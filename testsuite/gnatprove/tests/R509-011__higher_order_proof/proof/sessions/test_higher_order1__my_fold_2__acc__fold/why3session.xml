@@ -748,7 +748,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.237" proved="true">
-  <proof prover="0"><result status="valid" steps="231"/></proof>
+  <proof prover="0"><result status="valid" steps="203"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.238" proved="true">
@@ -759,7 +759,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.240" proved="true">
-  <proof prover="0"><result status="valid" steps="536"/></proof>
+  <proof prover="0"><result status="valid" steps="520"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.241" proved="true">
@@ -1172,7 +1172,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.373" proved="true">
-  <proof prover="0"><result status="valid" steps="6260"/></proof>
+  <proof prover="0"><result status="valid" steps="5802"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.374" proved="true">
@@ -1183,11 +1183,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.376" proved="true">
-  <proof prover="0"><result status="valid" steps="13692"/></proof>
+  <proof prover="0"><result status="valid" steps="17669"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.377" proved="true">
-  <proof prover="0"><result status="valid" steps="16877"/></proof>
+  <proof prover="0"><result status="valid" steps="12638"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.378" proved="true">
@@ -1524,7 +1524,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.485" proved="true">
-  <proof prover="0"><result status="valid" steps="8657"/></proof>
+  <proof prover="0"><result status="valid" steps="12615"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.486" proved="true">
@@ -1535,11 +1535,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.488" proved="true">
-  <proof prover="0"><result status="valid" steps="9525"/></proof>
+  <proof prover="0"><result status="valid" steps="17837"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.489" proved="true">
-  <proof prover="0"><result status="valid" steps="10695"/></proof>
+  <proof prover="0"><result status="valid" steps="18948"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.490" proved="true">
@@ -1643,11 +1643,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.522" proved="true">
-  <proof prover="0"><result status="valid" steps="10921"/></proof>
+  <proof prover="0"><result status="valid" steps="13996"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.523" proved="true">
-  <proof prover="0"><result status="valid" steps="15526"/></proof>
+  <proof prover="0"><result status="valid" steps="14623"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.524" proved="true">
@@ -1951,7 +1951,7 @@
   <proof prover="1"><result status="valid" steps="168"/></proof>
   </goal>
   <goal name="def&#39;vc.620" proved="true">
-  <proof prover="0"><result status="valid" steps="503"/></proof>
+  <proof prover="0"><result status="valid" steps="486"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.621" proved="true">
@@ -1962,11 +1962,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.623" proved="true">
-  <proof prover="0"><result status="valid" steps="15402"/></proof>
+  <proof prover="0"><result status="valid" steps="15190"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.624" proved="true">
-  <proof prover="0"><result status="valid" steps="16804"/></proof>
+  <proof prover="0"><result status="valid" steps="20785"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.625" proved="true">

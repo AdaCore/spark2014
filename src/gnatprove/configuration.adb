@@ -1137,7 +1137,7 @@ package body Configuration is
       if Alt_Ergo /= null then
          Ada.Text_IO.Put (Alt_Ergo.all & ": ");
          Call_With_Status (Alt_Ergo.all,
-                           Arguments => Dash_Version,
+                           Arguments => Dash_Dash_Version,
                            Status    => Status);
          Free (Alt_Ergo);
       end if;
