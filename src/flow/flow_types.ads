@@ -472,7 +472,7 @@ package Flow_Types is
    --  the graphviz/debug output where we prefer Magic_String to be evident
    --  (so Pretty should be False).
 
-   function Is_Easily_Printable (F : Flow_Id) return Boolean;
+   function Is_Easily_Printable (F : Flow_Id) return Boolean with Ghost;
    --  Check if F can be printed without resorting to Sprint
 
    package Flow_Graphs is new Graphs

@@ -33,6 +33,8 @@ package body Assumptions is
    -- From_JSON --
    ---------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
+
    function From_JSON (S : String) return Rule_Lists.List is
       V : constant JSON_Array := Get (Read (S));
    begin
@@ -59,16 +61,20 @@ package body Assumptions is
       return Result;
    end From_JSON;
 
+   pragma Annotate (Xcov, Exempt_Off);
+
    ----------------
    -- Read_Token --
    ----------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Read_Token (V : JSON_Value) return Token is
    begin
       return
         (Predicate => Claim_Kind'Value (Get (Get (V, "predicate"))),
          Arg       => From_JSON (Get (V, "arg")));
    end Read_Token;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------
    -- To_JSON --
@@ -107,6 +113,7 @@ package body Assumptions is
    -- To_String --
    ---------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function To_String (T : Token) return String is
 
       function Human_Readable (C : Claim_Kind) return String;
@@ -137,5 +144,6 @@ package body Assumptions is
    begin
       return Human_Readable (T.Predicate) & " of " & Subp_Name (T.Arg);
    end To_String;
+   pragma Annotate (Xcov, Exempt_Off);
 
 end Assumptions;

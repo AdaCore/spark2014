@@ -56,22 +56,6 @@ package body Gnat2Why.Assumptions is
 
    procedure Assume_For_Claim
      (C      : Claim;
-      Assume : Claim)
-   is
-      Position : Claim_Maps.Cursor;
-      Dummy    : Boolean;
-
-   begin
-      --  Attempt to insert an empty set and then put the assumption there
-      Claim_Assumptions.Insert (Key      => C,
-                                Position => Position,
-                                Inserted => Dummy);
-
-      Claim_Assumptions (Position).Include (Assume);
-   end Assume_For_Claim;
-
-   procedure Assume_For_Claim
-     (C      : Claim;
       Assume : Claim_Lists.List)
    is
       Position : Claim_Maps.Cursor;

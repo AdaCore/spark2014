@@ -481,6 +481,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    -- Print --
    -----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print (G : Scope_Graphs.Graph)
    is
       use Scope_Graphs;
@@ -557,11 +558,13 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          Node_Info => NDI'Access,
          Edge_Info => EDI'Access);
    end Print;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ----------------
    -- Print_Path --
    ----------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Path (From, To : Name_Scope) is
 
       Source : constant Scope_Graphs.Vertex_Id :=
@@ -621,6 +624,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          Search        => Is_Target'Access,
          Step          => Print_Vertex'Access);
    end Print_Path;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------------------
    -- Register_Name_Scope --

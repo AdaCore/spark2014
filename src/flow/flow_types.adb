@@ -975,6 +975,7 @@ package body Flow_Types is
    -- Is_Easily_Printable --
    -------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Ghost code");
    function Is_Easily_Printable (F : Flow_Id) return Boolean is
    begin
       case F.Kind is
@@ -988,6 +989,7 @@ package body Flow_Types is
             return Nkind (F.Node) in N_Has_Chars;
       end case;
    end Is_Easily_Printable;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ----------------------------
    -- To_Ordered_Flow_Id_Set --

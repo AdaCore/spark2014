@@ -60,10 +60,6 @@ package Gnat2Why.Assumptions is
 
    procedure Assume_For_Claim
      (C      : Claim;
-      Assume : Claim);
-
-   procedure Assume_For_Claim
-     (C      : Claim;
       Assume : Claim_Lists.List);
    --  Both procedures register that the claim C depends on the assumption(s)
    --  provided. Calling these procedures does not mean that claim C has been

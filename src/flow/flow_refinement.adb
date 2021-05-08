@@ -32,7 +32,6 @@ with Sinfo.Utils;                    use Sinfo.Utils;
 with Sprint;                         use Sprint;
 
 with Common_Iterators;               use Common_Iterators;
-with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 
@@ -76,16 +75,6 @@ package body Flow_Refinement is
       Target_Scope : constant Flow_Scope := Get_Flow_Scope (N);
    begin
       return Is_Visible (Target_Scope, S);
-   end Is_Visible;
-
-   function Is_Visible (EN : Entity_Name;
-                        S  : Flow_Scope)
-                        return Boolean
-   is
-      E : constant Entity_Id := Find_Entity (EN);
-   begin
-      return (Present (E)
-              and then Is_Visible (E, S));
    end Is_Visible;
 
    function Is_Visible (F : Flow_Id;
@@ -380,26 +369,6 @@ package body Flow_Refinement is
       return Is_Visible (Target_Scope => (Ent => Scope (E), Part => Body_Part),
                          Looking_From => S);
    end State_Refinement_Is_Visible;
-
-   function State_Refinement_Is_Visible (EN : Entity_Name;
-                                         S  : Flow_Scope)
-                                         return Boolean
-   is
-      E : constant Entity_Id := Find_Entity (EN);
-   begin
-      return (Present (E)
-              and then State_Refinement_Is_Visible (E, S));
-   end State_Refinement_Is_Visible;
-
-   function State_Refinement_Is_Visible (F : Flow_Id;
-                                         S : Flow_Scope)
-                                         return Boolean
-   is
-     (case F.Kind is
-         when Direct_Mapping =>
-            State_Refinement_Is_Visible (F.Node, S),
-         when others =>
-            raise Program_Error);
 
    ------------------------
    -- Is_Fully_Contained --
@@ -821,6 +790,7 @@ package body Flow_Refinement is
       -- Check_Direct_Mappings --
       ---------------------------
 
+      pragma Annotate (Xcov, Exempt_On, "Ghost code");
       procedure Check_Direct_Mappings (Deps : Dependency_Maps.Map) is
       begin
          for Clause in Deps.Iterate loop
@@ -840,6 +810,7 @@ package body Flow_Refinement is
             end;
          end loop;
       end Check_Direct_Mappings;
+      pragma Annotate (Xcov, Exempt_Off);
 
       ---------------------------
       -- Is_Hidden_Constituent --
@@ -1350,6 +1321,7 @@ package body Flow_Refinement is
    --  Start of processing for Is_Initialized_At_Elaboration
 
    begin
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Trace then
          Write_Str ("Query: ");
          Sprint_Node (E);
@@ -1361,13 +1333,16 @@ package body Flow_Refinement is
          Print_Flow_Scope (Common_Scope);
          Write_Eol;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       loop
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Trace then
             Write_Str ("   -> looking at ");
             Sprint_Node (Ent);
             Write_Eol;
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          case Ekind (Ent) is
             when E_Abstract_State =>
@@ -1401,17 +1376,22 @@ package body Flow_Refinement is
          Init := Present (Find_In_Initializes (Ent));
 
          if Ptr.Ent in Common_Scope.Ent | S.Ent then
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Trace then
                Write_Line ("   -> in common scope or home");
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
             if Ekind (Ent) = E_Variable and then
               Present (Encapsulating_State (Ent)) and then
               Get_Flow_Scope (Encapsulating_State (Ent)).Ent = Ptr.Ent
             then
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Trace then
                   Write_Line ("   -> looking up");
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
+
                Init := Present (Find_In_Initializes
                                   (Encapsulating_State (Ent)));
             end if;

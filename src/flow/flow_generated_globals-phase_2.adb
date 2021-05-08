@@ -519,6 +519,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Globals.Inputs.Clear;
          Globals.Outputs.Clear;
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if XXX then
             declare
                Inserted : Boolean;
@@ -535,6 +536,7 @@ package body Flow_Generated_Globals.Phase_2 is
                end if;
             end;
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
       end if;
    end GG_Get_Globals;
 
@@ -1742,6 +1744,7 @@ package body Flow_Generated_Globals.Phase_2 is
          -- Dump_Contract --
          -------------------
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          procedure Dump_Contract (Scop : Entity_Id) is
             C : constant Entity_Contract_Maps.Cursor :=
               Global_Contracts.Find (To_Entity_Name (Scop));
@@ -1876,6 +1879,7 @@ package body Flow_Generated_Globals.Phase_2 is
                end;
             end if;
          end Dump_Contract;
+         pragma Annotate (Xcov, Exempt_Off);
 
          ------------------------------
          -- Dump_Main_Unit_Contracts --
@@ -1940,12 +1944,14 @@ package body Flow_Generated_Globals.Phase_2 is
                 and then Collect'Result.Initializes.Is_Empty
                 and then Collect'Result.Refined_Initializes.Is_Empty;
 
+            pragma Annotate (Xcov, Exempt_On, "Ghost code");
             function Is_Empty (Globals : Global_Names) return Boolean is
               (Globals.Proof_Ins.Is_Empty
                  and then Globals.Inputs.Is_Empty
                  and then Globals.Outputs.Is_Empty)
               with Ghost;
             --  Returns True iff the Globals contract is empty
+            pragma Annotate (Xcov, Exempt_Off);
 
             --------------------
             -- Callee_Globals --
@@ -2727,8 +2733,10 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_State_Constituents_Map_Is_Ready --
    ----------------------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Ghost code");
    function GG_State_Constituents_Map_Is_Ready return Boolean
    is (GG_State_Constituents);
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------------
    -- GG_Is_Ghost_Entity --

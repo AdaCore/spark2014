@@ -353,6 +353,7 @@ project GNAT2Why is
                               "xutil",
 
                               --  Exclude units not exercized in gnat2why itself
+                              "assumptions.search",
                               "memcache_client",
                               "named_semaphores",
 

@@ -385,9 +385,11 @@ package body Flow_Visibility is
       --  check explanations).
 
       if Gnat2Why_Args.Global_Gen_Mode then
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Print (Scope_Graph);
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
       else
          Hierarchy_Info.Clear;
          Hierarchy_Info.Reserve_Capacity (0);
@@ -657,6 +659,7 @@ package body Flow_Visibility is
    -- Print --
    -----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print (G : Scope_Graphs.Graph)
    is
       use Scope_Graphs;
@@ -768,11 +771,13 @@ package body Flow_Visibility is
          Node_Info => NDI'Access,
          Edge_Info => EDI'Access);
    end Print;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ----------------
    -- Print_Path --
    ----------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Path (From, To : Flow_Scope) is
 
       Source : constant Scope_Graphs.Vertex_Id :=
@@ -836,6 +841,7 @@ package body Flow_Visibility is
          Search        => Is_Target'Access,
          Step          => Print_Vertex'Access);
    end Print_Path;
+   pragma Annotate (Xcov, Exempt_Off);
 
    --------------------------
    -- Register_Flow_Scopes --

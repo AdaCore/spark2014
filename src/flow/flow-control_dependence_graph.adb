@@ -33,6 +33,7 @@ package body Flow.Control_Dependence_Graph is
       -- Sanity_Check --
       ------------------
 
+      pragma Annotate (Xcov, Exempt_On, "Ghost code");
       procedure Sanity_Check (V, CV : Flow_Graphs.Vertex_Id) is
          use type Flow_Graphs.Vertex_Id;
       begin
@@ -72,6 +73,7 @@ package body Flow.Control_Dependence_Graph is
             end if;
          end loop;
       end Sanity_Check;
+      pragma Annotate (Xcov, Exempt_Off);
 
       --  Local variables
 

@@ -47,9 +47,11 @@ package Assumptions is
 
    function Hash_Token (X : Token) return Ada.Containers.Hash_Type;
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Hash_Token (X : Token) return Ada.Containers.Hash_Type is
      (Ada.Containers.Hash_Type (Claim_Kind'Pos (X.Predicate)) +
           3 * Hash (X.Arg));
+   pragma Annotate (Xcov, Exempt_Off);
 
    function "<" (Left, Right : Token) return Boolean is
      (Left.Predicate < Right.Predicate or else
