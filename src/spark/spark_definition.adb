@@ -1452,100 +1452,99 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            declare
-            begin
-               if not Is_Valid_Allocating_Context (N) then
-                  Mark_Violation
-                    ("allocator not stored in object as "
-                     & "part of assignment, declaration or return", N);
+            if not Is_Valid_Allocating_Context (N) then
+               Mark_Violation
+                 ("allocator not stored in object as "
+                  & "part of assignment, declaration or return", N);
 
-               --  Currently forbid the use of an uninitialized allocator (for
-               --  a type which defines full default initialization) inside
-               --  an expression function, as this requires translating the
-               --  expression in the term domain. As the frontend does not
-               --  expand the default value of the type here, this would
-               --  require using an epsilon in Why3 which we prefer avoid
-               --  doing outside of axiom guards.
+            --  Currently forbid the use of an uninitialized allocator (for
+            --  a type which defines full default initialization) inside
+            --  an expression function, as this requires translating the
+            --  expression in the term domain. As the frontend does not
+            --  expand the default value of the type here, this would
+            --  require using an epsilon in Why3 which we prefer avoid
+            --  doing outside of axiom guards.
 
-               elsif Nkind (Expression (N)) /= N_Qualified_Expression
-                 and then Nkind (Original_Node (Enclosing_Declaration (N))) =
-                   N_Expression_Function
-               then
-                  Mark_Unsupported
-                    ("uninitialized allocator inside expression function", N);
+            elsif Nkind (Expression (N)) /= N_Qualified_Expression
+              and then Nkind (Enclosing_Declaration (N)) =
+                N_Subprogram_Body
+              and then Is_Expression_Function_Or_Completion
+                  (Unique_Defining_Entity (Enclosing_Declaration (N)))
+            then
+               Mark_Unsupported
+                 ("uninitialized allocator inside expression function", N);
 
-               --  Check that the type of the allocator is visibly an access
-               --  type.
+            --  Check that the type of the allocator is visibly an access
+            --  type.
 
-               elsif Retysp_In_SPARK (Etype (N))
-                 and then Is_Access_Type (Retysp (Etype (N)))
-               then
-                  --  If the expression is a qualified expression, then we
-                  --  have an initialized allocator.
+            elsif Retysp_In_SPARK (Etype (N))
+              and then Is_Access_Type (Retysp (Etype (N)))
+            then
+               --  If the expression is a qualified expression, then we
+               --  have an initialized allocator.
+
+               if Nkind (Expression (N)) = N_Qualified_Expression then
+                  Mark (Expression (N));
+
+               --  Otherwise the expression is a subtype indicator and we
+               --  have an uninitialized allocator.
+
+               else
+                  declare
+                     --  In non-interfering contexts the subtype indicator
+                     --  is always a subtype name, because frontend creates
+                     --  an itype for each constrained subtype indicator.
+                     Expr : constant Node_Id := Expression (N);
+                     pragma Assert (Is_Entity_Name (Expr));
+
+                     Typ  : constant Entity_Id := Entity (Expr);
+                     pragma Assert (Is_Type (Typ));
+
+                  begin
+                     if not In_SPARK (Typ) then
+                        Mark_Violation (Expr, Typ);
+
+                     elsif Default_Initialization (Typ)
+                     not in Full_Default_Initialization
+                       | No_Possible_Initialization
+                     then
+                        Mark_Violation ("uninitialized allocator without"
+                                        & " default initialization", N);
+                     end if;
+                  end;
+               end if;
+
+               --  We only support allocators of access-to-constant types in
+               --  specific contexts.
+
+               if Is_Access_Constant (Retysp (Etype (N))) then
+
+                  Check_Move_To_Constant (N);
+
+                  --  The initial value of the allocator is moved. We need
+                  --  to consider it specifically in the case of allocators
+                  --  to access-to-constant types as the allocator type is
+                  --  not itself of a deep type.
 
                   if Nkind (Expression (N)) = N_Qualified_Expression then
-                     Mark (Expression (N));
-
-                  --  Otherwise the expression is a subtype indicator and we
-                  --  have an uninitialized allocator.
-
-                  else
                      declare
-                        --  In non-interfering contexts the subtype indicator
-                        --  is always a subtype name, because frontend creates
-                        --  an itype for each constrained subtype indicator.
-                        Expr : constant Node_Id := Expression (N);
-                        pragma Assert (Is_Entity_Name (Expr));
-
-                        Typ  : constant Entity_Id := Entity (Expr);
-                        pragma Assert (Is_Type (Typ));
-
+                        Des_Ty : Entity_Id := Directly_Designated_Type
+                          (Retysp (Etype (N)));
                      begin
-                        if not In_SPARK (Typ) then
-                           Mark_Violation (Expr, Typ);
+                        if Is_Incomplete_Type (Des_Ty) then
+                           Des_Ty := Full_View (Des_Ty);
+                        end if;
 
-                        elsif Default_Initialization (Typ)
-                                not in Full_Default_Initialization
-                                     | No_Possible_Initialization
-                        then
-                           Mark_Violation ("uninitialized allocator without"
-                                           & " default initialization", N);
+                        if Is_Deep (Des_Ty) then
+                           Check_Source_Of_Move
+                             (Expression (N), To_Constant => True);
                         end if;
                      end;
                   end if;
-
-                  --  We only support allocators of access-to-constant types in
-                  --  specific contexts.
-
-                  if Is_Access_Constant (Retysp (Etype (N))) then
-
-                     Check_Move_To_Constant (N);
-
-                     --  The initial value of the allocator is moved. We need
-                     --  to consider it specifically in the case of allocators
-                     --  to access-to-constant types as the allocator type is
-                     --  not itself of a deep type.
-
-                     if Nkind (Expression (N)) = N_Qualified_Expression then
-                        declare
-                           Des_Ty : Entity_Id := Directly_Designated_Type
-                             (Retysp (Etype (N)));
-                        begin
-                           if Is_Incomplete_Type (Des_Ty) then
-                              Des_Ty := Full_View (Des_Ty);
-                           end if;
-
-                           if Is_Deep (Des_Ty) then
-                              Check_Source_Of_Move
-                                (Expression (N), To_Constant => True);
-                           end if;
-                        end;
-                     end if;
-                  end if;
-               else
-                  Mark_Violation (N, Etype (N));
                end if;
-            end;
+            else
+               Mark_Violation (N, Etype (N));
+            end if;
 
          when N_Assignment_Statement =>
             declare
