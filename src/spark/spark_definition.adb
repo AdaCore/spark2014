@@ -525,19 +525,73 @@ package body SPARK_Definition is
    ----------------------------
 
    procedure Check_Move_To_Constant (Expr : Node_Id) is
-      Par       : constant Node_Id := Parent (Expr);
-      Operation : constant String :=
+      Operation  : constant String :=
         (if Nkind (Expr) = N_Allocator then "allocator of"
          else "move inside a conversion to");
+      Context    : Node_Id := Parent (Expr);
+      Is_Valid   : Boolean;
 
    begin
-      --  Check that we are directly inside a library level constant
-      --  declaration.
+      --  Check that Expr is a part of the definition of a library level
+      --  constant.
 
-      if Nkind (Par) /= N_Object_Declaration
-        or else not Is_Constant_In_SPARK (Defining_Identifier (Par))
-        or else not Is_Library_Level_Entity (Defining_Identifier (Par))
-      then
+      loop
+         case Nkind (Context) is
+
+            --  The allocating expression appears on the rhs of a library level
+            --  constant declaration.
+
+            when N_Object_Declaration =>
+               declare
+                  Obj : constant Entity_Id := Defining_Identifier (Context);
+               begin
+                  Is_Valid := Is_Constant_In_SPARK (Obj)
+                    and then Is_Library_Level_Entity (Obj);
+                  exit;
+               end;
+
+            --  The allocating expression is the expression of a type
+            --  conversion or a qualified expression occurring in a
+            --  valid allocating context.
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  The allocating expression occurs as the expression in another
+            --  initialized allocator. If it is an allocator to constant, the
+            --  context will be checked while checking the allocator.
+            --  Otherwise, continue the check.
+
+            when N_Allocator =>
+               declare
+                  Ty : constant Entity_Id := Retysp (Etype (Context));
+               begin
+                  if Is_Access_Type (Ty) and then Is_Access_Constant (Ty) then
+                     Is_Valid := True;
+                     exit;
+                  end if;
+               end;
+
+            --  The allocating expression corresponds to a component value in
+            --  an aggregate occurring in an allocating context.
+
+            when N_Aggregate
+               | N_Component_Association
+            =>
+               null;
+
+            when others =>
+               Is_Valid := False;
+               exit;
+         end case;
+
+         Context := Parent (Context);
+      end loop;
+
+      if not Is_Valid then
          Mark_Unsupported
            (Operation & " an access-to-constant type not in"
             & " library level constant declaration", Expr);
