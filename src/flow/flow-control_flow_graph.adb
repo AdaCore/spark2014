@@ -3661,7 +3661,9 @@ package body Flow.Control_Flow_Graph is
                   Atr : V_Attributes renames FA.Atr (V);
 
                begin
-                  if Atr.Loops.Contains (Loop_Id) then
+                  if Atr.Loops.Contains (Loop_Id)
+                    and then not Atr.In_Nested_Package
+                  then
                      for Var of
                        Atr.Variables_Defined.Union (Atr.Volatiles_Read)
                      loop
