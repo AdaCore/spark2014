@@ -2,5 +2,6 @@ main.adb:14:04: high: alignment of overlayed object might not be an integral mul
 main.adb:14:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Node_Variant_Type has discriminants]
 main.adb:14:38: high: object is unsuitable for aliasing via address clause [possible explanation: type Node_Variant_Type has discriminants]
 main.adb:14:38: high: types of aliased objects do not have the same size [possible explanation: type Node_Type doesn't have an Object_Size representation clause or aspect]
+main.adb:22:07: info: initialization of "Branch" proved
+main.adb:24:06: info: data dependencies proved
 main.adb:25:06: info: flow dependencies proved
-main.adb:28:16: high: "Alias" must be listed in the Global aspect of "Create_Empty_Branch" (SPARK RM 6.1.4(14))

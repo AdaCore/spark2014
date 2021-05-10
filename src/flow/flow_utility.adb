@@ -5549,6 +5549,11 @@ package body Flow_Utility is
                              E),
                           Scope)
 
+                     elsif Ekind (E) in E_Constant | E_Variable
+                       and then Present (Ultimate_Overlaid_Entity (E))
+                     then
+                        Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
+
                      else Flatten_Variable (E, Scope));
 
                   To_Ext : Flow_Id_Sets.Set;
