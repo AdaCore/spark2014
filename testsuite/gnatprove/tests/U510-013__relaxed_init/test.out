@@ -1,0 +1,4 @@
+init.adb:5:29: info: initialization of "Status" proved
+init.adb:7:17: info: postcondition proved (CVC4: 1 VC; Trivial: 2 VC)
+init.adb:16:04: info: initialization of "B" proved
+init.adb:19:10: medium: initialization check might fail

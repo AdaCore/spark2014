@@ -5,7 +5,7 @@ reason_for_check.adb:18:21: medium: range check might fail (e.g. when X1 = -1 an
 reason_for_check.adb:18:29: info: range check proved (CVC4: 1 VC)
 reason_for_check.adb:18:29: medium: range check might fail (e.g. when X2 = -1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention X2]
 reason_for_check.adb:19:07: medium: precondition might fail, cannot prove V < 1000 (e.g. when Y1 = 1000 and Y2 = 1) [possible fix: precondition of subprogram at line 16 should mention Y1 and Y2]
-reason_for_check.adb:19:25: medium: range check might fail (e.g. when Y2 = 1) [reason for check: output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention Y1]
+reason_for_check.adb:19:25: medium: range check might fail (e.g. when Y2 = 1) [reason for check: output value must fit in argument type] [possible fix: call at line 19 should mention W (for argument Y1) in a postcondition]
 reason_for_check.adb:19:29: info: range check proved (CVC4: 1 VC)
 reason_for_check.adb:19:29: medium: range check might fail (e.g. when Y2 = 1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention Y2]
 reason_for_check.adb:24:04: warning: analyzing unreferenced function "Get"

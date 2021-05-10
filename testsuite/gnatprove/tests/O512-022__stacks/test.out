@@ -1,5 +1,5 @@
 main.adb:7:04: info: initialization of "Max" proved
-main.adb:10:09: medium: range check might fail [reason for check: output value must fit in argument type]
+main.adb:10:09: medium: range check might fail [reason for check: output value must fit in argument type] [possible fix: postcondition of call at line 10 should mention Item (for argument Max)]
 main.adb:15:18: info: range check proved (CVC4: 1 VC)
 main.adb:22:13: info: initialization of "Cmd" proved
 main.adb:23:13: info: initialization of "Last" proved
