@@ -25,7 +25,7 @@
 with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
-with Ada.Text_IO;
+with Ada.Text_IO;               use Ada.Text_IO;
 with Aspects;                   use Aspects;
 with Assumption_Types;          use Assumption_Types;
 with Atree;                     use Atree;
@@ -633,6 +633,7 @@ package body Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Cntexmp     : JSON_Value;
+      Verdict     : Cntexmp_Verdict;
       Check_Tree  : JSON_Value;
       VC_File     : String;
       VC_Loc      : Node_Id;
@@ -644,11 +645,46 @@ package body Flow_Error_Messages is
       Stats       : Prover_Stat_Maps.Map;
       Place_First : Boolean)
    is
+      function Get_Fix_Or_Verdict
+        (N          : Node_Id;
+         Tag        : VC_Kind;
+         How_Proved : Prover_Category;
+         Verdict    : Cntexmp_Verdict)
+         return String;
+      --  Return a fix, or the verdict if the fix was not found and the
+      --  verdict is a subcontract weakness
+
       function Get_Severity
         (N         : Node_Id;
          Is_Proved : Boolean;
-         Tag       : VC_Kind) return Msg_Severity;
+         Tag       : VC_Kind;
+         Verdict   : Cntexmp_Verdict) return Msg_Severity;
       --  @result Severity of the proof message
+
+      ------------------------
+      -- Get_Fix_Or_Verdict --
+      ------------------------
+
+      function Get_Fix_Or_Verdict
+        (N          : Node_Id;
+         Tag        : VC_Kind;
+         How_Proved : Prover_Category;
+         Verdict    : Cntexmp_Verdict)
+         return String
+      is
+         Fix : constant String := Get_Fix (N, Tag, How_Proved);
+      begin
+         if Fix = "" then
+            case Verdict.Verdict_Category is
+               when Subcontract_Weakness =>
+                  return "add or complete related loop invariants "
+                    & "or postconditions";
+               when others => null;
+            end case;
+         end if;
+
+         return Fix;
+      end Get_Fix_Or_Verdict;
 
       ------------------
       -- Get_Severity --
@@ -657,7 +693,8 @@ package body Flow_Error_Messages is
       function Get_Severity
         (N         : Node_Id;
          Is_Proved : Boolean;
-         Tag       : VC_Kind) return Msg_Severity
+         Tag       : VC_Kind;
+         Verdict   : Cntexmp_Verdict) return Msg_Severity
       is
          Result : Msg_Severity;
 
@@ -695,6 +732,9 @@ package body Flow_Error_Messages is
          then
             Result := Low_Check_Kind;
 
+         elsif Verdict.Verdict_Category = Non_Conformity then
+            Result := High_Check_Kind;
+
          --  Default for unproved checks is to issue a medium severity message
 
          else
@@ -714,9 +754,15 @@ package body Flow_Error_Messages is
       VC_Slc  : constant Source_Ptr  := VC_Span.Ptr;
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
-        Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
+        (if Verdict.Verdict_Category in
+            Not_Checked | Cntexmp_Confirmed_Verdict_Category
+         then
+            Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc)
+         else
+            Cntexample_File_Maps.Empty);
 
-      Severity  : constant Msg_Severity := Get_Severity (N, Is_Proved, Tag);
+      Severity  : constant Msg_Severity :=
+                    Get_Severity (N, Is_Proved, Tag, Verdict);
       Suppr     : String_Id := No_String;
       Msg_Id    : Message_Id := No_Message_Id;
       Is_Annot  : Boolean;
@@ -807,7 +853,8 @@ package body Flow_Error_Messages is
                      end;
 
                      declare
-                        Fix : constant String := Get_Fix (N, Tag, How_Proved);
+                        Fix : constant String :=
+                          Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict);
                      begin
                         if Fix /= "" then
                            Append (Message, " [possible fix: " & Fix & "]");
@@ -856,7 +903,8 @@ package body Flow_Error_Messages is
                      end;
 
                      declare
-                        Fix : constant String := Get_Fix (N, Tag, How_Proved);
+                        Fix : constant String :=
+                          Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict);
                      begin
                         if Fix /= "" then
                            Ignore_Id := Print_Regular_Msg

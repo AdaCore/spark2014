@@ -92,6 +92,7 @@ package Gnat2Why.Error_Messages is
       Extra_Msg   : String := "";
       Explanation : String := "";
       Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Verdict     : Cntexmp_Verdict := (others => <>);
       Check_Tree  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
       VC_Loc      : Node_Id := Empty;
