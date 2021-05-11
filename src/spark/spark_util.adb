@@ -2114,7 +2114,7 @@ package body SPARK_Util is
    function Is_Error_Signaling_Statement (N : Node_Id) return Boolean is
    begin
       case Nkind (N) is
-         when N_Raise_xxx_Error | N_Raise_Statement =>
+         when N_Raise_xxx_Error | N_Raise_Statement | N_Raise_Expression =>
             return True;
 
          when N_Pragma =>

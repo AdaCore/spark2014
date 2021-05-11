@@ -1,0 +1,2 @@
+main.adb:2:04: warning: analyzing unreferenced function "Do_Something"
+main.adb:8:35: info: raise statement or expression proved unreachable (CVC4: 1 VC)
