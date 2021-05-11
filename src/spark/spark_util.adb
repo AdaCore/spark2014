@@ -2935,14 +2935,14 @@ package body SPARK_Util is
                                 & "Alignment representation clause or aspect");
          return;
       end if;
-      if Alignment (X) mod Alignment (Y) /= Uint_0 then
+      if Alignment (Y) mod Alignment (X) /= Uint_0 then
          Result := False;
          Explanation :=
-           To_Unbounded_String ("alignment of " & Source_Name (X) & " (which "
-                                & "is " & UI_Image (Alignment (X)) & ") must "
+           To_Unbounded_String ("alignment of " & Source_Name (Y) & " (which "
+                                & "is " & UI_Image (Alignment (Y)) & ") must "
                                 & "be a multipe of the alignment of "
-                                & Source_Name (Y) & "(which is "
-                                & UI_Image (Alignment (Y)) & ")");
+                                & Source_Name (X) & "(which is "
+                                & UI_Image (Alignment (X)) & ")");
          return;
       end if;
       Result := True;
