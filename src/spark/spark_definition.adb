@@ -3400,7 +3400,9 @@ package body SPARK_Definition is
             if not Retysp_In_SPARK (Etype (P))
               or else not
                 (Expr_Has_Relaxed_Init (P, No_Eval => True)
-                 or else Has_Relaxed_Init (Etype (P)))
+                 or else Has_Relaxed_Init (Etype (P))
+                 or else (Nkind (P) in N_Identifier | N_Expanded_Name
+                          and then Has_Relaxed_Initialization (Entity (P))))
             then
                Mark_Violation
                  ("prefix of attribute """
