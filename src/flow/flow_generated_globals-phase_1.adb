@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Einfo.Utils;             use Einfo.Utils;
+with Elists;                  use Elists;
 with Lib.Util;                use Lib.Util;
 with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
@@ -786,14 +787,18 @@ package body Flow_Generated_Globals.Phase_1 is
         and then Has_Non_Null_Abstract_State (E)
       then
          for State of Iter (Abstract_States (E)) loop
-            --  ??? Probably we should move recording of the non-Part_of
-            --  constituents here as well are write them in a single GG line.
-            for Part_Of of Iter (Part_Of_Constituents (State)) loop
-               New_GG_Line (EK_Part_Of);
-               Serialize (State);
-               Serialize (Part_Of);
-               Terminate_GG_Line;
-            end loop;
+            declare
+               Part_Ofs : constant Elist_Id := Part_Of_Constituents (State);
+            begin
+               if Present (Part_Ofs)
+                 and then not Is_Empty_Elmt_List (Part_Of_Constituents (State))
+               then
+                  New_GG_Line (EK_Part_Of);
+                  Serialize (State);
+                  Serialize (Part_Of_Constituents (State));
+                  Terminate_GG_Line;
+               end if;
+            end;
          end loop;
       end if;
    end GG_Register_Flow_Scope;

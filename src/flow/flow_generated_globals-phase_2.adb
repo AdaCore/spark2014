@@ -1298,8 +1298,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Part_Of =>
                   declare
-                     State   : Entity_Name;
-                     Part_Of : Entity_Name;
+                     State    : Entity_Name;
+                     Part_Ofs : Name_Sets.Set;
 
                      State_Pos : Name_Graphs.Cursor;
                      Part_Pos  : Name_Maps.Cursor;
@@ -1307,23 +1307,26 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   begin
                      Serialize (State);
-                     Serialize (Part_Of);
+                     Serialize (Part_Ofs);
+                     pragma Assert (not Part_Ofs.Is_Empty);
 
                      State_Part_Map.Insert (Key      => State,
                                             Position => State_Pos,
                                             Inserted => Inserted);
 
-                     State_Part_Map (State_Pos).Include (Part_Of);
+                     State_Part_Map (State_Pos).Union (Part_Ofs);
 
-                     Part_State_Map.Insert (Key      => Part_Of,
-                                            New_Item => State,
-                                            Position => Part_Pos,
-                                            Inserted => Inserted);
+                     for Part_Of of Part_Ofs loop
+                        Part_State_Map.Insert (Key      => Part_Of,
+                                               New_Item => State,
+                                               Position => Part_Pos,
+                                               Inserted => Inserted);
 
-                     pragma Assert
-                       (Inserted
-                          or else
-                        Part_State_Map (Part_Pos) = State);
+                        pragma Assert
+                          (Inserted
+                             or else
+                           Part_State_Map (Part_Pos) = State);
+                     end loop;
 
                      State_Abstractions.Include (State);
                   end;
