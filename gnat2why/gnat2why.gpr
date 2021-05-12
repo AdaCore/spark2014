@@ -64,6 +64,7 @@ project GNAT2Why is
                               "named_semaphores",
 
                               --  Exclude generated units intentionally not fully covered
+                              "gnat1drv",
                               "why.atree.accessors",
                               "why.atree.builders",
                               "why.atree.mutators",
