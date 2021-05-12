@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2020, AdaCore                     --
+--                     Copyright (C) 2010-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -29,17 +29,19 @@ package body Outputs is
    --  If a new line has just been created, print as many spaces
    --  as the indentation level requires.
 
-   function File_Handle (O : Output_Id) return File_Type;
+   type File_Access is access all File_Type;
+
+   function File_Handle (O : Output_Id) return File_Access;
    --  Return the file handle corresponding to this output id
 
-   function File_Handle (O : Output_Id) return File_Type is
+   function File_Handle (O : Output_Id) return File_Access is
       (case O is
           when Stdout =>
-             Standard_Output,
+             Stdout_Handle'Access,
           when Stderr =>
-             Standard_Error,
+             Stderr_Handle'Access,
           when Current_File =>
-             Current_File_Handle);
+             Current_File_Handle'Access);
 
    ------------------------
    -- Close_Current_File --
@@ -60,7 +62,7 @@ package body Outputs is
    begin
       if Output_States (O).New_Line then
          for J in 1 .. Output_States (O).Indent loop
-            Put (File_Handle (O), " ");
+            Put (File_Handle (O).all, " ");
          end loop;
          Output_States (O).New_Line := False;
       end if;
@@ -72,7 +74,7 @@ package body Outputs is
 
    procedure NL (O : Output_Id) is
    begin
-      New_Line (File_Handle (O));
+      New_Line (File_Handle (O).all);
       Output_States (O).New_Line := True;
    end NL;
 
@@ -95,17 +97,17 @@ package body Outputs is
    begin
       I (O);
       if As_String then
-         Put (File_Handle (O), '"');
+         Put (File_Handle (O).all, '"');
          for I in S'Range loop
             if S (I) = '"' then
-               Put (File_Handle (O), "\""");
+               Put (File_Handle (O).all, "\""");
             else
-               Put (File_Handle (O), S (I));
+               Put (File_Handle (O).all, S (I));
             end if;
          end loop;
-         Put (File_Handle (O), '"');
+         Put (File_Handle (O).all, '"');
       else
-         Put (File_Handle (O), S);
+         Put (File_Handle (O).all, S);
       end if;
    end P;
 
@@ -116,7 +118,7 @@ package body Outputs is
    procedure PL (O : Output_Id; S : String) is
    begin
       I (O);
-      Put_Line (File_Handle (O), S);
+      Put_Line (File_Handle (O).all, S);
       Output_States (O).New_Line := True;
    end PL;
 
