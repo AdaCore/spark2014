@@ -4266,6 +4266,7 @@ package body SPARK_Definition is
                               when Pragma_Postcondition
                                  | Pragma_Post_Class
                                  | Pragma_Contract_Cases
+                                 | Pragma_Refined_Post
                               =>
                                  In_Contracts := Unique_Defining_Entity
                                    (Find_Related_Declaration_Or_Body

@@ -3647,6 +3647,60 @@ package body Gnat2Why.Subprograms is
               (Prog,
                New_Assume_Statement
                  (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
+
+            --  For functions we also need to assume the dynamic invariant of
+            --  the result.
+
+            if Ekind (E) = E_Function then
+               declare
+                  Include_Type_Inv : constant W_Term_Id :=
+                    Include_Non_Local_Type_Inv_For_Subp (E);
+                  Dyn_Prop         : W_Pred_Id := Compute_Dynamic_Invariant
+                    (Expr             => New_Deref
+                       (Right => Result_Name,
+                        Typ   => Get_Typ (Result_Name)),
+                     Ty               => Etype (E),
+                     Params           => Params,
+                     Include_Type_Inv => Include_Type_Inv);
+
+               begin
+                  --  For borrowing traversal functions, add the dynamic
+                  --  invariant of the result at end and of the borrowed
+                  --  parameter at end.
+
+                  if Is_Borrowing_Traversal_Function (E) then
+                     declare
+                        Brower_At_End   : constant W_Identifier_Id :=
+                          Get_Brower_At_End (E);
+                        Borrowed_At_End : constant W_Identifier_Id :=
+                          To_Local (Get_Borrowed_At_End (E));
+                     begin
+                        Dyn_Prop :=
+                          +New_And_Expr
+                            (Conjuncts =>
+                               (1 => +Dyn_Prop,
+                                2 => +Compute_Dynamic_Invariant
+                                  (Expr             => New_Deref
+                                       (Right => Brower_At_End,
+                                        Typ   => Get_Typ (Brower_At_End)),
+                                   Ty               => Etype (E),
+                                   Params           => Params,
+                                   Include_Type_Inv => Include_Type_Inv),
+                                3 => +Compute_Dynamic_Invariant
+                                  (Expr             => +Borrowed_At_End,
+                                   Ty               => Etype
+                                     (First_Formal (E)),
+                                   Params           => Params,
+                                   Include_Type_Inv => Include_Type_Inv)),
+                             Domain    => EW_Pred);
+                     end;
+                  end if;
+
+                  Prog := Sequence
+                    (Prog,
+                     New_Assume_Statement (Pred => Dyn_Prop));
+               end;
+            end if;
          end if;
          return Prog;
       end Checking_Of_Refined_Post;
