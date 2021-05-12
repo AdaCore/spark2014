@@ -78,6 +78,9 @@ package SPARK_Util is
 
          | N_Package_Instantiation
          | N_Subprogram_Instantiation
+         | N_Generic_Subprogram_Declaration
+         | N_Generic_Package_Declaration
+         | N_Body_Stub
          | N_Use_Package_Clause
          | N_Use_Type_Clause
          | N_Validate_Unchecked_Conversion

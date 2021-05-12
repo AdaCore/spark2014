@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                Copyright (C) 2013-2020, Altran UK Limited                --
+--                Copyright (C) 2013-2021, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -3510,7 +3510,6 @@ package body Flow_Utility is
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
             when N_Abstract_Subprogram_Declaration
-               | N_Body_Stub
                | N_Entry_Body
                | N_Entry_Declaration
                | N_Package_Declaration

@@ -15131,8 +15131,29 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         when others =>
+         --  Block statements can occur for inlined function calls
+
+         when N_Block_Statement =>
+            R := Transform_Block_Statement (Decl);
+
+         when N_Ignored_In_SPARK
+            | N_Task_Type_Declaration
+            | N_Subprogram_Body
+            | N_Protected_Body
+            | N_Task_Body
+            | N_Abstract_Subprogram_Declaration
+            | N_Subprogram_Declaration
+            | N_Entry_Declaration
+            | N_Private_Extension_Declaration
+            | N_Private_Type_Declaration
+            | N_Component_Declaration
+         =>
             null;
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Transform_Declaration] kind = "
+                                  & Node_Kind'Image (Nkind (Decl)));
+            raise Not_Implemented;
       end case;
 
       --  Aspect or representation clause Address may involve computations
