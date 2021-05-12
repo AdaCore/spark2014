@@ -3555,7 +3555,6 @@ package body Flow_Utility is
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
             when N_Abstract_Subprogram_Declaration
-               | N_Body_Stub
                | N_Entry_Body
                | N_Entry_Declaration
                | N_Package_Declaration

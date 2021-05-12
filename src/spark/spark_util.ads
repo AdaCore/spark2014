@@ -80,6 +80,9 @@ package SPARK_Util is
 
          | N_Package_Instantiation
          | N_Subprogram_Instantiation
+         | N_Generic_Subprogram_Declaration
+         | N_Generic_Package_Declaration
+         | N_Body_Stub
          | N_Use_Package_Clause
          | N_Use_Type_Clause
          | N_Validate_Unchecked_Conversion
@@ -743,7 +746,7 @@ package SPARK_Util is
 
    function Is_Error_Signaling_Statement (N : Node_Id) return Boolean;
    --  Returns True iff N is a statement used to signal an error:
-   --    . a raise statement
+   --    . a raise statement or expression
    --    . a pragma Assert (False)
    --    . a call to an error-signaling procedure
 

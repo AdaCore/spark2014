@@ -15510,8 +15510,42 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         when others =>
+         when N_Itype_Reference =>
+            declare
+               Assoc : constant Node_Id :=
+                 Associated_Node_For_Itype (Itype (Decl));
+            begin
+               if Nkind (Assoc) in N_Has_Etype then
+                  return New_Ignore
+                    (Prog => +Transform_Expr (Assoc, EW_Prog, Body_Params));
+               else
+                  return +Void;
+               end if;
+            end;
+
+         --  Block statements can occur for inlined function calls
+
+         when N_Block_Statement =>
+            R := Transform_Block_Statement (Decl);
+
+         when N_Ignored_In_SPARK
+            | N_Task_Type_Declaration
+            | N_Subprogram_Body
+            | N_Protected_Body
+            | N_Task_Body
+            | N_Abstract_Subprogram_Declaration
+            | N_Subprogram_Declaration
+            | N_Entry_Declaration
+            | N_Private_Extension_Declaration
+            | N_Private_Type_Declaration
+            | N_Component_Declaration
+         =>
             null;
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Transform_Declaration] kind = "
+                                  & Node_Kind'Image (Nkind (Decl)));
+            raise Not_Implemented;
       end case;
 
       --  Aspect or representation clause Address may involve computations
@@ -21727,6 +21761,7 @@ package body Gnat2Why.Expr is
             | N_Object_Renaming_Declaration
             | N_Subtype_Declaration
             | N_Full_Type_Declaration
+            | N_Itype_Reference
          =>
             return Transform_Declaration (Stmt_Or_Decl);
 
@@ -21764,19 +21799,6 @@ package body Gnat2Why.Expr is
             end if;
 
             return Transform_Pragma (Stmt_Or_Decl, Force => False);
-
-         when N_Itype_Reference =>
-            declare
-               Assoc : constant Node_Id :=
-                 Associated_Node_For_Itype (Itype (Stmt_Or_Decl));
-            begin
-               if Nkind (Assoc) in N_Has_Etype then
-                  return New_Ignore
-                    (Prog => +Transform_Expr (Assoc, EW_Prog, Body_Params));
-               else
-                  return +Void;
-               end if;
-            end;
 
          when N_Raise_xxx_Error
             | N_Raise_Statement
