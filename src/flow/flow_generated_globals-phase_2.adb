@@ -2155,11 +2155,11 @@ package body Flow_Generated_Globals.Phase_2 is
                   Update.Proper.Inputs.Difference (P.Local_Variables);
                   Update.Proper.Proof_Ins.Difference (P.Local_Variables);
 
-                  --  We used Outputs sets only to compute the Initializes set.
-                  --  Now we clear them to make sure that the remaining GG
-                  --  computation do not depend on them. The outside world
-                  --  should only use the proper Initializes, Inputs and
-                  --  Proof_Ins, which correspond to an explicit contract like:
+                  --  We use Outputs only to compute the Initializes. Now we
+                  --  clear them to make sure that the remaining GG computation
+                  --  does not depend on them. The outside world should only
+                  --  use the proper Initializes, Inputs and Proof_Ins, which
+                  --  correspond to an explicit contract like:
                   --
                   --    with Initializes => (... => ..., null => ...);
                   --

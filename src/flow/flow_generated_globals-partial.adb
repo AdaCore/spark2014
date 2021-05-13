@@ -1749,6 +1749,21 @@ package body Flow_Generated_Globals.Partial is
 
                Node_Sets.Move (Target => Update.Initializes.Proper,
                                Source => Projected);
+
+               --  We use Outputs only to compute the Initializes. Now we clear
+               --  them to make sure that the remaining GG computation does not
+               --  depend on them. The outside world should only use the proper
+               --  Initializes, Inputs and Proof_Ins, which correspond to an
+               --  explicit contract like:
+               --
+               --    with Initializes => (... => ..., null => ...);
+               --
+               --  Their refined versions are kept to generate a more
+               --  complete Initializes contract in subsequent iterations of
+               --  Do_Global, but they should not be queried.
+
+               Update.Proper.Outputs.Clear;
+               Update.Refined.Outputs.Clear;
             end;
          end if;
       end if;
