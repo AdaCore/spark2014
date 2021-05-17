@@ -7437,7 +7437,8 @@ package body Gnat2Why.Expr is
       return Nkind (N) not in N_Quantified_Expression |
                               N_And_Then              |
                               N_Op_And                |
-                              N_If_Expression;
+                              N_If_Expression         |
+                              N_Case_Expression;
    end Is_Terminal_Node;
 
    ---------------------
