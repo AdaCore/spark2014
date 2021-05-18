@@ -1985,11 +1985,15 @@ package body SPARK_Definition is
                Mark (Expression (N));
             end if;
 
-         --  The frontend inserts explicit checks during semantic analysis
-         --  in some cases that are not supported in GNATprove, like cases
-         --  of infinite recursion detected by the frontend.
+         --  The frontend inserts explicit raise-statements/expressions during
+         --  semantic analysis in some cases that are statically known to raise
+         --  an exception, like simple cases of infinite recursion or division
+         --  by zero. No condition should be present in SPARK code, but accept
+         --  them here as the code should in that case be rejected after
+         --  marking.
+
          when N_Raise_xxx_Error =>
-            Mark_Unsupported ("compiler-generated raise statement", N);
+            null;
 
          when N_Raise_Expression =>
             declare
@@ -2153,6 +2157,8 @@ package body SPARK_Definition is
                         CE_Discriminant_Check_Failed,
                         Ent => Prefix_Type);
                   end if;
+
+                  return;
                end if;
             end;
 

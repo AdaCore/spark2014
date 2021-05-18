@@ -93,14 +93,6 @@ package body Binary_Search_Trees is
      (Starting_At : not null access constant Tree_Node) return not null access constant Tree_Node
    is
       Current : not null access constant Tree_Node := Starting_At;
-
-      -- The following version produces the message "compiler-generated raise statement is not
-      -- yet supported" on the final return statement of this function. I assume this has some-
-      -- thing to do with returning an "access constant Tree_Node" as a "not null access constant
-      -- Tree_Node." Doesn't Ada normally raise Constraint_Error there when the return value is
-      -- null? Why is this special?
-      --
-      -- Current : access constant Tree_Node := Starting_At;
    begin
       while Current.Left /= null loop
          Current := Current.Left;

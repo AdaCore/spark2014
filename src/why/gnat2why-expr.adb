@@ -17551,7 +17551,14 @@ package body Gnat2Why.Expr is
                T := +Call;
             end;
 
-         when N_Raise_Expression =>
+         when N_Raise_Expression
+            | N_Raise_xxx_Error
+         =>
+            --  No condition should be present in SPARK code. Such code should
+            --  be rejected after marking and not reach here.
+
+            pragma Assert (if Nkind (Expr) in N_Raise_xxx_Error
+                           then No (Condition (Expr)));
 
             --  Using raise expressions inside preconditions to change the
             --  reported error is a common pattern used in the standard
@@ -17560,8 +17567,11 @@ package body Gnat2Why.Expr is
             --  NB. Cases where such a translation would be incorrect are
             --  detected in marking.
 
-            if Raise_Occurs_In_Pre (Expr) then
+            if Nkind (Expr) = N_Raise_Expression
+              and then Raise_Occurs_In_Pre (Expr)
+            then
                T := New_Literal (Value => EW_False, Domain => Domain);
+
             else
                T := Why_Default_Value (Domain, Etype (Expr));
                if Domain = EW_Prog then
@@ -21804,6 +21814,12 @@ package body Gnat2Why.Expr is
          when N_Raise_xxx_Error
             | N_Raise_Statement
          =>
+            --  No condition should be present in SPARK code. Such code should
+            --  be rejected after marking and not reach here.
+
+            pragma Assert (if Nkind (Stmt_Or_Decl) in N_Raise_xxx_Error
+                           then No (Condition (Stmt_Or_Decl)));
+
             return Transform_Raise (Stmt_Or_Decl);
 
          --  Subprogram and package declarations are already taken care of
