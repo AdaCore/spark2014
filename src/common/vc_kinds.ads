@@ -366,7 +366,7 @@ package VC_Kinds is
 
    function Locate_On_First_Token (V : VC_Kind) return Boolean is
      (case V is when VC_RTE_Kind     => False,
-                when VC_Assert_Kind  => V /= VC_Precondition,
+                when VC_Assert_Kind  => V not in VC_Precondition | VC_Raise,
                 when VC_LSP_Kind     => True,
                 when VC_Warning_Kind => True);
    --  Returns True if this kind of VC should be considered like an assertion

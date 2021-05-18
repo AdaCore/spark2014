@@ -1,3 +1,3 @@
-p.ads:3:22: high: exception might be raised
-p.ads:6:36: high: exception might be raised
-p.ads:6:45: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+p.ads:3:33: high: divide by zero might fail
+p.ads:6:37: high: divide by zero might fail
+p.ads:6:46: info: division check proved (CVC4: 1 VC)
