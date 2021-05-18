@@ -60,7 +60,6 @@ package body Why.Keywords is
       Keywords.Insert ("exists");
       Keywords.Insert ("export");
       Keywords.Insert ("false");
-      Keywords.Insert ("float");
       Keywords.Insert ("for");
       Keywords.Insert ("forall");
       Keywords.Insert ("fun");
@@ -87,10 +86,8 @@ package body Why.Keywords is
       Keywords.Insert ("pure");
       Keywords.Insert ("raise");
       Keywords.Insert ("raises");
-      Keywords.Insert ("range");
       Keywords.Insert ("reads");
       Keywords.Insert ("rec");
-      Keywords.Insert ("ref");
       Keywords.Insert ("requires");
       Keywords.Insert ("return");
       Keywords.Insert ("returns");
@@ -108,6 +105,9 @@ package body Why.Keywords is
       Keywords.Insert ("while");
       Keywords.Insert ("with");
       Keywords.Insert ("writes");
+      Keywords.Insert ("float");
+      Keywords.Insert ("range");
+      Keywords.Insert ("ref");
 
    end Update_Keywords;
 
