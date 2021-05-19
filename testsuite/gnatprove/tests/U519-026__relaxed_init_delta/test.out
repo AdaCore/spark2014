@@ -1,0 +1,24 @@
+main.adb:20:25: info: data dependencies proved
+main.adb:21:33: medium: initialization check might fail [possible fix: subprogram at line 20 should mention X in a precondition]
+main.adb:26:25: info: data dependencies proved
+main.adb:27:18: medium: initialization check might fail [possible fix: subprogram at line 26 should mention X in a precondition]
+main.adb:34:25: info: data dependencies proved
+main.adb:35:39: medium: initialization check might fail [possible fix: subprogram at line 34 should mention X in a precondition]
+main.adb:40:25: info: data dependencies proved
+main.adb:41:19: medium: initialization check might fail [possible fix: subprogram at line 40 should mention X in a precondition]
+main.adb:46:25: info: data dependencies proved
+main.adb:47:35: medium: initialization check might fail [possible fix: subprogram at line 46 should mention X in a precondition]
+main.adb:52:39: info: data dependencies proved
+main.adb:54:35: medium: initialization check might fail [possible fix: subprogram at line 52 should mention X in a precondition]
+main.adb:60:39: info: data dependencies proved
+main.adb:63:37: medium: initialization check might fail [possible fix: subprogram at line 60 should mention X in a precondition]
+main.adb:68:26: info: data dependencies proved
+main.adb:70:18: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+main.adb:82:26: info: data dependencies proved
+main.adb:84:21: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+main.adb:89:26: info: data dependencies proved
+main.adb:91:19: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+main.adb:96:26: info: data dependencies proved
+main.adb:98:22: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+main.adb:103:40: info: data dependencies proved
+main.adb:111:40: info: data dependencies proved

@@ -1199,7 +1199,7 @@ package body SPARK_Util is
                when Attribute_Update =>
                   return Expr_Has_Relaxed_Init
                     (Prefix (Expr), No_Eval => False)
-                    or else Aggr_Has_Relaxed_Init (Expr);
+                    or else Aggr_Has_Relaxed_Init (First (Expressions (Expr)));
 
                when others =>
                   return False;

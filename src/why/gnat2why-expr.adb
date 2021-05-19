@@ -15725,9 +15725,12 @@ package body Gnat2Why.Expr is
 
    begin
       if Is_Record_Type (Pref_Typ) then
-         W_Pref := +Transform_Expr (Domain => Domain,
-                                    Expr   => Pref,
-                                    Params => Params);
+         W_Pref := +Transform_Expr
+           (Domain        => Domain,
+            Expr          => Pref,
+            Params        => Params,
+            Expected_Type => EW_Abstract
+              (Pref_Typ, Relaxed_Init => Expr_Has_Relaxed_Init (Ada_Node)));
 
          --  Introduce a temporary for the prefix to avoid recomputing it
          --  several times if Pref_Typ has discriminants.
@@ -15778,8 +15781,8 @@ package body Gnat2Why.Expr is
                       Component_Associations (Aggr),
                     Params              => Params,
                     In_Delta_Aggregate => True,
-                    Init_Wrapper        =>
-                      Expr_Has_Relaxed_Init (Pref)));
+                    Init_Wrapper        => Get_Relaxed_Init
+                      (Get_Type (W_Pref))));
 
             --  If we are in the program domain and Pref_Typ has discriminants,
             --  check that selectors are present in the prefix.
