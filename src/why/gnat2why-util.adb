@@ -615,12 +615,11 @@ package body Gnat2Why.Util is
    begin
 
       --  For specs we usually want the markers that identify subparts of
-      --  formulas, so we set this here. We do not set it to GM_All, as this
-      --  could cause side effects related to the location of checks. This
-      --  boolean is a no-op for Domains other than EW_Pred.
+      --  formulas, so we set this here. This boolean is a no-op for Domains
+      --  other than EW_Pred.
 
-      if Local_Params.Gen_Marker = GM_None then
-         Local_Params.Gen_Marker := GM_Node_Only;
+      if not Local_Params.Gen_Marker then
+         Local_Params.Gen_Marker := True;
       end if;
       if Nodes.Is_Empty then
          return New_Literal (Value => EW_True, Domain => Domain);
@@ -764,7 +763,7 @@ package body Gnat2Why.Util is
                               +New_Discrete_Constant (Value => Uint_0,
                                                       Typ   => Get_Type (+V)),
                             Context => Result,
-                            Typ     => Get_Typ (W_Identifier_Id (V)));
+                            Typ     => Get_Type (+Prog));
       end loop;
       return Result;
    end Create_Zero_Binding;

@@ -35,7 +35,6 @@ with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                 use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
-with Gnat2Why_Args;
 with GNATCOLL.Utils;                use GNATCOLL.Utils;
 with Sinput;                        use Sinput;
 with SPARK_Definition;              use SPARK_Definition;
@@ -92,9 +91,6 @@ package body Why.Gen.Expr is
    function New_Located_String (Input : Source_Ptr) return String;
    --  Build a string that represents the source location of the source
    --  pointer.
-
-   function New_Located_Label (Input : Source_Ptr) return Symbol;
-   --  Same as New_Located_String, but return a Symbol.
 
    function New_Check_Label
      (Sloc : Source_Ptr;
@@ -3248,27 +3244,6 @@ package body Why.Gen.Expr is
       return To_String (Buf);
    end New_Located_String;
 
-   -----------------------
-   -- New_Located_Label --
-   -----------------------
-
-   function New_Located_Label (Input : Source_Ptr) return Symbol is
-   begin
-      return NID (GP_Sloc_Marker & New_Located_String (Input));
-   end New_Located_Label;
-
-   -----------------------
-   -- New_Located_Label --
-   -----------------------
-
-   function New_Located_Label
-     (N         : Node_Id;
-      Left_Most : Boolean := False)
-      return Symbol is
-   begin
-      return New_Located_Label (Compute_VC_Sloc (N, Left_Most));
-   end New_Located_Label;
-
    ---------------------
    -- New_Shape_Label --
    ---------------------
@@ -3814,7 +3789,6 @@ package body Why.Gen.Expr is
       Sloc : constant Source_Ptr := Compute_VC_Sloc
         (N, Left_Most => Locate_On_First_Token (Reason));
       Id  : constant VC_Id := Register_VC (N, Reason, Current_Subp);
-      Location_Lab : constant Symbol := New_Located_Label (Sloc);
 
       Labels : Symbol_Set;
 
@@ -3831,12 +3805,6 @@ package body Why.Gen.Expr is
          Labels.Insert (GP_Already_Proved);
       end if;
       Labels.Insert (New_Check_Label (Sloc, Reason, Id));
-
-      --  Do not generate comment labels in Why3 to facilitate debugging
-
-      if not Gnat2Why_Args.Debug_Mode then
-         Labels.Insert (New_Comment_Label (N, Location_Lab, Reason));
-      end if;
 
       declare
          Symb : constant Symbol := New_Shape_Label (Node => N);

@@ -5108,7 +5108,7 @@ package body Gnat2Why.Expr is
                declare
                   My_Params : Transformation_Params := Params;
                begin
-                  My_Params.Gen_Marker := GM_Node_Only;
+                  My_Params.Gen_Marker := True;
                   Res := +New_And_Then_Expr
                     (Left   => +Dynamic_Predicate_Expression
                        (Expr      => +Expr,
@@ -6595,7 +6595,7 @@ package body Gnat2Why.Expr is
    is
       Params : constant Transformation_Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => GM_None,
+         Gen_Marker  => False,
          Ref_Allowed => True,
          Old_Policy  => As_Old);
       Result : constant W_Term_Id :=
@@ -10051,7 +10051,7 @@ package body Gnat2Why.Expr is
 
          Params_No_Ref : constant Transformation_Params :=
            (Phase       => Params.Phase,
-            Gen_Marker  => GM_None,
+            Gen_Marker  => False,
             Ref_Allowed => False,
             Old_Policy  => Raise_Error);
 
@@ -11150,7 +11150,7 @@ package body Gnat2Why.Expr is
                     Domain => EW_Term,
                     Params =>
                       Transformation_Params'(Phase       => Generate_Logic,
-                                             Gen_Marker  => GM_None,
+                                             Gen_Marker  => False,
                                              Ref_Allowed => False,
                                              Old_Policy  => Use_Map));
             end if;
@@ -16100,11 +16100,11 @@ package body Gnat2Why.Expr is
       --  printed for subterms.
 
       if Domain = EW_Pred
-        and then Local_Params.Gen_Marker /= GM_None
+        and then Local_Params.Gen_Marker
         and then Is_Terminal_Node (Expr)
       then
          Pretty_Label := New_Sub_VC_Marker (Expr);
-         Local_Params.Gen_Marker := GM_None;
+         Local_Params.Gen_Marker := False;
       end if;
 
       --  Expressions that cannot be translated to predicates directly are
@@ -17087,7 +17087,7 @@ package body Gnat2Why.Expr is
                     Warn_On_Dead_Branch (Else_Part, Else_Expr, Phase);
                end if;
 
-               Local_Params.Gen_Marker := GM_None;
+               Local_Params.Gen_Marker := False;
                Condition :=
                  +Transform_Expr (Cond,
                                   EW_Bool_Type,
@@ -17630,18 +17630,11 @@ package body Gnat2Why.Expr is
       --  This label will be used for pretty printing the expression
 
       if Pretty_Label /= No_Symbol then
-         declare
-            Label_Set : Symbol_Set := Symbol_Sets.To_Set (Pretty_Label);
-         begin
-            if Params.Gen_Marker = GM_All then
-               Label_Set.Include (New_Located_Label (Expr, Left_Most => True));
-            end if;
-            T :=
-              New_Label (Labels => Label_Set,
-                         Def => T,
-                         Domain => Domain,
-                         Typ    => Get_Type (T));
-         end;
+         T :=
+           New_Label (Labels => Symbol_Sets.To_Set (Pretty_Label),
+                      Def => T,
+                      Domain => Domain,
+                      Typ    => Get_Type (T));
       end if;
 
       --  Insert an overflow check if flag Do_Overflow_Check is set. No
@@ -19219,7 +19212,7 @@ package body Gnat2Why.Expr is
                   Result := New_Ignore
                     (Prog =>
                        +Transform_Expr (Expr, EW_Prog, Params => Params));
-                  Params.Gen_Marker := GM_All;
+                  Params.Gen_Marker := True;
                   Result := Sequence
                     (Result,
                      New_Located_Assert
@@ -19578,7 +19571,7 @@ package body Gnat2Why.Expr is
 
       if Present (Expr) then
          Runtime := +Transform_Expr (Expr, EW_Prog, Params => Params);
-         Params.Gen_Marker := GM_All;
+         Params.Gen_Marker := True;
          Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
          return;
       else
@@ -21754,23 +21747,18 @@ package body Gnat2Why.Expr is
                         end if;
 
                         Else_Stmt :=
-                          New_Label
-                            (Labels =>
-                               Symbol_Sets.To_Set (New_Located_Label (Cur)),
-                             Def    =>
-                             +New_Simpl_Conditional
-                               (Condition =>
-                                  New_Counterexample_Assign (Cur,
-                                  Transform_Expr_With_Actions
-                                    (Condition (Cur),
-                                     Condition_Actions (Cur),
-                                     EW_Bool_Type,
-                                     EW_Prog,
-                                     Params => Body_Params)),
-                                Then_Part => +Cur_Stmt,
-                                Else_Part => +Else_Stmt,
-                                Domain    => EW_Prog),
-                                Typ       => EW_Unit_Type);
+                          +New_Simpl_Conditional
+                          (Condition =>
+                             New_Counterexample_Assign (Cur,
+                               Transform_Expr_With_Actions
+                                 (Condition (Cur),
+                                  Condition_Actions (Cur),
+                                  EW_Bool_Type,
+                                  EW_Prog,
+                                  Params => Body_Params)),
+                           Then_Part => +Cur_Stmt,
+                           Else_Part => +Else_Stmt,
+                           Domain    => EW_Prog);
                         Prev (Cur);
                      end loop;
                   end;
@@ -21890,10 +21878,7 @@ package body Gnat2Why.Expr is
             Assert_And_Cut_Expr => Cut_Assertion_Expr,
             Assert_And_Cut      => Cut_Assertion));
    begin
-      Sequence_Append (Seq,
-                       New_Label (Labels => Symbol_Sets.To_Set
-                                  (New_Located_Label (Stmt_Or_Decl)),
-                                  Def    => +Prog));
+      Sequence_Append (Seq, Prog);
 
       --  If we are translating a label, catch the exception which may have
       --  been raised by goto statements referencing this label.

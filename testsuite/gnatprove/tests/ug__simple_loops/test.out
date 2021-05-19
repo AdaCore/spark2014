@@ -18,5 +18,4 @@ simple_loops.adb:26:30: info: loop invariant initialization proved
 simple_loops.adb:26:44: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Prop
    26 |      pragma Loop_Invariant (if J > 1 then Prop);
       |                                           ^~~~
-  e.g. when J = 2
-        and Prop = False
+  e.g. when Prop = False

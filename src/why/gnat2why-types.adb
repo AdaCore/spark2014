@@ -866,7 +866,7 @@ package body Gnat2Why.Types is
 
       Params :=
         (Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => GM_None,
+         Gen_Marker  => False,
          Ref_Allowed => True,
          Old_Policy  => Use_Map);
 

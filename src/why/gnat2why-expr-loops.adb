@@ -1607,7 +1607,7 @@ package body Gnat2Why.Expr.Loops is
                       (Name    => Nam_For_Iter,
                        Def     => Init_Iter,
                        Context => Entire_Loop,
-                       Typ     => Typ_For_Iter);
+                       Typ     => EW_Unit_Type);
                end if;
 
                --  Bind the temporary variable used for the container

@@ -164,11 +164,6 @@ package Why.Gen.Expr is
        Domain    : EW_Domain) return W_Expr_Id;
    --  Conditional, simplify if condition is true/false.
 
-   function New_Located_Label
-     (N         : Node_Id;
-      Left_Most : Boolean := False) return Symbol;
-   --  Return a label that contains the Ada Sloc of the node
-
    function New_Shape_Label (Node : Node_Id) return Symbol;
    --  Return a label representing the shape of the Ada code surrounding the
    --  input node. This label is used to name the VC file for manual proof.

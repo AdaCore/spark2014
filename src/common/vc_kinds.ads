@@ -389,7 +389,6 @@ package VC_Kinds is
    GP_Check_Marker          : constant String := "GP_Check:";
    GP_Pretty_Ada_Marker     : constant String := "GP_Pretty_Ada:";
    GP_Shape_Marker          : constant String := "GP_Shape:";
-   GP_Sloc_Marker           : constant String := "GP_Sloc:";
    GP_Subp_Marker           : constant String := "GP_Subp:";
    GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
 
