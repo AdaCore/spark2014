@@ -220,7 +220,9 @@ package body Red_Black_Trees with SPARK_Mode is
       if T /= null then
          Prove_Model_Eq (T.Left, Pos1, Pos2);
          Prove_Model_Eq (T.Right, Pos1 + Size (T.Left) + 1, Pos2 + Size (T.Left) + 1);
+         pragma Assert (for all I in Pos1 .. Model (T.Left, Pos1)'Last => Model (T, Pos1) (I) = Model (T.Left, Pos1) (I));
          pragma Assert (for all I in Pos1 .. Model (T.Left, Pos1)'Last => Model (T, Pos1) (I) = Model (T, Pos2) (I - Pos1 + Pos2));
+         pragma Assert (for all I in Pos1 + Size (T.Left) + 1 .. Model (T.Right, Pos1 + Size (T.Left) + 1)'Last => Model (T, Pos1) (I) = Model (T.Right, Pos1 + Size (T.Left) + 1) (I));
          pragma Assert (for all I in Pos1 + Size (T.Left) + 1 .. Model (T.Right, Pos1 + Size (T.Left) + 1)'Last => Model (T, Pos1) (I) = Model (T, Pos2) (I - Pos1 + Pos2));
          pragma Assert (for all I in Model (T, Pos1)'Range => Model (T, Pos1) (I) = Model (T, Pos2) (I - Pos1 + Pos2));
       end if;
