@@ -1,0 +1,8 @@
+main.adb:3:14: info: add a contract to analyze it separately from calling contexts
+main.adb:3:14: info: local subprogram "Foo" only analyzed in the context of calls
+main.adb:3:14: warning: subprogram "Foo" has no effect
+main.adb:10:19: warning: unused variable "J"
+main.adb:10:37: info: data dependencies proved
+main.adb:12:23: info: cannot unroll loop (value of loop bounds)
+main.adb:13:10: warning: this statement is never reached
+main.adb:13:10: warning: unused variable constant with variable input "C2b"
