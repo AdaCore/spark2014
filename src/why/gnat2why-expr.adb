@@ -15147,6 +15147,9 @@ package body Gnat2Why.Expr is
             | N_Private_Extension_Declaration
             | N_Private_Type_Declaration
             | N_Component_Declaration
+            | N_Record_Representation_Clause
+            | N_Attribute_Definition_Clause
+            | N_Enumeration_Representation_Clause
          =>
             null;
 

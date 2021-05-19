@@ -65,6 +65,8 @@ package SPARK_Atree is
    N_And_Then                        : Node_Kind renames Sinfo.N_And_Then;
    N_Assignment_Statement            : Node_Kind renames
      Sinfo.N_Assignment_Statement;
+   N_Attribute_Definition_Clause     : Node_Kind renames
+     Sinfo.N_Attribute_Definition_Clause;
    N_Attribute_Reference             : Node_Kind renames
      Sinfo.N_Attribute_Reference;
    N_Block_Statement                 : Node_Kind renames
@@ -96,6 +98,8 @@ package SPARK_Atree is
      Sinfo.N_Entry_Call_Statement;
    N_Entry_Declaration               : Node_Kind renames
      Sinfo.N_Entry_Declaration;
+   N_Enumeration_Representation_Clause : Node_Kind renames
+     Sinfo.N_Enumeration_Representation_Clause;
    N_Exit_Statement                  : Node_Kind renames
      Sinfo.N_Exit_Statement;
    N_Expression_With_Actions         : Node_Kind renames
@@ -177,6 +181,8 @@ package SPARK_Atree is
    N_Raise_Statement                 : Node_Kind renames
      Sinfo.N_Raise_Statement;
    N_Range                           : Node_Kind renames Sinfo.N_Range;
+   N_Record_Representation_Clause    : Node_Kind renames
+     Sinfo.N_Record_Representation_Clause;
    N_Selected_Component              : Node_Kind renames
      Sinfo.N_Selected_Component;
    N_Simple_Return_Statement         : Node_Kind renames
