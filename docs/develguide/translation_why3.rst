@@ -4830,30 +4830,26 @@ split transformation (do not work for gnatwhy3).
 The list of labels that are used by gnat2why can be found in vc_kinds.ads and
 the exhaustive list is the following:
 
-``GP_Id:<n>`` with n a natural, is used to make the association between SPARK
-checks and Why3 goals. For example, gnatwhy3's answer will typically contain
-``{GP_ID:"1", proved:true}``, gnat2why will make the
-correspondence with the real SPARK check which gives ``overflow check proved``.
+``GP_Sloc:<l>`` with l a location is used to define a location. It is not to be
+confused with the # notation of Why3 for locations. l is of the form
+file:line:column. In case of instantiated or inlined VC, the location is also
+contained file:line:column:instantiated:file:line:column.
+
+``GP_Check:<n>:<reason_name>:<l>`` with n a natural, reason_name a string that defines
+the kind of a vc: ``OVERFLOW_CHECK``, ``RANGE_CHECK`` etc, and l a location
+list as for ``GP_Sloc``. This label identifies as check uniquely as a location
+and a reason (VC kind). The natural ``n`` is the ID of the VC, which is used to
+simplify identifying a VC. For example, gnatwhy3's answer will typically contain
+``{GP_ID:"1", proved:true}``, gnat2why will make the correspondence with the
+real SPARK check which gives ``overflow check proved``.  The VC kind is also
+used e.g. in debug mode and for coq proofs, and to create appropriate filename
+for .smt2 or .v files. It is also used to recognize a goal in prove check mode.
+The exhaustive list of kinds can be found in type ``VC_Kind`` in vc_kinds.ads.
 
 ``GP_Pretty_Ada:<n>``, with n the integer representation of an Ada AST node. It
 is an extra information added to a specific check/goal so that, in the case
 where this goal is not proved, the part of the program is reprinted: ``overflow
 check might fail: cannot prove (In_range (B))``.
-
-``GP_Reason:<reason_name>``, with reason_name a string that defines
-the kind of a vc: ``OVERFLOW_CHECK``, ``RANGE_CHECK`` etc. This is used for
-reporting of messages to the user. In debug mode and for coq proofs, the reason
-is also used to create appropriate filename for .smt2 or .v files. It is also
-used to recognize a goal in prove check mode.
-The exhaustive list of kinds can be found in type ``VC_Kind`` in vc_kinds.ads.
-
-``GP_Shape:<s>`` with s a string representing the shape of an Ada node, is
-used to generate appropriate Coq filenames in manual proofs.
-
-``GP_Sloc:<l>`` with l a location is used to give the precise location of
-a VC. It is not to be confused with the # notation of Why3 for locations. l is
-of the form file:line:column. In case of instantiated or inlined VC, the
-location is also contained file:line:column:instantiated:file:line:column.
 
 ``GP_Subp`` ???
 

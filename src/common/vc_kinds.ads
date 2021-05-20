@@ -386,9 +386,8 @@ package VC_Kinds is
    --  gnat2why, use of the corresponding Name_Ids in Why.Atree.Modules is
    --  preferred over using the strings here.
 
-   GP_Id_Marker             : constant String := "GP_Id:";
+   GP_Check_Marker          : constant String := "GP_Check:";
    GP_Pretty_Ada_Marker     : constant String := "GP_Pretty_Ada:";
-   GP_Reason_Marker         : constant String := "GP_Reason:";
    GP_Shape_Marker          : constant String := "GP_Shape:";
    GP_Sloc_Marker           : constant String := "GP_Sloc:";
    GP_Subp_Marker           : constant String := "GP_Subp:";
