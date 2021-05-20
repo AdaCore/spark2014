@@ -1,0 +1,1 @@
+main.adb:17:22: high: constant with variable input "Z" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(14))
