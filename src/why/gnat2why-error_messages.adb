@@ -727,6 +727,11 @@ package body Gnat2Why.Error_Messages is
             --  determined to always happen, should the given node be executed.
 
             if Nkind (Node) in N_Raise_xxx_Error then
+               --  ??? The following doesn't work for proving messages manually
+               --  in GS, which relies on being able to get back to the VC kind
+               --  from the message. A better solution would be to include the
+               --  VC kind in the JSON file. Same for Proved_Message.
+
                case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
                   when CE_Range_Check_Failed =>
                      return Not_Proved_Message (Node, VC_Range_Check);
@@ -735,6 +740,13 @@ package body Gnat2Why.Error_Messages is
                   when CE_Divide_By_Zero =>
                      return Not_Proved_Message (Node, VC_Division_Check);
                   when SE_Infinite_Recursion =>
+
+                     --  ??? This message should be reflected in the "Messages
+                     --  reported by Proof" SPARK UG table, which is generated
+                     --  automatically. Also, it should appear in the
+                     --  GNATstudio plugin's vc_fail_msg_dict. Same for
+                     --  Proved_Message.
+
                      return "infinite recursion might occur";
 
                   --  In debug builds developers will get a crash with a
