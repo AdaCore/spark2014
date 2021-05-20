@@ -1695,14 +1695,43 @@ package body Flow_Error_Messages is
 
             if Map.Contains (V) then
                --  Only pretty-print actuals; formals will be pretty anyway
-               Append (Expl, Flow_Id_To_String (Map (V))
-                       & " (for argument "
-                       & Flow_Id_To_String (V, Pretty => True)
-                       & ")");
+               declare
+                  Formal : constant Flow_Id := Map (V);
+               begin
+                  Append (Expl, Flow_Id_To_String (Formal));
+
+                  --  For an initialization check, if an explaining formal
+                  --  V has relaxed initialization, suggest to mention
+                  --  V'Initialized.
+
+                  if Tag = VC_Initialization_Check
+                    and then Formal.Kind = Direct_Mapping
+                    and then Nkind (Formal.Node) in N_Entity
+                    and then Has_Relaxed_Initialization (Formal.Node)
+                  then
+                     Append (Expl, "'Initialized");
+                  end if;
+
+                  Append (Expl, " (for argument "
+                          & Flow_Id_To_String (V, Pretty => True)
+                          & ")");
+               end;
             else
                Append (Expl, Flow_Id_To_String (V, Pretty => True));
+
+               --  For an initialization check, if an explaining variable V has
+               --  relaxed initialization, suggest to mention V'Initialized.
+
+               if Tag = VC_Initialization_Check
+                 and then V.Kind = Direct_Mapping
+                 and then Nkind (V.Node) in N_Entity
+                 and then Has_Relaxed_Initialization (V.Node)
+               then
+                  Append (Expl, "'Initialized");
+               end if;
             end if;
          end loop;
+
          return Expl;
       end Explain_Variables;
 
