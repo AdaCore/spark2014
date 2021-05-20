@@ -2913,7 +2913,7 @@ package body SPARK_Util is
       --  Check whether the object is subjected to a Relaxed_Initialization
       --  aspect.
 
-      elsif Ekind (Obj) in E_Variable | Formal_Kind
+      elsif Ekind (Obj) in E_Variable | E_Constant | Formal_Kind
         and then Has_Relaxed_Initialization (Obj)
       then
          return True;

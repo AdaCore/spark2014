@@ -1,0 +1,6 @@
+constant_with_relaxed.adb:17:25: info: data dependencies proved
+constant_with_relaxed.adb:20:22: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+constant_with_relaxed.adb:25:25: info: data dependencies proved
+constant_with_relaxed.adb:28:22: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+constant_with_relaxed.adb:35:22: high: constant with variable input "Z" must be listed in the Global aspect of "Test3" (SPARK RM 6.1.4(14))
+constant_with_relaxed.adb:37:29: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
