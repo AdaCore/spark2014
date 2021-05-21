@@ -39,10 +39,14 @@ instructions.adb:19:28: info: unrolling loop
 instructions.adb:31:07: medium: exception might be raised
 instructions.adb:50:58: info: precondition proved (CVC4: 1 VC)
 instructions.adb:54:13: medium: exception might be raised
+screen_output.adb:42:07: warning: this statement is never reached
+screen_output.adb:43:07: warning: this statement is never reached
+screen_output.adb:44:07: warning: this statement is never reached
 screen_output.adb:54:46: info: range check proved (CVC4: 1 VC)
 screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
 screen_output.adb:83:53: low: range check might fail (e.g. when S = (2 => ' ', others => ':') and S'First = 1 and S'Last = Integer'Last-1) [reason for check: input value must fit in parameter type] [possible fix: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
+screen_output.ads:11:14: warning: subprogram "Debug_Msg" has no effect
 sdc.adb:11:04: info: initialization of "File" proved
 sdc.adb:12:04: info: initialization of "T" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items

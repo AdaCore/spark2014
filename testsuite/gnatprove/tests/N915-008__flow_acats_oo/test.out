@@ -90,6 +90,7 @@ cc1311a.adb:290:14: info: range check proved (CVC4: 1 VC), in instantiation at c
 cc1311a.adb:291:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:442
 cc1311a.adb:302:14: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:443
 cc1311a.adb:303:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:443
+cc1311a.adb:303:22: warning: this statement is never reached, in instantiation at cc1311a.adb:443
 cc1311a.adb:315:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:445
 cc1311a.adb:317:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:445
 cc1311a.adb:328:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:446

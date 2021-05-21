@@ -1817,9 +1817,15 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V_Case      : Flow_Graphs.Vertex_Id;
-      Alternative : Node_Id;
-      Funcs       : Node_Sets.Set;
+      V_Case            : Flow_Graphs.Vertex_Id;
+      Alternative       : Node_Id;
+      Funcs             : Node_Sets.Set;
+      Known_Expression  : constant Boolean :=
+        Compile_Time_Known_Value (Expression (N));
+      Known_Alternative : constant Node_Id :=
+        (if Known_Expression
+         then Find_Static_Alternative (N)
+         else Types.Empty);
    begin
       Collect_Functions_And_Read_Locked_POs
         (Expression (N),
@@ -1853,12 +1859,14 @@ package body Flow.Control_Flow_Graph is
 
       loop
          declare
-            Stmts   : constant List_Id := Statements (Alternative);
-            V_Alter : Flow_Graphs.Vertex_Id;
-
+            Stmts            : constant List_Id :=
+              Statements (Alternative);
+            V_Alter          : Flow_Graphs.Vertex_Id;
+            Dead_Alternative : constant Boolean :=
+              Known_Expression and then Alternative /= Known_Alternative;
          begin
             --  We introduce a vertex V_Alter for each
-            --  case_statement_alternative and we link that to V_Case.
+            --  case_statement_alternative.
             Add_Vertex
               (FA,
                Direct_Mapping_Id (Alternative),
@@ -1868,15 +1876,21 @@ package body Flow.Control_Flow_Graph is
                                 then Abnormal_Termination
                                 else Normal_Execution)),
                V_Alter);
-            Linkup (FA, V_Case, V_Alter);
 
             --  We link V_Alter with its statements
             Process_Statement_List (Stmts, FA, CM, Ctx);
             Linkup (FA,
                     V_Alter,
                     CM (Union_Id (Stmts)).Standard_Entry);
-            CM (Union_Id (N)).Standard_Exits.Union
-              (CM (Union_Id (Stmts)).Standard_Exits);
+
+            --  If the case alternative is not statically dead, we link
+            --  V_Alter to V_Case and V_Alter to the standard exits of the
+            --  case statement.
+            if not Dead_Alternative then
+               Linkup (FA, V_Case, V_Alter);
+               CM (Union_Id (N)).Standard_Exits.Union
+                 (CM (Union_Id (Stmts)).Standard_Exits);
+            end if;
 
             CM.Delete (Union_Id (Stmts));
 
@@ -1890,7 +1904,8 @@ package body Flow.Control_Flow_Graph is
       --  statements with more than one alternative.
       --  If there is just one case_statement_alternative then we introduce a
       --  control dependency on objects referenced in the selecting_expression.
-      if List_Length (Alternatives (N)) = 1 then
+      --  We do the same if the value of the expression is statically known.
+      if List_Length (Alternatives (N)) = 1 or else Known_Expression then
          declare
             V_Dummy : Flow_Graphs.Vertex_Id;
 
@@ -2257,13 +2272,17 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V, V_Prev       : Flow_Graphs.Vertex_Id;
-      If_Part         : constant List_Id := Then_Statements (N);
-      Else_Part       : constant List_Id := Else_Statements (N);
-      Elsif_Part      : constant List_Id := Elsif_Parts (N);
-      Elsif_Statement : Node_Id;
-      Funcs           : Node_Sets.Set;
+      V, V_Prev           : Flow_Graphs.Vertex_Id;
+      If_Part             : constant List_Id := Then_Statements (N);
+      Else_Part           : constant List_Id := Else_Statements (N);
+      Elsif_Part          : constant List_Id := Elsif_Parts (N);
+      Elsif_Statement     : Node_Id;
+      Funcs               : Node_Sets.Set;
+      Seen_True_Condition : Boolean := False;
+      Known_Condition     : Boolean :=
+        Compile_Time_Known_Value (Condition (N));
    begin
+
       --  We have a vertex for the if statement itself
       Collect_Functions_And_Read_Locked_POs
         (Condition (N),
@@ -2294,9 +2313,17 @@ package body Flow.Control_Flow_Graph is
 
       --  We hang the if part off that
       Process_Statement_List (If_Part, FA, CM, Ctx);
-      Linkup (FA, V, CM (Union_Id (If_Part)).Standard_Entry);
-      CM (Union_Id (N)).Standard_Exits.Union
-        (CM (Union_Id (If_Part)).Standard_Exits);
+
+      --  The statements in the if branch are linked to the if statement vertex
+      --  and the standard exits of the if statement if they are not statically
+      --  dead.
+
+      if not Known_Condition or else Is_True (Expr_Value (Condition (N))) then
+         Seen_True_Condition := Known_Condition;
+         Linkup (FA, V, CM (Union_Id (If_Part)).Standard_Entry);
+         CM (Union_Id (N)).Standard_Exits.Union
+           (CM (Union_Id (If_Part)).Standard_Exits);
+      end if;
 
       CM.Delete (Union_Id (If_Part));
 
@@ -2323,17 +2350,33 @@ package body Flow.Control_Flow_Graph is
       --  Finally please note that at the end variable V is either the
       --  vertex for the if statement itself or the very last elsif
       --  part.
+      --
+      --  If we encounter a condition known to be true, Has_Encountered_True
+      --  is set to True. The remaining branches of the if statement will
+      --  not be linked to the graph, because they are statically dead.
+      --
+      --  If we encounter a condition known to be false, the statements of
+      --  the branch are not linked to the vertex representing elsif vertex.
 
       if Present (Elsif_Part) then
          Elsif_Statement := First (Elsif_Part);
          V_Prev          := V;
 
          while Present (Elsif_Statement) loop
+            Known_Condition :=
+              Compile_Time_Known_Value (Condition (Elsif_Statement));
+
             declare
-               Elsif_Body : constant List_Id :=
+               Elsif_Body  : constant List_Id :=
                  Then_Statements (Elsif_Statement);
-               Funcs      : Node_Sets.Set;
+               Funcs       : Node_Sets.Set;
+               Dead_Branch : constant Boolean :=
+                 Seen_True_Condition
+                 or else (Known_Condition
+                            and then
+                          Is_False (Expr_Value (Condition (Elsif_Statement))));
             begin
+
                --  We have a vertex V for each elsif statement
                Collect_Functions_And_Read_Locked_POs
                  (Condition (Elsif_Statement),
@@ -2359,16 +2402,29 @@ package body Flow.Control_Flow_Graph is
                   V);
                Ctx.Folded_Function_Checks.Append (Condition (Elsif_Statement));
 
-               --  Link V_Prev to V
-               Linkup (FA, V_Prev, V);
+               --  If we didn't encounter a statically true condition, link
+               --  V_Prev to V.
 
-               --  Process statements of elsif and link V to them
+               if not Seen_True_Condition then
+                  Linkup (FA, V_Prev, V);
+               end if;
+
+               --  Process statements of elsif
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);
-               Linkup (FA, V, CM (Union_Id (Elsif_Body)).Standard_Entry);
 
-               --  Add the exits of Elsif_Body to the exits of N
-               CM (Union_Id (N)).Standard_Exits.Union
-                 (CM (Union_Id (Elsif_Body)).Standard_Exits);
+               --  If the code is not statically dead, link V to the
+               --  statements of elsif and add the exits of Elsif_Body to the
+               --  exits of N.
+
+               if not Dead_Branch then
+                  Seen_True_Condition :=
+                    Seen_True_Condition or else Known_Condition;
+
+                  Linkup (FA, V, CM (Union_Id (Elsif_Body)).Standard_Entry);
+
+                  CM (Union_Id (N)).Standard_Exits.Union
+                    (CM (Union_Id (Elsif_Body)).Standard_Exits);
+               end if;
 
                CM.Delete (Union_Id (Elsif_Body));
             end;
@@ -2383,12 +2439,20 @@ package body Flow.Control_Flow_Graph is
 
       if Present (Else_Part) then
          Process_Statement_List (Else_Part, FA, CM, Ctx);
-         Linkup (FA, V, CM (Union_Id (Else_Part)).Standard_Entry);
-         CM (Union_Id (N)).Standard_Exits.Union
-           (CM (Union_Id (Else_Part)).Standard_Exits);
+
+         if not Seen_True_Condition then
+            Linkup (FA, V, CM (Union_Id (Else_Part)).Standard_Entry);
+
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM (Union_Id (Else_Part)).Standard_Exits);
+         end if;
 
          CM.Delete (Union_Id (Else_Part));
-      else
+
+      --  If we didn't encounter a statically true condition, then we could
+      --  exit the if statement by the last elsif statement.
+
+      elsif not Seen_True_Condition then
          CM (Union_Id (N)).Standard_Exits.Insert (V);
       end if;
    end Do_If_Statement;

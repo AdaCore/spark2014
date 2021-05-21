@@ -110,16 +110,20 @@ frame_condition.adb:159:10: info: precondition proved (CVC4: 1 VC)
 frame_condition.adb:160:10: info: precondition proved (CVC4: 1 VC)
 frame_condition.adb:167:17: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:167:17: info: local subprogram "Increment" only analyzed in the context of calls
+frame_condition.adb:170:33: warning: this statement is never reached, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:170:42: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
 frame_condition.adb:170:42: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
+frame_condition.adb:171:33: warning: this statement is never reached, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
 frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
 frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:175:17: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:175:17: info: local subprogram "Set_Max" only analyzed in the context of calls
 frame_condition.adb:178:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
 frame_condition.adb:178:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:234
+frame_condition.adb:178:46: warning: this statement is never reached, in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:234
 frame_condition.adb:179:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
 frame_condition.adb:179:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:234
+frame_condition.adb:179:47: warning: this statement is never reached, in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
 frame_condition.adb:183:17: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:183:17: info: local subprogram "Update_One_Max" only analyzed in the context of calls
 frame_condition.adb:190:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:233
