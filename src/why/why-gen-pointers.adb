@@ -31,6 +31,7 @@ with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
 with Namet;               use Namet;
 with Sinput;              use Sinput;
 with Snames;              use Snames;
+with SPARK_Definition;    use SPARK_Definition;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -139,9 +140,10 @@ package body Why.Gen.Pointers is
       ------------------------------
 
       procedure Declare_Access_Function is
-
          Null_Access_Name : constant String := To_String (WNE_Rec_Comp_Prefix)
          & (Full_Name (E)) & To_String (WNE_Pointer_Value) & "__pred";
+         Value_Id         : constant W_Identifier_Id := To_Local
+           (E_Symb (E, WNE_Pointer_Value));
 
          --  The null exclusion defined here is related to the designated type
          --  (that gives the subtype_indication).
@@ -173,11 +175,11 @@ package body Why.Gen.Pointers is
             Emit (Th,
                   New_Function_Decl
                     (Domain      => EW_Pterm,
-                     Name        => To_Local (E_Symb (E, WNE_Pointer_Value)),
+                     Name        => Value_Id,
                      Binders     => A_Binder,
                      Location    => No_Location,
                      Labels      => Symbol_Sets.Empty_Set,
-                     Return_Type => EW_Abstract (Directly_Designated_Type (E)),
+                     Return_Type => Get_Typ (Value_Id),
                      Def         => New_Call
                        (Domain => EW_Term,
                         Name   => To_Local (E_Symb (E, WNE_Pointer_Open)),
@@ -190,8 +192,7 @@ package body Why.Gen.Pointers is
                                   New_Named_Type
                                     (Name => To_Local
                                        (E_Symb (E, WNE_Private_Type))))),
-                        Typ    =>
-                          EW_Abstract (Directly_Designated_Type (E)))));
+                        Typ    => Get_Typ (Value_Id))));
          end if;
 
          Emit (Th,
@@ -250,12 +251,11 @@ package body Why.Gen.Pointers is
             Emit (Th,
                   New_Function_Decl
                     (Domain      => EW_Prog,
-                     Name        => To_Program_Space
-                       (To_Local (E_Symb (E, WNE_Pointer_Value))),
+                     Name        => To_Program_Space (Value_Id),
                      Binders     => A_Binder,
                      Labels      => Symbol_Sets.Empty_Set,
                      Location    => No_Location,
-                     Return_Type => EW_Abstract (Directly_Designated_Type (E)),
+                     Return_Type => Get_Typ (Value_Id),
                      Pre         => Precond,
                      Post        => Post));
 
@@ -431,6 +431,7 @@ package body Why.Gen.Pointers is
       begin
          declare
             Root_Ty : constant W_Type_Id := EW_Abstract (Root);
+            Des_Ty  : constant Entity_Id := Directly_Designated_Type (Root);
             Def     : constant W_Expr_Id :=
               Pointer_From_Split_Form
                 (A  =>
@@ -443,8 +444,7 @@ package body Why.Gen.Pointers is
                           Domain         => EW_Term,
                           Local          => True),
                        To             =>
-                         EW_Abstract
-                           (Directly_Designated_Type (Root)),
+                         EW_Abstract (Des_Ty, Has_Relaxed_Init (Des_Ty)),
                        Force_No_Slide => True),
                     2 => New_Pointer_Is_Null_Access
                       (E     => E,
@@ -473,7 +473,8 @@ package body Why.Gen.Pointers is
          end;
 
          declare
-            Def : constant W_Expr_Id :=
+            Des_Ty  : constant Entity_Id := Directly_Designated_Type (E);
+            Def     : constant W_Expr_Id :=
               Pointer_From_Split_Form
                 (A     =>
                    (1 => Insert_Simple_Conversion
@@ -484,8 +485,7 @@ package body Why.Gen.Pointers is
                           Name           => +R_Ident,
                           Domain         => EW_Term),
                        To             =>
-                         EW_Abstract
-                           (Directly_Designated_Type (E)),
+                         EW_Abstract (Des_Ty, Has_Relaxed_Init (Des_Ty)),
                        Force_No_Slide => True),
                     2 => New_Pointer_Is_Null_Access
                       (E     => Root,
@@ -774,9 +774,10 @@ package body Why.Gen.Pointers is
 
    procedure Declare_Rep_Pointer_Compl_If_Needed (E : Entity_Id)
    is
+      Des_Ty : constant Entity_Id := Directly_Designated_Type (E);
       Inserted : Boolean;
       Position : Node_Sets.Cursor;
-      Th : Theory_UC;
+      Th       : Theory_UC;
    begin
       --  Use the Completed_Types set to make sure that we do not complete the
       --  same type twice.
@@ -814,9 +815,9 @@ package body Why.Gen.Pointers is
                        (Kind      => EW_Type_Subst,
                         Orig_Name => New_Name
                           (Symb => NID ("comp_ty")),
-                        Image     =>
-                          Get_Name
-                            (EW_Abstract (Directly_Designated_Type (E)))))));
+                        Image     => Get_Name
+                          (EW_Abstract
+                               (Des_Ty, Has_Relaxed_Init (Des_Ty)))))));
 
          Complete_Rep_Pointer_Type (Th, E);
 
@@ -1325,18 +1326,16 @@ package body Why.Gen.Pointers is
             Progs    => (1 => +Name),
             Domain   => EW_Prog,
             Reason   => VC_Null_Pointer_Dereference,
-            Typ      => EW_Abstract (Directly_Designated_Type (Retysp (E))));
+            Typ      => Get_Typ (Field));
       elsif Designates_Incomplete_Type (Repr_Pointer_Type (Retysp (E))) then
          return New_Call (Args   => (1 => Name),
                           Name   => Field,
                           Domain => Domain,
-                          Typ    => EW_Abstract
-                            (Directly_Designated_Type (Retysp (E))));
+                          Typ    => Get_Typ (Field));
       else
          return New_Record_Access (Name  => +Name,
                                    Field => Field,
-                                   Typ   => EW_Abstract
-                                     (Directly_Designated_Type (Retysp (E))));
+                                   Typ   => Get_Typ (Field));
       end if;
    end New_Pointer_Value_Access;
 

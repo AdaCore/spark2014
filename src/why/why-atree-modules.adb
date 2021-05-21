@@ -3328,8 +3328,10 @@ package body Why.Atree.Modules is
                M_C            : constant W_Module_Id :=
                  (if Is_Incompl then E_Compl_Module (Repr_Pointer_Type (E))
                   else M);
-               Des_Ty         : constant W_Type_Id :=
-                 EW_Abstract (Directly_Designated_Type (Retysp (E)));
+               Des_Ty         : constant Entity_Id :=
+                 Directly_Designated_Type (Retysp (E));
+               W_Des_Ty       : constant W_Type_Id := EW_Abstract
+                 (Des_Ty, Relaxed_Init => Has_Relaxed_Init (Des_Ty));
 
             begin
                Insert_Symbol
@@ -3365,7 +3367,7 @@ package body Why.Atree.Modules is
                        Full_Name_Node & "__pointer_value"),
                      Module => M_C,
                      Domain => EW_Term,
-                     Typ    => Des_Ty));
+                     Typ    => W_Des_Ty));
 
                Insert_Symbol
                  (E, WNE_To_Base,
@@ -3431,7 +3433,7 @@ package body Why.Atree.Modules is
                        (Symb   => NID ("__open"),
                         Module => M_C,
                         Domain => EW_Term,
-                        Typ    => Des_Ty));
+                        Typ    => W_Des_Ty));
                   Insert_Symbol
                     (E, WNE_Pointer_Close,
                      New_Identifier

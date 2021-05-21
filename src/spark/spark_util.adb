@@ -23,29 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Common_Iterators;       use Common_Iterators;
-with Errout;                 use Errout;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Refinement;        use Flow_Refinement;
-with Flow_Types;             use Flow_Types;
-with Flow_Utility;           use Flow_Utility;
+with Ada.Characters.Latin_1;        use Ada.Characters.Latin_1;
+with Common_Iterators;              use Common_Iterators;
+with Errout;                        use Errout;
+with Flow_Dependency_Maps;          use Flow_Dependency_Maps;
+with Flow_Refinement;               use Flow_Refinement;
+with Flow_Types;                    use Flow_Types;
+with Flow_Utility;                  use Flow_Utility;
+with Flow_Utility.Initialization;   use Flow_Utility.Initialization;
 with Gnat2Why_Args;
 with Lib.Xref;
 with Opt;
 with Osint;
 with Output;
-with Pprint;                 use Pprint;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with Sem_Ch12;               use Sem_Ch12;
-with Sem_Eval;               use Sem_Eval;
-with Sem_Prag;               use Sem_Prag;
-with Sem_Type;               use Sem_Type;
-with Sinfo.Utils;            use Sinfo.Utils;
-with Stand;                  use Stand;
-with Stringt;                use Stringt;
+with Pprint;                        use Pprint;
+with SPARK_Definition;              use SPARK_Definition;
+with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
+with SPARK_Util.Types;              use SPARK_Util.Types;
+with Sem_Ch12;                      use Sem_Ch12;
+with Sem_Eval;                      use Sem_Eval;
+with Sem_Prag;                      use Sem_Prag;
+with Sem_Type;                      use Sem_Type;
+with Sinfo.Utils;                   use Sinfo.Utils;
+with Stand;                         use Stand;
+with Stringt;                       use Stringt;
 
 package body SPARK_Util is
 
@@ -1213,7 +1214,13 @@ package body SPARK_Util is
                return Expr_Has_Relaxed_Init
                  (Expression (Expr), No_Eval => False);
             else
-               return Contains_Relaxed_Init_Parts (Entity (Expression (Expr)));
+               --  The default value is necessarily entirely initialized
+
+               pragma Assert
+                 (Default_Initialization (Entity (Expression (Expr)))
+                  in Full_Default_Initialization
+                   | No_Possible_Initialization);
+               return False;
             end if;
 
          when N_Character_Literal

@@ -880,13 +880,16 @@ package body Why.Gen.Binders is
         and then Ekind (E) /= E_Loop_Parameter
       then
          declare
-            Name    : constant W_Identifier_Id :=
+            Name     : constant W_Identifier_Id :=
               To_Why_Id (E => E, Local => Local);
             --  This name does not correspond to a given declaration (thus, we
             --  don't give it a type). It is only used to prefix generic names
             --  of elements of the pointer.
 
-            Result  : Item_Type :=
+            Des_Ty   : constant Entity_Id := Directly_Designated_Type (Ty);
+            Value_Ty : constant W_Type_Id := EW_Abstract
+              (Des_Ty, Relaxed_Init => Has_Relaxed_Init (Des_Ty));
+            Result   : Item_Type :=
               (Kind    => Pointer,
                Local   => Local,
                Init    => New_Init_Id (Name),
@@ -899,9 +902,7 @@ package body Why.Gen.Binders is
                            B_Name   =>
                              Value_Append
                                (Base => Name,
-                                Typ  =>
-                                  EW_Abstract
-                                    (Directly_Designated_Type (Ty))),
+                                Typ  => Value_Ty),
                            B_Ent    => Null_Entity_Name,
                            Mutable  => True,
                            Labels   => <>);
