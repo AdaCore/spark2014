@@ -131,7 +131,7 @@ rec_init_by_proof.adb:63:19: info: initialization check proved (CVC4: 3 VC; Triv
 rec_init_by_proof.adb:63:23: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
 rec_init_by_proof.adb:64:04: info: precondition proved (CVC4: 3 VC; Trivial: 3 VC)
 rec_init_by_proof.adb:65:04: info: precondition proved (CVC4: 3 VC; Trivial: 3 VC)
-rec_init_by_proof.adb:67:04: medium: precondition might fail
+rec_init_by_proof.adb:67:04: medium: precondition might fail, cannot prove X'Initialized
 rec_init_by_proof.adb:68:10: medium: initialization check might fail
 var_init_by_proof.adb:6:18: medium: initialization check might fail
 var_init_by_proof.adb:6:18: warning: unused variable "X"
