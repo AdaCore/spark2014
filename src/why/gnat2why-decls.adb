@@ -36,7 +36,6 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Pointers;    use Why.Gen.Pointers;
 with Why.Ids;             use Why.Ids;
@@ -52,7 +51,8 @@ package body Gnat2Why.Decls is
 
    procedure Translate_Constant (E : Entity_Id)
    is
-      Typ : constant W_Type_Id := Type_Of_Node (E);
+      B  : constant Item_Type := Ada_Ent_To_Why.Element (Symbol_Table, E);
+      pragma Assert (B.Kind = Regular and then not B.Main.Mutable);
       Th : Theory_UC;
    begin
       --  Start with opening the theory to define, as the creation of a
@@ -71,22 +71,14 @@ package body Gnat2Why.Decls is
 
       --  We generate a "logic", whose axiom will be given in a completion
 
-      --  It can happen that components need to be translated, for example, for
-      --  discriminants of task types.
-      --  In this case, the variable should have its own name and not a Why3
-      --  record component name.
-
-      pragma Assert (not Is_Protected_Component_Or_Discr_Or_Part_Of (E));
-
       Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Pterm,
-               Name        => To_Why_Id
-                 (E, No_Comp => True, Domain => EW_Term, Local => True),
+               Name        => To_Local (B.Main.B_Name),
                Binders     => (1 .. 0 => <>),
                Labels      => Get_Counterexample_Labels (E),
                Location    => Safe_First_Sloc (E),
-               Return_Type => Typ));
+               Return_Type => Get_Typ (B.Main.B_Name)));
 
       Close_Theory (Th,
                     Kind           => Definition_Theory,
@@ -156,46 +148,21 @@ package body Gnat2Why.Decls is
                   or else Is_Static_Expression (Expr))
       then
          declare
-            Typ : constant W_Type_Id := Type_Of_Node (E);
+            B  : constant Item_Type :=
+              Ada_Ent_To_Why.Element (Symbol_Table, E);
+            pragma Assert (B.Kind = Regular and then not B.Main.Mutable);
             Def : W_Term_Id;
 
          begin
-            Def := Get_Pure_Logic_Term_If_Possible (Expr, Typ);
+            Def := Get_Pure_Logic_Term_If_Possible
+              (Expr, Get_Typ (B.Main.B_Name));
 
             if Def /= Why_Empty then
-
-               --  The definition of constants is done in a separate theory.
-               --  This theory is added as a completion of the base theory
-               --  defining the constant.
-
-               if Is_Full_View (E)
-                 and then Etype (Partial_View (E)) /= Etype (E)
-               then
-
-                  --  It may be the case that the full view has a more precise
-                  --  type than the partial view, for example when the type of
-                  --  the partial view is an indefinite array. In that case,
-                  --  convert back to the expected type for the constant.
-
-                  Def :=
-                    W_Term_Id
-                      (Insert_Simple_Conversion
-                         (Domain   => EW_Term,
-                          Ada_Node => Expr,
-                          Expr     => W_Expr_Id (Def),
-                          To       => EW_Abstract (Etype (Partial_View (E)))));
-
-                  --  In the general case, we generate a defining axiom if
-                  --  necessary and possible.
-
-               end if;
-
                Emit
                  (Th,
                   New_Defining_Axiom
                     (Ada_Node => E,
-                     Name     =>
-                       To_Why_Id (E, Domain => EW_Term, Local => False),
+                     Name     => B.Main.B_Name,
                      Binders  => (1 .. 0 => <>),
                      Def      => Def));
 

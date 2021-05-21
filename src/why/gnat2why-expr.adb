@@ -1052,7 +1052,7 @@ package body Gnat2Why.Expr is
          declare
             Binder   : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, Lvalue);
-            Why_Ty   : constant W_Type_Id := Type_Of_Node (Lvalue);
+            Why_Ty   : constant W_Type_Id := Why_Type_Of_Entity (Lvalue);
             Why_Expr : W_Prog_Id :=
               +Transform_Expr (Rexpr,
                                Why_Ty,
@@ -1330,8 +1330,7 @@ package body Gnat2Why.Expr is
                | Concurrent_Self
             =>
                declare
-                  L_Id : constant W_Identifier_Id :=
-                    To_Why_Id (Lvalue, Typ => Why_Ty);
+                  L_Id : constant W_Identifier_Id := Binder.Main.B_Name;
                begin
                   if Is_Mutable_In_Why (Lvalue) then
 

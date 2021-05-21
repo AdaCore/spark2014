@@ -663,6 +663,7 @@ package body Why.Gen.Binders is
          --  test when it is safe to call Actual_Subtype
          and then (Ekind (E) in E_Constant | E_Variable
            or else Is_Formal (E))
+         and then Is_Mutable_In_Why (E)
          and then Present (Actual_Subtype (E))
          and then Entity_In_SPARK (Actual_Subtype (E))
          then Actual_Subtype (E)
@@ -942,7 +943,7 @@ package body Why.Gen.Binders is
             --  flag.
 
             Name   : constant W_Identifier_Id :=
-              To_Why_Id (E => E, Typ => Typ, Local => Local);
+              To_Why_Id (E => E, Typ => Typ, Local => Local, No_Comp => True);
             Binder : constant Binder_Type :=
               Binder_Type'(Ada_Node => E,
                            B_Name   => Name,
