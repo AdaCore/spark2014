@@ -12,7 +12,7 @@ call.adb:4:32: info: object is suitable for aliasing via address clause (Trivial
 call.adb:4:32: info: types of aliased objects have the same size (Trivial)
 call.adb:5:36: info: initialization of "To" proved
 call.adb:12:04: info: precondition proved (Trivial: 1 VC)
-main.adb:5:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention A and B in a precondition]
+main.adb:5:19: medium: assertion might fail, cannot prove B = 0 [possible fix: subprogram at line 3 should mention A and B in a precondition]
 p.ads:3:04: info: alignment of overlaid objects is compatible (Trivial)
 p.ads:3:04: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:3:32: info: object is suitable for aliasing via address clause (Trivial)

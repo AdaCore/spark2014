@@ -4,9 +4,9 @@ bitsets.ads:19:09: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC), in in
 bitsets.ads:24:09: info: postcondition proved (CVC4: 3 VC), in instantiation at test_main.adb:5
 bitsets.ads:30:09: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
 bitsets.ads:34:20: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
-bitsets.ads:42:19: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
-bitsets.ads:45:19: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
-bitsets.ads:48:19: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
+bitsets.ads:42:19: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
+bitsets.ads:45:19: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
+bitsets.ads:48:19: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
 test_main.adb:11:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:12:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:13:19: info: assertion proved (CVC4: 1 VC)

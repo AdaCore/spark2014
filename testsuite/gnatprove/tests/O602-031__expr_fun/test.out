@@ -1,3 +1,3 @@
 repro.ads:14:24: warning: unused initial value of "sortie1"
 repro.ads:15:24: warning: unused initial value of "sortie2"
-repro.ads:17:13: info: postcondition proved (CVC4: 1 VC)
+repro.ads:17:13: info: postcondition proved (CVC4: 2 VC)

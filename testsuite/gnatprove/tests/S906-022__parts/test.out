@@ -1,0 +1,2 @@
+exprfun.ads:8:29: medium: postcondition might fail, cannot prove B (e.g. when B = False)
+typred.adb:5:08: medium: predicate check might fail (e.g. when X = (A => True, B => True)) [possible fix: subprogram at typred.ads:10 should mention X in a precondition]

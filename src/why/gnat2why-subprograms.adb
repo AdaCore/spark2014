@@ -2281,6 +2281,12 @@ package body Gnat2Why.Subprograms is
                      Mutable   => False,
                      Labels    => <>)
         & Logic_Why_Binders;
+      Labels : constant Symbol_Set :=
+        (if Is_Expression_Function_Or_Completion (E)
+         and then not Has_Contracts (E, Pragma_Postcondition)
+         and then not Present (Get_Pragma (E, Pragma_Contract_Cases))
+         then Symbol_Sets.To_Set (NID ("inline_marker"))
+         else Symbol_Sets.Empty_Set);
    begin
       --  Generate a logic function
 
@@ -2291,7 +2297,7 @@ package body Gnat2Why.Subprograms is
             Name        => Logic_Id,
             Binders     => Logic_Why_Binders,
             Location    => No_Location,
-            Labels      => Symbol_Sets.Empty_Set,
+            Labels      => Labels,
             Def         => Def,
             Return_Type => Why_Type));
 
@@ -6339,7 +6345,7 @@ package body Gnat2Why.Subprograms is
 
       Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => True,
          Ref_Allowed => False,
          Old_Policy  => Ignore);
 

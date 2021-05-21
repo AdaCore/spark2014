@@ -50,9 +50,9 @@
   </goal>
   <goal name="def&#39;vc.11">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="23016"/></proof>
+  <proof prover="1"><result status="unknown" steps="22883"/></proof>
   <proof prover="2"><result status="unknown" steps="103"/></proof>
-  <proof prover="3"><result status="unknown" steps="206"/></proof>
+  <proof prover="3"><result status="unknown" steps="166"/></proof>
   </goal>
  </transf>
  </goal>

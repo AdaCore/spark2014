@@ -15,7 +15,7 @@ ring_buf.adb:16:28: medium: range check might fail [reason for check: result of 
 ring_buf.adb:23:32: medium: divide by zero might fail
 ring_buf.adb:24:28: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 ring_buf.ads:39:21: info: initialization of "R" proved
-ring_buf.ads:40:19: medium: postcondition might fail
+ring_buf.ads:40:19: medium: postcondition might fail, cannot prove R.Length = 0
 ring_buf.ads:47:19: medium: postcondition might fail
 ring_buf.ads:49:43: info: initialization of "Element" proved
 ring_buf.ads:52:15: medium: postcondition might fail, cannot prove R.Length = R.Length'Old - 1

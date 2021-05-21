@@ -13,7 +13,7 @@ Generated contracts for main
       Input =>
          p__var
 main.adb:20:19: info: precondition proved (Trivial: 1 VC)
-main.adb:20:19: medium: assertion might fail
+main.adb:20:19: medium: assertion might fail, cannot prove Variable_Constant
 Generated contracts for read_variable
    Global =>
       Input =>

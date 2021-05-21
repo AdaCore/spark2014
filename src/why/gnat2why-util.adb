@@ -1654,7 +1654,11 @@ package body Gnat2Why.Util is
 
         --  Functions from predefined units should be safe
 
-        and then not Lib.In_Predefined_Unit (E);
+        and then not Lib.In_Predefined_Unit (E)
+
+        and then (Type_Needs_Dynamic_Invariant (Etype (E))
+                  or else Has_Contracts (E, Pragma_Postcondition)
+                  or else Present (Get_Pragma (E, Pragma_Contract_Cases)));
    end Use_Guard_For_Function;
 
    -----------------------------
