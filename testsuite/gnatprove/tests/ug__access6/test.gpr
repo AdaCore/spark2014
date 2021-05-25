@@ -1,5 +1,3 @@
-with "spark_heap";
-
 project Test is
 
    package Builder is

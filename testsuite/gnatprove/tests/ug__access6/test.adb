@@ -1,5 +1,4 @@
 with Ada.Unchecked_Deallocation;
-with SPARK.Heap;
 
 procedure Test is
    type Int_Ptr is access Integer;
