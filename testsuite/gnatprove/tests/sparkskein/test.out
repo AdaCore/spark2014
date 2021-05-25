@@ -9,6 +9,8 @@ skein.adb:183:13: info: types in unchecked conversion have the same size (Trivia
 skein.adb:184:32: info: type is suitable as source for unchecked conversion (Trivial)
 skein.adb:184:55: info: type is suitable for unchecked conversion (Trivial)
 skein.adb:193:11: info: data dependencies proved
+skein.adb:200:07: warning: statement has no effect
+skein.adb:203:10: warning: this statement is never reached
 skein.adb:207:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:207:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
 skein.adb:223:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:857
