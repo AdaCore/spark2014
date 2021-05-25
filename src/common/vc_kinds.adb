@@ -30,6 +30,7 @@ package body VC_Kinds is
    function To_JSON (C : Cntexample_Elt) return JSON_Value;
    function To_JSON (L : Cntexample_Elt_Lists.List) return JSON_Value;
    function To_JSON (K : CEE_Kind) return JSON_Value;
+   function To_JSON (V : Cntexmp_Value_Ptr) return JSON_Value;
 
    function From_JSON (V : JSON_Value) return Cntexample_Lines;
    function From_JSON (V : JSON_Value) return Cntexample_Elt;
@@ -1150,12 +1151,71 @@ package body VC_Kinds is
       return Obj;
    end To_JSON;
 
+   function To_JSON (V : Cntexmp_Value_Ptr) return JSON_Value is
+
+      function Create_Float (F : Float_Value_Ptr) return JSON_Value;
+
+      function Create_Record (A : Cntexmp_Value_Array.Map) return JSON_Value;
+
+      function Create_Array
+        (Indices : Cntexmp_Value_Array.Map; Other : Cntexmp_Value_Ptr)
+         return JSON_Value;
+
+      function Create_Float (F : Float_Value_Ptr) return JSON_Value is
+         Res : constant JSON_Value := Create;
+      begin
+         Set_Field (Res, "sign", To_String (F.F_Sign));
+         Set_Field (Res, "exponend", To_String (F.F_Exponent));
+         Set_Field (Res, "significand", To_String (F.F_Significand));
+         return Res;
+      end Create_Float;
+
+      function Create_Record (A : Cntexmp_Value_Array.Map) return JSON_Value is
+         Res : constant JSON_Value := Create;
+         use Cntexmp_Value_Array;
+      begin
+         for C in A.Iterate loop
+            Set_Field (Res, Key (C), To_JSON (Element (C)));
+         end loop;
+         return Res;
+      end Create_Record;
+
+      function Create_Array
+        (Indices : Cntexmp_Value_Array.Map; Other : Cntexmp_Value_Ptr)
+         return JSON_Value is
+         Res : constant JSON_Value := Create;
+      begin
+         Set_Field (Res, "indices", Create_Record (Indices));
+         Set_Field (Res, "others", To_JSON (Other));
+         return Res;
+      end Create_Array;
+
+   begin
+      return
+        (case V.T is
+            when Cnt_Integer    => Create (V.I),
+            when Cnt_Decimal    => Create (V.D),
+            when Cnt_Float      => Create_Float (V.F),
+            when Cnt_Boolean    => Create (V.Bo),
+            when Cnt_Bitvector  => Create (V.B),
+            when Cnt_Unparsed   => Create (V.U),
+            when Cnt_Record     => Create_Record (V.Fi),
+            when Cnt_Projection => Create (V.Er),
+            when Cnt_Array      =>
+              Create_Array (V.Array_Indices, V.Array_Others),
+            when Cnt_Invalid    => Create (V.S));
+   end To_JSON;
+
    function To_JSON (C : Cntexample_Elt) return JSON_Value is
       Obj : constant JSON_Value := Create_Object;
    begin
       Set_Field (Obj, "name",  C.Name);
       Set_Field (Obj, "value", C.Val_Str.Str);
       Set_Field (Obj, "kind",  To_JSON (C.Kind));
+      if C.Value /= null then
+         Set_Field (Obj, "type", Cntexmp_Type'Image (C.Value.T));
+         Set_Field (Obj, "full_value", To_JSON (C.Value));
+      end if;
       return Obj;
    end To_JSON;
 
