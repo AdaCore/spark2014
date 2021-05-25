@@ -3854,12 +3854,27 @@ package body Gnat2Why.Expr is
 
                            --  If Field has a default expression, use it
 
-                           T_Comp := Transform_Expr
-                             (Expr          =>
-                                Expression (Enclosing_Declaration (Field)),
-                              Expected_Type => Type_Of_Node (Etype (Field)),
-                              Domain        => EW_Prog,
-                              Params        => Params);
+                           declare
+                              F_Ty   : constant Entity_Id := Etype (Field);
+                              Exp_Ty : constant W_Type_Id :=
+                                (if Is_Scalar_Type (F_Ty)
+                                 then Type_Of_Node (F_Ty)
+                                 else EW_Abstract
+                                   (F_Ty, Has_Relaxed_Init (F_Ty)));
+                              --  For scalar types, if we have a value, it is
+                              --  initialized. Otherwise we only expect a
+                              --  partially initialized type if the type of the
+                              --  component is marked with
+                              --  Relaxed_Initialization.
+
+                           begin
+                              T_Comp := Transform_Expr
+                                (Expr          =>
+                                   Expression (Enclosing_Declaration (Field)),
+                                 Expected_Type => Exp_Ty,
+                                 Domain        => EW_Prog,
+                                 Params        => Params);
+                           end;
                         else
 
                            --  Otherwise, use its Field's Etype default value
@@ -4128,24 +4143,48 @@ package body Gnat2Why.Expr is
          --  should not exist in the Ada declaration.
 
          if Present (Expression (Enclosing_Declaration (E))) then
-            P := +New_Comparison
-              (Symbol => Why_Eq,
-               Left   => Insert_Simple_Conversion
-                 (Domain => EW_Term,
-                  Expr   => +F_Expr,
-                  To     => Type_Of_Node (F_Ty)),
-               Right  => New_Tag_Update
-                 (Domain => EW_Term,
-                  Name   => Transform_Expr
-                    (Expr          => Expression (Enclosing_Declaration (E)),
-                     Expected_Type => Type_Of_Node (F_Ty),
-                     Domain        => EW_Term,
-                     Params        => Params),
-                  Ty     => F_Ty),
-               Domain => EW_Pred);
+            declare
+               Exp_Ty : constant W_Type_Id :=
+                 (if Is_Scalar_Type (F_Ty) then Type_Of_Node (F_Ty)
+                  else EW_Abstract (F_Ty, Has_Relaxed_Init (F_Ty)));
+               --  For scalar types, if we have a value, it is initialized.
+               --  Otherwise we only expect a partially initialized type if the
+               --  type of the component is marked with Relaxed_Initialization.
 
-            --  otherwise, use its Field's Etype default value.
-            --   default_init (<Expr>.rec__field1, Etype (Field1)))
+            begin
+               P := +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +F_Expr,
+                     To     => Exp_Ty),
+                  Right  => New_Tag_Update
+                    (Domain => EW_Term,
+                     Name   => Transform_Expr
+                       (Expr          => Expression
+                            (Enclosing_Declaration (E)),
+                        Expected_Type => Exp_Ty,
+                        Domain        => EW_Term,
+                        Params        => Params),
+                     Ty     => F_Ty),
+                  Domain => EW_Pred);
+
+               --  If F_Expr has a wrapper for initialization and not Exp_Ty,
+               --  set the init flag to True.
+
+               if Is_Init_Wrapper_Type (Get_Type (+F_Expr))
+                 and then not Is_Init_Wrapper_Type (Exp_Ty)
+               then
+                  P := +New_And_Expr
+                    (Left   => +P,
+                     Right  => +Compute_Is_Initialized
+                       (F_Ty, +F_Expr, Params.Ref_Allowed, Domain => EW_Pred),
+                     Domain => EW_Pred);
+               end if;
+            end;
+
+         --  otherwise, use its Field's Etype default value.
+         --   default_init (<Expr>.rec__field1, Etype (Field1)))
 
          else
             P := +Compute_Default_Init
@@ -4153,18 +4192,6 @@ package body Gnat2Why.Expr is
                F_Ty,
                Params => Params,
                Use_Pred => Use_Pred);
-         end if;
-
-         --  If F_Ty has a wrapper for initialization, set the init flag
-
-         if Is_Init_Wrapper_Type (Get_Type (+F_Expr))
-           and then Present (Expression (Enclosing_Declaration (E)))
-         then
-            P := +New_And_Expr
-              (Left   => +P,
-               Right  => +Compute_Is_Initialized
-                    (F_Ty, +F_Expr, Params.Ref_Allowed, Domain => EW_Pred),
-               Domain => EW_Pred);
          end if;
 
          return P;
