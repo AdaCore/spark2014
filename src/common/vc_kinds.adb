@@ -25,12 +25,12 @@
 
 package body VC_Kinds is
 
-   function To_JSON (S : Prover_Stat) return JSON_Value;
-   function To_JSON (L : Cntexample_Lines) return JSON_Value;
-   function To_JSON (C : Cntexample_Elt) return JSON_Value;
+   function To_JSON (S : Prover_Stat)               return JSON_Value;
+   function To_JSON (L : Cntexample_Lines)          return JSON_Value;
+   function To_JSON (C : Cntexample_Elt)            return JSON_Value;
    function To_JSON (L : Cntexample_Elt_Lists.List) return JSON_Value;
-   function To_JSON (K : CEE_Kind) return JSON_Value;
-   function To_JSON (V : Cntexmp_Value_Ptr) return JSON_Value;
+   function To_JSON (K : CEE_Kind)                  return JSON_Value;
+   function To_JSON (V : Cntexmp_Value_Ptr)         return JSON_Value;
 
    function From_JSON (V : JSON_Value) return Cntexample_Lines;
    function From_JSON (V : JSON_Value) return Cntexample_Elt;
@@ -1161,6 +1161,10 @@ package body VC_Kinds is
         (Indices : Cntexmp_Value_Array.Map; Other : Cntexmp_Value_Ptr)
          return JSON_Value;
 
+      ------------------
+      -- Create_Float --
+      ------------------
+
       function Create_Float (F : Float_Value_Ptr) return JSON_Value is
          Res : constant JSON_Value := Create;
       begin
@@ -1170,25 +1174,37 @@ package body VC_Kinds is
          return Res;
       end Create_Float;
 
+      -------------------
+      -- Create_Record --
+      -------------------
+
       function Create_Record (A : Cntexmp_Value_Array.Map) return JSON_Value is
          Res : constant JSON_Value := Create;
          use Cntexmp_Value_Array;
       begin
          for C in A.Iterate loop
-            Set_Field (Res, Key (C), To_JSON (Element (C)));
+            Set_Field (Res, Key (C), To_JSON (A (C)));
          end loop;
          return Res;
       end Create_Record;
 
+      ------------------
+      -- Create_Array --
+      ------------------
+
       function Create_Array
-        (Indices : Cntexmp_Value_Array.Map; Other : Cntexmp_Value_Ptr)
-         return JSON_Value is
+        (Indices : Cntexmp_Value_Array.Map;
+         Other   : Cntexmp_Value_Ptr)
+         return JSON_Value
+      is
          Res : constant JSON_Value := Create;
       begin
          Set_Field (Res, "indices", Create_Record (Indices));
          Set_Field (Res, "others", To_JSON (Other));
          return Res;
       end Create_Array;
+
+   --  Start of processing for To_JSON
 
    begin
       return
@@ -1220,7 +1236,8 @@ package body VC_Kinds is
    end To_JSON;
 
    function To_JSON (L : Cntexample_Elt_Lists.List)
-                     return JSON_Value is
+                     return JSON_Value
+   is
       Result : JSON_Array := Empty_Array;
    begin
       for Elt of L loop
