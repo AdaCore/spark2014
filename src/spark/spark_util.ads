@@ -470,11 +470,11 @@ package SPARK_Util is
    --  @param E entity of a procedure or entry formal parameter of mode IN
    --  @return True if E can be written despite being of mode IN
 
-   function Root_Record_Component (E : Entity_Id) return Entity_Id
-   with Pre => Ekind (E) in E_Component | E_Discriminant;
-   --  Given a component or discriminant of a record (sub-)type, return the
-   --  corresponding component or discriminant of the root type, if any. This
-   --  is the identity when E is the component of a root type.
+   function Root_Discriminant (E : Entity_Id) return Entity_Id
+   with Pre => Ekind (E) = E_Discriminant;
+   --  Given discriminant of a record (sub-)type, return the corresponding
+   --  discriminant of the root type, if any. This is the identity when E is
+   --  the discriminant of a root type.
    --  ??? Same update needed as for Root_Retysp
 
    function Search_Component_By_Name

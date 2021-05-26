@@ -673,7 +673,7 @@ package body Gnat2Why.Tables is
    is
    begin
       if Ekind (Comp) = E_Discriminant then
-         return Root_Record_Component (Comp);
+         return Root_Discriminant (Comp);
       else
          pragma Assert (Ekind (Comp) in E_Component | Type_Kind);
 

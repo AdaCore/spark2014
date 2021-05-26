@@ -78,17 +78,8 @@ package SPARK_Util.Types is
    function Has_Boolean_Type (T : Entity_Id) return Boolean is
      (Root_Type (Retysp (T)) = Standard_Boolean);
 
-   function Has_Class_Wide_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Class_Wide_Kind);
-
-   function Has_Composite_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Composite_Kind);
-
    function Has_Discrete_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Discrete_Kind);
-
-   function Has_Enumeration_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Enumeration_Kind);
 
    function Has_Integer_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Integer_Kind);
@@ -128,7 +119,8 @@ package SPARK_Util.Types is
    function Static_Discrete_Predicate (T : Entity_Id) return List_Id is
      (Einfo.Entities.Static_Discrete_Predicate (Retysp (T)));
 
-   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
+   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean with
+     Pre => Has_Scalar_Type (T);
    --  Returns whether type T has a scalar subtype with statically known
    --  bounds. This includes looking past private types.
 
@@ -314,10 +306,6 @@ package SPARK_Util.Types is
      Pre => Is_Type (Typ);
    --  Returns True if Typ has subcomponents whose type may be used for
    --  expressions with relaxed initialization.
-
-   function Get_Access_Type_From_Profile (Ty : Entity_Id) return Entity_Id with
-     Pre  => Ekind (Ty) = E_Subprogram_Type,
-     Post => Is_Access_Subprogram_Type (Get_Access_Type_From_Profile'Result);
 
    function Num_Literals (Ty : Entity_Id) return Positive
      with Pre => Is_Enumeration_Type (Ty);

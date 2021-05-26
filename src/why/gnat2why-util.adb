@@ -59,7 +59,7 @@ package body Gnat2Why.Util is
 
       function Normalize_Entity (E : Entity_Id) return Entity_Id is
         (if Nkind (E) in N_Entity and then Ekind (E) = E_Discriminant then
-              Root_Record_Component (E) else E);
+              Root_Discriminant (E) else E);
       --  Entities of discriminants can vary when types are derived. We want to
       --  refer to the same item for every variants of a single discriminant
       --  entity.

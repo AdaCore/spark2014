@@ -1,0 +1,29 @@
+bad_alignment.adb:3:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: alignment of X (which is 2) must be a multiple of the alignment of Y (which is 4)]
+bad_alignment.adb:3:04: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:3:56: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:3:56: info: types of aliased objects have the same size (Trivial)
+bad_alignment.adb:4:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Z doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+bad_alignment.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:4:40: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:4:40: info: types of aliased objects have the same size (Trivial)
+bad_alignment.adb:5:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Z doesn't have an Alignment representation clause or aspect] [possible fix: overlaid object should have an Alignment representation clause]
+bad_alignment.adb:5:04: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:5:56: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:5:56: info: types of aliased objects have the same size (Trivial)
+bad_alignment.adb:7:04: warning: analyzing unreferenced procedure "P"
+bad_alignment.adb:7:14: warning: subprogram "P" has no effect
+bad_alignment.adb:8:07: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Z must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+bad_alignment.adb:8:07: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:8:68: info: object is suitable for aliasing via address clause (Trivial)
+bad_alignment.adb:8:68: info: types of aliased objects have the same size (Trivial)
+pointer_eq.adb:9:19: error: equality on access types is not allowed in SPARK
+pointer_eq.adb:9:19: error: violation of aspect SPARK_Mode at line 1
+test_annotate.adb:1:11: warning: subprogram "Test_Annotate" has no effect
+test_annotate.adb:4:07: warning: this statement is never reached
+test_annotate.adb:5:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_annotate.adb:7:07: warning: this statement is never reached
+test_annotate.adb:8:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_annotate.adb:11:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_annotate.adb:18:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_annotate.adb:23:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+gnatprove: error during flow analysis and proof

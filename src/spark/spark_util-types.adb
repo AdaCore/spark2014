@@ -86,10 +86,7 @@ package body SPARK_Util.Types is
       Anc_Subt : Entity_Id;
 
    begin
-      if not Has_Scalar_Type (Under_T) then
-         return False;
-
-      elsif Base_T = Under_T then
+      if Base_T = Under_T then
          return True;
 
       else
@@ -712,7 +709,7 @@ package body SPARK_Util.Types is
          begin
             case Nkind (T_Def) is
                when N_Subtype_Indication =>
-                  return Entity (Subtype_Mark (T_Def));
+                  raise Program_Error;
 
                when N_Derived_Type_Definition =>
                   declare
@@ -753,13 +750,6 @@ package body SPARK_Util.Types is
          return Specific_Type;
       end if;
    end Get_Specific_Type_From_Classwide;
-
-   ----------------------------------
-   -- Get_Access_Type_From_Profile --
-   ----------------------------------
-
-   function Get_Access_Type_From_Profile (Ty : Entity_Id) return Entity_Id is
-     (Defining_Entity (Associated_Node_For_Itype (Ty)));
 
    ------------------------------
    -- Get_Constraint_For_Discr --
@@ -1468,10 +1458,14 @@ package body SPARK_Util.Types is
          end if;
 
          if Is_Concurrent_Type (Typ) then
+            pragma Annotate
+              (Xcov, Exempt_On, "The frontend crashes on UC on tasks and "
+               & "rejectes UC on protected types");
             Result := False;
             Explanation :=
               To_Unbounded_String (Typ_Name & " is a concurrent type");
             return;
+            pragma Annotate (Xcov, Exempt_Off);
          end if;
 
          if Has_Discriminants (Typ) then
@@ -1489,22 +1483,11 @@ package body SPARK_Util.Types is
          end if;
 
          if Is_Scalar_Type (Typ) then
-            if Top_Level and then not Known_Esize (Typ) then
-               Result := False;
-               Explanation :=
-                 To_Unbounded_String (Typ_Name & " doesn't "
-                                      & "have an Object_Size "
-                                      & "representation clause or aspect");
-               return;
-            elsif not Known_RM_Size (Typ) then
-               Result := False;
-               Explanation :=
-                 To_Unbounded_String (Typ_Name & " doesn't "
-                                      & "have a Size "
-                                      & "representation clause or aspect");
 
-               return;
-            end if;
+            --  The size of scalar types is always known statically
+
+            pragma Assert (Known_Esize (Typ) and Known_RM_Size (Typ));
+
             Typ_Size := (if Top_Level then Esize (Typ) else RM_Size (Typ));
             Result := True;
             return;
@@ -1664,10 +1647,14 @@ package body SPARK_Util.Types is
          end if;
 
          if Is_Concurrent_Type (Typ) then
+            pragma Annotate
+              (Xcov, Exempt_On, "The frontend crashes on UC on tasks and "
+               & "rejectes UC on protected types");
             Result := False;
             Explanation :=
               To_Unbounded_String (Typ_Name & " is a concurrent type");
             return;
+            pragma Annotate (Xcov, Exempt_Off);
          end if;
 
          if Is_Access_Type (Typ) then
@@ -1683,22 +1670,10 @@ package body SPARK_Util.Types is
             declare
                R : constant Node_Id := Scalar_Range (Typ);
             begin
-               if Top_Level and then not Known_Esize (Typ) then
-                  Result := False;
-                  Explanation :=
-                    To_Unbounded_String (Typ_Name & " doesn't "
-                                         & "have an Object_Size "
-                                         & "representation clause or aspect");
-                  return;
-               elsif not Known_RM_Size (Typ) then
-                  Result := False;
-                  Explanation :=
-                    To_Unbounded_String (Typ_Name & " doesn't "
-                                         & "have a Size "
-                                         & "representation clause or aspect");
+               --  The size of scalar types is always known statically
 
-                  return;
-               end if;
+               pragma Assert (Known_Esize (Typ) and Known_RM_Size (Typ));
+
                Typ_Size := (if Top_Level then Esize (Typ) else RM_Size (Typ));
 
                --  Despite having a known Esize, we might not know the bounds
