@@ -64,7 +64,7 @@ prime_and_coprime_numbers.adb:213:13: info: loop invariant initialization proved
 prime_and_coprime_numbers.adb:213:13: info: loop invariant preservation proved (Z3: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:56: medium: array index check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6 [reason for check: value must be a valid index into the array]
 prime_and_coprime_numbers.adb:215:13: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:215:13: medium: loop invariant might not be preserved by an arbitrary iteration, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:216:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Set.Is_Prime (V) = (for all Div in 2 .. Index_2 - 1 => V mod Div /= 0), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:216:29: info: index check proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:217:55: info: division check proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:219:27: info: index check proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -74,7 +74,7 @@ prime_and_coprime_numbers.adb:229:19: info: loop invariant initialization proved
 prime_and_coprime_numbers.adb:229:19: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:229:62: info: index check proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:231:19: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:231:19: medium: loop invariant might not be preserved by an arbitrary iteration, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:232:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Set.Is_Prime (V) = ((for all Div in 2 .. Index_2 - 1 => V mod Div /= 0) and (if V in Index_2 + 1..Index_3 then V mod Index_2 /= 0 else True)), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:232:35: info: index check proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:233:62: info: division check proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:235:41: info: overflow check proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
