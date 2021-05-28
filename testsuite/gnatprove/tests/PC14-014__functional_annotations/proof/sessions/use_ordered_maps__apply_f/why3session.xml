@@ -504,8 +504,7 @@
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.138" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="204833"/></proof>
+  <proof prover="0"><result status="valid" steps="144676"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

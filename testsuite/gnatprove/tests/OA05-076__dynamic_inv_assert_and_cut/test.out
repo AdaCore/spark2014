@@ -311,7 +311,7 @@ lsc-bignum.adb:446:07: medium: precondition might fail, cannot prove Num_Of_Big_
 lsc-bignum.adb:447:39: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:451:07: medium: precondition might fail, cannot prove A_Last in A'range
 lsc-bignum.adb:452:39: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
-lsc-bignum.adb:456:07: medium: precondition might fail
+lsc-bignum.adb:456:07: medium: precondition might fail, cannot prove B_First + (A_Last - A_First) in B'range
 lsc-bignum.adb:457:39: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:462:21: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:463:10: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux1, Aux1_First, L + 1) = Math_Int.From_Word32 (1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]

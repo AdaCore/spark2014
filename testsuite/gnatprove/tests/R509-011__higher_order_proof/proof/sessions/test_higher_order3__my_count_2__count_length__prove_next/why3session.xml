@@ -58,14 +58,8 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-<<<<<<< HEAD
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="203572272"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-=======
   <proof prover="0"><result status="valid" steps="204342"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
->>>>>>> cc6f8eae8c... tmp
   </goal>
  </transf>
  </goal>
