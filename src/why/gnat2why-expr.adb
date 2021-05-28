@@ -15644,7 +15644,7 @@ package body Gnat2Why.Expr is
 
                      Suitable_For_UC_Target
                        (Retysp (Etype (Defining_Identifier (Decl))),
-                        Valid, Explanation);
+                        True, Valid, Explanation);
                      Emit_Static_Proof_Result
                        (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
@@ -15683,7 +15683,8 @@ package body Gnat2Why.Expr is
                      Explanation : Unbounded_String;
                   begin
                      Suitable_For_UC_Target
-                       (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
+                       (Retysp (Etype (Prefix (Expr))),
+                        True, Valid, Explanation);
                      Emit_Static_Proof_Result
                        (Expr, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));

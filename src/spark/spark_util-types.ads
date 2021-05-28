@@ -260,6 +260,7 @@ package SPARK_Util.Types is
    --  pragma or aspect applying to Ty.
 
    procedure Suitable_For_UC (Typ         : Entity_Id;
+                              Use_Esize   : Boolean;
                               Result      : out Boolean;
                               Explanation : out Unbounded_String)
      with Pre => Is_Type (Typ);
@@ -267,6 +268,7 @@ package SPARK_Util.Types is
    --  conversion" of SPARK RM 13.9.
 
    procedure Suitable_For_UC_Target (Typ         : Entity_Id;
+                                     Use_Esize   : Boolean;
                                      Result      : out Boolean;
                                      Explanation : out Unbounded_String)
      with Pre => Is_Type (Typ);
@@ -279,6 +281,12 @@ package SPARK_Util.Types is
      with Pre => Is_Type (A) and then Is_Type (B);
    --  If types A and B have the same Esize, then set Result to True; otherwise
    --  set Result to False and Explanation to a possible fix.
+
+   procedure Have_Same_Known_RM_Size (A, B        : Entity_Id;
+                                      Result      : out Boolean;
+                                      Explanation : out Unbounded_String)
+     with Pre => Is_Type (A) and then Is_Type (B);
+   --  Same as Have_Same_Known_Esize, but checks the RM_Size.
 
    function Contains_Relaxed_Init_Parts
      (Typ        : Entity_Id;

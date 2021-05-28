@@ -182,8 +182,8 @@ is
 
    function Skein_512_State_Words_To_Bytes is new
      Ada.Unchecked_Conversion (Skein_512_State_Words, Skein_512_State_Bytes);
-
-
+   pragma Annotate(Gnatprove, False_Positive, "unsuitable*unchecked conversion", "can't annotate with Size aspect");
+   pragma Annotate(Gnatprove, False_Positive, "same size", "can't annotate with Size aspect");
    --  Local package body stubs
    package body Trace is separate;
 

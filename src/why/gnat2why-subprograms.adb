@@ -4453,17 +4453,17 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Suitable_For_UC (Src_Ty, Valid, Explanation);
+               Suitable_For_UC (Src_Ty, False, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Suitable_For_UC_Target (Tar_Ty, Valid, Explanation);
+               Suitable_For_UC_Target (Tar_Ty, False, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Have_Same_Known_Esize
+               Have_Same_Known_RM_Size
                  (Src_Ty, Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (E, VC_UC_Same_Size, Valid, E,

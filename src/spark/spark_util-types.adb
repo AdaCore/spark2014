@@ -59,6 +59,17 @@ package body SPARK_Util.Types is
    --  undefined and Explanation contains a string why the size could not
    --  be computed.
 
+   procedure Check_Known_RM_Size (Typ         : Entity_Id;
+                                  Result      : out Boolean;
+                                  Explanation : out Unbounded_String);
+   --  If the RM_Size of the type is known, set Result to True. Otherwise, set
+   --  Result to False and save an explanation string in Explanation.
+
+   procedure Check_Known_Esize (Typ         : Entity_Id;
+                                Result      : out Boolean;
+                                Explanation : out Unbounded_String);
+   --  same as Check_Known_RM_Size, but for Esize
+
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
@@ -458,6 +469,46 @@ package body SPARK_Util.Types is
    begin
       return Refers_To_Type_Instance (Default_Init_Expr) = Abandon;
    end Check_DIC_At_Declaration;
+
+   -----------------------
+   -- Check_Known_Esize --
+   -----------------------
+
+   procedure Check_Known_Esize (Typ         : Entity_Id;
+                                Result      : out Boolean;
+                                Explanation : out Unbounded_String)
+   is
+   begin
+      if not Known_Esize (Typ) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String (Type_Name_For_Explanation (Typ) & " doesn't "
+                                & "have an Object_Size representation "
+                                & "clause or aspect");
+      else
+         Result := True;
+      end if;
+   end Check_Known_Esize;
+
+   -------------------------
+   -- Check_Known_RM_Size --
+   -------------------------
+
+   procedure Check_Known_RM_Size (Typ         : Entity_Id;
+                                  Result      : out Boolean;
+                                  Explanation : out Unbounded_String)
+   is
+   begin
+      if not Known_RM_Size (Typ) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String (Type_Name_For_Explanation (Typ) & " doesn't "
+                                & "have a Size representation clause "
+                                & "or aspect");
+      else
+         Result := True;
+      end if;
+   end Check_Known_RM_Size;
 
    --------------------------------
    -- Check_Needed_On_Conversion --
@@ -1382,13 +1433,14 @@ package body SPARK_Util.Types is
    ---------------------
 
    procedure Suitable_For_UC (Typ         : Entity_Id;
+                              Use_Esize   : Boolean;
                               Result      : out Boolean;
                               Explanation : out Unbounded_String)
    is
 
       procedure Suitable_For_UC_Internal
         (Typ         : Entity_Id;
-         Top_Level   : Boolean;
+         Use_Esize   : Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
@@ -1430,7 +1482,7 @@ package body SPARK_Util.Types is
 
       procedure Suitable_For_UC_Internal
         (Typ         : Entity_Id;
-         Top_Level   : Boolean;
+         Use_Esize   : Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String)
@@ -1488,7 +1540,7 @@ package body SPARK_Util.Types is
 
             pragma Assert (Known_Esize (Typ) and Known_RM_Size (Typ));
 
-            Typ_Size := (if Top_Level then Esize (Typ) else RM_Size (Typ));
+            Typ_Size := (if Use_Esize then Esize (Typ) else RM_Size (Typ));
             Result := True;
             return;
          end if;
@@ -1500,24 +1552,39 @@ package body SPARK_Util.Types is
 
       Typ_Size : Uint;
    begin
-      Suitable_For_UC_Internal (Typ, True, Result, Typ_Size, Explanation);
+      Suitable_For_UC_Internal (Typ, Use_Esize, Result, Typ_Size, Explanation);
       if not Result then
          return;
       end if;
-      if not Known_Esize (Typ) then
-         Result := False;
-         Explanation :=
-           To_Unbounded_String (Typ_Name & " doesn't "
-                                & "have an Object_Size representation "
-                                & "clause or aspect");
-      elsif Esize (Typ) = Typ_Size then
-         Result := True;
+      if Use_Esize then
+         Check_Known_Esize (Typ, Result, Explanation);
+         if not Result then
+            return;
+         end if;
+         if Esize (Typ) = Typ_Size then
+            Result := True;
+         else
+            Result := False;
+            Explanation :=
+              To_Unbounded_String
+                (Typ_Name & " has minimal size " & UI_Image (Typ_Size)
+                 & ", but Object_Size was declared as "
+                 & UI_Image (Esize (Typ)));
+         end if;
       else
-         Result := False;
-         Explanation :=
-           To_Unbounded_String
-             (Typ_Name & " has minimal size " & UI_Image (Typ_Size) & ", but "
-              & "Object_Size was declared as " & UI_Image (Esize (Typ)));
+         Check_Known_RM_Size (Typ, Result, Explanation);
+         if not Result then
+            return;
+         end if;
+         if RM_Size (Typ) = Typ_Size then
+            Result := True;
+         else
+            Result := False;
+            Explanation :=
+              To_Unbounded_String
+                (Typ_Name & " has minimal size " & UI_Image (Typ_Size)
+                 & ", but Size was declared as " & UI_Image (RM_Size (Typ)));
+         end if;
       end if;
    end Suitable_For_UC;
 
@@ -1526,6 +1593,7 @@ package body SPARK_Util.Types is
    ----------------------------
 
    procedure Suitable_For_UC_Target (Typ         : Entity_Id;
+                                     Use_Esize   : Boolean;
                                      Result      : out Boolean;
                                      Explanation : out Unbounded_String)
    is
@@ -1553,7 +1621,7 @@ package body SPARK_Util.Types is
 
       procedure Suitable_For_UC_Target_Internal
         (Typ         : Entity_Id;
-         Top_Level   : Boolean;
+         Use_Esize   : Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
@@ -1588,7 +1656,7 @@ package body SPARK_Util.Types is
 
       procedure Suitable_For_UC_Target_Internal
         (Typ         : Entity_Id;
-         Top_Level   : Boolean;
+         Use_Esize   : Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String)
@@ -1674,7 +1742,7 @@ package body SPARK_Util.Types is
 
                pragma Assert (Known_Esize (Typ) and Known_RM_Size (Typ));
 
-               Typ_Size := (if Top_Level then Esize (Typ) else RM_Size (Typ));
+               Typ_Size := (if Use_Esize then Esize (Typ) else RM_Size (Typ));
 
                --  Despite having a known Esize, we might not know the bounds
                --  at compile time. Checking for this next.
@@ -1710,7 +1778,7 @@ package body SPARK_Util.Types is
                          (Typ_Name & " has "
                           & UI_Image (Num_Values)
                           & " values but has "
-                          & (if Top_Level then "Object_Size " else "Size ")
+                          & (if Use_Esize then "Object_Size " else "Size ")
                           & UI_Image (Typ_Size));
                   end if;
                   return;
@@ -1729,24 +1797,40 @@ package body SPARK_Util.Types is
 
    begin
       Suitable_For_UC_Target_Internal
-        (Typ, True, Result, Typ_Size, Explanation);
+        (Typ, Use_Esize, Result, Typ_Size, Explanation);
       if not Result then
          return;
       end if;
-      if not Known_Esize (Typ) then
-         Result := False;
-         Explanation :=
-           To_Unbounded_String (Typ_Name & " doesn't "
-                                & "have an Object_Size representation "
-                                & "clause or aspect");
-      elsif Esize (Typ) = Typ_Size then
-         Result := True;
+      if Use_Esize then
+         Check_Known_Esize (Typ, Result, Explanation);
+         if not Result then
+            return;
+         end if;
+         if Esize (Typ) = Typ_Size then
+            Result := True;
+         else
+            Result := False;
+            Explanation :=
+              To_Unbounded_String
+                (Typ_Name & " has minimal size " & UI_Image (Typ_Size)
+                 & ", but Object_Size was declared as "
+                 & UI_Image (Esize (Typ)));
+         end if;
       else
-         Result := False;
-         Explanation :=
-           To_Unbounded_String
-             (Typ_Name & " has minimal size " & UI_Image (Typ_Size) & ", but "
-              & "Object_Size was declared as " & UI_Image (Esize (Typ)));
+         Check_Known_RM_Size (Typ, Result, Explanation);
+         if not Result then
+            return;
+         end if;
+         if RM_Size (Typ) = Typ_Size then
+            Result := True;
+         else
+            Result := False;
+            Explanation :=
+              To_Unbounded_String
+                (Typ_Name & " has minimal size " & UI_Image (Typ_Size)
+                 & ", but Size was declared as "
+                 & UI_Image (RM_Size (Typ)));
+         end if;
       end if;
    end Suitable_For_UC_Target;
 
@@ -1785,20 +1869,12 @@ package body SPARK_Util.Types is
                                     Explanation : out Unbounded_String)
    is
    begin
-      if not Known_Esize (A) then
-         Result := False;
-         Explanation :=
-           To_Unbounded_String (Type_Name_For_Explanation (A) & " doesn't "
-                                & "have an Object_Size representation "
-                                & "clause or aspect");
+      Check_Known_Esize (A, Result, Explanation);
+      if not Result then
          return;
       end if;
-      if not Known_Esize (B) then
-         Result := False;
-         Explanation :=
-           To_Unbounded_String (Type_Name_For_Explanation (B) & " doesn't "
-                                & "have an Object_Size representation "
-                                & "clause or aspect");
+      Check_Known_Esize (B, Result, Explanation);
+      if not Result then
          return;
       end if;
       if Esize (A) /= Esize (B) then
@@ -1813,6 +1889,35 @@ package body SPARK_Util.Types is
       Result := True;
       Explanation := Null_Unbounded_String;
    end Have_Same_Known_Esize;
+
+   -----------------------------
+   -- Have_Same_Known_RM_Size --
+   -----------------------------
+
+   procedure Have_Same_Known_RM_Size (A, B        : Entity_Id;
+                                      Result      : out Boolean;
+                                      Explanation : out Unbounded_String)
+   is
+   begin
+      Check_Known_RM_Size (A, Result, Explanation);
+      if not Result then
+         return;
+      end if;
+      Check_Known_RM_Size (B, Result, Explanation);
+      if not Result then
+         return;
+      end if;
+      if RM_Size (A) /= RM_Size (B) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String ("Size of " & Type_Name_For_Explanation (A)
+                                & " and " & Type_Name_For_Explanation (B)
+                                & " differ");
+         return;
+      end if;
+      Result := True;
+      Explanation := Null_Unbounded_String;
+   end Have_Same_Known_RM_Size;
 
    -------------------------
    -- Unchecked_Full_Type --

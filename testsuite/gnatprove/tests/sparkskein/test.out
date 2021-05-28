@@ -5,9 +5,6 @@ skein.adb:128:35: info: range check proved (altergo: 1 VC)
 skein.adb:180:13: info: types in unchecked conversion have the same size (Trivial)
 skein.adb:181:07: info: type is suitable as source for unchecked conversion (Trivial)
 skein.adb:181:20: info: type is suitable for unchecked conversion (Trivial)
-skein.adb:183:13: info: types in unchecked conversion have the same size (Trivial)
-skein.adb:184:32: info: type is suitable as source for unchecked conversion (Trivial)
-skein.adb:184:55: info: type is suitable for unchecked conversion (Trivial)
 skein.adb:193:11: info: data dependencies proved
 skein.adb:200:07: warning: statement has no effect
 skein.adb:203:10: warning: this statement is never reached

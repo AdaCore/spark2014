@@ -131,7 +131,7 @@ A subtype ``S`` is said to be `suitable for unchecked conversion` if:
   limited type, of a type with discriminants, or of a private type whose
   completion fails to meet these requirements.
 
-- ``S`` is a scalar type, or if it is a composite type, the Object_Size N of
+- ``S`` is a scalar type, or if it is a composite type, the Size N of
   ``S`` is the sum of the size of the components of ``S``, and all components
   of ``S`` are also suitable for unchecked conversion.
 
@@ -140,7 +140,7 @@ conversion` if it is suitable for unchecked conversion, and, in addition:
 
 - ``S`` is not of a subtype that is subject to a predicate, or of a type
   that is subject to a type invariant.
-- Given the Object_Size N of ``S`` in bits, there exist exactly 2**N distinct
+- Given the Size N of ``S`` in bits, there exist exactly 2**N distinct
   valid values that belong to ``S`` and contain no invalid scalar parts.  [In
   other words, every possible assignment of values to the bits representing an
   object of subtype ``S`` represents a distinct value of ``S``.]
@@ -158,7 +158,7 @@ could be misaligned (as GNAT ensures).
 .. centered:: **Verification Rules**
 
 1. The source and target subtypes of an instance of ``Unchecked_Conversion``
-   shall have the same Object_Size.
+   shall have the same Size.
 
 2. The source and target subtypes shall be suitable for unchecked conversion
    and the target subtype should be suitable as the target of an unchecked
