@@ -47,14 +47,7 @@ package body Why.Gen.Binders is
       return W_Binder_Array;
 
    function New_Constant_Record_Binders
-     (Domain  : EW_Domain;
-      Binders : Binder_Array)
-      return W_Record_Binder_Array;
-
-   function New_Expr_Array
-     (Domain  : EW_Domain;
-      Binders : Binder_Array)
-      return W_Expr_Array;
+     (Binders : Binder_Array) return W_Record_Binder_Array;
 
    ----------------------------
    -- Concurrent_Self_Binder --
@@ -264,16 +257,13 @@ package body Why.Gen.Binders is
    -- Get_Binders_From_Expression --
    ---------------------------------
 
-   function Get_Binders_From_Expression
-     (Expr    : Node_Id;
-      Compute : Boolean := False) return Item_Array
-   is
+   function Get_Binders_From_Expression (Expr : Node_Id) return Item_Array is
       Variables : constant Flow_Id_Sets.Set :=
         Get_Variables_For_Proof (Expr, Expr);
 
    begin
       pragma Assert (if Is_Static_Expression (Expr) then Variables.Is_Empty);
-      return Get_Binders_From_Variables (Variables, Compute);
+      return Get_Binders_From_Variables (Variables);
    end Get_Binders_From_Expression;
 
    --------------------------------
@@ -282,7 +272,6 @@ package body Why.Gen.Binders is
 
    function Get_Binders_From_Variables
      (Variables   : Flow_Id_Sets.Set;
-      Compute     : Boolean := False;
       Ignore_Self : Boolean := False)
       return Item_Array
    is
@@ -304,34 +293,30 @@ package body Why.Gen.Binders is
                else Ada_Ent_To_Why.Find (Symbol_Table, F.Name));
 
          begin
-            --  For components of protected types, include a reference to self
+            --  For protected types, include a reference to self
 
-            if Use_Ent
-              and then (Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
-                        or else Is_Type (Entity))
-              and then not Ignore_Self
-            then
-               declare
-                  Prot_Ty : constant Entity_Id :=
-                    (if Is_Type (Entity) then Entity
-                     else Enclosing_Concurrent_Type (Entity));
-               begin
-                  Binders (I) :=
-                    Item_Type'(Kind  => Concurrent_Self,
-                               Local => True,
-                               Init  => <>,
-                               Main  => Concurrent_Self_Binder (Prot_Ty));
-                  I := I + 1;
-               end;
+            if Use_Ent and then Is_Type (Entity) then
+               pragma Assert (Is_Protected_Type (Entity));
 
-            --  Do nothing if the entity is a reference to a concurrent type
-            --  and they are ignored.
+               --  Do nothing if the entity is a reference to a concurrent type
+               --  and they are ignored.
 
-            elsif Use_Ent and then Is_Type (Entity) then
-               pragma Assert
-                 (if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
-                    or else Is_Type (Entity)
-                  then Ignore_Self);
+               if Ignore_Self then
+                  null;
+               else
+                  declare
+                     Prot_Ty : constant Entity_Id :=
+                       (if Is_Type (Entity) then Entity
+                        else Enclosing_Concurrent_Type (Entity));
+                  begin
+                     Binders (I) :=
+                       Item_Type'(Kind  => Concurrent_Self,
+                                  Local => True,
+                                  Init  => <>,
+                                  Main  => Concurrent_Self_Binder (Prot_Ty));
+                     I := I + 1;
+                  end;
+               end if;
 
             --  If there is an existing binder for this entity use it
 
@@ -339,19 +324,11 @@ package body Why.Gen.Binders is
                Binders (I) := Ada_Ent_To_Why.Element (C);
                I := I + 1;
 
-            --  Otherwise, construct the binder
+            --  Otherwise, F is an opaque name of a flow effect. Construct a
+            --  dummy binder with the appropriate name.
 
-            elsif Use_Ent then
-
-               --  If we are not allowed to construct binders, all the
-               --  entities should be in the Symbol_Table.
-
-               pragma Assert (Compute);
-
-               Binders (I) := Mk_Item_Of_Entity (Entity);
-               I := I + 1;
             else
-               pragma Assert (Is_Opaque_For_Proof (F));
+               pragma Assert (not Use_Ent and then Is_Opaque_For_Proof (F));
 
                Binders (I) :=
                  (Regular,
@@ -962,42 +939,18 @@ package body Why.Gen.Binders is
    ---------------------------------
 
    function New_Constant_Record_Binders
-     (Domain  : EW_Domain;
-      Binders : Binder_Array)
-      return W_Record_Binder_Array
+     (Binders : Binder_Array) return W_Record_Binder_Array
    is
-
-      function New_Arg_Type
-        (Binder : Binder_Type)
-         return W_Type_Id;
-
-      ------------------
-      -- New_Arg_Type --
-      ------------------
-
-      function New_Arg_Type
-        (Binder : Binder_Type)
-         return W_Type_Id is
-      begin
-         if Domain = EW_Prog and then Binder.Mutable then
-            return New_Ref_Type (Ty => Get_Type (+Binder.B_Name));
-         else
-            return Get_Type (+Binder.B_Name);
-         end if;
-      end New_Arg_Type;
-
       Result : W_Record_Binder_Array (Binders'Range);
-
-   --  Start of processing for New_Constant_Record_Binders
 
    begin
       for B in Binders'Range loop
          Result (B) := New_Record_Binder
            (Ada_Node   => Binders (B).Ada_Node,
-            Domain     => Domain,
+            Domain     => EW_Term,
             Name       => Binders (B).B_Name,
             Labels     => Binders (B).Labels,
-            Arg_Type   => New_Arg_Type (Binders (B)),
+            Arg_Type   => Get_Type (+Binders (B).B_Name),
             Is_Mutable => Binders (B).Mutable);
       end loop;
 
@@ -1138,52 +1091,9 @@ package body Why.Gen.Binders is
         (Ada_Node => Ada_Node,
          Domain   => Domain,
          Name     => Name,
-         Args     => New_Expr_Array (Domain, Binders),
+         Args     => Get_Args_From_Binders (Binders, False),
          Typ      => Typ);
    end New_Call;
-
-   -----------------------------
-   -- New_Existential_Quantif --
-   -----------------------------
-
-   function New_Existential_Quantif
-     (Ada_Node : Node_Id := Empty;
-      Binders  : Binder_Array;
-      Pred     : W_Pred_Id)
-      return W_Pred_Id is
-   begin
-      if Binders'Length = 0 then
-         return Pred;
-      else
-         return New_Existential_Quantif
-           (Ada_Node  => Ada_Node,
-            Variables => (1 => Binders (Binders'First).B_Name),
-            Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
-            Labels    => Symbol_Sets.Empty_Set,
-            Pred      =>
-              New_Existential_Quantif (Empty,
-                                       Binders (Binders'First + 1
-                                                .. Binders'Last),
-                                       Pred));
-      end if;
-   end New_Existential_Quantif;
-
-   --------------------
-   -- New_Expr_Array --
-   --------------------
-
-   function New_Expr_Array
-     (Domain  : EW_Domain;
-      Binders : Binder_Array)
-      return W_Expr_Array
-   is
-   begin
-      if Binders'Length = 0 and then Domain = EW_Prog then
-         return (1 => +Void);
-      else
-         return Get_Args_From_Binders (Binders, False);
-      end if;
-   end New_Expr_Array;
 
    -----------------------
    -- New_Function_Decl --
@@ -1297,7 +1207,7 @@ package body Why.Gen.Binders is
             Labels     => Symbol_Sets.Empty_Set,
             Definition =>
               New_Record_Definition
-                (Fields => New_Constant_Record_Binders (EW_Pred, Binders)));
+                (Fields => New_Constant_Record_Binders (Binders)));
    end New_Record_Definition;
 
    ---------------------------

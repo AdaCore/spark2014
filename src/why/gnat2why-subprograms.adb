@@ -1665,7 +1665,7 @@ package body Gnat2Why.Subprograms is
                                Raw_Binders : Item_Array)
                                      return Item_Array is
       Effect_Binders : Item_Array :=
-        Compute_Binders_For_Effects (E, Compute => True);
+        Compute_Binders_For_Effects (E);
    begin
       Localize_Binders (Effect_Binders);
       return Raw_Binders & Effect_Binders;
@@ -1675,12 +1675,9 @@ package body Gnat2Why.Subprograms is
    -- Compute_Binders_For_Effects --
    ---------------------------------
 
-   function Compute_Binders_For_Effects
-     (E       : Entity_Id;
-      Compute : Boolean) return Item_Array
-   is
-      Read_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids  : Flow_Types.Flow_Id_Sets.Set;
+   function Compute_Binders_For_Effects (E : Entity_Id) return Item_Array is
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
    begin
       --  Collect global variables potentially read and written
@@ -1694,7 +1691,7 @@ package body Gnat2Why.Subprograms is
       --  in binders for parameters.
 
       return Get_Binders_From_Variables
-        (Read_Ids.Union (Write_Ids), Compute, Ignore_Self => True);
+        (Read_Ids.Union (Write_Ids), Ignore_Self => True);
    end Compute_Binders_For_Effects;
 
    -------------------------
@@ -5207,7 +5204,7 @@ package body Gnat2Why.Subprograms is
                declare
                   New_Binders : Item_Array :=
                     Compute_Raw_Binders (E) &
-                    Compute_Binders_For_Effects (E, Compute => False);
+                    Compute_Binders_For_Effects (E);
                   Old_Binders : Item_Array := New_Binders;
                   Desc_Params : Item_Array :=
                     Compute_Raw_Binders (Descendant_E);
@@ -5867,7 +5864,7 @@ package body Gnat2Why.Subprograms is
                   declare
                      Logic_Binders   : constant Item_Array :=
                        Compute_Raw_Binders (E) &
-                       Compute_Binders_For_Effects (E, Compute => False);
+                       Compute_Binders_For_Effects (E);
                      --  Binders for parameters and effects of E
 
                      Dispatch_Param  : constant Entity_Id :=
@@ -6134,7 +6131,7 @@ package body Gnat2Why.Subprograms is
       Ref_Allowed : Boolean) return W_Expr_Array
    is
       Effect_Binders : constant Item_Array :=
-        Compute_Binders_For_Effects (E, Compute => False);
+        Compute_Binders_For_Effects (E);
       Logic_Binders  : constant Binder_Array :=
         To_Binder_Array (Effect_Binders);
 
@@ -6191,7 +6188,7 @@ package body Gnat2Why.Subprograms is
    function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array is
       Logic_Binders     : constant Item_Array :=
         Compute_Raw_Binders (E) &
-        Compute_Binders_For_Effects (E, Compute => False);
+        Compute_Binders_For_Effects (E);
       New_Binders       : Item_Array := Logic_Binders;
       Old_Binders       : Item_Array := Logic_Binders;
    begin

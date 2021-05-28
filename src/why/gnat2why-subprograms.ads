@@ -213,9 +213,7 @@ private
    --  @result an assumption including the dynamic property of every external
    --     dynamic objects that are referenced in E.
 
-   function Compute_Binders_For_Effects
-     (E       : Entity_Id;
-      Compute : Boolean) return Item_Array
+   function Compute_Binders_For_Effects (E : Entity_Id) return Item_Array
    with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Subprogram_Type;
    --  @param E an enity for a subprogram
    --  @param Compute True if binders should be created when not in the

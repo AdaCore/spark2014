@@ -252,7 +252,7 @@ package body Gnat2Why.Subprograms.Pointers is
         Compute_Subprogram_Parameters (To_Ent, EW_Term);
       Effects                : Item_Array :=
         (if Is_Function_Type (To_Profile) then (1 .. 0 => <>)
-         else Compute_Binders_For_Effects (From_Ent, Compute => False));
+         else Compute_Binders_For_Effects (From_Ent));
       Checks                 : W_Prog_Id;
 
       --  As this check can occur anywhere during the translation, we need to
