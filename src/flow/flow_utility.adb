@@ -5286,35 +5286,33 @@ package body Flow_Utility is
          F   : constant Flow_Id := Add_Component (Map_Root, Component);
          Tmp : Flow_Id_Maps.Map;
       begin
-         case Ekind (Get_Type (Component, Scope)) is
-            when Record_Kind =>
-               if Present (Input) then
-                  Tmp := Recurse_On (Input, F);
+         if Is_Record_Type (Get_Type (Component, Scope)) then
+            if Present (Input) then
+               Tmp := Recurse_On (Input, F);
 
-                  for C in Tmp.Iterate loop
-                     declare
-                        Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                        Inputs : Flow_Id_Sets.Set renames Tmp (C);
-                     begin
-                        M.Insert (Output, Inputs);
-                     end;
-                  end loop;
-               end if;
-
-            when others =>
-               declare
-                  Outputs : constant Flow_Id_Sets.Set :=
-                    Flatten_Variable (F, Scope);
-
-                  Inputs  : constant Flow_Id_Sets.Set :=
-                    Get_Vars_Wrapper (Input);
-
-               begin
-                  for Output of Outputs loop
+               for C in Tmp.Iterate loop
+                  declare
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
+                  begin
                      M.Insert (Output, Inputs);
-                  end loop;
-               end;
-         end case;
+                  end;
+               end loop;
+            end if;
+         else
+            declare
+               Outputs : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (F, Scope);
+
+               Inputs  : constant Flow_Id_Sets.Set :=
+                 Get_Vars_Wrapper (Input);
+
+            begin
+               for Output of Outputs loop
+                  M.Insert (Output, Inputs);
+               end loop;
+            end;
+         end if;
       end Merge;
 
       ------------------------------
