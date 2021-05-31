@@ -5875,6 +5875,8 @@ package body Flow_Utility is
       --  other variables that might be used.
 
       Vars_Defined := Flatten_Variable (Base_Node, Scope);
+      Vars_Used    := Flow_Id_Sets.Empty_Set;
+      Vars_Proof   := Flow_Id_Sets.Empty_Set;
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
@@ -5882,9 +5884,6 @@ package body Flow_Utility is
          Print_Node_Set (Vars_Defined);
       end if;
       pragma Annotate (Xcov, Exempt_Off);
-
-      Vars_Used    := Flow_Id_Sets.Empty_Set;
-      Vars_Proof   := Flow_Id_Sets.Empty_Set;
 
       --  We go through the sequence. At each point we might do one of the
       --  following, depending on the operation:
