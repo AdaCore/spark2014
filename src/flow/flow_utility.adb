@@ -5811,7 +5811,6 @@ package body Flow_Utility is
       Use_Computed_Globals : Boolean;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
-      Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
    is
       --  Fold_Functions (a parameter for Get_Variables) is specified as
@@ -5876,7 +5875,6 @@ package body Flow_Utility is
 
       Vars_Defined := Flatten_Variable (Base_Node, Scope);
       Vars_Used    := Flow_Id_Sets.Empty_Set;
-      Vars_Proof   := Flow_Id_Sets.Empty_Set;
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
@@ -5951,8 +5949,6 @@ package body Flow_Utility is
                   while Present (Expr) loop
                      Vars_Used.Union
                        (Get_Vars_Wrapper (Expr, Fold => Inputs));
-                     Vars_Proof.Union
-                       (Get_Vars_Wrapper (Expr, Fold => Proof_Ins));
 
                      Next (Expr);
                   end loop;
@@ -5967,9 +5963,6 @@ package body Flow_Utility is
                begin
                   Vars_Used.Union (Get_Vars_Wrapper (LB, Fold => Inputs));
                   Vars_Used.Union (Get_Vars_Wrapper (HB, Fold => Inputs));
-
-                  Vars_Proof.Union (Get_Vars_Wrapper (LB, Fold => Proof_Ins));
-                  Vars_Proof.Union (Get_Vars_Wrapper (HB, Fold => Proof_Ins));
                end;
 
                Process_Type_Conversions := False;
@@ -6006,9 +5999,6 @@ package body Flow_Utility is
 
          Write_Str ("Variables used: ");
          Print_Node_Set (Vars_Used);
-
-         Write_Str ("Proof variables used: ");
-         Print_Node_Set (Vars_Proof);
 
          Outdent;
       end if;
