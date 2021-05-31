@@ -5925,15 +5925,15 @@ package body Flow_Utility is
                            if F.Kind = Record_Field
                              and then In_Type (F.Component (Idx))
                            then
-                              Vars_Defined.Include (F);
+                              Vars_Defined.Insert (F);
                            elsif F.Kind = Direct_Mapping then
                               case F.Facet is
                                  when Extension_Part =>
                                     if Is_Class_Wide_Type (New_Typ) then
-                                       Vars_Defined.Include (F);
+                                       Vars_Defined.Insert (F);
                                     end if;
                                  when others =>
-                                    Vars_Defined.Include (F);
+                                    Vars_Defined.Insert (F);
                               end case;
                            end if;
                         end loop;
