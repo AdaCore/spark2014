@@ -5241,7 +5241,7 @@ package body Flow_Utility is
       --  things being equal to the example above) we include Obj.C => Foo.
       --
       --  If the Input is Empty (because we're looking at a box in an
-      --  aggregate), then we don't do anything.
+      --  aggregate), then we add an empty map entry for it.
 
       function Untangle_Delta_Aggregate
         (Pref   : Node_Id;
@@ -5297,6 +5297,10 @@ package body Flow_Utility is
                   begin
                      M.Insert (Output, Inputs);
                   end;
+               end loop;
+            else
+               for Output of Flatten_Variable (F, Scope) loop
+                  M.Insert (Output, Flow_Id_Sets.Empty_Set);
                end loop;
             end if;
          else
