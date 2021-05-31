@@ -5537,6 +5537,11 @@ package body Flow_Utility is
                   LHS_Ext : constant Flow_Id :=
                     (Map_Root with delta Facet => Extension_Part);
 
+                  LHS_Ext_Inputs   : Flow_Id_Sets.Set;
+                  LHS_Ext_Position : Flow_Id_Maps.Cursor;
+                  Unused           : Boolean;
+                  --  LHS extension, its inputs and position in the map
+
                   RHS : Flow_Id_Sets.Set :=
                     (if Nkind (N) = N_Target_Name then
                        Flatten_Variable (Target_Name, Scope)
@@ -5562,12 +5567,6 @@ package body Flow_Utility is
                         Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
 
                      else Flatten_Variable (E, Scope));
-
-                  To_Ext : Flow_Id_Sets.Set;
-                  F      : Flow_Id;
-
-                  LHS_Pos : Flow_Id_Maps.Cursor;
-                  Unused  : Boolean;
 
                begin
                   if (Is_Class_Wide_Type (Map_Type)
@@ -5606,26 +5605,29 @@ package body Flow_Utility is
                   end if;
 
                   for Input of RHS loop
-                     F := Join (Map_Root, Input);
-                     if LHS.Contains (F) then
-                        M.Insert (F, (if Is_Pure_Constant
-                                  then Flow_Id_Sets.Empty_Set
-                                  else Flow_Id_Sets.To_Set (Input)));
-                     else
-                        To_Ext.Insert (Input);
-                     end if;
+                     declare
+                        F : constant Flow_Id := Join (Map_Root, Input);
+                     begin
+                        if LHS.Contains (F) then
+                           M.Insert (F, (if Is_Pure_Constant
+                                         then Flow_Id_Sets.Empty_Set
+                                         else Flow_Id_Sets.To_Set (Input)));
+                        else
+                           LHS_Ext_Inputs.Insert (Input);
+                        end if;
+                     end;
                   end loop;
 
-                  if not To_Ext.Is_Empty
+                  if not LHS_Ext_Inputs.Is_Empty
                     and then Is_Tagged_Type (Map_Type)
                   then
                      --  Attempt to insert an empty set
                      M.Insert (Key      => LHS_Ext,
-                               Position => LHS_Pos,
+                               Position => LHS_Ext_Position,
                                Inserted => Unused);
 
                      if not Is_Pure_Constant then
-                        M (LHS_Pos).Union (To_Ext);
+                        M (LHS_Ext_Position).Union (LHS_Ext_Inputs);
                      end if;
                   end if;
                end;
