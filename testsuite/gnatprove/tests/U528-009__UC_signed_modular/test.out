@@ -1,0 +1,19 @@
+conv.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+conv.adb:9:53: info: type is suitable as source for unchecked conversion (Trivial)
+conv.adb:9:60: info: type is suitable for unchecked conversion (Trivial)
+conv.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+conv.adb:10:53: info: type is suitable as source for unchecked conversion (Trivial)
+conv.adb:10:60: info: type is suitable for unchecked conversion (Trivial)
+conv.adb:13:29: info: range check proved (CVC4: 1 VC)
+conv.adb:13:77: info: overflow check proved (CVC4: 1 VC)
+conv.adb:13:77: info: range check proved (CVC4: 1 VC)
+conv.adb:16:32: info: range check proved (altergo: 1 VC)
+conv.adb:16:80: info: range check proved (altergo: 1 VC)
+conv.adb:18:04: warning: analyzing unreferenced procedure "To_Uns_Equiv"
+conv.adb:18:14: high: all paths in "To_Uns_Equiv" raise exceptions or do not terminate normally
+conv.adb:22:22: info: assertion proved (altergo: 1 VC)
+conv.adb:23:07: medium: assertion might fail (e.g. when X = -1)
+conv.adb:26:04: warning: analyzing unreferenced procedure "To_Int_Equiv"
+conv.adb:26:14: high: all paths in "To_Int_Equiv" raise exceptions or do not terminate normally
+conv.adb:30:22: info: assertion proved (altergo: 1 VC)
+conv.adb:31:07: medium: assertion might fail (e.g. when X = Uns64'Last)
