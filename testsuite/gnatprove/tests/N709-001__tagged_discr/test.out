@@ -2,7 +2,7 @@ classwide.ads:18:06: info: data dependencies proved
 classwide.ads:23:06: info: data dependencies proved
 classwide.ads:28:06: info: data dependencies proved
 classwide.ads:35:22: info: initialization of "V" proved
-classwide.ads:36:14: medium: postcondition might fail, cannot prove Is_Zero (V)
+classwide.ads:36:14: medium: postcondition might fail
 classwide.ads:37:06: info: data dependencies proved
 classwide.ads:39:22: info: initialization of "V" proved
 classwide.ads:40:14: info: postcondition proved (CVC4: 1 VC)
@@ -10,7 +10,7 @@ classwide.ads:41:06: info: data dependencies proved
 classwide.ads:44:22: warning: unused initial value of "V"
 classwide.ads:45:14: info: postcondition proved (CVC4: 4 VC)
 classwide.ads:46:06: info: data dependencies proved
-classwide.ads:49:14: medium: postcondition might fail, cannot prove Is_Zero (V)
+classwide.ads:49:14: medium: postcondition might fail
 classwide.ads:50:06: info: data dependencies proved
 classwide.ads:53:14: info: postcondition proved (CVC4: 1 VC)
 classwide.ads:54:06: info: data dependencies proved

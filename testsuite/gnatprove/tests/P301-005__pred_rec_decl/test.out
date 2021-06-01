@@ -2,15 +2,15 @@ main.adb:8:04: medium: predicate check might fail on default value
 preds.adb:4:07: info: initialization of "Tmp" proved
 preds.adb:4:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.adb:10:07: info: initialization of "Tmp" proved
-preds.adb:10:07: medium: predicate check might fail on default value, cannot prove Int_Bad /= 0
+preds.adb:10:07: medium: predicate check might fail on default value
 preds.adb:16:07: info: initialization of "Tmp" proved
 preds.adb:16:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.adb:22:07: info: initialization of "Tmp" proved
-preds.adb:22:07: medium: predicate check might fail on default value, cannot prove Sub_Int_Bad /= 0
+preds.adb:22:07: medium: predicate check might fail on default value
 preds.adb:28:07: info: initialization of "Tmp" proved
 preds.adb:28:07: info: predicate check proved on default value (CVC4: 2 VC)
 preds.adb:34:07: info: initialization of "Tmp" proved
-preds.adb:34:07: medium: predicate check might fail on default value, cannot prove Intp /= 0
+preds.adb:34:07: medium: predicate check might fail on default value
 preds.adb:40:07: info: initialization of "Tmp" proved
 preds.adb:40:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.adb:46:07: info: initialization of "Tmp" proved
@@ -41,11 +41,11 @@ preds.ads:49:29: info: initialization of "X" proved
 preds.ads:50:30: info: initialization of "X" proved
 preds.ads:54:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.ads:55:07: info: predicate check proved on default value (CVC4: 1 VC)
-preds.ads:61:07: medium: predicate check might fail on default value, cannot prove Int_Bad /= 0
+preds.ads:61:07: medium: predicate check might fail on default value
 preds.ads:62:07: medium: predicate check might fail on default value
 preds.ads:66:29: info: initialization of "X" proved
 preds.ads:67:30: info: initialization of "X" proved
 preds.ads:70:23: info: range check proved (CVC4: 1 VC)
 preds.ads:74:23: info: range check proved (CVC4: 1 VC)
 preds.ads:78:07: info: predicate check proved on default value (CVC4: 1 VC)
-preds.ads:82:07: medium: predicate check might fail on default value, cannot prove Rec_Int_Bad /= 0
+preds.ads:82:07: medium: predicate check might fail on default value

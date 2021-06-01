@@ -2264,7 +2264,7 @@ package body Gnat2Why.Subprograms is
         To_Local (Guard_Predicate_Name (E));
       Params             : constant Transformation_Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => False,
          Old_Policy  => Ignore);
       Def                : constant W_Expr_Id :=
@@ -2444,7 +2444,7 @@ package body Gnat2Why.Subprograms is
 
       Params :=
         (Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Policy  => Use_Map);
 
@@ -2793,7 +2793,7 @@ package body Gnat2Why.Subprograms is
       Register_VC_Entity (E);
 
       Params := (Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => False,
+                 Gen_Marker  => GM_None,
                  Ref_Allowed => True,
                  Old_Policy  => Use_Map);
 
@@ -2891,7 +2891,7 @@ package body Gnat2Why.Subprograms is
       declare
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
          Check : constant W_Pred_Id :=
@@ -2957,7 +2957,7 @@ package body Gnat2Why.Subprograms is
                   declare
                      Params  : constant Transformation_Params :=
                        (Phase       => Generate_Contract_For_Body,
-                        Gen_Marker  => False,
+                        Gen_Marker  => GM_None,
                         Ref_Allowed => True,
                         Old_Policy  => Use_Map);
                      Barrier : constant Node_Id :=
@@ -3382,7 +3382,7 @@ package body Gnat2Why.Subprograms is
                Empty);
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
       begin
@@ -3414,7 +3414,7 @@ package body Gnat2Why.Subprograms is
       function Assume_For_Output return W_Prog_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
       begin
@@ -3438,7 +3438,7 @@ package body Gnat2Why.Subprograms is
       function Assume_Or_Assert_Of_Pre return W_Prog_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
          Pre_Node : constant Node_Id :=
@@ -3471,7 +3471,7 @@ package body Gnat2Why.Subprograms is
                declare
                   Params : constant Transformation_Params :=
                     (Phase       => Generate_Contract_For_Body,
-                     Gen_Marker  => False,
+                     Gen_Marker  => GM_None,
                      Ref_Allowed => True,
                      Old_Policy  => Use_Map);
                   Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
@@ -3504,7 +3504,7 @@ package body Gnat2Why.Subprograms is
       function CC_And_RTE_Post return W_Prog_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
       begin
@@ -3560,7 +3560,7 @@ package body Gnat2Why.Subprograms is
          Value  : constant Node_Id := Retrieve_Inline_Annotation (E);
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
       begin
@@ -3599,7 +3599,7 @@ package body Gnat2Why.Subprograms is
       function Check_Invariants_Of_Outputs return W_Prog_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
          Check : constant W_Pred_Id :=
@@ -3627,7 +3627,7 @@ package body Gnat2Why.Subprograms is
       is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
 
@@ -3837,14 +3837,14 @@ package body Gnat2Why.Subprograms is
       function Post_As_Pred return W_Pred_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_Contract_For_Body,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => As_Old);
          Mark_Params : Transformation_Params := Params;
          Post_N    : Node_Id;
       begin
 
-         Mark_Params.Gen_Marker := True;
+         Mark_Params.Gen_Marker := GM_Toplevel;
 
          --  There might be no specific postcondition for E. In that case, the
          --  classwide or inherited postcondition is checked if present. Locate
@@ -3894,7 +3894,7 @@ package body Gnat2Why.Subprograms is
       function RTE_Of_Pre return W_Prog_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
 
@@ -3964,7 +3964,7 @@ package body Gnat2Why.Subprograms is
       function Warn_On_Inconsistent_Post return W_Prog_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
          Post : W_Pred_Id :=
@@ -4004,7 +4004,7 @@ package body Gnat2Why.Subprograms is
       function Warn_On_Inconsistent_Pre return W_Prog_Id is
          Params : constant Transformation_Params :=
            (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Policy  => Use_Map);
          Pre : W_Pred_Id :=
@@ -4021,7 +4021,7 @@ package body Gnat2Why.Subprograms is
             declare
                Params : constant Transformation_Params :=
                  (Phase       => Generate_Contract_For_Body,
-                  Gen_Marker  => False,
+                  Gen_Marker  => GM_None,
                   Ref_Allowed => True,
                   Old_Policy  => Use_Map);
                Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
@@ -4121,13 +4121,13 @@ package body Gnat2Why.Subprograms is
 
       Body_Params :=
         (Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Policy  => Use_Map);
 
       Contract_Params :=
         (Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Policy  => As_Old);
 
@@ -4509,7 +4509,7 @@ package body Gnat2Why.Subprograms is
       Register_VC_Entity (E);
 
       Params := (Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => False,
+                 Gen_Marker  => GM_None,
                  Ref_Allowed => True,
                  Old_Policy  => Use_Map);
 
@@ -4668,7 +4668,7 @@ package body Gnat2Why.Subprograms is
    begin
       Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => False,
          Old_Policy  => Ignore);
 
@@ -5271,7 +5271,7 @@ package body Gnat2Why.Subprograms is
 
                   Params :=
                     (Phase       => Generate_Logic,
-                     Gen_Marker  => False,
+                     Gen_Marker  => GM_None,
                      Ref_Allowed => False,
                      Old_Policy  => Use_Map);
 
@@ -5355,7 +5355,7 @@ package body Gnat2Why.Subprograms is
 
                   Params :=
                     (Phase       => Generate_Logic,
-                     Gen_Marker  => False,
+                     Gen_Marker  => GM_None,
                      Ref_Allowed => False,
                      Old_Policy  => Ignore);
 
@@ -5501,7 +5501,7 @@ package body Gnat2Why.Subprograms is
    begin
       Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Policy  => As_Old);
 
@@ -6347,7 +6347,7 @@ package body Gnat2Why.Subprograms is
 
       Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => True,
+         Gen_Marker  => GM_Toplevel,
          Ref_Allowed => False,
          Old_Policy  => Ignore);
 

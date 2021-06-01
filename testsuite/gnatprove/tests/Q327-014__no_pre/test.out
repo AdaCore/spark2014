@@ -17,7 +17,7 @@ dispatch.ads:19:73: info: overflow check proved (CVC4: 1 VC)
 dispatch.ads:23:20: info: postcondition proved (CVC4: 1 VC)
 dispatch.ads:23:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dispatch.ads:27:20: info: postcondition proved (Trivial: 1 VC)
-dispatch.ads:27:20: medium: postcondition might be weaker than class-wide postcondition, cannot prove Incr5'Result.F = X.F + 1
+dispatch.ads:27:20: medium: postcondition might be weaker than class-wide postcondition
 dispatch.ads:28:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dispatch.ads:33:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 dispatch.ads:33:73: info: overflow check proved (CVC4: 1 VC)

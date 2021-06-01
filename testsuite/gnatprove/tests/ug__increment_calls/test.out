@@ -1,7 +1,7 @@
 increment_calls.adb:8:04: info: initialization of "X" proved
 increment_calls.adb:15:04: info: precondition proved
 
-increment_calls.adb:16:04: medium: precondition might fail, cannot prove X < Integer'last
+increment_calls.adb:16:04: medium: precondition might fail
    16 |   Increment_Guarded (X);
       |   ^~~~~~~~~~~~~~~~~~~~
   e.g. when X = Integer'Last

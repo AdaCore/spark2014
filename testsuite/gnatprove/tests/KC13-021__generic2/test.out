@@ -6,8 +6,8 @@ p.adb:8:19: medium: overflow check might fail, in instantiation at q.adb:13 (e.g
 p.adb:8:19: medium: overflow check might fail, in instantiation at q.ads:9 (e.g. when Tmp = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function QF1 or turning it into an expression function]
 p.adb:8:29: medium: overflow check might fail, in instantiation at q.adb:13 (e.g. when Tmp = 4) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function QF1 or turning it into an expression function]
 p.adb:8:29: medium: overflow check might fail, in instantiation at q.ads:9 (e.g. when Tmp = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function QF1 or turning it into an expression function]
-p.adb:9:07: medium: precondition might fail, cannot prove J < Integer'last, in instantiation at q.adb:13 (e.g. when Tmp = Integer'Last)
-p.adb:9:07: medium: precondition might fail, cannot prove J < Integer'last, in instantiation at q.ads:9 (e.g. when Tmp = Integer'Last)
+p.adb:9:07: medium: precondition might fail, in instantiation at q.adb:13 (e.g. when Tmp = Integer'Last)
+p.adb:9:07: medium: precondition might fail, in instantiation at q.ads:9 (e.g. when Tmp = Integer'Last)
 q.adb:10:14: info: overflow check proved (CVC4: 1 VC)
 q.adb:16:07: info: initialization of "R1" proved
 q.adb:17:07: info: initialization of "R2" proved

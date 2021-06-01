@@ -195,11 +195,19 @@ package Gnat2Why.Util is
    --  Why3, Use_Map to use the map for old, and Raise_Error to raise
    --  Program_Error.
 
+   type GM_Kind is (GM_None, GM_Label, GM_Toplevel);
+   --  Used to indicate whether we should generate pretty-printing labels. The
+   --  meaning of the flags is as follows:
+   --    GM_None     - don't generate pretty-printing labels
+   --    GM_Label    - do generate pretty-printing labels
+   --    GM_Toplevel - do generate pretty-printing labels for subterms, but not
+   --                  for this node
+
    type Transformation_Params is record
       Phase       : Transformation_Phase;
       --  Current transformation phase, which impacts the way code is
       --  transformed from Ada to Why3.
-      Gen_Marker  : Boolean;
+      Gen_Marker  : GM_Kind;
       --  Flag that indicates whether the transformation should include in the
       --  generated Why3 node a special label, to be used to show which part of
       --  a possibly large assertion is not proved.
@@ -233,7 +241,7 @@ package Gnat2Why.Util is
    is
      (Transformation_Params'
         (Phase       => Phase,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => (if Phase = Generate_Logic then False else True),
          Old_Policy  => (if Phase = Generate_Logic then As_Old else Use_Map)));
    --  Usual set of transformation parameters for a given phase

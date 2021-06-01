@@ -1,7 +1,7 @@
 client_unit.adb:6:07: info: initialization of "Item1_Done" proved
 client_unit.adb:9:07: info: precondition proved (CVC4: 1 VC)
 client_unit.adb:11:10: info: precondition proved (CVC4: 1 VC)
-client_unit.adb:16:10: medium: precondition might fail, cannot prove Cur_State = In_Progress (e.g. when State = Init_Done)
+client_unit.adb:16:10: medium: precondition might fail (e.g. when State = Init_Done)
 client_unit.adb:23:07: info: initialization of "Item_Done" proved
 client_unit.adb:26:07: info: precondition proved (CVC4: 1 VC)
 client_unit.adb:28:10: info: precondition proved (CVC4: 1 VC)

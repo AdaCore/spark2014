@@ -9,4 +9,4 @@ test_qualif.adb:21:16: info: range check proved (CVC4: 1 VC)
 test_qualif.adb:21:22: info: discriminant check proved (CVC4: 1 VC)
 test_qualif.adb:22:21: medium: predicate check might fail (e.g. when W = (D => 1, F => ?) and Z = (D => ?, F => 0))
 test_qualif.adb:27:25: info: data dependencies proved
-test_qualif.adb:32:35: medium: predicate check might fail, cannot prove My_Not_Zero /= 0
+test_qualif.adb:32:35: medium: predicate check might fail

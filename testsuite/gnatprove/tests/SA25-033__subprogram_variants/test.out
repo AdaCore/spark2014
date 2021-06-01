@@ -5,7 +5,7 @@ fibo_variant.adb:11:25: info: range check proved (CVC4: 1 VC)
 fibo_variant.adb:12:12: medium: overflow check might fail (e.g. when N = 3 and Z = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention N and Z in a precondition]
 fibo_variant.adb:12:14: info: subprogram variant proved (CVC4: 1 VC)
 fibo_variant.adb:12:22: info: range check proved (CVC4: 1 VC)
-test_bad_variant.adb:6:27: medium: precondition might fail, cannot prove X = 0 or else Bad_1 (X - 1) (e.g. when X = 2)
+test_bad_variant.adb:6:27: medium: precondition might fail (e.g. when X = 2)
 test_bad_variant.adb:6:27: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a precondition]
 test_bad_variant.adb:6:36: info: range check proved (CVC4: 1 VC)
 test_bad_variant.adb:10:13: info: function contract might not be available on recursive calls

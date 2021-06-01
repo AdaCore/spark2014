@@ -614,12 +614,11 @@ package body Gnat2Why.Util is
       Local_Params : Transformation_Params := Params;
    begin
 
-      --  For specs we usually want the markers that identify subparts of
-      --  formulas, so we set this here. This boolean is a no-op for Domains
-      --  other than EW_Pred.
+      --  For specs we usually want the pretty-printing markers. This flag is a
+      --  no-op for Domains other than EW_Pred.
 
-      if not Local_Params.Gen_Marker then
-         Local_Params.Gen_Marker := True;
+      if Local_Params.Gen_Marker = GM_None then
+         Local_Params.Gen_Marker := GM_Toplevel;
       end if;
       if Nodes.Is_Empty then
          return New_Literal (Value => EW_True, Domain => Domain);

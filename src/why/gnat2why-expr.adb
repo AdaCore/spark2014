@@ -5135,7 +5135,7 @@ package body Gnat2Why.Expr is
                declare
                   My_Params : Transformation_Params := Params;
                begin
-                  My_Params.Gen_Marker := True;
+                  My_Params.Gen_Marker := GM_Toplevel;
                   Res := +New_And_Then_Expr
                     (Left   => +Dynamic_Predicate_Expression
                        (Expr      => +Expr,
@@ -6622,7 +6622,7 @@ package body Gnat2Why.Expr is
    is
       Params : constant Transformation_Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Policy  => As_Old);
       Result : constant W_Term_Id :=
@@ -10078,7 +10078,7 @@ package body Gnat2Why.Expr is
 
          Params_No_Ref : constant Transformation_Params :=
            (Phase       => Params.Phase,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => False,
             Old_Policy  => Raise_Error);
 
@@ -11177,7 +11177,7 @@ package body Gnat2Why.Expr is
                     Domain => EW_Term,
                     Params =>
                       Transformation_Params'(Phase       => Generate_Logic,
-                                             Gen_Marker  => False,
+                                             Gen_Marker  => GM_None,
                                              Ref_Allowed => False,
                                              Old_Policy  => Use_Map));
             end if;
@@ -16123,15 +16123,30 @@ package body Gnat2Why.Expr is
 
    begin
       --  We check whether we need to generate a pretty printing label. If we
-      --  do, we set the corresponding flag to "False" so that the label is not
-      --  printed for subterms.
+      --  do, we set the corresponding flag to "GM_None" so that the label is
+      --  not printed for subterms.
+      --  Our intention is to skip printing pretty-printing labels when not
+      --  needed (predicate is just a single item, without conjunction,
+      --  quantification, etc). So we skip the printing at the top level of the
+      --  term, and set label generation for subterms, unless we are already at
+      --  a terminal node.
 
-      if Domain = EW_Pred
-        and then Local_Params.Gen_Marker
-        and then Is_Terminal_Node (Expr)
-      then
-         Pretty_Label := New_Sub_VC_Marker (Expr);
-         Local_Params.Gen_Marker := False;
+      if Domain = EW_Pred then
+         case Local_Params.Gen_Marker is
+            when GM_Label =>
+               if Is_Terminal_Node (Expr) then
+                  Pretty_Label := New_Sub_VC_Marker (Expr);
+                  Local_Params.Gen_Marker := GM_None;
+               end if;
+            when GM_Toplevel =>
+               if Is_Terminal_Node (Expr) then
+                  Local_Params.Gen_Marker := GM_None;
+               else
+                  Local_Params.Gen_Marker := GM_Label;
+               end if;
+            when GM_None =>
+               null;
+         end case;
       end if;
 
       --  Expressions that cannot be translated to predicates directly are
@@ -17114,7 +17129,7 @@ package body Gnat2Why.Expr is
                     Warn_On_Dead_Branch (Else_Part, Else_Expr, Phase);
                end if;
 
-               Local_Params.Gen_Marker := False;
+               Local_Params.Gen_Marker := GM_None;
                Condition :=
                  +Transform_Expr (Cond,
                                   EW_Bool_Type,
@@ -19256,7 +19271,7 @@ package body Gnat2Why.Expr is
                   Result := New_Ignore
                     (Prog =>
                        +Transform_Expr (Expr, EW_Prog, Params => Params));
-                  Params.Gen_Marker := True;
+                  Params.Gen_Marker := GM_Label;
                   Result := Sequence
                     (Result,
                      New_Located_Assert
@@ -19615,7 +19630,7 @@ package body Gnat2Why.Expr is
 
       if Present (Expr) then
          Runtime := +Transform_Expr (Expr, EW_Prog, Params => Params);
-         Params.Gen_Marker := True;
+         Params.Gen_Marker := GM_Toplevel;
          Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
          return;
       else

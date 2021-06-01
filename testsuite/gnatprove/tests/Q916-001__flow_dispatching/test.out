@@ -27,10 +27,10 @@ ints.ads:12:20: info: postcondition proved (CVC4: 1 VC), in inherited contract a
 ints.ads:16:34: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 test_ints.adb:12:04: info: precondition proved (CVC4: 1 VC)
-test_ints.adb:13:05: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
+test_ints.adb:13:05: medium: precondition might fail
 test_ints.adb:15:04: info: precondition proved (CVC4: 1 VC)
-test_ints.adb:16:04: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10 [possible fix: call at line 15 should mention Arg (for argument AI) in a postcondition]
-test_ints.adb:24:09: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
-test_ints.adb:31:09: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
-test_ints.adb:35:04: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
-test_ints.adb:36:04: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
+test_ints.adb:16:04: medium: precondition might fail [possible fix: call at line 15 should mention Arg (for argument AI) in a postcondition]
+test_ints.adb:24:09: medium: precondition might fail
+test_ints.adb:31:09: medium: precondition might fail
+test_ints.adb:35:04: medium: precondition might fail
+test_ints.adb:36:04: medium: precondition might fail
