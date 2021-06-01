@@ -795,6 +795,10 @@ package body Configuration is
             Long_Switch => "--counterexamples=");
          Define_Switch
            (Config,
+            CL_Switches.Check_Counterexamples'Access,
+            Long_Switch => "--check-counterexamples=");
+         Define_Switch
+           (Config,
             CL_Switches.No_Counterexample'Access,
             Long_Switch => "--no-counterexample");
          Define_Switch
@@ -1630,6 +1634,8 @@ package body Configuration is
                raise Program_Error;
          end case;
 
+         FS.Check_Counterexamples := True;
+
          --  If option --timeout was not provided, keep timeout corresponding
          --  to level switch/default value. Otherwise, take the user-provided
          --  timeout. To be able to detect if --timeout was provided,
@@ -1701,6 +1707,21 @@ package body Configuration is
            and then SPARK_Install.CVC4_Present
            and then not Is_Manual_Prover (FS)
            and then not CL_Switches.Output_Msg_Only;
+
+         if CL_Switches.Check_Counterexamples.all = "" then
+            null;
+         elsif CL_Switches.Check_Counterexamples.all = "on" then
+            FS.Check_Counterexamples := True;
+         elsif CL_Switches.Check_Counterexamples.all = "off" then
+            FS.Check_Counterexamples := False;
+         else
+            Abort_Msg ("error: wrong argument for --check-counterexamples, " &
+                         "must be one of (on, off)",
+                       With_Help => False);
+         end if;
+
+         FS.Check_Counterexamples :=
+           FS.Counterexamples and then FS.Check_Counterexamples;
 
       end Set_Level_Timeout_Steps_Provers;
 
@@ -2534,9 +2555,23 @@ package body Configuration is
       Args.Append ("--counterexample");
       Args.Append (if FS.Counterexamples then "on" else "off");
 
-      --  ??? Disable this debug flag for counterexample checking
-      Args.Append ("--debug-why3");
-      Args.Append ("vc:do_not_keep_trace");
+      Args.Append ("--giant-step-rac");
+      Args.Append (if FS.Check_Counterexamples then "on" else "off");
+
+      if FS.Check_Counterexamples and then not FS.Provers.Is_Empty then
+         Args.Append ("--rac-prover");
+         Args.Append (FS.Provers (String_Lists.First (FS.Provers)));
+      end if;
+
+      if not (FS.Counterexamples and then FS.Check_Counterexamples) then
+         --  Counterexample checking requires variables for return values in
+         --  the prover models. Introducing these variables changes the proof
+         --  tasks and possibly results in proof regressions, so we *disable*
+         --  the generation of variables for return values when counterexamples
+         --  are not checked or not requested.
+         Args.Append ("--debug-why3");
+         Args.Append ("vc:do_not_keep_trace");
+      end if;
 
       if CL_Switches.Z3_Counterexample then
          Args.Append ("--ce-prover");

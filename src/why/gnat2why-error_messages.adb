@@ -1190,7 +1190,7 @@ package body Gnat2Why.Error_Messages is
 
       begin
 
-         begin
+         if Gnat2Why_Args.Check_Counterexamples then
             if Cntexmp.Is_Empty then
                Verdict :=
                  (Verdict_Category => Not_Checked,
@@ -1253,12 +1253,12 @@ package body Gnat2Why.Error_Messages is
                      end if;
                end;
             end if;
-         --  else
-         --     Verdict :=
-         --       (Verdict_Category => Not_Checked,
-         --        Verdict_Reason   => To_Unbounded_String
-         --          ("Counterexample checking not requested"));
-         end;
+         else
+            Verdict :=
+              (Verdict_Category => Not_Checked,
+               Verdict_Reason   => To_Unbounded_String
+                 ("Counterexample checking not requested"));
+         end if;
 
          if SPARK_RAC.Do_RAC_Info then
             Write_Str

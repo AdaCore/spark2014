@@ -83,9 +83,10 @@ package body Gnat2Why_Opts.Writing is
          Obj : constant JSON_Value := Create_Object;
 
       begin
-         Set_Field (Obj, No_Loop_Unrolling_Name, FS.No_Loop_Unrolling);
-         Set_Field (Obj, No_Inlining_Name,       FS.No_Inlining);
-         Set_Field (Obj, Info_Messages_Name,     FS.Info);
+         Set_Field (Obj, Check_Counterexamples_Name, FS.Check_Counterexamples);
+         Set_Field (Obj, No_Loop_Unrolling_Name,     FS.No_Loop_Unrolling);
+         Set_Field (Obj, No_Inlining_Name,           FS.No_Inlining);
+         Set_Field (Obj, Info_Messages_Name,         FS.Info);
 
          --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
          --  might call gnatwhy3, which requires Write_Why3_Conf_File to be

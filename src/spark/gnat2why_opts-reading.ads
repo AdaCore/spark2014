@@ -178,6 +178,11 @@ package Gnat2Why_Opts.Reading is
 
    Why3_Args : String_Lists.List;
 
+   --  Check counterexamples based on the result from giant-step RAC from
+   --  gnatwhy3, and the Ada small-step RAC.
+
+   Check_Counterexamples : Boolean;
+
    --  Prevent loop unrolling
 
    No_Loop_Unrolling : Boolean;

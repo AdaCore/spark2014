@@ -743,7 +743,9 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
 
 def prove_all(opt=None, steps=None, procs=parallel_procs,
               vc_timeout=None, memlimit=None,
-              mode="all", counterexample=True,
+              mode="all",
+              counterexample=True,
+              check_counterexamples=True,
               prover=default_provers,
               cache_allowed=True,
               report="provers",
@@ -810,6 +812,11 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
             fullopt += ["--counterexamples=off"]
         else:
             fullopt += ["--counterexamples=on"]
+    if check_counterexamples is not None:
+        if check_counterexamples:
+            fullopt += ["--check-counterexamples=on"]
+        else:
+            fullopt += ["--check-counterexamples=off"]
     if why3server_mode():
         fullopt += ["--why3-server="+why3server_mode()]
     # Add opt last, so that it may include switch -cargs

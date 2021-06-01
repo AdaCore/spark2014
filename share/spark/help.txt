@@ -56,6 +56,8 @@ gnatprove basic switches:
    . error         - Treat warnings as errors
 
 gnatprove advanced switches:
+ --check-counterexamples=c
+                      Enable or disable checking of counterexample (c=on*,off)
  --checks-as-errors   Treat unproved check messages as errors
  --counterexamples=c  Enable or disable counterexamples (c=on,off*)
  -d, --debug          Debug mode

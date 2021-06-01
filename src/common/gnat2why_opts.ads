@@ -88,6 +88,7 @@ private
    CP_Dir_Name                  : constant String := "codepeer_dir";
    CWE_Name                     : constant String := "cwe";
    Check_All_Mode_Name          : constant String := "check_all_mode";
+   Check_Counterexamples_Name   : constant String := "check_counterexamples";
    Check_Mode_Name              : constant String := "check_mode";
    Debug_Mode_Name              : constant String := "debug";
    Debug_Trivial_Name           : constant String := "debug_trivial";
