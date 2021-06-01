@@ -1846,7 +1846,7 @@ package body Flow_Utility is
          begin
             for V of Get_Variables_For_Proof
               (Expr_N  => Get_Expr_From_Return_Only_Func (E),
-               Scope_N => Etype (First_Formal (E)))
+               Scope_N => E)
             loop
                if V.Kind = Direct_Mapping
                  and then V.Node = Param
@@ -5425,6 +5425,14 @@ package body Flow_Utility is
 
             begin
                Component_Association := First (Component_Associations (N));
+
+               --  If it is a null record aggregate, then the entire object is
+               --  assigned an empty data.
+
+               if No (Component_Association) then
+                  M.Insert (Map_Root, Flow_Id_Sets.Empty_Set);
+               end if;
+
                while Present (Component_Association) loop
                   if Box_Present (Component_Association) then
                      Input := Empty;  -- ??? use default component expression
@@ -5450,6 +5458,7 @@ package body Flow_Utility is
                --  that they appear initialized.
                for Component of Unique_Components (Map_Type) loop
                   if not Done.Contains (Component) then
+                     pragma Assert (Is_Declared_Within_Variant (Component));
                      for F of
                        Flatten_Variable
                          (Add_Component (Map_Root, Component),
@@ -5606,7 +5615,14 @@ package body Flow_Utility is
 
                   for Input of RHS loop
                      declare
-                        F : constant Flow_Id := Join (Map_Root, Input);
+                        F : constant Flow_Id :=
+                          Join
+                            (Map_Root, Input,
+                             Offset =>
+                               (if Is_Concurrent_Component_Or_Discr (E)
+                                  or else Is_Part_Of_Concurrent_Object (E)
+                                then 1
+                                else 0));
                      begin
                         if LHS.Contains (F) then
                            M.Insert (F, (if Is_Pure_Constant

@@ -1701,6 +1701,9 @@ package body Flow.Control_Flow_Graph is
                      V);
                   Verts_Defined.Append (V);
                   All_Vertices.Insert (V);
+                  pragma Assert
+                    (for some Comp_Id of F.Component =>
+                       Is_Declared_Within_Variant (Comp_Id));
                end loop;
             end if;
 
