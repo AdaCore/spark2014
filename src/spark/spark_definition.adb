@@ -285,12 +285,6 @@ package body SPARK_Definition is
    --  Return true if E has subcomponents of a deep type which are subjected
    --  to a subtype predicate.
 
-   procedure Check_Move_To_Constant (Expr : Node_Id) with
-     Pre => Nkind (Expr) in N_Allocator
-                          | N_Type_Conversion
-                          | N_Unchecked_Type_Conversion;
-   --  Check that Expr is directly inside a library level constant declaration
-
    procedure Check_Source_Of_Borrow_Or_Observe
      (Expr : Node_Id; In_Observe : Boolean)
    with
@@ -519,84 +513,6 @@ package body SPARK_Definition is
          end if;
       end if;
    end Check_Compatible_Access_Types;
-
-   ----------------------------
-   -- Check_Move_To_Constant --
-   ----------------------------
-
-   procedure Check_Move_To_Constant (Expr : Node_Id) is
-      Operation  : constant String :=
-        (if Nkind (Expr) = N_Allocator then "allocator of"
-         else "move inside a conversion to");
-      Context    : Node_Id := Parent (Expr);
-      Is_Valid   : Boolean;
-
-   begin
-      --  Check that Expr is a part of the definition of a library level
-      --  constant.
-
-      loop
-         case Nkind (Context) is
-
-            --  The allocating expression appears on the rhs of a library level
-            --  constant declaration.
-
-            when N_Object_Declaration =>
-               declare
-                  Obj : constant Entity_Id := Defining_Identifier (Context);
-               begin
-                  Is_Valid := Is_Constant_In_SPARK (Obj)
-                    and then Is_Library_Level_Entity (Obj);
-                  exit;
-               end;
-
-            --  The allocating expression is the expression of a type
-            --  conversion or a qualified expression occurring in a
-            --  valid allocating context.
-
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               null;
-
-            --  The allocating expression occurs as the expression in another
-            --  initialized allocator. If it is an allocator to constant, the
-            --  context will be checked while checking the allocator.
-            --  Otherwise, continue the check.
-
-            when N_Allocator =>
-               declare
-                  Ty : constant Entity_Id := Retysp (Etype (Context));
-               begin
-                  if Is_Access_Type (Ty) and then Is_Access_Constant (Ty) then
-                     Is_Valid := True;
-                     exit;
-                  end if;
-               end;
-
-            --  The allocating expression corresponds to a component value in
-            --  an aggregate occurring in an allocating context.
-
-            when N_Aggregate
-               | N_Component_Association
-            =>
-               null;
-
-            when others =>
-               Is_Valid := False;
-               exit;
-         end case;
-
-         Context := Parent (Context);
-      end loop;
-
-      if not Is_Valid then
-         Mark_Unsupported
-           (Operation & " an access-to-constant type not in"
-            & " library level constant declaration", Expr);
-      end if;
-   end Check_Move_To_Constant;
 
    ---------------------------------------
    -- Check_Source_Of_Borrow_Or_Observe --
@@ -1569,33 +1485,27 @@ package body SPARK_Definition is
                   end;
                end if;
 
-               --  We only support allocators of access-to-constant types in
-               --  specific contexts.
+               --  The initial value of the allocator is moved. We need
+               --  to consider it specifically in the case of allocators
+               --  to access-to-constant types as the allocator type is
+               --  not itself of a deep type.
 
-               if Is_Access_Constant (Retysp (Etype (N))) then
+               if Is_Access_Constant (Retysp (Etype (N)))
+                 and then Nkind (Expression (N)) = N_Qualified_Expression
+               then
+                  declare
+                     Des_Ty : Entity_Id := Directly_Designated_Type
+                       (Retysp (Etype (N)));
+                  begin
+                     if Is_Incomplete_Type (Des_Ty) then
+                        Des_Ty := Full_View (Des_Ty);
+                     end if;
 
-                  Check_Move_To_Constant (N);
-
-                  --  The initial value of the allocator is moved. We need
-                  --  to consider it specifically in the case of allocators
-                  --  to access-to-constant types as the allocator type is
-                  --  not itself of a deep type.
-
-                  if Nkind (Expression (N)) = N_Qualified_Expression then
-                     declare
-                        Des_Ty : Entity_Id := Directly_Designated_Type
-                          (Retysp (Etype (N)));
-                     begin
-                        if Is_Incomplete_Type (Des_Ty) then
-                           Des_Ty := Full_View (Des_Ty);
-                        end if;
-
-                        if Is_Deep (Des_Ty) then
-                           Check_Source_Of_Move
-                             (Expression (N), To_Constant => True);
-                        end if;
-                     end;
-                  end if;
+                     if Is_Deep (Des_Ty) then
+                        Check_Source_Of_Move
+                          (Expression (N), To_Constant => True);
+                     end if;
+                  end;
                end if;
             else
                Mark_Violation (N, Etype (N));
@@ -2359,18 +2269,22 @@ package body SPARK_Definition is
                --  A conversion from an access-to-variable type to an
                --  access-to-constant type is considered a move if the
                --  expression is not rooted inside a constant part of an
-               --  object. In this case, we need to check that we are in a
-               --  context where the move is allowed.
+               --  object. In this case, we need to check that the move is
+               --  allowed.
 
-               elsif Is_Access_Object_Type (Retysp (Etype (N)))
-                 and then Is_Access_Constant (Retysp (Etype (N)))
-                 and then not Is_Anonymous_Access_Object_Type (Etype (N))
-                 and then not Is_Access_Constant
-                   (Retysp (Etype (Expression (N))))
-                 and then not Is_Rooted_In_Constant (Expression (N))
-               then
+               elsif Conversion_Is_Move_To_Constant (N) then
                   Check_Source_Of_Move (Expression (N), To_Constant => True);
-                  Check_Move_To_Constant (N);
+
+                  --  Moving a tracked object inside an expression is not
+                  --  supported yet.
+
+                  if Is_Path_Expression (Expression (N))
+                    and then Present (Get_Root_Object (Expression (N)))
+                  then
+                     Mark_Unsupported
+                       ("move as part of a conversion to an access-to-constant"
+                        & " type", N);
+                  end if;
                end if;
 
             else

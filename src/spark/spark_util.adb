@@ -933,6 +933,19 @@ package body SPARK_Util is
       return Check_Volatile_Function (N) = Abandon;
    end Contains_Volatile_Function_Call;
 
+   ------------------------------------
+   -- Conversion_Is_Move_To_Constant --
+   ------------------------------------
+
+   function Conversion_Is_Move_To_Constant (Expr : Node_Id) return Boolean is
+     (Is_Access_Object_Type (Retysp (Etype (Expr)))
+      and then Is_Access_Constant (Retysp (Etype (Expr)))
+      and then not Is_Anonymous_Access_Object_Type (Etype (Expr))
+      and then not Is_Access_Constant
+        (Retysp (Etype (Expression (Expr))))
+      and then not Is_Rooted_In_Constant (Expression (Expr))
+      and then not In_Assertion_Expression_Pragma (Expr));
+
    --------------------------------------------
    -- Directly_Enclosing_Subprogram_Or_Entry --
    --------------------------------------------
@@ -2802,6 +2815,70 @@ package body SPARK_Util is
          return False;
       end if;
    end May_Issue_Warning_On_Node;
+
+   ---------------------------
+   -- Value_Is_Never_Leaked --
+   ---------------------------
+
+   function Value_Is_Never_Leaked (Expr : Node_Id) return Boolean is
+      Context : Node_Id := Parent (Expr);
+
+   begin
+      --  Check that Expr is a part of the definition of a library level
+      --  constant.
+
+      loop
+         case Nkind (Context) is
+
+            --  The allocating expression appears on the rhs of a library level
+            --  constant declaration.
+
+            when N_Object_Declaration =>
+               declare
+                  Obj : constant Entity_Id := Defining_Identifier (Context);
+               begin
+                  return Is_Constant_In_SPARK (Obj)
+                    and then Is_Library_Level_Entity (Obj);
+               end;
+
+            --  The allocating expression is the expression of a type
+            --  conversion or a qualified expression.
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  The allocating expression occurs as the expression in another
+            --  initialized allocator. If it is an allocator to constant, the
+            --  context will be checked while checking the allocator.
+            --  Otherwise, continue the check.
+
+            when N_Allocator =>
+               declare
+                  Ty : constant Entity_Id := Retysp (Etype (Context));
+               begin
+                  if Is_Access_Constant (Ty) then
+                     return True;
+                  end if;
+               end;
+
+            --  The allocating expression corresponds to a component value in
+            --  an aggregate.
+
+            when N_Aggregate
+               | N_Component_Association
+            =>
+               null;
+
+            when others =>
+               return False;
+         end case;
+
+         Context := Parent (Context);
+      end loop;
+   end Value_Is_Never_Leaked;
 
    ------------------------------------
    -- Number_Of_Assocs_In_Expression --

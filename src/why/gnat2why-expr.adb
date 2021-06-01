@@ -17213,6 +17213,18 @@ package body Gnat2Why.Expr is
                                     Local_Params);
             end if;
 
+            --  Insert static memory leak if the conversion is a move
+
+            if Domain = EW_Prog
+              and then Conversion_Is_Move_To_Constant (Expr)
+              and then not Value_Is_Never_Leaked (Expr)
+            then
+               Emit_Static_Proof_Result
+                 (Expr, VC_Memory_Leak, False, Current_Subp,
+                  Explanation =>
+                    "conversion to access-to-constant type leaks memory");
+            end if;
+
             --  Invariant checks are introduced explicitly as they need only be
             --  performed on actual type conversions (and not view
             --  conversions).
@@ -17382,6 +17394,7 @@ package body Gnat2Why.Expr is
                Call     : W_Expr_Id;
                New_Expr : constant Node_Id := Expression (Expr);
                Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
+               To_Const : constant Boolean := Is_Access_Constant (Exp_Ty);
                Des_Ty   : constant Entity_Id :=
                  Directly_Designated_Type (Exp_Ty);
 
@@ -17389,12 +17402,16 @@ package body Gnat2Why.Expr is
                --  Insert static memory leak if needed
 
                if Domain = EW_Prog
-                 and then In_Assertion_Expression_Pragma (Expr)
+                 and then (if To_Const then not Value_Is_Never_Leaked (Expr)
+                           else In_Assertion_Expression_Pragma (Expr))
                then
                   Emit_Static_Proof_Result
                     (Expr, VC_Memory_Leak, False, Current_Subp,
                      Explanation =>
-                       "allocator inside an assertion leaks memory");
+                       (if To_Const
+                        then "allocator for an access-to-constant type"
+                        else "allocator inside an assertion")
+                        & " leaks memory");
                end if;
 
                --  Uninitialized allocator

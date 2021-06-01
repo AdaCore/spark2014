@@ -933,4 +933,19 @@ package SPARK_Util is
    --  Return objects that can appear on the LHS of the Initializes contract
    --  for a package E.
 
+   function Conversion_Is_Move_To_Constant (Expr : Node_Id) return Boolean with
+     Pre => Nkind (Expr) in N_Type_Conversion | N_Unchecked_Type_Conversion;
+   --  Return True if a conversion can cause an object to be moved.
+   --  Currently, we return True iff:
+   --    * We are converting from an access-to-variable type to a named
+   --      access-to-constant type
+   --    * The prefix is not part of a constant and we are not in an assertion,
+   --      otherwise this is not a move.
+
+   function Value_Is_Never_Leaked (Expr : Node_Id) return Boolean with
+     Pre => Nkind (Expr) in N_Subexpr
+     and then Is_Access_Type (Etype (Expr))
+     and then Is_Access_Constant (Etype (Expr));
+   --  Checks whether a created access-to-constant value is known to never leak
+
 end SPARK_Util;

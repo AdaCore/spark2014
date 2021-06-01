@@ -32,5 +32,4 @@ package body Access_To_Constants with SPARK_Mode is
 
 begin
    X.all := 14; --  X has been moved
-   Z.all := 14; --  Z has been moved
 end Access_To_Constants;
