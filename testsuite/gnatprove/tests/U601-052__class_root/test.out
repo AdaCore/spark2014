@@ -1,0 +1,2 @@
+main.adb:13:40: info: tag check proved (CVC4: 1 VC)
+main.adb:15:19: medium: assertion might fail (e.g. when X = (X => 1, Y => 2, Round => False))
