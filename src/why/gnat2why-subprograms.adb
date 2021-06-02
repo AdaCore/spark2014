@@ -262,7 +262,8 @@ package body Gnat2Why.Subprograms is
    function Get_Location_For_Aspect
      (E         : Entity_Id;
       Kind      : Pragma_Id;
-      Classwide : Boolean := False) return Node_Id
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Node_Id
    with Pre => Kind in Pragma_Precondition
                      | Pragma_Postcondition
                      | Pragma_Refined_Post;
@@ -3856,7 +3857,8 @@ package body Gnat2Why.Subprograms is
               Get_Location_For_Aspect
                (E, Pragma_Postcondition, Classwide => True);
          elsif Has_Contracts (E, Pragma_Postcondition, Inherited => True) then
-            Post_N := E;
+            Post_N := Get_Location_For_Aspect (E, Pragma_Postcondition,
+                                               Inherited => True);
          else
             Post_N := Empty;
          end if;
@@ -4607,7 +4609,8 @@ package body Gnat2Why.Subprograms is
    function Get_Location_For_Aspect
      (E         : Entity_Id;
       Kind      : Pragma_Id;
-      Classwide : Boolean := False) return Node_Id is
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Node_Id is
    begin
 
       --  In the case of a No_Return Subprogram, there is no real location for
@@ -4625,7 +4628,9 @@ package body Gnat2Why.Subprograms is
 
       declare
          L : constant Node_Lists.List :=
-           Find_Contracts (E, Kind, Classwide => Classwide);
+              Find_Contracts (E, Kind,
+                              Classwide => Classwide,
+                              Inherited => Inherited);
       begin
          if L.Is_Empty then
             return Empty;

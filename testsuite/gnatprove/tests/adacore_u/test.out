@@ -375,8 +375,8 @@ abstract_ints.adb:33:56: medium: overflow check might fail (e.g. when Arg1 = (Mi
 abstract_ints.adb:37:30: info: overflow check proved (CVC4: 1 VC)
 abstract_ints.adb:55:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
 abstract_ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
+abstract_ints.ads:12:20: info: postcondition proved (CVC4: 1 VC), in inherited contract at abstract_ints.ads:23
 abstract_ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
-abstract_ints.ads:23:25: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:40:70: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention Arg in a precondition]
 distributed_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:12:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
@@ -397,9 +397,9 @@ ints.adb:46:30: info: overflow check proved (CVC4: 1 VC)
 ints.adb:64:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:29 should mention Arg in a precondition]
 ints.ads:11:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
+ints.ads:12:20: info: postcondition proved (CVC4: 1 VC), in inherited contract at ints.ads:24
 ints.ads:16:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
-ints.ads:24:25: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
 predicate_ints.adb:31:39: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => -1) and Arg2 = (Min => 0, Max => 0, Value => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer]
 predicate_ints.adb:43:10: info: precondition proved (CVC4: 1 VC)
@@ -414,10 +414,10 @@ predicate_ints.adb:78:25: info: precondition proved (CVC4: 2 VC)
 predicate_ints.adb:86:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
 predicate_ints.ads:12:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 predicate_ints.ads:13:20: info: postcondition proved (CVC4: 1 VC)
+predicate_ints.ads:13:20: info: postcondition proved (CVC4: 1 VC), in inherited contract at predicate_ints.ads:29
 predicate_ints.ads:17:21: info: initialization of "Arg" proved
 predicate_ints.ads:21:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 predicate_ints.ads:22:14: info: postcondition proved (CVC4: 1 VC)
-predicate_ints.ads:29:25: info: postcondition proved (CVC4: 1 VC)
 synchronized_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 synchronized_file_system.ads:12:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
 synchronized_file_system.ads:13:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
