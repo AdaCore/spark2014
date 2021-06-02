@@ -407,7 +407,6 @@ package Why.Atree.Modules is
       Mult           : W_Identifier_Id;
       Power          : W_Identifier_Id;
       To_Int         : W_Identifier_Id;
-      UC_To_Int      : W_Identifier_Id;  --  bitwise conversion for UC
       Of_Int         : W_Identifier_Id;
       Udiv           : W_Identifier_Id;
       Urem           : W_Identifier_Id;

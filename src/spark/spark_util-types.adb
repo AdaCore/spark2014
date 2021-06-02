@@ -51,12 +51,13 @@ package body SPARK_Util.Types is
       Size        : out Uint;
       Explanation : out Unbounded_String)
    with Pre => Is_Composite_Type (Typ);
-   --  This function is used by Suitable_For_UC and Suitable_For_UC_Target to
-   --  recurse over composite types. It checks that the composite types have
-   --  no holes, and that each field has the property checked by the procedure
-   --  Examine. If Result is True, Size contains the declared or computed size
-   --  of the type (RM_Size). Otherwise, Size is undefined and Explanation
-   --  contains a string explaining why the size could not be computed.
+   --  This function is used by Type_Has_No_Holes and
+   --  Is_Valid_Bitpattern_No_Holes to recurse over composite types. It checks
+   --  that the composite types have no holes, and that each field has the
+   --  property checked by the Examine. If Result is True, Size contains the
+   --  declared or computed size of the type (RM_Size). Otherwise, Size is
+   --  undefined and Explanation contains a string why the size could not
+   --  be computed.
 
    ---------------------------------------------
    -- Queries related to representative types --

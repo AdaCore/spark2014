@@ -2254,45 +2254,6 @@ package body Gnat2Why.Subprograms is
       E            : Entity_Id;
       Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>))
    is
-      --  Local subprograms
-
-      function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean
-      with
-        Pre => Is_Unchecked_Conversion_Instance (E);
-      --  Return whether E is an UC for which a precise definition is given
-
-      -----------------------------------
-      -- Is_UC_With_Precise_Definition --
-      -----------------------------------
-
-      function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean is
-         Source_Type : constant Entity_Id := Retysp (Etype (First_Formal (E)));
-         Target_Type : constant Entity_Id := Retysp (Etype (E));
-
-         Valid_Source, Valid_Target, Valid_Size : Boolean;
-         Ignored : Unbounded_String;
-
-      begin
-         --  Only generate a definition for UC between integer types...
-
-         if not Has_Integer_Type (Source_Type)
-           or else not Has_Integer_Type (Target_Type)
-         then
-            return False;
-         end if;
-
-         --  that are suitable for UC.
-
-         Suitable_For_UC (Source_Type, Valid_Source, Ignored);
-         Suitable_For_UC_Target (Target_Type, Valid_Target, Ignored);
-         --  ??? TO BE REPLACED BY RM_SIZE
-         Have_Same_Known_Esize (Source_Type, Target_Type, Valid_Size, Ignored);
-
-         return Valid_Source and Valid_Target and Valid_Size;
-      end Is_UC_With_Precise_Definition;
-
-      --  Local variables
-
       Why_Type           : constant W_Type_Id := Type_Of_Node (E);
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Logic_Why_Binders  : constant Binder_Array :=
@@ -2306,6 +2267,9 @@ package body Gnat2Why.Subprograms is
          Gen_Marker  => False,
          Ref_Allowed => False,
          Old_Policy  => Ignore);
+      Def                : constant W_Expr_Id :=
+        Compute_Inlined_Expr
+          (E, Logic_Func_Binders, Why_Type, Params);
       Result_Id          : constant W_Identifier_Id :=
         New_Temp_Identifier (Base_Name => "result", Typ => Why_Type);
       Pred_Binders       : constant Binder_Array :=
@@ -2321,54 +2285,7 @@ package body Gnat2Why.Subprograms is
          and then not Present (Get_Pragma (E, Pragma_Contract_Cases))
          then Symbol_Sets.To_Set (NID ("inline_marker"))
          else Symbol_Sets.Empty_Set);
-
-      Def : W_Expr_Id;
-
-   --  Start of processing for Declare_Logic_Functions
-
    begin
-      if Is_Unchecked_Conversion_Instance (E)
-        and then Is_UC_With_Precise_Definition (E)
-      then
-         declare
-            Source_Type : constant Entity_Id :=
-              Retysp (Etype (First_Formal (E)));
-            Target_Type : constant Entity_Id := Retysp (Etype (E));
-            Arg         : constant W_Identifier_Id :=
-              Logic_Why_Binders (1).B_Name;
-
-         begin
-            if Is_Signed_Integer_Type (Source_Type)
-              and then Is_Signed_Integer_Type (Target_Type)
-            then
-               Def := +Arg;  --  Trivial case of UC between signed types
-
-            elsif Is_Modular_Integer_Type (Source_Type)
-              and then Is_Modular_Integer_Type (Target_Type)
-            then
-               Def := +Arg;  --  Trivial case of UC between modular types
-
-            elsif Is_Modular_Integer_Type (Source_Type) then
-               Def := New_Call
-                 (Domain  => EW_Term,
-                  Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
-
-            else
-               pragma Assert (Is_Modular_Integer_Type (Target_Type));
-               Def := New_Call
-                 (Domain  => EW_Term,
-                  Name    => MF_BVs (Base_Why_Type (Target_Type)).Of_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
-            end if;
-         end;
-      else
-         Def :=
-           Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, Params);
-      end if;
-
       --  Generate a logic function
 
       Emit
