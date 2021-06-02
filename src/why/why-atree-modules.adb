@@ -2860,7 +2860,6 @@ package body Why.Atree.Modules is
                           Typ    => EW_Int_Type);
                   begin
                      Insert_Symbol (E, WNE_To_Int, To_Int);
-                     Insert_Symbol (E, WNE_To_BitVector, To_Int);
                      Insert_Symbol
                        (E, WNE_Of_BitVector,
                         New_Identifier

@@ -29,6 +29,7 @@ with Snames;                 use Snames;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Types;                  use Types;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Ids;                use Why.Ids;
 with Why.Inter;              use Why.Inter;
 with Why.Sinfo;              use Why.Sinfo;
@@ -50,7 +51,14 @@ package Why.Gen.Names is
 
    function Conversion_Name
       (From : W_Type_Id;
-       To   : W_Type_Id) return W_Identifier_Id;
+       To   : W_Type_Id) return W_Identifier_Id
+     with Pre =>
+       (if Get_Type_Kind (From) = EW_Builtin
+          and then Get_Type_Kind (To) in EW_Abstract | EW_Split
+        then Base_Why_Type (To) = From
+        elsif Get_Type_Kind (To) = EW_Builtin
+          and then Get_Type_Kind (From) in EW_Abstract | EW_Split
+        then Base_Why_Type (From) = To);
    --  Return the name of the conversion function between the two types
 
    function Range_Pred_Name
@@ -404,7 +412,6 @@ package Why.Gen.Names is
       WNE_To_Fixed,
       WNE_To_Float32,             --  for fixed-point
       WNE_To_Float64,             --  for fixed-point
-      WNE_To_BitVector,
 
       WNE_Empty,                   --  dummy value for Why_Name_Enum
 
