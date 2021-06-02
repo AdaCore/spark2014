@@ -5723,15 +5723,16 @@ package body Flow_Utility is
             M := Recurse_On (Expression (N), Map_Root, Map_Type);
 
          when N_Attribute_Reference =>
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
+            if Debug_Trace_Untangle_Record then
+               Write_Str ("processing attribute ");
+               Write_Name (Attribute_Name (N));
+               Write_Eol;
+            end if;
+            pragma Annotate (Xcov, Exempt_Off);
+
             case Get_Attribute_Id (Attribute_Name (N)) is
                when Attribute_Update =>
-                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
-                  if Debug_Trace_Untangle_Record then
-                     Write_Str ("processing attribute Update");
-                     Write_Eol;
-                  end if;
-                  pragma Annotate (Xcov, Exempt_Off);
-
                   pragma Assert (List_Length (Expressions (N)) = 1);
                   M :=
                     Untangle_Delta_Aggregate
@@ -5739,13 +5740,6 @@ package body Flow_Utility is
                        Component_Associations (First (Expressions (N))));
 
                when Attribute_Result =>
-                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
-                  if Debug_Trace_Untangle_Record then
-                     Write_Str ("processing attribute Result");
-                     Write_Eol;
-                  end if;
-                  pragma Annotate (Xcov, Exempt_Off);
-
                   declare
                      Class_Wide_Conversion : constant Boolean :=
                        not Is_Class_Wide_Type (Get_Type (N, Scope))
