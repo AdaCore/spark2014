@@ -458,10 +458,12 @@ package body Flow.Control_Flow_Graph is
    --  Block contains the combined standard entry and exits of the joined
    --  up sequence. Entries for the nodes are removed from the connection map.
 
-   procedure Clear_Attributes (Atr : in out V_Attributes);
-   --  Clear the attributes and set Is_Null_Node to True. The values of
-   --  Is_Original_Program_Node and Error_Location are kept because they are
-   --  read in a routine that detects dead code.
+   procedure Clear_Vertex_And_Attributes
+     (FA : in out Flow_Analysis_Graphs;
+      V  : Flow_Graphs.Vertex_Id);
+   --  Clear vertex V, its attributes and set Is_Null_Node to True. The values
+   --  of Is_Original_Program_Node and Error_Location in the attributes are
+   --  kept because they are read in a routine that detects dead code.
 
    procedure Create_Record_Tree
      (F        : Flow_Id;
@@ -4244,14 +4246,15 @@ package body Flow.Control_Flow_Graph is
 
                         Add_Vertex
                           (FA,
-                           Make_Basic_Attributes
+                           (Make_Basic_Attributes
                              (Var_Def       => Flow_Id_Sets.To_Set (Output),
                               Var_Ex_Use    => Inputs,
                               Sub_Called    => Funcs,
                               Loops         => Ctx.Current_Loops,
                               In_Nested_Pkg => Ctx.In_Nested_Package,
                               E_Loc         => N,
-                              Print_Hint    => Pretty_Print_Record_Field),
+                              Print_Hint    => Pretty_Print_Record_Field)
+                           with delta Is_Declaration_Node => True),
                            V);
                         Missing.Exclude (Output);
                         --  ??? this should be Delete, but currently we will
@@ -4270,14 +4273,15 @@ package body Flow.Control_Flow_Graph is
                   for F of Missing loop
                      Add_Vertex
                        (FA,
-                        Make_Basic_Attributes
+                        (Make_Basic_Attributes
                           (Var_Def       => Flow_Id_Sets.To_Set (F),
                            Var_Ex_Use    => Flow_Id_Sets.Empty_Set,
                            Sub_Called    => Node_Sets.Empty_Set,
                            Loops         => Ctx.Current_Loops,
                            In_Nested_Pkg => Ctx.In_Nested_Package,
                            E_Loc         => N,
-                           Print_Hint    => Pretty_Print_Record_Field),
+                           Print_Hint    => Pretty_Print_Record_Field)
+                           with delta Is_Declaration_Node => True),
                         V);
                      Inits.Append (V);
                      All_Vertices.Insert (V);
@@ -4302,7 +4306,7 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (N),
-                  Make_Basic_Attributes
+                  (Make_Basic_Attributes
                     (Var_Def       => Var_Def,
                      Var_Ex_Use    => Get_Variables
                        (Expr,
@@ -4314,7 +4318,8 @@ package body Flow.Control_Flow_Graph is
                      Sub_Called    => Funcs,
                      Loops         => Ctx.Current_Loops,
                      In_Nested_Pkg => Ctx.In_Nested_Package,
-                     E_Loc         => N),
+                     E_Loc         => N)
+                   with delta Is_Declaration_Node => True),
                   V);
                Inits.Append (V);
 
@@ -6441,8 +6446,22 @@ package body Flow.Control_Flow_Graph is
 
          begin
             if Atr.Is_Exceptional_Path then
-               FA.CFG.Clear_Vertex (V);
-               Clear_Attributes (Atr);
+
+               --  If we are dealing with a declaration node, then we delete
+               --  the corresponding 'Initial and 'Final vertices as well.
+               if Atr.Is_Declaration_Node then
+                  for F of Atr.Variables_Defined loop
+                     Clear_Vertex_And_Attributes
+                       (FA,
+                        FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)));
+                     Clear_Vertex_And_Attributes
+                       (FA,
+                        FA.CFG.Get_Vertex (Change_Variant (F, Final_Value)));
+                  end loop;
+               end if;
+
+               --  Then we delete vertex V
+               Clear_Vertex_And_Attributes (FA, V);
             end if;
          end;
       end loop;
@@ -6582,11 +6601,8 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end loop;
 
-               --  Remove all edges from the vertex
-               FA.CFG.Clear_Vertex (V);
-
-               --  Clear the node
-               Clear_Attributes (Atr);
+               --  Remove all edges from the vertex and clear the node
+               Clear_Vertex_And_Attributes (FA, V);
             end if;
          end;
       end loop;
@@ -6938,14 +6954,19 @@ package body Flow.Control_Flow_Graph is
    -- Clear_Attributes --
    ----------------------
 
-   procedure Clear_Attributes (Atr : in out V_Attributes) is
+   procedure Clear_Vertex_And_Attributes
+     (FA : in out Flow_Analysis_Graphs;
+      V  : Flow_Graphs.Vertex_Id)
+   is
+      Atr : V_Attributes renames FA.Atr (V);
    begin
+      FA.CFG.Clear_Vertex (V);
       Atr := (Null_Attributes with delta
                 Is_Null_Node             => True,
                 Is_Original_Program_Node =>
                   Atr.Is_Original_Program_Node,
                 Error_Location           => Atr.Error_Location);
-   end Clear_Attributes;
+   end Clear_Vertex_And_Attributes;
 
    ------------
    -- Create --

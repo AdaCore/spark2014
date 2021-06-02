@@ -667,6 +667,10 @@ package Flow_Types is
       --  True if this vertex models a loop that is detected as potentially
       --  nonreturning.
 
+      Is_Declaration_Node          : Boolean;
+      --  True if this vertex models a declaration node with explicit
+      --  initialization.
+
       Execution                    : Execution_Kind_T;
       --  Determines how we should treat edges from this vertex. Most nodes
       --  will have Normal_Execution set here.
@@ -754,6 +758,7 @@ package Flow_Types is
                    Is_Global_Parameter             => False,
                    Is_Implicit_Parameter           => False,
                    Is_Neverending                  => False,
+                   Is_Declaration_Node             => False,
                    Execution                       => Normal_Execution,
                    Perform_IPFA                    => False,
                    Call_Vertex                     => Null_Flow_Id,

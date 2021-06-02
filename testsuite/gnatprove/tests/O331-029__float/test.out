@@ -384,13 +384,6 @@ sensfusion6_pack.adb:241:13: medium: range check might fail, in call inlined at 
 sensfusion6_pack.adb:241:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:256:25: info: analyzing call to "Mahony_Update_Q" in context
 sensfusion6_pack.adb:263:25: warning: this statement is never reached
-sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C11b"
-sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C12b"
-sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C13b"
-sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C14b"
-sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C15b"
-sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C16b"
-sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C17b"
 sensfusion6_pack.adb:277:07: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:278:07: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:279:07: info: initialization of "Grav_Z" proved
