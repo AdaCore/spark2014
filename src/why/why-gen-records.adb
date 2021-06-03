@@ -98,12 +98,26 @@ package body Why.Gen.Records is
    --  requires { d1 = constr_of_first_discr /\ d2 = constr_of_second_discr }
    --  ensures  { result = x }
 
+   function Concrete_Extension_Type
+     (Ty    : Entity_Id;
+      Local : Boolean := True) return W_Type_Id;
+   --  Return the concrete type associated to the extension type of a tagged
+   --  type.
+
    function Count_Fields_Not_In_Root (E : Entity_Id) return Natural;
    --  Counts the number of fields for the Why3 record representing type E that
    --  are not present in the representation of the root type for E.
 
-   function Get_Rep_Record_Module (E : Entity_Id) return W_Module_Id;
-   --  Return the name of a record's representative module.
+   procedure Create_Rep_Record_Completion_If_Needed (E : Entity_Id) with
+     Pre => Is_Tagged_Type (E);
+   --  Create a module for the completion of the representative type of a
+   --  record if needed. It contains a concrete record type for the
+   --  extension containing all components that can appear in a visible
+   --  extension of the Root but do not occur in E. If E is a root type of
+   --  a tagged derivation, it also contains axioms definining the
+   --  extract__<comp> functions for all components of its visible extensions.
+   --  Otherwise, it contains axioms giving a concrete definition to the
+   --  hide__ and extract__ext__ functions of the type.
 
    procedure Declare_Protected_Access_Functions
      (Th           : Theory_UC;
@@ -179,19 +193,35 @@ package body Why.Gen.Records is
    --  If the current record type is not a root type, return the name of the
    --  corresponding predicate in the root type module.
 
-   function Extract_Extension_Fun return W_Identifier_Id;
+   function Extract_Extension_Fun
+     (Rec   : Entity_Id;
+      Local : Boolean := True) return W_Identifier_Id;
    --  Return the name of the extract function for an extension component
 
    function Extract_Fun
      (Field : Entity_Id;
       Rec   : Entity_Id;
-      Local : Boolean := True)
-         return W_Identifier_Id;
+      Local : Boolean := True) return W_Identifier_Id;
    --  Return the name of the extract function for an extension
 
-   function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
-   --  Return the name of the special field representing extension
-   --  components.
+   function Get_Rep_Record_Completion (E : Entity_Id) return W_Module_Id;
+   --  Return the name of a record's representative completion module
+
+   function Get_Rep_Record_Module (E : Entity_Id) return W_Module_Id;
+   --  Return the name of a record's representative module
+
+   function Hidden_Ext_Name
+     (Rec   : Entity_Id;
+      Local : Boolean := True) return W_Identifier_Id;
+   --  Record component of a concrete extension type standing for the
+   --  additional unknown extensions.
+
+   function Hidden_Component_Name
+     (Field : Entity_Id;
+      Rec   : Entity_Id;
+      Local : Boolean := True) return W_Identifier_Id;
+   --  Record component of a concrete extension type standing for a component
+   --  Field not present in Rec.
 
    function W_Type_Of_Component
      (Field        : Entity_Id;
@@ -403,6 +433,38 @@ package body Why.Gen.Records is
       return Build_Predicate (Expr, Expr, Ty);
    end Build_Predicate_For_Record;
 
+   ---------------------------------
+   -- Complete_Tagged_Record_Type --
+   ---------------------------------
+
+   procedure Complete_Tagged_Record_Type
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+   begin
+      Create_Rep_Record_Completion_If_Needed (E);
+
+      --  Export the theory containing the completion
+
+      Add_With_Clause (Th, Get_Rep_Record_Completion (E), EW_Export);
+   end Complete_Tagged_Record_Type;
+
+   -----------------------------
+   -- Concrete_Extension_Type --
+   -----------------------------
+
+   function Concrete_Extension_Type
+     (Ty    : Entity_Id;
+      Local : Boolean := True) return W_Type_Id
+   is
+      Name : constant W_Name_Id := New_Name
+        (Symb   => NID (To_String (WNE_Rec_Extension_Suffix)),
+         Module => (if Local then Why_Empty
+                    else Get_Rep_Record_Completion (Ty)));
+   begin
+      return New_Named_Type (Name);
+   end Concrete_Extension_Type;
+
    ------------------------------
    -- Count_Fields_Not_In_Root --
    ------------------------------
@@ -421,6 +483,445 @@ package body Why.Gen.Records is
 
       return Count;
    end Count_Fields_Not_In_Root;
+
+   --------------------------------------------
+   -- Create_Rep_Record_Completion_If_Needed --
+   --------------------------------------------
+
+   procedure Create_Rep_Record_Completion_If_Needed (E : Entity_Id) is
+
+      procedure Complete_Extraction_Functions with
+        Pre => E = Root_Retysp (E);
+      --  Emit axioms definining the extract__<comp> functions for all
+      --  components of the visible extensions of a root record type E.
+
+      procedure Complete_Hide_Function with
+        Pre => E /= Root_Retysp (E);
+      --  Emit axioms giving a concrete definition to the hide__ and
+      --  extract__ext__ functions of the type E.
+
+      procedure Declare_Extension_Type;
+      --  Declare a concrete record type for the extension part of E. It
+      --  contains all components that can appear in a visible extension of the
+      --  root type of E but do not occur in E.
+
+      Root       : constant Entity_Id := Root_Retysp (E);
+      Ancestor   : constant Entity_Id :=
+        Oldest_Parent_With_Same_Fields (E);
+      E_Ext_Type : constant W_Type_Id := New_Named_Type
+        (Name => Get_Name (E_Symb (E, WNE_Extension_Type)));
+      Th         : Theory_UC;
+
+      -----------------------------------
+      -- Complete_Extraction_Functions --
+      -----------------------------------
+
+      procedure Complete_Extraction_Functions is
+         Ext_Comps          : constant Node_Sets.Set :=
+           Get_Extension_Components (Root);
+         Concrete_Root_Type : constant W_Type_Id :=
+           Concrete_Extension_Type (Root);
+         Root_Ext_Id        : constant W_Identifier_Id :=
+           To_Local (E_Symb (Root, WNE_Rec_Extension));
+
+      begin
+         for Field of Ext_Comps loop
+
+            --  Generate:
+            --  axiom extract__<comp>__def:
+            --   forall ext : __exp_type.
+            --     extract__<comp> ext = (open ext).<comp>
+
+            declare
+               Orig     : constant Entity_Id := Original_Declaration (Field);
+               Field_Id : constant W_Identifier_Id :=
+                 Hidden_Component_Name (Field, Root);
+               Extract_Call : W_Expr_Id := New_Call
+                 (Domain => EW_Term,
+                  Name   => Extract_Fun
+                    (Field, Rec => Orig, Local => False),
+                  Args   => (1 => +Root_Ext_Id),
+                  Typ    => W_Type_Of_Component
+                    (Field, Orig, Init_Wrapper => False));
+               --  extract__<comp> ext
+
+            begin
+               --  If field is a true component, then we might need a
+               --  conversion so that it has the type of the root component.
+
+               if not Is_Type (Field) then
+                  Extract_Call := Insert_Simple_Conversion
+                    (Domain         => EW_Term,
+                     Expr           => Extract_Call,
+                     To             => Get_Typ (Field_Id),
+                     Force_No_Slide => True);
+               end if;
+
+               Emit (Th,
+                     New_Guarded_Axiom
+                       (Name     =>
+                          NID (Img (Get_Symb
+                            (Get_Name (Extract_Fun (Field, Rec => Orig))))
+                            & "__def"),
+                        Binders  => (1 => (B_Name => Root_Ext_Id,
+                                           others => <>)),
+                        Def      => +New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => Extract_Call,
+                           Right  => New_Record_Access
+                             (Name  => New_Call
+                                  (Domain  => EW_Term,
+                                   Name    => New_Identifier
+                                     (Name => To_String (WNE_Open)),
+                                   Args    => (1 => +Root_Ext_Id),
+                                   Typ     => Concrete_Root_Type),
+                              Field => Field_Id,
+                              Typ   => Get_Typ (Field_Id)),
+                           Domain => EW_Term)));
+            end;
+         end loop;
+      end Complete_Extraction_Functions;
+
+      ----------------------------
+      -- Complete_Hide_Function --
+      ----------------------------
+
+      procedure Complete_Hide_Function is
+         Ext_Comps       : constant Node_Sets.Set :=
+           Get_Extension_Components (Root);
+
+         Root_Ext_Type      : constant W_Type_Id := New_Named_Type
+           (Name => Get_Name (E_Symb (Root, WNE_Extension_Type)));
+         --  Abstract extension type of the root
+         Concrete_Root_Type : constant W_Type_Id := Concrete_Extension_Type
+           (Root, Local => False);
+         --  Concrete extension type of the root
+         Concrete_E_Type    : constant W_Type_Id :=
+           Concrete_Extension_Type (E);
+         --  Concrete extension type of E
+         E_Open_Ext_Id      : constant W_Identifier_Id := New_Temp_Identifier
+           (Base_Name => "open_ext",
+            Typ       => Concrete_E_Type);
+         R_Open_Ext_Id      : constant W_Identifier_Id := New_Temp_Identifier
+           (Base_Name => "open_ext",
+            Typ       => Concrete_Root_Type);
+         --  Temporary identifiers for the concrete view of Root and E
+         --  extensions.
+         Number_Of_Exts     : constant Natural :=
+           Natural (Ext_Comps.Length)
+           + 1;  --  for the extension field of the current type
+         Hide_Binders       : Binder_Array (1 .. Number_Of_Exts);
+         R_Associations     : W_Field_Association_Array (1 .. Number_Of_Exts);
+         E_Associations     : W_Field_Association_Array (1 .. Number_Of_Exts);
+         Num_Binders        : Natural := 0;
+         Num_R_Assocs       : Natural := 0;
+         Num_E_Assocs       : Natural := 0;
+
+      begin
+         --  Store in Hide_Binders a binder for each component of Ext_Comps
+         --  which is present in E:
+         --    Hide_Binders := (tmp_comp1 : t1, ...)
+         --  Store in R_Associations the associations for the definition of
+         --  hide__ext__, see below. If the component is present in E, use
+         --  a binder from Hide_Binders, otherwise, look for it in
+         --  E_Open_Ext_Id:
+         --    R_Associations :=
+         --      (comp1 => tmp_comp1, ...,
+         --       hidden_comp1 => e_open_ext.hidden_comp1, ...)
+         --  Store in E_Associations the associations for the definition of
+         --  extract__ext__, see below. Each component of Ext_Comps which is
+         --  not present in E is associated to the corresponding component
+         --  in R_Open_Ext_Id:
+         --    E_Associations :=
+         --      (hidden_comp1 => r_open_ext.hidden_comp1, ...)
+
+         for Field of Ext_Comps loop
+            declare
+               E_Field    : constant Entity_Id :=
+                 Search_Component_In_Type (E, Field);
+               E_Field_Id : W_Identifier_Id;
+               R_Field_Id : constant W_Identifier_Id :=
+                 Hidden_Component_Name (Field, Root, Local => False);
+            begin
+               if Present (E_Field) then
+                  Num_Binders := Num_Binders + 1;
+                  E_Field_Id := New_Temp_Identifier
+                    (Base_Name => Short_Name (E_Field),
+                     Typ       => W_Type_Of_Component
+                       (E_Field, Root, Init_Wrapper => False));
+                  Hide_Binders (Num_Binders) :=
+                    (B_Name => E_Field_Id,
+                     others => <>);
+
+                  Num_R_Assocs := Num_R_Assocs + 1;
+                  R_Associations (Num_R_Assocs) := New_Field_Association
+                    (Domain => EW_Term,
+                     Field  => R_Field_Id,
+                     Value  =>
+                       (if Is_Type (Field) then +E_Field_Id
+                        else Insert_Simple_Conversion
+                          (Domain         => EW_Term,
+                           Expr           => +E_Field_Id,
+                           To             => Get_Typ (R_Field_Id),
+                           Force_No_Slide => True)));
+               else
+                  E_Field_Id := Hidden_Component_Name (Field, E);
+                  Num_R_Assocs := Num_R_Assocs + 1;
+                  R_Associations (Num_R_Assocs) := New_Field_Association
+                    (Domain => EW_Term,
+                     Field  => R_Field_Id,
+                     Value  => New_Record_Access
+                       (Name  => +E_Open_Ext_Id,
+                        Field => E_Field_Id,
+                        Typ   => Get_Typ (R_Field_Id)));
+                  Num_E_Assocs := Num_E_Assocs + 1;
+                  E_Associations (Num_E_Assocs) := New_Field_Association
+                    (Domain => EW_Term,
+                     Field  => E_Field_Id,
+                     Value  => New_Record_Access
+                       (Name  => +R_Open_Ext_Id,
+                        Field => R_Field_Id,
+                        Typ   => Get_Typ (R_Field_Id)));
+               end if;
+            end;
+         end loop;
+
+         --  Add the extension field to Hide_Binders
+
+         declare
+            E_Ext_Id : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "ext", Typ => E_Ext_Type);
+         begin
+            Num_Binders := Num_Binders + 1;
+            Hide_Binders (Num_Binders) :=
+              (B_Name => E_Ext_Id,
+               others => <>);
+         end;
+
+         --  Add the hidden extension field to R_Associations
+         --  and E_Associations.
+
+         Num_R_Assocs := Num_R_Assocs + 1;
+         R_Associations (Num_R_Assocs) := New_Field_Association
+           (Domain => EW_Term,
+            Field  => Hidden_Ext_Name (Root, Local => False),
+            Value  => New_Record_Access
+              (Name  => +E_Open_Ext_Id,
+               Field => Hidden_Ext_Name (E),
+               Typ   => EW_Private_Type));
+
+         Num_E_Assocs := Num_E_Assocs + 1;
+         E_Associations (Num_E_Assocs) := New_Field_Association
+           (Domain => EW_Term,
+            Field  => Hidden_Ext_Name (E),
+            Value  => New_Record_Access
+              (Name  => +R_Open_Ext_Id,
+               Field => Hidden_Ext_Name (Root, Local => False),
+               Typ   => EW_Private_Type));
+
+         --  axiom hide__ext__def:
+         --   forall tmp_comp1 : t1 ..  ext : __exp_type.
+         --     let open_ext = open ext in
+         --     Root.open (hide__ext__ (tmp_comp1, .. , ext))
+         --      = { comp1        => tmp_comp1, ..,
+         --          hidden_comp1 => open_ext.hidden_comp1, ..,
+         --          hidden_ext   => open_ext.hidden_ext }
+
+         declare
+            Hide_Name : constant W_Identifier_Id :=
+              New_Identifier
+                (Name   => To_String (WNE_Hide_Extension),
+                 Module => Get_Rep_Record_Module (E),
+                 Typ    => Root_Ext_Type);
+         begin
+            Emit (Th,
+                  New_Guarded_Axiom
+                    (Name     =>
+                       NID (To_String (WNE_Hide_Extension) & "def"),
+                     Binders  => Hide_Binders (1 .. Num_Binders),
+                     Def      => New_Binding
+                       (Name     => E_Open_Ext_Id,
+                        Def      => New_Call
+                          (Domain => EW_Term,
+                           Name   => New_Identifier
+                             (Name => To_String (WNE_Open)),
+                           Args   =>
+                             (1 => +Hide_Binders (Num_Binders).B_Name),
+                           Typ    => Get_Typ (E_Open_Ext_Id)),
+                        Context  => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => New_Call
+                             (Domain => EW_Term,
+                              Name   => New_Identifier
+                                (Name   => To_String (WNE_Open),
+                                 Module => Get_Rep_Record_Completion (Root)),
+                              Args   => (1 => New_Call
+                                           (Domain  => EW_Term,
+                                            Name    => Hide_Name,
+                                            Binders => Hide_Binders
+                                              (1 .. Num_Binders),
+                                            Typ     => Root_Ext_Type)),
+                              Typ    => Concrete_Root_Type),
+                           Right  => New_Record_Aggregate
+                             (Associations => R_Associations),
+                           Domain => EW_Pred))));
+         end;
+
+         --  For the extension field, generate:
+         --  axiom extract___ext____def:
+         --   forall ext : Root.__exp_type.
+         --     let open_ext = Root.open ext in
+         --     open (extract__ext__ ext) =
+         --       { hidden_comp1 => open_ext.hidden_comp1, ..,
+         --         hidden_ext   => open_ext.hidden_ext }
+
+         declare
+            Extract_Func : constant W_Identifier_Id := Extract_Extension_Fun
+              (E, Local => False);
+            Root_Ext_Id  : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "ext", Typ => Root_Ext_Type);
+         begin
+
+            Emit (Th,
+                  New_Guarded_Axiom
+                    (Name    =>
+                       NID (To_String (WNE_Extract_Prefix) &
+                           To_String (WNE_Rec_Extension_Suffix) & "def"),
+                     Binders => (1 => (B_Name => Root_Ext_Id,
+                                        others => <>)),
+                     Def     => New_Binding
+                       (Name     => R_Open_Ext_Id,
+                        Def      => New_Call
+                          (Domain => EW_Term,
+                           Name   => New_Identifier
+                             (Name   => To_String (WNE_Open),
+                              Module => Get_Rep_Record_Completion (Root)),
+                           Args   => (1 => +Root_Ext_Id),
+                           Typ    => Get_Typ (R_Open_Ext_Id)),
+                        Context  => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => New_Call
+                             (Domain => EW_Term,
+                              Name   => New_Identifier
+                                (Name => To_String (WNE_Open)),
+                              Args   => (1 => New_Call
+                                           (Domain => EW_Term,
+                                            Name   => Extract_Func,
+                                            Args   => (1 => +Root_Ext_Id),
+                                            Typ    => E_Ext_Type)),
+                              Typ    => Concrete_E_Type),
+                           Right  => New_Record_Aggregate
+                             (Associations =>
+                                  E_Associations (1 .. Num_E_Assocs)),
+                           Domain => EW_Pred))));
+         end;
+      end Complete_Hide_Function;
+
+      ----------------------------
+      -- Declare_Extension_Type --
+      ----------------------------
+
+      procedure Declare_Extension_Type is
+         Ext_Comps : constant Node_Sets.Set := Get_Extension_Components (Root);
+         Binders   : Binder_Array (1 .. Natural (Ext_Comps.Length) + 1);
+         Index     : Natural := 0;
+
+      begin
+         --  Add a field for each extension of Root not visible in E
+
+         for Field of Ext_Comps loop
+            if E = Root or else No (Search_Component_In_Type (E, Field)) then
+               Index := Index + 1;
+               Binders (Index) :=
+                 (B_Name   => Hidden_Component_Name (Field, E),
+                  Ada_Node => Field,
+                  others   => <>);
+            end if;
+         end loop;
+
+         --  Add a field of type __private representing the unknown extension
+         --  components.
+
+         Index := Index + 1;
+         Binders (Index) :=
+           (B_Name => New_Identifier
+              (Domain => EW_Term,
+               Name   => To_String (WNE_Hidden_Extension),
+               Module => Why_Empty,
+               Typ    => EW_Private_Type),
+            others => <>);
+
+         Emit_Record_Declaration
+           (Th           => Th,
+            Name         => Get_Name (Concrete_Extension_Type (E)),
+            Binders      => Binders (1 .. Index),
+            SPARK_Record => False);
+      end Declare_Extension_Type;
+
+   --  Start of processing for Create_Rep_Record_Completion_If_Needed
+
+   begin
+      --  Empty record types and clones do not require a representative
+      --  theory.
+
+      if Count_Why_Top_Level_Fields (E) = 0
+        or else Record_Type_Is_Clone (E)
+      then
+         return;
+      end if;
+
+      --  If E has an ancestor with the same fields, use its representative
+
+      if Ancestor /= E then
+         return;
+      end if;
+
+      Th := Open_Theory
+        (WF_Context,
+         Get_Rep_Record_Completion (E),
+         Comment =>
+           "Module for completing the tagged record theory associated to type "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  Declare a concrete record type for the extensions of E
+
+      Declare_Extension_Type;
+
+      --  Link it to the abstract extension type using Open and Close
+
+      Emit (Th,
+            New_Clone_Declaration
+              (Theory_Kind   => EW_Module,
+               Clone_Kind    => EW_Export,
+               As_Name       => No_Symbol,
+               Origin        => Incomp_Ty_Conv,
+               Substitutions =>
+                 (1 => New_Clone_Substitution
+                      (Kind      => EW_Type_Subst,
+                       Orig_Name => New_Name
+                         (Symb => NID ("abstr_ty")),
+                       Image     => Get_Name (E_Ext_Type)),
+                  2 => New_Clone_Substitution
+                    (Kind      => EW_Type_Subst,
+                     Orig_Name => New_Name
+                       (Symb => NID ("comp_ty")),
+                     Image     => Get_Name (Concrete_Extension_Type (E))))));
+
+      --  Add defining axioms for the abstract functions for extraction and
+      --  collapse of the type extension.
+
+      if E = Root then
+         Complete_Extraction_Functions;
+      else
+         Complete_Hide_Function;
+      end if;
+
+      Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => E);
+   end Create_Rep_Record_Completion_If_Needed;
 
    ----------------------------------------
    -- Create_Rep_Record_Theory_If_Needed --
@@ -611,6 +1112,7 @@ package body Why.Gen.Records is
                    (Name => To_Name (WNE_Rec_Rep))));
 
       --  The static tag for the type is defined as a logic constant
+
       if Is_Tagged_Type (E) then
          Emit (Th,
                New_Function_Decl
@@ -1149,7 +1651,7 @@ package body Why.Gen.Records is
                                (1 => New_Record_Access
                                   (Name  => R_Field_Access,
                                    Field =>
-                                     +New_Extension_Component_Expr (Root),
+                                     +E_Symb (Root, WNE_Rec_Extension),
                                    Typ   => EW_Private_Type)))));
                   end if;
                end;
@@ -1170,13 +1672,11 @@ package body Why.Gen.Records is
                     Field  => To_Local (E_Symb (E, WNE_Rec_Extension)),
                     Value  =>
                       +W_Term_Id'(New_Call
-                      (Name => Extract_Extension_Fun,
+                      (Name => Extract_Extension_Fun (E),
                        Args =>
                          (1 => New_Record_Access
                             (Name  => R_Field_Access,
-                             Field =>
-                               +New_Extension_Component_Expr
-                               (Root),
+                             Field => +E_Symb (Root, WNE_Rec_Extension),
                              Typ   => EW_Private_Type)))));
 
                declare
@@ -1212,7 +1712,7 @@ package body Why.Gen.Records is
                   To_Root_Field (Field_To_Index) :=
                     New_Field_Association
                       (Domain => EW_Term,
-                       Field  => +New_Extension_Component_Expr (Root),
+                       Field  => +E_Symb (Root, WNE_Rec_Extension),
                        Value  => New_Call (Domain => EW_Term,
                                            Name   =>
                                              To_Ident (WNE_Hide_Extension),
@@ -2066,12 +2566,16 @@ package body Why.Gen.Records is
                Index := Index + 1;
             end loop;
 
-            --  For tagged types, add a field of type __private representing
-            --  the unknown extension components.
+            --  For tagged types, add a field of the local abstract __exp_type
+            --  type representing the unknown extension components.
 
             if Is_Tagged_Type (E) then
                Binders_F (Index) :=
-                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
+                 (B_Name => New_Identifier
+                    (Domain => EW_Term,
+                     Name   => To_Local (E_Symb (E, WNE_Rec_Extension)),
+                     Typ    => New_Named_Type
+                       (To_Local (E_Symb (E, WNE_Extension_Type)))),
                   others => <>);
                Index := Index + 1;
             end if;
@@ -2444,14 +2948,19 @@ package body Why.Gen.Records is
       ----------------------------------
 
       procedure Declare_Extraction_Functions (Components : Node_Lists.List) is
+         Root_Ext_Type   : constant W_Type_Id := New_Named_Type
+           (Name => Get_Name (E_Symb (Root, WNE_Extension_Type)));
+         E_Ext_Type      : constant W_Type_Id := New_Named_Type
+           (To_Local (E_Symb (E, WNE_Extension_Type)));
          X_Ident         : constant W_Identifier_Id :=
-           New_Identifier (Name => "x", Typ => EW_Private_Type);
+           New_Identifier (Name => "x", Typ => Root_Ext_Type);
          Binder          : constant Binder_Array :=
            (1 => (B_Name => X_Ident,
                   others => <>));
          Hide_Name       : constant W_Identifier_Id :=
            To_Ident (WNE_Hide_Extension);
-         Extract_Func    : constant W_Identifier_Id := Extract_Extension_Fun;
+         Extract_Func    : constant W_Identifier_Id :=
+           Extract_Extension_Fun (E);
          Num_Hide_Params : constant Natural :=
            Natural (Components.Length)
            + 1;  --  for the extension field of the current type
@@ -2467,33 +2976,8 @@ package body Why.Gen.Records is
                                  Typ  => W_Type_Of_Component
                                    (Field, E, Init_Wrapper => False)),
                others => <>);
-         end loop;
 
-         --  the extension field in the current type is also part of the
-         --  extension field in the root type
-
-         Index := Index + 1;
-         Hide_Binders (Index) :=
-           (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
-            others => <>);
-
-         pragma Assert (Index = Num_Hide_Params);
-
-         --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
-         --                       : __private
-
-         Emit (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => Hide_Name,
-                  Binders     => Hide_Binders,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Location    => No_Location,
-                  Return_Type => EW_Private_Type));
-
-         for Field of Components loop
-
-            --  function extract__<comp> (x : __private) : <typ>
+            --  function extract__<comp> (x : root.__exp_type) : <typ>
 
             --  If an extraction function is already present in the base type
             --  or parent type of E, then the extraction function is a renaming
@@ -2528,37 +3012,32 @@ package body Why.Gen.Records is
                           (Field, E, Init_Wrapper => False),
                         Def         => Definition));
             end;
-
-            --  Declare an axiom for the extraction function stating:
-            --  forall .... extract__<comp> (hide__ext (...)) = comp
-
-            Emit (Th,
-                  New_Guarded_Axiom
-                    (Name     =>
-                       NID (Img (Get_Symb
-                         (Get_Name (Extract_Fun (Field, Rec => E))))
-                         & "__conv"),
-                     Binders  => Hide_Binders,
-                     Def      => +New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => New_Call
-                          (Domain  => EW_Term,
-                           Name    => Extract_Fun (Field, Rec => E),
-                           Args    =>
-                             (1 => New_Call
-                                  (Domain  => EW_Term,
-                                   Name    => Hide_Name,
-                                   Binders => Hide_Binders,
-                                   Typ     => EW_Private_Type)),
-                           Typ     => W_Type_Of_Component
-                             (Field, E, Init_Wrapper => False)),
-                        Right  => +New_Identifier
-                          (Name => Full_Name (Field),
-                           Typ  => W_Type_Of_Component
-                             (Field, E, Init_Wrapper => False)),
-                        Domain => EW_Term)));
-
          end loop;
+
+         --  The extension field in the current type is also part of the
+         --  extension field in the root type
+
+         Index := Index + 1;
+         Hide_Binders (Index) :=
+           (B_Name => New_Identifier
+              (Domain => EW_Term,
+               Name   => To_Local (E_Symb (E, WNE_Rec_Extension)),
+               Typ    => E_Ext_Type),
+            others => <>);
+
+         pragma Assert (Index = Num_Hide_Params);
+
+         --  function hide__ext__ (comp1 : typ1; .. ; ext : __exp_type)
+         --                       : root.__exp_type
+
+         Emit (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => Hide_Name,
+                  Binders     => Hide_Binders,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Location    => No_Location,
+                  Return_Type => Root_Ext_Type));
 
          --  function extract__ext__ (x : __private) : __private
 
@@ -2569,7 +3048,7 @@ package body Why.Gen.Records is
                   Binders     => Binder,
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
-                  Return_Type => EW_Private_Type));
+                  Return_Type => E_Ext_Type));
       end Declare_Extraction_Functions;
 
       ------------------------------------------------
@@ -2621,6 +3100,25 @@ package body Why.Gen.Records is
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set));
          end;
+      end if;
+
+      --  Emit an abstract type for the extension part of a tagged type along
+      --  with a constant standing for the null extension.
+
+      if Is_Tagged_Type (E) then
+         Emit (Th,
+               New_Type_Decl
+                 (Name  => Img
+                    (Get_Symb (To_Local (E_Symb (E, WNE_Extension_Type))))));
+         Emit (Th,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_Null_Extension)),
+                  Binders     => (1 .. 0 => <>),
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Location    => No_Location,
+                  Return_Type => New_Named_Type
+                    (To_Local (E_Symb (E, WNE_Extension_Type)))));
       end if;
 
       Declare_Record_Type
@@ -2741,10 +3239,17 @@ package body Why.Gen.Records is
    -- Extract_Extension_Fun --
    ---------------------------
 
-   function Extract_Extension_Fun return W_Identifier_Id is
+   function Extract_Extension_Fun
+     (Rec   : Entity_Id;
+      Local : Boolean := True) return W_Identifier_Id
+   is
    begin
-      return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
-                               To_String (WNE_Rec_Extension_Suffix));
+      return New_Identifier
+        (Name   => To_String (WNE_Extract_Prefix) &
+           To_String (WNE_Rec_Extension_Suffix),
+         Domain => EW_Term,
+         Module =>
+           (if Local then Why_Empty else E_Module (Rec)));
    end Extract_Extension_Fun;
 
    -----------------
@@ -2880,6 +3385,19 @@ package body Why.Gen.Records is
       return Args;
    end Get_Discriminants_Of_Subtype;
 
+   -------------------------------
+   -- Get_Rep_Record_Completion --
+   -------------------------------
+
+   function Get_Rep_Record_Completion (E : Entity_Id) return W_Module_Id is
+      Ancestor : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
+      Name     : constant String :=
+        Full_Name (Ancestor) & To_String (WNE_Rec_Rep) & "__Compl";
+   begin
+      return New_Module (File => No_Symbol,
+                         Name => Name);
+   end Get_Rep_Record_Completion;
+
    ---------------------------
    -- Get_Rep_Record_Module --
    ---------------------------
@@ -2892,6 +3410,47 @@ package body Why.Gen.Records is
       return New_Module (File => No_Symbol,
                          Name => Name);
    end Get_Rep_Record_Module;
+
+   ---------------------
+   -- Hidden_Ext_Name --
+   ---------------------
+
+   function Hidden_Ext_Name
+     (Rec   : Entity_Id;
+      Local : Boolean := True) return W_Identifier_Id
+   is (New_Identifier
+       (Domain => EW_Term,
+        Symb   => NID (To_String (WNE_Hidden_Extension)),
+        Module => (if Local then Why_Empty
+                   else Get_Rep_Record_Completion (Rec)),
+        Typ    => EW_Private_Type));
+
+   ---------------------------
+   -- Hidden_Component_Name --
+   ---------------------------
+
+   function Hidden_Component_Name
+     (Field : Entity_Id;
+      Rec   : Entity_Id;
+      Local : Boolean := True) return W_Identifier_Id
+   is
+      Orig : constant Entity_Id := Representative_Component (Field);
+      Name : constant String :=
+        To_String (WNE_Rec_Comp_Prefix) & (Full_Name (Orig)) & "__"
+        & To_String (WNE_Rec_Extension_Suffix);
+      pragma Assert (Field /= Rec);
+      Typ  : constant W_Type_Id :=
+        W_Type_Of_Component (Field        => Field,
+                             Rec          => Rec,
+                             Init_Wrapper => False);
+   begin
+      return New_Identifier
+       (Domain => EW_Term,
+        Symb   => NID (Name),
+        Module => (if Local then Why_Empty
+                   else Get_Rep_Record_Completion (Rec)),
+        Typ    => Typ);
+   end Hidden_Component_Name;
 
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --
@@ -3119,7 +3678,7 @@ package body Why.Gen.Records is
                  New_Field_Association
                    (Domain => Domain,
                     Field  => E_Symb (Ty, WNE_Rec_Extension),
-                    Value  => +M_Main.Null_Extension);
+                    Value  => +E_Symb (Ty, WNE_Null_Extension));
             end if;
 
             Assoc := New_Field_Association
@@ -3323,16 +3882,6 @@ package body Why.Gen.Records is
          Field    => E_Symb (Ty, WNE_Rec_Split_Discrs, Init_Wrapper),
          Name     => Name);
    end New_Discriminants_Access;
-
-   ----------------------------------
-   -- New_Extension_Component_Expr --
-   ----------------------------------
-
-   function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id
-   is
-   begin
-      return +E_Symb (Ty, WNE_Rec_Extension);
-   end New_Extension_Component_Expr;
 
    -----------------------
    -- New_Fields_Access --

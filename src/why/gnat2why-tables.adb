@@ -49,23 +49,27 @@ package body Gnat2Why.Tables is
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
-   package Descendant_Maps is new Ada.Containers.Hashed_Maps
+   package Node_Set_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Node_Sets.Set,
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => Node_Sets."=");
 
-   Comp_Info   : Component_Info_Map_Maps.Map :=
+   Comp_Info    : Component_Info_Map_Maps.Map :=
      Component_Info_Map_Maps.Empty_Map;
    --  This map maps record types and protected types to a map mapping each
    --  component and each N_Variant node to a Component_Info record. This map
    --  is populated through calls to Init_Component_Info and
    --  Init_Component_Info_For_Protected_Types.
 
-   Descendants : Descendant_Maps.Map;
+   Descendants  : Node_Set_Maps.Map;
    --  This map maps tagged types to all their descendants that are visible
    --  from the analyzed unit.
+
+   Tagged_Comps : Node_Set_Maps.Map;
+   --  This map maps root tagged types to all the components declared in those
+   --  of their descendants that are visible from the analyzed unit.
 
    function Find_Rec_Node_For_Variant (E : Entity_Id) return Entity_Id
    with Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
@@ -104,6 +108,13 @@ package body Gnat2Why.Tables is
       Info : in out Record_Info);
    --  @param E record or concurrent subtype
    --  For each subcomponent of E, create an entry in map Comp_Info
+
+   procedure Init_Tagged_Components (E : Entity_Id) with
+     Pre => Is_Tagged_Type (E);
+   --  @param E a tagged type
+   --  If E is the root of a tagged derivation, add an entry for it in
+   --  Tagged_Comps. Otherwise, add the components from its derivation in their
+   --  root entry.
 
    function Search_Component_In_Info
      (Info : Component_Sets.Set;
@@ -260,6 +271,13 @@ package body Gnat2Why.Tables is
    begin
       return Descendants (Ty);
    end Get_Descendant_Set;
+
+   ------------------------------
+   -- Get_Extension_Components --
+   ------------------------------
+
+   function Get_Extension_Components (E : Entity_Id) return Node_Sets.Set is
+      (Tagged_Comps (E));
 
    ----------------------
    -- Get_Variant_Info --
@@ -501,6 +519,10 @@ package body Gnat2Why.Tables is
       if Is_Tagged_Type (Root_Retysp (E)) then
          Descendants.Include (E, Node_Sets.Empty_Set);
          Store_In_Ancestors (E);
+
+         if Ekind (E) /= E_Record_Subtype then
+            Init_Tagged_Components (E);
+         end if;
       end if;
    end Init_Component_Info;
 
@@ -579,6 +601,10 @@ package body Gnat2Why.Tables is
                Comp_Info (Position).Components.Insert (E);
                Comp_Info (Position).Visibility.Insert (E, Hidden);
             end if;
+
+            if Is_Tagged_Type (Root_Retysp (E)) then
+               Init_Tagged_Components (E);
+            end if;
          end;
       else
          Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
@@ -621,6 +647,43 @@ package body Gnat2Why.Tables is
          end;
       end loop;
    end Init_Component_Info_For_Subtypes;
+
+   ----------------------------
+   -- Init_Tagged_Components --
+   ----------------------------
+
+   procedure Init_Tagged_Components (E : Entity_Id) is
+      Root : constant Entity_Id := Root_Retysp (E);
+   begin
+      if E = Root then
+         Tagged_Comps.Insert (E, Node_Sets.Empty_Set);
+      elsif Has_Private_Fields (E) then
+         Tagged_Comps (Root).Insert (E);
+      else
+         declare
+            Enclosing_Decl : constant Node_Id := Parent (E);
+            pragma Assert
+              (Nkind (Enclosing_Decl) = N_Full_Type_Declaration);
+            Type_Def       : constant Node_Id :=
+              Type_Definition (Enclosing_Decl);
+            pragma Assert
+              (Nkind (Type_Def) = N_Derived_Type_Definition
+               and then Present (Record_Extension_Part (Type_Def)));
+            Rec_Ext        : constant Node_Id :=
+              Record_Extension_Part (Type_Def);
+            Comp_Decl      : Node_Id :=
+              (if Null_Present (Rec_Ext) then Types.Empty
+               else First (Component_Items (Component_List (Rec_Ext))));
+            Root_Comps     : Node_Sets.Set renames Tagged_Comps (Root);
+         begin
+            while Present (Comp_Decl) loop
+               Root_Comps.Insert
+                 (Defining_Identifier (Comp_Decl));
+               Next (Comp_Decl);
+            end loop;
+         end;
+      end if;
+   end Init_Tagged_Components;
 
    -------------------
    -- Lt_Components --

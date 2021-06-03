@@ -55,6 +55,13 @@ package Why.Gen.Records is
                          Private_Kind
      and then Might_Contain_Relaxed_Init (E);
 
+   procedure Complete_Tagged_Record_Type
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   with Pre => Is_Tagged_Type (E);
+   --  Emit a type concrete declaration for the extension part of a tagged type
+   --  and axioms for its extract__ and hide__ functions.
+
    procedure Create_Rep_Record_Theory_If_Needed (E : Entity_Id)
    with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |

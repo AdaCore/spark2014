@@ -182,7 +182,7 @@ package body Why.Gen.Pointers is
                      Return_Type => Get_Typ (Value_Id),
                      Def         => New_Call
                        (Domain => EW_Term,
-                        Name   => To_Local (E_Symb (E, WNE_Pointer_Open)),
+                        Name   => To_Local (E_Symb (E, WNE_Open)),
                         Args   =>
                           (1   => New_Record_Access
                                (Name  => +A_Ident,
@@ -803,7 +803,7 @@ package body Why.Gen.Pointers is
                  (Theory_Kind   => EW_Module,
                   Clone_Kind    => EW_Export,
                   As_Name       => No_Symbol,
-                  Origin        => Access_To_Incomp_Ty,
+                  Origin        => Incomp_Ty_Conv,
                   Substitutions =>
                     (1 => New_Clone_Substitution
                          (Kind      => EW_Type_Subst,
@@ -1200,7 +1200,7 @@ package body Why.Gen.Pointers is
         (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty))
          then New_Call
            (Domain => Domain,
-            Name   => E_Symb (Ty, WNE_Pointer_Close),
+            Name   => E_Symb (Ty, WNE_Close),
             Args   => (1 => Value))
          else Value);
       Update_Expr : constant W_Expr_Id :=
@@ -1460,8 +1460,8 @@ package body Why.Gen.Pointers is
          Value := New_Call
            (Domain => EW_Term,
             Name   =>
-              (if Local then To_Local (E_Symb (Ty_Ext, WNE_Pointer_Close))
-               else E_Symb (Ty_Ext, WNE_Pointer_Close)),
+              (if Local then To_Local (E_Symb (Ty_Ext, WNE_Close))
+               else E_Symb (Ty_Ext, WNE_Close)),
             Args   => (1 => Value));
       end if;
 

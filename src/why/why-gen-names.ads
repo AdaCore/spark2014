@@ -314,12 +314,29 @@ package Why.Gen.Names is
       --  Name of the program function for variant checks on subprogram calls
       WNE_Check_Subprogram_Variants,
 
+      --  Symbols to introduce a bijection between an abstract type and its
+      --  completion.
+      WNE_Open,
+      WNE_Close,
+
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 
+      --  Symbols for extensions of tagged types
+
+      --  Name of the Why3 field representing potential unknown extension
+      --  components in a tagged derivation.
+      WNE_Hidden_Extension,  --  rec__hidden_ext__
+
+      --  Type for the extension components of a tagged type
+      WNE_Extension_Type,    --  __ext_type
+
+      --  Constant standing for the empty extension
+      WNE_Null_Extension,    --  __null_ext__
+
       --  Name of the Why3 field representing extension components in a tagged
       --  type or a class-wide type.
-      WNE_Rec_Extension,  --  rec__ext__
+      WNE_Rec_Extension,     --  rec__ext__
 
       --  Suffix of the above extension field, to be used in related functions
       WNE_Rec_Extension_Suffix,  --  ext__
@@ -422,8 +439,6 @@ package Why.Gen.Names is
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Assign_Null_Check,      --  "__assign_null_check"
       WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
-      WNE_Pointer_Open,           --  "__open"
-      WNE_Pointer_Close,          --  "__close"
       WNE_Is_Moved,               --  "__is_moved"
       WNE_Move,                   --  "__move"
       WNE_Moved_Relation,         --  "__moved_relation"

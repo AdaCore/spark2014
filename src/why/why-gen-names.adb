@@ -925,6 +925,7 @@ package body Why.Gen.Names is
          when WNE_Fixed_Point_Prefix         => "Fixed_Point",
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
          when WNE_Havoc                      => "__havoc",
+         when WNE_Hidden_Extension           => "rec__hidden_ext__",
          when WNE_Hide_Extension             => "hide_ext__",
          when WNE_Init_Wrapper_Suffix        => "__init_wrapper",
          when WNE_No_Return_Module           => "No_Return",
@@ -946,6 +947,8 @@ package body Why.Gen.Names is
          when WNE_Is_Moved           => "__is_moved",
          when WNE_Move               => "__move",
          when WNE_Moved_Relation     => "__moved_relation",
+         when WNE_Close              => "__close",
+         when WNE_Open               => "__open",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -988,6 +991,7 @@ package body Why.Gen.Names is
             | WNE_Dynamic_Predicate
             | WNE_Dynamic_Property
             | WNE_Dynamic_Property_BV_Int
+            | WNE_Extension_Type
             | WNE_Fixed_Point_Div
             | WNE_Fixed_Point_Div_Int
             | WNE_Fixed_Point_Mult
@@ -999,6 +1003,7 @@ package body Why.Gen.Names is
             | WNE_Index_Dynamic_Property_4
             | WNE_Init_Value
             | WNE_Int_Proj
+            | WNE_Null_Extension
             | WNE_Of_Array
             | WNE_Of_Base
             | WNE_Of_BitVector
@@ -1014,8 +1019,6 @@ package body Why.Gen.Names is
             | WNE_Private_To_Wrapper
             | WNE_Private_Type
             | WNE_Pointer_Call
-            | WNE_Pointer_Close
-            | WNE_Pointer_Open
             | WNE_Pointer_Value_Abstr
             | WNE_Pos_To_Rep
             | WNE_Refined_Func_Guard
