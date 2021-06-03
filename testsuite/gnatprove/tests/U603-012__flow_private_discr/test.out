@@ -1,0 +1,3 @@
+minimal.adb:8:09: info: discriminant check proved (CVC4: 1 VC)
+minimal.ads:4:14: warning: subprogram "Dummy" has no effect
+minimal.ads:18:30: info: range check proved (CVC4: 1 VC)
