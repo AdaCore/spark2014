@@ -18,7 +18,7 @@ records.adb:89:07: info: initialization of "R" proved
 records.adb:94:15: info: precondition proved (CVC4: 2 VC)
 records.adb:103:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 records.adb:111:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
-records.adb:120:47: medium: postcondition might fail, cannot prove A.The_Pair = Null_Pair (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)))
+records.adb:119:19: medium: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:129:25: info: initialization of "Dst" proved
 records.adb:130:11: info: flow dependencies proved
 records.adb:132:22: info: postcondition proved (CVC4: 2 VC)
@@ -106,9 +106,9 @@ counterexample expected for check at records.adb:86
   trace at records.adb:91 --> A = (A => Unsigned_Byte'Last, B => 0)
   trace at records.adb:96 --> R = (A => 0, B => 0)
   trace at records.adb:99 --> R = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)
-counterexample expected for check at records.adb:120
+counterexample expected for check at records.adb:119
   trace at records.adb:118 --> A = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:120 --> A = (Exists => False, The_Pair => (A => 1, B => 0))
+  trace at records.adb:119 --> A = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:123 --> A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True
 counterexample expected for check at records.adb:142
   trace at records.adb:138 --> Src = (Exists => True, The_Pair => (A => 1, B => 0))

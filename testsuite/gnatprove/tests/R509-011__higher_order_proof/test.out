@@ -1896,7 +1896,7 @@ spark-higher_order-fold.adb:914:65: info: index check proved (CVC4: 4 VC), in in
 
 spark-higher_order-fold.adb:914:68: info: index check proved (CVC4: 4 VC), in instantiation at test_higher_order3.ads:20
 
-spark-higher_order-fold.adb:918:10: info: precondition proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_higher_order3.ads:20
+spark-higher_order-fold.adb:918:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order3.ads:20
 
 spark-higher_order-fold.adb:938:30: info: precondition proved (CVC4: 3 VC), in instantiation at test_higher_order3.ads:20
 

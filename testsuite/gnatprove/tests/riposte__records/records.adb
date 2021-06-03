@@ -116,8 +116,8 @@ is
    end Is_Valid_B;
 
    function Is_Valid_C (A : in Optional_Pair) return Boolean
-     with Post => Is_Valid_C'Result = (if not A.Exists
-                                         then A.The_Pair = Null_Pair) --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+     with Post => Is_Valid_C'Result = (if not A.Exists --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+                                         then A.The_Pair = Null_Pair)
    is
    begin
       return A.Exists
