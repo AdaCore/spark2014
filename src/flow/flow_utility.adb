@@ -5421,7 +5421,6 @@ package body Flow_Utility is
 
                Input  : Node_Id;
                Target : Node_Id;
-               Done   : Node_Sets.Set;
 
             begin
                Component_Association := First (Component_Associations (N));
@@ -5443,30 +5442,12 @@ package body Flow_Utility is
                   Target := First (Choices (Component_Association));
                   Merge (M, Component => Unique_Component (Entity (Target)),
                          Input => Input);
-                  Done.Insert (Unique_Component (Entity (Target)));
-                  --  ??? repeated calls to Unique_Component
 
                   --  Multiple component updates are expanded into individual
                   --  component associations.
                   pragma Assert (No (Next (Target)));
 
                   Next (Component_Association);
-               end loop;
-
-               --  If the aggregate is more constrained than the type would
-               --  suggest, we fill in the "missing" fields with null, so
-               --  that they appear initialized.
-               for Component of Unique_Components (Map_Type) loop
-                  if not Done.Contains (Component) then
-                     pragma Assert (Is_Declared_Within_Variant (Component));
-                     for F of
-                       Flatten_Variable
-                         (Add_Component (Map_Root, Component),
-                          Scope)
-                     loop
-                        M.Insert (F, Flow_Id_Sets.Empty_Set);
-                     end loop;
-                  end if;
                end loop;
             end;
 
