@@ -4800,8 +4800,7 @@ package body Flow_Utility is
             --  Handle clauses like "X'Result => ..." and "X.Y'Result => ..."
 
             when N_Attribute_Reference =>
-               pragma Assert (Get_Attribute_Id (Attribute_Name (Item)) =
-                              Attribute_Result);
+               pragma Assert (Attribute_Name (Item) = Name_Result);
 
                if Entity (Prefix (Item)) = Output then
                   Needle := First_Name_Node (Prefix (Item));
@@ -4833,8 +4832,7 @@ package body Flow_Utility is
 
                         when N_Attribute_Reference =>
                            pragma Assert
-                             (Get_Attribute_Id (Attribute_Name (Single_Item)) =
-                                Attribute_Result);
+                             (Attribute_Name (Single_Item) = Name_Result);
 
                            if Entity (Prefix (Single_Item)) = Output then
                               Needle := First_Name_Node (Prefix (Single_Item));
@@ -5728,15 +5726,15 @@ package body Flow_Utility is
             end if;
             pragma Annotate (Xcov, Exempt_Off);
 
-            case Get_Attribute_Id (Attribute_Name (N)) is
-               when Attribute_Update =>
+            case Attribute_Name (N) is
+               when Name_Update =>
                   pragma Assert (List_Length (Expressions (N)) = 1);
                   M :=
                     Untangle_Delta_Aggregate
                       (Prefix (N),
                        Component_Associations (First (Expressions (N))));
 
-               when Attribute_Result =>
+               when Name_Result =>
                   declare
                      Class_Wide_Conversion : constant Boolean :=
                        not Is_Class_Wide_Type (Get_Type (N, Scope))
@@ -5752,7 +5750,7 @@ package body Flow_Utility is
 
                when others =>
                   Error_Msg_N ("cannot untangle attribute", N);
-                  raise Why.Not_Implemented;
+                  raise Program_Error;
             end case;
 
          when N_Explicit_Dereference
