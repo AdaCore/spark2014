@@ -408,6 +408,8 @@ package Why.Atree.Modules is
       Power          : W_Identifier_Id;
       To_Int         : W_Identifier_Id;
       Of_Int         : W_Identifier_Id;
+      UC_To_Int      : W_Identifier_Id;  --  bitwise conversion for UC
+      UC_Of_Int      : W_Identifier_Id;  --  bitwise conversion for UC
       Udiv           : W_Identifier_Id;
       Urem           : W_Identifier_Id;
       BW_And         : W_Identifier_Id;

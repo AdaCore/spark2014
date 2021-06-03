@@ -1559,6 +1559,16 @@ package body Why.Atree.Modules is
                            Symb   => NID ("t_int"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Int_Type);
+         M_BVs (BV).UC_Of_Int :=
+           New_Identifier (Domain => EW_Term,
+                           Symb   => NID ("uc_of_int"),
+                           Module => M_BVs (BV).Module,
+                           Typ    => M_BVs (BV).T);
+         M_BVs (BV).UC_To_Int :=
+           New_Identifier (Domain => EW_Term,
+                           Symb   => NID ("uc_to_int"),
+                           Module => M_BVs (BV).Module,
+                           Typ    => EW_Int_Type);
          M_BVs (BV).Two_Power_Size :=
            New_Identifier (Module => M_BVs (BV).Module,
                            Domain => EW_Term,
