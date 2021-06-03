@@ -4288,6 +4288,21 @@ package body Flow.Control_Flow_Graph is
                         V);
                      Inits.Append (V);
                      All_Vertices.Insert (V);
+
+                     --  ??? We only expect missing variant parts here, but
+                     --  also get array bounds (which feels dubious but easy)
+                     --  and private parts (when a nested package makes use of
+                     --  its private types). The private parts is a known
+                     --  consequence of the current handling of nested packages
+                     --  and while more serious it is also much harder to fix.
+
+                     pragma Assert
+                       (Is_Bound (F)
+                          or else
+                        (for some Comp_Id of F.Component =>
+                           Is_Declared_Within_Variant (Comp_Id))
+                          or else
+                        Ctx.In_Nested_Package);
                   end loop;
 
                   if not FA.Generating_Globals then
