@@ -87,9 +87,9 @@ bounded_queue_example.adb:10:04: info: initialization of "My_Queue" proved
 bounded_queue_example.adb:10:50: info: range check proved (CVC4: 1 VC)
 bounded_queue_example.adb:11:04: info: initialization of "Value" proved
 bounded_queue_example.adb:15:43: info: unrolling loop
-bounded_queue_example.adb:16:07: medium: precondition might fail, cannot prove not Full (Queue)
+bounded_queue_example.adb:16:07: medium: precondition might fail
 bounded_queue_example.adb:18:38: info: unrolling loop
-bounded_queue_example.adb:19:07: medium: precondition might fail, cannot prove not Empty (Queue)
+bounded_queue_example.adb:19:07: medium: precondition might fail
 bounded_queue_example.adb:24:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v1.adb:7:04: info: initialization of "Value" proved
@@ -98,17 +98,17 @@ bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
 bounded_queue_example_v1.adb:11:40: info: cannot unroll loop (too many loop iterations)
-bounded_queue_example_v1.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v1.adb:12:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:14:38: info: unrolling loop
-bounded_queue_example_v1.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:6:04: info: initialization of "My_Queue" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:11:40: info: cannot unroll loop (too many loop iterations)
-bounded_queue_example_v2.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v2.adb:12:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:14:38: info: unrolling loop
-bounded_queue_example_v2.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v2.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
 bounded_queue_v1.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array]

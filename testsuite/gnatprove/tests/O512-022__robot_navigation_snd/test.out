@@ -33,7 +33,7 @@ algorithm.adb:94:22: warning: this statement is never reached
 algorithm.adb:95:22: warning: this statement is never reached
 algorithm.adb:96:22: warning: this statement is never reached
 algorithm.adb:106:22: info: initialization of "d" proved
-algorithm.adb:108:44: medium: precondition might fail, cannot prove X /= 0.0 or Y /= 0.0
+algorithm.adb:108:44: medium: precondition might fail
 algorithm.adb:108:64: info: division check proved (CVC4: 1 VC)
 algorithm.adb:108:64: info: float overflow check proved (Trivial)
 algorithm.adb:109:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
@@ -144,7 +144,7 @@ algorithm.adb:355:19: warning: this statement is never reached
 algorithm.adb:356:19: warning: this statement is never reached
 algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:361:27: medium: precondition might fail, cannot prove Has_Element (Container, Position)
+algorithm.adb:361:27: medium: precondition might fail
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
 algorithm.adb:381:71: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at algorithm.ads:91 should mention This]
 algorithm.adb:395:22: info: assertion proved (CVC4: 1 VC)
@@ -199,7 +199,7 @@ algorithm.adb:473:114: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:477:35: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:477:77: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:477:96: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:478:36: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
+algorithm.adb:478:36: medium: precondition might fail [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:478:73: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:478:92: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:480:22: warning: statement has no effect
@@ -214,9 +214,9 @@ algorithm.adb:509:13: warning: this statement is never reached
 algorithm.adb:510:13: warning: this statement is never reached
 algorithm.adb:510:30: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:510:67: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:514:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
+algorithm.adb:514:20: medium: precondition might fail [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:514:57: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:515:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
+algorithm.adb:515:20: medium: precondition might fail [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:515:57: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:530:07: info: initialization of "deltaMag" proved
 algorithm.adb:531:07: info: initialization of "deltaAngle" proved
@@ -325,7 +325,7 @@ algorithm.adb:732:10: warning: statement has no effect
 algorithm.adb:733:13: warning: this statement is never reached
 algorithm.adb:737:52: info: division check proved (CVC4: 1 VC)
 algorithm.adb:737:52: info: float overflow check proved (Trivial)
-algorithm.adb:744:58: medium: precondition might fail, cannot prove X /= 0.0 or Y /= 0.0
+algorithm.adb:744:58: medium: precondition might fail
 algorithm.adb:745:88: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 algorithm.adb:746:104: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:755:13: warning: statement has no effect
@@ -348,7 +348,7 @@ algorithm.adb:774:37: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:777:60: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:778:57: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:795:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:798:29: medium: precondition might fail, cannot prove safetyDist /= 0.0
+algorithm.adb:798:29: medium: precondition might fail
 algorithm.adb:800:07: warning: statement has no effect
 algorithm.adb:801:10: warning: this statement is never reached
 algorithm.adb:802:10: warning: this statement is never reached
