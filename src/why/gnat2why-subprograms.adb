@@ -5277,6 +5277,7 @@ package body Gnat2Why.Subprograms is
                                  Subp   => Descendant_E,
                                  Name   => Desc_Id,
                                  Args   => Desc_Args,
+                                 Check  => False,
                                  Typ    => Desc_Ty),
                               To     => Anc_Ty),
                            Right  => Anc_Call,

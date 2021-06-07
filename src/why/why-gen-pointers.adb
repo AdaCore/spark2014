@@ -1047,14 +1047,13 @@ package body Why.Gen.Pointers is
          return Expr;
       else
          return
-           +New_VC_Call
+           New_VC_Call
              (Ada_Node => Ada_Node,
               Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun),
               Progs    =>
                 Prepare_Args_For_Access_Subtype_Check (Check_Ty, +Expr),
               Reason   => (if Has_Array_Type (Des_Ty) then VC_Range_Check
                            else VC_Discriminant_Check),
-              Domain   => EW_Prog,
               Typ      => Get_Type (+Expr));
       end if;
    end Insert_Pointer_Subtype_Check;
@@ -1324,7 +1323,6 @@ package body Why.Gen.Pointers is
            (Ada_Node => Ada_Node,
             Name     => To_Program_Space (Field),
             Progs    => (1 => +Name),
-            Domain   => EW_Prog,
             Reason   => VC_Null_Pointer_Dereference,
             Typ      => Get_Typ (Field));
       elsif Designates_Incomplete_Type (Repr_Pointer_Type (Retysp (E))) then

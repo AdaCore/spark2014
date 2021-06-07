@@ -413,7 +413,7 @@ package body Gnat2Why.Expr is
      (Ada_Node : Node_Id;
       T        : W_Expr_Id;
       In_Type  : Entity_Id;
-      Is_Float : Boolean) return W_Expr_Id
+      Is_Float : Boolean) return W_Prog_Id
      with Pre => Is_Scalar_Type (In_Type);
    --  Inserts an overflow check on top of the Why expression T, using the
    --  bounds of the base type of In_Type. Use Ada_Node for the VC location.
@@ -2813,13 +2813,12 @@ package body Gnat2Why.Expr is
             --  In this case, we can use the expression of the variants, as
             --  it cannot have changed since the beginning of the subprogram.
          begin
-            return +New_VC_Call
+            return New_VC_Call
               (Ada_Node => Call,
                Name     => E_Symb
                  (Get_Called_Entity (Call), WNE_Check_Subprogram_Variants),
                Progs    => Enclosing_Variants & Args,
                Reason   => VC_Subprogram_Variant,
-               Domain   => EW_Prog,
                Typ      => EW_Unit_Type);
          end;
       else
@@ -5324,13 +5323,12 @@ package body Gnat2Why.Expr is
                           (Domain => EW_Prog,
                            Name   => "_",
                            Typ    => Get_Type (+Postfetch_Actual)),
-                        Def      => New_VC_Call
+                        Def      => +New_VC_Call
                           (Ada_Node => Actual,
                            Name     => To_Program_Space
                              (E_Symb (Etype (Actual),
                               WNE_Assign_Null_Check)),
                            Progs    => (1 => +Postfetch_Actual),
-                           Domain   => EW_Prog,
                            Reason   => VC_Null_Exclusion,
                            Typ      => Get_Type (+Postfetch_Actual)),
                         Context  => +Void,
@@ -7252,13 +7250,12 @@ package body Gnat2Why.Expr is
      (Ada_Node : Node_Id;
       T        : W_Expr_Id;
       In_Type  : Entity_Id;
-      Is_Float : Boolean) return W_Expr_Id
+      Is_Float : Boolean) return W_Prog_Id
    is
       Base : constant Entity_Id := Base_Type (In_Type);
 
    begin
-      return New_VC_Call (Domain   => EW_Prog,
-                          Ada_Node => Ada_Node,
+      return New_VC_Call (Ada_Node => Ada_Node,
                           Name     => E_Symb (Base, WNE_Range_Check_Fun),
                           Progs    => (1 => +T),
                           Reason   =>
@@ -8170,27 +8167,16 @@ package body Gnat2Why.Expr is
                   Expr     => Right,
                   To       => R_Type);
 
-               if Domain = EW_Prog
-                 and then Present (Ada_Node)
-                 and then Do_Division_Check (Ada_Node)
-               then
-                  T :=
-                    New_VC_Call
-                      (Ada_Node => Ada_Node,
-                       Domain   => Domain,
-                       Name     => To_Program_Space (Name),
-                       Progs    => (1 => Left_Rep, 2 => Right_Rep),
-                       Reason   => VC_Division_Check,
-                       Typ      => Base);
-               else
-                  T :=
-                    New_Call
-                      (Ada_Node => Ada_Node,
-                       Domain   => Domain,
-                       Name     => Name,
-                       Args     => (1 => Left_Rep, 2 => Right_Rep),
-                       Typ      => Base);
-               end if;
+               T := New_Operator_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Name,
+                  Args     => (1 => Left_Rep, 2 => Right_Rep),
+                  Reason   => VC_Division_Check,
+                  Check    => (Domain = EW_Prog
+                               and then Present (Ada_Node)
+                               and then Do_Division_Check (Ada_Node)),
+                  Typ      => Base);
 
                if Base_Why_Type (Return_Type) /= Base then
                   T := Insert_Checked_Conversion
@@ -8216,28 +8202,24 @@ package body Gnat2Why.Expr is
                           M_Int_Div.Rem_Id
                         else M_Int_Div.Mod_Id);
 
-               Name := (if Domain = EW_Prog then
-                          To_Program_Space (Name)
-                        else
-                          Name);
-               T :=
-                 New_VC_Call
-                   (Ada_Node => Ada_Node,
-                    Domain   => Domain,
-                    Name     => Name,
-                    Progs    =>
-                      (1 => Insert_Simple_Conversion
+               T := New_Operator_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Name,
+                  Args     =>
+                    (1 => Insert_Simple_Conversion
                          (Ada_Node => Ada_Node,
                           Domain   => Domain,
                           Expr     => Left,
                           To       => Base),
-                       2 => Insert_Simple_Conversion
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Expr     => Right,
-                          To       => Base)),
-                    Reason   => VC_Division_Check,
-                    Typ      => Base);
+                     2 => Insert_Simple_Conversion
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Expr     => Right,
+                        To       => Base)),
+                  Check    => Domain = EW_Prog,
+                  Reason   => VC_Division_Check,
+                  Typ      => Base);
             end;
 
          when N_Op_Expon =>
@@ -12997,31 +12979,18 @@ package body Gnat2Why.Expr is
                then
                   --  In the program domain, emit a range check
 
-                  if Domain = EW_Prog then
-                     T := New_VC_Call
-                       (Ada_Node => Arg,
-                        Domain   => Domain,
-                        Reason   => VC_Range_Check,
-                        Name     => To_Program_Space
-                          (E_Symb (Val_Type, WNE_Rep_To_Pos)),
-                        Progs    => (1 => Transform_Expr
-                                     (Arg,
-                                      EW_Int_Type,
-                                      Domain,
-                                      Params)),
-                        Typ      => EW_Int_Type);
-                  else
-                     T := New_Call
-                       (Ada_Node => Arg,
-                        Domain   => Domain,
-                        Name     => E_Symb (Val_Type, WNE_Rep_To_Pos),
-                        Args     => (1 => Transform_Expr
-                                     (Arg,
-                                      EW_Int_Type,
-                                      Domain,
-                                      Params)),
-                        Typ      => EW_Int_Type);
-                  end if;
+                  T := New_Operator_Call
+                    (Ada_Node => Arg,
+                     Domain   => Domain,
+                     Reason   => VC_Range_Check,
+                     Name     => E_Symb (Val_Type, WNE_Rep_To_Pos),
+                     Args     => (1 => Transform_Expr
+                                      (Arg,
+                                       EW_Int_Type,
+                                       Domain,
+                                       Params)),
+                     Check    => Domain = EW_Prog,
+                     Typ      => EW_Int_Type);
                else
                   pragma Annotate
                     (Xcov, Exempt_On,
@@ -13390,22 +13359,14 @@ package body Gnat2Why.Expr is
                     Domain   => Domain,
                     Name     => Of_String_Id,
                     Args     => (1 => Arg));
-               if Domain = EW_Prog then
-                  T := New_VC_Call
-                    (Ada_Node => Expr,
-                     Domain   => Domain,
-                     Name     => To_Program_Space (Func),
-                     Progs    => (1 => T),
-                     Reason   => VC_Precondition,
-                     Typ      => Base_Why_Type (Var));
-               else
-                  T := New_Call
-                    (Ada_Node => Expr,
-                     Domain   => Domain,
-                     Name     => Func,
-                     Args     => (1 => T),
-                     Typ      => Base_Why_Type (Var));
-               end if;
+               T := New_Operator_Call
+                 (Ada_Node => Expr,
+                  Domain   => Domain,
+                  Name     => Func,
+                  Args     => (1 => T),
+                  Check    => Domain = EW_Prog,
+                  Reason   => VC_Precondition,
+                  Typ      => Base_Why_Type (Var));
             end;
 
          when Attribute_Update =>
@@ -13459,27 +13420,17 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
             begin
-               if Domain = EW_Prog
-               then
-                  --  The front end does not insert a Do_Division_Check flag on
-                  --  remainder attribute so we systematically do the check.
-                  T := New_VC_Call
-                    (Ada_Node => Expr,
-                     Name     => To_Program_Space (MF_Floats (Base).Remainder),
-                     Progs    => (1 => Arg_1,
-                                  2 => Arg_2),
-                     Reason   => VC_Division_Check,
-                     Domain   => Domain,
-                     Typ      => Base);
-               else
-                  T := New_Call
-                    (Ada_Node => Expr,
-                     Name     => MF_Floats (Base).Remainder,
-                     Args     => (1 => Arg_1,
-                                  2 => Arg_2),
-                     Domain   => Domain,
-                     Typ      => Base);
-               end if;
+               --  The front end does not insert a Do_Division_Check flag on
+               --  remainder attribute so we systematically do the check.
+               T := New_Operator_Call
+                 (Ada_Node => Expr,
+                  Name     => MF_Floats (Base).Remainder,
+                  Args     => (1 => Arg_1,
+                               2 => Arg_2),
+                  Reason   => VC_Division_Check,
+                  Check    => Domain = EW_Prog,
+                  Domain   => Domain,
+                  Typ      => Base);
             end;
 
          when Attribute_Min
@@ -17743,11 +17694,11 @@ package body Gnat2Why.Expr is
 
                case Mode is
                   when Strict =>
-                     T := Insert_Overflow_Check (Expr, T, Expr_Type,
-                                                 Is_Float => False);
+                     T := +Insert_Overflow_Check (Expr, T, Expr_Type,
+                                                  Is_Float => False);
                   when Minimized =>
-                     T := Insert_Overflow_Check (Expr, T, Standard_Integer_64,
-                                                 Is_Float => False);
+                     T := +Insert_Overflow_Check (Expr, T, Standard_Integer_64,
+                                                  Is_Float => False);
                   when Eliminated =>
                      null;
                   when Not_Set =>
@@ -17800,8 +17751,8 @@ package body Gnat2Why.Expr is
                end if;
 
                if not True_Check_Inserted then
-                  T := Insert_Overflow_Check (Expr, T, Expr_Type,
-                                              Is_Float => True);
+                  T := +Insert_Overflow_Check (Expr, T, Expr_Type,
+                                               Is_Float => True);
                end if;
             end;
 
@@ -17809,7 +17760,8 @@ package body Gnat2Why.Expr is
          --  the overflow check.
 
          else
-            T := Insert_Overflow_Check (Expr, T, Expr_Type, Is_Float => False);
+            T :=
+              +Insert_Overflow_Check (Expr, T, Expr_Type, Is_Float => False);
          end if;
       end if;
 
@@ -18041,31 +17993,17 @@ package body Gnat2Why.Expr is
                                  Domain   => Domain,
                                  Selector => Selector));
 
-      if Domain in EW_Term | EW_Pred then
-         T := New_Function_Call
-           (Ada_Node => Expr,
-            Domain   => Domain,
-            Subp     => Subp,
-            Selector => Selector,
-            Name     => Why_Name,
-            Args     => Args,
-            Typ      => Get_Typ (Why_Name));
-      elsif Why_Subp_Has_Precondition (Subp, Selector) then
-         T := New_VC_Call
-           (Ada_Node => Expr,
-            Name     => Why_Name,
-            Progs    => Args,
-            Reason   => VC_Precondition,
-            Domain   => Domain,
-            Typ      => Get_Typ (Why_Name));
-      else
-         T := New_Call
-           (Name     => Why_Name,
-            Args     => Args,
-            Ada_Node => Expr,
-            Domain   => Domain,
-            Typ      => Get_Typ (Why_Name));
-      end if;
+      T := New_Function_Call
+        (Ada_Node => Expr,
+         Domain   => Domain,
+         Subp     => Subp,
+         Selector => Selector,
+         Name     => Why_Name,
+         Args     => Args,
+         Check    =>
+           Domain = EW_Prog
+           and then Why_Subp_Has_Precondition (Subp, Selector),
+         Typ      => Get_Typ (Why_Name));
 
       --  There are no tag checks on dispatching equality. Instead, the
       --  operator returns False. Take care of this special case by
@@ -18135,12 +18073,11 @@ package body Gnat2Why.Expr is
 
          if Subp_Needs_Invariant_Checks (Subp) then
             T := +Sequence
-              (+New_VC_Call
+              (New_VC_Call
                  (Ada_Node => Expr,
                   Name     => E_Symb (Subp, WNE_Check_Invariants_On_Call),
                   Progs    => Args,
                   Reason   => VC_Invariant_Check,
-                  Domain   => Domain,
                   Typ      => EW_Unit_Type),
                +T);
          end if;
@@ -20022,35 +19959,20 @@ package body Gnat2Why.Expr is
               Expr     => +W_Index_Var,
               To       => Type_Of_Node (Curs_Type));
       begin
-         if Domain in EW_Prog | EW_Pterm then
-            return New_VC_Call
-              (Ada_Node => Ada_Node,
-               Name     =>
-                 W_Identifier_Id
-                   (Transform_Identifier (Params       => Params,
-                                          Expr         => Element_E,
-                                          Ent          => Element_E,
-                                          Domain       => Domain)),
-               Progs    => (1 => Cont_Expr,
-                            2 => Curs_Expr),
-               Reason   => VC_Precondition,
-               Domain   => Domain,
-               Typ      => Element_T);
-         else
-            return New_Function_Call
-              (Ada_Node => Ada_Node,
-               Name     =>
-                 W_Identifier_Id
-                   (Transform_Identifier (Params       => Params,
-                                          Expr         => Element_E,
-                                          Ent          => Element_E,
-                                          Domain       => Domain)),
-               Subp     => Element_E,
-               Args     => (1 => Cont_Expr,
-                            2 => Curs_Expr),
-               Domain   => Domain,
-               Typ      => Element_T);
-         end if;
+         return New_Function_Call
+           (Ada_Node => Ada_Node,
+            Name     =>
+              W_Identifier_Id
+                (Transform_Identifier (Params       => Params,
+                                       Expr         => Element_E,
+                                       Ent          => Element_E,
+                                       Domain       => Domain)),
+            Subp     => Element_E,
+            Args     => (1 => Cont_Expr,
+                         2 => Curs_Expr),
+            Domain   => Domain,
+            Check    => Domain = EW_Prog,
+            Typ      => Element_T);
       end Make_Binding_For_Iterable;
 
       ----------------------------------
@@ -20117,35 +20039,20 @@ package body Gnat2Why.Expr is
             T           : W_Expr_Id;
 
          begin
-            if Domain in EW_Prog | EW_Pterm then
-               T := New_VC_Call
-                 (Ada_Node => Ada_Node,
-                  Name     =>
-                    W_Identifier_Id
-                      (Transform_Identifier (Params => Params,
-                                             Expr   => Has_Element,
-                                             Ent    => Has_Element,
-                                             Domain => Subdomain)),
-                  Progs    => (1 => Cont_Expr,
-                               2 => Curs_Expr),
-                  Reason   => VC_Precondition,
-                  Domain   => Subdomain,
-                  Typ      => Type_Of_Node (Etype (Has_Element)));
-            else
-               T := New_Function_Call
-                 (Ada_Node => Ada_Node,
-                  Name     =>
-                    W_Identifier_Id
-                      (Transform_Identifier (Params => Params,
-                                             Expr   => Has_Element,
-                                             Ent    => Has_Element,
-                                             Domain => Subdomain)),
-                  Subp     => Has_Element,
-                  Args     => (1 => Cont_Expr,
-                               2 => Curs_Expr),
-                  Domain   => Subdomain,
-                  Typ      => Type_Of_Node (Etype (Has_Element)));
-            end if;
+            T := New_Function_Call
+              (Ada_Node => Ada_Node,
+               Name     =>
+                 W_Identifier_Id
+                   (Transform_Identifier (Params => Params,
+                                          Expr   => Has_Element,
+                                          Ent    => Has_Element,
+                                          Domain => Subdomain)),
+               Subp     => Has_Element,
+               Args     => (1 => Cont_Expr,
+                            2 => Curs_Expr),
+               Domain   => Subdomain,
+               Check    => Subdomain = EW_Prog,
+               Typ      => Type_Of_Node (Etype (Has_Element)));
 
             return T;
          end;
@@ -20203,33 +20110,19 @@ package body Gnat2Why.Expr is
                        To     => Type_Of_Node (Cont_Type));
                begin
                   Over_Type := Etype (Model);
-                  if Subdomain = EW_Term then
-                     W_Over_E := New_Function_Call
-                       (Ada_Node => Ada_Node,
-                        Name     =>
-                          W_Identifier_Id
-                            (Transform_Identifier (Params => Params,
-                                                   Expr   => Model,
-                                                   Ent    => Model,
-                                                   Domain => Subdomain)),
-                        Subp     => Model,
-                        Args     => (1 => Cont_Expr),
-                        Domain   => Subdomain,
-                        Typ      => Type_Of_Node (Over_Type));
-                  else
-                     W_Over_E := New_VC_Call
-                       (Ada_Node => Ada_Node,
-                        Name     =>
-                          W_Identifier_Id
-                            (Transform_Identifier (Params => Params,
-                                                   Expr   => Model,
-                                                   Ent    => Model,
-                                                   Domain => Subdomain)),
-                        Progs    => (1 => Cont_Expr),
-                        Reason   => VC_Precondition,
-                        Domain   => Subdomain,
-                        Typ      => Type_Of_Node (Over_Type));
-                  end if;
+                  W_Over_E := New_Function_Call
+                    (Ada_Node => Ada_Node,
+                     Name     =>
+                       W_Identifier_Id
+                         (Transform_Identifier (Params => Params,
+                                                Expr   => Model,
+                                                Ent    => Model,
+                                                Domain => Subdomain)),
+                     Subp     => Model,
+                     Args     => (1 => Cont_Expr),
+                     Domain   => Subdomain,
+                     Check    => Subdomain = EW_Prog,
+                     Typ      => Type_Of_Node (Over_Type));
                end;
 
                Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
@@ -21526,7 +21419,6 @@ package body Gnat2Why.Expr is
                        Why_Name,
                        Args,
                        VC_Precondition,
-                       EW_Prog,
                        EW_Unit_Type);
                else
                   Call :=
@@ -21562,13 +21454,12 @@ package body Gnat2Why.Expr is
 
                if Subp_Needs_Invariant_Checks (Subp) then
                   Call := +Sequence
-                    (+New_VC_Call
+                    (New_VC_Call
                        (Ada_Node => Stmt_Or_Decl,
                         Name     =>
                           E_Symb (Subp, WNE_Check_Invariants_On_Call),
                         Progs    => Args,
                         Reason   => VC_Invariant_Check,
-                        Domain   => EW_Prog,
                         Typ      => EW_Unit_Type),
                      +Call);
                end if;

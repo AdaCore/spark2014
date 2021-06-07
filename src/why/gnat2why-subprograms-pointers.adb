@@ -862,12 +862,11 @@ package body Gnat2Why.Subprograms.Pointers is
       Expr     : W_Expr_Id;
       Domain   : EW_Domain) return W_Expr_Id
    is (if Domain = EW_Prog
-       then New_VC_Call (Ada_Node => Ada_Node,
-                         Name     => M_Subprogram_Access.Rec_Value_Prog,
-                         Progs    => (1 => Expr),
-                         Reason   => VC_Null_Pointer_Dereference,
-                         Domain   => EW_Prog,
-                         Typ      => M_Subprogram_Access.Subprogram_Type)
+       then +New_VC_Call (Ada_Node => Ada_Node,
+                          Name     => M_Subprogram_Access.Rec_Value_Prog,
+                          Progs    => (1 => Expr),
+                          Reason   => VC_Null_Pointer_Dereference,
+                          Typ      => M_Subprogram_Access.Subprogram_Type)
        else New_Record_Access
          (Ada_Node => Ada_Node,
           Name     => Expr,

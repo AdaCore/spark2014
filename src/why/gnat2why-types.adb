@@ -778,6 +778,7 @@ package body Gnat2Why.Types is
                                             Typ => EW_Bool_Type),
                      Subp     => Eq,
                      Args     => (1 => Arg_A, 2 => Arg_B),
+                     Check    => False,
                      Typ      => EW_Bool_Type));
             begin
                Emit
