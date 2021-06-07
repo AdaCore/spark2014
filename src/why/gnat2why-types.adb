@@ -845,14 +845,13 @@ package body Gnat2Why.Types is
    -- Generate_VCs_For_Type --
    ---------------------------
 
-   procedure Generate_VCs_For_Type (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_Type (E : Entity_Id) is
       Decl     : constant Node_Id := Enclosing_Declaration (E);
       Name     : constant String := Full_Name (E);
-      Params   : Transformation_Params;
+      Params   : constant Transformation_Params := Body_Params;
       Why_Body : W_Prog_Id;
+      Th       : Theory_UC;
 
-      Th : Theory_UC;
    begin
       Th :=
         Open_Theory (WF_Main,
@@ -867,12 +866,6 @@ package body Gnat2Why.Types is
                         " defined at " & Build_Location_String (Sloc (E))
                      else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Params :=
-        (Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => Use_Map);
 
       Current_Subp := E;
 

@@ -2527,11 +2527,7 @@ package body Gnat2Why.Subprograms is
               Typ   => Type_Of_Node (E));
       end if;
 
-      Params :=
-        (Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => Use_Map);
+      Params := Contract_Params;
 
       --  First retrieve contracts specified on the subprogram and the
       --  subprograms it overrides.
@@ -2877,10 +2873,7 @@ package body Gnat2Why.Subprograms is
 
       Register_VC_Entity (E);
 
-      Params := (Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => GM_None,
-                 Ref_Allowed => True,
-                 Old_Policy  => Use_Map);
+      Params := Body_Params;
 
       --  Reset the toplevel exceptions for exit paths
 
@@ -2974,12 +2967,8 @@ package body Gnat2Why.Subprograms is
       --  initialized by the package.
 
       declare
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
-         Check : constant W_Pred_Id :=
+         Params : constant Transformation_Params := Contract_Params;
+         Check  : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Package (E, Params);
       begin
          if not Is_True_Boolean (+Check) then
@@ -3368,8 +3357,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Subprogram --
    ---------------------------------
 
-   procedure Generate_VCs_For_Subprogram (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_Subprogram (E : Entity_Id) is
       Body_N : constant Node_Id := Get_Body (E);
 
       function Assume_For_Input return W_Prog_Id;
@@ -3438,9 +3426,6 @@ package body Gnat2Why.Subprograms is
       --  return verification of the contract cases, plus runtime checks for
       --  the Post
 
-      Body_Params     : Transformation_Params;
-      Contract_Params : Transformation_Params;
-
       function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id;
 
       function Warn_On_Inconsistent_Pre return W_Prog_Id;
@@ -3465,11 +3450,7 @@ package body Gnat2Why.Subprograms is
                First_Formal (E)
             else
                Empty);
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          if Ekind (E) = E_Procedure and then Null_Present (E) then
             return +Void;
@@ -3497,11 +3478,7 @@ package body Gnat2Why.Subprograms is
       -----------------------
 
       function Assume_For_Output return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          if Ekind (E) = E_Procedure and then Null_Present (E) then
             return +Void;
@@ -3521,11 +3498,7 @@ package body Gnat2Why.Subprograms is
       -----------------------------
 
       function Assume_Or_Assert_Of_Pre return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Pre_Node : constant Node_Id :=
            Get_Location_For_Aspect (E, Pragma_Precondition);
          Pre : W_Pred_Id :=
@@ -3587,11 +3560,7 @@ package body Gnat2Why.Subprograms is
       ---------------------
 
       function CC_And_RTE_Post return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          return
            Sequence
@@ -3643,11 +3612,7 @@ package body Gnat2Why.Subprograms is
 
       function Check_Inline_For_Proof return W_Prog_Id is
          Value  : constant Node_Id := Retrieve_Inline_Annotation (E);
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          if Present (Value) and then
            (not Is_Expression_Function_Or_Completion (E)
@@ -3682,11 +3647,7 @@ package body Gnat2Why.Subprograms is
       ---------------------------------
 
       function Check_Invariants_Of_Outputs return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Check : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Subprogram (E, False, Params);
       begin
@@ -3708,15 +3669,9 @@ package body Gnat2Why.Subprograms is
       -- Checking_Of_Refined_Post --
       ------------------------------
 
-      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id
-      is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
-
-         Prog : W_Prog_Id := Arg;
+      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id is
+         Params : constant Transformation_Params := Contract_Params;
+         Prog   : W_Prog_Id := Arg;
       begin
          if Has_Contracts (E, Pragma_Refined_Post) then
             Prog :=
@@ -3977,15 +3932,9 @@ package body Gnat2Why.Subprograms is
       ----------------
 
       function RTE_Of_Pre return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
-
-         Pre   : constant W_Prog_Id :=
+         Params : constant Transformation_Params := Contract_Params;
+         Pre    : constant W_Prog_Id :=
            +Compute_Spec (Params, E, Pragma_Precondition, EW_Prog);
-
       begin
          return
            Sequence
@@ -4047,11 +3996,7 @@ package body Gnat2Why.Subprograms is
       -------------------------------
 
       function Warn_On_Inconsistent_Post return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Post : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Postcondition);
          Stmt : W_Prog_Id;
@@ -4087,11 +4032,7 @@ package body Gnat2Why.Subprograms is
       ------------------------------
 
       function Warn_On_Inconsistent_Pre return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Pre : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Precondition);
          Stmt : W_Prog_Id;
@@ -4203,18 +4144,6 @@ package body Gnat2Why.Subprograms is
       Current_Subp := E;
 
       Register_VC_Entity (E);
-
-      Body_Params :=
-        (Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => Use_Map);
-
-      Contract_Params :=
-        (Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => As_Old);
 
       --  Reset the toplevel exceptions for exit paths
 
@@ -4562,11 +4491,10 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Task_Type --
    --------------------------------
 
-   procedure Generate_VCs_For_Task_Type (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_Task_Type (E : Entity_Id) is
       Name   : constant String  := Full_Name (E);
       Body_N : constant Node_Id := Task_Body (E);
-      Params : Transformation_Params;
+      Params : constant Transformation_Params := Body_Params;
 
       Why_Body   : W_Prog_Id;
       Priv_Decls : constant List_Id := Private_Declarations_Of_Task_Type (E);
@@ -4592,11 +4520,6 @@ package body Gnat2Why.Subprograms is
       Current_Subp := E;
 
       Register_VC_Entity (E);
-
-      Params := (Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => GM_None,
-                 Ref_Allowed => True,
-                 Old_Policy  => Use_Map);
 
       --  Reset the toplevel exceptions for exit paths
 

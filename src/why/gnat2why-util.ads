@@ -256,8 +256,11 @@ package Gnat2Why.Util is
    function Assert_Params return Transformation_Params is
      (Usual_Params (Generate_VCs_For_Assert));
 
-   function Logic_Params return Transformation_Params
-   is (Usual_Params (Generate_Logic));
+   function Contract_Params return Transformation_Params is
+     (Usual_Params (Generate_VCs_For_Contract));
+
+   function Logic_Params return Transformation_Params is
+     (Usual_Params (Generate_Logic));
 
    --------------
    -- Builders --
