@@ -42,6 +42,7 @@ with SPARK_Util;                    use SPARK_Util;
 with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
+with VC_Kinds;                      use VC_Kinds;
 with Why;                           use Why;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
 with Why.Atree.Builders;            use Why.Atree.Builders;
@@ -499,7 +500,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Symbol_Sets.Empty_Set,
+                  Labels   => Symbol_Sets.To_Set (NID (GP_Inline_Marker)),
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))

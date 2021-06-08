@@ -2319,7 +2319,7 @@ package body Gnat2Why.Subprograms is
         (if Is_Expression_Function_Or_Completion (E)
          and then not Has_Contracts (E, Pragma_Postcondition)
          and then not Present (Get_Pragma (E, Pragma_Contract_Cases))
-         then Symbol_Sets.To_Set (NID ("inline_marker"))
+         then Symbol_Sets.To_Set (NID (GP_Inline_Marker))
          else Symbol_Sets.Empty_Set);
 
       Def : W_Expr_Id;

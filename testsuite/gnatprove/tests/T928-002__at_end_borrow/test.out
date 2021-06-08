@@ -9,10 +9,10 @@ test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls
 test_borrow.adb:23:07: medium: "Length" is recursive, terminating annotation could be incorrect
-test_borrow.adb:23:37: info: predicate check proved (CVC4: 1 VC)
+test_borrow.adb:23:37: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:45: info: predicate check proved (CVC4: 1 VC)
 test_borrow.adb:23:54: info: pointer dereference check proved (CVC4: 1 VC)
-test_borrow.adb:23:58: info: predicate check proved (CVC4: 1 VC)
+test_borrow.adb:23:58: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:60: info: predicate check proved (CVC4: 1 VC)
 test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls
 test_borrow.adb:28:24: info: pointer dereference check proved (CVC4: 1 VC)

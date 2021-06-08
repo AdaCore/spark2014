@@ -1,18 +1,18 @@
 init_pred_in_loop.adb:10:04: warning: analyzing unreferenced procedure "Test_No_Init_1"
 init_pred_in_loop.adb:10:14: warning: subprogram "Test_No_Init_1" has no effect
 init_pred_in_loop.adb:11:07: info: initialization of "X" proved
-init_pred_in_loop.adb:13:12: info: predicate check proved (CVC4: 1 VC)
+init_pred_in_loop.adb:13:12: info: predicate check proved (CVC4: 2 VC)
 init_pred_in_loop.adb:15:33: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:15:33: info: loop invariant preservation proved (Trivial: 1 VC)
 init_pred_in_loop.adb:16:25: info: assertion proved (CodePeer)
-init_pred_in_loop.adb:20:11: info: predicate check proved (CVC4: 1 VC)
+init_pred_in_loop.adb:20:11: info: predicate check proved (CVC4: 2 VC)
 init_pred_in_loop.adb:24:04: warning: analyzing unreferenced procedure "Test_No_Init_2"
 init_pred_in_loop.adb:24:14: warning: subprogram "Test_No_Init_2" has no effect
-init_pred_in_loop.adb:25:22: info: predicate check proved (CVC4: 1 VC)
+init_pred_in_loop.adb:25:22: info: predicate check proved (CVC4: 2 VC)
 init_pred_in_loop.adb:28:33: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:28:33: info: loop invariant preservation proved (Trivial: 1 VC)
 init_pred_in_loop.adb:29:25: info: assertion proved (CodePeer)
-init_pred_in_loop.adb:30:11: info: predicate check proved (CVC4: 1 VC)
+init_pred_in_loop.adb:30:11: info: predicate check proved (CVC4: 2 VC)
 init_pred_in_loop.adb:40:04: warning: analyzing unreferenced procedure "Test_Partial_Init_1"
 init_pred_in_loop.adb:40:14: warning: subprogram "Test_Partial_Init_1" has no effect
 init_pred_in_loop.adb:41:07: info: initialization of "X" proved
@@ -40,11 +40,11 @@ init_pred_in_loop.adb:67:11: info: predicate check proved (CVC4: 1 VC)
 init_pred_in_loop.adb:77:04: warning: analyzing unreferenced procedure "Test_Full_Init_1"
 init_pred_in_loop.adb:77:14: warning: subprogram "Test_Full_Init_1" has no effect
 init_pred_in_loop.adb:78:07: info: initialization of "X" proved
-init_pred_in_loop.adb:78:07: info: predicate check proved on default value (CVC4: 1 VC)
+init_pred_in_loop.adb:78:07: info: predicate check proved on default value (CVC4: 2 VC)
 init_pred_in_loop.adb:81:33: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:81:33: info: loop invariant preservation proved (Trivial: 1 VC)
 init_pred_in_loop.adb:82:25: info: assertion proved (CodePeer)
-init_pred_in_loop.adb:83:11: info: predicate check proved (CVC4: 1 VC)
+init_pred_in_loop.adb:83:11: info: predicate check proved (CVC4: 2 VC)
 init_pred_in_loop.adb:87:04: warning: analyzing unreferenced procedure "Test_Full_Init_2"
 init_pred_in_loop.adb:87:14: warning: subprogram "Test_Full_Init_2" has no effect
 init_pred_in_loop.adb:88:27: info: predicate check proved (CVC4: 1 VC)
