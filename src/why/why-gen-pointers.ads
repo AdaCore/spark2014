@@ -57,9 +57,16 @@ package Why.Gen.Pointers is
 
    function Move_Param_Item
      (Typ : Entity_Id) return Item_Type
-   with Pre => Is_Deep (Typ) and then Is_Composite_Type (Typ);
+   with Pre => Contains_Allocated_Parts (Typ)
+     and then (not Is_Access_Type (Typ) or else Is_General_Access_Type (Typ));
    --  Create an item for the parameter of the __move function for deep
    --  composite types.
+
+   function Has_Predeclared_Move_Predicates (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  Return True if the is_moved and moved_relation predicates need to be
+   --  declared separately from their definition to avoid circularity (E is the
+   --  completion of an incomplete type designated by a general access type).
 
    function New_Ada_Pointer_Update
      (Ada_Node : Node_Id;

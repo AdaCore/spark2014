@@ -274,7 +274,7 @@ package Gnat2Why.Expr is
      (Expr     : W_Term_Id;
       Ty       : Entity_Id;
       Use_Pred : Boolean := True) return W_Pred_Id
-   with Pre => Is_Deep (Ty);
+   with Pre => Contains_Allocated_Parts (Ty);
    --  @param Expr term on which to check all pointers are moved
    --  @param Ty corresponding Ada type
    --  @param Use_Pred True iff the predicate __is_moved should be called
@@ -285,7 +285,7 @@ package Gnat2Why.Expr is
       Expr2    : W_Term_Id;
       Ty       : Entity_Id;
       Use_Pred : Boolean := True) return W_Pred_Id
-   with Pre => Is_Deep (Ty);
+   with Pre => Contains_Allocated_Parts (Ty);
    --  @param Expr1 term corresponding to the new value of an object
    --  @param Expr2 term corresponding to the old value of the same object
    --  @param Ty corresponding Ada type

@@ -216,6 +216,11 @@ package SPARK_Util.Types is
    function Is_Anonymous_Access_Object_Type (T : Entity_Id) return Boolean is
      (Ekind (T) = E_Anonymous_Access_Type);
 
+   function Is_General_Access_Type (T : Entity_Id) return Boolean
+   with Pre => Is_Type (T);
+   --  @param T any type
+   --  @returns True iff T is (a subtype of) a general access-to-variable type
+
    function Is_Nouveau_Type (T : Entity_Id) return Boolean is
      (Etype (T) = T)
    with Pre => Is_Type (T);
@@ -287,6 +292,12 @@ package SPARK_Util.Types is
                                       Explanation : out Unbounded_String)
      with Pre => Is_Type (A) and then Is_Type (B);
    --  Same as Have_Same_Known_Esize, but checks the RM_Size.
+
+   function Contains_Allocated_Parts (Typ : Entity_Id) return Boolean with
+     Pre  => Is_Type (Typ),
+     Post => (if Contains_Allocated_Parts'Result then Is_Deep (Typ));
+   --  Returns True if Typ has subcomponents whose type is a pool specific
+   --  access type (and these subcomponents are not in a constant part of Typ).
 
    function Contains_Relaxed_Init_Parts
      (Typ        : Entity_Id;

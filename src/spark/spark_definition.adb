@@ -5393,6 +5393,16 @@ package body SPARK_Definition is
                E);
          end if;
 
+         --  Reject unchecked deallocation on general access types
+
+         if Is_Unchecked_Deallocation_Instance (E)
+           and then Is_General_Access_Type (Etype (First_Formal (E)))
+         then
+            Mark_Violation
+              ("instance of Unchecked_Deallocation with a general access type",
+               E);
+         end if;
+
          Mark_Subprogram_Specification (E);
 
          --  We mark bodies of predicate functions, and of expression functions
@@ -6195,6 +6205,12 @@ package body SPARK_Definition is
             --  Still, it is necessary for preventing the usage of such
             --  class wide types declared in with'ed packages without
             --  SPARK_Mode.
+            --
+            --  Classwide types can be used to create a recursive datastructure
+            --  resulting in a tree with no incomplete types. In this case, the
+            --  specific type will be rejected (deep components cannot appear
+            --  in tagged types) but it might be too late to reject E. Do it
+            --  directly.
 
             declare
                Specific_Type : constant Entity_Id :=
@@ -6202,6 +6218,7 @@ package body SPARK_Definition is
             begin
                if not Retysp_In_SPARK (Specific_Type)
                  or else not Is_Tagged_Type (Retysp (Specific_Type))
+                 or else Is_Deep (Specific_Type)
                then
                   Mark_Violation (E, From => Specific_Type);
 
@@ -6545,19 +6562,6 @@ package body SPARK_Definition is
 
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
                raise Program_Error;
-
-            --  Reject general access-to-variable types. We check the
-            --  underlying type of the base type as the base type itself can be
-            --  private.
-            --  ??? We assume that access subtypes have visibility on the full
-            --  view of their base type or we would have a private subtype
-            --  instead of an access subtype.
-
-            elsif Ekind (Underlying_Type (Base_Type (E))) =
-              E_General_Access_Type
-              and then not Is_Access_Constant (E)
-            then
-               Mark_Violation ("general access-to-variable type", E);
 
             --  Storage_Pool is not in SPARK
 

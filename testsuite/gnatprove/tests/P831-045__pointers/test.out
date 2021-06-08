@@ -1,17 +1,41 @@
-n01.adb:14:12: error: general access-to-variable type is not allowed in SPARK
-n01.adb:14:12: error: violation of aspect SPARK_Mode at line 9
-n011.adb:12:12: error: general access-to-variable type is not allowed in SPARK
-n011.adb:12:12: error: violation of aspect SPARK_Mode at line 7
-n02.adb:13:12: error: general access-to-variable type is not allowed in SPARK
-n02.adb:13:12: error: violation of aspect SPARK_Mode at line 8
-n02.adb:14:12: error: general access-to-variable type is not allowed in SPARK
-n02.adb:14:12: error: violation of aspect SPARK_Mode at line 8
-n04.adb:14:08: error: general access-to-variable type is not allowed in SPARK
-n04.adb:14:08: error: violation of aspect SPARK_Mode at line 12
-n05.adb:11:08: error: general access-to-variable type is not allowed in SPARK
-n05.adb:11:08: error: violation of aspect SPARK_Mode at line 9
+n01.adb:19:23: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+n01.adb:19:23: error: violation of aspect SPARK_Mode at line 9
+n01.adb:23:44: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n01.adb:23:44: error: violation of aspect SPARK_Mode at line 9
+n01.adb:24:04: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n01.adb:24:04: error: violation of aspect SPARK_Mode at line 9
+n01.adb:28:44: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n01.adb:28:44: error: violation of aspect SPARK_Mode at line 9
+n01.adb:35:44: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n01.adb:35:44: error: violation of aspect SPARK_Mode at line 9
+n011.adb:19:23: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+n011.adb:19:23: error: violation of aspect SPARK_Mode at line 7
+n011.adb:23:04: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n011.adb:23:04: error: violation of aspect SPARK_Mode at line 7
+n02.adb:19:23: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+n02.adb:19:23: error: violation of aspect SPARK_Mode at line 8
+n02.adb:23:44: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n02.adb:23:44: error: violation of aspect SPARK_Mode at line 8
+n02.adb:25:04: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n02.adb:25:04: error: violation of aspect SPARK_Mode at line 8
+n02.adb:29:44: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n02.adb:29:44: error: violation of aspect SPARK_Mode at line 8
+n02.adb:38:44: error: "Y" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n02.adb:38:44: error: violation of aspect SPARK_Mode at line 8
+n04.adb:18:18: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+n04.adb:18:18: error: violation of aspect SPARK_Mode at line 12
+n04.adb:24:06: error: "Z" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n04.adb:24:06: error: violation of aspect SPARK_Mode at line 12
+n04.adb:28:05: error: "Z" is not allowed in SPARK (due to Access attribute of a named access-to-variable type)
+n04.adb:28:05: error: violation of aspect SPARK_Mode at line 12
+n04.adb:40:08: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+n04.adb:40:08: error: violation of aspect SPARK_Mode at line 12
 n05.adb:15:20: warning: formal parameter "A" is not referenced [-gnatwf]
 n05.adb:44:03: warning: variable "C" is never read and never assigned [-gnatwv]
+n05.adb:48:10: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+n05.adb:48:10: error: violation of aspect SPARK_Mode at line 9
+n05.adb:49:10: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+n05.adb:49:10: error: violation of aspect SPARK_Mode at line 9
 observingcomposite.adb:20:20: error: uninitialized allocator without default initialization is not allowed in SPARK
 observingcomposite.adb:20:20: error: violation of aspect SPARK_Mode at line 6
 observingcomposite.adb:21:20: error: uninitialized allocator without default initialization is not allowed in SPARK
@@ -70,35 +94,39 @@ pointers2.ads:20:14: error: object was moved at pointers2.adb:36
 pointers2.ads:20:14: error: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-simple.adb:6:09: error: general access-to-variable type is not allowed in SPARK
-simple.adb:6:09: error: violation of aspect SPARK_Mode at line 5
-simple.adb:8:09: error: general access-to-variable type is not allowed in SPARK
-simple.adb:8:09: error: violation of aspect SPARK_Mode at line 5
 simple.adb:12:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
 simple.adb:12:04: error: violation of aspect SPARK_Mode at line 5
+simple.adb:19:09: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+simple.adb:19:09: error: violation of aspect SPARK_Mode at line 5
+simple.adb:20:09: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+simple.adb:20:09: error: violation of aspect SPARK_Mode at line 5
 simple.adb:22:04: error: "X" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 simple.adb:22:04: error: violation of aspect SPARK_Mode at line 5
-test.adb:8:09: error: general access-to-variable type is not allowed in SPARK
-test.adb:8:09: error: violation of aspect SPARK_Mode at line 7
-test.adb:9:09: error: general access-to-variable type is not allowed in SPARK
-test.adb:9:09: error: violation of aspect SPARK_Mode at line 7
-test.adb:10:09: error: general access-to-variable type is not allowed in SPARK
-test.adb:10:09: error: violation of aspect SPARK_Mode at line 7
+simple.adb:22:09: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(7))
+simple.adb:22:09: error: violation of aspect SPARK_Mode at line 5
+simple.adb:24:09: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+simple.adb:24:09: error: violation of aspect SPARK_Mode at line 5
 test.adb:13:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
 test.adb:13:04: error: violation of aspect SPARK_Mode at line 7
 test.adb:20:12: warning: variable "varPtr2" is read but never assigned [-gnatwv]
 test.adb:24:30: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:24:30: error: violation of aspect SPARK_Mode at line 7
-test.adb:28:08: error: general access-to-variable type is not allowed in SPARK
-test.adb:28:08: error: violation of aspect SPARK_Mode at line 7
 test.adb:64:09: warning: variable "X" is read but never assigned [-gnatwv]
 test.adb:78:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:78:03: error: violation of aspect SPARK_Mode at line 7
 test.adb:78:08: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(7))
 test.adb:78:08: error: violation of aspect SPARK_Mode at line 7
+test.adb:79:08: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+test.adb:79:08: error: violation of aspect SPARK_Mode at line 7
+test.adb:80:10: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+test.adb:80:10: error: violation of aspect SPARK_Mode at line 7
 test.adb:84:08: warning: "B" may be null [enabled by default]
 test.adb:86:11: warning: "x0" may be referenced before it has a value [enabled by default]
 test.adb:87:08: info: analyzing call to "g" in context
 test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:89:03: error: violation of aspect SPARK_Mode at line 7
+test.adb:89:08: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+test.adb:89:08: error: violation of aspect SPARK_Mode at line 7
+test.adb:94:13: error: Access attribute of a named access-to-variable type is not allowed in SPARK
+test.adb:94:13: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof

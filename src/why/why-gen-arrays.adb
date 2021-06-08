@@ -2187,7 +2187,7 @@ package body Why.Gen.Arrays is
                       (Symb => NID (Append_Num ("rep_to_int", Dim_Count))),
                     Image     =>
                       Get_Name (Conversion_Name (From => R_Ty,
-                                                To => EW_Int_Type)));
+                                                 To   => EW_Int_Type)));
             end if;
             Cursor := Cursor + 1;
 

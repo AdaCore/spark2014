@@ -2822,6 +2822,7 @@ package body SPARK_Util is
 
    function Value_Is_Never_Leaked (Expr : Node_Id) return Boolean is
       Context : Node_Id := Parent (Expr);
+      Nested  : Boolean := False;
 
    begin
       --  Check that Expr is a part of the definition of a library level
@@ -2837,7 +2838,8 @@ package body SPARK_Util is
                declare
                   Obj : constant Entity_Id := Defining_Identifier (Context);
                begin
-                  return Is_Constant_In_SPARK (Obj)
+                  return ((not Nested and then Ekind (Obj) = E_Constant)
+                          or else Is_Constant_In_SPARK (Obj))
                     and then Is_Library_Level_Entity (Obj);
                end;
 
@@ -2851,18 +2853,10 @@ package body SPARK_Util is
                null;
 
             --  The allocating expression occurs as the expression in another
-            --  initialized allocator. If it is an allocator to constant, the
-            --  context will be checked while checking the allocator.
-            --  Otherwise, continue the check.
+            --  initialized allocator.
 
             when N_Allocator =>
-               declare
-                  Ty : constant Entity_Id := Retysp (Etype (Context));
-               begin
-                  if Is_Access_Constant (Ty) then
-                     return True;
-                  end if;
-               end;
+               Nested := True;
 
             --  The allocating expression corresponds to a component value in
             --  an aggregate.
@@ -2870,7 +2864,7 @@ package body SPARK_Util is
             when N_Aggregate
                | N_Component_Association
             =>
-               null;
+               Nested := True;
 
             when others =>
                return False;

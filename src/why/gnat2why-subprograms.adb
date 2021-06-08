@@ -830,108 +830,6 @@ package body Gnat2Why.Subprograms is
       return Call_Effects;
    end Compute_Call_Effects;
 
-   --------------------------
-   -- Compute_Deep_Outputs --
-   --------------------------
-
-   function Compute_Deep_Outputs (E : Entity_Id) return Entity_Sets.Set is
-      Outputs : Entity_Sets.Set;
-   begin
-      declare
-         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-      begin
-         Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                         Reads           => Read_Ids,
-                                         Writes          => Write_Ids,
-                                         Erase_Constants => True);
-
-         for Write_Id of Write_Ids loop
-            case Write_Id.Kind is
-               when Direct_Mapping =>
-                  declare
-                     Entity : constant Entity_Id :=
-                       Get_Direct_Mapping_Id (Write_Id);
-                     Typ    : constant Entity_Id := Retysp (Etype (Entity));
-
-                  begin
-                     if not Is_Concurrent_Type (Entity)
-                       and then not Read_Ids.Contains (Write_Id)
-                       and then Is_Deep (Typ)
-                       and then not Is_Anonymous_Access_Type (Typ)
-                     then
-                        Outputs.Insert (Entity);
-                     end if;
-                  end;
-
-               when Magic_String =>
-                  null;
-
-               when others =>
-                  raise Program_Error;
-            end case;
-         end loop;
-      end;
-
-      declare
-         Formal : Entity_Id := First_Formal (E);
-      begin
-         while Present (Formal) loop
-            declare
-               Typ : constant Entity_Id := Retysp (Etype (Formal));
-            begin
-               if Is_Deep (Typ)
-                 and then not Is_Anonymous_Access_Type (Typ)
-                 and then Ekind (Formal) = E_Out_Parameter
-               then
-                  Outputs.Insert (Formal);
-               end if;
-
-               Next_Formal (Formal);
-            end;
-         end loop;
-      end;
-
-      return Outputs;
-   end Compute_Deep_Outputs;
-
-   ---------------------------------------------
-   -- Compute_Moved_Property_For_Deep_Outputs --
-   ---------------------------------------------
-
-   function Compute_Moved_Property_For_Deep_Outputs
-     (E      : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-   is
-      Assume : W_Prog_Id := +Void;
-   begin
-      if Ekind (E) in E_Function | E_Package | E_Task_Type then
-         return +Void;
-      end if;
-
-      declare
-         Outputs : constant Entity_Sets.Set := Compute_Deep_Outputs (E);
-      begin
-         for Obj of Outputs loop
-            declare
-               Typ : constant Entity_Id := Retysp (Etype (Obj));
-            begin
-               Append
-                 (Assume,
-                  New_Assume_Statement
-                    (Pred =>
-                         Compute_Is_Moved_Property
-                       (+Transform_Identifier (Params => Params,
-                                               Expr   => Obj,
-                                               Ent    => Obj,
-                                               Domain => EW_Term), Typ)));
-            end;
-         end loop;
-      end;
-
-      return Assume;
-   end Compute_Moved_Property_For_Deep_Outputs;
-
    -----------------------------------------
    -- Compute_Dynamic_Property_For_Inputs --
    -----------------------------------------
@@ -1357,6 +1255,110 @@ package body Gnat2Why.Subprograms is
       end loop;
       return Pred;
    end Compute_Guard_Formula;
+
+   ---------------------------------------------
+   -- Compute_Moved_Property_For_Deep_Outputs --
+   ---------------------------------------------
+
+   function Compute_Moved_Property_For_Deep_Outputs
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      Assume : W_Prog_Id := +Void;
+   begin
+      if Ekind (E) in E_Function | E_Package | E_Task_Type then
+         return +Void;
+      end if;
+
+      declare
+         Outputs : constant Entity_Sets.Set :=
+           Compute_Outputs_With_Allocated_Parts (E);
+      begin
+         for Obj of Outputs loop
+            declare
+               Typ : constant Entity_Id := Retysp (Etype (Obj));
+            begin
+               Append
+                 (Assume,
+                  New_Assume_Statement
+                    (Pred => Compute_Is_Moved_Property
+                       (+Transform_Identifier (Params => Params,
+                                               Expr   => Obj,
+                                               Ent    => Obj,
+                                               Domain => EW_Term), Typ)));
+            end;
+         end loop;
+      end;
+
+      return Assume;
+   end Compute_Moved_Property_For_Deep_Outputs;
+
+   ------------------------------------------
+   -- Compute_Outputs_With_Allocated_Parts --
+   ------------------------------------------
+
+   function Compute_Outputs_With_Allocated_Parts
+     (E : Entity_Id) return Entity_Sets.Set
+   is
+      Outputs : Entity_Sets.Set;
+   begin
+      declare
+         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      begin
+         Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                         Reads           => Read_Ids,
+                                         Writes          => Write_Ids,
+                                         Erase_Constants => True);
+
+         for Write_Id of Write_Ids loop
+            case Write_Id.Kind is
+               when Direct_Mapping =>
+                  declare
+                     Entity : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Write_Id);
+                     Typ    : constant Entity_Id := Retysp (Etype (Entity));
+
+                  begin
+                     if not Is_Concurrent_Type (Entity)
+                       and then not Read_Ids.Contains (Write_Id)
+                       and then Contains_Allocated_Parts (Typ)
+                       and then not Is_Anonymous_Access_Type (Typ)
+                     then
+                        Outputs.Insert (Entity);
+                     end if;
+                  end;
+
+               when Magic_String =>
+                  null;
+
+               when others =>
+                  raise Program_Error;
+            end case;
+         end loop;
+      end;
+
+      declare
+         Formal : Entity_Id := First_Formal (E);
+      begin
+         while Present (Formal) loop
+            declare
+               Typ : constant Entity_Id := Retysp (Etype (Formal));
+            begin
+               if Contains_Allocated_Parts (Typ)
+                 and then not Is_Anonymous_Access_Type (Typ)
+                 and then Ekind (Formal) = E_Out_Parameter
+               then
+                  Outputs.Insert (Formal);
+               end if;
+
+               Next_Formal (Formal);
+            end;
+         end loop;
+      end;
+
+      return Outputs;
+   end Compute_Outputs_With_Allocated_Parts;
 
    ------------------------------------
    -- Compute_Subprogram_Parameters  --

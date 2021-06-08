@@ -4025,6 +4025,9 @@ package body Gnat2Why.Borrow_Checker is
                               Nkind (N.Expr) = N_Attribute_Reference);
 
                            if Nkind (N.Expr) = N_Attribute_Reference then
+                              pragma Assert
+                                (Attribute_Name (N.Expr) in
+                                     Name_Last | Name_First | Name_Length);
                               return (R                => Folded,
                                       Found_Permission =>
                                         Bounds_Permission (C.Tree_Access),

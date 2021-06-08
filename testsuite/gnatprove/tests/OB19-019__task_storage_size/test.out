@@ -18,6 +18,6 @@ ss_defined.ads:7:20: error: attribute "Storage_Size" is not allowed in SPARK
 ss_defined.ads:7:20: error: violation of pragma SPARK_Mode at test.adc:1
 ss_defined.ads:7:39: error: attribute "Storage_Size" is not allowed in SPARK
 ss_defined.ads:7:39: error: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:3:09: error: general access-to-variable type is not allowed in SPARK
+unsupported.adb:3:09: error: access type with Storage_Size is not allowed in SPARK
 unsupported.adb:3:09: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

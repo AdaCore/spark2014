@@ -2130,7 +2130,7 @@ package body Gnat2Why.Expr is
    begin
       --  Nothing to check on borrow/observe of anonymous access type
 
-      if Is_Deep (Typ)
+      if Contains_Allocated_Parts (Typ)
         and then not Is_Anonymous_Access_Type (Typ)
       then
          declare
@@ -5358,7 +5358,7 @@ package body Gnat2Why.Expr is
       is
          pragma Unreferenced (E);
       begin
-         if Is_Deep (C_Ty) then
+         if Contains_Allocated_Parts (C_Ty) then
             return Compute_Is_Moved_Property (C_Expr, C_Ty);
          else
             return True_Pred;
@@ -5374,7 +5374,9 @@ package body Gnat2Why.Expr is
    --  Start of processing for Compute_Is_Moved_Property
 
    begin
-      if Has_Access_Type (Ty) then
+      if Has_Access_Type (Ty)
+        and then not Is_General_Access_Type (Retysp (Ty))
+      then
          return +New_Or_Expr
            (Left   => New_Pointer_Is_Null_Access (Ty, +Expr),
             Right  => New_Pointer_Is_Moved_Access (Ty, +Expr),
@@ -5382,21 +5384,26 @@ package body Gnat2Why.Expr is
 
       elsif Use_Pred then
          declare
-            --  We need to convert to the expected type for unconstrained
-            --  arrays in split form.
-
-            Full_Expr : constant W_Expr_Id :=
+            W_Expr : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
                  Expr   => +Expr,
-                 To     => EW_Abstract (Ty));
+                 To     => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
          begin
             return +W_Expr_Id'(New_Call
                                (Domain => EW_Pred,
                                 Name   => E_Symb (Ty, WNE_Is_Moved),
-                                Args   => (1 => Full_Expr),
+                                Args   => (1 => W_Expr),
                                 Typ    => EW_Bool_Type));
          end;
+
+      elsif Is_General_Access_Type (Retysp (Ty)) then
+         return +New_Or_Expr
+           (Left   => New_Pointer_Is_Null_Access (Ty, +Expr),
+            Right  => +Is_Moved_For_Comp
+              (+New_Pointer_Value_Access (Empty, Ty, +Expr, EW_Term),
+               Directly_Designated_Type (Ty)),
+            Domain => EW_Pred);
 
       elsif Has_Record_Type (Ty) then
          return Is_Moved_For_Record (Expr, Ty);
@@ -5447,7 +5454,7 @@ package body Gnat2Why.Expr is
       is
          pragma Unreferenced (E);
       begin
-         if Is_Deep (C_Ty) then
+         if Contains_Allocated_Parts (C_Ty) then
             return Compute_Moved_Relation (C_Expr1, C_Expr2, C_Ty);
          else
             return +New_Comparison
@@ -5475,7 +5482,9 @@ package body Gnat2Why.Expr is
    --  Start of processing for Compute_Moved_Relation
 
    begin
-      if Has_Access_Type (Ty) then
+      if Has_Access_Type (Ty)
+        and then not Is_General_Access_Type (Retysp (Ty))
+      then
          return +New_Comparison
            (Symbol => Why_Eq,
             Left   => New_Pointer_Is_Moved_Access (Ty, +Expr1),
@@ -5486,11 +5495,42 @@ package body Gnat2Why.Expr is
       --  the predicate when Use_Pred is True.
 
       elsif Use_Pred then
-         return +W_Expr_Id'(New_Call
-                            (Domain => EW_Pred,
-                             Name   => E_Symb (Ty, WNE_Moved_Relation),
-                             Args   => (1 => +Expr1, 2 => +Expr2),
-                             Typ    => EW_Bool_Type));
+         declare
+            W_Expr1 : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => EW_Term,
+                 Expr   => +Expr1,
+                 To     => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+            W_Expr2 : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => EW_Term,
+                 Expr   => +Expr2,
+                 To     => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+         begin
+            return +W_Expr_Id'(New_Call
+                               (Domain => EW_Pred,
+                                Name   => E_Symb (Ty, WNE_Moved_Relation),
+                                Args   => (1 => W_Expr1, 2 => W_Expr2),
+                                Typ    => EW_Bool_Type));
+         end;
+
+      elsif Is_General_Access_Type (Retysp (Ty)) then
+         return +New_And_Expr
+           (Left   => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Pointer_Is_Null_Access (Ty, +Expr1),
+               Right  => New_Pointer_Is_Null_Access (Ty, +Expr2),
+               Domain => EW_Pred),
+            Right  => New_Conditional
+              (Condition => New_Not
+                   (Domain => EW_Term,
+                    Right  => New_Pointer_Is_Null_Access (Ty, +Expr1)),
+               Then_Part => +Set_Moved_For_Comp
+                 (+New_Pointer_Value_Access (Empty, Ty, +Expr1, EW_Term),
+                  +New_Pointer_Value_Access (Empty, Ty, +Expr2, EW_Term),
+                  Directly_Designated_Type (Ty)),
+               Domain    => EW_Pred),
+            Domain => EW_Pred);
 
       elsif Has_Record_Type (Ty) then
          return Set_Moved_For_Record (Expr1, Expr2, Ty);
@@ -6259,7 +6299,7 @@ package body Gnat2Why.Expr is
                   Value   => New_Pointer_Value_Access
                     (Ada_Node => Empty,
                      Domain   => EW_Pterm,
-                     E        => Etype (Pattern.Value.Ada_Node),
+                     E        => Pattern.P_Typ,
                      Name     => Expr)));
             Args (Count) := +Pattern.Value.B_Name;
             Need_Store := True;
@@ -6274,14 +6314,14 @@ package body Gnat2Why.Expr is
                     (Mutable => True,
                      Name    => Pattern.Is_Null,
                      Value   => New_Pointer_Is_Null_Access
-                       (E    => Etype (Pattern.Value.Ada_Node),
+                       (E    => Pattern.P_Typ,
                         Name => Expr)));
                Args (Count) := +Pattern.Is_Null;
                Count := Count + 1;
             else
                Args (Count) :=
                  New_Pointer_Is_Null_Access
-                   (E    => Etype (Pattern.Value.Ada_Node),
+                   (E    => Pattern.P_Typ,
                     Name => Expr);
                Count := Count + 1;
             end if;
@@ -6293,7 +6333,7 @@ package body Gnat2Why.Expr is
                  (Mutable => True,
                   Name    => Pattern.Is_Moved,
                   Value   => New_Pointer_Is_Moved_Access
-                    (E    => Etype (Pattern.Value.Ada_Node),
+                    (E    => Pattern.P_Typ,
                      Name => Expr)));
             Args (Count) := +Pattern.Is_Moved;
             Count := Count + 1;
@@ -7033,7 +7073,7 @@ package body Gnat2Why.Expr is
            (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
             else Empty);
       begin
-         return Is_Deep (Typ)
+         return Contains_Allocated_Parts (Typ)
            and then not Is_Anonymous_Access_Type (Typ)
            and then Present (Root)
            and then not Is_Constant_In_SPARK (Root)
@@ -7469,7 +7509,7 @@ package body Gnat2Why.Expr is
 
       --  For a pointer, we update the is_moved field to true.
 
-      elsif Is_Access_Type (Typ) then
+      elsif Is_Access_Type (Typ) and then not Is_General_Access_Type (Typ) then
 
          --  For whole objects, we simply assign the is_moved field.
          --
@@ -7532,7 +7572,8 @@ package body Gnat2Why.Expr is
                   Binder : constant Item_Type :=
                     Ada_Ent_To_Why.Element (Symbol_Table, Entity (Expr));
                begin
-                  pragma Assert (Binder.Kind in UCArray | DRecord | Regular);
+                  pragma Assert
+                    (Binder.Kind in UCArray | DRecord | Regular | Pointer);
 
                   Get_Item_From_Var
                     (Pattern    => Pattern,
@@ -7800,8 +7841,7 @@ package body Gnat2Why.Expr is
 
             when Pointer =>
                declare
-                  Binder_Typ : constant Entity_Id :=
-                    Etype (Binder.Value.Ada_Node);
+                  Binder_Typ : constant Entity_Id := Binder.P_Typ;
                   Tmp        : constant W_Expr_Id :=
                     New_Temp_For_Expr (+Right_Side);
 
@@ -9346,8 +9386,7 @@ package body Gnat2Why.Expr is
 
          when Pointer =>
             declare
-               Formal_Typ        : constant Entity_Id :=
-                 Etype (Pattern.Value.Ada_Node);
+               Formal_Typ        : constant Entity_Id := Pattern.P_Typ;
 
                Reconstructed_Arg : W_Prog_Id;
                --  We reconstruct the argument and convert it to the
@@ -17162,10 +17201,13 @@ package body Gnat2Why.Expr is
                                     Local_Params);
             end if;
 
-            --  Insert static memory leak if the conversion is a move
+            --  Insert static memory leak if the conversion is a move of a
+            --  pool specific access type.
 
             if Domain = EW_Prog
               and then Conversion_Is_Move_To_Constant (Expr)
+              and then not Is_General_Access_Type
+                (Retysp (Etype (Expression (Expr))))
               and then not Value_Is_Never_Leaked (Expr)
             then
                Emit_Static_Proof_Result
@@ -17344,6 +17386,7 @@ package body Gnat2Why.Expr is
                New_Expr : constant Node_Id := Expression (Expr);
                Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
                To_Const : constant Boolean := Is_Access_Constant (Exp_Ty);
+               To_Gen   : constant Boolean := Is_General_Access_Type (Exp_Ty);
                Des_Ty   : constant Entity_Id :=
                  Directly_Designated_Type (Exp_Ty);
 
@@ -17351,16 +17394,19 @@ package body Gnat2Why.Expr is
                --  Insert static memory leak if needed
 
                if Domain = EW_Prog
-                 and then (if To_Const then not Value_Is_Never_Leaked (Expr)
+                 and then (if To_Gen or else To_Const
+                           then not Value_Is_Never_Leaked (Expr)
                            else In_Assertion_Expression_Pragma (Expr))
                then
                   Emit_Static_Proof_Result
                     (Expr, VC_Memory_Leak, False, Current_Subp,
-                     Explanation =>
-                       (if To_Const
-                        then "allocator for an access-to-constant type"
-                        else "allocator inside an assertion")
-                        & " leaks memory");
+                     Explanation => "allocator "
+                     & (if To_Const
+                        then "for an access-to-constant type"
+                        elsif To_Gen
+                        then "for a general access-to-variable type"
+                        else "inside an assertion")
+                     & " leaks memory");
                end if;
 
                --  Uninitialized allocator
@@ -18033,9 +18079,12 @@ package body Gnat2Why.Expr is
 
       if Domain = EW_Prog then
 
-         --  Insert static memory leak if needed
+         --  Insert static memory leak on calls to allocating functions
+         --  occuring inside assertions, but only if they contain parts of a
+         --  pool specific access type.
 
          if Is_Allocating_Function (Subp)
+           and then Contains_Allocated_Parts (Etype (Subp))
            and then In_Assertion_Expression_Pragma (Expr)
          then
             Emit_Static_Proof_Result
@@ -21445,7 +21494,7 @@ package body Gnat2Why.Expr is
                Check_For_Memory_Leak : declare
 
                   Outputs : Entity_Sets.Set :=
-                    Compute_Deep_Outputs (Subp);
+                    Compute_Outputs_With_Allocated_Parts (Subp);
 
                   procedure Check_Param
                     (Formal : Entity_Id; Actual : Node_Id);
@@ -21455,7 +21504,7 @@ package body Gnat2Why.Expr is
                   is
                      Typ : constant Entity_Id := Retysp (Etype (Formal));
                   begin
-                     if Is_Deep (Typ)
+                     if Contains_Allocated_Parts (Typ)
                        and then not Is_Anonymous_Access_Type (Typ)
                        and then Ekind (Formal) = E_Out_Parameter
                      then

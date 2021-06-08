@@ -2710,29 +2710,41 @@ package body Why.Atree.Modules is
                   Typ    => EW_Bool_Type));
          end if;
 
-         if Is_Deep (E)
-           and then not Has_Access_Type (E)
+         --  Symbols for moves of deep types. The Is_Moved and Moved_Relation
+         --  predicates are in the definition module if they are predeclared,
+         --  otherwise they are in the axiom module.
+
+         if Contains_Allocated_Parts (E)
+           and then (not Has_Access_Type (E)
+                     or else Is_General_Access_Type (E))
          then
-            Insert_Symbol
-              (E, WNE_Is_Moved,
-               New_Identifier
-                 (Symb   => NID (To_String (WNE_Is_Moved)),
-                  Module => AM,
-                  Domain => EW_Term,
-                  Typ    => EW_Bool_Type));
-            Insert_Symbol
-              (E, WNE_Move,
-               New_Identifier
-                 (Symb   => NID (To_String (WNE_Move)),
-                  Module => AM,
-                  Domain => EW_Prog));
-            Insert_Symbol
-              (E, WNE_Moved_Relation,
-               New_Identifier
-                 (Symb   => NID (To_String (WNE_Moved_Relation)),
-                  Module => AM,
-                  Domain => EW_Term,
-                  Typ    => EW_Bool_Type));
+            declare
+               Pred_Module : constant W_Module_Id :=
+                 (if not Has_Predeclared_Move_Predicates (E) then AM
+                  elsif Might_Contain_Relaxed_Init (E) then E_Init_Module (E)
+                  else M);
+            begin
+               Insert_Symbol
+                 (E, WNE_Is_Moved,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Is_Moved)),
+                     Module => Pred_Module,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+               Insert_Symbol
+                 (E, WNE_Move,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Move)),
+                     Module => AM,
+                     Domain => EW_Prog));
+               Insert_Symbol
+                 (E, WNE_Moved_Relation,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Moved_Relation)),
+                     Module => Pred_Module,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+            end;
          end if;
 
          --  Symbols for scalar types
