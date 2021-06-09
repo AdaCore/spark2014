@@ -29,16 +29,20 @@ project GNAT2Why is
 
       for Excluded_Source_Dirs use ("gnat_src");
 
-      --  Exclude source files leading to false positives
       for Excluded_Source_Files use
-        ("assumptions.ads",
+        (--  Exclude source files leading to false positives
+         "assumptions.ads",
          "assumptions.adb",
          "flow.ads",
          "flow-analysis.adb",
          "flow-analysis-sanity.adb",
          "flow-control_flow_graph.adb",
          "flow-data_dependence_graph.adb",
-         "why-atree-tables.adb");
+         "why-atree-tables.adb",
+
+         --  Exclude generated frontend files
+         "obj/einfo-entities.adb",
+         "obj/sinfo-nodes.adb");
 
    end CodePeer;
 
