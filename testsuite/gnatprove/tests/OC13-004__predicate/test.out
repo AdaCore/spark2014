@@ -1,1 +1,3 @@
-dyn_pred.ads:19:38: info: predicate check proved (CVC4: 2 VC)
+dyn_pred2.ads:8:44: error: expected type "Rec_Type" defined at line 10
+dyn_pred2.ads:8:44: error: found type "Non_Zero_Type" defined at line 14
+gnatprove: error during generation of Global contracts
