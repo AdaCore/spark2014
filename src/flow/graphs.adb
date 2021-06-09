@@ -816,6 +816,8 @@ package body Graphs is
      (G : Graph;
       R : Vertex_Id) return Vertex_To_Vertex_T
    is
+      pragma Annotate (CodePeer, Skip_Analysis);
+
       subtype V_To_V is Vertex_To_Vertex_T (0 .. G.Vertices.Last_Index);
       type V_To_VIL is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index)
