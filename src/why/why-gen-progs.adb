@@ -27,11 +27,49 @@ with Common_Containers;       use Common_Containers;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
+with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Terms;           use Why.Gen.Terms;
 
 package body Why.Gen.Progs is
+
+   ------------
+   -- Append --
+   ------------
+
+   procedure Append
+     (Left  : in out W_Prog_Id;
+      Right : W_Prog_Id)
+   is
+   begin
+      Left := Sequence (Left, Right);
+   end Append;
+
+   procedure Append
+     (Left           : in out W_Prog_Id;
+      Right1, Right2 : W_Prog_Id)
+   is
+   begin
+      Left := Sequence ((1 => Left, 2 => Right1, 3 => Right2));
+   end Append;
+
+   procedure Append
+     (Left  : in out W_Expr_Id;
+      Right : W_Prog_Id)
+   is
+   begin
+      Left := +Sequence (+Left, Right);
+   end Append;
+
+   procedure Append
+     (Left           : in out W_Expr_Id;
+      Right1, Right2 : W_Prog_Id)
+   is
+   begin
+      Left := +Sequence ((1 => +Left, 2 => Right1, 3 => Right2));
+   end Append;
 
    ----------------------------------
    -- Emit_Always_True_Range_Check --
@@ -199,6 +237,42 @@ package body Why.Gen.Progs is
            Return_Type => +T);
    end New_Simpl_Any_Prog;
 
+   -------------
+   -- Prepend --
+   -------------
+
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Prog_Id)
+   is
+   begin
+      Right := Sequence (Left, Right);
+   end Prepend;
+
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Expr_Id)
+   is
+   begin
+      Right := +Sequence (Left, +Right);
+   end Prepend;
+
+   procedure Prepend
+     (Left1, Left2  : W_Prog_Id;
+      Right         : in out W_Prog_Id)
+   is
+   begin
+      Right := Sequence ((1 => Left1, 2 => Left2, 3 => Right));
+   end Prepend;
+
+   procedure Prepend
+     (Left1, Left2  : W_Prog_Id;
+      Right         : in out W_Expr_Id)
+   is
+   begin
+      Right := +Sequence ((1 => Left1, 2 => Left2, 3 => +Right));
+   end Prepend;
+
    --------------
    -- Sequence --
    --------------
@@ -247,17 +321,69 @@ package body Why.Gen.Progs is
    ---------------------
 
    procedure Sequence_Append
-     (Seq : in out W_Statement_Sequence_Id;
-      Elt : W_Prog_Id)
+     (Left  : in out W_Statement_Sequence_Id;
+      Right : W_Statement_Sequence_Id)
    is
-      --  CodePeer does not understand the Unmodified pragma and issues a false
-      --  alarm otherwise.
-      pragma Annotate (CodePeer, Skip_Analysis);
-      pragma Unmodified (Seq);
+      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Left
+      pragma Unmodified (Left);
+
+      Stats : constant Why_Node_Lists.List :=
+        Get_List (+Get_Statements (Right));
    begin
-      if not Is_Void (Elt) then
-         Statement_Sequence_Append_To_Statements (Seq, Elt);
+      for Stat of Stats loop
+         Statement_Sequence_Append_To_Statements (Left, +Stat);
+      end loop;
+   end Sequence_Append;
+
+   procedure Sequence_Append
+     (Left  : in out W_Statement_Sequence_Id;
+      Right : W_Prog_Id)
+   is
+   begin
+      if Is_Void (Right) then
+         null;
+
+      elsif Get_Kind (+Right) = W_Statement_Sequence then
+         Sequence_Append (Left, W_Statement_Sequence_Id'(+Right));
+
+      else
+         Statement_Sequence_Append_To_Statements (Left, Right);
       end if;
    end Sequence_Append;
+
+   ----------------------
+   -- Sequence_Prepend --
+   ----------------------
+
+   procedure Sequence_Prepend
+     (Left  : W_Statement_Sequence_Id;
+      Right : in out W_Statement_Sequence_Id)
+   is
+      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Right
+      pragma Unmodified (Right);
+
+      Stats : constant Why_Node_Lists.List :=
+        Get_List (+Get_Statements (Left));
+   begin
+      for Stat of reverse Stats loop
+         Statement_Sequence_Prepend_To_Statements (Right, +Stat);
+      end loop;
+   end Sequence_Prepend;
+
+   procedure Sequence_Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Statement_Sequence_Id)
+   is
+   begin
+      if Is_Void (Left) then
+         null;
+
+      elsif Get_Kind (+Left) = W_Statement_Sequence then
+         Sequence_Prepend (W_Statement_Sequence_Id'(+Left), Right);
+
+      else
+         Statement_Sequence_Prepend_To_Statements (Right, Left);
+      end if;
+   end Sequence_Prepend;
 
 end Why.Gen.Progs;

@@ -196,7 +196,7 @@ package body Gnat2Why.Subprograms.Pointers is
                 9 => To_Post_Check));
          end if;
 
-         Why_Body := Sequence
+         Prepend
            (Compute_Dynamic_Property_For_Inputs (Params => Params,
                                                  E      => To),
             Why_Body);

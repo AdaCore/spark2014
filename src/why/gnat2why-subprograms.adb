@@ -363,11 +363,10 @@ package body Gnat2Why.Subprograms is
                           Expression
                             (First (Pragma_Argument_Associations (Init_Cond)));
                      begin
-                        Assumption :=
-                          Sequence
-                            (Assumption,
-                             New_Assume_Statement
-                               (Pred => +Transform_Expr
+                        Append
+                          (Assumption,
+                           New_Assume_Statement
+                             (Pred => +Transform_Expr
                                   (Expr, EW_Bool_Type, EW_Pred, Params)));
                      end;
                   end if;
@@ -579,7 +578,7 @@ package body Gnat2Why.Subprograms is
                                           VC_Ceiling_Priority_Protocol,
                                         Kind     => EW_Check);
                begin
-                  S := Sequence (S, Check);
+                  Append (S, Check);
                end;
             end loop;
          end loop;
@@ -765,8 +764,7 @@ package body Gnat2Why.Subprograms is
                   if Ekind (Ent) = E_Procedure
                     and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
                   then
-                     Stat := Sequence (Stat,
-                                       Single_Attach_Handler_Check (Ent));
+                     Append (Stat, Single_Attach_Handler_Check (Ent));
                   end if;
                end;
             end if;
@@ -823,7 +821,7 @@ package body Gnat2Why.Subprograms is
         (Ada_Node => E,
          Effects  => +Compute_Effects (E, Global_Params => True));
 
-      Call_Effects := Sequence
+      Append
         (Call_Effects,
          New_Assume_Statement
            (Ada_Node => E,
@@ -918,13 +916,15 @@ package body Gnat2Why.Subprograms is
             declare
                Typ : constant Entity_Id := Retysp (Etype (Obj));
             begin
-               Assume := Sequence (Assume,
-                 New_Assume_Statement (Pred =>
-                   Compute_Is_Moved_Property
-                     (+Transform_Identifier (Params => Params,
-                                             Expr   => Obj,
-                                             Ent    => Obj,
-                                             Domain => EW_Term), Typ)));
+               Append
+                 (Assume,
+                  New_Assume_Statement
+                    (Pred =>
+                         Compute_Is_Moved_Property
+                       (+Transform_Identifier (Params => Params,
+                                               Expr   => Obj,
+                                               Ent    => Obj,
+                                               Domain => EW_Term), Typ)));
             end;
          end loop;
       end;
@@ -1935,7 +1935,7 @@ package body Gnat2Why.Subprograms is
         and then (if List_Length (Component_Associations (Aggr)) = 2
                   then not Has_Others)
       then
-         Result := Sequence
+         Append
            (Result,
             New_Assert
               (Pred     =>
@@ -1956,7 +1956,7 @@ package body Gnat2Why.Subprograms is
       --  is no OTHER guard.
 
       if not Has_Others then
-         Result := Sequence
+         Append
            (Result,
             New_Assert
               (Pred       =>
@@ -2098,8 +2098,7 @@ package body Gnat2Why.Subprograms is
             Enabled     : constant W_Expr_Id := +Guard_Ident;
 
          begin
-            Result := Sequence
-              (Result, Do_One_Contract_Case (Contract_Case, Enabled));
+            Append (Result, Do_One_Contract_Case (Contract_Case, Enabled));
          end;
 
          Next (Contract_Case);
@@ -2775,7 +2774,7 @@ package body Gnat2Why.Subprograms is
             Subset => Old_Parts);
       end if;
 
-      Why_Body := Sequence (Why_Body, Classwide_Post_RTE);
+      Append (Why_Body, Classwide_Post_RTE);
 
       --  Insert bindings for variants, they may be needed to check recursive
       --  calls in the classwide post. We use EW_Pterm as a domain here as RTE
@@ -2789,7 +2788,7 @@ package body Gnat2Why.Subprograms is
 
       --  Assume dynamic property of inputs before the checks
 
-      Why_Body := Sequence
+      Prepend
         (Compute_Dynamic_Property_For_Inputs (Params => Params,
                                               E      => E),
          Why_Body);
@@ -2942,11 +2941,10 @@ package body Gnat2Why.Subprograms is
          if Present (Handled_Statement_Sequence (Body_N))
            and then Body_Statements_In_SPARK (E)
          then
-            Why_Body :=
-              Sequence
-                (Transform_Statements_And_Declarations
-                   (Statements (Handled_Statement_Sequence (Body_N))),
-                 Why_Body);
+            Prepend
+              (Transform_Statements_And_Declarations
+                 (Statements (Handled_Statement_Sequence (Body_N))),
+               Why_Body);
          end if;
 
          Why_Body :=
@@ -2956,7 +2954,7 @@ package body Gnat2Why.Subprograms is
 
          if Is_Compilation_Unit (E) then
             Params.Phase := Generate_VCs_For_Contract;
-            Why_Body := Sequence
+            Prepend
               (Assume_Initial_Condition_Of_Withed_Units
                  (Package_Body_Entity (Body_N), Params),
                Why_Body);
@@ -2972,13 +2970,12 @@ package body Gnat2Why.Subprograms is
            Compute_Type_Invariants_For_Package (E, Params);
       begin
          if not Is_True_Boolean (+Check) then
-            Why_Body :=
-              Sequence
-                (Why_Body,
-                 New_Assert
-                      (Pred        =>
-                         +New_VC_Expr (E, +Check, VC_Invariant_Check, EW_Pred),
-                       Assert_Kind => EW_Assert));
+            Append
+              (Why_Body,
+               New_Assert
+                 (Pred        =>
+                      +New_VC_Expr (E, +Check, VC_Invariant_Check, EW_Pred),
+                  Assert_Kind => EW_Assert));
          end if;
       end;
 
@@ -3002,7 +2999,7 @@ package body Gnat2Why.Subprograms is
 
       if Is_Compilation_Unit (E) then
          Params.Phase := Generate_VCs_For_Contract;
-         Why_Body := Sequence
+         Prepend
            (Assume_Initial_Condition_Of_Withed_Units (E, Params), Why_Body);
       end if;
 
@@ -3047,8 +3044,7 @@ package body Gnat2Why.Subprograms is
                   end;
                end if;
 
-               Why_Body := Sequence
-                 (New_Assume_Statement (Pred => Pre), Why_Body);
+               Prepend (New_Assume_Statement (Pred => Pre), Why_Body);
             end;
          end if;
       end;
@@ -3058,11 +3054,10 @@ package body Gnat2Why.Subprograms is
 
       Params.Phase := Generate_VCs_For_Contract;
 
-      Why_Body :=
-        Sequence
-          (Compute_Dynamic_Property_For_Inputs (Params => Params,
-                                                E      => E),
-           Why_Body);
+      Prepend
+        (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                              E      => E),
+         Why_Body);
 
       --  Assume values of constants
 
@@ -3244,7 +3239,7 @@ package body Gnat2Why.Subprograms is
                   --  Generate a range check, but with a reason of ceiling
                   --  check, as specified in RM index for "Ceiling_Check".
 
-                  Why_Body := Sequence
+                  Append
                     (Why_Body,
                      New_Located_Assert
                        (Ada_Node => E,
@@ -3276,9 +3271,9 @@ package body Gnat2Why.Subprograms is
       --  Check that no Attach_Handler expression of the protected object
       --  corresponds to a reserved interrupt; see RM C.3.1(10/3).
 
-      Why_Body := Sequence (Why_Body,
-                            Compute_Attach_Handler_Check
-                              (Base_Type (E), Body_Params));
+      Append (Why_Body,
+              Compute_Attach_Handler_Check
+                (Base_Type (E), Body_Params));
 
       --  Translate public and private declarations of the package
 
@@ -3323,7 +3318,8 @@ package body Gnat2Why.Subprograms is
                   end if;
                end if;
             end loop;
-            Why_Body := Sequence (Why_Body, +Checks);
+
+            Append (Why_Body, +Checks);
          end;
 
          Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
@@ -3590,9 +3586,9 @@ package body Gnat2Why.Subprograms is
             begin
                if B.Init.Present then
                   pragma Assert (Ekind (Param) = E_Out_Parameter);
-                  Checks := Sequence
-                    (Left  => Checks,
-                     Right => New_Located_Assert
+                  Append
+                    (Checks,
+                     New_Located_Assert
                        (Ada_Node => Param,
                         Pred     => Pred_Of_Boolean_Term
                           (New_Deref (Right => B.Init.Id,
@@ -3674,11 +3670,10 @@ package body Gnat2Why.Subprograms is
          Prog   : W_Prog_Id := Arg;
       begin
          if Has_Contracts (E, Pragma_Refined_Post) then
-            Prog :=
-              Sequence
-                (Prog,
-                 New_Ignore
-                   (Prog => +Compute_Spec
+            Append
+              (Prog,
+               New_Ignore
+                 (Prog => +Compute_Spec
                       (Params, E, Pragma_Refined_Post, EW_Prog)));
             Prog :=
               New_Located_Abstract
@@ -3687,7 +3682,7 @@ package body Gnat2Why.Subprograms is
                  Reason => VC_Refined_Post,
                  Post => +Compute_Spec
                    (Params, E, Pragma_Refined_Post, EW_Pred));
-            Prog := Sequence
+            Append
               (Prog,
                New_Assume_Statement
                  (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
@@ -3740,7 +3735,7 @@ package body Gnat2Why.Subprograms is
                      end;
                   end if;
 
-                  Prog := Sequence
+                  Append
                     (Prog,
                      New_Assume_Statement (Pred => Dyn_Prop));
                end;
@@ -3805,8 +3800,8 @@ package body Gnat2Why.Subprograms is
                   CC_Old.Clear;
                   Collect_Old_Parts (Expression (Contract_Case), CC_Old);
                   Case_Guard := First (Choice_List (Contract_Case));
-                  R := Sequence
-                    (Left  => New_Conditional
+                  Prepend
+                    (New_Conditional
                        (Condition =>
                             +(if Nkind (Case_Guard) = N_Others_Choice
                               then Others_Guard_Ident
@@ -3818,7 +3813,7 @@ package body Gnat2Why.Subprograms is
                                 Expr   => +Void,
                                 Domain => EW_Prog,
                                 Subset => CC_Old))),
-                     Right => R);
+                     R);
 
                   Next (Contract_Case);
                end loop;
@@ -3967,8 +3962,7 @@ package body Gnat2Why.Subprograms is
                                   else "")));
 
             for Prag of Prags loop
-               Result :=
-                 Sequence (Result, Transform_Pragma (Prag, Force => True));
+               Append (Result, Transform_Pragma (Prag, Force => True));
             end loop;
          end if;
 
@@ -4541,10 +4535,9 @@ package body Gnat2Why.Subprograms is
          --  We check that the call graph starting from this task respects the
          --  ceiling priority protocol.
 
-         Why_Body :=
-           Sequence
-             (Check_Ceiling_Protocol (Params, E),
-              Why_Body);
+         Prepend
+           (Check_Ceiling_Protocol (Params, E),
+            Why_Body);
       else
          Why_Body := +Void;
       end if;
@@ -4567,11 +4560,10 @@ package body Gnat2Why.Subprograms is
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type.
 
-      Why_Body :=
-        Sequence
-          (Compute_Dynamic_Property_For_Inputs (Params => Params,
-                                                E      => E),
-           Why_Body);
+      Prepend
+        (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                              E      => E),
+         Why_Body);
 
       --  Assume values of constants
 

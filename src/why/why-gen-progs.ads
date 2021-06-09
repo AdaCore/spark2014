@@ -40,6 +40,35 @@ package Why.Gen.Progs is
    True_Prog  : constant W_Prog_Id := New_Literal (Value => EW_True);
    False_Prog : constant W_Prog_Id := New_Literal (Value => EW_False);
 
+   pragma Annotate (Xcov, Exempt_On, "Ghost code");
+   function Is_Empty_Or_Unit (Prog : W_Prog_Id) return Boolean is
+     (Get_Type (+Prog) = Why_Empty
+      or else Get_Type (+Prog) = EW_Unit_Type)
+   with Ghost;
+   pragma Annotate (Xcov, Exempt_Off);
+
+   procedure Append
+     (Left  : in out W_Prog_Id;
+      Right : W_Prog_Id)
+   with Pre => Is_Empty_Or_Unit (Left);
+
+   procedure Append
+     (Left           : in out W_Prog_Id;
+      Right1, Right2 : W_Prog_Id)
+   with Pre => Is_Empty_Or_Unit (Left)
+     and then Is_Empty_Or_Unit (Right1);
+
+   procedure Append
+     (Left  : in out W_Expr_Id;
+      Right : W_Prog_Id)
+   with Pre => Is_Empty_Or_Unit (+Left);
+
+   procedure Append
+     (Left           : in out W_Expr_Id;
+      Right1, Right2 : W_Prog_Id)
+   with Pre => Is_Empty_Or_Unit (+Left)
+     and then Is_Empty_Or_Unit (Right1);
+
    procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;
       Check_Kind : Scalar_Check_Kind);
@@ -111,6 +140,28 @@ package Why.Gen.Progs is
    --  Build a "any" expression whose type is a simple type, satisfying
    --  proposition Pred.
 
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Prog_Id)
+   with Pre => Is_Empty_Or_Unit (Left);
+
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Expr_Id)
+   with Pre => Is_Empty_Or_Unit (Left);
+
+   procedure Prepend
+     (Left1, Left2  : W_Prog_Id;
+      Right         : in out W_Prog_Id)
+   with Pre => Is_Empty_Or_Unit (Left1)
+     and then Is_Empty_Or_Unit (Left2);
+
+   procedure Prepend
+     (Left1, Left2  : W_Prog_Id;
+      Right         : in out W_Expr_Id)
+   with Pre => Is_Empty_Or_Unit (Left1)
+     and then Is_Empty_Or_Unit (Left2);
+
    function Sequence (Ada_Node    : Node_Id;
                       Left, Right : W_Prog_Id) return W_Prog_Id;
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
@@ -123,7 +174,20 @@ package Why.Gen.Progs is
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id
    with Pre => Progs'Length /= 0;
 
-   procedure Sequence_Append (Seq : in out W_Statement_Sequence_Id;
-                              Elt : W_Prog_Id);
+   procedure Sequence_Append
+     (Left  : in out W_Statement_Sequence_Id;
+      Right : W_Statement_Sequence_Id);
+
+   procedure Sequence_Append
+     (Left : in out W_Statement_Sequence_Id;
+      Right : W_Prog_Id);
+
+   procedure Sequence_Prepend
+     (Left  : W_Statement_Sequence_Id;
+      Right : in out W_Statement_Sequence_Id);
+
+   procedure Sequence_Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Statement_Sequence_Id);
 
 end Why.Gen.Progs;
