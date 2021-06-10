@@ -3478,7 +3478,7 @@ package body Why.Gen.Records is
                Progs    => Prepare_Args_For_Subtype_Check
                  (Check_Ty, Tmp_Expr),
                Reason   => VC_Discriminant_Check,
-               Typ      => Get_Type (+Expr)),
+               Typ      => EW_Unit_Type),
             Right    => +Tmp_Expr));
    end Insert_Subtype_Discriminant_Check;
 

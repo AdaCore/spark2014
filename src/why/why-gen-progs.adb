@@ -71,6 +71,37 @@ package body Why.Gen.Progs is
       Left := +Sequence ((1 => +Left, 2 => Right1, 3 => Right2));
    end Append;
 
+   procedure Append
+     (Left  : in out W_Statement_Sequence_Id;
+      Right : W_Statement_Sequence_Id)
+   is
+      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Left
+      pragma Unmodified (Left);
+
+      Stats : constant Why_Node_Lists.List :=
+        Get_List (+Get_Statements (Right));
+   begin
+      for Stat of Stats loop
+         Statement_Sequence_Append_To_Statements (Left, +Stat);
+      end loop;
+   end Append;
+
+   procedure Append
+     (Left  : in out W_Statement_Sequence_Id;
+      Right : W_Prog_Id)
+   is
+   begin
+      if Is_Void (Right) then
+         null;
+
+      elsif Get_Kind (+Right) = W_Statement_Sequence then
+         Append (Left, W_Statement_Sequence_Id'(+Right));
+
+      else
+         Statement_Sequence_Append_To_Statements (Left, Right);
+      end if;
+   end Append;
+
    ----------------------------------
    -- Emit_Always_True_Range_Check --
    ----------------------------------
@@ -273,6 +304,37 @@ package body Why.Gen.Progs is
       Right := +Sequence ((1 => Left1, 2 => Left2, 3 => +Right));
    end Prepend;
 
+   procedure Prepend
+     (Left  : W_Statement_Sequence_Id;
+      Right : in out W_Statement_Sequence_Id)
+   is
+      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Right
+      pragma Unmodified (Right);
+
+      Stats : constant Why_Node_Lists.List :=
+        Get_List (+Get_Statements (Left));
+   begin
+      for Stat of reverse Stats loop
+         Statement_Sequence_Prepend_To_Statements (Right, +Stat);
+      end loop;
+   end Prepend;
+
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Statement_Sequence_Id)
+   is
+   begin
+      if Is_Void (Left) then
+         null;
+
+      elsif Get_Kind (+Left) = W_Statement_Sequence then
+         Prepend (W_Statement_Sequence_Id'(+Left), Right);
+
+      else
+         Statement_Sequence_Prepend_To_Statements (Right, Left);
+      end if;
+   end Prepend;
+
    --------------
    -- Sequence --
    --------------
@@ -283,19 +345,14 @@ package body Why.Gen.Progs is
       return W_Prog_Id
    is
    begin
-      --  We only optimize the case where at least one of (Left, Right) is not
-      --  a sequence; in this case we append the not-sequence statement to the
-      --  sequence statement.
-      --  If both are sequences, or both are non-sequences, we use
-      --  New_Statement_Sequence.
       if Is_Void (Left) then
          return Right;
       elsif Is_Void (Right) then
          return Left;
+      else
+         return New_Statement_Sequence
+           (Ada_Node => Ada_Node, Statements => (1 => Left, 2 => Right));
       end if;
-
-      return New_Statement_Sequence
-        (Ada_Node => Ada_Node, Statements => (1 => Left, 2 => Right));
    end Sequence;
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id is
@@ -315,75 +372,5 @@ package body Why.Gen.Progs is
            (Statements => (Non_Void_Progs (Non_Void_Progs'First .. J - 1)));
       end if;
    end Sequence;
-
-   ---------------------
-   -- Sequence_Append --
-   ---------------------
-
-   procedure Sequence_Append
-     (Left  : in out W_Statement_Sequence_Id;
-      Right : W_Statement_Sequence_Id)
-   is
-      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Left
-      pragma Unmodified (Left);
-
-      Stats : constant Why_Node_Lists.List :=
-        Get_List (+Get_Statements (Right));
-   begin
-      for Stat of Stats loop
-         Statement_Sequence_Append_To_Statements (Left, +Stat);
-      end loop;
-   end Sequence_Append;
-
-   procedure Sequence_Append
-     (Left  : in out W_Statement_Sequence_Id;
-      Right : W_Prog_Id)
-   is
-   begin
-      if Is_Void (Right) then
-         null;
-
-      elsif Get_Kind (+Right) = W_Statement_Sequence then
-         Sequence_Append (Left, W_Statement_Sequence_Id'(+Right));
-
-      else
-         Statement_Sequence_Append_To_Statements (Left, Right);
-      end if;
-   end Sequence_Append;
-
-   ----------------------
-   -- Sequence_Prepend --
-   ----------------------
-
-   procedure Sequence_Prepend
-     (Left  : W_Statement_Sequence_Id;
-      Right : in out W_Statement_Sequence_Id)
-   is
-      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Right
-      pragma Unmodified (Right);
-
-      Stats : constant Why_Node_Lists.List :=
-        Get_List (+Get_Statements (Left));
-   begin
-      for Stat of reverse Stats loop
-         Statement_Sequence_Prepend_To_Statements (Right, +Stat);
-      end loop;
-   end Sequence_Prepend;
-
-   procedure Sequence_Prepend
-     (Left  : W_Prog_Id;
-      Right : in out W_Statement_Sequence_Id)
-   is
-   begin
-      if Is_Void (Left) then
-         null;
-
-      elsif Get_Kind (+Left) = W_Statement_Sequence then
-         Sequence_Prepend (W_Statement_Sequence_Id'(+Left), Right);
-
-      else
-         Statement_Sequence_Prepend_To_Statements (Right, Left);
-      end if;
-   end Sequence_Prepend;
 
 end Why.Gen.Progs;

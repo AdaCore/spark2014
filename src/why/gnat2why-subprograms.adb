@@ -3312,7 +3312,7 @@ package body Gnat2Why.Subprograms is
                   end if;
 
                   if F_Check /= +Void then
-                     Sequence_Append
+                     Append
                        (Checks,
                         New_Ignore
                           (Ada_Node => Etype (Field),
@@ -3859,7 +3859,7 @@ package body Gnat2Why.Subprograms is
 
          if Ekind (E) /= E_Function then
             for E of Borrows loop
-               Sequence_Append
+               Append
                  (Result,
                   Havoc_Borrowed_Expression (E));
             end loop;

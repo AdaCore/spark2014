@@ -347,7 +347,7 @@ package body Gnat2Why.Expr.Loops is
          loop
             Scop := Enclosing_Block_Stmt (Scop);
             exit when Nkind (Scop) = N_Loop_Statement;
-            Sequence_Append (Res, Havoc_Borrowed_From_Block (Scop));
+            Append (Res, Havoc_Borrowed_From_Block (Scop));
          end loop;
 
          return +Res;
@@ -396,9 +396,9 @@ package body Gnat2Why.Expr.Loops is
 
          if Nkind (Instr) = N_Block_Statement then
             if Present (Declarations (Instr)) then
-               Sequence_Append (Body_Prog,
+               Append (Body_Prog,
                  Havoc_Borrowed_From_Block (Instr));
-               Sequence_Append (Body_Prog,
+               Append (Body_Prog,
                  Check_No_Memory_Leaks_At_End_Of_Scope (Declarations (Instr)));
             end if;
          else
