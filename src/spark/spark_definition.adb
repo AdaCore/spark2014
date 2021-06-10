@@ -3490,16 +3490,6 @@ package body SPARK_Definition is
                     ("Access attribute of a private type", N);
                   return;
 
-               --  N should not be of a named access-to-variable type
-
-               elsif not Is_Anonymous_Access_Type (Etype (N))
-                 and then Is_Access_Object_Type (Retysp (Etype (N)))
-                 and then not Is_Access_Constant (Retysp (Etype (N)))
-               then
-                  Mark_Violation
-                    ("Access attribute of a named access-to-variable type", N);
-                  return;
-
                --  The prefix must be a path rooted inside an object
 
                elsif not Is_Access_Object_Type (Retysp (Etype (N)))
@@ -3515,42 +3505,13 @@ package body SPARK_Definition is
                      N);
                   return;
 
-               --  'Access of an anonymous access-to-object type must occur
-               --  directly inside an assignment statement, an object
-               --  declaration, or a simple return statement from an
-               --  non-expression function. We don't need to worry about
-               --  declare expressions, 'Access is not allowed there.
-               --  This is because the expression introduces a borrower/an
-               --  observer that we only handle currently inside declarations
-               --  and assignments to objects of an anonymous access-to-object
-               --  type and on return of traversal functions.
-
-               elsif Is_Anonymous_Access_Type (Etype (N))
-                 and then
-                   (No (Par)
-                    or else Nkind (Par) not in N_Assignment_Statement
-                                             | N_Object_Declaration
-                                             | N_Simple_Return_Statement
-                    or else N /= Expression (Par))
-               then
-                  declare
-                     Operation : constant String :=
-                       (if Is_Access_Constant (Etype (N)) then "observe"
-                        else "borrow");
-                  begin
-                     Mark_Unsupported
-                       (Operation & " through 'Access not directly inside an"
-                        & " assignment statement, an object declaration, or a"
-                        & " simple return statement", N);
-                     return;
-                  end;
-
                --  For a named access-to-constant type, mark the prefix before
                --  checking whether it is rooted at a constant part of an
                --  object.
 
-               elsif not Is_Anonymous_Access_Type (Etype (N)) then
-                  pragma Assert (Is_Access_Constant (Retysp (Etype (N))));
+               elsif not Is_Anonymous_Access_Type (Etype (N))
+                 and then Is_Access_Constant (Retysp (Etype (N)))
+               then
 
                   Mark (P);
                   pragma Assert (List_Length (Exprs) = 0);
@@ -3581,6 +3542,39 @@ package body SPARK_Definition is
                   --  We can return here, the prefix has already been marked
 
                   return;
+
+               --  'Access of an anonymous access-to-object type or named
+               --  access-to-variable type must occur directly inside an
+               --  assignment statement, an object declaration, or a simple
+               --  return statement from a non-expression function. We don't
+               --  need to worry about declare expressions, 'Access is not
+               --  allowed there.
+               --  This is because the expression introduces a borrower/an
+               --  observer/a move that we only handle currently inside
+               --  declarations, assignments and on return of traversal
+               --  functions. We could consider allowing it inside
+               --  non-traversal function calls (probaly easy) or inside
+               --  procedure calls (would require special handling in flow and
+               --  proof).
+
+               elsif No (Par)
+                 or else Nkind (Par) not in N_Assignment_Statement
+                                          | N_Object_Declaration
+                                          | N_Simple_Return_Statement
+                 or else N /= Expression (Par)
+               then
+                  declare
+                     Operation : constant String :=
+                       (if not Is_Anonymous_Access_Type (Etype (N)) then "move"
+                        elsif Is_Access_Constant (Etype (N)) then "observe"
+                        else "borrow");
+                  begin
+                     Mark_Unsupported
+                       (Operation & " through 'Access not directly inside an"
+                        & " assignment statement, an object declaration, or a"
+                        & " simple return statement", N);
+                     return;
+                  end;
                end if;
             end;
          when others =>
@@ -6557,11 +6551,6 @@ package body SPARK_Definition is
                      Mark_Subprogram_Entity (Profile);
                   end if;
                end;
-
-            --  This type should no longer occur after resolution
-
-            elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
-               raise Program_Error;
 
             --  Storage_Pool is not in SPARK
 

@@ -2494,8 +2494,17 @@ package body SPARK_Util is
    ------------------------
 
    function Is_Path_Expression (Expr : Node_Id) return Boolean is
-   begin
-      case Nkind (Expr) is
+
+      function Is_Path_Expression_Ann (Expr : Node_Id) return Boolean;
+      --  Check whether Expr is the prefix of a path
+
+      ----------------------------
+      -- Is_Path_Expression_Ann --
+      ----------------------------
+
+      function Is_Path_Expression_Ann (Expr : Node_Id) return Boolean is
+      begin
+         case Nkind (Expr) is
          when N_Expanded_Name
             | N_Identifier
          =>
@@ -2506,7 +2515,7 @@ package body SPARK_Util is
             | N_Selected_Component
             | N_Slice
          =>
-            return Is_Path_Expression (Prefix (Expr));
+            return Is_Path_Expression_Ann (Prefix (Expr));
 
          --  Special value NULL corresponds to an empty path
 
@@ -2525,38 +2534,50 @@ package body SPARK_Util is
             return True;
 
          when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_First
-                                      | Name_Last
-                                      | Name_Length
-                                      | Name_Access
-            then
-               return Is_Path_Expression (Prefix (Expr));
 
             --  Old and Loop_Entry attributes can only be called on new
             --  objects. Update attribute is similar to delta aggregates.
 
+            return Attribute_Name (Expr) in Name_Loop_Entry
+                                          | Name_Old
+                                          | Name_Update;
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Is_Path_Expression_Ann (Expression (Expr));
+
+         when others =>
+            return False;
+         end case;
+      end Is_Path_Expression_Ann;
+
+   --  Start of processing for Is_Path_Expression
+
+   begin
+      case Nkind (Expr) is
+         when N_Attribute_Reference =>
+            if Attribute_Name (Expr) in Name_Access
+                                      | Name_First
+                                      | Name_Last
+                                      | Name_Length
+            then
+               return Is_Path_Expression_Ann (Prefix (Expr));
             else
-               return Attribute_Name (Expr) in Name_Loop_Entry
-                                             | Name_Old
-                                             | Name_Update;
+               return Is_Path_Expression_Ann (Expr);
             end if;
 
          --  Path op null or null op Path is a path
 
          when N_Op_Eq | N_Op_Ne =>
             return (Nkind (Left_Opnd (Expr)) = N_Null
-                    and then Is_Path_Expression (Right_Opnd (Expr)))
+                    and then Is_Path_Expression_Ann (Right_Opnd (Expr)))
               or else (Nkind (Right_Opnd (Expr)) = N_Null
-                       and then Is_Path_Expression (Left_Opnd (Expr)));
-
-         when N_Qualified_Expression
-            | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
-            return Is_Path_Expression (Expression (Expr));
+                       and then Is_Path_Expression_Ann (Left_Opnd (Expr)));
 
          when others =>
-            return False;
+            return Is_Path_Expression_Ann (Expr);
       end case;
    end Is_Path_Expression;
 

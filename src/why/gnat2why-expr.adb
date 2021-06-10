@@ -12373,8 +12373,13 @@ package body Gnat2Why.Expr is
             Count_Discriminants (Get_Ada_Node (+L_Type)) > 0
          and then not Is_Constrained (Get_Ada_Node (+L_Type)));
 
-      Tmp      : constant W_Expr_Id :=
-        New_Temp_For_Expr (+T, Lgth_Check or else Disc_Check);
+      Tag_Check  : constant Boolean :=
+        Is_Class_Wide_Type (Etype (Lvalue)) and then
+        not Is_Tag_Indeterminate (Expression (Stmt));
+
+      Tmp        : constant W_Expr_Id :=
+        New_Temp_For_Expr
+          (+T, Lgth_Check or else Disc_Check or else Tag_Check);
 
    begin
       --  The Exp_Entity type is in fact the type that is expected in Why.
@@ -12470,9 +12475,7 @@ package body Gnat2Why.Expr is
       --  not introduce this check for calls with dispatching results as in
       --  this case the tag will depend on the context.
 
-      if Is_Class_Wide_Type (Etype (Lvalue)) and then
-        not Is_Tag_Indeterminate (Expression (Stmt))
-      then
+      if Tag_Check then
          declare
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
