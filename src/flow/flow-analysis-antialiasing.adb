@@ -697,13 +697,11 @@ package body Flow.Analysis.Antialiasing is
          and then not Is_Access_Type (Etype (F)))
         or else
 
-      --  ??? The SPARK RM 6.4.2(2) states that anonymous access-to-constant
-      --  parameters are immutable. The best we can check for here
-      --  appears to be the intersection of 'anonymous access' and
-      --  'access constant'.
-        (Ekind (F) = E_Anonymous_Access_Type
+      --  The SPARK RM 6.4.2(2) states that anonymous access-to-constant
+      --  parameters are immutable. We implement via the intersection of
+      --  'anonymous access' and 'access constant'.
+        (Is_Anonymous_Access_Type (Etype (F))
          and then Is_Access_Constant (Etype (F)));
-
    end Is_Immutable;
 
    ---------------------------
