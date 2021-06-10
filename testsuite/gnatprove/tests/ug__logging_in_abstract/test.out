@@ -11,7 +11,7 @@ logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of
    13 |     Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
       |                         ~~~~~~~~~~~^
 
-logging_in_abstract.adb:16:28: medium: overflow check might fail
+logging_in_abstract.adb:16:28: medium: overflow check might fail, cannot prove upper bound for Log_Size + 1
    16 |      Log_Size := Log_Size + 1;
       |                  ~~~~~~~~~^~~
   e.g. when Log_Size = Natural'Last

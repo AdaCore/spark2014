@@ -100,7 +100,7 @@ tests.adb:411:09: info: data dependencies proved
 tests.adb:413:21: medium: missing dependency "M => B"
 tests.adb:414:21: medium: missing dependency "O => A"
 tests.adb:420:43: info: tag check proved (CVC4: 1 VC)
-tests.adb:423:13: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
+tests.adb:423:13: medium: range check might fail, cannot prove lower bound for Z.X [reason for check: value must fit in the target type of the assignment]
 tests.adb:428:23: info: initialization of "N" proved
 tests.adb:429:09: info: data dependencies proved
 tests.adb:430:09: info: flow dependencies proved

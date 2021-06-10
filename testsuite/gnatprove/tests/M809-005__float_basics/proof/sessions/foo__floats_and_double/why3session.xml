@@ -12,7 +12,7 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3014"/></proof>
   <proof prover="1"><result status="unknown" steps="76027"/></proof>
   <proof prover="2"><result status="unknown" steps="5010"/></proof>
   </goal>
@@ -21,7 +21,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="4339"/></proof>
   <proof prover="1"><result status="unknown" steps="85835"/></proof>
   <proof prover="2"><result status="unknown" steps="5315"/></proof>
   </goal>

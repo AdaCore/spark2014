@@ -1,4 +1,4 @@
-contradictions.adb:18:14: info: overflow check proved (CVC4: 1 VC)
+contradictions.adb:18:14: info: overflow check proved (CVC4: 2 VC)
 contradictions.adb:30:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 contradictions.ads:21:39: warning: unreachable branch (CVC4: 1 VC)
 contradictions.ads:24:17: info: initialization of "V" proved

@@ -9,11 +9,11 @@ a-cfhama.ads:814:20: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cfhama.ads:829:20: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:10
 a-cfhama.ads:844:42: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.ads:10
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:10
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)

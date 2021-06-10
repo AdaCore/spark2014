@@ -1,5 +1,5 @@
 
-account3.adb:18:33: medium: overflow check might fail
+account3.adb:18:33: medium: overflow check might fail, cannot prove upper bound for Tmp + 1
    18 |            Num_Accounts := Tmp + 1;
       |                            ~~~~^~~
   e.g. when Tmp = Natural'Last

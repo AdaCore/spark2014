@@ -1,5 +1,5 @@
 
-counterex_unprovable.adb:20:27: medium: range check might fail
+counterex_unprovable.adb:20:27: medium: range check might fail, cannot prove lower bound for Result + X
    20 |         Result := Result + X;
       |                   ~~~~~~~^~~
   e.g. when Result = Int'First

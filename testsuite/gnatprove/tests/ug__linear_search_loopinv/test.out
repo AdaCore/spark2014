@@ -1,5 +1,5 @@
 
-linear_search.adb:22:21: medium: range check might fail
+linear_search.adb:22:21: medium: range check might fail, cannot prove upper bound for Pos + 1
    22 |         Pos := Pos + 1;
       |                ~~~~^~~
   e.g. when Pos = 10

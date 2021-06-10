@@ -9,9 +9,9 @@ aggs.ads:32:11: info: flow dependencies proved
 aggs.ads:34:21: info: initialization of "X" proved
 aggs.ads:35:11: info: flow dependencies proved
 aggs.ads:36:22: info: postcondition proved (CVC4: 1 VC)
-aggs.ads:40:28: info: range check proved (CVC4: 1 VC)
+aggs.ads:40:28: info: range check proved (CVC4: 2 VC)
 dynval.adb:1:11: warning: subprogram "Dynval" has no effect
 dynval.adb:4:12: info: range check proved (CVC4: 2 VC)
-dynval.adb:5:61: medium: range check might fail (e.g. when L = 6 and U = 6) [reason for check: default component value must fit in the component type]
+dynval.adb:5:61: medium: range check might fail, cannot prove lower bound for 5 (e.g. when L = 6) [reason for check: default component value must fit in the component type]
 dynval.adb:8:06: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 dynval.adb:8:10: info: index check proved (CVC4: 2 VC)

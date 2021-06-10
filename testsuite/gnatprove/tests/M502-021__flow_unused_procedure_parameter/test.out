@@ -6,5 +6,5 @@ test.adb:6:10: warning: unused assignment, in call inlined at test.adb:14
 test.adb:6:10: warning: unused assignment, in call inlined at test.adb:24
 test.adb:10:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:11:07: info: initialization of "Y" proved
-test.adb:17:14: info: overflow check proved (CVC4: 1 VC)
+test.adb:17:14: info: overflow check proved (CVC4: 2 VC)
 test.adb:20:04: warning: analyzing unreferenced procedure "Test_02"

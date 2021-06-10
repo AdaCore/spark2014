@@ -1,13 +1,13 @@
 a-cfdlli.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at lists.ads:4
 a-cfdlli.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at lists.ads:4
 a-cfdlli.ads:416:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at lists.ads:4
-a-cfdlli.ads:521:49: info: overflow check proved (CVC4: 1 VC), in instantiation at lists.ads:4
-a-cfdlli.ads:662:49: info: overflow check proved (CVC4: 1 VC), in instantiation at lists.ads:4
-a-cfdlli.ads:752:57: info: overflow check proved (CVC4: 1 VC), in instantiation at lists.ads:4
-a-cfdlli.ads:818:57: info: overflow check proved (CVC4: 1 VC), in instantiation at lists.ads:4
-a-cfdlli.ads:905:28: info: overflow check proved (CVC4: 1 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:521:49: info: overflow check proved (CVC4: 2 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:662:49: info: overflow check proved (CVC4: 2 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:752:57: info: overflow check proved (CVC4: 2 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:818:57: info: overflow check proved (CVC4: 2 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:905:28: info: overflow check proved (CVC4: 2 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:905:39: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
-a-cfdlli.ads:1081:43: info: overflow check proved (CVC4: 1 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:1081:43: info: overflow check proved (CVC4: 2 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:1262:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:1401:20: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:1416:20: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
@@ -19,16 +19,16 @@ a-cfdlli.ads:1523:14: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1530:23: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at seq.ads:4
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at seq.ads:4
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at seq.ads:4
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at seq.ads:4
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at seq.ads:4
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at seq.ads:4
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at seq.ads:4
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at seq.ads:4
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at seq.ads:4
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at seq.ads:4
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at seq.ads:4
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at lists.ads:4
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at seq.ads:4
 linear_search.adb:13:44: medium: postcondition might fail, cannot prove E /= N (e.g. when Arr = (9 => 1, others => 0) and E = Arr (10) and N = 0 and Search'Result = 0)
@@ -36,7 +36,7 @@ linear_search.adb:15:35: info: index check proved (CVC4: 2 VC)
 linear_search.adb:20:34: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:20:34: info: loop invariant preservation proved (CVC4: 1 VC)
 linear_search.adb:21:42: info: index check proved (CVC4: 4 VC)
-linear_search.adb:25:18: info: range check proved (CVC4: 1 VC)
+linear_search.adb:25:18: info: range check proved (CVC4: 2 VC)
 linear_search.adb:36:18: info: precondition proved (CVC4: 2 VC)
 linear_search.adb:36:18: info: precondition proved (Trivial: 1 VC)
 linear_search.adb:36:38: medium: postcondition might fail, cannot prove E /= N
@@ -45,7 +45,7 @@ linear_search.adb:43:34: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:43:34: info: loop invariant preservation proved (CVC4: 1 VC)
 linear_search.adb:44:37: info: precondition proved (CVC4: 4 VC)
 linear_search.adb:45:14: info: precondition proved (CVC4: 2 VC)
-linear_search.adb:48:18: info: range check proved (CVC4: 1 VC)
+linear_search.adb:48:18: info: range check proved (CVC4: 2 VC)
 linear_search.adb:59:18: info: precondition proved (CVC4: 2 VC)
 linear_search.adb:59:18: info: precondition proved (Trivial: 1 VC)
 linear_search.adb:59:38: medium: postcondition might fail, cannot prove E /= N
@@ -59,5 +59,5 @@ linear_search.adb:69:33: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:69:33: info: loop invariant preservation proved (CVC4: 1 VC)
 linear_search.adb:70:50: info: precondition proved (CVC4: 4 VC)
 linear_search.adb:71:13: info: precondition proved (CVC4: 1 VC)
-linear_search.adb:74:17: info: overflow check proved (CVC4: 1 VC)
+linear_search.adb:74:17: info: overflow check proved (CVC4: 2 VC)
 linear_search.adb:75:10: info: precondition proved (CVC4: 1 VC)

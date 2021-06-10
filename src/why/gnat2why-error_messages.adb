@@ -848,9 +848,12 @@ package body Gnat2Why.Error_Messages is
 
       use GNATCOLL.JSON;
 
+      type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
+
       type Extra_Info is record
-         Node : Node_Id;
-         Inline : Boolean;
+         Node       : Node_Id;
+         Inline     : Boolean;
+         Bound_Info : Bound_Info_Type;
       end record;
 
       type Why3_Prove_Result is record
@@ -865,6 +868,14 @@ package body Gnat2Why.Error_Messages is
          Check_Tree : JSON_Value;
       end record;
 
+      function Compute_Cannot_Prove_Message
+        (Rec : Why3_Prove_Result;
+         VC  : VC_Info)
+         return String
+        with Pre => not Rec.Result;
+      --  Function to compute the "cannot prove ..." part of a message. Returns
+      --  empty string if no such message can be generated.
+
       function Parse_Why3_Prove_Result (V : JSON_Value)
                                         return Why3_Prove_Result;
       --  Parse the JSON produced for Why3 for a single Why3 result record.
@@ -875,6 +886,37 @@ package body Gnat2Why.Error_Messages is
 
       procedure Handle_Error (Msg : String; Internal : Boolean) with No_Return;
       procedure Handle_Timings (V : JSON_Value);
+
+      ----------------------------------
+      -- Compute_Cannot_Prove_Message --
+      ----------------------------------
+
+      function Compute_Cannot_Prove_Message
+        (Rec : Why3_Prove_Result;
+         VC  : VC_Info)
+         return String
+      is
+         Extra_Text : constant String :=
+           (case Rec.EI.Bound_Info is
+               when Low_Bound =>
+                  "lower bound for "
+                     & String_Of_Node (Original_Node (VC.Node)),
+               when High_Bound =>
+                  "upper bound for "
+                    & String_Of_Node (Original_Node (VC.Node)),
+               when No_Bound =>
+                  (if Present (Rec.EI.Node)
+                   and then VC.Node /= Rec.EI.Node
+                   then String_Of_Node (Original_Node (Rec.EI.Node))
+                   else "")
+            );
+      begin
+         if Extra_Text /= "" then
+            return ", cannot prove " & Extra_Text;
+         else
+            return "";
+         end if;
+      end Compute_Cannot_Prove_Message;
 
       ------------------
       -- Handle_Error --
@@ -908,14 +950,9 @@ package body Gnat2Why.Error_Messages is
          Rec        : constant Why3_Prove_Result :=
            Parse_Why3_Prove_Result (V);
          VC         : VC_Info renames VC_Table (Rec.Id);
-         Extra_Text : constant String :=
-           (if not Rec.Result
-              and then Present (Rec.EI.Node)
-              and then VC.Node /= Rec.EI.Node
-            then String_Of_Node (Original_Node (Rec.EI.Node))
-            else "");
-         Extra_Msg  : constant String :=
-           (if Extra_Text /= "" then ", cannot prove " & Extra_Text else "");
+         CP_Msg  : constant String :=
+           (if not Rec.Result then Compute_Cannot_Prove_Message (Rec, VC) else
+            "");
          Node       : constant Node_Id :=
            (if Present (Rec.EI.Node)
             and then not Rec.EI.Inline
@@ -947,7 +984,7 @@ package body Gnat2Why.Error_Messages is
             VC_Loc      => VC_Sloc,
             Editor_Cmd  => To_String (Rec.Editor_Cmd),
             Stats       => Rec.Stats,
-            Extra_Msg   => Extra_Msg);
+            Extra_Msg   => CP_Msg);
       end Handle_Result;
 
       --------------------
@@ -979,11 +1016,22 @@ package body Gnat2Why.Error_Messages is
 
       function Parse_Why3_Prove_Result (V : JSON_Value)
                                         return Why3_Prove_Result is
-         E : Extra_Info := (0, False);
+         E : Extra_Info := (0, False, No_Bound);
       begin
          if Has_Field (V, "extra_info") then
-            E.Node := Node_Id (Integer'(Get (Get (V, "extra_info"), "node")));
-            E.Inline := Get (Get (Get (V, "extra_info"), "inline"));
+            declare
+               I : constant Integer :=
+                 Integer'(Get (Get (V, "extra_info"), "node"));
+            begin
+               if I = Low_Bound_Id then
+                  E.Bound_Info := Low_Bound;
+               elsif I = High_Bound_Id then
+                  E.Bound_Info := High_Bound;
+               else
+                  E.Node := Node_Id (I);
+               end if;
+               E.Inline := Get (Get (Get (V, "extra_info"), "inline"));
+            end;
          end if;
          return Why3_Prove_Result'
            (Id         => VC_Id (Integer'(Get (Get (V, "id")))),

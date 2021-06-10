@@ -1,5 +1,5 @@
 
-semaphores1.adb:17:31: medium: overflow check might fail
+semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1
    17 |         The_Data := The_Data + 1;
       |                     ~~~~~~~~~^~~
   reason for check: result of addition must fit in a 32-bits machine integer

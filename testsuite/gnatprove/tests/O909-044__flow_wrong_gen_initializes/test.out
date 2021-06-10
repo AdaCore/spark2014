@@ -1,1 +1,1 @@
-outer.ads:13:25: medium: range check might fail [reason for check: default component value must fit in the type]
+outer.ads:13:25: medium: range check might fail, cannot prove lower bound for Var [reason for check: default component value must fit in the type]

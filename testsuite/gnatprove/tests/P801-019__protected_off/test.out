@@ -1,1 +1,1 @@
-pack.adb:7:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+pack.adb:7:17: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer]

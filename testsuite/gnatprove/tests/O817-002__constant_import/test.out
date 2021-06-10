@@ -1,2 +1,2 @@
-ali_crash.adb:5:45: info: range check proved (CVC4: 1 VC)
+ali_crash.adb:5:45: info: range check proved (CVC4: 2 VC)
 ali_crash.ads:3:14: warning: subprogram "P" has no effect

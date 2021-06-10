@@ -3529,7 +3529,8 @@ package body Why.Gen.Expr is
    function New_Range_Expr
      (Domain    : EW_Domain;
       Low, High : W_Expr_Id;
-      Expr      : W_Expr_Id) return W_Expr_Id
+      Expr      : W_Expr_Id;
+      Pretty    : Boolean := False) return W_Expr_Id
    is
       Ty : constant W_Type_Id :=
         (if Get_Type_Kind (Get_Type (Low)) = EW_Split
@@ -3539,22 +3540,37 @@ package body Why.Gen.Expr is
         (if Ty = EW_Int_Type or else Why_Type_Is_Fixed (Ty) then Int_Infix_Le
          elsif Why_Type_Is_BitVector (Ty) then MF_BVs (Ty).Ule
          else MF_Floats (Ty).Le);
+      Left : W_Expr_Id :=
+        New_Comparison
+          (Domain => Domain,
+           Symbol => Le,
+           Left   => Low,
+           Right  => Expr);
+      Right : W_Expr_Id :=
+        New_Comparison
+          (Domain => Domain,
+           Symbol => Le,
+           Left   => Expr,
+           Right  => High);
    begin
+      if Pretty then
+         Left :=
+           New_Label
+             (Labels =>
+                Symbol_Sets.To_Set
+                  (NID (GP_Pretty_Ada_Marker & Integer'Image (Low_Bound_Id))),
+              Def    => Left,
+              Domain => Domain);
+         Right :=
+           New_Label
+             (Labels =>
+                Symbol_Sets.To_Set
+                  (NID (GP_Pretty_Ada_Marker & Integer'Image (High_Bound_Id))),
+              Def    => Right,
+              Domain => Domain);
+      end if;
       return
-         New_And_Expr
-           (Left  =>
-              New_Comparison
-                (Domain => Domain,
-                 Symbol => Le,
-                 Left   => Low,
-                 Right  => Expr),
-            Right  =>
-              New_Comparison
-                (Domain => Domain,
-                 Symbol => Le,
-                 Left   => Expr,
-                 Right  => High),
-            Domain => Domain);
+         New_And_Expr (Left, Right, Domain);
    end New_Range_Expr;
 
    ---------------------------

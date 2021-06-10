@@ -35,7 +35,7 @@ libst-reals-errors.adb:69:14: info: predicate check proved (CVC4: 1 VC)
 libst-reals-errors.adb:78:13: info: assertion proved (altergo: 1 VC)
 libst-reals-errors.adb:78:93: info: predicate check proved (CVC4: 1 VC)
 libst-reals-errors.adb:81:10: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals-errors.adb:81:39: info: range check proved (CVC4: 1 VC)
+libst-reals-errors.adb:81:39: info: range check proved (CVC4: 2 VC)
 libst-reals-errors.adb:83:27: info: range check proved (altergo: 1 VC)
 libst-reals-errors.adb:85:25: info: assertion proved (altergo: 1 VC)
 libst-reals-errors.adb:85:83: info: predicate check proved (CVC4: 1 VC)
@@ -49,9 +49,9 @@ libst-reals-errors.adb:110:79: info: index check proved (CVC4: 2 VC)
 libst-reals-errors.adb:111:49: info: index check proved (CVC4: 2 VC)
 libst-reals-errors.adb:111:81: info: index check proved (CVC4: 2 VC)
 libst-reals-errors.adb:113:10: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals-errors.adb:113:52: info: range check proved (CVC4: 1 VC)
+libst-reals-errors.adb:113:52: info: range check proved (CVC4: 2 VC)
 libst-reals-errors.adb:126:10: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals-errors.adb:126:44: info: range check proved (CVC4: 1 VC)
+libst-reals-errors.adb:126:44: info: range check proved (CVC4: 2 VC)
 libst-reals-errors.adb:130:13: info: assertion proved (altergo: 1 VC)
 libst-reals-errors.adb:130:39: info: index check proved (CVC4: 2 VC)
 libst-reals-errors.adb:143:36: info: float overflow check proved (Trivial)
@@ -127,7 +127,7 @@ libst-reals-errors.adb:252:22: info: range check proved (CVC4: 1 VC)
 libst-reals-errors.adb:253:22: info: range check proved (CVC4: 1 VC)
 libst-reals-errors.adb:262:10: info: precondition proved (CVC4: 2 VC)
 libst-reals-errors.adb:264:10: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals-errors.adb:264:48: info: range check proved (CVC4: 1 VC)
+libst-reals-errors.adb:264:48: info: range check proved (CVC4: 2 VC)
 libst-reals-errors.adb:267:13: info: range check proved (CVC4: 1 VC)
 libst-reals-errors.adb:267:68: info: float overflow check proved (Trivial)
 libst-reals-errors.adb:267:68: info: range check proved (Trivial)
@@ -248,7 +248,7 @@ libst-reals-errors.adb:436:19: info: predicate check proved (CVC4: 1 VC)
 libst-reals-errors.adb:451:17: info: postcondition proved (altergo: 1 VC)
 libst-reals-errors.adb:451:55: info: predicate check proved (CVC4: 1 VC)
 libst-reals-errors.adb:456:13: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals-errors.adb:456:33: info: range check proved (CVC4: 1 VC)
+libst-reals-errors.adb:456:33: info: range check proved (CVC4: 2 VC)
 libst-reals-errors.adb:464:07: info: precondition proved (CVC4: 1 VC)
 libst-reals-errors.adb:468:22: info: assertion proved (altergo: 1 VC)
 libst-reals-errors.adb:468:22: info: precondition proved (altergo: 1 VC)
@@ -266,7 +266,7 @@ libst-reals-errors.ads:16:13: info: predicate check proved (CVC4: 1 VC)
 libst-reals-errors.ads:19:13: info: function contract might not be available on recursive calls
 libst-reals-errors.ads:24:37: info: predicate check proved (CVC4: 1 VC)
 libst-reals-errors.ads:25:12: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals-errors.ads:25:53: info: range check proved (CVC4: 1 VC)
+libst-reals-errors.ads:25:53: info: range check proved (CVC4: 2 VC)
 libst-reals-errors.ads:26:31: info: index check proved (CVC4: 2 VC)
 libst-reals-errors.ads:26:63: info: index check proved (CVC4: 2 VC)
 libst-reals-errors.ads:28:16: info: postcondition proved (altergo: 1 VC)
@@ -293,14 +293,14 @@ libst-reals-errors.ads:86:23: info: precondition proved (CVC4: 1 VC)
 libst-reals.ads:15:13: info: function contract might not be available on recursive calls
 libst-reals.ads:19:37: info: predicate check proved (CVC4: 1 VC)
 libst-reals.ads:20:12: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals.ads:20:39: info: range check proved (CVC4: 1 VC)
+libst-reals.ads:20:39: info: range check proved (CVC4: 2 VC)
 libst-reals.ads:20:68: info: index check proved (CVC4: 2 VC)
 libst-reals.ads:22:14: info: postcondition proved (altergo: 1 VC)
 libst-reals.ads:22:39: info: predicate check proved (CVC4: 1 VC)
 libst-reals.ads:27:13: info: implicit function contract might not be available on recursive calls
 libst-reals.ads:32:37: info: predicate check proved (CVC4: 1 VC)
 libst-reals.ads:33:12: info: subprogram variant proved (CVC4: 1 VC)
-libst-reals.ads:33:49: info: range check proved (CVC4: 1 VC)
+libst-reals.ads:33:49: info: range check proved (CVC4: 2 VC)
 libst-reals.ads:34:33: info: index check proved (CVC4: 2 VC)
 libst-reals.ads:34:60: info: index check proved (CVC4: 2 VC)
 libst-reals.ads:40:53: info: division check proved (CVC4: 1 VC)
@@ -309,12 +309,12 @@ libst.adb:13:17: info: postcondition proved (altergo: 1 VC)
 libst.adb:13:24: info: range check proved (Trivial)
 libst.adb:13:27: info: float overflow check proved (Trivial)
 libst.adb:13:36: info: range check proved (Trivial)
-libst.adb:13:50: info: overflow check proved (CVC4: 1 VC)
+libst.adb:13:50: info: overflow check proved (CVC4: 2 VC)
 libst.adb:13:50: info: range check proved (Trivial)
 libst.adb:22:10: info: precondition proved (CVC4: 2 VC)
-libst.adb:22:38: info: range check proved (CVC4: 1 VC)
+libst.adb:22:38: info: range check proved (CVC4: 2 VC)
 libst.adb:23:17: info: subprogram variant proved (CVC4: 1 VC)
-libst.adb:23:44: info: range check proved (CVC4: 1 VC)
+libst.adb:23:44: info: range check proved (CVC4: 2 VC)
 libst.adb:23:49: info: float overflow check proved (CVC4: 1 VC)
 libst.adb:23:60: info: index check proved (CVC4: 2 VC)
 libst.adb:40:17: info: postcondition proved (CVC4: 2 VC)
@@ -330,33 +330,33 @@ libst.adb:56:27: info: float overflow check proved (Trivial)
 libst.adb:56:36: info: range check proved (Trivial)
 libst.adb:56:39: info: float overflow check proved (Trivial)
 libst.adb:56:63: info: float overflow check proved (Trivial)
-libst.adb:56:74: info: overflow check proved (CVC4: 1 VC)
+libst.adb:56:74: info: overflow check proved (CVC4: 2 VC)
 libst.adb:56:74: info: range check proved (Trivial)
 libst.adb:57:25: info: float overflow check proved (Trivial)
 libst.adb:57:34: info: range check proved (Trivial)
 libst.adb:57:38: info: float overflow check proved (Trivial)
 libst.adb:57:64: info: float overflow check proved (Trivial)
-libst.adb:57:75: info: overflow check proved (CVC4: 1 VC)
+libst.adb:57:75: info: overflow check proved (CVC4: 2 VC)
 libst.adb:57:75: info: range check proved (Trivial)
 libst.adb:64:13: info: assertion proved (altergo: 1 VC)
 libst.adb:64:23: info: float overflow check proved (Trivial)
 libst.adb:64:32: info: range check proved (Trivial)
-libst.adb:64:58: info: overflow check proved (CVC4: 1 VC)
+libst.adb:64:58: info: overflow check proved (CVC4: 2 VC)
 libst.adb:64:58: info: range check proved (Trivial)
 libst.adb:65:25: info: assertion proved (altergo: 1 VC)
 libst.adb:65:35: info: float overflow check proved (Trivial)
 libst.adb:65:44: info: range check proved (Trivial)
 libst.adb:65:47: info: float overflow check proved (Trivial)
-libst.adb:66:48: info: overflow check proved (CVC4: 1 VC)
-libst.adb:66:52: info: overflow check proved (CVC4: 1 VC)
+libst.adb:66:48: info: overflow check proved (CVC4: 2 VC)
+libst.adb:66:52: info: overflow check proved (CVC4: 2 VC)
 libst.adb:66:52: info: range check proved (Trivial)
 libst.adb:68:13: info: assertion proved (altergo: 1 VC)
 libst.adb:68:23: info: float overflow check proved (Trivial)
-libst.adb:68:34: info: overflow check proved (CVC4: 1 VC)
+libst.adb:68:34: info: overflow check proved (CVC4: 2 VC)
 libst.adb:68:34: info: range check proved (Trivial)
-libst.adb:68:62: info: overflow check proved (CVC4: 1 VC)
+libst.adb:68:62: info: overflow check proved (CVC4: 2 VC)
 libst.adb:68:62: info: range check proved (Trivial)
-libst.adb:68:67: info: overflow check proved (CVC4: 1 VC)
+libst.adb:68:67: info: overflow check proved (CVC4: 2 VC)
 libst.adb:75:10: info: precondition proved (CVC4: 8 VC)
 libst.adb:77:30: info: index check proved (CVC4: 2 VC)
 libst.adb:77:33: info: float overflow check proved (Trivial)
@@ -364,13 +364,13 @@ libst.adb:77:43: info: index check proved (CVC4: 2 VC)
 libst.adb:79:33: info: float overflow check proved (Trivial)
 libst.adb:79:44: info: range check proved (Trivial)
 libst.adb:80:21: info: subprogram variant proved (CVC4: 1 VC)
-libst.adb:80:58: info: range check proved (CVC4: 1 VC)
+libst.adb:80:58: info: range check proved (CVC4: 2 VC)
 libst.adb:81:31: info: float overflow check proved (Trivial)
 libst.adb:81:42: info: range check proved (Trivial)
 libst.adb:82:10: info: precondition proved (CVC4: 1 VC)
-libst.adb:82:42: info: range check proved (CVC4: 1 VC)
+libst.adb:82:42: info: range check proved (CVC4: 2 VC)
 libst.adb:83:17: info: subprogram variant proved (CVC4: 1 VC)
-libst.adb:83:54: info: range check proved (CVC4: 1 VC)
+libst.adb:83:54: info: range check proved (CVC4: 2 VC)
 libst.adb:83:59: info: float overflow check proved (CVC4: 1 VC)
 libst.adb:83:70: info: index check proved (CVC4: 2 VC)
 libst.adb:83:73: info: float overflow check proved (Trivial)
@@ -378,7 +378,7 @@ libst.adb:83:83: info: index check proved (CVC4: 2 VC)
 libst.ads:29:13: info: function contract might not be available on recursive calls
 libst.ads:34:14: info: postcondition proved (CVC4: 2 VC)
 libst.ads:35:34: info: subprogram variant proved (CVC4: 1 VC)
-libst.ads:35:61: info: range check proved (CVC4: 1 VC)
+libst.ads:35:61: info: range check proved (CVC4: 2 VC)
 libst.ads:35:66: info: float overflow check proved (CVC4: 1 VC)
 libst.ads:35:77: info: index check proved (CVC4: 2 VC)
 libst.ads:36:70: info: range check proved (Trivial)
@@ -387,7 +387,7 @@ libst.ads:38:07: info: range check proved (CVC4: 1 VC)
 libst.ads:43:13: info: function contract might not be available on recursive calls
 libst.ads:49:14: info: postcondition proved (CVC4: 3 VC)
 libst.ads:51:16: info: subprogram variant proved (CVC4: 1 VC)
-libst.ads:51:53: info: range check proved (CVC4: 1 VC)
+libst.ads:51:53: info: range check proved (CVC4: 2 VC)
 libst.ads:51:58: info: float overflow check proved (CVC4: 1 VC)
 libst.ads:51:69: info: index check proved (CVC4: 2 VC)
 libst.ads:51:72: info: float overflow check proved (Trivial)
@@ -407,36 +407,36 @@ spark-floating_point_arithmetic_lemmas.ads:207:13: info: subprogram "Is_Integer_
 spark-floating_point_arithmetic_lemmas.ads:207:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:211:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:211:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:211:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:211:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:211:33: info: range check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:211:33: info: range check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:215:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:215:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:219:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:219:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:219:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:219:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:219:33: info: range check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:219:33: info: range check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:224:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:224:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:228:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:228:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:228:29: info: range check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:228:29: medium: range check might fail, cannot prove lower bound for Fl (I), in instantiation at spark-float_arithmetic_lemmas.ads:32 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 224 should mention I in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:228:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:228:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:233:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:233:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:237:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:237:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:237:29: info: range check proved (CVC4: 1 VC; altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:237:29: medium: range check might fail, cannot prove lower bound for Fl (I), in instantiation at spark-float_arithmetic_lemmas.ads:32 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 233 should mention I in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:237:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:237:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:241:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:241:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:248:19: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:248:19: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:80:52: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
@@ -454,8 +454,8 @@ spark-mod_arithmetic_lemmas.ads:119:32: info: division check proved (CVC4: 1 VC)
 spark-mod_arithmetic_lemmas.ads:127:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:127:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-test_array_lemmas.ads:64:41: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:64:41: info: overflow check proved (CVC4: 1 VC)
+spark-test_array_lemmas.ads:64:41: info: overflow check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:64:53: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:41: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:73:41: info: overflow check proved (CVC4: 1 VC)
+spark-test_array_lemmas.ads:73:41: info: overflow check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:53: info: index check proved (CVC4: 2 VC)

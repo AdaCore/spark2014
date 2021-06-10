@@ -1,38 +1,39 @@
 stacks.adb:10:24: info: index check proved (CVC4: 2 VC)
-stacks.adb:11:28: info: range check proved (CVC4: 1 VC)
-stacks.adb:16:28: info: range check proved (CVC4: 1 VC)
+stacks.adb:11:28: info: range check proved (CVC4: 2 VC)
+stacks.adb:16:28: info: range check proved (CVC4: 2 VC)
 stacks.adb:17:19: info: index check proved (CVC4: 2 VC)
 stacks.adb:28:23: info: index check proved (CVC4: 2 VC)
-stacks.adb:29:28: info: range check proved (CVC4: 1 VC)
-stacks.adb:34:28: info: range check proved (CVC4: 1 VC)
+stacks.adb:29:28: info: range check proved (CVC4: 2 VC)
+stacks.adb:34:28: info: range check proved (CVC4: 2 VC)
 stacks.adb:35:18: info: index check proved (CVC4: 2 VC)
-stacks.adb:40:28: info: range check proved (CVC4: 1 VC)
-stacks.adb:44:29: info: range check proved (CVC4: 1 VC)
+stacks.adb:40:28: info: range check proved (CVC4: 2 VC)
+stacks.adb:44:29: info: range check proved (CVC4: 2 VC)
 stacks.ads:7:09: info: default initial condition proved (CVC4: 1 VC)
 stacks.ads:16:20: info: postcondition proved (CVC4: 3 VC), in inherited contract at stacks.ads:40
-stacks.ads:18:33: info: range check proved (CVC4: 1 VC)
+stacks.ads:18:33: info: range check proved (CVC4: 2 VC)
 stacks.ads:24:20: info: postcondition proved (CVC4: 1 VC), in inherited contract at stacks.ads:44
 stacks.ads:27:20: info: postcondition proved (CVC4: 2 VC), in inherited contract at stacks.ads:46
 stacks.ads:28:55: info: index check proved (CVC4: 2 VC)
 stacks.ads:31:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC), in inherited contract at stacks.ads:48
 stacks.ads:31:20: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC), in inherited contract at stacks.ads:48
 stacks.ads:31:45: info: range check proved (CVC4: 4 VC)
-stacks.ads:31:98: info: overflow check proved (CVC4: 1 VC)
+stacks.ads:31:98: info: overflow check proved (CVC4: 2 VC)
 stacks.ads:32:75: info: index check proved (CVC4: 2 VC)
 stacks.ads:35:20: info: postcondition proved (CVC4: 1 VC), in inherited contract at stacks.ads:50
 stacks.ads:35:20: info: postcondition proved (Z3: 1 VC), in inherited contract at stacks.ads:50
-stacks.ads:35:50: info: range check proved (CVC4: 1 VC)
+stacks.ads:35:50: info: range check proved (CVC4: 2 VC)
 stacks.ads:48:37: info: initialization of "E" proved
 stacks.ads:57:20: info: postcondition proved (Z3: 1 VC)
-stacks.ads:57:36: info: range check proved (CVC4: 1 VC)
+stacks.ads:57:36: info: range check proved (CVC4: 2 VC)
 stacks.ads:68:38: info: initialization of "E" proved
 stacks.ads:82:15: info: range check proved (CVC4: 1 VC)
 stacks.ads:82:15: info: range check proved (CVC4: 4 VC)
 stacks.ads:84:61: info: index check proved (CVC4: 2 VC)
-stacks.ads:96:55: info: range check proved (CVC4: 1 VC)
-stacks.ads:97:35: info: range check proved (CVC4: 1 VC)
+stacks.ads:96:55: info: range check proved (CVC4: 2 VC)
+stacks.ads:97:35: info: range check proved (CVC4: 2 VC)
 stacks.ads:101:20: info: range check proved (CVC4: 4 VC)
 stacks.ads:101:46: info: range check proved (CVC4: 1 VC)
+stacks.ads:101:46: info: range check proved (CVC4: 2 VC)
 stacks.ads:101:49: info: range check proved (CVC4: 4 VC)
 stacks.ads:102:20: info: range check proved (CVC4: 1 VC)
 stacks.ads:102:20: info: range check proved (CVC4: 4 VC)

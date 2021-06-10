@@ -40,8 +40,8 @@ main.adb:8:29: error: reference to variable "The_Protected_Int" cannot appear in
 main.adb:11:04: error: "The_Protected_Int" is constituent of single protected type "P_Int"
 main.adb:11:04: error: reference to variable "The_Protected_Int" cannot appear in this context
 gnatprove: error during generation of Global contracts
-po_t7.adb:11:34: info: overflow check proved (CVC4: 1 VC)
-po_t7.adb:18:52: info: overflow check proved (CVC4: 1 VC)
+po_t7.adb:11:34: info: overflow check proved (CVC4: 2 VC)
+po_t7.adb:18:52: info: overflow check proved (CVC4: 2 VC)
 po_t7.ads:11:21: high: variable "Not_CAE" cannot be referenced in precondition of protected operation "Get" (SPARK RM 9(10))
 po_t7.ads:14:21: high: variable "Not_CAE" cannot be referenced in precondition of protected operation "Increase" (SPARK RM 9(10))
 use_po_t8.adb:3:11: high: more tasks than allowed might queue on protected entry "po_t8.p_int.increase" (restriction No_Entry_Queue active) (SPARK RM 9(11))

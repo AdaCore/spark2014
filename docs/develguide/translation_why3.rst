@@ -4904,10 +4904,16 @@ used e.g. in debug mode and for coq proofs, and to create appropriate filename
 for .smt2 or .v files. It is also used to recognize a goal in prove check mode.
 The exhaustive list of kinds can be found in type ``VC_Kind`` in vc_kinds.ads.
 
-``GP_Pretty_Ada:<n>``, with n the integer representation of an Ada AST node. It
-is an extra information added to a specific check/goal so that, in the case
-where this goal is not proved, the part of the program is reprinted: ``overflow
-check might fail: cannot prove (In_range (B))``.
+``GP_Pretty_Ada:<n>``, with n an integer representation. When a VC is a
+conjunction of several parts, gnat2why adds such a flag to each part, and this
+information is extracted by gnatwhy3 from an unproved VC and passed back to
+gnat2why. In this way, the (first) unproved part of a VC with multiple parts
+can be identified. In practice this info is used to generate "cannot prove ..."
+messages which provide this information to the user. If the integer is zero,
+the information is absent. A positive integer corresponds to Node_Id and
+usually identifies a subpart of an assertion. If it is negative, it is either
+-1 or -2, and identifies the lower or upper bound, respectively, of a range or
+overflow check.
 
 ``GP_Subp`` attribute that is attached to some top-level definitions in Why3
   code. Used to implement "Prove Subprogram" functionality.

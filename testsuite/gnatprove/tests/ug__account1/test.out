@@ -1,5 +1,5 @@
 
-account1.adb:15:39: medium: overflow check might fail
+account1.adb:15:39: medium: overflow check might fail, cannot prove upper bound for Num_Accounts + 1
    15 |         Num_Accounts := Num_Accounts + 1;
       |                         ~~~~~~~~~~~~~^~~
   e.g. when Num_Accounts = Natural'Last

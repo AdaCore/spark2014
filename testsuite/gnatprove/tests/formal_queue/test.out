@@ -1,13 +1,13 @@
 a-cfdlli.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at queue.ads:19
 a-cfdlli.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at queue.ads:19
 a-cfdlli.ads:416:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at queue.ads:19
-a-cfdlli.ads:521:49: info: overflow check proved (CVC4: 1 VC), in instantiation at queue.ads:19
-a-cfdlli.ads:662:49: info: overflow check proved (CVC4: 1 VC), in instantiation at queue.ads:19
-a-cfdlli.ads:752:57: info: overflow check proved (CVC4: 1 VC), in instantiation at queue.ads:19
-a-cfdlli.ads:818:57: info: overflow check proved (CVC4: 1 VC), in instantiation at queue.ads:19
-a-cfdlli.ads:905:28: info: overflow check proved (CVC4: 1 VC), in instantiation at queue.ads:19
+a-cfdlli.ads:521:49: info: overflow check proved (CVC4: 2 VC), in instantiation at queue.ads:19
+a-cfdlli.ads:662:49: info: overflow check proved (CVC4: 2 VC), in instantiation at queue.ads:19
+a-cfdlli.ads:752:57: info: overflow check proved (CVC4: 2 VC), in instantiation at queue.ads:19
+a-cfdlli.ads:818:57: info: overflow check proved (CVC4: 2 VC), in instantiation at queue.ads:19
+a-cfdlli.ads:905:28: info: overflow check proved (CVC4: 2 VC), in instantiation at queue.ads:19
 a-cfdlli.ads:905:39: info: precondition proved (CVC4: 1 VC), in instantiation at queue.ads:19
-a-cfdlli.ads:1081:43: info: overflow check proved (CVC4: 1 VC), in instantiation at queue.ads:19
+a-cfdlli.ads:1081:43: info: overflow check proved (CVC4: 2 VC), in instantiation at queue.ads:19
 a-cfdlli.ads:1262:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at queue.ads:19
 a-cfdlli.ads:1401:20: info: precondition proved (CVC4: 1 VC), in instantiation at queue.ads:19
 a-cfdlli.ads:1416:20: info: precondition proved (CVC4: 1 VC), in instantiation at queue.ads:19
@@ -18,11 +18,11 @@ a-cfdlli.ads:1474:23: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1523:14: info: precondition proved (CVC4: 1 VC), in instantiation at queue.ads:19
 a-cfdlli.ads:1530:23: info: precondition proved (CVC4: 1 VC), in instantiation at queue.ads:19
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at queue.ads:19
 queue.adb:6:19: info: precondition proved (CVC4: 1 VC)
 queue.adb:8:07: info: precondition proved (CVC4: 1 VC)
@@ -33,8 +33,8 @@ queue.ads:24:19: info: postcondition proved (CVC4: 1 VC)
 queue.ads:24:19: info: precondition proved (CVC4: 1 VC)
 queue.ads:28:14: info: postcondition proved (CVC4: 2 VC)
 queue.ads:33:14: info: postcondition proved (CVC4: 3 VC)
-queue.ads:33:51: info: overflow check proved (CVC4: 1 VC)
+queue.ads:33:51: info: overflow check proved (CVC4: 2 VC)
 queue.ads:34:10: info: precondition proved (CVC4: 1 VC)
-queue.ads:35:40: info: overflow check proved (CVC4: 1 VC)
+queue.ads:35:40: info: overflow check proved (CVC4: 2 VC)
 queue.ads:36:14: info: precondition proved (CVC4: 2 VC)
 queue.ads:36:52: info: precondition proved (CVC4: 2 VC)

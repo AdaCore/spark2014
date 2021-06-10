@@ -18,7 +18,7 @@ skein.adb:222:13: info: predicate check proved (CVC4: 1 VC), in call inlined at 
 skein.adb:222:29: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:855
 skein.adb:224:44: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:855
 skein.adb:224:44: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:855
-skein.adb:225:35: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:855
+skein.adb:225:35: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:855
 skein.adb:225:49: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:855
 skein.adb:231:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:231:14: info: local subprogram "Get_64_LSB_First" only analyzed in the context of calls
@@ -35,7 +35,7 @@ skein.adb:256:47: info: index check proved (CVC4: 16 VC), in call inlined at ske
 skein.adb:261:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:261:14: info: local subprogram "Skein_Start_New_Type" only analyzed in the context of calls
 skein.adb:284:11: info: data dependencies proved
-skein.adb:294:19: info: postcondition proved (CVC4: 4 VC)
+skein.adb:294:19: info: postcondition proved (CVC4: 6 VC)
 skein.adb:299:07: info: initialization of "TS" proved
 skein.adb:301:07: info: initialization of "X" proved
 skein.adb:302:07: info: initialization of "W" proved
@@ -129,25 +129,25 @@ skein.adb:674:10: info: initialization of "Final_Dst" proved, in call inlined at
 skein.adb:675:10: info: initialization of "Final_Src" proved
 skein.adb:675:10: info: initialization of "Final_Src" proved, in call inlined at skein.adb:714
 skein.adb:675:10: info: initialization of "Final_Src" proved, in call inlined at skein.adb:754
-skein.adb:681:25: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:714
-skein.adb:681:25: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:754
-skein.adb:683:30: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:714
-skein.adb:683:30: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:754
+skein.adb:681:25: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:714
+skein.adb:681:25: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:754
+skein.adb:683:30: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:714
+skein.adb:683:30: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:754
 skein.adb:688:36: info: index check proved (CVC4: 4 VC), in call inlined at skein.adb:714
 skein.adb:688:36: info: index check proved (CVC4: 4 VC), in call inlined at skein.adb:754
 skein.adb:692:39: info: loop invariant initialization proved (Trivial: 1 VC), in call inlined at skein.adb:714
 skein.adb:692:39: info: loop invariant initialization proved (Trivial: 1 VC), in call inlined at skein.adb:754
 skein.adb:692:39: info: loop invariant preservation proved (Trivial: 1 VC), in call inlined at skein.adb:714
 skein.adb:692:39: info: loop invariant preservation proved (Trivial: 1 VC), in call inlined at skein.adb:754
-skein.adb:696:27: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:714
-skein.adb:696:27: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:754
-skein.adb:712:42: info: range check proved (CVC4: 1 VC)
+skein.adb:696:27: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:714
+skein.adb:696:27: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:754
+skein.adb:712:42: info: range check proved (CVC4: 2 VC)
 skein.adb:714:13: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:719:13: info: precondition proved (CVC4: 6 VC)
 skein.adb:721:35: info: predicate check proved (CVC4: 1 VC)
 skein.adb:721:35: info: range check proved (CVC4: 1 VC)
 skein.adb:733:49: info: division check proved (CVC4: 1 VC)
-skein.adb:733:49: info: range check proved (CVC4: 1 VC)
+skein.adb:733:49: info: range check proved (CVC4: 2 VC)
 skein.adb:735:13: info: precondition proved (CVC4: 6 VC)
 skein.adb:754:07: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:768:07: info: initialization of "Local_Ctx" proved
@@ -180,7 +180,7 @@ skein.adb:810:07: info: precondition proved (CVC4: 6 VC)
 skein.adb:811:51: info: predicate check proved (CVC4: 1 VC)
 skein.adb:811:51: info: range check proved (CVC4: 1 VC)
 skein.adb:818:52: info: division check proved (CVC4: 1 VC)
-skein.adb:818:52: info: range check proved (CVC4: 1 VC)
+skein.adb:818:52: info: range check proved (CVC4: 2 VC)
 skein.adb:826:44: info: division check proved (CVC4: 1 VC)
 skein.adb:830:13: info: loop invariant initialization proved (CVC4: 1 VC)
 skein.adb:830:13: info: loop invariant preservation proved (CVC4: 1 VC)

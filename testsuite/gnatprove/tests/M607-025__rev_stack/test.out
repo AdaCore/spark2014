@@ -2,71 +2,71 @@ a-cofove.ads:294:08: info: dynamic accessibility check proved (Trivial), in inst
 a-cofove.ads:300:08: info: dynamic accessibility check proved (Trivial), in instantiation at list.ads:8
 a-cofove.ads:319:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at list.ads:8
 a-cofove.ads:319:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofove.ads:628:57: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofove.ads:628:57: info: range check proved (Z3: 2 VC), in instantiation at list.ads:8
 a-cofove.ads:756:23: info: precondition proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofove.ads:759:38: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofove.ads:759:38: info: range check proved (Z3: 2 VC), in instantiation at list.ads:8
 a-cofove.ads:792:14: info: precondition proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofove.ads:796:35: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofove.ads:796:35: info: range check proved (Z3: 2 VC), in instantiation at list.ads:8
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (Z3: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
+a-cofuve.ads:237:63: info: range check proved (Z3: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (Z3: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (Z3: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
+a-cofuve.ads:239:30: info: range check proved (Z3: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
 a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at list.ads:8
 list.adb:18:14: info: initialization of "Res" proved
 list.adb:22:10: info: precondition proved (Z3: 2 VC)
 list.adb:22:19: info: precondition proved (Z3: 4 VC)
-list.adb:22:31: info: range check proved (Z3: 2 VC)
+list.adb:22:31: info: range check proved (Z3: 4 VC)
 list.adb:25:13: info: loop invariant initialization proved (Z3: 2 VC)
 list.adb:25:13: info: loop invariant preservation proved (Z3: 2 VC)
-list.adb:25:35: info: overflow check proved (Z3: 2 VC)
-list.adb:25:43: info: overflow check proved (Z3: 2 VC)
-list.adb:28:35: info: overflow check proved (Z3: 2 VC)
+list.adb:25:35: info: overflow check proved (Z3: 4 VC)
+list.adb:25:43: info: overflow check proved (Z3: 4 VC)
+list.adb:28:35: info: overflow check proved (Z3: 4 VC)
 list.adb:28:43: info: index check proved (Z3: 4 VC)
-list.adb:28:43: info: overflow check proved (Z3: 2 VC)
+list.adb:28:43: info: overflow check proved (Z3: 4 VC)
 list.adb:28:50: info: precondition proved (Z3: 4 VC)
-list.adb:28:62: info: range check proved (Z3: 2 VC)
+list.adb:28:62: info: range check proved (Z3: 4 VC)
 list.adb:34:13: info: loop invariant initialization proved (Z3: 4 VC)
 list.adb:34:13: info: loop invariant preservation proved (Z3: 4 VC)
-list.adb:34:40: info: overflow check proved (Z3: 2 VC)
-list.adb:36:38: info: overflow check proved (Z3: 2 VC)
-list.adb:36:42: info: overflow check proved (Z3: 2 VC)
-list.adb:38:39: info: overflow check proved (Z3: 2 VC)
-list.adb:38:43: info: overflow check proved (Z3: 2 VC)
+list.adb:34:40: info: overflow check proved (Z3: 4 VC)
+list.adb:36:38: info: overflow check proved (Z3: 4 VC)
+list.adb:36:42: info: overflow check proved (Z3: 4 VC)
+list.adb:38:39: info: overflow check proved (Z3: 4 VC)
+list.adb:38:43: info: overflow check proved (Z3: 4 VC)
 list.adb:39:34: info: index check proved (Z3: 4 VC)
 list.adb:39:64: info: index check proved (Z3: 4 VC)
-list.adb:41:40: info: overflow check proved (Z3: 2 VC)
+list.adb:41:40: info: overflow check proved (Z3: 4 VC)
 list.adb:42:20: info: precondition proved (Z3: 4 VC)
-list.adb:42:34: info: range check proved (Z3: 2 VC)
+list.adb:42:34: info: range check proved (Z3: 4 VC)
 list.adb:42:39: info: precondition proved (Z3: 4 VC)
-list.adb:42:56: info: overflow check proved (Z3: 2 VC)
-list.adb:42:60: info: overflow check proved (Z3: 2 VC)
-list.adb:42:60: info: range check proved (Z3: 2 VC)
+list.adb:42:56: info: overflow check proved (Z3: 4 VC)
+list.adb:42:60: info: overflow check proved (Z3: 4 VC)
+list.adb:42:60: info: range check proved (Z3: 4 VC)
 list.adb:43:10: info: precondition proved (Z3: 1 VC)
 list.adb:43:23: info: precondition proved (Z3: 1 VC)
 list.adb:44:10: info: precondition proved (Z3: 1 VC)
-list.ads:9:38: info: range check proved (Z3: 1 VC)
+list.ads:9:38: info: range check proved (Z3: 2 VC)
 list.ads:12:14: info: postcondition proved (Z3: 1 VC)
 list.ads:13:19: info: precondition proved (Z3: 2 VC)
-list.ads:13:31: info: range check proved (Z3: 1 VC)
+list.ads:13:31: info: range check proved (Z3: 2 VC)
 list.ads:13:36: info: precondition proved (Z3: 2 VC)
-list.ads:14:34: info: overflow check proved (Z3: 1 VC)
-list.ads:14:38: info: overflow check proved (Z3: 1 VC)
-list.ads:14:38: info: range check proved (Z3: 1 VC)
+list.ads:14:34: info: overflow check proved (Z3: 2 VC)
+list.ads:14:38: info: overflow check proved (Z3: 2 VC)
+list.ads:14:38: info: range check proved (Z3: 2 VC)
 stack.adb:5:47: info: range check proved (Z3: 1 VC)
 stack.adb:5:47: info: range check proved (Z3: 4 VC)
-stack.adb:17:22: info: range check proved (Z3: 1 VC)
+stack.adb:17:22: info: range check proved (Z3: 2 VC)
 stack.adb:18:19: info: index check proved (Z3: 2 VC)
-stack.adb:29:22: info: range check proved (Z3: 1 VC)
+stack.adb:29:22: info: range check proved (Z3: 2 VC)
 stack.adb:34:07: info: initialization of "E" proved
 stack.ads:12:17: info: postcondition proved (Z3: 2 VC)
 stack.ads:23:14: info: postcondition proved (Z3: 1 VC)
 stack.ads:27:14: info: postcondition proved (Z3: 1 VC)
 stack.ads:27:41: info: index check proved (Z3: 2 VC)
 stack.ads:31:14: info: postcondition proved (Z3: 1 VC)
-stack.ads:31:34: info: range check proved (Z3: 1 VC)
+stack.ads:31:34: info: range check proved (Z3: 2 VC)
 stack.ads:39:14: info: postcondition proved (Z3: 1 VC)
 stack.ads:39:29: info: range check proved (Z3: 4 VC)
-stack.ads:39:56: info: overflow check proved (Z3: 1 VC)
+stack.ads:39:56: info: overflow check proved (Z3: 2 VC)
 stack.ads:53:60: info: index check proved (Z3: 2 VC)

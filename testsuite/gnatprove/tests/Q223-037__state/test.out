@@ -4,6 +4,6 @@ main.adb:12:04: info: initialization of "X" proved
 main.adb:16:10: info: precondition proved (CVC4: 1 VC)
 p.adb:7:35: info: initialization of "P_State" constituent of "P_Abs_State" proved
 p.adb:16:16: info: division check proved (CVC4: 1 VC)
-p.adb:16:16: info: overflow check proved (CVC4: 1 VC)
+p.adb:16:16: info: overflow check proved (CVC4: 2 VC)
 p.ads:12:09: info: data dependencies proved
 p.ads:13:17: info: postcondition proved (CVC4: 1 VC)

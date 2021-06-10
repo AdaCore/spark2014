@@ -1,5 +1,5 @@
 bounded_strings.adb:9:33: info: index check proved (CVC4: 2 VC)
-bounded_strings.adb:10:38: info: range check proved (CVC4: 1 VC)
+bounded_strings.adb:10:38: info: range check proved (CVC4: 2 VC)
 bounded_strings.adb:16:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bounded_strings.adb:16:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bounded_strings.ads:9:09: info: default initial condition proved (CVC4: 1 VC)
@@ -15,6 +15,6 @@ bounded_strings.ads:38:10: info: range check proved (CVC4: 2 VC)
 bounded_strings.ads:38:39: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test.adb:8:22: medium: precondition might fail
 test.adb:8:30: medium: private part of "TLV_Information.Filestore_Message" is not set
-test.ads:9:61: info: range check proved (CVC4: 1 VC)
+test.ads:9:61: info: range check proved (CVC4: 2 VC)
 test.ads:14:08: info: data dependencies proved
 test.ads:15:08: info: flow dependencies proved

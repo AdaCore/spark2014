@@ -65,7 +65,7 @@ floating_point.adb:131:66: info: type is suitable for unchecked conversion (Triv
 floating_point.adb:132:07: info: initialization of "I" proved
 floating_point.adb:133:07: info: initialization of "Y" proved
 floating_point.adb:134:40: info: float overflow check proved (Trivial)
-floating_point.adb:139:25: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
+floating_point.adb:139:25: medium: overflow check might fail, cannot prove upper bound for 16#5F3759DF# - (I / 2) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 floating_point.adb:139:30: info: division check proved (colibri: 1 VC)
 floating_point.adb:141:14: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 floating_point.adb:141:28: info: float overflow check proved (colibri: 1 VC)

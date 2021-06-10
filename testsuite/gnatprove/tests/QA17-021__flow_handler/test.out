@@ -12,14 +12,14 @@ q.ads:3:14: high: with task "q.po3"
 q.ads:4:45: medium: this interrupt might be reserved
 r.ads:8:26: info: data dependencies proved
 r.ads:8:69: medium: this interrupt might be reserved
-r.ads:11:33: info: range check proved (CVC4: 1 VC)
-r.ads:14:42: info: range check proved (CVC4: 1 VC)
+r.ads:11:33: info: range check proved (CVC4: 2 VC)
+r.ads:14:42: info: range check proved (CVC4: 2 VC)
 r.ads:17:04: high: possible data race when accessing variable "r.x"
 r.ads:17:04: high: with task "r.po1"
 r.ads:17:04: high: with task "r.po2"
 r.ads:17:04: high: with task "r.po3"
 r.ads:17:04: high: with task "r.po4"
 r.ads:17:04: high: with task "r.po5"
-r.ads:17:14: info: range check proved (CVC4: 1 VC)
-r.ads:19:25: info: range check proved (CVC4: 1 VC)
-r.ads:21:33: info: range check proved (CVC4: 1 VC)
+r.ads:17:14: info: range check proved (CVC4: 2 VC)
+r.ads:19:25: info: range check proved (CVC4: 2 VC)
+r.ads:21:33: info: range check proved (CVC4: 2 VC)

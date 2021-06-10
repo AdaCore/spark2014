@@ -8,14 +8,14 @@ records.adb:36:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:38:07: info: initialization of "R" proved
 records.adb:45:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:56:19: info: postcondition proved (CVC4: 1 VC)
-records.adb:60:29: info: range check proved (CVC4: 1 VC)
-records.adb:61:29: info: range check proved (CVC4: 1 VC)
+records.adb:60:29: info: range check proved (CVC4: 2 VC)
+records.adb:61:29: info: range check proved (CVC4: 2 VC)
 records.adb:65:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 records.adb:70:07: info: initialization of "R" proved
-records.adb:75:15: info: precondition proved (CVC4: 2 VC)
+records.adb:75:15: info: precondition proved (CVC4: 4 VC)
 records.adb:86:25: medium: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => Unsigned_Byte'Last) and Safe_Add_Pair_B'Result = (A => 0, B => 0))
 records.adb:89:07: info: initialization of "R" proved
-records.adb:94:15: info: precondition proved (CVC4: 2 VC)
+records.adb:94:15: info: precondition proved (CVC4: 4 VC)
 records.adb:103:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 records.adb:111:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 records.adb:119:19: medium: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)))
@@ -60,7 +60,7 @@ records.adb:309:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:312:07: info: initialization of "Tmp" proved
 records.adb:323:19: medium: postcondition might fail (e.g. when N = 0 and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 1, B => 0)))
 records.adb:326:07: info: initialization of "Tmp" proved
-records.adb:329:27: info: range check proved (CVC4: 1 VC)
+records.adb:329:27: info: range check proved (CVC4: 2 VC)
 records.adb:334:11: info: flow dependencies proved
 records.adb:335:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:344:11: info: flow dependencies proved
@@ -86,7 +86,7 @@ records.adb:439:13: info: add a contract to analyze it separately from calling c
 records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the context of calls
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:448:07: info: initialization of "R" proved
-records.adb:453:24: medium: range check might fail (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment]
+records.adb:453:24: medium: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment]
 records.adb:465:11: info: flow dependencies proved
 records.adb:466:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:474:30: info: assertion proved (CVC4: 1 VC)

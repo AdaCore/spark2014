@@ -20,26 +20,26 @@ bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC4: 3 VC), 
 bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:27:20: medium: postcondition might fail, cannot prove Extract_Bits_Inline_Always'Result = (Shift_Right (Value, From) and Make_Mask (Mask_Size (To - From + 1))), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:27:20: medium: postcondition might fail, cannot prove Extract_Bits_Inline_Always'Result = (Shift_Right (Value, From) and Make_Mask (Mask_Size (To - From + 1))), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:28:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:29:98: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:31:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:33:46: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:34:47: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:35:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:35:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:35:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -56,18 +56,18 @@ bits_manipulation-functions.adb:47:18: info: postcondition proved (CVC4: 3 VC), 
 bits_manipulation-functions.adb:47:18: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:47:18: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:47:18: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:48:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:49:89: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:51:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:55:08: info: precondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:55:08: info: precondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:55:08: info: precondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -76,18 +76,18 @@ bits_manipulation-functions.adb:58:18: info: postcondition proved (CVC4: 3 VC), 
 bits_manipulation-functions.adb:58:18: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:58:18: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:58:18: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:59:80: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:60:93: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:62:74: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:67:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:67:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:67:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -120,10 +120,10 @@ bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, i
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:93:30: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -264,10 +264,10 @@ bits_manipulation-functions.adb:217:39: info: loop invariant preservation proved
 bits_manipulation-functions.adb:217:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:218:42: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:218:42: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 4 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 4 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 4 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:218:63: info: range check proved (CVC4: 4 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:220:28: info: assertion proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:220:28: info: assertion proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:220:28: info: assertion proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -280,18 +280,18 @@ bits_manipulation-functions.ads:17:20: info: postcondition proved (CVC4: 3 VC), 
 bits_manipulation-functions.ads:17:20: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:17:20: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:17:20: info: postcondition proved (CVC4: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:18:82: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:19:84: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:21:75: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:27:16: info: postcondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:27:16: info: postcondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:27:16: info: postcondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -300,18 +300,18 @@ bits_manipulation-functions.ads:39:56: info: division check proved (CVC4: 1 VC),
 bits_manipulation-functions.ads:39:56: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:39:56: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:39:56: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42 [reason for check: result of subtraction must be convertible to the target type of the conversion]
-bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43 [reason for check: result of subtraction must be convertible to the target type of the conversion]
-bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44 [reason for check: result of subtraction must be convertible to the target type of the conversion]
-bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45 [reason for check: result of subtraction must be convertible to the target type of the conversion]
+bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:58:67: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:105:66: info: range check proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42 [reason for check: result of subtraction must be convertible to the target type of the conversion]
+bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43 [reason for check: result of subtraction must be convertible to the target type of the conversion]
+bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44 [reason for check: result of subtraction must be convertible to the target type of the conversion]
+bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45 [reason for check: result of subtraction must be convertible to the target type of the conversion]
 bits_manipulation-functions.ads:300:26: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:300:26: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:300:26: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44

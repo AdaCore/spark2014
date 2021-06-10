@@ -405,6 +405,12 @@ package VC_Kinds is
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
 
+   --  Constants that are used in the extra_info returned from gnatwhy3, to
+   --  identify lower and upper bound of a range check.
+
+   Low_Bound_Id  : constant Integer := -1;
+   High_Bound_Id : constant Integer := -2;
+
    --------------------
    --  Data Exchange --
    --------------------
