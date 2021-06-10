@@ -280,9 +280,9 @@ correct usage of formal containers in client code, but not to prove that formal
 containers implement their specification.
 
 Procedures ``Update_Element`` or ``Query_Element`` that iterate over a
-container are not defined on formal containers. Specification and analysis of
-such procedures that take an access-to-procedure in parameter is beyond the
-capabilities of |SPARK| and |GNATprove|. See :ref:`Excluded Ada Features`.
+container are not defined on formal containers. The effect of these procedures
+could not be precisely described in their contracts as there is no way to
+refer to the contract of their access-to-procedure parameter.
 
 Procedures and functions that query the content of a container take the
 container in parameter. For example, function ``Has_Element`` that queries if a

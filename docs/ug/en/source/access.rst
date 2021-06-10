@@ -1,13 +1,85 @@
 Pointer Support and Dynamic Memory Management
 =============================================
 
+Access types are supported in |SPARK| but with major restrictions. Here is
+an overview of the kind of access types supported in |SPARK|, their
+restrictions, and what they can be used for.
+
+* Named pool-specific access-to-variable types can only designate data allocated
+  on the heap (this is an Ada rule). |SPARK| enforces a
+  :ref:`Memory Ownership Policy` to retain absence of aliasing, see
+  :ref:`Access to Objects and Ownership`. Values of such an access type can be
+  deallocated safely. |GNATprove| generates verification conditions to ensure
+  that no memory can be leaked.
+
+  .. code-block:: ada
+
+     type PS_Int_Acc is access Integer;
+     X1 : PS_Int_Acc := new Integer'(15);
+
+* Named access-to-constant types (using the keyword ``constant``) can be used
+  to designate data regardless of where it is allocated (the stack, the
+  heap...), but they cannot be deallocated. Objects of this type
+  are not subjected to any ownership checking but the value they designate
+  should be constant all the way down (ie. if such a value has a subcomponent
+  of an access-to-variable type, the value designated by this subcomponent
+  should be constant too).
+
+  .. code-block:: ada
+
+     type Cst_Int_Acc is access constant Integer;
+     C  : aliased constant Integer := 15;
+     X2 : Cst_Int_Acc := C'Access;
+
+* Named general access-to-variable types (using the keyword ``all``) can
+  designate data regardless of where it is allocated. Like access-to-constant
+  types, they cannot be deallocated, so |GNATprove| will flag memory leaks
+  as soon as a value of such a type is allocated on the heap. They are
+  subjected to the :ref:`Memory Ownership Policy` of |SPARK|.
+
+  .. code-block:: ada
+
+     type Gen_Int_Acc is access all Integer;
+     V  : aliased Integer := 15;
+     X3 : Gen_Int_Acc := V'Access;
+
+* Anonymous access-to-object types can only be used as the type of stand-alone
+  objects for :ref:`Observing` and :ref:`Borrowing` and as the return type of
+  :ref:`Traversal Functions`. In particular they cannot be stored inside
+  composite types. They are used to grant temporary access to parts of
+  other data-structures (recursive data-structures, composite types, formal
+  containers...).
+
+  .. code-block:: ada
+
+     type List;
+     type List_Acc is access List;
+     type List is record
+       Value : aliased Integer;
+       Next  : List_Acc;
+     end record;
+
+     L : List_Acc := new List'(14, new List'(15, new List'(16, null)));
+     B : access Integer := L.Next.Value'Access;
+
+* Access-to-subprogram types can designate functions and procedures. Named
+  access-to-subprogram types can be annotated with a contract, see
+  :ref:`Contracts for Subprogram Pointers`, but the
+  designated subprograms cannot currently have global inputs or outputs.
+
+  .. code-block:: ada
+
+     type Func_Acc is not null access function (X : Natural) return Natural;
+     function Id (X : Natural) return Natural is (X);
+     F : Func_Acc := Id'Access;
+
 .. index:: ownership; analysis of
            access types; access to object
 
 Access to Objects and Ownership
 -------------------------------
 
-In |SPARK|, values of an access-to-object type are subjected to a
+In |SPARK|, values of an access-to-variable type are subjected to a
 :ref:`Memory Ownership Policy`. The idea is that an object designated by a
 pointer always has a single owner, which retains the right to either modify it,
 or (exclusive or) share it with others in a read-only way. Said otherwise, we
