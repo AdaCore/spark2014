@@ -1,0 +1,3 @@
+use_sax.adb:3:18: error: "C" is not writable
+use_sax.adb:3:18: error: object was declared as not writable at sax_symbols.ads:8
+gnatprove: error during flow analysis and proof
