@@ -690,18 +690,19 @@ package body Flow.Analysis.Antialiasing is
    ------------------
 
    function Is_Immutable (F : Entity_Id) return Boolean is
+      Typ : constant Entity_Id := Etype (F);
    begin
       return
-        --  It is of mode 'in' and not of an access type
-        (Ekind (F) = E_In_Parameter
-         and then not Is_Access_Type (Etype (F)))
+        --  The SPARK RM 6.4.2(2) states that anonymous access-to-constant
+        --  parameters are immutable. We implement via the intersection of
+        --  'anonymous access' and 'access constant'.
+        (Is_Anonymous_Access_Type (Typ)
+         and then Is_Access_Constant (Typ))
         or else
 
-      --  The SPARK RM 6.4.2(2) states that anonymous access-to-constant
-      --  parameters are immutable. We implement via the intersection of
-      --  'anonymous access' and 'access constant'.
-        (Is_Anonymous_Access_Type (Etype (F))
-         and then Is_Access_Constant (Etype (F)));
+        --  It is of mode 'in' and not of an access-to-object type
+        (Ekind (F) = E_In_Parameter
+         and then not Is_Access_Object_Type (Typ));
    end Is_Immutable;
 
    ---------------------------
