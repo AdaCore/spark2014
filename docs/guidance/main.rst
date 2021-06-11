@@ -709,78 +709,6 @@ typically addressed, as detailed in the rest of this section.
 
 In the following, we consider the error messages that are issued in each case.
 
-.. rubric:: attribute "Access" is not allowed in SPARK
-
-See 'general access type is not allowed in SPARK'
-
-.. rubric:: access to subprogram type is not allowed in SPARK
-
-Calls to subprograms through an access-to-subprogram variable can be isolated
-inside a wrapper subprogram as follows:
-
-.. code-block:: ada
-
-   Callback : Sub_T;
-
-   procedure Wrap (Arg1, Arg2 : T);
-
-   procedure Wrap (Arg1, Arg2 : T)
-     with SPARK_Mode => Off
-   is
-   begin
-      Callback.all (Arg1, Arg2);
-   end Wrap;
-
-Similarly for passing a subprogram as an an
-access-to-subprogram parameter; this can be isolated inside a wrapper
-subprogram as follows:
-
-.. code-block:: ada
-
-   procedure Proc (Arg1, Arg2 : T);
-   procedure Call_Sub (Sub : Sub_T);
-   procedure Wrap;
-
-   procedure Wrap
-     with SPARK_Mode => Off
-   is
-   begin
-      Call_Sub (Proc'Access);
-   end Wrap;
-
-The wrapper can even be made generic if some common processing needs to be performed
-before and/or after the call. In that case, Ada rules prevent directly taking
-the address of the subprogram (procedure or function) inside the
-generic, so a local wrapper should be used and its address taken:
-
-.. code-block:: ada
-
-   procedure Proc (Arg1, Arg2 : T);
-   procedure Call_Sub (Sub : Sub_T);
-   procedure Wrap;
-
-   generic
-     with procedure P (Arg1, Arg2 : T);
-   procedure Wrap;
-
-   procedure Wrap
-     with SPARK_Mode => Off
-   is
-      procedure Local_Wrap (Arg1, Arg2 : T) is
-      begin
-         P (Arg1, Arg2);
-      end Local_Wrap;
-   begin
-      --  pre-treatments here
-      Call_Sub (Local_Wrap'Access);
-      --  post-treatments here
-   end Wrap;
-
-   procedure Wrap_Proc is new Wrap (Proc);
-
-Depending on how type ``Sub_T`` is defined, the attribute ``Unchecked_Access`` may
-need to be used instead of the attribute ``Access`` in the code above.
-
 .. rubric:: function with "in out" parameter is not allowed in SPARK
 
 .. index:: Function with "in out" parameter
@@ -880,127 +808,6 @@ value ``null`` and by excluding the body of ``Log`` from analysis:
       Log (X);
       return X + 1;
    end Increment_And_Log;
-
-.. rubric:: general access type is not allowed in SPARK
-
-.. index:: access types, Pointers
-
-These errors are issued on uses of general access types, that is, pointers which
-are allowed to designate objects allocated on the stack. These access types are
-identified by the keywords ``all`` or ``constant``. For example:
-
-.. code-block:: ada
-
-   type Int_Acc is access all Integer;  --<<--  VIOLATION
-   type Int_Cst is access constant Integer;  --<<--  VIOLATION
-
-   Data1 : Integer;
-   Data2 : Boolean;
-   Data3 : Int_Acc;
-
-   procedure Operate is
-   begin
-      Data1 := 42;
-      Data2 := False;
-      Data3.all := 42;
-   end Operate;
-
-Uses of access types that are not allowed by SPARK can sometimes be
-rewritten, either to remove the access completely (using ``in out`` parameters
-for example) or to fit the ownership
-policy of SPARK (allocate data on the heap and ensure that each allocated
-block has a single owner at every program point). It may not be possible if
-the program needs to reference values declared on the stack through pointers
-or when dealing with data-structures involving cyclic references for example.
-
-In some cases, the use of access types can be moved from the subprogram into
-a helper subprogram, which is then excluded from analysis. For example, we can
-modify the code above as follows, where both the declaration of global variable
-``Data3`` (an access value) and the assignment to ``Data3.all`` are grouped in a
-package body ``Memory_Accesses`` that is excluded from analysis, while the
-package spec for ``Memory_Accesses`` can be used in SPARK code:
-
-.. code-block:: ada
-
-   Data1 : Integer;
-   Data2 : Boolean;
-
-   package Memory_Accesses is
-      procedure Write_Data3 (V : Integer);
-   end Memory_Accesses;
-
-   package body Memory_Accesses
-     with SPARK_Mode => Off
-   is
-      type Int_Acc is access all Integer;
-      Data3 : Int_Acc;
-
-      procedure Write_Data3 (V : Integer) is
-      begin
-        Data3.all := V;
-      end Write_Data3;
-   end Memory_Accesses;
-
-   procedure Operate is
-   begin
-      Data1 := 42;
-      Data2 := False;
-      Memory_Accesses.Write_Data3 (42);
-   end Operate;
-
-In other cases, the access type needs to be visible from client code, but
-the fact that it's implemented as a general access type need not be visible to
-client code. Here's an example:
-
-.. code-block:: ada
-
-   type Ptr is access all Integer;  --<<--  VIOLATION
-
-   procedure Operate (Data1, Data2, Data3 : Ptr) is
-   begin
-      Data1.all := Data2.all;
-      Data2.all := Data2.all + Data3.all;
-      Data3.all := 42;
-   end Operate;
-
-Here the general access type can be declared as a private type in either a local
-package or a package defined in a different unit, whose private part (and
-possibly also its package body) is excluded from analysis. For example, we
-can modify the code above as follows, where the type ``Ptr`` together with
-accessors to query and update objects of type ``Ptr`` are grouped in package
-``Ptr_Accesses``:
-
-.. code-block:: ada
-
-   package Ptr_Accesses is
-      type Ptr is limited private;
-      function Get (X : Ptr) return Integer;
-      procedure Set (X : Ptr; V : Integer);
-   private
-      pragma SPARK_Mode (Off);
-      type Ptr is access all Integer;
-   end Ptr_Accesses;
-
-   package body Ptr_Accesses
-     with SPARK_Mode => Off
-   is
-      function Get (X : Ptr) return Integer is (X.all);
-      procedure Set (X : Ptr; V : Integer) is
-      begin
-         X.all := V;
-      end Set;
-   end Ptr_Accesses;
-
-   procedure Operate (Data1, Data2, Data3 : Ptr_Accesses.Ptr) is
-      use Ptr_Accesses;
-   begin
-      Set (Data1, Get (Data2));
-      Set (Data2, Get (Data2) + Get (Data3));
-      Set (Data3, 42);
-   end Operate;
-
-Note that we have chosen to make ``Ptr`` a limited type. It will help to prevent
-harmful aliasing by disallowing copies of objects of type ``Ptr``.
 
 .. rubric:: handler is not allowed in SPARK
 
@@ -1124,9 +931,98 @@ associated to ``X`` is changed, so that it is no longer
 possible to read the allocated memory now reachable through ``Y`` from ``X``.
 
 When such errors occur in a piece of code, there are two possibilities. The
-first one is to hide the pointers from SPARK using SPARK_Mode, see the
-explanations for general access types for more details. The second is to
-transform the code to comply with the ownership policy of SPARK. In our example,
+first one is to hide the pointers from SPARK using SPARK_Mode, the second is to
+transform the code to comply with the ownership policy of SPARK.
+
+To hide the pointers, access type can for example be declared as a private type
+in either a local package or a package defined in a different unit, whose
+private part (and possibly also its package body) is excluded from analysis. For
+example, we can group together the type ``Ptr`` and accessors to query and
+update objects of type ``Ptr`` in package ``Ptr_Accesses``:
+
+.. code-block:: ada
+
+   package Ptr_Accesses is
+      type Ptr is limited private;
+      function Create (V : Integer) return Ptr with
+        Volatile_Function,
+	Post => Get (Create'Result) = V;
+      function Get (X : Ptr) return Integer with
+        Global => null;
+      procedure Set (X : in out Ptr; V : Integer) with
+        Global => null,
+	Post => Get (X) = V;
+   private
+      pragma SPARK_Mode (Off);
+      type Ptr is access all Integer;
+   end Ptr_Accesses;
+
+   package body Ptr_Accesses
+     with SPARK_Mode => Off
+   is
+      function Create (V : Integer) return Ptr is (new Integer'(V));
+      function Get (X : Ptr) return Integer is (X.all);
+      procedure Set (X : in out Ptr; V : Integer) is
+      begin
+         X.all := V;
+      end Set;
+   end Ptr_Accesses;
+
+Here the type ``Ptr`` is declared as ``limited`` so that it cannot be copied
+and create aliasing. As a result our code cannot be rewritten using this
+pattern. Another alternative is to introduce a global state for the values of
+all pointers of a type:
+
+.. code-block:: ada
+
+   package Ptr_Accesses with
+     Abstract_State => Allocated_Memory,
+     Initializes => Allocated_Memory
+   is
+      type Ptr is private;
+
+      function Create (V : Integer) return Ptr with
+        Volatile_Function,
+	Post => Get (Create'Result) = V;
+      function Get (X : Ptr) return Integer with
+        Global => Allocated_Memory;
+      procedure Set (X : Ptr; V : Integer) with
+        Global => (In_Out => Allocated_Memory),
+	Post => Get (X) = V;
+   private
+      pragma SPARK_Mode (Off);
+      type Ptr is access all Integer;
+   end Ptr_Accesses;
+
+   package body Ptr_Accesses
+      with SPARK_Mode => Off
+   is
+      function Create (V : Integer) return Ptr is (new Integer'(V));
+      function Get (X : Ptr) return Integer is (X.all);
+      procedure Set (X : Ptr; V : Integer) is
+      begin
+         X.all := V;
+      end Set;
+   end Ptr_Accesses;
+
+Using this package, we can rewrite the ``Ownership_Transfer`` procedure as
+follows:
+
+.. code-block:: ada
+
+  procedure Ownership_Transfer is
+     X : Ptr_Accesses.Ptr := Ptr_Accesses.Create (1);
+     Y : Ptr_Accesses.Ptr;
+  begin
+     pragma Assert (Ptr_Accesses.Get (X) = 1);
+     Y := X;
+     Ptr_Accesses.Set (Y, 2);
+     pragma Assert (Ptr_Accesses.Get (X) = 2);
+  end Ownership_Transfer;
+
+Both the alternatives above might result in loss of provability however, so
+when it is possible, it might be better to try to transform the code to comply
+with the ownership policy of SPARK. In our example,
 we should no longer try to access the allocated memory through ``X`` and rather
 use ``Y``. It may also be necessary to assign ``null`` to moved objects so
 that they are back to a readable state:
