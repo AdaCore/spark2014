@@ -12893,7 +12893,7 @@ package body Gnat2Why.Expr is
                   Offset : constant W_Expr_Id :=
                     New_Modular_Constant (Typ => W_Type,
                                           Value => Uint_1);
-                  NType : constant Node_Id := Etype (Expr);
+                  NType : constant Entity_Id := Etype (Expr);
                begin
                   Old := Transform_Expr (First (Expressions (Expr)),
                                          W_Type,
@@ -14389,7 +14389,7 @@ package body Gnat2Why.Expr is
 
          declare
             Op         : constant Node_Kind := Nkind (Expr);
-            Right_Type : constant Node_Id := Etype (Right);
+            Right_Type : constant Entity_Id := Etype (Right);
             Subdomain  : constant EW_Domain :=
               (if Domain = EW_Pred then EW_Term else Domain);
 
@@ -14432,7 +14432,7 @@ package body Gnat2Why.Expr is
       else
          declare
             Op         : constant Node_Kind := Nkind (Expr);
-            Right_Type : constant Node_Id := Etype (Right);
+            Right_Type : constant Entity_Id := Etype (Right);
             Subdomain  : constant EW_Domain :=
               (if Domain = EW_Pred then EW_Term else Domain);
 

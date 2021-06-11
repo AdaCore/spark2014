@@ -1141,7 +1141,7 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Local variables
 
-      Target_Typ  : constant Node_Id := Etype (Target);
+      Target_Typ  : constant Entity_Id := Etype (Target);
       Target_Root : Entity_Id;
       Expr_Root   : Entity_Id;
       Perm        : Perm_Kind;
@@ -1427,7 +1427,7 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Declaration (Decl : Node_Id) is
       Target     : constant Entity_Id := Defining_Identifier (Decl);
-      Target_Typ : constant Node_Id := Etype (Target);
+      Target_Typ : constant Entity_Id := Etype (Target);
       Expr       : Node_Id;
 
    begin
