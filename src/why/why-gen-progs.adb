@@ -325,7 +325,9 @@ package body Why.Gen.Progs is
    is
    begin
       if Is_Void (Left) then
+         pragma Annotate (Xcov, Exempt_On, "Case currently not exercized");
          null;
+         pragma Annotate (Xcov, Exempt_Off);
 
       elsif Get_Kind (+Left) = W_Statement_Sequence then
          Prepend (W_Statement_Sequence_Id'(+Left), Right);
