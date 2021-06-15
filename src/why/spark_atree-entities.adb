@@ -47,7 +47,7 @@ package body SPARK_Atree.Entities is
    -- Alignment --
    ---------------
 
-   function Alignment (Ent : Entity_Id) return Uint renames
+   function Alignment (Ent : Entity_Id) return Unat renames
      Einfo.Entities.Alignment;
 
    -------------------------------
