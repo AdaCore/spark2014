@@ -926,7 +926,11 @@ package body Flow_Error_Messages is
    function Get_Details (N : Node_Id; Tag : VC_Kind) return String is
 
       Par : Node_Id := Atree.Parent (N);
-      --  Enclosing expression to inform on contect for the check
+      --  Enclosing expression to inform on context for the check
+
+      Arg : Node_Id := N;
+      --  Node whose parent is Par, when skipping type conversions introduced
+      --  by the frontend for Par.
 
       --  Name of the operation to use in more detailed message
       Oper : constant String :=
@@ -977,6 +981,17 @@ package body Flow_Error_Messages is
          Par := Original_Node (Par);
       end if;
 
+      --  Skip type conversions inserted by the frontend to find a suitable
+      --  explanation.
+
+      while Nkind (Par) in N_Type_Conversion
+                         | N_Unchecked_Type_Conversion
+        and then not Comes_From_Source (Par)
+      loop
+         Arg := Par;
+         Par := Atree.Parent (Par);
+      end loop;
+
       case Tag is
          when VC_Index_Check =>
             return Value & " must be a valid index into the array";
@@ -1006,13 +1021,10 @@ package body Flow_Error_Messages is
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
             =>
-               if Comes_From_Source (Par) then
-                  return
-                    Value & " must have same length as the target array type"
-                    & " of the conversion";
-               else
-                  return "";
-               end if;
+               pragma Assert (Comes_From_Source (Par));
+               return
+                 Value & " must have same length as the target array type"
+                 & " of the conversion";
 
             when N_Qualified_Expression =>
                return Value & " must have the same length as the array type"
@@ -1089,13 +1101,10 @@ package body Flow_Error_Messages is
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
             =>
-               if Comes_From_Source (Par) then
-                  return
-                    Value & " must be convertible to the target type"
-                    & " of the conversion";
-               else
-                  return "";
-               end if;
+               pragma Assert (Comes_From_Source (Par));
+               return
+                 Value & " must be convertible to the target type"
+                 & " of the conversion";
 
             when N_Qualified_Expression =>
                return Value & " must fit in the type of the qualification";
@@ -1110,7 +1119,7 @@ package body Flow_Error_Messages is
                | N_Entry_Call_Statement
             =>
                declare
-                  Param : constant Entity_Id := Get_Formal_From_Actual (N);
+                  Param : constant Entity_Id := Get_Formal_From_Actual (Arg);
                begin
                   case Formal_Kind'(Ekind (Param)) is
                      when E_In_Parameter =>

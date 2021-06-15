@@ -7,7 +7,7 @@ package Arrays with SPARK_Mode is
    type Second is array (Uint64 range <>) of Uint32;
 
 
-   Arr_1 : First(0.. 255);
+   Arr_1 : First(0.. 255) with Volatile;
    for Arr_1'Alignment use 4;
 
 

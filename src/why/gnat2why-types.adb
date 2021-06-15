@@ -549,10 +549,14 @@ package body Gnat2Why.Types is
          --  Start with creating the predicate __moved_relation
 
          declare
+            Typ      : constant W_Type_Id :=
+              (if Might_Contain_Relaxed_Init (E)
+               then EW_Init_Wrapper (Type_Of_Node (E))
+               else Type_Of_Node (E));
             A_Ident  : constant W_Identifier_Id :=
-              New_Identifier (Name => "a", Typ => Type_Of_Node (E));
+              New_Identifier (Name => "a", Typ => Typ);
             B_Ident  : constant W_Identifier_Id :=
-              New_Identifier (Name => "b", Typ => Type_Of_Node (E));
+              New_Identifier (Name => "b", Typ => Typ);
             R_Binder : constant Binder_Array :=
               (1 => (B_Name => A_Ident,
                      others => <>),

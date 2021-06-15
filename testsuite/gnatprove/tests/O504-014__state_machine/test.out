@@ -69,4 +69,4 @@ state_machine_with_oop.ads:65:28: warning: unused variable "Current"
 state_machine_with_oop.ads:66:28: warning: unused variable "Current"
 state_machine_with_oop.ads:69:13: high: all paths in "Move_To_B" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:70:13: high: all paths in "Move_To_C" raise exceptions or do not terminate normally
-state_machine_with_oop.ads:78:49: medium: range check might fail
+state_machine_with_oop.ads:78:49: medium: range check might fail [reason for check: default component value must fit in the type]

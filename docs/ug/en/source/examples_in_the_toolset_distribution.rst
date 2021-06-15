@@ -606,14 +606,13 @@ contracts and automatically proved by |GNATprove|. In addition, two test
 procedures call read-then-write and write-then-read and GNATprove is able to
 prove the expected properties on the interplay between reading and writing.
 
-In this program we use an external axiomatization in order to lift
+This program used to rely on an external axiomatization in order to lift
 some operators from the underlying Why3 theory of bitvectors to
 |SPARK|. In particular the ``Nth`` function, at the core of the
 specification of the program, lets us check if a specific bit in a
-modular value is set or not. Note that while such a function could be
-easily implemented in |SPARK|, using the one defined in the Why3 theory
-leads to more automatic proofs because it
-lets the provers use the associated axioms and lemmas.
+modular value is set or not. This function is now implemented in |SPARK|,
+as prover support for bitvector arithmetic has improved enough for
+proofs to go through automatically.
 
 .. index:: Silver level; distributed examples - Crazyflie
 

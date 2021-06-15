@@ -1809,7 +1809,7 @@ package body SPARK_Util.Subprograms is
    function Get_Body_Entity (E : Entity_Id) return Entity_Id is
    begin
       return (case Ekind (E) is
-                 when E_Entry         => Entry_Body_Entity (E),
+                 when Entry_Kind      => Entry_Body_Entity (E),
                  when E_Task_Type     => Task_Body_Entity (E),
                  when Subprogram_Kind => Subprogram_Body_Entity (E),
                  when others          => raise Program_Error);

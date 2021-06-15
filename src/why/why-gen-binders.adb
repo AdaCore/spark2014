@@ -168,10 +168,14 @@ package body Why.Gen.Binders is
       case B.Kind is
          when Regular | UCArray | Func | Pointer
             =>
-            if No (Get_Ada_Node_From_Item (B)) then
-               return Empty;
-            else
+            if Present (Get_Ada_Node_From_Item (B)) then
                return Etype (Get_Ada_Node_From_Item (B));
+            elsif Get_Type_Kind (Get_Why_Type_From_Item (B))
+                in EW_Split | EW_Abstract
+            then
+               return Get_Ada_Node (+Get_Why_Type_From_Item (B));
+            else
+               return Empty;
             end if;
          when Concurrent_Self =>
             return B.Main.Ada_Node;

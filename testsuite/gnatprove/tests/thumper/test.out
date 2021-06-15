@@ -198,7 +198,7 @@ hermes-der-encode.adb:124:45: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:124:60: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:133:07: medium: exception might be raised
 hermes-der-encode.adb:142:47: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:142:71: medium: range check might fail
+hermes-der-encode.adb:142:71: medium: range check might fail [reason for check: input value must fit in parameter type]
 hermes-der-encode.adb:142:80: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at hermes-der-encode.ads:34 should mention Value in a precondition]
 hermes-der-encode.adb:149:39: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:155:07: medium: exception might be raised
@@ -399,7 +399,7 @@ server_timestamp_maker.adb:79:30: medium: precondition might fail, cannot prove 
 server_timestamp_maker.adb:80:55: info: range check proved (CVC4: 1 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: warning: "Version_Stop" is set by "Get_Integer_Value" but not used after the call
 server_timestamp_maker.adb:89:16: info: analyzing call to "Get_Message_Imprint" in context
-server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115 [reason for check: default component value must fit in the type]
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
 server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:115:14: info: analyzing call to "Valid_Request" in context
@@ -439,12 +439,12 @@ timestamp_messages-client.ads:46:55: medium: incorrect dependency "Status => Sta
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Stop => Start"
 timestamp_messages-server.adb:22:45: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:28:46: info: range check proved (CVC4: 1 VC)
-timestamp_messages-server.adb:28:80: medium: range check might fail
+timestamp_messages-server.adb:28:80: medium: range check might fail [reason for check: input value must fit in parameter type]
 timestamp_messages-server.adb:28:89: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:32:42: medium: range check might fail [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:33:42: medium: range check might fail [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:34:42: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:35:40: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:42:46: info: range check proved (CVC4: 1 VC)
-timestamp_messages-server.adb:42:73: medium: range check might fail
+timestamp_messages-server.adb:42:73: medium: range check might fail [reason for check: input value must fit in parameter type]
 timestamp_messages-server.adb:42:82: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible fix: you should consider adding a postcondition to function Make_Leading_Identifier or turning it into an expression function in its unit spec]

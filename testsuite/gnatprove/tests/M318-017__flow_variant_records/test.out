@@ -60,12 +60,12 @@ definite.adb:153:09: medium: discriminant check might fail [possible fix: subpro
 definite.adb:159:09: info: data dependencies proved
 definite.adb:160:09: info: flow dependencies proved
 definite.adb:164:09: medium: discriminant check might fail [possible fix: subprogram at line 157 should mention X in a precondition]
-definite.adb:164:29: medium: range check might fail [possible fix: subprogram at line 157 should mention I in a precondition]
+definite.adb:164:29: medium: range check might fail [reason for check: value must fit in component type] [possible fix: subprogram at line 157 should mention I in a precondition]
 definite.adb:168:23: info: initialization of "X" proved
 definite.adb:170:09: info: data dependencies proved
 definite.adb:171:04: info: flow dependencies proved
 definite.adb:174:09: medium: discriminant check might fail [possible fix: subprogram at line 168 should mention X'Constrained or X.D in a precondition]
-definite.adb:174:29: medium: range check might fail [possible fix: subprogram at line 168 should mention I in a precondition]
+definite.adb:174:29: medium: range check might fail [reason for check: value must fit in component type] [possible fix: subprogram at line 168 should mention I in a precondition]
 test.adb:18:04: warning: analyzing unreferenced procedure "Test_Init_01"
 test.adb:19:28: info: initialization of "R" proved
 test.adb:23:12: medium: discriminant check might fail [possible fix: subprogram at line 18 should mention R'Constrained or R.D in a precondition]

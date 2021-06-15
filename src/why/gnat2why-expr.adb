@@ -6809,10 +6809,15 @@ package body Gnat2Why.Expr is
       procedure Collect_Moved_Objects
         (Expr     : Node_Id;
          Toplevel : Boolean;
-         Map      : in out Ada_To_Why_Ident.Map);
-      --  Add in Map all moved objects from Expr. If Toplevel is True, this is
+         Set      : in out Node_Sets.Set);
+      --  Add in Set all moved objects from Expr. If Toplevel is True, this is
       --  the outer toplevel call, for which the top-level object should not
-      --  be inserted in the map as it is handled specially.
+      --  be inserted in the set as it is handled specially.
+
+      function Tmp_Of_Expr (Expr : W_Expr_Id) return W_Identifier_Id;
+      --  Return a temporary identifier suitable to be used in place of Expr.
+      --  It has the same type and if the type is an array in split form, an
+      --  appropriate Ada node to retrieve the bounds.
 
       ------------------
       -- Can_Be_Moved --
@@ -6833,7 +6838,7 @@ package body Gnat2Why.Expr is
       procedure Collect_Moved_Objects
         (Expr     : Node_Id;
          Toplevel : Boolean;
-         Map      : in out Ada_To_Why_Ident.Map)
+         Set      : in out Node_Sets.Set)
       is
          --  Local subprograms
 
@@ -6845,7 +6850,7 @@ package body Gnat2Why.Expr is
 
          procedure Collect_Subobject (Expr : Node_Id);
          --  Collect a subobject, passing in the value False for Toplevel and
-         --  the Map.
+         --  the Set.
 
          --------------------------
          -- Collect_Associations --
@@ -6882,20 +6887,18 @@ package body Gnat2Why.Expr is
 
          procedure Collect_Subobject (Expr : Node_Id) is
          begin
-            Collect_Moved_Objects (Expr, Toplevel => False, Map => Map);
+            Collect_Moved_Objects (Expr, Toplevel => False, Set => Set);
          end Collect_Subobject;
 
       --  Start of processing for Collect_Moved_Objects
 
       begin
-         --  Object can be moved, insert it in the map unless at top-level
+         --  Object can be moved, insert it in the set unless at top-level
 
          if not Toplevel
            and then Can_Be_Moved (Expr)
          then
-            Map.Insert
-              (Expr,
-               New_Temp_Identifier (Typ => Type_Of_Node (Expr)));
+            Set.Insert (Expr);
             return;
          end if;
 
@@ -6910,7 +6913,7 @@ package body Gnat2Why.Expr is
                | N_Unchecked_Type_Conversion
             =>
                Collect_Moved_Objects
-                 (Expression (Expr), Toplevel => Toplevel, Map => Map);
+                 (Expression (Expr), Toplevel => Toplevel, Set => Set);
 
             --  No move occurs in an uninitialized allocator
 
@@ -6946,11 +6949,29 @@ package body Gnat2Why.Expr is
          end case;
       end Collect_Moved_Objects;
 
+      -----------------
+      -- Tmp_Of_Expr --
+      -----------------
+
+      function Tmp_Of_Expr (Expr : W_Expr_Id) return W_Identifier_Id is
+         Typ  : constant W_Type_Id := Get_Type (+Expr);
+         Node : constant Node_Id :=
+           (if Get_Type_Kind (Typ) = EW_Split
+              and then Has_Array_Type (Get_Ada_Node (+Typ))
+            then Get_Entity_Of_Variable (Expr)
+            else Empty);
+      begin
+         return New_Temp_Identifier
+           (Ada_Node  => Node,
+            Typ       => Typ,
+            Base_Name => "for_move");
+      end Tmp_Of_Expr;
+
       --  Local variables
 
       Rhs           : constant Node_Id := Expression (Stmt);
       Toplevel_Move : constant Boolean := Can_Be_Moved (Rhs);
-      Nested_Moved  : Ada_To_Why_Ident.Map;
+      Nested_Moved  : Node_Sets.Set;
       Do_Move       : Boolean;
       Tmp           : W_Identifier_Id;
       Init          : W_Prog_Id;
@@ -6966,25 +6987,24 @@ package body Gnat2Why.Expr is
       --  Collect all deep objects potentially moved inside an aggregate
 
       else
-         Collect_Moved_Objects (Rhs, Toplevel => True, Map => Nested_Moved);
+         Collect_Moved_Objects (Rhs, Toplevel => True, Set => Nested_Moved);
          Do_Move := Toplevel_Move or else not Nested_Moved.Is_Empty;
       end if;
 
       if Do_Move then
-         Tmp  := New_Temp_Identifier (Typ => Get_Type (+Expr));
+         Tmp  := Tmp_Of_Expr (+Expr);
          Init := Expr;
          Expr := +Tmp;
-      end if;
 
-      if Do_Move then
-         for Mapping in Nested_Moved.Iterate loop
+         for Obj of Nested_Moved loop
             declare
-               Obj     : Node_Id renames Ada_To_Why_Ident.Key (Mapping);
-               Obj_Tmp : W_Identifier_Id renames Nested_Moved (Mapping);
+               Obj_Expr : constant W_Expr_Id :=
+                 Transform_Expr (Obj, EW_Term, Body_Params);
+               Obj_Tmp  : constant W_Identifier_Id := Tmp_Of_Expr (Obj_Expr);
             begin
                Expr := New_Binding
                  (Name    => Obj_Tmp,
-                  Def     => Transform_Expr (Obj, EW_Term, Body_Params),
+                  Def     => Obj_Expr,
                   Context => +Sequence (Move_Expression (Obj, Obj_Tmp), +Expr),
                   Typ     => Get_Type (+Expr));
             end;
@@ -7294,8 +7314,26 @@ package body Gnat2Why.Expr is
             Args       : W_Expr_Array
               (1 .. Item_Array_Length ((1 => Pattern)));
             T          : W_Prog_Id;
+            W_Expr     : W_Expr_Id := +Tmp;
+            Exp_Typ    : W_Type_Id := Get_Why_Type_From_Item (Pattern);
 
          begin
+            --  Get_Item_From_Var and Get_Item_From_Expr expect an expression
+            --  of the pattern type but with arrays to be in abstract form.
+
+            if Has_Array_Type (Etype (Expr))
+              and then Get_Type_Kind (Exp_Typ) = EW_Split
+            then
+               Exp_Typ := EW_Abstract
+                 (Get_Ada_Node (+Exp_Typ), Get_Relaxed_Init (Exp_Typ));
+            end if;
+
+            W_Expr := Insert_Simple_Conversion
+              (Domain         => EW_Pterm,
+               Expr           => W_Expr,
+               To             => Exp_Typ,
+               Force_No_Slide => True);
+
             --  If Expr is a whole object, try to reuse the references of Expr
 
             if Is_Simple_Actual (Expr) then
@@ -7308,7 +7346,7 @@ package body Gnat2Why.Expr is
                   Get_Item_From_Var
                     (Pattern    => Pattern,
                      Var        => Binder,
-                     Expr       => +Tmp,
+                     Expr       => W_Expr,
                      Context    => Context,
                      Args       => Args,
                      Need_Store => Need_Store);
@@ -7319,7 +7357,7 @@ package body Gnat2Why.Expr is
             else
                Get_Item_From_Expr
                  (Pattern    => Pattern,
-                  Expr       => +Tmp,
+                  Expr       => W_Expr,
                   Context    => Context,
                   Args       => Args,
                   Need_Store => Need_Store);
@@ -7341,7 +7379,7 @@ package body Gnat2Why.Expr is
                       (Pattern    => Pattern,
                        Actual     => Expr,
                        No_Checks  => True,
-                       Pre_Expr   => +Tmp);
+                       Pre_Expr   => W_Expr);
                begin
                   T := Sequence
                     (T,
@@ -12228,12 +12266,30 @@ package body Gnat2Why.Expr is
       if Is_Deep (Typ)
         and then not Is_Anonymous_Access_Type (Typ)
       then
+
+         --  If T is an array in split form, we need to be able to retrieve
+         --  its bounds. Use a label to provide the appropriate Ada node.
+
          declare
-            Tmp : W_Expr_Id;
+            Is_Split : constant Boolean :=
+              Get_Type_Kind (Get_Type (+T)) = EW_Split
+              and then Has_Array_Type (Get_Ada_Node (+Get_Type (+T)));
+            pragma Assert
+              (if Is_Split
+               then Nkind (Lvalue) in N_Identifier | N_Expanded_Name);
+            Tmp      : W_Expr_Id;
          begin
+            if Is_Split then
+               T := New_Label (Ada_Node => Entity (Lvalue),
+                               Labels   => Symbol_Sets.Empty_Set,
+                               Def      => +T,
+                               Typ      => Get_Type (+T));
+            end if;
+
             Insert_Move_Of_Deep_Parts (Stmt    => Stmt,
                                        Lhs_Typ => Typ,
                                        Expr    => T);
+
             Tmp := New_Temp_For_Expr (+T);
 
             --  Check that the assignment does not cause a memory leak. This

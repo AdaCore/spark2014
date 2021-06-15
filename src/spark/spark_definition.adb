@@ -47,6 +47,7 @@ with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sinfo.Utils;                     use Sinfo.Utils;
+with Sinput;                          use Sinput;
 with Snames;                          use Snames;
 with SPARK_Atree.Entities;
 with SPARK_Util;                      use SPARK_Util;
@@ -2768,10 +2769,15 @@ package body SPARK_Definition is
    ------------------
 
    procedure Mark_Address (E : Entity_Id) is
-      Address : constant Node_Id := Get_Rep_Item (E, Name_Address);
+      Address : constant Node_Id := Address_Clause (E);
    begin
       if Present (Address) then
-         Mark (Expression (Address));
+         if Is_Object (E) and then Is_Deep (Etype (E)) then
+            Mark_Violation
+              ("address clause on an object of an ownership type", Address);
+         else
+            Mark (Expression (Address));
+         end if;
       end if;
    end Mark_Address;
 
@@ -2977,18 +2983,29 @@ package body SPARK_Definition is
                   N);
             end if;
 
-         --  Attribute Address is only allowed inside an Address aspect or
-         --  attribute definition clause (SPARK RM 15.2).
-         --  We also exclude nodes that are known to make proof switch domain
-         --  from Prog to Pred, as this is not supported in the translation
-         --  currently.
-
          when Attribute_Address =>
 
             declare
-               M : Node_Id := Parent (N);
-               Found_Violation : Boolean := False;
+               Pref        : constant Node_Id := Prefix (N);
+               Root_Object : constant Entity_Id :=
+                 (if Is_Path_Expression (Pref)
+                  then Get_Root_Object (Pref, False)
+                  else Empty);
+               Root_Is_Volatile : constant Boolean :=
+                 (Present (Root_Object)
+                  and then Is_Object (Root_Object)
+                  and then Has_Volatile (Root_Object)
+                  and then Has_Volatile_Property
+                    (Root_Object, Pragma_Async_Writers));
+               M                : Node_Id := Parent (N);
+               Found_Violation  : Boolean := False;
+
             begin
+               --  Attribute Address is only allowed inside an Address aspect
+               --  or attribute definition clause (SPARK RM 15.2).
+               --  We also exclude nodes that are known to make proof switch
+               --  domain from Prog to Pred, as this is not supported in the
+               --  translation currently.
 
                loop
                   if Nkind (M) = N_Attribute_Definition_Clause
@@ -3018,9 +3035,35 @@ package body SPARK_Definition is
                   M := Parent (M);
                end loop;
 
-               if not Found_Violation
-                 and then Nkind (Prefix (N)) in N_Identifier | N_Expanded_Name
-                 and then not Is_Volatile (Entity (Prefix (N)))
+               if Found_Violation then
+                  null;
+
+               --  For now we reject P'Address if P is a complex expression
+               --  (not an identifier) unless it is a path rooted at a volatile
+               --  object.
+
+               elsif No (Root_Object) then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ on an expression which is not a part of an object",
+                     N);
+               elsif Is_Object (Root_Object)
+                 and then not Root_Is_Volatile
+                 and then Nkind (Pref) not in
+                   N_Identifier | N_Expanded_Name
+               then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ of a part of an object which is not volatile", N);
+
+               --  If the prefix is a non-volatile object, the attribute
+               --  reference must appear at the top-level in an address clause
+               --  so we can handle the underlying alias in a safe way.
+
+               elsif Is_Object (Root_Object)
+                 and then not Root_Is_Volatile
                  and then
                    not (Nkind (Parent (N)) = N_Attribute_Definition_Clause
                         and then Chars (Parent (N)) = Name_Address)
@@ -3030,6 +3073,17 @@ package body SPARK_Definition is
                      & Standard_Ada_Case (Get_Name_String (Aname))
                      & """ of non-volatile object not"
                      & " at top level of address clause", N);
+
+               --  We do not support taking the address of an object of a deep
+               --  type as an overlay would break the ownership model.
+
+               elsif Is_Object (Root_Object)
+                 and then Is_Deep (Etype (Root_Object))
+               then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ on an object of an ownership type", N);
                end if;
             end;
 
@@ -4419,6 +4473,10 @@ package body SPARK_Definition is
                Ty  => T,
                Own => False);
          end if;
+
+         --  Also mark the Address clause if any
+
+         Mark_Address (E);
       end Mark_Object_Entity;
 
       ---------------------------
@@ -4832,10 +4890,65 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Subprogram_Entity
 
       begin
+         --  Switch --limit-subp may be passed on for a subprogram that is
+         --  always inlined. Ignore the switch in that case by resetting
+         --  the value of Limit_Subp. If --limit-line or --limit-region are
+         --  not already used, set the value of Limit_Region to analyze the
+         --  subprogram in its calling contexts.
+
+         if Is_Requested_Subprogram_Or_Task (E)
+           and then Is_Local_Subprogram_Always_Inlined (E)
+         then
+            Gnat2Why_Args.Limit_Subp := Null_Unbounded_String;
+
+            if Gnat2Why_Args.Limit_Region = Null_Unbounded_String
+              and then Gnat2Why_Args.Limit_Line = Null_Unbounded_String
+            then
+               declare
+                  Body_E     : constant Entity_Id := Get_Body_Entity (E);
+                  This_E     : constant Entity_Id :=
+                    (if Present (Body_E) then Body_E else E);
+                  This_Decl  : constant Node_Id :=
+                    (if Present (Body_E) then Subprogram_Body (E)
+                     else Subprogram_Spec (E));
+                  Slc        : constant Source_Ptr := Sloc (This_E);
+                  File       : constant String := File_Name (Slc);
+                  First_Line : constant Physical_Line_Number :=
+                    Get_Physical_Line_Number (Slc);
+                  Last_Line  : constant Physical_Line_Number :=
+                    Get_Physical_Line_Number (Sloc (Last_Node (This_Decl)));
+                  Limit_Str  : constant String :=
+                    File
+                    & ':' & Int_Image (Int (First_Line))
+                    & ':' & Int_Image (Int (Last_Line));
+               begin
+                  Gnat2Why_Args.Limit_Region :=
+                    To_Unbounded_String (Limit_Str);
+
+                  --  Also add the corresponding arguments for gnatwhy3
+
+                  Gnat2Why_Args.Why3_Args.Append ("--limit-region");
+                  Gnat2Why_Args.Why3_Args.Append (Limit_Str);
+               end;
+            end if;
+         end if;
+
          if Is_Protected_Operation (E)
            and then not Is_SPARK_Tasking_Configuration
          then
             Mark_Violation_In_Tasking (E);
+         end if;
+
+         --  Reject unchecked conversion to and from a deep type as it could
+         --  create an unknown alias.
+
+         if Is_Unchecked_Conversion_Instance (E)
+           and then (Is_Deep (Etype (E))
+                     or else Is_Deep (Etype (First_Formal (E))))
+         then
+            Mark_Violation
+              ("unchecked conversion instance to or from an ownership type",
+               E);
          end if;
 
          Mark_Subprogram_Specification (E);
@@ -6262,8 +6375,8 @@ package body SPARK_Definition is
 
          if not Violation_Detected
            and then
-             ((Is_First_Subtype (E)
-               and then Has_Relaxed_Initialization (E))
+             ((Is_First_Subtype (First_Subtype (E))
+               and then Has_Relaxed_Initialization (First_Subtype (E)))
               or else (Is_Composite_Type (E)
                        and then Contains_Only_Relaxed_Init (E)))
          then
@@ -6386,10 +6499,6 @@ package body SPARK_Definition is
       then
          Set_Partial_View (Full_View (E), E);
          Queue_For_Marking (Full_View (E));
-      end if;
-
-      if Ekind (E) in E_Constant | E_Variable then
-         Mark_Address (E);
       end if;
 
       --  Mark differently each kind of entity
@@ -8105,6 +8214,14 @@ package body SPARK_Definition is
       Inserted : Boolean;
 
    begin
+      --  Predicates might apply to subtypes. We do this check even if the base
+      --  type was already analyzed.
+
+      if Has_Predicates (Ty) then
+         Mark_Unsupported
+           ("predicate on a type with initialization by proof", N);
+      end if;
+
       --  Store Rep_Ty in the Relaxed_Init map or update its mapping if
       --  necessary.
 
@@ -8119,10 +8236,7 @@ package body SPARK_Definition is
 
       --  Raise violations on currently unsupported cases
 
-      if Has_Predicates (Ty) then
-         Mark_Unsupported
-           ("predicate on a type with initialization by proof", N);
-      elsif Has_Invariants_In_SPARK (Ty) then
+      if Has_Invariants_In_SPARK (Ty) then
          Mark_Unsupported
            ("invariant on a type with initialization by proof", N);
       elsif Is_Tagged_Type (Rep_Ty) then

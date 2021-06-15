@@ -1,0 +1,9 @@
+ranges.adb:1:11: warning: subprogram "Ranges" has no effect
+ranges.adb:11:12: medium: range check might fail (e.g. when X1 = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 1 should mention X1 in a precondition]
+ranges.adb:11:14: info: range check proved (CVC4: 1 VC)
+ranges.adb:13:12: info: range check proved (CVC4: 1 VC)
+ranges.adb:13:14: medium: range check might fail (e.g. when X1 = -11) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 1 should mention X1 in a precondition]
+ranges.adb:17:18: medium: range check might fail (e.g. when X2 = -1) [reason for check: value must fit in component type] [possible fix: subprogram at line 1 should mention X2 in a precondition]
+ranges.adb:17:20: info: range check proved (CVC4: 1 VC)
+ranges.adb:19:18: info: range check proved (CVC4: 1 VC)
+ranges.adb:19:20: medium: range check might fail (e.g. when X2 = -11) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 1 should mention X2 in a precondition]
