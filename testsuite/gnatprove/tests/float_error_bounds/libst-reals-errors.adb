@@ -439,4 +439,43 @@ package body Libst.Reals.Errors with SPARK_Mode is
          Num_A => Weighted_Sum_Abs_Rec (Weights, Values, Max_Index));
    end Error_For_Sum;
 
+   procedure Precise_Bounds_For_Sum
+     (Weights : Weight_Array;
+      Values  : Value_Array)
+   is
+      --  Lemma: Prove by induction that Sum_Weight is either 0.0 or more than
+      --         Min_Weight on real numbers
+
+      procedure Min_Bound_For_SW (I : Extended_Index) with
+        Subprogram_Variant => (Decreases => I),
+        Post => Sum_Weight_Rec (Weights, I) = Big_Real'(0.0)
+        or else Sum_Weight_Rec (Weights, I) >= To_Big_Real (Min_Weight)
+      is
+      begin
+         if I /= 0 then
+            Min_Bound_For_SW (I - 1);
+         end if;
+      end Min_Bound_For_SW;
+
+   begin
+      --  Sum_Weight (Weights) in floats is not 0.0
+      Error_For_SW (Weights);
+      --  Compute the error for the computation of Weighted_Sum
+      Error_For_Sum (Weights, Values);
+      --  Bound Weighted_Sum and Weighted_Sum_Abs by Max_Value on real numbers
+      Sum_Less_Than_Sum_Abs (Weights, Values, Max_Index);
+      Bound_Sum_Abs (Weights, Values, Max_Index);
+      pragma Assert (Weighted_Sum_Abs (Weights, Values) <= To_Big_Real (Max_Value));
+      --  Sum_Weight is more than Min_Weight on real numbers
+      Min_Bound_For_SW (Max_Index);
+      pragma Assert (Sum_Weight (Weights) >= To_Big_Real (Min_Weight));
+
+      --  Compute the most precise bound for Weighted_Sum on floats given by
+      --  the error bound on the computation and the bound on real numbers.
+      pragma Assert
+        (abs (To_Big_Real (Float'(Weighted_Sum (Weights, Values)))) <=
+           To_Big_Real (Max_Value) + 1.25E-45 + 2.52E-43 / To_Big_Real (Min_Weight)
+         + 2.05E-5 * To_Big_Real (Max_Value));
+   end Precise_Bounds_For_Sum;
+
 end Libst.Reals.Errors;

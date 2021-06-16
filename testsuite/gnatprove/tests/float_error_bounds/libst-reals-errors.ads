@@ -78,4 +78,13 @@ package Libst.Reals.Errors with SPARK_Mode is
             + 2.05E-5 * Weighted_Sum_Abs (Weights, Values);
    --  Error bound on the computation of Weighted_Sum
 
+   procedure Precise_Bounds_For_Sum
+     (Weights : Weight_Array;
+      Values  : Value_Array)
+   with
+       Pre  => Sum_Weight (Weights) /= Float'(0.0),
+       Post => Float'(Weighted_Sum (Weights, Values))
+         in - 1.00003 * Max_Value .. 1.00003 * Max_Value;
+   --  Precise bound for Weighted_Sum obtained through error bound computation
+
 end Libst.Reals.Errors;
