@@ -33,6 +33,7 @@ with Types;                use Types;
 with Uintp;                use Uintp;
 with VC_Kinds;             use VC_Kinds;
 with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Conversions;      use Why.Conversions;
 with Why.Ids;              use Why.Ids;
 with Why.Inter;            use Why.Inter;
 with Why.Sinfo;            use Why.Sinfo;
@@ -83,6 +84,15 @@ package Why.Gen.Expr is
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;
 
+   function New_And_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
+      (+New_And_Expr (+Left, +Right, EW_Prog));
+
+   function New_And_Term (Left, Right : W_Term_Id) return W_Term_Id is
+      (+New_And_Expr (+Left, +Right, EW_Term));
+
+   function New_And_Pred (Left, Right : W_Pred_Id) return W_Pred_Id is
+      (+New_And_Expr (+Left, +Right, EW_Pred));
+
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
@@ -90,9 +100,7 @@ package Why.Gen.Expr is
    --  Generate the expression "Left and Right"; choose the right "and"
    --  operation depending on "Base", e.g. for modular or boolean types.
 
-   function New_And_Expr
-     (Conjuncts : W_Expr_Array;
-      Domain    : EW_Domain) return W_Expr_Id;
+   function New_And_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id;
 
    function New_And_Then_Expr
       (Left, Right : W_Expr_Id;
@@ -102,6 +110,21 @@ package Why.Gen.Expr is
      (Symbol      : W_Identifier_Id;
       Left, Right : W_Expr_Id;
       Domain      : EW_Domain) return W_Expr_Id;
+
+   function New_Comparison
+     (Symbol      : W_Identifier_Id;
+      Left, Right : W_Prog_Id) return W_Prog_Id
+   is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Prog)));
+
+   function New_Comparison
+     (Symbol      : W_Identifier_Id;
+      Left, Right : W_Term_Id) return W_Term_Id
+   is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Term)));
+
+   function New_Comparison
+     (Symbol      : W_Identifier_Id;
+      Left, Right : W_Term_Id) return W_Pred_Id
+   is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Pred)));
 
    function New_Counterexample_Assign (If_Node   : Node_Id;
                                        Condition : W_Expr_Id)
@@ -129,6 +152,12 @@ package Why.Gen.Expr is
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
       Domain      : EW_Domain) return W_Expr_Id;
+
+   function New_Or_Term (Left, Right : W_Term_Id) return W_Term_Id is
+     (+New_Or_Expr (+Left, +Right, EW_Term));
+
+   function New_Or_Pred (Left, Right : W_Pred_Id) return W_Pred_Id is
+     (+New_Or_Expr (+Left, +Right, EW_Pred));
 
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
@@ -238,6 +267,11 @@ package Why.Gen.Expr is
    --  comparisons being in Base_Type (int or real). If Pretty is set to true,
    --  the two parts of a conjunction get a GP_Pretty_Ada attribute, which can
    --  be used for identifying the unproved part of a range or overflow check.
+
+   function New_Range_Expr
+     (Low, High : W_Term_Id;
+      Expr      : W_Term_Id) return W_Pred_Id
+   is (+W_Expr_Id'(New_Range_Expr (EW_Term, +Low, +High, +Expr)));
 
    function New_Discrete_Add
      (Domain : EW_Domain;
@@ -382,6 +416,22 @@ package Why.Gen.Expr is
    --     constraints.
    --  @result converted expression of Expr to type To, no check
 
+   function Insert_Simple_Conversion
+     (Ada_Node       : Node_Id := Empty;
+      Expr           : W_Prog_Id;
+      To             : W_Type_Id;
+      Force_No_Slide : Boolean := False) return W_Prog_Id
+   is (+W_Expr_Id'(Insert_Simple_Conversion
+       (Ada_Node, EW_Term, +Expr, To, Force_No_Slide)));
+
+   function Insert_Simple_Conversion
+     (Ada_Node       : Node_Id := Empty;
+      Expr           : W_Term_Id;
+      To             : W_Type_Id;
+      Force_No_Slide : Boolean := False) return W_Term_Id
+   is (+W_Expr_Id'(Insert_Simple_Conversion
+       (Ada_Node, EW_Term, +Expr, To, Force_No_Slide)));
+
    function Insert_Scalar_Conversion
      (Domain   : EW_Domain;
       Ada_Node : Node_Id := Empty;
@@ -471,6 +521,24 @@ package Why.Gen.Expr is
       return W_Expr_Id;
    --  same as New_Binding, but adds type information coming from Context
 
+   function New_Typed_Binding
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Def      : W_Prog_Id;
+      Context  : W_Prog_Id)
+      return W_Prog_Id
+   is (+W_Expr_Id'
+         (New_Typed_Binding (Ada_Node, EW_Prog, Name, +Def, +Context)));
+
+   function New_Typed_Binding
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Def      : W_Term_Id;
+      Context  : W_Pred_Id)
+      return W_Pred_Id
+   is (+W_Expr_Id'
+         (New_Typed_Binding (Ada_Node, EW_Pred, Name, +Def, +Context)));
+
    subtype Supported_Attribute_Id is Attribute_Id with
      Static_Predicate => Supported_Attribute_Id in Attribute_Alignment
                                                  | Attribute_Constrained
@@ -527,6 +595,11 @@ package Why.Gen.Expr is
    --  expression for later use. If Need_Temp is False, do not actually
    --  introduce a temp variable.
 
+   function New_Temp_For_Expr
+     (E         : W_Term_Id;
+      Need_Temp : Boolean := True) return W_Term_Id
+   is (+W_Expr_Id'(New_Temp_For_Expr (+E, Need_Temp)));
+
    function Binding_For_Temp
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
@@ -534,5 +607,11 @@ package Why.Gen.Expr is
       Context  : W_Expr_Id) return W_Expr_Id;
    --  Introduce a let binding for Tmp on top of "Context". The value of Tmp is
    --  the one provided to the corresponding call to New_Temp_For_Expr.
+
+   function Binding_For_Temp
+     (Ada_Node : Node_Id := Empty;
+      Tmp      : W_Term_Id;
+      Context  : W_Pred_Id) return W_Pred_Id
+   is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Pred, +Tmp, +Context)));
 
 end Why.Gen.Expr;

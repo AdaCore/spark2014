@@ -714,8 +714,8 @@ package body Gnat2Why.Expr.Loops.Inv is
            and then not Is_Constrained (Expr_Ty)
          then
             return New_Bounds_Equality
-              (Left_Arr  => Expr,
-               Right_Arr => At_Entry,
+              (Left_Arr  => +Expr,
+               Right_Arr => +At_Entry,
                Dim       => Positive (Number_Dimensions (Expr_Ty)));
          elsif Has_Discriminants (Expr_Ty)
            and then not Is_Constrained (Expr_Ty)
@@ -928,8 +928,8 @@ package body Gnat2Why.Expr.Loops.Inv is
             declare
                E_Expr_Ty    : constant Entity_Id :=
                  Retysp (Directly_Designated_Type (Expr_Ty));
-               E_Is_Null    : constant W_Expr_Id :=
-                 New_Pointer_Is_Null_Access (Expr_Ty, Expr);
+               E_Is_Null    : constant W_Term_Id :=
+                 New_Pointer_Is_Null_Access (Expr_Ty, +Expr);
                E_Expr       : constant W_Expr_Id :=
                  New_Pointer_Value_Access
                    (Types.Empty, Expr_Ty, Expr, EW_Term);
@@ -953,27 +953,24 @@ package body Gnat2Why.Expr.Loops.Inv is
                --  affectations.
 
             begin
-               if +Value_Status /= True_Pred then
+               if Value_Status /= True_Pred then
                   Value_Status := New_Conditional
                     (Condition => New_Comparison
                        (Symbol => Why_Eq,
                         Left   => E_Is_Null,
-                        Right  => +False_Term,
-                        Domain => EW_Pred),
-                     Then_Part => +Value_Status,
+                        Right  => False_Term),
+                     Then_Part => Value_Status,
                      Typ       => EW_Bool_Type);
                end if;
 
-               Preserved_Components := +New_And_Expr
+               Preserved_Components := New_And_Pred
                  (Conjuncts =>
                     (1 => New_Comparison
                        (Symbol => Why_Eq,
                         Left   => E_Is_Null,
                         Right  => New_Pointer_Is_Null_Access
-                          (Expr_Ty, At_Entry),
-                        Domain => EW_Pred),
-                     2 => +Value_Status),
-                  Domain    => EW_Pred);
+                          (Expr_Ty, +At_Entry)),
+                     2 => Value_Status));
             end;
       end case;
       return Preserved_Components;
@@ -1099,7 +1096,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                declare
                   Binder      : constant Item_Type :=
                     Ada_Ent_To_Why.Element (Symbol_Table, N);
-                  Expr        : constant W_Expr_Id :=
+                  Expr        : constant W_Term_Id :=
                     Reconstruct_Item (Binder, Ref_Allowed => True);
                   Init_Id     : constant W_Expr_Id := Get_Init_Id_From_Object
                     (N, Ref_Allowed => True);
@@ -1114,17 +1111,16 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                begin
                   Dyn_Types_Inv :=
-                    +New_And_Expr
-                    (Domain    => EW_Pred,
-                     Conjuncts =>
-                       (1 => +Dyn_Types_Inv,
+                    New_And_Pred
+                    (Conjuncts =>
+                       (1 => Dyn_Types_Inv,
 
                         --  Compute the dynamic property of Expr, taking into
                         --  account its initialization if it corresponds to a
                         --  variable taken as input in the current subprogram.
 
-                        2 => +Compute_Dynamic_Invariant
-                          (Expr        => +Expr,
+                        2 => Compute_Dynamic_Invariant
+                          (Expr        => Expr,
                            Ty          => Etype (N),
                            Params      => Body_Params,
                            Initialized =>
@@ -1140,9 +1136,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                         3 => (if Is_Local_Borrower (N)
                                 and then Status.Kind = Entire_Object
-                              then New_And_Expr
-                                (Domain => EW_Pred,
-                                 Left   => +Compute_Dynamic_Invariant
+                              then New_And_Pred
+                                (Left   => Compute_Dynamic_Invariant
                                    (Expr        => New_Deref
                                         (Right => Brower_Id,
                                          Typ   => Get_Typ (Brower_Id)),
@@ -1157,9 +1152,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                                          (Right => Brower_Id,
                                           Typ   => Get_Typ (Brower_Id))),
                                     Right  => New_Pointer_Is_Null_Access
-                                      (Etype (N), Expr),
-                                    Domain => EW_Pred))
-                              else +True_Pred),
+                                      (Etype (N), Expr)))
+                              else True_Pred),
 
                         --  Unmodified fields are preserved. Nothing can be
                         --  preserved if the variable is a scalar. Avoid
@@ -1167,14 +1161,14 @@ package body Gnat2Why.Expr.Loops.Inv is
                         --  variable as they could generate spurious
                         --  initialization checks.
 
-                        4 => (if Has_Scalar_Type (Etype (N)) then +True_Pred
-                              else +Equality_Of_Preserved_Components
+                        4 => (if Has_Scalar_Type (Etype (N)) then True_Pred
+                              else Equality_Of_Preserved_Components
                                 (Loop_Idx  => Loop_Index,
                                  Low_Id    => Low_Id,
                                  High_Id   => High_Id,
                                  Is_Rev    => Is_Reverse,
                                  Loop_Vars => Modified,
-                                 Expr      => Expr,
+                                 Expr      => +Expr,
                                  At_Entry  => +Name_For_Loop_Entry
                                    (Expr    => N,
                                     Loop_Id => Loop_Id),
@@ -1209,14 +1203,12 @@ package body Gnat2Why.Expr.Loops.Inv is
          begin
 
             Dyn_Types_Inv :=
-              +New_And_Expr
-              (Domain    => EW_Pred,
-               Conjuncts =>
-                 (1 => +Dyn_Types_Inv,
-                  2 => New_Call (Name   => Why_Eq,
-                                 Typ    => EW_Bool_Type,
-                                 Args   => (Expr, L_Id),
-                                 Domain => EW_Pred)));
+              New_And_Pred
+              (Conjuncts =>
+                 (1 => Dyn_Types_Inv,
+                  2 => New_Call (Name => Why_Eq,
+                                 Typ  => EW_Bool_Type,
+                                 Args => (Expr, L_Id))));
          end;
       end loop;
 

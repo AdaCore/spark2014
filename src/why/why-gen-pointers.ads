@@ -32,6 +32,7 @@ with SPARK_Util.Types;       use SPARK_Util.Types;
 with Types;                  use Types;
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Ids;                use Why.Ids;
+with Why.Conversions;        use Why.Conversions;
 with Why.Sinfo;              use Why.Sinfo;
 
 package Why.Gen.Pointers is
@@ -91,6 +92,20 @@ package Why.Gen.Pointers is
    --  @param Name name of the pointer to access
    --  @param Local whether we want the local or the global access
 
+   function New_Pointer_Is_Null_Access
+     (E     : Entity_Id;
+      Name  : W_Prog_Id;
+      Local : Boolean := False)
+      return W_Prog_Id
+   is (+W_Expr_Id'(New_Pointer_Is_Null_Access (E, +Name, Local)));
+
+   function New_Pointer_Is_Null_Access
+     (E     : Entity_Id;
+      Name  : W_Term_Id;
+      Local : Boolean := False)
+      return W_Term_Id
+   is (+W_Expr_Id'(New_Pointer_Is_Null_Access (E, +Name, Local)));
+
    function New_Pointer_Is_Moved_Access
      (E     : Entity_Id;
       Name  : W_Expr_Id;
@@ -100,6 +115,20 @@ package Why.Gen.Pointers is
    --  @param E the Ada type entity
    --  @param Name name of the pointer to access
    --  @param Local whether we want the local or the global access
+
+   function New_Pointer_Is_Moved_Access
+     (E     : Entity_Id;
+      Name  : W_Term_Id;
+      Local : Boolean := False)
+      return W_Term_Id
+   is (+W_Expr_Id'(New_Pointer_Is_Moved_Access (E, +Name, Local)));
+
+   function New_Pointer_Is_Moved_Access
+     (E     : Entity_Id;
+      Name  : W_Prog_Id;
+      Local : Boolean := False)
+      return W_Prog_Id
+   is (+W_Expr_Id'(New_Pointer_Is_Moved_Access (E, +Name, Local)));
 
    function New_Pointer_Is_Moved_Update
      (E      : Entity_Id;
@@ -112,7 +141,7 @@ package Why.Gen.Pointers is
    --  with value Value.
 
    function New_Pointer_Value_Access
-     (Ada_Node : Node_Id;
+     (Ada_Node : Node_Id := Empty;
       E        : Entity_Id;
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
@@ -122,6 +151,15 @@ package Why.Gen.Pointers is
    --  @param E the Ada type entity
    --  @param Name name of the pointer to access
    --  @param Local whether we want the local or the global access
+
+   function New_Pointer_Value_Access
+     (Ada_Node : Node_Id := Empty;
+      E        : Entity_Id;
+      Name     : W_Term_Id;
+      Local    : Boolean := False)
+      return W_Term_Id
+   is (+W_Expr_Id'
+         (New_Pointer_Value_Access (Ada_Node, E, +Name, EW_Term, Local)));
 
    function Repr_Pointer_Type (E : Entity_Id) return Entity_Id
      with Pre => Has_Access_Type (E);
@@ -134,7 +172,7 @@ package Why.Gen.Pointers is
    function Pointer_From_Split_Form
      (I           : Item_Type;
       Ref_Allowed : Boolean)
-      return W_Expr_Id
+      return W_Term_Id
      with Pre => I.Kind = Pointer;
    --  Reconstructs a complete pointer from an item in split form.
 
@@ -143,7 +181,7 @@ package Why.Gen.Pointers is
       A        : W_Expr_Array;
       Ty       : Entity_Id;
       Local    : Boolean := False)
-      return W_Expr_Id;
+      return W_Term_Id;
    --  Reconstructs a complete pointer of type Ty from an array of expressions
    --  representing a split form. A should contain first the value, then
    --  is_null and is_moved.

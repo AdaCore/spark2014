@@ -31,6 +31,7 @@ with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Ids;              use Why.Ids;
@@ -163,7 +164,7 @@ package Why.Gen.Arrays is
 
    function Array_From_Split_Form
      (I           : Item_Type;
-      Ref_Allowed : Boolean) return W_Expr_Id
+      Ref_Allowed : Boolean) return W_Term_Id
    with Pre => I.Kind = UCArray;
    --  Reconstructs a complete array from an item in split form.
 
@@ -181,11 +182,17 @@ package Why.Gen.Arrays is
    --  attributes.
 
    function New_Array_Access
-     (Ada_Node : Node_Id;
+     (Ada_Node : Node_Id := Empty;
       Ar       : W_Expr_Id;
       Index    : W_Expr_Array;
       Domain   : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access
+
+   function New_Array_Access
+     (Ada_Node : Node_Id := Empty;
+      Ar       : W_Term_Id;
+      Index    : W_Expr_Array) return W_Term_Id
+   is (+W_Expr_Id'(New_Array_Access (Ada_Node, +Ar, Index, EW_Term)));
 
    function Array_Convert_To_Base
      (Domain : EW_Domain;
@@ -244,8 +251,8 @@ package Why.Gen.Arrays is
    --  ???
 
    function New_Bounds_Equality
-     (Left_Arr  : W_Expr_Id;
-      Right_Arr : W_Expr_Id;
+     (Left_Arr  : W_Term_Id;
+      Right_Arr : W_Term_Id;
       Dim       : Positive) return W_Pred_Id;
    --  @param Left_Arr array expression whose bounds should be compared
    --  @param Right_Arr
@@ -256,18 +263,16 @@ package Why.Gen.Arrays is
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...
 
    function New_Bounds_Equality
-     (Left_Arr : W_Expr_Id;
+     (Left_Arr : W_Term_Id;
       Right_Ty : Entity_Id;
-      Domain   : EW_Domain := EW_Pred;
-      Params   : Transformation_Params := Body_Params) return W_Expr_Id
+      Params   : Transformation_Params := Body_Params) return W_Pred_Id
    with Pre => Is_Constrained (Right_Ty);
    --  same as above but takes the bounds of a type for Right
 
    function New_Bounds_Equality
-     (Left_Arr     : W_Expr_Id;
+     (Left_Arr     : W_Term_Id;
       Right_Bounds : W_Expr_Array;
-      Dim          : Positive;
-      Domain       : EW_Domain := EW_Pred) return W_Expr_Id
+      Dim          : Positive) return W_Pred_Id
    with Pre => Right_Bounds'Length = Dim * 2;
    --  same as above but with the bounds stored in an array
 

@@ -357,7 +357,40 @@ package body Xtree_Builders is
          if IK = Unchecked then
             P (O, Builder_Param_Type (FI, Regular, In_Builder_Spec));
          else
-            P (O, Builder_Param_Type (FI, IK, In_Builder_Spec));
+            declare
+               Param_Type : constant String :=
+                 Builder_Param_Type (FI, IK, In_Builder_Spec);
+            begin
+               if Return_Type = "W_Prog_Id" then
+                  if Param_Type = "W_Expr_Id" then
+                     P (O, "W_Prog_Id");
+                  elsif Param_Type = "W_Expr_OId" then
+                     P (O, "W_Prog_OId");
+                  else
+                     P (O, Param_Type);
+                  end if;
+
+               elsif Return_Type = "W_Term_Id" then
+                  if Param_Type = "W_Expr_Id" then
+                     P (O, "W_Term_Id");
+                  elsif Param_Type = "W_Expr_OId" then
+                     P (O, "W_Term_OId");
+                  else
+                     P (O, Param_Type);
+                  end if;
+
+               elsif Return_Type = "W_Pred_Id" then
+                  if Param_Type = "W_Expr_Id" then
+                     P (O, "W_Pred_Id");
+                  elsif Param_Type = "W_Expr_OId" then
+                     P (O, "W_Pred_OId");
+                  else
+                     P (O, Param_Type);
+                  end if;
+               else
+                  P (O, Param_Type);
+               end if;
+            end;
          end if;
 
          if Has_Default_Value (Kind, FI, IK, In_Builder_Spec) then

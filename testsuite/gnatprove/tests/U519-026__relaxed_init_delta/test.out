@@ -13,12 +13,12 @@ main.adb:54:35: medium: initialization check might fail [possible fix: subprogra
 main.adb:60:39: info: data dependencies proved
 main.adb:63:37: medium: initialization check might fail [possible fix: subprogram at line 60 should mention X'Initialized in a precondition]
 main.adb:68:26: info: data dependencies proved
-main.adb:70:18: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+main.adb:70:18: info: initialization check proved (CVC4: 2 VC; Trivial: 3 VC)
 main.adb:82:26: info: data dependencies proved
-main.adb:84:21: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+main.adb:84:21: info: initialization check proved (CVC4: 3 VC; Trivial: 6 VC)
 main.adb:89:26: info: data dependencies proved
-main.adb:91:19: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+main.adb:91:19: info: initialization check proved (CVC4: 2 VC; Trivial: 3 VC)
 main.adb:96:26: info: data dependencies proved
-main.adb:98:22: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+main.adb:98:22: info: initialization check proved (CVC4: 3 VC; Trivial: 6 VC)
 main.adb:103:40: info: data dependencies proved
 main.adb:111:40: info: data dependencies proved

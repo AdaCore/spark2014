@@ -45,7 +45,6 @@ with Urealp;                        use Urealp;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
 with Why.Atree.Modules;             use Why.Atree.Modules;
 with Why.Atree.Tables;              use Why.Atree.Tables;
-with Why.Conversions;               use Why.Conversions;
 with Why.Gen.Arrays;                use Why.Gen.Arrays;
 with Why.Gen.Binders;               use Why.Gen.Binders;
 with Why.Gen.Names;                 use Why.Gen.Names;
@@ -216,14 +215,13 @@ package body Why.Gen.Expr is
      (New_Any_Expr (Post        =>
                       New_Connection
                         (Left  =>
-                           New_Call (Domain => EW_Pred,
-                                     Name   => Why_Eq,
+                           New_Call (Name   => Why_Eq,
                                      Typ    => EW_Bool_Type,
                                      Args   =>
                                        (+New_Result_Ident (EW_Bool_Type),
                                         +True_Term)),
                          Op    => EW_Equivalent,
-                         Right => +W),
+                         Right => W),
                     Labels      => Symbol_Sets.Empty_Set,
                     Return_Type => EW_Bool_Type));
 
@@ -232,10 +230,11 @@ package body Why.Gen.Expr is
    --------------------------
 
    function Boolean_Term_Of_Pred (W : W_Pred_Id) return W_Term_Id is
-     (New_Conditional (Condition => +W,
-                       Then_Part => +True_Term,
-                       Else_Part => +False_Term,
-                       Typ       => EW_Bool_Type));
+     (+W_Expr_Id'(New_Conditional (Condition => +W,
+                                   Then_Part => +True_Term,
+                                   Else_Part => +False_Term,
+                                   Typ       => EW_Bool_Type,
+                                   Domain    => EW_Term)));
 
    ---------------------
    -- Compute_VC_Sloc --
@@ -463,7 +462,7 @@ package body Why.Gen.Expr is
          Check       : W_Pred_Id;
          Dim         : constant Positive :=
            Positive (Number_Dimensions (To_Ent));
-         Eqs         : W_Expr_Array (1 .. 2 * Dim);
+         Eqs         : W_Pred_Array (1 .. 2 * Dim);
          Count       : Natural := 0;
       begin
          for I in 1 .. Dim loop
@@ -478,17 +477,16 @@ package body Why.Gen.Expr is
                Count := Count + 1;
                Eqs (Count) := New_Comparison
                  (Symbol => Why_Eq,
-                  Left   => Get_Array_Attr
+                  Left   => +Get_Array_Attr
                     (Domain => EW_Term,
                      Expr   => Expr,
                      Attr   => Attribute_First,
                      Dim    => I),
-                  Right  => Get_Array_Attr
+                  Right  => +Get_Array_Attr
                     (Domain => EW_Term,
                      Attr   => Attribute_First,
                      Dim    => I,
-                     Ty     => To_Ent),
-                  Domain => EW_Pred);
+                     Ty     => To_Ent));
             end if;
 
             --  If To_Ent is constrained add constraint on the last bound
@@ -497,20 +495,20 @@ package body Why.Gen.Expr is
                Count := Count + 1;
                Eqs (Count) := New_Comparison
                  (Symbol => Why_Eq,
-                  Left   => Get_Array_Attr
+                  Left   => +Get_Array_Attr
                     (Domain => EW_Term,
                      Expr   => Expr,
                      Attr   => Attribute_Last,
                      Dim    => I),
-                  Right  => Get_Array_Attr
+                  Right  => +Get_Array_Attr
                     (Domain => EW_Term,
                      Attr   => Attribute_Last,
                      Dim    => I,
-                     Ty     => To_Ent),
-                  Domain => EW_Pred);
+                     Ty     => To_Ent));
             end if;
          end loop;
-         Check := +New_And_Expr (Eqs (1 .. Count), EW_Pred);
+
+         Check := New_And_Pred (Eqs (1 .. Count));
 
          return New_Located_Assert (Ada_Node,
                                     Check,
@@ -733,20 +731,20 @@ package body Why.Gen.Expr is
                                    (Ada_Node => Ada_Node,
                                     Prog     => New_Conditional
                                       (Ada_Node  => Ada_Node,
-                                       Condition => New_Comparison
+                                       Condition => +New_Comparison
                                          (Symbol => Int_Infix_Le,
                                           Domain => Domain,
-                                          Left   => Insert_Scalar_Conversion
+                                          Left   => +Insert_Scalar_Conversion
                                             (Domain => Domain,
                                              Expr   => First_Expr,
                                              To     => EW_Int_Type),
                                           Right  => Last_Expr),
-                                       Then_Part => +Do_Range_Check
+                                       Then_Part => Do_Range_Check
                                          (Ada_Node   => Ada_Node,
                                           Ty         => Target,
                                           W_Expr     => Last_Expr,
                                           Check_Kind => RCK_Range),
-                                       Else_Part => +Do_Range_Check
+                                       Else_Part => Do_Range_Check
                                          (Ada_Node   => Ada_Node,
                                           Ty         => Base_Retysp (Target),
                                           W_Expr     => Last_Expr,
@@ -2728,45 +2726,28 @@ package body Why.Gen.Expr is
       end if;
    end New_And_Expr;
 
-   function New_And_Expr
-      (Conjuncts : W_Expr_Array;
-       Domain    : EW_Domain) return W_Expr_Id is
+   function New_And_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
    begin
       if Conjuncts'Length = 0 then
-         return +False_Pred;
+         return False_Pred;
 
       elsif Conjuncts'Length = 1 then
          return Conjuncts (Conjuncts'First);
 
-      elsif Domain = EW_Pred then
-         return New_Connection
-           (Domain     => Domain,
-            Op         => EW_And,
-            Left       => +Conjuncts (Conjuncts'First),
-            Right      => +Conjuncts (Conjuncts'First + 1),
-            More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
-
       else
          declare
-            Result : W_Expr_Id :=
-              New_Call (Domain => Domain,
-                        Name   => M_Boolean.Andb,
-                        Args   => (1 => +Conjuncts (Conjuncts'First),
-                                   2 => +Conjuncts (Conjuncts'First + 1)),
-                        Typ    => EW_Bool_Type);
+            More : constant W_Expr_Array :=
+              (for J in Conjuncts'First + 2 .. Conjuncts'Last =>
+                 +Conjuncts (J));
          begin
-            for K in Conjuncts'First + 2 .. Conjuncts'Last loop
-               Result := New_Call (Domain => Domain,
-                                   Name   => M_Boolean.Andb,
-                                   Args   => (1 => Result,
-                                              2 => +Conjuncts (K)),
-                                   Typ    => EW_Bool_Type);
-            end loop;
-
-            return Result;
+            return New_Connection
+              (Op         => EW_And,
+               Left       => Conjuncts (Conjuncts'First),
+               Right      => Conjuncts (Conjuncts'First + 1),
+               More_Right => More);
          end;
       end if;
-   end New_And_Expr;
+   end New_And_Pred;
 
    function New_And_Expr
       (Left, Right : W_Expr_Id;
@@ -3355,7 +3336,6 @@ package body Why.Gen.Expr is
          New_Record_Access (Name  =>
                                 New_Label
                               (Ada_Node => If_Node,
-                               Domain   => EW_Prog,
                                Labels   => Node_Label,
                                Def      => +M_Main.Spark_CE_Branch,
                                Typ      => Get_Typ (M_Main.Spark_CE_Branch)),

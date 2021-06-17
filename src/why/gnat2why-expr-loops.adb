@@ -169,11 +169,10 @@ package body Gnat2Why.Expr.Loops is
               (Prog,
                New_Ignore
                  (Prog =>
-                      +Transform_Expr (Expr          => Expr,
-                                       Expected_Type =>
-                                         Base_Why_Type_No_Bool (Expr),
-                                       Domain        => EW_Prog,
-                                       Params        => Body_Params)));
+                      Transform_Prog (Expr          => Expr,
+                                      Expected_Type =>
+                                        Base_Why_Type_No_Bool (Expr),
+                                      Params        => Body_Params)));
             Next (Variant);
          end;
       end loop;
@@ -367,10 +366,9 @@ package body Gnat2Why.Expr.Loops is
          return
            New_Conditional
              (Ada_Node  => Stmt,
-              Condition => +Transform_Expr (Condition (Stmt),
-                                            EW_Bool_Type,
-                                            EW_Prog,
-                                            Params => Body_Params),
+              Condition => Transform_Prog (Condition (Stmt),
+                                           EW_Bool_Type,
+                                           Body_Params),
               Then_Part => +Raise_Stmt);
       end if;
    end Transform_Exit_Statement;
@@ -1201,7 +1199,7 @@ package body Gnat2Why.Expr.Loops is
                              Name     => Update_Op,
                              Args     =>
                                (1 => +Index_Deref,
-                                2 => One_Expr),
+                                2 => +One_Expr),
                              Typ      => Loop_Index_Type);
                      begin
                         return New_Assignment
@@ -1352,15 +1350,13 @@ package body Gnat2Why.Expr.Loops is
                   --  old !i <= tmp < i or old !i >= tmp > i
 
                   Last_Filter  : constant W_Pred_Id :=
-                    +Transform_Expr (Filter, EW_Pred, Body_Params);
+                    Transform_Pred (Filter, Body_Params);
                   Exit_Stmt    : constant W_Prog_Id := New_Conditional
                     (Condition => New_Not
-                       (Domain => EW_Prog,
-                        Right  => Transform_Expr
+                       (Right  => Transform_Prog
                           (Filter,
                            EW_Bool_Type,
-                           EW_Prog,
-                           Params => Body_Params)),
+                           Body_Params)),
                      Then_Part => New_Raise
                        (Name => Loop_Exception_Name (Loop_Id)));
                   --  if not cond then raise loop_exit;
@@ -1387,11 +1383,10 @@ package body Gnat2Why.Expr.Loops is
                      Labels    => Symbol_Sets.Empty_Set,
                      Var_Type  => Loop_Index_Type,
                      Pred      => New_Conditional
-                       (Condition => +Tmp_Range,
+                       (Condition => Tmp_Range,
                         Then_Part => New_Not
-                          (Domain => EW_Pred,
-                           Right  => Transform_Expr
-                             (Filter, EW_Term, Body_Params))));
+                          (Right  => Transform_Pred
+                             (Filter, Body_Params))));
 
                   --  Compute:
                   --    ignore { let tmp = any int
@@ -1417,8 +1412,7 @@ package body Gnat2Why.Expr.Loops is
                                  Right  => +Index_Deref,
                                  Domain => EW_Pred),
                               Domain => EW_Pred)),
-                        Context => Transform_Expr
-                          (Filter, EW_Prog, Body_Params),
+                        Context => Transform_Prog (Filter, Body_Params),
                         Typ     => EW_Bool_Type));
                   Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
@@ -1434,15 +1428,13 @@ package body Gnat2Why.Expr.Loops is
                           ((1 => New_Any_Expr
                             (Effects     =>
                                  New_Effects (Writes => (1 => Loop_Index)),
-                             Post        => +New_And_Expr
+                             Post        => New_And_Pred
                                (Conjuncts =>
-                                  (1 => +Range_Expr,
-                                   2 => +Other_Filter,
-                                   3 => New_Or_Expr
-                                     (Left   => +Exit_Cond,
-                                      Right  => +Last_Filter,
-                                      Domain => EW_Pred)),
-                                Domain    => EW_Pred),
+                                  (1 => Range_Expr,
+                                   2 => Other_Filter,
+                                   3 => New_Or_Pred
+                                     (Left   => Exit_Cond,
+                                      Right  => Last_Filter))),
                              Return_Type => EW_Unit_Type,
                              Labels      => Symbol_Sets.Empty_Set),
                             2 => Check_Filter,
@@ -1497,12 +1489,11 @@ package body Gnat2Why.Expr.Loops is
 
                   if Present (Iterator_Filter (LParam_Spec)) then
                      Final_Prog := New_Conditional
-                       (Condition => Transform_Expr
+                       (Condition => Transform_Prog
                           (Expr          => Iterator_Filter (LParam_Spec),
                            Expected_Type => EW_Bool_Type,
-                           Domain        => EW_Prog,
                            Params        => Body_Params),
-                        Then_Part => +Final_Prog);
+                        Then_Part => Final_Prog);
                   end if;
 
                   declare
@@ -1606,15 +1597,13 @@ package body Gnat2Why.Expr.Loops is
                   declare
                      Actual_Range : constant Node_Id :=
                        Get_Range (Over_Node);
-                     High_Expr    : constant W_Expr_Id :=
-                       Transform_Expr (High_Bound (Actual_Range),
+                     High_Expr    : constant W_Prog_Id :=
+                       Transform_Prog (High_Bound (Actual_Range),
                                        Loop_Index_Type,
-                                       EW_Prog,
                                        Params => Body_Params);
-                     Low_Expr     : constant W_Expr_Id :=
-                       Transform_Expr (Low_Bound (Actual_Range),
+                     Low_Expr     : constant W_Prog_Id :=
+                       Transform_Prog (Low_Bound (Actual_Range),
                                        Loop_Index_Type,
-                                       EW_Prog,
                                        Params => Body_Params);
                   begin
                      --  Insert assignment to high bound first, so that
@@ -1623,10 +1612,10 @@ package body Gnat2Why.Expr.Loops is
                      --  common error is detected on low bound rather than high
                      --  bound, which is more intuitive.
 
-                     Entire_Loop := +New_Typed_Binding
-                       (Stmt, EW_Prog, High_Id, High_Expr, +Entire_Loop);
-                     Entire_Loop := +New_Typed_Binding
-                       (Stmt, EW_Prog, Low_Id, Low_Expr, +Entire_Loop);
+                     Entire_Loop := New_Typed_Binding
+                       (Stmt, High_Id, High_Expr, Entire_Loop);
+                     Entire_Loop := New_Typed_Binding
+                       (Stmt, Low_Id, Low_Expr, Entire_Loop);
                   end;
                end if;
 

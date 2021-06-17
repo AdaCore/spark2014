@@ -161,7 +161,7 @@ package body Gnat2Why.Subprograms is
      (E                  : Entity_Id;
       Guard_Map          : out Ada_To_Why_Ident.Map;
       Others_Guard_Ident : out W_Identifier_Id;
-      Others_Guard_Expr  : out W_Expr_Id);
+      Others_Guard_Expr  : out W_Term_Id);
    --  Returns the map from contracts cases nodes attached to subprogram E,
    --  if any, to Why identifiers for the value of these guards in the Why3
    --  program. If the contract cases contain an "others" case, return in
@@ -366,8 +366,8 @@ package body Gnat2Why.Subprograms is
                         Append
                           (Assumption,
                            New_Assume_Statement
-                             (Pred => +Transform_Expr
-                                  (Expr, EW_Bool_Type, EW_Pred, Params)));
+                             (Pred => Transform_Pred
+                                  (Expr, EW_Bool_Type, Params)));
                      end;
                   end if;
                end;
@@ -1210,7 +1210,7 @@ package body Gnat2Why.Subprograms is
          declare
             Ada_Node : constant Node_Id :=
               Get_Ada_Node_From_Item (B);
-            Expr     : constant W_Expr_Id :=
+            Expr     : constant W_Term_Id :=
               Reconstruct_Item (B, Params.Ref_Allowed);
             Ty_Node  : constant Entity_Id :=
               (if Present (Ada_Node) then
@@ -1440,19 +1440,18 @@ package body Gnat2Why.Subprograms is
                                  declare
                                     Binder : constant Item_Type :=
                                       Ada_Ent_To_Why.Element (Symbol_Table, E);
-                                    Expr   : constant W_Expr_Id :=
+                                    Expr   : constant W_Term_Id :=
                                       Reconstruct_Item
                                         (Binder,
                                          Ref_Allowed => Params.Ref_Allowed);
                                  begin
-                                    Inv_Pred := +New_And_Then_Expr
-                                      (Left   => +Inv_Pred,
-                                       Right  => +Compute_Type_Invariant
-                                         (Expr        => +Expr,
+                                    Inv_Pred := New_And_Pred
+                                      (Left   => Inv_Pred,
+                                       Right  => Compute_Type_Invariant
+                                         (Expr        => Expr,
                                           Ty          => Etype (E),
                                           Params      => Params,
-                                          On_Internal => True),
-                                       Domain => EW_Pred);
+                                          On_Internal => True));
                                  end;
                               end if;
                            end;
@@ -1590,11 +1589,11 @@ package body Gnat2Why.Subprograms is
       is
          Binder : constant Item_Type :=
            Ada_Ent_To_Why.Element (Symbol_Table, E);
-         Expr   : constant W_Expr_Id :=
+         Expr   : constant W_Term_Id :=
            Reconstruct_Item (Binder, Ref_Allowed => Params.Ref_Allowed);
       begin
          return Compute_Type_Invariant
-           (Expr        => +Expr,
+           (Expr        => Expr,
             Ty          => Etype (E),
             Params      => Params,
             On_Internal => True);
@@ -1764,7 +1763,7 @@ package body Gnat2Why.Subprograms is
      (E                  : Entity_Id;
       Guard_Map          : out Ada_To_Why_Ident.Map;
       Others_Guard_Ident : out W_Identifier_Id;
-      Others_Guard_Expr  : out W_Expr_Id)
+      Others_Guard_Expr  : out W_Term_Id)
    is
       Prag          : constant Node_Id :=
         Get_Pragma (E, Pragma_Contract_Cases);
@@ -1776,7 +1775,7 @@ package body Gnat2Why.Subprograms is
       --  Initial values for outputs related to the "others" guard if any
 
       Others_Guard_Ident := Why_Empty;
-      Others_Guard_Expr := New_Literal (Domain => EW_Term, Value  => EW_False);
+      Others_Guard_Expr := New_Literal (Value => EW_False);
 
       --  If no Contract_Cases on this subprogram, nothing to do
 
@@ -1795,7 +1794,7 @@ package body Gnat2Why.Subprograms is
               New_Temp_Identifier (Typ => EW_Bool_Type);
 
             --  Whether the current guard is enabled
-            Enabled     : constant W_Expr_Id := +Guard_Ident;
+            Enabled     : constant W_Term_Id := +Guard_Ident;
 
          begin
             Case_Guard := First (Choice_List (Contract_Case));
@@ -1804,16 +1803,17 @@ package body Gnat2Why.Subprograms is
 
             if Nkind (Case_Guard) = N_Others_Choice then
                Others_Guard_Ident := Guard_Ident;
-               Others_Guard_Expr := New_Not (Domain => EW_Pred,
-                                             Right  => Others_Guard_Expr);
+               Others_Guard_Expr :=
+                 New_Conditional (Condition => Others_Guard_Expr,
+                                  Then_Part => False_Term,
+                                  Else_Part => True_Term);
 
             --  Regular contract case
 
             else
                Guard_Map.Include (Case_Guard, Guard_Ident);
-               Others_Guard_Expr := New_Or_Expr (Left   => Others_Guard_Expr,
-                                                 Right  => Enabled,
-                                                 Domain => EW_Term);
+               Others_Guard_Expr := New_Or_Term (Left  => Others_Guard_Expr,
+                                                 Right => Enabled);
             end if;
 
             Next (Contract_Case);
@@ -2025,17 +2025,16 @@ package body Gnat2Why.Subprograms is
 
          --  Enabled must be converted to a predicate to be used as the
          --  condition in an if-expr inside a predicate.
-         Enabled_Pred : constant W_Expr_Id :=
+         Enabled_Pred : constant W_Pred_Id :=
            New_Call
-             (Domain => EW_Pred,
-              Name   => Why_Eq,
+             (Name   => Why_Eq,
               Typ    => EW_Bool_Type,
               Args   => (+Enabled,
                          New_Literal (Domain => EW_Term,
                                       Value  => EW_True)));
 
-         WP_Consequence : W_Expr_Id :=
-           Transform_Expr (Consequence, EW_Prog, Params);
+         WP_Consequence : W_Prog_Id :=
+           Transform_Prog (Consequence, Params);
 
       begin
          --  Possibly warn on an unreachable case
@@ -2046,27 +2045,23 @@ package body Gnat2Why.Subprograms is
          return Sequence
            (New_Ignore
               (Prog =>
-                 +W_Expr_Id'(New_Conditional
+                 New_Conditional
                    (Ada_Node    => Contract_Case,
-                    Domain      => EW_Prog,
-                    Condition   => Enabled,
+                    Condition   => +Enabled,
                     Then_Part   => WP_Consequence,
                     Else_Part   =>
                       Insert_Simple_Conversion
-                        (Domain => EW_Prog,
-                         Expr   => +True_Prog,
-                         To     => Type_Of_Node (Consequence))))),
+                        (Expr => True_Prog,
+                         To   => Type_Of_Node (Consequence)))),
             New_Assert
               (Pred => +New_VC_Expr
                  (Contract_Case,
-                  New_Conditional
+                  +New_Conditional
                     (Ada_Node    => Contract_Case,
-                     Domain      => EW_Pred,
                      Condition   => Enabled_Pred,
-                     Then_Part   =>
-                       +Transform_Expr (Consequence, EW_Pred, Params)),
-                    VC_Contract_Case,
-                    EW_Pred),
+                     Then_Part   => Transform_Pred (Consequence, Params)),
+                  VC_Contract_Case,
+                  EW_Pred),
                Assert_Kind => EW_Assert));
       end Do_One_Contract_Case;
 
@@ -2162,7 +2157,7 @@ package body Gnat2Why.Subprograms is
          --  The "others" choice requires special processing
 
          if Nkind (Case_Guard) = N_Others_Choice then
-            Result := +Transform_Expr (Consequence, EW_Pred, Params);
+            Result := Transform_Pred (Consequence, Params);
 
          --  Regular contract case
 
@@ -2174,10 +2169,9 @@ package body Gnat2Why.Subprograms is
                   Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
             begin
                Result := New_Conditional
-                 (Condition => Enabled,
-                  Then_Part =>
-                    Transform_Expr (Consequence, EW_Pred, Params),
-                  Else_Part => +Result);
+                 (Condition => +Enabled,
+                  Then_Part => Transform_Pred (Consequence, Params),
+                  Else_Part => Result);
             end;
          end if;
 
@@ -2917,7 +2911,7 @@ package body Gnat2Why.Subprograms is
             --  corresponds to the initial condition of the package.
 
             Params.Phase := Generate_Contract_For_Body;
-            Post := +Transform_Expr (Expr, EW_Bool_Type, EW_Pred, Params);
+            Post := Transform_Pred (Expr, EW_Bool_Type, Params);
             Post :=
               +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred);
 
@@ -2925,8 +2919,7 @@ package body Gnat2Why.Subprograms is
             --  initial condition.
 
             Params.Phase := Generate_VCs_For_Contract;
-            Why_Body :=
-              +Transform_Expr (Expr, EW_Bool_Type, EW_Prog, Params);
+            Why_Body := Transform_Prog (Expr, EW_Bool_Type, Params);
          end;
 
       --  No initial condition, so no postcondition for the generated
@@ -3159,11 +3152,10 @@ package body Gnat2Why.Subprograms is
       begin
          for W_D of reverse W_Discriminants loop
             Expr :=
-              +New_Typed_Binding
-                 (Domain   => EW_Term,
-                  Name     => W_D.Id,
-                  Def      => W_D.Val,
-                  Context  => +Expr);
+              New_Typed_Binding
+                (Name    => +W_D.Id,
+                 Def     => +W_D.Val,
+                 Context => Expr);
          end loop;
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end Wrap_Discr;
@@ -3296,11 +3288,10 @@ package body Gnat2Why.Subprograms is
 
                      --  If Field has a default expression, use it
 
-                     F_Check := +Transform_Expr
+                     F_Check := Transform_Prog
                        (Expr          =>
                           Expression (Enclosing_Declaration (Field)),
                         Expected_Type => Type_Of_Node (Etype (Field)),
-                        Domain        => EW_Prog,
                         Params        => Body_Params);
                   else
 
@@ -3418,7 +3409,7 @@ package body Gnat2Why.Subprograms is
       --  contract cases on exit.
       Guard_Map          : Ada_To_Why_Ident.Map;
       Others_Guard_Ident : W_Identifier_Id;
-      Others_Guard_Expr  : W_Expr_Id;
+      Others_Guard_Expr  : W_Term_Id;
 
       function CC_And_RTE_Post return W_Prog_Id;
       --  return verification of the contract cases, plus runtime checks for
@@ -3717,23 +3708,22 @@ package body Gnat2Why.Subprograms is
                           To_Local (Get_Borrowed_At_End (E));
                      begin
                         Dyn_Prop :=
-                          +New_And_Expr
+                          New_And_Pred
                             (Conjuncts =>
-                               (1 => +Dyn_Prop,
-                                2 => +Compute_Dynamic_Invariant
+                               (1 => Dyn_Prop,
+                                2 => Compute_Dynamic_Invariant
                                   (Expr             => New_Deref
                                        (Right => Brower_At_End,
                                         Typ   => Get_Typ (Brower_At_End)),
                                    Ty               => Etype (E),
                                    Params           => Params,
                                    Include_Type_Inv => Include_Type_Inv),
-                                3 => +Compute_Dynamic_Invariant
+                                3 => Compute_Dynamic_Invariant
                                   (Expr             => +Borrowed_At_End,
                                    Ty               => Etype
                                      (First_Formal (E)),
                                    Params           => Params,
-                                   Include_Type_Inv => Include_Type_Inv)),
-                             Domain    => EW_Pred);
+                                   Include_Type_Inv => Include_Type_Inv)));
                      end;
                   end if;
 
@@ -4085,10 +4075,9 @@ package body Gnat2Why.Subprograms is
          Prog : W_Prog_Id := P;
       begin
          if Present (Others_Guard_Ident) then
-            Prog := +New_Typed_Binding (Name    => Others_Guard_Ident,
-                                        Domain  => EW_Prog,
-                                        Def     => Others_Guard_Expr,
-                                        Context => +Prog);
+            Prog := New_Typed_Binding (Name    => Others_Guard_Ident,
+                                       Def     => +Others_Guard_Expr,
+                                       Context => Prog);
          end if;
 
          Prog := +Bind_From_Mapping_In_Expr
@@ -4728,16 +4717,13 @@ package body Gnat2Why.Subprograms is
                           else Retysp (Etype (E))),
                Expr   => +New_Result_Ident (Why_Type),
                Params => Params);
-            Call                : constant W_Expr_Id := New_Call
-              (Domain  => EW_Term,
-               Name    => Logic_Id,
+            Call                : constant W_Term_Id := New_Call
+              (Name    => Logic_Id,
                Binders => Logic_Why_Binders);
-            Def                 : constant W_Pred_Id := +New_Typed_Binding
-              (Ada_Node => Empty,
-               Domain   => EW_Pred,
-               Name     => +New_Result_Ident (Why_Type),
+            Def                 : constant W_Pred_Id := New_Typed_Binding
+              (Name     => +New_Result_Ident (Why_Type),
                Def      => Call,
-               Context  => +Dynamic_Prop_Result);
+               Context  => Dynamic_Prop_Result);
 
          begin
             pragma Assert (Is_True_Boolean (+Spec_Guard));
@@ -4752,7 +4738,7 @@ package body Gnat2Why.Subprograms is
                   Triggers =>
                     New_Triggers
                       (Triggers =>
-                           (1 => New_Trigger (Terms => (1 => Call)))),
+                           (1 => New_Trigger (Terms => (1 => +Call)))),
                   Def      => Def));
             return;
          end;
@@ -4937,31 +4923,30 @@ package body Gnat2Why.Subprograms is
             --  of the result.
 
             Complete_Post : constant W_Pred_Id :=
-              +New_And_Expr
+              New_And_Pred
               (Conjuncts =>
                  (1 =>
                     (if Is_Borrowing_Traversal_Function (E)
-                     then +Wrap_Post_Of_Traversal
+                     then Wrap_Post_Of_Traversal
                        (E      => E,
                         Post   => Post,
                         Args   => Get_Args_From_Binders
                           (Logic_Why_Binders, Ref_Allowed => False),
                         Params => Params)
-                     else +Post),
-                  2 => +Dynamic_Prop_Result,
-                  3 => +Tag_Comp),
-               Domain    => EW_Pred);
+                     else Post),
+                  2 => Dynamic_Prop_Result,
+                  3 => Tag_Comp));
             Guarded_Post  : constant W_Pred_Id :=
               (if not Use_Guard_For_Function (E) then Complete_Post
                else New_Conditional
-                 (Condition   => New_Call
+                 (Condition   => +New_Call
                       (Domain  => EW_Pred,
                        Name    => Guard_Predicate_Name
                          (E,
                           Selector_Name          => Selector,
                           Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper),
                        Binders => Pred_Binders),
-                  Then_Part   => +Complete_Post));
+                  Then_Part   => Complete_Post));
             Call            : constant W_Expr_Id := New_Call
               (Domain  => EW_Term,
                Name    => Id,
@@ -5327,17 +5312,15 @@ package body Gnat2Why.Subprograms is
 
                      begin
                         if Get_Ada_Node (+Typ) = Descendant then
-                           Desc_Post := +New_Typed_Binding
-                             (Domain   => EW_Pred,
-                              Name     => Desc_Params (I).Main.B_Name,
+                           Desc_Post := New_Typed_Binding
+                             (Name     => Desc_Params (I).Main.B_Name,
                               Def      => Insert_Simple_Conversion
-                                (Domain => EW_Term,
-                                 Expr   =>
+                                (Expr   =>
                                    Reconstruct_Item
                                      (New_Binders (I), Ref_Allowed => False),
                                  To     =>
                                    Get_Typ (Desc_Params (I).Main.B_Name)),
-                              Context  => +Desc_Post);
+                              Context  => Desc_Post);
                            Ada_Ent_To_Why.Insert (Symbol_Table,
                                                   Ada_Node,
                                                   Desc_Params (I));
@@ -5380,12 +5363,10 @@ package body Gnat2Why.Subprograms is
 
                      begin
                         if Get_Ada_Node (+Typ) = Descendant then
-                           Desc_Post := +New_Typed_Binding
-                             (Domain   => EW_Pred,
-                              Name     => Desc_Params (I).Main.B_Name,
+                           Desc_Post := New_Typed_Binding
+                             (Name     => Desc_Params (I).Main.B_Name,
                               Def      => Insert_Simple_Conversion
-                                (Domain => EW_Term,
-                                 Expr   =>
+                                (Expr   =>
                                    Reconstruct_Item
                                      (Old_Binders (I), Ref_Allowed => False),
                                  To     =>
@@ -5673,13 +5654,10 @@ package body Gnat2Why.Subprograms is
 
                if not Has_Pragma_Volatile_Function (E) then
                   Param_Post :=
-                    +New_And_Expr
-                    (Domain    => EW_Pred,
-                     Conjuncts =>
+                    New_And_Pred
+                    (Conjuncts =>
                        (1 => New_Call
                          (Name   => Why_Eq,
-                          Domain => EW_Pred,
-                          Typ    => EW_Bool_Type,
                           Args   => (+Result_Id,
                                      New_Call
                                        (Domain => EW_Term,
@@ -5687,11 +5665,10 @@ package body Gnat2Why.Subprograms is
                                         Args   => Tag_Arg & Logic_Func_Args))),
                         2 => (if Use_Guard_For_Function (E) then
                                  New_Call
-                                   (Domain => EW_Term,
-                                    Name   => Pred_Id,
-                                    Args   => Pred_Args)
-                              else +True_Pred),
-                        3 => +Param_Post));
+                                   (Name => Pred_Id,
+                                    Args => Pred_Args)
+                              else True_Pred),
+                        3 => Param_Post));
                end if;
 
                return New_Function_Decl
@@ -5826,13 +5803,13 @@ package body Gnat2Why.Subprograms is
             if Has_Might_Not_Return_Annotation (E) then
                Post := New_Conditional
                  (Condition =>
-                    New_Comparison
+                    +New_Comparison
                       (Symbol => M_Integer.Bool_Eq,
                        Left   => New_Deref (Right => +M_Main.No_Return,
                                             Typ   => EW_Bool_Type),
                        Right  => +False_Term,
                        Domain => EW_Pred),
-                  Then_Part => +Post);
+                  Then_Part => Post);
             end if;
 
             Emit
@@ -5953,12 +5930,11 @@ package body Gnat2Why.Subprograms is
                                 Return_Type => EW_Unit_Type,
                                 Effects     => Effects,
                                 Pre         => Dispatch_Pre,
-                                Post        => +New_And_Expr
+                                Post        => New_And_Pred
                                   (Conjuncts =>
-                                       (1 => +Dispatch_Post,
-                                        2 => +Dynamic_Prop_Effects,
-                                        3 => +Spec_Post_Call),
-                                   Domain => EW_Pred)))));
+                                       (1 => Dispatch_Post,
+                                        2 => Dynamic_Prop_Effects,
+                                        3 => Spec_Post_Call))))));
                end;
             end if;
 
@@ -6166,8 +6142,8 @@ package body Gnat2Why.Subprograms is
       for Count in Variants_Ids'Range loop
          T := New_Binding
            (Name    => +Variants_Ids (Count),
-            Def     => Variants_Exprs (Count),
-            Context => +T,
+            Def     => +Variants_Exprs (Count),
+            Context => T,
             Typ     => W_Ty);
       end loop;
       return T;
@@ -6273,13 +6249,12 @@ package body Gnat2Why.Subprograms is
         (if not Use_Guard_For_Function (E)
          or else not Is_Recursive (E)
          then True_Pred
-         else +New_Typed_Binding
-           (Domain   => EW_Pred,
-            Name     => Result_Id,
-            Def      => New_Call (Domain  => EW_Pred,
-                                  Name    => Logic_Id,
-                                  Binders => Flat_Binders,
-                                  Typ     => EW_Bool_Type),
+         else New_Typed_Binding
+           (Name     => Result_Id,
+            Def      => +New_Call (Domain  => EW_Pred,
+                                   Name    => Logic_Id,
+                                   Binders => Flat_Binders,
+                                   Typ     => EW_Bool_Type),
             Context  => +New_Call (Domain  => EW_Pred,
                                    Name    => E_Symb (E, Pred_Name),
                                    Binders => Pred_Binders,
@@ -6370,9 +6345,7 @@ package body Gnat2Why.Subprograms is
                Name     => Logic_Id,
                Binders  => Flat_Binders,
                Pre      => Func_Guard,
-               Def      => +Transform_Expr (Expr,
-                                            EW_Pred,
-                                            Params)));
+               Def      => Transform_Pred (Expr, Params)));
 
       else
          pragma Assert (not Has_Scalar_Type (Etype (E))
@@ -6591,7 +6564,7 @@ package body Gnat2Why.Subprograms is
         To_Local (Get_Borrowed_At_End (E));
       Borrowed_Ent    : constant Entity_Id := First_Formal (E);
       Borrowed_Ty     : constant Entity_Id := Retysp (Etype (Borrowed_Ent));
-      Borrowed        : constant W_Expr_Id := Transform_Identifier
+      Borrowed        : constant W_Term_Id := +Transform_Identifier
         (Expr   => Borrowed_Ent,
          Ent    => Borrowed_Ent,
          Domain => EW_Term,
@@ -6616,7 +6589,7 @@ package body Gnat2Why.Subprograms is
       --  The ground call to E.borrowed_at_end is used to allow an instance of
       --  the quantified formula just after the borrow.
 
-      return +New_And_Expr
+      return New_And_Pred
         (Left   => New_Universal_Quantif
            (Variables => (1 => Brower_At_End),
             Labels    => Symbol_Sets.Empty_Set,
@@ -6625,8 +6598,8 @@ package body Gnat2Why.Subprograms is
               (Triggers =>
                    (1 => New_Trigger (Terms => (1 => +Borrowed_Call)))),
             Pred      => New_Conditional
-              (Condition => New_And_Expr
-                   (Left   => +Compute_Dynamic_Invariant
+              (Condition => New_And_Pred
+                   (Left   => Compute_Dynamic_Invariant
                         (Expr   => +Brower_At_End,
                          Ty     => Brower_Ty,
                          Params => Params),
@@ -6637,34 +6610,26 @@ package body Gnat2Why.Subprograms is
                           Name => +Brower_At_End),
                        Right  => New_Pointer_Is_Null_Access
                          (E    => Brower_Ty,
-                          Name => +Result_Name),
-                       Domain => EW_Pred),
-                    Domain => EW_Pred),
+                          Name => +Result_Name))),
                Then_Part => New_Binding
                  (Name    => Borrowed_At_End,
-                  Def     => Borrowed_Call,
-                  Context => New_And_Expr
+                  Def     => +Borrowed_Call,
+                  Context => New_And_Pred
                     (Left   => New_Comparison
                          (Symbol => Why_Eq,
                           Left   => New_Pointer_Is_Null_Access
                             (Borrowed_Ty, +Borrowed_At_End),
                           Right  => New_Pointer_Is_Null_Access
-                            (Borrowed_Ty, Borrowed),
-                          Domain => EW_Pred),
-                     Right  => +Post,
-                     Domain => EW_Pred),
-                  Domain  => EW_Pred,
+                            (Borrowed_Ty, Borrowed)),
+                     Right  => Post),
                   Typ     => EW_Bool_Type))),
          Right  => New_Comparison
            (Symbol => Why_Eq,
             Left   => New_Call
-              (Domain => EW_Term,
-               Name   => Get_Borrowed_At_End (E),
-               Args   => Args & (1 => +Result_Name),
-               Typ    => Get_Typ (Borrowed_At_End)),
-            Right  => Borrowed,
-            Domain => EW_Pred),
-         Domain => EW_Pred);
+              (Name => Get_Borrowed_At_End (E),
+               Args => Args & (1 => +Result_Name),
+               Typ  => Get_Typ (Borrowed_At_End)),
+            Right  => Borrowed));
    end Wrap_Post_Of_Traversal;
 
 end Gnat2Why.Subprograms;
