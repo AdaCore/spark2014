@@ -44,6 +44,7 @@ class Z3(Prover):
 
     limit_reg = re.compile("rlimit-count *(\d*)")
     time_reg = re.compile(":time *(\d*.\d*)")
+    name = "z3"
 
     def __init__(self, executable_name="z3"):
         Prover.__init__(self)
@@ -83,6 +84,7 @@ class Z3(Prover):
 
 class Altergo(Prover):
 
+    name = "altergo"
     limit_reg = re.compile("\((\d*) steps\)")
     time_reg = re.compile("\((\d*.\d*)\)")
     status_reg = re.compile("Valid|Timeout|I don't know")
@@ -150,6 +152,7 @@ class Altergo(Prover):
 
 
 class CVC4(Prover):
+    name = "cvc4"
     limit_reg = re.compile("smt::SmtEngine::resourceUnitsUsed, (\d+.?\d*)")
     time_reg = re.compile("driver::totalTime, *(\d*.\d*)")
 
@@ -185,6 +188,25 @@ class CVC4(Prover):
         except ValueError:
             return {"filename": fn, "status": "error", "output": output}
 
+class CVC5(CVC4):
+    name = "cvc5"
+    limit_reg = re.compile("resource::resourceUnitsUsed = (\d+.?\d*)")
+    time_reg = re.compile("driver::totalTime = *(\d*.\d*)")
+
+    def __init__(self, executable_name="cvc5"):
+        Prover.__init__(self)
+        self.executable_name = executable_name
+        self.version_arg = "--version"
+
+    def command(self, timeout, rlimit):
+        result = [self.executable_name,
+                  "--stats-expert",
+                  "--quiet"]
+        if timeout:
+            result.append("--tlimit=" + str(timeout * 1000))
+        if rlimit:
+            result.append("--rlimit=" + str(rlimit))
+        return result
 
 def parse_arguments():
     args = None
@@ -215,10 +237,6 @@ def parse_arguments():
                         default="json",
                         help='output format [json]')
     args = parser.parse_args()
-    if args.prover != "z3" and args.prover != "cvc4" and\
-       args.prover != "altergo":
-        print("prover " + args.prover + " not supported, exiting.")
-        exit(1)
     if args.format != "json" and args.format != "csv":
         print("output format " + args.format + " not supported, exiting.")
         exit(1)
@@ -349,15 +367,15 @@ def run_stats(prover, files,
 
 
 def main():
+    provers = [Z3(), CVC4(), Altergo(), CVC5()]
     args = parse_arguments()
-    if args.prover == "z3":
-        prover = Z3()
-    elif args.prover == "cvc4":
-        prover = CVC4()
-    elif args.prover == "altergo":
-        prover = Altergo()
-    else:
-        raise ValueError
+    prover = None
+    for p in provers:
+        if args.prover == p.name:
+            prover = p
+    if prover is None:
+        print("prover " + args.prover + " not supported, exiting.")
+        exit(1)
 
     results = run_stats(prover=prover,
                         files=args.files,
