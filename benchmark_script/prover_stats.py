@@ -267,19 +267,36 @@ def send_request(fd, cmd):
     fd.sendall(s.encode('utf-8'))
     return id_num
 
+buf = bytearray()
 
 def read_request(fd):
-    s = fd.recv(4096)
-    lines = s.decode('utf-8').splitlines()
+    global buf
     results = []
-    for s in lines:
-        s = s.strip('\n')
-        if s.startswith("F"):
-            fields = s.split(';')
+    while True:
+        s = fd.recv(4096)
+        buf.extend(s)
+        if b'\n' in buf:
+            break
+    start = 0
+    while True:
+        idx = buf.find(b'\n', start)
+        if idx == -1:
+            break
+        line = buf[start:idx].decode('utf-8')
+        start = idx + 1
+        line = line.strip('\n')
+        if line.startswith("F"):
+            fields = line.split(';')
             my_id = fields[1]
             time = float(fields[3])
             fn = fields[-1]
             results.append((int(my_id), fn, time))
+        elif line.startswith("S"):
+            pass
+        else:
+            print(line)
+            raise BufferError
+    buf = buf[start:]
     return results
 
 
