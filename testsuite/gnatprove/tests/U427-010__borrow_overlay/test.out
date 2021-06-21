@@ -1,3 +1,3 @@
-main_access.adb:10:07: error: observed object is aliased through address clauses
-main_access.adb:17:07: error: borrowed object is aliased through address clauses
+main_access.adb:10:07: error: observed object aliased through address clauses is not supported yet
+main_access.adb:17:07: error: borrowed object aliased through address clauses is not supported yet
 gnatprove: error during flow analysis and proof

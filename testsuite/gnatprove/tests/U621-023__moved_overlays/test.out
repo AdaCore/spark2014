@@ -1,0 +1,5 @@
+main.adb:2:22: info: data dependencies proved
+main.adb:8:25: error: moved object aliased through address clauses is not supported yet
+main.adb:15:22: info: data dependencies proved
+main.adb:18:22: error: moved object aliased through address clauses is not supported yet
+gnatprove: error during flow analysis and proof
