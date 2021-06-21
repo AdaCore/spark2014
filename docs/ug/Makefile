@@ -39,7 +39,7 @@ ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 GENERATED_RST_FILES = en/source/flow_checks_table.rst en/source/proof_checks_table.rst
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest setup
+.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest setup generate
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -64,7 +64,13 @@ $(GENERATED_RST_FILES): table_generator/table_generator.adb
 	gprbuild -p -P table_generator/table_generator
 	table_generator/obj/table_generator
 
-setup:	$(GENERATED_RST_FILES)
+generate:
+	@echo "Generating GNATprove results..."
+	rm -rf examples
+	mkdir examples
+	cp -r ../../testsuite/gnatprove/tests/ug__* examples
+
+setup:	$(GENERATED_RST_FILES) generate
 	echo "version = '$(VERSION)'" > ../sphinx_support/confvars.py
 
 clean:
@@ -72,13 +78,6 @@ clean:
 	gprclean -P table_generator/table_generator
 	rm -f $(GENERATED_RST_FILES)
 
-generate:
-	@echo "Generating GNATprove results..."
-	(cd examples; ./run_examples.py)
-
-generate-nightly:
-	@echo "Generating GNATprove results..."
-	(cd examples; ./run_examples.py)
 
 html: setup
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html

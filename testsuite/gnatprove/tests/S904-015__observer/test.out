@@ -1,11 +1,13 @@
 traversal_funcs.adb:13:16: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:15:14: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:19:35: info: precondition proved (Trivial: 1 VC)
 traversal_funcs.adb:21:29: info: precondition proved (Trivial: 1 VC)
 traversal_funcs.adb:21:36: info: pointer dereference check proved (CVC4: 1 VC)
 traversal_funcs.adb:22:15: info: precondition proved (Trivial: 1 VC)
 traversal_funcs.adb:22:22: info: pointer dereference check proved (CVC4: 1 VC)
 traversal_funcs.adb:22:25: info: pointer dereference check proved (CVC4: 1 VC)
-traversal_funcs.adb:27:17: warning: "L" is not modified, could be of access constant type
+traversal_funcs.adb:24:14: medium: dynamic accessibility check might fail
+traversal_funcs.adb:27:17: warning: "L" is not modified, parameter type could be rewritten as 'access constant List'
 traversal_funcs.adb:28:35: info: precondition proved (Trivial: 1 VC)
 traversal_funcs.adb:28:41: info: precondition proved (Trivial: 1 VC)
 traversal_funcs.adb:28:49: info: precondition proved (Trivial: 1 VC)

@@ -33,26 +33,31 @@ with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 package body SPARK_Util.Types is
 
    function Type_Name_For_Explanation (Typ : Entity_Id) return String
-     is (if not Is_Itype (Typ) then "type " & Source_Name (Typ)
-         else "anonymous type")
+     is (if Is_Itype (Typ) then "anonymous type"
+         else "type " & Source_Name (Typ))
      with Pre => Is_Type (Typ);
    --  This function computes a user-visible string to represent the type in
    --  argument.
 
    generic
-      with procedure Callback
+      with procedure Examine
         (Typ         : Entity_Id;
          Result      : out Boolean;
+         Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
-   procedure Check_Composite_Types_For_Holes
+   procedure Minimal_Size
      (Typ         : Entity_Id;
-      Size        : Uint;
       Result      : out Boolean;
-      Explanation : out Unbounded_String);
+      Size        : out Uint;
+      Explanation : out Unbounded_String)
+   with Pre => Is_Composite_Type (Typ);
    --  This function is used by Type_Has_No_Holes and
    --  Is_Valid_Bitpattern_No_Holes to recurse over composite types. It checks
    --  that the composite types have no holes, and that each field has the
-   --  property checked by the Callback.
+   --  property checked by the Examine. If Result is True, Size contains the
+   --  declared or computed size of the type (RM_Size). Otherwise, Size is
+   --  undefined and Explanation contains a string why the size could not
+   --  be computed.
 
    ---------------------------------------------
    -- Queries related to representative types --
@@ -225,7 +230,7 @@ package body SPARK_Util.Types is
       --  similar subtypes of the same base type). And our translation to Why3
       --  depends on being able to unify all such access types.
 
-      if Is_Generic_Actual_Type (Typ) then
+      if Entity_In_SPARK (Typ) and then Is_Generic_Actual_Type (Typ) then
          declare
             Decl    : constant Node_Id := Parent (Typ);
             Sub_Ind : Node_Id;
@@ -305,101 +310,87 @@ package body SPARK_Util.Types is
       end if;
    end Has_Unconstrained_UU_Component;
 
-   -------------------------------------
-   -- Check_Composite_Types_For_Holes --
-   -------------------------------------
+   ------------------
+   -- Minimal_Size --
+   ------------------
 
-   procedure Check_Composite_Types_For_Holes
+   procedure Minimal_Size
      (Typ         : Entity_Id;
-      Size        : Uint;
       Result      : out Boolean;
+      Size        : out Uint;
       Explanation : out Unbounded_String)
    is
+      function Typ_Name return String is (Type_Name_For_Explanation (Typ));
    begin
+      --  Default initialization for Codepeer
+      Size := Uint_0;
+
       if Is_Array_Type (Typ) then
-         if not Is_Static_Array_Type (Typ) then
+         if not Is_Constrained (Typ) then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("size of non-static array type cannot "
-                                   & "be determined");
+              To_Unbounded_String ("can't determine size for "
+                                   & "unconstrained array " & Typ_Name);
+            return;
+
+         elsif not Compile_Time_Known_Bounds (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("bounds of " & Typ_Name & " are "
+                                   & "not known at compile time");
             return;
          end if;
 
          declare
-            Comp_Typ : constant Entity_Id :=
-              Retysp (Component_Type (Typ));
-            Mult_Size : Uint := Uint_1;
-            Index : Entity_Id;
+            Comp_Typ  : constant Entity_Id := Retysp (Component_Type (Typ));
+            Comp_Size : Uint;
+            Index     : Node_Id;
          begin
-            Callback (Comp_Typ, Result, Explanation);
+            Examine (Comp_Typ, Result, Comp_Size, Explanation);
             if not Result then
                return;
             end if;
 
-            pragma Assert (Known_RM_Size (Comp_Typ));
-
-            Mult_Size := UI_Mul (Mult_Size, RM_Size (Comp_Typ));
+            Size := Comp_Size;
             Index := First_Index (Typ);
             while Present (Index) loop
                declare
                   Rng : constant Node_Id := Get_Range (Index);
                begin
-                  Mult_Size :=
-                    UI_Mul (Mult_Size,
-                            UI_Add (
-                              UI_Sub (Expr_Value (High_Bound (Rng)),
-                                Expr_Value (Low_Bound (Rng))),
-                              Uint_1));
+                  Size :=
+                    Size *
+                      (Expr_Value (High_Bound (Rng)) -
+                         Expr_Value (Low_Bound (Rng)) + 1);
                   Next_Index (Index);
                end;
             end loop;
-            if not UI_Eq (Size, Mult_Size) then
-               Result := False;
-               Explanation :=
-                 To_Unbounded_String
-                   ("array type has size " & UI_Image (Size) & " but "
-                    & "components add up to size " & UI_Image (Mult_Size));
-               return;
-            end if;
          end;
 
-      end if;
-
-      if Is_Record_Type (Typ) then
+      elsif Is_Record_Type (Typ) then
          declare
-            Comp     : Node_Id := First_Component (Typ);
-            Sum_Size : Uint := Uint_0;
+            Comp : Entity_Id := First_Component (Typ);
          begin
             while Present (Comp) loop
                declare
-                  Comp_Ty  : constant Entity_Id := Retysp (Etype (Comp));
+                  Comp_Ty   : constant Entity_Id := Retysp (Etype (Comp));
+                  Comp_Size : Uint;
                begin
-                  if Ekind (Comp) = E_Component then
-                     Callback
-                       (Comp_Ty, Result, Explanation);
-                     if not Result then
-                        return;
-                     end if;
+                  Examine (Comp_Ty, Result, Comp_Size, Explanation);
+                  if not Result then
+                     return;
                   end if;
-                  pragma Assert (Known_RM_Size (Comp_Ty));
-                  Sum_Size := UI_Add (Sum_Size, RM_Size (Comp_Ty));
-                  Next_Component (Comp);
+                  Size := Size + Comp_Size;
                end;
+               Next_Component (Comp);
             end loop;
-            if not UI_Eq (Size, Sum_Size) then
-               Result := False;
-               Explanation :=
-                 To_Unbounded_String
-                   ("record type has size " & UI_Image (Size) & " but "
-                    & "components add up to size " & UI_Image (Sum_Size));
-               return;
-            end if;
          end;
       end if;
-      Result := True;
-      Explanation := To_Unbounded_String ("");
+
+      Result      := True;
+      Explanation := Null_Unbounded_String;
+
       return;
-   end Check_Composite_Types_For_Holes;
+   end Minimal_Size;
 
    ------------------------------
    -- Check_DIC_At_Declaration --
@@ -901,10 +892,14 @@ package body SPARK_Util.Types is
       case Type_Kind'(Ekind (Rep_Typ)) is
          when Access_Kind =>
 
-            --  Access to subprograms are not subjected to ownership rules
+            --  Access to subprograms are not subjected to ownership rules, nor
+            --  are access-to-constant types, unless they are observers
+            --  (anonymous access-to-constant types).
 
             return Ekind (Directly_Designated_Type (Rep_Typ)) /=
-              E_Subprogram_Type;
+              E_Subprogram_Type
+              and then (not Is_Access_Constant (Rep_Typ)
+                        or else Is_Anonymous_Access_Type (Rep_Typ));
 
          when E_Array_Type
             | E_Array_Subtype
@@ -990,304 +985,6 @@ package body SPARK_Util.Types is
      (Is_Array_Type (E)
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
-
-   -----------------------
-   -- Type_Has_No_Holes --
-   -----------------------
-
-   procedure Type_Has_No_Holes (Typ         : Entity_Id;
-                                Result      : out Boolean;
-                                Explanation : out Unbounded_String)
-   is
-
-      procedure Type_Has_No_Holes_Internal
-        (Typ         : Entity_Id;
-         Use_RM_Size : Boolean;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String);
-
-      procedure Type_Has_No_Holes_Callback
-        (Typ         : Entity_Id;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String);
-      --  This function is a wrapper for Type_Has_No_Holes_Internal, that can
-      --  be used with the generic to traverse records and arrays.
-
-      procedure Type_Has_No_Holes_Callback
-        (Typ         : Entity_Id;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String) is
-      begin
-         Type_Has_No_Holes_Internal (Typ, True, Result, Explanation);
-      end Type_Has_No_Holes_Callback;
-
-      procedure Recurse is new
-        Check_Composite_Types_For_Holes (Type_Has_No_Holes_Callback);
-
-      --------------------------------
-      -- Type_Has_No_Holes_Internal --
-      --------------------------------
-
-      procedure Type_Has_No_Holes_Internal
-        (Typ         : Entity_Id;
-         Use_RM_Size : Boolean;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String)
-      is
-
-         function Typ_Name return String is (Type_Name_For_Explanation (Typ));
-
-         Typ_Size : Uint;
-
-      begin
-
-         if Is_Tagged_Type (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " is a tagged type");
-            return;
-         end if;
-
-         if Is_Private_Type (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " is a private type");
-            return;
-         end if;
-
-         if Is_Concurrent_Type (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " is a concurrent type");
-            return;
-         end if;
-
-         if Has_Discriminants (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " has discriminants");
-            return;
-         end if;
-
-         if Is_Scalar_Type (Typ) then
-            Result := True;
-            return;
-         end if;
-
-         if Use_RM_Size and then not Known_RM_Size (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " doesn't "
-                                   & "have a Size representation clause or "
-                                   & "aspect");
-            return;
-         end if;
-         if not Use_RM_Size and then not Known_Esize (Typ)
-         then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " doesn't "
-                                   & "have an Object_Size representation "
-                                   & "clause or aspect");
-            return;
-         end if;
-
-         if Use_RM_Size then
-            Typ_Size := RM_Size (Typ);
-         else
-            Typ_Size := Esize (Typ);
-         end if;
-
-         Recurse (Typ, Typ_Size, Result, Explanation);
-      end Type_Has_No_Holes_Internal;
-
-   begin
-      Type_Has_No_Holes_Internal (Typ, False, Result, Explanation);
-   end Type_Has_No_Holes;
-
-   ----------------------------------
-   -- Is_Valid_Bitpattern_No_Holes --
-   ----------------------------------
-
-   procedure Is_Valid_Bitpattern_No_Holes (Typ         : Entity_Id;
-                                           Result      : out Boolean;
-                                           Explanation : out Unbounded_String)
-   is
-      --  The property Is_Valid_Bitpattern_No_Holes is *not* compositional.
-      --  For example, an object of type U7:
-      --
-      --  type U7 is mod 2 ** 7;
-      --  X : U7;
-      --
-      --  is considered to have a hole (the Size of X, or Object_Size of U7, is
-      --  8, but the data only takes up 7 bits), while this type does not:
-
-      --  type My_Rec is record
-      --     X : U7;
-      --     Y : Boolean;
-      --  end record;
-
-      --  In practice it means that for components, we need to use the RM_Size,
-      --  and not the Object_Size of the type to carry out the checks in this
-      --  function.
-
-      procedure Is_Valid_Bitpattern_No_Holes_Internal
-        (Typ         : Entity_Id;
-         Use_RM_Size : Boolean;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String);
-      --  The internal version of the function. If Use_RM_Size is set to True,
-      --  the RM_Size is used for size computations, otherwise the
-      --  Object_Size/Esize is used.
-
-      procedure Is_Valid_Bitpattern_No_Holes_Callback
-        (Typ         : Entity_Id;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String);
-
-      -------------------------------------------
-      -- Is_Valid_Bitpattern_No_Holes_Callback --
-      -------------------------------------------
-
-      procedure Is_Valid_Bitpattern_No_Holes_Callback
-        (Typ         : Entity_Id;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String)
-      is
-      begin
-         Is_Valid_Bitpattern_No_Holes_Internal
-           (Typ, True, Result, Explanation);
-      end Is_Valid_Bitpattern_No_Holes_Callback;
-
-      procedure Recurse is new Check_Composite_Types_For_Holes
-        (Is_Valid_Bitpattern_No_Holes_Callback);
-
-      -------------------------------------------
-      -- Is_Valid_Bitpattern_No_Holes_Internal --
-      -------------------------------------------
-
-      procedure Is_Valid_Bitpattern_No_Holes_Internal
-        (Typ         : Entity_Id;
-         Use_RM_Size : Boolean;
-         Result      : out Boolean;
-         Explanation : out Unbounded_String)
-      is
-
-         function Typ_Name return String is (Type_Name_For_Explanation (Typ));
-
-         Typ_Size : Uint;
-
-      --  Start of processing for Is_Valid_Bitpattern_No_Holes_Internal
-
-      begin
-         --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
-
-         if Is_Floating_Point_Type (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String ("floating-point types have invalid bit "
-                                   & "patterns for SPARK");
-            return;
-         end if;
-
-         if Use_RM_Size and then not Known_RM_Size (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " doesn't "
-                                   & "have a Size representation clause or "
-                                   & "aspect");
-            return;
-         end if;
-         if not Use_RM_Size and then not Known_Esize (Typ)
-         then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " doesn't "
-                                   & "have an Object_Size representation "
-                                   & "clause or aspect");
-            return;
-         end if;
-
-         --  We always exclude invariants and predicates, as well as types with
-         --  discriminants and tags, private types and concurrent types.
-
-         if Invariant_Check_Needed (Typ)
-           or else Has_Predicates (Typ)
-         then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " has invariants or predicates");
-            return;
-         end if;
-
-         if Has_Discriminants (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " has discriminants");
-            return;
-         end if;
-
-         if Is_Tagged_Type (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " is a tagged type");
-            return;
-         end if;
-
-         if Is_Private_Type (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " is a private type");
-            return;
-         end if;
-
-         if Is_Concurrent_Type (Typ) then
-            Result := False;
-            Explanation :=
-              To_Unbounded_String (Typ_Name & " is a concurrent type");
-            return;
-         end if;
-
-         if Use_RM_Size then
-            Typ_Size := RM_Size (Typ);
-         else
-            Typ_Size := Esize (Typ);
-         end if;
-         --  Constrained scalar types are also excluded
-
-         if Is_Scalar_Type (Typ) then
-            declare
-               R : constant Node_Id := Scalar_Range (Typ);
-            begin
-               pragma Assert (Compile_Time_Known_Value (Low_Bound (R)));
-               pragma Assert (Compile_Time_Known_Value (High_Bound (R)));
-               declare
-                  Low        : constant Uint := Expr_Value (Low_Bound (R));
-                  High       : constant Uint := Expr_Value (High_Bound (R));
-                  Num_Values : constant Uint := UI_Add (UI_Sub (High, Low), 1);
-               begin
-                  if UI_Eq (UI_Expon (Uint_2, Typ_Size), Num_Values) then
-                     Result := True;
-                     Explanation := To_Unbounded_String ("");
-                  else
-                     Result := False;
-                     Explanation :=
-                       To_Unbounded_String
-                         (Typ_Name & " has "
-                          & UI_Image (Num_Values) & " values but has bit size "
-                          & UI_Image (Typ_Size));
-                  end if;
-                  return;
-               end;
-            end;
-         end if;
-
-         Recurse (Typ, Typ_Size, Result, Explanation);
-      end Is_Valid_Bitpattern_No_Holes_Internal;
-
-   begin
-      Is_Valid_Bitpattern_No_Holes_Internal (Typ, False, Result, Explanation);
-   end Is_Valid_Bitpattern_No_Holes;
 
    ----------------------------
    -- Iterate_Applicable_DIC --
@@ -1501,6 +1198,62 @@ package body SPARK_Util.Types is
    function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
    is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
 
+   -----------------------------------
+   -- Predefined_Eq_Uses_Pointer_Eq --
+   -----------------------------------
+
+   function Predefined_Eq_Uses_Pointer_Eq (Ty : Entity_Id) return Boolean is
+
+      function Uses_Pointer_Eq_Comp (Ty : Entity_Id) return Boolean is
+        (not (Is_Record_Type (Unchecked_Full_Type (Ty))
+              and then Present (Get_User_Defined_Eq (Base_Type (Ty))))
+         and then Predefined_Eq_Uses_Pointer_Eq (Ty));
+      --  The predefined equality on pointer is used for a component of type Ty
+      --  if the predefined equality is used for components of this type and
+      --  this equality uses predefined equality on pointers.
+
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
+   begin
+      if Is_Access_Type (Rep_Ty) then
+         return True;
+      elsif Is_Array_Type (Rep_Ty) then
+         return Uses_Pointer_Eq_Comp (Component_Type (Rep_Ty));
+      elsif Is_Record_Type (Rep_Ty) then
+
+         --  Check if pointer equality is used for one of the visible
+         --  components of Ty.
+
+         declare
+            Comp : Node_Id := First_Component (Rep_Ty);
+         begin
+            while Present (Comp) loop
+               if Uses_Pointer_Eq_Comp (Etype (Comp)) then
+                  return True;
+               end if;
+               Next_Component (Comp);
+            end loop;
+         end;
+
+         --  If the type is tagged, there might be hidden components inherited
+         --  from some ancestor.
+
+         if Is_Tagged_Type (Rep_Ty) then
+            declare
+               Base   : constant Entity_Id := Base_Retysp (Rep_Ty);
+               Parent : constant Entity_Id := Retysp (Etype (Base));
+            begin
+               return Parent /= Base
+                 and then Predefined_Eq_Uses_Pointer_Eq (Parent);
+            end;
+         else
+            return False;
+         end if;
+      else
+         pragma Assert (Ekind (Rep_Ty) in Private_Kind | Scalar_Kind);
+         return False;
+      end if;
+   end Predefined_Eq_Uses_Pointer_Eq;
+
    ---------------------------------------
    -- Private_Declarations_Of_Task_Type --
    ---------------------------------------
@@ -1634,6 +1387,394 @@ package body SPARK_Util.Types is
       end if;
    end Static_Array_Length;
 
+   ---------------------
+   -- Suitable_For_UC --
+   ---------------------
+
+   procedure Suitable_For_UC (Typ         : Entity_Id;
+                              Result      : out Boolean;
+                              Explanation : out Unbounded_String)
+   is
+
+      procedure Suitable_For_UC_Internal
+        (Typ         : Entity_Id;
+         Top_Level   : Boolean;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String);
+      --  Check if the type in argument is suitable for unchecked conversion.
+      --  If yes, Result is set to True and Typ_Size contains the declared or
+      --  computed size for the type. If Top_Level is True, this is the
+      --  Object_Size, if not it is the RM Size or a computed value. If the
+      --  type is not suitable for unchecked conversion, Explanation contains
+      --  a string which explains why it is not suitable.
+
+      procedure Suitable_For_UC_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String);
+      --  Same as Suitable_For_UC_Internal, but Top_Level is fixed to False.
+
+      ------------------------------
+      -- Suitable_For_UC_Callback --
+      ------------------------------
+
+      procedure Suitable_For_UC_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String) is
+      begin
+         Suitable_For_UC_Internal
+           (Typ, False, Result, Typ_Size, Explanation);
+      end Suitable_For_UC_Callback;
+
+      procedure Recurse is new Minimal_Size (Suitable_For_UC_Callback);
+      --  We use the generic Minimal_Size, which factors common code between
+      --  Suitable_For_UC_Target and Suitable_For_UC.
+
+      ------------------------------
+      -- Suitable_For_UC_Internal --
+      ------------------------------
+
+      procedure Suitable_For_UC_Internal
+        (Typ         : Entity_Id;
+         Top_Level   : Boolean;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String)
+      is
+
+         function Typ_Name return String is (Type_Name_For_Explanation (Typ));
+
+      begin
+
+         --  Default initialization for Codepeer
+         Typ_Size := Uint_0;
+
+         if Is_Tagged_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a tagged type");
+            return;
+         end if;
+
+         if Is_Private_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a private type");
+            return;
+         end if;
+
+         if Is_Concurrent_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a concurrent type");
+            return;
+         end if;
+
+         if Has_Discriminants (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " has discriminants");
+            return;
+         end if;
+
+         if Is_Access_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is an access type");
+            return;
+         end if;
+
+         if Is_Scalar_Type (Typ) then
+            if Top_Level and then not Known_Esize (Typ) then
+               Result := False;
+               Explanation :=
+                 To_Unbounded_String (Typ_Name & " doesn't "
+                                      & "have an Object_Size "
+                                      & "representation clause or aspect");
+               return;
+            elsif not Known_RM_Size (Typ) then
+               Result := False;
+               Explanation :=
+                 To_Unbounded_String (Typ_Name & " doesn't "
+                                      & "have a Size "
+                                      & "representation clause or aspect");
+
+               return;
+            end if;
+            Typ_Size := (if Top_Level then Esize (Typ) else RM_Size (Typ));
+            Result := True;
+            return;
+         end if;
+
+         Recurse (Typ, Result, Typ_Size, Explanation);
+      end Suitable_For_UC_Internal;
+
+      function Typ_Name return String is (Type_Name_For_Explanation (Typ));
+
+      Typ_Size : Uint;
+   begin
+      Suitable_For_UC_Internal (Typ, True, Result, Typ_Size, Explanation);
+      if not Result then
+         return;
+      end if;
+      if not Known_Esize (Typ) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String (Typ_Name & " doesn't "
+                                & "have an Object_Size representation "
+                                & "clause or aspect");
+      elsif Esize (Typ) = Typ_Size then
+         Result := True;
+      else
+         Result := False;
+         Explanation :=
+           To_Unbounded_String
+             (Typ_Name & " has minimal size " & UI_Image (Typ_Size) & ", but "
+              & "Object_Size was declared as " & UI_Image (Esize (Typ)));
+      end if;
+   end Suitable_For_UC;
+
+   ----------------------------
+   -- Suitable_For_UC_Target --
+   ----------------------------
+
+   procedure Suitable_For_UC_Target (Typ         : Entity_Id;
+                                     Result      : out Boolean;
+                                     Explanation : out Unbounded_String)
+   is
+      --  The property to be "suitable for unchecked conversion" is *not*
+      --  compositional.
+      --  For example, an object of type U7:
+      --
+      --  type U7 is mod 2 ** 7;
+      --  X : U7;
+      --
+      --  is considered to have a hole (the Size of X, or Object_Size of U7, is
+      --  8, but the data only takes up 7 bits), while this type does not:
+
+      --  type My_Rec is record
+      --     X : U7;
+      --     Y : Boolean;
+      --  end record;
+
+      --  In practice it means that for components, we need to use the RM_Size,
+      --  and not the Object_Size of the type to carry out the checks in this
+      --  function.
+
+      --  The structure of this subprogram is identical to Suitable_For_UC. See
+      --  there for some comments.
+
+      procedure Suitable_For_UC_Target_Internal
+        (Typ         : Entity_Id;
+         Top_Level   : Boolean;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String);
+
+      procedure Suitable_For_UC_Target_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String);
+      --  Same as Suitable_For_UC_Target_Internal, but Top_Level fixed to
+      --  False.
+
+      -------------------------------------
+      -- Suitable_For_UC_Target_Callback --
+      -------------------------------------
+
+      procedure Suitable_For_UC_Target_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String) is
+      begin
+         Suitable_For_UC_Target_Internal
+           (Typ, False, Result, Typ_Size, Explanation);
+      end Suitable_For_UC_Target_Callback;
+
+      procedure Recurse is new Minimal_Size (Suitable_For_UC_Target_Callback);
+
+      -------------------------------------
+      -- Suitable_For_UC_Target_Internal --
+      -------------------------------------
+
+      procedure Suitable_For_UC_Target_Internal
+        (Typ         : Entity_Id;
+         Top_Level   : Boolean;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String)
+      is
+
+         function Typ_Name return String is (Type_Name_For_Explanation (Typ));
+
+      --  Start of processing for Suitable_For_UC_Target_Internal
+
+      begin
+
+         --  Default Initialization for Codepeer
+         Typ_Size := Uint_0;
+
+         --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
+
+         if Is_Floating_Point_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("floating-point types have invalid bit "
+                                   & "patterns for SPARK");
+            return;
+         end if;
+
+         --  We always exclude invariants and predicates, as well as types with
+         --  discriminants and tags, private types and concurrent types.
+
+         if Invariant_Check_Needed (Typ)
+           or else Has_Predicates (Typ)
+         then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " has invariants or predicates");
+            return;
+         end if;
+
+         if Has_Discriminants (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " has discriminants");
+            return;
+         end if;
+
+         if Is_Tagged_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a tagged type");
+            return;
+         end if;
+
+         if Is_Private_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a private type");
+            return;
+         end if;
+
+         if Is_Concurrent_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a concurrent type");
+            return;
+         end if;
+
+         if Is_Access_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is an access type");
+            return;
+         end if;
+
+         --  Constrained scalar types are also excluded
+
+         if Is_Scalar_Type (Typ) then
+            declare
+               R : constant Node_Id := Scalar_Range (Typ);
+            begin
+               if Top_Level and then not Known_Esize (Typ) then
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String (Typ_Name & " doesn't "
+                                         & "have an Object_Size "
+                                         & "representation clause or aspect");
+                  return;
+               elsif not Known_RM_Size (Typ) then
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String (Typ_Name & " doesn't "
+                                         & "have a Size "
+                                         & "representation clause or aspect");
+
+                  return;
+               end if;
+               Typ_Size := (if Top_Level then Esize (Typ) else RM_Size (Typ));
+
+               --  Despite having a known Esize, we might not know the bounds
+               --  at compile time. Checking for this next.
+
+               if not Compile_Time_Known_Value (Low_Bound (R)) then
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String ("lower bound for " & Typ_Name
+                                         & " is not known at compile time");
+                  return;
+               end if;
+
+               if not Compile_Time_Known_Value (High_Bound (R)) then
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String ("upper bound for " & Typ_Name
+                                         & " is not known at compile time");
+                  return;
+               end if;
+
+               declare
+                  Low        : constant Uint := Expr_Value (Low_Bound (R));
+                  High       : constant Uint := Expr_Value (High_Bound (R));
+                  Num_Values : constant Uint := High - Low + 1;
+               begin
+                  if 2 ** Typ_Size = Num_Values then
+                     Result := True;
+                     Explanation := To_Unbounded_String ("");
+                  else
+                     Result := False;
+                     Explanation :=
+                       To_Unbounded_String
+                         (Typ_Name & " has "
+                          & UI_Image (Num_Values)
+                          & " values but has "
+                          & (if Top_Level then "Object_Size " else "Size ")
+                          & UI_Image (Typ_Size));
+                  end if;
+                  return;
+               end;
+            end;
+         end if;
+
+         Recurse (Typ, Result, Typ_Size, Explanation);
+      end Suitable_For_UC_Target_Internal;
+
+      function Typ_Name return String is (Type_Name_For_Explanation (Typ));
+
+      Typ_Size : Uint;
+
+   --  Start of processing for Suitable_For_UC_Target
+
+   begin
+      Suitable_For_UC_Target_Internal
+        (Typ, True, Result, Typ_Size, Explanation);
+      if not Result then
+         return;
+      end if;
+      if not Known_Esize (Typ) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String (Typ_Name & " doesn't "
+                                & "have an Object_Size representation "
+                                & "clause or aspect");
+      elsif Esize (Typ) = Typ_Size then
+         Result := True;
+      else
+         Result := False;
+         Explanation :=
+           To_Unbounded_String
+             (Typ_Name & " has minimal size " & UI_Image (Typ_Size) & ", but "
+              & "Object_Size was declared as " & UI_Image (Esize (Typ)));
+      end if;
+   end Suitable_For_UC_Target;
+
    ---------------
    -- Task_Body --
    ---------------
@@ -1660,13 +1801,13 @@ package body SPARK_Util.Types is
       end if;
    end Task_Body_Entity;
 
-   ---------------------------------
-   -- Types_Have_Same_Known_Esize --
-   ---------------------------------
+   ---------------------------
+   -- Have_Same_Known_Esize --
+   ---------------------------
 
-   procedure Types_Have_Same_Known_Esize (A, B        : Entity_Id;
-                                          Result      : out Boolean;
-                                          Explanation : out Unbounded_String)
+   procedure Have_Same_Known_Esize (A, B        : Entity_Id;
+                                    Result      : out Boolean;
+                                    Explanation : out Unbounded_String)
    is
    begin
       if not Known_Esize (A) then
@@ -1685,7 +1826,7 @@ package body SPARK_Util.Types is
                                 & "clause or aspect");
          return;
       end if;
-      if not UI_Eq (Esize (A), Esize (B)) then
+      if Esize (A) /= Esize (B) then
          Result := False;
          Explanation :=
            To_Unbounded_String ("Object_Sizes of "
@@ -1696,7 +1837,7 @@ package body SPARK_Util.Types is
       end if;
       Result := True;
       Explanation := Null_Unbounded_String;
-   end Types_Have_Same_Known_Esize;
+   end Have_Same_Known_Esize;
 
    -------------------------
    -- Unchecked_Full_Type --

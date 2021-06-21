@@ -78,11 +78,12 @@ coverage-nightly: coverage gnatprove-nightly install install-coverage install-ex
 
 setup:
 	cd why3 && ./configure --prefix=$(INSTALLDIR)/libexec/spark \
-		--enable-relocation --disable-js-of-ocaml
+		--enable-relocation --disable-js-of-ocaml \
+		--disable-hypothesis-selection
 
 why3:
 	$(MAKE) -C why3
-	why3/bin/gnatwhy3.opt --list-transforms | python scripts/why3menus.py share/spark/config/generated_menus.json
+	why3/bin/gnatwhy3.opt --list-transforms | python3 scripts/why3menus.py share/spark/config/generated_menus.json
 
 install-all:
 	$(MAKE) install
@@ -128,7 +129,7 @@ gnat2why:
 	# Produce Ada code that stores the reserved keywords of Why3
 	# This script should be run *ONLY* in developper build not in prod
 	# (gnat2why-nightly)
-	python scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
+	python3 scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
 	# (The timestamp of) src/why/xgen/gnat_ast.ml is updated every time `make` is called in
 	# `gnat2why`, causing a recompilation of why3 every time because Why3's makefile is
@@ -190,10 +191,12 @@ install-examples:
 	done
 	find $(EXAMPLESDIR) -name test.py -exec rm -f {} \;
 	find $(EXAMPLESDIR) -name test.out -exec rm -f {} \;
-	# install examples in SPARK User's Guide specially
-	$(CP) docs/ug/examples/tests \
+	# install examples in SPARK User's Guide
+	mkdir $(EXAMPLESDIR)/gnatprove_by_example
+	$(CP) testsuite/gnatprove/tests/ug__* \
 	  $(EXAMPLESDIR)/gnatprove_by_example
-
+	$(CP) docs/ug/gnatprove_by_example.gpr docs/ug/test.adc \
+	  $(EXAMPLESDIR)/gnatprove_by_example
 clean:
 	$(MAKE) -C gnat2why clean
 	$(MAKE) -f Makefile.gnatprove clean

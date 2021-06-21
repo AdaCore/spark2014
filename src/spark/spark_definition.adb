@@ -280,14 +280,24 @@ package body SPARK_Definition is
    --  Return true if E has subcomponents of a deep type which are subjected
    --  to a subtype predicate.
 
-   procedure Check_Source_Of_Borrow_Or_Observe (Expr : Node_Id) with
+   procedure Check_Move_To_Constant (Expr : Node_Id) with
+     Pre => Nkind (Expr) in N_Allocator
+                          | N_Type_Conversion
+                          | N_Unchecked_Type_Conversion;
+   --  Check that Expr is directly inside a library level constant declaration
+
+   procedure Check_Source_Of_Borrow_Or_Observe
+     (Expr : Node_Id; In_Observe : Boolean)
+   with
      Post => (if not Violation_Detected
               then Is_Path_Expression (Expr)
                 and then Present (Get_Root_Object (Expr)));
    --  Check that a borrow has a valid source (stand-alone object or call to a
    --  traversal function).
 
-   procedure Check_Source_Of_Move (Expr : Node_Id);
+   procedure Check_Source_Of_Move
+     (Expr        : Node_Id;
+      To_Constant : Boolean := False);
    --  Check that a move has a valid source
 
    procedure Check_Compatible_Access_Types
@@ -505,12 +515,36 @@ package body SPARK_Definition is
       end if;
    end Check_Compatible_Access_Types;
 
+   ----------------------------
+   -- Check_Move_To_Constant --
+   ----------------------------
+
+   procedure Check_Move_To_Constant (Expr : Node_Id) is
+      Par       : constant Node_Id := Parent (Expr);
+      Operation : constant String :=
+        (if Nkind (Expr) = N_Allocator then "allocator of"
+         else "move inside a conversion to");
+
+   begin
+      --  Check that we are directly inside a library level constant
+      --  declaration.
+
+      if Nkind (Par) /= N_Object_Declaration
+        or else not Is_Constant_In_SPARK (Defining_Identifier (Par))
+        or else not Is_Library_Level_Entity (Defining_Identifier (Par))
+      then
+         Mark_Unsupported
+           (Operation & " an access-to-constant type not in"
+            & " library level constant declaration", Expr);
+      end if;
+   end Check_Move_To_Constant;
+
    ---------------------------------------
    -- Check_Source_Of_Borrow_Or_Observe --
    ---------------------------------------
 
    procedure Check_Source_Of_Borrow_Or_Observe
-     (Expr : Node_Id)
+     (Expr : Node_Id; In_Observe : Boolean)
    is
       Root : constant Entity_Id :=
         (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
@@ -537,6 +571,13 @@ package body SPARK_Definition is
       elsif Is_Effectively_Volatile (Root) then
          Mark_Violation
            ("borrow or observe of a volatile object", Expr);
+
+      --  In case of a borrow, the path should not traverse an
+      --  access-to-constant type.
+
+      elsif not In_Observe and then Traverse_Access_To_Constant (Expr) then
+         Mark_Violation
+           ("borrow of an access-to-constant part of an object", Expr);
       end if;
    end Check_Source_Of_Borrow_Or_Observe;
 
@@ -544,10 +585,15 @@ package body SPARK_Definition is
    -- Check_Source_Of_Move --
    --------------------------
 
-   procedure Check_Source_Of_Move (Expr : Node_Id) is
+   procedure Check_Source_Of_Move
+     (Expr        : Node_Id;
+      To_Constant : Boolean := False) is
    begin
       if not Is_Path_Expression (Expr) then
          Mark_Violation ("expression as source of move", Expr);
+      elsif not To_Constant and then Traverse_Access_To_Constant (Expr) then
+         Mark_Violation
+           ("access-to-constant part of an object as source of move", Expr);
       else
          declare
             Root : constant Entity_Id := Get_Root_Object (Expr);
@@ -1334,7 +1380,8 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
+            if Is_OK_Volatile_Context
+              (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
             then
                --  Check that the type of the allocator is visibly an access
                --  type.
@@ -1375,6 +1422,35 @@ package body SPARK_Definition is
                         end if;
                      end;
                   end if;
+
+                  --  We only support allocators of access-to-constant types in
+                  --  specific contexts.
+
+                  if Is_Access_Constant (Retysp (Etype (N))) then
+
+                     Check_Move_To_Constant (N);
+
+                     --  The initial value of the allocator is moved. We need
+                     --  to consider it specifically in the case of allocators
+                     --  to access-to-constant types as the allocator type is
+                     --  not itself of a deep type.
+
+                     if Nkind (Expression (N)) = N_Qualified_Expression then
+                        declare
+                           Des_Ty : Entity_Id := Directly_Designated_Type
+                             (Retysp (Etype (N)));
+                        begin
+                           if Is_Incomplete_Type (Des_Ty) then
+                              Des_Ty := Full_View (Des_Ty);
+                           end if;
+
+                           if Is_Deep (Des_Ty) then
+                              Check_Source_Of_Move
+                                (Expression (N), To_Constant => True);
+                           end if;
+                        end;
+                     end if;
+                  end if;
                else
                   Mark_Violation (N, Etype (N));
                end if;
@@ -1402,8 +1478,17 @@ package body SPARK_Definition is
                then
                   Mark_Violation ("assignment to a complex expression", Var);
 
+               --  Assigned object should not be a constant
+
                elsif Is_Constant_In_SPARK (Get_Root_Object (Var)) then
                   Mark_Violation ("assignment into a constant object", Var);
+
+               --  Assigned object should not be inside an access-to-constant
+               --  type.
+
+               elsif Traverse_Access_To_Constant (Var) then
+                  Mark_Violation ("assignment into an access-to-constant part"
+                                  & " of an object", Var);
 
                --  SPARK RM 3.10(7): If the type of the target is an anonymous
                --  access-to-variable type (an owning access type), the source
@@ -1419,7 +1504,8 @@ package body SPARK_Definition is
 
                elsif Is_Anonymous_Access_Object_Type (Etype (Var)) then
 
-                  Check_Source_Of_Borrow_Or_Observe (Expr);
+                  Check_Source_Of_Borrow_Or_Observe
+                    (Expr, Is_Access_Constant (Etype (Var)));
 
                   if Is_Path_Expression (Expr)
                     and then Present (Get_Root_Object (Expr))
@@ -1660,6 +1746,44 @@ package body SPARK_Definition is
                Mark_List (Alternatives (N));
             else
                Mark (Right_Opnd (N));
+            end if;
+
+            --  Disallow membership tests if they involved the use of the
+            --  predefined equality on access types (except if one of the
+            --  operands is syntactically null).
+
+            if not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
+              and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
+              and then Nkind (Left_Opnd (N)) /= N_Null
+            then
+               --  Iterate through the alternatives to see if some involve the
+               --  use of the predefined equality.
+
+               declare
+                  function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
+                  is
+                    ((not Is_Entity_Name (Alt)
+                     or else not Is_Type (Entity (Alt)))
+                     and then Nkind (Alt) /= N_Null);
+                  --  Return True if Alt is not a type inclusion or a
+                  --  comparison to null.
+
+                  Alt : Node_Id;
+               begin
+                  if Present (Alternatives (N)) then
+                     Alt := First (Alternatives (N));
+                     while Present (Alt) loop
+                        if Alternative_Uses_Eq (Alt) then
+                           Mark_Violation
+                             ("equality on access types", Alt);
+                           exit;
+                        end if;
+                        Next (Alt);
+                     end loop;
+                  elsif Alternative_Uses_Eq (Right_Opnd (N)) then
+                     Mark_Violation ("equality on access types", N);
+                  end if;
+               end;
             end if;
 
          --  Check that the type of null is visibly an access type
@@ -1999,32 +2123,10 @@ package body SPARK_Definition is
 
             Mark (Expression (N));
 
-            --  Source unchecked type conversion nodes were rewritten as such
-            --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
-            --  instance of Unchecked_Conversion as the Original_Node of the
-            --  new N_Unchecked_Type_Conversion node, and marking the node as
-            --  coming from source. We translate this original node to Why, so
-            --  it should be in SPARK too.
+            --  Check various limitations of GNATprove and issue an error on
+            --  unsupported conversions.
 
-            if Nkind (N) = N_Unchecked_Type_Conversion
-              and then Comes_From_Source (N)
-            then
-               declare
-                  Orig_N : constant Node_Id := Original_Node (N);
-               begin
-                  pragma Assert (Nkind (Orig_N) = N_Function_Call
-                                   and then Is_Entity_Name (Name (Orig_N))
-                                   and then Is_Unchecked_Conversion_Instance
-                                     (Entity (Name (Orig_N))));
-
-                  Mark (Orig_N);
-               end;
-
-            --  Otherwise, this is a type conversion that does not come from an
-            --  unchecked conversion in the source. Check various limitations
-            --  of GNATprove and issue an error on unsupported conversions.
-
-            elsif Has_Array_Type (Etype (N)) then
+            if Has_Array_Type (Etype (N)) then
 
                --  Restrict array conversions to the cases where either:
                --  - corresponding indices have modular types of the same size
@@ -2083,11 +2185,39 @@ package body SPARK_Definition is
                   end loop;
                end;
 
-            --  When converting to an anonymous access type, check that the
-            --  expression and the target have compatible designated types.
-
             elsif Has_Access_Type (Etype (N)) then
+
+               --  When converting to an anonymous access type, check that the
+               --  expression and the target have compatible designated types.
+
                Check_Compatible_Access_Types (Etype (N), Expression (N));
+
+               --  Anonymous access types are for borrows and observe. It is
+               --  not allowed to convert them back into a named type.
+
+               if Is_Anonymous_Access_Object_Type (Etype (Expression (N)))
+                 and then not Is_Anonymous_Access_Object_Type (Etype (N))
+               then
+                  Mark_Violation
+                    ("conversion from an anonymous access type to a named"
+                     & " access type", N);
+
+               --  A conversion from an access-to-variable type to an
+               --  access-to-constant type is considered a move if the
+               --  expression is not rooted inside a constant part of an
+               --  object. In this case, we need to check that we are in a
+               --  context where the move is allowed.
+
+               elsif Is_Access_Object_Type (Retysp (Etype (N)))
+                 and then Is_Access_Constant (Retysp (Etype (N)))
+                 and then not Is_Anonymous_Access_Object_Type (Etype (N))
+                 and then not Is_Access_Constant
+                   (Retysp (Etype (Expression (N))))
+                 and then not Is_Rooted_In_Constant (Expression (N))
+               then
+                  Check_Source_Of_Move (Expression (N), To_Constant => True);
+                  Check_Move_To_Constant (N);
+               end if;
 
             else
                Scalar_Conversion : declare
@@ -2335,6 +2465,14 @@ package body SPARK_Definition is
             | N_Timed_Entry_Call
          =>
             Mark_Violation ("tasking", N);
+
+         --  Unsupported INOX constructs
+
+         when N_Goto_When_Statement
+            | N_Raise_When_Statement
+            | N_Return_When_Statement
+         =>
+            Mark_Violation ("INOX", N);
 
          --  The following kinds can be safely ignored by marking
 
@@ -2772,12 +2910,158 @@ package body SPARK_Definition is
       Address : constant Node_Id := Address_Clause (E);
    begin
       if Present (Address) then
-         if Is_Object (E) and then Is_Deep (Etype (E)) then
-            Mark_Violation
-              ("address clause on an object of an ownership type", Address);
-         else
-            Mark (Expression (Address));
-         end if;
+         declare
+            Address_Expr    : constant Node_Id := Expression (Address);
+            Simple_Address  : constant Boolean :=
+              Nkind (Address_Expr) = N_Attribute_Reference
+              and then Attribute_Name (Address_Expr) = Name_Address;
+            Prefix_Expr     : constant Node_Id :=
+              (if Simple_Address then Prefix (Address_Expr)
+               else Empty);
+            Aliased_Object  : constant Entity_Id :=
+              (if Simple_Address
+               then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
+               else Empty);
+            Supported_Alias : constant Boolean :=
+              Present (Aliased_Object) and then Is_Object (Aliased_Object);
+            E_Is_Constant   : constant Boolean :=
+              Is_Object (E) and then Is_Constant_In_SPARK (E);
+         begin
+
+            Mark (Address_Expr);
+
+            --  If we cannot determine which object the address of E
+            --  references, check that E has asynchronous writers. If it is
+            --  not the case, issue a warning that we cannot account for
+            --  indirect writes.
+
+            if Is_Object (E)
+              and then not Supported_Alias
+              and then not
+                (Has_Volatile (E)
+                 and then Has_Volatile_Property (E, Pragma_Async_Writers))
+            then
+               Error_Msg_NE
+                 ("?indirect writes to & through a potential alias are"
+                  & " ignored", Address, E);
+               Error_Msg_NE
+                 ("\consider annotating & with Async_Writers",
+                  Address, E);
+            end if;
+
+            --  If E is variable in SPARK, check here that we can account
+            --  for effects to other objects induced by writing to E. The
+            --  fact that we can account for indirect effects to E is
+            --  verified inside proof. We emit check messages in this case.
+
+            if Is_Object (E) and then not E_Is_Constant then
+
+               --  If E is a variable and the address clause do not link to a
+               --  part of an object, we cannot handle the case, emit a
+               --  warning.
+
+               if not Supported_Alias then
+                  Error_Msg_NE
+                    ("?writing to & is assumed to have no effects on"
+                     & " other non-volatile objects", Address, E);
+
+               --  We do not handle yet overlays between (parts of) objects of
+               --  a deep type.
+
+               else
+                  if Is_Deep (Etype (E)) then
+                     Mark_Unsupported
+                       ("address clause on an object of an ownership type",
+                        Address);
+                  elsif Is_Deep (Etype (Aliased_Object)) then
+                     Mark_Unsupported
+                       ("overlay with an object of an ownership type",
+                        Address);
+                  end if;
+               end if;
+            end if;
+
+            --  If the address expression is a reference to the address of
+            --  (a part of) another object, check that either both are
+            --  mutable or both are constant for SPARK.
+
+            if Supported_Alias
+              and then E_Is_Constant /=
+                (Is_Constant_In_SPARK (Aliased_Object)
+                 or else Traverse_Access_To_Constant (Prefix_Expr))
+            then
+               declare
+                  E_Mod : constant String :=
+                    (if E_Is_Constant then "constant" else "mutable");
+                  R_Mod : constant String :=
+                    (if E_Is_Constant then "mutable" else "constant");
+               begin
+                  Mark_Violation
+                    ("address clause for a " & E_Mod
+                     & " object referencing a " & R_Mod & " part of an object",
+                     Address);
+               end;
+
+            --  If E is not imported, its initialization writes to the supplied
+            --  address.
+
+            elsif not Is_Imported (E) then
+
+               --  If E has an unsupported address, the effect is ignored, emit
+               --  a warning.
+
+               if not Supported_Alias then
+
+                  --  Only emit the warning for constants, it is redundant for
+                  --  variables.
+
+                  if E_Is_Constant then
+                     Error_Msg_NE
+                       ("?initialization of & is assumed to have no effects on"
+                        & " other non-volatile objects", Address, E);
+                     Error_Msg_NE
+                       ("\consider annotating & with Import",
+                        Address, E);
+                  end if;
+
+               --  Constants are aliased with constants, they should always be
+               --  imported.
+
+               elsif E_Is_Constant then
+                  Mark_Violation
+                    ("constant object with an address clause which is not"
+                     & " imported", E);
+
+               --  To avoid introducing invalid values in aliases, E
+               --  should be initialized at declaration.
+
+               else
+                  declare
+                     Decl    : constant Node_Id := Parent (E);
+                     Is_Init : constant Boolean :=
+                       Nkind (Decl) = N_Object_Declaration
+                       and then Present (Expression (Decl));
+                  begin
+                     if not Is_Init
+                       and then Default_Initialization (Etype (E)) /=
+                         Full_Default_Initialization
+                     then
+                        Mark_Violation
+                          ("object with an address clause which is not"
+                           & " fully initialized at declaration", E,
+                           Cont_Msg => "consider marking it as imported");
+                     end if;
+                  end;
+               end if;
+            end if;
+
+            if Is_Object (E)
+              and then not E_Is_Constant
+              and then Supported_Alias
+            then
+               Set_Overlay_Alias (E, Aliased_Object);
+            end if;
+         end;
       end if;
    end Mark_Address;
 
@@ -2983,29 +3267,18 @@ package body SPARK_Definition is
                   N);
             end if;
 
+         --  Attribute Address is only allowed inside an Address aspect
+         --  or attribute definition clause (SPARK RM 15.2).
+         --  We also exclude nodes that are known to make proof switch
+         --  domain from Prog to Pred, as this is not supported in the
+         --  translation currently.
+
          when Attribute_Address =>
 
             declare
-               Pref        : constant Node_Id := Prefix (N);
-               Root_Object : constant Entity_Id :=
-                 (if Is_Path_Expression (Pref)
-                  then Get_Root_Object (Pref, False)
-                  else Empty);
-               Root_Is_Volatile : constant Boolean :=
-                 (Present (Root_Object)
-                  and then Is_Object (Root_Object)
-                  and then Has_Volatile (Root_Object)
-                  and then Has_Volatile_Property
-                    (Root_Object, Pragma_Async_Writers));
-               M                : Node_Id := Parent (N);
-               Found_Violation  : Boolean := False;
+               M : Node_Id := Parent (N);
 
             begin
-               --  Attribute Address is only allowed inside an Address aspect
-               --  or attribute definition clause (SPARK RM 15.2).
-               --  We also exclude nodes that are known to make proof switch
-               --  domain from Prog to Pred, as this is not supported in the
-               --  translation currently.
 
                loop
                   if Nkind (M) = N_Attribute_Definition_Clause
@@ -3020,7 +3293,6 @@ package body SPARK_Definition is
                        ("attribute """
                         & Standard_Ada_Case (Get_Name_String (Aname))
                         & """ in unsupported context", N);
-                     Found_Violation := True;
                      exit;
                   elsif Nkind (M) in N_Subexpr then
                      null;
@@ -3029,63 +3301,21 @@ package body SPARK_Definition is
                        ("attribute """
                         & Standard_Ada_Case (Get_Name_String (Aname))
                         & """ outside an attribute definition clause", N);
-                     Found_Violation := True;
                      exit;
                   end if;
                   M := Parent (M);
                end loop;
-
-               if Found_Violation then
-                  null;
-
-               --  For now we reject P'Address if P is a complex expression
-               --  (not an identifier) unless it is a path rooted at a volatile
-               --  object.
-
-               elsif No (Root_Object) then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ on an expression which is not a part of an object",
-                     N);
-               elsif Is_Object (Root_Object)
-                 and then not Root_Is_Volatile
-                 and then Nkind (Pref) not in
-                   N_Identifier | N_Expanded_Name
-               then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ of a part of an object which is not volatile", N);
-
-               --  If the prefix is a non-volatile object, the attribute
-               --  reference must appear at the top-level in an address clause
-               --  so we can handle the underlying alias in a safe way.
-
-               elsif Is_Object (Root_Object)
-                 and then not Root_Is_Volatile
-                 and then
-                   not (Nkind (Parent (N)) = N_Attribute_Definition_Clause
-                        and then Chars (Parent (N)) = Name_Address)
-               then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ of non-volatile object not"
-                     & " at top level of address clause", N);
-
-               --  We do not support taking the address of an object of a deep
-               --  type as an overlay would break the ownership model.
-
-               elsif Is_Object (Root_Object)
-                 and then Is_Deep (Etype (Root_Object))
-               then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ on an object of an ownership type", N);
-               end if;
             end;
+
+            --  Reject taking the address of a subprogram
+
+            if Nkind (P) in N_Identifier | N_Expanded_Name
+              and then not Is_Object (Entity (P))
+            then
+               Mark_Violation ("attribute """
+                               & Standard_Ada_Case (Get_Name_String (Aname))
+                               & """ of a non-object entity", N);
+            end if;
 
          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
          --  types.
@@ -3127,83 +3357,187 @@ package body SPARK_Definition is
             end if;
 
          when Attribute_Access =>
+            declare
+               Par : constant Node_Id := Parent (N);
+            begin
+               --  We support 'Access if it is directly prefixed by a
+               --  subprogram name.
 
-            --  We only support 'Access if it is directly prefixed by a
-            --  subprogram name. Otherwise, we return early to avoid trying
-            --  to mark the prefix.
+               if Nkind (P) in N_Identifier | N_Expanded_Name
+                 and then Is_Subprogram (Entity (P))
+               then
+                  declare
+                     Subp : constant Entity_Id := Entity (P);
+                  begin
+                     if not In_SPARK (Subp) then
+                        Mark_Violation (N, From => P);
 
-            if Nkind (P) in N_Identifier | N_Expanded_Name then
-               declare
-                  Subp : constant Entity_Id := Entity (P);
-               begin
-                  if not Is_Subprogram (Subp) then
-                     Mark_Violation ("attribute ""Access"" on object", N);
+                     --  Dispatching operations need a specialised version that
+                     --  called on classwide types. We do not support them is
+                     --  currently.
 
-                  elsif not In_SPARK (Subp) then
-                     Mark_Violation (N, From => P);
+                     elsif Is_Dispatching_Operation (Subp) then
+                        Mark_Unsupported
+                          ("access to dispatching operation", N);
 
-                  --  Dispatching operations need a specialised version that is
-                  --  called on classwide types. We do not support them
-                  --  currently.
+                     --  Volatile functions and subprograms declared within a
+                     --  protected object have an implicit global parameter. We
+                     --  do not support taking their access.
 
-                  elsif Is_Dispatching_Operation (Subp) then
-                     Mark_Unsupported ("access to dispatching operation", N);
+                     elsif Ekind (Subp) = E_Function
+                       and then Is_Volatile_Function (Subp)
+                     then
+                        Mark_Violation ("access to volatile function", N);
 
-                  --  Volatile functions and subprograms declared within a
-                  --  protected object have an implicit global parameter. We do
-                  --  not support taking their access.
+                     elsif Within_Protected_Type (Subp) then
+                        Mark_Violation
+                          ("access to subprogram declared within a protected"
+                           & " object", N);
 
-                  elsif Ekind (Subp) = E_Function
-                    and then Is_Volatile_Function (Subp)
-                  then
-                     Mark_Violation ("access to volatile function", N);
+                     --  Subprograms annotated with relaxed initialization need
+                     --  a special handling at call.
 
-                  elsif Within_Protected_Type (Subp) then
-                     Mark_Violation
-                       ("access to subprogram declared within a protected"
-                        & " object", N);
+                     elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
+                     then
+                        Mark_Unsupported
+                          ("access to subprogram annotated with"
+                           & " Relaxed_Initialization", N);
 
-                  --  Subprograms annotated with relaxed initialization need
-                  --  a special handling at call.
+                     --  Subprogram with non-null Global contract (either
+                     --  explicit or generated).
 
-                  elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization) then
+                     else
+                        declare
+                           Globals : Global_Flow_Ids;
+                        begin
+                           Get_Globals
+                             (Subprogram          => Subp,
+                              Scope               =>
+                                (Ent => Subp, Part => Visible_Part),
+                              Classwide           => False,
+                              Globals             => Globals,
+                              Use_Deduced_Globals =>
+                                 not Gnat2Why_Args.Global_Gen_Mode,
+                              Ignore_Depends      => False);
+
+                           if not Globals.Proof_Ins.Is_Empty
+                             or else not Globals.Inputs.Is_Empty
+                             or else not Globals.Outputs.Is_Empty
+                           then
+                              Mark_Violation
+                                ("access to subprogram with global effects",
+                                 N);
+                           end if;
+                        end;
+                     end if;
+                  end;
+
+               --  N should visibly be of an access type
+
+               elsif not Is_Access_Type (Retysp (Etype (N))) then
+                  Mark_Violation
+                    ("Access attribute of a private type", N);
+                  return;
+
+               --  N should not be of a named access-to-variable type
+
+               elsif not Is_Anonymous_Access_Type (Etype (N))
+                 and then Is_Access_Object_Type (Retysp (Etype (N)))
+                 and then not Is_Access_Constant (Retysp (Etype (N)))
+               then
+                  Mark_Violation
+                    ("Access attribute of a named access-to-variable type", N);
+                  return;
+
+               --  The prefix must be a path rooted inside an object
+
+               elsif not Is_Access_Object_Type (Retysp (Etype (N)))
+                 or else not Is_Path_Expression (P)
+               then
+                  Mark_Violation
+                    ("Access attribute on a complex expression", N);
+                  return;
+
+               elsif No (Get_Root_Object (P)) then
+                  Mark_Violation
+                    ("Access attribute of a path not rooted inside an object",
+                     N);
+                  return;
+
+               --  'Access of an anonymous access-to-object type must occur
+               --  directly inside an assignment statement, an object
+               --  declaration, or a simple return statement from an
+               --  non-expression function. We don't need to worry about
+               --  declare expressions, 'Access is not allowed there.
+               --  This is because the expression introduces a borrower/an
+               --  observer that we only handle currently inside declarations
+               --  and assignments to objects of an anonymous access-to-object
+               --  type and on return of traversal functions.
+
+               elsif Is_Anonymous_Access_Type (Etype (N))
+                 and then
+                   (No (Par)
+                    or else Nkind (Par) not in N_Assignment_Statement
+                                             | N_Object_Declaration
+                                             | N_Simple_Return_Statement
+                    or else N /= Expression (Par))
+               then
+                  declare
+                     Operation : constant String :=
+                       (if Is_Access_Constant (Etype (N)) then "observe"
+                        else "borrow");
+                  begin
                      Mark_Unsupported
-                       ("access to subprogram annotated with"
-                        & " Relaxed_Initialization", N);
+                       (Operation & " through 'Access not directly inside an"
+                        & " assignment statement, an object declaration, or a"
+                        & " simple return statement", N);
+                     return;
+                  end;
 
-                  --  Subprogram with non-null Global contract (either explicit
-                  --  or generated).
+               --  For a named access-to-constant type, mark the prefix before
+               --  checking whether it is rooted at a constant part of an
+               --  object.
 
-                  else
-                     declare
-                        Globals : Global_Flow_Ids;
-                     begin
-                        Get_Globals
-                          (Subprogram          => Subp,
-                           Scope               =>
-                             (Ent => Subp, Part => Visible_Part),
-                           Classwide           => False,
-                           Globals             => Globals,
-                           Use_Deduced_Globals =>
-                              not Gnat2Why_Args.Global_Gen_Mode,
-                           Ignore_Depends      => False);
+               elsif not Is_Anonymous_Access_Type (Etype (N)) then
+                  pragma Assert (Is_Access_Constant (Retysp (Etype (N))));
 
-                        if not Globals.Proof_Ins.Is_Empty
-                          or else not Globals.Inputs.Is_Empty
-                          or else not Globals.Outputs.Is_Empty
-                        then
-                           Mark_Violation
-                             ("access to subprogram with global effects", N);
-                        end if;
-                     end;
-                  end if;
-               end;
-            else
-               Mark_Unsupported
-                 ("Access attribute on a complex expression", N);
-               return;
-            end if;
+                  Mark (P);
+                  pragma Assert (List_Length (Exprs) = 0);
 
+                  declare
+                     Root : constant Entity_Id := Get_Root_Object (P);
+                  begin
+                     pragma Assert (Present (Root));
+
+                     --  Reject paths not rooted inside a constant part of an
+                     --  object. Parameters of mode IN are not considered
+                     --  constants as the actual might be a variable.
+
+                     if (not Is_Constant_In_SPARK (Root)
+                         or else Ekind (Root) = E_In_Parameter)
+                       and then not Traverse_Access_To_Constant (P)
+                     then
+                        Mark_Violation
+                          ("Access attribute of a named access-to-constant"
+                           & " type whose prefix is not a constant part of an"
+                           & " object", N);
+
+                     --  Also reject paths rooted inside observers which can
+                     --  really be parts of variables.
+
+                     elsif Is_Anonymous_Access_Object_Type (Etype (Root)) then
+                        Mark_Violation
+                          ("Access attribute of a named access-to-constant"
+                           & " type whose prefix is rooted inside an object of"
+                           & " an anonymous access type", N);
+                     end if;
+                  end;
+
+                  --  We can return here, the prefix has already been marked
+
+                  return;
+               end if;
+            end;
          when others =>
             Mark_Violation
               ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
@@ -3249,6 +3583,17 @@ package body SPARK_Definition is
       Mark (Left_Opnd (N));
       Mark (Right_Opnd (N));
 
+      --  Disallow equality operators tests if they involved the use of the
+      --  predefined equality on access types (except if one of the operands is
+      --  syntactically null).
+
+      if Nkind (N) in N_Op_Eq | N_Op_Ne
+        and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
+        and then Nkind (Left_Opnd (N)) /= N_Null
+        and then Nkind (Right_Opnd (N)) /= N_Null
+      then
+         Mark_Violation ("equality on access types", N);
+
       --  Only support multiplication and division operations on fixed-point
       --  types if either:
       --  - one of the arguments is an integer type, or
@@ -3256,7 +3601,7 @@ package body SPARK_Definition is
       --  - both arguments and the result have compatible fixed-point types as
       --    defined in Ada RM G.2.3(21)
 
-      if Nkind (N) in N_Op_Multiply | N_Op_Divide then
+      elsif Nkind (N) in N_Op_Multiply | N_Op_Divide then
          declare
             L_Type  : constant Entity_Id := Base_Type (Etype (Left_Opnd (N)));
             R_Type  : constant Entity_Id := Base_Type (Etype (Right_Opnd (N)));
@@ -3476,9 +3821,10 @@ package body SPARK_Definition is
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then not Is_Function_Or_Function_Type (E)
          then
-            Check_Source_Of_Borrow_Or_Observe (Actual);
+            Check_Source_Of_Borrow_Or_Observe
+              (Actual, Is_Access_Constant (Etype (Formal)));
 
-         --  In and in out parameters of an access type are considered to be
+         --  OUT and IN OUT parameters of an access type are considered to be
          --  moved.
 
          elsif Is_Access_Type (Etype (Formal))
@@ -3501,10 +3847,7 @@ package body SPARK_Definition is
            or else
              (not Is_Function_Or_Function_Type (E)
               and then Ekind (Formal) = E_In_Parameter
-              and then Is_Access_Type (Etype (Formal))
-              and then Ekind (Directly_Designated_Type (Etype (Formal))) /=
-                E_Subprogram_Type
-              and then not Is_Access_Constant (Etype (Formal)))
+              and then Is_Access_Variable (Etype (Formal)))
          then
             declare
                Mode : constant String :=
@@ -3532,6 +3875,13 @@ package body SPARK_Definition is
                elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
                   Mark_Violation
                     ("constant object as " & Mode, Actual);
+
+               --  The actual should not be inside an access-to-constant type
+
+               elsif Traverse_Access_To_Constant (Actual) then
+                  Mark_Violation
+                    ("access-to-constant part of an object as " & Mode,
+                     Actual);
                end if;
             end;
          end if;
@@ -3564,35 +3914,6 @@ package body SPARK_Definition is
            (if Is_Overloadable (E)
             then E = Ultimate_Alias (E)
             else Ekind (E) = E_Entry_Family);
-      end if;
-
-      --  A possibly nonreturning procedure should only be called from
-      --  another (possibly) nonreturning procedure.
-
-      if Has_Might_Not_Return_Annotation (E) then
-         declare
-            Caller : Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Declaration (N));
-         begin
-            while Ekind (Caller) not in Subprogram_Kind
-                                      | E_Entry
-                                      | E_Package
-                                      | E_Package_Body
-                                      | E_Task_Body
-            loop
-               Caller := Scope (Caller);
-            end loop;
-
-            if not Is_Possibly_Nonreturning_Procedure (Caller) then
-               Error_Msg_N ("call to possibly nonreturning procedure outside "
-                            & "a (possibly) nonreturning procedure", N);
-               if Ekind (Caller) = E_Procedure then
-                  Error_Msg_NE
-                    ("\consider annotating caller & with Might_Not_Return",
-                     N, Caller);
-               end if;
-            end if;
-         end;
       end if;
 
       --  There should not be calls to default initial condition and invariant
@@ -3667,9 +3988,10 @@ package body SPARK_Definition is
       end if;
 
       if Ekind (E) = E_Function
-        and then not Is_OK_Volatile_Context (Context => Parent (N),
-                                             Obj_Ref => N)
         and then Is_Volatile_Call (N)
+        and then
+          not Is_OK_Volatile_Context
+                (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
@@ -3718,6 +4040,34 @@ package body SPARK_Definition is
            ("?no Global contract available for &", N, E);
          Error_Msg_NE
            ("\\assuming & has no effect on global items", N, E);
+      end if;
+
+      --  A possibly nonreturning procedure should only be called from
+      --  another (possibly) nonreturning procedure.
+
+      if Has_Might_Not_Return_Annotation (E) then
+         declare
+            Caller : Entity_Id :=
+              Unique_Defining_Entity (Enclosing_Declaration (N));
+         begin
+            while Ekind (Caller) not in Subprogram_Kind
+                                      | E_Entry
+                                      | E_Package
+                                      | E_Task_Type
+            loop
+               Caller := Scope (Caller);
+            end loop;
+
+            if not Is_Possibly_Nonreturning_Procedure (Caller) then
+               Error_Msg_N ("call to possibly nonreturning procedure outside "
+                            & "a (possibly) nonreturning procedure", N);
+               if Ekind (Caller) = E_Procedure then
+                  Error_Msg_NE
+                    ("\consider annotating caller & with Might_Not_Return",
+                     N, Caller);
+               end if;
+            end if;
+         end;
       end if;
 
       --  Check that the parameter of a function annotated with At_End_Borrow
@@ -4433,7 +4783,8 @@ package body SPARK_Definition is
             if Nkind (N) = N_Object_Declaration
               and then Is_Anonymous_Access_Object_Type (T)
             then
-               Check_Source_Of_Borrow_Or_Observe (Expr);
+               Check_Source_Of_Borrow_Or_Observe
+                 (Expr, Is_Access_Constant (T));
 
                --  We do not support local borrowers if they have predicates
                --  that can be broken during the traversal.
@@ -4452,7 +4803,7 @@ package body SPARK_Definition is
             --  moving a path.
 
             elsif Is_Deep (T) then
-               Check_Source_Of_Move (Expr);
+               Check_Source_Of_Move (Expr, Is_Constant_In_SPARK (E));
             end if;
 
             --  If T has an anonymous access type, it can happen that Expr and
@@ -4560,6 +4911,18 @@ package body SPARK_Definition is
                Mark_Violation
                  ("anonymous access type for result for "
                   & "non-traversal functions", Id);
+
+            --  For now we don't support volatile borrowing traversal
+            --  functions.
+            --  Supporting them would require some special handling as we
+            --  cannot call the function in the term domain to update the value
+            --  of the borrowed parameter at end.
+
+            elsif Is_Volatile_Func
+              and then Is_Borrowing_Traversal_Function (Id)
+            then
+               Mark_Unsupported
+                 ("volatile borrowing traversal function", Id);
             end if;
 
             while Present (Formal) loop
@@ -5528,8 +5891,7 @@ package body SPARK_Definition is
 
                   elsif not Is_Compilation_Unit (Enclosing_U) then
                      Mark_Unsupported
-                       ("type invariant not immediately in a compilation unit",
-                        E);
+                       ("type invariant in a nested package", E);
 
                   elsif Is_Child_Unit (Enclosing_U)
                     and then Is_Private_Descendant (Enclosing_U)
@@ -6086,16 +6448,18 @@ package body SPARK_Definition is
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
                Mark_Violation ("access attribute", E);
 
-            --  Reject general access types. We check the underlying type of
-            --  the base type as the base type itself can be private.
+            --  Reject general access-to-variable types. We check the
+            --  underlying type of the base type as the base type itself can be
+            --  private.
             --  ??? We assume that access subtypes have visibility on the full
             --  view of their base type or we would have a private subtype
             --  instead of an access subtype.
 
             elsif Ekind (Underlying_Type (Base_Type (E))) =
               E_General_Access_Type
+              and then not Is_Access_Constant (E)
             then
-               Mark_Violation ("general access type", E);
+               Mark_Violation ("general access-to-variable type", E);
 
             --  Storage_Pool is not in SPARK
 
@@ -6741,10 +7105,20 @@ package body SPARK_Definition is
    begin
       case Ekind (E) is
          when Object_Kind =>
-            if Ekind (E) in E_Variable | E_Constant | Formal_Kind
-              and then not In_SPARK (E)
-            then
-               Mark_Violation (N, From => E);
+            if Ekind (E) in E_Variable | E_Constant | Formal_Kind then
+               if not In_SPARK (E) then
+                  Mark_Violation (N, From => E);
+
+               elsif Is_Effectively_Volatile_For_Reading (E)
+                 and then
+                   not Is_OK_Volatile_Context (Context       => Parent (N),
+                                               Obj_Ref       => N,
+                                               Check_Actuals => True)
+               then
+                  Mark_Violation
+                    ("volatile object in interfering context", N,
+                     SRM_Reference => "SPARK RM 7.1.3(10)");
+               end if;
 
             --  Record components and discriminants are in SPARK if they are
             --  visible in the representative type of their scope. Do not
@@ -7307,7 +7681,7 @@ package body SPARK_Definition is
             | Pragma_Ada_12
             | Pragma_Ada_2005
             | Pragma_Ada_2012
-            | Pragma_Ada_2020
+            | Pragma_Ada_2022
             | Pragma_Annotate
             | Pragma_Assume_No_Invalid_Values
             --  Pragma_Check is handled specially above
@@ -7406,7 +7780,6 @@ package body SPARK_Definition is
             | Pragma_Eliminate
             | Pragma_Enable_Atomic_Synchronization
             | Pragma_Export_Object
-            | Pragma_Export_Value
             | Pragma_Export_Valued_Procedure
             | Pragma_Extend_System
             | Pragma_Extensions_Allowed
@@ -7483,7 +7856,6 @@ package body SPARK_Definition is
             | Pragma_Title
             | Pragma_Unimplemented_Unit
             | Pragma_Universal_Aliasing
-            | Pragma_Universal_Data
             | Pragma_Unreferenced_Objects
             | Pragma_Unreserve_All_Interrupts
             | Pragma_Use_VADS_Size
@@ -7638,7 +8010,8 @@ package body SPARK_Definition is
                if Is_Traversal_Function (Subp)
                  and then Nkind (Expr) /= N_Null
                then
-                  Check_Source_Of_Borrow_Or_Observe (Expr);
+                  Check_Source_Of_Borrow_Or_Observe
+                    (Expr, Is_Access_Constant (Return_Typ));
                end if;
 
             --  If we are returning a deep type, this is a move. Check that we

@@ -1,5 +1,8 @@
-addr.adb:6:10: error: "Val" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
-addr.adb:6:10: error: violation of pragma SPARK_Mode at test.adc:1
-addr.adb:6:42: error: attribute "Address" of a part of an object which is not volatile is not allowed in SPARK
-addr.adb:6:42: error: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+addr.adb:4:23: info: unrolling loop
+addr.adb:6:10: high: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
+addr.adb:6:10: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
+addr.adb:6:10: info: initialization of "Val" proved
+addr.adb:6:10: info: object is suitable for aliasing via address clause (Trivial)
+addr.adb:6:50: info: object is suitable for aliasing via address clause (Trivial)
+addr.adb:6:50: info: types of aliased objects have the same size (Trivial)
+addr.adb:8:33: medium: range check might fail (e.g. when Val = 'NUL') [reason for check: value cannot be minimum value of the type]

@@ -368,7 +368,7 @@ For example, consider a variant of the ``List.Find`` function defined in the
 API of formal containers, which returns a cursor holding the value searched if
 there is one, and the special cursor ``No_Element`` otherwise:
 
-.. literalinclude:: /examples/tests/my_find/my_find.ads
+.. literalinclude:: /examples/ug__my_find/my_find.ads
    :language: ada
    :linenos:
 
@@ -379,13 +379,13 @@ query the position of the current cursor in the list, and ``Model`` is used to
 specify that the value searched is not contained in the part of the container
 already traversed (otherwise the loop would have exited):
 
-.. literalinclude:: /examples/tests/my_find/my_find.adb
+.. literalinclude:: /examples/ug__my_find/my_find.adb
    :language: ada
    :linenos:
 
 |GNATprove| proves that function ``My_Find`` implements its specification:
 
-.. literalinclude:: /examples/tests/my_find/test.out
+.. literalinclude:: /examples/ug__my_find/test.out
    :language: none
 
 .. note::

@@ -24,6 +24,7 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
@@ -1107,6 +1108,11 @@ package body Flow.Analysis.Sanity is
                            =>
                               Collect_Indexes (Prefix (Expr));
 
+                           when N_Attribute_Reference =>
+                              pragma Assert
+                                (Attribute_Name (Expr) = Name_Access);
+                              Collect_Indexes (Prefix (Expr));
+
                            when N_Indexed_Component =>
                               declare
                                  Ind_Expr : Node_Id :=
@@ -1907,7 +1913,8 @@ package body Flow.Analysis.Sanity is
                                         else FA.Spec_Entity),
                            F1       => Var,
                            Severity => Error_Kind,
-                           Tag      => Side_Effects);
+                           Tag      => Side_Effects,
+                           Vertex   => V);
                         --  ??? the Atr.Error_Location should be always present
                         --  (which should be enforced by the graph building
                         --  API); we check it only to be on the safe side.

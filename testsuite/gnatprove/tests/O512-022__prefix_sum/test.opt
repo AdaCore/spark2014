@@ -1,3 +1,3 @@
-ALL XFAIL diff in replay (U210-022)
 NT SKIP too slow on Windows (PA06-025)
+ALL XFAIL replay DIFFs in nightly testing (U210-022)
 assertions SKIP minor proof diff

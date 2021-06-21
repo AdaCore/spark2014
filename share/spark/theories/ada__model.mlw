@@ -58,7 +58,7 @@ end
 
 module Static_Discrete_Base
   (* The module that is used as basis for all "static" discrete types.
-     It contains the whole discrete theory, exceptt he projections
+     It contains the whole discrete theory, except the projections
      to_rep/of_rep and associated axioms. "Static" here means that Why
      only sees a static version of the type, with constants for the
      bounds, even though this might correspond to dynamic types in

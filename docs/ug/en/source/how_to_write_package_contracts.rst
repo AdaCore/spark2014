@@ -18,15 +18,15 @@ aspect. All outputs are considered to be initialized from all inputs. For
 example, consider package ``Init_Data`` which initializes all its global
 variables during elaboration, from either constants or variables:
 
-.. literalinclude:: /examples/tests/init_data/external_data.ads
+.. literalinclude:: /examples/ug__init_data/external_data.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/init_data/init_data.ads
+.. literalinclude:: /examples/ug__init_data/init_data.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/init_data/init_data.adb
+.. literalinclude:: /examples/ug__init_data/init_data.adb
    :language: ada
    :linenos:
 
@@ -44,7 +44,7 @@ As a result, |GNATprove| can check that global variables are properly
 initialized when calling the main procedure ``Main_Proc``, and it does not
 issue any message when analyzing this code:
 
-.. literalinclude:: /examples/tests/init_data/main_proc.adb
+.. literalinclude:: /examples/ug__init_data/main_proc.adb
    :language: ada
    :linenos:
 

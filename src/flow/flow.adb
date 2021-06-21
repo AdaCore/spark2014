@@ -59,6 +59,7 @@ with Sinfo.Nodes;                      use Sinfo.Nodes;
 with Sinput;                           use Sinput;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
+with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
@@ -378,9 +379,13 @@ package body Flow is
          for F of To_Ordered_Flow_Id_Set (S) loop
             case F.Kind is
                when Direct_Mapping =>
-                  Append (Variables, To_JSON (F.Node));
+                  if not Is_Heap_Variable (F.Node) then
+                     Append (Variables, To_JSON (F.Node));
+                  end if;
                when Magic_String =>
-                  Append (Variables, Create (Pretty_Print (F.Name)));
+                  if not Is_Heap_Variable (F.Name) then
+                     Append (Variables, Create (Pretty_Print (F.Name)));
+                  end if;
                when others =>
                   raise Program_Error;
             end case;
@@ -422,7 +427,8 @@ package body Flow is
       if not Is_Empty (Obj) then
          declare
             Result : constant JSON_Value := Create_Object;
-            Slc    : constant Source_Ptr := Sloc (FA.Spec_Entity);
+            Slc    : constant Source_Ptr :=
+              Sloc (Enclosing_Declaration (FA.Spec_Entity));
             File   : constant String     := File_Name (Slc);
             Line   : constant Positive   :=
               Positive (Get_Physical_Line_Number (Slc));
@@ -1284,7 +1290,7 @@ package body Flow is
    begin
       Current_Error_Node := E;
 
-      FA.Spec_Entity                          := Unique_Entity (E);
+      FA.Spec_Entity                          := E;
       FA.Start_Vertex                         := Null_Vertex;
       FA.Helper_End_Vertex                    := Null_Vertex;
       FA.End_Vertex                           := Null_Vertex;
@@ -1656,7 +1662,10 @@ package body Flow is
                         end if;
                      end if;
                      Analysis.Check_Aliasing (FA);
-                     if not Is_Library_Level_Entity (FA.Spec_Entity) then
+                     if Present
+                          (SPARK_Util.Subprograms.Enclosing_Subprogram
+                             (FA.Spec_Entity))
+                     then
                         Analysis.Check_Potentially_Blocking (FA);
                         Analysis.Check_Terminating_Annotation (FA);
                      end if;

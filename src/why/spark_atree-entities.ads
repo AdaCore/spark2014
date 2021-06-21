@@ -90,6 +90,8 @@ package SPARK_Atree.Entities is
      Einfo.Entities.E_Exception_Type;
    E_Function                    : Entity_Kind renames
      Einfo.Entities.E_Function;
+   E_General_Access_Type         : Entity_Kind renames
+     Einfo.Entities.E_General_Access_Type;
    E_In_Parameter                : Entity_Kind renames
      Einfo.Entities.E_In_Parameter;
    E_In_Out_Parameter            : Entity_Kind renames
@@ -356,6 +358,12 @@ package SPARK_Atree.Entities is
 
    function Is_Constrained (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
+
+   function Is_Fixed_Lower_Bound_Array_Subtype (Typ : Entity_Id) return Boolean
+   with Pre => Is_Type (Typ);
+
+   function Is_Fixed_Lower_Bound_Index_Subtype (Typ : Entity_Id) return Boolean
+   with Pre => Is_Type (Typ);
 
    function Is_Limited_View (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
@@ -631,6 +639,9 @@ package SPARK_Atree.Entities is
      Pre  => Ekind (Obj) = E_Constant
        and then SPARK_Util.Is_Partial_View (Obj),
      Post => Ekind (Full_View'Result) = E_Constant;
+
+   function Is_Aliased (Obj : Entity_Id) return Boolean with
+     Pre => Ekind (Obj) = E_In_Parameter;
 
    function Known_Component_First_Bit (Obj : Entity_Id) return Boolean with
      Pre => Ekind (Obj) in E_Discriminant | E_Component;

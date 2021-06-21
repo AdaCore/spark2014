@@ -1,0 +1,18 @@
+validity.adb:7:13: info: types in unchecked conversion have the same size
+validity.adb:7:59: info: type is suitable as source for unchecked conversion
+
+validity.adb:7:68: high: type is unsuitable as a target for unchecked conversion
+    7 |   function Int_To_Float is new Ada.Unchecked_Conversion (Integer, Float);
+      |                                                                   ^~~~~
+  possible explanation: floating-point types have invalid bit patterns for SPARK
+
+validity.adb:11:22: warning: attribute Valid is assumed to return True
+   11 |      pragma Assert (X'Valid);
+      |                     ^~~~~~~
+validity.adb:11:22: info: assertion proved
+
+validity.adb:13:22: warning: attribute Valid is assumed to return True
+   13 |      pragma Assert (Y'Valid);
+      |                     ^~~~~~~
+validity.adb:13:22: info: assertion proved
+validity.ads:5:36: info: initialization of "Y" proved

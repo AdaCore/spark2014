@@ -1,3 +1,5 @@
-foo.adb:8:07: high: object with non-trivial address clause is not volatile
 foo.adb:8:07: info: object is suitable for aliasing via address clause (Trivial)
+foo.adb:9:07: warning: consider annotating "Result" with Async_Writers
+foo.adb:9:07: warning: indirect writes to "Result" through a potential alias are ignored
+foo.adb:9:07: warning: writing to "Result" is assumed to have no effects on other non-volatile objects
 foo.ads:3:23: info: initialization of "X" proved

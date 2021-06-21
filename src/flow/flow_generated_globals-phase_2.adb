@@ -358,6 +358,11 @@ package body Flow_Generated_Globals.Phase_2 is
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean is
       (Is_Directly_Nonreturning (To_Entity_Name (E)));
 
+   function Part_Of_Constituents (State : Entity_Name) return Name_Sets.Set
+      with Pre => GG_Is_Abstract_State (State);
+   --  Returns a set union of the known Part_Of constituents of abstract State
+   --  and the state entity itself (to represent the unknown constituents.)
+
    function Down_Project
      (Var    : Entity_Name;
       Caller : Entity_Name)
@@ -1193,6 +1198,8 @@ package body Flow_Generated_Globals.Phase_2 is
                Serialize (V.Globals.Refined, "refined_");
                if V.Kind = E_Package then
                   Serialize (V.Globals.Initializes, "initializes");
+                  Serialize (V.Globals.Refined_Initializes,
+                                                    "refined_initializes");
                end if;
                Serialize (V.Globals.Calls.Proof_Calls,
                           "calls_proof");
@@ -1240,6 +1247,7 @@ package body Flow_Generated_Globals.Phase_2 is
                G.Refined.Outputs.Clear;
 
                G.Initializes.Clear;
+               G.Refined_Initializes.Clear;
 
                G.Calls.Proof_Calls.Clear;
                G.Calls.Conditional_Calls.Clear;
@@ -1669,6 +1677,7 @@ package body Flow_Generated_Globals.Phase_2 is
          procedure Filter_Local
            (E : Entity_Name; Names : in out Name_Sets.Set)
          with Post => Names.Is_Subset (Names'Old);
+         --  Filter out items from Names declared within E
 
          procedure Fold (Folded    :        Entity_Name;
                          Analyzed  :        Entity_Name;
@@ -1919,7 +1928,9 @@ package body Flow_Generated_Globals.Phase_2 is
                return Global_Names;
 
             function Collect (Caller : Entity_Name) return Flow_Names
-            with Post => Is_Empty (Collect'Result.Proper);
+              with Post => Is_Empty (Collect'Result.Proper)
+                and then Collect'Result.Initializes.Is_Empty
+                and then Collect'Result.Refined_Initializes.Is_Empty;
 
             function Is_Empty (Globals : Global_Names) return Boolean is
               (Globals.Proof_Ins.Is_Empty
@@ -1963,10 +1974,51 @@ package body Flow_Generated_Globals.Phase_2 is
                --  ??? by keeping these separate we don't have to care about
                --  maintaing the Global_Nodes invariant.
 
+               procedure Children_Initializes (Parent : Entity_Name);
+               --  Pull objects initialized in child packages into own refined
+               --  outputs, so that Part_Ofs constituents declared in child
+               --  units contribute to the initialization of Abstract_States
+               --  declared in the parent.
+
+               --------------------------
+               -- Children_Initializes --
+               --------------------------
+
+               procedure Children_Initializes (Parent : Entity_Name) is
+               begin
+                  for Child of Child_Packages (Parent) loop
+                     Children_Initializes (Child);
+                     --  ??? generic child units should be filtered earlier
+
+                     --  Pick the Initializes contract computed in the current
+                     --  iteration of Do_Global.
+
+                     --  ??? if Patches would be a map, so we could just pick
+                     --  what we need and not scan it.
+
+                     for Patch of Patches loop
+                        if Patch.Entity = Child then
+                           Result_Outputs.Union (Patch.Contract.Initializes);
+                           Result_Inputs.Union
+                             (Patch.Contract.Proper.Inputs);
+                           Result_Proof_Ins.Union
+                             (Patch.Contract.Proper.Proof_Ins);
+                           exit;
+                        end if;
+                     end loop;
+                  end loop;
+               end Children_Initializes;
+
                Result : Flow_Names;
 
             begin
                Result.Calls := Categorize_Calls (Caller, Analyzed, Contracts);
+
+               if Caller /= Standard_Standard then
+                  Children_Initializes (Caller);
+                  Result_Outputs.Union
+                    (Contracts (Caller).Refined_Initializes);
+               end if;
 
                --  Now collect their globals
 
@@ -2052,11 +2104,15 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             Debug ("Folding", Folded);
 
+            for Child of Traversal.Scope_Map (Folded) loop
+               Fold (Child, Analyzed, Contracts, Patches);
+            end loop;
+
             --  See comment above that explains why Original is not a renaming
             if Contracts.Contains (Folded) then
                Original := Contracts (Folded);
             else
-               goto Fold_Children;
+               return;
             end if;
 
             --  First we resolve globals coming from the callees...
@@ -2102,11 +2158,6 @@ package body Flow_Generated_Globals.Phase_2 is
               (Global_Patch'(Entity   => Folded,
                              Contract => Update));
 
-            <<Fold_Children>>
-
-            for Child of Traversal.Scope_Map (Folded) loop
-               Fold (Child, Analyzed, Contracts, Patches);
-            end loop;
          end Fold;
 
          ---------------
@@ -2589,17 +2640,37 @@ package body Flow_Generated_Globals.Phase_2 is
      (State_Comp_Map (To_Entity_Name (AS)).Contains (To_Entity_Name (C)));
 
    ----------------------
+   -- Part_Of_Constituents --
+   ----------------------
+
+   function Part_Of_Constituents (State : Entity_Name) return Name_Sets.Set is
+      Part_Map_Cursor : constant Name_Graphs.Cursor :=
+        State_Part_Map.Find (State);
+   begin
+      if Name_Graphs.Has_Element (Part_Map_Cursor) then
+         return Name_Sets.Union (State_Part_Map (Part_Map_Cursor),
+            Name_Sets.To_Set (State));
+      else
+         --  [Empty set] union [State]
+         return Name_Sets.To_Set (State);
+      end if;
+   end Part_Of_Constituents;
+
+   ----------------------
    -- Get_Constituents --
    ----------------------
 
    function Get_Constituents (E : Entity_Name) return Name_Sets.Set is
       C : constant Name_Graphs.Cursor := State_Comp_Map.Find (E);
    begin
-      if Name_Graphs.Has_Element (C) then
-         return State_Comp_Map (C);
-      else
-         return State_Part_Map (E).Union (Name_Sets.To_Set (E));
-      end if;
+      --  If we have information about the refined state constituents in the
+      --  State_Comp_Map, use that. If not (e.g. we have a spec file declaring
+      --  abstract state with no body to refine it) we return the Part_Of
+      --  constituent information.
+      return (if Name_Graphs.Has_Element (C) then
+                 State_Comp_Map (C)
+              else
+                 Part_Of_Constituents (E));
    end Get_Constituents;
 
    ----------------------------
@@ -3581,20 +3652,27 @@ package body Flow_Generated_Globals.Phase_2 is
          if State_Abstractions.Contains (Var) then
 
             --  ??? recursive call to Down_Project?
-
-            if State_Refinement_Is_Visible (Var, Target_Scope) then
-               return State_Comp_Map (Var);
-            elsif Part_Of_Is_Visible (Var, Target_Scope) then
-               if State_Part_Map.Contains (Var) then
-                  return Name_Sets.Union
-                    (State_Part_Map (Var),
-                     Name_Sets.To_Set (Var));
+            declare
+               Comp_Map_Cursor : constant Name_Graphs.Cursor :=
+                 State_Comp_Map.Find (Var);
+            begin
+               if State_Refinement_Is_Visible (Var, Target_Scope) then
+                  if Name_Graphs.Has_Element (Comp_Map_Cursor) then
+                     return State_Comp_Map (Comp_Map_Cursor);
+                  else
+                     --  This case can legally occur when the package has
+                     --  a spec file which declares abstract state, but no
+                     --  body file to refine it. Since we have visible state
+                     --  refinement, there should be a Part_Of.
+                     return Part_Of_Constituents (Var);
+                  end if;
+               elsif Part_Of_Is_Visible (Var, Target_Scope) then
+                  return Part_Of_Constituents (Var);
                else
+                  --  No other information available
                   return Name_Sets.To_Set (Var);
                end if;
-            else
-               return Name_Sets.To_Set (Var);
-            end if;
+            end;
          else
             return Name_Sets.To_Set (Var);
          end if;

@@ -266,6 +266,7 @@ package body Gnat2Why.Error_Messages is
                | VC_UC_Volatile
                | VC_Memory_Leak
                | VC_Memory_Leak_At_End_Of_Scope
+               | VC_Dynamic_Accessibility_Check
                | VC_Unchecked_Union_Restriction
             =>
                return (OK => False);
@@ -657,6 +658,8 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check might fail";
          when VC_Null_Exclusion =>
             return "null exclusion check might fail";
+         when VC_Dynamic_Accessibility_Check =>
+            return "dynamic accessibility check might fail";
          when VC_Memory_Leak =>
             return "memory leak might occur";
          when VC_Memory_Leak_At_End_Of_Scope =>
@@ -725,19 +728,20 @@ package body Gnat2Why.Error_Messages is
          when VC_Subprogram_Variant        =>
             return "subprogram variant might fail";
          when VC_UC_Source               =>
-            return "type with holes is unsuitable for unchecked conversion";
+            return "type is unsuitable for unchecked conversion";
 
          when VC_UC_Target               =>
             declare
                Common : constant String :=
-                 " with constraints on bit representation is unsuitable for ";
+                 " is unsuitable ";
             begin
                if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
                then
                   return "object" & Common &
-                    "aliasing via address clause";
+                    "for aliasing via address clause";
                else
-                  return "type" & Common & "unchecked conversion";
+                  return "type" & Common
+                    & "as a target for unchecked conversion";
                end if;
             end;
 
@@ -761,7 +765,8 @@ package body Gnat2Why.Error_Messages is
               & " Program_Error";
 
          when VC_UC_Volatile =>
-            return "object with non-trivial address clause is not volatile";
+            return "object with non-trivial address clause or prefix of the " &
+              "'Address reference does not have asynchronous writers";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -1044,6 +1049,8 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check proved";
          when VC_Null_Exclusion =>
             return "null exclusion check proved";
+         when VC_Dynamic_Accessibility_Check =>
+            return "dynamic accessibility check proved";
          when VC_Memory_Leak =>
             return "absence of memory leak proved";
          when VC_Memory_Leak_At_End_Of_Scope =>
@@ -1127,7 +1134,8 @@ package body Gnat2Why.Error_Messages is
             return "alignment of overlaid objects is compatible";
 
          when VC_UC_Volatile =>
-            return "object with non-trivial address clause is volatile";
+            return "object with non-trivial address clause and prefix of the" &
+              " 'Address attribute have asynchronous writers";
 
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";

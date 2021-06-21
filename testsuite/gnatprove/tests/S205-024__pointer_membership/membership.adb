@@ -10,7 +10,5 @@ procedure Membership with SPARK_Mode is
 begin
     if Y in Ptr2 then
        Y := new Nat_Array'(1 .. 6 => 0);
-    elsif Y in X | Y then
-       pragma Assert (False);
     end if;
 end Membership;

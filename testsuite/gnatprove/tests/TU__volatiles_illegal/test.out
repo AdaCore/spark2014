@@ -1,38 +1,38 @@
-volatiles_illegal_1.adb:8:26: constituent "Vol2" introduces external property "Async_Writers" in refinement of state "State2"
-volatiles_illegal_1.adb:8:26: property is missing in abstract state declaration at volatiles_illegal_1.ads:11
-volatiles_illegal_2.ads:27:27: illegal combination of external properties (SPARK RM 7.1.2(6))
-volatiles_illegal_2.ads:31:72: expression of external state property must be static
-volatiles_illegal_2.ads:34:27: illegal combination of external properties (SPARK RM 7.1.2(6))
-volatiles_illegal_2.ads:38:27: illegal combination of external properties (SPARK RM 7.1.2(6))
-volatiles_illegal_2.ads:43:11: external property "Async_Writers" must apply to a volatile type or object
-volatiles_illegal_2.ads:47:37: unsupported aspect "Volatile" on parameter
-volatiles_illegal_2.ads:47:47: unsupported aspect "Async_Readers" on parameter
-volatiles_illegal_3.ads:20:59: volatile object cannot act as actual in generic instantiation
-volatiles_illegal_3.ads:25:21: volatile object "Vol" cannot act as global item of a function
-volatiles_illegal_3.ads:30:17: nonvolatile function "F2" cannot have a volatile parameter
-volatiles_illegal_4.adb:11:16: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
-volatiles_illegal_4.adb:19:08: corresponding formal has mode "in"
-volatiles_illegal_4.adb:19:08: effectively volatile variable "Vol1" cannot appear as actual in procedure call
-volatiles_illegal_4.adb:19:08: variable has enabled property "Effective_Reads"
-volatiles_illegal_4.adb:23:08: volatile object cannot act as actual in a call (SPARK RM 7.1.3(10))
-volatiles_illegal_5.adb:8:11: loop parameter cannot be volatile
-volatiles_illegal_5.adb:8:21: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
-volatiles_illegal_5.ads:8:04: constant cannot be volatile
-volatiles_illegal_5.ads:8:04: constant declaration requires initialization expression
-volatiles_illegal_5.ads:8:04: standalone volatile constant must be imported (RM C.6(13))
-volatiles_illegal_6.adb:5:26: constituent "Vol" introduces external property "Effective_Writes" in refinement of state "State"
-volatiles_illegal_6.adb:5:26: property is missing in abstract state declaration at volatiles_illegal_6.ads:5
-volatiles_illegal_7.adb:5:26: non-external state "State" cannot contain external constituents in refinement
-volatiles_illegal_8.adb:3:26: constituent "Different_Vol" introduces external property "Async_Readers" in refinement of state "State"
-volatiles_illegal_8.adb:3:26: property is missing in abstract state declaration at volatiles_illegal_8.ads:3
-volatiles_illegal_9.adb:11:07: effectively volatile variable "Emb_Vol" must be declared at library level (SPARK RM 7.1.3(3))
-volatiles_illegal_9.adb:20:07: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
-volatiles_illegal_10.ads:10:18: discriminant cannot be volatile
-vc3.ads:18:04: illegal combination of external properties (SPARK RM 7.1.2(6))
-vc3.ads:25:04: illegal combination of external properties (SPARK RM 7.1.2(6))
-vc3.ads:32:04: illegal combination of external properties (SPARK RM 7.1.2(6))
-vc3.ads:39:04: illegal combination of external properties (SPARK RM 7.1.2(6))
-vc3.ads:53:04: illegal combination of external properties (SPARK RM 7.1.2(6))
-vc3.ads:67:04: illegal combination of external properties (SPARK RM 7.1.2(6))
-vc3.ads:88:04: illegal combination of external properties (SPARK RM 7.1.2(6))
-vc3.ads:95:04: illegal combination of external properties (SPARK RM 7.1.2(6))
+volatiles_illegal_1.adb:8:26: error: constituent "Vol2" introduces external property "Async_Writers" in refinement of state "State2"
+volatiles_illegal_1.adb:8:26: error: property is missing in abstract state declaration at volatiles_illegal_1.ads:11
+volatiles_illegal_2.ads:27:27: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+volatiles_illegal_2.ads:31:72: error: expression of external state property must be static
+volatiles_illegal_2.ads:34:27: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+volatiles_illegal_2.ads:38:27: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+volatiles_illegal_2.ads:43:11: error: external property "Async_Writers" must apply to a volatile type or object
+volatiles_illegal_2.ads:47:37: error: unsupported aspect "Volatile" on parameter
+volatiles_illegal_2.ads:47:47: error: unsupported aspect "Async_Readers" on parameter
+volatiles_illegal_3.ads:20:59: error: volatile object cannot act as actual in generic instantiation
+volatiles_illegal_3.ads:25:21: error: volatile object "Vol" cannot act as global item of a function
+volatiles_illegal_3.ads:30:17: error: nonvolatile function "F2" cannot have a volatile parameter
+volatiles_illegal_4.adb:11:16: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+volatiles_illegal_4.adb:19:08: error: corresponding formal has mode "in"
+volatiles_illegal_4.adb:19:08: error: effectively volatile variable "Vol1" cannot appear as actual in procedure call
+volatiles_illegal_4.adb:19:08: error: variable has enabled property "Effective_Reads"
+volatiles_illegal_4.adb:23:08: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+volatiles_illegal_5.adb:8:11: error: loop parameter cannot be volatile
+volatiles_illegal_5.adb:8:21: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+volatiles_illegal_5.ads:8:04: error: constant cannot be volatile
+volatiles_illegal_5.ads:8:04: error: constant declaration requires initialization expression
+volatiles_illegal_5.ads:8:04: error: standalone volatile constant must be imported (RM C.6(13))
+volatiles_illegal_6.adb:5:26: error: constituent "Vol" introduces external property "Effective_Writes" in refinement of state "State"
+volatiles_illegal_6.adb:5:26: error: property is missing in abstract state declaration at volatiles_illegal_6.ads:5
+volatiles_illegal_7.adb:5:26: error: non-external state "State" cannot contain external constituents in refinement
+volatiles_illegal_8.adb:3:26: error: constituent "Different_Vol" introduces external property "Async_Readers" in refinement of state "State"
+volatiles_illegal_8.adb:3:26: error: property is missing in abstract state declaration at volatiles_illegal_8.ads:3
+volatiles_illegal_9.adb:11:07: error: effectively volatile variable "Emb_Vol" must be declared at library level (SPARK RM 7.1.3(3))
+volatiles_illegal_9.adb:20:07: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+volatiles_illegal_10.ads:10:18: error: discriminant cannot be volatile
+vc3.ads:18:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+vc3.ads:25:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+vc3.ads:32:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+vc3.ads:39:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+vc3.ads:53:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+vc3.ads:67:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+vc3.ads:88:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
+vc3.ads:95:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))

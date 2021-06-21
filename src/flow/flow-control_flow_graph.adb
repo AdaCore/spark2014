@@ -970,13 +970,11 @@ package body Flow.Control_Flow_Graph is
    --  the created vertex, so this procedure can be called again with another
    --  borrower.
 
-   function RHS_Split_Useful (N     : Node_Id;
+   function RHS_Split_Useful (LHS   : Node_Id;
+                              RHS   : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean
-   with Pre => Nkind (N) in N_Assignment_Statement  |
-                            N_Component_Declaration |
-                            N_Object_Declaration
-               and then Present (Expression (N));
+   with Pre => Nkind (RHS) in N_Subexpr;
    --  Checks the right hand side of an assignment statement (or the
    --  expression on an object declaration) and determines if we can
    --  perform some meaningful record-field splitting.
@@ -1308,25 +1306,16 @@ package body Flow.Control_Flow_Graph is
      (E  : Entity_Id;
       FA : in out Flow_Analysis_Graphs)
    is
-      Typ : constant Entity_Id := Get_Type (E, FA.B_Scope);
-
       M : constant Param_Mode :=
         (case Ekind (E) is
-            --  Formal parameters of mode IN with a non-constant access type
-            --  can be assigned, so we handle them very much like IN OUTs.
-            --
-            --  However, first parameter of a borrowing traversal function is
-            --  special: it is of an access type (thus appears writable), so
-            --  that the function's result is of an access type as well (so
-            --  that this result is writable), but actually this parameter
-            --  cannot be written (because functions cannot have side-effects).
+
+         --  Formal parameters of mode IN with a visibly non-constant access
+         --  type can be assigned in procedures (or procedure-like constructs
+         --  like entry) so we handle them very much like IN OUTs.
 
             when E_In_Parameter =>
-               (if Is_Access_Object_Type (Typ)
-                  and then not Is_Access_Constant (Typ)
-                  and then not
-                    (Is_Borrowing_Traversal_Function (FA.Spec_Entity)
-                     and then E = First_Formal (FA.Spec_Entity))
+               (if Is_Access_Variable (Etype (E))
+                and then Ekind (FA.Spec_Entity) in E_Procedure | E_Entry
                 then Mode_In_Out
                 else Mode_In),
 
@@ -1564,7 +1553,9 @@ package body Flow.Control_Flow_Graph is
       --  we try our best to dis-entangle the record fields so that information
       --  does not bleed all over the place) and the default case.
 
-      if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
+      if not Partial
+        and then RHS_Split_Useful (Name (N), Expression (N), FA.B_Scope)
+      then
 
          --  Deal with record self-assignments like we deal with calls to
          --  procedures with parameters of mode IN OUT, i.e. create separate
@@ -2987,7 +2978,7 @@ package body Flow.Control_Flow_Graph is
       function Variables_Initialized_By_Loop (Loop_N : Node_Id)
                                               return Flow_Id_Sets.Set
       is
-         Fully_Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Fully_Initialized : Flow_Id_Sets.Set;
 
          type Target (Valid : Boolean := False)
             is record
@@ -3035,6 +3026,11 @@ package body Flow.Control_Flow_Graph is
          --  Note: this is similar to Scope_Within, but operating on the
          --  syntactic level, because FOR loops do not act as scopes for
          --  objects declared within them.
+
+         procedure Potentially_Defined (N : Node_Id)
+           with Pre => Nkind (N) in N_Subexpr;
+         --  Examine if a subexpression N denotes an component of an array that
+         --  is fully initialized in the current loop.
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
          --  In the traversal of the loop body, this finds suitable targets
@@ -3093,8 +3089,6 @@ package body Flow.Control_Flow_Graph is
             end case;
 
             --  Extract indices (and make sure they are simple and distinct)
-
-            L := Node_Lists.Empty_List;
 
             declare
                Param_Expr  : Node_Id := First (Expressions (N)); --  LHS
@@ -3259,24 +3253,20 @@ package body Flow.Control_Flow_Graph is
                then
                   declare
                      Var : constant Node_Id := Get_Direct_Mapping_Id (F);
-                     Var_Defined : Target;
+                     pragma Assert
+                       (Nkind (Var) = N_Assignment_Statement
+                          or else
+                        Is_Actual_Parameter (Var));
+                     --  The written object is either assigned directly or via
+                     --  an output of a subprogram call.
+
+                     Var_Defined : constant Target :=
+                       Get_Array_Index
+                         (if Nkind (Var) = N_Assignment_Statement
+                          then Name (Var)
+                          else Var);
 
                   begin
-                     case Nkind (Var) is
-                        when N_Assignment_Statement =>
-                           Var_Defined := Get_Array_Index (Name (Var));
-
-                        when N_Indexed_Component =>
-                           Var_Defined := Get_Array_Index (Var);
-
-                        when N_Slice =>
-                           Var_Defined := Get_Array_Index (Var);
-
-                        when others =>
-                           raise Program_Error;
-
-                     end case;
-
                      if Var_Defined = T then
                         FA.CFG.DFS (Start         => V,
                                     Include_Start => False,
@@ -3353,6 +3343,22 @@ package body Flow.Control_Flow_Graph is
             return Present (Current_Loop_Parent (E));
          end Is_Declared_Within_Current_Loop;
 
+         -------------------------
+         -- Potentially_Defined --
+         -------------------------
+
+         procedure Potentially_Defined (N : Node_Id) is
+            T : constant Target := Get_Array_Index (N);
+         begin
+            if T.Valid
+              and then not Is_Declared_Within_Current_Loop
+                (Get_Direct_Mapping_Id (T.Var))
+              and then Fully_Defined_In_Original_Loop (T)
+            then
+               Fully_Initialized.Include (T.Var);
+            end if;
+         end Potentially_Defined;
+
          -----------------
          -- Proc_Search --
          -----------------
@@ -3384,20 +3390,7 @@ package body Flow.Control_Flow_Graph is
                   end if;
 
                when N_Assignment_Statement =>
-                  if Nkind (Name (N)) = N_Indexed_Component then
-                     declare
-                        T : constant Target := Get_Array_Index (Name (N));
-
-                     begin
-                        if T.Valid
-                          and then not Is_Declared_Within_Current_Loop
-                            (Get_Direct_Mapping_Id (T.Var))
-                          and then Fully_Defined_In_Original_Loop (T)
-                        then
-                           Fully_Initialized.Include (T.Var);
-                        end if;
-                     end;
-                  end if;
+                  Potentially_Defined (Name (N));
 
                when N_Procedure_Call_Statement
                   | N_Entry_Call_Statement
@@ -3414,23 +3407,8 @@ package body Flow.Control_Flow_Graph is
                                                  Actual : Node_Id)
                      is
                      begin
-                        if Nkind (Actual) = N_Indexed_Component then
-
-                           declare
-                              T : constant Target :=
-                                (if Ekind (Formal) = E_Out_Parameter
-                                 then Get_Array_Index (Actual)
-                                 else Null_Target);
-
-                           begin
-                              if T.Valid
-                                and then not Is_Declared_Within_Current_Loop
-                                  (Get_Direct_Mapping_Id (T.Var))
-                                and then Fully_Defined_In_Original_Loop (T)
-                              then
-                                 Fully_Initialized.Include (T.Var);
-                              end if;
-                           end;
+                        if Ekind (Formal) = E_Out_Parameter then
+                           Potentially_Defined (Actual);
                         end if;
                      end Handle_Parameter;
 
@@ -4157,7 +4135,7 @@ package body Flow.Control_Flow_Graph is
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
 
-            if RHS_Split_Useful (N, FA.B_Scope) then
+            if RHS_Split_Useful (E, Expr, FA.B_Scope) then
 
                declare
                   M : constant Flow_Id_Maps.Map := Untangle_Record_Assignment
@@ -5178,6 +5156,8 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      pragma Unmodified (Ctx);
+
       V     : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
    begin
@@ -5530,6 +5510,7 @@ package body Flow.Control_Flow_Graph is
       Ctx      : in out Context)
    is
       pragma Unreferenced (CM);
+      pragma Unmodified (Ctx);
 
       Globals : Global_Flow_Ids;
       V       : Flow_Graphs.Vertex_Id;
@@ -6048,19 +6029,21 @@ package body Flow.Control_Flow_Graph is
    -- RHS_Split_Useful --
    ----------------------
 
-   function RHS_Split_Useful (N     : Node_Id;
+   function RHS_Split_Useful (LHS   : Node_Id;
+                              RHS   : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean is
 
-      function Rec (N : Node_Id) return Boolean
+      function Is_Split_Useful (N : Node_Id) return Boolean
       with Pre => Nkind (N) in N_Subexpr;
-      --  Recursive helper function
+      --  Returns True iff assignment with expression N should be analysed
+      --  component-by-component.
 
-      ---------
-      -- Rec --
-      ---------
+      ---------------------
+      -- Is_Split_Useful --
+      ---------------------
 
-      function Rec (N : Node_Id) return Boolean is
+      function Is_Split_Useful (N : Node_Id) return Boolean is
          T : constant Entity_Id := Get_Type (N, Scope);
       begin
          if not Is_Record_Type (T)
@@ -6091,36 +6074,31 @@ package body Flow.Control_Flow_Graph is
                return True;
 
             when N_Selected_Component =>
-               return Rec (Prefix (N));
+               return Is_Split_Useful (Prefix (N));
 
             when N_Attribute_Reference =>
-               return Is_Attribute_Update (N)
-                 and then Rec (Prefix (N));
+               return Attribute_Name (N) = Name_Update
+                 and then Is_Split_Useful (Prefix (N));
 
             when N_Expression_With_Actions
                | N_Qualified_Expression
                | N_Type_Conversion
             =>
-               return Rec (Expression (N));
+               return Is_Split_Useful (Expression (N));
 
             when others =>
                return False;
          end case;
-      end Rec;
+      end Is_Split_Useful;
 
-      T : constant Entity_Id :=
-        Get_Type ((if Nkind (N) = N_Assignment_Statement then
-                      Name (N)
-                   else
-                      Defining_Identifier (N)),
-                  Scope);
+      T : constant Entity_Id := Get_Type (LHS, Scope);
 
    --  Start of processing for RHS_Split_Useful
 
    begin
       return not Is_Class_Wide_Type (T)
         and then not Is_Tagged_Type (T)
-        and then Rec (Expression (N));
+        and then Is_Split_Useful (RHS);
    end RHS_Split_Useful;
 
    ----------------------------
@@ -6590,7 +6568,7 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Ada_12
             | Pragma_Ada_2005
             | Pragma_Ada_2012
-            | Pragma_Ada_2020
+            | Pragma_Ada_2022
             | Pragma_Annotate
             | Pragma_Assume_No_Invalid_Values
             --  Pragma_Check is handled specially above
@@ -6686,7 +6664,6 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Eliminate
             | Pragma_Enable_Atomic_Synchronization
             | Pragma_Export_Object
-            | Pragma_Export_Value
             | Pragma_Export_Valued_Procedure
             | Pragma_Extend_System
             | Pragma_Extensions_Allowed
@@ -6763,7 +6740,6 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Title
             | Pragma_Unimplemented_Unit
             | Pragma_Universal_Aliasing
-            | Pragma_Universal_Data
             | Pragma_Unreferenced_Objects
             | Pragma_Unreserve_All_Interrupts
             | Pragma_Use_VADS_Size
@@ -6821,25 +6797,17 @@ package body Flow.Control_Flow_Graph is
    ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
-      Connection_Map  : Connection_Maps.Map := Connection_Maps.Empty_Map;
-      The_Context     : Context             := No_Context;
-      Preconditions   : Node_Lists.List;
-      Precon_Block    : Graph_Connections;
-      Postcon_Block   : Graph_Connections;
-      Body_N          : Node_Id;
-      Spec_N          : Node_Id;
+      Connection_Map : Connection_Maps.Map := Connection_Maps.Empty_Map;
+      The_Context    : Context             := No_Context;
+      Precon_Block   : Graph_Connections;
+      Postcon_Block  : Graph_Connections;
+      Body_N         : Node_Id;
+      Spec_N         : Node_Id;
 
    begin
       case FA.Kind is
-         when Kind_Subprogram =>
-            Body_N        := Get_Body (FA.Spec_Entity);
-            Preconditions :=
-              Get_Precondition_Expressions (FA.Spec_Entity);
-
-         when Kind_Task =>
-            --  Tasks cannot have pre- or postconditions right now. This is
-            --  a matter for the ARG perhaps.
-            Body_N := Task_Body (FA.Spec_Entity);
+         when Kind_Subprogram | Kind_Task =>
+            Body_N := Get_Body (FA.Spec_Entity);
 
          when Kind_Package =>
             Spec_N := Package_Specification (FA.Spec_Entity);
@@ -7020,9 +6988,12 @@ package body Flow.Control_Flow_Graph is
             --  Flowgraph for preconditions and left hand sides of contract
             --  cases.
             declare
-               NL : Union_Lists.List := Union_Lists.Empty_List;
+               NL : Union_Lists.List;
+
             begin
-               for Precondition of Preconditions loop
+               for Precondition of
+                 Get_Precondition_Expressions (FA.Spec_Entity)
+               loop
                   Do_Contract_Expression (Precondition,
                                           FA,
                                           Connection_Map,
@@ -7038,15 +7009,12 @@ package body Flow.Control_Flow_Graph is
             --  Flowgraph for postconditions and right hand sides of contract
             --  cases.
             declare
-               NL             : Union_Lists.List := Union_Lists.Empty_List;
-               Postconditions : Node_Lists.List;
+               NL : Union_Lists.List;
             begin
                for Refined in Boolean loop
-                  Postconditions := Get_Postcondition_Expressions
-                    (FA.Spec_Entity,
-                     Refined);
-
-                  for Postcondition of Postconditions loop
+                  for Postcondition of
+                    Get_Postcondition_Expressions (FA.Spec_Entity, Refined)
+                  loop
                      Do_Contract_Expression (Postcondition,
                                              FA,
                                              Connection_Map,
@@ -7067,12 +7035,13 @@ package body Flow.Control_Flow_Graph is
          when Kind_Package =>
             --  Flowgraph for initial_condition aspect
             declare
-               NL             : Union_Lists.List := Union_Lists.Empty_List;
-               Postconditions : constant Node_Lists.List :=
-                 Get_Postcondition_Expressions (FA.Spec_Entity,
-                                                Refined => False);
+               NL : Union_Lists.List := Union_Lists.Empty_List;
+
             begin
-               for Postcondition of Postconditions loop
+               for Postcondition of
+                 Get_Postcondition_Expressions (FA.Spec_Entity,
+                                                Refined => False)
+               loop
                   Do_Contract_Expression (Postcondition,
                                           FA,
                                           Connection_Map,

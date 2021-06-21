@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
 with Einfo.Utils;                    use Einfo.Utils;
 with Errout;                         use Errout;
+with Flow.Dynamic_Memory;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with GNATCOLL.Utils;
@@ -594,9 +595,39 @@ package body Flow_Types is
    -----------------
 
    function Is_Internal (F : Flow_Id) return Boolean is
-     (F.Kind in Direct_Mapping | Record_Field
-      and then Nkind (F.Node) in N_Entity
-      and then Is_Internal (F.Node));
+   begin
+      if F.Kind in Direct_Mapping | Record_Field then
+
+         --  The heap entity should behave as coming from source even when it
+         --  is created implicitly.
+
+         if Flow.Dynamic_Memory.Is_Heap_State (F.Node) then
+            return False;
+
+         elsif Nkind (F.Node) in N_Entity then
+            declare
+               Partial_View : constant Entity_Id :=
+                 Incomplete_Or_Partial_View (F.Node);
+               --  Flow represents deferred constants with their full views
+               --  (because messages emitted for full views are easier
+               --  to understand). Those full views are actually internal
+               --  entities, so here we must examine their partial views.
+               --  Same for incomplete and private types.
+
+            begin
+               if Present (Partial_View) then
+                  return Is_Internal (Partial_View);
+               else
+                  return Is_Internal (F.Node);
+               end if;
+            end;
+         else
+            return not Comes_From_Source (F.Node);
+         end if;
+      else
+         return False;
+      end if;
+   end Is_Internal;
 
    ---------------------
    -- Magic_String_Id --

@@ -116,8 +116,8 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.29" proved="true">
-  <proof prover="0"><result status="valid" steps="967"/></proof>
-  <proof prover="1"><result status="unknown" steps="819"/></proof>
+  <proof prover="0"><result status="valid" steps="1065"/></proof>
+  <proof prover="1"><result status="unknown" steps="811"/></proof>
   </goal>
   <goal name="def&#39;vc.30" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>

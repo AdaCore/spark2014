@@ -3,7 +3,9 @@ test_01.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_01.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
 test_01.adb:18:04: info: object is suitable for aliasing via address clause (Trivial)
-test_01.adb:18:04: info: object with non-trivial address clause is volatile (Trivial)
+test_01.adb:22:06: warning: consider annotating "Sensor" with Async_Writers
+test_01.adb:22:06: warning: indirect writes to "Sensor" through a potential alias are ignored
+test_01.adb:22:06: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 test_01.ads:5:04: info: flow dependencies proved
 test_01.ads:10:09: info: data dependencies proved
 === test_02.adb ===
@@ -11,28 +13,34 @@ test_02.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_02.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
 test_02.adb:18:04: info: object is suitable for aliasing via address clause (Trivial)
-test_02.adb:18:04: info: object with non-trivial address clause is volatile (Trivial)
+test_02.adb:22:06: warning: consider annotating "Sensor" with Async_Writers
+test_02.adb:22:06: warning: indirect writes to "Sensor" through a potential alias are ignored
+test_02.adb:22:06: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 test_02.ads:5:04: info: flow dependencies proved
 test_02.ads:10:09: info: data dependencies proved
 === test_03.adb ===
 test_03.adb:21:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:21:04: info: object with non-trivial address clause is volatile (Trivial)
+test_03.adb:23:14: warning: consider annotating "V_AR" with Async_Writers
+test_03.adb:23:14: warning: indirect writes to "V_AR" through a potential alias are ignored
+test_03.adb:23:14: warning: writing to "V_AR" is assumed to have no effects on other non-volatile objects
 test_03.adb:26:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:26:04: info: object with non-trivial address clause is volatile (Trivial)
+test_03.adb:28:14: warning: writing to "V_AW" is assumed to have no effects on other non-volatile objects
 test_03.adb:31:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:31:04: info: object with non-trivial address clause is volatile (Trivial)
+test_03.adb:33:14: warning: writing to "V_ER" is assumed to have no effects on other non-volatile objects
 test_03.adb:36:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:36:04: info: object with non-trivial address clause is volatile (Trivial)
+test_03.adb:38:14: warning: consider annotating "V_EW" with Async_Writers
+test_03.adb:38:14: warning: indirect writes to "V_EW" through a potential alias are ignored
+test_03.adb:38:14: warning: writing to "V_EW" is assumed to have no effects on other non-volatile objects
 test_03.adb:41:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:41:04: info: object with non-trivial address clause is volatile (Trivial)
+test_03.adb:43:14: warning: writing to "V_V" is assumed to have no effects on other non-volatile objects
 === test_04.adb ===
 test_04.adb:21:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:21:04: info: object with non-trivial address clause is volatile (Trivial)
+test_04.adb:23:14: warning: writing to "V_AR" is assumed to have no effects on other non-volatile objects
 test_04.adb:26:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:26:04: info: object with non-trivial address clause is volatile (Trivial)
+test_04.adb:28:14: warning: writing to "V_AW" is assumed to have no effects on other non-volatile objects
 test_04.adb:31:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:31:04: info: object with non-trivial address clause is volatile (Trivial)
+test_04.adb:33:14: warning: writing to "V_ER" is assumed to have no effects on other non-volatile objects
 test_04.adb:36:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:36:04: info: object with non-trivial address clause is volatile (Trivial)
+test_04.adb:38:14: warning: writing to "V_EW" is assumed to have no effects on other non-volatile objects
 test_04.adb:41:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:41:04: info: object with non-trivial address clause is volatile (Trivial)
+test_04.adb:43:14: warning: writing to "V_V" is assumed to have no effects on other non-volatile objects

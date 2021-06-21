@@ -218,7 +218,6 @@ package body Flow_Utility is
                     (Ekind (Called_Func) in E_Function | E_Subprogram_Type);
 
                begin
-
                   --  Ignore calls to predicate functions and don't descend
                   --  into their predicate expressions.
 
@@ -230,6 +229,9 @@ package body Flow_Utility is
                      --  parameter. If we returned Skip, we would ignore the
                      --  call entirely.
 
+                     return OK;
+
+                  elsif Is_Unchecked_Conversion_Instance (Called_Func) then
                      return OK;
                   end if;
 
@@ -4554,13 +4556,8 @@ package body Flow_Utility is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               --  Constants that are visibly of an access type are treated
-               --  like variables. Hence using Is_Access_Type instead of
-               --  Has_Access_Type here.
-
                if Ekind (E) = E_Constant then
-                  return Is_Access_Type (Etype (E))
-                    or else Has_Variable_Input (E);
+                  return Has_Variable_Input (E);
                else
                   return True;
                end if;
@@ -6208,6 +6205,7 @@ package body Flow_Utility is
                   | N_Indexed_Component
                   | N_Slice
                   | N_Selected_Component
+                  | N_Attribute_Reference
                =>
                   Prefix (N),
 
@@ -6247,6 +6245,10 @@ package body Flow_Utility is
                | N_Indexed_Component
                | N_Slice
             =>
+               return Obj;
+
+            when N_Attribute_Reference =>
+               pragma Assert (Attribute_Name (N) = Name_Access);
                return Obj;
 
             when N_Qualified_Expression

@@ -9,7 +9,7 @@ procedure Bad_Pledge_Calls_4 with SPARK_Mode is
    A  : Int_Arr;
    I  : Positive := 1;
    X  : access Integer := A (I);
-   pragma Assert (Good (X) = Good (A (I)));
+   pragma Assert (if X /= null then Good (X).all = Good (A (I)).all);
 begin
    null;
 end Bad_Pledge_Calls_4;

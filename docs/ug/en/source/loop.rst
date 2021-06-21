@@ -18,9 +18,29 @@ table of the following form:
 
 The examples in this section use the types defined in package ``Loop_Types``:
 
-.. literalinclude:: /examples/tests/loop_types/loop_types.ads
+.. literalinclude:: /examples/ug__loop_types/loop_types.ads
    :language: ada
    :linenos:
+
+As there is no built-in way to iterate over the elements of a recursive
+data structure, the first function ``For_All_List`` can be used to state that
+all elements of a list have a given property. The second variant of
+``For_All_List`` takes two lists and states that both lists have the same number
+of elements and that the corresponding elements of both lists are related by the
+given relation. The function ``At_End`` is used to
+refer to the value of a borrowed list or a local borrower at the end of the
+borrow, see :ref:`Referring to a value at the end of a borrow` for more
+explanations.
+
+.. note::
+   We cannot currently prove the termination of ``For_All_List`` for two
+   reasons. First, as it is a recursive function, we would need to provide
+   a Subprogram_Variant to prove that the call chain is bounded. Currently,
+   structural variants are not supported and we have not defined a notion of
+   length on lists. The second is that we have no way for now to state on
+   the access-to-subprogram type Property that all elements of this type
+   must terminate. Therefore, we justify these checks, see section on
+   :ref:`Justifying Check Messages`.
 
 .. index:: Loop_Invariant; rationale
 
@@ -30,7 +50,7 @@ The Need for a Loop Invariant
 Consider a simple procedure that increments its integer parameter ``X`` a
 number ``N`` of times:
 
-.. literalinclude:: /examples/tests/increment_loop/increment_loop.adb
+.. literalinclude:: /examples/ug__increment_loop/increment_loop.adb
    :language: ada
    :linenos:
 
@@ -41,7 +61,7 @@ given for a single increment in :ref:`Increment`. |GNATprove| does not manage
 to prove either the absence of overflow or the postcondition of
 ``Increment_Loop``:
 
-.. literalinclude:: /examples/tests/increment_loop/test.out
+.. literalinclude:: /examples/ug__increment_loop/test.out
    :language: none
 
 As described in :ref:`How to Write Loop Invariants`, this is because variable
@@ -50,21 +70,21 @@ it is stated in a loop invariant. If we add such a loop invariant, as suggested
 by the possible explanation in the message issued by |GNATprove|, that
 describes precisely the value of ``X`` in each iteration of the loop:
 
-.. literalinclude:: /examples/tests/increment_loop_inv/increment_loop_inv.adb
+.. literalinclude:: /examples/ug__increment_loop_inv/increment_loop_inv.adb
    :language: ada
    :linenos:
 
 then |GNATprove| proves both the absence of overflow and the postcondition of
 ``Increment_Loop_Inv``:
 
-.. literalinclude:: /examples/tests/increment_loop_inv/test.out
+.. literalinclude:: /examples/ug__increment_loop_inv/test.out
    :language: none
 
 Fortunately, many loops fall into some broad categories for which the loop
 invariant is known. In the following sections, we describe these common
 patterns of loops and their loop invariant, which involve in general iterating
-over the content of a collection (either an array or a container from the
-:ref:`Formal Containers Library`).
+over the content of a collection (either an array, a container from the
+:ref:`Formal Containers Library`, or a pointer-based linked list).
 
 .. index:: Loop_Invariant; initialization loops
 
@@ -87,7 +107,7 @@ In the simplest case, every element is assigned the same value. For example, in
 procedure ``Init_Arr_Zero`` below, value zero is assigned to every element of
 array ``A``:
 
-.. literalinclude:: /examples/tests/init_arr_zero/init_arr_zero.adb
+.. literalinclude:: /examples/ug__init_arr_zero/init_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -96,21 +116,32 @@ The loop invariant expresses that all elements up to the current loop index
 prove the postcondition of ``Init_Arr_Zero``, namely that all elements of the
 array have value zero:
 
-.. literalinclude:: /examples/tests/init_arr_zero/test.out
+.. literalinclude:: /examples/ug__init_arr_zero/test.out
    :language: none
 
-.. note::
+In the example above, pragma Annotate is used in ``Init_Arr_Zero`` to justify
+a message issued by flow analysis, about the possible read of uninitialized
+value ``A(K)`` in the loop invariant. Indeed, flow analysis is not currently
+able to infer that all elements up to the loop index ``J`` have been
+initialized, hence it issues a message that ``"A" might not be initialized``.
+For more details, see section on :ref:`Justifying Check Messages`.
 
-   Pragma Annotate is used in ``Init_Arr_Zero`` to justify a message issued by
-   flow analysis, about the possible read of uninitialized value ``A(K)`` in
-   the loop invariant. Indeed, flow analysis is not currently able to infer
-   that all elements up to the loop index ``J`` have been initialized, hence it
-   issues a message that ``"A" might not be initialized``. For more details,
-   see section on :ref:`Justifying Check Messages`.
+To verify this loop completely, it is possible to annotate ``A`` with the
+Relaxed_Initialization aspect to use proof to verify its correct initialization
+(see :ref:`Aspect Relaxed_Initialization` for more details).
+In this case, the loop invariant should be extended to state that the elements
+of ``A`` have been initialized by the loop up to the current index:
+
+.. literalinclude:: /examples/ug__init_arr_zero_relaxed_init/init_arr_zero.adb
+   :language: ada
+   :linenos:
+
+Remark that the postcondition of ``Init_Arr_Zero`` also needs to state that
+``A`` is entirely initialized by the call.
 
 Consider now a variant of the same initialization loop over a vector:
 
-.. literalinclude:: /examples/tests/init_vec_zero/init_vec_zero.adb
+.. literalinclude:: /examples/ug__init_vec_zero/init_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -124,12 +155,12 @@ from arrays whose length cannot change. With this loop invariant, |GNATprove|
 is able to prove the postcondition of ``Init_Vec_Zero``, namely that all
 elements of the vector have value zero:
 
-.. literalinclude:: /examples/tests/init_vec_zero/test.out
+.. literalinclude:: /examples/ug__init_vec_zero/test.out
    :language: none
 
 Similarly, consider a variant of the same initialization loop over a list:
 
-.. literalinclude:: /examples/tests/init_list_zero/init_list_zero.adb
+.. literalinclude:: /examples/ug__init_list_zero/init_list_zero.adb
    :language: ada
    :linenos:
 
@@ -146,7 +177,7 @@ here even if the length of the list changes. With this loop invariant,
 |GNATprove| is able to prove the postcondition of ``Init_List_Zero``, namely
 that all elements of the list have value zero:
 
-.. literalinclude:: /examples/tests/init_list_zero/test.out
+.. literalinclude:: /examples/ug__init_list_zero/test.out
    :language: none
 
 The case of sets and maps is similar to the case of lists.
@@ -161,11 +192,41 @@ The case of sets and maps is similar to the case of lists.
    the procedure (the bounds of an array are not modifiable, hence considered
    separately from the parameter mode).
 
+Consider now a variant of the same initialization loop over a pointer-based
+list:
+
+.. literalinclude:: /examples/ug__init_access_list_zero/p.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__init_access_list_zero/p.adb
+   :language: ada
+   :linenos:
+
+Like in the other variants, the postcondition of ``Init_List_Zero`` states that
+the elements of the list ``L`` after the call are all ``0``. It uses the
+``For_All_List`` function from ``Loop_Types`` to quantify over all the elements
+of the list.
+The loop iterates over the list ``L`` using a local borrower ``B`` which is
+a local variable which borrows the ownership of a part of a datastructure for
+the duration of its scope, see :ref:`Borrowing` for more details.
+The loop invariant uses the ``At_End`` function to express properties about the
+values of ``L`` and ``B`` at the end of the borrow. It states that the elements
+of ``L`` at the end of the borrow will all be ``0`` if the elements of ``B`` at
+the end of the borrow are all ``0``. This is provable because we know while
+verifying the invariant that the already traversed elements were all set to
+``0`` and that they can no longer be changed during the scope of ``B``. With
+this loop invariant, |GNATprove| is able to prove the postcondition of
+``Init_List_Zero``:
+
+.. literalinclude:: /examples/ug__init_access_list_zero/test.out
+   :language: none
+
 Consider now a case where the value assigned to each element is not the
 same. For example, in procedure ``Init_Arr_Index`` below, each element of array
 ``A`` is assigned the value of its index:
 
-.. literalinclude:: /examples/tests/init_arr_index/init_arr_index.adb
+.. literalinclude:: /examples/ug__init_arr_index/init_arr_index.adb
    :language: ada
    :linenos:
 
@@ -174,7 +235,19 @@ The loop invariant expresses that all elements up to the current loop index
 able to prove the postcondition of ``Init_Arr_Index``, namely that all elements
 of the array have the value of their index:
 
-.. literalinclude:: /examples/tests/init_arr_index/test.out
+.. literalinclude:: /examples/ug__init_arr_index/test.out
+   :language: none
+
+As for ``Init_Arr_Zero`` above, it is possible to annotate ``A`` with the
+Relaxed_Initialization aspect to use proof to verify its correct initialization:
+
+.. literalinclude:: /examples/ug__init_arr_index_relaxed_init/init_arr_index.adb
+   :language: ada
+   :linenos:
+
+Everything is proved by |GNATprove|:
+
+.. literalinclude:: /examples/ug__init_arr_index_relaxed_init/test.out
    :language: none
 
 Similarly, variants of ``Init_Vec_Zero`` and ``Init_List_Zero`` that assign a
@@ -202,7 +275,7 @@ In the simplest case, every element is assigned a new value based only on its
 initial value. For example, in procedure ``Map_Arr_Incr`` below, every element
 of array ``A`` is incremented by one:
 
-.. literalinclude:: /examples/tests/map_arr_incr/map_arr_incr.adb
+.. literalinclude:: /examples/ug__map_arr_incr/map_arr_incr.adb
    :language: ada
    :linenos:
 
@@ -211,7 +284,7 @@ The loop invariant expresses that all elements up to the current loop index
 invariant, |GNATprove| is able to prove the postcondition of ``Map_Arr_Incr``,
 namely that all elements of the array have been incremented:
 
-.. literalinclude:: /examples/tests/map_arr_incr/test.out
+.. literalinclude:: /examples/ug__map_arr_incr/test.out
    :language: none
 
 Note that the commented loop invariant expressing that other elements have not
@@ -220,7 +293,7 @@ Generated Loop Invariants`.
 
 Consider now a variant of the same initialization loop over a vector:
 
-.. literalinclude:: /examples/tests/map_vec_incr/map_vec_incr.adb
+.. literalinclude:: /examples/ug__map_vec_incr/map_vec_incr.adb
    :language: ada
    :linenos:
 
@@ -235,12 +308,12 @@ loop (using attributes ``Loop_Entry`` and ``Old``).
 With this loop invariant, |GNATprove| is able to prove the postcondition of
 ``Map_Vec_Incr``, namely that all elements of the vector have been incremented:
 
-.. literalinclude:: /examples/tests/map_vec_incr/test.out
+.. literalinclude:: /examples/ug__map_vec_incr/test.out
    :language: none
 
-Similarly, consider a variant of the same initialization loop over a list:
+Similarly, consider a variant of the same mapping loop over a list:
 
-.. literalinclude:: /examples/tests/map_list_incr/map_list_incr.adb
+.. literalinclude:: /examples/ug__map_list_incr/map_list_incr.adb
    :language: ada
    :linenos:
 
@@ -253,8 +326,99 @@ elements of the list both in the invariant and in the postcondition. With this
 loop invariant, |GNATprove| is able to prove the postcondition of
 ``Map_List_Incr``, namely that all elements of the list have been incremented:
 
-.. literalinclude:: /examples/tests/map_list_incr/test.out
+.. literalinclude:: /examples/ug__map_list_incr/test.out
    :language: none
+
+Finally, consider a variant of the same mapping loop over a pointer-based
+list:
+
+.. literalinclude:: /examples/ug__map_access_list_incr/p.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__map_access_list_incr/p.adb
+   :language: ada
+   :linenos:
+
+Like in the other variants, the precondition of ``Map_List_Incr`` states that
+all elements of the input list ``L`` are less than ``Component_T'Last`` before
+the call. It uses the ``For_All_List`` function from ``Loop_Types`` to
+quantify over all the elements of the list. The postcondition is weaker than in
+other variants of the loop. Indeed, referring to the value of a pointer-based
+datastructure before the call is not allowed in the |SPARK| language.
+Therefore we changed the postcondition to state instead that
+all elements of the list are bigger than ``Component_T'First`` after the call.
+
+The loop iterates over the list ``L`` using a local borrower ``B`` which is
+a local variable which borrows the ownership of a part of a datastructure for
+the duration of its scope, see :ref:`Borrowing` for more details.
+The loop invariant is made of two parts. The first one states that the initial
+property still holds on the elements of ``L`` accessible through ``B``. The
+second uses the ``At_End`` function to express properties about the values
+of ``L`` and ``B`` at the end of the borrow. It states that the elements of
+``L`` at the end of the borrow will have the ``Bigger_Than_First`` property
+if the elements of ``B`` at the end of the borrow have this property. This is
+provable because we know when verifying the invariant that the already traversed
+elements currently have the ``Bigger_Than_First`` property and that they can
+no longer be changed during the scope of ``B``. With this
+loop invariant, |GNATprove| is able to prove the postcondition of
+``Map_List_Incr``:
+
+.. literalinclude:: /examples/ug__map_access_list_incr/test.out
+   :language: none
+
+If we want to retain the most precise postcondition relating the elements of
+the structure before and after the loop, we need to introduce a way to store
+the values of the list before the call in a separate data structure. In the
+following example, it is done by declaring a ``Copy`` function which returns
+a copy of its input list. In its postcondition, we use the two-valued
+``For_All_List`` function to state that the elements of the new structure
+are equal to the elements of the input structure. An alternative could be
+to store the elements in a structure not subjected to ownership like an array.
+
+.. note::
+
+   The function ``Copy`` is marked as ``Import`` because it cannot be
+   implemented in |SPARK|. Indeed, the ownership policy requires the new
+   structure to be independent of the input one, and memory allocation is not
+   allowed in regular functions (it is considered to depend on a volatile state
+   representing the memory).
+
+.. literalinclude:: /examples/ug__long__map_access_list_incr_copy/p.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__long__map_access_list_incr_copy/p.adb
+   :language: ada
+   :linenos:
+
+The postcondition of ``Map_List_Incr`` is similar to the postcondition of
+``Copy``. It uses the two-valued ``For_All_List`` function to relate the
+elements of ``L`` before and after the call. Like in the previous variant, the
+loop traverses ``L`` using a local borrower ``B``. To be able to speak
+about the initial value of ``L`` in the invariant, we introduce a ghost
+constant ``L_Old`` storing a copy of this value. As we need to traverse both
+lists at the same time, we declare a ghost variable ``B_Old`` as a local
+observer of ``L_Old``.
+
+The loop invariant is made of three parts now. The first one is similar to the
+one in the previous example. The third loop invariant is a direct adaptation of
+the second loop invariant of the previous example. It states that if, at the end
+of the borrow, the values accessible through ``B`` are related to their
+equivalent element in ``B_Old`` through ``Is_Incr``, then so are all the
+elements of ``L``. The loop invariant in the middle states that the elements
+reachable through ``B`` have not been modified by the loop. |GNATprove| can
+verify these loop invariants as well as the postcondition of ``Map_List_Incr``:
+
+.. literalinclude:: /examples/ug__long__map_access_list_incr_copy/test.out
+   :language: none
+
+.. note::
+
+   The second loop invariant does not subsume the first. Indeed, proving that,
+   if all elements of ``L_Old`` are small enough, so are all elements of an
+   unknown observer ``B_Old`` of ``L_Old``, is beyond the capacity of
+   |GNATprove|.
 
 .. index:: Loop_Invariant; validation loops
 
@@ -278,7 +442,7 @@ from the loop if an invalid value if encountered:
 Consider a procedure ``Validate_Arr_Zero`` that checks that all elements of an
 array ``A`` have value zero:
 
-.. literalinclude:: /examples/tests/validate_arr_zero/validate_arr_zero.adb
+.. literalinclude:: /examples/ug__validate_arr_zero/validate_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -287,12 +451,12 @@ The loop invariant expresses that all elements up to the current loop index
 the postcondition of ``Validate_Arr_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if all elements of the array have value zero:
 
-.. literalinclude:: /examples/tests/validate_arr_zero/test.out
+.. literalinclude:: /examples/ug__validate_arr_zero/test.out
    :language: none
 
 Consider now a variant of the same validation loop over a vector:
 
-.. literalinclude:: /examples/tests/validate_vec_zero/validate_vec_zero.adb
+.. literalinclude:: /examples/ug__validate_vec_zero/validate_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -305,12 +469,12 @@ able to prove the postcondition of ``Validate_Vec_Zero``, namely that output
 parameter ``Success`` is True if-and-only-if all elements of the vector have
 value zero:
 
-.. literalinclude:: /examples/tests/validate_vec_zero/test.out
+.. literalinclude:: /examples/ug__validate_vec_zero/test.out
    :language: none
 
 Similarly, consider a variant of the same validation loop over a list:
 
-.. literalinclude:: /examples/tests/validate_list_zero/validate_list_zero.adb
+.. literalinclude:: /examples/ug__validate_list_zero/validate_list_zero.adb
    :language: ada
    :linenos:
 
@@ -321,10 +485,32 @@ invariant, |GNATprove| is able to prove the postcondition of
 ``Validate_List_Zero``, namely that output parameter ``Success`` is True
 if-and-only-if all elements of the list have value zero:
 
-.. literalinclude:: /examples/tests/validate_list_zero/test.out
+.. literalinclude:: /examples/ug__validate_list_zero/test.out
    :language: none
 
 The case of sets and maps is similar to the case of lists.
+
+Consider now a variant of the same validation loop over a pointer-based list:
+
+.. literalinclude:: /examples/ug__validate_access_list_zero/p.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__validate_access_list_zero/p.adb
+   :language: ada
+   :linenos:
+
+The loop is implemented using a local observer (see :ref:`Observing`) which
+borrows a read-only permission over a part of a datastructure until the end
+of the scope of the observer. In the loop invariant, we cannot, like in
+the other versions of the algorithm, speak about the value of the elements
+which have already been traversed to say that they are all ``0``. Instead,
+we state that the list ``L`` only contains ``0`` iff ``C`` only contains ``0``.
+This is true since the loop exits as soon as a non-zero value is encountered.
+With this invariant, the postcondition can be proved by |GNATprove|:
+
+.. literalinclude:: /examples/ug__validate_access_list_zero/test.out
+   :language: none
 
 A variant of the previous validation pattern is to continue validating elements
 even after an invalid value has been encountered, which allows for example
@@ -345,7 +531,7 @@ logging all invalid values:
 Consider a variant of ``Validate_Arr_Zero`` that keeps validating elements of
 the array after a non-zero element has been encountered:
 
-.. literalinclude:: /examples/tests/validate_full_arr_zero/validate_full_arr_zero.adb
+.. literalinclude:: /examples/ug__validate_full_arr_zero/validate_full_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -357,7 +543,7 @@ postcondition of ``Validate_Full_Arr_Zero``, which is the same as the
 postcondition of ``Validate_Arr_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if all elements of the array have value zero:
 
-.. literalinclude:: /examples/tests/validate_full_arr_zero/test.out
+.. literalinclude:: /examples/ug__validate_full_arr_zero/test.out
    :language: none
 
 Similarly, variants of ``Validate_Vec_Zero`` and ``Validate_List_Zero`` that
@@ -387,7 +573,7 @@ of the collection that satisfy a given criterion:
 Consider a procedure ``Count_Arr_Zero`` that counts elements with value zero
 in array ``A``:
 
-.. literalinclude:: /examples/tests/count_arr_zero/count_arr_zero.adb
+.. literalinclude:: /examples/ug__count_arr_zero/count_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -399,12 +585,12 @@ With this loop invariant, |GNATprove| is able to prove the postcondition of
 number bounded by the length of the array ``A``, and that ``Counter`` is equal
 to zero exactly when all elements in ``A`` have a non-zero value:
 
-.. literalinclude:: /examples/tests/count_arr_zero/test.out
+.. literalinclude:: /examples/ug__count_arr_zero/test.out
    :language: none
 
 Consider now a variant of the same counting loop over a vector:
 
-.. literalinclude:: /examples/tests/count_vec_zero/count_vec_zero.adb
+.. literalinclude:: /examples/ug__count_vec_zero/count_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -417,7 +603,7 @@ is a natural number bounded by the length of the vector ``V``, and that
 ``Counter`` is equal to zero exactly when all elements in ``V`` have a non-zero
 value:
 
-.. literalinclude:: /examples/tests/count_vec_zero/test.out
+.. literalinclude:: /examples/ug__count_vec_zero/test.out
    :language: none
 
 .. index:: Loop_Invariant; search loops
@@ -442,7 +628,7 @@ collection that meets a given search criterion:
 Consider a procedure ``Search_Arr_Zero`` that searches an element with value
 zero in array ``A``:
 
-.. literalinclude:: /examples/tests/search_arr_zero/search_arr_zero.adb
+.. literalinclude:: /examples/ug__search_arr_zero/search_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -452,12 +638,12 @@ prove the postcondition of ``Search_Arr_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if there is an element of the array that has
 value zero, and that ``Pos`` is the index of such an element:
 
-.. literalinclude:: /examples/tests/search_arr_zero/test.out
+.. literalinclude:: /examples/ug__search_arr_zero/test.out
    :language: none
 
 Consider now a variant of the same search loop over a vector:
 
-.. literalinclude:: /examples/tests/search_vec_zero/search_vec_zero.adb
+.. literalinclude:: /examples/ug__search_vec_zero/search_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -467,12 +653,12 @@ is able to prove the postcondition of ``Search_Vec_Zero``, namely that output
 parameter ``Success`` is True if-and-only-if there is an element of the vector
 that has value zero, and that ``Pos`` is the index of such an element:
 
-.. literalinclude:: /examples/tests/search_vec_zero/test.out
+.. literalinclude:: /examples/ug__search_vec_zero/test.out
    :language: none
 
 Similarly, consider a variant of the same search loop over a list:
 
-.. literalinclude:: /examples/tests/search_list_zero/search_list_zero.adb
+.. literalinclude:: /examples/ug__search_list_zero/search_list_zero.adb
    :language: ada
    :linenos:
 
@@ -482,12 +668,43 @@ the postcondition of ``Search_List_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if there is an element of the list that has
 value zero, and that ``Pos`` is the cursor of such an element:
 
-.. literalinclude:: /examples/tests/search_list_zero/test.out
+.. literalinclude:: /examples/ug__search_list_zero/test.out
    :language: none
 
-The case of sets and maps is similar to the case of lists. For more complex
-examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
-on :ref:`How to Write Loop Invariants`.
+The case of sets and maps is similar to the case of lists.
+
+Consider a variant of the same search loop over a pointer-based list:
+
+.. literalinclude:: /examples/ug__search_access_list_zero/p.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__search_access_list_zero/p.adb
+   :language: ada
+   :linenos:
+
+As our pointer-based lists do not support cursors, the result of the search
+is a pointer inside the list which can be used to access or even update the
+corresponding element. Storing such an object inside an OUT parameter would
+break the ownership model of SPARK by creating an alias. Instead, we use a
+traversal function (see :ref:`Traversal Functions`) to return this pointer
+as a local borrower of the input list. Since we now have a function, we can
+no longer have an explicit ``Success`` flag to encode whether or not the value
+was found. Instead, we simply return ``null`` in case of failure.
+
+The loop iterates over the input list ``L`` using a local borrower ``B``. The
+iteration stops when either ``B`` is ``null`` or ``B.Value`` is zero. In the
+loop invariant, we cannot speak directly about the elements of ``L`` that have
+been traversed to say that they are not ``0``. Instead, we write in the
+invariant that ``L`` contains only non-zero values iff ``B`` contains only
+non-zero values. Thanks to this loop invariant, |GNATprove| is able to verify
+the postcondition of ``Search_List_Zero``:
+
+.. literalinclude:: /examples/ug__search_access_list_zero/test.out
+   :language: none
+
+For more complex examples of search loops, see the :ref:`SPARK Tutorial` as
+well as the section on :ref:`How to Write Loop Invariants`.
 
 .. index:: Loop_Invariant; maximize loops
 
@@ -511,7 +728,7 @@ collection that maximizes a given optimality criterion:
 Consider a procedure ``Search_Arr_Max`` that searches an element maximum value
 in array ``A``:
 
-.. literalinclude:: /examples/tests/search_arr_max/search_arr_max.adb
+.. literalinclude:: /examples/ug__search_arr_max/search_arr_max.adb
    :language: ada
    :linenos:
 
@@ -524,12 +741,12 @@ position ``Pos`` for the optimum is not recorded. With this loop invariant,
 that output parameter ``Max`` is the maximum of the elements in the array, and
 that ``Pos`` is the index of such an element:
 
-.. literalinclude:: /examples/tests/search_arr_max/test.out
+.. literalinclude:: /examples/ug__search_arr_max/test.out
    :language: none
 
 Consider now a variant of the same search loop over a vector:
 
-.. literalinclude:: /examples/tests/search_vec_max/search_vec_max.adb
+.. literalinclude:: /examples/ug__search_vec_max/search_vec_max.adb
    :language: ada
    :linenos:
 
@@ -543,12 +760,12 @@ to prove the postcondition of ``Search_Vec_Max``, namely that output parameter
 ``Max`` is the maximum of the elements in the vector, and that ``Pos`` is the
 index of such an element:
 
-.. literalinclude:: /examples/tests/search_vec_max/test.out
+.. literalinclude:: /examples/ug__search_vec_max/test.out
    :language: none
 
 Similarly, consider a variant of the same search loop over a list:
 
-.. literalinclude:: /examples/tests/search_list_max/search_list_max.adb
+.. literalinclude:: /examples/ug__search_list_max/search_list_max.adb
    :language: ada
    :linenos:
 
@@ -565,10 +782,58 @@ invariant, |GNATprove| is able to prove the postcondition of
 ``Search_List_Max``, namely that output parameter ``Max`` is the maximum of the
 elements in the list, and that ``Pos`` is the cursor of such an element:
 
-.. literalinclude:: /examples/tests/search_list_max/test.out
+.. literalinclude:: /examples/ug__search_list_max/test.out
    :language: none
 
-The case of sets and maps is similar to the case of lists. For more complex
+The case of sets and maps is similar to the case of lists.
+
+Consider a variant of the same search loop over a pointer-based list:
+
+.. literalinclude:: /examples/ug__search_access_list_max/p.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__search_access_list_max/p.adb
+   :language: ada
+   :linenos:
+
+As our pointer-based lists do not support cursors, the result of the search
+is a pointer inside the list which can be used to access or even update the
+corresponding element. Storing such an object inside an OUT parameter would
+break the ownership model of SPARK by creating an alias. Instead, we use a
+traversal function (see :ref:`Traversal Functions`) to return this pointer
+as a local borrower of the input list. Since we now have a function, we can
+no longer explicitely return the value of the maximum. It is not a problem,
+as it can be accessed easily as the ``Value`` component of the returned
+pointer. In the postcondition of ``Search_List_Max``, we cannot use
+``For_All_List`` to express that the returned pointer designates the maximum
+value in the list. Indeed, the property depends on the value of this maximum.
+Instead, we create a specific recursive function taking the maximum as an
+additional parameter.
+
+The iteration over the input list ``L`` uses a local borrower ``B``. It is
+expressed as two nested loops. The inner loop declares a local borrower ``Prec``
+to register the current value of the maximum. Then it iterates through the loop
+using ``B`` until a value bigger than the current maximum is found. The outer
+loop repeats this step as many times as necessary. This split into two loops
+is necessary as the |SPARK| language prevents borrowers from jumping into a
+different part of the data structure. As ``B`` is not syntactically a path
+rooted at ``Prec``, ``Prec`` cannot be assigned the current value of ``B`` when
+a new maximal value is found. We therefore need to create a new variable
+to hold the current maximum each time it changes.
+
+In the loop invariant of the outer loop, we cannot speak directly about the
+elements of ``L`` that have been traversed to say that they are smaller than
+the current maximum. Instead, we write in the invariant that the all values of
+``L`` are smaller than any given value bigger than the current maximum iff the
+values of ``B`` are. A similar invariant is necessary on the inner loop.
+Thanks to these loop invariants, |GNATprove| is able to verify
+the postcondition of ``Search_List_Max``:
+
+.. literalinclude:: /examples/ug__search_access_list_max/test.out
+   :language: none
+
+For more complex
 examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
 on :ref:`How to Write Loop Invariants`.
 
@@ -593,7 +858,7 @@ is the one that updates elements based on their value:
 Consider a procedure ``Update_Arr_Zero`` that sets to zero all elements in
 array ``A`` that have a value smaller than a given ``Threshold``:
 
-.. literalinclude:: /examples/tests/update_arr_zero/update_arr_zero.adb
+.. literalinclude:: /examples/ug__update_arr_zero/update_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -604,7 +869,7 @@ prove the postcondition of ``Update_Arr_Zero``, namely that all elements
 initially smaller than ``Threshold`` have been zeroed out, and that other
 elements have not been modified:
 
-.. literalinclude:: /examples/tests/update_arr_zero/test.out
+.. literalinclude:: /examples/ug__update_arr_zero/test.out
    :language: none
 
 Note that the commented loop invariant expressing that other elements have not
@@ -613,7 +878,7 @@ Generated Loop Invariants`.
 
 Consider now a variant of the same update loop over a vector:
 
-.. literalinclude:: /examples/tests/update_vec_zero/update_vec_zero.adb
+.. literalinclude:: /examples/ug__update_vec_zero/update_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -625,12 +890,12 @@ follow the current loop index have not been modified, and that the length of
 ``V`` is not modified (like in ``Init_Vec_Zero``). With this loop invariant,
 |GNATprove| is able to prove the postcondition of ``Update_Vec_Zero``:
 
-.. literalinclude:: /examples/tests/update_vec_zero/test.out
+.. literalinclude:: /examples/ug__update_vec_zero/test.out
    :language: none
 
 Similarly, consider a variant of the same update loop over a list:
 
-.. literalinclude:: /examples/tests/update_list_zero/update_list_zero.adb
+.. literalinclude:: /examples/ug__update_list_zero/update_list_zero.adb
    :language: ada
    :linenos:
 
@@ -649,10 +914,63 @@ With this loop invariant, |GNATprove| is able to prove the postcondition of
 ``Threshold`` have been zeroed out, and that other elements have not been
 modified:
 
-.. literalinclude:: /examples/tests/update_list_zero/test.out
+.. literalinclude:: /examples/ug__update_list_zero/test.out
                     :language: none
 
 The case of sets and maps is similar to the case of lists.
+
+Consider now a variant of the same update loop over a pointer-based list.
+To express the postcondition relating the elements of the structure before and
+after the loop, we need to introduce a way to store the values of the list
+before the call in a separate data structure. Indeed, the ``Old`` attribute
+cannot be used on ``L`` directly has it would introduce an alias. In this
+example, it is done by declaring a ``Copy`` function which returns
+a copy of its input list. In its postcondition, we use the two-valued
+``For_All_List`` function to state that the elements of the new structure
+are equal to the elements of its input structure. An alternative could be
+to store the elements in a structure not subjected to ownership like an array.
+
+.. note::
+
+   The function ``Copy`` is marked as ``Import`` because it cannot be
+   implemented in |SPARK|. Indeed, the ownership policy requires the new
+   structure to be independent of the input one, and memory allocation is not
+   allowed in regular functions (it is considered to depend on a volatile state
+   representing the memory).
+
+.. literalinclude:: /examples/ug__long__update_access_list_zero/p.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__long__update_access_list_zero/p.adb
+   :language: ada
+   :linenos:
+
+In the postcondition of ``Update_List_Zero``, we cannot use ``For_All_List`` to
+express the relation between the values of the list before and after the call.
+Indeed, the relation depends on the value of the input ``Threshold``.
+Instead, we create a specific recursive function taking the threshold as an
+additional parameter.
+
+The loop traverses ``L`` using a local borrower ``B``. To be able to speak
+about the initial value of ``L`` in the invariant, we introduce a ghost
+constant ``L_Old`` storing a copy of this value. As we need to traverse both
+lists at the same time, we declare a ghost variable ``B_Old`` as a local
+observer of ``L_Old``.
+
+The loop invariant is made of two parts. The first one states that the elements
+reachable through ``B`` have not been modified by the loop. In the second loop
+invariant, we want to use ``Updated_If_Less_Than_Threshold`` to relate the
+elements of ``L`` that were already traversed to the elements of ``L_Old``.
+As we cannot speak specifically about the traversed elements of ``L``, the
+invariant states that, if at the end of the borrow the values accessible
+through ``B`` are related to their equivalent element in ``B_Old`` through
+``Updated_If_Less_Than_Threshold``, then so are all the elements of ``L``.
+|GNATprove| can verify these invariants as well as the postcondition of
+``Update_List_Zero``:
+
+.. literalinclude:: /examples/ug__long__update_access_list_zero/test.out
+   :language: none
 
 The second pattern of update loops that we consider now is the one that updates
 elements based on their position:
@@ -669,7 +987,7 @@ elements based on their position:
 Consider a procedure ``Update_Range_Arr_Zero`` that sets to zero all elements
 in array ``A`` between indexes ``First`` and ``Last``:
 
-.. literalinclude:: /examples/tests/update_range_arr_zero/update_range_arr_zero.adb
+.. literalinclude:: /examples/ug__update_range_arr_zero/update_range_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -681,12 +999,12 @@ been modified (using a combination of :ref:`Attribute Loop_Entry` and
 namely that all elements between ``First`` and ``Last`` have been zeroed out,
 and that other elements have not been modified:
 
-.. literalinclude:: /examples/tests/update_range_arr_zero/test.out
+.. literalinclude:: /examples/ug__update_range_arr_zero/test.out
    :language: none
 
 Consider now a variant of the same update loop over a vector:
 
-.. literalinclude:: /examples/tests/update_range_vec_zero/update_range_vec_zero.adb
+.. literalinclude:: /examples/ug__update_range_vec_zero/update_range_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -697,12 +1015,12 @@ index ``J`` have been zeroed, and that other elements have not been modified.
 With this loop invariant, |GNATprove| is able to prove the
 postcondition of ``Update_Range_Vec_Zero``:
 
-.. literalinclude:: /examples/tests/update_range_vec_zero/test.out
+.. literalinclude:: /examples/ug__update_range_vec_zero/test.out
    :language: none
 
 Similarly, consider a variant of the same update loop over a list:
 
-.. literalinclude:: /examples/tests/update_range_list_zero/update_range_list_zero.adb
+.. literalinclude:: /examples/ug__update_range_list_zero/update_range_list_zero.adb
    :language: ada
    :linenos:
 
@@ -716,5 +1034,5 @@ modified during the loop. It is necessary to know that the two cursors ``First``
 namely that all elements between ``First`` and ``Last`` have been zeroed out,
 and that other elements have not been modified:
 
-.. literalinclude:: /examples/tests/update_range_list_zero/test.out
+.. literalinclude:: /examples/ug__update_range_list_zero/test.out
    :language: none

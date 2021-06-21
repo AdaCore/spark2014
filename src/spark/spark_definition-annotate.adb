@@ -671,9 +671,9 @@ package body SPARK_Definition.Annotate is
          E := Unique_Entity (Entity (Arg3_Exp));
       end if;
 
-      --  This entity must be a procedure
+      --  This entity must be a (generic) procedure
 
-      if Ekind (E) /= E_Procedure then
+      if Ekind (E) not in E_Procedure | E_Generic_Procedure then
          Error_Msg_N
            (Aspect_Or_Pragma
             & " Annotate Might_Not_Return must apply to a procedure",
@@ -687,7 +687,6 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with No_Return",
             Arg3_Exp);
-         return;
 
       --  The procedure should not be annotated as terminating
 
@@ -696,7 +695,6 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with Terminating",
             Arg3_Exp);
-         return;
 
       --  The procedure should not be dispatching
 
@@ -705,7 +703,6 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be dispatching",
             Arg3_Exp);
-         return;
       end if;
 
       Might_Not_Return_Annotations.Include (E);
@@ -791,7 +788,7 @@ package body SPARK_Definition.Annotate is
 
       --  It must not be a procedure with Might_Not_Return
 
-      elsif Ekind (E) = E_Procedure
+      elsif Ekind (E) in E_Procedure | E_Generic_Procedure
         and then Has_Might_Not_Return_Annotation (E)
       then
          Error_Msg_N
@@ -850,7 +847,7 @@ package body SPARK_Definition.Annotate is
    -------------------------------------
 
    function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_Procedure
+     (Ekind (E) in E_Procedure | E_Generic_Procedure
       and then Might_Not_Return_Annotations.Contains (E));
 
    -----------------------------------
@@ -919,6 +916,21 @@ package body SPARK_Definition.Annotate is
       end if;
       if Whole then
          Sloc_Range (Range_Node, Left_Sloc, Right_Sloc);
+
+         --  Sloc_Range doesn't take into account aspect specifications
+         --  attached to the node, so we do this ourselves here.
+
+         if Permits_Aspect_Specifications (Range_Node) then
+            declare
+               N : Node_Id := First (Aspect_Specifications (Range_Node));
+            begin
+               while Present (N) loop
+                  Insert_Annotate_Range
+                    (Prgma, Kind, Pattern, Reason, N, Whole);
+                  Next (N);
+               end loop;
+            end;
+         end if;
       else
          Left_Sloc := First_Sloc (Range_Node);
          Right_Sloc := First_Sloc (Prgma);

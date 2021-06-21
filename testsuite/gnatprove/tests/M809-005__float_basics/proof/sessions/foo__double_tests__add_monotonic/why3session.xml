@@ -17,15 +17,15 @@
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="225341"/></proof>
-  <proof prover="2"><result status="unknown" steps="8563"/></proof>
+  <proof prover="1"><result status="unknown" steps="287350"/></proof>
+  <proof prover="2"><result status="unknown" steps="8543"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="2"><result status="valid" steps="22794"/></proof>
+  <proof prover="2"><result status="valid" steps="22104"/></proof>
   </goal>
  </transf>
  </goal>

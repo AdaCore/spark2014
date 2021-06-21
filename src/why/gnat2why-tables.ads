@@ -25,6 +25,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Ordered_Sets;
 with Common_Containers;           use Common_Containers;
 with Einfo.Entities;              use Einfo.Entities;
 with SPARK_Util;                  use SPARK_Util;
@@ -108,7 +109,17 @@ package Gnat2Why.Tables is
    --  @param Comp component or a variant part of the record type
    --  @return component info associated to Comp in M.
 
-   function Get_Component_Set (E : Entity_Id) return Node_Sets.Set with
+   function Lt_Components (Left, Right : Entity_Id) return Boolean;
+   function Eq_Components (Left, Right : Entity_Id) return Boolean;
+   --  For operands which are components, go to the root component before doing
+   --  the comparison.
+
+   package Component_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Entity_Id,
+      "<"          => Lt_Components,
+      "="          => Eq_Components);
+
+   function Get_Component_Set (E : Entity_Id) return Component_Sets.Set with
      Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E the set of E's components. It also includes components which

@@ -1,2 +1,2 @@
-elab.ads:6:19: warning: Program_Error will be raised at run time
-elab.ads:6:19: warning: cannot call "F" before body seen
+elab.ads:6:19: warning: Program_Error will be raised at run time [enabled by default]
+elab.ads:6:19: warning: cannot call "F" before body seen [enabled by default]

@@ -105,7 +105,7 @@ type can be any value.
 The following code example shows some simple representation clauses using the
 aspect syntax:
 
-.. literalinclude:: /examples/tests/uc/uc.ads
+.. literalinclude:: /examples/ug__uc/uc.ads
    :language: ada
    :lines: 5-22
 
@@ -133,11 +133,11 @@ whose address clause is more complex than a simple address clause of the form
 
 These validity checks are illustrated in the following example:
 
-.. literalinclude:: /examples/tests/validity/validity.ads
+.. literalinclude:: /examples/ug__validity/validity.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/validity/validity.adb
+.. literalinclude:: /examples/ug__validity/validity.adb
    :language: ada
    :linenos:
 
@@ -148,7 +148,7 @@ a "high" unproved check that the unchecked conversion to ``Float`` may produce
 invalid values (for example, if an ``Integer`` is converted whose bit
 representation corresponds to a ``NaN`` float, which is not allowed in SPARK).
 
-.. literalinclude:: /examples/tests/validity/test.out
+.. literalinclude:: /examples/ug__validity/test.out
    :language: none
 
 When checking an instance of ``Unchecked_Conversion``, |GNATprove| also checks
@@ -162,7 +162,7 @@ Address clause or aspect that refers to the ``'Address`` of another object,
 The following example shows some typical usages of unchecked conversions and
 ``Object_Size`` clauses:
 
-.. literalinclude:: /examples/tests/uc/uc.ads
+.. literalinclude:: /examples/ug__uc/uc.ads
    :language: ada
    :linenos:
 
@@ -210,7 +210,7 @@ variable) is `read` when returning from the subprogram.
 aforementioned data initialization policy. For example, consider a procedure
 ``Proc`` which has a parameter and a global item of each mode:
 
-.. literalinclude:: /examples/tests/data_initialization/data_initialization.ads
+.. literalinclude:: /examples/ug__data_initialization/data_initialization.ads
    :language: ada
    :linenos:
 
@@ -219,14 +219,14 @@ but it only initalizes them partially. Similarly, procedure ``Call_Proc`` which
 calls ``Proc`` should completely initalize all of ``Proc``'s inputs prior to
 the call, but it only initalizes ``G1`` completely.
 
-.. literalinclude:: /examples/tests/data_initialization/data_initialization.adb
+.. literalinclude:: /examples/ug__data_initialization/data_initialization.adb
    :language: ada
    :linenos:
 
 On this program, |GNATprove| issues 6 high check messages, corresponding to
 the violations of the data initialization policy:
 
-.. literalinclude:: /examples/tests/data_initialization/test.out
+.. literalinclude:: /examples/ug__data_initialization/test.out
    :language: none
 
 While a user can justify individually such messages with pragma ``Annotate``
@@ -266,14 +266,14 @@ underlying allocated memory.
 
 For example, in the following example:
 
-.. literalinclude:: /examples/tests/ownership_transfer/ownership_transfer.adb
+.. literalinclude:: /examples/ug__ownership_transfer/ownership_transfer.adb
    :language: ada
    :linenos:
 
 GNATprove correctly detects that ``X.all`` can neither be read nor written
 after the assignment of ``X`` to ``Y`` and issues corresponding messages:
 
-.. literalinclude:: /examples/tests/ownership_transfer/test.out
+.. literalinclude:: /examples/ug__ownership_transfer/test.out
    :language: none
 
 At call site, ownership is similarly transferred to the callee's parameters for
@@ -282,14 +282,14 @@ arguments) when returning from the call.
 
 For example, in the following example:
 
-.. literalinclude:: /examples/tests/ownership_transfer_at_call/ownership_transfer_at_call.adb
+.. literalinclude:: /examples/ug__ownership_transfer_at_call/ownership_transfer_at_call.adb
    :language: ada
    :linenos:
 
 GNATprove correctly detects that the call to ``Proc`` cannot take ``X`` in
 argument as ``X`` is already accessed as a global variable by ``Proc``.
 
-.. literalinclude:: /examples/tests/ownership_transfer_at_call/test.out
+.. literalinclude:: /examples/ug__ownership_transfer_at_call/test.out
    :language: none
    :lines: 56-58
 
@@ -299,7 +299,7 @@ declaring a local object of an anonymous access type and initializing it with
 a part of an existing object. In the following example, ``B`` temporarily
 borrows the ownership of ``X``:
 
-.. literalinclude:: /examples/tests/ownership_borrowing/ownership_borrowing.adb
+.. literalinclude:: /examples/ug__ownership_borrowing/ownership_borrowing.adb
    :language: ada
    :linenos:
 
@@ -308,14 +308,14 @@ but complete ownership is restored to ``X`` when ``B`` goes out of scope.
 GNATprove correctly detects that reading or assigning to ``X`` in the scope of
 ``B`` is incorrect.
 
-.. literalinclude:: /examples/tests/ownership_borrowing/test.out
+.. literalinclude:: /examples/ug__ownership_borrowing/test.out
    :language: none
 
 It is also possible to only transfer read access to a local variable. This
 happens when the variable has an anonymous access-to-constant type, as in the
 following example:
 
-.. literalinclude:: /examples/tests/ownership_observing/ownership_observing.adb
+.. literalinclude:: /examples/ug__ownership_observing/ownership_observing.adb
    :language: ada
    :linenos:
 
@@ -324,7 +324,7 @@ lifetime of an observer, it is illegal to move or modify the observed object.
 GNATprove correctly flags the write inside ``X`` in the scope of ``B`` as
 illegal. Note that reading ``X`` is still possible in the scope of ``B``:
 
-.. literalinclude:: /examples/tests/ownership_observing/test.out
+.. literalinclude:: /examples/ug__ownership_observing/test.out
    :language: none
 
 Only pool-specific access types are allowed in SPARK, so it is not possible to
@@ -367,7 +367,7 @@ object` (a notion formally defined in Ada RM).
 
 For example, in the following example:
 
-.. literalinclude:: /examples/tests/aliasing/aliasing.ads
+.. literalinclude:: /examples/ug__aliasing/aliasing.ads
    :language: ada
    :linenos:
 
@@ -384,27 +384,27 @@ the case if these input parameters were of a record or array type.
 For example, here are examples of correct and illegal (according to Ada and
 SPARK rules) calls to procedure ``Whatever``:
 
-.. literalinclude:: /examples/tests/check_param_aliasing/check_param_aliasing.adb
+.. literalinclude:: /examples/ug__check_param_aliasing/check_param_aliasing.adb
    :language: ada
    :linenos:
 
 |GNATprove| (like |GNAT Pro| compiler, since these are also Ada rules)
 correctly detects the two illegal calls and issues errors:
 
-.. literalinclude:: /examples/tests/check_param_aliasing/test.out
+.. literalinclude:: /examples/ug__check_param_aliasing/test.out
    :language: none
 
 Here are other examples of correct and incorrect calls (according to SPARK
 rules) to procedure ``Whatever``:
 
-.. literalinclude:: /examples/tests/check_aliasing/check_aliasing.adb
+.. literalinclude:: /examples/ug__check_aliasing/check_aliasing.adb
    :language: ada
    :linenos:
 
 |GNATprove| correctly detects the two incorrect calls and issues high check
 messages:
 
-.. literalinclude:: /examples/tests/check_aliasing/test.out
+.. literalinclude:: /examples/ug__check_aliasing/test.out
    :language: none
    :lines: 10-12,18-20
 
@@ -445,11 +445,11 @@ Multiple error signaling mechanisms are treated the same way:
 For example, consider the artificial subprogram ``Check_OK`` which raises an
 exception when parameter ``OK`` is ``False``:
 
-.. literalinclude:: /examples/tests/abnormal_terminations/abnormal_terminations.ads
+.. literalinclude:: /examples/ug__abnormal_terminations/abnormal_terminations.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/abnormal_terminations/abnormal_terminations.adb
+.. literalinclude:: /examples/ug__abnormal_terminations/abnormal_terminations.adb
    :language: ada
    :linenos:
 
@@ -465,7 +465,7 @@ During proof, |GNATprove| generates a check that the
 thanks to the precondition of ``Check_OK`` which states that parameter
 ``OK`` should always be ``True`` on entry:
 
-.. literalinclude:: /examples/tests/abnormal_terminations/test.out
+.. literalinclude:: /examples/ug__abnormal_terminations/test.out
    :language: none
 
 |GNATprove| also checks that procedures that are marked with aspect or pragma
@@ -501,18 +501,18 @@ Such a call is in effect interpreted as an error signaling mechanism
 For example, consider the procedure ``Conditional_Exit`` which conditionally
 calls the nonterminating ``Always_Exit`` procedure:
 
-.. literalinclude:: /examples/tests/possibly_nonreturning/possibly_nonreturning.ads
+.. literalinclude:: /examples/ug__possibly_nonreturning/possibly_nonreturning.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/possibly_nonreturning/possibly_nonreturning.adb
+.. literalinclude:: /examples/ug__possibly_nonreturning/possibly_nonreturning.adb
    :language: ada
    :linenos:
 
 |GNATprove| issues an error here on the call to the possibly nonreturning
 procedure ``Conditional_Exit`` in procedure ``Regular``:
 
-.. literalinclude:: /examples/tests/possibly_nonreturning/test.out
+.. literalinclude:: /examples/ug__possibly_nonreturning/test.out
    :language: none
 
 It would be legal to call the nonreturning procedure ``Always_Exit`` from
@@ -542,25 +542,25 @@ either through a pragma or aspect.
 
 For example, consider the following generic increment procedure:
 
-.. literalinclude:: /examples/tests/instance_increment/generic_increment.ads
+.. literalinclude:: /examples/ug__instance_increment/generic_increment.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/instance_increment/generic_increment.adb
+.. literalinclude:: /examples/ug__instance_increment/generic_increment.adb
    :language: ada
    :linenos:
 
 Procedure ``Instance_Increment`` is a specific instance of
 ``Generic_Increment`` for the type ``Integer``:
 
-.. literalinclude:: /examples/tests/instance_increment/instance_increment.ads
+.. literalinclude:: /examples/ug__instance_increment/instance_increment.ads
    :language: ada
    :linenos:
 
 |GNATprove| analyzes this instantiation and reports messages on the generic
 code, always stating to which instantiation the messages correspond to:
 
-.. literalinclude:: /examples/tests/instance_increment/test.out
+.. literalinclude:: /examples/ug__instance_increment/test.out
    :language: none
 
 Thus, it is possible that some checks are proved on an instance and not on

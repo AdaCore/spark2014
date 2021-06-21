@@ -4,7 +4,7 @@ package Addr is
 
    X : Integer;
 
-   Y : Integer;
+   Y : Integer with Import;
    for Y'Address use X'Address;
    --  the above is fine as per RM
 

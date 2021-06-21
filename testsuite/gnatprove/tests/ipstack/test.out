@@ -1,3 +1,9 @@
+aip-arp.adb:325:10: warning: consider annotating "Result" with Async_Writers
+aip-arp.adb:325:10: warning: indirect writes to "Result" through a potential alias are ignored
+aip-arp.adb:325:10: warning: writing to "Result" is assumed to have no effects on other non-volatile objects
 aip-arp.adb:396:25: warning: statement has no effect
 aip-arp.adb:61:13: warning: statement has no effect
 aip-arp.ads:69:07: warning: unused variable "Netif_MAC_Addr_Ptr"
+aip-tcp.adb:2740:10: warning: consider annotating "Result" with Async_Writers
+aip-tcp.adb:2740:10: warning: indirect writes to "Result" through a potential alias are ignored
+aip-tcp.adb:2740:10: warning: writing to "Result" is assumed to have no effects on other non-volatile objects

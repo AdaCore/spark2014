@@ -12,9 +12,11 @@ anti_aliasing.adb:51:20: high: formal parameter "I" and global "Local_1" are ali
 externals.adb:27:04: high: "Out_Reg" constituent of "Complex_Device" is not written in "Externals"
 externals.adb:27:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8
 externals.adb:27:04: info: object is suitable for aliasing via address clause (Trivial)
-externals.adb:27:04: info: object with non-trivial address clause is volatile (Trivial)
+externals.adb:31:11: warning: consider annotating "Out_Reg" with Async_Writers
+externals.adb:31:11: warning: indirect writes to "Out_Reg" through a potential alias are ignored
+externals.adb:31:11: warning: writing to "Out_Reg" is assumed to have no effects on other non-volatile objects
 externals.adb:33:04: info: object is suitable for aliasing via address clause (Trivial)
-externals.adb:33:04: info: object with non-trivial address clause is volatile (Trivial)
+externals.adb:36:11: warning: writing to "In_Reg" is assumed to have no effects on other non-volatile objects
 externals.adb:43:07: info: initialization of "Temp" proved
 externals.adb:44:07: info: initialization of "Press" proved
 externals.adb:49:31: medium: overflow check might fail (e.g. when Press = -341 and Temp = -1740262) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 48 should mention Press (for argument Press) in a postcondition]
@@ -50,15 +52,19 @@ global_and_generics.ads:8:09: info: flow dependencies proved, in instantiation a
 global_and_generics.ads:12:06: info: data dependencies proved
 global_and_generics.ads:13:06: info: flow dependencies proved
 hal.adb:13:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:13:04: info: object with non-trivial address clause is volatile (Trivial)
+hal.adb:17:11: warning: writing to "Read_FIFO" is assumed to have no effects on other non-volatile objects
 hal.adb:21:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:21:04: info: object with non-trivial address clause is volatile (Trivial)
+hal.adb:25:11: warning: consider annotating "Write_FIFO" with Async_Writers
+hal.adb:25:11: warning: indirect writes to "Write_FIFO" through a potential alias are ignored
+hal.adb:25:11: warning: writing to "Write_FIFO" is assumed to have no effects on other non-volatile objects
 hal.adb:30:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:30:04: info: object with non-trivial address clause is volatile (Trivial)
+hal.adb:33:11: warning: writing to "Status" is assumed to have no effects on other non-volatile objects
 hal.adb:38:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:38:04: info: object with non-trivial address clause is volatile (Trivial)
-hal.adb:46:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
-hal.adb:46:04: info: object with non-trivial address clause is volatile (Trivial)
+hal.adb:41:11: warning: consider annotating "Control" with Async_Writers
+hal.adb:41:11: warning: indirect writes to "Control" through a potential alias are ignored
+hal.adb:41:11: warning: writing to "Control" is assumed to have no effects on other non-volatile objects
+hal.adb:46:04: high: object is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has Object_Size 8]
+hal.adb:50:11: warning: writing to "Wdog_Shared_Memory" is assumed to have no effects on other non-volatile objects
 hal.adb:70:07: info: initialization of "Current_Status" proved
 hal.adb:71:07: info: initialization of "Next_Byte" proved
 hal.adb:94:41: info: initialization of "Write_FIFO" constituent of "Serial_Out" proved
@@ -91,7 +97,7 @@ initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
 input_port.ads:6:04: info: object is suitable for aliasing via address clause (Trivial)
-input_port.ads:6:04: info: object with non-trivial address clause is volatile (Trivial)
+input_port.ads:9:11: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:26 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC4: 1 VC)
@@ -113,16 +119,20 @@ main_hal.adb:16:20: medium: missing dependency "HAL.Wdog_State => HAL.Serial_In"
 main_hal.adb:19:04: info: initialization of "Wdog_Timed_Out" proved
 main_hal.adb:20:04: info: initialization of "A_Byte" proved
 main_hal.adb:35:07: medium: "Found" might not be initialized
-multiple_ports.ads:18:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:18:04: info: object with non-trivial address clause is volatile (Trivial)
-multiple_ports.ads:27:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:27:04: info: object with non-trivial address clause is volatile (Trivial)
-multiple_ports.ads:36:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:36:04: info: object with non-trivial address clause is volatile (Trivial)
-multiple_ports.ads:42:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:42:04: info: object with non-trivial address clause is volatile (Trivial)
-multiple_ports.ads:55:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:55:04: info: object with non-trivial address clause is volatile (Trivial)
+multiple_ports.ads:18:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:20:11: warning: writing to "V_In_1" is assumed to have no effects on other non-volatile objects
+multiple_ports.ads:27:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:30:11: warning: writing to "V_In_2" is assumed to have no effects on other non-volatile objects
+multiple_ports.ads:36:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:38:11: warning: consider annotating "V_Out_1" with Async_Writers
+multiple_ports.ads:38:11: warning: indirect writes to "V_Out_1" through a potential alias are ignored
+multiple_ports.ads:38:11: warning: writing to "V_Out_1" is assumed to have no effects on other non-volatile objects
+multiple_ports.ads:42:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:45:11: warning: consider annotating "V_Out_2" with Async_Writers
+multiple_ports.ads:45:11: warning: indirect writes to "V_Out_2" through a potential alias are ignored
+multiple_ports.ads:45:11: warning: writing to "V_Out_2" is assumed to have no effects on other non-volatile objects
+multiple_ports.ads:55:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:56:11: warning: writing to "V_In_Out" is assumed to have no effects on other non-volatile objects
 outer-public_child.adb:7:15: warning: "Hidden_State" constituent of "A2" is set by "Init_A2" but not used after the call
 outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved
 outer-public_child.ads:7:14: info: data dependencies proved
@@ -141,7 +151,9 @@ outer.ads:31:17: info: data dependencies proved
 outer.ads:31:39: info: initialization of "Hidden_State" constituent of "A2" proved
 outer.ads:32:17: info: flow dependencies proved
 output_port.ads:6:04: info: object is suitable for aliasing via address clause (Trivial)
-output_port.ads:6:04: info: object with non-trivial address clause is volatile (Trivial)
+output_port.ads:9:11: warning: consider annotating "Sensor" with Async_Writers
+output_port.ads:9:11: warning: indirect writes to "Sensor" through a potential alias are ignored
+output_port.ads:9:11: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 p.ads:2:08: info: flow dependencies proved
 param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"
 param_1_illegal.adb:9:10: info: index check proved (CVC4: 2 VC)

@@ -42,6 +42,7 @@ with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Init;           use Why.Gen.Init;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Pointers;       use Why.Gen.Pointers;
 with Why.Gen.Preds;          use Why.Gen.Preds;
@@ -972,14 +973,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                         Right  => New_Pointer_Is_Null_Access
                           (Expr_Ty, At_Entry),
                         Domain => EW_Pred),
-                     2 => New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => New_Pointer_Address_Access
-                          (Expr_Ty, Expr),
-                        Right  => New_Pointer_Address_Access
-                          (Expr_Ty, At_Entry),
-                        Domain => EW_Pred),
-                     3 => +Value_Status),
+                     2 => +Value_Status),
                   Domain    => EW_Pred);
             end;
       end case;
@@ -1108,6 +1102,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                     Ada_Ent_To_Why.Element (Symbol_Table, N);
                   Expr        : constant W_Expr_Id :=
                     Reconstruct_Item (Binder, Ref_Allowed => True);
+                  Init_Id     : constant W_Expr_Id := Get_Init_Id_From_Object
+                    (N, Ref_Allowed => True);
                   Initialized : constant Boolean :=
                     (if Is_Declared_In_Unit (N, Scope) then
                           Is_Initialized_At_Decl (N)
@@ -1133,7 +1129,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                            Ty          => Etype (N),
                            Params      => Body_Params,
                            Initialized =>
-                             (if Initialized then True_Term
+                             (if Init_Id /= Why_Empty then +Init_Id
+                              elsif Initialized then True_Term
                               else False_Term)),
 
                         --  If N is a local borrower and it is modified at
@@ -1165,20 +1162,25 @@ package body Gnat2Why.Expr.Loops.Inv is
                                     Domain => EW_Pred))
                               else +True_Pred),
 
-                        --  Unmodified fields are preserved
+                        --  Unmodified fields are preserved. Nothing can be
+                        --  preserved if the variable is a scalar. Avoid
+                        --  creating a reference of Loop_Entry for such
+                        --  variable as they could generate spurious
+                        --  initialization checks.
 
-                        4 => +Equality_Of_Preserved_Components
-                          (Loop_Idx  => Loop_Index,
-                           Low_Id    => Low_Id,
-                           High_Id   => High_Id,
-                           Is_Rev    => Is_Reverse,
-                           Loop_Vars => Modified,
-                           Expr      => Expr,
-                           At_Entry  => +Name_For_Loop_Entry
-                             (Expr    => N,
-                              Loop_Id => Loop_Id),
-                           Expr_Ty   => Retysp (Etype (N)),
-                           Status    => Status)));
+                        4 => (if Has_Scalar_Type (Etype (N)) then +True_Pred
+                              else +Equality_Of_Preserved_Components
+                                (Loop_Idx  => Loop_Index,
+                                 Low_Id    => Low_Id,
+                                 High_Id   => High_Id,
+                                 Is_Rev    => Is_Reverse,
+                                 Loop_Vars => Modified,
+                                 Expr      => Expr,
+                                 At_Entry  => +Name_For_Loop_Entry
+                                   (Expr    => N,
+                                    Loop_Id => Loop_Id),
+                                 Expr_Ty   => Retysp (Etype (N)),
+                                 Status    => Status))));
                end;
             end if;
 

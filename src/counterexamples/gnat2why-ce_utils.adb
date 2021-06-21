@@ -241,10 +241,10 @@ package body Gnat2Why.CE_Utils is
             Left  : String renames Val (Val'First .. Cut);
             Right : String renames Val (Cut + 1 .. Val'Last);
          begin
-            return UI_Add (UI_Mul
-                           (UI_From_String (Left),
-                              UI_Expon (Uint_10, Int (Right'Length))),
-                           UI_From_String (Right));
+            return
+              UI_From_String (Left) * Uint_10 ** Int (Right'Length)
+                +
+              UI_From_String (Right);
          end;
    end UI_From_String;
 

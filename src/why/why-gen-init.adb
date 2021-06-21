@@ -46,10 +46,8 @@ with Why.Types;                use Why.Types;
 package body Why.Gen.Init is
 
    function New_Init_Attribute_Access
-     (E           : Entity_Id;
-      Name        : W_Expr_Id;
-      Ref_Allowed : Boolean := True)
-      return W_Expr_Id;
+     (E    : Entity_Id;
+      Name : W_Expr_Id) return W_Expr_Id;
    --  Access the initialization flag of an expression of a wrapper type
 
    ----------------------------
@@ -96,7 +94,7 @@ package body Why.Gen.Init is
          if Is_Type (E) then
             if Get_Relaxed_Init (Get_Type (+C_Expr)) then
                return +Pred_Of_Boolean_Term
-                 (+New_Init_Attribute_Access (E, +C_Expr, Ref_Allowed));
+                 (+New_Init_Attribute_Access (E, +C_Expr));
             else
                return True_Pred;
             end if;
@@ -139,7 +137,7 @@ package body Why.Gen.Init is
          --  Initialization of top level type
 
          if Has_Scalar_Type (E) then
-            P := +New_Init_Attribute_Access (E, +Name, Ref_Allowed);
+            P := +New_Init_Attribute_Access (E, +Name);
             if Domain = EW_Pred then
                P := +Pred_Of_Boolean_Term (+P);
             end if;
@@ -280,6 +278,33 @@ package body Why.Gen.Init is
       end case;
    end EW_Init_Wrapper;
 
+   -----------------------------
+   -- Get_Init_Id_From_Object --
+   -----------------------------
+
+   function Get_Init_Id_From_Object
+     (Obj         : Entity_Id;
+      Ref_Allowed : Boolean) return W_Expr_Id
+   is
+      C    : constant Ada_Ent_To_Why.Cursor :=
+        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
+      Item : Item_Type;
+   begin
+      if Ada_Ent_To_Why.Has_Element (C) then
+         Item := Ada_Ent_To_Why.Element (C);
+         if Item.Init.Present then
+            if Ref_Allowed then
+               return New_Deref
+                 (Right => Item.Init.Id,
+                  Typ   => Get_Typ (Item.Init.Id));
+            else
+               return +Item.Init.Id;
+            end if;
+         end if;
+      end if;
+      return Why_Empty;
+   end Get_Init_Id_From_Object;
+
    ---------------------------------
    -- Insert_Initialization_Check --
    ---------------------------------
@@ -343,47 +368,21 @@ package body Why.Gen.Init is
    -------------------------------
 
    function New_Init_Attribute_Access
-     (E           : Entity_Id;
-      Name        : W_Expr_Id;
-      Ref_Allowed : Boolean := True)
-      return W_Expr_Id
+     (E    : Entity_Id;
+      Name : W_Expr_Id) return W_Expr_Id
    is
       Field : W_Identifier_Id;
 
    begin
       pragma Assert (Get_Relaxed_Init (Get_Type (Name)));
 
-      --  If Name is in split form, use the Symbol_Table to get the init
-      --  attribute.
+      --  Name is necessarily in abstract form. Query the record component.
 
-      if Get_Type_Kind (Get_Type (Name)) = EW_Split then
-         declare
-            Ent : constant Item_Type :=
-              Ada_Ent_To_Why.Element
-                (Symbol_Table,
-                 Get_Entity_Of_Variable (Name));
-         begin
-            if Ent.Init.Present then
-               if Ref_Allowed then
-                  return New_Deref (Right => Ent.Init.Id,
-                                    Typ   => EW_Bool_Type);
-               else
-                  return +Ent.Init.Id;
-               end if;
-            else
-               return +True_Term;
-            end if;
-         end;
-
-      --  Otherwise, query the record component
-
-      else
-         pragma Assert (Get_Type_Kind (Get_Type (Name)) = EW_Abstract);
-         Field := E_Symb (E, WNE_Attr_Init);
-         return New_Record_Access (Name   => +Name,
-                                   Field  => Field,
-                                   Typ    => EW_Bool_Type);
-      end if;
+      pragma Assert (Get_Type_Kind (Get_Type (Name)) = EW_Abstract);
+      Field := E_Symb (E, WNE_Attr_Init);
+      return New_Record_Access (Name   => +Name,
+                                Field  => Field,
+                                Typ    => EW_Bool_Type);
    end New_Init_Attribute_Access;
 
    --------------------

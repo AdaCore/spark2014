@@ -113,9 +113,9 @@ begin
       declare
          Z : access Integer := Y.V;
       begin
-         pragma Assert (At_End_Borrow (Y.V) = At_End_Borrow (Z));
-         pragma Assert (At_End_Borrow (Y.N) = At_End_Borrow (X4.N.N.N));
-         pragma Assert (At_End_Borrow (Z) = At_End_Borrow (X4.N.N.V)); --@ASSERT:FAIL
+         pragma Assert (At_End_Borrow (Y.V).all = At_End_Borrow (Z).all);
+         pragma Assert (if At_End_Borrow (Y.N) /= null then At_End_Borrow (Y.N).V.all = At_End_Borrow (X4.N.N.N).V.all);
+         pragma Assert (At_End_Borrow (Z).all = At_End_Borrow (X4.N.N.V).all); --@ASSERT:FAIL
          Z.all := 42;
       end;
       Y := Y.N;
@@ -194,7 +194,7 @@ begin
       begin
          pragma Assert (X.G'First = 1 and X.G'Last = 2); --  not borrowed
          pragma Assert (Z.all = CF1X);
-         pragma Assert (At_End_Borrow (X.F (1).X) = At_End_Borrow (Z)); --  actually borrowed
+         pragma Assert (At_End_Borrow (X.F (1).X).all = At_End_Borrow (Z).all); --  actually borrowed
          pragma Assert (At_End_Borrow (X.F (2).X).all = CF2X); --  conservatively frozen by the borrow
          pragma Assert (X.F (1).Y.all = CF1Y); --  not borrowed
          pragma Assert (X.F (2).Y.all = CF2Y); --  not borrowed

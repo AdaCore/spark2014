@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;                            use Aspects;
 with Common_Iterators;                   use Common_Iterators;
 with Debug;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
@@ -242,6 +241,7 @@ package body SPARK_Util.Subprograms is
    begin
       while Ekind (Context) in E_Package | E_Block loop
          Context := Scope (Context);
+         exit when No (Context);
       end loop;
       return Context;
    end Enclosing_Subprogram;
@@ -1143,17 +1143,6 @@ package body SPARK_Util.Subprograms is
    function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean is
       (Is_Traversal_Function (E) and then not Is_Access_Constant (Etype (E)));
 
-   -----------------------------------------
-   -- Is_Integer_Literal_Aspect_Parameter --
-   -----------------------------------------
-
-   function Is_Integer_Literal_Aspect_Parameter (E : Entity_Id) return Boolean
-   is (Ekind (E) = E_Function
-       and then Has_Aspect (Etype (E), Aspect_Integer_Literal)
-       and then
-       Entity (Find_Value_Of_Aspect
-               (Etype (E), Aspect_Integer_Literal)) = E);
-
    ----------------------------------------
    -- Is_Invisible_Dispatching_Operation --
    ----------------------------------------
@@ -1257,17 +1246,6 @@ package body SPARK_Util.Subprograms is
                      N_Protected_Definition);
    end Is_Protected_Operation;
 
-   --------------------------------------
-   -- Is_Real_Literal_Aspect_Parameter --
-   --------------------------------------
-
-   function Is_Real_Literal_Aspect_Parameter (E : Entity_Id) return Boolean
-   is (Ekind (E) = E_Function
-       and then Has_Aspect (Etype (E), Aspect_Real_Literal)
-       and then
-       Entity (Find_Value_Of_Aspect
-               (Etype (E), Aspect_Real_Literal)) = E);
-
    -------------------------------------
    -- Is_Requested_Subprogram_Or_Task --
    -------------------------------------
@@ -1331,16 +1309,9 @@ package body SPARK_Util.Subprograms is
 
         and then Is_Anonymous_Access_Object_Type (Etype (E))
 
-        --  the function has at least one formal parameter,
+        --  and the function has at least one formal parameter.
 
-        and then Present (First_Formal (E))
-
-        --  and the function's first parameter is of an access-to-object type.
-
-        and then Is_Access_Type (Retysp (Etype (First_Formal (E))))
-        and then
-          Ekind (Directly_Designated_Type (Retysp (Etype (First_Formal (E)))))
-            /= E_Subprogram_Type;
+        and then Present (First_Formal (E));
    end Is_Traversal_Function;
 
    ----------------------------------------

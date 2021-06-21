@@ -24,7 +24,7 @@ def output_too_long(result_file):
     tmp = fd.read().splitlines()
     fd.close()
 
-    return re.search("output too long", tmp[1]) is not None
+    return len(tmp) > 1 and re.search("output too long", tmp[1]) is not None
 
 
 for result_file in glob("out/*.result"):

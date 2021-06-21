@@ -1,0 +1,3 @@
+p.ads:8:22: error: "Y" is not allowed in SPARK (due to volatile object in interfering context)
+p.ads:8:22: error: violation of aspect SPARK_Mode at line 7
+gnatprove: error during flow analysis and proof

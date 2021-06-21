@@ -1,0 +1,3 @@
+p1.adb:3:28: info: data dependencies proved
+p1.ads:1:35: warning: no procedure exists that can initialize abstract state "P1.State1"
+p1.ads:2:25: info: data dependencies proved

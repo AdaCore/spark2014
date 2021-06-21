@@ -9,6 +9,5 @@ begin
    pragma Assert (X = 0 and Y = 0 and Z = 0);
 
    X := 1;
-   pragma Assert (Y = 0); --  Not true, but GNATprove proves due to its
-                          --  ignorance for 'Address representation clause.
+   pragma Assert (Y = 0); --@ASSERT:FAIL
 end;

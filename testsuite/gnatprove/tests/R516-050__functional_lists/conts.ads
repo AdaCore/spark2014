@@ -95,7 +95,7 @@ package Conts with SPARK_Mode is
       procedure Unchecked_Free is new Ada.Unchecked_Deallocation
          (Element_Type, Element_Access);
       function To_Element_Access (E : Element_Type) return Element_Access
-         is (new Element_Type'(E));
+         is (new Element_Type'(E)) with Volatile_Function;
       function To_Element_Type (E : Element_Access) return Element_Type
          is (E.all);
       function Get_Reference (E : Element_Access) return Reference_Type

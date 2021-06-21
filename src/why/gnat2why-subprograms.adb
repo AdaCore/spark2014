@@ -60,6 +60,7 @@ with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Modules;              use Why.Atree.Modules;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
+with Why.Gen.Init;                   use Why.Gen.Init;
 with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
@@ -1108,15 +1109,20 @@ package body Gnat2Why.Subprograms is
                begin
                   if not Is_Concurrent_Type (Entity) then
                      declare
+                        Init_Id  : constant W_Expr_Id :=
+                          Get_Init_Id_From_Object (Entity, Params.Ref_Allowed);
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Invariant
-                            (Expr   =>
+                            (Expr        =>
                                +Transform_Identifier (Params   => Params,
                                                       Expr     => Entity,
                                                       Ent      => Entity,
                                                       Domain   => EW_Term),
-                             Ty     => Etype (Entity),
-                             Params => Params);
+                             Ty          => Etype (Entity),
+                             Params      => Params,
+                             Initialized =>
+                               (if Init_Id /= Why_Empty then +Init_Id
+                                else True_Term));
                      begin
                         Dynamic_Prop_Effects := +New_And_Expr
                           (Left   => +Dynamic_Prop_Effects,
@@ -4415,17 +4421,17 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Type_Has_No_Holes (Src_Ty, Valid, Explanation);
+               Suitable_For_UC (Src_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Is_Valid_Bitpattern_No_Holes (Tar_Ty, Valid, Explanation);
+               Suitable_For_UC_Target (Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Types_Have_Same_Known_Esize
+               Have_Same_Known_Esize
                  (Src_Ty, Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (E, VC_UC_Same_Size, Valid, E,
@@ -5120,10 +5126,9 @@ package body Gnat2Why.Subprograms is
                   for I in Desc_Binders'Range loop
                      Desc_Args (I) :=
                        Insert_Simple_Conversion
-                         (Domain         => EW_Term,
-                          Expr           => +Anc_Binders (I).B_Name,
-                          To             => Get_Typ (Desc_Binders (I).B_Name),
-                          Force_No_Slide => True);
+                         (Domain => EW_Term,
+                          Expr   => +Anc_Binders (I).B_Name,
+                          To     => Get_Typ (Desc_Binders (I).B_Name));
                   end loop;
 
                   Emit
@@ -5146,15 +5151,14 @@ package body Gnat2Why.Subprograms is
                            --  Conversion is needed for controlling result
 
                            Left   => Insert_Simple_Conversion
-                             (Domain         => EW_Term,
-                              Expr           => New_Function_Call
+                             (Domain => EW_Term,
+                              Expr   => New_Function_Call
                                 (Domain => EW_Term,
                                  Subp   => Descendant_E,
                                  Name   => Desc_Id,
                                  Args   => Desc_Args,
                                  Typ    => Desc_Ty),
-                              To             => Anc_Ty,
-                              Force_No_Slide => True),
+                              To     => Anc_Ty),
                            Right  => Anc_Call,
                            Domain => EW_Term)));
                end;
@@ -5289,13 +5293,12 @@ package body Gnat2Why.Subprograms is
                              (Domain   => EW_Pred,
                               Name     => Desc_Params (I).Main.B_Name,
                               Def      => Insert_Simple_Conversion
-                                (Domain         => EW_Term,
-                                 Expr           =>
+                                (Domain => EW_Term,
+                                 Expr   =>
                                    Reconstruct_Item
                                      (New_Binders (I), Ref_Allowed => False),
-                                 To             =>
-                                   Get_Typ (Desc_Params (I).Main.B_Name),
-                                 Force_No_Slide => True),
+                                 To     =>
+                                   Get_Typ (Desc_Params (I).Main.B_Name)),
                               Context  => +Desc_Post);
                            Ada_Ent_To_Why.Insert (Symbol_Table,
                                                   Ada_Node,
@@ -5343,13 +5346,12 @@ package body Gnat2Why.Subprograms is
                              (Domain   => EW_Pred,
                               Name     => Desc_Params (I).Main.B_Name,
                               Def      => Insert_Simple_Conversion
-                                (Domain         => EW_Term,
-                                 Expr           =>
+                                (Domain => EW_Term,
+                                 Expr   =>
                                    Reconstruct_Item
                                      (Old_Binders (I), Ref_Allowed => False),
-                                 To             =>
-                                   Get_Typ (Desc_Params (I).Main.B_Name),
-                                 Force_No_Slide => True),
+                                 To     =>
+                                   Get_Typ (Desc_Params (I).Main.B_Name)),
                               Context  => +Desc_Post);
                         end if;
                      end;

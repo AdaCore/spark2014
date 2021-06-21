@@ -1,4 +1,4 @@
-dimensions.ads:6:18: warning: unit "Ada.Numerics.Generic_Elementary_Functions" is not referenced
+dimensions.ads:6:18: warning: unit "Ada.Numerics.Generic_Elementary_Functions" is not referenced [-gnatwu]
 steering.adb:11:53: info: division check proved (CodePeer)
 steering.adb:11:53: info: float overflow check proved (Trivial)
 steering.adb:11:53: info: range check proved (Trivial)

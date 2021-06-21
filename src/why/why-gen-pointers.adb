@@ -308,26 +308,11 @@ package body Why.Gen.Pointers is
          Result_Null : constant W_Term_Id :=
            +New_Pointer_Is_Null_Access (E, +Result, Local => True);
 
-         Result_Address : constant W_Term_Id :=
-           +New_Pointer_Address_Access (E, +Result, Local => True);
-
          Result_Value : constant W_Term_Id :=
            +New_Pointer_Value_Access (E, E, +Result, EW_Term, Local => True);
 
          Post_Null : constant W_Expr_Id :=
            New_Not (Domain => EW_Prog, Right => +Result_Null);
-
-         Next_Address : constant W_Identifier_Id := New_Identifier
-           (Name => "__next_pointer_address",
-            Typ  => EW_Int_Type);
-
-         Post_Address : constant W_Pred_Id := +New_Comparison
-           (Symbol => Why_Eq,
-            Domain => EW_Prog,
-            Left   => +Result_Address,
-            Right  => New_Deref (Ada_Node => E,
-                                 Right    => Next_Address,
-                                 Typ      => EW_Int_Type));
 
          Post_Value : constant W_Pred_Id := +New_Comparison
            (Symbol => Why_Eq,
@@ -340,30 +325,12 @@ package body Why.Gen.Pointers is
 
          Initialized_Post : constant W_Pred_Id := +New_And_Expr
            (Domain => EW_Prog,
-            Left   => New_And_Then_Expr (Left   => +Post_Null,
-                                         Right  => +Post_Address,
-                                         Domain => EW_Prog),
+            Left   => +Post_Null,
             Right  => +Post_Value);
 
-         Uninitialized_Post : constant W_Pred_Id := +New_And_Then_Expr
-           (Domain => EW_Prog,
-            Left   => +Post_Null,
-            Right  => +Post_Address);
-
-         Address_Effects : constant W_Effects_Id :=
-           New_Effects (Writes => (1 => +Next_Address));
+         Uninitialized_Post : constant W_Pred_Id := +Post_Null;
 
       begin
-
-         --  Counter for abstract pointer addresses as global variable
-         --  ??? should be incremented
-         Emit (Th,
-               New_Global_Ref_Declaration
-                 (Name     => Next_Address,
-                  Labels   => Symbol_Sets.Empty_Set,
-                  Ref_Type => EW_Int_Type,
-                  Location => No_Location));
-
          Emit (Th,
                New_Function_Decl
                  (Domain      => EW_Prog,
@@ -372,8 +339,7 @@ package body Why.Gen.Pointers is
                   Return_Type => Abstr_Ty,
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
-                  Post        => Uninitialized_Post,
-                  Effects     => Address_Effects));
+                  Post        => Uninitialized_Post));
 
          Emit (Th,
                New_Function_Decl
@@ -383,8 +349,7 @@ package body Why.Gen.Pointers is
                   Return_Type => Abstr_Ty,
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
-                  Post        => Initialized_Post,
-                  Effects     => Address_Effects));
+                  Post        => Initialized_Post));
 
       end Declare_Allocation_Function;
 
@@ -561,15 +526,11 @@ package body Why.Gen.Pointers is
                          EW_Abstract
                            (Directly_Designated_Type (Root)),
                        Force_No_Slide => True),
-                    2 => New_Pointer_Address_Access
+                    2 => New_Pointer_Is_Null_Access
                       (E     => E,
                        Name  => +A_Ident,
                        Local => True),
-                    3 => New_Pointer_Is_Null_Access
-                      (E     => E,
-                       Name  => +A_Ident,
-                       Local => True),
-                    4 => New_Pointer_Is_Moved_Access
+                    3 => New_Pointer_Is_Moved_Access
                       (E     => E,
                        Name  => +A_Ident,
                        Local => True)),
@@ -606,13 +567,10 @@ package body Why.Gen.Pointers is
                          EW_Abstract
                            (Directly_Designated_Type (E)),
                        Force_No_Slide => True),
-                    2 => New_Pointer_Address_Access
+                    2 => New_Pointer_Is_Null_Access
                       (E     => Root,
                        Name  => +R_Ident),
-                    3 => New_Pointer_Is_Null_Access
-                      (E     => Root,
-                       Name  => +R_Ident),
-                    4 => New_Pointer_Is_Moved_Access
+                    3 => New_Pointer_Is_Moved_Access
                       (E     => Root,
                        Name  => +R_Ident)),
                  Ty    => E,
@@ -822,6 +780,7 @@ package body Why.Gen.Pointers is
                   | N_Indexed_Component
                   | N_Selected_Component
                   | N_Slice
+                  | N_Attribute_Reference
                =>
                   Borrowed_Expr := Prefix (Borrowed_Expr);
 
@@ -866,7 +825,7 @@ package body Why.Gen.Pointers is
                                            Labels   => Symbol_Sets.Empty_Set,
                                            Location => No_Location));
 
-         --  Declare a global constant for the value of the borrwoed expression
+         --  Declare a global constant for the value of the borrowed expression
          --  at the end of the borrow. We assume its value on the borrow based
          --  on the value of the borrower at the end.
 
@@ -988,7 +947,7 @@ package body Why.Gen.Pointers is
       --------------------------
 
       procedure Declare_Pointer_Type is
-         Binders_F : Binder_Array (1 .. 4);
+         Binders_F : Binder_Array (1 .. 3);
          Ty_Name   : constant W_Name_Id := To_Name (WNE_Rec_Rep);
 
       begin
@@ -1003,10 +962,6 @@ package body Why.Gen.Pointers is
             others => <>);
 
          Binders_F (3) :=
-           (B_Name => To_Local (E_Symb (E, WNE_Pointer_Address)),
-            others => <>);
-
-         Binders_F (4) :=
            (B_Name => Value_Id,
             Labels => Get_Model_Trace_Label ("'" & All_Label),
             others => <>);
@@ -1032,14 +987,6 @@ package body Why.Gen.Pointers is
            New_Identifier (Name => "b", Typ => Abstr_Ty);
 
          Sec_Condition      : W_Expr_Id;
-
-         Comparison_Address : constant W_Pred_Id :=
-           +New_Comparison
-           (Domain => EW_Pred,
-            Symbol => Why_Eq,
-            Left   => +New_Pointer_Address_Access (E, +A_Ident, Local => True),
-            Right  => +New_Pointer_Address_Access (E, +B_Ident, Local => True)
-           );
 
          Comparison_Null    : constant W_Pred_Id :=
            +New_Comparison
@@ -1072,9 +1019,7 @@ package body Why.Gen.Pointers is
             Condition => New_Not (Domain => EW_Pred,
                                   Right  => +New_Pointer_Is_Null_Access
                                     (E, +A_Ident, Local => True)),
-            Then_Part => +New_And_Expr (Left   => +Comparison_Address,
-                                        Right  => +Comparison_Value,
-                                        Domain => EW_Pred));
+            Then_Part => +Comparison_Value);
 
          Emit
            (Th,
@@ -1367,27 +1312,6 @@ package body Why.Gen.Pointers is
    end New_Ada_Pointer_Update;
 
    --------------------------------
-   -- New_Pointer_Address_Access --
-   --------------------------------
-
-   function New_Pointer_Address_Access
-     (E     : Entity_Id;
-      Name  : W_Expr_Id;
-      Local : Boolean := False)
-      return W_Expr_Id
-   is
-      Field : constant W_Identifier_Id :=
-        (if Local
-         then To_Local (E_Symb (E, WNE_Pointer_Address))
-         else E_Symb (E, WNE_Pointer_Address));
-
-   begin
-      return New_Record_Access (Name  => +Name,
-                                Field => Field,
-                                Typ   => EW_Int_Type);
-   end New_Pointer_Address_Access;
-
-   --------------------------------
    -- New_Pointer_Is_Null_Access --
    --------------------------------
 
@@ -1555,7 +1479,6 @@ package body Why.Gen.Pointers is
       E        : constant Entity_Id := I.Value.Ada_Node;
       Ty       : constant Entity_Id := Etype (E);
       Value    : W_Expr_Id;
-      Addr     : W_Expr_Id;
       Is_Null  : W_Expr_Id;
       Is_Moved : W_Expr_Id;
 
@@ -1568,10 +1491,8 @@ package body Why.Gen.Pointers is
       end if;
 
       if I.Mutable and then Ref_Allowed then
-         Addr := New_Deref (E, I.Address, Get_Typ (I.Address));
          Is_Null := New_Deref (E, I.Is_Null, Get_Typ (I.Is_Null));
       else
-         Addr := +I.Address;
          Is_Null := +I.Is_Null;
       end if;
 
@@ -1583,7 +1504,7 @@ package body Why.Gen.Pointers is
 
       return Pointer_From_Split_Form
         (Ada_Node => E,
-         A        => (1 => Value, 2 => Addr, 3 => Is_Null, 4 => Is_Moved),
+         A        => (1 => Value, 2 => Is_Null, 3 => Is_Moved),
          Ty       => Ty);
    end Pointer_From_Split_Form;
 
@@ -1596,14 +1517,12 @@ package body Why.Gen.Pointers is
    is
       Ty_Ext     : constant Entity_Id := Retysp (Ty);
       Value      : W_Expr_Id := A (1);
-      Addr       : constant W_Expr_Id := A (2);
-      Is_Null    : constant W_Expr_Id := A (3);
-      Is_Moved   : constant W_Expr_Id := A (4);
+      Is_Null    : constant W_Expr_Id := A (2);
+      Is_Moved   : constant W_Expr_Id := A (3);
       S_Value    : W_Identifier_Id :=
         (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
          then E_Symb (Ty_Ext, WNE_Pointer_Value_Abstr)
          else E_Symb (Ty_Ext, WNE_Pointer_Value));
-      S_Addr     : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Pointer_Address);
       S_Is_Null  : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Null_Pointer);
       S_Is_Moved : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Moved_Pointer);
 
@@ -1612,7 +1531,6 @@ package body Why.Gen.Pointers is
 
       if Local then
          S_Value := To_Local (S_Value);
-         S_Addr := To_Local (S_Addr);
          S_Is_Null := To_Local (S_Is_Null);
          S_Is_Moved := To_Local (S_Is_Moved);
       end if;
@@ -1638,13 +1556,9 @@ package body Why.Gen.Pointers is
                  Value  => Value),
             2 => New_Field_Association
                 (Domain => EW_Term,
-                 Field  => S_Addr,
-                 Value  => Addr),
-            3 => New_Field_Association
-                (Domain => EW_Term,
                  Field  => S_Is_Null,
                  Value  => Is_Null),
-            4 => New_Field_Association
+            3 => New_Field_Association
                 (Domain => EW_Term,
                  Field  => S_Is_Moved,
                  Value  => Is_Moved)),

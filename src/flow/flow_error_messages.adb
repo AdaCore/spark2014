@@ -84,6 +84,16 @@ package body Flow_Error_Messages is
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
 
+   function Get_Explanation
+     (N           : Node_Id;
+      Tag         : VC_Kind;
+      Explanation : String) return String;
+   --  @param N node associated to an unproved check
+   --  @param Tag associated unproved check
+   --  @param Explanation if non-empty, explanation passed on by the caller
+   --  @result message part suggesting a possible explanation for why the check
+   --    was not unproved
+
    function Get_Filtered_Variables_For_Proof
      (Expr    : Node_Id;
       Context : Node_Id)
@@ -92,9 +102,10 @@ package body Flow_Error_Messages is
    --  special variables __HEAP and SPARK.Heap.Dynamic_Memory used to model
    --  (de)allocation.
 
-   function Get_Fix (N          : Node_Id;
-                     Tag        : VC_Kind;
-                     How_Proved : Prover_Category) return String;
+   function Get_Fix
+     (N          : Node_Id;
+      Tag        : VC_Kind;
+      How_Proved : Prover_Category) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
    --  @param How_Proved should be PC_Trivial if the check is static
@@ -210,7 +221,8 @@ package body Flow_Error_Messages is
      (S    : Unbounded_String;
       F    : Flow_Id;
       Flag : Source_Ptr)
-      return Unbounded_String;
+      return Unbounded_String
+   with Pre => not Is_Internal (F);
    --  Find the first '&' or '%' and substitute with the given flow id, with or
    --  without enclosing quotes respectively. Alternatively, '#' works like
    --  '&', but is followed by a line reference. Use '@' to substitute only
@@ -773,10 +785,15 @@ package body Flow_Error_Messages is
                           Message & " [reason for check: " & Details & "]";
                      end if;
 
-                     if Explanation /= "" then
-                        Message := Message
-                          & " [possible explanation: " & Explanation & "]";
-                     end if;
+                     declare
+                        Expl : constant String :=
+                          Get_Explanation (N, Tag, Explanation);
+                     begin
+                        if Expl /= "" then
+                           Message := Message
+                             & " [possible explanation: " & Expl & "]";
+                        end if;
+                     end;
 
                      declare
                         Fix : constant String := Get_Fix (N, Tag, How_Proved);
@@ -815,12 +832,17 @@ package body Flow_Error_Messages is
                            Span, Severity, Continuation => True);
                      end if;
 
-                     if Explanation /= "" then
-                        Ignore_Id := Print_Regular_Msg
-                          (SGR_Note & "possible explanation: " & SGR_Reset
-                           & Explanation,
-                           Span, Severity, Continuation => True);
-                     end if;
+                     declare
+                        Expl : constant String :=
+                          Get_Explanation (N, Tag, Explanation);
+                     begin
+                        if Expl /= "" then
+                           Ignore_Id := Print_Regular_Msg
+                             (SGR_Note & "possible explanation: " & SGR_Reset
+                              & Expl,
+                              Span, Severity, Continuation => True);
+                        end if;
+                     end;
 
                      declare
                         Fix : constant String := Get_Fix (N, Tag, How_Proved);
@@ -1204,6 +1226,55 @@ package body Flow_Error_Messages is
             return "";
       end case;
    end Get_Details;
+
+   ---------------------
+   -- Get_Explanation --
+   ---------------------
+
+   function Get_Explanation
+     (N           : Node_Id;
+      Tag         : VC_Kind;
+      Explanation : String) return String
+   is
+   begin
+      --  If an explanation is passed on by the caller, take it
+
+      if Explanation /= "" then
+         return Explanation;
+      end if;
+
+      --  If a run-time check fails inside the prefix of a an attribute
+      --  reference with 'Old or 'Loop_Entry attribute, and this attribute
+      --  reference is potentially unevaluated, it is likely that the user
+      --  misunderstood the evaluation rules for 'Old/'Loop_Entry.
+
+      if Tag in VC_RTE_Kind | VC_Precondition | VC_Precondition_Main then
+         declare
+            function Is_Old_Or_Loop_Entry (N : Node_Id) return Boolean is
+              (Nkind (N) = N_Attribute_Reference
+               and then Attribute_Name (N) in Name_Old | Name_Loop_Entry);
+
+            function Enclosing_Old_Or_Loop_Entry is new
+              First_Parent_With_Property (Is_Old_Or_Loop_Entry);
+
+            Par : constant Node_Id := Enclosing_Old_Or_Loop_Entry (N);
+         begin
+            if Present (Par)
+              and then Is_Potentially_Unevaluated (Par)
+            then
+               if Attribute_Name (Par) = Name_Old then
+                  return "enclosing 'Old attribute reference is "
+                    & "unconditionally evaluated on subprogram entry";
+               else
+                  return "enclosing 'Loop_Entry attribute reference is "
+                    & "unconditionally evaluated on loop entry";
+               end if;
+            end if;
+         end;
+      end if;
+
+      return "";
+   end Get_Explanation;
 
    --------------------------------------
    -- Get_Filtered_Variables_For_Proof --
@@ -3046,8 +3117,6 @@ package body Flow_Error_Messages is
                                ((F with delta Facet => Normal_Part)));
                   elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                     and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
-                    and then not Is_Access_Type
-                      (Etype (Get_Direct_Mapping_Id (F)))
                   then
                      declare
                         Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
@@ -3058,11 +3127,20 @@ package body Flow_Error_Messages is
                         then
                            Append (R, "renaming of a function call ");
                         else
-                           Append (R, "constant with");
-                           if not Has_Variable_Input (Var) then
-                              Append (R, "out");
+                           if Has_Variable_Input (Var) then
+
+                              --  Constant of an access-to-variable type that
+                              --  has variable input can be assigned, so it
+                              --  behaves like a variable.
+
+                              if Is_Access_Variable (Etype (Var)) then
+                                 null;
+                              else
+                                 Append (R, "constant with variable input ");
+                              end if;
+                           else
+                              Append (R, "constant without variable input ");
                            end if;
-                           Append (R, " variable input ");
                         end if;
                      end;
                      Append_Quote;

@@ -87,7 +87,7 @@ between two variants of the record for logging either only the minimum and
 maximum entries or the last entries, and a discriminant ``Capacity`` specifying
 the maximum number of entries logged:
 
-.. literalinclude:: /examples/tests/logging_discr/logging_discr.ads
+.. literalinclude:: /examples/ug__logging_discr/logging_discr.ads
    :language: ada
    :linenos:
 
@@ -95,7 +95,7 @@ Subtypes of ``Log_Type`` can specify fixed values for ``Kind`` and
 ``Capacity``, like in ``Min_Max_Log`` and ``Ten_Values_Log``. The discriminants
 ``Kind`` and ``Capacity`` are accessed like regular components, for example:
 
-.. literalinclude:: /examples/tests/logging_discr/logging_discr.adb
+.. literalinclude:: /examples/ug__logging_discr/logging_discr.adb
    :language: ada
    :linenos:
 
@@ -105,7 +105,7 @@ in raising an exception at run time. During analysis, |GNATprove| checks that
 components accessed are present, and that array components are accessed within
 bounds:
 
-.. literalinclude:: /examples/tests/logging_discr/test.out
+.. literalinclude:: /examples/ug__logging_discr/test.out
    :language: none
 
 .. index:: predicate, Static_Predicate, Dynamic_Predicate
@@ -515,7 +515,7 @@ condition specifying that the size of the log is initially zero, where uses of
 the name of the private type ``Log_Type`` in the argument refer to variables of
 this type:
 
-.. literalinclude:: /examples/tests/logging_priv/logging_priv.ads
+.. literalinclude:: /examples/ug__logging_priv/logging_priv.ads
    :language: ada
    :linenos:
 
@@ -538,7 +538,7 @@ definition of the private type is in |SPARK|, |GNATprove| also checks that the
 type is indeed fully default initialized, and if not issues a message like
 here:
 
-.. literalinclude:: /examples/tests/logging_priv/test.out
+.. literalinclude:: /examples/ug__logging_priv/test.out
    :language: none
 
 If partial default initialization of the type is intended, in general for

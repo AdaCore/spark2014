@@ -9,7 +9,7 @@ procedure Bad_Pledge_Calls_3 with SPARK_Mode is
    end record;
 
    X  : Holder;
-   pragma Assert (X.R = Good (X.R));
+   pragma Assert (if X.R /= null then X.R.all = Good (X.R).all);
 begin
    null;
 end Bad_Pledge_Calls_3;

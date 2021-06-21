@@ -13,8 +13,8 @@
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450094"/></proof>
-  <proof prover="2"><result status="unknown" steps="4835"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450095"/></proof>
+  <proof prover="2"><result status="unknown" steps="4834"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -26,11 +26,11 @@
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="240758"/></proof>
-  <proof prover="2"><result status="unknown" steps="5348"/></proof>
+  <proof prover="1"><result status="unknown" steps="242106"/></proof>
+  <proof prover="2"><result status="unknown" steps="5347"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="2"><result status="valid" steps="12667"/></proof>
+  <proof prover="2"><result status="valid" steps="12456"/></proof>
   </goal>
  </transf>
  </goal>

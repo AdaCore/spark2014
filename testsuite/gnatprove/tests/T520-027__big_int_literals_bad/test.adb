@@ -5,7 +5,7 @@ is
    procedure Foo_2 (Value : Big_Integer)
    is
    begin
-      pragma Assert (0 <= Value); --  To big literals are not handled yet
+      pragma Assert (0 <= Value); --  Explicit base is not handled yet
    end Foo_2;
 
    procedure Foo_5 (Value : Big_Integer)

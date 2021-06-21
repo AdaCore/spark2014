@@ -825,10 +825,9 @@ package body Gnat2Why.Expr.Loops is
                                Domain => Domain);
                   Cur_Expr  : constant W_Expr_Id :=
                     Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => +Iter_Deref,
-                       To             => Typ_For_Iter,
-                       Force_No_Slide => True);
+                      (Domain => EW_Term,
+                       Expr   => +Iter_Deref,
+                       To     => Typ_For_Iter);
                begin
                   if Domain in EW_Prog | EW_Pterm then
                      pragma Assert (W_Container /= Why_Empty);
@@ -878,10 +877,9 @@ package body Gnat2Why.Expr.Loops is
                      Domain => EW_Prog);
                   Cur_Expr  : constant W_Expr_Id :=
                     Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => +Iter_Deref,
-                       To             => Typ_For_Iter,
-                       Force_No_Slide => True);
+                      (Domain => EW_Term,
+                       Expr   => +Iter_Deref,
+                       To     => Typ_For_Iter);
                begin
                   pragma Assert (W_Container /= Why_Empty);
                   return
@@ -946,10 +944,9 @@ package body Gnat2Why.Expr.Loops is
                       (Etype (Over_Node), Name_Element);
                   Cur_Expr : constant W_Expr_Id :=
                     Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => +Iter_Deref,
-                       To             => Typ_For_Iter,
-                       Force_No_Slide => True);
+                      (Domain => EW_Term,
+                       Expr   => +Iter_Deref,
+                       To     => Typ_For_Iter);
                   W_Elmt   : constant W_Identifier_Id :=
                     +Transform_Identifier
                       (Params => Body_Params,
@@ -1000,10 +997,9 @@ package body Gnat2Why.Expr.Loops is
                             Name     => Loop_Index,
                             Labels   => Symbol_Sets.Empty_Set,
                             Value    => +Insert_Simple_Conversion
-                              (Domain         => EW_Term,
-                               Expr           => +Call_Elmt,
-                               To             => Loop_Index_Type,
-                               Force_No_Slide => True),
+                              (Domain => EW_Term,
+                               Expr   => +Call_Elmt,
+                               To     => Loop_Index_Type),
                             Typ      => Loop_Index_Type));
                begin
                   return +Upd_Elmt;
@@ -1239,10 +1235,9 @@ package body Gnat2Why.Expr.Loops is
                             (Etype (Over_Node), Name_Next);
                         Cur_Expr  : constant W_Expr_Id :=
                           Insert_Simple_Conversion
-                            (Domain         => EW_Term,
-                             Expr           => +Iter_Deref,
-                             To             => Typ_For_Iter,
-                             Force_No_Slide => True);
+                            (Domain => EW_Term,
+                             Expr   => +Iter_Deref,
+                             To     => Typ_For_Iter);
                         Call_Next : constant W_Expr_Id := +New_VC_Call
                           (Ada_Node => LParam_Spec,
                            Name     =>
@@ -1263,10 +1258,9 @@ package body Gnat2Why.Expr.Loops is
                              Name     => Nam_For_Iter,
                              Labels   => Symbol_Sets.Empty_Set,
                              Value    => +Insert_Simple_Conversion
-                               (Domain         => EW_Term,
-                                Expr           => +Call_Next,
-                                To             => Get_Type (+Iter_Deref),
-                                Force_No_Slide => True),
+                               (Domain => EW_Term,
+                                Expr   => +Call_Next,
+                                To     => Get_Type (+Iter_Deref)),
                              Typ      => Typ_For_Iter);
                      begin
                         if Need_Iter then

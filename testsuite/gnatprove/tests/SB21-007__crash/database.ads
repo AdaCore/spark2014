@@ -15,8 +15,14 @@ package Database with SPARK_Mode,
       Email : Email_Address_Type;
    end record;
 
+   function "=" (X, Y : DB_Entry_Type) return Boolean is
+     (X.Key = Y.Key
+      and then (X.Email = null) = (Y.Email = null)
+      and then (if X.Email /= null then X.Email.all = Y.Email.all));
+
    package DB_Entry_Sets is new Ada.Containers.Functional_Sets
-     (Element_Type => DB_Entry_Type);
+     (Element_Type => DB_Entry_Type,
+      Equivalent_Elements => "=");
    use DB_Entry_Sets;
    subtype Model_Type is DB_Entry_Sets.Set with Ghost;
 

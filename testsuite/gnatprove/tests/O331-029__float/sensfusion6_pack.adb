@@ -26,7 +26,7 @@ is procedure Madgwick_Update_Q (Gx : T_Rate; Gy : T_Rate; Gz : T_Rate; Ax : T_Ac
       Is_Init := True;
    end SensFusion6_Init;
 
-   function SensFusion6_Test return bool is
+   function SensFusion6_Test return C_Bool is
    begin
       return Is_Init;
    end SensFusion6_Test;

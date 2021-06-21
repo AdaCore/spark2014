@@ -87,8 +87,8 @@ package body Flow.Dynamic_Memory is
         Make_Defining_Identifier
           (No_Location, Name_SPARK);
 
-      Set_Ekind (SPARK_Pkg_Id, E_Package);
-      Set_Scope (SPARK_Pkg_Id, Standard_Standard);
+      Mutate_Ekind (SPARK_Pkg_Id, E_Package);
+      Set_Scope    (SPARK_Pkg_Id, Standard_Standard);
 
       --  Create SPARK.Heap package
 
@@ -96,8 +96,8 @@ package body Flow.Dynamic_Memory is
         Make_Defining_Identifier
           (No_Location, Name_Find (Heap_Pkg_Name));
 
-      Set_Ekind (Heap_Pkg_Id, E_Package);
-      Set_Scope (Heap_Pkg_Id, SPARK_Pkg_Id);
+      Mutate_Ekind      (Heap_Pkg_Id, E_Package);
+      Set_Scope         (Heap_Pkg_Id, SPARK_Pkg_Id);
       Set_Is_Child_Unit (Heap_Pkg_Id);
 
       --  Create SPARK.Heap.Dynamic_Memory abstract state
@@ -108,9 +108,9 @@ package body Flow.Dynamic_Memory is
         Make_Defining_Identifier
           (No_Location, State_Name_Id);
 
-      Set_Ekind (Dynamic_Memory_Id, E_Abstract_State);
-      Set_Etype (Dynamic_Memory_Id, Standard_Void_Type);
-      Set_Scope (Dynamic_Memory_Id, Heap_Pkg_Id);
+      Mutate_Ekind (Dynamic_Memory_Id, E_Abstract_State);
+      Set_Etype    (Dynamic_Memory_Id, Standard_Void_Type);
+      Set_Scope    (Dynamic_Memory_Id, Heap_Pkg_Id);
 
       --  Create a fake declaration of the form:
       --     "[State_Name_Id] with External => Async_Writers"

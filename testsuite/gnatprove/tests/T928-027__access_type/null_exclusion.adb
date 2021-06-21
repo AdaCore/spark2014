@@ -12,7 +12,7 @@ procedure Null_Exclusion with SPARK_Mode is
    procedure Do_Nothing (Y : not null access Float) is
    begin
       Y.all := -13.0;
-      pragma Assert (X /= Y);--@PREDICATE_CHECK:NONE
+      pragma Assert (if X /= null then X.all /= Y.all);--@PREDICATE_CHECK:NONE
    end Do_Nothing;
 begin
    null;

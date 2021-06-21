@@ -5,7 +5,7 @@ procedure Test_Declare_Illegal with SPARK_Mode is
       X : Integer := 1;
    begin
       X := (declare
-            Y : constant Int_Ptr := new Integer'(3);
+            Y : constant Int_Ptr := null; --  allocator would be illegal here
             begin Y.all + X);
    end Bad1;
 

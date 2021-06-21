@@ -441,19 +441,9 @@ package body Gnat2Why.Decls is
                   Labels   => Get_Counterexample_Labels (E, "'" & All_Label),
                   Ref_Type => Get_Typ (Var.Value.B_Name)));
 
-            --  Generate a global ref for the address and is_null if the
-            --  pointer is mutable.
+            --  Generate a global ref for the is_null if the pointer is mutable
 
             if Var.Mutable then
-
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Name     => To_Local (Var.Address),
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Location => Safe_First_Sloc (E),
-                     Ref_Type => Get_Typ (Var.Address)));
-
                Emit
                  (Th,
                   New_Global_Ref_Declaration
@@ -463,19 +453,9 @@ package body Gnat2Why.Decls is
                        (E, "'" & Is_Null_Label),
                      Ref_Type => Get_Typ (Var.Is_Null)));
 
-            --  Otherwise generate constants
+            --  Otherwise generate a constant
 
             else
-               Emit
-                 (Th,
-                  Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Pterm,
-                     Name        => To_Local (Var.Address),
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Binders     => (1 .. 0 => <>),
-                     Location    => Safe_First_Sloc (E),
-                     Return_Type => Get_Typ (Var.Address)));
-
                Emit
                  (Th,
                   Why.Atree.Builders.New_Function_Decl

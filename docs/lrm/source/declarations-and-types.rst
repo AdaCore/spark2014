@@ -347,8 +347,8 @@ Access Types
 In order to reduce the complexity associated with the specification
 and verification of a program's behavior in the face of pointer-related
 aliasing, |SPARK| supports only "owning" access-to-object types (described
-below) and access-to-subprogram types; other access types (including
-access discriminants) are not in |SPARK|.
+below), named access-to-constant types, and access-to-subprogram types; other
+access types (including access discriminants) are not in |SPARK|.
 
 Restrictions are imposed on the use of "owning" access objects in order
 to ensure, roughly speaking (and using terms that have not been defined yet),
@@ -432,20 +432,22 @@ Only the following (named or anonymous) access types are in |SPARK|:
 - the anonymous type of an object renaming declaration,
 
 - an anonymous type occurring as a parameter type, or as a function result type
-  of a traversal function (defined below), or
+  of a traversal function (defined below),
+
+- a named access-to-constant type, or
 
 - an access-to-subprogram type associated with the "Ada" calling convention.
 
-[Redundant: For example, named general access types, access discriminants,
-and access-to-subprogram types with the "protected" calling convention are not
-in |SPARK|.]
+[Redundant: For example, named general access-to-variable types, access
+discriminants, and access-to-subprogram types with the "protected" calling
+convention are not in |SPARK|.]
 
 .. index:: access type; owning
            access type; observing
 
 An access-to-object type abiding by these rules is said to be an *owning*
 access type when it is an access-to-variable type, and an *observing* access
-type when it is an access-to-constant type.
+type when it is an anonymous access-to-constant type.
 
 User-defined storage pools are not in |SPARK|; more specifically, the package
 System.Storage_Pools, Storage_Pool aspect specifications, and the Storage_Pool
@@ -454,8 +456,7 @@ attribute are not in |SPARK|.
 .. index:: owning type
 
 A composite type is also said to be an *owning* type if it has an
-access subcomponent [redundant: , regardless of whether the subcomponent's
-type is access-to-constant or access-to-variable].
+access-to-variable subcomponent.
 
 Privacy is ignored in determining whether a type is an owning or
 observing type. A generic formal private type is not an owning type
@@ -607,8 +608,10 @@ borrowing (see below).
            ownership; observe
            ownership; borrow
 
-A name that denotes a managed object has an initial ownership state
-of Unrestricted unless otherwise specified.
+
+Unless otherwise specified, a name that denotes a managed object has an
+initial ownership state of Unrestricted if it is variable and Observed
+if it is a constant view.
 Certain constructs (described below) are said to *observe*, *borrow*,
 or *move* the value of a managed object; these may change the ownership
 state (to Observed, Borrowed, or Moved respectively) of a name within a
@@ -645,11 +648,6 @@ and identify a corresponding *observer*:
   the traversed parameter for the traversal function]. The name being observed
   denotes the traversed parameter for the traversal function whose body is
   considered.
-
-- An assignment operation that is used to initialize a constant object
-  (including a generic formal object of mode **in**) of an owning composite
-  type. The name being observed denotes the source of the assignment. The
-  initialized object is the observer.
 
 - A procedure call where an actual parameter is a name denoting a managed
   object, and the corresponding formal parameter is of mode **in** and composite
@@ -710,20 +708,17 @@ the name, usually used together with the term "indirect borrower".
 The terms "indirect observer" and "direct observer" are defined analogously.
 
 While a name that denotes a managed object is in the Borrowed state it
-provides a constant view [redundant: , even if the name denotes a variable].
-Furthermore, the only permitted read of a managed object in the Borrowed
-state is the introduction of a new observer of the object. Within the
-scope of such a new observer any direct or indirect borrower
-of the original name similarly enters the Observed state and provides
-only a constant view.
+is incorrect to move, borrow, observe or modify it. [Intuitively,
+the value of a borrowed object is frozen for the duration of the borrow,
+while the ownership is held by the borrower].
 
 At the point where a name that denotes a managed object is borrowed,
 every name of a reachable element of the object is borrowed.
 
 The following operations are said to be *move* operations:
 
-- An assignment operation, where the target is a variable or return object (see
-  Ada RM 6.5) of an owning type.
+- An assignment operation, where the target is a variable, a constant, or
+  return object (see Ada RM 6.5) of an owning type.
 
   [Redundant: In the case of a formal parameter of an access type of mode **in
   out** or **out**, this includes all assignments to or from such a formal
@@ -909,12 +904,19 @@ be an owning type).]
     also break the invariant on the borrowed object for the time of the
     borrow.]
 
+16. Objects of an anonymous access-to-object types shall not be converted
+    (implicitly or explicitly) to a named access type.
+
+17. Evaluation of equality operators, and membership tests where one or more of
+    the choices are expressions, shall not include directly or indirectly calls
+    to the primitive equality on access types, unless one of the operands is
+    syntactically null.
 
 .. centered:: **Verification Rules**
 
 .. index:: memory leak, deallocation, Unchecked_Deallocation
 
-16. When an owning access object other than a borrower, an observer,
+18. When an owning access object other than a borrower, an observer,
     or an object in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
@@ -929,7 +931,7 @@ be an owning type).]
     the object designated by X".]
 
 
-17. When converting from a [named or anonymous] access-to-subprogram type
+19. When converting from a [named or anonymous] access-to-subprogram type
     to another, if the converted expression is not null,
     a verification condition is introduced to ensure that the
     precondition of the source of the conversion is implied by the

@@ -11,7 +11,7 @@ Increment
 
 Consider a simple procedure that increments its integer parameter ``X``:
 
-.. literalinclude:: /examples/tests/increment/increment.adb
+.. literalinclude:: /examples/ug__increment/increment.adb
    :language: ada
    :linenos:
 
@@ -20,7 +20,7 @@ there are no possible reads of uninitialized data and no possible run-time
 errors in the procedure. Here, it issues a message about a possible overflow
 check failure on ``X + 1``:
 
-.. literalinclude:: /examples/tests/increment/test.out
+.. literalinclude:: /examples/ug__increment/test.out
    :language: none
 
 .. index:: precondition; example of use
@@ -33,7 +33,7 @@ issued by |GNATprove|, one way to eliminate this vulnerability is to add a
 precondition to ``Increment`` specifying that ``X`` should be less than
 ``Integer'Last`` when calling the procedure:
 
-.. literalinclude:: /examples/tests/increment_guarded/increment_guarded.adb
+.. literalinclude:: /examples/ug__increment_guarded/increment_guarded.adb
    :language: ada
    :linenos:
 
@@ -43,7 +43,7 @@ the procedure, including in its contract, and that the procedure implements its
 contract. As expected, |GNATprove| now proves that there is no possible
 overflow check failure on ``X + 1``:
 
-.. literalinclude:: /examples/tests/increment_guarded/test.out
+.. literalinclude:: /examples/ug__increment_guarded/test.out
    :language: none
 
 .. index:: Global; example of use
@@ -64,7 +64,7 @@ with:
 * a postcondition (aspect ``Post``) stating that parameter ``X`` should have
   been incremented by the procedure on exit
 
-.. literalinclude:: /examples/tests/increment_full/increment_full.adb
+.. literalinclude:: /examples/ug__increment_full/increment_full.adb
    :language: ada
    :linenos:
 
@@ -75,21 +75,21 @@ cannot raise run-time errors or read uninitialized data. By default,
 |GNATprove|'s output is empty in such a case, but we can request that it prints
 one line per check proved by using switch ``--report=all``, which we do here:
 
-.. literalinclude:: /examples/tests/increment_full/test.out
+.. literalinclude:: /examples/ug__increment_full/test.out
    :language: none
 
 As subprogram contracts are used to analyze callers of a subprogram, let's
 consider a procedure ``Increment_Calls`` that calls the different versions of
 ``Increment`` presented so far:
 
-.. literalinclude:: /examples/tests/increment_calls/increment_calls.adb
+.. literalinclude:: /examples/ug__increment_calls/increment_calls.adb
    :language: ada
    :linenos:
 
 |GNATprove| proves all preconditions expect the one on the second call to
 ``Increment_Guarded``:
 
-.. literalinclude:: /examples/tests/increment_calls/test.out
+.. literalinclude:: /examples/ug__increment_calls/test.out
    :language: none
 
 ``Increment`` has no precondition, so there is nothing to check here except the
@@ -123,7 +123,7 @@ performing :ref:`Contextual Analysis of Subprograms Without Contracts` for these
 local subprograms. For example, consider a local definition of ``Increment``
 inside procedure ``Increment_Local``:
 
-.. literalinclude:: /examples/tests/increment_local/increment_local.adb
+.. literalinclude:: /examples/ug__increment_local/increment_local.adb
    :language: ada
    :linenos:
 
@@ -131,7 +131,7 @@ Although ``Increment`` has no contract (like the previous non-local version),
 |GNATprove| proves that this program is free from run-time errors, and that the
 assertion on line 15 holds:
 
-.. literalinclude:: /examples/tests/increment_local/test.out
+.. literalinclude:: /examples/ug__increment_local/test.out
    :language: none
 
 Swap
@@ -140,7 +140,7 @@ Swap
 Consider a simple procedure that swaps its integer parameters ``X`` and ``Y``,
 whose simple-minded implementation is wrong:
 
-.. literalinclude:: /examples/tests/swap_bad/swap_bad.adb
+.. literalinclude:: /examples/ug__swap_bad/swap_bad.adb
    :language: ada
    :linenos:
 
@@ -148,7 +148,7 @@ As this procedure does not have a contract yet, |GNATprove| only checks that
 there are no possible reads of uninitialized data and no possible run-time
 errors in the procedure. Here, it simply issues a warning:
 
-.. literalinclude:: /examples/tests/swap_bad/test.out
+.. literalinclude:: /examples/ug__swap_bad/test.out
    :language: none
 
 But we know the procedure is wrong, so we'd like to get an error of some sort!
@@ -161,13 +161,13 @@ One such contract is the flow dependencies introduced by aspect
 ``Depends``. Here it specifies that the final value of ``X`` (resp. ``Y``)
 should depend on the initial value of ``Y`` (resp. ``X``):
 
-.. literalinclude:: /examples/tests/swap_bad_depends/swap_bad_depends.adb
+.. literalinclude:: /examples/ug__swap_bad_depends/swap_bad_depends.adb
    :language: ada
    :linenos:
 
 |GNATprove| issues 3 check messages (and a warning) on ``Swap_Bad_Depends``:
 
-.. literalinclude:: /examples/tests/swap_bad_depends/test.out
+.. literalinclude:: /examples/ug__swap_bad_depends/test.out
    :language: none
 
 The last message informs us that the dependency ``Y => X`` stated in
@@ -179,7 +179,7 @@ Another possible contract is the postcondition introduced by aspect
 ``Post``. Here it specifies that the final value of ``X`` (resp. ``Y``) is
 equal to the initial value of ``Y`` (resp. ``X``):
 
-.. literalinclude:: /examples/tests/swap_bad_post/swap_bad_post.adb
+.. literalinclude:: /examples/ug__swap_bad_post/swap_bad_post.adb
    :language: ada
    :linenos:
 
@@ -187,7 +187,7 @@ equal to the initial value of ``Y`` (resp. ``X``):
 ``Swap_Bad_Post`` (and a warning), with a counterexample giving concrete values
 of a wrong execution:
 
-.. literalinclude:: /examples/tests/swap_bad_post/test.out
+.. literalinclude:: /examples/ug__swap_bad_post/test.out
    :language: none
 
 Both the check messages on ``Swap_Bad_Depends`` and on ``Swap_Bad_Post`` inform
@@ -199,27 +199,27 @@ initial value of ``X``; the fact that this value is not used is a clear sign
 that there is an error in the implementation. The correct version of ``Swap``
 uses a temporary value to hold the value of ``X``:
 
-.. literalinclude:: /examples/tests/swap/swap.adb
+.. literalinclude:: /examples/ug__swap/swap.adb
    :language: ada
    :linenos:
 
 |GNATprove| proves both contracts on ``Swap`` and it informs us that the
 postcondition was proved:
 
-.. literalinclude:: /examples/tests/swap/test.out
+.. literalinclude:: /examples/ug__swap/test.out
    :language: none
 
 Let's now consider a well-known `in place` implementation of ``Swap`` that
 avoids introducing a temporary variable by using bitwise operations:
 
-.. literalinclude:: /examples/tests/swap_modulo/swap_modulo.adb
+.. literalinclude:: /examples/ug__swap_modulo/swap_modulo.adb
    :language: ada
    :linenos:
 
 |GNATprove| understands the bitwise operations on values of modular types, and
 it proves here that the postcondition of ``Swap_Modulo`` is proved:
 
-.. literalinclude:: /examples/tests/swap_modulo/test.out
+.. literalinclude:: /examples/ug__swap_modulo/test.out
    :language: none
 
 |GNATprove|'s flow analysis issues warnings like the one on ``Swap_Bad``
@@ -227,7 +227,7 @@ whenever it detects that some variables or statements are not used in the
 computation, which is likely uncovering an error. For example, consider
 procedure ``Swap_Warn`` which assigns ``X`` and ``Tmp_Y`` out of order:
 
-.. literalinclude:: /examples/tests/swap_warn/swap_warn.adb
+.. literalinclude:: /examples/ug__swap_warn/swap_warn.adb
    :language: ada
    :linenos:
 
@@ -235,7 +235,7 @@ On this wrong implementation, |GNATprove| issues a high check message for the
 certain read of an uninitialized variable, and three warnings that point to
 unused constructs:
 
-.. literalinclude:: /examples/tests/swap_warn/test.out
+.. literalinclude:: /examples/ug__swap_warn/test.out
    :language: none
 
 In general, warnings issued by |GNATprove|'s flow analysis should be carefully
@@ -248,7 +248,7 @@ Consider a simple function ``Addition`` that returns the sum of its integer
 parameters ``X`` and ``Y``. As in :ref:`Increment`, we add a suitable
 precondition and postcondition for this function:
 
-.. literalinclude:: /examples/tests/addition/addition.adb
+.. literalinclude:: /examples/ug__addition/addition.adb
    :language: ada
    :linenos:
 
@@ -259,7 +259,7 @@ depends on all its inputs), so are not in general given explicitly.
 |GNATprove| issues a check message about a possible overflow in the
 precondition of ``Addition``:
 
-.. literalinclude:: /examples/tests/addition/test.out
+.. literalinclude:: /examples/ug__addition/test.out
    :language: none
 
 Indeed, if we call for example ``Addition`` on values ``Integer'Last`` for
@@ -276,7 +276,7 @@ treated differently (``Constraint_Error`` in the case of an overflow,
 One way to avoid this vulnerability is to rewrite the precondition so that no
 overflow can occur:
 
-.. literalinclude:: /examples/tests/addition_rewrite/addition.adb
+.. literalinclude:: /examples/ug__addition_rewrite/addition.adb
    :language: ada
    :linenos:
 
@@ -284,7 +284,7 @@ Although |GNATprove| proves that ``Addition`` implements its contract
 and is free from run-time errors, the rewritten precondition is not so readable
 anymore:
 
-.. literalinclude:: /examples/tests/addition_rewrite/test.out
+.. literalinclude:: /examples/ug__addition_rewrite/test.out
    :language: none
 
 .. index:: Big_Numbers; example of use
@@ -292,14 +292,14 @@ anymore:
 A better way to achieve the same goal without losing in readability is to use
 the :ref:`Big Numbers Library` for arithmetic operations which could overflow:
 
-.. literalinclude:: /examples/tests/addition_bignum/addition.adb
+.. literalinclude:: /examples/ug__addition_bignum/addition.adb
    :language: ada
    :linenos:
 
 In that case, |GNATprove| proves that there are no run-time errors in function
 ``Addition``, and that it implements its contract:
 
-.. literalinclude:: /examples/tests/addition_bignum/test.out
+.. literalinclude:: /examples/ug__addition_bignum/test.out
    :language: none
 
 .. index:: Contract_Cases; example of use
@@ -310,14 +310,14 @@ addition would overflow the bounds of machine integers. That's what the
 rewritten function ``Addition`` does, and its saturating behavior is expressed
 in :ref:`Contract Cases`:
 
-.. literalinclude:: /examples/tests/addition_saturated/addition.adb
+.. literalinclude:: /examples/ug__addition_saturated/addition.adb
    :language: ada
    :linenos:
 
 |GNATprove| proves that ``Addition`` implements its contract and is free from
 run-time errors:
 
-.. literalinclude:: /examples/tests/addition_saturated/test.out
+.. literalinclude:: /examples/ug__addition_saturated/test.out
    :language: none
 
 Note that we analyzed this function in ELIMINATED overflow mode, using the

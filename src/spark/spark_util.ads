@@ -165,6 +165,16 @@ package SPARK_Util is
    --  @param E classwide type
    --  @return the specific tagged type corresponding to classwide type E
 
+   procedure Set_Overlay_Alias (E1, E2 : Entity_Id)
+   with Pre => Is_Object (E1) and then Is_Object (E2);
+   --  Register that New_Id is aliasing Old_Id via overlays
+
+   function Overlay_Alias (E : Entity_Id) return Node_Sets.Set
+   with Pre  => Is_Object (E),
+        Post => not Overlay_Alias'Result.Contains (E);
+   --  Return the objects which are aliases of E via overlays. This does not
+   --  return E itself.
+
    ---------------------------------
    -- Extra tables on expressions --
    ---------------------------------
@@ -701,10 +711,6 @@ package SPARK_Util is
    --  NULL, or a function call. Through_Traversal is True if it should follow
    --  through calls to traversal functions.
 
-   function Has_Dereferences (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in N_Subexpr;
-   --  Return True if there is a dereference in the suffix of N which is a path
-
    function Is_Action (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Object_Declaration;
    --  @param N is an object declaration
@@ -809,6 +815,16 @@ package SPARK_Util is
    with Pre => Nkind (Call) = N_Function_Call;
    --  Store the link between a call to a function annotated with
    --  At_End_Borrow and the entity whose scope the at end refers to.
+
+   function Traverse_Access_To_Constant (Expr : Node_Id) return Boolean with
+     Pre => Is_Path_Expression (Expr);
+   --  Return True if the path from Expr goes through a dereference of an
+   --  access-to-constant type.
+
+   function Is_Rooted_In_Constant (Expr : Node_Id) return Boolean;
+   --  Return True is Expr is a path rooted inside a constant part of an
+   --  object. We do not return True if Expr is rooted inside an IN parameter,
+   --  as the actual might be a variable object.
 
    ---------------------------------
    -- Misc operations and queries --

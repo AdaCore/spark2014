@@ -47,12 +47,13 @@ package SPARK_Util.Hardcoded is
    --  translated using the normal mechanism.
 
    package Big_Reals_Names is
-      Big_Real              : constant String := "big_real";
-      Is_Valid              : constant String := "is_valid";
-      Min                   : constant String := "min";
-      Max                   : constant String := "max";
-      From_String           : constant String := "from_string";
-      Generic_To_Big_Real   : constant String := "to_big_real";
+      Big_Real             : constant String := "big_real";
+      Is_Valid             : constant String := "is_valid";
+      Min                  : constant String := "min";
+      Max                  : constant String := "max";
+      From_String          : constant String := "from_string";
+      From_Universal_Image : constant String := "from_universal_image";
+      Generic_To_Big_Real  : constant String := "to_big_real";
    end Big_Reals_Names;
    --  Names of entities that will be considered as hardcoded in the
    --  Big_Reals unit.
@@ -78,7 +79,12 @@ package SPARK_Util.Hardcoded is
    --  corresponding to Unit.
 
    function Is_Hardcoded_Entity (E : Entity_Id) return Boolean;
-   --  Return True iff E is a hardcoded entity.
+   --  Return True iff E is a hardcoded entity
+
+   function Is_Literal_Function (E : Entity_Id) return Boolean with
+     Post => (if Is_Literal_Function'Result then Is_Hardcoded_Entity (E));
+   --  Return True iff E is a function used to encode literals. Those are
+   --  handled specifically when they have string literals as parameters.
 
    function Get_Hardcoded_Unit (E : Entity_Id) return Hardcoded_Enum
      with Pre => Is_Hardcoded_Entity (E);

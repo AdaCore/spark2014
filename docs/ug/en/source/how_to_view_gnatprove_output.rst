@@ -281,7 +281,7 @@ GNAT Studio`). |GNATprove| then displays the path in one color, and the values o
 variables on the path by inserting lines in the editor only (not in the file)
 which display these values. For example, consider procedure ``Counterex``:
 
-.. literalinclude:: /examples/tests/counterex/counterex.adb
+.. literalinclude:: /examples/ug__counterex/counterex.adb
    :language: ada
    :linenos:
 
@@ -300,7 +300,7 @@ giving the values of variables from the checked expression for the
 counterexample. Here, the message issued by |GNATprove| on line 11 gives the
 value of output parameter ``R``:
 
-.. literalinclude:: /examples/tests/counterex/test.out
+.. literalinclude:: /examples/ug__counterex/test.out
    :language: none
    :lines: 9-12
 
@@ -316,11 +316,11 @@ feasible execution of the program:
    ``Double_In_Loop`` is not provable because its loop does not have a loop
    invariant:
 
-   .. literalinclude:: /examples/tests/counterex_unprovable/counterex_unprovable.ads
+   .. literalinclude:: /examples/ug__counterex_unprovable/counterex_unprovable.ads
       :language: ada
       :linenos:
 
-   .. literalinclude:: /examples/tests/counterex_unprovable/counterex_unprovable.adb
+   .. literalinclude:: /examples/ug__counterex_unprovable/counterex_unprovable.adb
       :language: ada
       :linenos:
 
@@ -329,7 +329,7 @@ feasible execution of the program:
    input, due to a missing contract in the function called or a missing loop
    invariant the loop executed:
 
-   .. literalinclude:: /examples/tests/counterex_unprovable/test.out
+   .. literalinclude:: /examples/ug__counterex_unprovable/test.out
       :language: none
       :lines: 12-22
 

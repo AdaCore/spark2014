@@ -190,7 +190,8 @@ package body SPARK_Util.Hardcoded is
                                              | BRN.Min
                                              | BRN.Max
                                              | BRN.Is_Valid
-                                             | BRN.From_String;
+                                             | BRN.From_String
+                                             | BRN.From_Universal_Image;
 
       elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
          return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer
@@ -202,5 +203,20 @@ package body SPARK_Util.Hardcoded is
 
       return False;
    end Is_Hardcoded_Entity;
+
+   function Is_Literal_Function (E : Entity_Id) return Boolean is
+      package BIN renames Big_Integers_Names; use BIN;
+      package BRN renames Big_Reals_Names; use BRN;
+
+   begin
+      if Is_From_Hardcoded_Unit (E, Big_Integers) then
+         return Get_Name_String (Chars (E)) = BIN.From_String;
+      elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
+         return Get_Name_String (Chars (E)) in BRN.From_String
+                                             | BRN.From_Universal_Image;
+      else
+         return False;
+      end if;
+   end Is_Literal_Function;
 
 end SPARK_Util.Hardcoded;

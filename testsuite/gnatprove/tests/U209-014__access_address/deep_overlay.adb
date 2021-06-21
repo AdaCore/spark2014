@@ -7,7 +7,7 @@ procedure Deep_Overlay with SPARK_Mode is
    function G is new Ada.Unchecked_Conversion (Long_Long_Integer, Int_Access);
 
    X : Int_Access;
-   Y : Long_Long_Integer with
+   Y : Long_Long_Integer with Import,
      Address => X'Address;
    W : Long_Long_Integer := 0;
    Z : Int_Access with

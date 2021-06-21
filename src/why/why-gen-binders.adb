@@ -30,6 +30,7 @@ with SPARK_Util.Types;    use SPARK_Util.Types;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Init;        use Why.Gen.Init;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -110,7 +111,6 @@ package body Why.Gen.Binders is
             if Binder.Mutable then
                Effects_Append (Eff, Binder.Value.B_Name);
                Effects_Append (Eff, Binder.Is_Null);
-               Effects_Append (Eff, Binder.Address);
             elsif Binder.Value.Mutable then
                Effects_Append (Eff, Binder.Value.B_Name);
             end if;
@@ -399,7 +399,13 @@ package body Why.Gen.Binders is
             end;
 
          when UCArray =>
-            return Get_Typ (B.Content.B_Name);
+            declare
+               Typ : constant W_Type_Id := Get_Typ (B.Content.B_Name);
+            begin
+               pragma Assert (Get_Type_Kind (Typ) = EW_Split);
+               return EW_Abstract
+                 (Get_Ada_Node (+Typ), Get_Relaxed_Init (Typ));
+            end;
 
          when Pointer =>
 
@@ -452,7 +458,7 @@ package body Why.Gen.Binders is
                when Pointer =>
                   pragma Assert (B.Value.Mutable);
                   if B.Mutable or else Keep_Local (B.Local) then
-                     Count := Count + 4;
+                     Count := Count + 3;
                   else
                      Count := Count + 2;
                   end if;
@@ -606,7 +612,6 @@ package body Why.Gen.Binders is
                B.Value.B_Name := Local_Name (B.Value.B_Name);
 
                if B.Mutable or else not Only_Variables then
-                  B.Address := Local_Name (B.Address);
                   B.Is_Null := Local_Name (B.Is_Null);
                end if;
 
@@ -900,11 +905,6 @@ package body Why.Gen.Binders is
                            Mutable  => True,
                            Labels   => <>);
 
-            Result.Address :=
-              Address_Append
-                (Base => Name,
-                 Typ  => EW_Int_Type);
-
             Result.Is_Null :=
               Is_Null_Append
                 (Base => Name,
@@ -927,7 +927,7 @@ package body Why.Gen.Binders is
 
                --  Use an init wrapper type for objects with relaxed init
 
-               elsif Obj_Has_Relaxed_Init (E)
+               elsif Obj_Has_Relaxed_Init (E) and then not Is_Scalar_Type (Ty)
                then EW_Init_Wrapper (Type_Of_Node (Ty))
 
                --  Otherwise we use Why3 representation for the type
@@ -1434,7 +1434,6 @@ package body Why.Gen.Binders is
       Ref_Allowed : Boolean := True) return W_Expr_Id
    is
       T           : W_Expr_Id;
-      Needs_Deref : Boolean := False;
    begin
       case E.Kind is
          when Func =>
@@ -1444,11 +1443,15 @@ package body Why.Gen.Binders is
             | Concurrent_Self
          =>
             T := +E.Main.B_Name;
-            Needs_Deref := E.Main.Mutable;
+
+            if E.Main.Mutable and then Ref_Allowed then
+               T := New_Deref (Ada_Node => Get_Ada_Node (+T),
+                               Right    => +T,
+                               Typ      => Get_Type (T));
+            end if;
 
          when UCArray =>
-            T := +E.Content.B_Name;
-            Needs_Deref := E.Content.Mutable;
+            T := Array_From_Split_Form (E, Ref_Allowed);
 
          when DRecord =>
             T := Record_From_Split_Form (E, Ref_Allowed);
@@ -1457,28 +1460,6 @@ package body Why.Gen.Binders is
             T := Pointer_From_Split_Form (E, Ref_Allowed);
 
       end case;
-
-      if Ref_Allowed and then Needs_Deref then
-         T := New_Deref (Ada_Node => Get_Ada_Node (+T),
-                         Right    => +T,
-                         Typ      => Get_Type (T));
-      end if;
-
-      --  If init is present, use a split EW_Init_Wrapper type to enforce
-      --  initialization checking at use.
-
-      if Ref_Allowed and then E.Init.Present then
-         declare
-            Ent : constant Entity_Id := Get_Ada_Node_From_Item (E);
-         begin
-            T := New_Label
-              (Ada_Node => Ent,
-               Domain   => EW_Term,
-               Labels   => Symbol_Sets.Empty_Set,
-               Def      => T,
-               Typ      => EW_Split (Etype (Ent), Relaxed_Init => True));
-         end;
-      end if;
 
       return T;
    end Reconstruct_Item;
@@ -1543,14 +1524,10 @@ package body Why.Gen.Binders is
 
                   if Cur.Mutable or else Keep_Local (Cur.Local) then
                      Result (Count) :=
-                       (B_Name  => Cur.Address,
-                        Mutable => Cur.Mutable,
-                        others  => <>);
-                     Result (Count + 1) :=
                        (B_Name  => Cur.Is_Null,
                         Mutable => Cur.Mutable,
                         others  => <>);
-                     Count := Count + 2;
+                     Count := Count + 1;
                   end if;
 
                   Result (Count) :=

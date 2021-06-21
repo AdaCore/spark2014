@@ -1,18 +1,23 @@
 #! /usr/bin/env python
 
 from e3.env import Env
+from e3.diff import diff
 from e3.fs import find
 from e3.testsuite import logger, Testsuite
 from e3.testsuite.control import AdaCoreLegacyTestControlCreator, TestControl
 from e3.testsuite.driver import TestDriver
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
+from e3.testsuite.driver.diff import DiffTestDriver, OutputRefiner, RefiningChain
+from e3.testsuite.result import binary_repr, Log, truncated
 from e3.testsuite.testcase_finder import ParsedTest, ProbingError, TestFinder
 import e3.yaml
+import glob
 import os
 import os.path
 import re
 import sys
-from typing import List
+import time
+from typing import AnyStr, List, Optional
 
 # name for the entry in the test_env dict for the subprogram to call
 call_entry = "call_name"
@@ -69,8 +74,204 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
 
     def set_up(self) -> None:
         super().set_up()
-        if 'timeout' in self.test_env:
-            self.timeout = int(self.test_env['timeout'])
+        if "timeout" in self.test_env:
+            self.timeout = int(self.test_env["timeout"])
+
+
+class NoEmptyOutputRefiner(OutputRefiner):
+    def refine(self, output):
+        if len(output) == 0:
+            return "(no output)"
+        return output
+
+
+class SortLinesRefiner(OutputRefiner):
+    def refine(self, output):
+        lines = output.splitlines()
+        lines.sort()
+        return "\n".join(lines)
+
+
+class UGTestDriver(DiffTestDriver):
+    """Simple test driver (in principle) that just runs a fixed gnatprove
+    command on the UG tests. The output is sorted before comparison as we
+    have observed diffs in the order of file processing (for the tests that
+    contain multiple units). When updating baselines, the new actual output
+    (without sorting) needs to be stored. Because of this requirement, we
+    had to copy the code of "compute_diff" here and modify it to store
+    non-refined baselines.
+    """
+
+    copy_test_directory = True
+
+    output_refiners = [NoEmptyOutputRefiner(), SortLinesRefiner()]
+
+    @property
+    def test_control_creator(self):
+        assert isinstance(self.env.discs, list)
+        return SPARKControlCreator(self.env.discs, self.test_env)
+
+    @property
+    def refine_baseline(self) -> bool:
+        """Whether to apply output refiners to the output baseline."""
+        return True
+
+    # copying this code from DiffTestDriver
+    def compute_diff(
+        self,
+        baseline_file: Optional[str],
+        baseline: AnyStr,
+        actual: AnyStr,
+        failure_message: str = "unexpected output",
+        ignore_white_chars: Optional[bool] = None,
+        truncate_logs_threshold: Optional[int] = None,
+    ) -> List[str]:
+        """Compute the diff between expected and actual outputs.
+
+        Return an empty list if there is no diff, and return a list that
+        contains an error message based on ``failure_message`` otherwise.
+
+        :param baseline_file: Absolute filename for the text file that contains
+            the expected content (for baseline rewriting, if enabled), or None.
+        :param actual: Actual content to compare.
+        :param failure_message: Failure message to return if there is a
+            difference.
+        :param ignore_white_chars: Whether to ignore whitespaces during the
+            diff computation. If left to None, use
+            ``self.diff_ignore_white_chars``.
+        :param truncate_logs_threshold: Threshold to truncate the diff message
+            in ``self.result.log``. See ``e3.testsuite.result.truncated``'s
+            ``line_count`` argument. If left to None, use the testsuite's
+            ``--truncate-logs`` option.
+        """
+        if ignore_white_chars is None:
+            ignore_white_chars = self.diff_ignore_white_chars
+
+        if truncate_logs_threshold is None:
+            truncate_logs_threshold = self.testsuite_options.truncate_logs
+
+        # Run output refiners on the actual output, not on the baseline
+        refiners = (
+            RefiningChain[str](self.output_refiners)
+            if isinstance(actual, str)
+            else RefiningChain[bytes](self.output_refiners)
+        )
+        refined_actual = refiners.refine(actual)
+        refined_baseline = (
+            refiners.refine(baseline) if self.refine_baseline else baseline
+        )
+
+        # When running in binary mode, make sure the diff runs on text strings
+        if self.default_encoding == "binary":
+            assert isinstance(refined_actual, bytes)
+            assert isinstance(refined_baseline, bytes)
+            decoded_ref_actual = binary_repr(refined_actual)
+            decoded_baseline = binary_repr(refined_baseline)
+            decoded_actual = binary_repr(actual)
+        else:
+            assert isinstance(refined_actual, str)
+            assert isinstance(refined_baseline, str)
+            decoded_ref_actual = refined_actual
+            decoded_baseline = refined_baseline
+            decoded_actual = actual
+
+        # Get the two texts to compare as list of lines, with trailing
+        # characters preserved (splitlines(keepends=True)).
+        expected_lines = decoded_baseline.splitlines(True)
+        actual_lines = decoded_ref_actual.splitlines(True)
+
+        # Compute the diff. If it is empty, return no failure. Otherwise,
+        # include the diff in the test log and return the given failure
+        # message.
+        d = diff(expected_lines, actual_lines, ignore_white_chars=ignore_white_chars)
+        if not d:
+            return []
+
+        self.failing_diff_count += 1
+        message = failure_message
+
+        diff_lines = []
+        for line in d.splitlines():
+            # Add colors diff lines
+            if line.startswith("-"):
+                color = self.Fore.RED
+            elif line.startswith("+"):
+                color = self.Fore.GREEN
+            elif line.startswith("@"):
+                color = self.Fore.CYAN
+            else:
+                color = ""
+            diff_lines.append(color + line + self.Style.RESET_ALL)
+
+        # If requested and the failure is not expected, rewrite the test
+        # baseline with the new one.
+        if (
+            baseline_file is not None
+            and not self.test_control.xfail
+            and getattr(self.env, "rewrite_baselines", False)
+        ):
+            if isinstance(actual, str):
+                with open(baseline_file, "w", encoding=self.default_encoding) as f:
+                    f.write(actual)
+            else:
+                assert isinstance(actual, bytes)
+                with open(baseline_file, "wb") as f:
+                    f.write(actual)
+            message = "{} (baseline updated)".format(message)
+
+        # Send the appropriate logging. Make sure ".log" has all the
+        # information. If there are multiple diff failures for this testcase,
+        # do not emit the "expected/out" logs, as they support only one diff.
+        diff_log = (
+            self.Style.RESET_ALL
+            + self.Style.BRIGHT
+            + "Diff failure: {}\n".format(message)
+            + "\n".join(diff_lines)
+            + "\n"
+        )
+        self.result.log += "\n" + truncated(diff_log, truncate_logs_threshold)
+        if self.failing_diff_count == 1:
+            self.result.expected = Log(decoded_baseline)
+            self.result.out = Log(decoded_actual)
+            self.result.diff = Log(diff_log)
+        else:
+            self.result.expected = None
+            self.result.out = None
+            assert isinstance(self.result.diff, Log) and isinstance(
+                self.result.diff.log, str
+            )
+            self.result.diff += "\n" + diff_log
+
+        return [message]
+
+    def run(self):
+        pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
+        gprfiles = glob.glob(pattern)
+        assert len(gprfiles) == 1
+        cmd = [
+            "gnatprove",
+            "-P",
+            gprfiles[0],
+            "-f",
+            "-q",
+            "--level=2",
+            "--timeout=60",
+        ]
+
+        # tests prefixed by ug__long__ require more steps to prove
+        if self.test_env["test_name"].startswith("ug__long__"):
+            cmd += ["--steps=7000"]
+        else:
+            cmd += ["--steps=100"]
+
+        # test access6 requires use of lemma library SPARK.Heap, which in turn
+        # requires defining env var SPARK_HEAP_OBJECT_DIR
+        if self.test_env["test_name"] == "ug__access6":
+            cmd += ["-XSPARK_HEAP_OBJECT_DIR=."]
+
+        start_time = time.time()
+        self.shell(cmd, catch_error=False)
+        self.result.time = time.time() - start_time
 
 
 class SPARKTestFinder(TestFinder):
@@ -139,6 +340,9 @@ class SPARKTestFinder(TestFinder):
         if self.pattern and not self.test_contains_pattern(dirpath, self.pattern):
             return None
 
+        if testname.startswith("ug__"):
+            return ParsedTest(testname, UGTestDriver, {}, dirpath)
+
         # We read the test.yaml file if present and load it into the
         # environment
         test_env = None
@@ -162,9 +366,7 @@ class SPARKTestFinder(TestFinder):
             if "prove_all" in test_env or "do_flow" in test_env:
                 logger.warning(
                     '{}: "test.py" file is present, so "prove_all" '
-                    'and "do_flow" ignored in "test.yaml"'.format(
-                        testname
-                    )
+                    'and "do_flow" ignored in "test.yaml"'.format(testname)
                 )
         else:
             # if it's a flow test, we set the call to do_flow, and if no

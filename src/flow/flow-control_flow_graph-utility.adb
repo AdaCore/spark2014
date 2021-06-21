@@ -507,22 +507,10 @@ package body Flow.Control_Flow_Graph.Utility is
             end;
          else
             declare
-               Partial    : Boolean;
-               Unused_Vc  : Boolean;
-               Unused_Seq : Node_Lists.List;
-               Map_Root   : Flow_Id;
-               Unused     : Flow_Id_Sets.Set;
+               Partial : Boolean;
+               Unused  : Flow_Id_Sets.Set;
 
             begin
-               --  We're interested in the map root, since we might have to do
-               --  something about extensions.
-               Get_Assignment_Target_Properties
-                 (N                  => Prefix (Name (Call_Vertex)),
-                  Partial_Definition => Partial,
-                  View_Conversion    => Unused_Vc,
-                  Map_Root           => Map_Root,
-                  Seq                => Unused_Seq);
-
                --  We have an unconditional addition to folded_function_checks
                --  for each actual anyway, so we can ignore the proof variables
                --  here.

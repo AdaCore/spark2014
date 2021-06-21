@@ -58,6 +58,11 @@ package body SPARK_Util is
    --  Map from full views of entities to their partial views, for deferred
    --  constants and private types.
 
+   Overlay_Aliases : Node_Graphs.Map;
+   --  Map from an entity to all its overlay aliases. This map is filled during
+   --  marking and queried (via a getter function) during flow and proof. Note
+   --  that the mapping for an entity E contains E as well.
+
    ----------------------
    -- Set_Partial_View --
    ----------------------
@@ -116,6 +121,59 @@ package body SPARK_Util is
 
    function Specific_Tagged (E : Entity_Id) return Entity_Id
      renames Specific_Tagged_Types.Element;
+
+   -----------------------
+   -- Set_Overlay_Alias --
+   -----------------------
+
+   procedure Set_Overlay_Alias (E1, E2 : Entity_Id) is
+      use Node_Graphs;
+      C1, C2 : Node_Graphs.Cursor;
+      Un : Node_Sets.Set;
+   begin
+
+      C1 := Overlay_Aliases.Find (E1);
+      C2 := Overlay_Aliases.Find (E2);
+
+      --  Store the union of the aliases of E1 and E2 in Un
+
+      if Has_Element (C1) then
+         Un.Union (Overlay_Aliases (C1));
+      else
+         Un.Include (E1);
+      end if;
+
+      if Has_Element (C2) then
+         Un.Union (Overlay_Aliases (C2));
+      else
+         Un.Include (E2);
+      end if;
+
+      --  Map all elements of Un to Un
+
+      for Elt of Un loop
+         Overlay_Aliases.Include (Elt, Un);
+      end loop;
+   end Set_Overlay_Alias;
+
+   -------------------
+   -- Overlay_Alias --
+   -------------------
+
+   function Overlay_Alias (E : Entity_Id) return Node_Sets.Set is
+      C : constant Node_Graphs.Cursor := Overlay_Aliases.Find (E);
+      use Node_Graphs;
+   begin
+      --  Given that the alias set for E contains E itself, we remove it here
+
+      if Has_Element (C) then
+         pragma Assert (Overlay_Aliases (C).Contains (E));
+         return Overlay_Aliases (C).Difference (Node_Sets.To_Set (E));
+      else
+         return Node_Sets.Empty_Set;
+      end if;
+
+   end Overlay_Alias;
 
    ---------------------------------
    -- Extra tables on expressions --
@@ -1433,37 +1491,9 @@ package body SPARK_Util is
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
       Formal : Entity_Id;
       Call   : Node_Id;
-      Par    : Node_Id;
    begin
-      --  Detect actual of a call to instance of Ada.Unchecked_Conversion,
-      --  which are rewritten into N_Unchecked_Type_Conversion.
-
-      Par := Parent (Actual);
-
-      if Nkind (Par) = N_Parameter_Association then
-         Par := Parent (Par);
-      end if;
-
-      if Nkind (Par) = N_Unchecked_Type_Conversion then
-         declare
-            Conversion_Call : constant Node_Id := Original_Node (Par);
-            --  Original call to instance of Ada.Unchecked_Conversion
-
-            pragma Assert
-              (Nkind (Conversion_Call) = N_Function_Call
-                 and then
-               Is_Unchecked_Conversion_Instance
-                 (Entity (Name (Conversion_Call))));
-         begin
-            return First_Formal (Entity (Name (Conversion_Call)));
-         end;
-
-      --  Otherwise it is an ordinary actual of a subprogram call
-
-      else
-         Find_Actual (Actual, Formal, Call);
-         return Formal;
-      end if;
+      Find_Actual (Actual, Formal, Call);
+      return Formal;
    end Get_Formal_From_Actual;
 
    ----------------------------
@@ -1471,19 +1501,13 @@ package body SPARK_Util is
    ----------------------------
 
    function Get_Initialized_Object (N : Node_Id) return Entity_Id is
-      Par : Node_Id := Parent (N);
+      Context : constant Node_Id := Unqual_Conv (Parent (N));
+      --  Skip qualifications and type conversions between the aggregate and
+      --  the object declaration.
 
    begin
-      --  The object declaration might be the parent expression of the
-      --  aggregate, or there might be a qualification in between. Deal
-      --  uniformly with both cases.
-
-      if Nkind (Par) = N_Qualified_Expression then
-         Par := Parent (Par);
-      end if;
-
-      if Nkind (Par) = N_Object_Declaration then
-         return Defining_Identifier (Par);
+      if Nkind (Context) = N_Object_Declaration then
+         return Defining_Identifier (Context);
       else
          return Empty;
       end if;
@@ -1727,6 +1751,7 @@ package body SPARK_Util is
          when N_Function_Call =>
             if Through_Traversal
               and then Is_Traversal_Function_Call (Expr)
+              and then Is_Path_Expression (First_Actual (Expr))
             then
                return GRO (First_Actual (Expr));
             else
@@ -1740,7 +1765,10 @@ package body SPARK_Util is
             return GRO (Expression (Expr));
 
          when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            if Attribute_Name (Expr) in Name_First
+                                      | Name_Last
+                                      | Name_Length
+                                      | Name_Access
             then
                return GRO (Prefix (Expr));
             else
@@ -1765,34 +1793,6 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Get_Root_Object;
-
-   ----------------------
-   -- Has_Dereferences --
-   ----------------------
-
-   function Has_Dereferences (N : Node_Id) return Boolean is
-   begin
-      if Einfo.Utils.Is_Entity_Name (N) then
-         return False;
-      else
-         case Nkind (N) is
-            when N_Explicit_Dereference =>
-               return True;
-
-            when N_Indexed_Component
-               | N_Selected_Component
-               | N_Slice
-            =>
-               return Has_Dereferences (Prefix (N));
-
-            when N_Type_Conversion =>
-               return Has_Dereferences (Expression (N));
-
-            when others =>
-               return False;
-         end case;
-      end if;
-   end Has_Dereferences;
 
    ------------------
    -- Has_Volatile --
@@ -1989,13 +1989,19 @@ package body SPARK_Util is
    --------------------------
 
    function Is_Constant_In_SPARK (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Etype (E);
    begin
-      return Ekind (E) in E_Constant | E_In_Parameter
-            and then (not Is_Access_Type (Ty)
-              or else Is_Access_Constant (Ty)
-              or else Ekind (Directly_Designated_Type (Ty)) = E_Subprogram_Type
-              or else Comes_From_Declare_Expr (E));
+      case Ekind (E) is
+         when E_In_Parameter =>
+            return Ekind (Scope (E)) = E_Function
+              or else not Is_Access_Variable (Etype (E));
+         when E_Loop_Parameter =>
+            return True;
+         when E_Constant =>
+            return Comes_From_Declare_Expr (E)
+              or else not Is_Access_Variable (Etype (E));
+         when others =>
+            return False;
+      end case;
    end Is_Constant_In_SPARK;
 
    ------------------------------------------
@@ -2510,7 +2516,10 @@ package body SPARK_Util is
             return True;
 
          when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            if Attribute_Name (Expr) in Name_First
+                                      | Name_Last
+                                      | Name_Length
+                                      | Name_Access
             then
                return Is_Path_Expression (Prefix (Expr));
 
@@ -2642,6 +2651,23 @@ package body SPARK_Util is
       return Ekind (E) in E_Component | E_Discriminant | E_In_Parameter
         and then Ekind (Scope (E)) = E_Protected_Type;
    end Is_Protected_Component_Or_Discr;
+
+   ---------------------------
+   -- Is_Rooted_In_Constant --
+   ---------------------------
+
+   function Is_Rooted_In_Constant (Expr : Node_Id) return Boolean is
+      Root : constant Entity_Id :=
+        (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
+         else Empty);
+   begin
+      return Present (Root)
+        and then
+          (not Is_Deep (Etype (Root))
+           or else (Is_Constant_In_SPARK (Root)
+                    and then Ekind (Root) /= E_In_Parameter)
+           or else Traverse_Access_To_Constant (Expr));
+   end Is_Rooted_In_Constant;
 
    ------------------------------
    -- Is_Quantified_Loop_Param --
@@ -3676,6 +3702,82 @@ package body SPARK_Util is
    begin
       return Parent (Label);
    end Statement_Enclosing_Label;
+
+   ---------------------------------
+   -- Traverse_Access_To_Constant --
+   ---------------------------------
+
+   function Traverse_Access_To_Constant (Expr : Node_Id) return Boolean is
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+            | N_Aggregate
+            | N_Allocator
+            | N_Delta_Aggregate
+            | N_Extension_Aggregate
+            | N_Null
+         =>
+            return False;
+
+         --  In the case of a call to a traversal function, the root object is
+         --  the root of the traversed parameter. Otherwise there is no root
+         --  object.
+
+         when N_Function_Call =>
+            if Is_Traversal_Function_Call (Expr) then
+               return Traverse_Access_To_Constant (First_Actual (Expr));
+            else
+               return False;
+            end if;
+
+         when N_Attribute_Reference =>
+            if Attribute_Name (Expr) in Name_First
+                                      | Name_Last
+                                      | Name_Length
+                                      | Name_Access
+            then
+               return Traverse_Access_To_Constant (Prefix (Expr));
+            else
+               pragma Assert
+                 (Attribute_Name (Expr) in Name_Loop_Entry
+                                         | Name_Old
+                                         | Name_Update);
+               return False;
+            end if;
+
+         when N_Explicit_Dereference =>
+            pragma Assert (Is_Access_Type (Retysp (Etype (Prefix (Expr)))));
+
+            return Is_Access_Constant (Retysp (Etype (Prefix (Expr))))
+              or else Traverse_Access_To_Constant (Prefix (Expr));
+
+         when N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return Traverse_Access_To_Constant (Prefix (Expr));
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Traverse_Access_To_Constant (Expression (Expr));
+
+         when N_Op_Eq
+            | N_Op_Ne
+         =>
+            if Nkind (Left_Opnd (Expr)) = N_Null then
+               return Traverse_Access_To_Constant (Right_Opnd (Expr));
+            else
+               pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+               return Traverse_Access_To_Constant (Left_Opnd (Expr));
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Traverse_Access_To_Constant;
 
    -----------------------------
    -- Unique_Main_Unit_Entity --

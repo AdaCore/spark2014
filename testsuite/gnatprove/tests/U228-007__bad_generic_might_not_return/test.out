@@ -1,0 +1,25 @@
+bad_spec.ads:7:06: error: aspect Annotate Might_Not_Return must apply to a procedure
+bad_spec.ads:14:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with No_Return
+gnatprove: error during generation of Global contracts
+bad_spec_prag.ads:5:04: error: wrong number of arguments in pragma Annotate (GNATprove, Might_Not_Return, ...), expected 3
+bad_spec_prag.ads:9:50: error: pragma Annotate Might_Not_Return must apply to a procedure
+bad_spec_prag.ads:16:50: error: procedure with pragma Annotate Might_Not_Return must not also be marked with No_Return
+bad_spec_prag.ads:21:50: error: pragma Annotate Might_Not_Return must apply to a procedure
+gnatprove: error during generation of Global contracts
+bad.adb:26:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+gnatprove: error during generation of Global contracts
+weird.ads:6:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Terminating
+weird.ads:12:06: error: procedure with aspect Annotate Terminating must not also be marked with Might_Not_Return
+weird.ads:17:06: error: procedure with aspect Annotate Terminating must not also be marked with No_Return
+gnatprove: error during generation of Global contracts
+pack.adb:5:07: medium: exception might be raised (e.g. when B = True)
+pack.adb:11:10: medium: precondition might fail, cannot prove B, in instantiation at pack.adb:15
+pack.adb:27:22: info: assertion proved (CVC4: 1 VC)
+pack.adb:36:10: medium: precondition might fail, cannot prove B, in instantiation at pack.adb:43
+pack.ads:8:06: info: data dependencies proved, in instantiation at pack.adb:15
+pack.ads:9:14: info: postcondition proved (CVC4: 1 VC), in instantiation at pack.adb:15
+pack.ads:13:06: info: data dependencies proved
+pack.ads:14:14: info: postcondition proved (CVC4: 1 VC)
+pack.ads:18:06: info: data dependencies proved
+pack.ads:22:14: info: postcondition proved (CVC4: 1 VC)
+pack.ads:30:06: info: data dependencies proved, in instantiation at pack.adb:43

@@ -1,0 +1,16 @@
+p.adb:14:33: info: loop invariant preservation proved
+p.adb:14:33: info: loop invariant initialization proved
+p.adb:14:62: info: null exclusion check proved
+p.adb:16:13: info: loop invariant initialization proved
+p.adb:16:13: info: loop invariant preservation proved
+p.adb:18:14: info: pointer dereference check proved
+p.adb:19:14: info: pointer dereference check proved
+p.adb:21:16: info: pointer dereference check proved
+p.adb:22:24: info: pointer dereference check proved
+p.ads:20:20: info: pointer dereference check proved
+p.ads:20:47: info: pointer dereference check proved
+p.ads:21:22: info: pointer dereference check proved
+p.ads:21:33: info: pointer dereference check proved
+p.ads:22:53: info: pointer dereference check proved
+p.ads:22:62: info: pointer dereference check proved
+p.ads:28:14: info: postcondition proved

@@ -116,5 +116,5 @@ patris.ads:296:06: info: data dependencies proved
 patris.ads:299:11: info: data dependencies proved
 patris.ads:302:06: info: data dependencies proved
 patris.ads:305:11: info: data dependencies proved
-pebble.ads:108:48: warning: return type of "Equal" is an 8-bit Ada Boolean
-pebble.ads:108:48: warning: use appropriate corresponding type in C (e.g. char)
+pebble.ads:108:48: warning: return type of "Equal" is an 8-bit Ada Boolean [-gnatwx]
+pebble.ads:108:48: warning: use appropriate corresponding type in C (e.g. char) [-gnatwx]

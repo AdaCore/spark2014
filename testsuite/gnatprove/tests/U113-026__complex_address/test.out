@@ -1,20 +1,14 @@
-arrays.ads:23:04: error: "Arr_3" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
-arrays.ads:23:04: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:25:29: error: attribute "Address" of a part of an object which is not volatile is not allowed in SPARK
-arrays.ads:25:29: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:27:04: error: "Arr_4" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
+arrays.ads:25:04: warning: writing to "Arr_3" is assumed to have no effects on other non-volatile objects
+arrays.ads:27:04: error: "Arr_4" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:27:04: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:28:79: error: attribute "Address" in unsupported context is not yet supported
-arrays.ads:31:04: error: "Arr_5" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
+arrays.ads:31:04: error: "Arr_5" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:31:04: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:32:27: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
+arrays.ads:32:27: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:32:27: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:32:45: error: attribute "Address" in unsupported context is not yet supported
-arrays.ads:34:04: error: "Arr_6" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
+arrays.ads:34:04: error: "Arr_6" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:34:04: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:35:27: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
+arrays.ads:35:27: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:35:27: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:35:34: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" of a part of an object which is not volatile)
-arrays.ads:35:34: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:35:52: error: attribute "Address" in unsupported context is not yet supported
 gnatprove: error during flow analysis and proof

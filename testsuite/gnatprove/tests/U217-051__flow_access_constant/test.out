@@ -1,0 +1,13 @@
+main.adb:5:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:10:33: medium: constant without variable input "A" cannot appear in Initializes
+main.adb:10:36: medium: constant without variable input "B" cannot appear in Initializes
+main.adb:10:39: medium: constant without variable input "C" cannot appear in Initializes
+main.adb:11:11: info: initial condition proved (CVC4: 1 VC)
+main.adb:16:14: medium: constant without variable input "A" cannot appear in Globals
+main.adb:16:14: medium: constant without variable input "B" cannot appear in Globals
+main.adb:16:14: medium: constant without variable input "C" cannot appear in Globals
+main.adb:16:20: info: initialization of "Y" proved
+main.adb:17:29: medium: constant without variable input "A" cannot appear in Depends
+main.adb:17:32: medium: constant without variable input "B" cannot appear in Depends
+main.adb:17:35: medium: constant without variable input "C" cannot appear in Depends
+main.adb:17:48: info: postcondition proved (CVC4: 1 VC)

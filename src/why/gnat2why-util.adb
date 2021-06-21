@@ -966,14 +966,6 @@ package body Gnat2Why.Util is
                             Name    : W_Identifier_Id;
                             Mutable : Boolean := False) is
    begin
-      --  For an array in split form, we do not have enough information in Name
-      --  to recompute a correct binder.
-
-      pragma Assert
-        (not (Get_Typ (Name) /= Why_Empty
-         and then Get_Type_Kind (Get_Typ (Name)) = EW_Split
-         and then Has_Array_Type (Get_Ada_Node (+Get_Typ (Name)))));
-
       Ada_Ent_To_Why.Insert (Symbol_Table, E,
                              Mk_Tmp_Item_Of_Entity (E, Name, Mutable));
    end Insert_Entity;

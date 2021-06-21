@@ -1,3 +1,5 @@
+traversals.adb:16:07: info: dynamic accessibility check proved (Trivial)
+traversals.adb:20:07: info: dynamic accessibility check proved (Trivial)
 traversals.adb:24:13: info: function contract might not be available on recursive calls
 traversals.adb:25:07: medium: "Length" is recursive, terminating annotation could be incorrect
 traversals.adb:26:14: info: pointer dereference check proved (CVC4: 1 VC)

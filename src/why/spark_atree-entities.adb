@@ -165,10 +165,12 @@ package body SPARK_Atree.Entities is
    --------------------------------
 
    function Designates_Incomplete_Type (E : Entity_Id) return Boolean is
-     (Einfo.Utils.Is_Incomplete_Type
-       (Einfo.Entities.Directly_Designated_Type (E))
-     or else
-     SPARK_Util.Is_Partial_View (Einfo.Entities.Directly_Designated_Type (E)));
+      Des_Ty : constant Entity_Id :=
+        Einfo.Entities.Directly_Designated_Type (E);
+   begin
+      return Einfo.Utils.Is_Incomplete_Type (Des_Ty)
+        or else SPARK_Util.Is_Partial_View (Des_Ty);
+   end Designates_Incomplete_Type;
 
    ------------------------------
    -- Directly_Designated_Type --
@@ -472,6 +474,13 @@ package body SPARK_Atree.Entities is
    function Is_Actual_Subtype (Typ : Entity_Id) return Boolean is
      (Einfo.Entities.Is_Actual_Subtype (Typ));
 
+   ----------------
+   -- Is_Aliased --
+   ----------------
+
+   function Is_Aliased (Obj : Entity_Id) return Boolean renames
+     Einfo.Entities.Is_Aliased;
+
    ------------------
    -- Is_Base_Type --
    ------------------
@@ -508,6 +517,22 @@ package body SPARK_Atree.Entities is
      (Subp : Entity_Id)
       return Boolean
       renames Sem_Util.Is_Expression_Function_Or_Completion;
+
+   ----------------------------------------
+   -- Is_Fixed_Lower_Bound_Array_Subtype --
+   ----------------------------------------
+
+   function Is_Fixed_Lower_Bound_Array_Subtype
+     (Typ : Entity_Id) return Boolean
+   is (Einfo.Entities.Is_Fixed_Lower_Bound_Array_Subtype (Typ));
+
+   ----------------------------------------
+   -- Is_Fixed_Lower_Bound_Index_Subtype --
+   ----------------------------------------
+
+   function Is_Fixed_Lower_Bound_Index_Subtype
+     (Typ : Entity_Id) return Boolean
+   is (Einfo.Entities.Is_Fixed_Lower_Bound_Index_Subtype (Typ));
 
    ---------------------
    -- Is_Limited_View --

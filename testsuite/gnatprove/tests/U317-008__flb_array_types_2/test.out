@@ -1,0 +1,3 @@
+test_first_bound_rejected.adb:7:44: error: index with fixed lower bound not allowed for subtype of fixed-lower-bound type "My_Arr" defined at line 6
+test_first_bound_rejected.adb:16:42: error: index with fixed lower bound not allowed for subtype of fixed-lower-bound type "My_Arr" defined at line 15
+gnatprove: error during generation of Global contracts

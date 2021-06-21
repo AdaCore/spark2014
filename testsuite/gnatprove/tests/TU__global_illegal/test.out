@@ -1,25 +1,25 @@
-global_illegal.ads:29:11: incorrect placement of aspect "Global"
-global_illegal.ads:40:26: global item must denote object, state or current instance of concurrent type
-global_illegal.ads:43:22: "Non_Existant" is undefined
-global_illegal.ads:57:22: duplicate global mode
-global_illegal.ads:58:22: duplicate global mode
-global_illegal.ads:59:22: duplicate global mode
-global_illegal.ads:60:22: duplicate global mode
-global_illegal.ads:61:22: duplicate global mode
-global_illegal.ads:61:34: global item cannot reference parameter of subprogram "P2"
-global_illegal.ads:69:32: duplicate global item
-global_illegal.ads:71:32: duplicate global item
-global_illegal.ads:86:26: cannot mix null and non-null global items
-global_illegal.ads:91:21: global item must denote object, state or current instance of concurrent type
-global_illegal.ads:97:22: global mode "Output" is not applicable to functions
-global_illegal.ads:98:22: global mode "In_Out" is not applicable to functions
-global_illegal_2.adb:13:11: aspect specification must appear on initial declaration
-global_illegal_2.adb:26:31: cannot mention state "A" in global refinement
-global_illegal_2.adb:26:31: use its constituents instead
-global_illegal_2.adb:44:35: global item "X" cannot have mode In_Out or Output
-global_illegal_2.adb:44:35: item already appears as input of subprogram "P3"
-global_illegal_2.adb:45:35: global item "Y" cannot have mode In_Out or Output
-global_illegal_2.adb:45:35: item already appears as input of subprogram "P3"
+global_illegal.ads:29:11: error: incorrect placement of aspect "Global"
+global_illegal.ads:40:26: error: global item must denote object, state or current instance of concurrent type
+global_illegal.ads:43:22: error: "Non_Existant" is undefined
+global_illegal.ads:57:22: error: duplicate global mode
+global_illegal.ads:58:22: error: duplicate global mode
+global_illegal.ads:59:22: error: duplicate global mode
+global_illegal.ads:60:22: error: duplicate global mode
+global_illegal.ads:61:22: error: duplicate global mode
+global_illegal.ads:61:34: error: global item cannot reference parameter of subprogram "P2"
+global_illegal.ads:69:32: error: duplicate global item
+global_illegal.ads:71:32: error: duplicate global item
+global_illegal.ads:86:26: error: cannot mix null and non-null global items
+global_illegal.ads:91:21: error: global item must denote object, state or current instance of concurrent type
+global_illegal.ads:97:22: error: global mode "Output" is not applicable to functions
+global_illegal.ads:98:22: error: global mode "In_Out" is not applicable to functions
+global_illegal_2.adb:13:11: error: aspect specification must appear on initial declaration
+global_illegal_2.adb:26:31: error: cannot mention state "A" in global refinement
+global_illegal_2.adb:26:31: error: use its constituents instead
+global_illegal_2.adb:44:35: error: global item "X" cannot have mode In_Out or Output
+global_illegal_2.adb:44:35: error: item already appears as input of subprogram "P3"
+global_illegal_2.adb:45:35: error: global item "Y" cannot have mode In_Out or Output
+global_illegal_2.adb:45:35: error: item already appears as input of subprogram "P3"
 global_illegal_3.adb:32:17: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 22 should mention X in a precondition]
 global_illegal_3.adb:32:19: high: "Y" must be listed in the Global aspect of "P1" (SPARK RM 6.1.4(14))
 global_illegal_3.adb:43:09: high: "X" must be a global output of "P2" (SPARK RM 6.1.4(17))

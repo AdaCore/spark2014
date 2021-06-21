@@ -139,29 +139,22 @@ package SPARK_Util.Subprograms is
    --  @return the enclosing protected type
 
    function Enclosing_Subprogram (E : Entity_Id) return Entity_Id
-     with Pre  => Ekind (E) in E_Function
-                             | E_Procedure
-                             | E_Task_Type
-                             | Entry_Kind
-                             | E_Package,
+     with Pre => Ekind (E) in E_Function
+                            | E_Procedure
+                            | E_Task_Type
+                            | Entry_Kind
+                            | E_Package,
           Contract_Cases =>
                ((Ekind (E) in E_Function
-                           | E_Procedure
-                           | E_Task_Type
-                           | Entry_Kind)
+                            | E_Procedure
+                            | E_Task_Type
+                            | Entry_Kind)
                 =>
                   Enclosing_Subprogram'Result = E,
 
-                Ekind (E) = E_Package and then Is_Library_Level_Entity (E)
-                =>
-                  Enclosing_Subprogram'Result = Empty,
-
-                Ekind (E) = E_Package and then not Is_Library_Level_Entity (E)
-                =>
-                  Ekind (Enclosing_Subprogram'Result) in E_Function
-                                                       | E_Procedure
-                                                       | E_Task_Type
-                                                       | Entry_Kind,
+                Ekind (E) = E_Package =>
+                  (if Is_Library_Level_Entity (E)
+                   then Enclosing_Subprogram'Result = Empty),
 
                 others => False);
    --  @param E is an entry, subprogram, task, package
@@ -442,10 +435,6 @@ package SPARK_Util.Subprograms is
    --     and is considered to always terminate abnormally.
    --  Note: this routine is meant to be only used in phase 2
 
-   function Is_Integer_Literal_Aspect_Parameter (E : Entity_Id) return Boolean;
-   --  Return True if E is a function associated with the Integer_Literal
-   --  aspect of a type.
-
    function Is_Intrinsic (E : Entity_Id) return Boolean
    is
      (Ekind (E) in E_Function | E_Procedure
@@ -475,10 +464,6 @@ package SPARK_Util.Subprograms is
    with Pre => Ekind (E) in E_Function | E_Procedure;
    --  @param E subprogram
    --  @return True iff E is a predefined potentially blocking subprogram
-
-   function Is_Real_Literal_Aspect_Parameter (E : Entity_Id) return Boolean;
-   --  Return True if E is a function associated with the Real_Literal
-   --  aspect of a type.
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean;
    --  @param E any entity

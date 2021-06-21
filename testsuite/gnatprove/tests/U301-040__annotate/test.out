@@ -1,0 +1,1 @@
+test_annotate.adb:3:38: info: types of aliased objects have the same size (Trivial)

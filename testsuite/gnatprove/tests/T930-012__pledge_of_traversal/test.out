@@ -1,3 +1,5 @@
+test_pledge.adb:5:07: info: dynamic accessibility check proved (Trivial)
+test_pledge.adb:14:07: info: dynamic accessibility check proved (Trivial)
 test_pledge.adb:19:14: info: postcondition proved (CVC4: 1 VC)
 test_pledge.adb:19:27: info: pointer dereference check proved (CVC4: 1 VC)
 test_pledge.adb:19:45: info: pointer dereference check proved (CVC4: 1 VC)

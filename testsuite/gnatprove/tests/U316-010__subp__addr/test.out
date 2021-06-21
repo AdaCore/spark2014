@@ -1,0 +1,5 @@
+main.adb:2:04: error: "Y" is not allowed in SPARK (due to attribute "Address" of a non-object entity)
+main.adb:2:04: error: violation of pragma SPARK_Mode at test.adc:1
+main.adb:2:32: error: attribute "Address" of a non-object entity is not allowed in SPARK
+main.adb:2:32: error: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof

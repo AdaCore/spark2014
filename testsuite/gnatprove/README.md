@@ -63,3 +63,7 @@ Another field is the `timeout` field:
 timeout: 1500
 ```
 This directive replaces the default timeout of 300s (5 minutes) for this test.
+
+Tests with the prefix `ug__` are part of the special SPARK UG testsuite and
+don't interpret test.yaml or test.py files. They run a fixed `gnatprove`
+command. See the `UGTestDriver` in `run-tests` for details.

@@ -55,7 +55,7 @@ procedure Test_Declare with SPARK_Mode is
             else not Has_Zero (A (A'First .. I)));
          pragma Loop_Invariant
            (if Found then Fst_Zero <= I
-              and not Has_Zero (A'Loop_Entry (Fst_Zero + 1 .. I)));
+              and (for all K in Fst_Zero + 1 .. I => A'Loop_Entry (K) /= 0));
          pragma Loop_Invariant
            (if Found then A = (A'Loop_Entry with delta Fst_Zero .. I => 0)
             else A = A'Loop_Entry);

@@ -1,14 +1,14 @@
-refined_depends_illegal.adb:6:14: useless refinement, subprogram "P1" does not depend on abstract state with visible refinement
-refined_depends_illegal.adb:20:14: useless refinement, declaration of subprogram "No_Depends_Contract" lacks aspect or pragma Depends
-refined_depends_illegal.adb:35:14: aspect "Refined_Depends" must apply to the body of subprogram declared in a package specification
-refined_depends_illegal.adb:53:14: global "X" is missing from output dependence list
-refined_depends_illegal.adb:63:14: add "null => Var2" dependency to ignore this input
-refined_depends_illegal.adb:63:14: global "Var" is missing from output dependence list
-refined_depends_illegal.adb:63:14: global "Var2" is missing from input dependence list
-refined_depends_illegal.adb:71:14: constituent "Z" is missing in output list
-refined_depends_illegal.adb:71:14: output state "State2" must be replaced by all its constituents in dependence refinement
-refined_depends_illegal.adb:81:48: duplicate use of item "W"
-refined_depends_illegal.adb:89:48: cannot mix null and non-null dependency items
+refined_depends_illegal.adb:6:14: error: useless refinement, subprogram "P1" does not depend on abstract state with visible refinement
+refined_depends_illegal.adb:20:14: error: useless refinement, declaration of subprogram "No_Depends_Contract" lacks aspect or pragma Depends
+refined_depends_illegal.adb:35:14: error: aspect "Refined_Depends" must apply to the body of subprogram declared in a package specification
+refined_depends_illegal.adb:53:14: error: global "X" is missing from output dependence list
+refined_depends_illegal.adb:63:14: error: add "null => Var2" dependency to ignore this input
+refined_depends_illegal.adb:63:14: error: global "Var" is missing from output dependence list
+refined_depends_illegal.adb:63:14: error: global "Var2" is missing from input dependence list
+refined_depends_illegal.adb:71:14: error: constituent "Z" is missing in output list
+refined_depends_illegal.adb:71:14: error: output state "State2" must be replaced by all its constituents in dependence refinement
+refined_depends_illegal.adb:81:48: error: duplicate use of item "W"
+refined_depends_illegal.adb:89:48: error: cannot mix null and non-null dependency items
 refined_depends_illegal_2.adb:11:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at refined_depends_illegal_2.ads:6 should mention X in a precondition]
 refined_depends_illegal_2.adb:11:18: high: "Y" constituent of "State" must be listed in the Refined_Depends aspect of "P1" (SPARK RM 6.1.4(14))
 refined_depends_illegal_2.adb:16:42: info: initialization of "X" constituent of "State" proved

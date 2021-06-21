@@ -1,0 +1,33 @@
+lits.ads:7:40: info: predicate check proved (CVC4: 1 VC)
+lits.ads:8:19: info: assertion proved (CVC4: 1 VC)
+lits.ads:8:28: info: predicate check proved (CVC4: 1 VC)
+lits.ads:11:40: info: predicate check proved (CVC4: 1 VC)
+lits.ads:12:19: info: assertion proved (CVC4: 1 VC)
+lits.ads:12:28: info: predicate check proved (CVC4: 1 VC)
+lits.ads:14:40: info: predicate check proved (CVC4: 1 VC)
+lits.ads:15:19: info: assertion proved (CVC4: 1 VC)
+lits.ads:15:28: info: predicate check proved (CVC4: 1 VC)
+lits.ads:17:40: info: predicate check proved (CVC4: 1 VC)
+lits.ads:18:19: info: assertion proved (CVC4: 1 VC)
+lits.ads:18:29: info: predicate check proved (CVC4: 1 VC)
+lits.ads:20:40: info: predicate check proved (CVC4: 1 VC)
+lits.ads:21:19: info: assertion proved (CVC4: 1 VC)
+lits.ads:21:29: info: predicate check proved (CVC4: 1 VC)
+lits.ads:23:40: info: predicate check proved (CVC4: 1 VC)
+lits.ads:24:19: info: assertion proved (CVC4: 1 VC)
+lits.ads:24:28: info: predicate check proved (CVC4: 1 VC)
+lits.ads:27:41: info: call to "From_Universal_Image" is not handled precisely
+lits.ads:27:41: medium: divide by zero might fail
+lits.ads:27:41: medium: precondition might fail
+lits.ads:28:19: medium: assertion might fail
+lits.ads:28:30: info: predicate check proved (CVC4: 1 VC)
+lits.ads:29:41: info: call to "From_Universal_Image" is not handled precisely
+lits.ads:29:41: medium: divide by zero might fail
+lits.ads:29:41: medium: precondition might fail
+lits.ads:30:19: medium: assertion might fail
+lits.ads:30:30: info: predicate check proved (CVC4: 1 VC)
+lits.ads:32:41: info: call to "From_Universal_Image" is not handled precisely
+lits.ads:32:41: medium: divide by zero might fail
+lits.ads:32:41: medium: precondition might fail
+lits.ads:33:41: info: predicate check proved (CVC4: 1 VC)
+lits.ads:33:41: medium: divide by zero might fail

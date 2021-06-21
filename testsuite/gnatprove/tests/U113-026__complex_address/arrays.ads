@@ -13,24 +13,24 @@ package Arrays with SPARK_Mode is
 
 
    Length : constant Uint64 := arr_1'Length / 4;
-   Arr_2 : Second(0 .. Length) with Volatile;
+   Arr_2 : Second(0 .. Length) with Import, Volatile;
    for Arr_2'Address use arr_1'Address;
    for Arr_2'Alignment use 4;
 
    function F (X : System.Address) return System.Address;
    function G (X : System.Address) return Boolean;
 
-   Arr_3 : First(0.. 255) with Volatile;
+   Arr_3 : First(0.. 255) with Import, Volatile;
    for Arr_3'Alignment use 4;
    for Arr_3'Address use F (Arr_1(0..255)'Address);
 
-   Arr_4 : First(0 .. 255);
+   Arr_4 : First(0 .. 255) with Import;
    for Arr_4'Address use (if (for all I in Uint64 range 0 .. 1 => G (Arr_3 (I)'Address)) then Arr_2'Address else Arr_3'Address);
 
 
-   Arr_5 : First(0 .. 255);
+   Arr_5 : First(0 .. 255) with Import;
    for Arr_5'Address use (Arr_3((if G (Arr_3'Address) then 0 else 1) .. 255)'Address);
 
-   Arr_6 : First(0 .. 255);
+   Arr_6 : First(0 .. 255) with Import;
    for Arr_6'Address use (First'(Arr_3((if G (Arr_3'Address) then 0 else 1) .. 255))(1 .. 255)'Address);
 end Arrays;

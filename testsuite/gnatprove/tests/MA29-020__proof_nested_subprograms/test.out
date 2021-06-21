@@ -1,7 +1,7 @@
 skein.adb:27:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:27:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
 skein.adb:34:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:139
-skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash'First = 9223372036854775809 and Local_Ctx.H.Tweak_Words.Field_Type = U6'Last and Local_Ctx.H.Tweak_Words.First_Block = True and Local_Ctx.H.Tweak_Words.Final_Block = True and Local_Ctx.H.Hash_Bit_Len = 2305843009213693948 and N = 7) [reason for check: result of addition must be a valid index into the array]
+skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash'First = 17149707381027370441 and Hash'Last = 10916725496745942989 and Local_Ctx.H.Tweak_Words.Field_Type = U6'Last and Local_Ctx.H.Tweak_Words.First_Block = True and Local_Ctx.H.Tweak_Words.Final_Block = True and Local_Ctx.H.Hash_Bit_Len = 18305769090843128 and Local_Ctx.B(6) = 60 and N = 7) [reason for check: result of addition must be a valid index into the array]
 skein.adb:36:77: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:139
 skein.adb:36:77: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:139
 skein.adb:37:57: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:139
@@ -79,7 +79,7 @@ Concurrency . . . . . .
 Total 28 7 (25%) . 18 (64%) . 3 (11%)
 
 
-max steps used for successful proof: 364
+max steps used for successful proof: 137
 
 Analyzed 1 unit
 in unit skein, 8 subprograms and packages out of 8 analyzed

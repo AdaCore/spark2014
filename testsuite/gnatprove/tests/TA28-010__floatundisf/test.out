@@ -1,6 +1,6 @@
 convert.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 convert.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
-convert.adb:10:20: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+convert.adb:10:20: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
 convert.adb:13:07: info: initialization of "Res_Hi" proved
 convert.adb:13:15: info: initialization of "Res_Mid" proved
 convert.adb:13:24: info: initialization of "Res_Lo" proved

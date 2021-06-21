@@ -1686,6 +1686,10 @@ package body Flow_Generated_Globals.Partial is
    --  Start of processing for Fold
 
    begin
+      for Child of Scope_Map (Folded) loop
+         Fold (Child, Analyzed, Contracts, Patches);
+      end loop;
+
       Debug ("Folding", Folded);
 
       Update := Collect (Folded);
@@ -1753,10 +1757,6 @@ package body Flow_Generated_Globals.Partial is
 
       Patches.Append (Global_Patch'(Entity  => Folded,
                                     Globals => Update));
-
-      for Child of Scope_Map (Folded) loop
-         Fold (Child, Analyzed, Contracts, Patches);
-      end loop;
    end Fold;
 
    --------------------
@@ -1974,7 +1974,8 @@ package body Flow_Generated_Globals.Partial is
          Contr.Has_Subp_Variant :=
            (if Is_Callable (E)
                or else (Ekind (E) = E_Package
-                        and then not Is_Library_Level_Entity (E))
+                          and then
+                        Present (Subprograms.Enclosing_Subprogram (E)))
             then Has_Subprogram_Variant
               (Subprograms.Enclosing_Subprogram (E))
             else Meaningless);
