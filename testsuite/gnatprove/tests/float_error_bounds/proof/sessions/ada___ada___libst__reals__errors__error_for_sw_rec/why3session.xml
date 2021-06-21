@@ -91,7 +91,7 @@
   <proof prover="0" timelimit="20" memlimit="2000"><result status="valid" steps="30714"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="3"><result status="timeout" steps="68360"/></proof>
+  <proof prover="3"><result status="timeout" steps="64606"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>

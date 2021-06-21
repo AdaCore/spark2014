@@ -25,6 +25,16 @@ package body Libst with SPARK_Mode is
       end if;
    end Sum_Weight_Rec;
 
+   function Sum_Weight (Weights : Weight_Array) return Sum_Of_Weights is
+      Res : Float := 0.0;
+   begin
+      for I in Index loop
+         Res := Res + Weights (I);
+         pragma Loop_Invariant (Res = Sum_Weight_Rec (Weights, I));
+      end loop;
+      return Res;
+   end Sum_Weight;
+
    function Weighted_Sum_Rec
      (Weights : Weight_Array;
       Values  : Value_Array;
@@ -78,5 +88,21 @@ package body Libst with SPARK_Mode is
          return Weighted_Sum_Rec (Weights, Values, I - 1) + Weights (I) * Values (I);
       end if;
    end Weighted_Sum_Rec;
+
+   function Weighted_Sum
+     (Weights : Weight_Array;
+      Values  : Value_Array) return Sum_Of_Values
+   is
+      Num : Float := 0.0;
+      Den : Float := 0.0;
+   begin
+      for I in Index loop
+         Num := Num + Weights (I) * Values (I);
+         Den := Den + Weights (I);
+         pragma Loop_Invariant (Num = Weighted_Sum_Rec (Weights, Values, I));
+         pragma Loop_Invariant (Den = Sum_Weight_Rec (Weights, I));
+      end loop;
+      return Num / Den;
+   end Weighted_Sum;
 
 end Libst;

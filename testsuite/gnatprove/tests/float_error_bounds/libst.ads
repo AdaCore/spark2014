@@ -30,12 +30,13 @@ package Libst with SPARK_Mode is
      (Weights : Weight_Array;
       I       : Extended_Index) return Float
    with
+     Ghost,
      Subprogram_Variant => (Decreases => I),
      Post => Sum_Weight_Rec'Result =
          (if I = 0 then 0.0 else Sum_Weight_Rec (Weights, I - 1) + Weights (I))
        and then Sum_Weight_Rec'Result in 0.0 |  Min_Weight .. Float (I);
-   function Sum_Weight (Weights : Weight_Array) return Sum_Of_Weights is
-     (Sum_Weight_Rec (Weights, Max_Index));
+   function Sum_Weight (Weights : Weight_Array) return Sum_Of_Weights with
+     Post => Sum_Weight'Result = Sum_Weight_Rec (Weights, Max_Index);
    --  Sum of an array of weights
 
    Max_Sum_Of_Values : constant := Max_Value * Float (Max_Index) / Min_Weight;
@@ -45,6 +46,7 @@ package Libst with SPARK_Mode is
       Values  : Value_Array;
       I       : Extended_Index) return Float
    with
+     Ghost,
      Subprogram_Variant => (Decreases => I),
      Post => Weighted_Sum_Rec'Result =
          (if I = 0 then 0.0
@@ -54,8 +56,8 @@ package Libst with SPARK_Mode is
    function Weighted_Sum
      (Weights : Weight_Array;
       Values  : Value_Array) return Sum_Of_Values
-   is
-     (Weighted_Sum_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights))
-   with Pre => Sum_Weight (Weights) /= 0.0;
+   with
+       Pre  => Sum_Weight (Weights) /= 0.0,
+       Post => Weighted_Sum'Result = Weighted_Sum_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights);
    --  Weighted sum of an array of values
 end Libst;
