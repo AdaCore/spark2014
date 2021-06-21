@@ -1,0 +1,9 @@
+test.adb:10:21: info: initialization of "C" proved
+test.adb:11:11: info: data dependencies proved
+test.adb:21:14: info: add a contract to analyze it separately from calling contexts
+test.adb:21:14: info: local subprogram "Stuff2" only analyzed in the context of calls
+test.adb:23:22: info: initialization of "C" proved
+test.adb:27:17: info: overflow check proved (CVC4: 2 VC), in call inlined at test.adb:43
+test.adb:41:16: high: formal parameter "C" and global "Glob1" are aliased (SPARK RM 6.4.2)
+test.adb:44:31: high: formal parameters "B" and "C" are aliased (SPARK RM 6.4.2)
+types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention Left and Right in a precondition]

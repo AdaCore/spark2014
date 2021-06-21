@@ -382,7 +382,7 @@ package body Flow.Analysis.Antialiasing is
          loop
             N := Parent (N);
             Depth := Depth - 1;
-            exit when not Is_Conversion (N);
+            exit when not Is_Conversion (N) or else Depth = 0;
          end loop;
       end Up_Ignoring_Conversions;
 
