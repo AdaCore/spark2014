@@ -2888,72 +2888,76 @@ package body Flow.Analysis is
       end loop;
    end Find_Use_Of_Uninitialized_Variables;
 
-   --------------------------
-   -- Find_Stable_Elements --
-   --------------------------
+   ----------------------------
+   -- Find_Stable_Conditions --
+   ----------------------------
 
-   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs) is
-      Done : Boolean;
-      M    : Attribute_Maps.Map renames FA.Atr;
-   begin
-      for Loop_Id of FA.Loops loop
-         Done := False;
-         while not Done loop
-            Done := True;
-            for N_Loop of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-               declare
-                  Atr : V_Attributes renames M (N_Loop);
+   procedure Find_Stable_Conditions (FA : in out Flow_Analysis_Graphs) is
 
-                  Is_Stable : Boolean;
-               begin
-                  if Atr.Loops.Contains (Loop_Id) then
-                     --  For all nodes in the loop, do:
+      function Is_While_Loop (F : Flow_Id) return Boolean is
+        (F.Kind = Direct_Mapping
+         and then Nkind (F.Node) = N_Loop_Statement
+         and then Present (Condition (Iteration_Scheme (F.Node))));
+      --  Returns True if F is a WHILE loop
 
-                     --  We start by checking if the used variables
-                     --  contain the loop parameter for our loop.
-                     if Present (Loop_Parameter_From_Loop (Loop_Id)) then
-                        Is_Stable := not Atr.Variables_Used.Contains
-                          (Direct_Mapping_Id
-                             (Loop_Parameter_From_Loop (Loop_Id)));
-                     else
-                        Is_Stable := True;
-                     end if;
+      function Defined_In_Loop_Body (Loop_Id : Entity_Id)
+                                     return Flow_Id_Sets.Set
+        with Pre => Ekind (Loop_Id) = E_Loop;
+      --  Returns all the variables defined in the given loop's body
 
-                     --  We then check if we have at least one
-                     --  in-neighbour from "outside" the loop.
-                     if Is_Stable then
-                        for V of FA.PDG.Get_Collection
-                          (N_Loop, Flow_Graphs.In_Neighbours)
-                        loop
-                           if M (V).Loops.Contains (Loop_Id) then
-                              Is_Stable := False;
-                              exit;
-                           end if;
-                        end loop;
-                     end if;
+      --------------------------
+      -- Defined_In_Loop_Body --
+      --------------------------
 
-                     if Is_Stable then
-                        --  Remove from the loop
-                        Atr.Loops.Delete (Loop_Id);
-
-                        --  Complain
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "stable",
-                           N        => Error_Location (FA.PDG, FA.Atr, N_Loop),
-                           Tag      => Stable,
-                           Severity => Warning_Kind,
-                           Vertex   => N_Loop);
-
-                        --  There might be other stable elements now
-                        Done := False;
-                     end if;
-                  end if;
-               end;
-            end loop;
+      function Defined_In_Loop_Body (Loop_Id : Entity_Id)
+                                     return Flow_Id_Sets.Set
+      is
+         Result : Flow_Id_Sets.Set;
+      begin
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            declare
+               Atr : V_Attributes renames FA.Atr (V);
+            begin
+               if Atr.Loops.Contains (Loop_Id) then
+                  Result.Union (Atr.Variables_Defined);
+               end if;
+            end;
          end loop;
+         return Result;
+      end Defined_In_Loop_Body;
+
+   --  Start of processing for Find_Stable_Conditions
+
+   begin
+      for N_Loop of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Cond_Id  : constant Flow_Id := FA.CFG.Get_Key (N_Loop);
+            Cond_Atr : V_Attributes renames FA.Atr (N_Loop);
+
+         begin
+            --  If this vertex is a WHILE loop with variables, i.e.
+            --  not a simple 'while True loop ...'.
+            if not Cond_Atr.Variables_Used.Is_Empty
+              and then Is_While_Loop (Cond_Id)
+              and then Flow_Id_Sets.Intersection
+                (Cond_Atr.Variables_Used,
+                 Defined_In_Loop_Body
+                   (Entity (Identifier (Cond_Id.Node)))).Is_Empty
+            then
+               --  If none of the variables used in the loop condition are
+               --  modified in the loop body, then the loop condition is
+               --  stable.
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "loop condition is stable",
+                  N        => Error_Location (FA.CFG, FA.Atr, N_Loop),
+                  Tag      => Stable,
+                  Severity => Warning_Kind,
+                  Vertex   => N_Loop);
+            end if;
+         end;
       end loop;
-   end Find_Stable_Elements;
+   end Find_Stable_Conditions;
 
    ----------------------------------------
    -- Find_Input_Only_Used_In_Assertions --

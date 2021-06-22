@@ -54,6 +54,7 @@ bad_multi_cond_assign.adb:7:17: info: overflow check proved (CVC4: 2 VC)
 bad_multi_cond_assign.adb:9:17: medium: overflow check might fail [CWE 190], cannot prove upper bound for Y * 2 (e.g. when Y = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention Y in a precondition]
 bad_multi_induction.adb:1:32: info: initialization of "X1" proved
 bad_multi_induction.adb:1:36: info: initialization of "X2" proved
+bad_multi_induction.adb:5:17: warning: loop condition is stable
 bad_multi_induction.adb:6:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for X2 + 6 (e.g. when X2 = 2147483642) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention X2 in a loop invariant]
 bad_self_assign.adb:2:21: medium: overflow check might fail [CWE 190], cannot prove lower bound for X - 1 (e.g. when X = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 bad_self_assign.adb:4:11: info: overflow check proved (CVC4: 2 VC)

@@ -3598,7 +3598,6 @@ package body Flow.Control_Flow_Graph is
       --  loop. Please note that we don't flag the loop statement
       --  itself as part of the loop, hence the corresponding delete
       --  is here as well.
-      FA.Loops.Insert (Loop_Id);
       Ctx.Current_Loops.Insert (Loop_Id);
       Ctx.Entry_References.Insert (Loop_Id, Node_Sets.Empty_Set);
       Ctx.Termination_Proved := False;

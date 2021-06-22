@@ -1,6 +1,7 @@
 test.adb:9:07: info: initialization of "Temp" proved
 test.adb:11:07: warning: statement has no effect
 test.adb:12:15: warning: unused assignment
+test.adb:26:26: warning: loop condition is stable
 test.adb:27:23: info: overflow check proved (CVC4: 2 VC)
 test.adb:70:14: medium: overflow check might fail, cannot prove lower bound for X + Z [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at test.ads:22 should mention X and Z in a precondition]
 test.adb:95:16: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at test.ads:36 should mention X and Y in a precondition]

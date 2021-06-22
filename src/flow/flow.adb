@@ -1631,6 +1631,7 @@ package body Flow is
                      Analysis.Find_Unwritten_Exports (FA);
                      Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);
                      Analysis.Find_Ineffective_Statements (FA);
+                     Analysis.Find_Stable_Conditions (FA);
                      Analysis.Find_Dead_Code (FA);
                      Analysis.Check_Depends_Contract (FA);
                   end if;
@@ -1675,6 +1676,7 @@ package body Flow is
                      --  impossible to initialize state abstractions.
                      if not Gnat2Why_Args.Prove_Mode then
                         Analysis.Find_Ineffective_Statements (FA);
+                        Analysis.Find_Stable_Conditions (FA);
                         Analysis.Find_Dead_Code (FA);
                         Analysis.Find_Hidden_Unexposed_State (FA);
                         if Have_Full_Package_Code then

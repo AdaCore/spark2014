@@ -200,6 +200,7 @@ nested_loops.adb:5:07: info: initialization of "X" proved
 nested_loops.adb:8:17: info: overflow check proved (CVC4: 4 VC)
 nested_loops.adb:9:31: info: loop variant proved (CVC4: 1 VC)
 nested_loops.adb:11:34: info: loop variant proved (CVC4: 1 VC)
+nested_loops.adb:13:25: warning: loop condition is stable
 nested_loops.adb:14:37: medium: loop variant might fail
 nested_loops.adb:22:04: warning: analyzing unreferenced procedure "Proc2"
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect

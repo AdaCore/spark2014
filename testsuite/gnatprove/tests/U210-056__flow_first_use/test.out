@@ -9,4 +9,5 @@ main_for.adb:4:13: high: "X" is not initialized
 main_for.adb:4:20: info: cannot unroll loop (too many loop iterations)
 main_while.adb:1:23: medium: "Y" might not be initialized in "Main_While"
 main_while.adb:4:10: high: "X" is not initialized
+main_while.adb:4:16: warning: loop condition is stable
 main_while.adb:5:12: high: "X" is not initialized
