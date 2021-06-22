@@ -21,7 +21,7 @@ package Libst with SPARK_Mode is
      Predicate => Weight in 0.0 | Min_Weight .. 1.0;
    type Weight_Array is array (Index) of Weight;
 
-   --  Definition of the weighted sum on an array of values using floating
+   --  Definition of the weighted average on an array of values using floating
    --  point computation.
 
    subtype Sum_Of_Weights is Float range 0.0 .. Float (Max_Index) with
@@ -53,11 +53,11 @@ package Libst with SPARK_Mode is
           else Weighted_Sum_Rec (Weights, Values, I - 1) + Weights (I) * Values (I))
        and then Weighted_Sum_Rec'Result in
              -(Max_Value * Float (I)) .. Max_Value * Float (I);
-   function Weighted_Sum
+   function Weighted_Average
      (Weights : Weight_Array;
       Values  : Value_Array) return Sum_Of_Values
    with
        Pre  => Sum_Weight (Weights) /= 0.0,
-       Post => Weighted_Sum'Result = Weighted_Sum_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights);
-   --  Weighted sum of an array of values
+       Post => Weighted_Average'Result = Weighted_Sum_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights);
+   --  Weighted average of an array of values
 end Libst;

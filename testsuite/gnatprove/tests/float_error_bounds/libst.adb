@@ -89,7 +89,7 @@ package body Libst with SPARK_Mode is
       end if;
    end Weighted_Sum_Rec;
 
-   function Weighted_Sum
+   function Weighted_Average
      (Weights : Weight_Array;
       Values  : Value_Array) return Sum_Of_Values
    is
@@ -103,6 +103,6 @@ package body Libst with SPARK_Mode is
          pragma Loop_Invariant (Den = Sum_Weight_Rec (Weights, I));
       end loop;
       return Num / Den;
-   end Weighted_Sum;
+   end Weighted_Average;
 
 end Libst;

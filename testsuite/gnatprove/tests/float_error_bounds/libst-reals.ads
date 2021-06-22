@@ -9,7 +9,7 @@ is
    use Float_Conversions;
    --  Conversions between Big_Real and Float
 
-   --  Definition of the weighted sum on an array of values using exact real
+   --  Definition of the weighted average on an array of values using exact real
    --  computation.
 
    function Sum_Weight_Rec
@@ -33,11 +33,11 @@ is
       else Weighted_Sum_Rec (Weights, Values, I - 1)
         + To_Big_Real (Weights (I)) * To_Big_Real (Values (I)))
    with Subprogram_Variant => (Decreases => I);
-   function Weighted_Sum
+   function Weighted_Average
      (Weights : Weight_Array;
       Values  : Value_Array) return Valid_Big_Real
    is
      (Weighted_Sum_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights))
    with Pre => Sum_Weight (Weights) /= Valid_Big_Real'(0.0);
-   --  Weighted sum of an array of values
+   --  Weighted average of an array of values
 end Libst.Reals;

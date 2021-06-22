@@ -242,7 +242,7 @@ package body Libst.Reals.Errors with SPARK_Mode is
       end if;
    end Error_For_Sum_Rec;
 
-   procedure Error_For_Sum
+   procedure Error_For_Average
      (Weights : Weight_Array;
       Values  : Value_Array)
    is
@@ -305,6 +305,10 @@ package body Libst.Reals.Errors with SPARK_Mode is
          Den_F               : Floats_For_Div;
          Num_R, Den_R, Num_A : Valid_Big_Real) is
       begin
+         pragma Assert (abs (To_Big_Real (Num_F) / To_Big_Real (Den_F)) <=
+                          abs (To_Big_Real (Num_F) / To_Big_Real (Den_F) - Num_R / To_Big_Real (Den_F))
+                        + abs (Num_R / To_Big_Real (Den_F) - Num_R / Den_R)
+                        + Num_A / Den_R);
          pragma Assert (1.0E-7 * abs (To_Big_Real (Num_F) / To_Big_Real (Den_F)) <=
                           1.0E-7 * (Num_A / Den_R + 2.02E-43 / Den_R + 2.03E-5 * Num_A / Den_R));
          pragma Assert (1.0E-7 * Num_A / Den_R + 1.0E-7 * 2.03E-5 * Num_A / Den_R <= 1.01E-7 * Num_A / Den_R);
@@ -353,12 +357,12 @@ package body Libst.Reals.Errors with SPARK_Mode is
 
       Num_F : constant Float := Weighted_Sum_Rec (Weights, Values, Max_Index);
       Den_F : constant Float := Sum_Weight (Weights);
-      Res_F : Float; --  Will be set to Weighted_Sum (Weights, Values) once its precondition can be proved
+      Res_F : Float; --  Will be set to Weighted_Average (Weights, Values) once its precondition can be proved
       Num_R : constant Valid_Big_Real := Weighted_Sum_Rec (Weights, Values, Max_Index);
       Den_R : constant Valid_Big_Real := Sum_Weight (Weights);
       Num_A : constant Valid_Big_Real := Weighted_Sum_Abs_Rec (Weights, Values, Max_Index);
-      Res_R : constant Valid_Big_Real := Weighted_Sum (Weights, Values);
-      Res_A : constant Valid_Big_Real := Weighted_Sum_Abs (Weights, Values);
+      Res_R : constant Valid_Big_Real := Weighted_Average (Weights, Values);
+      Res_A : constant Valid_Big_Real := Weighted_Average_Abs (Weights, Values);
 
    begin
       --  Compute the error for the numerator
@@ -369,7 +373,7 @@ package body Libst.Reals.Errors with SPARK_Mode is
       --  Compute the error for the denominator
       Error_For_SW (Weights);
       pragma Assert (Den_F >= Min_Weight);
-      Res_F := Weighted_Sum (Weights, Values);
+      Res_F := Weighted_Average (Weights, Values);
       --  Compute the error for the division
       Bound_Error_Div (Num_F, Den_F);
       --  The absolute value of the weighted sum is less than the weighted
@@ -381,45 +385,45 @@ package body Libst.Reals.Errors with SPARK_Mode is
       EB_For_Div (Num_F, Den_F, Num_R, Den_R, Num_A);
       --  Aggregate together error bounds coming from all the computations
       Aggregate_Bounds (Num_F, Den_F, Res_F, Num_R, Den_R, Num_A, Res_R, Res_A);
-   end Error_For_Sum;
+   end Error_For_Average;
 
-   procedure Precise_Bounds_For_Sum
+   procedure Precise_Bounds_For_Average
      (Weights : Weight_Array;
       Values  : Value_Array)
    is
       --  Lemma: Prove by induction that Sum_Weight is either 0.0 or more than
       --         Min_Weight on real numbers
 
-      procedure Min_Bound_For_SW (I : Extended_Index) with
+      procedure Min_For_SW (I : Extended_Index) with
         Subprogram_Variant => (Decreases => I),
         Post => Sum_Weight_Rec (Weights, I) = Big_Real'(0.0)
         or else Sum_Weight_Rec (Weights, I) >= To_Big_Real (Min_Weight)
       is
       begin
          if I /= 0 then
-            Min_Bound_For_SW (I - 1);
+            Min_For_SW (I - 1);
          end if;
-      end Min_Bound_For_SW;
+      end Min_For_SW;
 
    begin
       --  Sum_Weight (Weights) in floats is not 0.0
       Error_For_SW (Weights);
-      --  Compute the error for the computation of Weighted_Sum
-      Error_For_Sum (Weights, Values);
-      --  Bound Weighted_Sum and Weighted_Sum_Abs by Max_Value on real numbers
+      --  Compute the error for the computation of Weighted_Average
+      Error_For_Average (Weights, Values);
+      --  Bound Weighted_Sum_Rec and Weighted_Sum_Abs by Max_Value on real numbers
       Sum_Less_Than_Sum_Abs (Weights, Values, Max_Index);
       Bound_Sum_Abs (Weights, Values, Max_Index);
-      pragma Assert (Weighted_Sum_Abs (Weights, Values) <= To_Big_Real (Max_Value));
+      pragma Assert (Weighted_Average_Abs (Weights, Values) <= To_Big_Real (Max_Value));
       --  Sum_Weight is more than Min_Weight on real numbers
-      Min_Bound_For_SW (Max_Index);
+      Min_For_SW (Max_Index);
       pragma Assert (Sum_Weight (Weights) >= To_Big_Real (Min_Weight));
 
-      --  Compute the most precise bound for Weighted_Sum on floats given by
+      --  Compute the most precise bound for Weighted_Average on floats given by
       --  the error bound on the computation and the bound on real numbers.
       pragma Assert
-        (abs (To_Big_Real (Float'(Weighted_Sum (Weights, Values)))) <=
+        (abs (To_Big_Real (Float'(Weighted_Average (Weights, Values)))) <=
            To_Big_Real (Max_Value) + 1.25E-45 + 2.52E-43 / To_Big_Real (Min_Weight)
          + 2.05E-5 * To_Big_Real (Max_Value));
-   end Precise_Bounds_For_Sum;
+   end Precise_Bounds_For_Average;
 
 end Libst.Reals.Errors;
