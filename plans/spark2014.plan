@@ -1,4 +1,3 @@
-# This is identical to the spark2014 preset
 def my_plan():
     anod_install("gnatpython", query_range=20)
     anod_install("stable-codepeer-core", query_range=20)
