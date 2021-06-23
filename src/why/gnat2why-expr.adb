@@ -5138,7 +5138,7 @@ package body Gnat2Why.Expr is
          --  Go to the next type in the derivation tree of Rep_Ty to continue
          --  the search.
 
-         Rep_Ty := Parent_Type (Rep_Ty);
+         Rep_Ty := Parent_Retysp (Rep_Ty);
          exit when No (Rep_Ty);
       end loop;
 

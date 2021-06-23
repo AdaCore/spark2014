@@ -2516,7 +2516,7 @@ package body Why.Gen.Expr is
       begin
          loop
             declare
-               New_Parent : constant Entity_Id := Parent_Type (Parent);
+               New_Parent : constant Entity_Id := Parent_Retysp (Parent);
             begin
                if No (New_Parent)
                  or else not Is_Constrained (New_Parent)

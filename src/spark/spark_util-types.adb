@@ -1151,7 +1151,7 @@ package body SPARK_Util.Types is
               (First_Formal (Proc),
                Get_Expr_From_Check_Only_Proc (Proc));
          end if;
-         Rep_Ty := Parent_Type (Rep_Ty);
+         Rep_Ty := Parent_Retysp (Rep_Ty);
       end loop;
    end Iterate_Applicable_DIC;
 
@@ -1304,16 +1304,31 @@ package body SPARK_Util.Types is
       return Count;
    end Num_Literals;
 
+   -------------------
+   -- Parent_Retysp --
+   -------------------
+
+   function Parent_Retysp (Ty : Entity_Id) return Entity_Id is
+      Rep_Ty  : constant Entity_Id := Retysp (Ty);
+      Next_Ty : constant Entity_Id :=
+        Retysp (Parent_Type (Rep_Ty));
+   begin
+      if Next_Ty = Rep_Ty then
+         return Empty;
+      else
+         return Next_Ty;
+      end if;
+   end Parent_Retysp;
+
    -----------------
    -- Parent_Type --
    -----------------
 
    function Parent_Type (Ty : Entity_Id) return Entity_Id is
-      Rep_Ty  : constant Entity_Id := Retysp (Ty);
-      Decl    : constant Node_Id := Original_Node (Parent (Rep_Ty));
+      Decl   : constant Node_Id := Original_Node (Parent (Ty));
       --  Derived type definitions are sometimes rewritten into record
       --  definitions by the frontend.
-      Sub_Ty  : constant Node_Id :=
+      Sub_Ty : constant Node_Id :=
         (if Nkind (Decl) = N_Subtype_Declaration
          then Subtype_Indication (Decl)
          elsif Nkind (Decl) = N_Full_Type_Declaration
@@ -1325,20 +1340,13 @@ package body SPARK_Util.Types is
       --  the next subtype in the derivation tree. Indeed, Etype on
       --  subtypes returns the base type.
 
-      Next_Ty : constant Entity_Id :=
-        (if Present (Sub_Ty)
-         then Retysp
-           (Entity
+   begin
+      return (if Present (Sub_Ty)
+              then Entity
                 (if Nkind (Sub_Ty) = N_Subtype_Indication
                  then Subtype_Mark (Sub_Ty)
-                 else Sub_Ty))
-         else Retysp (Etype (Rep_Ty)));
-   begin
-      if Next_Ty = Rep_Ty then
-         return Empty;
-      else
-         return Next_Ty;
-      end if;
+                 else Sub_Ty)
+              else Etype (Ty));
    end Parent_Type;
 
    ---------------------------------------

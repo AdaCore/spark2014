@@ -5726,11 +5726,13 @@ package body SPARK_Definition is
             return;
          end if;
 
+         --  Look at the parent type for subtypes and derived types
+
          declare
-            Anc_Subt : constant Entity_Id := Ancestor_Subtype (E);
+            Anc_Subt : constant Entity_Id := Parent_Type (E);
          begin
-            if Present (Anc_Subt)
-              and then not In_SPARK (Anc_Subt)
+            if Anc_Subt /= Etype (E)
+              and then not Retysp_In_SPARK (Anc_Subt)
             then
                Mark_Violation (E, From => Anc_Subt);
             end if;
