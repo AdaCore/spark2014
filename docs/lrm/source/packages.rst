@@ -435,7 +435,7 @@ be *compatible with respect to volatility* with E2 if
 2. The value of a volatility refinement aspect shall only be specified
    for an effectively volatile stand-alone object or for an effectively
    volatile type (which may be a formal type).
-   [A formal parameter is not a stand-alone object; see Ada RM 3.3.1 .]
+   [A formal parameter is not a stand-alone object; see Ada RM 3.3.1.]
    If specified for a stand-alone object, the declared object shall be
    compatible with respect to volatility with its type.
 
@@ -443,8 +443,7 @@ be *compatible with respect to volatility* with E2 if
    shall be a library-level declaration. [In particular, it shall not be
    declared within a subprogram.]
 
-4. A constant object (other than a formal parameter of mode **in**)
-   shall not be effectively volatile.
+4. A discriminant or a loop parameter shall not be effectively volatile.
 
 5. An effectively volatile type other than a protected type
    shall not have a discriminated part.
