@@ -84,7 +84,7 @@ package Libst.Reals.Errors with SPARK_Mode is
    with
        Pre  => Sum_Weight (Weights) /= Float'(0.0),
        Post => Float'(Weighted_Average (Weights, Values))
-         in - (Max_Value + 2.0) .. Max_Value + 2.0;
+         in - (Max_Value + 3.5) .. Max_Value + 3.5;
    --  Precise bound for Weighted_Average obtained through error bound computation
 
 end Libst.Reals.Errors;

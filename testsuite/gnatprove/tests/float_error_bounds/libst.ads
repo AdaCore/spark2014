@@ -1,5 +1,5 @@
 package Libst with SPARK_Mode is
-   Max_Exact_Integer_Computation : constant := 2.0 ** 23;
+   Max_Exact_Integer_Computation : constant := 2.0 ** 24;
    --  Upper bound of the interval on which integer computations are exact
    Float_Sqrt : constant Float := 2.0 ** 63;
    --  Safe bound for multiplication
