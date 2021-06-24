@@ -21,20 +21,20 @@ def run_manual(check_to_prove, option=""):
 
 
 def run_automatic(prover, level=4):
-    cmd = "gnatprove -P spark_lemmas.gpr --no-counterexample -j0" + \
+    cmd = "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0" + \
           " --prover=" + prover + " --level=" + str(level)
     run(cmd)
 
 
 def run_automatic_timeout(prover, level=4, timeout=100):
-    cmd = "gnatprove -P spark_lemmas.gpr --no-counterexample -j0" + \
+    cmd = "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0" + \
           " --prover=" + prover + " --level=" + str(level) + \
           " --timeout=" + str(timeout)
     run(cmd)
 
 
 def run_options(opt):
-    cmd = "gnatprove -P spark_lemmas.gpr --no-counterexample -j0 " + opt
+    cmd = "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0 " + opt
     run(cmd)
 
 

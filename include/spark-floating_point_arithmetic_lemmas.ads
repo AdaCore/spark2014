@@ -89,7 +89,7 @@ is
          (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
          (Val3 in 0.0 .. Fl_Last_Sqrt) and then
          Val1 <= Val2,
-       Post => Val1 * Val3 <= Val2 * Val3;  --  MANUAL PROOF
+       Post => Val1 * Val3 <= Val2 * Val3;  --  COLIBRI
 
    procedure Lemma_Mult_Right_Negative_Is_Monotonic
      (Val1 : Fl;
@@ -102,7 +102,7 @@ is
          (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
          (Val3 in -Fl_Last_Sqrt .. 0.0) and then
          Val1 <= Val2,
-       Post => Val2 * Val3 <= Val1 * Val3;  --  MANUAL PROOF
+       Post => Val2 * Val3 <= Val1 * Val3;  --  COLIBRI
 
    procedure Lemma_Mult_By_Less_Than_One
      (Val1 : Fl;
@@ -123,7 +123,7 @@ is
          (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
          (Val3 in 1.0 / Fl_Last_Sqrt .. Fl'Last) and then
          Val1 <= Val2,
-       Post => Val1 / Val3 <= Val2 / Val3;  --  MANUAL PROOF
+       Post => Val1 / Val3 <= Val2 / Val3;  --  COLIBRI
 
    procedure Lemma_Div_Right_Negative_Is_Monotonic
      (Val1 : Fl;
@@ -136,7 +136,7 @@ is
          (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
          (Val3 in Fl'First .. -1.0 / Fl_Last_Sqrt) and then
          Val1 <= Val2,
-       Post => Val2 / Val3 <= Val1 / Val3;  --  MANUAL PROOF
+       Post => Val2 / Val3 <= Val1 / Val3;  --  COLIBRI
 
    procedure Lemma_Div_Left_Is_Monotonic
      (Val1 : Float;

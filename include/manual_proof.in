@@ -8,8 +8,4 @@ spark-mod_arithmetic_lemmas.ads:112:14:VC_POSTCONDITION
 spark-mod_arithmetic_lemmas.ads:120:15:VC_POSTCONDITION
 spark-mod_arithmetic_lemmas.ads:128:15:VC_POSTCONDITION
 spark-unconstrained_array_lemmas.ads:57:15:VC_POSTCONDITION
-spark-floating_point_arithmetic_lemmas.ads:92:16:VC_POSTCONDITION
-spark-floating_point_arithmetic_lemmas.ads:105:16:VC_POSTCONDITION
 spark-floating_point_arithmetic_lemmas.ads:113:16:VC_POSTCONDITION
-spark-floating_point_arithmetic_lemmas.ads:126:16:VC_POSTCONDITION
-spark-floating_point_arithmetic_lemmas.ads:139:16:VC_POSTCONDITION
