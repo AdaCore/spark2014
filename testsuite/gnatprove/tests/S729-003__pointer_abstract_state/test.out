@@ -15,8 +15,8 @@ insrc.adb:169:16: info: analyzing call to "AffChaineErr" in context
 insrc.adb:208:13: info: analyzing call to "AffGenericErr" in context
 insrc.adb:233:13: info: analyzing call to "AffGenericErr" in context
 insrc.ads:55:04: error: "AFCB_Ptr" is not allowed in SPARK
-insrc.ads:55:04: error: "File_Type" is not allowed in SPARK (due to owning component of a tagged type)
-insrc.ads:55:04: error: "File_Type" is not allowed in SPARK (due to owning component of a tagged type)
+insrc.ads:55:04: error: "File_Type" is not allowed in SPARK (due to owning component of tagged type)
+insrc.ads:55:04: error: "File_Type" is not allowed in SPARK (due to owning component of tagged type)
 insrc.ads:55:04: error: instantiation error at a-direio.adb:57
 insrc.ads:55:04: error: instantiation error at a-direio.adb:58
 insrc.ads:55:04: error: instantiation error at a-direio.ads:167
@@ -96,8 +96,8 @@ outsrc.adb:141:15: error: "P" is not allowed in SPARK
 outsrc.adb:141:15: error: violation of aspect SPARK_Mode at line 22
 outsrc.adb:148:17: error: "TStateListMgr" is not allowed in SPARK
 outsrc.adb:148:17: error: violation of aspect SPARK_Mode at line 22
-outsrc.ads:103:07: error: owning component of a tagged type is not allowed in SPARK
+outsrc.ads:103:07: error: owning component "FirstElt" of tagged type "TTextListMgr" is not allowed in SPARK
 outsrc.ads:103:07: error: violation of aspect SPARK_Mode at line 24
-outsrc.ads:103:17: error: owning component of a tagged type is not allowed in SPARK
+outsrc.ads:103:17: error: owning component "CurElt" of tagged type "TTextListMgr" is not allowed in SPARK
 outsrc.ads:103:17: error: violation of aspect SPARK_Mode at line 24
 gnatprove: error during flow analysis and proof

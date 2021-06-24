@@ -3395,14 +3395,14 @@ package body SPARK_Definition is
                      Mark_Violation
                        ("prefix of """ & Astring
                         & """ attribute which is not a function call",
-                        P, "SPARK RM 3.10(13)");
+                        P, SRM_Reference => "SPARK RM 3.10(13)");
 
                   elsif Is_Traversal_Function_Call (P) then
                      Mark_Violation
                        ("prefix of """ & Astring
                         & """ attribute which is a call to a traversal "
                         & "function",
-                        P, "SPARK RM 3.10(13)");
+                        P, SRM_Reference => "SPARK RM 3.10(13)");
                   end if;
                end;
             end if;
@@ -4806,14 +4806,14 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("object of anonymous access not declared "
                      & "immediately within a subprogram, entry or block",
-                     N, "SPARK RM 3.10(4)");
+                     N, SRM_Reference => "SPARK RM 3.10(4)");
                end if;
             end;
 
             if No (Expr) then
                Mark_Violation
                  ("uninitialized object of anonymous access type",
-                  N, "SPARK RM 3.10(4)");
+                  N, SRM_Reference => "SPARK RM 3.10(4)");
             end if;
          end if;
 
@@ -5925,19 +5925,21 @@ package body SPARK_Definition is
 
             if Has_Inheritable_Invariants (E) then
                Mark_Violation
-                 ("classwide invariant", E, "SPARK RM 7.3.2(2)");
+                 ("classwide invariant", E,
+                  SRM_Reference => "SPARK RM 7.3.2(2)");
 
             --  Partial invariants are not allowed in SPARK
 
             elsif Present (Partial_Invariant_Procedure (E)) then
                Mark_Violation
                  ("type invariant on private_type_declaration or"
-                  & " private_type_extension", E, "SPARK RM 7.3.2(2)");
+                  & " private_type_extension", E,
+                  SRM_Reference => "SPARK RM 7.3.2(2)");
 
             elsif Is_Effectively_Volatile_For_Reading (E) then
                Mark_Violation
                  ("type invariant on effectively volatile type",
-                  E, "SPARK RM 7.3.2(4)");
+                  E, SRM_Reference => "SPARK RM 7.3.2(4)");
 
             --  Only mark the invariant as part of the type's fullview
 
@@ -5965,7 +5967,8 @@ package body SPARK_Definition is
                   then
                      Mark_Violation
                        ("type invariant on completion of "
-                        & "private_type_extension", E, "SPARK RM 7.3.2(2)");
+                        & "private_type_extension", E,
+                        SRM_Reference => "SPARK RM 7.3.2(2)");
 
                   --  We currently do not support invariants on type
                   --  declared in a nested package. This restriction results
@@ -6036,7 +6039,7 @@ package body SPARK_Definition is
          then
             Mark_Violation
               ("subtype predicate on effectively volatile type for reading",
-               E, "SPARK RM 3.2.4(3)");
+               E, SRM_Reference => "SPARK RM 3.2.4(3)");
          end if;
 
          --  We currently do not support invariants on components of tagged
@@ -6402,8 +6405,12 @@ package body SPARK_Definition is
 
                            if Is_Tagged_Type (E) and then Is_Deep (Comp_Type)
                            then
+                              Error_Msg_Node_1 := Comp_Type;
+                              Error_Msg_Node_2 := E;
                               Mark_Violation
-                                ("owning component of a tagged type", Comp);
+                                ("owning component & of tagged type &", Comp,
+                                 Root_Cause_Msg =>
+                                   "owning component of tagged type");
                            end if;
 
                            --  Tagged types with components with relaxed init
@@ -6412,9 +6419,14 @@ package body SPARK_Definition is
                            if Is_Tagged_Type (E)
                              and then Contains_Relaxed_Init_Parts (Comp_Type)
                            then
+                              Error_Msg_Node_1 := Comp_Type;
+                              Error_Msg_Node_2 := E;
                               Mark_Violation
-                                ("component of a tagged type with relaxed"
-                                 & " initialization", Comp);
+                                ("component & of tagged type & with relaxed"
+                                 & " initialization", Comp,
+                                 Root_Cause_Msg =>
+                                   "component of tagged type with relaxed"
+                                   & " Initialization");
                            end if;
 
                            --  Check that the component is not of an anonymous
@@ -7159,7 +7171,7 @@ package body SPARK_Definition is
          Mark_Violation
            ("extended return applying to a traversal function",
             N,
-            "SPARK RM 3.10(5)");
+            SRM_Reference => "SPARK RM 3.10(5)");
       end if;
 
       Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));

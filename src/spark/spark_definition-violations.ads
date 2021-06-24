@@ -104,10 +104,11 @@ private package SPARK_Definition.Violations is
    --  when specified.
 
    procedure Mark_Violation
-     (Msg           : String;
-      N             : Node_Id;
-      SRM_Reference : String := "";
-      Cont_Msg      : String := "")
+     (Msg            : String;
+      N              : Node_Id;
+      SRM_Reference  : String := "";
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "")
      with
        Global => (Output => Violation_Detected,
                   Input  => Current_SPARK_Pragma),
@@ -116,10 +117,12 @@ private package SPARK_Definition.Violations is
        (SRM_Reference'Length > 9
         and then Head (SRM_Reference, 9) = "SPARK RM ");
    --  Mark node N as a violation of SPARK. An error message pointing to the
-   --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is
-   --  On. If SRM_Reference is set, the reference to the SRM is appended
-   --  to the error message. If Cont_Msg is set, a continuation message
-   --  is issued.
+   --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
+   --  If SRM_Reference is set, the reference to the SRM is appended to the
+   --  error message. If Cont_Msg is set, a continuation message is issued. If
+   --  Root_Cause_Msg is set, the corresponding message is used as root cause
+   --  message for cascading violations (typically used if Msg has character
+   --  insertions).
 
    procedure Mark_Violation
      (N    : Node_Id;
