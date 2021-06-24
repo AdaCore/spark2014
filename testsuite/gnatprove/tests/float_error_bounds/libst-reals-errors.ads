@@ -19,9 +19,9 @@ package Libst.Reals.Errors with SPARK_Mode is
    function Weighted_Sum_Abs_Rec
      (Weights : Weight_Array;
       Values  : Value_Array;
-      I       : Extended_Index) return Valid_Big_Real
+      I       : Extended_Index) return Big_Real
    is
-     (if I = 0 then Valid_Big_Real'(0.0)
+     (if I = 0 then Big_Real'(0.0)
       else Weighted_Sum_Abs_Rec (Weights, Values, I - 1)
       + To_Big_Real (Weights (I)) * abs (To_Big_Real (Values (I))))
    with Subprogram_Variant => (Decreases => I),
@@ -29,10 +29,10 @@ package Libst.Reals.Errors with SPARK_Mode is
 
    function Weighted_Average_Abs
      (Weights : Weight_Array;
-      Values  : Value_Array) return Valid_Big_Real
+      Values  : Value_Array) return Big_Real
    is
      (Weighted_Sum_Abs_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights))
-   with Pre => Sum_Weight (Weights) /= Valid_Big_Real'(0.0);
+   with Pre => Sum_Weight (Weights) /= Big_Real'(0.0);
    --  Weighted average of the absolute values of elements of the Values array
 
    procedure Sum_Less_Than_Sum_Abs
@@ -70,7 +70,7 @@ package Libst.Reals.Errors with SPARK_Mode is
      (Weights : Weight_Array;
       Values  : Value_Array)
    with
-     Pre  => Sum_Weight (Weights) /= Valid_Big_Real'(0.0),
+     Pre  => Sum_Weight (Weights) /= Big_Real'(0.0),
      Post =>
          abs (To_Big_Real (Weighted_Average (Weights, Values)) -
                 Weighted_Average (Weights, Values))

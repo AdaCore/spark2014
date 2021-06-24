@@ -119,7 +119,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="unknown" steps="3101409"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="valid" steps="159899"/></proof>
-  <proof prover="3"><result status="unknown" steps="100002"/></proof>
+  <proof prover="3"><result status="unknown" steps="73651"/></proof>
   </goal>
  </transf>
  </goal>
