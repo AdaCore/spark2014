@@ -370,8 +370,7 @@ package SPARK_Util is
      (E : Checked_Entity_Id;
       P : Volatile_Pragma_Id)
       return Boolean
-   with Pre => Has_Volatile (E)
-     and then Ekind (E) /= E_Constant;
+   with Pre => Has_Volatile (E);
    --  @param E an external state, a volatile object or type, or a protected
    --     component
    --  @return True iff E has the specified property P of volatility, either

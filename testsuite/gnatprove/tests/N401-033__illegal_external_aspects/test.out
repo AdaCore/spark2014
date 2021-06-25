@@ -6,13 +6,7 @@ vc.ads:28:09: error: illegal combination of external properties (SPARK RM 7.1.2(
 vc.ads:38:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:41:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:44:11: error: incorrect placement of aspect "ASYNC_READERS"
-vc.ads:48:04: error: constant cannot be volatile
-vc.ads:51:04: error: constant cannot be volatile
-vc.ads:53:11: error: aspect "ASYNC_READERS" must apply to a volatile type or object
-vc.ads:57:04: error: constant cannot be volatile
-vc.ads:59:11: error: aspect "ASYNC_READERS" must apply to a volatile type or object
-vc.ads:63:04: error: constant cannot be volatile
-vc.ads:65:11: error: aspect "ASYNC_READERS" must apply to a volatile type or object
+vc.ads:63:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
 vc.ads:77:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:82:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:87:11: error: incorrect placement of aspect "ASYNC_READERS"

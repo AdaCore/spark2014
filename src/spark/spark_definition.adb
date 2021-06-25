@@ -4747,17 +4747,6 @@ package body SPARK_Definition is
          Encap_Id : constant Entity_Id := Encapsulating_State (E);
 
       begin
-         --  A constant object (other than a formal parameter of mode in) shall
-         --  not be effectively volatile (SPARK RM 7.1.3(4)). This legality
-         --  rule is checked by the frontend for code with SPARK_Mode On, but
-         --  needs to be checked here for code with SPARK_Mode Auto.
-
-         if Ekind (E) = E_Constant
-           and then Is_Effectively_Volatile_For_Reading (T)
-         then
-            Mark_Violation ("volatile constant", Def);
-         end if;
-
          --  A variable whose Part_Of pragma specifies a single concurrent
          --  type as encapsulator must be (SPARK RM 9.4):
          --    * Of a type that defines full default initialization, or

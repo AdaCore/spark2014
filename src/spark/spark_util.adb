@@ -1827,6 +1827,7 @@ package body SPARK_Util is
 
       case Ekind (E) is
          when E_Abstract_State
+            | E_Constant
             | E_Variable
             | E_Component
             | Type_Kind
