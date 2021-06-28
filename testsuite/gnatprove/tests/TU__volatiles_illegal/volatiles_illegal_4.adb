@@ -16,8 +16,8 @@ is
       X := X + 1; -- legal, X is not Volatile
    end P4;
 begin
-   P1 (Vol1, A);  --  Vol1 does not have Effective_Reads => False.
-
+   P1 (Vol1, A);  --  Vol1 does not have Effective_Reads => False,
+                  --  but is of a non-scalar type.
    P3 (Vol2);     --  Vol2 does not have all attributes set to True.
 
    P4 (B);        --  B is a volatile while the formal parameter of
