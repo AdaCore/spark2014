@@ -1,5 +1,5 @@
 derived_types_and_classes_illegal.ads:5:07: error: component of anonymous access type is not allowed in SPARK
-derived_types_and_classes_illegal.ads:5:07: error: owning component of a tagged type is not allowed in SPARK
+derived_types_and_classes_illegal.ads:5:07: error: owning component "A" of tagged type "Record_T" is not allowed in SPARK
 derived_types_and_classes_illegal.ads:5:07: error: violation of aspect SPARK_Mode at line 2
 derived_types_and_classes_illegal.ads:5:07: error: violation of aspect SPARK_Mode at line 2
 derived_types_and_classes_illegal.ads:8:09: error: "Record_T" is not allowed in SPARK (due to component of anonymous access type)

@@ -35,7 +35,7 @@ bad_raise.adb:7:43: error: raise expression in a complex expression in a precond
 bad_relaxed_init.ads:5:14: error: protected component with initialization by proof is not yet supported
 bad_relaxed_init.ads:12:04: error: Part_Of variable with initialization by proof is not yet supported
 bad_relaxed_init.ads:20:09: error: concurrent type with initialization by proof is not yet supported
-bad_relaxed_init.ads:23:07: error: component of a tagged type with relaxed initialization is not allowed in SPARK
+bad_relaxed_init.ads:23:07: error: component "F" of tagged type "Root" with relaxed initialization is not allowed in SPARK
 bad_relaxed_init.ads:23:07: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:26:09: error: tagged type with initialization by proof is not yet supported
 bad_relaxed_init.ads:32:09: error: access type with initialization by proof is not yet supported
