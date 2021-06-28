@@ -22,7 +22,7 @@ volatiles_illegal_6.adb:5:26: error: property is missing in abstract state decla
 volatiles_illegal_7.adb:5:26: error: non-external state "State" cannot contain external constituents in refinement
 volatiles_illegal_8.adb:3:26: error: constituent "Different_Vol" introduces external property "Async_Readers" in refinement of state "State"
 volatiles_illegal_8.adb:3:26: error: property is missing in abstract state declaration at volatiles_illegal_8.ads:3
-volatiles_illegal_9.adb:11:07: error: effectively volatile variable "Emb_Vol" must be declared at library level (SPARK RM 7.1.3(3))
+volatiles_illegal_9.adb:11:07: error: effectively volatile object "Emb_Vol" must be declared at library level (SPARK RM 7.1.3(3))
 volatiles_illegal_9.adb:20:07: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
 volatiles_illegal_10.ads:10:18: error: discriminant cannot be volatile
 vc3.ads:18:04: error: illegal combination of external properties (SPARK RM 7.1.2(6))
