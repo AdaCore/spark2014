@@ -5529,7 +5529,6 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (Ctx);
       Typ : constant Entity_Id := Defining_Identifier (N);
-      V   : Flow_Graphs.Vertex_Id;
    begin
       if Is_Scalar_Type (Typ) then
          declare
@@ -5548,6 +5547,7 @@ package body Flow.Control_Flow_Graph is
                  Target_Name          => Null_Flow_Id,
                  Use_Computed_Globals => not FA.Generating_Globals);
 
+            V : Flow_Graphs.Vertex_Id;
          begin
             Add_Vertex
               (FA,

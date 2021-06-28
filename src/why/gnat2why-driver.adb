@@ -1277,10 +1277,6 @@ package body Gnat2Why.Driver is
    ------------------------------
 
    procedure Translate_Hidden_Globals (E : Entity_Id) is
-      Unused_Node : Node_Sets.Cursor;
-      Unused_Name : Name_Sets.Cursor;
-      Inserted    : Boolean;
-
    begin
       if (case Ekind (E) is
           when Entry_Kind | E_Task_Type => True,
@@ -1293,8 +1289,10 @@ package body Gnat2Why.Driver is
       )
       then
          declare
-            Reads  : Flow_Types.Flow_Id_Sets.Set;
-            Writes : Flow_Types.Flow_Id_Sets.Set;
+            Reads       : Flow_Types.Flow_Id_Sets.Set;
+            Writes      : Flow_Types.Flow_Id_Sets.Set;
+            Unused_Name : Name_Sets.Cursor;
+            Inserted    : Boolean;
          begin
             --  Collect global variables potentially read and written
             Flow_Utility.Get_Proof_Globals (Subprogram      => E,

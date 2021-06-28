@@ -281,7 +281,6 @@ package body Why.Gen.Records is
                             then First_Discriminant (Ty_Ext)
                             else Empty);
       T_Comp  : W_Pred_Id;
-      T_Guard : W_Pred_Id;
       R_Acc1  : W_Expr_Id;
       R_Acc2  : W_Expr_Id;
       Tmps    : W_Identifier_Array (1 .. Discrs);
@@ -346,6 +345,7 @@ package body Why.Gen.Records is
             Fields    : Component_Sets.Set renames Get_Component_Set (Ty_Ext);
             Conjuncts : W_Pred_Array (1 .. Natural (Fields.Length));
             Count     : Natural := 0;
+            T_Guard   : W_Pred_Id;
          begin
             for Field of Fields loop
 
