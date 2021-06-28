@@ -14,7 +14,6 @@ volatiles_illegal_4.adb:11:16: error: volatile object cannot appear in this cont
 volatiles_illegal_4.adb:23:08: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
 volatiles_illegal_5.adb:8:11: error: loop parameter cannot be volatile
 volatiles_illegal_5.adb:8:21: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
-volatiles_illegal_5.ads:8:04: error: constant cannot be volatile
 volatiles_illegal_5.ads:8:04: error: constant declaration requires initialization expression
 volatiles_illegal_5.ads:8:04: error: standalone volatile constant must be imported (RM C.6(13))
 volatiles_illegal_6.adb:5:26: error: constituent "Vol" introduces external property "Effective_Writes" in refinement of state "State"
