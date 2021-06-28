@@ -95,6 +95,15 @@ package body Flow.Analysis.Antialiasing is
    --  Updates the aliasing Status only if the Current_Status is worse (in
    --  terms of the ordering given by the type Computed_Aliasing_Result).
 
+   procedure Trace_Line (Txt : String);
+   procedure Trace_Two_Nodes (Text1     : String;
+                              Node1     : Node_Id;
+                              Text2     : String := "";
+                              Node2     : Node_Id;
+                              Text3     : String := "";
+                              Two_Lines : Boolean := False);
+   --  Emit debug information if Trace_Antialiasing is True
+
    ------------------
    -- Check_Ranges --
    ------------------
@@ -394,26 +403,19 @@ package body Flow.Analysis.Antialiasing is
    --  Start of processing for Aliasing
 
    begin
-      if Trace_Antialiasing then
-         Write_Str ("antialiasing: checking ");
-         Sprint_Node (A);
-         Write_Str (" <--> ");
-         Sprint_Node (B);
-         Write_Eol;
-      end if;
+      Trace_Two_Nodes (Text1 => "antialiasing: checking ",
+                       Node1 => A,
+                       Text2 => " <--> ",
+                       Node2 => B);
 
       --  First we check if either of the nodes is interesting as
       --  non-interesting nodes cannot introduce aliasing.
 
       if not Is_Interesting (A) then
-         if Trace_Antialiasing then
-            Write_Line ("   -> A is not interesting");
-         end if;
+         Trace_Line ("   -> A is not interesting");
          return Impossible;
       elsif not Is_Interesting (B) then
-         if Trace_Antialiasing then
-            Write_Line ("   -> B is not interesting");
-         end if;
+         Trace_Line ("   -> B is not interesting");
          return Impossible;
       end if;
 
@@ -425,10 +427,7 @@ package body Flow.Analysis.Antialiasing is
            and then Is_Immutable (Formal_B);
       begin
          if A_Is_Immutable and then B_Present_And_Immutable then
-            if Trace_Antialiasing then
-               Write_Line
-                 ("   -> A and B are both immutable formal parameters");
-            end if;
+            Trace_Line ("   -> A and B are both immutable formal parameters");
             return Impossible;
 
          --  Determine if at least one of the corresponding formal
@@ -436,16 +435,12 @@ package body Flow.Analysis.Antialiasing is
          --  an access type
 
          elsif A_Is_Immutable and then Is_By_Copy_Not_Access (Formal_A) then
-            if Trace_Antialiasing then
-               Write_Line ("   -> A does not require aa checking");
-            end if;
+            Trace_Line ("   -> A does not require aa checking");
             return Impossible;
          elsif B_Present_And_Immutable
            and then Is_By_Copy_Not_Access (Formal_B)
          then
-            if Trace_Antialiasing then
-               Write_Line ("   -> B does not require aa checking");
-            end if;
+            Trace_Line ("   -> B does not require aa checking");
             return Impossible;
          end if;
       end;
@@ -459,24 +454,17 @@ package body Flow.Analysis.Antialiasing is
       Ptr_B := B;
       Find_Root (Ptr_B, Depth_B);
 
-      if Trace_Antialiasing then
-         Write_Str ("   -> root of A: ");
-         Sprint_Node (Ptr_A);
-         Write_Eol;
-         Write_Str ("   -> root of B: ");
-         Sprint_Node (Ptr_B);
-         Write_Eol;
-      end if;
+      Trace_Two_Nodes (Text1     => "   -> root of A: ",
+                       Node1     => Ptr_A,
+                       Text2     => "   -> root of B: ",
+                       Node2     => Ptr_B,
+                       Two_Lines => True);
 
       if not Is_Root (Nkind (Ptr_A)) then
-         if Trace_Antialiasing then
-            Write_Line ("   -> root of A is not interesting");
-         end if;
+         Trace_Line ("   -> root of A is not interesting");
          return Impossible;
       elsif not Is_Root (Nkind (Ptr_B)) then
-         if Trace_Antialiasing then
-            Write_Line ("   -> root of B is not interesting");
-         end if;
+         Trace_Line ("   -> root of B is not interesting");
          return Impossible;
       end if;
 
@@ -484,9 +472,7 @@ package body Flow.Analysis.Antialiasing is
       --  then we cannot have aliasing.
 
       if Entity (Ptr_A) /= Get_Root_Entity (Ptr_B) then
-         if Trace_Antialiasing then
-            Write_Line ("   -> different root entities");
-         end if;
+         Trace_Line ("   -> different root entities");
          return Impossible;
       end if;
 
@@ -500,9 +486,7 @@ package body Flow.Analysis.Antialiasing is
         and then (Ekind (Entity (Ptr_A)) /= E_Variable
                   or else not Is_Constant_After_Elaboration (Entity (Ptr_A)))
       then
-         if Trace_Antialiasing then
-            Write_Line ("   -> non-interfering objects");
-         end if;
+         Trace_Line ("   -> non-interfering objects");
          return Impossible;
       end if;
 
@@ -520,9 +504,7 @@ package body Flow.Analysis.Antialiasing is
       --  that we are dealing with an identifier and not an unchecked
       --  conversion, etc.
 
-      if Trace_Antialiasing then
-         Write_Line ("   -> same root entity");
-      end if;
+      Trace_Line ("   -> same root entity");
 
       while Depth_A > 0 and then Depth_B > 0 loop
 
@@ -542,9 +524,7 @@ package body Flow.Analysis.Antialiasing is
          --  have aliasing.
 
          if Is_Conversion (Ptr_A) or else Is_Conversion (Ptr_B) then
-            if Trace_Antialiasing then
-               Write_Line ("   -> identical tree followed by conversion");
-            end if;
+            Trace_Line ("   -> identical tree followed by conversion");
             return Definite_Aliasing;
          end if;
 
@@ -559,22 +539,17 @@ package body Flow.Analysis.Antialiasing is
             --     A (5)       <-->  A (J).Wibble
             --     A (1 .. 3)  <-->  A (K .. L)
 
-            if Trace_Antialiasing then
-               Write_Str ("   -> checking same structure at ");
-               Sprint_Node (Ptr_A);
-               Write_Str (" <--> ");
-               Sprint_Node (Ptr_B);
-               Write_Eol;
-            end if;
+            Trace_Two_Nodes (Text1 => "   -> checking same structure at ",
+                             Node1 => Ptr_A,
+                             Text2 => " <--> ",
+                             Node2 => Ptr_B);
 
             case Nkind (Ptr_A) is
                when N_Selected_Component =>
                   if Entity (Selector_Name (Ptr_A)) /=
                      Entity (Selector_Name (Ptr_B))
                   then
-                     if Trace_Antialiasing then
-                        Write_Line ("   -> selectors differ");
-                     end if;
+                     Trace_Line ("   -> selectors differ");
                      return No_Aliasing;
                   end if;
 
@@ -588,13 +563,12 @@ package body Flow.Analysis.Antialiasing is
 
                         case Compile_Time_Compare (Index_A, Index_B, True) is
                            when LT | GT | NE =>
-                              if Trace_Antialiasing then
-                                 Write_Str ("   -> index ");
-                                 Sprint_Node (Index_A);
-                                 Write_Str (" and ");
-                                 Sprint_Node (Index_B);
-                                 Write_Line (" statically differ");
-                              end if;
+                              Trace_Two_Nodes
+                                (Text1 => "   -> index ",
+                                 Node1 => Index_A,
+                                 Text2 => " and ",
+                                 Node2 => Index_B,
+                                 Text3 => " statically differ");
                               return No_Aliasing;
 
                            when EQ =>
@@ -613,13 +587,12 @@ package body Flow.Analysis.Antialiasing is
                   case Check_Ranges (Discrete_Range (Ptr_A),
                                      Discrete_Range (Ptr_B)) is
                      when No_Aliasing =>
-                        if Trace_Antialiasing then
-                           Write_Str ("   -> slice ");
-                           Sprint_Node (Discrete_Range (Ptr_A));
-                           Write_Str (" and ");
-                           Sprint_Node (Discrete_Range (Ptr_B));
-                           Write_Line (" statically distinct");
-                        end if;
+                        Trace_Two_Nodes
+                          (Text1 => "   -> slice ",
+                           Node1 => Discrete_Range (Ptr_A),
+                           Text2 => " and ",
+                           Node2 => Discrete_Range (Ptr_B),
+                           Text3 => " statically distinct");
                         return No_Aliasing;
 
                      when Definite_Aliasing =>
@@ -651,10 +624,7 @@ package body Flow.Analysis.Antialiasing is
             --
             --  Consider this: A (4 .. 10) (5 .. 8) (3)
 
-            if Trace_Antialiasing then
-               Write_Line
-                 ("   -> slice v.s. index is difficult - bailing out");
-            end if;
+            Trace_Line ("   -> slice v.s. index is difficult - bailing out");
 
             return Possible_Aliasing;
 
@@ -671,11 +641,9 @@ package body Flow.Analysis.Antialiasing is
 
       --  The tree so far was exactly the same, so A and B definitely alias
 
-      if Trace_Antialiasing then
-         Write_Line ("   -> identical tree so far, hit end");
-         if Definitive_Result then
-            Write_Line ("   -> result is definitive");
-         end if;
+      Trace_Line ("   -> identical tree so far, hit end");
+      if Definitive_Result then
+         Trace_Line ("   -> result is definitive");
       end if;
 
       if Definitive_Result then
@@ -872,8 +840,8 @@ package body Flow.Analysis.Antialiasing is
          --  * If the formal parameter is immutable, there cannot be aliasing
          --    between it and any read-only global.
          if Formal_Is_Immutable then
-            if Trace_Antialiasing and then not Reads_Only.Is_Empty then
-               Write_Line ("   -> A does not require aa checking against " &
+            if not Reads_Only.Is_Empty then
+               Trace_Line ("   -> A does not require aa checking against " &
                              "read-only globals");
             end if;
          else
@@ -894,8 +862,8 @@ package body Flow.Analysis.Antialiasing is
          --  an access type, then there cannot be aliasing between it and any
          --  output or in-out global.
          if Formal_Is_Immutable and then Is_By_Copy_Not_Access (Formal) then
-            if Trace_Antialiasing and then not Writes_Or_Reads.Is_Empty then
-               Write_Line ("   -> A does not require aa checking against " &
+            if not Writes_Or_Reads.Is_Empty then
+               Trace_Line ("   -> A does not require aa checking against " &
                              "OUT or IN_OUT globals");
             end if;
          else
@@ -1000,5 +968,45 @@ package body Flow.Analysis.Antialiasing is
          Status := Current_Status;
       end if;
    end Update_Status;
+
+   --  Debug routines, localised to declutter code coverage analysis
+   pragma Annotate (Xcov, Exempt_On, "Compilation-dependent debug code");
+   ----------------
+   -- Trace_Line --
+   ----------------
+
+   procedure Trace_Line (Txt : String)
+   is
+   begin
+      if Trace_Antialiasing then
+         Write_Line (Txt);
+      end if;
+   end Trace_Line;
+
+   ---------------------
+   -- Trace_Two_Nodes --
+   ---------------------
+
+   procedure Trace_Two_Nodes (Text1     : String;
+                              Node1     : Node_Id;
+                              Text2     : String := "";
+                              Node2     : Node_Id;
+                              Text3     : String := "";
+                              Two_Lines : Boolean := False)
+   is
+   begin
+      if Trace_Antialiasing then
+         Write_Str (Text1);
+         Sprint_Node (Node1);
+         if Two_Lines then
+            Write_Eol;
+         end if;
+         Write_Str (Text2);
+         Sprint_Node (Node2);
+         Write_Str (Text3);
+         Write_Eol;
+      end if;
+   end Trace_Two_Nodes;
+   pragma Annotate (Xcov, Exempt_Off);
 
 end Flow.Analysis.Antialiasing;

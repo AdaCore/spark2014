@@ -1,9 +1,28 @@
-test.adb:10:21: info: initialization of "C" proved
-test.adb:11:11: info: data dependencies proved
-test.adb:21:14: info: add a contract to analyze it separately from calling contexts
-test.adb:21:14: info: local subprogram "Stuff2" only analyzed in the context of calls
-test.adb:23:22: info: initialization of "C" proved
-test.adb:27:17: info: overflow check proved (CVC4: 2 VC), in call inlined at test.adb:43
-test.adb:41:16: high: formal parameter "C" and global "Glob1" are aliased (SPARK RM 6.4.2)
-test.adb:44:31: high: formal parameters "B" and "C" are aliased (SPARK RM 6.4.2)
+test.adb:12:21: info: initialization of "C" proved
+test.adb:13:11: info: data dependencies proved
+test.adb:23:14: info: add a contract to analyze it separately from calling contexts
+test.adb:23:14: info: local subprogram "Stuff2" only analyzed in the context of calls
+test.adb:25:22: info: initialization of "C" proved
+test.adb:29:17: info: overflow check proved (CVC4: 2 VC), in call inlined at test.adb:78
+test.adb:29:17: info: overflow check proved (CVC4: 2 VC), in call inlined at test.adb:96
+test.adb:40:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Outer_T doesn't have a Size representation clause or aspect]
+test.adb:40:52: high: type is unsuitable for unchecked conversion [possible explanation: type Root_T is a tagged type]
+test.adb:40:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Root_T is a tagged type]
+test.adb:42:14: info: add a contract to analyze it separately from calling contexts
+test.adb:42:14: info: local subprogram "Stuff3" only analyzed in the context of calls
+test.adb:43:22: info: initialization of "B" proved
+test.adb:46:26: info: overflow check proved (CVC4: 2 VC), in call inlined at test.adb:85
+test.adb:46:26: medium: overflow check might fail, cannot prove upper bound for A.Field + 1, in call inlined at test.adb:82 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 74 should mention B (for argument Rec1) in a postcondition]
+test.adb:46:26: medium: overflow check might fail, cannot prove upper bound for A.Field + 1, in call inlined at test.adb:93 [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:57:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Outer doesn't have a Size representation clause or aspect]
+test.adb:57:51: high: type is unsuitable for unchecked conversion [possible explanation: type Outer doesn't have a Size representation clause or aspect]
+test.adb:57:58: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Outer doesn't have a Size representation clause or aspect]
+test.adb:59:14: info: add a contract to analyze it separately from calling contexts
+test.adb:59:14: info: local subprogram "Stuff4" only analyzed in the context of calls
+test.adb:60:22: info: initialization of "Y" proved
+test.adb:76:16: high: formal parameter "C" and global "Glob1" are aliased (SPARK RM 6.4.2)
+test.adb:79:31: high: formal parameters "B" and "C" are aliased (SPARK RM 6.4.2)
+test.adb:82:17: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
+test.adb:85:18: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
+test.adb:88:25: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention Left and Right in a precondition]
