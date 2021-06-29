@@ -31,81 +31,9 @@ insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
-outsrc.adb:28:14: error: "TTextListMgr" is not allowed in SPARK
-outsrc.adb:28:14: error: violation of aspect SPARK_Mode at line 22
 outsrc.adb:35:29: error: uninitialized allocator without default initialization is not allowed in SPARK
 outsrc.adb:35:29: error: violation of aspect SPARK_Mode at line 22
 outsrc.adb:38:32: error: uninitialized allocator without default initialization is not allowed in SPARK
 outsrc.adb:38:32: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:50:14: error: "TTextListMgr" is not allowed in SPARK
-outsrc.adb:50:14: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:63:13: error: "P" is not allowed in SPARK
-outsrc.adb:63:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:64:34: error: "P" is not allowed in SPARK
-outsrc.adb:64:34: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:65:10: error: "P" is not allowed in SPARK
-outsrc.adb:65:10: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:65:15: error: "P" is not allowed in SPARK
-outsrc.adb:65:15: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:73:13: error: "Dum" is not allowed in SPARK
-outsrc.adb:73:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:74:13: error: "Dum" is not allowed in SPARK
-outsrc.adb:74:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:75:30: error: "Dum" is not allowed in SPARK
-outsrc.adb:75:30: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:77:10: error: "Dum" is not allowed in SPARK
-outsrc.adb:77:10: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:77:17: error: "Dum" is not allowed in SPARK
-outsrc.adb:77:17: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:91:13: error: "Dum" is not allowed in SPARK
-outsrc.adb:91:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:92:13: error: "Dum" is not allowed in SPARK
-outsrc.adb:92:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:93:13: error: "Dum" is not allowed in SPARK
-outsrc.adb:93:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:95:18: error: "Dum" is not allowed in SPARK
-outsrc.adb:95:18: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:97:10: error: "Dum" is not allowed in SPARK
-outsrc.adb:97:10: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:97:17: error: "Dum" is not allowed in SPARK
-outsrc.adb:97:17: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:106:35: error: "TEnumListMgr" is not allowed in SPARK
-outsrc.adb:106:35: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:109:14: error: "P" is not allowed in SPARK
-outsrc.adb:109:14: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:110:17: error: "P" is not allowed in SPARK
-outsrc.adb:110:17: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:113:10: error: "P" is not allowed in SPARK
-outsrc.adb:113:10: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:113:15: error: "P" is not allowed in SPARK
-outsrc.adb:113:15: error: violation of aspect SPARK_Mode at line 22
 outsrc.adb:116:18: error: implicit conversion between access types with different designated types is not yet supported
-outsrc.adb:123:33: error: "TEnumListMgr" is not allowed in SPARK
-outsrc.adb:123:33: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:125:13: error: "P" is not allowed in SPARK
-outsrc.adb:125:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:127:36: error: "P" is not allowed in SPARK
-outsrc.adb:127:36: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:131:10: error: "P" is not allowed in SPARK
-outsrc.adb:131:10: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:131:15: error: "P" is not allowed in SPARK
-outsrc.adb:131:15: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:137:31: error: "TStateListMgr" is not allowed in SPARK
-outsrc.adb:137:31: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:139:13: error: "P" is not allowed in SPARK
-outsrc.adb:139:13: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:140:50: error: "P" is not allowed in SPARK
-outsrc.adb:140:50: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:140:86: error: "P" is not allowed in SPARK
-outsrc.adb:140:86: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:141:10: error: "P" is not allowed in SPARK
-outsrc.adb:141:10: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:141:15: error: "P" is not allowed in SPARK
-outsrc.adb:141:15: error: violation of aspect SPARK_Mode at line 22
-outsrc.adb:148:17: error: "TStateListMgr" is not allowed in SPARK
-outsrc.adb:148:17: error: violation of aspect SPARK_Mode at line 22
-outsrc.ads:103:07: error: owning component "FirstElt" of tagged type "TTextListMgr" is not allowed in SPARK
-outsrc.ads:103:07: error: violation of aspect SPARK_Mode at line 24
-outsrc.ads:103:17: error: owning component "CurElt" of tagged type "TTextListMgr" is not allowed in SPARK
-outsrc.ads:103:17: error: violation of aspect SPARK_Mode at line 24
 gnatprove: error during flow analysis and proof

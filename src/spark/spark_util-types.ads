@@ -356,6 +356,11 @@ package SPARK_Util.Types is
    --  Return True if the predefined equality of Ty uses the predefined
    --  equality on access types.
 
+   function Acts_As_Incomplete_Type (Ty : Entity_Id) return Boolean with
+     Pre => Is_Type (Ty);
+   --  Return True if Ty is is handled as an incomplete type to decide whether
+   --  the type designated by an access type should be deferred.
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

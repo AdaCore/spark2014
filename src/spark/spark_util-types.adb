@@ -399,6 +399,19 @@ package body SPARK_Util.Types is
       return;
    end Minimal_Size;
 
+   -----------------------------
+   -- Acts_As_Incomplete_Type --
+   -----------------------------
+
+   function Acts_As_Incomplete_Type (Ty : Entity_Id) return Boolean is
+     (Is_Incomplete_Type (Ty)
+      or else Is_Partial_View (Ty)
+      or else
+        (Is_Class_Wide_Type (Ty)
+         and then Nkind (Atree.Parent (Ty)) in
+           N_Incomplete_Type_Declaration
+         | N_Private_Type_Declaration));
+
    ------------------------------
    -- Check_DIC_At_Declaration --
    ------------------------------
@@ -1036,6 +1049,15 @@ package body SPARK_Util.Types is
             return Is_Deep (Component_Type (Rep_Typ));
 
          when Record_Kind =>
+            --  For tagged records, search only in the root type, extensions
+            --  are not allowed to introduce deep components.
+
+            if Is_Tagged_Type (Typ) and then Root_Retysp (Typ) /= Typ then
+               return Is_Deep (Root_Retysp (Typ));
+            end if;
+
+            --  Otherwise, go over the list of components
+
             declare
                Comp : Entity_Id := First_Component_Or_Discriminant (Rep_Typ);
             begin

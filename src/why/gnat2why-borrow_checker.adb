@@ -5415,8 +5415,12 @@ package body Gnat2Why.Borrow_Checker is
       E    : Entity_Id;
       Expl : Node_Id)
    is
-      Check_Ty : constant Entity_Id := Retysp (E);
+      Check_Ty : Entity_Id := Retysp (E);
    begin
+      if Is_Class_Wide_Type (Check_Ty) then
+         Check_Ty := Get_Specific_Type_From_Classwide (Check_Ty);
+      end if;
+
       --  Shallow extensions are set to RW
 
       if not Is_Node_Deep (T) then
@@ -5693,6 +5697,7 @@ package body Gnat2Why.Borrow_Checker is
                   declare
                      pragma Assert (Kind (C) = Entire_Object);
 
+                     Pref_Ty : Entity_Id := Retysp (Etype (Prefix (N.Expr)));
                      D       : Perm_Tree_Access;
                      D_This  : Perm_Tree_Access;
                      Comp    : Node_Id;
@@ -5702,9 +5707,11 @@ package body Gnat2Why.Borrow_Checker is
                      --  Create an empty hash table
 
                   begin
-                     Comp :=
-                       First_Component_Or_Discriminant
-                         (Retysp (Etype (Prefix (N.Expr))));
+                     if Is_Class_Wide_Type (Pref_Ty) then
+                        Pref_Ty := Get_Specific_Type_From_Classwide (Pref_Ty);
+                     end if;
+
+                     Comp := First_Component_Or_Discriminant (Pref_Ty);
 
                      while Present (Comp) loop
                         if Perm /= None
