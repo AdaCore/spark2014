@@ -4418,9 +4418,6 @@ package body Flow.Analysis is
 
       --  Detect objects missing from the LHS of the Initializes
 
-      --  ??? Maybe we could avoid calling GG_Get_Local_Variables and retrieve
-      --  this information from the AST.
-
       for Var of States_And_Objects (FA.Spec_Entity) loop
          declare
             LHS            : constant Flow_Id := Direct_Mapping_Id (Var);
