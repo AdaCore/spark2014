@@ -358,7 +358,7 @@ package body Flow_Refinement is
    -- State_Refinement_Is_Visible --
    ---------------------------------
 
-   function State_Refinement_Is_Visible (E : Checked_Entity_Id;
+   function State_Refinement_Is_Visible (E : E_Abstract_State_Id;
                                          S : Flow_Scope)
                                          return Boolean
    is
@@ -1153,7 +1153,7 @@ package body Flow_Refinement is
    -- Find_In_Initializes --
    -------------------------
 
-   function Find_In_Initializes (E : Checked_Entity_Id) return Entity_Id is
+   function Find_In_Initializes (E : N_Entity_Id) return Entity_Id is
       Scop : constant Entity_Id := Scope (E);
 
    begin
@@ -1217,7 +1217,7 @@ package body Flow_Refinement is
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 
-   function Is_Initialized_At_Elaboration (E : Checked_Entity_Id;
+   function Is_Initialized_At_Elaboration (E : N_Entity_Id;
                                            S : Flow_Scope)
                                            return Boolean
    is
@@ -1500,7 +1500,7 @@ package body Flow_Refinement is
    -- Nested_Within_Concurrent_Type --
    -----------------------------------
 
-   function Nested_Within_Concurrent_Type (T : Type_Id;
+   function Nested_Within_Concurrent_Type (T : Concurrent_Kind_Id;
                                            S : Flow_Scope)
                                            return Boolean
    is (Present (S) and then Sem_Util.Scope_Within_Or_Same (S.Ent, T));
@@ -1510,7 +1510,7 @@ package body Flow_Refinement is
    -------------------------------------
 
    function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Id;
-                                             Typ        : Type_Id)
+                                             Typ        : Type_Kind_Id)
                                              return Boolean
    is
      (Scope_Within_Or_Same (Scope (Subprogram), Scope (Typ))

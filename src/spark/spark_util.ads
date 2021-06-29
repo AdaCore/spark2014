@@ -27,7 +27,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories;
 with Assumption_Types;      use Assumption_Types;
 with Atree;                 use Atree;
-with Checked_Types;         use Checked_Types;
 with Common_Containers;     use Common_Containers;
 with Einfo.Entities;        use Einfo.Entities;
 with Einfo.Utils;           use Einfo.Utils;
@@ -354,7 +353,7 @@ package SPARK_Util is
    --     concurrent type
    --  @return concurrent type
 
-   function Has_Volatile (E : Checked_Entity_Id) return Boolean
+   function Has_Volatile (E : N_Entity_Id) return Boolean
    with Pre  => Ekind (E) in E_Abstract_State
                            | E_Protected_Type
                            | E_Task_Type
@@ -367,7 +366,7 @@ package SPARK_Util is
    --  @return True iff E is an external state or a volatile object or type
 
    function Has_Volatile_Property
-     (E : Checked_Entity_Id;
+     (E : N_Entity_Id;
       P : Volatile_Pragma_Id)
       return Boolean
    with Pre => Has_Volatile (E);

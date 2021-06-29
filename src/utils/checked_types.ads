@@ -26,19 +26,10 @@
 --  particular Node_Id and Entity_Id) with predicates that enforce various
 --  assumptions.
 
-with Types;          use Types;
-with Atree;          use Atree;
 with Einfo.Entities; use Einfo.Entities;
 with Sinfo.Nodes;    use Sinfo.Nodes;
 
 package Checked_Types is
-
-   subtype Checked_Entity_Id is Entity_Id with
-     Predicate => Nkind (Checked_Entity_Id) in N_Entity;
-
-   subtype Checked_Entity_Id_Or_Empty is Entity_Id with
-     Predicate => (if Present (Checked_Entity_Id_Or_Empty)
-                   then Checked_Entity_Id_Or_Empty in Checked_Entity_Id);
 
    -----------------
    -- Subprograms --
@@ -48,24 +39,9 @@ package Checked_Types is
    --  generics to be subprograms. We also exclude E_Operator here as we will
    --  never get this in SPARK (if the Expander works as intended).
 
-   subtype Subprogram_Id is Checked_Entity_Id with
+   subtype Subprogram_Id is N_Entity_Id with
      Predicate => Ekind (Subprogram_Id) in E_Function
                                          | E_Procedure
                                          | Entry_Kind;
-
-   subtype Subprogram_Id_Or_Empty is Checked_Entity_Id_Or_Empty with
-     Predicate => (if Present (Subprogram_Id_Or_Empty)
-                   then Subprogram_Id_Or_Empty in Subprogram_Id);
-
-   -----------
-   -- Types --
-   -----------
-
-   subtype Type_Id is Checked_Entity_Id with
-     Predicate => Ekind (Type_Id) in Type_Kind;
-
-   subtype Type_Id_Or_Empty is Checked_Entity_Id_Or_Empty with
-     Predicate => (if Present (Type_Id_Or_Empty)
-                   then Type_Id_Or_Empty in Type_Id);
 
 end Checked_Types;

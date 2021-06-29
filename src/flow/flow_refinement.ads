@@ -113,10 +113,9 @@ package Flow_Refinement is
    --  Return True iff the implementation (and thus refined global or depends)
    --  of subprogram E is visible from S.
 
-   function State_Refinement_Is_Visible (E : Checked_Entity_Id;
+   function State_Refinement_Is_Visible (E : E_Abstract_State_Id;
                                          S : Flow_Scope)
-                                         return Boolean
-   with Pre => Ekind (E) = E_Abstract_State;
+                                         return Boolean;
    --  Return True iff the constituents of E are visible from S
 
    function Is_Fully_Contained (State   : Entity_Id;
@@ -210,17 +209,15 @@ package Flow_Refinement is
    function Down_Project (Var : Entity_Id;
                           S   : Flow_Scope)
                           return Node_Sets.Set
-   with Post => (for all V of Down_Project'Result =>
-                    V in Checked_Entity_Id_Or_Empty);
+   with Post => (for all V of Down_Project'Result => V in N_Entity_Id);
    --  Given a variable Var and a scope S, recursively expand abstract states
    --  whose refinement is visible in S.
 
    function Down_Project (Vars : Node_Sets.Set;
                           S    : Flow_Scope)
                           return Node_Sets.Set
-   with Pre  => (for all V of Vars => V in Checked_Entity_Id_Or_Empty),
-        Post => (for all V of Down_Project'Result =>
-                    V in Checked_Entity_Id_Or_Empty);
+   with Pre  => (for all V of Vars => V in N_Entity_Id),
+        Post => (for all V of Down_Project'Result => V in N_Entity_Id);
    --  Same as above, but for many nodes
 
    function Down_Project (Var : Flow_Id;
@@ -234,7 +231,7 @@ package Flow_Refinement is
                           return Flow_Id_Sets.Set;
    --  Same as above, but for many Flow_Ids
 
-   function Find_In_Initializes (E : Checked_Entity_Id)
+   function Find_In_Initializes (E : N_Entity_Id)
                                  return Entity_Id
    with Pre  => Ekind (E) in E_Abstract_State | E_Constant | E_Variable,
         Post => (if Present (Find_In_Initializes'Result)
@@ -253,7 +250,7 @@ package Flow_Refinement is
    --  ??? this should be moved to Functions and renamed to Enclosing_Scope
    --  (since Get is meaningless and Flow repeats the type of parameter)
 
-   function Is_Initialized_At_Elaboration (E : Checked_Entity_Id;
+   function Is_Initialized_At_Elaboration (E : N_Entity_Id;
                                            S : Flow_Scope)
                                            return Boolean
    with Pre => Ekind (E) in E_Abstract_State
@@ -292,14 +289,13 @@ package Flow_Refinement is
    --       is present
    --     * ditto for Depends and Refined_Depends
 
-   function Nested_Within_Concurrent_Type (T : Type_Id;
+   function Nested_Within_Concurrent_Type (T : Concurrent_Kind_Id;
                                            S : Flow_Scope)
-                                           return Boolean
-   with Pre => Is_Concurrent_Type (T);
+                                           return Boolean;
    --  Returns True iff S is nested inside a concurrent type T
 
    function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Id;
-                                             Typ        : Type_Id)
+                                             Typ        : Type_Kind_Id)
                                              return Boolean
    with Pre => Has_Invariants_In_SPARK (Typ);
    --  Returns True iff Subprogram is a boundary subprogram for Typ, i.e. if it

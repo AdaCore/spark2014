@@ -31,7 +31,6 @@ with Sem_Util;                       use Sem_Util;
 with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
 
-with Checked_Types;                  use Checked_Types;
 with Gnat2Why_Args;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
@@ -496,8 +495,8 @@ package body Flow.Analysis.Sanity is
       ------------------------
 
       procedure Check_Type_Aspects (N : Node_Id) is
-         Typ : constant Type_Id := Defining_Identifier (N);
-         Rep : Node_Id          := First_Rep_Item (Typ);
+         Typ : constant Type_Kind_Id := Defining_Identifier (N);
+         Rep : Node_Id               := First_Rep_Item (Typ);
 
       begin
          --  Check that the type predicate expression, if present, does not

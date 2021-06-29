@@ -34,8 +34,8 @@ with Ada.Strings.Hash;
 with Einfo.Entities;   use Einfo.Entities;
 with GNATCOLL.Symbols; use GNATCOLL.Symbols;
 with Hashing;          use Hashing;
+with Sinfo.Nodes;      use Sinfo.Nodes;
 with Types;            use Types;
-with Checked_Types;    use Checked_Types;
 
 --  This package contains a few common types (and expression functions) which
 --  are used throughout gnat2why (frame conditions, flow and why generation).
@@ -48,11 +48,11 @@ package Common_Containers is
    --  any number of these lists, while it can be only in one List_Id.
 
    package Entity_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Checked_Entity_Id);
+     Ada.Containers.Doubly_Linked_Lists (N_Entity_Id);
 
    package Entity_Vectors is new Ada.Containers.Vectors
      (Index_Type   => Positive,
-      Element_Type => Checked_Entity_Id);
+      Element_Type => N_Entity_Id);
 
    function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type
    is (Generic_Integer_Hash (Integer (X)));
@@ -72,7 +72,7 @@ package Common_Containers is
    --  Set of nodes for use where ordering doesn't matter but performance does
 
    package Entity_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Checked_Entity_Id);
+     (Element_Type => N_Entity_Id);
 
    package Node_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,

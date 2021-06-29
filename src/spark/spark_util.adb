@@ -1798,7 +1798,7 @@ package body SPARK_Util is
    -- Has_Volatile --
    ------------------
 
-   function Has_Volatile (E : Checked_Entity_Id) return Boolean is
+   function Has_Volatile (E : N_Entity_Id) return Boolean is
      (case Ekind (E) is
          when E_Abstract_State =>
             Is_External_State (E),
@@ -1813,7 +1813,7 @@ package body SPARK_Util is
    ---------------------------
 
    function Has_Volatile_Property
-     (E : Checked_Entity_Id;
+     (E : N_Entity_Id;
       P : Volatile_Pragma_Id)
       return Boolean
    is
