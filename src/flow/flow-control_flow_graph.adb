@@ -4298,8 +4298,10 @@ package body Flow.Control_Flow_Graph is
                      pragma Assert
                        (Is_Bound (F)
                           or else
-                        (for some Comp_Id of F.Component =>
-                           Is_Declared_Within_Variant (Comp_Id))
+                        (F.Kind = Record_Field
+                          and then
+                         (for some Comp_Id of F.Component =>
+                           Is_Declared_Within_Variant (Comp_Id)))
                           or else
                         Ctx.In_Nested_Package);
                   end loop;
