@@ -4433,7 +4433,7 @@ package body Flow.Analysis is
 
                   --  ??? It would be better if we wouldn't get things that are
                   --  not in SPARK here but at the moment Down_Project does
-                  --  returns them. This need to be fixed in Down_Project.
+                  --  return them. This need to be fixed in Down_Project.
 
                   if Is_Abstract_State (Constituent)
                     or else Entity_In_SPARK (Constituent)

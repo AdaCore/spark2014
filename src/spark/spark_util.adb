@@ -4060,7 +4060,7 @@ package body SPARK_Util is
       --  states are given); however, respect the SPARK_Mode barrier.
       --
       --  Note: objects declared behind a SPARK_Mode => Off barrier might
-      --  sitll leak into flow analysis if they come from the frontend-cross
+      --  still leak into flow analysis if they come from the frontend-cross
       --  references, but then users should properly annotate their package.
 
       Traverse_Declarations (Visible_Declarations (Pkg_Spec));
