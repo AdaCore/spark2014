@@ -13,6 +13,8 @@ p.adb:19:22: info: pointer dereference check proved
 p.adb:19:29: info: overflow check proved
 p.adb:20:16: info: pointer dereference check proved
 p.adb:21:24: info: pointer dereference check proved
+p.adb:24:10: info: assertion proved
+p.adb:24:50: info: null exclusion check proved
 p.ads:12:28: info: overflow check proved
 p.ads:20:43: info: null exclusion check proved
 p.ads:21:14: info: postcondition proved

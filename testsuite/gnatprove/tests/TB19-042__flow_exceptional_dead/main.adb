@@ -3,7 +3,7 @@ procedure Main with SPARK_Mode is
 
    procedure Call is null;
 
-   procedure Bar (Value : Enum) is
+   procedure Dead_Loop (Value : Enum) is
    begin
       for I in 1 .. 0 loop
          case Value is
@@ -12,7 +12,29 @@ procedure Main with SPARK_Mode is
          end case;
          null;
       end loop;
-   end Bar;
+   end Dead_Loop;
+
+   procedure Dead_Return (Value : Enum) is
+   begin
+      return;
+      case Value is
+         when A  => null;
+         when B  => Call; raise Program_Error;
+      end case;
+      null;
+   end Dead_Return;
+
+   procedure Dead_Goto (Value : Enum) is
+   begin
+      goto L1;
+      case Value is
+         when A  => null;
+         when B  => Call; raise Program_Error;
+      end case;
+      null;
+      <<L1>>
+   end Dead_Goto;
+
 
 begin
    null;

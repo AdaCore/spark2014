@@ -75,8 +75,8 @@ package body SPARK_Atree.Entities is
    -- Component_Clause --
    ----------------------
 
-   function Component_Clause (Obj : Entity_Id) return Node_Id renames
-     Einfo.Entities.Component_Clause;
+   function Component_Clause (Obj : Entity_Id) return Node_Id is
+     (Einfo.Entities.Component_Clause (Obj));
 
    -------------------------
    -- Component_First_Bit --
@@ -311,7 +311,7 @@ package body SPARK_Atree.Entities is
    -- Get_Enum_Lit_From_Pos --
    ---------------------------
 
-   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
+   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Node_Id
    is (Sem_Util.Get_Enum_Lit_From_Pos (Typ, P, No_Location));
 
    ---------------------------------

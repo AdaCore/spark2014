@@ -2298,9 +2298,7 @@ package body Flow_Generated_Globals.Partial is
          Constants : Node_Lists.List;
       begin
          for E of From loop
-            if Present (E)
-              and then Ekind (E) = E_Constant
-            then
+            if Ekind (E) = E_Constant then
                Constants.Append (E);
             end if;
          end loop;
@@ -2480,9 +2478,7 @@ package body Flow_Generated_Globals.Partial is
          Filtered : Node_Sets.Set;
       begin
          for E of From loop
-            if Present (E)
-              and then Ekind (E) = E_Constant
-            then
+            if Ekind (E) = E_Constant then
                if not Resolved_Inputs (E, Constant_Graph).Is_Empty then
                   Filtered.Insert (E);
                end if;

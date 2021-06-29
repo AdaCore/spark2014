@@ -3,7 +3,7 @@ safe.adb:5:57: info: type is suitable as source for unchecked conversion (Trivia
 safe.adb:5:66: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
 safe.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:7:56: info: type is suitable as source for unchecked conversion (Trivial)
-safe.adb:7:63: high: type is unsuitable as a target for unchecked conversion [possible explanation: type natural has 16#8000_0000# values but has Object_Size 32]
+safe.adb:7:63: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Natural has 16#8000_0000# values but has Object_Size 32]
 safe.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:9:60: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:9:67: info: type is suitable for unchecked conversion (Trivial)
@@ -40,7 +40,7 @@ safe.adb:107:64: high: type is unsuitable as a target for unchecked conversion [
 safe.adb:121:13: high: types used for unchecked conversion do not have the same size [possible explanation: type My_Rec doesn't have an Object_Size representation clause or aspect]
 safe.adb:121:55: high: type is unsuitable for unchecked conversion [possible explanation: type My_Rec has discriminants]
 safe.adb:121:63: info: type is suitable for unchecked conversion (Trivial)
-safe.adb:123:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type integer and type U8 differ]
+safe.adb:123:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Integer and type U8 differ]
 safe.adb:123:54: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:123:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:132:13: info: types in unchecked conversion have the same size (Trivial)

@@ -18,5 +18,5 @@ test_callback.adb:55:24: info: precondition of target is strong enough to imply 
 test_callback.adb:55:36: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:63:07: info: precondition proved (CVC4: 1 VC)
 test_callback.adb:63:24: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
-test_callback.adb:63:24: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove Relation (X'Old, x)
+test_callback.adb:63:24: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove Relation (X'Old, X)
 test_callback.adb:63:36: info: null exclusion check proved (Trivial: 1 VC)

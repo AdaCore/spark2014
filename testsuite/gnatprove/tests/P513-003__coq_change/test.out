@@ -11,7 +11,7 @@ lemmas.ads:15:14: medium: postcondition might fail, vc file: gnatprove/../proof/
  "(val1 Ã· denom ?= val2 Ã· denom) = Lt".
 Error:
 In environment
-Unable to unify "(?M1591 Ã· ?M1593 ?= ?M1592 Ã· ?M1593) = Gt -> False" with
+Unable to unify "(?M1735 Ã· ?M1737 ?= ?M1736 Ã· ?M1737) = Gt -> False" with
 h1 : dynamic_invariant val1 true false true true
 h2 : dynamic_invariant val2 true false true true
 h3 : true = true // 1 <= 2147483647 -> 1 <= denom <= 2147483647

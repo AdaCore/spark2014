@@ -474,13 +474,13 @@ package body Ce_Pretty_Printing is
                   --  Call Get_Enum_Lit_From_Pos to get a corresponding
                   --  enumeration entity.
 
-                  Enum  : Entity_Id;
+                  Lit : Node_Id;
 
                begin
                   --  Initialization of Enum can raise Constraint_Error if
                   --  there is no literal value for the position.
 
-                  Enum := Get_Enum_Lit_From_Pos (AST_Type, Value);
+                  Lit := Get_Enum_Lit_From_Pos (AST_Type, Value);
 
                   --  Special case for characters, which are defined in the
                   --  standard unit Standard.ASCII, and as such do not have
@@ -490,7 +490,7 @@ package body Ce_Pretty_Printing is
                      --  Call Get_Unqualified_Decoded_Name_String to get a
                      --  correctly printed character in Name_Buffer.
 
-                     Get_Unqualified_Decoded_Name_String (Chars (Enum));
+                     Get_Unqualified_Decoded_Name_String (Chars (Lit));
 
                      --  The call to Get_Unqualified_Decoded_Name_String set
                      --  Name_Buffer to '<char>' where <char> is the character
@@ -510,7 +510,7 @@ package body Ce_Pretty_Printing is
                   else
                      return Make_Trivial
                        (Nul => Nul,
-                        Str => To_Unbounded_String (Source_Name (Enum)));
+                        Str => To_Unbounded_String (Source_Name (Lit)));
                   end if;
 
                   --  An exception is raised by Get_Enum_Lit_From_Pos if the

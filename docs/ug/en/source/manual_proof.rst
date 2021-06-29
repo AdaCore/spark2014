@@ -378,33 +378,23 @@ to prove is at the end of the file:
 
 .. code-block:: coq
 
-  Theorem WP_parameter_def :
-    forall (r1:Z) (r2:Z) (o:Z) (o1:Z) (result:Z)
-           (r11:Z) (result1:Z) (r21:Z) (r12:Z) (r22:Z)
-           (r13:Z) (r23:Z),
-      ((in_range1 x)
-       /\ ((in_range1 y)
-       /\ ((in_range1 z)
-       /\ (((0%Z <= 2147483647%Z)%Z -> (in_range r1))
-       /\ (((0%Z <= 2147483647%Z)%Z -> (in_range r2))
-       /\ ((z < y)%Z
-       /\ (((((o = (ZArith.BinInt.Z.quot x y))
-       /\ (in_range (ZArith.BinInt.Z.quot x y)))
-       /\ (((mk_int__ref result) = (mk_int__ref r1))
-       /\ (r11 = o)))
-       /\ (((o1 = (ZArith.BinInt.Z.quot x z))
-       /\ (in_range (ZArith.BinInt.Z.quot x z)))
-       /\ ((result1 = r2)
-       /\ (r21 = o1))))
-       /\ (((r21 = r22)
-       /\ (r11 = r12))
-       /\ ((r23 = r21)
-       /\ (r13 = r11)))))))))) ->
-       (r12 <= r22)%Z.
-
-    intros r1 r2 o o1 result r11 result1 r21 r12 r22 r13 r23
-    (h1,(h2,(h3,(h4,(h5,(h6,((((h7,h8),(h9,h10)),((h11,h12),
-    (h13,h14))),((h15,h16),(h17,h18))))))))).
+  Theorem def'vc :
+    forall (r1:Numbers.BinNums.Z) (r2:Numbers.BinNums.Z),
+    dynamic_invariant1 x Init.Datatypes.true Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant1 y Init.Datatypes.true Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant1 z Init.Datatypes.true Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant r1 Init.Datatypes.false Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant r2 Init.Datatypes.false Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true -> (z < y)%Z ->
+    forall (r11:Numbers.BinNums.Z), (r11 = (ZArith.BinInt.Z.quot x y)) ->
+    forall (r21:Numbers.BinNums.Z), (r21 = (ZArith.BinInt.Z.quot x z)) ->
+    (r11 <= r21)%Z.
+  Proof.
+  intros r1 r2 h1 h2 h3 h4 h5 h6 r11 h7 r21 h8.
 
   Qed.
 
@@ -423,28 +413,19 @@ useful information in the environment.
 Here is the state of the proof as displayed in a suitable IDE for Coq::
 
   1 subgoal
-
-    r1, r2, o, o1, result, r11, result1, r21, r12, r22, r13, r23 : int
-    h1 : in_range1 x
-    h2 : in_range1 y
-    h3 : in_range1 z
-    h4 : (0 <= 2147483647)%Z -> in_range r1
-    h5 : (0 <= 2147483647)%Z -> in_range r2
-    h6 : (z < y)%Z
-    h7 : o = (x ÷ y)%Z
-    h8 : in_range (x ÷ y)
-    h9 : mk_int__ref result = mk_int__ref r1
-    h10 : r11 = o
-    h11 : o1 = (x ÷ z)%Z
-    h12 : in_range (x ÷ z)
-    h13 : result1 = r2
-    h14 : r21 = o1
-    h15 : r21 = r22
-    h16 : r11 = r12
-    h17 : r23 = r21
-    h18 : r13 = r11
-    ______________________________________(1/1)
-    (r12 <= r22)%Z
+  r1, r2 : int
+  h1 : dynamic_invariant1 x true false true true
+  h2 : dynamic_invariant1 y true false true true
+  h3 : dynamic_invariant1 z true false true true
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  r11 : int
+  h7 : r11 = (x ÷ y)%Z
+  r21 : int
+  h8 : r21 = (x ÷ z)%Z
+  ______________________________________(1/1)
+  (r11 <= r21)%Z
 
 Some expresions are enclosed in ``()%Z``, which means that they are dealing
 with relative integers. This is necessarily in order to use the operators
@@ -454,24 +435,19 @@ function or to declare a relative integer constant (e.g. ``0%Z``).
 Next, we can use the ``subst`` tactic to automaticaly replace variables by
 terms to which they are equal (as stated by the hypotheses in the current
 environment) and clean the environment of replaced variables. Here, we can get
-rid of many variables at once with ``subst o o1 result1 r11 r12 r21 r22 r23
-r13.`` (note the presence of the ``.`` at the end of each tactic). The new
-state is::
+rid of many variables at once with ``subst.`` (note the presence of the ``.``
+at the end of each tactic). The new state is::
 
   1 subgoal
-
-    r1, r2, result : int
-    h1 : in_range1 x
-    h2 : in_range1 y
-    h3 : in_range1 z
-    h4 : (0 <= 2147483647)%Z -> in_range r1
-    h5 : (0 <= 2147483647)%Z -> in_range r2
-    h6 : (z < y)%Z
-    h8 : in_range (x ÷ y)
-    h9 : mk_int__ref result = mk_int__ref r1
-    h12 : in_range (x ÷ z)
-    ______________________________________(1/1)
-    (x ÷ y <= x ÷ z)%Z
+  r1, r2 : int
+  h1 : dynamic_invariant1 x true false true true
+  h2 : dynamic_invariant1 y true false true true
+  h3 : dynamic_invariant1 z true false true true
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  ______________________________________(1/1)
+  (x ÷ y <= x ÷ z)%Z
 
 At this state, the hypotheses alone are not enough to prove the goal without
 proving properties about ``÷`` and ``<`` operators. It is necessary to use
@@ -495,180 +471,176 @@ case, ``p`` is matched with ``x``, ``q`` with ``z`` and
 ``r`` with ``y`` and the new state is::
 
   2 subgoals
-
-    r1, r2, result : int
-    h1 : in_range1 x
-    h2 : in_range1 y
-    h3 : in_range1 z
-    h4 : (0 <= 2147483647)%Z -> in_range r1
-    h5 : (0 <= 2147483647)%Z -> in_range r2
-    h6 : (z < y)%Z
-    h8 : in_range (x ÷ y)
-    h9 : mk_int__ref result = mk_int__ref r1
-    h12 : in_range (x ÷ z)
-    ______________________________________(1/2)
-    (0 <= x)%Z
-    ______________________________________(2/2)
-    (0 < z <= y)%Z
+  r1, r2 : int
+  h1 : dynamic_invariant1 x true false true true
+  h2 : dynamic_invariant1 y true false true true
+  h3 : dynamic_invariant1 z true false true true
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  ______________________________________(1/2)
+  (0 <= x)%Z
+  ______________________________________(2/2)
+  (0 < z <= y)%Z
 
 As expected, there are two subgoals, one per hypothesis of the theorem. Once
 the first subgoal is proved, the rest of the script will automatically apply to
 the second one.  Now, if we look back at the |SPARK| code, ``X`` is of type
-``Positive`` so ``X`` is greater than 0 and ``in_rangeN`` (where N is a number)
-are predicates generated by |SPARK| to state the range of a value from a ranged subtype
-interpreted as a relative integer in Coq. Here, the predicate ``in_range1``
-provides the property needed to prove the first subgoal which is that "All
-elements of subtype positive have their integer interpretation in the range
-1 .. (2³¹ - 1)".  However, the goal does not match exactly the predicate, because
+``Positive`` so ``X`` is greater than 0 and ``dynamic_invariantN`` (where N is
+a number) are predicates generated by |SPARK| to state the range of a value
+from a ranged subtype interpreted as a relative integer in Coq. Here, the
+predicate ``dynamic_invariant1`` provides the property needed to prove the first
+subgoal which is that "All elements of subtype positive have their integer
+interpretation in the range 1 .. (2³¹ - 1)". To be able to see the definition
+of ``dynamic_invariant1`` in ``h1``, we can use the ``unfold`` tactic of Coq. We
+need to supply the name of the predicate to unfold:
+``unfold dynamic_invariant1 in h1``. After this unfolding, we get a new
+predicate ``in_range1`` that we can unfold too so that ``h1`` is now
+``true = true \/ (1 <= 2147483647)%Z -> (1 <= x <= 2147483647)%Z``.
+
+We see now that the goal does not match
+exactly the hypothesis, because
 one is a comparison with 0, while the other is a comparison
 with 1. Transitivity on "lesser or equal" relation is needed to prove this
 goal, of course this is provided in Coq's standard library:
 
 .. code-block:: coq
 
-  Lemma Zle_trans : forall n m p:Z, (n <= m)%Z -> (m <= p)%Z -> (n <= p)%Z.
+  Lemma Z.le_trans : forall n m p:Z, (n <= m)%Z -> (m <= p)%Z -> (n <= p)%Z.
 
 Since the lemma's conclusion contains only two variables while it uses three,
-using tactic ``apply Zle_trans.`` will generate an error stating that Coq was
+using tactic ``apply Z.le_trans.`` will generate an error stating that Coq was
 not able to find a term for the variable ``m``.  In this case, ``m`` needs to
 be instantiated explicitly, here with the value 1: ``apply Zle_trans with (m:=
 1%Z).`` There are two new subgoals, one to prove that ``0 <= 1`` and the other
 that ``1 <= x``::
 
   3 subgoals
+  r1, r2 : int
+  h1 : true = true \/ (1 <= 2147483647)%Z -> (1 <= x <= 2147483647)%Z
+  h2 : dynamic_invariant1 y true false true true
+  h3 : dynamic_invariant1 z true false true true
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  ______________________________________(1/3)
+  (0 <= 1)%Z
+  ______________________________________(2/3)
+  (1 <= x)%Z
+  ______________________________________(3/3)
+  (0 < z <= y)%Z
 
-    r1, r2, result : int
-    h1 : in_range1 x
-    h2 : in_range1 y
-    h3 : in_range1 z
-    h4 : (0 <= 2147483647)%Z -> in_range r1
-    h5 : (0 <= 2147483647)%Z -> in_range r2
-    h6 : (z < y)%Z
-    h8 : in_range (x ÷ y)
-    h9 : mk_int__ref result = mk_int__ref r1
-    h12 : in_range (x ÷ z)
-    ______________________________________(1/3)
-    (0 <= 1)%Z
-    ______________________________________(2/3)
-    (1 <= x)%Z
-    ______________________________________(3/3)
-    (0 < z <= y)%Z
-
-To prove that ``0 <= 1``, the theorem ``Lemma Zle_0_1 : (0 <= 1)%Z.`` is used.
-``apply Zle_0_1`` will not generate any new subgoals since it does not contain
+To prove that ``0 <= 1``, the theorem ``Lemma Z.le_0_1 : (0 <= 1)%Z.`` is used.
+``apply Z.le_0_1`` will not generate any new subgoals since it does not contain
 implications. Coq passes to the next subgoal::
 
   2 subgoals
+  r1, r2 : int
+  h1 : true = true \/ (1 <= 2147483647)%Z -> (1 <= x <= 2147483647)%Z
+  h2 : dynamic_invariant1 y true false true true
+  h3 : dynamic_invariant1 z true false true true
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  ______________________________________(1/2)
+  (1 <= x)%Z
+  ______________________________________(2/2)
+  (0 < z <= y)%Z
 
-    r1, r2, result : int
-    h1 : in_range1 x
-    h2 : in_range1 y
-    h3 : in_range1 z
-    h4 : (0 <= 2147483647)%Z -> in_range r1
-    h5 : (0 <= 2147483647)%Z -> in_range r2
-    h6 : (z < y)%Z
-    h8 : in_range (x ÷ y)
-    h9 : mk_int__ref result = mk_int__ref r1
-    h12 : in_range (x ÷ z)
-    ______________________________________(1/2)
-    (1 <= x)%Z
-    ______________________________________(2/2)
-    (0 < z <= y)%Z
+This goal is now adapted to the range information in hypothesis ``h1``. It
+introduces a subgoal which is the disjunction in the hypothesis of ``h1``.
+To prove this disjunction, we need to tell Coq which operand we want to prove.
+Here, both are obviously true. Let's choose the left one using the tactic
+``left.``. We are left with only the equality to prove::
 
-This goal is now adapted to the ``in_range1`` definition with ``h1`` which does
-not introduce subgoals, so the subgoal 1 is fully proved, and all that remains
+  2 subgoals
+  r1, r2 : int
+  h1 : true = true \/ (1 <= 2147483647)%Z -> (1 <= x <= 2147483647)%Z
+  h2 : dynamic_invariant1 y true false true true
+  h3 : dynamic_invariant1 z true false true true
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  ______________________________________(1/2)
+  true = true
+  ______________________________________(2/2)
+  (0 < z <= y)%Z
+
+This can be discharged using ``apply eq_refl.`` to apply the reflexivity
+axiom of equality.
+Now the subgoal 1 is fully proved, and all that remains
 is subgoal 2::
 
   1 subgoal
+  r1, r2 : int
+  h1 : dynamic_invariant1 x true false true true
+  h2 : dynamic_invariant1 y true false true true
+  h3 : dynamic_invariant1 z true false true true
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  ______________________________________(1/1)
+  (0 < z <= y)%Z
 
-    r1, r2, result : int
-    h1 : in_range1 x
-    h2 : in_range1 y
-    h3 : in_range1 z
-    h4 : (0 <= 2147483647)%Z -> in_range r1
-    h5 : (0 <= 2147483647)%Z -> in_range r2
-    h6 : (z < y)%Z
-    h8 : in_range (x ÷ y)
-    h9 : mk_int__ref result = mk_int__ref r1
-    h12 : in_range (x ÷ z)
-    ______________________________________(1/1)
-    (0 < z <= y)%Z
-
-Transitivity is needed again, as well as ``in_range1``.  In the previous
+Transitivity is needed again, as well as the definition of
+``dynamic_invariant1``.  In the previous
 subgoal, every step was detailed in order to show how the tactic ``apply``
 worked. Now, let's see that proof doesn't have to be this detailed. The first
 thing to do is to add the fact that ``1 <= z`` to the current
-environment: ``unfold in_range1 in h3.`` will add the range of ``z`` as
-an hypthesis in the environment::
+environment: ``unfold dynamic_invariant1, in_range1 in h3.`` will add the range
+of ``z`` as an hypthesis in the environment::
 
   1 subgoal
+  r1, r2 : int
+  h1 : dynamic_invariant1 x true false true true
+  h2 : dynamic_invariant1 y true false true true
+  h3 : true = true \/ (1 <= 2147483647)%Z -> (1 <= z <= 2147483647)%Z
+  h4 : dynamic_invariant r1 false false true true
+  h5 : dynamic_invariant r2 false false true true
+  h6 : (z < y)%Z
+  ______________________________________(1/1)
+  (0 < z <= y)%Z
 
-    r1, r2, result : int
-    h1 : in_range1 x
-    h2 : in_range1 y
-    h3 : (1 <= z <= 2147483647)%Z
-    h4 : (0 <= 2147483647)%Z -> in_range r1
-    h5 : (0 <= 2147483647)%Z -> in_range r2
-    h6 : (z < y)%Z
-    h8 : in_range (x ÷ y)
-    h9 : mk_int__ref result = mk_int__ref r1
-    h12 : in_range (x ÷ z)
-    ______________________________________(1/1)
-    (0 < z <= y)%Z
-
-At this point, the goal can be solved simply using the ``omega.`` tactic.
-``omega`` is a tactic made to facilitate the verification of properties about
-relative integers equalities and inequalities. It uses a predefined set of
-theorems and the hypotheses present in the current environment to try to solve
-the current goal. ``omega`` either solves the goal or, if it fails, it does not
+At this point, the goal can be solved simply using the ``intuition.`` tactic.
+``intuition`` is an automatic tactic of Coq implementing a decision procedure
+for some simple goals. It either solves the goal or, if it fails, it does not
 generate any subgoals.  The benefit of the latter way is that there are less
 steps than with the previous subgoal for a more complicated goal (there are two
 inequalities in the second subgoal) and we do not have to find the different
-theorems we need to solve the goal without omega.
+theorems we need to solve the goal without ``intuition``.
 
 Finally, here is the final version of the proof script for the postcondition:
 
 .. code-block:: coq
 
-  Theorem WP_parameter_def :
-    forall (r1:Z) (r2:Z) (o:Z) (o1:Z) (result:Z)
-           (r11:Z) (result1:Z) (r21:Z) (r12:Z) (r22:Z)
-           (r13:Z) (r23:Z),
-      ((in_range1 x)
-       /\ ((in_range1 y)
-       /\ ((in_range1 z)
-       /\ (((0%Z <= 2147483647%Z)%Z -> (in_range r1))
-       /\ (((0%Z <= 2147483647%Z)%Z -> (in_range r2))
-       /\ ((z < y)%Z
-       /\ (((((o = (ZArith.BinInt.Z.quot x y))
-       /\ (in_range (ZArith.BinInt.Z.quot x y)))
-       /\ (((mk_int__ref result) = (mk_int__ref r1))
-       /\ (r11 = o)))
-       /\ (((o1 = (ZArith.BinInt.Z.quot x z))
-       /\ (in_range (ZArith.BinInt.Z.quot x z)))
-       /\ ((result1 = r2)
-       /\ (r21 = o1))))
-       /\ (((r21 = r22)
-       /\ (r11 = r12))
-       /\ ((r23 = r21)
-       /\ (r13 = r11)))))))))) ->
-       (r12 <= r22)%Z.
-
-    intros r1 r2 o o1 result r11 result1 r21 r12 r22 r13 r23
-    (h1,(h2,(h3,(h4,(h5,(h6,((((h7,h8),(h9,h10)),((h11,h12),
-    (h13,h14))),((h15,h16),(h17,h18))))))))).
-
-  subst o o1 result1 r11 r12 r21 r22 r23 r13.
+  Theorem def'vc :
+    forall (r1:Numbers.BinNums.Z) (r2:Numbers.BinNums.Z),
+    dynamic_invariant1 x Init.Datatypes.true Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant1 y Init.Datatypes.true Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant1 z Init.Datatypes.true Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant r1 Init.Datatypes.false Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true ->
+    dynamic_invariant r2 Init.Datatypes.false Init.Datatypes.false
+    Init.Datatypes.true Init.Datatypes.true -> (z < y)%Z ->
+    forall (r11:Numbers.BinNums.Z), (r11 = (ZArith.BinInt.Z.quot x y)) ->
+    forall (r21:Numbers.BinNums.Z), (r21 = (ZArith.BinInt.Z.quot x z)) ->
+    (r11 <= r21)%Z.
+  Proof.
+  intros r1 r2 h1 h2 h3 h4 h5 h6 r11 h7 r21 h8.
+  subst.
   apply Z.quot_le_compat_l.
-    apply Zle_trans with (m:=1%Z).
-      (* 0 <= 1 *)
-      apply Zle_0_1.
+    apply Z.le_trans with (m:=1%Z).
+      (* 0 <= x *)
+    - apply Z.le_0_1.
       (* 1 <= x *)
-      unfold in_range1 in h1.
-      apply h1.
+    - unfold dynamic_invariant1, in_range1 in h1.
+      apply h1. left. apply eq_refl.
     (* 0 < z <= y *)
-    unfold in_range1 in h3.
-    omega.
+    - unfold dynamic_invariant1, in_range1 in h3.
+      intuition.
   Qed.
 
 To check and save the proof:

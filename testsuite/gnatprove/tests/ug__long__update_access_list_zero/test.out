@@ -7,6 +7,7 @@ p.adb:18:14: info: pointer dereference check proved
 p.adb:19:14: info: pointer dereference check proved
 p.adb:21:16: info: pointer dereference check proved
 p.adb:22:24: info: pointer dereference check proved
+p.adb:25:10: info: assertion proved
 p.ads:20:20: info: pointer dereference check proved
 p.ads:20:47: info: pointer dereference check proved
 p.ads:21:22: info: pointer dereference check proved

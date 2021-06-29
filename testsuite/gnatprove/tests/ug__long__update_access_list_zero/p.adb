@@ -21,5 +21,7 @@ is
          B := B.Next;
          B_Old := B_Old.Next;
       end loop;
+      pragma Assert
+        (Updated_If_Less_Than_Threshold (L_Old, At_End (L), Threshold));
    end Update_List_Zero;
 end P;

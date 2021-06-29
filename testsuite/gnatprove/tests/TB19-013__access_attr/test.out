@@ -5,7 +5,6 @@ test_access.adb:11:21: info: pointer dereference check proved (CVC4: 1 VC)
 test_access.adb:14:31: info: pointer dereference check proved (CVC4: 1 VC)
 test_access.adb:16:29: info: data dependencies proved
 test_access.adb:17:30: medium: predicate check might fail
-test_access.adb:22:04: high: "V" must be listed in the Global aspect of "Test_Access" (SPARK RM 6.1.4(14))
 test_access.adb:27:14: info: postcondition proved (CVC4: 1 VC)
 test_access.adb:27:27: info: pointer dereference check proved (CVC4: 1 VC)
 test_access.adb:33:77: info: dynamic accessibility check proved (Trivial)
@@ -35,11 +34,11 @@ test_access.adb:85:22: info: pointer dereference check proved (CVC4: 1 VC)
 test_access.adb:85:26: info: overflow check proved (CVC4: 1 VC)
 test_access.adb:88:19: info: assertion proved (CVC4: 1 VC)
 test_access.adb:89:19: medium: assertion might fail (e.g. when V = (F1 => 2, F2 => 15))
-test_access_constraints.adb:9:07: high: "R" must be listed in the Global aspect of "Test_Discr" (SPARK RM 6.1.4(14))
+test_access_constraints.adb:8:30: info: data dependencies proved
 test_access_constraints.adb:14:12: info: pointer dereference check proved (CVC4: 1 VC)
 test_access_constraints.adb:14:12: info: range check proved (CVC4: 1 VC)
 test_access_constraints.adb:14:19: medium: discriminant check might fail (e.g. when B.all = (B => True, F1 => 1, F2 => 2))
-test_access_constraints.adb:21:28: high: "R" must be listed in the Global aspect of "Test_Discr" (SPARK RM 6.1.4(14))
+test_access_constraints.adb:18:55: info: data dependencies proved
 test_access_constraints.adb:23:12: info: pointer dereference check proved (CVC4: 1 VC)
 test_access_constraints.adb:23:12: info: range check proved (CVC4: 1 VC)
 test_access_constraints.adb:23:19: medium: discriminant check might fail (e.g. when B.all = (B => True, F1 => 4, F2 => 4))
@@ -58,7 +57,6 @@ test_access_constraints.adb:42:12: info: pointer dereference check proved (CVC4:
 test_access_constraints.adb:42:16: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test_access_constraints.adb:42:19: medium: length check might fail (e.g. when B.all = (others => -1)) [reason for check: array must be of the appropriate length]
 test_access_constraints.adb:42:19: medium: range check might fail (e.g. when B.all = (others => -1))
-test_access_ownership_error.adb:12:04: high: "V" must be listed in the Global aspect of "Test_Access_Ownership_Error" (SPARK RM 6.1.4(14))
 test_access_ownership_error.adb:19:08: error: object was observed at line 17
 test_access_ownership_error.adb:25:08: error: object was observed at line 23
 test_access_ownership_error.adb:26:08: error: object was observed at line 23
@@ -75,6 +73,6 @@ test_access_violation.adb:29:21: info: no contextual analysis of "F" (body not s
 test_access_violation.adb:30:26: error: observe through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
 test_access_violation.adb:31:21: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK
 test_access_violation.adb:31:21: error: violation of aspect SPARK_Mode at line 1
-test_access_violation.adb:38:24: error: Access attribute of a named access-to-constant type whose prefix is rooted inside an object of an anonymous access type is not allowed in SPARK
+test_access_violation.adb:38:24: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK
 test_access_violation.adb:38:24: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

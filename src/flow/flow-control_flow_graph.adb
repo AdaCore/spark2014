@@ -2402,8 +2402,6 @@ package body Flow.Control_Flow_Graph is
       C : Goto_Jump_Maps.Cursor :=
         Ctx.Goto_Jumps.Find (Entity (Identifier (N)));
 
-      use type Goto_Jump_Maps.Cursor;
-
    begin
       Add_Vertex (FA,
                   Direct_Mapping_Id (N),
@@ -2412,7 +2410,7 @@ package body Flow.Control_Flow_Graph is
 
       CM.Insert (Union_Id (N), Trivial_Connection (V));
 
-      if C /= Goto_Jump_Maps.No_Element then
+      if Goto_Jump_Maps.Has_Element (C) then
          Linkup (FA, Froms => Ctx.Goto_Jumps (C), To => V);
          Ctx.Goto_Jumps.Delete (C);
       end if;
@@ -4577,7 +4575,6 @@ package body Flow.Control_Flow_Graph is
 
       DM : constant Dependency_Maps.Map :=
         Parse_Initializes (Package_Spec, FA.B_Scope);
-      --  ??? This needs to take into account initializes from gg
 
       Save_In_Nested_Package : constant Boolean := Ctx.In_Nested_Package;
 
@@ -4624,25 +4621,30 @@ package body Flow.Control_Flow_Graph is
                        (if Present (The_Out)
                         then Get_Direct_Mapping_Id (The_Out)
                         else Types.Empty);
+                     --  If Init_Item = Types.Empty, we are in the case of a
+                     --  "null => ..." Initializes contract. We will create
+                     --  a vertex to read the RHS of the contract and insert
+                     --  it in the Connections Map.
 
                      V : Flow_Graphs.Vertex_Id;
 
                   begin
-                     if Present (Init_Item) then
-                        Init_Items.Append (Union_Id (Init_Item));
+                     Init_Items.Append (Union_Id (Init_Item));
 
-                        Add_Vertex
-                          (FA,
-                           Make_Package_Initialization_Attributes
-                             (The_State => The_Out,
-                              Inputs    => The_Ins,
-                              Scope     => FA.B_Scope,
-                              Loops     => Ctx.Current_Loops,
-                              E_Loc     => Init_Item),
-                           V);
-                        CM.Insert (Union_Id (Init_Item),
-                                   Trivial_Connection (V));
-                     end if;
+                     Add_Vertex
+                       (FA,
+                        Make_Package_Initialization_Attributes
+                          (The_State => The_Out,
+                           Inputs    => The_Ins,
+                           Scope     => FA.B_Scope,
+                           Loops     => Ctx.Current_Loops,
+                           E_Loc     => (if Present (Init_Item)
+                                         then Init_Item
+                                         else N)),
+                        V);
+                     CM.Insert (Union_Id (Init_Item),
+                                Trivial_Connection (V));
+
                   end;
                end loop;
 
@@ -6012,7 +6014,7 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Make_Basic_Attributes
-           (Var_Def       => Flow_Id_Sets.To_Set (Borrowed),
+           (Var_Def       => Flatten_Variable (Borrowed, FA.B_Scope),
             Var_Ex_Use    => Flow_Id_Sets.To_Set (Borrower),
             Loops         => Node_Sets.Empty_Set,  --  ??? not sure about this
             In_Nested_Pkg => False,                --  ??? not sure about this

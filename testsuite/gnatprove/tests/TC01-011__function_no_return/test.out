@@ -1,0 +1,2 @@
+no_return_function.adb:2:13: error: function annotated with No_Return is not yet supported
+gnatprove: error during flow analysis and proof

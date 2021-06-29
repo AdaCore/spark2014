@@ -4317,7 +4317,7 @@ package body Flow_Utility is
    ---------------------------------
 
    function Has_Variable_Input_Internal (C : Entity_Id) return Boolean is
-      E    : Entity_Id := C;
+      E    : Entity_Id;
       Expr : Node_Id;
       Vars : Flow_Id_Sets.Set;
 
@@ -4338,7 +4338,7 @@ package body Flow_Utility is
       else
          --  We are dealing with a deferred constant so we need to get to the
          --  full view.
-         E    := Full_View (E);
+         E    := Full_View (C);
          Expr := Expression (Declaration_Node (E));
       end if;
 

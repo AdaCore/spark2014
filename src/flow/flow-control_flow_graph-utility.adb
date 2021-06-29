@@ -783,7 +783,9 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes;
 
       Split_State : constant Flow_Id_Sets.Set :=
-        Flatten_Variable (The_State, Scope);
+        (if Present (The_State)
+         then Flatten_Variable (The_State, Scope)
+         else Flow_Id_Sets.Empty_Set);
 
       Split_Inputs : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
@@ -798,7 +800,8 @@ package body Flow.Control_Flow_Graph.Utility is
         (Var_Def       => Split_State,
          Var_Ex_Use    => Split_Inputs,
          Var_Im_Use    =>
-           (if Is_Initialized_At_Elaboration (The_State, Scope)
+           (if Present (The_State)
+              and then Is_Initialized_At_Elaboration (The_State, Scope)
               and then Is_Initialized_In_Specification (The_State, Scope)
             then Split_State
             else Flow_Id_Sets.Empty_Set),

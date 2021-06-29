@@ -494,9 +494,8 @@ subcomponent].
            borrowing traversal function
 
 A function is said to be a *traversal function* if the result type of the
-function is an anonymous access-to-object type, the function has at least one
-formal parameter, and the function's first parameter is of an access type
-[redundant: , either named or anonymous]. The traversal function is said to be
+function is an anonymous access-to-object type and the function has at least one
+formal parameter. The traversal function is said to be
 an *observing traversal function* if the result type of the function is an
 anonymous access-to-constant type, and a *borrowing traversal function* if the
 result type of the function is an anonymous access-to-variable type. The first
@@ -526,6 +525,9 @@ The *root object* of a name that denotes an object is defined as follows:
 
 - if the name is a qualified_expression or a type conversion, the root
   object is the root object of the operand of the name;
+
+- if the name is a reference to the Access attribute, the root object is the
+  root object of the prefix of the name;
 
 - otherwise, the name statically denotes an object and the root
   object is the statically denoted object.
@@ -558,6 +560,11 @@ Two names are said to be *potential aliases* when:
 
 - both names are dereferences and their prefixes are potential aliases; or
 
+- one name is a dereference whose prefix is an Access attribute reference
+  (or has such such an attribute reference as an operative constituent
+  - see Ada RM 4.4), and the prefix of the attribute reference and the
+  other name are potential aliases; or
+
 - at least one name denotes an object renaming declaration, and the other
   is a potential alias with the object_name denoting the renamed entity.
 
@@ -580,6 +587,10 @@ The prefix and the name that are potential aliases are called the
 
 A name that denotes a managed object can be in one of the
 following ownership states: Unrestricted, Observed, Borrowed, or Moved.
+A name that denotes an object which is not managed but is used as a
+prefix of a reference to the Access attribute or as the first parameter of a
+call to a traversal function can also be in the Unrestricted, Observed, or
+Borrowed state.
 
 A given name may take on different states at different points in the
 program. For example, within a block_statement which declares an observer
@@ -609,17 +620,17 @@ borrowing (see below).
            ownership; borrow
 
 
-Unless otherwise specified, a name that denotes a managed object has an
+Unless otherwise specified, a name that denotes an object has an
 initial ownership state of Unrestricted if it is variable and Observed
 if it is a constant view.
 Certain constructs (described below) are said to *observe*, *borrow*,
-or *move* the value of a managed object; these may change the ownership
+or *move* the value of an object; these may change the ownership
 state (to Observed, Borrowed, or Moved respectively) of a name within a
 certain portion of the program text (described below). In the first two
 cases (i.e. observing and borrowing), the ownership state of a name
 reverts to its previous value at the end of this region of text.
 
-The following operations *observe* a name that denotes a managed object
+The following operations *observe* a name that denotes an object
 and identify a corresponding *observer*:
 
 - An assignment operation that is used to initialize an access object,
@@ -629,10 +640,14 @@ and identify a corresponding *observer*:
   anonymous access-to-constant type.
 
   The source expression of the assignment shall be either a name denoting a
-  part of a stand-alone object or of a parameter, or a call on a traversal
-  function whose result type is an (anonymous) access type.  If the source of
-  the assignment is a call on a traversal function then the name being observed
-  denotes the actual traversed parameter of the call. Otherwise the name being
+  part of a stand-alone object or of a parameter, a call on a traversal
+  function whose result type is an (anonymous) access type, or a reference
+  to the Access attribute whose prefix is a name denoting a part of
+  a stand-alone object or of a parameter.
+  If the source of the assignment is a call on a traversal function then the
+  name being observed denotes the actual traversed parameter of the call. If
+  the source is a reference to the Access attribute, the name being observed
+  denotes the prefix of the attribute reference. Otherwise the name being
   observed denotes the source of the assignment.
 
 - Inside the body of a borrowing traversal function, an assignment operation
@@ -656,16 +671,16 @@ and identify a corresponding *observer*:
 
 Such an operation is called an *observing operation*.
 
-In the region of program text beween the point where a name denoting a
-managed object is observed and the end of the scope of the observer, the
-ownership state of the name is Observed. While a name that denotes a managed
+In the region of program text beween the point where a name denoting an
+object is observed and the end of the scope of the observer, the
+ownership state of the name is Observed. While a name that denotes an
 object is in the Observed state it provides a constant view
 [redundant: , even if the name denotes a variable].
 
-At the point where a name that denotes a managed object is observed,
+At the point where a name that denotes an object is observed,
 every name of a reachable element of the object is observed.
 
-The following operations *borrow* a name that denotes a managed object
+The following operations *borrow* a name that denotes an object
 and identify a corresponding *borrower*:
 
 - An assignment operation that is used to initialize an access object, where
@@ -677,11 +692,15 @@ and identify a corresponding *borrower*:
   defining *observe* above.
 
   The source expression of the assignment shall be either a name denoting a
-  part of a stand-alone object or of a parameter, or a call on a traversal
-  function whose result type is an (anonymous) access-to-variable type.  If the
-  source of the assignment is a call on a traversal function then the name
-  being borrowed denotes the actual traversed parameter of the call. Otherwise
-  the name being borrowed denotes the source of the assignment.
+  part of a stand-alone object or of a parameter, a call on a traversal
+  function whose result type is an (anonymous) access-to-variable type, or a
+  reference to the Access attribute whose prefix is a name denoting a part of
+  a stand-alone object or of a parameter. If the source of the assignment is a
+  call on a traversal function then the name being borrowed denotes the actual
+  traversed parameter of the call. If the source is a reference to the Access
+  attribute, the name being borrowed denotes the prefix of the attribute
+  reference. Otherwise the name being borrowed denotes the source of the
+  assignment.
 
 - A call (or instantiation) where the (borrowed) name denotes an actual
   parameter that is a managed object other than an owning access object, and
@@ -697,8 +716,8 @@ Such an operation is called a *borrowing operation*.
 The *borrowed name* of the source of a borrow operation is the smallest
 name that is borrowed in the borrow operation.
 
-In the region of program text beween the point where a name denoting a
-managed object is borrowed and the end of the scope of the borrower, the
+In the region of program text beween the point where a name denoting an
+object is borrowed and the end of the scope of the borrower, the
 ownership state of the name is Borrowed.
 
 An indirect borrower of a name is defined to be a borrower either of
@@ -707,12 +726,12 @@ A direct borrower of a name is just another term for a borrower of
 the name, usually used together with the term "indirect borrower".
 The terms "indirect observer" and "direct observer" are defined analogously.
 
-While a name that denotes a managed object is in the Borrowed state it
+While a name that denotes an object is in the Borrowed state it
 is incorrect to move, borrow, observe or modify it. [Intuitively,
 the value of a borrowed object is frozen for the duration of the borrow,
 while the ownership is held by the borrower].
 
-At the point where a name that denotes a managed object is borrowed,
+At the point where a name that denotes an object is borrowed,
 every name of a reachable element of the object is borrowed.
 
 The following operations are said to be *move* operations:
@@ -786,7 +805,9 @@ be an owning type).]
 3. If the target of an assignment operation is an object of an anonymous
    access-to-object type (including copy-in for a parameter), then the source
    shall be a name denoting a part of a stand-alone object, a part of a
-   parameter, or a part of a call to a traversal function.
+   parameter, a part of a call to a traversal function, or a reference to the
+   Access attribute whose prefix is either a name denoting a part of a
+   stand-alone object or a part of a parameter.
 
    [Redundant: One consequence of this rule is that every allocator is of a
    named access type.]
@@ -869,18 +890,18 @@ be an owning type).]
    constant without variable inputs.
 
 
-10. If the state of a name that denotes a managed object is Observed, the name
+10. If the state of a name that denotes an object is Observed, the name
     shall not be moved, borrowed, or assigned.
 
 
-11. If the state of a name that denotes a managed object is Borrowed, the name
+11. If the state of a name that denotes an object is Borrowed, the name
     shall not be moved, borrowed, observed, or assigned.
 
 
-12. At the point of a call, any name that denotes a managed object that is a
+12. At the point of a call, any name that denotes an object that is a
     global output of the callee (i.e., an output other than a parameter of the
     callee or a function result) shall not be in the Observed or Borrowed
-    state.  Similarly, any name that denotes a managed object that is a global
+    state.  Similarly, any name that denotes an object that is a global
     input of the callee shall not be in the Moved or Borrowed state.
 
 

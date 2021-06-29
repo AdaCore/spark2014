@@ -32,12 +32,32 @@ package body Flow.Data_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
 
+      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
+                              return Boolean;
+      --  Check if we should go down the given edge based on colour
+
       function Potential_Definite_Calls
         (Calls : Node_Sets.Set)
          return Flow_Id_Sets.Set;
       --  Returns subprograms whose calls need to be checked for being
       --  definitive (as opposed to being conditional or being only called
       --  in assertions).
+
+      procedure Process
+        (V_D : Flow_Graphs.Vertex_Id;
+         TV  : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Process the vertex V_D to create the corresponding vertex in the DDG
+
+      -------------------
+      -- Edge_Selector --
+      -------------------
+
+      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
+                              return Boolean is
+        (case FA.CFG.Edge_Colour (A, B) is
+            when EC_Default | EC_Inf => True,
+            when EC_Barrier          => False,
+            when others              => raise Program_Error);
 
       ------------------------------
       -- Potential_Definite_Calls --
@@ -64,146 +84,160 @@ package body Flow.Data_Dependence_Graph is
          return Check;
       end Potential_Definite_Calls;
 
-   --  Start of processing for Create
+      -------------
+      -- Process --
+      -------------
 
-   begin
-      FA.DDG := FA.CFG.Create;
+      procedure Process
+        (V_D : Flow_Graphs.Vertex_Id;
+         TV  : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+         Atr_Def : V_Attributes renames FA.Atr (V_D);
 
-      for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            Atr_Def : V_Attributes renames FA.Atr (V_D);
+         use type Flow_Id_Sets.Set;
 
-            use type Flow_Id_Sets.Set;
+         Combined_Defined : constant Flow_Id_Sets.Set :=
+           Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
+           Potential_Definite_Calls (Atr_Def.Subprograms_Called);
 
-            Combined_Defined : constant Flow_Id_Sets.Set :=
-              Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
-              Potential_Definite_Calls (Atr_Def.Subprograms_Called);
+         use type Flow_Graphs.Vertex_Id;
 
-            use type Flow_Graphs.Vertex_Id;
+      begin
+         TV := Flow_Graphs.Continue;
 
-         begin
-            --  If this vertex defines a component of a record assignment, then
-            --  connect it with a corresponding vertex with variables used for
-            --  the new value of this record component. This is similar to
-            --  connecting 'In and 'Out vertices of procedure calls according
-            --  to the Depends contract, which happens when building TDG.
+         --  If this vertex defines a component of a record assignment, then
+         --  connect it with a corresponding vertex with variables used for the
+         --  new value of this record component. This is similar to connecting
+         --  'In and 'Out vertices of procedure calls according to the Depends
+         --  contract, which happens when building TDG.
 
-            if Atr_Def.Record_RHS /= Flow_Graphs.Null_Vertex then
-               FA.DDG.Add_Edge (Atr_Def.Record_RHS, V_D, EC_DDG);
-            end if;
+         if Atr_Def.Record_RHS /= Flow_Graphs.Null_Vertex then
+            FA.DDG.Add_Edge (Atr_Def.Record_RHS, V_D, EC_DDG);
+         end if;
 
-            for Var of Combined_Defined loop
-               declare
-                  procedure Visitor
-                    (V_U : Flow_Graphs.Vertex_Id;
-                     TV  : out Flow_Graphs.Simple_Traversal_Instruction);
-                  --  For Var, check if there is a def-use link from V_D to
-                  --  V_U. Stop traversal if node V_U also defined Var.
+         for Var of Combined_Defined loop
+            declare
+               procedure Visitor
+                 (V_U  : Flow_Graphs.Vertex_Id;
+                  TV_U : out Flow_Graphs.Simple_Traversal_Instruction);
+               --  For Var, check if there is a def-use link from V_D to V_U.
+               --  Stop traversal if node V_U also defined Var.
 
-                  function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
-                                             return Boolean;
-                  --  Check if we should go down the given edge based on colour
+               -------------
+               -- Visitor --
+               -------------
 
-                  -------------
-                  -- Visitor --
-                  -------------
+               procedure Visitor
+                 (V_U  : Flow_Graphs.Vertex_Id;
+                  TV_U : out Flow_Graphs.Simple_Traversal_Instruction)
+               is
+                  Atr : V_Attributes renames FA.Atr (V_U);
+               begin
+                  if Atr.Variables_Used.Contains (Var) then
+                     FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
+                  end if;
 
-                  procedure Visitor
-                    (V_U : Flow_Graphs.Vertex_Id;
-                     TV  : out Flow_Graphs.Simple_Traversal_Instruction)
-                  is
-                     Atr : V_Attributes renames FA.Atr (V_U);
-                  begin
-                     if Atr.Variables_Used.Contains (Var) then
-                        FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
-                     end if;
-
-                     if Atr.Variables_Defined.Contains (Var)
-                       or else Atr.Volatiles_Read.Contains (Var)
+                  if Atr.Variables_Defined.Contains (Var)
+                    or else Atr.Volatiles_Read.Contains (Var)
+                  then
+                     if (Atr_Def.Is_Parameter
+                         or else Atr_Def.Is_Global_Parameter
+                         or else Atr_Def.Is_Implicit_Parameter)
+                       and then (Atr.Is_Parameter
+                                 or else Atr.Is_Global_Parameter
+                                 or else Atr.Is_Implicit_Parameter)
+                       and then Atr_Def.Call_Vertex = Atr.Call_Vertex
                      then
-                        if (Atr_Def.Is_Parameter
-                            or else Atr_Def.Is_Global_Parameter
-                            or else Atr_Def.Is_Implicit_Parameter)
-                          and then (Atr.Is_Parameter
-                                    or else Atr.Is_Global_Parameter
-                                    or else Atr.Is_Implicit_Parameter)
-                          and then Atr_Def.Call_Vertex = Atr.Call_Vertex
-                        then
-                           --  We have a definite order in which we assign
-                           --  out parameters in flow, but this is just an
-                           --  assumption which means we might get an
-                           --  incorrect graph when aliasing is present.
-                           --  Here we allow multiple out vertices from the
-                           --  same procedure call to flow into the same
-                           --  variable.
-                           TV := Flow_Graphs.Continue;
-                        else
-                           TV := Flow_Graphs.Skip_Children;
-                        end if;
+                        --  We have a definite order in which we assign out
+                        --  parameters in flow, but this is just an assumption
+                        --  which means we might get an incorrect graph when
+                        --  aliasing is present. Here we allow multiple out
+                        --  vertices from the same procedure call to flow
+                        --  into the same variable.
+                        TV_U := Flow_Graphs.Continue;
+                     else
+                        TV_U := Flow_Graphs.Skip_Children;
+                     end if;
 
                      --  Deal with calls to potentially definite calls, which
                      --  is only needed in phase 1 and only if generating
                      --  globals for the currently analysed subprogram.
 
-                     elsif FA.Generating_Globals
-                       and then FA.Is_Generative
-                       and then Var.Kind = Direct_Mapping
-                       and then
-                         Is_Subprogram_Or_Entry (Get_Direct_Mapping_Id (Var))
-                       and then Atr.Subprograms_Called.Contains
-                         (Get_Direct_Mapping_Id (Var))
-                     then
-                        TV := Flow_Graphs.Skip_Children;
+                  elsif FA.Generating_Globals
+                    and then FA.Is_Generative
+                    and then Var.Kind = Direct_Mapping
+                    and then
+                      Is_Subprogram_Or_Entry (Get_Direct_Mapping_Id (Var))
+                      and then Atr.Subprograms_Called.Contains
+                        (Get_Direct_Mapping_Id (Var))
+                  then
+                     TV_U := Flow_Graphs.Skip_Children;
 
-                     else
-                        TV := Flow_Graphs.Continue;
-                     end if;
-                  end Visitor;
-
-                  -------------------
-                  -- Edge_Selector --
-                  -------------------
-
-                  function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
-                                          return Boolean is
-                    (case FA.CFG.Edge_Colour (A, B) is
-                        when EC_Default | EC_Inf => True,
-                        when EC_Barrier          => False,
-                        when others              => raise Program_Error);
-
-               begin
-                  --  Check for self-dependency (i.e. X := X + 1)
-                  if Atr_Def.Variables_Used.Contains (Var) then
-                     FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
+                  else
+                     TV_U := Flow_Graphs.Continue;
                   end if;
+               end Visitor;
 
-                  --  Flag all def-used chains rooted at V_D
-                  FA.CFG.DFS (Start         => V_D,
-                              Include_Start => False,
-                              Visitor       => Visitor'Access,
-                              Edge_Selector => Edge_Selector'Access);
+            begin
+               --  Check for self-dependency (i.e. X := X + 1)
+               if Atr_Def.Variables_Used.Contains (Var) then
+                  FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
+               end if;
 
-                  for Vol of Atr_Def.Volatiles_Written loop
-                     declare
-                        V_Final : constant Flow_Graphs.Vertex_Id :=
-                          FA.CFG.Get_Vertex
-                            (Change_Variant (Vol, Final_Value));
+               --  Flag all def-used chains rooted at V_D
+               FA.CFG.DFS (Start         => V_D,
+                           Include_Start => False,
+                           Visitor       => Visitor'Access,
+                           Edge_Selector => Edge_Selector'Access);
 
-                     begin
-                        if V_Final /= Flow_Graphs.Null_Vertex then
-                           --  If V_Final is null, then we're doing something
-                           --  involving a variable that has been missed out
-                           --  of the global annotation. We just ignore the
-                           --  connection in that case, and flow analysis
-                           --  sanity check will pick up the pieces later.
-                           FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
-                        end if;
-                     end;
-                  end loop;
-               end;
-            end loop;
-         end;
+               for Vol of Atr_Def.Volatiles_Written loop
+                  declare
+                     V_Final : constant Flow_Graphs.Vertex_Id :=
+                       FA.CFG.Get_Vertex (Change_Variant (Vol, Final_Value));
+
+                  begin
+                     if V_Final /= Flow_Graphs.Null_Vertex then
+                        --  If V_Final is null, then we're doing something
+                        --  involving a variable that has been missed out
+                        --  of the global annotation. We just ignore the
+                        --  connection in that case, and flow analysis
+                        --  sanity check will pick up the pieces later.
+                        FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
+                     end if;
+                  end;
+               end loop;
+            end;
+         end loop;
+      end Process;
+
+      --  Local variables
+
+      Unused : Flow_Graphs.Simple_Traversal_Instruction;
+
+   --  Start of processing for Create
+
+   begin
+      FA.DDG := FA.CFG.Create;
+
+      --  Process 'Initial vertices (leading to the Start_Vertex); those
+      --  vertices can have 'Initial_Grouping in-neighbours themselves, but
+      --  they do not affect DDG.
+
+      for V_D of FA.CFG.Get_Collection
+        (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
+      loop
+         pragma Assert (FA.CFG.Get_Key (V_D).Variant = Initial_Value);
+         Process (V_D, Unused);
       end loop;
+
+      --  Process remaining live vertices (coming from the Start_Vertex)
+
+      FA.CFG.DFS
+        (Start         => FA.Start_Vertex,
+         Include_Start => True,
+         Visitor       => Process'Access,
+         Edge_Selector => Edge_Selector'Access);
+
    end Create;
 
 end Flow.Data_Dependence_Graph;

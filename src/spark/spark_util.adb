@@ -25,7 +25,6 @@
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Common_Iterators;       use Common_Iterators;
-with Csets;                  use Csets;
 with Errout;                 use Errout;
 with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
 with Flow_Refinement;        use Flow_Refinement;
@@ -1623,29 +1622,19 @@ package body SPARK_Util is
    -------------------------
 
    function Get_Operator_Symbol (N : Node_Id) return String is
-      subtype Operator_Name_Id is Name_Id range
-        First_Operator_Name .. Last_Operator_Name;
+      Buf : Bounded_String;
+
    begin
-      return (case Operator_Name_Id'(Chars (N)) is
-                 when Name_Op_Abs      => "abs",
-                 when Name_Op_And      => "and",
-                 when Name_Op_Mod      => "mod",
-                 when Name_Op_Not      => "not",
-                 when Name_Op_Or       => "or",
-                 when Name_Op_Rem      => "rem",
-                 when Name_Op_Xor      => "xor",
-                 when Name_Op_Eq       => "=",
-                 when Name_Op_Ne       => "/=",
-                 when Name_Op_Lt       => "<",
-                 when Name_Op_Le       => "<=",
-                 when Name_Op_Gt       => ">",
-                 when Name_Op_Ge       => ">=",
-                 when Name_Op_Add      => "+",
-                 when Name_Op_Subtract => "-",
-                 when Name_Op_Concat   => "&",
-                 when Name_Op_Multiply => "*",
-                 when Name_Op_Divide   => "/",
-                 when Name_Op_Expon    => "**");
+      --  Reuse frontend decoding of operator symbol
+
+      Append_Unqualified_Decoded (Buf, Chars (N));
+
+      --  Strip leading and trailing quotes
+
+      pragma Assert (Buf.Chars (1) = '"');
+      pragma Assert (Buf.Chars (Buf.Length) = '"');
+
+      return Buf.Chars (2 .. Buf.Length - 1);
    end Get_Operator_Symbol;
 
    ---------------
@@ -3503,50 +3492,17 @@ package body SPARK_Util is
    -- Source_Name --
    -----------------
 
-   function Source_Name (E : Entity_Id) return String is
+   function Source_Name (N : Entity_Id) return String is
+      Buf : Bounded_String;
+
    begin
-      if Nkind (E) = N_Defining_Operator_Symbol then
-         return """" & Get_Operator_Symbol (E) & """";
-
+      if Nkind (N) in N_Entity and then Is_Single_Concurrent_Type (N) then
+         return Source_Name (Anonymous_Object (N));
       else
-         declare
-            function Short_Name (E : Entity_Id) return String
-            with Post => Short_Name'Result /= "";
-            --  @return the uncapitalized unqualified name for E
+         Append_Unqualified_Decoded (Buf, Chars (N));
+         Adjust_Name_Case (Buf, Sloc (N));
 
-            ----------------
-            -- Short_Name --
-            ----------------
-
-            function Short_Name (E : Entity_Id) return String is
-            begin
-               Get_Unqualified_Name_String (Chars (E));
-               return Name_Buffer (1 .. Name_Len);
-            end Short_Name;
-
-            --  Local variables
-
-            Name : String := Short_Name (E);
-            Loc  : Source_Ptr := Sloc (E);
-            Buf  : Source_Buffer_Ptr;
-
-         begin
-            if Loc >= First_Source_Ptr then
-               Buf := Source_Text (Get_Source_File_Index (Loc));
-
-               --  Copy characters from source while they match (modulo
-               --  capitalization) the name of the entity.
-
-               for Idx in Name'Range loop
-                  exit when not Identifier_Char (Buf (Loc))
-                    or else Fold_Lower (Buf (Loc)) /= Name (Idx);
-                  Name (Idx) := Buf (Loc);
-                  Loc := Loc + 1;
-               end loop;
-            end if;
-
-            return Name;
-         end;
+         return To_String (Buf);
       end if;
    end Source_Name;
 
@@ -3749,7 +3705,9 @@ package body SPARK_Util is
          when N_Explicit_Dereference =>
             pragma Assert (Is_Access_Type (Retysp (Etype (Prefix (Expr)))));
 
-            return Is_Access_Constant (Retysp (Etype (Prefix (Expr))))
+            return (Is_Access_Constant (Retysp (Etype (Prefix (Expr))))
+                    and then not Is_Anonymous_Access_Type
+                      (Etype (Prefix (Expr))))
               or else Traverse_Access_To_Constant (Prefix (Expr));
 
          when N_Indexed_Component

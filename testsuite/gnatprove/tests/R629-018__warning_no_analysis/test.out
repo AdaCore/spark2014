@@ -1,2 +1,2 @@
-pack.adb:1:14: warning: SPARK_Mode not applied to this compilation unit
-pack.adb:1:14: warning: only enclosed declarations with SPARK_Mode will be analyzed
+pack.adb:1:14: info: SPARK_Mode not applied to this compilation unit
+pack.adb:1:14: info: only enclosed declarations with SPARK_Mode will be analyzed
