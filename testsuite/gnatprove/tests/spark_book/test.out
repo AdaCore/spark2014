@@ -997,6 +997,7 @@ string_examples.adb:25:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:25:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:26:06: info: range check proved (CVC4: 4 VC)
 strings.adb:11:07: info: initialization of "Current" proved
+strings.adb:19:37: warning: loop condition is stable
 strings.adb:20:21: info: index check proved (CVC4: 2 VC)
 strings.adb:33:07: info: initialization of "Equals_Found" proved
 strings.adb:34:07: info: initialization of "Equals_Position" proved
