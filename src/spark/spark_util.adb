@@ -3952,18 +3952,17 @@ package body SPARK_Util is
                         if In_Generic_Actual (Obj) then
                            null;
 
-                        elsif Is_Access_Variable (Etype (Obj)) then
-                           Register_Object (Obj);
-
-                        elsif Has_Variable_Input (Obj) then
+                        elsif Is_Access_Variable (Etype (Obj))
+                          or else Has_Variable_Input (Obj)
+                        then
                            if Present (Expression (N)) then
                               --  Completion of a deferred constant
 
                               if Is_Full_View (Obj) then
                                  null;
 
-                                 --  Ordinary constant with an initialization
-                                 --  expression.
+                              --  Ordinary constant with an initialization
+                              --  expression.
 
                               else
                                  Register_Object (Obj);
@@ -3975,7 +3974,7 @@ package body SPARK_Util is
                               if Present (Full_View (Obj)) then
                                  Register_Object (Full_View (Obj));
 
-                                 --  Imported constant
+                              --  Imported constant
 
                               else
                                  pragma Assert (Is_Imported (Obj));
