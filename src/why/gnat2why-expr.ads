@@ -25,7 +25,6 @@
 
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
-with Flow_Utility;               use Flow_Utility;
 with Gnat2Why.Util;              use Gnat2Why.Util;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
@@ -685,9 +684,7 @@ package Gnat2Why.Expr is
       Expr   : W_Expr_Id;
       Domain : EW_Domain;
       Subset : Node_Sets.Set;
-      As_Old : Boolean := False) return W_Expr_Id
-   with Pre => (for all N of Subset => Map.Contains (N)
-                or else Get_Variables_For_Proof (N, N).Is_Empty);
+      As_Old : Boolean := False) return W_Expr_Id;
    --  Same as above but only bind the nodes from Subset. If As_Old is True,
    --  the expressions in Map should be evaluated in the pre state.
 

@@ -37,6 +37,7 @@ with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
+with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
@@ -9853,9 +9854,9 @@ package body Gnat2Why.Expr is
          if Needs_Bounds then
             for Dim in 1 .. Nb_Dim loop
                Bnd_Args (2 * Dim - 1) := Get_Array_Attr
-                 (Domain, Etype (Expr), Attribute_First, Dim);
+                 (Domain, Etype (Expr), Attribute_First, Dim, Params);
                Bnd_Args (2 * Dim) := Get_Array_Attr
-                 (Domain, Etype (Expr), Attribute_Last, Dim);
+                 (Domain, Etype (Expr), Attribute_Last, Dim, Params);
             end loop;
          end if;
 
