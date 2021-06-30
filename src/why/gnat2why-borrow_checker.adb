@@ -2043,7 +2043,9 @@ package body Gnat2Why.Borrow_Checker is
       if Is_Type_Name (Expr) then
          return;
 
-      elsif Is_Path_Expression (Expr) then
+      elsif Expr in N_Subexpr_Id
+        and then Is_Path_Expression (Expr)
+      then
          if Mode /= Assign then
             Read_Indexes (Expr);
          end if;

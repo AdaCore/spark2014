@@ -1256,8 +1256,11 @@ package body Why.Gen.Expr is
       --  predicate function inside the definition of a predicate function.
 
       Need_Pred_Check : constant Boolean :=
-        not No_Init and then Has_Predicates (R)
-        and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+        not No_Init
+        and then Has_Predicates (R)
+        and then (No (Ada_Node)
+                   or else Ada_Node not in N_Subexpr_Id
+                   or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
 
    begin
       --  When neither checks nor conversions need to be inserted, return

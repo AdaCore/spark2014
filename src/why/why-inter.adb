@@ -1369,7 +1369,8 @@ package body Why.Inter is
                      elsif Ekind (N) = E_Function then Fun_Has_Relaxed_Init (N)
                      else Has_Relaxed_Init (Etype (N))),
                   when N_Identifier | N_Expanded_Name =>
-                    Obj_Has_Relaxed_Init (Entity (N)),
+                    Is_Object (Entity (N))
+                      and then Obj_Has_Relaxed_Init (Entity (N)),
                   when others                         =>
                     Expr_Has_Relaxed_Init (N));
          begin
