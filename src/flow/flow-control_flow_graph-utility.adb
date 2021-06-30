@@ -617,7 +617,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Constant        :=
         Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
       A.Is_Function_Return := Ekind (Entire_Var) = E_Function;
-      A.Is_Package_State   := Is_Package_State (Entire_Var);
       A.Mode               := Mode;
 
       case F_Ent.Variant is
