@@ -2234,7 +2234,9 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  when elaborating the current package.
 
                   Update.Refined_Initializes.Union
-                    (Update.Refined.Outputs - Update.Refined.Inputs);
+                    ((Update.Refined.Outputs - Update.Refined.Inputs)
+                       and
+                     States_And_Objects (Folded));
 
                   --  Pull objects initialized in child packages into own
                   --  refined outputs, so that Part_Of constituents declared
@@ -2282,13 +2284,6 @@ package body Flow_Generated_Globals.Phase_2 is
                         Projected.Include (State);
                      end if;
                   end loop;
-
-                  --  ??? the intersection below should be only necessary for
-                  --  pure outputs added the Refined_Initializes, but actually
-                  --  in the ALI file we only record objects allowed to appear
-                  --  in the up-projected Initializes. To be fixed.
-
-                  Projected.Intersection (States_And_Objects (Folded));
 
                   Name_Sets.Move (Target => Update.Initializes,
                                   Source => Projected);
@@ -2609,7 +2604,16 @@ package body Flow_Generated_Globals.Phase_2 is
                if Phase_1_Info.Contains (Child)
                  and then Phase_1_Info (Child).Kind = E_Package
                then
-                  Local_Variables.Union (States_And_Objects (Child));
+                  declare
+                     Projected, Partial : Name_Sets.Set;
+                  begin
+                     Up_Project
+                       (States_And_Objects (Child),
+                        Name_Scope'(E, Visible_Part),
+                        Projected, Partial);
+                     Local_Variables.Union (Projected);
+                     Local_Variables.Union (Partial);
+                  end;
                end if;
             end loop;
 
