@@ -1636,7 +1636,11 @@ package body SPARK_Definition is
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
-            Mark (Prefix (N));
+            if not Most_Underlying_Type_In_SPARK (Etype (Prefix (N))) then
+               Mark_Violation (N, From => Etype (Prefix (N)));
+            else
+               Mark (Prefix (N));
+            end if;
 
          when N_Extended_Return_Statement =>
             Mark_Extended_Return_Statement (N);
