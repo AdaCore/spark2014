@@ -2015,11 +2015,6 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symb   => NID ("div"),
                         Typ    => EW_Int_Type);
-      M_Int_Div.Euclid :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symb   => NID ("euclid_div"),
-                        Typ    => EW_Int_Type);
       M_Int_Div.Rem_Id :=
         New_Identifier (Module => M,
                         Domain => EW_Term,

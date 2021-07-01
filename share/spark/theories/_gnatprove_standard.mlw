@@ -178,17 +178,19 @@ module Int_Division
   function div (x y : int) : int = ComputerDivision.div x y
   val div (x:int) (y:int) : int
      ensures { result = div x y }
-  function euclid_div (x y : int) : int = EuclideanDivision.div x y
-  val euclid_div (x:int) (y:int) : int
-     ensures { result = euclid_div x y }
 
   function rem (x y : int) : int = ComputerDivision.mod x y
   val rem (x:int) (y:int) : int
      ensures { result = rem x y }
 
-  (* This is the formula I found after playing with mod and euclidean mod *)
+  (* rem is always of the sign of the dividend. mod is always of the sign of
+  the divisor. Thus they are equal when the dividend and the divisor have the
+  same sign. rem and mod are equal to zero on the same arguments. Otherwise,
+  mod can be obtained from rem by adding the divisor. *)
   function mod (x y : int) : int =
-    if y > 0 then EuclideanDivision.mod x y else EuclideanDivision.mod x y + y
+    if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then rem x y
+    else if rem x y = 0 then 0
+    else rem x y + y
   val mod (x:int) (y:int) : int
      ensures { result = mod x y }
 
@@ -205,10 +207,6 @@ module Int_Division
   val div_ (x:int) (y:int) : int
      requires { y <> 0 }
      ensures { result = div x y }
-
-  val euclid_div_ (x:int) (y:int) : int
-     requires { y <> 0 }
-     ensures { result = euclid_div x y }
 
   val rem_ (x:int) (y:int) : int
      requires { y <> 0 }

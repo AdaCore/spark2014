@@ -179,7 +179,6 @@ package Why.Atree.Modules is
    type M_Int_Div_Type is record
       Module   : W_Module_Id;
       Div      : W_Identifier_Id;
-      Euclid   : W_Identifier_Id;
       Rem_Id   : W_Identifier_Id;
       Mod_Id   : W_Identifier_Id;
       Math_Mod : W_Identifier_Id;
