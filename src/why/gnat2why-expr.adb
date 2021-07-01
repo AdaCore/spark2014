@@ -15406,21 +15406,33 @@ package body Gnat2Why.Expr is
                            or else No (Package_Body (E)))
                then
                   declare
+                     Declared : constant Flow_Id_Sets.Set :=
+                       Expand_Abstract_States
+                         (To_Flow_Id_Set
+                            (States_And_Objects (E)));
+
                      Init_Map : constant Dependency_Maps.Map :=
                        Parse_Initializes (E, Get_Flow_Scope (E));
 
+                     Initialized : Flow_Id_Sets.Set;
+
                   begin
-                     for Var of States_And_Objects (E) loop
-                        if not Is_Abstract_State (Var)
-                          and then Entity_In_SPARK (Var)
+                     for Clause in Init_Map.Iterate loop
+                        Initialized.Union
+                          (Expand_Abstract_State
+                             (Dependency_Maps.Key (Clause)));
+                     end loop;
+
+                     for Var of Declared loop
+                        if Var.Kind = Direct_Mapping
                           and then Ada_Ent_To_Why.Has_Element
-                            (Symbol_Table, Var)
+                            (Symbol_Table, Get_Direct_Mapping_Id (Var))
                         then
                            Assume_Declaration_Of_Entity
-                             (E             => Var,
+                             (E             => Get_Direct_Mapping_Id (Var),
                               Params        => Body_Params,
                               Initialized   =>
-                                Init_Map.Contains (Direct_Mapping_Id (Var)),
+                                Initialized.Contains (Var),
                               Top_Predicate => True,
                               Context       => R);
                         end if;
