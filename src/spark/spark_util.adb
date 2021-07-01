@@ -3955,9 +3955,7 @@ package body SPARK_Util is
 
    function States_And_Objects (E : E_Package_Id) return Node_Sets.Set is
       procedure Register_Object (Obj : Entity_Id)
-        with Pre => Ekind (Obj) in E_Abstract_State
-                                 | E_Constant
-                                 | E_Variable;
+        with Pre => Ekind (Obj) in E_Constant | E_Variable;
       --  Register Obj as either a ghost or an ordinary variable
 
       procedure Traverse_Declarations (L : List_Id);
@@ -3970,7 +3968,9 @@ package body SPARK_Util is
 
       procedure Register_Object (Obj : Entity_Id) is
       begin
-         if Comes_From_Source (Obj) then
+         if Comes_From_Source (Obj)
+           and then No (Ultimate_Overlaid_Entity (Obj))
+         then
             Results.Insert (Obj);
          end if;
       end Register_Object;
@@ -4068,7 +4068,7 @@ package body SPARK_Util is
       if Present (Get_Pragma (E, Pragma_Abstract_State)) then
          if Has_Non_Null_Abstract_State (E) then
             for State of Iter (Abstract_States (E)) loop
-               Register_Object (State);
+               Results.Insert (State);
             end loop;
          end if;
       elsif Private_Spec_In_SPARK (E) then
