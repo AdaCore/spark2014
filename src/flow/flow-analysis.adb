@@ -5903,6 +5903,7 @@ package body Flow.Analysis is
       procedure Check_Constant_Global (G : Entity_Id) is
       begin
          if Ekind (G) = E_Constant
+           and then not Is_Access_Variable (Etype (G))
            and then not Has_Variable_Input (G)
          then
             declare
