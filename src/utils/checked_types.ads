@@ -37,9 +37,25 @@ package Checked_Types is
    -- Subtypes of nodes --
    -----------------------
 
-   subtype Empty_Or_Subexpr_Id is Node_Id with
-     Predicate => No (Empty_Or_Subexpr_Id)
-       or else Empty_Or_Subexpr_Id in N_Subexpr_Id;
+   subtype Opt_N_Protected_Body_Id is Node_Id with
+     Predicate => No (Opt_N_Protected_Body_Id)
+       or else Opt_N_Protected_Body_Id in N_Protected_Body_Id;
+
+   subtype Opt_N_Protected_Definition_Id is Node_Id with
+     Predicate => No (Opt_N_Protected_Definition_Id)
+       or else Opt_N_Protected_Definition_Id in N_Protected_Definition_Id;
+
+   subtype Opt_N_Subexpr_Id is Node_Id with
+     Predicate => No (Opt_N_Subexpr_Id)
+       or else Opt_N_Subexpr_Id in N_Subexpr_Id;
+
+   subtype Opt_N_Task_Body_Id is Node_Id with
+     Predicate => No (Opt_N_Task_Body_Id)
+       or else Opt_N_Task_Body_Id in N_Task_Body_Id;
+
+   subtype Opt_N_Task_Definition_Id is Node_Id with
+     Predicate => No (Opt_N_Task_Definition_Id)
+       or else Opt_N_Task_Definition_Id in N_Task_Definition_Id;
 
    subtype N_Aggregate_Kind_Id is Node_Id with
      Predicate => N_Aggregate_Kind_Id in N_Aggregate_Id
@@ -54,21 +70,41 @@ package Checked_Types is
    -- Subtypes of entities --
    --------------------------
 
-   subtype Empty_Or_Object_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Object_Kind_Id)
-       or else Empty_Or_Object_Kind_Id in Object_Kind_Id;
+   subtype Opt_Object_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Object_Kind_Id)
+       or else Opt_Object_Kind_Id in Object_Kind_Id;
 
-   subtype Empty_Or_Package_Id is Entity_Id with
-     Predicate => No (Empty_Or_Package_Id)
-       or else Empty_Or_Package_Id in E_Package_Id;
+   subtype Opt_E_Package_Id is Entity_Id with
+     Predicate => No (Opt_E_Package_Id)
+       or else Opt_E_Package_Id in E_Package_Id;
 
-   subtype Empty_Or_Record_Field_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Record_Field_Kind_Id)
-       or else Empty_Or_Record_Field_Kind_Id in Record_Field_Kind_Id;
+   subtype Opt_Record_Field_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Record_Field_Kind_Id)
+       or else Opt_Record_Field_Kind_Id in Record_Field_Kind_Id;
 
-   subtype Empty_Or_Type_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Type_Kind_Id)
-       or else Empty_Or_Type_Kind_Id in Type_Kind_Id;
+   subtype Opt_E_Task_Body_Id is Entity_Id with
+     Predicate => No (Opt_E_Task_Body_Id)
+       or else Opt_E_Task_Body_Id in E_Task_Body_Id;
+
+   subtype Opt_E_Enumeration_Literal_Id is Entity_Id with
+     Predicate => No (Opt_E_Enumeration_Literal_Id)
+       or else Opt_E_Enumeration_Literal_Id in E_Enumeration_Literal_Id;
+
+   subtype Opt_E_Component_Id is Entity_Id with
+     Predicate => No (Opt_E_Component_Id)
+       or else Opt_E_Component_Id in E_Component_Id;
+
+   subtype Opt_E_Discriminant_Id is Entity_Id with
+     Predicate => No (Opt_E_Discriminant_Id)
+       or else Opt_E_Discriminant_Id in E_Discriminant_Id;
+
+   subtype Opt_E_Procedure_Id is Entity_Id with
+     Predicate => No (Opt_E_Procedure_Id)
+       or else Opt_E_Procedure_Id in E_Procedure_Id;
+
+   subtype Opt_Type_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Type_Kind_Id)
+       or else Opt_Type_Kind_Id in Type_Kind_Id;
 
    --  Entities which may contain components or discriminants, like record
    subtype Record_Like_Kind_Id is Entity_Id with
@@ -90,8 +126,8 @@ package Checked_Types is
                                          | E_Procedure
                                          | Entry_Kind;
 
-   subtype Empty_Or_Subprogram_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Subprogram_Kind_Id)
-       or else Empty_Or_Subprogram_Kind_Id in Subprogram_Id;
+   subtype Opt_Subprogram_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Subprogram_Kind_Id)
+       or else Opt_Subprogram_Kind_Id in Subprogram_Id;
 
 end Checked_Types;

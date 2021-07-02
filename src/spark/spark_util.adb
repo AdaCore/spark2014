@@ -960,7 +960,7 @@ package body SPARK_Util is
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id)
-      return Empty_Or_Subprogram_Kind_Id
+      return Opt_Subprogram_Kind_Id
    is
       S : Entity_Id := Scope (E);
    begin
@@ -996,7 +996,7 @@ package body SPARK_Util is
 
    function Enclosing_Generic_Instance
      (E : Entity_Id)
-      return Empty_Or_Package_Id
+      return Opt_E_Package_Id
    is
       S : Entity_Id := Scope (E);
    begin
@@ -1529,7 +1529,7 @@ package body SPARK_Util is
 
    function Get_Initialized_Object
      (N : N_Subexpr_Id)
-      return Empty_Or_Object_Kind_Id
+      return Opt_Object_Kind_Id
    is
       Context : constant Node_Id := Unqual_Conv (Parent (N));
       --  Skip qualifications and type conversions between the aggregate and
@@ -1565,7 +1565,7 @@ package body SPARK_Util is
    procedure Get_Observed_Or_Borrowed_Info
      (Expr   : N_Subexpr_Id;
       B_Expr : out N_Subexpr_Id;
-      B_Ty   : in out Empty_Or_Type_Kind_Id)
+      B_Ty   : in out Opt_Type_Kind_Id)
    is
       function Find_Func_Call (Expr : Node_Id) return Node_Id;
       --  Search for function calls in the prefixes of Expr
@@ -1721,7 +1721,7 @@ package body SPARK_Util is
    function Get_Root_Object
      (Expr              : N_Subexpr_Id;
       Through_Traversal : Boolean := True)
-      return Empty_Or_Object_Kind_Id
+      return Opt_Object_Kind_Id
    is
       function GRO (Expr : Node_Id) return Entity_Id;
       --  Local wrapper on the actual function, to propagate the values of
@@ -2068,7 +2068,7 @@ package body SPARK_Util is
    ---------------------------------------
 
    function Is_Call_Arg_To_Predicate_Function
-     (N : Empty_Or_Subexpr_Id)
+     (N : Opt_N_Subexpr_Id)
       return Boolean
    is
      (Present (N)
@@ -3299,7 +3299,7 @@ package body SPARK_Util is
    function Search_Component_By_Name
      (Rec  : Record_Like_Kind_Id;
       Comp : Record_Field_Kind_Id)
-      return Empty_Or_Record_Field_Kind_Id
+      return Opt_Record_Field_Kind_Id
    is
       Specific_Rec : constant Entity_Id :=
         (if Is_Class_Wide_Type (Rec)
