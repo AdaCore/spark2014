@@ -39,10 +39,8 @@
 --  in SPARK, and listed for translation, or not listed for translation if a
 --  violation was detected in the body.
 
-with Atree;                             use Atree;
 with Common_Containers;                 use Common_Containers;
 with Einfo.Entities;                    use Einfo.Entities;
-with Einfo.Utils;                       use Einfo.Utils;
 with GNATCOLL.JSON;                     use GNATCOLL.JSON;
 with Sem_Util;                          use Sem_Util;
 with Sinfo.Nodes;                       use Sinfo.Nodes;
@@ -140,7 +138,9 @@ package SPARK_Definition is
    --  Returns True iff the body of E was marked in SPARK and contains no SPARK
    --  violations.
 
-   function Entity_Body_Compatible_With_SPARK (E : Entity_Id) return Boolean
+   function Entity_Body_Compatible_With_SPARK
+     (E : E_Function_Id)
+      return Boolean
    with Pre => Is_Expression_Function_Or_Completion (E);
    --  Returns True iff the body of expression function E contains no SPARK
    --  violations.
@@ -151,13 +151,12 @@ package SPARK_Definition is
                          E_Task_Type;
    --  Returns True iff the private part of spec is in SPARK
 
-   function Body_Statements_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) = E_Package and then Entity_Body_In_SPARK (E);
+   function Body_Statements_In_SPARK (E : E_Package_Id) return Boolean with
+     Pre => Entity_Body_In_SPARK (E);
    --  Returns True iff the package body statements are in SPARK. Only
    --  applicable to packages, whose body itself is in SPARK.
 
-   function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E);
+   function Full_View_Not_In_SPARK (E : Type_Kind_Id) return Boolean;
    --  Returns True if the underlying type of the type E is not in SPARK or
    --  declared in a private part with SPARK_Mode => Off. Also returns True
    --  if E is a subtype or derived type of such an entity.
@@ -166,13 +165,11 @@ package SPARK_Definition is
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
 
-   function Has_Relaxed_Init (E : Entity_Id) return Boolean with
-     Pre  => Is_Type (E),
-     Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
+   function Has_Relaxed_Init (E : Type_Kind_Id) return Boolean
+     with Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
    --  True if type E is annotated with relaxed initialization
 
-   function In_Relaxed_Init (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
+   function In_Relaxed_Init (E : Type_Kind_Id) return Boolean;
    --  True if E is the type of a part of a type annotated with relaxed
    --  initialization.
 
@@ -180,11 +177,12 @@ package SPARK_Definition is
    --  Returns True iff entity E is defined in actions and thus requires a
    --  special translation. See gnat2why.ads for details.
 
-   function Is_Loop_Entity (E : Entity_Id) return Boolean;
+   function Is_Loop_Entity (E : Constant_Or_Variable_Kind_Id) return Boolean;
    --  Returns True iff entity E is defined in loop before the invariants and
    --  thus may require a special translation. See gnat2why.ads for details.
 
-   procedure Mark_Iterable_Aspect (Iterable_Aspect : Node_Id);
+   procedure Mark_Iterable_Aspect
+     (Iterable_Aspect : N_Aspect_Specification_Id);
    --  Mark functions mentioned in the Iterable aspect of a type.
    --  ??? This function is currently public because it is used by
    --  SPARK_Annotate, which is conceptually part of marking. We should
@@ -194,18 +192,14 @@ package SPARK_Definition is
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 
-   function Has_Incomplete_Access (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
+   function Has_Incomplete_Access (E : Type_Kind_Id) return Boolean;
    --  Return True if E is the full view of an incomplete type
 
-   function Get_Incomplete_Access (E : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (E) and then Has_Incomplete_Access (E),
-     Post => Present (Get_Incomplete_Access'Result)
-     and then Is_Access_Type (Get_Incomplete_Access'Result);
+   function Get_Incomplete_Access (E : Type_Kind_Id) return Access_Kind_Id
+     with Pre => Has_Incomplete_Access (E);
    --  Return an access type to E
 
-   function Raise_Occurs_In_Pre (N : Node_Id) return Boolean with
-     Pre => Nkind (N) = N_Raise_Expression;
+   function Raise_Occurs_In_Pre (N : N_Raise_Expression_Id) return Boolean;
    --  Return True if N occurs in a precondition
 
    ----------------------------------------------------------------------
@@ -220,20 +214,24 @@ package SPARK_Definition is
 
    type Cursor is private;
 
-   function First_Cursor (Kind : Entity_Collection)
-                          return Cursor;
+   function First_Cursor
+     (Kind : Entity_Collection)
+      return Cursor;
 
-   function Next_Cursor (Kind : Entity_Collection;
-                         C    : Cursor)
-                         return Cursor;
+   function Next_Cursor
+     (Kind : Entity_Collection;
+      C    : Cursor)
+      return Cursor;
 
-   function Has_Element (Kind : Entity_Collection;
-                         C    : Cursor)
-                         return Boolean;
+   function Has_Element
+     (Kind : Entity_Collection;
+      C    : Cursor)
+      return Boolean;
 
-   function Get_Element (Kind : Entity_Collection;
-                         C    : Cursor)
-                         return Entity_Id;
+   function Get_Element
+     (Kind : Entity_Collection;
+      C    : Cursor)
+      return Entity_Id;
 
 private
 

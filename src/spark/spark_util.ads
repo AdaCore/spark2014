@@ -50,16 +50,15 @@ package SPARK_Util is
    --  Utility types related to entities and nodes  --
    ---------------------------------------------------
 
-   subtype N_Ignored_In_SPARK is Node_Kind with
+   subtype N_Ignored_In_Marking is Node_Kind with
      Predicate =>
-       N_Ignored_In_SPARK in
+       N_Ignored_In_Marking in
            N_Call_Marker
          | N_Exception_Declaration
          | N_Freeze_Entity
          | N_Freeze_Generic_Entity
          | N_Implicit_Label_Declaration
          | N_Incomplete_Type_Declaration
-         | N_Label
          | N_Null_Statement
          | N_Number_Declaration
          | N_Representation_Clause
@@ -82,11 +81,19 @@ package SPARK_Util is
          | N_Subprogram_Instantiation
          | N_Generic_Subprogram_Declaration
          | N_Generic_Package_Declaration
-         | N_Body_Stub
          | N_Use_Package_Clause
          | N_Use_Type_Clause
          | N_Validate_Unchecked_Conversion
          | N_Variable_Reference_Marker;
+
+   --  After marking, ignore also labels (used in marking for targets of goto),
+   --  and body stubs (used in marking to reach out to the proper bodies).
+   subtype N_Ignored_In_SPARK is Node_Kind with
+     Predicate =>
+       N_Ignored_In_SPARK in
+           N_Ignored_In_Marking
+         | N_Label
+         | N_Body_Stub;
 
    subtype N_Entity_Body is Node_Kind
      with Static_Predicate => N_Entity_Body in N_Proper_Body | N_Entry_Body;

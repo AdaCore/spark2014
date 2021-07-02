@@ -41,6 +41,10 @@ package Checked_Types is
      Predicate => No (Opt_N_Entry_Body_Id)
        or else Opt_N_Entry_Body_Id in N_Entry_Body_Id;
 
+   subtype Opt_N_Object_Declaration is Node_Id with
+     Predicate => No (Opt_N_Object_Declaration)
+       or else Opt_N_Object_Declaration in N_Object_Declaration_Id;
+
    subtype Opt_N_Pragma_Id is Node_Id with
      Predicate => No (Opt_N_Pragma_Id)
        or else Opt_N_Pragma_Id in N_Pragma_Id;
@@ -56,6 +60,10 @@ package Checked_Types is
    subtype Opt_N_Subexpr_Id is Node_Id with
      Predicate => No (Opt_N_Subexpr_Id)
        or else Opt_N_Subexpr_Id in N_Subexpr_Id;
+
+   subtype Opt_N_Subprogram_Body_Id is Node_Id with
+     Predicate => No (Opt_N_Subprogram_Body_Id)
+       or else Opt_N_Subprogram_Body_Id in N_Subprogram_Body_Id;
 
    subtype Opt_N_Task_Body_Id is Node_Id with
      Predicate => No (Opt_N_Task_Body_Id)
@@ -85,6 +93,10 @@ package Checked_Types is
    subtype Opt_Entry_Kind_Id is Entity_Id with
      Predicate => No (Opt_Entry_Kind_Id)
        or else Opt_Entry_Kind_Id in Entry_Kind_Id;
+
+   subtype Opt_Formal_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Formal_Kind_Id)
+       or else Opt_Formal_Kind_Id in Formal_Kind_Id;
 
    subtype Opt_E_Package_Id is Entity_Id with
      Predicate => No (Opt_E_Package_Id)
