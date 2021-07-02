@@ -3302,6 +3302,7 @@ package body Flow.Analysis is
 
                   begin
                      if (Ekind (E) = E_Variable
+                         or else Is_Access_Variable (Etype (E))
                          or else Has_Variable_Input (E))
                        and then not Is_Internal (E)
                        and then not Is_Part_Of_Concurrent_Object (E)
@@ -4553,6 +4554,7 @@ package body Flow.Analysis is
                      for Constituent of Iter (Refinement_Constituents (State))
                      loop
                         if Ekind (Constituent) = E_Constant
+                          and then not Is_Access_Variable (Etype (Constituent))
                           and then not Has_Variable_Input (Constituent)
                         then
                            Error_Msg (Refined_State_N,
