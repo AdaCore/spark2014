@@ -2255,7 +2255,7 @@ package body SPARK_Util is
       --  here.
 
       (Ekind (E) = E_Constant and then
-         (Is_Access_Type (Etype (E)) or else Has_Variable_Input (E)))
+         (Is_Access_Variable (Etype (E)) or else Has_Variable_Input (E)))
         or else
       (Ekind (E) = E_Abstract_State and then not Is_Null_State (E)));
    --  ??? this could be further restricted basen on what may appear in
