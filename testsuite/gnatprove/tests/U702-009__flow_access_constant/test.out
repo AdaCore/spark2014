@@ -1,5 +1,6 @@
 g.adb:5:21: info: flow dependencies proved, in instantiation at g.adb:9
 g.adb:9:04: error: illegal move during elaboration
 g.adb:9:04: error: instantiation error at line 6
+h.ads:1:16: info: flow dependencies proved
 q.ads:2:14: warning: subprogram "Dummy" has no effect
 gnatprove: error during flow analysis and proof
