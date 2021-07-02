@@ -240,7 +240,7 @@ package SPARK_Util is
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id)
-      return Opt_Subprogram_Kind_Id;
+      return Opt_Subprogram_Like_Kind_Id;
    --  Returns the entity of the first subprogram or entry enclosing E. Returns
    --  Empty if there is no such subprogram or if something else than a package
    --  (a concurrent type or a block statement) is encountered while going up

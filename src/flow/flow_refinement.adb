@@ -1509,9 +1509,10 @@ package body Flow_Refinement is
    -- Is_Boundary_Subprogram_For_Type --
    -------------------------------------
 
-   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Id;
-                                             Typ        : Type_Kind_Id)
-                                             return Boolean
+   function Is_Boundary_Subprogram_For_Type
+     (Subprogram : Subprogram_Like_Kind_Id;
+      Typ        : Type_Kind_Id)
+      return Boolean
    is
      (Scope_Within_Or_Same (Scope (Subprogram), Scope (Typ))
       and then Is_Globally_Visible (Subprogram));

@@ -37,6 +37,14 @@ package Checked_Types is
    -- Subtypes of nodes --
    -----------------------
 
+   subtype Opt_N_Entry_Body_Id is Node_Id with
+     Predicate => No (Opt_N_Entry_Body_Id)
+       or else Opt_N_Entry_Body_Id in N_Entry_Body_Id;
+
+   subtype Opt_N_Pragma_Id is Node_Id with
+     Predicate => No (Opt_N_Pragma_Id)
+       or else Opt_N_Pragma_Id in N_Pragma_Id;
+
    subtype Opt_N_Protected_Body_Id is Node_Id with
      Predicate => No (Opt_N_Protected_Body_Id)
        or else Opt_N_Protected_Body_Id in N_Protected_Body_Id;
@@ -73,6 +81,10 @@ package Checked_Types is
    subtype Opt_Object_Kind_Id is Entity_Id with
      Predicate => No (Opt_Object_Kind_Id)
        or else Opt_Object_Kind_Id in Object_Kind_Id;
+
+   subtype Opt_Entry_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Entry_Kind_Id)
+       or else Opt_Entry_Kind_Id in Entry_Kind_Id;
 
    subtype Opt_E_Package_Id is Entity_Id with
      Predicate => No (Opt_E_Package_Id)
@@ -121,13 +133,14 @@ package Checked_Types is
    --  generics to be subprograms. We also exclude E_Operator here as we will
    --  never get this in SPARK (if the Expander works as intended).
 
-   subtype Subprogram_Id is N_Entity_Id with
-     Predicate => Ekind (Subprogram_Id) in E_Function
-                                         | E_Procedure
-                                         | Entry_Kind;
+   subtype Subprogram_Like_Kind_Id is N_Entity_Id with
+     Predicate => Ekind (Subprogram_Like_Kind_Id) in E_Function
+                                                   | E_Procedure
+                                                   | Entry_Kind
+                                                   | E_Subprogram_Type;
 
-   subtype Opt_Subprogram_Kind_Id is Entity_Id with
-     Predicate => No (Opt_Subprogram_Kind_Id)
-       or else Opt_Subprogram_Kind_Id in Subprogram_Id;
+   subtype Opt_Subprogram_Like_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Subprogram_Like_Kind_Id)
+       or else Opt_Subprogram_Like_Kind_Id in Subprogram_Like_Kind_Id;
 
 end Checked_Types;

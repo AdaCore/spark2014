@@ -756,6 +756,7 @@ package body Flow_Generated_Globals.Partial is
          Contr.Nonblocking :=
            (if Is_Callee (E)
             then (if In_Predefined_Unit (E)
+                    and then Ekind (E) in E_Function | E_Procedure
                   then not Is_Predefined_Potentially_Blocking (E)
                   else False)
             else Meaningless);
