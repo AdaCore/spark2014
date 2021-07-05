@@ -17,7 +17,7 @@ my_container_contains.ads:20:14: info: postcondition proved (CVC4: 1 VC)
 my_container_contains.ads:20:15: info: precondition proved (Trivial: 1 VC)
 my_container_contains.ads:22:20: warning: unused variable "C"
 my_container_contains.ads:25:26: warning: unused variable "C"
-my_container_contains.ads:28:14: info: postcondition proved (CVC4: 1 VC)
+my_container_contains.ads:28:14: info: postcondition proved (altergo: 1 VC)
 my_container_model.adb:14:33: info: loop invariant initialization proved (CVC4: 1 VC)
 my_container_model.adb:14:33: info: loop invariant preservation proved (CVC4: 1 VC)
 my_container_model.adb:14:66: info: index check proved (CVC4: 4 VC)
