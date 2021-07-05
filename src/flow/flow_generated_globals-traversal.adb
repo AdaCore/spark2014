@@ -159,6 +159,7 @@ package body Flow_Generated_Globals.Traversal is
                   begin
                      if Ekind (E) = E_Constant
                        and then E = Unique_Entity (E)
+                       and then not Is_Access_Variable (Etype (E))
                        and then Has_Variable_Input (E)
                        and then not Is_Part_Of_Concurrent_Object (E)
                        --  ??? the Part_Of probably shouldn't be here

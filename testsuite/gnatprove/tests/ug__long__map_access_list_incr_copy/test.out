@@ -18,4 +18,9 @@ p.adb:24:50: info: null exclusion check proved
 p.ads:12:28: info: overflow check proved
 p.ads:20:43: info: null exclusion check proved
 p.ads:21:14: info: postcondition proved
+
+p.ads:21:28: medium: memory leak might occur
+   21 |     Post => For_All_List (Copy (L)'Old, L, Is_Incr'Access);
+      |                           ^~~~~~~
+  possible explanation: call to allocating function inside an assertion leaks memory
 p.ads:21:52: info: null exclusion check proved

@@ -267,7 +267,7 @@ package body Why.Gen.Expr is
 
    function Cur_Subp_Sloc return Symbol is
    begin
-      return NID (Subp_Location (Current_Subp));
+      return NID (GP_Subp_Marker & Subp_Location (Current_Subp));
    end Cur_Subp_Sloc;
 
    --------------

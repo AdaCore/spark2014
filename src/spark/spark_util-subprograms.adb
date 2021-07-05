@@ -39,7 +39,6 @@ with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
-with VC_Kinds;                           use VC_Kinds;
 
 package body SPARK_Util.Subprograms is
 
@@ -819,6 +818,23 @@ package body SPARK_Util.Subprograms is
         or else
       Is_Pure (E));
 
+   ----------------------------
+   -- Is_Allocating_Function --
+   ----------------------------
+
+   function Is_Allocating_Function (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) in E_Function | E_Subprogram_Type
+        and then Etype (E) /= Standard_Void_Type
+
+        --  A function is said to be an allocating function if the result type
+        --  of the function is a named access-to-variable type or a composite
+        --  owning type.
+
+        and then not Is_Anonymous_Access_Object_Type (Etype (E))
+        and then Is_Deep (Etype (E));
+   end Is_Allocating_Function;
+
    ----------------------------------------
    -- Is_Possibly_Nonreturning_Procedure --
    ----------------------------------------
@@ -1169,6 +1185,10 @@ package body SPARK_Util.Subprograms is
          Etyp := Etype (Param);
       end if;
 
+      if Is_Anonymous_Access_Type (Etyp) then
+         Etyp := Directly_Designated_Type (Etyp);
+      end if;
+
       return Is_Private_Type (Etyp)
         and then not Is_Tagged_Type (Etyp)
         and then Present (Subprogram_Spec (E))
@@ -1251,8 +1271,8 @@ package body SPARK_Util.Subprograms is
    -------------------------------------
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
-      Limit_Str : constant String :=
-        GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp);
+      Limit_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
+
    begin
       return
         Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
@@ -1573,9 +1593,6 @@ package body SPARK_Util.Subprograms is
    function Subp_Body_Location (E : Entity_Id) return String is
       Body_N : Node_Id;
       Body_E : Entity_Id := Empty;
-      Slc    : Source_Ptr;
-      Line   : Positive;
-
    begin
       case Ekind (E) is
          when E_Function
@@ -1598,14 +1615,10 @@ package body SPARK_Util.Subprograms is
             null;
       end case;
 
-      if Present (Body_E) then
-         Slc := Sloc (Body_E);
-         Line := Positive (Get_Physical_Line_Number (Slc));
-         return
-           GP_Subp_Marker & SPARK_Util.File_Name (Slc) & ":" & Image (Line, 1);
-      else
-         return "";
-      end if;
+      return
+        (if Present (Body_E)
+         then Subp_Location (Body_E)
+         else "");
    end Subp_Body_Location;
 
    -------------------
@@ -1617,10 +1630,11 @@ package body SPARK_Util.Subprograms is
    --  users inside a generic/inlined subprogram.
 
    function Subp_Location (E : Entity_Id) return String is
-      S : constant Subp_Type := Entity_To_Subp_Assumption (E);
-      B : constant Base_Sloc := Subp_Sloc (S).First_Element;
+      Slc : constant Source_Ptr := Sloc (E);
+      File : constant String := File_Name (Slc);
+      Line : constant Physical_Line_Number := Get_Physical_Line_Number (Slc);
    begin
-      return GP_Subp_Marker & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
+      return File & ":" & Image (Positive (Line), 1);
    end Subp_Location;
 
    ---------------------------------

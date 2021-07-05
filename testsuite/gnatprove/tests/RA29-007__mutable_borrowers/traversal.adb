@@ -11,7 +11,7 @@ procedure Traversal with SPARK_Mode is
    function Get_Fst (X : access Two_Acc) return access Integer is (X.Fst) with
      Pre => X /= null;
 
-   function Id (X : Int_Acc) return access Integer is (X);
+   function Id (X : access Integer) return access Integer is (X);
 
    V : Int_Acc := new Integer'(1);
    W : Int_Acc := new Integer'(2);

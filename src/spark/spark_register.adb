@@ -27,7 +27,6 @@ with Aspects;                use Aspects;
 with Atree;                  use Atree;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
-with Flow.Dynamic_Memory;
 with Sem_Util;               use Sem_Util;
 with Sinfo.Nodes;            use Sinfo.Nodes;
 with Sinfo.Utils;            use Sinfo.Utils;
@@ -136,11 +135,6 @@ package body SPARK_Register is
                               pragma Assert (Is_Intrinsic_Subprogram (E));
                            else
                               Register_Entity (E);
-
-                              if Is_Unchecked_Deallocation_Instance (E) then
-                                 Register_Entity
-                                   (Flow.Dynamic_Memory.Heap_State);
-                              end if;
                            end if;
 
                         --  Register external calls to protected subprograms
@@ -379,9 +373,6 @@ package body SPARK_Register is
                  N_Task_Type_Declaration      =>
                --  ??? is this needed for wrapper packages?
                Register_Entity (Defining_Entity (N));
-
-            when N_Allocator =>
-               Register_Entity (Flow.Dynamic_Memory.Heap_State);
 
             when others =>
                null;

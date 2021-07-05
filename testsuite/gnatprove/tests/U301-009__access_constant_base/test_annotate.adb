@@ -35,7 +35,6 @@ procedure Test_Annotate with SPARK_Mode is
       and then (if X /= null and then X.F /= null then X.F.all = Y.F.all));
 
    function Deep_Copy (R : Rec_Acc) return C_Rec_C_Acc with
-     Volatile_Function,
      Post => Eq (R, Deep_Copy'Result)
    is
       Res : C_Rec_C_Acc;

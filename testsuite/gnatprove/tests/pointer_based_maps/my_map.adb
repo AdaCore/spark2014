@@ -6,20 +6,14 @@ package body My_Map with SPARK_Mode is
    procedure Free is new Ada.Unchecked_Deallocation(Integer, Nullable_Int_Acc);
    procedure Free is new Ada.Unchecked_Deallocation(Map, Map_Acc);
 
-   function Deep_Copy (M : access constant Map) return Map_Acc with SPARK_Mode => Off is
+   function Deep_Copy (M : access constant Map) return Map_Acc is
    begin
       if M = null then
          return null;
       else
-         declare
-            Value : constant Int_Acc := new Integer'(M.Value.all);
-            Res   : constant Map_Acc :=
-              new Map'(Key   => M.Key,
-                       Value => Value,
-                       Next  => Deep_Copy (M.Next));
-         begin
-            return Res;
-         end;
+         return new Map'(Key   => M.Key,
+                         Value => new Integer'(M.Value.all),
+                         Next  => Deep_Copy (M.Next));
       end if;
    end Deep_Copy;
 

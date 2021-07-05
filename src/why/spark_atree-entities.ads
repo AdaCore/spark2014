@@ -158,6 +158,9 @@ package SPARK_Atree.Entities is
    function Is_Access_Type (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Access_Type;
 
+   function Is_Access_Variable (E : Entity_Id) return Boolean
+     renames Sem_Util.Is_Access_Variable;
+
    function Is_Anonymous_Access_Type (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Anonymous_Access_Type;
 

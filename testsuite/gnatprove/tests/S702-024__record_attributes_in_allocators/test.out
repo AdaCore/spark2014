@@ -3,6 +3,7 @@ test_constr.adb:22:14: warning: subprogram "Test1" has no effect
 test_constr.adb:24:22: medium: assertion might fail
 test_constr.adb:24:30: medium: memory leak might occur at end of scope
 test_constr.adb:24:48: info: function contract not available for proof ("Create" might not return)
+test_constr.adb:24:48: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
 test_constr.adb:24:65: info: pointer dereference check proved (CVC4: 1 VC)
 test_constr.adb:27:04: warning: analyzing unreferenced procedure "Test2"
 test_constr.adb:27:14: warning: subprogram "Test2" has no effect
@@ -14,6 +15,7 @@ test_constr.adb:37:14: warning: subprogram "Test4" has no effect
 test_constr.adb:39:22: medium: assertion might fail
 test_constr.adb:39:30: medium: memory leak might occur at end of scope
 test_constr.adb:39:48: info: function contract not available for proof ("Create" might not return)
+test_constr.adb:39:48: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
 test_constr.adb:39:72: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:5:22: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:12:04: warning: analyzing unreferenced procedure "Test_1"

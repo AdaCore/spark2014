@@ -16,7 +16,7 @@ package Access_To_Constants with SPARK_Mode is
    function Allocate_Int_Acc (X : Integer) return Int_Acc with Global => null;
    --  Hide an allocation from SPARK
 
-   function Allocate_Int_Acc (X : Integer) return Rec with Volatile_Function;
+   function Allocate_Int_Acc (X : Integer) return Rec;
 
    X : Int_Acc := new Integer'(15);
    Y : constant C_Rec_Acc := new Rec'(F => X); --  This is a move

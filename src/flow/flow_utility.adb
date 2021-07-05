@@ -47,7 +47,6 @@ with Why;
 
 with Flow_Classwide;
 with Flow_Debug;                      use Flow_Debug;
-with Flow.Dynamic_Memory;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
 
@@ -2564,7 +2563,9 @@ package body Flow_Utility is
                   --  concurrent type we want to detect their discriminant
                   --  constraints so we add them as well.
 
-                  if Has_Variable_Input (E) then
+                  if Is_Access_Variable (Etype (E))
+                    or else Has_Variable_Input (E)
+                  then
                      return Merge_Entity (E);
                   else
                      return Flow_Id_Sets.Empty_Set;
@@ -4019,9 +4020,6 @@ package body Flow_Utility is
                return Skip;
 
             when N_Allocator =>
-               Variables.Include
-                 (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
-
                declare
                   Expr : constant Node_Id := Expression (N);
                begin
@@ -4149,6 +4147,7 @@ package body Flow_Utility is
         (for all V of Variables =>
            (if V.Kind in Direct_Mapping | Record_Field
               and then Ekind (V.Node) = E_Constant
+              and then not Is_Access_Variable (Etype (V.Node))
             then Has_Variable_Input (V.Node)));
 
       Map_Generic_In_Formals (Ctx.Scope, Variables, Entire => False);
@@ -4557,7 +4556,8 @@ package body Flow_Utility is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
                if Ekind (E) = E_Constant then
-                  return Has_Variable_Input (E);
+                  return Is_Access_Variable (Etype (E))
+                    or else Has_Variable_Input (E);
                else
                   return True;
                end if;
@@ -4633,6 +4633,7 @@ package body Flow_Utility is
 
                begin
                   if Ekind (E) = E_Constant
+                    and then not Is_Access_Variable (Etype (E))
                     and then not Has_Variable_Input (E)
                   then
                      Constants.Insert (F);

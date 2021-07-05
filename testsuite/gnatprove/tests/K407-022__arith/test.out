@@ -24,7 +24,7 @@ arith.adb:16:14: medium: divide by zero might fail [possible fix: subprogram at 
 arith.adb:16:14: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X and Y in a precondition]
 arith.adb:16:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X and Y and Z in a precondition]
 arith.adb:19:09: warning: unused assignment
-arith.adb:19:14: info: overflow check proved (CVC4: 1 VC)
+arith.adb:19:14: info: overflow check proved (CodePeer)
 arith.adb:19:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X and Y and Z in a precondition]
 arith.adb:20:14: info: division check proved (CodePeer)
 arith.adb:20:14: info: overflow check proved (CodePeer)

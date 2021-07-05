@@ -1,0 +1,6 @@
+overlay_test.adb:3:07: info: alignment of overlaid objects is compatible (Trivial)
+overlay_test.adb:3:07: info: object is suitable for aliasing via address clause (Trivial)
+overlay_test.adb:4:20: info: object is suitable for aliasing via address clause (Trivial)
+overlay_test.adb:4:20: info: types of aliased objects have the same size (Trivial)
+overlay_test.ads:12:28: warning: unused variable "A"
+overlay_test.ads:12:60: info: data dependencies proved

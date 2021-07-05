@@ -1850,32 +1850,6 @@ ensure that primitive equality of access types is never used in SPARK code
 unless one of the operands is ``null``. The first conjunct of the definition of
 ``bool_eq`` would be enough for this case.
 
-Allocators
-""""""""""
-
-Here are the program functions introduced for initialized and uninitialized
-allocators for ``Ptr``:
-
-.. code-block:: whyml
-
- val __new_uninitialized_allocator (_ : unit) : __rep
-  requires { true }
-  ensures  { not result.rec__p__ptr__is_null_pointer }
-
- val __new_initialized_allocator (__init_val : int) : __rep
-  requires { true }
-  ensures  { not result.rec__p__ptr__is_null_pointer
-                && result.rec__p__ptr__pointer_value = of_rep __init_val }
-
-Both program functions have as a postcondition that the result of the allocation
-is not null. Additionally, the
-postcondition of the initialized allocator assumes the value of the allocated
-data. Note that we do not assume that the value of the uninitialized allocator
-is default initialized in its postcondition. It is because uninitialized
-allocators can be used with any subtype compatible with the designated subtype.
-To handle them precisely, we assume default initialization of each uninitialized
-allocated value specifically depending on the subtype used in the allocator.
-
 Subtype Constraints
 """""""""""""""""""
 Subtypes of access types to unconstrained composite objects can be supplied with
@@ -4661,7 +4635,7 @@ This subprogram can only be called on local borrowers, the result
 attribute of a borrowing traversal function (this is checked in marking),
 or borrowed paths (this is checked in the borrow checker).
 When such a call is encountered, it is translated as a reference to the
-value of its parameter at the end of the borrow (see 
+value of its parameter at the end of the borrow (see
 ``Transform_At_End_Borrow_Call``). Since this value is imprecisely known
 while in the scope of the borrower, the property should hold
 at any time during the borrow.

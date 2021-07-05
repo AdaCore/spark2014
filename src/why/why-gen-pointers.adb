@@ -119,9 +119,6 @@ package body Why.Gen.Pointers is
       --  Generate the predicate related to the access to a pointer value
       --  (cannot access a null pointer).
 
-      procedure Declare_Allocation_Function;
-      --  Generate program functions called when allocating deep objects
-
       ---------------------
       -- Local Variables --
       ---------------------
@@ -275,83 +272,6 @@ package body Why.Gen.Pointers is
 
          end;
       end Declare_Access_Function;
-
-      ---------------------------------
-      -- Declare_Allocation_Function --
-      ---------------------------------
-
-      procedure Declare_Allocation_Function
-      is
-         Result   : constant W_Identifier_Id := New_Result_Ident (Why_Empty);
-         N_Des_Ty : constant W_Type_Id :=
-           Type_Of_Node (Directly_Designated_Type (E));
-         Des_Ty   : constant Node_Id := Directly_Designated_Type (E);
-
-         New_Uninitialized_Name : constant W_Identifier_Id :=
-           To_Local (E_Symb (E, WNE_Uninit_Allocator));
-
-         New_Initialized_Name : constant W_Identifier_Id :=
-           To_Local (E_Symb (E, WNE_Init_Allocator));
-
-         No_Init_Ident : constant W_Identifier_Id :=
-           New_Identifier (Name => "__void_param", Typ => EW_Unit_Type);
-
-         Init_Ident : constant W_Identifier_Id :=
-           New_Identifier (Name => "__init_val", Typ  => N_Des_Ty);
-
-         R_No_Init_Binder : constant Binder_Array :=
-           (1 => (B_Name => No_Init_Ident, others => <>));
-
-         R_Init_Binder : constant Binder_Array :=
-           (1 => (B_Name => Init_Ident, others => <>));
-
-         Result_Null : constant W_Term_Id :=
-           +New_Pointer_Is_Null_Access (E, +Result, Local => True);
-
-         Result_Value : constant W_Term_Id :=
-           +New_Pointer_Value_Access (E, E, +Result, EW_Term, Local => True);
-
-         Post_Null : constant W_Expr_Id :=
-           New_Not (Domain => EW_Prog, Right => +Result_Null);
-
-         Post_Value : constant W_Pred_Id := +New_Comparison
-           (Symbol => Why_Eq,
-            Domain => EW_Prog,
-            Left   => +Result_Value,
-            Right  => Insert_Simple_Conversion
-              (Domain  => EW_Prog,
-               Expr    => +Init_Ident,
-               To      => EW_Abstract (Des_Ty)));
-
-         Initialized_Post : constant W_Pred_Id := +New_And_Expr
-           (Domain => EW_Prog,
-            Left   => +Post_Null,
-            Right  => +Post_Value);
-
-         Uninitialized_Post : constant W_Pred_Id := +Post_Null;
-
-      begin
-         Emit (Th,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => New_Uninitialized_Name,
-                  Binders     => R_No_Init_Binder,
-                  Return_Type => Abstr_Ty,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Post        => Uninitialized_Post));
-
-         Emit (Th,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => New_Initialized_Name,
-                  Binders     => R_Init_Binder,
-                  Return_Type => Abstr_Ty,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Post        => Initialized_Post));
-
-      end Declare_Allocation_Function;
 
       ---------------------------------------
       -- Declare_Conversion_Check_Function --
@@ -597,7 +517,6 @@ package body Why.Gen.Pointers is
 
    begin
       Declare_Access_Function;
-      Declare_Allocation_Function;
 
       if not Is_Root then
          Declare_Conversion_Functions;

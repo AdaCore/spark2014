@@ -420,6 +420,15 @@ package body Why.Gen.Names is
            Ada_Node => Get_Ada_Node (+Name));
    end Field_Append;
 
+   ----------
+   -- Free --
+   ----------
+
+   procedure Free is
+   begin
+      Free (Why3_Symbol_Alloc);
+   end Free;
+
    ---------------------------
    -- Get_Modular_Converter --
    ---------------------------
@@ -974,8 +983,6 @@ package body Why.Gen.Names is
          when WNE_Is_Null_Pointer    => "__is_null_pointer",
          when WNE_Is_Moved_Pointer   => "__is_moved_pointer",
          when WNE_Pointer_Value      => "__pointer_value",
-         when WNE_Init_Allocator     => "__new_initialized_allocator",
-         when WNE_Uninit_Allocator   => "__new_uninitialized_allocator",
          when WNE_Is_Moved           => "__is_moved",
          when WNE_Move               => "__move",
          when WNE_Moved_Relation     => "__moved_relation",

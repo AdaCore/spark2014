@@ -131,12 +131,9 @@ chunks:
    :linenos:
 
 Note the contract of the higher-level ``Free`` procedure, with a postcondition
-stating that ``X`` is null on exit, and correct dependences taking into account
-the internal abstract state ``SPARK.Heap.Dynamic_Memory`` representing the
-state of the standard dynamic allocator (as presented in :ref:`SPARK Heap
-Library`), similar to what is defined for the standard
-``Ada.Unchecked_Deallocation`` procedure in SPARK RM 3.10. |GNATprove|
-guarantees that the above code is correctly deallocating memory:
+stating that ``X`` is null on exit, and correct dependences similar to what is
+defined for the standard ``Ada.Unchecked_Deallocation``. |GNATprove| guarantees
+that the above code is correctly deallocating memory:
 
 .. literalinclude:: /examples/ug__access6/test.out
    :language: none

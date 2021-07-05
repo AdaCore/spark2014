@@ -67,7 +67,7 @@
   <proof prover="1"><result status="valid" steps="191"/></proof>
   </goal>
   <goal name="def&#39;vc.15">
-  <proof prover="0"><result status="unknown" steps="25678"/></proof>
+  <proof prover="0"><result status="unknown" steps="24373"/></proof>
   <proof prover="1"><result status="unknown" steps="365014"/></proof>
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -82,7 +82,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.18">
-  <proof prover="0"><result status="unknown" steps="25657"/></proof>
+  <proof prover="0"><result status="unknown" steps="24885"/></proof>
   <proof prover="1"><result status="unknown" steps="365013"/></proof>
   </goal>
   <goal name="def&#39;vc.19" expl="postcondition">

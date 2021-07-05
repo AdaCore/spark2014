@@ -1081,12 +1081,13 @@ module Index_Type
   predicate index_le rep rep
 
   (* the bound type *)
-  type t
+  type t = {rec__first : base;
+            rec__last  : base}
 
   (* first and last of an index *)
-  val function first t : base
+  let function first (x:t) : base = x.rec__first
 
-  val function last t : base
+  let function last (x:t) : base = x.rec__last
 
   (* constructing and deconstructing the index *)
   val function mk rep rep : t

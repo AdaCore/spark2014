@@ -509,9 +509,8 @@ be *compatible with respect to volatility* with E2 if
      either Address, Alignment, Component_Size, First, First_Bit, Last,
      Last_Bit, Length, Position, Size, or Storage_Size; or
 
-   * the expression of a type conversion occurring in a non-interfering context; or
-
-   * the expression of a qualified expression occurring in a non-interfering context; or
+   * the expression of a type conversion, a qualified expression or a
+     parenthesized expression occurring in a non-interfering context; or
 
    * the expression in a ``delay_statement``.
 

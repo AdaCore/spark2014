@@ -756,8 +756,8 @@ package body Gnat2Why.Error_Messages is
             end;
 
          when VC_UC_Alignment =>
-            return "alignment of overlaying object might not be an integral " &
-              "multiple of alignment of overlaid object";
+            return "alignment of overlayed object might not be an integral " &
+              "multiple of alignment of overlaying object";
          when VC_Initialization_Check      =>
             return "initialization check might fail";
          when VC_Unchecked_Union_Restriction =>

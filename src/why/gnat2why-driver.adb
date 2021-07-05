@@ -41,7 +41,6 @@ with Einfo.Entities;                  use Einfo.Entities;
 with Einfo.Utils;                     use Einfo.Utils;
 with Errout;                          use Errout;
 with Flow;                            use Flow;
-with Flow.Dynamic_Memory;
 with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
@@ -622,11 +621,6 @@ package body Gnat2Why.Driver is
 
       Gnat2Why.Expr.Initialize_Tables_Nth_Roots;
 
-      --  Create an implicit state for memory (de)allocation. It needs to be
-      --  before rewriting, where we might refer to this abstract state.
-
-      Flow.Dynamic_Memory.Create_Heap_State;
-
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.
 
@@ -772,12 +766,6 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed (Timing, "translation of standard");
 
             Translate_CUnit;
-
-            --  After printing the .mlw files the memory consumed by the
-            --  Why3 AST is no longer needed; give it back to OS, so that
-            --  provers can use it.
-
-            Why.Atree.Tables.Free;
 
             Collect_Results;
             --  If the analysis is requested for a specific piece of code, we
@@ -984,7 +972,13 @@ package body Gnat2Why.Driver is
               Args                   => Args,
               Output_File_Descriptor => Fd,
               Err_To_Out             => True);
-         pragma Assert (Pid /= Invalid_Pid);
+
+         --  If spawning fails, for whatever reason, then simply crash
+
+         if Pid = Invalid_Pid then
+            raise Program_Error;
+         end if;
+
          Output_File_Map.Insert (Pid, Name);
          Close (Fd);
 
@@ -1155,6 +1149,9 @@ package body Gnat2Why.Driver is
       --  for solvers.
       Translated_Object_Names.Clear;
       Translated_Object_Names.Reserve_Capacity (0);
+
+      Why.Gen.Names.Free;
+      Why.Atree.Tables.Free;
    end Translate_CUnit;
 
    ----------------------

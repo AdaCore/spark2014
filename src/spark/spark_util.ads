@@ -500,12 +500,14 @@ package SPARK_Util is
      (X, Y        : Entity_Id;
       Result      : out Boolean;
       Explanation : out Unbounded_String)
-     with Pre => Is_Object (X) and then Is_Object (Y);
-   --  @param X  object that overlays the other (object with Address clause)
-   --  @param Y  object that is overlaid (object whose 'Address is used in
+   with Pre  => Ekind (X) in E_Constant | E_Variable and then Is_Object (Y),
+        Post => Result = (Explanation = Null_Unbounded_String);
+   --  @param X a stand-alone object that overlays the other
+   --            (object with Address clause)
+   --  @param Y object that is overlaid (object whose 'Address is used in
    --            the Address clause of X)
-   --  @return True iff X'Alignment and Y'Alignment are known and X'Alignment
-   --          is an integral multiple of Y
+   --  @return True iff X'Alignment and Y'Alignment are known and Y'Alignment
+   --          is an integral multiple of X'Alignment
 
    --------------------------------
    -- Queries related to pragmas --

@@ -5,4 +5,10 @@ gen.ads:6:04: medium: assertion might fail, in instantiation at inst.adb:6
 gen.ads:6:04: medium: assertion might fail, in instantiation at inst.adb:7
 gen.ads:6:04: medium: assertion might fail, in instantiation at inst.adb:8
 gen.ads:6:04: medium: assertion might fail, in instantiation at inst.adb:9
+inst.adb:4:04: warning: this statement is never reached
+inst.adb:5:04: warning: this statement is never reached
+inst.adb:6:04: warning: this statement is never reached
+inst.adb:7:04: warning: this statement is never reached
+inst.adb:8:04: warning: this statement is never reached
+inst.adb:9:04: warning: this statement is never reached
 inst.ads:11:14: warning: subprogram "P1" has no effect

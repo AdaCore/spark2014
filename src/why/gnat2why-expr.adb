@@ -1831,6 +1831,7 @@ package body Gnat2Why.Expr is
          if Nkind (N) in N_Entity
            and then
              ((Ekind (N) = E_Constant
+               and then not Is_Access_Variable (Etype (N))
                and then not Has_Variable_Input (N)
                and then not Is_Declared_In_Unit (N, Scope))
 
@@ -15126,6 +15127,7 @@ package body Gnat2Why.Expr is
                      --  variable inputs.
 
                      if Ekind (Obj) = E_Constant
+                       and then not Is_Access_Variable (Etype (Obj))
                        and then not Has_Variable_Input (Obj)
                        and then Is_Library_Level_Entity (Obj)
                        and then Invariant_Check_Needed (Obj_Type)
@@ -15530,10 +15532,12 @@ package body Gnat2Why.Expr is
                      Explanation : Unbounded_String;
                   begin
 
-                     R := +Sequence
-                       (R,
-                        Havoc_Overlay_Aliases
-                          (Overlay_Alias (Defining_Identifier (Decl))));
+                     if not Is_Imported (Defining_Identifier (Decl)) then
+                        R := +Sequence
+                          (R,
+                           Havoc_Overlay_Aliases
+                             (Overlay_Alias (Defining_Identifier (Decl))));
+                     end if;
 
                      Suitable_For_UC_Target
                        (Retysp (Etype (Defining_Identifier (Decl))),
@@ -17285,15 +17289,12 @@ package body Gnat2Why.Expr is
             --  For the evaluation of an initialized allocator, the evaluation
             --  of the qualified_expression is performed first.
 
-            --  For The evaluation of an uninitialized allocator,
+            --  For the evaluation of an uninitialized allocator,
             --  the elaboration of the subtype_indication is performed first.
 
             --  see ARM 4.8 $6/3
 
             declare
-               Func_New_Uninitialized_Name : W_Identifier_Id;
-               Func_New_Initialized_Name   : W_Identifier_Id;
-
                Call     : W_Expr_Id;
                New_Expr : constant Node_Id := Expression (Expr);
                Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
@@ -17301,7 +17302,19 @@ package body Gnat2Why.Expr is
                  Directly_Designated_Type (Exp_Ty);
 
             begin
+               --  Insert static memory leak if needed
+
+               if Domain = EW_Prog
+                 and then In_Assertion_Expression_Pragma (Expr)
+               then
+                  Emit_Static_Proof_Result
+                    (Expr, VC_Memory_Leak, False, Current_Subp,
+                     Explanation =>
+                       "allocator inside an assertion leaks memory");
+               end if;
+
                --  Uninitialized allocator
+
                --  Subtype indication are rewritten by the frontend into the
                --  corresponding Itype, so we only expect subtype names here.
                --  Attribute references like Type'Base are also rewritten, but
@@ -17310,30 +17323,15 @@ package body Gnat2Why.Expr is
                if Is_Entity_Name (New_Expr)
                  and then Is_Type (Entity (New_Expr))
                then
-                  Func_New_Uninitialized_Name :=
-                    E_Symb (Etype (Expr), WNE_Uninit_Allocator);
-
-                  Call := New_Call
-                    (Ada_Node => Expr,
-                     Domain   => Domain,
-                     Name     => Func_New_Uninitialized_Name,
-                     Args     => (1 => +Void),
-                     Typ      => Get_Typ (Func_New_Uninitialized_Name));
-
                   --  Construct the value for the uninitialized data. We
                   --  generate:
-                  --  Constr_ty.default_checks;
-                  --  let alloc = __new_uninitialized_allocator () in
-                  --  let value = to_des_ty
+                  --  Constr_ty.default_checks; (prog domain only)
+                  --  to_des_ty
                   --    (any constr_ty ensures
                   --     { Constr_ty.default_initial_condition result /\
-                  --       Constr_ty.dynamic_invariant result }) in
-                  --  assume { alloc.rec__value = value };
-                  --  alloc
+                  --       Constr_ty.dynamic_invariant result })
 
                   declare
-                     Call_Ty   : constant W_Type_Id :=
-                       Get_Typ (Func_New_Uninitialized_Name);
                      Constr_Ty : constant Entity_Id := Entity (New_Expr);
                      pragma Assert
                        (Default_Initialization (Constr_Ty) in
@@ -17341,7 +17339,8 @@ package body Gnat2Why.Expr is
                           No_Possible_Initialization);
 
                      Need_Bound_Check : constant Boolean :=
-                       Is_Array_Type (Des_Ty)
+                       Domain = EW_Prog
+                       and then Is_Array_Type (Des_Ty)
                        and then Is_Constrained (Des_Ty)
                        and then Des_Ty /= Retysp (Entity (New_Expr));
                      Value_Id         : constant W_Identifier_Id :=
@@ -17350,10 +17349,6 @@ package body Gnat2Why.Expr is
                           Typ       => EW_Abstract
                             (Des_Ty,
                              Relaxed_Init => Has_Relaxed_Init (Des_Ty)));
-                     Alloc_Id         : constant W_Identifier_Id :=
-                       New_Temp_Identifier
-                         (Base_Name => "alloc",
-                          Typ       => Call_Ty);
                      Res_Id           : constant W_Identifier_Id :=
                        +New_Result_Ident
                        (Typ => EW_Abstract
@@ -17416,37 +17411,27 @@ package body Gnat2Why.Expr is
                            Context  => Value_Expr);
                      end if;
 
+                     Call := Pointer_From_Split_Form
+                       (A  => (+Value_Id, +False_Term, +False_Term),
+                        Ty => Etype (Expr));
                      Call := New_Binding
-                       (Name    => New_Identifier (Name => "_"),
-                        Domain  => EW_Prog,
-                        Def     =>
-                          +Compute_Default_Check
-                          (Ada_Node => Expr,
-                           Ty       => Constr_Ty,
-                           Params   => Body_Params),
-                        Context => New_Binding
-                          (Name    => Alloc_Id,
+                       (Name    => Value_Id,
+                        Domain  => Domain,
+                        Def     => Value_Expr,
+                        Context => Call);
+
+                     if Domain = EW_Prog then
+                        Call := New_Binding
+                          (Name    => New_Identifier (Name => "_"),
                            Domain  => EW_Prog,
-                           Def     => Call,
-                           Context => New_Binding
-                             (Name    => Value_Id,
-                              Domain  => Domain,
-                              Def     => Value_Expr,
-                              Context => +Sequence
-                                (Left  => New_Assume_Statement
-                                     (Pred => +New_Comparison
-                                          (Symbol => Why_Eq,
-                                           Left   => New_Pointer_Value_Access
-                                             (Ada_Node => Expr,
-                                              E        => Exp_Ty,
-                                              Name     => +Alloc_Id,
-                                              Domain   => EW_Term),
-                                           Right  => +Value_Id,
-                                           Domain => EW_Pred)),
-                                 Right => +Alloc_Id),
-                              Typ     => Call_Ty),
-                           Typ     => Call_Ty),
-                        Typ     => Call_Ty);
+                           Def     =>
+                             +Compute_Default_Check
+                             (Ada_Node => Expr,
+                              Ty       => Constr_Ty,
+                              Params   => Body_Params),
+                           Context => Call,
+                           Typ => EW_Abstract (Etype (Expr)));
+                     end if;
                   end;
 
                --  Initialized allocator
@@ -17456,12 +17441,10 @@ package body Gnat2Why.Expr is
                else
                   pragma Assert (Nkind (New_Expr) = N_Qualified_Expression);
 
-                  Func_New_Initialized_Name :=
-                    E_Symb (Etype (Expr), WNE_Init_Allocator);
-
                   declare
                      Need_Bound_Check : constant Boolean :=
-                       Is_Array_Type (Des_Ty)
+                       Domain = EW_Prog
+                       and then Is_Array_Type (Des_Ty)
                        and then Is_Constrained (Des_Ty)
                        and then Des_Ty /= Etype (New_Expr);
                      Tmp_Value        : constant W_Expr_Id := New_Temp_For_Expr
@@ -17508,12 +17491,14 @@ package body Gnat2Why.Expr is
                         Domain   => Domain,
                         Tmp      => Tmp_Value,
                         Context  => Value_Expr);
-
-                     Call := New_Call
-                       (Name     => +Func_New_Initialized_Name,
-                        Domain   => Domain,
-                        Args     => (1 => Value_Expr),
-                        Typ      => Get_Typ (Func_New_Initialized_Name));
+                     Value_Expr :=
+                       Insert_Simple_Conversion
+                         (Domain => Domain,
+                          Expr   => Value_Expr,
+                          To     => EW_Abstract (Des_Ty));
+                     Call := Pointer_From_Split_Form
+                       (A  => (Value_Expr, +False_Term, +False_Term),
+                        Ty => Etype (Expr));
                   end;
 
                end if;
@@ -17899,7 +17884,6 @@ package body Gnat2Why.Expr is
       Why_Name : W_Identifier_Id;
 
    begin
-
       --  Hardcoded function calls are transformed in a specific function
 
       if Is_Hardcoded_Entity (Subp) then
@@ -18015,6 +17999,17 @@ package body Gnat2Why.Expr is
       end if;
 
       if Domain = EW_Prog then
+
+         --  Insert static memory leak if needed
+
+         if Is_Allocating_Function (Subp)
+           and then In_Assertion_Expression_Pragma (Expr)
+         then
+            Emit_Static_Proof_Result
+              (Expr, VC_Memory_Leak, False, Current_Subp,
+               Explanation => "call to allocating function inside "
+                 & "an assertion leaks memory");
+         end if;
 
          --  Insert invariant check if needed
 

@@ -2,12 +2,25 @@
 
 # This script calls update-session-test on all session tests.
 
+import argparse
 import os
+
+descr = """This script will update the session information of all tests, and
+then rerun the tests. It will run the tests twice, so it takes some time."""
 
 bad_files = []
 
 
-def process(fn):
+def parse_options():
+    args = None
+    parser = argparse.ArgumentParser(description=descr)
+    parser.add_argument('--rewrite', dest='rewrite', action='store_true',
+                        help='Use rewrite option ')
+    args = parser.parse_args()
+    return args
+
+
+def process(fn, rewrite):
     test_name = fn.replace("tests/", "").replace("/test.py", "")
     with open(fn, "rU") as fd:
         tmp = fd.read()
@@ -18,13 +31,17 @@ def process(fn):
                          "instructions" % test_name)
         return
 
-    os.system("./update-session-test %s" % test_name)
+    cmd = "./update-session-test"
+    if rewrite:
+        cmd += " --rewrite"
+    os.system(cmd + " %s" % test_name)
 
 
 def main():
+    args = parse_options()
     for path, dirs, files in os.walk("tests"):
         if "test.py" in files:
-            process(os.path.join(path, "test.py"))
+            process(os.path.join(path, "test.py"), args.rewrite)
 
     if len(bad_files):
         print("")

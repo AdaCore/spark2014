@@ -25,42 +25,20 @@
 
 with Aspects;                use Aspects;
 with Atree;                  use Atree;
-with Contracts;              use Contracts;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
-with Flow.Dynamic_Memory;    use Flow.Dynamic_Memory;
 with Namet;                  use Namet;
-with Nlists;                 use Nlists;
-with Nmake;                  use Nmake;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
-with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
 with Sinfo.Nodes;            use Sinfo.Nodes;
 with Sinfo.Utils;            use Sinfo.Utils;
 with Sinput;                 use Sinput;
-with Snames;                 use Snames;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Stand;                  use Stand;
 with Tbuild;                 use Tbuild;
 
 package body SPARK_Rewrite is
-
-   procedure Decorate_Unchecked_Deallocation (E : Entity_Id)
-   with Pre => Is_Unchecked_Deallocation_Instance (E);
-   --  Decorate Unchecked_Deallocation with this contract:
-   --
-   --     generic ...
-   --     procedure Ada.Unchecked_Deallocation (X : in out Name) with
-   --       Depends => (SPARK.Heap.Dynamic_Memory => SPARK.Heap.Dynamic_Memory,
-   --                   X => null, null => X);
-   --
-   --  which cannot appear explicitly, because we can't reference a custom unit
-   --  like SPARK.Heap in a predefined unit like Ada.Unchecked_Deallocation.
-   --
-   --  Note: decorating it here feels like a hack, but the alternative would
-   --  be to special-case all routines that examine the Depends contract, which
-   --  seems much more error-prone.
 
    procedure Rewrite_Fixed_Point_Mult_Div (N : Node_Id);
    --  Rewrite the type conversion introduced on multiplication/division
@@ -71,8 +49,7 @@ package body SPARK_Rewrite is
    with Pre => Nkind (N) in N_Subprogram_Instantiation;
    --  Replace names in instances of generic subprograms with names of
    --  the original subprograms; we prefer the original names when outputting
-   --  error messages and generating Why code. Also, decorate instances of
-   --  Ada.Unchecked_Deallocation.
+   --  error messages and generating Why code.
 
    procedure Rewrite_Subprogram_Reference (N : Node_Id);
    --  Replace renamings and inherited subprograms by the subprogram they
@@ -92,83 +69,6 @@ package body SPARK_Rewrite is
    --  of evaluation or expansion in the frontend, because the information that
    --  the parent expression is static is only available after the real literal
    --  node has been evaluated and expanded.
-
-   -------------------------------------
-   -- Decorate_Unchecked_Deallocation --
-   -------------------------------------
-
-   procedure Decorate_Unchecked_Deallocation (E : Entity_Id) is
-      function Make_Identifier (E : Entity_Id) return Node_Id;
-
-      ---------------------
-      -- Make_Identifier --
-      ---------------------
-
-      function Make_Identifier (E : Entity_Id) return Node_Id is
-         N : constant Node_Id :=
-           Make_Identifier
-             (Sloc => No_Location, Chars => Chars (E));
-      begin
-         Set_Entity (N, E);
-         return N;
-      end Make_Identifier;
-
-      --  Local variables
-
-      Spec : constant Node_Id := Subprogram_Spec (E);
-      --  Spec of the instance procedure; its Sloc will be used as a Sloc for
-      --  the pragma Depends (it could be used as a Sloc for nodes of the
-      --  pragma argument association, but they are never examined).
-
-      Prag : constant Node_Id :=
-        Make_Pragma
-          (Sloc                         => Sloc (Spec),
-           Pragma_Argument_Associations =>
-             New_List
-               (Make_Pragma_Argument_Association
-                  (Sloc       => No_Location,
-                   Expression =>
-                     Make_Aggregate
-                       (Sloc                     => No_Location,
-                        Component_Associations   =>
-                          (New_List
-                             (Make_Component_Association
-                                (Sloc       => No_Location,
-                                 Choices    =>
-                                   New_List
-                                     (Make_Identifier (Heap_State)),
-                                 Expression =>
-                                   Make_Identifier (Heap_State)),
-                              Make_Component_Association
-                                (Sloc       => No_Location,
-                                 Choices    =>
-                                   New_List
-                                     (Make_Identifier (First_Formal (E))),
-                                 Expression =>
-                                   Make_Null (No_Location)),
-                              Make_Component_Association
-                                (Sloc       => No_Location,
-                                 Choices    =>
-                                   New_List (Make_Null (No_Location)),
-                                 Expression =>
-                                   Make_Identifier (First_Formal (E)))))))),
-           Pragma_Identifier            =>
-             Make_Identifier (No_Location, Name_Depends));
-
-   --  Start of processing for Decorate_Unchecked_Deallocation
-
-   begin
-      --  This appears to be minimal anchoring of the pragma to the AST
-      Insert_After (Spec, Prag);
-      Add_Contract_Item (Prag, E);
-
-      --  Apply some sanity-checks
-      pragma Assert
-        (Present (Find_Contract (E, Pragma_Depends)));
-      pragma Assert
-        (Defining_Entity (Find_Related_Declaration_Or_Body (Prag)) = E);
-
-   end Decorate_Unchecked_Deallocation;
 
    ----------------------------------
    -- Rewrite_Fixed_Point_Mult_Div --
@@ -264,10 +164,6 @@ package body SPARK_Rewrite is
 
    begin
       Set_Chars (Subprogram_Instance, Orig_Name_Id);
-
-      if Is_Unchecked_Deallocation_Instance (Subprogram_Instance) then
-         Decorate_Unchecked_Deallocation (Subprogram_Instance);
-      end if;
    end Rewrite_Subprogram_Instantiation;
 
    ----------------------------------

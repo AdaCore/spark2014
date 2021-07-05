@@ -5,9 +5,9 @@ package Private_Pointer with SPARK_Mode is
       function Is_Null (X : T) return Boolean;
       function Get (X : T) return Integer with
         Pre => not Is_Null (X);
-      function Uninit_Alloc return T with Volatile_Function,
+      function Uninit_Alloc return T with
         Post => not Is_Null (Uninit_Alloc'Result);
-      function Init_Alloc (X : Integer) return T with Volatile_Function,
+      function Init_Alloc (X : Integer) return T with
         Post => not Is_Null (Init_Alloc'Result) and Get (Init_Alloc'Result) = X;
       procedure Set (X : in out T; Y : Integer) with
         Pre => not Is_Null (X),
@@ -18,7 +18,7 @@ package Private_Pointer with SPARK_Mode is
       function Is_Null (X : T) return Boolean is (X = null);
       function Get (X : T) return Integer is (Integer (X.all));
       function Uninit_Alloc return T is
-        (new My_Int);
+        (new My_Int'(0));
       function Init_Alloc (X : Integer) return T is
         (new My_Int'(My_Int (X)));
    end Mode_On;

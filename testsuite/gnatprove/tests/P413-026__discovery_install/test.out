@@ -11,8 +11,10 @@ gnatwhy3
 gprbuild
 gprclean
 gprconfig
+gprdump
 gprls
 gprname
+gprremote
 gprslave
 spark_memcached_wrapper
 spark_report
