@@ -1510,7 +1510,7 @@ package body Flow_Refinement is
    -------------------------------------
 
    function Is_Boundary_Subprogram_For_Type
-     (Subprogram : Subprogram_Like_Kind_Id;
+     (Subprogram : Callable_Kind_Id;
       Typ        : Type_Kind_Id)
       return Boolean
    is

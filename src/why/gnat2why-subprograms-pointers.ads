@@ -76,7 +76,7 @@ package Gnat2Why.Subprograms.Pointers is
       Params   : Transformation_Params) return W_Prog_Id
    with
      Pre => Is_Access_Subprogram_Type (To)
-     and then (Is_Access_Subprogram_Type (From) or else Is_Subprogram (From));
+     and then (Is_Subprogram (From) or else Is_Access_Subprogram_Type (From));
    --  Perform LSP checks to ensure that contracts of To are compatible with
    --  contracts of From. Expr is the Why expression for the subprogram
    --  access. It is used to have a precise knowledge of the converted

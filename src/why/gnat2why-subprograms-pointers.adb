@@ -231,8 +231,7 @@ package body Gnat2Why.Subprograms.Pointers is
       From, To : Entity_Id;
       Params   : Transformation_Params) return W_Prog_Id
    is
-      From_Access            : constant Boolean :=
-        Is_Access_Subprogram_Type (From);
+      From_Access            : constant Boolean := not Is_Subprogram (From);
       From_Profile           : constant Entity_Id :=
         (if From_Access then Directly_Designated_Type (From) else From);
       From_Ent               : constant Entity_Id :=

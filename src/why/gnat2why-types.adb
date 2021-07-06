@@ -42,6 +42,7 @@ with SPARK_Util;                    use SPARK_Util;
 with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
+with Types;                         use Types;
 with VC_Kinds;                      use VC_Kinds;
 with Why;                           use Why;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
@@ -69,7 +70,7 @@ package body Gnat2Why.Types is
 
    procedure Create_Predicates_For_Move
      (Th         : Theory_UC;
-      E          : Entity_Id;
+      E          : Type_Kind_Id;
       Predeclare : Boolean := False)
    with Pre => Contains_Allocated_Parts (E)
      and then (Is_Record_Type (E)
@@ -86,7 +87,7 @@ package body Gnat2Why.Types is
 
    procedure Create_Predicates_For_Move
      (Th         : Theory_UC;
-      E          : Entity_Id;
+      E          : Type_Kind_Id;
       Predeclare : Boolean := False)
    is
       Typ      : constant W_Type_Id :=
@@ -157,13 +158,13 @@ package body Gnat2Why.Types is
    -- Generate_Type_Completion --
    ------------------------------
 
-   procedure Generate_Type_Completion (E : Entity_Id)
-   is
+   procedure Generate_Type_Completion (E : Type_Kind_Id) is
+
       --  Local subprograms
 
       procedure Complete_Predicates_For_Move
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
       with Pre => Contains_Allocated_Parts (E)
         and then (Is_Record_Type (E)
                   or else Is_Array_Type (E)
@@ -173,17 +174,17 @@ package body Gnat2Why.Types is
 
       procedure Create_Axioms_For_Scalar_Bounds
         (Th : Theory_UC;
-         E  : Entity_Id);
+         E  : Type_Kind_Id);
       --  Create axioms defining the values of non-static scalar bounds
 
       procedure Create_Default_Init_Assumption
         (Th : Theory_UC;
-         E  : Entity_Id);
+         E  : Type_Kind_Id);
       --  Create a function to express type E's default initial assumption
 
       procedure Create_Dynamic_Invariant
         (Th     : Theory_UC;
-         E      : Entity_Id;
+         E      : Type_Kind_Id;
          Module : W_Module_Id);
       --  Create a function to express type E's dynamic invariant. Module is
       --  the module in which dynamic invariants for access to incomplete
@@ -191,13 +192,13 @@ package body Gnat2Why.Types is
 
       procedure Create_Dynamic_Predicate
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
         with Pre => Has_Predicates (E);
       --  Create a function to express type E's predicate
 
       procedure Create_Move_Function
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
       with Pre => Contains_Allocated_Parts (E)
         and then (Is_Record_Type (E)
                   or else Is_Array_Type (E)
@@ -220,7 +221,7 @@ package body Gnat2Why.Types is
 
       procedure Create_Type_Invariant
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
         with Pre => Has_Invariants_In_SPARK (E);
       --  Create a function to express type E's invariant
 
@@ -230,7 +231,7 @@ package body Gnat2Why.Types is
 
       procedure Complete_Predicates_For_Move
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
       is
          Typ      : constant W_Type_Id :=
            (if Might_Contain_Relaxed_Init (E)
@@ -313,8 +314,8 @@ package body Gnat2Why.Types is
       -------------------------------------
 
       procedure Create_Axioms_For_Scalar_Bounds
-        (Th   : Theory_UC;
-         E    : Entity_Id)
+        (Th : Theory_UC;
+         E  : Type_Kind_Id)
       is
          procedure Create_Axiom_For_Expr
            (Name : W_Identifier_Id;
@@ -388,7 +389,7 @@ package body Gnat2Why.Types is
 
       procedure Create_Default_Init_Assumption
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
       is
          Variables : Flow_Id_Sets.Set;
 
@@ -452,12 +453,11 @@ package body Gnat2Why.Types is
 
       procedure Create_Dynamic_Invariant
         (Th     : Theory_UC;
-         E      : Entity_Id;
+         E      : Type_Kind_Id;
          Module : W_Module_Id)
       is
-
          procedure Create_Dynamic_Invariant
-           (E       : Entity_Id;
+           (E       : Type_Kind_Id;
             Name    : W_Identifier_Id;
             For_Acc : Boolean);
          --  Emit a declaration for the predicate symbol Name and define it to
@@ -480,7 +480,7 @@ package body Gnat2Why.Types is
          ------------------------------
 
          procedure Create_Dynamic_Invariant
-           (E       : Entity_Id;
+           (E       : Type_Kind_Id;
             Name    : W_Identifier_Id;
             For_Acc : Boolean)
          is
@@ -636,7 +636,7 @@ package body Gnat2Why.Types is
 
       procedure Create_Dynamic_Predicate
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
       is
          Variables : Flow_Id_Sets.Set;
 
@@ -691,7 +691,7 @@ package body Gnat2Why.Types is
 
       procedure Create_Move_Function
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
       is
          Param          : constant Item_Type := Move_Param_Item (Retysp (E));
          Binders        : constant Binder_Array :=
@@ -751,7 +751,7 @@ package body Gnat2Why.Types is
 
       procedure Create_Type_Invariant
         (Th : Theory_UC;
-         E  : Entity_Id)
+         E  : Type_Kind_Id)
       is
          Variables : Flow_Id_Sets.Set;
 
@@ -801,8 +801,8 @@ package body Gnat2Why.Types is
       end Create_Type_Invariant;
 
       Ty : constant W_Type_Id := EW_Abstract (E);
-
       Th : Theory_UC;
+
    --  Start of processing for Generate_Type_Completion
 
    begin
@@ -826,7 +826,7 @@ package body Gnat2Why.Types is
 
       elsif Is_Access_Type (E) then
          declare
-            Ancestor   : constant Entity_Id := Repr_Pointer_Type (E);
+            Ancestor   : constant Type_Kind_Id := Repr_Pointer_Type (E);
             Name       : constant String :=
               Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
             Rep_Module : constant W_Module_Id :=
@@ -965,7 +965,7 @@ package body Gnat2Why.Types is
    -- Generate_VCs_For_Type --
    ---------------------------
 
-   procedure Generate_VCs_For_Type (E : Entity_Id) is
+   procedure Generate_VCs_For_Type (E : Type_Kind_Id) is
       Decl     : constant Node_Id := Enclosing_Declaration (E);
       Name     : constant String := Full_Name (E);
       Params   : constant Transformation_Params := Body_Params;
@@ -1038,7 +1038,7 @@ package body Gnat2Why.Types is
    -- Ident_Of_Ada_Type --
    -----------------------
 
-   function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id is
+   function Ident_Of_Ada_Type (E : Type_Kind_Id) return W_Name_Id is
    begin
       return (if Is_Standard_Boolean_Type (E) then
                 Get_Name (EW_Bool_Type)
@@ -1050,8 +1050,7 @@ package body Gnat2Why.Types is
    -- Translate_Type --
    --------------------
 
-   procedure Translate_Type (E : Entity_Id)
-   is
+   procedure Translate_Type (E : Type_Kind_Id) is
 
       procedure Generate_Ref_Type_And_Havoc_Fun
         (Th           : Theory_UC;

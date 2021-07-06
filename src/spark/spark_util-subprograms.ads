@@ -113,7 +113,7 @@ package SPARK_Util.Subprograms is
    --  Enclosing_Ent should be set as the entity enclosing Call.
 
    function Compatible_Variants
-     (E1, E2 : Subprogram_Like_Kind_Id)
+     (E1, E2 : Callable_Kind_Id)
       return Boolean;
    --  Return True if E1 and E2 have compatible variants. For now, this means
    --  that they have the same number of variants, which matching subtypes and
@@ -579,7 +579,7 @@ package SPARK_Util.Subprograms is
    --    --limit-subp switch of GNATprove.
 
    function Subp_Needs_Invariant_Checks
-     (E : Subprogram_Like_Kind_Id)
+     (E : Callable_Kind_Id)
       return Boolean;
    --  @param E subprogram or entry
    --  @return True whenever an invariant check may be needed when calling E
@@ -642,7 +642,7 @@ package SPARK_Util.Subprograms is
      Inheritance_Utilities_Inst.Inherited_Subprograms;
 
    function Is_Invisible_Dispatching_Operation
-     (E : Subprogram_Like_Kind_Id)
+     (E : Callable_Kind_Id)
       return Boolean
    with Pre => Is_Dispatching_Operation (E);
    --  @param E subprogram

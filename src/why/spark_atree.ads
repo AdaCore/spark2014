@@ -61,7 +61,10 @@ package SPARK_Atree is
    subtype N_Subexpr         is Sinfo.Nodes.N_Subexpr;
    subtype N_Subprogram_Call is Sinfo.Nodes.N_Subprogram_Call;
 
-   subtype N_Subexpr_Id      is Sinfo.Nodes.N_Subexpr_Id;
+   subtype N_Package_Body_Id          is Sinfo.Nodes.N_Package_Body_Id;
+   subtype N_Package_Specification_Id is
+     Sinfo.Nodes.N_Package_Specification_Id;
+   subtype N_Subexpr_Id               is Sinfo.Nodes.N_Subexpr_Id;
 
    N_Abstract_Subprogram_Declaration : Node_Kind renames
      Sinfo.Nodes.N_Abstract_Subprogram_Declaration;

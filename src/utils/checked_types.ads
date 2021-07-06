@@ -98,6 +98,10 @@ package Checked_Types is
      Predicate => No (Opt_Formal_Kind_Id)
        or else Opt_Formal_Kind_Id in Formal_Kind_Id;
 
+   subtype Opt_E_Function_Id is Entity_Id with
+     Predicate => No (Opt_E_Function_Id)
+       or else Opt_E_Function_Id in E_Function_Id;
+
    subtype Opt_E_Package_Id is Entity_Id with
      Predicate => No (Opt_E_Package_Id)
        or else Opt_E_Package_Id in E_Package_Id;
@@ -126,6 +130,10 @@ package Checked_Types is
      Predicate => No (Opt_E_Procedure_Id)
        or else Opt_E_Procedure_Id in E_Procedure_Id;
 
+   subtype Opt_Subprogram_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Subprogram_Kind_Id)
+       or else Opt_Subprogram_Kind_Id in Subprogram_Kind_Id;
+
    subtype Opt_Type_Kind_Id is Entity_Id with
      Predicate => No (Opt_Type_Kind_Id)
        or else Opt_Type_Kind_Id in Type_Kind_Id;
@@ -145,14 +153,29 @@ package Checked_Types is
    --  generics to be subprograms. We also exclude E_Operator here as we will
    --  never get this in SPARK (if the Expander works as intended).
 
-   subtype Subprogram_Like_Kind_Id is N_Entity_Id with
-     Predicate => Ekind (Subprogram_Like_Kind_Id) in E_Function
-                                                   | E_Procedure
-                                                   | Entry_Kind
-                                                   | E_Subprogram_Type;
+   subtype Callable_Kind_Id is N_Entity_Id with
+     Predicate => Callable_Kind_Id in E_Function_Id
+                                    | E_Procedure_Id
+                                    | Entry_Kind_Id
+                                    | E_Subprogram_Type_Id;
 
-   subtype Opt_Subprogram_Like_Kind_Id is Entity_Id with
-     Predicate => No (Opt_Subprogram_Like_Kind_Id)
-       or else Opt_Subprogram_Like_Kind_Id in Subprogram_Like_Kind_Id;
+   subtype Opt_Callable_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Callable_Kind_Id)
+       or else Opt_Callable_Kind_Id in Callable_Kind_Id;
+
+   subtype Function_Kind_Id is N_Entity_Id with
+     Predicate => Function_Kind_Id in E_Function_Id
+                                    | E_Generic_Function_Id
+                                    | E_Subprogram_Type_Id;
+
+   subtype Package_Kind_Id is N_Entity_Id with
+     Predicate => Package_Kind_Id in E_Package_Id
+                                   | E_Generic_Package_Id;
+
+   subtype Unit_Kind_Id is N_Entity_Id with
+     Predicate => Unit_Kind_Id in Callable_Kind_Id
+                                | E_Package_Id
+                                | E_Protected_Type_Id
+                                | E_Task_Type_Id;
 
 end Checked_Types;

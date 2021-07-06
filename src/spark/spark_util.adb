@@ -960,7 +960,7 @@ package body SPARK_Util is
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id)
-      return Opt_Subprogram_Like_Kind_Id
+      return Opt_Callable_Kind_Id
    is
       S : Entity_Id := Scope (E);
    begin

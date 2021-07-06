@@ -144,7 +144,7 @@ package body SPARK_Util.Subprograms is
    -------------------------
 
    function Compatible_Variants
-     (E1, E2 : Subprogram_Like_Kind_Id)
+     (E1, E2 : Callable_Kind_Id)
       return Boolean
    is
       Variants1 : constant Node_Id :=
@@ -1177,7 +1177,7 @@ package body SPARK_Util.Subprograms is
    ----------------------------------------
 
    function Is_Invisible_Dispatching_Operation
-     (E : Subprogram_Like_Kind_Id)
+     (E : Callable_Kind_Id)
       return Boolean
    is
       Param : Entity_Id;
@@ -1658,7 +1658,7 @@ package body SPARK_Util.Subprograms is
    ---------------------------------
 
    function Subp_Needs_Invariant_Checks
-     (E : Subprogram_Like_Kind_Id)
+     (E : Callable_Kind_Id)
       return Boolean
    is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;

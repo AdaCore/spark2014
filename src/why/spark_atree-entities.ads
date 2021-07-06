@@ -24,9 +24,12 @@
 ------------------------------------------------------------------------------
 
 with Aspects;
+with Checked_Types;          use Checked_Types;
 with Einfo.Entities;
 with Einfo.Utils;
+with Sinfo.Nodes;
 with Sem_Aux;
+with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Util;
 with SPARK_Util.Subprograms;
 
@@ -38,27 +41,69 @@ package SPARK_Atree.Entities is
 
    subtype Entity_Kind is Einfo.Entities.Entity_Kind;
 
-   subtype Access_Kind      is Einfo.Entities.Access_Kind;
-   subtype Array_Kind       is Einfo.Entities.Array_Kind;
-   subtype Class_Wide_Kind  is Einfo.Entities.Class_Wide_Kind;
-   subtype Composite_Kind   is Einfo.Entities.Composite_Kind;
-   subtype Concurrent_Kind  is Einfo.Entities.Concurrent_Kind;
-   subtype Discrete_Kind    is Einfo.Entities.Discrete_Kind;
-   subtype Entry_Kind       is Einfo.Entities.Entry_Kind;
-   subtype Fixed_Point_Kind is Einfo.Entities.Fixed_Point_Kind;
-   subtype Float_Kind       is Einfo.Entities.Float_Kind;
-   subtype Formal_Kind      is Einfo.Entities.Formal_Kind;
-   subtype Integer_Kind     is Einfo.Entities.Integer_Kind;
-   subtype Named_Kind       is Einfo.Entities.Named_Kind;
-   subtype Object_Kind      is Einfo.Entities.Object_Kind;
-   subtype Private_Kind     is Einfo.Entities.Private_Kind;
-   subtype Protected_Kind   is Einfo.Entities.Protected_Kind;
-   subtype Real_Kind        is Einfo.Entities.Real_Kind;
-   subtype Record_Kind      is Einfo.Entities.Record_Kind;
-   subtype Scalar_Kind      is Einfo.Entities.Scalar_Kind;
-   subtype Subprogram_Kind  is Einfo.Entities.Subprogram_Kind;
-   subtype Task_Kind        is Einfo.Entities.Task_Kind;
-   subtype Type_Kind        is Einfo.Entities.Type_Kind;
+   subtype Access_Kind          is Einfo.Entities.Access_Kind;
+   subtype Array_Kind           is Einfo.Entities.Array_Kind;
+   subtype Class_Wide_Kind      is Einfo.Entities.Class_Wide_Kind;
+   subtype Composite_Kind       is Einfo.Entities.Composite_Kind;
+   subtype Concurrent_Kind      is Einfo.Entities.Concurrent_Kind;
+   subtype Discrete_Kind        is Einfo.Entities.Discrete_Kind;
+   subtype Entry_Kind           is Einfo.Entities.Entry_Kind;
+   subtype Enumeration_Kind     is Einfo.Entities.Enumeration_Kind;
+   subtype Fixed_Point_Kind     is Einfo.Entities.Fixed_Point_Kind;
+   subtype Float_Kind           is Einfo.Entities.Float_Kind;
+   subtype Formal_Kind          is Einfo.Entities.Formal_Kind;
+   subtype Integer_Kind         is Einfo.Entities.Integer_Kind;
+   subtype Modular_Integer_Kind is Einfo.Entities.Modular_Integer_Kind;
+   subtype Named_Kind           is Einfo.Entities.Named_Kind;
+   subtype Object_Kind          is Einfo.Entities.Object_Kind;
+   subtype Private_Kind         is Einfo.Entities.Private_Kind;
+   subtype Protected_Kind       is Einfo.Entities.Protected_Kind;
+   subtype Real_Kind            is Einfo.Entities.Real_Kind;
+   subtype Record_Kind          is Einfo.Entities.Record_Kind;
+   subtype Record_Field_Kind    is Einfo.Entities.Record_Field_Kind;
+   subtype Scalar_Kind          is Einfo.Entities.Scalar_Kind;
+   subtype Subprogram_Kind      is Einfo.Entities.Subprogram_Kind;
+   subtype Task_Kind            is Einfo.Entities.Task_Kind;
+   subtype Type_Kind            is Einfo.Entities.Type_Kind;
+
+   subtype E_Constant_Id            is Einfo.Entities.E_Constant_Id;
+   subtype E_Discriminant_Id        is Einfo.Entities.E_Discriminant_Id;
+   subtype E_In_Parameter_Id        is Einfo.Entities.E_In_Parameter_Id;
+   subtype E_Enumeration_Literal_Id is Einfo.Entities.E_Enumeration_Literal_Id;
+   subtype E_Function_Id            is Einfo.Entities.E_Function_Id;
+   subtype E_Package_Id             is Einfo.Entities.E_Package_Id;
+   subtype E_Package_Body_Id        is Einfo.Entities.E_Package_Body_Id;
+   subtype E_Procedure_Id           is Einfo.Entities.E_Procedure_Id;
+   subtype E_Protected_Type_Id      is Einfo.Entities.E_Protected_Type_Id;
+   subtype E_Return_Statement_Id    is Einfo.Entities.E_Return_Statement_Id;
+   subtype E_String_Literal_Subtype_Id is
+     Einfo.Entities.E_String_Literal_Subtype_Id;
+   subtype E_Subprogram_Type_Id     is Einfo.Entities.E_Subprogram_Type_Id;
+
+   subtype Access_Kind_Id          is Einfo.Entities.Access_Kind_Id;
+   subtype Array_Kind_Id           is Einfo.Entities.Array_Kind_Id;
+   subtype Class_Wide_Kind_Id      is Einfo.Entities.Class_Wide_Kind_Id;
+   subtype Composite_Kind_Id       is Einfo.Entities.Composite_Kind_Id;
+   subtype Concurrent_Kind_Id      is Einfo.Entities.Concurrent_Kind_Id;
+   subtype Discrete_Kind_Id        is Einfo.Entities.Discrete_Kind_Id;
+   subtype Entry_Kind_Id           is Einfo.Entities.Entry_Kind_Id;
+   subtype Enumeration_Kind_Id     is Einfo.Entities.Enumeration_Kind_Id;
+   subtype Fixed_Point_Kind_Id     is Einfo.Entities.Fixed_Point_Kind_Id;
+   subtype Float_Kind_Id           is Einfo.Entities.Float_Kind_Id;
+   subtype Formal_Kind_Id          is Einfo.Entities.Formal_Kind_Id;
+   subtype Integer_Kind_Id         is Einfo.Entities.Integer_Kind_Id;
+   subtype Modular_Integer_Kind_Id is Einfo.Entities.Modular_Integer_Kind_Id;
+   subtype Named_Kind_Id           is Einfo.Entities.Named_Kind_Id;
+   subtype Object_Kind_Id          is Einfo.Entities.Object_Kind_Id;
+   subtype Private_Kind_Id         is Einfo.Entities.Private_Kind_Id;
+   subtype Protected_Kind_Id       is Einfo.Entities.Protected_Kind_Id;
+   subtype Real_Kind_Id            is Einfo.Entities.Real_Kind_Id;
+   subtype Record_Kind_Id          is Einfo.Entities.Record_Kind_Id;
+   subtype Record_Field_Kind_Id    is Einfo.Entities.Record_Field_Kind_Id;
+   subtype Scalar_Kind_Id          is Einfo.Entities.Scalar_Kind_Id;
+   subtype Subprogram_Kind_Id      is Einfo.Entities.Subprogram_Kind_Id;
+   subtype Task_Kind_Id            is Einfo.Entities.Task_Kind_Id;
+   subtype Type_Kind_Id            is Einfo.Entities.Type_Kind_Id;
 
    E_Abstract_State              : Entity_Kind renames
      Einfo.Entities.E_Abstract_State;
@@ -152,72 +197,73 @@ package SPARK_Atree.Entities is
    function Get_Pragma (E : Entity_Id; Id : Pragma_Id) return Node_Id renames
      Einfo.Utils.Get_Pragma;
 
-   function Is_Access_Subprogram_Type (E : Entity_Id) return Boolean;
+   function Is_Access_Subprogram_Type (E : Type_Kind_Id) return Boolean;
    --  Return True if E's base type is an access-to-subprogram type
 
-   function Is_Access_Type (E : Entity_Id) return Boolean renames
+   function Is_Access_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Access_Type;
 
-   function Is_Access_Variable (E : Entity_Id) return Boolean
+   function Is_Access_Variable (E : Type_Kind_Id) return Boolean
      renames Sem_Util.Is_Access_Variable;
 
-   function Is_Anonymous_Access_Type (E : Entity_Id) return Boolean renames
+   function Is_Anonymous_Access_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Anonymous_Access_Type;
 
-   function Is_Array_Type (E : Entity_Id) return Boolean renames
+   function Is_Array_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Array_Type;
 
-   function Is_Assignable (E : Entity_Id) return Boolean renames
+   function Is_Assignable (E : Object_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Assignable;
 
-   function Is_Boolean_Type (E : Entity_Id) return Boolean renames
+   function Is_Boolean_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Boolean_Type;
 
-   function Is_Character_Type (E : Entity_Id) return Boolean renames
+   function Is_Character_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Entities.Is_Character_Type;
 
    function Is_Compilation_Unit (E : Entity_Id) return Boolean renames
      Einfo.Entities.Is_Compilation_Unit;
 
-   function Is_Composite_Type (E : Entity_Id) return Boolean renames
+   function Is_Composite_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Composite_Type;
 
-   function Is_Concurrent_Type (E : Entity_Id) return Boolean renames
+   function Is_Concurrent_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Concurrent_Type;
 
-   function Is_Constant_Object (E : Entity_Id) return Boolean renames
+   function Is_Constant_Object (E : Object_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Constant_Object;
 
-   function Is_Discriminal (E : Entity_Id) return Boolean renames
+   function Is_Discriminal (E : Object_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Discriminal;
 
-   function Is_Discrete_Type (E : Entity_Id) return Boolean renames
+   function Is_Discrete_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Discrete_Type;
 
    function Is_Double_Precision_Floating_Point_Type
-     (E : Entity_Id) return Boolean
-     renames Sem_Util.Is_Double_Precision_Floating_Point_Type;
+     (E : Type_Kind_Id)
+      return Boolean
+   renames Sem_Util.Is_Double_Precision_Floating_Point_Type;
 
-   function Is_Elementary_Type (E : Entity_Id) return Boolean renames
+   function Is_Elementary_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Elementary_Type;
 
    function Is_Entity_Name (N : Node_Id) return Boolean with
      Post => not Is_Entity_Name'Result
-     or else (Nkind (N) in N_Has_Entity and then Present (Entity (N)));
+       or else (Nkind (N) in N_Has_Entity and then Present (Entity (N)));
 
    function Is_Entry (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Entry;
 
-   function Is_Enumeration_Type (E : Entity_Id) return Boolean renames
+   function Is_Enumeration_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Enumeration_Type;
 
-   function Is_Fixed_Point_Type (E : Entity_Id) return Boolean renames
+   function Is_Fixed_Point_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Fixed_Point_Type;
 
-   function Is_Floating_Point_Type (E : Entity_Id) return Boolean renames
+   function Is_Floating_Point_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Floating_Point_Type;
 
-   function Is_Formal (E : Entity_Id) return Boolean renames
+   function Is_Formal (E : Object_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Formal;
 
    function Is_Generic_Unit (E : Entity_Id) return Boolean renames
@@ -226,42 +272,43 @@ package SPARK_Atree.Entities is
    function Is_Imported (E : Entity_Id) return Boolean renames
      Einfo.Entities.Is_Imported;
 
-   function Is_Itype (E : Entity_Id) return Boolean renames
+   function Is_Itype (E : Type_Kind_Id) return Boolean renames
      Einfo.Entities.Is_Itype;
 
    function Is_Library_Level_Entity (E : Entity_Id) return Boolean renames
      Sem_Util.Is_Library_Level_Entity;
 
-   function Is_Modular_Integer_Type (E : Entity_Id) return Boolean renames
+   function Is_Modular_Integer_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Modular_Integer_Type;
 
-   function Is_Named_Number (E : Entity_Id) return Boolean renames
+   function Is_Named_Number (E : Object_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Named_Number;
 
    function Is_Object (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Object;
 
-   function Is_Private_Type (E : Entity_Id) return Boolean renames
+   function Is_Private_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Private_Type;
 
-   function Is_Protected_Type (E : Entity_Id) return Boolean renames
+   function Is_Protected_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Protected_Type;
 
-   function Is_Record_Type (E : Entity_Id) return Boolean renames
+   function Is_Record_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Record_Type;
 
-   function Is_Scalar_Type (E : Entity_Id) return Boolean renames
+   function Is_Scalar_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Scalar_Type;
 
-   function Is_Signed_Integer_Type (E : Entity_Id) return Boolean renames
+   function Is_Signed_Integer_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Signed_Integer_Type;
 
-   function Is_String_Type (E : Entity_Id) return Boolean renames
+   function Is_String_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_String_Type;
 
    function Is_Single_Precision_Floating_Point_Type
-     (E : Entity_Id) return Boolean
-     renames Sem_Util.Is_Single_Precision_Floating_Point_Type;
+     (E : Type_Kind_Id)
+      return Boolean
+   renames Sem_Util.Is_Single_Precision_Floating_Point_Type;
 
    function Is_Subprogram (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Subprogram;
@@ -274,11 +321,10 @@ package SPARK_Atree.Entities is
 
    function Is_Type (E : Entity_Id) return Boolean renames Einfo.Utils.Is_Type;
 
-   function Is_Unchecked_Union (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
+   function Is_Unchecked_Union (E : Type_Kind_Id) return Boolean;
    --  Same as Einfo.Is_Unchecked_Union except that it goes to the Base_Retysp
 
-   function Is_Universal_Numeric_Type (E : Entity_Id) return Boolean renames
+   function Is_Universal_Numeric_Type (E : Type_Kind_Id) return Boolean renames
      Sem_Util.Is_Universal_Numeric_Type;
 
    function Unique_Entity (E : Entity_Id) return Entity_Id renames
@@ -291,115 +337,92 @@ package SPARK_Atree.Entities is
    --  For Types --
    ----------------
 
-   function Associated_Node_For_Itype (Id : Entity_Id) return Node_Id with
-     Pre => Is_Itype (Id);
+   function Associated_Node_For_Itype (Id : Type_Kind_Id) return Node_Id;
 
-   function Base_Type (Typ : Entity_Id) return Entity_Id with
-     Pre => Is_Type (Typ);
+   function Base_Type (Typ : Type_Kind_Id) return Entity_Id;
 
-   function Cloned_Subtype (Typ : Entity_Id) return Entity_Id with
-     Pre => Is_Type (Typ);
+   function Cloned_Subtype (Typ : Type_Kind_Id) return Entity_Id;
 
-   function First_Subtype (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Typ),
-     Post => Einfo.Entities.Is_First_Subtype (First_Subtype'Result);
+   function First_Subtype (Typ : Type_Kind_Id) return Entity_Id
+     with Post => Einfo.Entities.Is_First_Subtype (First_Subtype'Result);
 
-   function Get_Cursor_Type (Typ : Entity_Id) return Entity_Id with
-     Pre => Is_Type (Typ)
-     and then Present (Aspects.Find_Aspect
-                       (Typ, A => Aspects.Aspect_Iterable));
+   function Get_Cursor_Type (Typ : Type_Kind_Id) return Entity_Id
+     with Pre =>
+       Present (Aspects.Find_Aspect (Typ, A => Aspects.Aspect_Iterable));
 
    function Get_Iterable_Type_Primitive
-     (Typ : Entity_Id;
+     (Typ : Type_Kind_Id;
       Nam : Name_Id)
-      return Entity_Id
-   with Pre  => Is_Type (Typ)
-                  and then
-                Nam in Name_Element
+      return E_Function_Id
+   with Pre  => Nam in Name_Element
                      | Name_First
                      | Name_Has_Element
                      | Name_Last
                      | Name_Next
                      | Name_Previous,
-        Post => Ekind (Get_Iterable_Type_Primitive'Result) = E_Function
-                  and then
-                Get_Iterable_Type_Primitive'Result =
+        Post => Get_Iterable_Type_Primitive'Result =
                 Sem_Aux.Ultimate_Alias (Get_Iterable_Type_Primitive'Result);
 
-   function Get_User_Defined_Eq (Typ : Entity_Id) return Entity_Id with
-     Pre => Is_Type (Typ);
-   --  Same as Einfo.Get_User_Defined_Eq except that it goes through renamings
+   function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id;
+   --  Same as Sem_Util.Get_User_Defined_Eq except that it goes through
+   --  renamings.
 
-   function Has_Default_Aspect (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
-   --  Same as Einfo.Has_Default_Aspect except that it goes to the Base_Retysp
+   function Has_Default_Aspect (Typ : Type_Kind_Id) return Boolean;
+   --  Same as Einfo.Entities.Has_Default_Aspect except that it goes to the
+   --  Base_Retysp.
 
-   function Has_DIC (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Has_DIC (Typ : Type_Kind_Id) return Boolean;
 
-   function Has_Own_DIC (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Has_Own_DIC (Typ : Type_Kind_Id) return Boolean;
 
-   function Has_Predicates (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Has_Predicates (Typ : Type_Kind_Id) return Boolean;
 
-   function Invariant_Procedure (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Typ),
-     Post => (if Present (Invariant_Procedure'Result) then
-                 Ekind (Invariant_Procedure'Result) = E_Procedure
-                   and then
-                 Einfo.Utils.Number_Formals (Invariant_Procedure'Result) = 1);
+   function Invariant_Procedure (Typ : Type_Kind_Id) return Opt_E_Procedure_Id
+     with Post =>
+       (if Present (Invariant_Procedure'Result) then
+          Einfo.Utils.Number_Formals (Invariant_Procedure'Result) = 1);
 
-   function Is_Actual_Subtype (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Is_Actual_Subtype (Typ : Type_Kind_Id) return Boolean;
 
-   function Is_Base_Type (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Is_Base_Type (Typ : Type_Kind_Id) return Boolean;
 
-   function Is_Class_Wide_Type (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Is_Class_Wide_Type (Typ : Type_Kind_Id) return Boolean;
 
-   function Is_Constrained (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Is_Constrained (Typ : Type_Kind_Id) return Boolean;
 
-   function Is_Fixed_Lower_Bound_Array_Subtype (Typ : Entity_Id) return Boolean
-   with Pre => Is_Type (Typ);
+   function Is_Fixed_Lower_Bound_Array_Subtype
+     (Typ : Type_Kind_Id)
+      return Boolean;
 
-   function Is_Fixed_Lower_Bound_Index_Subtype (Typ : Entity_Id) return Boolean
-   with Pre => Is_Type (Typ);
+   function Is_Fixed_Lower_Bound_Index_Subtype
+     (Typ : Type_Kind_Id)
+      return Boolean;
 
-   function Is_Limited_View (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Is_Limited_View (Typ : Type_Kind_Id) return Boolean;
 
-   function Is_Tagged_Type (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Is_Tagged_Type (Typ : Type_Kind_Id) return Boolean;
 
-   function Known_Object_Size (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Known_Object_Size (Typ : Type_Kind_Id) return Boolean;
    --  Renaming of Einfo.Known_Esize
 
-   function Object_Size (Typ : Entity_Id) return Uint with
-     Pre => Is_Type (Typ) and then Known_Object_Size (Typ);
+   function Object_Size (Typ : Type_Kind_Id) return Uint
+     with Pre => Known_Object_Size (Typ);
    --  Renaming of Einfo.Esize
 
-   function Partial_DIC_Procedure (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Typ),
+   function Partial_DIC_Procedure
+     (Typ : Type_Kind_Id)
+      return Opt_E_Procedure_Id
+   with
      Post =>
-       (if Present (Partial_DIC_Procedure'Result) then
-            Ekind (Partial_DIC_Procedure'Result) = E_Procedure
-              and then
+         (if Present (Partial_DIC_Procedure'Result) then
             Einfo.Utils.Number_Formals (Partial_DIC_Procedure'Result) = 1);
 
-   function Predicate_Function (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Typ),
-     Post => (if Present (Predicate_Function'Result) then
-                  Ekind (Predicate_Function'Result) = E_Function
-                    and then
-                  Einfo.Utils.Number_Formals (Predicate_Function'Result) = 1);
+   function Predicate_Function (Typ : Type_Kind_Id) return Opt_E_Function_Id
+     with Post =>
+       (if Present (Predicate_Function'Result) then
+          Einfo.Utils.Number_Formals (Predicate_Function'Result) = 1);
 
-   function Ultimate_Ancestor (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Typ),
-     Post => Is_Type (Ultimate_Ancestor'Result);
+   function Ultimate_Ancestor (Typ : Type_Kind_Id) return Type_Kind_Id;
    --  Return the ultimate ancestor of a type (the fisrt subtype of its root
    --  type.
 
@@ -407,21 +430,20 @@ package SPARK_Atree.Entities is
    --  For Scalar Types --
    -----------------------
 
-   function Default_Aspect_Value (Typ : Entity_Id) return Node_Id with
-     Pre => Is_Scalar_Type (Typ);
+   function Default_Aspect_Value
+     (Typ : Scalar_Kind_Id)
+      return Opt_N_Subexpr_Id;
    --  Same as Einfo.Default_Aspect_Value except that it goes to the
    --  Base_Retysp.
 
-   function Max_Size_Of_Img_Attr (Typ : Entity_Id) return Uint with
-     Pre => Is_Scalar_Type (Typ);
+   function Max_Size_Of_Img_Attr (Typ : Scalar_Kind_Id) return Uint;
    --  Return the maximal size of 'Image for type Typ
 
-   function Type_High_Bound (Typ : Entity_Id) return Node_Id with
-     Pre => Is_Scalar_Type (Typ);
+   function Type_High_Bound (Typ : Scalar_Kind_Id) return Opt_N_Subexpr_Id;
 
-   function Type_Low_Bound (Typ : Entity_Id) return Node_Id with
+   function Type_Low_Bound (Typ : Entity_Id) return Opt_N_Subexpr_Id with
      Pre => Is_Scalar_Type (Typ)
-     or else Ekind (Typ) = E_String_Literal_Subtype;
+       or else Ekind (Typ) = E_String_Literal_Subtype;
    --  Same as Einfo.Type_Low_Bound except that it accepts string literal
    --  subtypes and returns String_Literal_Low_Bound so that it can be called
    --  on the result of SPARK_Util.Nth_Index_Type which may return a string
@@ -431,23 +453,31 @@ package SPARK_Atree.Entities is
    --  For Enumeration Types --
    ----------------------------
 
-   function Has_Enumeration_Rep_Clause (Typ : Entity_Id) return Boolean
-   with
-     Pre  => Is_Enumeration_Type (Typ);
+   function Enumeration_Pos (Obj : E_Enumeration_Literal_Id) return Uint;
 
-   function First_Literal (Typ : Entity_Id) return Entity_Id
-   with
-     Pre  => Is_Enumeration_Type (Typ);
+   function Enumeration_Rep (Obj : E_Enumeration_Literal_Id) return Uint;
 
-   function Next_Literal (E : Entity_Id) return Entity_Id renames
+   function Has_Enumeration_Rep_Clause
+     (Typ : Enumeration_Kind_Id)
+      return Boolean;
+
+   function First_Literal
+     (Typ : Enumeration_Kind_Id)
+      return E_Enumeration_Literal_Id;
+
+   function Next_Literal
+     (E : E_Enumeration_Literal_Id)
+      return Opt_E_Enumeration_Literal_Id
+   renames Einfo.Utils.Next_Literal;
+
+   procedure Next_Literal (E : in out Opt_E_Enumeration_Literal_Id) renames
      Einfo.Utils.Next_Literal;
 
-   procedure Next_Literal (E : in out Entity_Id) renames
-     Einfo.Utils.Next_Literal;
-
-   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Node_Id
+   function Get_Enum_Lit_From_Pos
+     (Typ : Enumeration_Kind_Id;
+      P   : Uint)
+      return Node_Id
    with
-     Pre  => Is_Enumeration_Type (Typ),
      Post => Nkind (Get_Enum_Lit_From_Pos'Result) in N_Identifier
                                                    | N_Character_Literal;
    --  Same as Sum_Util.Get_Enum_Lit_From_Pos except that Loc parameter is
@@ -457,90 +487,77 @@ package SPARK_Atree.Entities is
    --  For Modular Integer Types --
    --------------------------------
 
-   function Modular_Size (Typ : Entity_Id) return Uint with
-     Pre => Is_Modular_Integer_Type (Typ);
+   function Modular_Size (Typ : Modular_Integer_Kind_Id) return Uint;
    --  Out of 8, 16, 32, 64 and 128, return the smallest X such that 2 ** X is
    --  greater or equal to the modulus of the type. This is basically used to
    --  determine the bitvector used for proof. Note that this can be different
    --  from the Ada RM Size of the type, which can be changed via a Size
    --  declaration.
 
-   function Modulus (Typ : Entity_Id) return Uint with
-     Pre => Is_Modular_Integer_Type (Typ);
+   function Modulus (Typ : Modular_Integer_Kind_Id) return Uint;
    --  Same as Einfo.Modulus except that it goes to the Base_Retysp
 
-   function Non_Binary_Modulus (Typ : Entity_Id) return Boolean with
-     Pre => Is_Modular_Integer_Type (Typ);
+   function Non_Binary_Modulus (Typ : Modular_Integer_Kind_Id) return Boolean;
    --  Same as Einfo.Non_Binary_Modulus except that it goes to the Base_Retysp
 
    ----------------------------
    --  For Fixed Point Types --
    ----------------------------
 
-   function Small_Value (Typ : Entity_Id) return Ureal with
-     Pre => Is_Fixed_Point_Type (Typ);
+   function Small_Value (Typ : Fixed_Point_Kind_Id) return Ureal;
 
    ------------------
    --  For Records --
    ------------------
 
-   function Discriminant_Constraint (Typ : Entity_Id) return Elist_Id with
-     Pre  => Is_Type (Typ) and then Has_Discriminants (Typ);
+   function Discriminant_Constraint (Typ : Type_Kind_Id) return Elist_Id
+     with Pre => Has_Discriminants (Typ);
 
-   function Has_Defaulted_Discriminants (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Has_Defaulted_Discriminants (Typ : Type_Kind_Id) return Boolean;
 
-   function Has_Discriminants (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Has_Discriminants (Typ : Type_Kind_Id) return Boolean;
    --  Same as Einfo.Has_Discriminants except that it ignores completely
    --  hidden discriminants.
 
-   function First_Discriminant (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Typ) and then Has_Discriminants (Typ),
-     Post => Ekind (First_Discriminant'Result) = E_Discriminant
-     and then
-       SPARK_Util.Is_Not_Hidden_Discriminant (First_Discriminant'Result);
+   function First_Discriminant (Typ : Type_Kind_Id) return E_Discriminant_Id
+   with
+     Pre  => Has_Discriminants (Typ),
+     Post => SPARK_Util.Is_Not_Hidden_Discriminant (First_Discriminant'Result);
    --  Same as Sem_Aux.First_Discriminants except that it ignores completely
    --  hidden discriminants.
 
-   procedure Next_Discriminant (Discr : in out Entity_Id) with
-     Pre  => Ekind (Discr) = E_Discriminant,
-     Post => (if Present (Discr) then
-                  Ekind (Discr) = E_Discriminant
-                  and then SPARK_Util.Is_Not_Hidden_Discriminant (Discr));
+   procedure Next_Discriminant (Discr : in out Opt_E_Discriminant_Id)
+     with Post => (if Present (Discr) then
+                     SPARK_Util.Is_Not_Hidden_Discriminant (Discr));
    --  Same as Einfo.Next_Discriminants except that it ignores completely
    --  hidden discriminants.
 
-   function Stored_Constraint (Typ : Entity_Id) return Elist_Id with
-     Pre  => Ekind (Typ) in Record_Kind
-                          | Concurrent_Kind
-                          | Private_Kind;
+   function Stored_Constraint (Typ : Type_Kind_Id) return Elist_Id
+     with Pre => Ekind (Typ) in Record_Kind
+                              | Concurrent_Kind
+                              | Private_Kind;
 
    --------------------------
    --  For Protected Types --
    --------------------------
 
-   function Has_Attach_Handler (Typ : Entity_Id) return Boolean with
-     Pre => Ekind (Typ) = E_Protected_Type;
+   function Has_Attach_Handler (Typ : E_Protected_Type_Id) return Boolean;
 
-   function Has_Interrupt_Handler (Typ : Entity_Id) return Boolean with
-     Pre => Ekind (Typ) = E_Protected_Type;
+   function Has_Interrupt_Handler (Typ : E_Protected_Type_Id) return Boolean;
 
    -----------------
    --  For Arrays --
    -----------------
 
-   function Component_Type (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Array_Type (Typ),
-     Post => Is_Type (Component_Type'Result);
+   function Component_Type (Typ : Array_Kind_Id) return Type_Kind_Id;
 
-   function Default_Aspect_Component_Value (Typ : Entity_Id) return Node_Id
-   with Pre  => Is_Array_Type (Typ);
+   function Default_Aspect_Component_Value
+     (Typ : Array_Kind_Id)
+      return Opt_N_Subexpr_Id;
    --  Same as Einfo.Default_Aspect_Component_Value except that it goes to the
    --  Base_Retysp.
 
-   function First_Index (Typ : Entity_Id) return Node_Id with
-     Pre => Is_Array_Type (Typ);
+   function First_Index (Typ : Array_Kind_Id) return Node_Id;
 
    procedure Next_Index (Index : in out Node_Id) renames
      Einfo.Utils.Next_Index;
@@ -548,111 +565,95 @@ package SPARK_Atree.Entities is
    function Next_Index (Index : Node_Id) return Node_Id
     renames Einfo.Utils.Next_Index;
 
-   function Number_Dimensions (Typ : Entity_Id) return Pos with
-     Pre => Ekind (Typ) in Array_Kind | E_String_Literal_Subtype;
+   function Number_Dimensions (Typ : Array_Kind_Id) return Pos;
 
    ------------------
    --  For Strings --
    ------------------
 
-   function String_Literal_Length (Typ : Entity_Id) return Uint with
-     Pre => Ekind (Typ) = E_String_Literal_Subtype;
+   function String_Literal_Length
+     (Typ : E_String_Literal_Subtype_Id)
+      return Uint;
 
-   function String_Literal_Low_Bound (Typ : Entity_Id) return Node_Id with
-     Pre => Ekind (Typ) = E_String_Literal_Subtype;
+   function String_Literal_Low_Bound
+     (Typ : E_String_Literal_Subtype_Id)
+      return Node_Id;
 
    -----------------------
    --  For Access Types --
    -----------------------
 
-   function Designates_Incomplete_Type (E : Entity_Id) return Boolean with
-     Pre => Is_Access_Type (E);
+   function Designates_Incomplete_Type (E : Access_Kind_Id) return Boolean;
    --  Returns True if E is an access type which designates an incomplete type
    --  or a partial view of a type.
 
-   function Directly_Designated_Type (E : Entity_Id) return Node_Id with
-     Pre => Is_Access_Type (E);
+   function Directly_Designated_Type (E : Access_Kind_Id) return Type_Kind_Id;
    --  If E designates an incomplete type, return its full view, else return
    --  the designated type.
 
-   function Can_Never_Be_Null (E : Entity_Id) return Boolean renames
+   function Can_Never_Be_Null (E : Access_Kind_Id) return Boolean renames
      Einfo.Entities.Can_Never_Be_Null;
 
-   function Is_Access_Constant (E : Entity_Id) return Boolean renames
+   function Is_Access_Constant (E : Access_Kind_Id) return Boolean renames
      Einfo.Entities.Is_Access_Constant;
 
-   function Access_Subprogram_Wrapper (E : Entity_Id) return Entity_Id renames
-     Einfo.Entities.Access_Subprogram_Wrapper;
+   function Access_Subprogram_Wrapper
+     (E : E_Subprogram_Type_Id)
+      return Opt_Subprogram_Kind_Id
+   is (Einfo.Entities.Access_Subprogram_Wrapper (E));
 
    ------------------
    --  For Objects --
    ------------------
 
-   function Actual_Subtype (Obj : Entity_Id) return Entity_Id with
-     Pre  => Ekind (Obj) in E_Constant | E_Variable or else Is_Formal (Obj),
-     Post =>
-       (if Present (Actual_Subtype'Result) then
-              Is_Type (Actual_Subtype'Result));
+   function Actual_Subtype (Obj : Object_Kind_Id) return Opt_Type_Kind_Id;
 
-   function Component_Clause (Obj : Entity_Id) return Node_Id with
-     Pre => Ekind (Obj) in E_Discriminant | E_Component;
+   function Component_Clause (Obj : Record_Field_Kind_Id) return Node_Id;
 
-   function Component_First_Bit (Obj : Entity_Id) return Uint with
-     Pre => Ekind (Obj) in E_Discriminant | E_Component
-     and then Known_Component_First_Bit (Obj);
+   function Component_First_Bit (Obj : Record_Field_Kind_Id) return Uint
+     with Pre => Known_Component_First_Bit (Obj);
    --  Returns the first bit of a component if it has been supplied
 
-   function Component_Last_Bit (Obj : Entity_Id) return Uint with
-     Pre => Ekind (Obj) in E_Discriminant | E_Component
-     and then Known_Component_Last_Bit (Obj);
+   function Component_Last_Bit (Obj : Record_Field_Kind_Id) return Uint
+     with Pre => Known_Component_Last_Bit (Obj);
    --  Returns the last bit of a component if it has been supplied
 
-   function Component_Position (Obj : Entity_Id) return Uint with
-     Pre => Ekind (Obj) in E_Discriminant | E_Component
-     and then Present (Component_Clause (Obj));
+   function Component_Position (Obj : Record_Field_Kind_Id) return Uint
+     with Pre => Present (Component_Clause (Obj));
    --  Returns the position of a component if it has been supplied
 
-   function Constant_Value (Obj : Entity_Id) return Node_Id with
-     Pre => Ekind (Obj) = E_Constant;
+   function Constant_Value (Obj : E_Constant_Id) return N_Subexpr_Id;
 
-   function Discriminal_Link (Obj : Entity_Id) return Node_Id with
-     Pre  => Is_Discriminal (Obj),
-     Post => Ekind (Discriminal_Link'Result) = E_Discriminant;
+   function Discriminal_Link (Obj : Object_Kind_Id) return E_Discriminant_Id
+     with Pre => Is_Discriminal (Obj);
 
-   function Discriminant_Default_Value (Obj : Entity_Id) return Node_Id with
-     Pre => Ekind (Obj) = E_Discriminant;
+   function Discriminant_Default_Value
+     (Obj : E_Discriminant_Id)
+      return Opt_N_Subexpr_Id;
 
-   function Enclosing_Type (Obj : Entity_Id) return Node_Id with
+   function Enclosing_Type (Obj : Entity_Id) return Type_Kind_Id with
      Pre  => Ekind (Obj) in
        E_Discriminant | E_Component | E_Constant | E_In_Parameter
-     or else SPARK_Util.Subprograms.Is_Protected_Operation (Obj),
-     Post => Is_Type (Enclosing_Type'Result)
-       and then Ekind (Enclosing_Type'Result) in
+        or else SPARK_Util.Subprograms.Is_Protected_Operation (Obj),
+     Post => Ekind (Enclosing_Type'Result) in
        Record_Kind | Private_Kind | Concurrent_Kind;
    --  Return the scope of a record component, discriminant, discriminal or
    --  protected operation.
 
-   function Enumeration_Pos (Obj : Entity_Id) return Uint with
-     Pre => Ekind (Obj) = E_Enumeration_Literal;
+   function Full_View (Obj : E_Constant_Id) return E_Constant_Id
+     with Pre => SPARK_Util.Is_Partial_View (Obj);
 
-   function Enumeration_Rep (Obj : Entity_Id) return Uint with
-     Pre => Ekind (Obj) = E_Enumeration_Literal;
+   function Is_Aliased (Obj : E_In_Parameter_Id) return Boolean;
 
-   function Full_View (Obj : Entity_Id) return Entity_Id with
-     Pre  => Ekind (Obj) = E_Constant
-       and then SPARK_Util.Is_Partial_View (Obj),
-     Post => Ekind (Full_View'Result) = E_Constant;
-
-   function Is_Aliased (Obj : Entity_Id) return Boolean with
-     Pre => Ekind (Obj) = E_In_Parameter;
-
-   function Known_Component_First_Bit (Obj : Entity_Id) return Boolean with
-     Pre => Ekind (Obj) in E_Discriminant | E_Component;
+   function Known_Component_First_Bit
+     (Obj : Record_Field_Kind_Id)
+      return Boolean;
    --  Returns True if the first bit of a component has been supplied either
    --  through a component clause or directly.
 
-   function Known_Component_Last_Bit (Obj : Entity_Id) return Boolean with
-     Pre => Ekind (Obj) in E_Discriminant | E_Component;
+   function Known_Component_Last_Bit
+     (Obj : Record_Field_Kind_Id)
+      return Boolean;
    --  Returns True if the last bit of a component has been supplied either
    --  through a component clause or through appropriate offset and component
    --  size.
@@ -661,74 +662,57 @@ package SPARK_Atree.Entities is
    --  For Subprograms --
    ----------------------
 
-   function First_Formal (Subp : Entity_Id) return Entity_Id with
-     Pre  => Ekind (Subp) in Einfo.Entities.Generic_Subprogram_Kind
-                           | Einfo.Entities.Overloadable_Kind
-                           | Einfo.Entities.E_Entry_Family
-                           | Einfo.Entities.E_Subprogram_Body
-                           | Einfo.Entities.E_Subprogram_Type,
-     Post => (if Present (First_Formal'Result) then
-                  Einfo.Utils.Is_Formal (First_Formal'Result));
-   --  Same as Einfo.First_Formal except that it ignores the formal introduced
-   --  for the access-to-subprogram object in access subprogram wrappers.
-
-   function Number_Formals (Subp : Entity_Id) return Natural with
-     Pre  => Ekind (Subp) in Einfo.Entities.Generic_Subprogram_Kind
-                           | Einfo.Entities.Overloadable_Kind
-                           | Einfo.Entities.E_Entry_Family
-                           | Einfo.Entities.E_Subprogram_Body
-                           | Einfo.Entities.E_Subprogram_Type;
-   --  Same as Einfo.Number_Formals except that it ignores the formal
+   function First_Formal (Subp : Callable_Kind_Id) return Opt_Formal_Kind_Id;
+   --  Same as Einfo.Utils.First_Formal except that it ignores the formal
    --  introduced for the access-to-subprogram object in access subprogram
    --  wrappers.
 
-   function Has_Controlling_Result (Subp : Entity_Id) return Boolean with
-     Pre => Ekind (Subp) = E_Function;
+   function Number_Formals (Subp : Callable_Kind_Id) return Natural;
+   --  Same as Einfo.Utils.Number_Formals except that it ignores the formal
+   --  introduced for the access-to-subprogram object in access subprogram
+   --  wrappers.
 
-   function Has_Pragma_Volatile_Function (Subp : Entity_Id) return Boolean with
-     Pre  => Ekind (Subp) in Einfo.Entities.Subprogram_Kind
-                           | Einfo.Entities.E_Subprogram_Type;
+   function Has_Controlling_Result (Subp : E_Function_Id) return Boolean;
+
+   function Has_Pragma_Volatile_Function
+     (Subp : Callable_Kind_Id)
+      return Boolean;
    --  Return True if Subp has a pragma Volatile_Function or if it is an
    --  unchecked conversion with a volatile profile.
    --  This is different from Sem_Util.Is_Volatile_Function as it does not
-   --  return True of protected functions.
+   --  return True for protected functions.
 
    function Is_Expression_Function_Or_Completion
-     (Subp : Entity_Id)
-      return Boolean
-   with Pre =>
-       Ekind (Subp) in Einfo.Entities.Subprogram_Kind
-                     | Einfo.Entities.E_Subprogram_Type;
+     (Subp : Callable_Kind_Id)
+      return Boolean;
 
-   function Is_Predicate_Function (Subp : Entity_Id) return Boolean with
-     Pre => Einfo.Utils.Is_Subprogram (Subp);
+   function Is_Predicate_Function (Subp : Subprogram_Kind_Id) return Boolean;
 
-   function Is_Visible_Dispatching_Operation (Subp : Entity_Id) return Boolean;
+   function Is_Visible_Dispatching_Operation
+     (Subp : Callable_Kind_Id)
+      return Boolean;
    --  Return True if Subp is a dispatching operation and there is a visibly
    --  tagged dispatching type (SPARK_Util.Subprograms.Find_Dispatching_Type
    --  returns True).
 
-   function Next_Formal (Formal : Entity_Id) return Entity_Id with
-     Pre  => Einfo.Utils.Is_Formal (Formal),
-     Post => No (Next_Formal'Result)
-       or else Einfo.Utils.Is_Formal (Next_Formal'Result);
-   --  Same as Einfo.Next_Formal except that it ignores the formal introduced
-   --  for the access-to-subprogram object in access subprogram wrappers.
+   function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id;
+   --  Same as Einfo.Utils.Next_Formal except that it ignores the formal
+   --  introduced for the access-to-subprogram object in access subprogram
+   --  wrappers.
 
-   procedure Next_Formal (Formal : in out Entity_Id) with
-     Pre  => Einfo.Utils.Is_Formal (Formal),
-     Post => No (Formal) or else Einfo.Utils.Is_Formal (Formal);
-   --  Same as Einfo.Next_Formal except that it ignores the formal introduced
-   --  for the access-to-subprogram object in access subprogram wrappers.
+   procedure Next_Formal (Formal : in out Opt_Formal_Kind_Id);
+   --  Same as Einfo.Utils.Next_Formal except that it ignores the formal
+   --  introduced for the access-to-subprogram object in access subprogram
+   --  wrappers.
 
-   function No_Return (Subp : Entity_Id) return Boolean renames
+   function No_Return (Subp : Callable_Kind_Id) return Boolean renames
      Einfo.Entities.No_Return;
 
-   function Null_Present (Subp : Entity_Id) return Boolean with
-     Pre => Ekind (Subp) = E_Procedure;
+   function Null_Present (Subp : E_Procedure_Id) return Boolean;
    --  Applies Sinfo.Null_Present on the specification of Subp.
 
-   function Subprogram_Specification (Subp : Entity_Id) return Node_Id with
+   function Subprogram_Specification (Subp : Callable_Kind_Id) return Node_Id
+   with
      Pre  => Ekind (Subp) in Subprogram_Kind | E_Entry,
      Post => Nkind (Subprogram_Specification'Result) in
          N_Function_Specification
@@ -737,33 +721,33 @@ package SPARK_Atree.Entities is
    --  Same as Sem_Aux.Subprogram_Specification except that it also works on
    --  entries.
 
-   function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
-   with Pre => Ekind (Subp) in Subprogram_Kind | E_Entry | E_Subprogram_Type;
+   function Is_Unchecked_Conversion_Instance
+     (Subp : Callable_Kind_Id)
+      return Boolean;
    --  Same as Sem_Util.Is_Unchecked_Conversion_Instance
 
    -------------------
    --  For Packages --
    -------------------
 
-   function Is_Wrapper_Package (Pack : Entity_Id) return Boolean with
-     Pre => Ekind (Pack) = E_Package;
+   function Is_Wrapper_Package (Pack : E_Package_Id) return Boolean;
 
-   function Package_Body_Entity (Pack : Node_Id) return Entity_Id with
-     Pre => Nkind (Pack) = N_Package_Body;
+   function Package_Body_Entity
+     (Pack : N_Package_Body_Id)
+      return E_Package_Body_Id;
 
-   function Package_Spec (Pack : Entity_Id) return Node_Id with
-     Pre => Ekind (Pack) = E_Package;
+   function Package_Spec
+     (Pack : E_Package_Id)
+      return N_Package_Specification_Id;
 
-   function Private_Declarations_Of_Package (Pack : Entity_Id) return List_Id
-   with
-     Pre => Ekind (Pack) = E_Package;
-   --  @param E a package entity
+   function Private_Declarations_Of_Package
+     (Pack : E_Package_Id)
+      return List_Id;
    --  @return the list of private declarations of the package
 
-   function Visible_Declarations_Of_Package (Pack : Entity_Id) return List_Id
-   with
-     Pre => Ekind (Pack) = E_Package;
-   --  @param E a package entity
+   function Visible_Declarations_Of_Package
+     (Pack : E_Package_Id)
+      return List_Id;
    --  @return the list of visible declarations of the package
 
    -------------------------
@@ -799,7 +783,6 @@ package SPARK_Atree.Entities is
    --  Computed whether library unit [Withed] precedes library unit [Main] as
    --  defined in SPARK RM 7.7(2).
 
-   function Return_Applies_To (E : Entity_Id) return Node_Id with
-     Pre => Ekind (E) = Einfo.Entities.E_Return_Statement;
+   function Return_Applies_To (E : E_Return_Statement_Id) return Node_Id;
 
 end SPARK_Atree.Entities;
