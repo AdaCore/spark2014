@@ -88,13 +88,11 @@ begin
    Stuff4 (X => Conv (Z).D,  --  Aliased, with an unchecked conversion
            Y => Z.D);
 
-   --  ??? The following two tests *should* intuitively report aliasing, but
-   --  they do not.
    Stuff3 (A => UncF1(A).D, --  Aliased, with an unchecked conversion
            B => A.D);       --  of tagged type.
 
-   Stuff2 (A => UncF1(A).D.Field, --  Similar to above
-           B => A.D.Field,
+   Stuff2 (A => UncF1(A).D.Field, --  Similar to previous, but Field is passed
+           B => A.D.Field,        --  by-copy so not aliased
            C => Rec2);
 
 end Test;
