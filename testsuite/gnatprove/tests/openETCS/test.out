@@ -109,7 +109,7 @@ section_3_5_3.ads:49:04: info: initialization of "Connections" proved
 section_3_5_3.ads:49:49: info: range check proved (CVC4: 2 VC)
 section_3_5_3.ads:51:53: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
-section_3_5_3.ads:75:14: medium: postcondition might fail
+section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Com_To_RBC_Map.Contains (Map, Id)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete

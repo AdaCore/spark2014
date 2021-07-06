@@ -152,69 +152,72 @@ my_map.adb:181:21: info: null exclusion check proved (CVC4: 1 VC)
 my_map.adb:181:21: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:183:16: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:185:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
-my_map.ads:17:13: info: implicit function contract might not be available on recursive calls
-my_map.ads:24:07: info: dynamic accessibility check proved (Trivial)
-my_map.ads:29:07: info: dynamic accessibility check proved (Trivial)
-my_map.ads:34:14: info: postcondition proved (CVC4: 2 VC)
-my_map.ads:38:14: info: postcondition proved (CVC4: 2 VC)
-my_map.ads:38:45: info: precondition proved (CVC4: 1 VC)
-my_map.ads:42:14: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC; Z3: 1 VC)
-my_map.ads:42:45: info: precondition proved (CVC4: 1 VC)
-my_map.ads:45:14: medium: memory leak might occur at end of scope
-my_map.ads:45:42: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
-my_map.ads:47:15: info: precondition proved (Trivial: 1 VC)
-my_map.ads:47:44: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:47:70: info: range check proved (CVC4: 2 VC)
-my_map.ads:50:14: medium: memory leak might occur at end of scope
-my_map.ads:50:42: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
-my_map.ads:52:15: info: precondition proved (Trivial: 1 VC)
-my_map.ads:52:30: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:52:60: info: range check proved (CVC4: 2 VC)
-my_map.ads:53:40: info: precondition proved (CVC4: 1 VC)
-my_map.ads:53:56: info: range check proved (CVC4: 2 VC)
-my_map.ads:53:61: info: precondition proved (CVC4: 1 VC)
-my_map.ads:53:81: info: range check proved (CVC4: 2 VC)
-my_map.ads:57:14: info: postcondition proved (CVC4: 1 VC)
-my_map.ads:57:14: info: precondition proved (CVC4: 1 VC)
-my_map.ads:57:58: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:61:14: info: postcondition proved (CVC4: 3 VC)
-my_map.ads:61:14: info: precondition proved (CVC4: 1 VC)
-my_map.ads:61:52: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:63:12: info: precondition proved (CVC4: 1 VC)
-my_map.ads:63:82: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:67:13: info: subprogram "First" will terminate, terminating annotation has been proved
-my_map.ads:73:13: info: implicit function contract might not be available on recursive calls
-my_map.ads:77:13: info: subprogram "Element" will terminate, terminating annotation has been proved
-my_map.ads:82:13: info: function contract might not be available on recursive calls
-my_map.ads:85:14: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
-my_map.ads:88:12: info: precondition proved (Trivial: 1 VC)
-my_map.ads:88:27: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:88:68: info: range check proved (CVC4: 2 VC)
-my_map.ads:90:12: info: precondition proved (Trivial: 1 VC)
-my_map.ads:90:42: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:90:68: info: range check proved (CVC4: 2 VC)
-my_map.ads:91:21: info: precondition proved (CVC4: 1 VC)
-my_map.ads:91:37: info: range check proved (CVC4: 2 VC)
-my_map.ads:91:42: info: precondition proved (CVC4: 1 VC)
-my_map.ads:91:73: info: range check proved (CVC4: 2 VC)
-my_map.ads:94:14: info: postcondition proved (CVC4: 1 VC)
-my_map.ads:106:17: medium: "Model_Contains" and "Has_Element" are mutually recursive, terminating annotation on "Model_Contains" could be incorrect
-my_map.ads:106:41: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:109:07: medium: "Model_Value" is recursive, terminating annotation could be incorrect
-my_map.ads:109:11: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:109:26: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:109:33: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:109:42: info: precondition proved (CVC4: 1 VC)
-my_map.ads:109:56: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:114:14: medium: "Has_Element" and "Model_Contains" are mutually recursive, terminating annotation on "Has_Element" could be incorrect
-my_map.ads:115:52: info: range check proved (CVC4: 2 VC)
-my_map.ads:117:07: medium: "Next" is recursive, terminating annotation could be incorrect
-my_map.ads:117:26: info: precondition proved (CVC4: 1 VC)
-my_map.ads:117:39: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:119:18: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:121:33: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:121:42: info: precondition proved (CVC4: 1 VC)
-my_map.ads:121:63: info: range check proved (CVC4: 2 VC)
+my_map.ads:12:13: info: function contract might not be available on recursive calls
+my_map.ads:16:06: warning: postcondition does not mention function result [-gnatw.t]
+my_map.ads:16:18: info: postcondition proved (Trivial: 1 VC)
+my_map.ads:18:13: info: implicit function contract might not be available on recursive calls
+my_map.ads:25:07: info: dynamic accessibility check proved (Trivial)
+my_map.ads:30:07: info: dynamic accessibility check proved (Trivial)
+my_map.ads:35:14: info: postcondition proved (CVC4: 2 VC)
+my_map.ads:39:14: info: postcondition proved (CVC4: 2 VC)
+my_map.ads:39:45: info: precondition proved (CVC4: 1 VC)
+my_map.ads:43:14: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC; Z3: 1 VC)
+my_map.ads:43:45: info: precondition proved (CVC4: 1 VC)
+my_map.ads:46:14: medium: memory leak might occur at end of scope
+my_map.ads:46:42: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+my_map.ads:48:15: info: precondition proved (Trivial: 1 VC)
+my_map.ads:48:44: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:48:70: info: range check proved (CVC4: 2 VC)
+my_map.ads:51:14: medium: memory leak might occur at end of scope
+my_map.ads:51:42: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+my_map.ads:53:15: info: precondition proved (Trivial: 1 VC)
+my_map.ads:53:30: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:53:60: info: range check proved (CVC4: 2 VC)
+my_map.ads:54:40: info: precondition proved (CVC4: 1 VC)
+my_map.ads:54:56: info: range check proved (CVC4: 2 VC)
+my_map.ads:54:61: info: precondition proved (CVC4: 1 VC)
+my_map.ads:54:81: info: range check proved (CVC4: 2 VC)
+my_map.ads:58:14: info: postcondition proved (CVC4: 1 VC)
+my_map.ads:58:14: info: precondition proved (CVC4: 1 VC)
+my_map.ads:58:58: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:62:14: info: postcondition proved (CVC4: 3 VC)
+my_map.ads:62:14: info: precondition proved (CVC4: 1 VC)
+my_map.ads:62:52: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:64:12: info: precondition proved (CVC4: 1 VC)
+my_map.ads:64:82: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:68:13: info: subprogram "First" will terminate, terminating annotation has been proved
+my_map.ads:74:13: info: implicit function contract might not be available on recursive calls
+my_map.ads:78:13: info: subprogram "Element" will terminate, terminating annotation has been proved
+my_map.ads:83:13: info: function contract might not be available on recursive calls
+my_map.ads:86:14: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+my_map.ads:89:12: info: precondition proved (Trivial: 1 VC)
+my_map.ads:89:27: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:89:68: info: range check proved (CVC4: 2 VC)
+my_map.ads:91:12: info: precondition proved (Trivial: 1 VC)
+my_map.ads:91:42: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:91:68: info: range check proved (CVC4: 2 VC)
+my_map.ads:92:21: info: precondition proved (CVC4: 1 VC)
+my_map.ads:92:37: info: range check proved (CVC4: 2 VC)
+my_map.ads:92:42: info: precondition proved (CVC4: 1 VC)
+my_map.ads:92:73: info: range check proved (CVC4: 2 VC)
+my_map.ads:95:14: info: postcondition proved (CVC4: 1 VC)
+my_map.ads:107:17: medium: "Model_Contains" and "Has_Element" are mutually recursive, terminating annotation on "Model_Contains" could be incorrect
+my_map.ads:107:41: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:110:07: medium: "Model_Value" is recursive, terminating annotation could be incorrect
+my_map.ads:110:11: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:110:26: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:110:33: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:110:42: info: precondition proved (CVC4: 1 VC)
+my_map.ads:110:56: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:115:14: medium: "Has_Element" and "Model_Contains" are mutually recursive, terminating annotation on "Has_Element" could be incorrect
+my_map.ads:116:52: info: range check proved (CVC4: 2 VC)
+my_map.ads:118:07: medium: "Next" is recursive, terminating annotation could be incorrect
+my_map.ads:118:26: info: precondition proved (CVC4: 2 VC)
+my_map.ads:118:39: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:120:18: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:122:33: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:122:42: info: precondition proved (CVC4: 1 VC)
+my_map.ads:122:63: info: range check proved (CVC4: 2 VC)
 use_my_map.adb:5:14: info: postcondition proved (altergo: 2 VC)
 use_my_map.adb:5:45: info: precondition proved (CVC4: 1 VC)
 use_my_map.adb:8:38: info: function contract not available for proof ("Reference" might not return)
