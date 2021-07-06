@@ -21,7 +21,7 @@ procedure Binary_Search with SPARK_Mode is
       (if T = null then False
        else V = T.Data or else M_Contains (T.Left, V) or else M_Contains (T.Right, V))
    with Annotate => (GNATprove, Terminating),
-     Ghost;
+     Post => True, Ghost;
 
    function "<" (V : Integer; T : access constant Tree) return Boolean
      with Annotate => (GNATprove, Terminating),
