@@ -320,15 +320,15 @@ package body Gnat2Why.Expr.Loops is
 
    function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id is
 
-      function Havoc_Borrowed_On_Exit return W_Prog_Id;
-      --  Havoc the local borrowers declared in blocks traversed by the exit
-      --  statement.
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id;
+      --  Havoc the local borrowers and check for memory leaks for objects
+      --  declared in blocks traversed by an exit statement.
 
-      ----------------------------
-      -- Havoc_Borrowed_On_Exit --
-      ----------------------------
+      -----------------------------------------------
+      -- Havoc_Borrowed_And_Check_No_Leaks_On_Exit --
+      -----------------------------------------------
 
-      function Havoc_Borrowed_On_Exit return W_Prog_Id is
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id is
          Loop_Id : constant Entity_Id := Loop_Entity_Of_Exit_Statement (Stmt);
 
          function Is_Loop_Or_Block (N : Node_Id) return Boolean is
@@ -347,10 +347,12 @@ package body Gnat2Why.Expr.Loops is
             Scop := Enclosing_Block_Stmt (Scop);
             exit when Nkind (Scop) = N_Loop_Statement;
             Append (Res, Havoc_Borrowed_From_Block (Scop));
+            Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
+                    (Declarations (Scop)));
          end loop;
 
          return +Res;
-      end Havoc_Borrowed_On_Exit;
+      end Havoc_Borrowed_And_Check_No_Leaks_On_Exit;
 
       Exc_Name   : constant W_Name_Id :=
         Loop_Exception_Name (Loop_Entity_Of_Exit_Statement (Stmt));
@@ -358,7 +360,7 @@ package body Gnat2Why.Expr.Loops is
         (Ada_Node => Stmt,
          Name => Exc_Name);
    begin
-      Prepend (Havoc_Borrowed_On_Exit, Raise_Stmt);
+      Prepend (Havoc_Borrowed_And_Check_No_Leaks_On_Exit, Raise_Stmt);
 
       if No (Condition (Stmt)) then
          return Raise_Stmt;

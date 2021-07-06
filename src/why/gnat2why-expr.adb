@@ -20968,19 +20968,19 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
 
-      function Havoc_Borrowed_On_Goto return W_Prog_Id;
-      --  Havoc the local borrowers declared in blocks traversed by a goto
-      --  statement.
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Goto return W_Prog_Id;
+      --  Havoc the local borrowers and check for memory leaks for objects
+      --  declared in blocks traversed by a goto statement.
 
-      function Havoc_Borrowed_On_Return return W_Prog_Id;
-      --  Havoc the local borrowers declared in blocks traversed by a return
-      --  statement.
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Return return W_Prog_Id;
+      --  Havoc the local borrowers and check for memory leaks for objects
+      --  declared in blocks traversed by a return statement.
 
-      ----------------------------
-      -- Havoc_Borrowed_On_Goto --
-      ----------------------------
+      -----------------------------------------------
+      -- Havoc_Borrowed_And_Check_No_Leaks_On_Goto --
+      -----------------------------------------------
 
-      function Havoc_Borrowed_On_Goto return W_Prog_Id is
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Goto return W_Prog_Id is
          Enclosing_Stmt : constant Node_Id :=
            Statement_Enclosing_Label (Entity (Name (Stmt_Or_Decl)));
 
@@ -20998,16 +20998,18 @@ package body Gnat2Why.Expr is
             Scop := Enclosing_Block_Stmt (Scop);
             exit when Scop = Enclosing_Stmt;
             Append (Res, Havoc_Borrowed_From_Block (Scop));
+            Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
+                    (Declarations (Scop)));
          end loop;
 
          return +Res;
-      end Havoc_Borrowed_On_Goto;
+      end Havoc_Borrowed_And_Check_No_Leaks_On_Goto;
 
-      ------------------------------
-      -- Havoc_Borrowed_On_Return --
-      ------------------------------
+      -------------------------------------------------
+      -- Havoc_Borrowed_And_Check_No_Leaks_On_Return --
+      -------------------------------------------------
 
-      function Havoc_Borrowed_On_Return return W_Prog_Id is
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Return return W_Prog_Id is
          function Is_Body_Or_Block (N : Node_Id) return Boolean is
            (Nkind (N) in N_Block_Statement
                        | N_Entity_Body);
@@ -21023,10 +21025,12 @@ package body Gnat2Why.Expr is
             Scop := Enclosing_Block_Stmt (Scop);
             exit when Nkind (Scop) /= N_Block_Statement;
             Append (Res, Havoc_Borrowed_From_Block (Scop));
+            Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
+                    (Declarations (Scop)));
          end loop;
 
          return +Res;
-      end Havoc_Borrowed_On_Return;
+      end Havoc_Borrowed_And_Check_No_Leaks_On_Return;
 
    --  Start of processing for Transform_Statement_Or_Declaration
 
@@ -21104,10 +21108,11 @@ package body Gnat2Why.Expr is
                Result_Stmt : W_Prog_Id;
 
             begin
-               --  Havoc objects borrowed in scopes traversed by the return
-               --  statement.
+               --  Havoc borrowed objects and check for memory leaks on scopes
+               --  traversed by the return statement.
 
-               Prepend (Havoc_Borrowed_On_Return, Raise_Stmt);
+               Prepend
+                 (Havoc_Borrowed_And_Check_No_Leaks_On_Return, Raise_Stmt);
 
                if Expression (Stmt_Or_Decl) /= Empty then
                   declare
@@ -21236,10 +21241,11 @@ package body Gnat2Why.Expr is
                    (Prog    => Sequence
                       ((1 => Expr,
 
-                        --  Havoc objects borrowed in scopes traversed by the
-                        --  return statement.
+                        --  Havoc the local borrowers and check for memory
+                        --  leaks for objects declared in blocks traversed by
+                        --  the return statement.
 
-                        2 => Havoc_Borrowed_On_Return,
+                        2 => Havoc_Borrowed_And_Check_No_Leaks_On_Return,
 
                         --  Raise statement
 
@@ -21273,11 +21279,11 @@ package body Gnat2Why.Expr is
                     Typ      => EW_Unit_Type);
 
             begin
-               --  Havoc objects borrowed in scopes traversed by the goto
-               --  statement.
+               --  Havoc borrowed objects and check for memory leaks on scopes
+               --  traversed by the goto statement.
 
                return Sequence
-                 (Havoc_Borrowed_On_Goto, Raise_Stmt);
+                 (Havoc_Borrowed_And_Check_No_Leaks_On_Goto, Raise_Stmt);
             end;
 
          when N_Procedure_Call_Statement

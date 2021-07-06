@@ -1,0 +1,67 @@
+main.adb:9:35: info: data dependencies proved
+main.adb:10:07: info: initialization of "V1" proved
+main.adb:10:07: medium: memory leak might occur at end of scope
+main.adb:11:07: info: initialization of "V2" proved
+main.adb:11:07: medium: memory leak might occur at end of scope
+main.adb:15:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:15:13: warning: initialization of "X" has no effect
+main.adb:16:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:16:13: warning: initialization of "Y" has no effect
+main.adb:17:13: medium: memory leak might occur at end of scope
+main.adb:20:19: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:20:19: warning: unused assignment
+main.adb:21:18: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:21:18: warning: unused assignment
+main.adb:26:19: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:26:19: warning: initialization of "X" has no effect
+main.adb:27:19: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:27:19: warning: initialization of "Y" has no effect
+main.adb:28:19: medium: memory leak might occur at end of scope
+main.adb:30:22: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:30:22: warning: unused assignment
+main.adb:31:21: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:31:21: warning: unused assignment
+main.adb:36:16: warning: statement has no effect
+main.adb:36:22: warning: "V1" is set by "Free" but not used after the call
+main.adb:37:16: warning: statement has no effect
+main.adb:37:22: warning: "V2" is set by "Free" but not used after the call
+main.adb:44:04: info: initialization of "V1" proved
+main.adb:44:04: medium: memory leak might occur at end of scope
+main.adb:45:04: info: initialization of "V2" proved
+main.adb:45:04: medium: memory leak might occur at end of scope
+main.adb:46:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:46:04: info: initialization of "V3" proved
+main.adb:47:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:47:04: info: initialization of "V4" proved
+main.adb:51:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:52:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:53:10: medium: memory leak might occur at end of scope
+main.adb:55:13: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:56:12: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:61:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:62:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:63:10: medium: memory leak might occur at end of scope
+main.adb:65:13: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:66:12: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:70:23: info: unrolling loop
+main.adb:72:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:73:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:74:13: medium: memory leak might occur at end of scope
+main.adb:76:16: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:77:15: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:82:26: info: unrolling loop
+main.adb:84:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:85:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:86:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:86:13: info: initialization of "Z" proved
+main.adb:86:13: medium: memory leak might occur at end of scope
+main.adb:88:16: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:89:15: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:91:29: info: unrolling loop
+main.adb:93:19: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:94:19: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:95:19: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+main.adb:95:19: info: initialization of "Z" proved
+main.adb:95:19: medium: memory leak might occur at end of scope
+main.adb:97:22: info: absence of memory leak proved (CVC4: 1 VC)
+main.adb:98:21: info: absence of memory leak proved (CVC4: 1 VC)
