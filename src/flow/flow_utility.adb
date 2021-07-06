@@ -457,10 +457,12 @@ package body Flow_Utility is
       if F.Kind in Direct_Mapping | Record_Field
         and then F.Facet = Normal_Part
       then
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Flatten then
             Write_Str ("Flatten: ");
             Print_Flow_Id (F);
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          --  Special-case abstract state, which lack's a type to branch on
          if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
@@ -492,17 +494,21 @@ package body Flow_Utility is
                -- Debug --
                -----------
 
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                procedure Debug (Msg : String) is
                begin
                   if Debug_Trace_Flatten then
                      Write_Line (Msg);
                   end if;
                end Debug;
+               pragma Annotate (Xcov, Exempt_Off);
 
             begin
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Flatten then
                   Indent;
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
 
                while Is_Class_Wide_Type (T) loop
                   T := Get_Type (Etype (T), Scope);
@@ -510,11 +516,13 @@ package body Flow_Utility is
 
                pragma Assert (Is_Type (T));
 
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Flatten then
                   Write_Str ("Branching on type: ");
                   Sprint_Node_Inline (T);
                   Write_Line (" (" & Ekind (T)'Img & ")");
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
 
                --  If the type is not in SPARK we return the variable itself
                if not Entity_In_SPARK (T) then
@@ -656,18 +664,22 @@ package body Flow_Utility is
 
                end case;
 
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Flatten then
                   Outdent;
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
 
                return Results;
             end;
          end if;
       else
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Flatten then
             Write_Str ("Flatten: ");
             Print_Flow_Id (F);
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          return Flow_Id_Sets.To_Set (F);
       end if;
@@ -736,6 +748,12 @@ package body Flow_Utility is
              (Direct_Mapping_Id
                 (Etype (Encapsulating_State (Root_Entity))),
               Root_Entity);
+
+      elsif Ekind (Root_Entity) in E_Constant | E_Variable
+        and then Present (Ultimate_Overlaid_Entity (Root_Entity))
+      then
+         Map_Root :=
+           Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity));
 
       else
          Map_Root := Direct_Mapping_Id (Root_Entity);
@@ -1301,6 +1319,8 @@ package body Flow_Utility is
       -- Debug --
       -----------
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
+
       procedure Debug (Msg : String) is
       begin
          if Debug_Trace_Get_Global then
@@ -1323,6 +1343,8 @@ package body Flow_Utility is
          end if;
       end Debug;
 
+      pragma Annotate (Xcov, Exempt_Off);
+
    --  Start of processing for Get_Globals
 
    begin
@@ -1330,6 +1352,7 @@ package body Flow_Utility is
       Globals.Inputs    := Flow_Id_Sets.Empty_Set;
       Globals.Outputs   := Flow_Id_Sets.Empty_Set;
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Get_Global then
          Write_Str ("Get_Global (");
          Sprint_Node (Subprogram);
@@ -1337,6 +1360,7 @@ package body Flow_Utility is
          Print_Flow_Scope (Scope);
          Write_Line (")");
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       if Present (Global_Node)
         and then not Use_Generated_Globals
@@ -2208,6 +2232,11 @@ package body Flow_Utility is
                  (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
                Ctx.Scope);
 
+         elsif Ekind (E) in E_Constant | E_Variable
+           and then Present (Ultimate_Overlaid_Entity (E))
+         then
+            return Flatten_Variable (Ultimate_Overlaid_Entity (E), Ctx.Scope);
+
          else
             return Flatten_Variable (E, Ctx.Scope);
          end if;
@@ -3014,11 +3043,13 @@ package body Flow_Utility is
                   FS        : Flow_Id_Sets.Set;
 
                begin
+                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug_Trace_Untangle_Fields then
                      Write_Str ("Updating component ");
                      Sprint_Node_Inline (Comp);
                      Write_Eol;
                   end if;
+                  pragma Annotate (Xcov, Exempt_Off);
 
                   --  Composite update
 
@@ -3106,12 +3137,14 @@ package body Flow_Utility is
       --  Start of processing for Untangle_Record_Fields
 
       begin
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Untangle_Fields then
             Write_Str ("Untangle_Record_Field on ");
             Sprint_Node_Inline (N);
             Write_Eol;
             Indent;
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          --  First, we figure out what the root node is. For example in
          --  Foo.Bar'Update(...).Z the root node will be Foo.
@@ -3146,6 +3179,7 @@ package body Flow_Utility is
 
          end loop;
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Untangle_Fields then
             Write_Str ("Root: ");
             Sprint_Node_Inline (Root_Node);
@@ -3166,6 +3200,7 @@ package body Flow_Utility is
             end loop;
             Outdent;
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          --  If the root node is not an entire record variable, we recurse here
          --  and then simply merge all variables we find here and then abort.
@@ -3229,11 +3264,13 @@ package body Flow_Utility is
                   end case;
                end loop;
 
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Untangle_Fields then
                   Write_Str ("Early delegation return: ");
                   Print_Node_Set (Vars);
                   Outdent;
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
             end return;
          end if;
 
@@ -3313,9 +3350,11 @@ package body Flow_Utility is
             M.Insert (F, Flow_Id_Sets.To_Set (F));
          end loop;
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Untangle_Fields then
             Print_Flow_Map (M);
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          --  We then process Seq (the sequence of actions we have been asked to
          --  take) and update the map or eliminate entries from it.
@@ -3359,18 +3398,22 @@ package body Flow_Utility is
                   then 1
                   else Positive (Current_Field.Component.Length) + 1));
 
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Fields then
                Write_Str ("Processing: ");
                Print_Node_Briefly (N);
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
             case Nkind (N) is
             when N_Delta_Aggregate =>
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Untangle_Fields then
                   Write_Str ("Updating the map at ");
                   Sprint_Flow_Id (Current_Field);
                   Write_Eol;
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
 
                Untangle_Delta_Fields (Component_Associations (N));
 
@@ -3378,11 +3421,13 @@ package body Flow_Utility is
                pragma Assert (Is_Attribute_Update (N));
                pragma Assert (List_Length (Expressions (N)) = 1);
 
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Untangle_Fields then
                   Write_Str ("Updating the map at ");
                   Sprint_Flow_Id (Current_Field);
                   Write_Eol;
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
 
                Untangle_Delta_Fields
                  (Component_Associations (First (Expressions (N))));
@@ -3397,11 +3442,13 @@ package body Flow_Utility is
                begin
                   --  We trim the result map
 
+                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug_Trace_Untangle_Fields then
                      Write_Str ("Trimming for: ");
                      Sprint_Node_Inline (Comp);
                      Write_Eol;
                   end if;
+                  pragma Annotate (Xcov, Exempt_Off);
 
                   for C in M.Iterate loop
                      declare
@@ -3429,9 +3476,11 @@ package body Flow_Utility is
                raise Why.Unexpected_Node;
             end case;
 
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Fields then
                Print_Flow_Map (M);
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
          end loop;
 
          --  We merge what is left after trimming
@@ -3440,6 +3489,7 @@ package body Flow_Utility is
             Depends_Vars.Union (S);
          end loop;
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Untangle_Fields then
             Write_Str ("Final (all) set: ");
             Print_Node_Set (All_Vars);
@@ -3451,6 +3501,7 @@ package body Flow_Utility is
             Outdent;
             Write_Eol;
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          --  proof variables (requires N709-009)
 
@@ -3504,12 +3555,10 @@ package body Flow_Utility is
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
             when N_Abstract_Subprogram_Declaration
-               | N_Body_Stub
                | N_Entry_Body
                | N_Entry_Declaration
                | N_Package_Declaration
                | N_Proper_Body
-               | N_Representation_Clause
                | N_Single_Task_Declaration
                | N_Subprogram_Declaration
                | N_Task_Type_Declaration
@@ -5324,6 +5373,7 @@ package body Flow_Utility is
    --  Start of processing for Untangle_Record_Assignment
 
    begin
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle_Record then
          Write_Str ("URA task: ");
          Write_Str (Character'Val (8#33#) & "[1m");
@@ -5344,16 +5394,19 @@ package body Flow_Utility is
          Write_Str ("Ext_Irrl: " & Extensions_Irrelevant'Img);
          Write_Eol;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       case Nkind (N) is
          when N_Aggregate =>
             pragma Assert (No (Expressions (N)));
             --  The front-end should rewrite this for us.
 
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing aggregate");
                Write_Eol;
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
             declare
                Component_Association : Node_Id;
@@ -5406,9 +5459,11 @@ package body Flow_Utility is
                 (Expression (N), Component_Associations (N));
 
          when N_Selected_Component =>
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Line ("processing selected component");
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
             declare
                Tmp : constant Flow_Id_Maps.Map :=
@@ -5433,10 +5488,12 @@ package body Flow_Utility is
             end;
 
          when N_Identifier | N_Expanded_Name | N_Target_Name =>
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing direct assignment");
                Write_Eol;
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
             if Nkind (N) /= N_Target_Name
               and then Comes_From_Declare_Expr (Entity (N))
@@ -5490,6 +5547,11 @@ package body Flow_Utility is
                                (Etype (Encapsulating_State (E))),
                              E),
                           Scope)
+
+                     elsif Ekind (E) in E_Constant | E_Variable
+                       and then Present (Ultimate_Overlaid_Entity (E))
+                     then
+                        Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
 
                      else Flatten_Variable (E, Scope));
 
@@ -5562,10 +5624,12 @@ package body Flow_Utility is
             end if;
 
          when N_Type_Conversion =>
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing type/view conversion");
                Write_Eol;
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
             declare
                T_From : constant Entity_Id := Get_Type (Expression (N), Scope);
@@ -5596,6 +5660,7 @@ package body Flow_Utility is
                  (Map_Root with delta Facet => The_Tag);
 
             begin
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Untangle_Record then
                   Write_Str ("from: ");
                   Sprint_Node_Inline (T_From);
@@ -5608,6 +5673,7 @@ package body Flow_Utility is
                   Write_Str ("temporary map: ");
                   Print_Flow_Map (Tmp);
                end if;
+               pragma Annotate (Xcov, Exempt_Off);
 
                for F of Flatten_Variable (T_To, Scope) loop
                   Valid_To_Fields.Insert (Join (Map_Root, F));
@@ -5649,10 +5715,12 @@ package body Flow_Utility is
          when N_Attribute_Reference =>
             case Get_Attribute_Id (Attribute_Name (N)) is
                when Attribute_Update =>
+                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug_Trace_Untangle_Record then
                      Write_Str ("processing attribute Update");
                      Write_Eol;
                   end if;
+                  pragma Annotate (Xcov, Exempt_Off);
 
                   pragma Assert (List_Length (Expressions (N)) = 1);
                   M :=
@@ -5661,10 +5729,12 @@ package body Flow_Utility is
                        Component_Associations (First (Expressions (N))));
 
                when Attribute_Result =>
+                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug_Trace_Untangle_Record then
                      Write_Str ("processing attribute Result");
                      Write_Eol;
                   end if;
+                  pragma Annotate (Xcov, Exempt_Off);
 
                   declare
                      Class_Wide_Conversion : constant Boolean :=
@@ -5713,12 +5783,14 @@ package body Flow_Utility is
             end;
       end case;
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle_Record then
          Outdent;
 
          Write_Str ("URA result: ");
          Print_Flow_Map (M);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       return M;
    end Untangle_Record_Assignment;
@@ -5762,12 +5834,14 @@ package body Flow_Utility is
 
    begin
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
          Write_Str ("Untangle_Assignment_Target on ");
          Sprint_Node_Inline (N);
          Write_Eol;
          Indent;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       Get_Assignment_Target_Properties
         (N,
@@ -5776,6 +5850,7 @@ package body Flow_Utility is
          Map_Root           => Base_Node,
          Seq                => Seq);
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
          Write_Line ("Seq is:");
          Indent;
@@ -5788,16 +5863,19 @@ package body Flow_Utility is
          Print_Flow_Id (Base_Node);
          Write_Eol;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       --  We now set the variable(s) defined and will start to establish
       --  other variables that might be used.
 
       Vars_Defined := Flatten_Variable (Base_Node, Scope);
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
          Write_Str ("Components: ");
          Print_Node_Set (Vars_Defined);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       Vars_Used    := Flow_Id_Sets.Empty_Set;
       Vars_Proof   := Flow_Id_Sets.Empty_Set;
@@ -5912,6 +5990,7 @@ package body Flow_Utility is
          Vars_Defined.Include ((Base_Node with delta Facet => Extension_Part));
       end if;
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
          Write_Str ("Variables ");
          if Partial_Definition then
@@ -5928,6 +6007,7 @@ package body Flow_Utility is
 
          Outdent;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
    end Untangle_Assignment_Target;
 
    --------------------------
@@ -6235,6 +6315,11 @@ package body Flow_Utility is
                 (Direct_Mapping_Id
                    (Etype (Encapsulating_State (Root_Entity))),
                  Root_Entity)
+
+            elsif Ekind (Root_Entity) in E_Constant | E_Variable
+              and then Present (Ultimate_Overlaid_Entity (Root_Entity))
+            then
+               Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity))
 
             else
                Direct_Mapping_Id (Root_Entity));

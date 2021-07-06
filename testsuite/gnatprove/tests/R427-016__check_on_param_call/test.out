@@ -49,7 +49,7 @@ formals.adb:100:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:16: medium: predicate check might fail [possible fix: call at line 99 should mention A (for argument V) in a postcondition]
 formals.adb:101:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:102:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:102:08: medium: predicate check might fail, cannot prove Constr_Int /= 0 [possible fix: call at line 101 should mention A (for argument W) in a postcondition]
+formals.adb:102:08: medium: predicate check might fail, cannot prove Constr_Int /= 0 [possible fix: call at line 102 should mention A (for argument W) in a postcondition]
 formals.adb:103:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:103:07: info: predicate check proved (CVC4: 1 VC)
 formals.adb:104:04: info: precondition proved (Trivial: 1 VC)

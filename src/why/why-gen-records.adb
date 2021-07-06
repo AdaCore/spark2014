@@ -47,7 +47,6 @@ with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Gen.Hardcoded;    use Why.Gen.Hardcoded;
 with Why.Gen.Init;         use Why.Gen.Init;
 with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Preds;        use Why.Gen.Preds;
 with Why.Gen.Progs;        use Why.Gen.Progs;
 with Why.Gen.Terms;        use Why.Gen.Terms;
 with Why.Images;           use Why.Images;
@@ -2942,9 +2941,16 @@ package body Why.Gen.Records is
          Domain   => EW_Pred,
          Name     => M_Compat_Tags.Compat_Tags_Id,
          Args     =>
-           (1 => New_Tag_Access (Domain => EW_Term,
-                                 Name   => Id,
-                                 Ty     => Root),
+           (1 => New_Tag_Access
+                (Domain => EW_Term,
+                 Name   => Insert_Simple_Conversion
+                   (Ada_Node => Ada_Node,
+                    Domain   => EW_Term,
+                    Expr     => Id,
+                    To       => EW_Abstract
+                      (Root,
+                       Relaxed_Init => Get_Relaxed_Init (Get_Type (Id)))),
+                 Ty     => Root),
             2 => +E_Symb (E => Check_Ty,
                           S => WNE_Tag)),
          Typ      => EW_Bool_Type);

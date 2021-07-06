@@ -1,0 +1,11 @@
+b.adb:15:36: error: "ACCNEWINT_CONST" is not readable
+b.adb:15:36: error: object was moved at line 14
+b.adb:19:55: error: "ACCNEWINT_CONST" is not readable
+b.adb:19:55: error: object was moved at line 14
+b.adb:20:55: error: "ACCNEWINT_CONST" is not readable
+b.adb:20:55: error: object was moved at line 14
+b.adb:22:14: error: object was moved at line 28
+b.adb:22:14: error: return from "R_ASSIGN" with moved value for "R_IN"
+b.adb:22:23: warning: "R_IN" is not modified, parameter type could be rewritten as 'access constant NEWINT'
+b.adb:23:23: warning: "R_INOUT" is not modified, could be IN
+gnatprove: error during flow analysis and proof

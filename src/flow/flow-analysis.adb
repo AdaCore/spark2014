@@ -904,19 +904,26 @@ package body Flow.Analysis is
                     (Entire_Variable (F_Final))
                   then
                      if Is_In_Access_Parameter then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "& is not modified, parameter type " &
-                             "could be rewritten as 'access constant %'",
-                           N        => Error_Location (FA.PDG, FA.Atr, V),
-                           F1       => Entire_Variable (F_Final),
-                           F2       =>
-                             Direct_Mapping_Id
-                               (Base_Type
-                                  (Directly_Designated_Type (Etype (Var)))),
-                           Tag      => Inout_Only_Read,
-                           Severity => Warning_Kind,
-                           Vertex   => V);
+                        declare
+                           E : constant Entity_Id :=
+                             Directly_Designated_Type (Etype (Var));
+                           Report_Id : constant Flow_Id := Direct_Mapping_Id
+                             (if Comes_From_Source (E)
+                              or else Is_Standard_Type (E)
+                              then E
+                              else Base_Type (E));
+                        begin
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "& is not modified, parameter type" &
+                                " could be rewritten as 'access constant %'",
+                              N        => Error_Location (FA.PDG, FA.Atr, V),
+                              F1       => Entire_Variable (F_Final),
+                              F2       => Report_Id,
+                              Tag      => Inout_Only_Read,
+                              Severity => Warning_Kind,
+                              Vertex   => V);
+                        end;
                      else
                         Error_Msg_Flow
                           (FA       => FA,
@@ -3865,6 +3872,7 @@ package body Flow.Analysis is
 
       --  Debug output
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Depends then
          Write_Line (Get_Name_String (Chars (FA.Spec_Entity)) & ":");
          Print_Dependency_Map ("user",    Projected_User_Deps);
@@ -3872,6 +3880,7 @@ package body Flow.Analysis is
          Print_Dependency_Map ("missing", Missing_Deps);
          Print_Dependency_Map ("unused",  Unused_Deps);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       for C in Unused_Deps.Iterate loop
          declare

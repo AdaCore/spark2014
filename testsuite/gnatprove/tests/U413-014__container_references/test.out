@@ -1,0 +1,407 @@
+a-cfdlli.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.adb:5
+a-cfdlli.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.adb:5
+a-cfdlli.ads:416:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:521:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:662:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:752:57: info: overflow check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:818:57: info: overflow check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:905:28: info: overflow check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:905:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1081:43: info: overflow check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1262:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1401:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1416:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1431:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1446:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1468:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1474:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1523:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1530:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfhama.ads:399:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:399:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:424:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:462:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:775:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:784:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:814:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:829:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhase.ads:502:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:828:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:837:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:858:24: info: overflow check proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:859:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:907:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1084:24: info: overflow check proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1085:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1085:44: info: overflow check proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1125:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1217:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1238:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfinve.ads:315:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:321:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:340:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:340:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:363:51: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:405:73: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:438:51: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:473:59: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:519:59: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:543:51: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:584:59: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:649:28: info: overflow check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:649:57: info: range check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:777:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:813:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cforma.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:405:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:411:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:430:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:468:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:839:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:848:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:883:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:891:21: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:918:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:926:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:996:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1011:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1026:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1041:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1081:46: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1096:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforse.ads:516:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:885:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:894:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:929:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:937:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:964:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:972:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:989:24: info: overflow check proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:990:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1038:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1208:24: info: overflow check proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1209:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1209:44: info: overflow check proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1248:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1352:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1367:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1382:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1397:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1431:47: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1446:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cofove.ads:294:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:5
+a-cofove.ads:300:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:5
+a-cofove.ads:319:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:319:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:342:51: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:384:73: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:417:51: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:452:59: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:498:59: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:522:51: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:563:59: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:628:28: info: overflow check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:628:57: info: range check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:756:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:792:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:95, in instantiation at test_hashed_sets.adb:6
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:100, in instantiation at test_ordered_sets.adb:5
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:95, in instantiation at test_hashed_sets.adb:6
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:100, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+test_hashed_maps.adb:15:15: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:16:15: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:17:15: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:18:15: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:23:50: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:25:25: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:25:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_hashed_maps.adb:28:50: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:30:25: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:30:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_hashed_maps.adb:34:45: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:34:56: info: null exclusion check proved (CVC4: 1 VC)
+test_hashed_maps.adb:36:25: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:36:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_hashed_maps.adb:37:12: info: pointer dereference check proved (CVC4: 1 VC)
+test_hashed_maps.adb:39:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:40:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:41:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:42:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:43:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:44:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:44:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:45:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:45:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:46:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:46:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:47:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:47:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:48:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:48:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:49:22: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:49:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:52:45: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:52:56: info: null exclusion check proved (CVC4: 1 VC)
+test_hashed_maps.adb:54:25: info: assertion proved (CVC4: 1 VC)
+test_hashed_maps.adb:54:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_hashed_maps.adb:55:12: info: pointer dereference check proved (CVC4: 1 VC)
+test_hashed_maps.adb:57:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:58:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:59:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:60:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:61:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:62:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:62:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:63:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:63:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:64:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:64:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:65:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:65:22: info: precondition proved (CVC4: 1 VC)
+test_hashed_maps.adb:66:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:66:22: info: precondition proved (Z3: 1 VC)
+test_hashed_maps.adb:67:22: info: assertion proved (Z3: 1 VC)
+test_hashed_maps.adb:67:22: info: precondition proved (Z3: 1 VC)
+test_hashed_maps.adb:70:04: info: initialization of "M" proved
+test_hashed_maps.adb:70:21: info: range check proved (CVC4: 1 VC)
+test_hashed_maps.adb:70:26: info: range check proved (CVC4: 1 VC)
+test_hashed_maps.adb:72:04: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+test_hashed_maps.adb:73:04: info: precondition proved (CVC4: 2 VC)
+test_hashed_maps.adb:74:04: info: precondition proved (CVC4: 2 VC)
+test_hashed_maps.adb:75:04: info: precondition proved (CVC4: 2 VC)
+test_hashed_maps.adb:76:04: info: precondition proved (CVC4: 9 VC)
+test_hashed_sets.adb:9:20: warning: "S" is not modified, could be IN
+test_hashed_sets.adb:19:51: info: precondition proved (CVC4: 1 VC)
+test_hashed_sets.adb:21:25: info: assertion proved (CVC4: 1 VC)
+test_hashed_sets.adb:21:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_hashed_sets.adb:25:04: info: initialization of "S" proved
+test_hashed_sets.adb:25:21: info: range check proved (CVC4: 1 VC)
+test_hashed_sets.adb:25:26: info: range check proved (CVC4: 1 VC)
+test_hashed_sets.adb:27:04: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+test_hashed_sets.adb:28:04: info: precondition proved (CVC4: 2 VC)
+test_hashed_sets.adb:29:04: info: precondition proved (CVC4: 2 VC)
+test_hashed_sets.adb:30:04: info: precondition proved (CVC4: 2 VC)
+test_hashed_sets.adb:31:04: info: precondition proved (CVC4: 5 VC)
+test_indefinite_vectors.adb:10:15: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:11:15: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:12:15: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:13:15: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:17:50: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:19:25: info: assertion proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:19:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:23:45: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:23:56: info: null exclusion check proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:25:25: info: assertion proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:25:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:26:12: info: pointer dereference check proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:28:22: info: assertion proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:29:22: info: assertion proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:29:22: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:30:22: info: assertion proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:30:22: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:31:22: info: assertion proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:31:22: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:32:22: info: assertion proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:32:22: info: precondition proved (CVC4: 2 VC)
+test_indefinite_vectors.adb:35:04: info: initialization of "V" proved
+test_indefinite_vectors.adb:35:24: info: range check proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:37:04: info: precondition proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:38:04: info: precondition proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:39:04: info: precondition proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:40:04: info: precondition proved (CVC4: 1 VC)
+test_indefinite_vectors.adb:41:04: info: precondition proved (CVC4: 5 VC)
+test_lists.adb:10:15: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:11:15: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:11:27: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:12:15: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:12:27: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:12:36: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:13:15: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:13:27: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:13:36: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:13:45: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:15:30: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:15:39: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:18:50: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:20:25: info: assertion proved (CVC4: 1 VC)
+test_lists.adb:20:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_lists.adb:24:45: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:24:56: info: null exclusion check proved (CVC4: 1 VC)
+test_lists.adb:26:25: info: assertion proved (CVC4: 1 VC)
+test_lists.adb:26:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_lists.adb:27:12: info: pointer dereference check proved (CVC4: 1 VC)
+test_lists.adb:29:22: info: assertion proved (CVC4: 1 VC)
+test_lists.adb:30:22: info: assertion proved (CVC4: 1 VC)
+test_lists.adb:30:22: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:31:22: info: assertion proved (Z3: 1 VC)
+test_lists.adb:31:22: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:31:34: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:32:22: info: assertion proved (Z3: 1 VC)
+test_lists.adb:32:22: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:32:34: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:32:43: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:33:22: info: assertion proved (Z3: 1 VC)
+test_lists.adb:33:22: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:33:34: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:33:43: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:33:52: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:34:22: info: assertion proved (Z3: 1 VC)
+test_lists.adb:34:26: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:34:35: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:37:04: info: initialization of "L" proved
+test_lists.adb:37:22: info: range check proved (CVC4: 1 VC)
+test_lists.adb:39:04: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:40:04: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:41:04: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:42:04: info: precondition proved (CVC4: 1 VC)
+test_lists.adb:43:04: info: precondition proved (CVC4: 4 VC; Z3: 1 VC)
+test_ordered_maps.adb:14:15: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:15:15: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:16:15: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:17:15: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:22:50: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:24:25: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:24:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_ordered_maps.adb:27:50: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:29:25: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:29:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_ordered_maps.adb:33:45: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:33:56: info: null exclusion check proved (CVC4: 1 VC)
+test_ordered_maps.adb:35:25: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:35:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_ordered_maps.adb:36:12: info: pointer dereference check proved (CVC4: 1 VC)
+test_ordered_maps.adb:38:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:39:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:40:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:41:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:42:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:43:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:43:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:44:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:44:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:45:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:45:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:46:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:46:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:47:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:47:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:48:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:48:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:51:45: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:51:56: info: null exclusion check proved (CVC4: 1 VC)
+test_ordered_maps.adb:53:25: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:53:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_ordered_maps.adb:54:12: info: pointer dereference check proved (CVC4: 1 VC)
+test_ordered_maps.adb:56:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:57:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:58:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:59:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:60:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:61:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:61:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:62:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:62:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:63:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:63:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:64:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:64:22: info: precondition proved (CVC4: 1 VC)
+test_ordered_maps.adb:65:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:65:22: info: precondition proved (Z3: 1 VC)
+test_ordered_maps.adb:66:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:66:22: info: precondition proved (Z3: 1 VC)
+test_ordered_maps.adb:69:04: info: initialization of "M" proved
+test_ordered_maps.adb:69:21: info: range check proved (CVC4: 1 VC)
+test_ordered_maps.adb:71:04: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+test_ordered_maps.adb:72:04: info: precondition proved (CVC4: 2 VC)
+test_ordered_maps.adb:73:04: info: precondition proved (CVC4: 2 VC)
+test_ordered_maps.adb:74:04: info: precondition proved (CVC4: 2 VC)
+test_ordered_maps.adb:75:04: info: precondition proved (CVC4: 9 VC)
+test_ordered_sets.adb:8:20: warning: "S" is not modified, could be IN
+test_ordered_sets.adb:18:50: info: precondition proved (CVC4: 1 VC)
+test_ordered_sets.adb:20:25: info: assertion proved (CVC4: 1 VC)
+test_ordered_sets.adb:20:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_ordered_sets.adb:24:04: info: initialization of "S" proved
+test_ordered_sets.adb:24:21: info: range check proved (CVC4: 1 VC)
+test_ordered_sets.adb:26:04: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+test_ordered_sets.adb:27:04: info: precondition proved (CVC4: 2 VC)
+test_ordered_sets.adb:28:04: info: precondition proved (CVC4: 2 VC)
+test_ordered_sets.adb:29:04: info: precondition proved (CVC4: 2 VC)
+test_ordered_sets.adb:30:04: info: precondition proved (CVC4: 5 VC)
+test_vectors.adb:10:15: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:11:15: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:12:15: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:13:15: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:17:50: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:19:25: info: assertion proved (CVC4: 1 VC)
+test_vectors.adb:19:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_vectors.adb:23:45: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:23:56: info: null exclusion check proved (CVC4: 1 VC)
+test_vectors.adb:25:25: info: assertion proved (CVC4: 1 VC)
+test_vectors.adb:25:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_vectors.adb:26:12: info: pointer dereference check proved (CVC4: 1 VC)
+test_vectors.adb:28:22: info: assertion proved (CVC4: 1 VC)
+test_vectors.adb:29:22: info: assertion proved (CVC4: 1 VC)
+test_vectors.adb:29:22: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:30:22: info: assertion proved (CVC4: 1 VC)
+test_vectors.adb:30:22: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:31:22: info: assertion proved (CVC4: 1 VC)
+test_vectors.adb:31:22: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:32:22: info: assertion proved (CVC4: 1 VC)
+test_vectors.adb:32:22: info: precondition proved (CVC4: 2 VC)
+test_vectors.adb:35:04: info: initialization of "V" proved
+test_vectors.adb:35:24: info: range check proved (CVC4: 1 VC)
+test_vectors.adb:37:04: info: precondition proved (CVC4: 1 VC)
+test_vectors.adb:38:04: info: precondition proved (CVC4: 1 VC)
+test_vectors.adb:39:04: info: precondition proved (CVC4: 1 VC)
+test_vectors.adb:40:04: info: precondition proved (CVC4: 1 VC)
+test_vectors.adb:41:04: info: precondition proved (CVC4: 5 VC)

@@ -34,6 +34,7 @@ package body Flow_Generated_Globals is
    -- Debug_Traversal --
    ---------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Debug_Traversal (E : Entity_Id) is
    begin
       if Debug_Tree_Traversal then
@@ -46,11 +47,13 @@ package body Flow_Generated_Globals is
          Term_Info.Set_Style (Normal);
       end if;
    end Debug_Traversal;
+   pragma Annotate (Xcov, Exempt_Off);
 
    --------------
    -- Disjoint --
    --------------
 
+   pragma Annotate (Xcov, Exempt_On, "Assertion code");
    function Disjoint (A, B, C : Name_Sets.Set) return Boolean is
    begin
       return not
@@ -58,6 +61,7 @@ package body Flow_Generated_Globals is
           or else
         (for some E of B => C.Contains (E));
    end Disjoint;
+   pragma Annotate (Xcov, Exempt_Off);
 
 --  Start of processing for Flow_Generated_Globals
 

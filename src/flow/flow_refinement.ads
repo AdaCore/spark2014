@@ -83,11 +83,6 @@ package Flow_Refinement is
                         return Boolean;
    --  Returns True iff N is visible from S
 
-   function Is_Visible (EN : Entity_Name;
-                        S  : Flow_Scope)
-                        return Boolean;
-   --  Returns True iff EN is visible from S
-
    function Is_Visible (F : Flow_Id;
                         S : Flow_Scope)
                         return Boolean;
@@ -123,17 +118,6 @@ package Flow_Refinement is
                                          return Boolean
    with Pre => Ekind (E) = E_Abstract_State;
    --  Return True iff the constituents of E are visible from S
-
-   function State_Refinement_Is_Visible (EN : Entity_Name;
-                                         S  : Flow_Scope)
-                                         return Boolean;
-   --  Return True iff the constituents of EN are visible from S
-
-   function State_Refinement_Is_Visible (F : Flow_Id;
-                                         S : Flow_Scope)
-                                         return Boolean
-   with Pre => Is_Abstract_State (F);
-   --  Return True iff the constituents of F are visible from S
 
    function Is_Fully_Contained (State   : Entity_Id;
                                 Outputs : Node_Sets.Set;

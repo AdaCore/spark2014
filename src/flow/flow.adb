@@ -450,6 +450,7 @@ package body Flow is
    -- Print_Graph_Vertex --
    ------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Graph_Vertex (G : Flow_Graphs.Graph;
                                  M : Attribute_Maps.Map;
                                  V : Flow_Graphs.Vertex_Id)
@@ -546,6 +547,7 @@ package body Flow is
 
       Outdent;
    end Print_Graph_Vertex;
+   pragma Annotate (Xcov, Exempt_Off);
 
    --------------
    -- Is_Valid --
@@ -595,6 +597,7 @@ package body Flow is
    -- Print_Graph --
    -----------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Graph
      (Filename          : String;
       G                 : Graph;
@@ -1180,6 +1183,7 @@ package body Flow is
          end if;
       end if;
    end Print_Graph;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------------------
    -- Flow_Analyse_Entity --
@@ -1222,6 +1226,8 @@ package body Flow is
       -- Debug --
       -----------
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
+
       procedure Debug (Str : String) is
       begin
          if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1249,10 +1255,13 @@ package body Flow is
          end if;
       end Debug;
 
+      pragma Annotate (Xcov, Exempt_Off);
+
       ---------------------
       -- Debug_GG_Source --
       ---------------------
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       procedure Debug_GG_Source is
       begin
          if Gnat2Why_Args.Flow_Advanced_Debug
@@ -1286,6 +1295,7 @@ package body Flow is
             end case;
          end if;
       end Debug_GG_Source;
+      pragma Annotate (Xcov, Exempt_Off);
 
    --  Start of processing for Flow_Analyse_Entity
 
@@ -1371,6 +1381,7 @@ package body Flow is
 
       Append (FA.Base_Filename, Unique_Name (E));
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Line (Character'Val (8#33#) & "[32m" &
                      Phase & " (cons) of " &
@@ -1411,6 +1422,7 @@ package body Flow is
             Write_Eol;
          end if;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       Debug_GG_Source;
 
@@ -1441,9 +1453,11 @@ package body Flow is
          Debug (Debug_Print_PDG,           FA.PDG, "pdg");
       end if;
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Outdent;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       return FA;
 
@@ -1589,6 +1603,7 @@ package body Flow is
 
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Line (Character'Val (8#33#) & "[32m" &
                           "Flow analysis (errors) for " &
@@ -1598,6 +1613,7 @@ package body Flow is
                           Get_Name_String (Chars (FA.Spec_Entity)) &
                           Character'Val (8#33#) & "[0m");
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
 
          Analysis.Sanity_Check (FA, Success);
 
@@ -1767,11 +1783,13 @@ package body Flow is
       --  compilation unit.
       Analysis.Check_Concurrent_Accesses (GNAT_Root);
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Line (Character'Val (8#33#) & "[33m" &
                        "Flow analysis complete for current CU" &
                        Character'Val (8#33#) & "[0m");
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       Flow_Sanity.Check_Incomplete_Globals;
 

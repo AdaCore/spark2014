@@ -402,7 +402,7 @@ package body Flow_Generated_Globals.Phase_2 is
    procedure Up_Project (Vars           :     Global_Names;
                          Projected_Vars : out Global_Names;
                          Scope          :     Name_Scope);
-   --  Same as above but lifter to sets with proof_ins, inputs and outputs
+   --  Same as above but lifted to sets with proof_ins, inputs and outputs
 
    function Is_Fully_Contained (State   : Entity_Name;
                                 Outputs : Name_Sets.Set;
@@ -519,6 +519,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Globals.Inputs.Clear;
          Globals.Outputs.Clear;
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if XXX then
             declare
                Inserted : Boolean;
@@ -535,6 +536,7 @@ package body Flow_Generated_Globals.Phase_2 is
                end if;
             end;
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
       end if;
    end GG_Get_Globals;
 
@@ -1624,12 +1626,14 @@ package body Flow_Generated_Globals.Phase_2 is
       -- Note_Time --
       ---------------
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       procedure Note_Time (Message : String) is
       begin
          if Debug_GG_Read_Timing then
             Timing_Phase_Completed (Timing, Message);
          end if;
       end Note_Time;
+      pragma Annotate (Xcov, Exempt_Off);
 
    --  Start of processing for GG_Resolve
 
@@ -1717,6 +1721,8 @@ package body Flow_Generated_Globals.Phase_2 is
          -----------
          -- Debug --
          -----------
+
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
 
          procedure Debug (Msg : String) is
          begin
@@ -1884,6 +1890,7 @@ package body Flow_Generated_Globals.Phase_2 is
                Ada.Text_IO.New_Line;
             end if;
          end Dump_Main_Unit_Contracts;
+         pragma Annotate (Xcov, Exempt_Off);
 
          ------------------
          -- Filter_Local --
@@ -1932,12 +1939,14 @@ package body Flow_Generated_Globals.Phase_2 is
                 and then Collect'Result.Initializes.Is_Empty
                 and then Collect'Result.Refined_Initializes.Is_Empty;
 
+            pragma Annotate (Xcov, Exempt_On, "Ghost code");
             function Is_Empty (Globals : Global_Names) return Boolean is
               (Globals.Proof_Ins.Is_Empty
                  and then Globals.Inputs.Is_Empty
                  and then Globals.Outputs.Is_Empty)
               with Ghost;
             --  Returns True iff the Globals contract is empty
+            pragma Annotate (Xcov, Exempt_Off);
 
             --------------------
             -- Callee_Globals --
@@ -2719,8 +2728,10 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_State_Constituents_Map_Is_Ready --
    ----------------------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Ghost code");
    function GG_State_Constituents_Map_Is_Ready return Boolean
    is (GG_State_Constituents);
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------------
    -- GG_Is_Ghost_Entity --
@@ -3233,6 +3244,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Print_Tasking_Info_Bag --
    ----------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Tasking_Info_Bag (P : Phase) is
 
       Debug_Print_Tasking_Info : constant Boolean := False;
@@ -3266,6 +3278,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Outdent;
       end loop;
    end Print_Tasking_Info_Bag;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ----------------------------
    -- Is_Protected_Operation --
@@ -3547,6 +3560,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Print --
    -----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print (G : Constant_Graphs.Graph)
    is
       use Constant_Graphs;
@@ -3622,6 +3636,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Edge_Info => EDI'Access);
       end if;
    end Print;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------
    -- Down_Project --
@@ -3920,6 +3935,8 @@ package body Flow_Generated_Globals.Phase_2 is
          case F.Kind is
             when Direct_Mapping =>
                declare
+                  Aliases : Flow_Id_Sets.Set;
+
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
                begin
@@ -3927,10 +3944,21 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  not in SPARK are represented by Entity_Name, because
                   --  they behave as "blobs".
 
-                  return Flow_Id_Sets.To_Set
+                  if Is_Object (E) then
+                     for Alias of Overlay_Alias (E) loop
+                        Aliases.Insert
+                          (if Entity_In_SPARK (Alias)
+                           then Direct_Mapping_Id (Alias, Normal_Use)
+                           else Magic_String_Id (To_Entity_Name (Alias)));
+                     end loop;
+                  end if;
+
+                  Aliases.Insert
                     (if Entity_In_SPARK (E)
                      then Change_Variant (F, Normal_Use)
                      else Magic_String_Id (To_Entity_Name (E)));
+
+                  return Aliases;
                end;
 
             when Magic_String =>

@@ -62,6 +62,7 @@ package SPARK_Util is
          | N_Label
          | N_Null_Statement
          | N_Number_Declaration
+         | N_Representation_Clause
 
          --  Renamings are replaced by the renamed object in the frontend, but
          --  the renaming declarations are not removed from the tree. We can
@@ -79,6 +80,9 @@ package SPARK_Util is
 
          | N_Package_Instantiation
          | N_Subprogram_Instantiation
+         | N_Generic_Subprogram_Declaration
+         | N_Generic_Package_Declaration
+         | N_Body_Stub
          | N_Use_Package_Clause
          | N_Use_Type_Clause
          | N_Validate_Unchecked_Conversion
@@ -165,8 +169,8 @@ package SPARK_Util is
    --  @param E classwide type
    --  @return the specific tagged type corresponding to classwide type E
 
-   procedure Set_Overlay_Alias (E1, E2 : Entity_Id)
-   with Pre => Is_Object (E1) and then Is_Object (E2);
+   procedure Set_Overlay_Alias (New_Id, Old_Id : Entity_Id)
+   with Pre => Is_Object (New_Id) and then Is_Object (Old_Id);
    --  Register that New_Id is aliasing Old_Id via overlays
 
    function Overlay_Alias (E : Entity_Id) return Node_Sets.Set
@@ -548,16 +552,6 @@ package SPARK_Util is
    --  @param N any expression node
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
-   function Declaration_Is_Associated_To_Parameter
-     (N : Node_Id) return Boolean
-     with Pre => Present (N);
-   --  @param N any node
-   --  return True if N has a Related_Expression attribute associated to
-   --  a parameter entity.
-   --  Declarations associated to subprogram parameters are translated before
-   --  the precondition so that checks related to parameters can be discharged
-   --  when verifying the precondition itself.
-
    generic
       with function Property (N : Node_Id) return Boolean;
    function First_Parent_With_Property (N : Node_Id) return Node_Id with
@@ -752,7 +746,7 @@ package SPARK_Util is
 
    function Is_Error_Signaling_Statement (N : Node_Id) return Boolean;
    --  Returns True iff N is a statement used to signal an error:
-   --    . a raise statement
+   --    . a raise statement or expression
    --    . a pragma Assert (False)
    --    . a call to an error-signaling procedure
 

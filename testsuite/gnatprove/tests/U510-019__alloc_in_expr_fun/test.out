@@ -1,0 +1,2 @@
+bad_alloc.adb:5:46: error: uninitialized allocator inside expression function is not yet supported
+gnatprove: error during flow analysis and proof

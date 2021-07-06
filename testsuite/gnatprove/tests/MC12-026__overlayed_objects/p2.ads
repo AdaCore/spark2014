@@ -22,16 +22,15 @@ is
    for Raw_S'Address use Full_S'Address;
 
    procedure Initialize
-     with Global  => (Output => (Full_S, Raw_S)),
-          Depends => ((Full_S, Raw_S) => null),
+     with Global  => (Output => Full_S),
+          Depends => (Full_S => null),
           Post    => Full_S = Null_R and
                      Raw_S  = Null_Raw_R;
 
    procedure Update_R (X : in Integer;
                        Y : in Float)
-     with Global => (In_Out => Full_S,
-                     Output => Raw_S),
-          Depends => (Full_S => +(X, Y),
-                      Raw_S  => (Full_S, X, Y));
+     with Global => (In_Out => Full_S),
+
+          Depends => (Full_S => +(X, Y));
 
 end P2;

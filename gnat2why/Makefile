@@ -2,7 +2,6 @@
 # This makefile assumes that it executed from the backend directory.
 
 GPRBUILD=gprbuild
-PROJECTFILE=gnat2why
 
 # number of processors
 PROCS=0
@@ -58,6 +57,7 @@ setup: setup_precheck
 	    -e "s^@GNAT1DIR@^$(gnat1dir)^" \
 	    sdefault.adb.in > obj/sdefault.adb
 	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
+	cp -f gnat_src/gnat1drv.adb ./gnat1drv.adb
 	for f in `cd gnat_src; ls gen_il*.ad? xutil.ad? *-tmpl xsnamest.adb`; \
 	do \
 	  cp -p gnat_src/$$f obj-tools; \
@@ -68,7 +68,7 @@ setup: setup_precheck
 	mv $(GEN_IL_FILES) ../obj
 
 build: setup force
-	$(GPRBUILD) $(GPRARGS) -P$(PROJECTFILE) -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
+	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
 
 # Compilation and linking settings for coverage and profiling; for details see
 # "Code Coverage and Profiling" in GNAT User's Guide.
@@ -78,14 +78,10 @@ build: setup force
 # source files.
 
 coverage-setup: setup force
-	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-trigger=atexit
-	# ??? insert newlines into the gnatcov output; otherwise we would have
-	# too long lines
-	sed -i 's/;[^ ]/\n&/g' obj/gnat2why-gnatcov-instr/gnat1drv.adb
+	gnatcov instrument --no-subprojects -P gnat2why.gpr --level=stmt --dump-trigger=atexit
 	mkdir -p obj_coverage
 
-coverage: GPRARGS=-XBuild=Coverage --src-subdirs=gnatcov-instr
-coverage: PROJECTFILE=gnat2why_coverage
+coverage: GPRARGS=-XBuild=Coverage --src-subdirs=gnatcov-instr --implicit-with=gnatcov_rts_full
 coverage: coverage-setup build
 
 profile: CFLAGS = -pg

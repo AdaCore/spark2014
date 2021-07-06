@@ -776,12 +776,12 @@ package body Flow_Error_Messages is
 
                   when GPO_Oneline =>
                      if One_Liner /= "" then
-                        Message := Message & " (e.g. when " & One_Liner & ")";
+                        Append (Message, " (e.g. when " & One_Liner & ")");
                      end if;
 
                      if Details /= "" then
-                        Message :=
-                          Message & " [reason for check: " & Details & "]";
+                        Append
+                          (Message, " [reason for check: " & Details & "]");
                      end if;
 
                      declare
@@ -789,8 +789,9 @@ package body Flow_Error_Messages is
                           Get_Explanation (N, Tag, Explanation);
                      begin
                         if Expl /= "" then
-                           Message := Message
-                             & " [possible explanation: " & Expl & "]";
+                           Append
+                             (Message,
+                              " [possible explanation: " & Expl & "]");
                         end if;
                      end;
 
@@ -798,7 +799,7 @@ package body Flow_Error_Messages is
                         Fix : constant String := Get_Fix (N, Tag, How_Proved);
                      begin
                         if Fix /= "" then
-                           Message := Message & " [possible fix: " & Fix & "]";
+                           Append (Message, " [possible fix: " & Fix & "]");
                         end if;
                      end;
 
@@ -991,15 +992,6 @@ package body Flow_Error_Messages is
 
       if Nkind (N) = N_Allocator then
          Par := N;
-      end if;
-
-      --  In proof, we use the original node for unchecked conversions
-      --  coming from source.
-
-      if Nkind (Par) = N_Unchecked_Type_Conversion
-        and then Comes_From_Source (Par)
-      then
-         Par := Original_Node (Par);
       end if;
 
       --  Skip type conversions inserted by the frontend to find a suitable
@@ -2183,6 +2175,40 @@ package body Flow_Error_Messages is
 
       else
          declare
+            function Get_Corresponding_Formal (N : Node_Id) return Entity_Id;
+            --  Return the corresponding formal parameter for an actual
+            --  parameter N, or Empty otherwise.
+
+            function Get_Corresponding_Formal (N : Node_Id) return Entity_Id is
+               This   : Node_Id := N;
+               Par    : Node_Id := Parent (N);
+               Actual : Node_Id;
+
+            begin
+               if Nkind (N) not in N_Subexpr then
+                  return Empty;
+               end if;
+
+               if Nkind (Par) = N_Parameter_Association then
+                  This := Par;
+                  Par := Parent (Par);
+               end if;
+
+               if Nkind (Par) in N_Subprogram_Call
+                               | N_Entry_Call_Statement
+               then
+                  Actual := First (Parameter_Associations (Par));
+                  while Present (Actual) loop
+                     if Actual = This then
+                        return Get_Formal_From_Actual (N);
+                     end if;
+                     Next (Actual);
+                  end loop;
+               end if;
+
+               return Empty;
+            end Get_Corresponding_Formal;
+
             Check_Vars  : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
             --  Retrieve variables from the node associated to the failed
             --  proof. This set can be reduced during our traversal back in the
@@ -2249,7 +2275,30 @@ package body Flow_Error_Messages is
                goto END_OF_SEARCH;
             end if;
 
-            Stmt := Get_Previous_Explain_Node (Stmt);
+            --  If N is the actual parameter in a call corresponding to an
+            --  OUT formal parameter, the check likely occurs after the call
+            --  (unless this is a length check, discriminant check, or a check
+            --  for a memory leak). Otherwise, the check likely occurs before
+            --  the call.
+
+            if Nkind (Stmt) in N_Procedure_Call_Statement then
+               declare
+                  Formal : constant Entity_Id := Get_Corresponding_Formal (N);
+               begin
+                  if Present (Formal)
+                    and then Ekind (Formal) = E_Out_Parameter
+                    and then Tag not in VC_Length_Check
+                                      | VC_Discriminant_Check
+                                      | VC_Memory_Leak
+                  then
+                     null;
+                  else
+                     Stmt := Get_Previous_Explain_Node (Stmt);
+                  end if;
+               end;
+            else
+               Stmt := Get_Previous_Explain_Node (Stmt);
+            end if;
 
             while Present (Stmt) loop
                case Explain_Node_Kind'(Nkind (Stmt)) is

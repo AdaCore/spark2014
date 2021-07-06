@@ -385,9 +385,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       --  scopes (up to Standard); however, the visibility paths are short.
 
       --  Print graph
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Print (Scope_Graph);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       Components := Scope_Graph.SCC;
 
@@ -421,6 +423,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    -- Dump --
    ----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Dump (E : Entity_Name; Info : Name_Info_T) is
       use Ada.Text_IO;
    begin
@@ -434,6 +437,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          New_Line;
       end if;
    end Dump;
+   pragma Annotate (Xcov, Exempt_Off);
 
    --------------
    -- Is_Child --
@@ -477,6 +481,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    -- Print --
    -----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print (G : Scope_Graphs.Graph)
    is
       use Scope_Graphs;
@@ -553,11 +558,13 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          Node_Info => NDI'Access,
          Edge_Info => EDI'Access);
    end Print;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ----------------
    -- Print_Path --
    ----------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Path (From, To : Name_Scope) is
 
       Source : constant Scope_Graphs.Vertex_Id :=
@@ -617,6 +624,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          Search        => Is_Target'Access,
          Step          => Print_Vertex'Access);
    end Print_Path;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------------------
    -- Register_Name_Scope --
@@ -762,9 +770,9 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       return To_Entity_Name (S (S'First .. J - 1));
    end Scope;
 
-   ------------------------
+   --------------------
    -- Child_Packages --
-   ------------------------
+   --------------------
 
    function Child_Packages (Parent_Package : Entity_Name)
                             return Name_Sets.Set

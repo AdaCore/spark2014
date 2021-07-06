@@ -45,7 +45,6 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Init;           use Why.Gen.Init;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Pointers;       use Why.Gen.Pointers;
-with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
 
@@ -1408,17 +1407,24 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
       begin
-         if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter then
-            Update_Status (Actual, Loop_Writes, Inv_Seen);
-
-         --  If Formal is an in parameter of an access-to-variable type, the
-         --  designated value only can be updated by the call, not the access
-         --  itself.
-
-         elsif Has_Access_Type (Etype (Formal))
-           and then not Is_Access_Constant (Retysp (Etype (Formal)))
+         if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
+           or else (Has_Access_Type (Etype (Formal))
+                    and then not Is_Access_Constant (Retysp (Etype (Formal))))
          then
-            Update_Status (Actual, Loop_Writes, Inv_Seen, Deref_Only => True);
+
+            --  If Formal is an IN parameter of an access-to-variable type, the
+            --  designated value only can be updated by the call, not the
+            --  access itself.
+
+            Update_Status
+               (Actual, Loop_Writes, Inv_Seen,
+                Deref_Only => Ekind (Formal) = E_In_Parameter);
+
+            --  Aliases of the root of the actual are entirely written
+
+            for Alias of Overlay_Alias (Get_Root_Object (Actual)) loop
+               One_Level_Update (Alias, Loop_Writes, Discard_Writes => False);
+            end loop;
          end if;
       end Process_Param;
 
@@ -1547,7 +1553,18 @@ package body Gnat2Why.Expr.Loops.Inv is
    begin
       case Nkind (N) is
          when N_Assignment_Statement =>
-            Update_Status (SPARK_Atree.Name (N), Loop_Writes, Inv_Seen);
+            declare
+               Lvalue : constant Entity_Id := SPARK_Atree.Name (N);
+            begin
+               Update_Status (Lvalue, Loop_Writes, Inv_Seen);
+
+               --  Aliases of the left-hand side are entirely written
+
+               for Alias of Overlay_Alias (Get_Root_Object (Lvalue)) loop
+                  One_Level_Update
+                    (Alias, Loop_Writes, Discard_Writes => False);
+               end loop;
+            end;
 
          --  Discard writes to variables local to a case statement
 
@@ -1611,6 +1628,16 @@ package body Gnat2Why.Expr.Loops.Inv is
                   One_Level_Update (E, Loop_Writes,
                                     Discard_Writes =>
                                       In_Nested or else Inv_Seen);
+
+                  --  If E has an initial value, its aliases are entirely
+                  --  written.
+
+                  if not Is_Imported (E) then
+                     for Alias of Overlay_Alias (E) loop
+                        One_Level_Update
+                          (Alias, Loop_Writes, Discard_Writes => False);
+                     end loop;
+                  end if;
                end if;
             end;
 
@@ -1840,7 +1867,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Updated_Component  : constant Entity_Id :=
                     Entity (Selector_Name (New_Write));
                   Expected_Component : constant Entity_Id :=
-                    Search_Component_By_Name (Expected_Type,
+                    Search_Component_In_Type (Expected_Type,
                                               Updated_Component);
 
                begin

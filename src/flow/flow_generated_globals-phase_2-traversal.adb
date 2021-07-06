@@ -31,6 +31,7 @@ package body Flow_Generated_Globals.Phase_2.Traversal is
    -- Dump_Tree --
    ---------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Dump_Tree is
 
       procedure Dump_Tree (E : Entity_Name; Indent : Natural);
@@ -54,6 +55,7 @@ package body Flow_Generated_Globals.Phase_2.Traversal is
          Dump_Tree (Standard_Standard, Indent => 0);
       end if;
    end Dump_Tree;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------
    -- Is_Leaf --

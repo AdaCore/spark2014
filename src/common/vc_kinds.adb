@@ -227,6 +227,8 @@ package body VC_Kinds is
    -- Description --
    -----------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
+
    function Description (Kind : VC_Kind) return String is
    begin
       case Kind is
@@ -487,6 +489,8 @@ package body VC_Kinds is
          when Volatile_Function_Without_Volatile_Effects  =>
             "A non-volatile function wrongly declared as volatile.");
 
+   pragma Annotate (Xcov, Exempt_Off);
+
    ---------------
    -- From_JSON --
    ---------------
@@ -520,6 +524,7 @@ package body VC_Kinds is
       return Map;
    end From_JSON;
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function From_JSON (V : JSON_Value) return Prover_Category is
       S : constant String := Get (V);
    begin
@@ -534,6 +539,7 @@ package body VC_Kinds is
       end if;
       raise Program_Error;
    end From_JSON;
+   pragma Annotate (Xcov, Exempt_Off);
 
    function From_JSON (V : JSON_Value) return CEE_Kind is
       S : constant String := Get (V);
@@ -875,6 +881,8 @@ package body VC_Kinds is
    -- Kind_Name --
    ---------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
+
    function Kind_Name (Kind : VC_Kind) return String is
    begin
       return
@@ -1036,6 +1044,8 @@ package body VC_Kinds is
             "object is not used",
          when Volatile_Function_Without_Volatile_Effects  =>
             "non-volatile function wrongly declared as volatile");
+
+   pragma Annotate (Xcov, Exempt_Off);
 
    ---------------
    -- Rule_Name --

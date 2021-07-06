@@ -1,3 +1,4 @@
+with "gnat2why_gnat";
 with "gnat2why_c";
 with "gnatcoll";
 
@@ -7,54 +8,13 @@ project GNAT2Why is
    for Exec_Dir use "../install/bin";
 
    for Source_Dirs use ("../src/why", ".", "../src/spark", "../src/utils", "..",
-                        "../src/flow", "../src/common", "obj", "gnat_src",
-                        "../src/counterexamples");
+                        "../src/flow", "../src/common", "../src/counterexamples");
 
    for Main use ("gnat1drv.adb");
 
+   package Compiler renames GNAT2Why_GNAT.Compiler;
 
-   type Build_Type is ("Debug", "Devel", "Production", "Coverage");
-   --  Debug: all checks enabled
-   --  Devel: inexpensive checks enabled, expensive checks disabled
-   --  Production: all checks disabled
-
-   Build : Build_Type := External ("Build", "Devel");
-
-   Common_Switches := ("-g");
-
-   package Compiler is
-      for Local_Configuration_Pragmas use "gnat.adc";
-
-      case Build is
-         when "Debug" | "Devel" =>
-            for Switches ("Ada") use
-               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnat2020");
-         when "Coverage" =>
-            for Switches ("Ada") use
-               Common_Switches & ("-O0", "-gnat2020");
-         when "Production" =>
-            for Switches ("Ada") use
-               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn", "-gnat2020");
-      end case;
-   end Compiler;
-
-   package Builder is
-      for Executable ("gnat1drv.adb") use "gnat2why";
-
-      case Build is
-         when "Debug" =>
-            for Global_Configuration_Pragmas use "debug.adc";
-         when "Devel" =>
-            for Global_Configuration_Pragmas use "devel.adc";
-         when "Coverage" =>
-            --  ??? currently coverage requires tampering checks to be disabled
-            for Global_Configuration_Pragmas use "coverage.adc";
-         when "Production" =>
-            null;
-      end case;
-
-      for Switches ("Ada") use ("-m");
-   end Builder;
+   package Builder renames GNAT2Why_GNAT.Builder;
 
    package IDE is
       for VCS_Kind use "Auto";
@@ -93,230 +53,32 @@ project GNAT2Why is
 
    package Coverage is
 
-      for Excluded_Units use ("adabkend",
-                              "ada_get_targ",
-                              "ali",
-                              "ali.util",
-                              "alloc",
-                              "aspects",
-                              "atree",
-                              "back_end",
-                              "bcheck",
-                              "binde",
-                              "binderr",
-                              "bindgen",
-                              "bindo",
-                              "bindo.augmentors",
-                              "bindo.builders",
-                              "bindo.diagnostics",
-                              "bindo.elaborators",
-                              "bindo.graphs",
-                              "bindo.units",
-                              "bindo.validators",
-                              "bindo.writers",
-                              "bindusg",
-                              "butil",
-                              "casing",
-                              "ceinfo",
+      for Excluded_Units use (--  Exclude files that cause errors
                               "ce_interval_sets",
                               "ce_pretty_printing",
-                              "checks",
-                              "clean",
-                              "comperr",
-                              "contracts",
-                              "cprint",
-                              "csets",
-                              "csinfo",
-                              "cstand",
-                              "debug",
-                              "debug_a",
-                              "einfo",
-                              "elists",
-                              "errout",
-                              "erroutc",
-                              "errutil",
-                              "err_vars",
-                              "eval_fat",
-                              "exp_aggr",
-                              "expander",
-                              "exp_atag",
-                              "exp_attr",
-                              "exp_cg",
-                              "exp_code",
-                              "exp_dbug",
-                              "exp_disp",
-                              "exp_dist",
-                              "exp_fixd",
-                              "exp_imgv",
-                              "exp_intr",
-                              "exp_pakd",
-                              "exp_prag",
-                              "exp_sel",
-                              "exp_smem",
-                              "exp_spark",
-                              "exp_strm",
-                              "exp_tss",
-                              "exp_unst",
-                              "exp_util",
-                              "fmap",
-                              "fname",
-                              "fname.sf",
-                              "fname.uf",
-                              "freeze",
-                              "frontend",
-                              "get_scos",
-                              "get_targ",
-                              "ghost",
-                              "gnatbind",
-                              "gnatccg_wrapper",
-                              "gnatchop",
-                              "gnatclean",
-                              "gnatcmd",
-                              "gnatdll",
-                              "gnatfind",
-                              "gnatkr",
-                              "gnatlink",
-                              "gnatls",
-                              "gnatmake",
-                              "gnatname",
-                              "gnatprep",
-                              "gnatvsn",
-                              "gnatxref",
-                              "gprep",
-                              "graphs",
-                              "hostparm",
-                              "impunit",
-                              "indepsw",
-                              "indepsw.aix",
-                              "indepsw.darwin",
-                              "indepsw.gnu",
-                              "inline",
-                              "interfac.avr",
-                              "itypes",
-                              "krunch",
-                              "layout",
-                              "lib",
-                              "lib.list",
-                              "lib.load",
-                              "lib.sort",
-                              "lib.util",
-                              "lib.writ",
-                              "lib.xref",
-                              "live",
-                              "make",
-                              "makeusg",
-                              "make_util",
-                              "mdll",
-                              "mdll.fil",
-                              "mdll.utl",
                               "name_ordered_entities",
-                              "namet",
-                              "namet.sp",
-                              "nlists",
-                              "nmake",
-                              "opt",
-                              "osint",
-                              "osint.b",
-                              "osint.c",
-                              "osint.l",
-                              "osint.m",
-                              "output",
-                              "par",
-                              "par_sco",
-                              "pprint",
-                              "prep",
-                              "prepcomp",
-                              "put_scos",
-                              "repinfo",
-                              "repinfo.input",
-                              "restrict",
-                              "rident",
-                              "rtsfind",
-                              "sa_messages",
-                              "scans",
-                              "scil_ll",
-                              "scn",
-                              "scng",
-                              "scos",
-                              "sco_test",
-                              "sem",
-                              "sem_aggr",
-                              "sem_attr",
-                              "sem_aux",
-                              "sem_case",
-                              "sem_cat",
-                              "sem_ch10",
-                              "sem_ch12",
-                              "sem_ch13",
-                              "sem_ch3",
-                              "sem_ch4",
-                              "sem_ch6",
-                              "sem_ch7",
-                              "sem_ch8",
-                              "sem_dim",
-                              "sem_disp",
-                              "sem_dist",
-                              "sem_elab",
-                              "sem_elim",
-                              "sem_eval",
-                              "sem_intr",
-                              "sem_mech",
-                              "sem_prag",
-                              "sem_res",
-                              "sem_scil",
-                              "sem_smem",
-                              "sem_type",
-                              "sem_util",
-                              "sem_warn",
-                              "set_targ",
-                              "sfn_scan",
-                              "sinfo",
-                              "sinfo.cn",
-                              "sinput",
-                              "sinput.c",
-                              "sinput.d",
-                              "sinput.l",
-                              "sprint",
-                              "stand",
-                              "stringt",
-                              "style",
-                              "styleg",
-                              "stylesw",
-                              "switch",
-                              "switch.b",
-                              "switch.c",
-                              "switch.m",
-                              "symbols",
-                              "table",
-                              "targparm",
-                              "tbuild",
-                              "tempdir",
-                              "tree_gen",
-                              "tree_in",
-                              "tree_io",
-                              "treepr",
-                              "ttypes",
-                              "types",
-                              "uintp",
-                              "uname",
-                              "urealp",
-                              "usage",
-                              "validsw",
-                              "warnsw",
-                              "why",
-                              "why.classes",
-                              "why.sinfo",
-                              "widechar",
-                              "xeinfo",
-                              "xleaps",
-                              "xnmake",
-                              "xoscons",
-                              "xref_lib",
-                              "xr_tabls",
-                              "xsinfo",
-                              "xsnamest",
-                              "xtreeprs",
-                              "xutil"
+
+                              --  Exclude units not exercized in gnat2why itself
+                              "assumptions.search",
+                              "memcache_client",
+                              "named_semaphores",
+
+                              --  Exclude generated units intentionally not fully covered
+                              "gnat1drv",
+                              "why.atree.accessors",
+                              "why.atree.builders",
+                              "why.atree.mutators",
+                              "why.atree.traversal",
+                              "why.atree.traversal_stub",
+                              "why.conversions",
+
+                              --  Exclude units for debugging/assertions
+                              "flow_debug",
+                              "spark_xrefs",
+                              "why.atree.treepr",
+                              "why.atree.validity",
+                              "why.images",
+                              "why.kind_validity"
                               );
    end Coverage;
 

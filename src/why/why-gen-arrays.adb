@@ -41,7 +41,6 @@ with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Init;          use Why.Gen.Init;
 with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Images;            use Why.Images;
 with Why.Inter;             use Why.Inter;

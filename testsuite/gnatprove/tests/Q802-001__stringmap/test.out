@@ -1,8 +1,13 @@
-a-cfhama.ads:686:39: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
-a-cfhama.ads:695:17: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
-a-cfhama.ads:725:20: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
-a-cfhama.ads:740:20: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
-a-cfhama.ads:755:42: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:399:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.ads:12
+a-cfhama.ads:399:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.ads:12
+a-cfhama.ads:424:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:462:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:775:39: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:784:17: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:814:20: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:829:20: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:12
+a-cfhama.ads:844:42: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.ads:12
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at test.ads:12
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:12
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test.ads:12
@@ -67,6 +72,12 @@ test.ads:12:04: info: function contract not available for proof ("=" might not r
 test.ads:12:04: info: function contract not available for proof ("=" might not return)
 test.ads:12:04: info: function contract not available for proof ("=" might not return)
 test.ads:12:04: info: function contract not available for proof ("=" might not return)
+test.ads:12:04: info: function contract not available for proof ("=" might not return)
+test.ads:12:04: info: function contract not available for proof ("=" might not return)
+test.ads:12:04: info: function contract not available for proof ("=" might not return)
+test.ads:12:04: info: function contract not available for proof ("=" might not return)
+test.ads:12:04: info: function contract not available for proof ("Contains" might not return)
+test.ads:12:04: info: function contract not available for proof ("Contains" might not return)
 test.ads:12:04: info: function contract not available for proof ("Contains" might not return)
 test.ads:12:04: info: function contract not available for proof ("Contains" might not return)
 test.ads:12:04: info: function contract not available for proof ("Contains" might not return)
@@ -84,6 +95,9 @@ test.ads:12:04: info: function contract not available for proof ("Contains" migh
 test.ads:12:04: info: function contract not available for proof ("Contains" might not return)
 test.ads:12:04: info: function contract not available for proof ("Element" might not return)
 test.ads:12:04: info: function contract not available for proof ("Element" might not return)
+test.ads:12:04: info: function contract not available for proof ("Element" might not return)
+test.ads:12:04: info: function contract not available for proof ("Elements_Equal_Except" might not return)
+test.ads:12:04: info: function contract not available for proof ("Elements_Equal_Except" might not return)
 test.ads:12:04: info: function contract not available for proof ("Elements_Equal_Except" might not return)
 test.ads:12:04: info: function contract not available for proof ("Elements_Equal_Except" might not return)
 test.ads:12:04: info: function contract not available for proof ("Elements_Equal_Except" might not return)
@@ -144,6 +158,11 @@ test.ads:12:04: info: function contract not available for proof ("Get" might not
 test.ads:12:04: info: function contract not available for proof ("Get" might not return)
 test.ads:12:04: info: function contract not available for proof ("Get" might not return)
 test.ads:12:04: info: function contract not available for proof ("Get" might not return)
+test.ads:12:04: info: function contract not available for proof ("Get" might not return)
+test.ads:12:04: info: function contract not available for proof ("Get" might not return)
+test.ads:12:04: info: function contract not available for proof ("Get" might not return)
+test.ads:12:04: info: function contract not available for proof ("Has_Element" might not return)
+test.ads:12:04: info: function contract not available for proof ("Has_Element" might not return)
 test.ads:12:04: info: function contract not available for proof ("Has_Element" might not return)
 test.ads:12:04: info: function contract not available for proof ("Has_Element" might not return)
 test.ads:12:04: info: function contract not available for proof ("Has_Element" might not return)
@@ -210,6 +229,10 @@ test.ads:12:04: info: function contract not available for proof ("Key" might not
 test.ads:12:04: info: function contract not available for proof ("Key" might not return)
 test.ads:12:04: info: function contract not available for proof ("Key" might not return)
 test.ads:12:04: info: function contract not available for proof ("Key" might not return)
+test.ads:12:04: info: function contract not available for proof ("Key" might not return)
+test.ads:12:04: info: function contract not available for proof ("Key" might not return)
+test.ads:12:04: info: function contract not available for proof ("Keys" might not return)
+test.ads:12:04: info: function contract not available for proof ("Keys" might not return)
 test.ads:12:04: info: function contract not available for proof ("Keys" might not return)
 test.ads:12:04: info: function contract not available for proof ("Keys" might not return)
 test.ads:12:04: info: function contract not available for proof ("Keys" might not return)
@@ -331,6 +354,8 @@ test.ads:12:04: info: function contract not available for proof ("Mapping_Preser
 test.ads:12:04: info: function contract not available for proof ("Mapping_Preserved" might not return)
 test.ads:12:04: info: function contract not available for proof ("Mapping_Preserved" might not return)
 test.ads:12:04: info: function contract not available for proof ("Mapping_Preserved" might not return)
+test.ads:12:04: info: function contract not available for proof ("Positions" might not return)
+test.ads:12:04: info: function contract not available for proof ("Positions" might not return)
 test.ads:12:04: info: function contract not available for proof ("Positions" might not return)
 test.ads:12:04: info: function contract not available for proof ("Positions" might not return)
 test.ads:12:04: info: function contract not available for proof ("Positions" might not return)
@@ -384,6 +409,8 @@ test.ads:12:04: info: function contract not available for proof ("Range_Equal" m
 test.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
 test.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
 test.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
+test.ads:12:04: info: function contract not available for proof ("Same_Keys" might not return)
+test.ads:12:04: info: function contract not available for proof ("Same_Keys" might not return)
 test.ads:12:04: info: function contract not available for proof ("Same_Keys" might not return)
 test.ads:12:04: info: function contract not available for proof ("Same_Keys" might not return)
 test.ads:12:04: info: function contract not available for proof ("Same_Keys" might not return)
@@ -602,195 +629,217 @@ test.ads:12:04: info: in instantiation at a-cfhama.ads:387
 test.ads:12:04: info: in instantiation at a-cfhama.ads:391
 test.ads:12:04: info: in instantiation at a-cfhama.ads:392
 test.ads:12:04: info: in instantiation at a-cfhama.ads:395
-test.ads:12:04: info: in instantiation at a-cfhama.ads:399
-test.ads:12:04: info: in instantiation at a-cfhama.ads:401
-test.ads:12:04: info: in instantiation at a-cfhama.ads:402
-test.ads:12:04: info: in instantiation at a-cfhama.ads:403
-test.ads:12:04: info: in instantiation at a-cfhama.ads:407
-test.ads:12:04: info: in instantiation at a-cfhama.ads:407
-test.ads:12:04: info: in instantiation at a-cfhama.ads:408
-test.ads:12:04: info: in instantiation at a-cfhama.ads:408
-test.ads:12:04: info: in instantiation at a-cfhama.ads:419
-test.ads:12:04: info: in instantiation at a-cfhama.ads:419
-test.ads:12:04: info: in instantiation at a-cfhama.ads:421
-test.ads:12:04: info: in instantiation at a-cfhama.ads:422
+test.ads:12:04: info: in instantiation at a-cfhama.ads:414
+test.ads:12:04: info: in instantiation at a-cfhama.ads:417
+test.ads:12:04: info: in instantiation at a-cfhama.ads:417
 test.ads:12:04: info: in instantiation at a-cfhama.ads:424
+test.ads:12:04: info: in instantiation at a-cfhama.ads:429
+test.ads:12:04: info: in instantiation at a-cfhama.ads:429
 test.ads:12:04: info: in instantiation at a-cfhama.ads:430
-test.ads:12:04: info: in instantiation at a-cfhama.ads:432
-test.ads:12:04: info: in instantiation at a-cfhama.ads:433
-test.ads:12:04: info: in instantiation at a-cfhama.ads:433
-test.ads:12:04: info: in instantiation at a-cfhama.ads:434
-test.ads:12:04: info: in instantiation at a-cfhama.ads:434
+test.ads:12:04: info: in instantiation at a-cfhama.ads:430
+test.ads:12:04: info: in instantiation at a-cfhama.ads:435
 test.ads:12:04: info: in instantiation at a-cfhama.ads:440
-test.ads:12:04: info: in instantiation at a-cfhama.ads:444
-test.ads:12:04: info: in instantiation at a-cfhama.ads:445
-test.ads:12:04: info: in instantiation at a-cfhama.ads:449
-test.ads:12:04: info: in instantiation at a-cfhama.ads:450
-test.ads:12:04: info: in instantiation at a-cfhama.ads:457
-test.ads:12:04: info: in instantiation at a-cfhama.ads:458
-test.ads:12:04: info: in instantiation at a-cfhama.ads:459
-test.ads:12:04: info: in instantiation at a-cfhama.ads:460
-test.ads:12:04: info: in instantiation at a-cfhama.ads:461
+test.ads:12:04: info: in instantiation at a-cfhama.ads:443
+test.ads:12:04: info: in instantiation at a-cfhama.ads:446
+test.ads:12:04: info: in instantiation at a-cfhama.ads:453
+test.ads:12:04: info: in instantiation at a-cfhama.ads:455
 test.ads:12:04: info: in instantiation at a-cfhama.ads:462
-test.ads:12:04: info: in instantiation at a-cfhama.ads:463
-test.ads:12:04: info: in instantiation at a-cfhama.ads:464
-test.ads:12:04: info: in instantiation at a-cfhama.ads:474
-test.ads:12:04: info: in instantiation at a-cfhama.ads:475
-test.ads:12:04: info: in instantiation at a-cfhama.ads:477
+test.ads:12:04: info: in instantiation at a-cfhama.ads:467
+test.ads:12:04: info: in instantiation at a-cfhama.ads:467
+test.ads:12:04: info: in instantiation at a-cfhama.ads:468
+test.ads:12:04: info: in instantiation at a-cfhama.ads:468
+test.ads:12:04: info: in instantiation at a-cfhama.ads:473
 test.ads:12:04: info: in instantiation at a-cfhama.ads:478
-test.ads:12:04: info: in instantiation at a-cfhama.ads:482
-test.ads:12:04: info: in instantiation at a-cfhama.ads:482
-test.ads:12:04: info: in instantiation at a-cfhama.ads:483
-test.ads:12:04: info: in instantiation at a-cfhama.ads:487
+test.ads:12:04: info: in instantiation at a-cfhama.ads:481
 test.ads:12:04: info: in instantiation at a-cfhama.ads:488
-test.ads:12:04: info: in instantiation at a-cfhama.ads:495
+test.ads:12:04: info: in instantiation at a-cfhama.ads:490
+test.ads:12:04: info: in instantiation at a-cfhama.ads:491
+test.ads:12:04: info: in instantiation at a-cfhama.ads:492
+test.ads:12:04: info: in instantiation at a-cfhama.ads:496
 test.ads:12:04: info: in instantiation at a-cfhama.ads:496
 test.ads:12:04: info: in instantiation at a-cfhama.ads:497
-test.ads:12:04: info: in instantiation at a-cfhama.ads:498
-test.ads:12:04: info: in instantiation at a-cfhama.ads:499
-test.ads:12:04: info: in instantiation at a-cfhama.ads:500
-test.ads:12:04: info: in instantiation at a-cfhama.ads:501
-test.ads:12:04: info: in instantiation at a-cfhama.ads:502
-test.ads:12:04: info: in instantiation at a-cfhama.ads:503
-test.ads:12:04: info: in instantiation at a-cfhama.ads:512
-test.ads:12:04: info: in instantiation at a-cfhama.ads:512
-test.ads:12:04: info: in instantiation at a-cfhama.ads:514
-test.ads:12:04: info: in instantiation at a-cfhama.ads:514
+test.ads:12:04: info: in instantiation at a-cfhama.ads:497
+test.ads:12:04: info: in instantiation at a-cfhama.ads:508
+test.ads:12:04: info: in instantiation at a-cfhama.ads:508
+test.ads:12:04: info: in instantiation at a-cfhama.ads:510
+test.ads:12:04: info: in instantiation at a-cfhama.ads:511
+test.ads:12:04: info: in instantiation at a-cfhama.ads:513
 test.ads:12:04: info: in instantiation at a-cfhama.ads:519
+test.ads:12:04: info: in instantiation at a-cfhama.ads:521
+test.ads:12:04: info: in instantiation at a-cfhama.ads:522
+test.ads:12:04: info: in instantiation at a-cfhama.ads:522
 test.ads:12:04: info: in instantiation at a-cfhama.ads:523
 test.ads:12:04: info: in instantiation at a-cfhama.ads:523
-test.ads:12:04: info: in instantiation at a-cfhama.ads:527
-test.ads:12:04: info: in instantiation at a-cfhama.ads:528
 test.ads:12:04: info: in instantiation at a-cfhama.ads:529
-test.ads:12:04: info: in instantiation at a-cfhama.ads:529
-test.ads:12:04: info: in instantiation at a-cfhama.ads:529
-test.ads:12:04: info: in instantiation at a-cfhama.ads:530
-test.ads:12:04: info: in instantiation at a-cfhama.ads:531
-test.ads:12:04: info: in instantiation at a-cfhama.ads:532
 test.ads:12:04: info: in instantiation at a-cfhama.ads:533
-test.ads:12:04: info: in instantiation at a-cfhama.ads:533
-test.ads:12:04: info: in instantiation at a-cfhama.ads:533
-test.ads:12:04: info: in instantiation at a-cfhama.ads:537
+test.ads:12:04: info: in instantiation at a-cfhama.ads:534
 test.ads:12:04: info: in instantiation at a-cfhama.ads:538
+test.ads:12:04: info: in instantiation at a-cfhama.ads:539
 test.ads:12:04: info: in instantiation at a-cfhama.ads:546
+test.ads:12:04: info: in instantiation at a-cfhama.ads:547
+test.ads:12:04: info: in instantiation at a-cfhama.ads:548
+test.ads:12:04: info: in instantiation at a-cfhama.ads:549
 test.ads:12:04: info: in instantiation at a-cfhama.ads:550
 test.ads:12:04: info: in instantiation at a-cfhama.ads:551
-test.ads:12:04: info: in instantiation at a-cfhama.ads:558
-test.ads:12:04: info: in instantiation at a-cfhama.ads:559
-test.ads:12:04: info: in instantiation at a-cfhama.ads:560
-test.ads:12:04: info: in instantiation at a-cfhama.ads:560
-test.ads:12:04: info: in instantiation at a-cfhama.ads:560
+test.ads:12:04: info: in instantiation at a-cfhama.ads:552
+test.ads:12:04: info: in instantiation at a-cfhama.ads:553
+test.ads:12:04: info: in instantiation at a-cfhama.ads:563
 test.ads:12:04: info: in instantiation at a-cfhama.ads:564
-test.ads:12:04: info: in instantiation at a-cfhama.ads:565
 test.ads:12:04: info: in instantiation at a-cfhama.ads:566
 test.ads:12:04: info: in instantiation at a-cfhama.ads:567
-test.ads:12:04: info: in instantiation at a-cfhama.ads:568
-test.ads:12:04: info: in instantiation at a-cfhama.ads:569
-test.ads:12:04: info: in instantiation at a-cfhama.ads:570
+test.ads:12:04: info: in instantiation at a-cfhama.ads:571
 test.ads:12:04: info: in instantiation at a-cfhama.ads:571
 test.ads:12:04: info: in instantiation at a-cfhama.ads:572
-test.ads:12:04: info: in instantiation at a-cfhama.ads:580
+test.ads:12:04: info: in instantiation at a-cfhama.ads:576
+test.ads:12:04: info: in instantiation at a-cfhama.ads:577
+test.ads:12:04: info: in instantiation at a-cfhama.ads:584
 test.ads:12:04: info: in instantiation at a-cfhama.ads:585
-test.ads:12:04: info: in instantiation at a-cfhama.ads:585
+test.ads:12:04: info: in instantiation at a-cfhama.ads:586
+test.ads:12:04: info: in instantiation at a-cfhama.ads:587
+test.ads:12:04: info: in instantiation at a-cfhama.ads:588
 test.ads:12:04: info: in instantiation at a-cfhama.ads:589
 test.ads:12:04: info: in instantiation at a-cfhama.ads:590
 test.ads:12:04: info: in instantiation at a-cfhama.ads:591
-test.ads:12:04: info: in instantiation at a-cfhama.ads:591
-test.ads:12:04: info: in instantiation at a-cfhama.ads:591
 test.ads:12:04: info: in instantiation at a-cfhama.ads:592
-test.ads:12:04: info: in instantiation at a-cfhama.ads:593
-test.ads:12:04: info: in instantiation at a-cfhama.ads:594
-test.ads:12:04: info: in instantiation at a-cfhama.ads:595
-test.ads:12:04: info: in instantiation at a-cfhama.ads:595
-test.ads:12:04: info: in instantiation at a-cfhama.ads:595
-test.ads:12:04: info: in instantiation at a-cfhama.ads:599
+test.ads:12:04: info: in instantiation at a-cfhama.ads:601
+test.ads:12:04: info: in instantiation at a-cfhama.ads:601
 test.ads:12:04: info: in instantiation at a-cfhama.ads:603
-test.ads:12:04: info: in instantiation at a-cfhama.ads:604
-test.ads:12:04: info: in instantiation at a-cfhama.ads:611
+test.ads:12:04: info: in instantiation at a-cfhama.ads:603
+test.ads:12:04: info: in instantiation at a-cfhama.ads:608
+test.ads:12:04: info: in instantiation at a-cfhama.ads:612
+test.ads:12:04: info: in instantiation at a-cfhama.ads:612
 test.ads:12:04: info: in instantiation at a-cfhama.ads:616
 test.ads:12:04: info: in instantiation at a-cfhama.ads:617
 test.ads:12:04: info: in instantiation at a-cfhama.ads:618
 test.ads:12:04: info: in instantiation at a-cfhama.ads:618
+test.ads:12:04: info: in instantiation at a-cfhama.ads:618
 test.ads:12:04: info: in instantiation at a-cfhama.ads:619
-test.ads:12:04: info: in instantiation at a-cfhama.ads:619
-test.ads:12:04: info: in instantiation at a-cfhama.ads:624
-test.ads:12:04: info: in instantiation at a-cfhama.ads:628
-test.ads:12:04: info: in instantiation at a-cfhama.ads:629
-test.ads:12:04: info: in instantiation at a-cfhama.ads:636
-test.ads:12:04: info: in instantiation at a-cfhama.ads:637
-test.ads:12:04: info: in instantiation at a-cfhama.ads:638
+test.ads:12:04: info: in instantiation at a-cfhama.ads:620
+test.ads:12:04: info: in instantiation at a-cfhama.ads:621
+test.ads:12:04: info: in instantiation at a-cfhama.ads:622
+test.ads:12:04: info: in instantiation at a-cfhama.ads:622
+test.ads:12:04: info: in instantiation at a-cfhama.ads:622
+test.ads:12:04: info: in instantiation at a-cfhama.ads:626
+test.ads:12:04: info: in instantiation at a-cfhama.ads:627
+test.ads:12:04: info: in instantiation at a-cfhama.ads:635
 test.ads:12:04: info: in instantiation at a-cfhama.ads:639
 test.ads:12:04: info: in instantiation at a-cfhama.ads:640
-test.ads:12:04: info: in instantiation at a-cfhama.ads:641
-test.ads:12:04: info: in instantiation at a-cfhama.ads:642
-test.ads:12:04: info: in instantiation at a-cfhama.ads:643
-test.ads:12:04: info: in instantiation at a-cfhama.ads:644
+test.ads:12:04: info: in instantiation at a-cfhama.ads:647
 test.ads:12:04: info: in instantiation at a-cfhama.ads:648
-test.ads:12:04: info: in instantiation at a-cfhama.ads:650
+test.ads:12:04: info: in instantiation at a-cfhama.ads:649
+test.ads:12:04: info: in instantiation at a-cfhama.ads:649
+test.ads:12:04: info: in instantiation at a-cfhama.ads:649
+test.ads:12:04: info: in instantiation at a-cfhama.ads:653
 test.ads:12:04: info: in instantiation at a-cfhama.ads:654
+test.ads:12:04: info: in instantiation at a-cfhama.ads:655
+test.ads:12:04: info: in instantiation at a-cfhama.ads:656
+test.ads:12:04: info: in instantiation at a-cfhama.ads:657
 test.ads:12:04: info: in instantiation at a-cfhama.ads:658
 test.ads:12:04: info: in instantiation at a-cfhama.ads:659
-test.ads:12:04: info: in instantiation at a-cfhama.ads:666
-test.ads:12:04: info: in instantiation at a-cfhama.ads:667
-test.ads:12:04: info: in instantiation at a-cfhama.ads:668
+test.ads:12:04: info: in instantiation at a-cfhama.ads:660
+test.ads:12:04: info: in instantiation at a-cfhama.ads:661
 test.ads:12:04: info: in instantiation at a-cfhama.ads:669
-test.ads:12:04: info: in instantiation at a-cfhama.ads:670
-test.ads:12:04: info: in instantiation at a-cfhama.ads:671
-test.ads:12:04: info: in instantiation at a-cfhama.ads:672
-test.ads:12:04: info: in instantiation at a-cfhama.ads:673
 test.ads:12:04: info: in instantiation at a-cfhama.ads:674
+test.ads:12:04: info: in instantiation at a-cfhama.ads:674
+test.ads:12:04: info: in instantiation at a-cfhama.ads:678
 test.ads:12:04: info: in instantiation at a-cfhama.ads:679
+test.ads:12:04: info: in instantiation at a-cfhama.ads:680
+test.ads:12:04: info: in instantiation at a-cfhama.ads:680
+test.ads:12:04: info: in instantiation at a-cfhama.ads:680
+test.ads:12:04: info: in instantiation at a-cfhama.ads:681
 test.ads:12:04: info: in instantiation at a-cfhama.ads:682
-test.ads:12:04: info: in instantiation at a-cfhama.ads:686
-test.ads:12:04: info: in instantiation at a-cfhama.ads:686
-test.ads:12:04: info: in instantiation at a-cfhama.ads:687
-test.ads:12:04: info: in instantiation at a-cfhama.ads:687
-test.ads:12:04: info: in instantiation at a-cfhama.ads:691
+test.ads:12:04: info: in instantiation at a-cfhama.ads:683
+test.ads:12:04: info: in instantiation at a-cfhama.ads:684
+test.ads:12:04: info: in instantiation at a-cfhama.ads:684
+test.ads:12:04: info: in instantiation at a-cfhama.ads:684
+test.ads:12:04: info: in instantiation at a-cfhama.ads:688
 test.ads:12:04: info: in instantiation at a-cfhama.ads:692
-test.ads:12:04: info: in instantiation at a-cfhama.ads:695
-test.ads:12:04: info: in instantiation at a-cfhama.ads:699
+test.ads:12:04: info: in instantiation at a-cfhama.ads:693
 test.ads:12:04: info: in instantiation at a-cfhama.ads:700
-test.ads:12:04: info: in instantiation at a-cfhama.ads:701
-test.ads:12:04: info: in instantiation at a-cfhama.ads:702
-test.ads:12:04: info: in instantiation at a-cfhama.ads:703
-test.ads:12:04: info: in instantiation at a-cfhama.ads:704
 test.ads:12:04: info: in instantiation at a-cfhama.ads:705
 test.ads:12:04: info: in instantiation at a-cfhama.ads:706
-test.ads:12:04: info: in instantiation at a-cfhama.ads:712
-test.ads:12:04: info: in instantiation at a-cfhama.ads:716
+test.ads:12:04: info: in instantiation at a-cfhama.ads:707
+test.ads:12:04: info: in instantiation at a-cfhama.ads:707
+test.ads:12:04: info: in instantiation at a-cfhama.ads:708
+test.ads:12:04: info: in instantiation at a-cfhama.ads:708
+test.ads:12:04: info: in instantiation at a-cfhama.ads:713
 test.ads:12:04: info: in instantiation at a-cfhama.ads:717
-test.ads:12:04: info: in instantiation at a-cfhama.ads:717
-test.ads:12:04: info: in instantiation at a-cfhama.ads:722
+test.ads:12:04: info: in instantiation at a-cfhama.ads:718
 test.ads:12:04: info: in instantiation at a-cfhama.ads:725
-test.ads:12:04: info: in instantiation at a-cfhama.ads:725
-test.ads:12:04: info: in instantiation at a-cfhama.ads:725
+test.ads:12:04: info: in instantiation at a-cfhama.ads:726
+test.ads:12:04: info: in instantiation at a-cfhama.ads:727
+test.ads:12:04: info: in instantiation at a-cfhama.ads:728
+test.ads:12:04: info: in instantiation at a-cfhama.ads:729
 test.ads:12:04: info: in instantiation at a-cfhama.ads:730
 test.ads:12:04: info: in instantiation at a-cfhama.ads:731
-test.ads:12:04: info: in instantiation at a-cfhama.ads:731
 test.ads:12:04: info: in instantiation at a-cfhama.ads:732
-test.ads:12:04: info: in instantiation at a-cfhama.ads:732
+test.ads:12:04: info: in instantiation at a-cfhama.ads:733
 test.ads:12:04: info: in instantiation at a-cfhama.ads:737
-test.ads:12:04: info: in instantiation at a-cfhama.ads:740
-test.ads:12:04: info: in instantiation at a-cfhama.ads:740
-test.ads:12:04: info: in instantiation at a-cfhama.ads:740
-test.ads:12:04: info: in instantiation at a-cfhama.ads:745
-test.ads:12:04: info: in instantiation at a-cfhama.ads:746
-test.ads:12:04: info: in instantiation at a-cfhama.ads:746
+test.ads:12:04: info: in instantiation at a-cfhama.ads:739
+test.ads:12:04: info: in instantiation at a-cfhama.ads:743
 test.ads:12:04: info: in instantiation at a-cfhama.ads:747
-test.ads:12:04: info: in instantiation at a-cfhama.ads:747
+test.ads:12:04: info: in instantiation at a-cfhama.ads:748
 test.ads:12:04: info: in instantiation at a-cfhama.ads:755
-test.ads:12:04: info: in instantiation at a-cfhama.ads:761
+test.ads:12:04: info: in instantiation at a-cfhama.ads:756
+test.ads:12:04: info: in instantiation at a-cfhama.ads:757
+test.ads:12:04: info: in instantiation at a-cfhama.ads:758
+test.ads:12:04: info: in instantiation at a-cfhama.ads:759
+test.ads:12:04: info: in instantiation at a-cfhama.ads:760
 test.ads:12:04: info: in instantiation at a-cfhama.ads:761
 test.ads:12:04: info: in instantiation at a-cfhama.ads:762
-test.ads:12:04: info: in instantiation at a-cfhama.ads:762
-test.ads:12:04: info: in instantiation at a-cfhama.ads:763
 test.ads:12:04: info: in instantiation at a-cfhama.ads:763
 test.ads:12:04: info: in instantiation at a-cfhama.ads:768
-test.ads:12:04: info: in instantiation at a-cfhama.ads:772
-test.ads:12:04: info: in instantiation at a-cfhama.ads:777
-test.ads:12:04: info: in instantiation at a-cfhama.ads:778
-test.ads:12:04: info: in instantiation at a-cfhama.ads:785
-test.ads:12:04: info: in instantiation at a-cfhama.ads:785
+test.ads:12:04: info: in instantiation at a-cfhama.ads:771
+test.ads:12:04: info: in instantiation at a-cfhama.ads:775
+test.ads:12:04: info: in instantiation at a-cfhama.ads:775
+test.ads:12:04: info: in instantiation at a-cfhama.ads:776
+test.ads:12:04: info: in instantiation at a-cfhama.ads:776
+test.ads:12:04: info: in instantiation at a-cfhama.ads:780
+test.ads:12:04: info: in instantiation at a-cfhama.ads:781
+test.ads:12:04: info: in instantiation at a-cfhama.ads:784
+test.ads:12:04: info: in instantiation at a-cfhama.ads:788
+test.ads:12:04: info: in instantiation at a-cfhama.ads:789
+test.ads:12:04: info: in instantiation at a-cfhama.ads:790
+test.ads:12:04: info: in instantiation at a-cfhama.ads:791
+test.ads:12:04: info: in instantiation at a-cfhama.ads:792
+test.ads:12:04: info: in instantiation at a-cfhama.ads:793
+test.ads:12:04: info: in instantiation at a-cfhama.ads:794
+test.ads:12:04: info: in instantiation at a-cfhama.ads:795
+test.ads:12:04: info: in instantiation at a-cfhama.ads:801
+test.ads:12:04: info: in instantiation at a-cfhama.ads:805
+test.ads:12:04: info: in instantiation at a-cfhama.ads:806
+test.ads:12:04: info: in instantiation at a-cfhama.ads:806
+test.ads:12:04: info: in instantiation at a-cfhama.ads:811
+test.ads:12:04: info: in instantiation at a-cfhama.ads:814
+test.ads:12:04: info: in instantiation at a-cfhama.ads:814
+test.ads:12:04: info: in instantiation at a-cfhama.ads:814
+test.ads:12:04: info: in instantiation at a-cfhama.ads:819
+test.ads:12:04: info: in instantiation at a-cfhama.ads:820
+test.ads:12:04: info: in instantiation at a-cfhama.ads:820
+test.ads:12:04: info: in instantiation at a-cfhama.ads:821
+test.ads:12:04: info: in instantiation at a-cfhama.ads:821
+test.ads:12:04: info: in instantiation at a-cfhama.ads:826
+test.ads:12:04: info: in instantiation at a-cfhama.ads:829
+test.ads:12:04: info: in instantiation at a-cfhama.ads:829
+test.ads:12:04: info: in instantiation at a-cfhama.ads:829
+test.ads:12:04: info: in instantiation at a-cfhama.ads:834
+test.ads:12:04: info: in instantiation at a-cfhama.ads:835
+test.ads:12:04: info: in instantiation at a-cfhama.ads:835
+test.ads:12:04: info: in instantiation at a-cfhama.ads:836
+test.ads:12:04: info: in instantiation at a-cfhama.ads:836
+test.ads:12:04: info: in instantiation at a-cfhama.ads:844
+test.ads:12:04: info: in instantiation at a-cfhama.ads:850
+test.ads:12:04: info: in instantiation at a-cfhama.ads:850
+test.ads:12:04: info: in instantiation at a-cfhama.ads:851
+test.ads:12:04: info: in instantiation at a-cfhama.ads:851
+test.ads:12:04: info: in instantiation at a-cfhama.ads:852
+test.ads:12:04: info: in instantiation at a-cfhama.ads:852
+test.ads:12:04: info: in instantiation at a-cfhama.ads:857
+test.ads:12:04: info: in instantiation at a-cfhama.ads:861
+test.ads:12:04: info: in instantiation at a-cfhama.ads:866
+test.ads:12:04: info: in instantiation at a-cfhama.ads:867
+test.ads:12:04: info: in instantiation at a-cfhama.ads:874
+test.ads:12:04: info: in instantiation at a-cfhama.ads:874
 test.ads:12:04: info: in instantiation at a-cfhama.ads:99
 test.ads:12:04: info: in instantiation at a-cfhama.ads:99
 test.ads:12:04: info: in instantiation at a-cfhama.ads:99
@@ -956,8 +1005,8 @@ test.ads:12:04: info: in instantiation at a-cofuve.ads:326
 test.ads:12:04: info: in instantiation at a-cofuve.ads:327
 test.ads:12:04: info: in instantiation at a-cofuve.ads:332
 test.ads:12:04: info: in instantiation at a-cofuve.ads:336
-test.ads:12:04: info: in instantiation at a-cofuve.ads:353
-test.ads:12:04: info: in instantiation at a-cofuve.ads:361
+test.ads:12:04: info: in instantiation at a-cofuve.ads:360
+test.ads:12:04: info: in instantiation at a-cofuve.ads:368
 test.ads:12:04: info: in instantiation at a-cofuve.ads:52
 test.ads:12:04: info: in instantiation at a-cofuve.ads:83
 test.ads:12:04: info: in instantiation at a-cofuve.ads:92

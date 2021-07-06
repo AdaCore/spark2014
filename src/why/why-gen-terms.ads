@@ -34,6 +34,9 @@ package Why.Gen.Terms is
    True_Term  : constant W_Term_Id := New_Literal (Value => EW_True);
    False_Term : constant W_Term_Id := New_Literal (Value => EW_False);
 
+   False_Pred : constant W_Pred_Id := New_Literal (Value => EW_False);
+   True_Pred  : constant W_Pred_Id := New_Literal (Value => EW_True);
+
    function Has_Dereference (W : Why_Node_Id) return Boolean;
    --  Return True if T contains a dereference
 

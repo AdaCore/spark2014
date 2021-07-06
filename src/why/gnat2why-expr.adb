@@ -191,7 +191,9 @@ package body Gnat2Why.Expr is
      (N             : Node_Id;
       Expected_Type : W_Type_OId := Why_Empty;
       Domain        : EW_Domain;
-      Params        : Transformation_Params) return W_Expr_Id;
+      Params        : Transformation_Params) return W_Expr_Id
+   with Pre => (if Expected_Type = Why_Empty then Nkind (N) = N_Case_Statement
+                else Nkind (N) = N_Case_Expression);
    --  Build Case expression of Ada Node
 
    function Check_No_Memory_Leaks
@@ -1977,16 +1979,11 @@ package body Gnat2Why.Expr is
                   Transform_Actions_Preparation (Actions (N));
                end if;
 
-               if Expected_Type = Why_Empty then
-                  T := Transform_Expr (Expression (N),
-                                       Domain,
-                                       Params);
-               else
-                  T := Transform_Expr (Expression (N),
-                                       Expected_Type,
-                                       Domain,
-                                       Params);
-               end if;
+               pragma Assert (Expected_Type /= Why_Empty);
+               T := Transform_Expr (Expression (N),
+                                    Expected_Type,
+                                    Domain,
+                                    Params);
 
                if Present (Actions (N)) then
                   T := Transform_Actions (Actions (N),
@@ -7440,7 +7437,8 @@ package body Gnat2Why.Expr is
       return Nkind (N) not in N_Quantified_Expression |
                               N_And_Then              |
                               N_Op_And                |
-                              N_If_Expression;
+                              N_If_Expression         |
+                              N_Case_Expression;
    end Is_Terminal_Node;
 
    ---------------------
@@ -7579,21 +7577,13 @@ package body Gnat2Why.Expr is
             --  And possibly declare new references
 
             for J of reverse Context loop
-               if J.Mutable then
-                  T :=
-                    New_Binding_Ref
-                      (Name    => J.Name,
-                       Def     => +J.Value,
-                       Context => T,
-                       Typ     => EW_Unit_Type);
-               else
-                  T :=
-                    +New_Typed_Binding
-                    (Domain   => EW_Prog,
-                     Name     => J.Name,
-                     Def      => J.Value,
-                     Context  => +T);
-               end if;
+               pragma Assert (J.Mutable);
+               T :=
+                 New_Binding_Ref
+                   (Name    => J.Name,
+                    Def     => +J.Value,
+                    Context => T,
+                    Typ     => EW_Unit_Type);
             end loop;
 
             return T;
@@ -7641,31 +7631,22 @@ package body Gnat2Why.Expr is
    --  Start of processing for New_Assignment
 
    begin
-      --  When assigning to the view conversion of an object, it is really the
-      --  object which will be assigned to in Why3. So start with skipping all
-      --  view conversions, so that the correct type of object is used later.
+      --  Assignments cannot change the tag of the object
 
-      while Nkind (Left_Side) in N_Type_Conversion
-                               | N_Unchecked_Type_Conversion
-      loop
-         Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain);
-      end loop;
-
-      --  Record attributes of objects are not modified by assignments
-
-      declare
-         Ty : constant Entity_Id := Etype (Left_Side);
-      begin
-         if Is_Record_Type_In_Why (Ty) then
-            Right_Side :=
-              +New_Tag_Update
+      if Is_Tagged_Type (Etype (Left_Side)) then
+         declare
+            Typ      : constant Entity_Id := Etype (Left_Side);
+            Old_Left : constant W_Expr_Id :=
+              Transform_Expr (Left_Side, EW_Pterm, Body_Params);
+         begin
+            Right_Side := +New_Tag_Update
               (Ada_Node  => Ada_Node,
                Domain    => Domain,
                Name      => +Right_Side,
-               From_Expr => Transform_Expr (Left_Side, EW_Pterm, Body_Params),
-               Ty        => Ty);
-         end if;
-      end;
+               From_Expr => Old_Left,
+               Ty        => Typ);
+         end;
+      end if;
 
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
          Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain);
@@ -8875,34 +8856,62 @@ package body Gnat2Why.Expr is
             --  but some Itype with the same constraints. To avoid a type
             --  mismatch in Why, we should use the selector of the expected
             --  type instead.
+            --  If there is no such component, we must be in a tagged view
+            --  conversion. Introduce conversions to do the update.
 
             declare
-               Selector  : constant Entity_Id :=
+               Selector  : Entity_Id :=
                  (if Nkind (N) in N_Identifier | N_Expanded_Name
                   then Entity (N)
                   else Search_Component_In_Type
                     (Pref_Ty, Entity (Selector_Name (N))));
-               To_Type   : constant W_Type_Id :=
-                 EW_Abstract
-                   (Etype (Selector),
-                    Relaxed_Init => Expr_Has_Relaxed_Init (N));
-               New_Value : constant W_Expr_Id := Insert_Simple_Conversion
-                      (Ada_Node => N,
-                       Domain   => Domain,
-                       Expr     => Init_Val,
-                       To       => To_Type);
+               Need_Conv : constant Boolean := No (Selector);
+               View_Pref : W_Expr_Id := Pref;
+
             begin
-               --  The code should never update a discrimiant by assigning to
-               --  it.
+               if Need_Conv then
+                  pragma Assert (Is_Tagged_Type (Pref_Ty));
 
-               pragma Assert (Ekind (Selector) /= E_Discriminant);
+                  Selector := Search_Component_In_Type
+                    (Etype (Prefix (N)), Entity (Selector_Name (N)));
+                  View_Pref := Insert_Simple_Conversion
+                    (Ada_Node => N,
+                     Domain   => Term_Domain (Domain),
+                     Expr     => View_Pref,
+                     To       => EW_Abstract (Etype (Prefix (N))));
+               end if;
 
-               Result := New_Ada_Record_Update
-                 (Ada_Node => N,
-                  Domain   => Domain,
-                  Name     => Pref,
-                  Field    => Selector,
-                  Value    => New_Value);
+               declare
+                  To_Type   : constant W_Type_Id :=
+                    EW_Abstract
+                      (Etype (Selector),
+                       Relaxed_Init => Expr_Has_Relaxed_Init (N));
+                  New_Value : constant W_Expr_Id := Insert_Simple_Conversion
+                    (Ada_Node => N,
+                     Domain   => Domain,
+                     Expr     => Init_Val,
+                     To       => To_Type);
+               begin
+                  --  The code should never update a discrimiant by assigning
+                  --  to it.
+
+                  pragma Assert (Ekind (Selector) /= E_Discriminant);
+
+                  Result := New_Ada_Record_Update
+                    (Ada_Node => N,
+                     Domain   => Domain,
+                     Name     => View_Pref,
+                     Field    => Selector,
+                     Value    => New_Value);
+               end;
+
+               if Need_Conv then
+                  Result := Insert_Simple_Conversion
+                    (Ada_Node => N,
+                     Domain   => Domain,
+                     Expr     => Result,
+                     To       => EW_Abstract (Pref_Ty));
+               end if;
             end;
 
          when N_Explicit_Dereference =>
@@ -9453,6 +9462,20 @@ package body Gnat2Why.Expr is
             | N_Unchecked_Type_Conversion
             | N_Qualified_Expression
          =>
+            --  In view conversions, check that the type of the conversion is
+            --  compatible with the tag of the expression.
+
+            if Domain = EW_Prog
+              and then Is_Tagged_Type (Etype (N))
+              and then Nkind (N) /= N_Qualified_Expression
+              and then not Is_Ancestor (Etype (N), Etype (Expression (N)))
+            then
+               Expr := +Insert_Tag_Check
+                 (Ada_Node => N,
+                  Check_Ty => Etype (N),
+                  Expr     => +Expr);
+            end if;
+
             N := Expression (N);
             Typ := Retysp (Etype (N));
 
@@ -11955,11 +11978,14 @@ package body Gnat2Why.Expr is
                                       Value  => EW_True),
             Domain    => Domain);
       elsif Op = N_Op_Ne then
+         pragma Annotate
+           (Xcov, Exempt_On, "A /= B is expanded into not (A = B)");
          T :=
            New_Call (Domain => Domain,
                      Name   => M_Boolean.Notb,
                      Args   => (1 => T),
                      Typ    => EW_Bool_Type);
+         pragma Annotate (Xcov, Exempt_Off);
       end if;
       return T;
    end Transform_Array_Equality;
@@ -12953,10 +12979,15 @@ package body Gnat2Why.Expr is
                         Typ      => EW_Int_Type);
                   end if;
                else
+                  pragma Annotate
+                    (Xcov, Exempt_On,
+                     "T'Enum_Val is expanded into T'Val if T has no"
+                     & " representation clause");
                   T := Transform_Expr (Arg,
                                        Type_Of_Node (Val_Type),
                                        Domain,
                                        Params);
+                  pragma Annotate (Xcov, Exempt_Off);
                end if;
             end;
 
@@ -13058,9 +13089,6 @@ package body Gnat2Why.Expr is
          when Attribute_Loop_Entry =>
             T := +Name_For_Loop_Entry (Expr);
 
-         when Attribute_Modulus =>
-            T := New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
-
          when Attribute_Mod =>
             declare
                Arg         : constant Node_Id := First (Expressions (Expr));
@@ -13090,9 +13118,11 @@ package body Gnat2Why.Expr is
                           Transform_Expr (Arg, Arg_BTyp, Domain, Params);
 
                         --  If the modulo comes from a builtin type, we use the
-                        --  modulus valus from Why3 theory.
+                        --  modulus value from the Why3 theory.
 
-                        if Get_EW_Type (Var) = EW_Builtin then
+                        if Var_Modulus =
+                          UI_Expon (2, Modular_Size (Etype (Var)))
+                        then
                            Mod_Expr :=
                              Insert_Simple_Conversion
                                (Domain => EW_Term,
@@ -13105,8 +13135,11 @@ package body Gnat2Why.Expr is
 
                         else
                            Mod_Expr :=
-                             New_Attribute_Expr
-                               (Etype (Var), Domain, Attribute_Modulus);
+                             Insert_Simple_Conversion
+                               (Domain => EW_Term,
+                                Expr   => New_Attribute_Expr
+                                  (Etype (Var), Domain, Attribute_Modulus),
+                                To     => Arg_BTyp);
                         end if;
 
                         T := Insert_Simple_Conversion
@@ -13537,37 +13570,26 @@ package body Gnat2Why.Expr is
                --  object. When specified on the type, the frontend replaces
                --  T'Alignment by its value. When specified on the object,
                --  we only support cases where the alignment is known.
+               --  Those are expanded by the frontend, so they never occur
+               --  here.
 
                if Has_Type_Prefix then
                   declare
                      Typ : constant Entity_Id := Entity (Var);
                   begin
                      if Known_Alignment (Typ) then
+                        pragma Annotate
+                          (Xcov, Exempt_On,
+                           "'Alignment is expanded by the frontend when"
+                           & " statically known");
                         T := New_Integer_Constant (Expr, Alignment (Typ));
+                        pragma Annotate (Xcov, Exempt_Off);
                      else
                         T := New_Attribute_Expr (Typ, Domain, Attr_Id);
                      end if;
                   end;
                else
-                  pragma Assert (Present (Entity (Var))
-                                   and then Known_Alignment (Entity (Var)));
-                  T := New_Integer_Constant (Expr, Alignment (Entity (Var)));
-               end if;
-
-               --  In the program domain, translate the object itself to
-               --  generate any necessary checks.
-
-               if not Has_Type_Prefix
-                 and then Domain = EW_Prog
-               then
-                  T := New_Binding
-                         (Name    =>
-                            New_Temp_Identifier (Typ => Get_Type (+T)),
-                          Domain  => Domain,
-                          Def     =>
-                            +Transform_Expr (Var, Domain, Params),
-                          Context => +T,
-                          Typ     => Get_Type (+T));
+                  raise Program_Error;
                end if;
             end;
 
@@ -13577,8 +13599,13 @@ package body Gnat2Why.Expr is
 
             begin
                if Known_Component_First_Bit (Component) then
+                  pragma Annotate
+                    (Xcov, Exempt_On,
+                     "'First_Bit is expanded by the frontend when statically"
+                     & " known");
                   return New_Integer_Constant
                     (Expr, Component_First_Bit (Component));
+                  pragma Annotate (Xcov, Exempt_Off);
                else
                   declare
                      Name : constant W_Identifier_Id :=
@@ -13599,9 +13626,13 @@ package body Gnat2Why.Expr is
 
             begin
                if Known_Component_Last_Bit (Component) then
+                  pragma Annotate
+                    (Xcov, Exempt_On,
+                     "'Last_Bit is expanded by the frontend when statically"
+                     & " known");
                   return New_Integer_Constant
                     (Expr, Component_Last_Bit (Component));
-
+                  pragma Annotate (Xcov, Exempt_Off);
                else
                   declare
                      Name : constant W_Identifier_Id :=
@@ -13622,8 +13653,13 @@ package body Gnat2Why.Expr is
 
             begin
                if Present (Component_Clause (Component)) then
+                  pragma Annotate
+                    (Xcov, Exempt_On,
+                     "'Position is expanded by the frontend when statically"
+                     & " known");
                   return New_Integer_Constant
                     (Expr, Component_Position (Component));
+                  pragma Annotate (Xcov, Exempt_Off);
                else
                   declare
                      Name : constant W_Identifier_Id :=
@@ -13790,15 +13826,6 @@ package body Gnat2Why.Expr is
                when N_Op_Ne => return MF_Floats (Ty).Bool_Ne;
                when N_Op_Ge => return MF_Floats (Ty).Bool_Ge;
                when N_Op_Le => return MF_Floats (Ty).Bool_Le;
-            end case;
-         elsif Ty = EW_Bool_Type then
-            case Op is
-               when N_Op_Gt => return M_Boolean.Bool_Gt;
-               when N_Op_Lt => return M_Boolean.Bool_Lt;
-               when N_Op_Eq => return M_Boolean.Bool_Eq;
-               when N_Op_Ne => return M_Boolean.Bool_Ne;
-               when N_Op_Ge => return M_Boolean.Bool_Ge;
-               when N_Op_Le => return M_Boolean.Bool_Le;
             end case;
          elsif Why_Type_Is_BitVector (Ty) then
             case Op is
@@ -14191,7 +14218,10 @@ package body Gnat2Why.Expr is
                end loop;
 
                if Nkind (Expr) = N_Op_Ne then
+                  pragma Annotate
+                    (Xcov, Exempt_On, "A /= B is expanded into not (A = B)");
                   T := New_Not (Domain => EW_Pred, Right => T);
+                  pragma Annotate (Xcov, Exempt_Off);
                end if;
 
             --  In the EW_Prog domain, we concentrate on generating the checks.
@@ -14497,11 +14527,14 @@ package body Gnat2Why.Expr is
                      Domain => Domain);
 
                elsif Op = N_Op_Ne then
+                  pragma Annotate
+                    (Xcov, Exempt_On, "A /= B is expanded into not (A = B)");
                   T :=
                     New_Call (Domain => Domain,
                               Name   => M_Boolean.Notb,
                               Args   => (1 => T),
                               Typ    => EW_Bool_Type);
+                  pragma Annotate (Xcov, Exempt_Off);
                end if;
 
             else
@@ -15371,9 +15404,6 @@ package body Gnat2Why.Expr is
                         R := Sequence (Check_Itypes_Of_Components (Ent), R);
                      end if;
 
-                  when Class_Wide_Kind =>
-                     null;
-
                   when E_Access_Type
                      | E_Access_Subtype
                      | E_Access_Subprogram_Type
@@ -15417,11 +15447,6 @@ package body Gnat2Why.Expr is
 
          when N_Pragma =>
             R := Transform_Pragma (Decl, Force => False);
-
-         when N_Raise_xxx_Error
-            | N_Raise_Statement
-         =>
-            R := Transform_Raise (Decl);
 
          when N_Package_Body | N_Package_Declaration =>
 
@@ -15486,8 +15511,42 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         when others =>
+         when N_Itype_Reference =>
+            declare
+               Assoc : constant Node_Id :=
+                 Associated_Node_For_Itype (Itype (Decl));
+            begin
+               if Nkind (Assoc) in N_Has_Etype then
+                  return New_Ignore
+                    (Prog => +Transform_Expr (Assoc, EW_Prog, Body_Params));
+               else
+                  return +Void;
+               end if;
+            end;
+
+         --  Block statements can occur for inlined function calls
+
+         when N_Block_Statement =>
+            R := Transform_Block_Statement (Decl);
+
+         when N_Ignored_In_SPARK
+            | N_Task_Type_Declaration
+            | N_Subprogram_Body
+            | N_Protected_Body
+            | N_Task_Body
+            | N_Abstract_Subprogram_Declaration
+            | N_Subprogram_Declaration
+            | N_Entry_Declaration
+            | N_Private_Extension_Declaration
+            | N_Private_Type_Declaration
+            | N_Component_Declaration
+         =>
             null;
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Transform_Declaration] kind = "
+                                  & Node_Kind'Image (Nkind (Decl)));
+            raise Not_Implemented;
       end case;
 
       --  Aspect or representation clause Address may involve computations
@@ -15617,6 +15676,24 @@ package body Gnat2Why.Expr is
       return +Insert_Cnt_Loc_Label (Decl, +R);
    end Transform_Declaration;
 
+   ----------------------------
+   -- Transform_Declarations --
+   ----------------------------
+
+   function Transform_Declarations
+     (L : List_Id) return W_Prog_Id
+   is
+      Cur_Decl : Node_Id := First (L);
+      Result   : W_Statement_Sequence_Id := Void_Sequence;
+
+   begin
+      while Present (Cur_Decl) loop
+         Sequence_Append (Result, Transform_Declaration (Cur_Decl));
+         Next (Cur_Decl);
+      end loop;
+      return +Result;
+   end Transform_Declarations;
+
    ----------------------------------
    -- Transform_Declarations_Block --
    ----------------------------------
@@ -15624,60 +15701,12 @@ package body Gnat2Why.Expr is
    function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
       return W_Prog_Id
    is
-      Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id := Void_Sequence;
+      Result : W_Statement_Sequence_Id := +Transform_Declarations (L);
 
    begin
-      while Present (Cur_Decl) loop
-         Sequence_Append (Result, Transform_Declaration (Cur_Decl));
-         Next (Cur_Decl);
-      end loop;
       Sequence_Append (Result, Core);
       return +Result;
    end Transform_Declarations_Block;
-
-   -------------------------------------
-   -- Transform_Declarations_For_Body --
-   -------------------------------------
-
-   function Transform_Declarations_For_Body
-     (L : List_Id) return W_Prog_Id
-   is
-      Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id := Void_Sequence;
-
-   begin
-      while Present (Cur_Decl)
-        and then Declaration_Is_Associated_To_Parameter (Cur_Decl)
-      loop
-         Next (Cur_Decl);
-      end loop;
-      while Present (Cur_Decl) loop
-         Sequence_Append (Result, Transform_Declaration (Cur_Decl));
-         Next (Cur_Decl);
-      end loop;
-      return +Result;
-   end Transform_Declarations_For_Body;
-
-   ---------------------------------------
-   -- Transform_Declarations_For_Params --
-   ---------------------------------------
-
-   function Transform_Declarations_For_Params
-     (L : List_Id) return W_Prog_Id
-   is
-      Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id := Void_Sequence;
-
-   begin
-      while Present (Cur_Decl)
-        and then Declaration_Is_Associated_To_Parameter (Cur_Decl)
-      loop
-         Sequence_Append (Result, Transform_Declaration (Cur_Decl));
-         Next (Cur_Decl);
-      end loop;
-      return +Result;
-   end Transform_Declarations_For_Params;
 
    -------------------------------
    -- Transform_Delta_Aggregate --
@@ -16615,10 +16644,12 @@ package body Gnat2Why.Expr is
 
                function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id
                is
-                  E : constant W_Expr_Id :=
+                  Tmp : constant W_Expr_Id := New_Temp_For_Expr
+                    (X, Need_Temp => Domain = EW_Prog);
+                  E   : W_Expr_Id :=
                     New_Binary_Op_Expr (Op          => N_Op_Divide,
                                         Left        => One,
-                                        Right       => X,
+                                        Right       => Tmp,
                                         Left_Type   => T,
                                         Right_Type  => T,
                                         Return_Type => Expr_Type,
@@ -16632,17 +16663,20 @@ package body Gnat2Why.Expr is
                             (Ada_Node => Expr,
                              Pred     =>
                                +New_Comparison
-                               (Why_Neq, X,
-                                +MF_Floats (Get_Type (X)).Plus_Zero,
+                               (Why_Neq, Tmp,
+                                +MF_Floats (Base_Type).Plus_Zero,
                                 EW_Term),
                              Reason   => VC_Division_Check,
                              Kind     => EW_Assert);
                      begin
-                        return +Sequence (Check, +E);
+                        E := +Sequence (Check, +E);
                      end;
-                  else
-                     return E;
                   end if;
+
+                  return Binding_For_Temp (Ada_Node => Expr,
+                                           Domain   => Domain,
+                                           Tmp      => Tmp,
+                                           Context  => E);
                end Inv;
 
             --  Start of processing for N_Op_Expon_Case
@@ -16659,21 +16693,20 @@ package body Gnat2Why.Expr is
                  and then Expr_Value (Left) = Uint_2
                then
                   declare
-                     Typ  : constant W_Type_Id := Base_Why_Type (Left_Type);
                      Expo : constant W_Expr_Id := New_Temp_For_Expr (W_Right);
                   begin
                      T := New_Call
                        (Ada_Node => Expr,
                         Domain   => Domain,
-                        Name     => MF_BVs (Typ).Lsl,
+                        Name     => MF_BVs (Base_Type).Lsl,
                         Args     =>
                           (1 => New_Modular_Constant (Value => Uint_1,
-                                                      Typ   => Typ),
+                                                      Typ   => Base_Type),
                            2 => Insert_Simple_Conversion
                              (Domain => Domain,
                               Expr   => Expo,
-                              To     => Typ)),
-                        Typ      => Typ);
+                              To     => Base_Type)),
+                        Typ      => Base_Type);
 
                      --  If the exponent does not fit in the modular type,
                      --  return 0.
@@ -16687,12 +16720,13 @@ package body Gnat2Why.Expr is
                                (Domain => EW_Term,
                                 Expr   => Expo,
                                 To     => EW_Int_Type),
-                             Right  => +MF_BVs (Typ).Two_Power_Size,
+                             Right  => +MF_BVs (Base_Type).Two_Power_Size,
                              Domain => EW_Pred),
                         Then_Part   => T,
-                        Else_Part   => New_Modular_Constant (Value => Uint_0,
-                                                             Typ   => Typ),
-                        Typ         => Typ);
+                        Else_Part   => New_Modular_Constant
+                          (Value => Uint_0,
+                           Typ   => Base_Type),
+                        Typ         => Base_Type);
 
                      --  Apply the modulus if it is smaller than the modulus
                      --  of the rep bitvector type.
@@ -21728,6 +21762,7 @@ package body Gnat2Why.Expr is
             | N_Object_Renaming_Declaration
             | N_Subtype_Declaration
             | N_Full_Type_Declaration
+            | N_Itype_Reference
          =>
             return Transform_Declaration (Stmt_Or_Decl);
 
@@ -21765,19 +21800,6 @@ package body Gnat2Why.Expr is
             end if;
 
             return Transform_Pragma (Stmt_Or_Decl, Force => False);
-
-         when N_Itype_Reference =>
-            declare
-               Assoc : constant Node_Id :=
-                 Associated_Node_For_Itype (Itype (Stmt_Or_Decl));
-            begin
-               if Nkind (Assoc) in N_Has_Etype then
-                  return New_Ignore
-                    (Prog => +Transform_Expr (Assoc, EW_Prog, Body_Params));
-               else
-                  return +Void;
-               end if;
-            end;
 
          when N_Raise_xxx_Error
             | N_Raise_Statement

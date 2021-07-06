@@ -525,19 +525,73 @@ package body SPARK_Definition is
    ----------------------------
 
    procedure Check_Move_To_Constant (Expr : Node_Id) is
-      Par       : constant Node_Id := Parent (Expr);
-      Operation : constant String :=
+      Operation  : constant String :=
         (if Nkind (Expr) = N_Allocator then "allocator of"
          else "move inside a conversion to");
+      Context    : Node_Id := Parent (Expr);
+      Is_Valid   : Boolean;
 
    begin
-      --  Check that we are directly inside a library level constant
-      --  declaration.
+      --  Check that Expr is a part of the definition of a library level
+      --  constant.
 
-      if Nkind (Par) /= N_Object_Declaration
-        or else not Is_Constant_In_SPARK (Defining_Identifier (Par))
-        or else not Is_Library_Level_Entity (Defining_Identifier (Par))
-      then
+      loop
+         case Nkind (Context) is
+
+            --  The allocating expression appears on the rhs of a library level
+            --  constant declaration.
+
+            when N_Object_Declaration =>
+               declare
+                  Obj : constant Entity_Id := Defining_Identifier (Context);
+               begin
+                  Is_Valid := Is_Constant_In_SPARK (Obj)
+                    and then Is_Library_Level_Entity (Obj);
+                  exit;
+               end;
+
+            --  The allocating expression is the expression of a type
+            --  conversion or a qualified expression occurring in a
+            --  valid allocating context.
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  The allocating expression occurs as the expression in another
+            --  initialized allocator. If it is an allocator to constant, the
+            --  context will be checked while checking the allocator.
+            --  Otherwise, continue the check.
+
+            when N_Allocator =>
+               declare
+                  Ty : constant Entity_Id := Retysp (Etype (Context));
+               begin
+                  if Is_Access_Type (Ty) and then Is_Access_Constant (Ty) then
+                     Is_Valid := True;
+                     exit;
+                  end if;
+               end;
+
+            --  The allocating expression corresponds to a component value in
+            --  an aggregate occurring in an allocating context.
+
+            when N_Aggregate
+               | N_Component_Association
+            =>
+               null;
+
+            when others =>
+               Is_Valid := False;
+               exit;
+         end case;
+
+         Context := Parent (Context);
+      end loop;
+
+      if not Is_Valid then
          Mark_Unsupported
            (Operation & " an access-to-constant type not in"
             & " library level constant declaration", Expr);
@@ -1452,100 +1506,99 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            declare
-            begin
-               if not Is_Valid_Allocating_Context (N) then
-                  Mark_Violation
-                    ("allocator not stored in object as "
-                     & "part of assignment, declaration or return", N);
+            if not Is_Valid_Allocating_Context (N) then
+               Mark_Violation
+                 ("allocator not stored in object as "
+                  & "part of assignment, declaration or return", N);
 
-               --  Currently forbid the use of an uninitialized allocator (for
-               --  a type which defines full default initialization) inside
-               --  an expression function, as this requires translating the
-               --  expression in the term domain. As the frontend does not
-               --  expand the default value of the type here, this would
-               --  require using an epsilon in Why3 which we prefer avoid
-               --  doing outside of axiom guards.
+            --  Currently forbid the use of an uninitialized allocator (for
+            --  a type which defines full default initialization) inside
+            --  an expression function, as this requires translating the
+            --  expression in the term domain. As the frontend does not
+            --  expand the default value of the type here, this would
+            --  require using an epsilon in Why3 which we prefer avoid
+            --  doing outside of axiom guards.
 
-               elsif Nkind (Expression (N)) /= N_Qualified_Expression
-                 and then Nkind (Original_Node (Enclosing_Declaration (N))) =
-                   N_Expression_Function
-               then
-                  Mark_Unsupported
-                    ("uninitialized allocator inside expression function", N);
+            elsif Nkind (Expression (N)) /= N_Qualified_Expression
+              and then Nkind (Enclosing_Declaration (N)) =
+                N_Subprogram_Body
+              and then Is_Expression_Function_Or_Completion
+                  (Unique_Defining_Entity (Enclosing_Declaration (N)))
+            then
+               Mark_Unsupported
+                 ("uninitialized allocator inside expression function", N);
 
-               --  Check that the type of the allocator is visibly an access
-               --  type.
+            --  Check that the type of the allocator is visibly an access
+            --  type.
 
-               elsif Retysp_In_SPARK (Etype (N))
-                 and then Is_Access_Type (Retysp (Etype (N)))
-               then
-                  --  If the expression is a qualified expression, then we
-                  --  have an initialized allocator.
+            elsif Retysp_In_SPARK (Etype (N))
+              and then Is_Access_Type (Retysp (Etype (N)))
+            then
+               --  If the expression is a qualified expression, then we
+               --  have an initialized allocator.
+
+               if Nkind (Expression (N)) = N_Qualified_Expression then
+                  Mark (Expression (N));
+
+               --  Otherwise the expression is a subtype indicator and we
+               --  have an uninitialized allocator.
+
+               else
+                  declare
+                     --  In non-interfering contexts the subtype indicator
+                     --  is always a subtype name, because frontend creates
+                     --  an itype for each constrained subtype indicator.
+                     Expr : constant Node_Id := Expression (N);
+                     pragma Assert (Is_Entity_Name (Expr));
+
+                     Typ  : constant Entity_Id := Entity (Expr);
+                     pragma Assert (Is_Type (Typ));
+
+                  begin
+                     if not In_SPARK (Typ) then
+                        Mark_Violation (Expr, Typ);
+
+                     elsif Default_Initialization (Typ)
+                     not in Full_Default_Initialization
+                       | No_Possible_Initialization
+                     then
+                        Mark_Violation ("uninitialized allocator without"
+                                        & " default initialization", N);
+                     end if;
+                  end;
+               end if;
+
+               --  We only support allocators of access-to-constant types in
+               --  specific contexts.
+
+               if Is_Access_Constant (Retysp (Etype (N))) then
+
+                  Check_Move_To_Constant (N);
+
+                  --  The initial value of the allocator is moved. We need
+                  --  to consider it specifically in the case of allocators
+                  --  to access-to-constant types as the allocator type is
+                  --  not itself of a deep type.
 
                   if Nkind (Expression (N)) = N_Qualified_Expression then
-                     Mark (Expression (N));
-
-                  --  Otherwise the expression is a subtype indicator and we
-                  --  have an uninitialized allocator.
-
-                  else
                      declare
-                        --  In non-interfering contexts the subtype indicator
-                        --  is always a subtype name, because frontend creates
-                        --  an itype for each constrained subtype indicator.
-                        Expr : constant Node_Id := Expression (N);
-                        pragma Assert (Is_Entity_Name (Expr));
-
-                        Typ  : constant Entity_Id := Entity (Expr);
-                        pragma Assert (Is_Type (Typ));
-
+                        Des_Ty : Entity_Id := Directly_Designated_Type
+                          (Retysp (Etype (N)));
                      begin
-                        if not In_SPARK (Typ) then
-                           Mark_Violation (Expr, Typ);
+                        if Is_Incomplete_Type (Des_Ty) then
+                           Des_Ty := Full_View (Des_Ty);
+                        end if;
 
-                        elsif Default_Initialization (Typ)
-                                not in Full_Default_Initialization
-                                     | No_Possible_Initialization
-                        then
-                           Mark_Violation ("uninitialized allocator without"
-                                           & " default initialization", N);
+                        if Is_Deep (Des_Ty) then
+                           Check_Source_Of_Move
+                             (Expression (N), To_Constant => True);
                         end if;
                      end;
                   end if;
-
-                  --  We only support allocators of access-to-constant types in
-                  --  specific contexts.
-
-                  if Is_Access_Constant (Retysp (Etype (N))) then
-
-                     Check_Move_To_Constant (N);
-
-                     --  The initial value of the allocator is moved. We need
-                     --  to consider it specifically in the case of allocators
-                     --  to access-to-constant types as the allocator type is
-                     --  not itself of a deep type.
-
-                     if Nkind (Expression (N)) = N_Qualified_Expression then
-                        declare
-                           Des_Ty : Entity_Id := Directly_Designated_Type
-                             (Retysp (Etype (N)));
-                        begin
-                           if Is_Incomplete_Type (Des_Ty) then
-                              Des_Ty := Full_View (Des_Ty);
-                           end if;
-
-                           if Is_Deep (Des_Ty) then
-                              Check_Source_Of_Move
-                                (Expression (N), To_Constant => True);
-                           end if;
-                        end;
-                     end if;
-                  end if;
-               else
-                  Mark_Violation (N, Etype (N));
                end if;
-            end;
+            else
+               Mark_Violation (N, Etype (N));
+            end if;
 
          when N_Assignment_Statement =>
             declare
@@ -3347,7 +3400,9 @@ package body SPARK_Definition is
             if not Retysp_In_SPARK (Etype (P))
               or else not
                 (Expr_Has_Relaxed_Init (P, No_Eval => True)
-                 or else Has_Relaxed_Init (Etype (P)))
+                 or else Has_Relaxed_Init (Etype (P))
+                 or else (Nkind (P) in N_Identifier | N_Expanded_Name
+                          and then Has_Relaxed_Initialization (Entity (P))))
             then
                Mark_Violation
                  ("prefix of attribute """
@@ -4211,6 +4266,7 @@ package body SPARK_Definition is
                               when Pragma_Postcondition
                                  | Pragma_Post_Class
                                  | Pragma_Contract_Cases
+                                 | Pragma_Refined_Post
                               =>
                                  In_Contracts := Unique_Defining_Entity
                                    (Find_Related_Declaration_Or_Body
@@ -6249,6 +6305,19 @@ package body SPARK_Definition is
                then
                   Mark_Unsupported
                     ("Class attribute of a constrained type", E);
+
+               --  Predicates are not supported on classwide subtypes as
+               --  classwide types are often identified to the associated
+               --  specific type which would cause the predicate to be ignored.
+               --  NB. Classwide types, as opposed to subtypes, can have
+               --  predicates because their associated specific type has a
+               --  predicate. We don't want to reject them.
+
+               elsif Ekind (E) = E_Class_Wide_Subtype
+                 and then Has_Predicates (E)
+               then
+                  Mark_Unsupported
+                    ("subtype predicate on a classwide type", E);
                end if;
             end;
 

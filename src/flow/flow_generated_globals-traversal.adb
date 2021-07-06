@@ -109,6 +109,7 @@ package body Flow_Generated_Globals.Traversal is
                      Root := E;
                   end if;
 
+                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug then
                      Ada.Text_IO.Put_Line
                        (Full_Source_Name (P) & P'Img &
@@ -116,6 +117,7 @@ package body Flow_Generated_Globals.Traversal is
                         Full_Source_Name (E) & E'Img &
                         " (" & Scope_Map.Length'Img & " )");
                   end if;
+                  pragma Annotate (Xcov, Exempt_Off);
 
                   Scope_Map.Insert (Key      => E,
                                     New_Item => (Units  => <>,
@@ -185,6 +187,7 @@ package body Flow_Generated_Globals.Traversal is
    -- Dump_Tree --
    ---------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Dump_Tree is
 
       procedure Dump (E : Entity_Id);
@@ -208,6 +211,7 @@ package body Flow_Generated_Globals.Traversal is
          Dump (Root);
       end if;
    end Dump_Tree;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------
    -- Is_Leaf --

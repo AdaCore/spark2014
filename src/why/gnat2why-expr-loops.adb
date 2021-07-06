@@ -41,7 +41,6 @@ with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
-with Why.Gen.Preds;           use Why.Gen.Preds;
 with Why.Gen.Progs;           use Why.Gen.Progs;
 with Why.Inter;               use Why.Inter;
 

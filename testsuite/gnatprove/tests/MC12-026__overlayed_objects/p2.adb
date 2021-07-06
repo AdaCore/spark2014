@@ -5,9 +5,9 @@ is
    --  specification, and the SPARK_Mode => Off appears
    --  on the body only.
    procedure Sync_Raw_S_With_Full_S
-     with Global => (Output => Raw_S,
-                     Input  => Full_S),
-          Depends => (Raw_S => Full_S);
+     with Global => Full_S,
+          Depends => (null => Full_S);
+
 
 
 

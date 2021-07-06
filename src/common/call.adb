@@ -68,6 +68,7 @@ package body Call is
    -- Call_With_Status --
    ----------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    procedure Call_With_Status
      (Command   : String;
       Arguments : String_Lists.List;
@@ -93,11 +94,13 @@ package body Call is
       GNATCOLL.Utils.Free (Arg_List);
       Free (Executable);
    end Call_With_Status;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------------
    -- Print_Command_Line --
    ------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    procedure Print_Command_Line
       (Command   : String;
        Arguments : Argument_List)
@@ -110,6 +113,7 @@ package body Call is
          Ada.Text_IO.Put (Arg.all);
       end loop;
    end Print_Command_Line;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------------------
    -- Read_File_Into_JSON --
@@ -151,6 +155,7 @@ package body Call is
    -- Read_File_Into_String --
    ---------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Read_File_Into_String (Fn : String) return String
    is
       File_Size : constant Natural := Natural (Ada.Directories.Size (Fn));
@@ -174,5 +179,6 @@ package body Call is
 
       return Contents;
    end Read_File_Into_String;
+   pragma Annotate (Xcov, Exempt_Off);
 
 end Call;

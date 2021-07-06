@@ -2,9 +2,9 @@ package body P
   with SPARK_Mode => On
 is
    procedure Sync_Raw_S_With_Full_S
-     with Global => (Output => Raw_S,
-                     Input  => Full_S),
-          Depends => (Raw_S => Full_S);
+     with Global => null;
+
+
 
 
    procedure Sync_Raw_S_With_Full_S

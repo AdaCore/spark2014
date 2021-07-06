@@ -315,7 +315,14 @@ package body SPARK_Definition.Annotate is
    begin
       --  The third argument must be an entity
 
-      pragma Assert (Present (Arg3_Exp) and then Present (Entity (Arg3_Exp)));
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate Inline_For_Proof must be "
+            & "an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
       E := Entity (Arg3_Exp);
 
       --  This entity must be a function
@@ -581,16 +588,30 @@ package body SPARK_Definition.Annotate is
         (Kind   : Iterable_Kind;
          Entity : Entity_Id)
       is
-         Container_Type : constant Entity_Id := Etype (First_Entity (Entity));
-         Iterable_Node  : constant Node_Id :=
+         Container_Type        : constant Entity_Id :=
+           Etype (First_Entity (Entity));
+         Iterable_Node         : constant Node_Id :=
            Find_Value_Of_Aspect (Container_Type, Aspect_Iterable);
          Model_Iterable_Aspect : constant Node_Id :=
            Find_Aspect (Etype (Entity), Aspect_Iterable);
+         Position              : Iterable_Maps.Cursor;
+         Inserted              : Boolean;
       begin
          pragma Assert (Present (Iterable_Node));
 
          Iterable_Annotations.Insert
-           (Iterable_Node, Iterable_Annotation'(Kind, Entity));
+           (Iterable_Node,
+            Iterable_Annotation'(Kind, Entity),
+            Position,
+            Inserted);
+
+         if not Inserted then
+            Error_Msg_NE
+              ("two Iterable_For_Proof annotations for container type &",
+               Entity, Container_Type);
+            return;
+         end if;
+
          if Present (Model_Iterable_Aspect) then
             SPARK_Definition.Mark_Iterable_Aspect (Model_Iterable_Aspect);
          end if;
@@ -713,11 +734,22 @@ package body SPARK_Definition.Annotate is
    -------------------------------------
 
    procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id) is
-      E    : constant Entity_Id := Entity (Arg3_Exp);
-      Decl : constant Node_Id := Parent (E);
+      E    : Entity_Id;
+      Decl : Node_Id;
       Base : Entity_Id;
 
    begin
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate No_Wrap_Around must be "
+            & "an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+      Decl := Parent (E);
+
       --  Annotation should apply to type declaration (not subtype)
 
       if Nkind (Decl) /= N_Full_Type_Declaration then
@@ -760,11 +792,20 @@ package body SPARK_Definition.Annotate is
       From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
       Aspect_Or_Pragma : constant String :=
         (if From_Aspect then "aspect" else "pragma");
-      E : constant Entity_Id := Entity (Arg3_Exp);
+      E : Entity_Id;
 
    begin
       --  The third argument must be an entity
 
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate Terminating must be "
+            & "an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
       pragma Assert (Present (E));
 
       --  This entity must be a subprogram or a package
@@ -1120,17 +1161,11 @@ package body SPARK_Definition.Annotate is
          if No (Arg) then
             Error_Msg_N
               ("missing name in Annotate " & Aspect_Or_Pragma
-               & " for 'G'N'A'Tprove", Arg);
+               & " for 'G'N'A'Tprove", Prag);
             return "";
-
-         elsif Nkind (Get_Pragma_Arg (Arg)) = N_Identifier then
-            return Get_Name_String (Chars (Get_Pragma_Arg (Arg)));
-
          else
-            Error_Msg_N
-              ("expected name in Annotate " & Aspect_Or_Pragma
-               & " for 'G'N'A'Tprove", Arg);
-            return "";
+            pragma Assert (Nkind (Get_Pragma_Arg (Arg)) = N_Identifier);
+            return Get_Name_String (Chars (Get_Pragma_Arg (Arg)));
          end if;
       end Get_Annotation_Name;
 
@@ -1212,14 +1247,9 @@ package body SPARK_Definition.Annotate is
       --  result in Result.Present being set to False after verifying the
       --  syntax and semantics of the pragma/aspect.
 
-      --  Annotations with 2 arguments
-
-      if Name = "external_axiomatization" then
-         null;
-
       --  Annotations with 3 arguments
 
-      elsif Name = "at_end_borrow" then
+      if Name = "at_end_borrow" then
          Check_At_End_Borrow_Annotation (Arg3_Exp);
 
       elsif Name = "inline_for_proof" then

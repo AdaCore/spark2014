@@ -53,6 +53,8 @@ package body Assumption_Types is
    -- From_JSON --
    ---------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
+
    function From_JSON (V : JSON_Value) return Subp_Type is
    begin
       return
@@ -73,6 +75,8 @@ package body Assumption_Types is
       end loop;
       return Sloc;
    end From_JSON;
+
+   pragma Annotate (Xcov, Exempt_Off);
 
    ----------
    -- Hash --
@@ -106,15 +110,13 @@ package body Assumption_Types is
                 Hash        => Hash,
                 "="         => "=");
 
-   ----------
-   -- Hash --
-   ----------
-
    function Hash (S : Subp_Type) return Ada.Containers.Hash_Type renames
      Unique_Subps.Hash;
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Hash (S : Unit_Type) return Ada.Containers.Hash_Type is
      (Hash (Symbol (S)));
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------
    -- Mk_Base_Sloc --
@@ -141,11 +143,13 @@ package body Assumption_Types is
    -- Mk_Unit --
    -------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Mk_Unit (Name : String) return Unit_Type is
       S : constant Symbol := Find (Symbol_Table, Name);
    begin
       return Unit_Type (S);
    end Mk_Unit;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ---------------
    -- Subp_Name --
@@ -157,7 +161,9 @@ package body Assumption_Types is
       return S.all;
    end Subp_Name;
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Subp_Sloc (Subp : Subp_Type) return My_Sloc is (Subp.Sloc);
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------
    -- To_JSON --
@@ -185,11 +191,13 @@ package body Assumption_Types is
    -- Unit_Name --
    ---------------
 
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Unit_Name (Unit : Unit_Type) return String is
       S : constant GNATCOLL.Utils.Cst_String_Access := Get (Unit);
    begin
       return S.all;
    end Unit_Name;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ---------
    -- "<" --

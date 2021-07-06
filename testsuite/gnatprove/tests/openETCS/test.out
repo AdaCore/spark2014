@@ -1,7 +1,12 @@
-a-cfhama.ads:686:39: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:695:17: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:725:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:740:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:399:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
+a-cfhama.ads:399:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
+a-cfhama.ads:424:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:462:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:775:39: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:784:17: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:814:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:829:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at com_map.ads:30
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at com_map.ads:30
 a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at com_map.ads:30

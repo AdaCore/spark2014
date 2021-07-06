@@ -23,19 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;      use Common_Containers;
-with Flow_Types;             use Flow_Types;
-with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
-with Snames;                 use Snames;
-with SPARK_Atree;            use SPARK_Atree;
-with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Util;             use SPARK_Util;
-with Types;                  use Types;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Gen.Preds;          use Why.Gen.Preds;
-with Why.Ids;                use Why.Ids;
-with Why.Sinfo;              use Why.Sinfo;
+with Common_Containers;    use Common_Containers;
+with Flow_Types;           use Flow_Types;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
+with Snames;               use Snames;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Definition;     use SPARK_Definition;
+with SPARK_Util;           use SPARK_Util;
+with Types;                use Types;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Gen.Terms;        use Why.Gen.Terms;
+with Why.Ids;              use Why.Ids;
+with Why.Sinfo;            use Why.Sinfo;
 
 pragma Warnings (Off);
 --  ??? Why.Types" is directly visible as "Types", as it has "Why" as a

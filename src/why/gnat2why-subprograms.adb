@@ -65,7 +65,6 @@ with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
 with Why.Gen.Records;                use Why.Gen.Records;
-with Why.Gen.Terms;                  use Why.Gen.Terms;
 with Why.Inter;                      use Why.Inter;
 with Why.Types;                      use Why.Types;
 
@@ -3296,11 +3295,6 @@ package body Gnat2Why.Subprograms is
       --  Generate assumptions for deep outputs, that all pointers are moved at
       --  subprogram entry.
 
-      function Comp_Decl_At_Subp_Start return W_Prog_Id;
-      --  The body of the subprogram may contain declarations that are in fact
-      --  essential to prove absence of RTE in the pre, e.g. compiler-generated
-      --  subtype declarations. We need to take those into account.
-
       function RTE_Of_Pre return W_Prog_Id;
       --  Compute an expression which contains the RTE checks of the
       --  precondition.
@@ -3653,29 +3647,63 @@ package body Gnat2Why.Subprograms is
               (Prog,
                New_Assume_Statement
                  (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
+
+            --  For functions we also need to assume the dynamic invariant of
+            --  the result.
+
+            if Ekind (E) = E_Function then
+               declare
+                  Include_Type_Inv : constant W_Term_Id :=
+                    Include_Non_Local_Type_Inv_For_Subp (E);
+                  Dyn_Prop         : W_Pred_Id := Compute_Dynamic_Invariant
+                    (Expr             => New_Deref
+                       (Right => Result_Name,
+                        Typ   => Get_Typ (Result_Name)),
+                     Ty               => Etype (E),
+                     Params           => Params,
+                     Include_Type_Inv => Include_Type_Inv);
+
+               begin
+                  --  For borrowing traversal functions, add the dynamic
+                  --  invariant of the result at end and of the borrowed
+                  --  parameter at end.
+
+                  if Is_Borrowing_Traversal_Function (E) then
+                     declare
+                        Brower_At_End   : constant W_Identifier_Id :=
+                          Get_Brower_At_End (E);
+                        Borrowed_At_End : constant W_Identifier_Id :=
+                          To_Local (Get_Borrowed_At_End (E));
+                     begin
+                        Dyn_Prop :=
+                          +New_And_Expr
+                            (Conjuncts =>
+                               (1 => +Dyn_Prop,
+                                2 => +Compute_Dynamic_Invariant
+                                  (Expr             => New_Deref
+                                       (Right => Brower_At_End,
+                                        Typ   => Get_Typ (Brower_At_End)),
+                                   Ty               => Etype (E),
+                                   Params           => Params,
+                                   Include_Type_Inv => Include_Type_Inv),
+                                3 => +Compute_Dynamic_Invariant
+                                  (Expr             => +Borrowed_At_End,
+                                   Ty               => Etype
+                                     (First_Formal (E)),
+                                   Params           => Params,
+                                   Include_Type_Inv => Include_Type_Inv)),
+                             Domain    => EW_Pred);
+                     end;
+                  end if;
+
+                  Prog := Sequence
+                    (Prog,
+                     New_Assume_Statement (Pred => Dyn_Prop));
+               end;
+            end if;
          end if;
          return Prog;
       end Checking_Of_Refined_Post;
-
-      -----------------------------
-      -- Comp_Decl_At_Subp_Start --
-      -----------------------------
-
-      function Comp_Decl_At_Subp_Start return W_Prog_Id is
-      begin
-         if Entity_Body_In_SPARK (E) then
-            return
-           Sequence
-             (New_Comment
-              (Comment => NID ("Declarations introduced by the compiler at the"
-               & " beginning of the subprogram"
-               & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                 else ""))),
-              Transform_Declarations_For_Params (Declarations (Body_N)));
-         else
-            return +Void;
-         end if;
-      end Comp_Decl_At_Subp_Start;
 
       ---------------------------
       -- Declare_Old_Variables --
@@ -4235,7 +4263,7 @@ package body Gnat2Why.Subprograms is
          Why_Body :=
            Sequence
              ((1 => Check_Ceiling_Protocol (Body_Params, E),
-               2 => Transform_Declarations_For_Body (Declarations (Body_N)),
+               2 => Transform_Declarations (Declarations (Body_N)),
                3 => Transform_Statements_And_Declarations
                  (Statements
                    (Handled_Statement_Sequence (Body_N))),
@@ -4354,7 +4382,6 @@ package body Gnat2Why.Subprograms is
          Prog := Sequence
            ((Assume_For_Input,
              Assume_For_Output,
-             Comp_Decl_At_Subp_Start,
              RTE_Of_Pre,
              Warn_Pre,
              Assume_Or_Assert_Of_Pre,
@@ -5690,11 +5717,9 @@ package body Gnat2Why.Subprograms is
                   Res_Expr  : constant W_Expr_Id :=
                     +New_Result_Ident (Why_Type);
                   Eq_Expr   : constant W_Pred_Id :=
-                    (if Is_Standard_Boolean_Type (Etype (E))
-                     then New_Equal_Bool (+Res_Expr, +Expr_Body)
-                     else New_Call (Name => Why_Eq,
-                                    Args => (Res_Expr, Expr_Body),
-                                    Typ  => EW_Bool_Type));
+                    (New_Call (Name => Why_Eq,
+                               Args => (Res_Expr, Expr_Body),
+                               Typ  => EW_Bool_Type));
                begin
                   if Entity_Body_In_SPARK (E)
                     and then Has_Contracts (E, Pragma_Refined_Post)

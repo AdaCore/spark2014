@@ -192,9 +192,9 @@ package body Flow_Generated_Globals.Phase_1 is
       procedure Process_Volatiles_And_States
         (Objects    : Node_Sets.Set;
          Local_Vars : Boolean := False);
-      --  Goes through Names, finds volatiles and remote states and stores them
-      --  in the appropriate containers. Local_Vars should be set to true when
-      --  processing local variables for a run-time check that they do not
+      --  Goes through Objects, finds volatiles and remote states and stores
+      --  them in the appropriate containers. Local_Vars should be set to true
+      --  when processing local variables for a run-time check that they do not
       --  represent remote states.
 
       procedure Process_Predefined_Entities (Objects : Node_Sets.Set);
