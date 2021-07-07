@@ -24,24 +24,23 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Checked_Types;                  use Checked_Types;
+with Flow_Error_Messages;            use Flow_Error_Messages;
+with Flow_Utility;                   use Flow_Utility;
+with Flow_Refinement;                use Flow_Refinement;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Gnat2Why_Args;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
 with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
-
-with Gnat2Why_Args;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with SPARK_Util;                     use SPARK_Util;
 with VC_Kinds;                       use VC_Kinds;
-
-with Flow_Error_Messages;            use Flow_Error_Messages;
-with Flow_Utility;                   use Flow_Utility;
-with Flow_Refinement;                use Flow_Refinement;
-with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 
 package body Flow.Analysis.Sanity is
 
@@ -647,10 +646,9 @@ package body Flow.Analysis.Sanity is
          -- Is_Within_Protected_Function --
          ----------------------------------
 
-         function Is_Within_Protected_Function return Boolean
-         is
-            Curr_Scope : Entity_Id := FA.Spec_Entity;
-            Prev_Scope : Entity_Id;
+         function Is_Within_Protected_Function return Boolean is
+            Curr_Scope : Unit_Kind_Id := FA.Spec_Entity;
+            Prev_Scope : Unit_Kind_Id;
          begin
             loop
                Prev_Scope := Curr_Scope;

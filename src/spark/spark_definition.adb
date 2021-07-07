@@ -5748,7 +5748,7 @@ package body SPARK_Definition is
                      else Empty);
                   --  Partial view of E. Do not use the Partial_Views from
                   --  SPARK_Util as it may not have been constructed yet.
-                  Enclosing_U    : constant Entity_Id := Enclosing_Unit (E);
+                  Enclosing_U    : constant Unit_Kind_Id := Enclosing_Unit (E);
 
                begin
                   if Present (E_Partial_View)
@@ -8755,8 +8755,7 @@ package body SPARK_Definition is
         or else (Ekind (E) = E_Variable
                  and then Is_Quantified_Loop_Param (E))
       then
-         return
-           SPARK_Pragma_Of_Entity (Enclosing_Unit (E));
+         return SPARK_Pragma_Of_Entity (Enclosing_Unit (E));
       end if;
 
       if Is_Formal (E)

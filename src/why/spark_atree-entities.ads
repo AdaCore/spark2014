@@ -44,6 +44,8 @@ package SPARK_Atree.Entities is
    subtype Access_Kind          is Einfo.Entities.Access_Kind;
    subtype Array_Kind           is Einfo.Entities.Array_Kind;
    subtype Class_Wide_Kind      is Einfo.Entities.Class_Wide_Kind;
+   subtype Constant_Or_Variable_Kind_Id is
+     Einfo.Entities.Constant_Or_Variable_Kind_Id;
    subtype Composite_Kind       is Einfo.Entities.Composite_Kind;
    subtype Concurrent_Kind      is Einfo.Entities.Concurrent_Kind;
    subtype Discrete_Kind        is Einfo.Entities.Discrete_Kind;

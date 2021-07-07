@@ -1502,10 +1502,10 @@ package body Gnat2Why.Expr is
    ----------------------------------
 
    procedure Assume_Declaration_Of_Entity
-     (E             : Entity_Id;
-      Params        : Transformation_Params;
-      Initialized   : Boolean;
-      Top_Predicate : Boolean;
+     (E             :        Extended_Object_Kind_Id;
+      Params        :        Transformation_Params;
+      Initialized   :        Boolean;
+      Top_Predicate :        Boolean;
       Context       : in out W_Prog_Id)
    is
       Max_Assocs : constant Natural := 100;
@@ -1671,11 +1671,12 @@ package body Gnat2Why.Expr is
 
    function Assume_Dynamic_Invariant
      (Expr          : W_Term_Id;
-      Ty            : Entity_Id;
+      Ty            : Type_Kind_Id;
       Initialized   : Boolean := True;
       Only_Var      : Boolean := True;
       Top_Predicate : Boolean := True;
-      Use_Pred      : Boolean := True) return W_Prog_Id
+      Use_Pred      : Boolean := True)
+      return W_Prog_Id
    is
       Init     : constant W_Term_Id :=
         (if Initialized then True_Term else False_Term);
@@ -2469,7 +2470,8 @@ package body Gnat2Why.Expr is
 
    function Check_Type_With_DIC
      (Params : Transformation_Params;
-      Ty     : Entity_Id) return W_Prog_Id
+      Ty     : Type_Kind_Id)
+      return W_Prog_Id
    is
       Ty_Ext    : constant Entity_Id := Retysp (Ty);
 
@@ -2632,7 +2634,8 @@ package body Gnat2Why.Expr is
    function Check_Scalar_Range
      (Params : Transformation_Params;
       N      : Entity_Id;
-      Base   : Entity_Id) return W_Prog_Id
+      Base   : Opt_Type_Kind_Id)
+      return W_Prog_Id
    is
       Rng  : constant Node_Id := Get_Range (N);
       Low  : constant Node_Id := Low_Bound (Rng);
@@ -2810,7 +2813,8 @@ package body Gnat2Why.Expr is
    function Check_Subtype_Indication
      (Params   : Transformation_Params;
       N        : Node_Id;
-      Sub_Type : Entity_Id) return W_Prog_Id is
+      Sub_Type : Type_Kind_Id)
+      return W_Prog_Id is
    begin
       if Is_Scalar_Type (Sub_Type) then
          return Check_Scalar_Range (Params   => Params,
@@ -2993,8 +2997,9 @@ package body Gnat2Why.Expr is
 
    function Compute_Borrow_At_End_Value
      (W_Brower      : W_Term_Id;
-      Expr          : Node_Id;
-      Borrowed_Expr : Node_Id := Empty) return W_Term_Id
+      Expr          : N_Subexpr_Id;
+      Borrowed_Expr : Opt_N_Subexpr_Id := Empty)
+      return W_Term_Id
    is
       Result  : W_Expr_Id := +W_Brower;
       Path    : Node_Id := Expr;
@@ -3427,11 +3432,12 @@ package body Gnat2Why.Expr is
 
    function Compute_Default_Check
      (Ada_Node         : Node_Id;
-      Ty               : Entity_Id;
+      Ty               : Type_Kind_Id;
       Params           : Transformation_Params;
       Assume_Last_DIC  : Boolean := False;
       Include_Subtypes : Boolean := False;
-      Decl_Node        : Node_Id := Empty) return W_Prog_Id
+      Decl_Node        : Opt_N_Declaration_Id := Empty)
+      return W_Prog_Id
    is
 
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
@@ -3914,11 +3920,12 @@ package body Gnat2Why.Expr is
 
    function Compute_Default_Init
      (Expr             : W_Term_Id;
-      Ty               : Entity_Id;
+      Ty               : Type_Kind_Id;
       Params           : Transformation_Params := Body_Params;
       Skip_Last_Cond   : W_Term_Id := False_Term;
       Use_Pred         : Boolean := True;
-      Include_Subtypes : Boolean := False) return W_Pred_Id
+      Include_Subtypes : Boolean := False)
+      return W_Pred_Id
    is
 
       Ty_Ext : constant Entity_Id := Retysp (Ty);
@@ -4371,13 +4378,14 @@ package body Gnat2Why.Expr is
 
    function Compute_Dynamic_Invariant
      (Expr             : W_Term_Id;
-      Ty               : Entity_Id;
+      Ty               : Type_Kind_Id;
       Params           : Transformation_Params;
       Initialized      : W_Term_Id := True_Term;
       Only_Var         : W_Term_Id := True_Term;
       Top_Predicate    : W_Term_Id := True_Term;
       Include_Type_Inv : W_Term_Id := True_Term;
-      Use_Pred         : Boolean := True) return W_Pred_Id
+      Use_Pred         : Boolean := True)
+      return W_Pred_Id
    is
       T               : W_Pred_Id;
       New_Incompl_Acc : Ada_To_Why_Ident.Map;
@@ -4402,19 +4410,19 @@ package body Gnat2Why.Expr is
    end Compute_Dynamic_Invariant;
 
    procedure Compute_Dynamic_Invariant
-     (Expr             : W_Term_Id;
-      Ty               : Entity_Id;
-      Params           : Transformation_Params;
-      Initialized      : W_Term_Id;
-      Only_Var         : W_Term_Id;
-      Top_Predicate    : W_Term_Id;
-      Include_Type_Inv : W_Term_Id;
-      Use_Pred         : Boolean;
-      New_Preds_Module : W_Module_Id;
-      T                : out W_Pred_Id;
-      Loc_Incompl_Acc  : Ada_To_Why_Ident.Map;
+     (Expr             :        W_Term_Id;
+      Ty               :        Type_Kind_Id;
+      Params           :        Transformation_Params;
+      Initialized      :        W_Term_Id;
+      Only_Var         :        W_Term_Id;
+      Top_Predicate    :        W_Term_Id;
+      Include_Type_Inv :        W_Term_Id;
+      Use_Pred         :        Boolean;
+      New_Preds_Module :        W_Module_Id;
+      T                :    out W_Pred_Id;
+      Loc_Incompl_Acc  :        Ada_To_Why_Ident.Map;
       New_Incompl_Acc  : in out Ada_To_Why_Ident.Map;
-      Expand_Incompl   : Boolean)
+      Expand_Incompl   :        Boolean)
    is
 
       function Invariant_For_Access
@@ -5041,9 +5049,10 @@ package body Gnat2Why.Expr is
 
    function Compute_Dynamic_Predicate
      (Expr     : W_Term_Id;
-      Ty       : Entity_Id;
+      Ty       : Type_Kind_Id;
       Params   : Transformation_Params := Body_Params;
-      Use_Pred : Boolean := True) return W_Pred_Id
+      Use_Pred : Boolean := True)
+      return W_Pred_Id
    is
       Rep_Ty : Entity_Id := Retysp (Ty);
       Res    : W_Pred_Id := True_Pred;
@@ -5289,8 +5298,9 @@ package body Gnat2Why.Expr is
 
    function Compute_Is_Moved_Property
      (Expr     : W_Term_Id;
-      Ty       : Entity_Id;
-      Use_Pred : Boolean := True) return W_Pred_Id
+      Ty       : Type_Kind_Id;
+      Use_Pred : Boolean := True)
+      return W_Pred_Id
    is
       --  Local subprograms
 
@@ -5386,8 +5396,9 @@ package body Gnat2Why.Expr is
    function Compute_Moved_Relation
      (Expr1    : W_Term_Id;
       Expr2    : W_Term_Id;
-      Ty       : Entity_Id;
-      Use_Pred : Boolean := True) return W_Pred_Id
+      Ty       : Type_Kind_Id;
+      Use_Pred : Boolean := True)
+      return W_Pred_Id
    is
       --  Local subprograms
 
@@ -5606,9 +5617,10 @@ package body Gnat2Why.Expr is
 
    function Compute_Top_Level_Type_Invariant
      (Expr     : W_Term_Id;
-      Ty       : Entity_Id;
+      Ty       : Type_Kind_Id;
       Params   : Transformation_Params := Body_Params;
-      Use_Pred : Boolean := True) return W_Pred_Id
+      Use_Pred : Boolean := True)
+      return W_Pred_Id
    is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
@@ -5642,12 +5654,13 @@ package body Gnat2Why.Expr is
 
    function Compute_Type_Invariant
      (Expr         : W_Term_Id;
-      Ty           : Entity_Id;
+      Ty           : Type_Kind_Id;
       Params       : Transformation_Params := Body_Params;
       On_External  : Boolean := False;
       On_Internal  : Boolean := False;
       Include_Comp : Boolean := True;
-      Use_Pred     : Boolean := True) return W_Pred_Id
+      Use_Pred     : Boolean := True)
+      return W_Pred_Id
    is
       function Invariant_For_Comp
         (C_Expr : W_Term_Id;
@@ -6597,8 +6610,9 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function Get_Pure_Logic_Term_If_Possible
-     (Expr          : Node_Id;
-      Expected_Type : W_Type_Id) return W_Term_Id
+     (Expr          : N_Subexpr_Id;
+      Expected_Type : W_Type_Id)
+      return W_Term_Id
    is
       Params : constant Transformation_Params :=
         (Phase       => Generate_Logic,
@@ -6620,9 +6634,10 @@ package body Gnat2Why.Expr is
    ------------------------
 
    function Get_Variants_Exprs
-     (E      : Entity_Id;
+     (E      : Callable_Kind_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Array
+      Params : Transformation_Params)
+      return W_Expr_Array
    is
       Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
       Exprs    : W_Expr_Array (1 .. Number_Of_Variants (E));
@@ -6653,7 +6668,7 @@ package body Gnat2Why.Expr is
    -- Get_Variants_Ids --
    ----------------------
 
-   function Get_Variants_Ids (E : Entity_Id) return W_Expr_Array is
+   function Get_Variants_Ids (E : Callable_Kind_Id) return W_Expr_Array is
       Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
       Exprs    : W_Expr_Array (1 .. Number_Of_Variants (E));
    begin
@@ -6692,7 +6707,9 @@ package body Gnat2Why.Expr is
    -- Havoc_Borrowed_Expression --
    -------------------------------
 
-   function Havoc_Borrowed_Expression (Brower : Entity_Id) return W_Prog_Id
+   function Havoc_Borrowed_Expression
+     (Brower : Constant_Or_Variable_Kind_Id)
+      return W_Prog_Id
    is
       Expr            : constant Node_Id := Get_Borrowed_Expr (Brower);
       Borrowed_At_End : constant W_Expr_Id := +Get_Borrowed_At_End (Brower);
@@ -6762,10 +6779,11 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Havoc_Borrowed_From_Block
-     (N : Node_Id) return W_Statement_Sequence_Id
+     (N : N_Block_Statement_Id)
+      return W_Statement_Sequence_Id
    is
    begin
-      return Result  : W_Statement_Sequence_Id := Void_Sequence do
+      return Result : W_Statement_Sequence_Id := Void_Sequence do
          if Present (Declarations (N)) then
             declare
                Borrows : Node_Lists.List;
@@ -6976,9 +6994,10 @@ package body Gnat2Why.Expr is
 
    function Insert_Invariant_Check
      (Ada_Node : Node_Id;
-      Check_Ty : Entity_Id;
+      Check_Ty : Type_Kind_Id;
       W_Expr   : W_Prog_Id;
-      Var_Ent  : Entity_Id := Empty) return W_Prog_Id
+      Var_Ent  : Opt_Object_Kind_Id := Empty)
+      return W_Prog_Id
    is
       W_Tmp : constant W_Identifier_Id :=
         New_Temp_Identifier (Typ      => Get_Type (+W_Expr),
@@ -7251,9 +7270,10 @@ package body Gnat2Why.Expr is
 
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
-      Check_Ty : Entity_Id;
+      Check_Ty : Type_Kind_Id;
       W_Expr   : W_Prog_Id;
-      Var_Ent  : Entity_Id := Empty) return W_Prog_Id
+      Var_Ent  : Opt_Object_Kind_Id := Empty)
+      return W_Prog_Id
    is
       Init_Expr : constant W_Expr_Id :=
         (if Is_Init_Wrapper_Type (Get_Type (+W_Expr))
@@ -8386,9 +8406,10 @@ package body Gnat2Why.Expr is
 
    function New_Predicate_Check
      (Ada_Node         : Node_Id;
-      Ty               : Entity_Id;
+      Ty               : Type_Kind_Id;
       W_Expr           : W_Expr_Id;
-      On_Default_Value : Boolean := False) return W_Prog_Id
+      On_Default_Value : Boolean := False)
+      return W_Prog_Id
    is
       Check : constant W_Pred_Id :=
         Compute_Dynamic_Predicate (Expr    => +W_Expr,
@@ -8675,7 +8696,7 @@ package body Gnat2Why.Expr is
    -- Number_Of_Variants --
    ------------------------
 
-   function Number_Of_Variants (E : Entity_Id) return Natural is
+   function Number_Of_Variants (E : Callable_Kind_Id) return Natural is
       Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
    begin
       if Present (Variants) then
@@ -12690,9 +12711,10 @@ package body Gnat2Why.Expr is
    -----------------------------
 
    function Transform_Attribute_Old
-     (Expr   : Node_Id;
+     (Expr   : N_Subexpr_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id
+      Params : Transformation_Params)
+      return W_Expr_Id
    is
    begin
       --  If no old attributes are expected here, raise an exception
@@ -15963,10 +15985,11 @@ package body Gnat2Why.Expr is
 
    function Transform_Discrete_Choices
      (Choices      : List_Id;
-      Choice_Type  : Entity_Id;
+      Choice_Type  : Opt_Type_Kind_Id;
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
-      Params       : Transformation_Params) return W_Expr_Id
+      Params       : Transformation_Params)
+      return W_Expr_Id
    is
       Cur_Choice : Node_Id   := First (Choices);
       C          : W_Expr_Id := New_Literal (Domain => Cond_Domain,
@@ -16022,10 +16045,11 @@ package body Gnat2Why.Expr is
    --------------------
 
    function Transform_Expr
-     (Expr          : Node_Id;
+     (Expr          : N_Subexpr_Id;
       Expected_Type : W_Type_Id;
       Domain        : EW_Domain;
-      Params        : Transformation_Params) return W_Expr_Id
+      Params        : Transformation_Params)
+      return W_Expr_Id
    is
       Expr_Type    : constant Entity_Id := Retysp (Etype (Expr));
       T            : W_Expr_Id;
@@ -17759,9 +17783,10 @@ package body Gnat2Why.Expr is
    end Transform_Expr;
 
    function Transform_Expr
-     (Expr    : Node_Id;
+     (Expr    : N_Subexpr_Id;
       Domain  : EW_Domain;
-      Params  : Transformation_Params) return W_Expr_Id
+      Params  : Transformation_Params)
+      return W_Expr_Id
    is
       Expected_Type : W_Type_Id := Why_Empty;
 
@@ -17807,11 +17832,12 @@ package body Gnat2Why.Expr is
    ---------------------------------
 
    function Transform_Expr_With_Actions
-     (Expr          : Node_Id;
+     (Expr          : N_Subexpr_Id;
       Actions       : List_Id;
       Expected_Type : W_Type_Id;
       Domain        : EW_Domain;
-      Params        : Transformation_Params) return W_Expr_Id
+      Params        : Transformation_Params)
+      return W_Expr_Id
    is
       T : W_Expr_Id;
 
@@ -19112,8 +19138,9 @@ package body Gnat2Why.Expr is
    ----------------------
 
    function Transform_Pragma
-     (Prag  : Node_Id;
-      Force : Boolean) return W_Prog_Id
+     (Prag  : N_Pragma_Id;
+      Force : Boolean)
+      return W_Prog_Id
    is
       Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
 
@@ -19504,9 +19531,9 @@ package body Gnat2Why.Expr is
    ----------------------------
 
    procedure Transform_Pragma_Check
-     (Stmt    :     Node_Id;
+     (Stmt    :     N_Pragma_Id;
       Force   :     Boolean;
-      Expr    : out Node_Id;
+      Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id)
    is
@@ -19534,8 +19561,9 @@ package body Gnat2Why.Expr is
    end Transform_Pragma_Check;
 
    function Transform_Pragma_Check
-     (Prag  : Node_Id;
-      Force : Boolean) return W_Prog_Id
+     (Prag  : N_Pragma_Id;
+      Force : Boolean)
+      return W_Prog_Id
    is
       --  Mark non-selected loop invariants (those not occurring next to the
       --  first batch of selected variants and invariants) as loop invariant
@@ -22067,7 +22095,7 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    procedure Variables_In_Default_Init
-     (Ty        : Entity_Id;
+     (Ty        :        Type_Kind_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
       Ty_Ext : constant Entity_Id := Retysp (Ty);
@@ -22247,7 +22275,7 @@ package body Gnat2Why.Expr is
    ------------------------------------
 
    procedure Variables_In_Dynamic_Predicate
-     (Ty        : Entity_Id;
+     (Ty        :        Type_Kind_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
       Rep_Type : Entity_Id := Retysp (Ty);
@@ -22282,7 +22310,7 @@ package body Gnat2Why.Expr is
    ------------------------------------
 
    procedure Variables_In_Dynamic_Invariant
-     (Ty        : Entity_Id;
+     (Ty        :        Type_Kind_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
 
@@ -22468,7 +22496,7 @@ package body Gnat2Why.Expr is
    ---------------------------------
 
    procedure Variables_In_Type_Invariant
-     (Ty        : Entity_Id;
+     (Ty        :        Type_Kind_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
       Rep_Type      : constant Entity_Id := Retysp (Ty);
@@ -22498,9 +22526,10 @@ package body Gnat2Why.Expr is
    -------------------------
 
    function Warn_On_Dead_Branch
-     (N     : Node_Id;
+     (N     : N_Subexpr_Id;
       W     : W_Prog_Id;
-      Phase : Transformation_Phase) return W_Prog_Id
+      Phase : Transformation_Phase)
+      return W_Prog_Id
    is
       (Warn_On_Dead_Branch_Or_Code (N, W, Branch => True, Phase => Phase));
 

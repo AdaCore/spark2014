@@ -27,6 +27,7 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
 with Aspects;                      use Aspects;
+with Checked_Types;                use Checked_Types;
 with Common_Containers;
 with Errout;                       use Errout;
 with Erroutc;
@@ -903,7 +904,7 @@ package body SPARK_Definition.Annotate is
    ------------------------------
 
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean is
-      Unit : constant Entity_Id :=
+      Unit : constant Opt_Unit_Kind_Id :=
         (if Present (Scope (E)) then Enclosing_Unit (E) else Empty);
    begin
       return Terminate_Annotations.Contains (E)

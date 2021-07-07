@@ -26,6 +26,7 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
+with Checked_Types;          use Checked_Types;
 with Common_Containers;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Utility;           use Flow_Utility;
@@ -1024,7 +1025,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       Is_Reverse    : constant Boolean :=
         Present (Param_Spec)
         and then Reverse_Present (Param_Spec);
-      Scope         : constant Entity_Id := Enclosing_Unit (Loop_Id);
+      Scope         : constant Unit_Kind_Id := Enclosing_Unit (Loop_Id);
       Modified      : constant Flow_Id_Sets.Set :=
         Flow_Utility.Get_Loop_Writes (Loop_Id);
       N             : Node_Id;

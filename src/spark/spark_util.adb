@@ -1020,7 +1020,7 @@ package body SPARK_Util is
    -- Enclosing_Unit --
    --------------------
 
-   function Enclosing_Unit (E : Entity_Id) return Entity_Id is
+   function Enclosing_Unit (E : Entity_Id) return Unit_Kind_Id is
       S : Entity_Id := Scope (E);
 
    begin
