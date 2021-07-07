@@ -432,13 +432,13 @@ package body Gnat2Why.Counter_Examples is
 
          --  Update bounds from the attribute values if any
 
-         if Attr_First /= No_Uint
+         if Present (Attr_First)
            and then Attr_First > Fst
          then
             Fst := Attr_First;
          end if;
 
-         if Attr_Last /= No_Uint
+         if Present (Attr_Last)
            and then Attr_Last < Lst
          then
             Lst := Attr_Last;
