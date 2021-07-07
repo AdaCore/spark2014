@@ -1,0 +1,65 @@
+p.adb:16:21: info: overflow check proved (CVC4: 2 VC)
+p.adb:18:21: info: overflow check proved (CVC4: 2 VC)
+p.adb:31:22: info: assertion proved (CVC4: 1 VC)
+p.adb:32:14: info: precondition proved (CVC4: 2 VC)
+p.adb:37:07: warning: variable "Z" is read but never assigned [-gnatwv]
+p.ads:7:20: info: postcondition proved (CVC4: 2 VC)
+p.ads:12:14: warning: subprogram "Annotate_Intentional" has no effect
+Summary of SPARK analysis
+=========================
+
+-------------------------------------------------------------------------------------------
+SPARK Analysis results        Total      Flow   CodePeer     Provers   Justified   Unproved
+-------------------------------------------------------------------------------------------
+Data Dependencies                 .         .          .           .           .          .
+Flow Dependencies                 .         .          .           .           .          .
+Initialization                    2         .          .           .           2          .
+Non-Aliasing                      .         .          .           .           .          .
+Run-time Checks                   2         .          .    2 (CVC4)           .          .
+Assertions                        1         .          .    1 (CVC4)           .          .
+Functional Contracts              2         .          .    2 (CVC4)           .          .
+LSP Verification                  .         .          .           .           .          .
+Termination                       .         .          .           .           .          .
+Concurrency                       .         .          .           .           .          .
+-------------------------------------------------------------------------------------------
+Total                             7         .          .     5 (71%)     2 (29%)          .
+
+
+max steps used for successful proof: 1
+
+Analyzed 5 units
+in unit main, 1 subprograms and packages out of 1 analyzed
+  Main at main.adb:6 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+effects on parameters and Global variables of Main depends on
+  effects on parameters and Global variables of P.Annotate_Intentional
+  effects on parameters and Global variables of Q
+  effects on parameters and Global variables of Q2
+  effects on parameters and Global variables of Q3
+in unit p, 4 subprograms and packages out of 6 analyzed
+  P at p.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+absence of run-time errors of P depends on
+  effects on parameters and Global variables of P.Inner
+  absence of run-time errors of P.Inner
+  P.Add_Or_Subtract at p.ads:5 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (3 checks)
+the postcondition of P.Add_Or_Subtract fully established
+effects on parameters and Global variables of P.Add_Or_Subtract fully established
+absence of run-time errors of P.Add_Or_Subtract fully established
+  P.Annotate_Intentional at p.ads:12 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (0 checks)
+   suppressed messages:
+    p.adb:42:10: 
+    p.adb:43:28: 
+absence of run-time errors of P.Annotate_Intentional depends on
+  effects on parameters and Global variables of P.Inner.Do_Nothing
+  absence of run-time errors of P.Inner.Do_Nothing
+  P.Assume_Natural at p.ads:9 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (2 checks)
+effects on parameters and Global variables of P.Assume_Natural fully established
+absence of run-time errors of P.Assume_Natural fully established
+  P.Inner at p.adb:4 skipped
+  P.Inner.Do_Nothing at p.adb:5 skipped
+in unit q, 0 subprograms and packages out of 1 analyzed
+  Q at q.adb:1 skipped
+in unit q2, 0 subprograms and packages out of 1 analyzed
+  Q2 at q2.adb:1 skipped
+in unit q3, 0 subprograms and packages out of 1 analyzed
+  Q3 at q3.adb:1 skipped
+
