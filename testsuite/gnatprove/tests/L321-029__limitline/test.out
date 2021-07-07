@@ -3,5 +3,4 @@ database.adb:149:17: info: add a contract to analyze it separately from calling 
 database.adb:149:17: info: local subprogram "Initialize_Links" only analyzed in the context of calls
 database.adb:171:07: info: cannot unroll loop (too many loop iterations)
 database.adb:171:07: info: in inlined body at line 153
-database.ads:51:14: info: postcondition proved (CVC4: 1 VC)
 database.ads:53:41: info: precondition proved (CVC4: 1 VC)

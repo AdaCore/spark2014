@@ -45,6 +45,7 @@ with Osint;                     use Osint;
 with SA_Messages;               use SA_Messages;
 with Sinput;                    use Sinput;
 with SPARK_Util;                use SPARK_Util;
+with Uintp;                     use Uintp;
 
 package body Gnat2Why.Error_Messages is
 
@@ -722,6 +723,40 @@ package body Gnat2Why.Error_Messages is
          when VC_Assert                    =>
             return "assertion might fail";
          when VC_Raise                     =>
+            --  Give explanations for exceptions which frontend statically
+            --  determined to always happen, should the given node be executed.
+
+            if Nkind (Node) in N_Raise_xxx_Error then
+               --  ??? The following doesn't work for proving messages manually
+               --  in GS, which relies on being able to get back to the VC kind
+               --  from the message. A better solution would be to include the
+               --  VC kind in the JSON file. Same for Proved_Message.
+
+               case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
+                  when CE_Range_Check_Failed =>
+                     return Not_Proved_Message (Node, VC_Range_Check);
+                  when CE_Index_Check_Failed =>
+                     return Not_Proved_Message (Node, VC_Index_Check);
+                  when CE_Divide_By_Zero =>
+                     return Not_Proved_Message (Node, VC_Division_Check);
+                  when SE_Infinite_Recursion =>
+
+                     --  ??? This message should be reflected in the "Messages
+                     --  reported by Proof" SPARK UG table, which is generated
+                     --  automatically. Also, it should appear in the
+                     --  GNATstudio plugin's vc_fail_msg_dict. Same for
+                     --  Proved_Message.
+
+                     return "infinite recursion might occur";
+
+                  --  In debug builds developers will get a crash with a
+                  --  missing case, which we will fix whenever it occurs;
+                  --  in production builds users will get a generic message.
+
+                  when others =>
+                     pragma Assert (False);
+               end case;
+            end if;
             return "exception might be raised";
          when VC_Inline_Check              =>
             return "Inline_For_Proof annotation might be incorrect";
@@ -1103,6 +1138,29 @@ package body Gnat2Why.Error_Messages is
          when VC_Loop_Variant              => return "loop variant proved";
          when VC_Assert                    => return "assertion proved";
          when VC_Raise                     =>
+            --  Give explanations for exceptions which frontend statically
+            --  determined to always happen, but backend proved to be
+            --  unreachable.
+
+            if Nkind (Node) in N_Raise_xxx_Error then
+               case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
+                  when CE_Range_Check_Failed =>
+                     return Proved_Message (Node, VC_Range_Check);
+                  when CE_Index_Check_Failed =>
+                     return Proved_Message (Node, VC_Index_Check);
+                  when CE_Divide_By_Zero =>
+                     return Proved_Message (Node, VC_Division_Check);
+                  when SE_Infinite_Recursion =>
+                     return "infinite recursion proved unreachable";
+
+                  --  In debug builds developers will get a crash with a
+                  --  missing case, which we will fix whenever it occurs;
+                  --  in production builds users will get a generic message.
+
+                  when others =>
+                     pragma Assert (False);
+               end case;
+            end if;
             return "raise statement or expression proved unreachable";
          when VC_Inline_Check              =>
             return "Inline_For_Proof annotation proved";

@@ -3,121 +3,148 @@ sensfusion6_pack.adb:18:14: info: local subprogram "Madgwick_Update_Q" only anal
 sensfusion6_pack.adb:19:14: info: add a contract to analyze it separately from calling contexts
 sensfusion6_pack.adb:19:14: info: local subprogram "Mahony_Update_Q" only analyzed in the context of calls
 sensfusion6_pack.adb:42:07: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:42:07: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:42:07: warning: unused variable "Recip_Norm", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:43:07: info: initialization of "S0" proved
-sensfusion6_pack.adb:43:07: info: initialization of "S0" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:43:07: warning: unused variable "S0", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:44:07: info: initialization of "S1" proved
-sensfusion6_pack.adb:44:07: info: initialization of "S1" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:44:07: warning: unused variable "S1", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:45:07: info: initialization of "S2" proved
-sensfusion6_pack.adb:45:07: info: initialization of "S2" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:45:07: warning: unused variable "S2", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:46:07: info: initialization of "S3" proved
-sensfusion6_pack.adb:46:07: info: initialization of "S3" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:46:07: warning: unused variable "S3", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:47:07: info: initialization of "Q_Dot1" proved
-sensfusion6_pack.adb:47:07: info: initialization of "Q_Dot1" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:47:07: warning: unused variable "Q_Dot1", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:48:07: info: initialization of "Q_Dot2" proved
-sensfusion6_pack.adb:48:07: info: initialization of "Q_Dot2" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:48:07: warning: unused variable "Q_Dot2", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:49:07: info: initialization of "Q_Dot3" proved
-sensfusion6_pack.adb:49:07: info: initialization of "Q_Dot3" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:49:07: warning: unused variable "Q_Dot3", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:50:07: info: initialization of "Q_Dot4" proved
-sensfusion6_pack.adb:50:07: info: initialization of "Q_Dot4" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:50:07: warning: unused variable "Q_Dot4", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:51:07: info: initialization of "Q0_X2" proved
-sensfusion6_pack.adb:51:07: info: initialization of "Q0_X2" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:51:07: warning: unused variable "Q0_X2", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:52:07: info: initialization of "Q1_X2" proved
-sensfusion6_pack.adb:52:07: info: initialization of "Q1_X2" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:52:07: warning: unused variable "Q1_X2", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:53:07: info: initialization of "Q2_X2" proved
-sensfusion6_pack.adb:53:07: info: initialization of "Q2_X2" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:53:07: warning: unused variable "Q2_X2", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:54:07: info: initialization of "Q3_X2" proved
-sensfusion6_pack.adb:54:07: info: initialization of "Q3_X2" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:54:07: warning: unused variable "Q3_X2", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:55:07: info: initialization of "Q0_X4" proved
-sensfusion6_pack.adb:55:07: info: initialization of "Q0_X4" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:55:07: warning: unused variable "Q0_X4", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:56:07: info: initialization of "Q1_X4" proved
-sensfusion6_pack.adb:56:07: info: initialization of "Q1_X4" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:56:07: warning: unused variable "Q1_X4", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:57:07: info: initialization of "Q2_X4" proved
-sensfusion6_pack.adb:57:07: info: initialization of "Q2_X4" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:57:07: warning: unused variable "Q2_X4", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:58:07: info: initialization of "Q1_X8" proved
-sensfusion6_pack.adb:58:07: info: initialization of "Q1_X8" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:58:07: warning: unused variable "Q1_X8", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:59:07: info: initialization of "Q2_X8" proved
-sensfusion6_pack.adb:59:07: info: initialization of "Q2_X8" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:59:07: warning: unused variable "Q2_X8", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:60:07: info: initialization of "Q0_Q0" proved
-sensfusion6_pack.adb:60:07: info: initialization of "Q0_Q0" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:60:07: warning: unused variable "Q0_Q0", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:61:07: info: initialization of "Q1_Q1" proved
-sensfusion6_pack.adb:61:07: info: initialization of "Q1_Q1" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:61:07: warning: unused variable "Q1_Q1", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:62:07: info: initialization of "Q2_Q2" proved
-sensfusion6_pack.adb:62:07: info: initialization of "Q2_Q2" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:62:07: warning: unused variable "Q2_Q2", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:63:07: info: initialization of "Q3_Q3" proved
-sensfusion6_pack.adb:63:07: info: initialization of "Q3_Q3" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:63:07: warning: unused variable "Q3_Q3", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:64:07: info: initialization of "Norm_Ax" proved
-sensfusion6_pack.adb:64:07: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:64:07: warning: unused variable "Norm_Ax", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:65:07: info: initialization of "Norm_Ay" proved
-sensfusion6_pack.adb:65:07: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:65:07: warning: unused variable "Norm_Ay", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:66:07: info: initialization of "Norm_Az" proved
-sensfusion6_pack.adb:66:07: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:66:07: warning: unused variable "Norm_Az", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:67:07: info: initialization of "Q0_Tmp" proved
-sensfusion6_pack.adb:67:07: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:67:07: warning: unused variable "Q0_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:68:07: info: initialization of "Q1_Tmp" proved
-sensfusion6_pack.adb:68:07: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:68:07: warning: unused variable "Q1_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:69:07: info: initialization of "Q2_Tmp" proved
-sensfusion6_pack.adb:69:07: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:69:07: warning: unused variable "Q2_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:70:07: info: initialization of "Q3_Tmp" proved
-sensfusion6_pack.adb:70:07: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:70:07: warning: unused variable "Q3_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:71:07: info: initialization of "Ax_Tmp" proved
-sensfusion6_pack.adb:71:07: info: initialization of "Ax_Tmp" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:71:07: warning: unused variable "Ax_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:72:07: info: initialization of "Ay_Tmp" proved
-sensfusion6_pack.adb:72:07: info: initialization of "Ay_Tmp" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:72:07: warning: unused variable "Ay_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:73:07: info: initialization of "Az_Tmp" proved
-sensfusion6_pack.adb:73:07: info: initialization of "Az_Tmp" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:73:07: warning: unused variable "Az_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:74:07: info: initialization of "Square_Sum" proved
-sensfusion6_pack.adb:74:07: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:74:07: warning: unused variable "Square_Sum", in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:77:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:77:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:77:28: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:77:33: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:77:38: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:77:43: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:77:48: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:78:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:78:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:78:27: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:78:32: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:78:37: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:78:42: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:78:47: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:79:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:79:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:79:27: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:79:32: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:79:37: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:79:42: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:79:47: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:80:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:80:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:80:27: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:80:32: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:80:37: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:80:42: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:80:47: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:84:07: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:86:17: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:87:17: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:88:17: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:89:21: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:89:31: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:89:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:89:49: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:89:58: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:89:58: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:89:67: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:90:21: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:90:24: info: precondition proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:91:18: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:91:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:91:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:92:18: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:92:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:92:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:93:18: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:93:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:93:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:96:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:96:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:97:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:97:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:98:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:98:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:99:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:99:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:100:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:100:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:101:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:101:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:102:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:102:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:103:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:103:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:104:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:104:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:105:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:105:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:106:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:106:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:107:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:107:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:108:16: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:108:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:111:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:111:22: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:111:30: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:111:38: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
@@ -125,6 +152,7 @@ sensfusion6_pack.adb:111:48: info: float overflow check proved (Z3: 1 VC), in ca
 sensfusion6_pack.adb:111:56: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:111:64: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:111:72: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:112:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:112:22: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:112:30: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:112:38: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
@@ -140,6 +168,7 @@ sensfusion6_pack.adb:113:52: info: float overflow check proved (Z3: 1 VC), in ca
 sensfusion6_pack.adb:113:60: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:113:68: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:113:76: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:114:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:114:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:114:28: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:114:33: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
@@ -155,6 +184,7 @@ sensfusion6_pack.adb:115:52: info: float overflow check proved (Z3: 1 VC), in ca
 sensfusion6_pack.adb:115:60: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:115:68: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:115:76: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:116:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:116:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:116:28: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:116:33: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
@@ -164,6 +194,7 @@ sensfusion6_pack.adb:116:57: info: float overflow check proved (Z3: 1 VC), in ca
 sensfusion6_pack.adb:116:65: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:116:70: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:116:78: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:119:21: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:119:24: info: precondition proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:119:37: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:119:42: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
@@ -172,26 +203,39 @@ sensfusion6_pack.adb:119:52: info: float overflow check proved (Z3: 1 VC), in ca
 sensfusion6_pack.adb:119:57: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:119:62: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:119:67: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:120:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:120:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:121:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:121:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:122:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:122:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:123:13: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:123:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:126:17: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:126:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:126:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:127:17: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:127:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:127:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:128:17: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:128:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:128:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:129:17: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:129:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:129:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:133:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:133:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:133:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:134:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:134:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:134:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:135:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:135:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:135:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:136:14: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:136:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:136:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:139:18: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:139:21: info: precondition proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:140:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:140:26: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
@@ -200,12 +244,16 @@ sensfusion6_pack.adb:140:44: info: float overflow check proved (Z3: 1 VC), in ca
 sensfusion6_pack.adb:140:53: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:140:62: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:140:71: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:141:10: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:141:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:142:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:143:10: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:143:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:144:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:145:10: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:145:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:146:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
+sensfusion6_pack.adb:147:10: warning: this statement is never reached, in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:147:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:148:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:159:07: info: initialization of "Recip_Norm" proved
@@ -335,6 +383,14 @@ sensfusion6_pack.adb:238:30: medium: float overflow check might fail, in call in
 sensfusion6_pack.adb:241:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: value must fit in the target type of the assignment]
 sensfusion6_pack.adb:241:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:256:25: info: analyzing call to "Mahony_Update_Q" in context
+sensfusion6_pack.adb:263:25: warning: this statement is never reached
+sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C11b"
+sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C12b"
+sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C13b"
+sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C14b"
+sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C15b"
+sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C16b"
+sensfusion6_pack.adb:263:25: warning: unused variable constant with variable input "C17b"
 sensfusion6_pack.adb:277:07: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:278:07: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:279:07: info: initialization of "Grav_Z" proved

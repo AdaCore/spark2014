@@ -89,9 +89,20 @@ package body Why.Gen.Expr is
    --  not allow retrieving the name of the appropriate conversion function,
    --  only the abstract fixed-point type allows it.
 
+   function New_Located_String (Input : Source_Ptr) return String;
+   --  Build a string that represents the source location of the source
+   --  pointer.
+
    function New_Located_Label (Input : Source_Ptr) return Symbol;
-   --  @param Input a source pointer
-   --  @return a Why3 label which identifies this source location in Why3
+   --  Same as New_Located_String, but return a Symbol.
+
+   function New_Check_Label
+     (Sloc : Source_Ptr;
+      Reason : VC_Kind;
+      Id : VC_Id)
+      return Symbol;
+   --  Returns a label that identifies the check for communication between
+   --  gnat2why and gnatwhy3.
 
    function Is_Essentially_Void_List (L : Why_Node_List) return Boolean;
    --  @param a list of Why nodes
@@ -2959,6 +2970,22 @@ package body Why.Gen.Expr is
       end if;
    end New_Attribute_Expr;
 
+   ---------------------
+   -- New_Check_Label --
+   ---------------------
+
+   function New_Check_Label
+     (Sloc : Source_Ptr;
+      Reason : VC_Kind;
+      Id : VC_Id)
+      return Symbol
+   is
+   begin
+      return NID (GP_Check_Marker & Image (Integer (Id), 1) & ":"
+                  & VC_Kind'Image (Reason) & ":"
+                  & New_Located_String (Sloc));
+   end New_Check_Label;
+
    --------------------
    -- New_Comparison --
    --------------------
@@ -3193,11 +3220,11 @@ package body Why.Gen.Expr is
                        Args => (1 => +Id));
    end New_Havoc_Call;
 
-   -----------------------
-   -- New_Located_Label --
-   -----------------------
+   ------------------------
+   -- New_Located_String --
+   ------------------------
 
-   function New_Located_Label (Input : Source_Ptr) return Symbol is
+   function New_Located_String (Input : Source_Ptr) return String is
       Slc : Source_Ptr := Input;
       Buf : Unbounded_String;
    begin
@@ -3218,7 +3245,16 @@ package body Why.Gen.Expr is
             Slc := Instantiation_Location (Slc);
          end;
       end loop;
-      return NID (GP_Sloc_Marker & To_String (Buf));
+      return To_String (Buf);
+   end New_Located_String;
+
+   -----------------------
+   -- New_Located_Label --
+   -----------------------
+
+   function New_Located_Label (Input : Source_Ptr) return Symbol is
+   begin
+      return NID (GP_Sloc_Marker & New_Located_String (Input));
    end New_Located_Label;
 
    -----------------------
@@ -3794,9 +3830,7 @@ package body Why.Gen.Expr is
             How_Proved => PC_Codepeer);
          Labels.Insert (GP_Already_Proved);
       end if;
-      Labels.Insert (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
-      Labels.Insert (NID (GP_Id_Marker & Image (Integer (Id), 1)));
-      Labels.Insert (Location_Lab);
+      Labels.Insert (New_Check_Label (Sloc, Reason, Id));
 
       --  Do not generate comment labels in Why3 to facilitate debugging
 

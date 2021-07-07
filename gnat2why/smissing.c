@@ -4,7 +4,7 @@
  *                                                                          *
  *                              s m i s s i n g                             *
  *                                                                          *
- *                      Copyright (C) 1998-2018, AdaCore                    *
+ *                      Copyright (C) 1998-2021, AdaCore                    *
  *                                                                          *
  * GNAT is free software;  you can  redistribute it  and/or modify it under *
  * terms of the  GNU General Public License as published  by the Free Soft- *
@@ -27,11 +27,6 @@
 /* This file contains the C routines or variables which are defined in
    some GCC source (and hence not available when compiling here). */
 
-/* Originally defined in GCC's toplev.c. GNAT uses this flag to
-   determine whether stack checking is enabled on the target (controls
-   allocation strategy for large objects in certain cases). */
-int flag_stack_check = 0;
-
 /* Originally defined in GCC's common.opt. Controls the balance between GNAT
    encodings and standard DWARF to emit in the debug infomation.  Useful for
    DWARF debugging information generation only so not used in SPARK2014.  */
@@ -47,27 +42,3 @@ void *callgraph_info_file = (void *)0;
 /* Originally defined in misc.c.  */
 unsigned int save_argc = 0;
 const char **save_argv = (const char **)0;
-
-/* Originally defined in misc.c, used in FSF version of lib-writ.adb */
-int flag_compare_debug = 0;
-
-/* Originally defined in version.c, used in FSF version of gnatvsn.adb */
-const char *const version_string = "GNAT for GNATprove";
-
-/* Originally defined in GCC's prefix.c. We need a dummy
-   update_path and set_std_prefix for osint.adb. */
-void
-set_std_prefix (char *path, int len)
-{
-}
-
-char *
-update_path (char *path, char *key)
-{
-  return path;
-}
-
-extern int sigreturn (void *uc, int flavour)
-{
-/* To work around Mac OS X 10.5/10.6 incompatibility */
-}

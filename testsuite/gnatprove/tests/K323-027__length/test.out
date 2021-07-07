@@ -1,5 +1,7 @@
 length.adb:4:07: warning: unused variable "X"
 length.adb:5:07: info: initialization of "Res" proved
+length.adb:7:07: warning: statement has no effect
+length.adb:10:14: warning: this statement is never reached
 length.adb:16:07: warning: unused variable "X"
 length.ads:6:20: info: postcondition proved (CVC4: 1 VC)
 length.ads:9:20: info: postcondition proved (CVC4: 1 VC)

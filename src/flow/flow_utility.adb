@@ -3204,10 +3204,16 @@ package body Flow_Utility is
 
          --  If the root node is not an entire record variable, we recurse here
          --  and then simply merge all variables we find here and then abort.
+         --  Also, we apply this simplified processing to objects coming from
+         --  declare expressions (because we can't do better with the current
+         --  handling of declare expressions in flow).
 
          if not (Nkind (Root_Node) in N_Identifier
                                     | N_Expanded_Name
                                     | N_Target_Name
+                   and then
+                 (if Nkind (Root_Node) = N_Identifier
+                  then not Comes_From_Declare_Expr (Entity (Root_Node)))
                    and then
                  Is_Record_Type
                    (Unchecked_Full_Type (Etype (Root_Node))))

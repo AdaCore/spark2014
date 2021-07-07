@@ -1,2 +1,2 @@
-q.ads:3:49: error: compiler-generated raise statement is not yet supported
-gnatprove: error during flow analysis and proof
+q.ads:3:49: high: infinite recursion might occur
+q.ads:5:18: warning: unused variable "X"

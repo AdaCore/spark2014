@@ -1,0 +1,48 @@
+bad_access.adb:4:07: error: local borrow of an expression with predicates on subcomponents of deep type is not yet supported
+bad_access.adb:12:04: info: no contextual analysis of "Do_Something" (multiple returns)
+bad_access.adb:14:10: info: no contextual analysis of "Rand" (body not seen yet)
+bad_access.adb:18:13: error: return statement in the scope of local owning declaration at line 16 is not yet supported
+bad_access.adb:26:13: error: return statement in the scope of local owning declaration at line 23 is not yet supported
+bad_access.adb:37:13: error: return statement in the scope of local owning declaration at line 34 is not yet supported
+bad_access.adb:49:13: error: return statement in the scope of local owning declaration at line 45 is not yet supported
+bad_access.adb:95:18: error: "Id" is not allowed in SPARK
+bad_access.adb:95:18: error: violation of aspect SPARK_Mode at line 2
+bad_array_conv.adb:7:19: error: conversion between array types with modular and non-modular index types is not yet supported
+bad_array_conv.adb:9:32: error: "Y" is not allowed in SPARK (due to conversion between array types with modular and non-modular index types)
+bad_array_conv.adb:9:32: error: violation of aspect SPARK_Mode at line 2
+bad_at_end_borrow.adb:19:13: error: borrowing traversal functions whose first parameter does not have an anonymous access-to-variable type is not yet supported
+bad_at_end_borrow.adb:27:16: error: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion is not allowed in SPARK
+bad_at_end_borrow.adb:27:16: error: violation of aspect SPARK_Mode at line 1
+bad_at_end_borrow.adb:27:52: error: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion is not allowed in SPARK
+bad_at_end_borrow.adb:27:52: error: violation of aspect SPARK_Mode at line 1
+bad_at_end_borrow.adb:29:07: error: "Bad" is not allowed in SPARK (due to call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion)
+bad_at_end_borrow.adb:29:07: error: violation of aspect SPARK_Mode at line 1
+bad_inheritance.ads:17:13: error: subprogram inherited from root and interface is not yet supported
+bad_inheritance.ads:27:13: error: subprogram inherited from root and interface is not yet supported
+bad_inheritance.ads:29:09: error: "Bad_Inter" is not allowed in SPARK
+bad_inheritance.ads:29:09: error: violation of aspect SPARK_Mode at line 2
+bad_inv_placement.adb:6:10: error: nested packages before loop-invariant is not yet supported
+bad_inv_placement.adb:9:10: error: nested subprogram before loop-invariant is not yet supported
+bad_iterators.adb:30:27: error: iterator specification is not allowed in SPARK (SPARK RM 5.5.2)
+bad_iterators.adb:30:27: error: violation of aspect SPARK_Mode at line 3
+bad_iterators.adb:31:33: error: loop on an iterator specification with an iterator filter is not yet supported
+bad_membership.adb:13:31: error: equality on access types is not allowed in SPARK
+bad_membership.adb:13:31: error: violation of aspect SPARK_Mode at line 1
+bad_membership.adb:14:19: error: equality on access types is not allowed in SPARK
+bad_membership.adb:14:19: error: violation of aspect SPARK_Mode at line 1
+bad_raise.adb:4:41: error: raise expression in a complex expression in a precondition is not yet supported
+bad_raise.adb:7:43: error: raise expression in a complex expression in a precondition is not yet supported
+bad_relaxed_init.ads:5:14: error: protected component with initialization by proof is not yet supported
+bad_relaxed_init.ads:12:04: error: Part_Of variable with initialization by proof is not yet supported
+bad_relaxed_init.ads:20:09: error: concurrent type with initialization by proof is not yet supported
+bad_relaxed_init.ads:23:07: error: component of a tagged type with relaxed initialization is not allowed in SPARK
+bad_relaxed_init.ads:23:07: error: violation of aspect SPARK_Mode at line 3
+bad_relaxed_init.ads:26:09: error: tagged type with initialization by proof is not yet supported
+bad_relaxed_init.ads:32:09: error: access type with initialization by proof is not yet supported
+case_prefix.adb:16:28: error: allocator as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+case_prefix.adb:16:28: error: violation of aspect SPARK_Mode at line 1
+ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous access type)
+ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous access type)
+ext.ads:6:09: error: access to incomplete type "T_Acc" is required to be in SPARK
+ext.ads:6:09: error: access to incomplete type "T_Acc" is required to be in SPARK
+gnatprove: error during flow analysis and proof

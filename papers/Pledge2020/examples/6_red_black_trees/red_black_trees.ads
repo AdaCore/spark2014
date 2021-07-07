@@ -27,7 +27,7 @@ package Red_Black_Trees with SPARK_Mode is
    --  Number of elements in the tree
 
    pragma Annotate
-     (GNATprove, False_Positive, """Size"" might not terminate",
+     (GNATprove, False_Positive, """Size"" is recursive",
       "Recursive calls only occur on structuraly smaller values");
 
    type Model_Type is array (Positive range <>) of Integer with Ghost;
@@ -58,14 +58,10 @@ package Red_Black_Trees with SPARK_Mode is
                      X.Value,
                      Model (X.Right, Fst + Size (X.Left) + 1),
                      Model'Result)),
-     Annotate => (GNATprove, Terminating);
+     Subprogram_Variant => (Decreases => Size (X));
    --  A model of a tree is an array containing the values of X in order. We
    --  first traverse the left subtree, then the root, and then the right
    --  subtree.
-
-   pragma Annotate
-     (GNATprove, False_Positive, """Model"" might not terminate",
-      "Recursive calls only occur on structuraly smaller values");
 
    function Model (X : access constant Tree_Cell) return Model_Type is
       (Model (X, 1))
@@ -105,12 +101,8 @@ package Red_Black_Trees with SPARK_Mode is
       else Nb_Black (T.Left) + 1) with
      Pre  => Size (T) < Natural'Last,
      Post => Nb_Black'Result <= Size (T),
-     Annotate => (GNATprove, Terminating);
+     Subprogram_Variant => (Decreases => Size (T));
    --  Number of black nodes in the left most branch of T
-
-   pragma Annotate
-     (GNATprove, False_Positive, """Nb_Black"" might not terminate",
-      "Recursive calls only occur on structuraly smaller values");
 
    function Same_Nb_Black (T : access constant Tree_Cell) return Boolean is
      (T = null
@@ -119,12 +111,8 @@ package Red_Black_Trees with SPARK_Mode is
                and then Same_Nb_Black (T.Right)))
    with Ghost,
      Pre => Size (T) < Natural'Last,
-     Annotate => (GNATprove, Terminating);
+     Subprogram_Variant => (Decreases => Size (T));
    --  All branches of T contain the same number of black nodes
-
-   pragma Annotate
-     (GNATprove, False_Positive, """Same_Nb_Black"" might not terminate",
-      "Recursive calls only occur on structuraly smaller values");
 
    function Get_Color (T : access constant Tree_Cell) return Red_Or_Black is
      (if T = null then Black else T.Color);
@@ -140,12 +128,8 @@ package Red_Black_Trees with SPARK_Mode is
          and Scarce_Red (T.Right)))
    with Ghost,
      Pre => Size (T) < Natural'Last,
-     Annotate => (GNATprove, Terminating);
+     Subprogram_Variant => (Decreases => Size (T));
    --  A red node is always followed by two black nodes
-
-   pragma Annotate
-     (GNATprove, False_Positive, """Scarce_Red"" might not terminate",
-      "Recursive calls only occur on structuraly smaller values");
 
    function Balanced (T : access constant Tree_Cell) return Boolean is
      (Get_Color (T) = Black

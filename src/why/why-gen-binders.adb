@@ -663,6 +663,7 @@ package body Why.Gen.Binders is
          --  test when it is safe to call Actual_Subtype
          and then (Ekind (E) in E_Constant | E_Variable
            or else Is_Formal (E))
+         and then Is_Mutable_In_Why (E)
          and then Present (Actual_Subtype (E))
          and then Entity_In_SPARK (Actual_Subtype (E))
          then Actual_Subtype (E)
@@ -879,13 +880,16 @@ package body Why.Gen.Binders is
         and then Ekind (E) /= E_Loop_Parameter
       then
          declare
-            Name    : constant W_Identifier_Id :=
+            Name     : constant W_Identifier_Id :=
               To_Why_Id (E => E, Local => Local);
             --  This name does not correspond to a given declaration (thus, we
             --  don't give it a type). It is only used to prefix generic names
             --  of elements of the pointer.
 
-            Result  : Item_Type :=
+            Des_Ty   : constant Entity_Id := Directly_Designated_Type (Ty);
+            Value_Ty : constant W_Type_Id := EW_Abstract
+              (Des_Ty, Relaxed_Init => Has_Relaxed_Init (Des_Ty));
+            Result   : Item_Type :=
               (Kind    => Pointer,
                Local   => Local,
                Init    => New_Init_Id (Name),
@@ -898,9 +902,7 @@ package body Why.Gen.Binders is
                            B_Name   =>
                              Value_Append
                                (Base => Name,
-                                Typ  =>
-                                  EW_Abstract
-                                    (Directly_Designated_Type (Ty))),
+                                Typ  => Value_Ty),
                            B_Ent    => Null_Entity_Name,
                            Mutable  => True,
                            Labels   => <>);
@@ -942,7 +944,7 @@ package body Why.Gen.Binders is
             --  flag.
 
             Name   : constant W_Identifier_Id :=
-              To_Why_Id (E => E, Typ => Typ, Local => Local);
+              To_Why_Id (E => E, Typ => Typ, Local => Local, No_Comp => True);
             Binder : constant Binder_Type :=
               Binder_Type'(Ada_Node => E,
                            B_Name   => Name,

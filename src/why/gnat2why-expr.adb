@@ -581,7 +581,8 @@ package body Gnat2Why.Expr is
      (Params        : Transformation_Params;
       Domain        : EW_Domain;
       Expr          : Node_Id;
-      Update_Prefix : Node_Id := Empty) return W_Expr_Id;
+      Update_Prefix : Node_Id := Empty;
+      Relaxed_Init  : Boolean) return W_Expr_Id;
    --  Transform an aggregate Expr. It may be called multiple times on the
    --  same Ada node, corresponding to different phases of the translation. The
    --  first time it is called on an Ada node, a logic function is generated
@@ -1051,7 +1052,7 @@ package body Gnat2Why.Expr is
          declare
             Binder   : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, Lvalue);
-            Why_Ty   : constant W_Type_Id := Type_Of_Node (Lvalue);
+            Why_Ty   : constant W_Type_Id := Why_Type_Of_Entity (Lvalue);
             Why_Expr : W_Prog_Id :=
               +Transform_Expr (Rexpr,
                                Why_Ty,
@@ -1329,8 +1330,7 @@ package body Gnat2Why.Expr is
                | Concurrent_Self
             =>
                declare
-                  L_Id : constant W_Identifier_Id :=
-                    To_Why_Id (Lvalue, Typ => Why_Ty);
+                  L_Id : constant W_Identifier_Id := Binder.Main.B_Name;
                begin
                   if Is_Mutable_In_Why (Lvalue) then
 
@@ -9716,13 +9716,16 @@ package body Gnat2Why.Expr is
      (Params        : Transformation_Params;
       Domain        : EW_Domain;
       Expr          : Node_Id;
-      Update_Prefix : Node_Id := Empty) return W_Expr_Id
+      Update_Prefix : Node_Id := Empty;
+      Relaxed_Init  : Boolean) return W_Expr_Id
    is
       --  The aggregate is the argument of a 'Update attribute_reference or a
       --  delta aggregate if and only if Update_Prefix has been supplied.
 
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
       Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
+      Ret_Type           : constant W_Type_Id := EW_Abstract
+        (Expr_Typ, Relaxed_Init => Relaxed_Init);
       Nb_Dim             : constant Positive :=
         Positive (Number_Dimensions (Expr_Typ));
       Needs_Bounds       : constant Boolean :=
@@ -9731,7 +9734,6 @@ package body Gnat2Why.Expr is
       --  the aggregate function if it is a delta aggregate (we will use the
       --  bounds of the updated object) or if the type is static (the bounds
       --  are declared in the type).
-      Init_Wrapper       : constant Boolean := Expr_Has_Relaxed_Init (Expr);
 
       type Aggregate_Element is record
          Value : Node_Id;
@@ -9883,7 +9885,7 @@ package body Gnat2Why.Expr is
                         Name     => Func,
                         Args     =>
                           Args & Bnd_Args & Var_Args & Context_Args,
-                        Typ      => Type_Of_Node (Expr));
+                        Typ      => Ret_Type);
 
          --  If the old map is not used by the current translation, we need
          --  to introduce mappings for those used in Context_Args. We do not
@@ -10052,10 +10054,6 @@ package body Gnat2Why.Expr is
             Gen_Marker  => GM_None,
             Ref_Allowed => False,
             Old_Policy  => Raise_Error);
-
-         --  Values used in calls to the aggregate function
-
-         Ret_Type      : constant W_Type_Id := Type_Of_Node (Expr);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
@@ -11111,7 +11109,7 @@ package body Gnat2Why.Expr is
                      Ar       => Arr,
                      Index    => Indexes),
                   Right  =>
-                    (if Has_Relaxed_Init (C_Typ) or else Init_Wrapper
+                    (if Has_Relaxed_Init (C_Typ) or else Relaxed_Init
                      then Insert_Simple_Conversion
                        (Ada_Node => Empty,
                         Domain   => EW_Term,
@@ -11164,14 +11162,33 @@ package body Gnat2Why.Expr is
             --    arr (indexes) = arg_val (indexes)
 
             if In_Delta_Aggregate and then Expr = Update_Prefix then
-               return New_Comparison
-                 (Symbol => Why_Eq,
-                  Left   => Read,
-                  Right  => New_Array_Access (Ada_Node => Empty,
-                                              Domain   => EW_Term,
-                                              Ar       => Arg_Val,
-                                              Index    => Indexes),
-                  Domain => EW_Pred);
+               declare
+                  Prefix_Read : constant W_Expr_Id := New_Array_Access
+                    (Ada_Node => Empty,
+                     Domain   => EW_Term,
+                     Ar       => Arg_Val,
+                     Index    => Indexes);
+               begin
+                  --  In general, the aggregate and its prefix have the same
+                  --  Why3 type. This might not be the case when the delta
+                  --  aggregate has relaxed initialization and not the prefix.
+                  --  Insert a conversion in this case.
+
+                  pragma Assert
+                    (Get_Ada_Node (+Get_Type (Prefix_Read)) =
+                       Get_Ada_Node (+Get_Type (Read))
+                     and then (if Get_Relaxed_Init (Get_Type (Prefix_Read))
+                               then Get_Relaxed_Init (Get_Type (Read))));
+
+                  return New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => Read,
+                     Right  => Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => Prefix_Read,
+                        To     => Get_Type (Read)),
+                     Domain => EW_Pred);
+               end;
 
             --  Use the split form of the component type for the
             --  comparison to avoid introducing unnecessary
@@ -11200,7 +11217,7 @@ package body Gnat2Why.Expr is
                   --  If the value has a type which does not have
                   --  relaxed initialization, it must be initialized.
 
-                  if (Has_Relaxed_Init (C_Typ) or else Init_Wrapper)
+                  if (Has_Relaxed_Init (C_Typ) or else Relaxed_Init)
                     and then
                       (Has_Scalar_Type (C_Typ)
                        or else
@@ -15725,9 +15742,12 @@ package body Gnat2Why.Expr is
 
    begin
       if Is_Record_Type (Pref_Typ) then
-         W_Pref := +Transform_Expr (Domain => Domain,
-                                    Expr   => Pref,
-                                    Params => Params);
+         W_Pref := +Transform_Expr
+           (Domain        => Domain,
+            Expr          => Pref,
+            Params        => Params,
+            Expected_Type => EW_Abstract
+              (Pref_Typ, Relaxed_Init => Expr_Has_Relaxed_Init (Ada_Node)));
 
          --  Introduce a temporary for the prefix to avoid recomputing it
          --  several times if Pref_Typ has discriminants.
@@ -15778,8 +15798,8 @@ package body Gnat2Why.Expr is
                       Component_Associations (Aggr),
                     Params              => Params,
                     In_Delta_Aggregate => True,
-                    Init_Wrapper        =>
-                      Expr_Has_Relaxed_Init (Pref)));
+                    Init_Wrapper        => Get_Relaxed_Init
+                      (Get_Type (W_Pref))));
 
             --  If we are in the program domain and Pref_Typ has discriminants,
             --  check that selectors are present in the prefix.
@@ -15849,7 +15869,8 @@ package body Gnat2Why.Expr is
            (Params        => Params,
             Domain        => Domain,
             Expr          => Aggr,
-            Update_Prefix => Pref);
+            Update_Prefix => Pref,
+            Relaxed_Init  => Expr_Has_Relaxed_Init (Ada_Node));
       end if;
 
       --  Detect possible memory leaks in the assignment of component
@@ -16195,9 +16216,11 @@ package body Gnat2Why.Expr is
                     (Is_Array_Type (Expr_Type) or else
                      Is_String_Type (Expr_Type));
 
-                  T := Transform_Aggregate (Params => Local_Params,
-                                            Domain => Domain,
-                                            Expr   => Expr);
+                  T := Transform_Aggregate
+                    (Params       => Local_Params,
+                     Domain       => Domain,
+                     Expr         => Expr,
+                     Relaxed_Init => Expr_Has_Relaxed_Init (Expr));
                end if;
             end;
 
@@ -17551,7 +17574,14 @@ package body Gnat2Why.Expr is
                T := +Call;
             end;
 
-         when N_Raise_Expression =>
+         when N_Raise_Expression
+            | N_Raise_xxx_Error
+         =>
+            --  No condition should be present in SPARK code. Such code should
+            --  be rejected after marking and not reach here.
+
+            pragma Assert (if Nkind (Expr) in N_Raise_xxx_Error
+                           then No (Condition (Expr)));
 
             --  Using raise expressions inside preconditions to change the
             --  reported error is a common pattern used in the standard
@@ -17560,8 +17590,11 @@ package body Gnat2Why.Expr is
             --  NB. Cases where such a translation would be incorrect are
             --  detected in marking.
 
-            if Raise_Occurs_In_Pre (Expr) then
+            if Nkind (Expr) = N_Raise_Expression
+              and then Raise_Occurs_In_Pre (Expr)
+            then
                T := New_Literal (Value => EW_False, Domain => Domain);
+
             else
                T := Why_Default_Value (Domain, Etype (Expr));
                if Domain = EW_Prog then
@@ -21804,6 +21837,12 @@ package body Gnat2Why.Expr is
          when N_Raise_xxx_Error
             | N_Raise_Statement
          =>
+            --  No condition should be present in SPARK code. Such code should
+            --  be rejected after marking and not reach here.
+
+            pragma Assert (if Nkind (Stmt_Or_Decl) in N_Raise_xxx_Error
+                           then No (Condition (Stmt_Or_Decl)));
+
             return Transform_Raise (Stmt_Or_Decl);
 
          --  Subprogram and package declarations are already taken care of

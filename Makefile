@@ -129,7 +129,7 @@ gnat2why:
 	# Produce Ada code that stores the reserved keywords of Why3
 	# This script should be run *ONLY* in developper build not in prod
 	# (gnat2why-nightly)
-	python3 scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
+	python3 scripts/why3keywords.py why3/src/core/keywords.ml src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
 	# (The timestamp of) src/why/xgen/gnat_ast.ml is updated every time `make` is called in
 	# `gnat2why`, causing a recompilation of why3 every time because Why3's makefile is

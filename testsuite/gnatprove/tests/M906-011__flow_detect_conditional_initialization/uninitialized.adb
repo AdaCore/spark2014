@@ -77,7 +77,7 @@ is
       if True then
          Rec.Boo := True;
       end if;
-      Rec.Boo := not Rec.Boo;  --  This should be a check.
+      Rec.Boo := not Rec.Boo;  --  This should be ok.
 
       for I in 1 .. 10 loop
          Rec.Arr (I) := I;  --  This should be ok.
@@ -137,7 +137,7 @@ is
       if False then
          X := 0;
       end if;
-      X := X + 1;  --  This should be a warning.
+      X := X + 1;  --  This should be a check.
       Y := 1;
    end Local;
 end Uninitialized;

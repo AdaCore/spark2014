@@ -829,7 +829,8 @@ package body SPARK_Definition is
                   Res := Subcomponents_With_Predicates (Des_Ty);
                end if;
             end;
-         when others => Res := False;
+         when others =>
+            raise Program_Error;
          end case;
 
          return Res;
@@ -1923,7 +1924,10 @@ package body SPARK_Definition is
                         Next (Alt);
                      end loop;
                   elsif Alternative_Uses_Eq (Right_Opnd (N)) then
+                     pragma Annotate
+                       (Xcov, Exempt_On, "X in Y is expanded into X = Y");
                      Mark_Violation ("equality on access types", N);
+                     pragma Annotate (Xcov, Exempt_Off);
                   end if;
                end;
             end if;
@@ -1981,11 +1985,15 @@ package body SPARK_Definition is
                Mark (Expression (N));
             end if;
 
-         --  The frontend inserts explicit checks during semantic analysis
-         --  in some cases that are not supported in GNATprove, like cases
-         --  of infinite recursion detected by the frontend.
+         --  The frontend inserts explicit raise-statements/expressions during
+         --  semantic analysis in some cases that are statically known to raise
+         --  an exception, like simple cases of infinite recursion or division
+         --  by zero. No condition should be present in SPARK code, but accept
+         --  them here as the code should in that case be rejected after
+         --  marking.
+
          when N_Raise_xxx_Error =>
-            Mark_Unsupported ("compiler-generated raise statement", N);
+            null;
 
          when N_Raise_Expression =>
             declare
@@ -2149,6 +2157,8 @@ package body SPARK_Definition is
                         CE_Discriminant_Check_Failed,
                         Ent => Prefix_Type);
                   end if;
+
+                  return;
                end if;
             end;
 
@@ -2309,7 +2319,8 @@ package body SPARK_Definition is
                      then
                         if Esize (Target_Type) /= Esize (Source_Type) then
                            Mark_Unsupported
-                             ("this conversion between array types", N);
+                             ("conversion between array types with modular"
+                              & " index types of different sizes", N);
                            exit;
                         end if;
 
@@ -2318,7 +2329,8 @@ package body SPARK_Definition is
                            Has_Modular_Integer_Type (Source_Type)
                      then
                         Mark_Unsupported
-                          ("this conversion between array types", N);
+                          ("conversion between array types with modular and"
+                           & " non-modular index types", N);
                         exit;
                      end if;
 
@@ -2456,16 +2468,6 @@ package body SPARK_Definition is
          when N_Unary_Op =>
             Mark_Unary_Op (N);
 
-         when N_Variant_Part =>
-            declare
-               Var : Node_Id := First (Variants (N));
-            begin
-               while Present (Var) loop
-                  Mark (Var);
-                  Next (Var);
-               end loop;
-            end;
-
          --  Frontend sometimes declares an Itype for the base type of a type
          --  declaration. This Itype should be marked at the point of
          --  declaration of the corresponding type, otherwise it may end up
@@ -2531,17 +2533,17 @@ package body SPARK_Definition is
             | N_Task_Body
          =>
             if Is_SPARK_Tasking_Configuration then
-                  case Nkind (N) is
-                     when N_Protected_Body =>
-                        Mark_Protected_Body (N);
+               case Nkind (N) is
+                  when N_Protected_Body =>
+                     Mark_Protected_Body (N);
 
-                     when N_Task_Body =>
-                        Mark_Subprogram_Body (N);
+                  when N_Task_Body =>
+                     Mark_Subprogram_Body (N);
 
-                     when others =>
-                        raise Program_Error;
+                  when others =>
+                     raise Program_Error;
 
-                  end case;
+               end case;
             else
                Mark_Violation_In_Tasking (N);
             end if;
@@ -2795,6 +2797,7 @@ package body SPARK_Definition is
             | N_Unused_At_End
             | N_Unused_At_Start
             | N_Variant
+            | N_Variant_Part
          =>
             raise Program_Error;
       end case;
@@ -2963,25 +2966,15 @@ package body SPARK_Definition is
 
                   if Constant_Present (N) then
 
-                     --  We don't support local borrowers/observers in actions
+                     --  We don't support local borrowers/observers in actions.
+                     --  They are not allowed by Ada in declare expressions,
+                     --  and they do not seem to be generated in others actions
+                     --  either.
 
                      if Is_Anonymous_Access_Object_Type
                        (Etype (Defining_Identifier (N)))
                      then
-                        if In_Declare_Expr then
-                           declare
-                              Kind : constant String :=
-                                (if Is_Access_Constant
-                                   (Etype (Defining_Identifier (N)))
-                                 then "observers"
-                                 else "borrowers");
-                           begin
-                              Mark_Violation
-                                ("local " & Kind & " in declare expression",
-                                 N);
-                           end;
-                        end if;
-                        return In_Declare_Expr;
+                        raise Program_Error;
 
                      --  We don't support moves in actions
 
@@ -3839,9 +3832,12 @@ package body SPARK_Definition is
                if Nkind (Right_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
+                  pragma Annotate
+                    (Xcov, Exempt_On, "GNAT associates to the left");
                   Error_Msg_F
                     ("?possible reassociation due to missing parentheses",
                      Right_Opnd (N));
+                  pragma Annotate (Xcov, Exempt_Off);
                end if;
 
             when N_Multiplying_Operator =>
@@ -3856,9 +3852,12 @@ package body SPARK_Definition is
                if Nkind (Right_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
+                  pragma Annotate
+                    (Xcov, Exempt_On, "GNAT associates to the left");
                   Error_Msg_F
                     ("?possible reassociation due to missing parentheses",
                      Right_Opnd (N));
+                  pragma Annotate (Xcov, Exempt_Off);
                end if;
 
             when others =>
@@ -4197,16 +4196,13 @@ package body SPARK_Definition is
 
       if Has_Might_Not_Return_Annotation (E) then
          declare
-            Caller : Entity_Id :=
+            Caller : constant Entity_Id :=
               Unique_Defining_Entity (Enclosing_Declaration (N));
          begin
-            while Ekind (Caller) not in Subprogram_Kind
-                                      | E_Entry
-                                      | E_Package
-                                      | E_Task_Type
-            loop
-               Caller := Scope (Caller);
-            end loop;
+            pragma Assert (Ekind (Caller) in Subprogram_Kind
+                                           | E_Entry
+                                           | E_Package
+                                           | E_Task_Type);
 
             if not Is_Possibly_Nonreturning_Procedure (Caller) then
                Error_Msg_N ("call to possibly nonreturning procedure outside "
@@ -4733,16 +4729,11 @@ package body SPARK_Definition is
       Violation_Detected := False;
 
       --  Protected types declared inside other protected types are not
-      --  supported in proof. Supporting them would require changing the
-      --  handling of self references to store multiple identifiers instead of
-      --  a single one.
-      --  Note that this is not useful anyway as Ravenscar prevents objects of
-      --  such a type to be initialized with the restriction
-      --  No_Local_Protected_Objects.
+      --  allowed in SPARK. Indeed SPARK RM 7.1.3(3) mandates effectively
+      --  volatile types to appear at library level.
 
-      if Ekind (E) = E_Protected_Type and then Within_Protected_Type (E) then
-         Mark_Unsupported ("protected type within protected type", E);
-      end if;
+      pragma Assert
+        (Ekind (E) /= E_Protected_Type or else not Within_Protected_Type (E));
 
       if Has_Discriminants (E) then
          declare
@@ -6079,7 +6070,12 @@ package body SPARK_Definition is
                   --  P826-030).
 
                   elsif Is_Protected_Type (E) then
+                     pragma Annotate
+                       (Xcov, Exempt_On,
+                        "Rejected by the frontend because of volatile IN " &
+                          "parameter in the invariant function");
                      Mark_Unsupported ("type invariant on protected types", E);
+                     pragma Annotate (Xcov, Exempt_Off);
 
                   --  We currently do not support invariants on tagged
                   --  types. To support them, we would need to introduce
@@ -6219,8 +6215,12 @@ package body SPARK_Definition is
             if Is_Modular_Integer_Type (E)
               and then Modulus (E) > UI_Expon (2, 128)
             then
+               pragma Annotate
+                 (Xcov, Exempt_On,
+                  "Modulus greater than 2**128 is rejected by the frontend");
                Mark_Unsupported ("modulus greater than 2 '*'* 128", E);
                return;
+               pragma Annotate (Xcov, Exempt_Off);
 
             elsif Is_Floating_Point_Type (E) then
                if not Is_Double_Precision_Floating_Point_Type (E)
@@ -6231,25 +6231,20 @@ package body SPARK_Definition is
                   return;
 
                --  Fixed-point values can be used as bounds in a floating-point
-               --  type constraint, but the underlying conversion is not
-               --  supported in GNATprove.
+               --  type constraint, but not in type derivation. In those cases,
+               --  the values for the bounds are static and are inlined by the
+               --  frontend.
 
                else
                   declare
-                     Low  : constant Node_Id := Type_Low_Bound (E);
-                     High : constant Node_Id := Type_High_Bound (E);
+                     Low  : constant Node_Id := Type_Low_Bound (E) with Ghost;
+                     High : constant Node_Id := Type_High_Bound (E) with Ghost;
                   begin
-                     if not In_SPARK (Etype (Low)) then
-                        Mark_Violation (E, From => Etype (Low));
-                     elsif not In_SPARK (Etype (High)) then
-                        Mark_Violation (E, From => Etype (High));
-                     elsif Has_Fixed_Point_Type (Etype (Low))
-                       or else Has_Fixed_Point_Type (Etype (High))
-                     then
-                        Mark_Unsupported ("conversion between fixed-point and "
-                                          & "floating-point types", E);
-                        return;
-                     end if;
+                     pragma Assert
+                       (In_SPARK (Etype (Low))
+                        and then In_SPARK (Etype (High))
+                        and then not Has_Fixed_Point_Type (Etype (Low))
+                        and then not Has_Fixed_Point_Type (Etype (High)));
                   end;
                end if;
             end if;
@@ -6632,8 +6627,10 @@ package body SPARK_Definition is
                   end if;
                end;
 
+            --  This type should no longer occur after resolution
+
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
-               Mark_Violation ("access attribute", E);
+               raise Program_Error;
 
             --  Reject general access-to-variable types. We check the
             --  underlying type of the base type as the base type itself can be
@@ -8422,15 +8419,6 @@ package body SPARK_Definition is
          if In_Pred_Function_Body then
             Current_Delayed_Aspect_Type := Etype (First_Formal (E));
 
-            --  If the type is private and the predicate is on the full view,
-            --  we should use the full view to get the correct SPARK_Mode.
-
-            if not Has_Predicates (Current_Delayed_Aspect_Type) then
-               pragma Assert
-                 (Present (Full_View (Current_Delayed_Aspect_Type)));
-               Current_Delayed_Aspect_Type :=
-                 Full_View (Current_Delayed_Aspect_Type);
-            end if;
             pragma Assert (Has_Predicates (Current_Delayed_Aspect_Type));
 
             Current_SPARK_Pragma :=
@@ -8505,7 +8493,7 @@ package body SPARK_Definition is
 
                --  Mark entry barrier
 
-               if Nkind (E) = N_Entry_Body then
+               if Nkind (N) = N_Entry_Body then
                   Mark (Condition (Entry_Body_Formal_Part (N)));
                end if;
 
@@ -8618,11 +8606,9 @@ package body SPARK_Definition is
       E : constant Entity_Id := Defining_Entity (N);
 
       pragma Assert (Ekind (E) in E_Function | E_Procedure | Entry_Kind);
-
-      In_Pred_Function_Decl : constant Boolean :=
-        Ekind (E) = E_Function and then Is_Predicate_Function (E);
-      --  Set to True iff processing declaration of a predicate function, which
-      --  is generated by the front end.
+      pragma Assert
+        (Ekind (E) /= E_Function or else not Is_Predicate_Function (E));
+      --  Mark_Subprogram_Declaration is never called on predicate functions
 
    begin
       --  Ignore some functions generated by the frontend for aspects
@@ -8646,72 +8632,10 @@ package body SPARK_Definition is
          declare
             Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
-            Save_Delayed_Aspect_Type : constant Entity_Id :=
-              Current_Delayed_Aspect_Type;
-
          begin
-            if In_Pred_Function_Decl then
-               Current_Delayed_Aspect_Type := Etype (First_Formal (E));
-
-               --  If the type is private and the predicate is on the full
-               --  view, we should use the full view to get the correct
-               --  SPARK_Mode.
-
-               if not Has_Predicates (Current_Delayed_Aspect_Type) then
-                  pragma Assert
-                    (Present (Full_View (Current_Delayed_Aspect_Type)));
-                  Current_Delayed_Aspect_Type :=
-                    Full_View (Current_Delayed_Aspect_Type);
-               end if;
-               pragma Assert (Has_Predicates (Current_Delayed_Aspect_Type));
-
-               Current_SPARK_Pragma :=
-                 SPARK_Pragma_Of_Entity (Current_Delayed_Aspect_Type);
-
-            else
-               Current_SPARK_Pragma := SPARK_Pragma (E);
-            end if;
+            Current_SPARK_Pragma := SPARK_Pragma (E);
 
             Mark_Entity (E);
-
-            if In_Pred_Function_Decl then
-               --  (1) For non-private types the Current_Delayed_Aspect_Type
-               --  and the type of the predicate function's formal parameter
-               --  are the same; their In_SPARK status must be the same.
-               --
-               --  (2) For private types with a predicate on the private view
-               --  the situation is the same.
-               --
-               --  (3) For private types with a predicate on the full view the
-               --  private view should be In_SPARK (otherwise there is no point
-               --  in marking the full view or its predicate) and the violation
-               --  in the predicate function renders the full view as not
-               --  in SPARK (the opposite doesn't hold, i.e. the predicate
-               --  might be in SPARK but the full view itself might contain
-               --  violations; ??? in this case we shouldn't bother with
-               --  marking the predicate).
-
-               pragma Assert
-                 ((Current_Delayed_Aspect_Type = Etype (First_Formal (E))
-                     and then
-                   In_SPARK (E) = In_SPARK (Current_Delayed_Aspect_Type))
-                   --  The above matches cases (1) and (2)
-
-                    or else
-
-                   --  The above matches case (3)
-                   (Is_Private_Type (Etype (First_Formal (E)))
-                      and then
-                    Current_Delayed_Aspect_Type =
-                      Full_View (Etype (First_Formal (E)))
-                      and then
-                    In_SPARK (Etype (First_Formal (E)))
-                      and then
-                    (if not In_SPARK (E)
-                     then not In_SPARK (Current_Delayed_Aspect_Type))));
-
-               Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
-            end if;
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end;

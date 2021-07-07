@@ -3,6 +3,8 @@ no_inlining.adb:6:16: info: local subprogram "Recurse1" only analyzed in the con
 no_inlining.adb:10:10: info: initialization of "Tmp" proved
 no_inlining.adb:10:10: info: initialization of "Tmp" proved, in call inlined at no_inlining.adb:26
 no_inlining.adb:10:10: info: initialization of "Tmp" proved, in call inlined at no_inlining.adb:31
+no_inlining.adb:12:10: warning: statement has no effect, in call inlined at no_inlining.adb:31
+no_inlining.adb:13:17: warning: this statement is never reached, in call inlined at no_inlining.adb:31
 no_inlining.adb:15:20: info: no contextual analysis of "Recurse2" (body not seen yet)
 no_inlining.adb:21:10: info: initialization of "Tmp" proved
 no_inlining.adb:26:20: info: analyzing call to "Recurse1" in context

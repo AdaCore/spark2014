@@ -1,11 +1,23 @@
+dead_condition.adb:5:06: info: data dependencies proved
+dead_condition.adb:10:07: warning: this statement is never reached
+dead_condition.adb:16:06: info: data dependencies proved
+dead_condition.adb:23:07: warning: this statement is never reached
+main.adb:25:12: warning: this statement is never reached, in instantiation at main.adb:46
 main.adb:32:12: warning: this statement is never reached, in instantiation at main.adb:47
+main.adb:40:15: warning: this statement is never reached, in instantiation at main.adb:48
+main.adb:46:14: warning: subprogram "Try_If" has no effect
 main.adb:47:04: info: cannot unroll loop (value of loop bounds)
 main.adb:47:04: info: in instantiation at line 31
 main.adb:47:14: warning: subprogram "Try_Loop" has no effect
+main.adb:48:14: warning: subprogram "Try_Case" has no effect
 main2.adb:27:10: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:48
+main2.adb:27:10: warning: this statement is never reached, in instantiation at main2.adb:48
 main2.adb:34:10: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:49
 main2.adb:34:10: warning: this statement is never reached, in instantiation at main2.adb:49
 main2.adb:42:13: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:50
+main2.adb:42:13: warning: this statement is never reached, in instantiation at main2.adb:50
+main2.adb:48:14: warning: subprogram "Try_If" has no effect
 main2.adb:49:04: info: cannot unroll loop (value of loop bounds)
 main2.adb:49:04: info: in instantiation at line 33
 main2.adb:49:14: warning: subprogram "Try_Loop" has no effect
+main2.adb:50:14: warning: subprogram "Try_Case" has no effect

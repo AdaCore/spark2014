@@ -1093,20 +1093,7 @@ package body Gnat2Why.Driver is
                   return;
                end if;
 
-               if not Is_Mutable_In_Why (E) then
-                  Ada_Ent_To_Why.Insert
-                    (Symbol_Table, E,
-                     (Regular, Local => False, Init => <>,
-                      Main           => (Ada_Node => E,
-                                         B_Name   => To_Why_Id
-                                           (E, No_Comp => True,
-                                            Typ        => Type_Of_Node (E)),
-                                         B_Ent    => Null_Entity_Name,
-                                         Mutable  => False,
-                                         Labels   => <>)));
-               else
-                  Insert_Item (E, Mk_Item_Of_Entity (E));
-               end if;
+               Insert_Item (E, Mk_Item_Of_Entity (E));
 
             when others =>
                null;

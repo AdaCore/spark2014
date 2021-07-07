@@ -38,7 +38,7 @@ begin
                S.Print;
                New_Line;
 
-            elsif Cmd = "quit" then
+            elsif Last = 4 and then Cmd = "quit" then
                return;
             end if;
          end;
