@@ -1,4 +1,3 @@
-with SPARK.Heap;
 with Ada.Unchecked_Deallocation;
 
 procedure Main with SPARK_Mode,

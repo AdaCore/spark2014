@@ -6,11 +6,11 @@ foo.adb:24:09: info: flow dependencies proved
 foo.adb:29:26: info: initialization of "R" proved
 foo.adb:30:09: info: data dependencies proved
 foo.adb:31:09: info: flow dependencies proved
-foo.adb:35:10: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 27 should mention G2 and B in a precondition]
+foo.adb:35:10: medium: precondition might fail [possible fix: subprogram at line 27 should mention G2 and B in a precondition]
 foo.adb:44:25: info: initialization of "R" proved
 foo.adb:45:09: info: data dependencies proved
 foo.adb:46:09: info: flow dependencies proved
-foo.adb:51:10: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 42 should mention G2 in a precondition]
+foo.adb:51:10: medium: precondition might fail [possible fix: subprogram at line 42 should mention G2 in a precondition]
 foo.adb:51:26: high: "B" is not initialized
 foo.adb:62:26: info: initialization of "R" proved
 foo.adb:63:09: info: data dependencies proved
@@ -25,12 +25,12 @@ foo.adb:100:21: medium: overflow check might fail [reason for check: result of a
 foo.adb:108:26: info: initialization of "R" proved
 foo.adb:109:09: info: data dependencies proved
 foo.adb:110:09: info: flow dependencies proved
-foo.adb:114:12: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 106 should mention G2 in a precondition]
+foo.adb:114:12: medium: precondition might fail [possible fix: subprogram at line 106 should mention G2 in a precondition]
 foo.adb:115:40: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 106 should mention A in a precondition]
-foo.adb:116:29: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 106 should mention G2 and B in a precondition]
+foo.adb:116:29: medium: precondition might fail [possible fix: subprogram at line 106 should mention G2 and B in a precondition]
 foo.adb:122:25: info: initialization of "R" proved
 foo.adb:123:09: info: data dependencies proved
-foo.adb:126:12: medium: precondition might fail, cannot prove Y = G2
+foo.adb:126:12: medium: precondition might fail
 foo.adb:127:40: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:128:29: high: "G1" is not an input in the Global contract of subprogram "Test_07_E" at line 120
 foo.adb:128:29: high: "G1" is not initialized
@@ -38,7 +38,7 @@ foo.adb:128:29: high: "G2" is not an input in the Global contract of subprogram 
 foo.adb:128:29: high: "G2" is not initialized
 foo.adb:128:29: high: either make "G1" an input in the Global contract or initialize it before use
 foo.adb:128:29: high: either make "G2" an input in the Global contract or initialize it before use
-foo.adb:128:29: medium: precondition might fail, cannot prove Y = G2
+foo.adb:128:29: medium: precondition might fail
 foo.adb:129:31: high: "A" is not initialized
 foo.adb:129:38: high: "B" is not initialized
 foo.adb:139:09: info: data dependencies proved

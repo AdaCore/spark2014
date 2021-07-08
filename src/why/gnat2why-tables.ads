@@ -145,6 +145,11 @@ package Gnat2Why.Tables is
    --  @param E entity of a tagged type
    --  @return the set of visible descendants of E.
 
+   function Get_Extension_Components (E : Entity_Id) return Node_Sets.Set with
+     Pre => Is_Tagged_Type (E) and then Root_Retysp (E) = E;
+   --  @param E entity of the root of tagged hierarchy
+   --  @return the set of the components declared in extensions of E
+
    function Has_Private_Part (E : Entity_Id) return Boolean with
      Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why

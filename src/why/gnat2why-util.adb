@@ -59,7 +59,7 @@ package body Gnat2Why.Util is
 
       function Normalize_Entity (E : Entity_Id) return Entity_Id is
         (if Nkind (E) in N_Entity and then Ekind (E) = E_Discriminant then
-              Root_Record_Component (E) else E);
+              Root_Discriminant (E) else E);
       --  Entities of discriminants can vary when types are derived. We want to
       --  refer to the same item for every variants of a single discriminant
       --  entity.
@@ -614,13 +614,11 @@ package body Gnat2Why.Util is
       Local_Params : Transformation_Params := Params;
    begin
 
-      --  For specs we usually want the markers that identify subparts of
-      --  formulas, so we set this here. We do not set it to GM_All, as this
-      --  could cause side effects related to the location of checks. This
-      --  boolean is a no-op for Domains other than EW_Pred.
+      --  For specs we usually want the pretty-printing markers. This flag is a
+      --  no-op for Domains other than EW_Pred.
 
       if Local_Params.Gen_Marker = GM_None then
-         Local_Params.Gen_Marker := GM_Node_Only;
+         Local_Params.Gen_Marker := GM_Toplevel;
       end if;
       if Nodes.Is_Empty then
          return New_Literal (Value => EW_True, Domain => Domain);
@@ -764,7 +762,7 @@ package body Gnat2Why.Util is
                               +New_Discrete_Constant (Value => Uint_0,
                                                       Typ   => Get_Type (+V)),
                             Context => Result,
-                            Typ     => Get_Typ (W_Identifier_Id (V)));
+                            Typ     => Get_Type (+Prog));
       end loop;
       return Result;
    end Create_Zero_Binding;
@@ -1655,7 +1653,11 @@ package body Gnat2Why.Util is
 
         --  Functions from predefined units should be safe
 
-        and then not Lib.In_Predefined_Unit (E);
+        and then not Lib.In_Predefined_Unit (E)
+
+        and then (Type_Needs_Dynamic_Invariant (Etype (E))
+                  or else Has_Contracts (E, Pragma_Postcondition)
+                  or else Present (Get_Pragma (E, Pragma_Contract_Cases)));
    end Use_Guard_For_Function;
 
    -----------------------------

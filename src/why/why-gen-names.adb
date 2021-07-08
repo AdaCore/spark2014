@@ -30,7 +30,6 @@ with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with String_Utils;           use String_Utils;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
@@ -62,8 +61,6 @@ package body Why.Gen.Names is
                         return W_Identifier_Id;
 
    function Append_Num (S : String; Count : Positive) return String;
-
-   function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
    ----------------
    -- Append_Num --
@@ -253,18 +250,17 @@ package body Why.Gen.Names is
                   declare
                      A : constant Node_Id := Get_Ada_Node (+To);
                   begin
-                     if Base_Why_Type (To) = From and then
-                       (From = EW_Int_Type
-                        or else Why_Type_Is_BitVector (From)
-                        or else Why_Type_Is_Float (From)
-                        or else Why_Type_Is_Fixed (From))
-                     then
-                        --  if we're converting from the representation type
-                        --  of a scalar kind
-                        return E_Symb (A, WNE_Of_Rep);
-                     else
-                        return E_Symb (A, Convert_From (From));
-                     end if;
+                     --  We're converting from the representation type
+                     --  of a scalar kind
+
+                     pragma Assert
+                       (Base_Why_Type (To) = From and then
+                            (From = EW_Int_Type
+                             or else Why_Type_Is_BitVector (From)
+                             or else Why_Type_Is_Float (From)
+                             or else Why_Type_Is_Fixed (From)));
+
+                     return E_Symb (A, WNE_Of_Rep);
                   end;
             end case;
 
@@ -276,30 +272,17 @@ package body Why.Gen.Names is
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);
                   begin
-                     if Base_Why_Type (From) = To and then
-                       (To = EW_Int_Type
-                        or else Why_Type_Is_BitVector (To)
-                        or else Why_Type_Is_Float (To)
-                        or else Why_Type_Is_Fixed (To))
-                     then
-                        --  if we're converting to the representation type
-                        --  of a discrete/float kind
-                        return E_Symb (A, WNE_To_Rep);
-                     else
-                        if To = EW_Int_Type then
-                           return E_Symb (A, WNE_To_Int);
-                        elsif Why_Type_Is_Fixed (To) then
-                           return E_Symb (A, WNE_To_Fixed);
-                        elsif To = EW_Float_32_Type then
-                           return E_Symb (A, WNE_To_Float32);
-                        elsif To = EW_Float_64_Type then
-                           return E_Symb (A, WNE_To_Float64);
-                        elsif Why_Type_Is_BitVector (To) then
-                           return E_Symb (A, WNE_To_BitVector);
-                        else
-                           raise Program_Error;
-                        end if;
-                     end if;
+                     --  We're converting to the representation type
+                     --  of a discrete/float kind
+
+                     pragma Assert
+                       (Base_Why_Type (From) = To and then
+                            (To = EW_Int_Type
+                             or else Why_Type_Is_BitVector (To)
+                             or else Why_Type_Is_Float (To)
+                             or else Why_Type_Is_Fixed (To)));
+
+                     return E_Symb (A, WNE_To_Rep);
                   end;
 
                --  Case of a conversion between two record or array types
@@ -344,29 +327,6 @@ package body Why.Gen.Names is
             end case;
       end case;
    end Conversion_Name;
-
-   ------------------
-   -- Convert_From --
-   ------------------
-
-   function Convert_From (Kind : W_Type_Id) return Why_Name_Enum is
-   begin
-      if Kind = EW_Int_Type then
-         return WNE_Of_Int;
-      elsif Why_Type_Is_Fixed (Kind) then
-         return WNE_Of_Fixed;
-      elsif Kind = EW_Float_32_Type then
-         return WNE_Of_Float32;
-      elsif Kind = EW_Float_64_Type then
-         return WNE_Of_Float64;
-      elsif Why_Type_Is_BitVector (Kind) then
-         return WNE_Of_BitVector;
-      elsif Kind = EW_Real_Type then
-         return WNE_Of_Real;
-      else
-         raise Why.Not_Implemented;
-      end if;
-   end Convert_From;
 
    ------------------
    -- Discr_Append --
@@ -965,6 +925,7 @@ package body Why.Gen.Names is
          when WNE_Fixed_Point_Prefix         => "Fixed_Point",
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
          when WNE_Havoc                      => "__havoc",
+         when WNE_Hidden_Extension           => "rec__hidden_ext__",
          when WNE_Hide_Extension             => "hide_ext__",
          when WNE_Init_Wrapper_Suffix        => "__init_wrapper",
          when WNE_No_Return_Module           => "No_Return",
@@ -986,6 +947,8 @@ package body Why.Gen.Names is
          when WNE_Is_Moved           => "__is_moved",
          when WNE_Move               => "__move",
          when WNE_Moved_Relation     => "__moved_relation",
+         when WNE_Close              => "__close",
+         when WNE_Open               => "__open",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -1028,6 +991,7 @@ package body Why.Gen.Names is
             | WNE_Dynamic_Predicate
             | WNE_Dynamic_Property
             | WNE_Dynamic_Property_BV_Int
+            | WNE_Extension_Type
             | WNE_Fixed_Point_Div
             | WNE_Fixed_Point_Div_Int
             | WNE_Fixed_Point_Mult
@@ -1039,6 +1003,7 @@ package body Why.Gen.Names is
             | WNE_Index_Dynamic_Property_4
             | WNE_Init_Value
             | WNE_Int_Proj
+            | WNE_Null_Extension
             | WNE_Of_Array
             | WNE_Of_Base
             | WNE_Of_BitVector
@@ -1054,8 +1019,6 @@ package body Why.Gen.Names is
             | WNE_Private_To_Wrapper
             | WNE_Private_Type
             | WNE_Pointer_Call
-            | WNE_Pointer_Close
-            | WNE_Pointer_Open
             | WNE_Pointer_Value_Abstr
             | WNE_Pos_To_Rep
             | WNE_Refined_Func_Guard
@@ -1071,7 +1034,6 @@ package body Why.Gen.Names is
             | WNE_Tag
             | WNE_To_Array
             | WNE_To_Base
-            | WNE_To_BitVector
             | WNE_To_Fixed
             | WNE_To_Float32
             | WNE_To_Float64

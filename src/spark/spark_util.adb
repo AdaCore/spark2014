@@ -933,6 +933,19 @@ package body SPARK_Util is
       return Check_Volatile_Function (N) = Abandon;
    end Contains_Volatile_Function_Call;
 
+   ------------------------------------
+   -- Conversion_Is_Move_To_Constant --
+   ------------------------------------
+
+   function Conversion_Is_Move_To_Constant (Expr : Node_Id) return Boolean is
+     (Is_Access_Object_Type (Retysp (Etype (Expr)))
+      and then Is_Access_Constant (Retysp (Etype (Expr)))
+      and then not Is_Anonymous_Access_Object_Type (Etype (Expr))
+      and then not Is_Access_Constant
+        (Retysp (Etype (Expression (Expr))))
+      and then not Is_Rooted_In_Constant (Expression (Expr))
+      and then not In_Assertion_Expression_Pragma (Expr));
+
    --------------------------------------------
    -- Directly_Enclosing_Subprogram_Or_Entry --
    --------------------------------------------
@@ -2188,6 +2201,8 @@ package body SPARK_Util is
    -- Is_Global_Entity --
    ----------------------
 
+   pragma Annotate
+     (Xcov, Exempt_On, "Only used in the predicate of Flow_Types.Global_Set");
    function Is_Global_Entity (E : Entity_Id) return Boolean is
      (Ekind (E) in E_Loop_Parameter
                  | E_Variable
@@ -2206,6 +2221,7 @@ package body SPARK_Util is
       (Ekind (E) = E_Abstract_State and then not Is_Null_State (E)));
    --  ??? this could be further restricted basen on what may appear in
    --  Proof_In, Input, and Output.
+   pragma Annotate (Xcov, Exempt_Off);
 
    -----------------------------
    -- Is_Ignored_Pragma_Check --
@@ -2294,6 +2310,7 @@ package body SPARK_Util is
          if Comes_From_This_Dead_Branch (If_Stmt, Stmt) then
             return True;
          end if;
+
          --  check if any of the elsif branches is dead and contains our stmt
          if Present (Elsif_Parts (If_Stmt)) then
             declare
@@ -2307,6 +2324,7 @@ package body SPARK_Util is
                end loop;
             end;
          end if;
+
          --  check if the else branch is dead and contains our stmt
          if List_Containing (Stmt) = Else_Statements (If_Stmt)
            and then Has_True_Condition (If_Stmt)
@@ -2363,9 +2381,12 @@ package body SPARK_Util is
            and then Comes_From_Dead_Branch (Anc, Prev)
          then
             return True;
+         elsif Nkind (Anc) = N_Elsif_Part then
+            Anc := Parent (Anc);
+         else
+            Prev := Anc;
+            Anc := Parent (Anc);
          end if;
-         Prev := Anc;
-         Anc := Parent (Anc);
       end loop;
       return False;
    end Is_In_Statically_Dead_Branch;
@@ -2398,8 +2419,7 @@ package body SPARK_Util is
 
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
      (not (Is_Completely_Hidden (E)
-             or else
-           No (Root_Record_Component (E))));
+             or else No (Root_Discriminant (E))));
 
    ----------------------
    -- Is_Others_Choice --
@@ -2796,6 +2816,70 @@ package body SPARK_Util is
       end if;
    end May_Issue_Warning_On_Node;
 
+   ---------------------------
+   -- Value_Is_Never_Leaked --
+   ---------------------------
+
+   function Value_Is_Never_Leaked (Expr : Node_Id) return Boolean is
+      Context : Node_Id := Parent (Expr);
+
+   begin
+      --  Check that Expr is a part of the definition of a library level
+      --  constant.
+
+      loop
+         case Nkind (Context) is
+
+            --  The allocating expression appears on the rhs of a library level
+            --  constant declaration.
+
+            when N_Object_Declaration =>
+               declare
+                  Obj : constant Entity_Id := Defining_Identifier (Context);
+               begin
+                  return Is_Constant_In_SPARK (Obj)
+                    and then Is_Library_Level_Entity (Obj);
+               end;
+
+            --  The allocating expression is the expression of a type
+            --  conversion or a qualified expression.
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  The allocating expression occurs as the expression in another
+            --  initialized allocator. If it is an allocator to constant, the
+            --  context will be checked while checking the allocator.
+            --  Otherwise, continue the check.
+
+            when N_Allocator =>
+               declare
+                  Ty : constant Entity_Id := Retysp (Etype (Context));
+               begin
+                  if Is_Access_Constant (Ty) then
+                     return True;
+                  end if;
+               end;
+
+            --  The allocating expression corresponds to a component value in
+            --  an aggregate.
+
+            when N_Aggregate
+               | N_Component_Association
+            =>
+               null;
+
+            when others =>
+               return False;
+         end case;
+
+         Context := Parent (Context);
+      end loop;
+   end Value_Is_Never_Leaked;
+
    ------------------------------------
    -- Number_Of_Assocs_In_Expression --
    ------------------------------------
@@ -3070,11 +3154,11 @@ package body SPARK_Util is
       return Result (1 .. Last);
    end Real_Image;
 
-   ---------------------------
-   -- Root_Record_Component --
-   ---------------------------
+   -----------------------
+   -- Root_Discriminant --
+   -----------------------
 
-   function Root_Record_Component (E : Entity_Id) return Entity_Id is
+   function Root_Discriminant (E : Entity_Id) return Entity_Id is
       Rec_Type : constant Entity_Id := Retysp (Scope (E));
       Root     : constant Entity_Id := Root_Retysp (Rec_Type);
 
@@ -3085,19 +3169,10 @@ package body SPARK_Util is
          return Search_Component_By_Name (Rec_Type, E);
       end if;
 
-      --  In the component case, it is enough to simply search for the matching
-      --  component in the root type, using "Chars".
-
-      if Ekind (E) = E_Component then
-         return Search_Component_By_Name (Root, E);
-      end if;
-
-      --  In the discriminant case, we need to climb up the hierarchy of types,
+      --  Otherwise, we need to climb up the hierarchy of types,
       --  to get to the corresponding discriminant in the root type. Note that
       --  there can be more than one corresponding discriminant (because of
       --  renamings), in this case the frontend has picked one for us.
-
-      pragma Assert (Ekind (E) = E_Discriminant);
 
       declare
          Cur_Type : Entity_Id := Rec_Type;
@@ -3144,7 +3219,7 @@ package body SPARK_Util is
 
          return Comp;
       end;
-   end Root_Record_Component;
+   end Root_Discriminant;
 
    ---------------------
    -- Safe_First_Sloc --
@@ -3702,6 +3777,9 @@ package body SPARK_Util is
    function Traverse_Access_To_Constant (Expr : Node_Id) return Boolean is
    begin
       case Nkind (Expr) is
+
+         --  We have reached the root of the path, return False
+
          when N_Expanded_Name
             | N_Identifier
             | N_Aggregate
@@ -3730,6 +3808,9 @@ package body SPARK_Util is
                                       | Name_Access
             then
                return Traverse_Access_To_Constant (Prefix (Expr));
+
+            --  We have reached the root of the path, return False
+
             else
                pragma Assert
                  (Attribute_Name (Expr) in Name_Loop_Entry
@@ -3761,12 +3842,16 @@ package body SPARK_Util is
          when N_Op_Eq
             | N_Op_Ne
          =>
+            pragma Annotate
+              (Xcov, Exempt_On,
+               "The routine is only called on deep paths or objects");
             if Nkind (Left_Opnd (Expr)) = N_Null then
                return Traverse_Access_To_Constant (Right_Opnd (Expr));
             else
                pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
                return Traverse_Access_To_Constant (Left_Opnd (Expr));
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
          when others =>
             raise Program_Error;

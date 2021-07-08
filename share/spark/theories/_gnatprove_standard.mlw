@@ -1287,6 +1287,24 @@ module BVAda
   lemma bv_max_to_uint: forall x y.
     to_uint (bv_max x y) = MinMax.max (to_uint x) (to_uint y)
 
+  (** Unchecked_Conversion from/to integers
+      This is used to translate SPARK Unchecked_Conversion between
+      signed and modular integers of the same bit size.
+  *)
+
+  function of_int int : t
+  function neg t : t
+  constant two_power_size_minus_one : int
+
+  function uc_of_int (x : int) : t =
+    if x >= 0 then (of_int x) else (neg (of_int (- x)))
+  val uc_of_int (x : int) : t ensures { result = uc_of_int x }
+
+  function uc_to_int (x : t) : int =
+    if bool_lt x (of_int two_power_size_minus_one) then (to_uint x)
+    else (- (to_uint (neg x)))
+  val uc_to_int (x : t) : int ensures { result = uc_to_int x }
+
 end
 
 module BV8
@@ -1303,8 +1321,11 @@ module BV8
     predicate ugt = ugt,
     predicate uge = uge,
     function to_uint = t'int,
+    function of_int = of_int,
     function ( * ) = mul,
-    function one = one
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -1341,8 +1362,11 @@ module BV16
     predicate ugt = ugt,
     predicate uge = uge,
     function to_uint = t'int,
+    function of_int = of_int,
     function ( * ) = mul,
-    function one = one
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -1379,8 +1403,11 @@ module BV32
     predicate ugt = ugt,
     predicate uge = uge,
     function to_uint = t'int,
+    function of_int = of_int,
     function ( * ) = mul,
-    function one = one
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -1417,8 +1444,11 @@ module BV64
     predicate ugt = ugt,
     predicate uge = uge,
     function to_uint = t'int,
+    function of_int = of_int,
     function ( * ) = mul,
-    function one = one
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -1455,8 +1485,11 @@ module BV128
     predicate ugt = ugt,
     predicate uge = uge,
     function to_uint = t'int,
+    function of_int = of_int,
     function ( * ) = mul,
-    function one = one
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }

@@ -328,7 +328,6 @@ package body Flow.Control_Flow_Graph.Utility is
             Unused_Vc  : Boolean;
             Unused_Seq : Node_Lists.List;
             Map_Root   : Flow_Id;
-            Unused     : Flow_Id_Sets.Set;
 
          begin
             --  We're interested in the map root, since we might have to do
@@ -348,7 +347,6 @@ package body Flow.Control_Flow_Graph.Utility is
                Use_Computed_Globals => not FA.Generating_Globals,
                Vars_Defined         => A.Variables_Defined,
                Vars_Used            => A.Variables_Explicitly_Used,
-               Vars_Proof           => Unused,
                Partial_Definition   => Partial);
 
             if Ext_Relevant_To_Formal
@@ -508,7 +506,6 @@ package body Flow.Control_Flow_Graph.Utility is
          else
             declare
                Partial : Boolean;
-               Unused  : Flow_Id_Sets.Set;
 
             begin
                --  We have an unconditional addition to folded_function_checks
@@ -520,7 +517,6 @@ package body Flow.Control_Flow_Graph.Utility is
                   Use_Computed_Globals => not FA.Generating_Globals,
                   Vars_Defined         => A.Variables_Defined,
                   Vars_Used            => A.Variables_Explicitly_Used,
-                  Vars_Proof           => Unused,
                   Partial_Definition   => Partial);
 
                A.Variables_Used := A.Variables_Explicitly_Used;

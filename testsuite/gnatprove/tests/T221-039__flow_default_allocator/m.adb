@@ -1,5 +1,3 @@
-with SPARK.Heap;
-
 procedure M (Data   :     Integer;
              Result : out Integer)
   with Depends => (Result => Data),

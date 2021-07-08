@@ -28,15 +28,15 @@ test.adb:7:11: info: data dependencies proved
 test.adb:7:41: info: initialization of "Stack_ASM.State" proved
 test.adb:13:23: info: initialization of "I" proved
 test.adb:14:11: info: data dependencies proved
-test.adb:17:21: medium: precondition might fail, cannot prove not (Is_Empty) [possible fix: subprogram at line 13 should mention Stack_Asm.The_Ptr and Stack_Asm.The_Stack in a precondition]
+test.adb:17:21: medium: precondition might fail [possible fix: subprogram at line 13 should mention Stack_Asm.The_Ptr and Stack_Asm.The_Stack in a precondition]
 test.adb:20:23: info: initialization of "I" proved
 test.adb:21:11: info: data dependencies proved
 test.adb:21:41: high: "Stack_ASM.State" is not initialized
 test.adb:24:21: high: "Stack_ASM.State" is not an input in the Global contract of subprogram "Test_03" at line 20
 test.adb:24:21: high: "Stack_ASM.State" is not initialized
 test.adb:24:21: high: either make "Stack_ASM.State" an input in the Global contract or initialize it before use
-test.adb:24:21: medium: precondition might fail, cannot prove not (Is_Empty)
+test.adb:24:21: medium: precondition might fail
 test.adb:27:23: info: initialization of "I" proved
 test.adb:28:11: info: data dependencies proved
 test.adb:28:41: info: initialization of "Stack_ASM.State" proved
-test.adb:32:21: medium: precondition might fail, cannot prove not (Is_Empty)
+test.adb:32:21: medium: precondition might fail

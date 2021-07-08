@@ -46,7 +46,7 @@ deceleration_curve.adb:89:29: medium: float overflow check might fail [reason fo
 deceleration_curve.adb:90:13: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
-deceleration_curve.adb:105:09: medium: precondition might fail, cannot prove d <= Braking_Curve_Maximum_End_Point [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:105:09: medium: precondition might fail [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:106:10: warning: no Global contract available for "Put"
@@ -54,13 +54,13 @@ deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global i
 deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Is_Valid_Speed(Speed) [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
-deceleration_curve.ads:28:06: info: precondition proved (CVC4: 1 VC)
+deceleration_curve.ads:28:06: info: precondition proved (CVC4: 2 VC)
 deceleration_curve.ads:81:32: medium: "Braking_Curve.curve" might not be initialized in "Curve_From_Target"
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
-deceleration_curve_test.adb:6:31: info: precondition proved (CVC4: 1 VC)
+deceleration_curve_test.adb:6:31: info: precondition proved (CVC4: 2 VC)
 deceleration_curve_test.adb:11:04: info: initialization of "braking_curve" proved
 deceleration_curve_test.adb:15:19: info: implicit function contract not available for proof ("Distance_To_Speed" might not return)
 deceleration_curve_test.adb:15:19: info: precondition proved (CVC4: 6 VC)
@@ -69,40 +69,40 @@ deceleration_curve_test.adb:17:04: info: precondition proved (CVC4: 1 VC)
 example.adb:4:13: info: overflow check proved (CVC4: 1 VC)
 example.adb:5:20: info: overflow check proved (CVC4: 1 VC)
 example.ads:5:14: info: postcondition proved (CVC4: 2 VC)
-sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved (CVC4: 1 VC)
+sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved (CVC4: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:180 should mention V]
-sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC4: 1 VC)
+sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC4: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:196 should mention V]
 sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved (CVC4: 1 VC)
+sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved (CVC4: 2 VC)
 sec_3_13_2_monitoring_inputs.ads:186:58: info: range check proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:200:08: info: postcondition proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.ads:201:24: info: precondition proved (CVC4: 1 VC)
+sec_3_13_2_monitoring_inputs.ads:201:24: info: precondition proved (CVC4: 2 VC)
 sec_3_13_2_monitoring_inputs.ads:202:58: info: range check proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.ads:244:46: info: precondition proved (CVC4: 1 VC)
+sec_3_13_2_monitoring_inputs.ads:244:46: info: precondition proved (CVC4: 2 VC)
 sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "dummy" has no effect
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
-sec_3_13_6_deceleration.adb:26:37: info: precondition proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.adb:26:37: info: precondition proved (CVC4: 2 VC)
 sec_3_13_6_deceleration.adb:26:37: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.adb:27:71: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC4: 2 VC)
 sec_3_13_6_deceleration.ads:40:37: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:41:71: info: range check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC4: 2 VC)
 sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention V in a precondition]
-sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC4: 2 VC)
 sec_3_13_6_deceleration.ads:46:38: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Trivial)
 sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 2 VC)
 sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention d and V in a precondition]
-sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Is_Valid_Speed(V) [possible fix: subprogram at line 44 should mention V in a precondition]
+sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
-sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail, cannot prove Target.location <= Braking_Curve_Maximum_End_Point
+sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC4: 1 VC)
 section_3_5_3.ads:49:04: info: initialization of "Connections" proved
@@ -193,24 +193,24 @@ step_function.adb:142:13: info: loop invariant initialization proved (CVC4: 1 VC
 step_function.adb:143:15: medium: "Merge.Step" might not be initialized
 step_function.adb:143:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter))
 step_function.adb:143:26: info: index check proved (CVC4: 4 VC)
-step_function.adb:144:19: info: precondition proved (CVC4: 2 VC)
+step_function.adb:144:19: info: precondition proved (CVC4: 4 VC)
 step_function.adb:144:47: info: index check proved (CVC4: 4 VC)
-step_function.adb:145:17: info: precondition proved (CVC4: 2 VC)
+step_function.adb:145:17: info: precondition proved (CVC4: 4 VC)
 step_function.adb:145:45: info: index check proved (CVC4: 4 VC)
-step_function.adb:152:22: info: precondition proved (CVC4: 1 VC)
-step_function.adb:153:22: info: precondition proved (CVC4: 1 VC)
+step_function.adb:152:22: info: precondition proved (CVC4: 2 VC)
+step_function.adb:153:22: info: precondition proved (CVC4: 2 VC)
 step_function.adb:153:39: medium: "Merge.Step" might not be initialized
-step_function.adb:159:22: info: precondition proved (CVC4: 1 VC)
-step_function.adb:160:22: info: precondition proved (CVC4: 1 VC)
+step_function.adb:159:22: info: precondition proved (CVC4: 2 VC)
+step_function.adb:160:22: info: precondition proved (CVC4: 2 VC)
 step_function.adb:160:39: medium: "Merge.Step" might not be initialized
-step_function.adb:166:22: info: precondition proved (CVC4: 1 VC)
-step_function.adb:167:22: info: precondition proved (CVC4: 1 VC)
+step_function.adb:166:22: info: precondition proved (CVC4: 2 VC)
+step_function.adb:167:22: info: precondition proved (CVC4: 2 VC)
 step_function.adb:167:39: medium: "Merge.Step" might not be initialized
-step_function.adb:175:19: info: precondition proved (CVC4: 1 VC)
-step_function.adb:176:19: info: precondition proved (CVC4: 1 VC)
+step_function.adb:175:19: info: precondition proved (CVC4: 2 VC)
+step_function.adb:176:19: info: precondition proved (CVC4: 2 VC)
 step_function.adb:176:36: medium: "Merge.Step" might not be initialized
-step_function.adb:182:22: info: precondition proved (CVC4: 1 VC)
-step_function.adb:183:22: info: precondition proved (CVC4: 1 VC)
+step_function.adb:182:22: info: precondition proved (CVC4: 2 VC)
+step_function.adb:183:22: info: precondition proved (CVC4: 2 VC)
 step_function.adb:183:39: medium: "Merge.Step" might not be initialized
 step_function.adb:188:22: info: range check proved (CVC4: 1 VC)
 step_function.ads:40:17: info: postcondition proved (CVC4: 2 VC)
@@ -229,45 +229,45 @@ step_function.ads:74:50: info: index check proved (CVC4: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC4: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC4: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC4: 6 VC)
-step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
+step_function.ads:101:04: medium: postcondition might fail, cannot prove SFun.Step(i+1).Delimiter > SFun.Step(i).Delimiter
 step_function.ads:106:30: info: index check proved (CVC4: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC4: 2 VC)
 step_function.ads:111:30: info: index check proved (CVC4: 2 VC)
 step_function.ads:111:56: info: index check proved (CVC4: 2 VC)
 step_function.ads:114:25: info: index check proved (CVC4: 2 VC)
-step_function.ads:114:40: info: precondition proved (CVC4: 1 VC)
+step_function.ads:114:40: info: precondition proved (CVC4: 2 VC)
 step_function.ads:115:61: info: index check proved (CVC4: 2 VC)
-step_function.ads:116:40: info: precondition proved (CVC4: 1 VC)
+step_function.ads:116:40: info: precondition proved (CVC4: 2 VC)
 step_function.ads:117:61: info: index check proved (CVC4: 2 VC)
 step_function_test.adb:39:04: info: initialization of "sfun_merge" proved
-step_function_test.adb:41:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:42:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:43:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:44:19: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:41:19: info: assertion proved (CVC4: 2 VC)
+step_function_test.adb:42:19: info: assertion proved (CVC4: 2 VC)
+step_function_test.adb:43:19: info: assertion proved (CVC4: 2 VC)
+step_function_test.adb:44:19: info: assertion proved (CVC4: 2 VC)
 step_function_test.adb:46:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:46:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:46:19: info: precondition proved (CVC4: 2 VC)
 step_function_test.adb:47:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:47:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:47:19: info: precondition proved (CVC4: 2 VC)
 step_function_test.adb:48:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:48:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:48:19: info: precondition proved (CVC4: 2 VC)
 step_function_test.adb:49:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:49:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:49:19: info: precondition proved (CVC4: 2 VC)
 step_function_test.adb:50:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:50:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:50:19: info: precondition proved (CVC4: 2 VC)
 step_function_test.adb:51:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:51:19: info: precondition proved (CVC4: 1 VC)
-step_function_test.adb:54:19: info: assertion proved (CVC4: 1 VC)
-step_function_test.adb:56:04: info: precondition proved (CVC4: 3 VC)
+step_function_test.adb:51:19: info: precondition proved (CVC4: 2 VC)
+step_function_test.adb:54:19: info: assertion proved (CVC4: 2 VC)
+step_function_test.adb:56:04: info: precondition proved (CVC4: 5 VC)
 step_function_test.adb:58:38: info: unrolling loop
-step_function_test.adb:61:22: info: precondition proved (CVC4: 13 VC)
+step_function_test.adb:61:22: info: precondition proved (CVC4: 6 VC; Z3: 20 VC)
 step_function_test.adb:61:22: medium: assertion might fail
-step_function_test.adb:62:28: info: precondition proved (CVC4: 13 VC)
-step_function_test.adb:62:49: info: precondition proved (CVC4: 13 VC)
-step_function_test.adb:65:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:62:28: info: precondition proved (CVC4: 17 VC; Z3: 9 VC)
+step_function_test.adb:62:49: info: precondition proved (CVC4: 19 VC; Z3: 7 VC)
+step_function_test.adb:65:19: info: precondition proved (Z3: 2 VC)
 step_function_test.adb:65:19: medium: assertion might fail
-step_function_test.adb:66:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:66:19: info: precondition proved (Z3: 2 VC)
 step_function_test.adb:66:19: medium: assertion might fail
-step_function_test.adb:67:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:67:19: info: precondition proved (Z3: 2 VC)
 step_function_test.adb:67:19: medium: assertion might fail
 units.adb:24:38: info: float overflow check proved (CVC4: 1 VC)
 units.adb:24:48: info: division check proved (CVC4: 1 VC)
@@ -275,4 +275,4 @@ units.adb:24:48: info: float overflow check proved (Trivial)
 units.ads:37:22: info: float overflow check proved (CVC4: 1 VC)
 units.ads:37:32: info: division check proved (CVC4: 1 VC)
 units.ads:37:32: info: float overflow check proved (Trivial)
-units.ads:43:20: info: precondition proved (CVC4: 1 VC)
+units.ads:43:20: info: precondition proved (CVC4: 2 VC)

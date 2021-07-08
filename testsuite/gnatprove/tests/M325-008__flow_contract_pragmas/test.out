@@ -1,7 +1,7 @@
 test.adb:30:30: warning: "X" is not modified, could be IN
 test.adb:32:17: info: postcondition proved (CVC4: 1 VC)
 test.adb:38:04: warning: analyzing unreferenced procedure "Detect_Uninitialised_In_Out"
-test.adb:43:07: medium: precondition might fail, cannot prove X > 0
+test.adb:43:07: medium: precondition might fail
 test.adb:43:23: high: "V" is not initialized
 test.adb:46:27: high: "X" is not initialized in "T_Out_Param"
 test.adb:47:16: high: "X" is not initialized

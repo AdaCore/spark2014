@@ -262,7 +262,8 @@ package body Gnat2Why.Subprograms is
    function Get_Location_For_Aspect
      (E         : Entity_Id;
       Kind      : Pragma_Id;
-      Classwide : Boolean := False) return Node_Id
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Node_Id
    with Pre => Kind in Pragma_Precondition
                      | Pragma_Postcondition
                      | Pragma_Refined_Post;
@@ -1665,7 +1666,7 @@ package body Gnat2Why.Subprograms is
                                Raw_Binders : Item_Array)
                                      return Item_Array is
       Effect_Binders : Item_Array :=
-        Compute_Binders_For_Effects (E, Compute => True);
+        Compute_Binders_For_Effects (E);
    begin
       Localize_Binders (Effect_Binders);
       return Raw_Binders & Effect_Binders;
@@ -1675,12 +1676,9 @@ package body Gnat2Why.Subprograms is
    -- Compute_Binders_For_Effects --
    ---------------------------------
 
-   function Compute_Binders_For_Effects
-     (E       : Entity_Id;
-      Compute : Boolean) return Item_Array
-   is
-      Read_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids  : Flow_Types.Flow_Id_Sets.Set;
+   function Compute_Binders_For_Effects (E : Entity_Id) return Item_Array is
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
    begin
       --  Collect global variables potentially read and written
@@ -1694,7 +1692,7 @@ package body Gnat2Why.Subprograms is
       --  in binders for parameters.
 
       return Get_Binders_From_Variables
-        (Read_Ids.Union (Write_Ids), Compute, Ignore_Self => True);
+        (Read_Ids.Union (Write_Ids), Ignore_Self => True);
    end Compute_Binders_For_Effects;
 
    -------------------------
@@ -2256,6 +2254,45 @@ package body Gnat2Why.Subprograms is
       E            : Entity_Id;
       Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>))
    is
+      --  Local subprograms
+
+      function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean
+      with
+        Pre => Is_Unchecked_Conversion_Instance (E);
+      --  Return whether E is an UC for which a precise definition is given
+
+      -----------------------------------
+      -- Is_UC_With_Precise_Definition --
+      -----------------------------------
+
+      function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean is
+         Source_Type : constant Entity_Id := Retysp (Etype (First_Formal (E)));
+         Target_Type : constant Entity_Id := Retysp (Etype (E));
+
+         Valid_Source, Valid_Target, Valid_Size : Boolean;
+         Ignored : Unbounded_String;
+
+      begin
+         --  Only generate a definition for UC between integer types...
+
+         if not Has_Integer_Type (Source_Type)
+           or else not Has_Integer_Type (Target_Type)
+         then
+            return False;
+         end if;
+
+         --  that are suitable for UC.
+
+         Suitable_For_UC (Source_Type, False, Valid_Source, Ignored);
+         Suitable_For_UC_Target (Target_Type, False, Valid_Target, Ignored);
+         Have_Same_Known_RM_Size
+           (Source_Type, Target_Type, Valid_Size, Ignored);
+
+         return Valid_Source and Valid_Target and Valid_Size;
+      end Is_UC_With_Precise_Definition;
+
+      --  Local variables
+
       Why_Type           : constant W_Type_Id := Type_Of_Node (E);
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Logic_Why_Binders  : constant Binder_Array :=
@@ -2269,9 +2306,6 @@ package body Gnat2Why.Subprograms is
          Gen_Marker  => GM_None,
          Ref_Allowed => False,
          Old_Policy  => Ignore);
-      Def                : constant W_Expr_Id :=
-        Compute_Inlined_Expr
-          (E, Logic_Func_Binders, Why_Type, Params);
       Result_Id          : constant W_Identifier_Id :=
         New_Temp_Identifier (Base_Name => "result", Typ => Why_Type);
       Pred_Binders       : constant Binder_Array :=
@@ -2281,7 +2315,62 @@ package body Gnat2Why.Subprograms is
                      Mutable   => False,
                      Labels    => <>)
         & Logic_Why_Binders;
+      Labels : constant Symbol_Set :=
+        (if Is_Expression_Function_Or_Completion (E)
+         and then not Has_Contracts (E, Pragma_Postcondition)
+         and then not Present (Get_Pragma (E, Pragma_Contract_Cases))
+         then Symbol_Sets.To_Set (NID ("inline_marker"))
+         else Symbol_Sets.Empty_Set);
+
+      Def : W_Expr_Id;
+
+   --  Start of processing for Declare_Logic_Functions
+
    begin
+      if Is_Unchecked_Conversion_Instance (E)
+        and then Is_UC_With_Precise_Definition (E)
+      then
+         declare
+            Source_Type : constant Entity_Id :=
+              Retysp (Etype (First_Formal (E)));
+            Target_Type : constant Entity_Id := Retysp (Etype (E));
+            Arg         : constant W_Identifier_Id :=
+              Logic_Why_Binders (1).B_Name;
+
+         begin
+            if Is_Signed_Integer_Type (Source_Type)
+              and then Is_Signed_Integer_Type (Target_Type)
+            then
+               Def := +Arg;  --  Trivial case of UC between signed types
+
+            elsif Is_Modular_Integer_Type (Source_Type)
+              and then Is_Modular_Integer_Type (Target_Type)
+            then
+               pragma Assert
+                 (Base_Why_Type (Source_Type) = Base_Why_Type (Target_Type));
+               Def := +Arg;  --  Trivial case of UC between modular types
+
+            elsif Is_Modular_Integer_Type (Source_Type) then
+               Def := New_Call
+                 (Domain  => EW_Term,
+                  Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
+                  Binders => Logic_Why_Binders,
+                  Typ     => Why_Type);
+
+            else
+               pragma Assert (Is_Modular_Integer_Type (Target_Type));
+               Def := New_Call
+                 (Domain  => EW_Term,
+                  Name    => MF_BVs (Base_Why_Type (Target_Type)).UC_Of_Int,
+                  Binders => Logic_Why_Binders,
+                  Typ     => Why_Type);
+            end if;
+         end;
+      else
+         Def :=
+           Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, Params);
+      end if;
+
       --  Generate a logic function
 
       Emit
@@ -2291,7 +2380,7 @@ package body Gnat2Why.Subprograms is
             Name        => Logic_Id,
             Binders     => Logic_Why_Binders,
             Location    => No_Location,
-            Labels      => Symbol_Sets.Empty_Set,
+            Labels      => Labels,
             Def         => Def,
             Return_Type => Why_Type));
 
@@ -3840,7 +3929,7 @@ package body Gnat2Why.Subprograms is
          Post_N    : Node_Id;
       begin
 
-         Mark_Params.Gen_Marker := GM_All;
+         Mark_Params.Gen_Marker := GM_Toplevel;
 
          --  There might be no specific postcondition for E. In that case, the
          --  classwide or inherited postcondition is checked if present. Locate
@@ -3853,7 +3942,8 @@ package body Gnat2Why.Subprograms is
               Get_Location_For_Aspect
                (E, Pragma_Postcondition, Classwide => True);
          elsif Has_Contracts (E, Pragma_Postcondition, Inherited => True) then
-            Post_N := E;
+            Post_N := Get_Location_For_Aspect (E, Pragma_Postcondition,
+                                               Inherited => True);
          else
             Post_N := Empty;
          end if;
@@ -4448,17 +4538,17 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Suitable_For_UC (Src_Ty, Valid, Explanation);
+               Suitable_For_UC (Src_Ty, False, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Suitable_For_UC_Target (Tar_Ty, Valid, Explanation);
+               Suitable_For_UC_Target (Tar_Ty, False, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Have_Same_Known_Esize
+               Have_Same_Known_RM_Size
                  (Src_Ty, Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (E, VC_UC_Same_Size, Valid, E,
@@ -4604,7 +4694,8 @@ package body Gnat2Why.Subprograms is
    function Get_Location_For_Aspect
      (E         : Entity_Id;
       Kind      : Pragma_Id;
-      Classwide : Boolean := False) return Node_Id is
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Node_Id is
    begin
 
       --  In the case of a No_Return Subprogram, there is no real location for
@@ -4622,7 +4713,9 @@ package body Gnat2Why.Subprograms is
 
       declare
          L : constant Node_Lists.List :=
-           Find_Contracts (E, Kind, Classwide => Classwide);
+              Find_Contracts (E, Kind,
+                              Classwide => Classwide,
+                              Inherited => Inherited);
       begin
          if L.Is_Empty then
             return Empty;
@@ -5201,7 +5294,7 @@ package body Gnat2Why.Subprograms is
                declare
                   New_Binders : Item_Array :=
                     Compute_Raw_Binders (E) &
-                    Compute_Binders_For_Effects (E, Compute => False);
+                    Compute_Binders_For_Effects (E);
                   Old_Binders : Item_Array := New_Binders;
                   Desc_Params : Item_Array :=
                     Compute_Raw_Binders (Descendant_E);
@@ -5861,7 +5954,7 @@ package body Gnat2Why.Subprograms is
                   declare
                      Logic_Binders   : constant Item_Array :=
                        Compute_Raw_Binders (E) &
-                       Compute_Binders_For_Effects (E, Compute => False);
+                       Compute_Binders_For_Effects (E);
                      --  Binders for parameters and effects of E
 
                      Dispatch_Param  : constant Entity_Id :=
@@ -6128,7 +6221,7 @@ package body Gnat2Why.Subprograms is
       Ref_Allowed : Boolean) return W_Expr_Array
    is
       Effect_Binders : constant Item_Array :=
-        Compute_Binders_For_Effects (E, Compute => False);
+        Compute_Binders_For_Effects (E);
       Logic_Binders  : constant Binder_Array :=
         To_Binder_Array (Effect_Binders);
 
@@ -6185,7 +6278,7 @@ package body Gnat2Why.Subprograms is
    function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array is
       Logic_Binders     : constant Item_Array :=
         Compute_Raw_Binders (E) &
-        Compute_Binders_For_Effects (E, Compute => False);
+        Compute_Binders_For_Effects (E);
       New_Binders       : Item_Array := Logic_Binders;
       Old_Binders       : Item_Array := Logic_Binders;
    begin
@@ -6339,7 +6432,7 @@ package body Gnat2Why.Subprograms is
 
       Params :=
         (Phase       => Generate_Logic,
-         Gen_Marker  => GM_None,
+         Gen_Marker  => GM_Toplevel,
          Ref_Allowed => False,
          Old_Policy  => Ignore);
 

@@ -1,5 +1,5 @@
 prove_all:
-  prover: ["cvc4"]
+  prover: ["cvc4", "z3"]
   procs: 4
   counterexample: False
   steps: 5000

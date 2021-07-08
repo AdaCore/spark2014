@@ -722,6 +722,8 @@ package body Gnat2Why.Types is
 
             Add_With_Clause (Th, Rep_Module, EW_Export);
          end;
+      elsif Is_Tagged_Type (E) then
+         Complete_Tagged_Record_Type (Th, E);
       end if;
 
       declare

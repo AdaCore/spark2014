@@ -189,24 +189,25 @@ package Gnat2Why.Util is
    --  WF_Context is used for all theories except the ones that contain VCs
    --  WF_Main is used for all theories that contain VCs
 
-   --  Type used to control which marker information is included in the node.
-   --  This is for pretty-printing part of a possibly large assertion.
-   type Gen_Marker_Kind is
-     (GM_None,      --  no pretty-printing info
-      GM_Node_Only, --  only the node ID is printed
-      GM_All);      --  node ID and sloc of node are printed
-
    type Old_Policy_Kind is (Ignore, As_Old, Use_Map, Raise_Error);
    --  Kind for policy with respect to encoding of 'Old attribute:
    --  Ignore if Old should be ignored, As_Old to use the 'old' keyword of
    --  Why3, Use_Map to use the map for old, and Raise_Error to raise
    --  Program_Error.
 
+   type GM_Kind is (GM_None, GM_Label, GM_Toplevel);
+   --  Used to indicate whether we should generate pretty-printing labels. The
+   --  meaning of the flags is as follows:
+   --    GM_None     - don't generate pretty-printing labels
+   --    GM_Label    - do generate pretty-printing labels
+   --    GM_Toplevel - do generate pretty-printing labels for subterms, but not
+   --                  for this node
+
    type Transformation_Params is record
       Phase       : Transformation_Phase;
       --  Current transformation phase, which impacts the way code is
       --  transformed from Ada to Why3.
-      Gen_Marker  : Gen_Marker_Kind;
+      Gen_Marker  : GM_Kind;
       --  Flag that indicates whether the transformation should include in the
       --  generated Why3 node a special label, to be used to show which part of
       --  a possibly large assertion is not proved.

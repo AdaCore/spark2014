@@ -107,7 +107,7 @@ binary_trees.adb:271:24: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:285:06: info: data dependencies proved
 binary_trees.adb:300:23: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:300:23: info: precondition proved (CVC4: 1 VC)
-binary_trees.adb:303:08: info: postcondition proved (CVC4: 2 VC)
+binary_trees.adb:303:08: info: postcondition proved (CVC4: 4 VC)
 binary_trees.adb:306:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:306:17: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:306:36: info: invariant check proved (CVC4: 1 VC)
@@ -208,7 +208,7 @@ binary_trees.adb:391:33: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:391:64: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:391:64: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:391:87: info: overflow check proved (CVC4: 2 VC)
-binary_trees.adb:397:07: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:397:07: info: precondition proved (CVC4: 15 VC; Trivial: 5 VC)
 binary_trees.adb:414:09: info: data dependencies proved
 binary_trees.adb:428:25: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:431:20: info: invariant check proved (CVC4: 1 VC)
@@ -218,7 +218,7 @@ binary_trees.adb:444:30: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:444:30: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:450:30: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:450:30: info: precondition proved (CVC4: 1 VC)
-binary_trees.adb:456:11: info: postcondition proved (CVC4: 7 VC; Trivial: 6 VC)
+binary_trees.adb:456:11: medium: postcondition might fail, cannot prove Get (P, I) = Get (Q, I)
 binary_trees.adb:457:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:457:17: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:458:19: info: invariant check proved (CVC4: 1 VC)
@@ -324,8 +324,8 @@ binary_trees.adb:531:50: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:531:50: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:531:74: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:531:74: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:538:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
-binary_trees.adb:538:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 2 VC)
+binary_trees.adb:538:16: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 2 VC)
+binary_trees.adb:538:16: info: loop invariant preservation proved (CVC4: 4 VC; Trivial: 2 VC)
 binary_trees.adb:539:21: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:539:21: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:539:64: info: invariant check proved (CVC4: 2 VC)
@@ -401,8 +401,8 @@ binary_trees.adb:589:70: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:589:77: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:589:77: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:589:98: info: index check proved (CVC4: 4 VC)
-binary_trees.adb:591:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
-binary_trees.adb:591:19: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 2 VC)
+binary_trees.adb:591:19: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 2 VC)
+binary_trees.adb:591:19: info: loop invariant preservation proved (CVC4: 4 VC; Trivial: 2 VC)
 binary_trees.adb:592:24: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:592:24: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:592:45: info: index check proved (CVC4: 4 VC)
@@ -426,12 +426,12 @@ binary_trees.adb:596:41: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:596:62: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:602:16: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:602:16: info: precondition proved (CVC4: 6 VC)
-binary_trees.adb:603:16: info: precondition proved (CVC4: 14 VC; Trivial: 2 VC)
-binary_trees.adb:606:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+binary_trees.adb:603:16: info: precondition proved (CVC4: 66 VC; Trivial: 22 VC)
+binary_trees.adb:606:16: medium: loop invariant might fail in first iteration, cannot prove M1 (I).K = M2 (I).K
+binary_trees.adb:606:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:607:56: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:608:24: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:608:24: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:608:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, P) = Model (F, P)
 binary_trees.adb:608:38: info: range check proved (CVC4: 2 VC)
 binary_trees.adb:608:43: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:608:43: info: precondition proved (CVC4: 2 VC)
@@ -458,8 +458,8 @@ binary_trees.adb:689:30: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:695:30: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:695:30: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:699:11: info: invariant check proved (CVC4: 1 VC)
-binary_trees.adb:699:11: info: postcondition proved (CVC4: 8 VC; Trivial: 6 VC)
 binary_trees.adb:699:11: info: precondition proved (CVC4: 1 VC)
+binary_trees.adb:699:11: medium: postcondition might fail, cannot prove M1 (I).K = M2 (I).K
 binary_trees.adb:699:28: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:705:26: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:705:26: info: precondition proved (CVC4: 1 VC)
@@ -574,8 +574,8 @@ binary_trees.adb:777:54: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:777:54: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:777:78: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:777:78: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:784:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
-binary_trees.adb:784:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 2 VC)
+binary_trees.adb:784:16: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 2 VC)
+binary_trees.adb:784:16: info: loop invariant preservation proved (CVC4: 4 VC; Trivial: 2 VC)
 binary_trees.adb:785:21: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:785:21: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:785:60: info: invariant check proved (CVC4: 2 VC)
@@ -651,8 +651,8 @@ binary_trees.adb:835:74: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:835:81: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:835:81: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:835:102: info: index check proved (CVC4: 4 VC)
-binary_trees.adb:837:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
-binary_trees.adb:837:19: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 2 VC)
+binary_trees.adb:837:19: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 2 VC)
+binary_trees.adb:837:19: info: loop invariant preservation proved (CVC4: 4 VC; Trivial: 2 VC)
 binary_trees.adb:838:24: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:838:24: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:838:41: info: index check proved (CVC4: 4 VC)
@@ -698,12 +698,12 @@ binary_trees.adb:864:16: info: precondition proved (CVC4: 6 VC)
 binary_trees.adb:865:16: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:865:16: info: precondition proved (CVC4: 6 VC)
 binary_trees.adb:865:45: info: range check proved (CVC4: 2 VC)
-binary_trees.adb:866:16: info: precondition proved (CVC4: 14 VC; Trivial: 2 VC)
-binary_trees.adb:872:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+binary_trees.adb:866:16: info: precondition proved (CVC4: 66 VC; Trivial: 22 VC)
+binary_trees.adb:872:16: medium: loop invariant might fail in first iteration, cannot prove M1 (I).K = M2 (I).K
+binary_trees.adb:872:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:873:55: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:874:20: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:874:20: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:874:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F, P) = Model (F_Old, P)
 binary_trees.adb:874:30: info: range check proved (CVC4: 2 VC)
 binary_trees.adb:874:35: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:874:35: info: precondition proved (CVC4: 2 VC)
@@ -804,12 +804,12 @@ binary_trees.adb:1022:47: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:1022:68: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:1035:16: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1035:16: info: precondition proved (CVC4: 6 VC)
-binary_trees.adb:1036:16: info: precondition proved (CVC4: 14 VC; Trivial: 2 VC)
-binary_trees.adb:1042:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+binary_trees.adb:1036:16: info: precondition proved (CVC4: 66 VC; Trivial: 22 VC)
+binary_trees.adb:1042:16: medium: loop invariant might fail in first iteration, cannot prove M1 (I).K = M2 (I).K
+binary_trees.adb:1042:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:1043:44: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:1044:20: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1044:20: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:1044:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, P) = Model (F, P)
 binary_trees.adb:1044:34: info: range check proved (CVC4: 2 VC)
 binary_trees.adb:1044:39: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1044:39: info: precondition proved (CVC4: 2 VC)
@@ -823,7 +823,7 @@ binary_trees.adb:1071:32: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:1072:07: info: precondition proved (CVC4: 14 VC; Trivial: 4 VC)
 binary_trees.adb:1072:07: medium: invariant check might fail
 binary_trees.adb:1089:09: info: data dependencies proved
-binary_trees.adb:1102:11: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
+binary_trees.adb:1102:11: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
 binary_trees.adb:1103:26: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:1104:16: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:1104:16: info: precondition proved (CVC4: 1 VC)
@@ -839,12 +839,12 @@ binary_trees.adb:1119:21: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1119:21: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:1120:31: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1120:31: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:1129:16: info: precondition proved (CVC4: 14 VC; Trivial: 2 VC)
-binary_trees.adb:1135:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+binary_trees.adb:1129:16: info: precondition proved (CVC4: 66 VC; Trivial: 22 VC)
+binary_trees.adb:1135:16: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC)
+binary_trees.adb:1135:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:1136:30: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:1136:53: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1136:53: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:1136:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, P) = Model (F, P)
 binary_trees.adb:1136:67: info: range check proved (CVC4: 2 VC)
 binary_trees.adb:1136:72: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1136:72: info: precondition proved (CVC4: 2 VC)
@@ -1198,8 +1198,12 @@ red_black_trees.adb:199:22: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:200:27: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:204:14: info: add a contract to analyze it separately from calling contexts
 red_black_trees.adb:204:14: info: local subprogram "Prove_Same_Nb_Blacks" only analyzed in the context of calls
-red_black_trees.adb:218:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:364
-red_black_trees.adb:218:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:368
+red_black_trees.adb:218:16: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:364
+red_black_trees.adb:218:16: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:368
+red_black_trees.adb:218:16: medium: loop invariant might fail in first iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:522
+red_black_trees.adb:218:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:364
+red_black_trees.adb:218:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:368
+red_black_trees.adb:218:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:522
 red_black_trees.adb:219:22: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:219:22: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:368
 red_black_trees.adb:219:22: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:522
@@ -1209,10 +1213,6 @@ red_black_trees.adb:220:30: info: precondition proved (CVC4: 2 VC), in call inli
 red_black_trees.adb:221:35: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:221:35: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:368
 red_black_trees.adb:221:35: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:522
-red_black_trees.adb:222:24: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:522
-red_black_trees.adb:222:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:364
-red_black_trees.adb:222:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:368
-red_black_trees.adb:222:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:522
 red_black_trees.adb:222:28: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:222:28: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:368
 red_black_trees.adb:222:28: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:522
@@ -1229,8 +1229,8 @@ red_black_trees.adb:229:14: info: add a contract to analyze it separately from c
 red_black_trees.adb:229:14: info: local subprogram "Prove_Same_Nb_Blacks_Swap" only analyzed in the context of calls
 red_black_trees.adb:239:22: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:239:22: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
-red_black_trees.adb:247:13: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:416
-red_black_trees.adb:247:13: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:471
+red_black_trees.adb:247:13: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:416
+red_black_trees.adb:247:13: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:248:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:248:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:249:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:416
@@ -1265,40 +1265,40 @@ red_black_trees.adb:265:14: info: add a contract to analyze it separately from c
 red_black_trees.adb:265:14: info: local subprogram "Prove_Same_Nb_Blacks_Rotate" only analyzed in the context of calls
 red_black_trees.adb:273:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:273:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:285:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:285:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:285:13: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:427
+red_black_trees.adb:285:13: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:285:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:427
+red_black_trees.adb:285:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:482
 red_black_trees.adb:286:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:286:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:287:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:287:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:289:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:289:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:289:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:289:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:289:44: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:289:44: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:291:13: medium: loop invariant might fail in first iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:427
+red_black_trees.adb:291:13: medium: loop invariant might fail in first iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:482
+red_black_trees.adb:291:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:427
+red_black_trees.adb:291:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:482
 red_black_trees.adb:291:16: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:291:16: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:292:18: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:292:18: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:292:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:292:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:292:22: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:292:22: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:292:41: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:292:41: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:294:25: medium: assertion might fail, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:427
+red_black_trees.adb:294:25: medium: assertion might fail, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:482
 red_black_trees.adb:294:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:294:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:295:28: medium: assertion might fail, cannot prove Eq (Nb_Blacks (T) (X), Nb_Blacks (T_Old) (X)), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:295:28: medium: assertion might fail, cannot prove Eq (Nb_Blacks (T) (X), Nb_Blacks (T_Old) (X)), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:295:32: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:295:32: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:295:51: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:295:51: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:296:25: medium: assertion might fail, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:427
+red_black_trees.adb:296:25: medium: assertion might fail, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:482
 red_black_trees.adb:296:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:296:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:297:28: medium: assertion might fail, cannot prove Eq (Nb_Blacks (T) (Parent (T.Struct, Y)), Nb_Blacks (T_Old) (Parent (T.Struct, Y))), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:297:28: medium: assertion might fail, cannot prove Eq (Nb_Blacks (T) (Parent (T.Struct, Y)), Nb_Blacks (T_Old) (Parent (T.Struct, Y))), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:297:32: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:297:32: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:298:32: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
@@ -1313,14 +1313,14 @@ red_black_trees.adb:314:22: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:314:22: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:314:22: medium: assertion might fail, in call inlined at red_black_trees.adb:440
 red_black_trees.adb:314:22: medium: assertion might fail, in call inlined at red_black_trees.adb:495
+red_black_trees.adb:327:13: medium: loop invariant might fail in first iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:440
+red_black_trees.adb:327:13: medium: loop invariant might fail in first iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:495
+red_black_trees.adb:327:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:440
+red_black_trees.adb:327:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X.Status = Y.Status, in call inlined at red_black_trees.adb:495
 red_black_trees.adb:328:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:328:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:329:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:329:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
-red_black_trees.adb:332:21: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:440
-red_black_trees.adb:332:21: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:495
-red_black_trees.adb:332:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:440
-red_black_trees.adb:332:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:332:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:332:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:332:44: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
@@ -1464,7 +1464,7 @@ red_black_trees.adb:445:31: medium: assertion might fail
 red_black_trees.adb:445:59: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:450:42: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:451:27: medium: assertion might fail, cannot prove T.Color (I) = Black
-red_black_trees.adb:457:18: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:457:18: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:457:34: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:457:52: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:457:70: info: range check proved (CVC4: 1 VC)
@@ -2023,28 +2023,28 @@ search_trees.adb:815:52: info: range check proved (CVC4: 1 VC), in call inlined 
 search_trees.adb:820:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:820:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls
 search_trees.adb:820:17: warning: subprogram "Prove_Plug_Y" has no effect
-search_trees.adb:825:25: medium: assertion might fail, in call inlined at search_trees.adb:910
-search_trees.adb:825:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:825:25: medium: assertion might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:910
+search_trees.adb:825:25: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:825:38: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:825:47: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:825:60: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:826:10: medium: precondition might fail, cannot prove S1 = S2, in call inlined at search_trees.adb:910
-search_trees.adb:826:32: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:826:32: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:826:50: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:827:32: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:827:47: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:828:32: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:828:32: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:828:50: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:829:32: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:829:47: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:833:18: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:833:44: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:833:44: medium: assertion might fail, cannot prove Model (F_1, X) (I).K, in call inlined at search_trees.adb:910
-search_trees.adb:836:18: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:836:18: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:836:31: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:837:21: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:837:21: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:837:34: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:837:49: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:837:49: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:837:67: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:839:18: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:839:18: medium: assertion might fail, cannot prove Model (F_1, T.Root) (I).K, in call inlined at search_trees.adb:910
@@ -2053,35 +2053,35 @@ search_trees.adb:840:22: info: precondition proved (CVC4: 1 VC), in call inlined
 search_trees.adb:840:35: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:840:50: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:840:65: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:843:18: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:843:18: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:843:31: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:844:21: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:844:21: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:844:34: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:844:49: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:844:49: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:844:67: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:846:17: medium: assertion might fail, cannot prove Get (Model (F_Old, T.Root) (X).A, Length (Model (F_1, T.Root) (I).A) + 1) = Get (Model (T.Struct, T.Root) (Y).A, Length (Model (F_5, T.Root) (I).A) + 1), in call inlined at search_trees.adb:910
-search_trees.adb:846:17: medium: precondition might fail, cannot prove Position in Index_Type'First .. Last (Container), in call inlined at search_trees.adb:910
+search_trees.adb:846:17: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:846:22: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:846:37: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:847:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:847:43: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:847:57: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:848:17: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:910
-search_trees.adb:848:22: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:848:22: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:848:40: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:849:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:849:25: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:849:38: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:849:52: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:852:19: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:852:19: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:852:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:853:20: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:853:20: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:853:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:853:48: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:853:48: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:853:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:854:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:910
-search_trees.adb:854:30: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:854:30: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:854:48: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:855:26: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
+search_trees.adb:855:26: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:855:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:855:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:858:27: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
@@ -2183,28 +2183,28 @@ search_trees.adb:1071:52: info: range check proved (CVC4: 1 VC), in call inlined
 search_trees.adb:1076:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:1076:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls
 search_trees.adb:1076:17: warning: subprogram "Prove_Plug_X" has no effect
-search_trees.adb:1081:25: medium: assertion might fail, in call inlined at search_trees.adb:1162
-search_trees.adb:1081:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1081:25: medium: assertion might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:1162
+search_trees.adb:1081:25: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1081:38: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:47: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:60: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:10: medium: precondition might fail, cannot prove S1 = S2, in call inlined at search_trees.adb:1162
-search_trees.adb:1082:26: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1082:26: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1082:44: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:58: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:73: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1083:26: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1083:26: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1083:44: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1083:58: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1083:73: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1086:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1086:45: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1086:45: medium: assertion might fail, cannot prove Model (F_1, Y) (I).K, in call inlined at search_trees.adb:1162
-search_trees.adb:1089:19: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1089:19: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1089:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1090:20: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1090:20: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1090:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1090:48: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1090:48: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1090:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1091:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1091:21: medium: assertion might fail, cannot prove Model (F_1, T.Root) (I).K, in call inlined at search_trees.adb:1162
@@ -2213,41 +2213,41 @@ search_trees.adb:1092:20: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1092:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1092:48: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1092:63: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1095:19: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1095:19: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1095:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1096:20: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1096:20: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1096:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1096:48: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1096:48: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1096:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1097:16: medium: assertion might fail, cannot prove Length (Model (F_1, T.Root) (I).A) = Length (Model (F_5, T.Root) (I).A), in call inlined at search_trees.adb:1162
 search_trees.adb:1097:24: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1097:37: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1097:61: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1097:61: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1097:74: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1099:13: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1100:19: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1100:19: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1100:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1101:20: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1101:20: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1101:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1101:48: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1101:48: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1101:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1102:16: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1102:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1102:36: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1103:26: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1103:26: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1103:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1103:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1104:18: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1104:23: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1104:23: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1104:41: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1105:26: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1105:26: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1105:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1105:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1108:19: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1108:19: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1108:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1109:20: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1109:20: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1109:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1109:48: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1109:48: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1109:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1110:16: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1110:16: medium: assertion might fail, cannot prove Get (Model (F_Old, T.Root) (Y).A, Length (Model (F_1, T.Root) (I).A) + 1) = Get (Model (T.Struct, T.Root) (X).A, Length (Model (F_5, T.Root) (I).A) + 1), in call inlined at search_trees.adb:1162
@@ -2257,13 +2257,13 @@ search_trees.adb:1111:26: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1111:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1111:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1112:18: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1112:23: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1112:23: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1112:41: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1113:26: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1113:26: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1113:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1113:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1114:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1114:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
+search_trees.adb:1114:25: medium: precondition might fail, in call inlined at search_trees.adb:1162
 search_trees.adb:1114:46: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1115:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1115:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
@@ -2904,5 +2904,5 @@ tree_model.ads:63:06: info: data dependencies proved
 tree_model.ads:67:14: info: postcondition proved (CVC4: 1 VC)
 tree_model.ads:71:06: info: data dependencies proved
 tree_model.ads:73:17: info: precondition proved (CVC4: 1 VC)
-tree_model.ads:76:14: info: postcondition proved (CVC4: 1 VC)
+tree_model.ads:76:14: info: postcondition proved (CVC4: 4 VC)
 tree_model.ads:76:14: info: precondition proved (CVC4: 1 VC)

@@ -39,4 +39,4 @@ counterexamples.adb:55:22: medium: assertion might fail (e.g. when A.all = (1 =>
 counterexamples.adb:55:25: info: index check proved (CVC4: 2 VC)
 counterexamples.adb:58:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 counterexamples.adb:58:04: info: initialization of "X" proved
-counterexamples.adb:61:04: medium: precondition might fail, cannot prove X.Second /= null (e.g. when X = (First => null, Second => null))
+counterexamples.adb:61:04: medium: precondition might fail (e.g. when X = (First => null, Second => null))

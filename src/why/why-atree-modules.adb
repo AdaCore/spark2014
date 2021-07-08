@@ -574,10 +574,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Rep_Proj_BV128");
-      Access_To_Incomp_Ty :=
+      Incomp_Ty_Conv :=
         New_Module
           (File => Ada_Model_File,
-           Name => "Access_to_incomplete_type");
+           Name => "Incomplete_type");
       Pledge :=
         New_Module
           (File => Ada_Model_File,
@@ -1559,6 +1559,16 @@ package body Why.Atree.Modules is
                            Symb   => NID ("t_int"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Int_Type);
+         M_BVs (BV).UC_Of_Int :=
+           New_Identifier (Domain => EW_Term,
+                           Symb   => NID ("uc_of_int"),
+                           Module => M_BVs (BV).Module,
+                           Typ    => M_BVs (BV).T);
+         M_BVs (BV).UC_To_Int :=
+           New_Identifier (Domain => EW_Term,
+                           Symb   => NID ("uc_to_int"),
+                           Module => M_BVs (BV).Module,
+                           Typ    => EW_Int_Type);
          M_BVs (BV).Two_Power_Size :=
            New_Identifier (Module => M_BVs (BV).Module,
                            Domain => EW_Term,
@@ -2219,12 +2229,6 @@ package body Why.Atree.Modules is
       M_Main.Return_Exc :=
         New_Name (Symb => NID ("Return__exc"));
 
-      M_Main.Null_Extension :=
-        New_Identifier (Domain => EW_Term,
-                        Module => M,
-                        Symb   => NID ("__null_ext__"),
-                        Typ    => M_Main.Private_Type);
-
       M_Main.Spark_CE_Branch :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
@@ -2860,7 +2864,6 @@ package body Why.Atree.Modules is
                           Typ    => EW_Int_Type);
                   begin
                      Insert_Symbol (E, WNE_To_Int, To_Int);
-                     Insert_Symbol (E, WNE_To_BitVector, To_Int);
                      Insert_Symbol
                        (E, WNE_Of_BitVector,
                         New_Identifier
@@ -3113,13 +3116,32 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Int_Type));
-                  Insert_Symbol
-                    (E, WNE_Rec_Extension,
-                     New_Identifier
-                       (Symb   => NID ("rec__ext__"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Private_Type));
+                  declare
+                     Ext_Type : constant W_Identifier_Id :=
+                       New_Identifier
+                         (Symb   => NID ("__ext_type"),
+                          Module => M,
+                          Domain => EW_Term);
+                  begin
+                     Insert_Symbol
+                       (E, WNE_Extension_Type, Ext_Type);
+                     Insert_Symbol
+                       (E, WNE_Rec_Extension,
+                        New_Identifier
+                          (Symb   => NID ("rec__ext__"),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => New_Named_Type
+                             (Name => Get_Name (Ext_Type))));
+                     Insert_Symbol
+                       (E, WNE_Null_Extension,
+                        New_Identifier
+                          (Symb   => NID ("null__ext__"),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => New_Named_Type
+                             (Name => Get_Name (Ext_Type))));
+                  end;
                end if;
 
                if Has_Defaulted_Discriminants (E) then
@@ -3428,16 +3450,16 @@ package body Why.Atree.Modules is
                                (Symb   => NID ("__main_type"),
                                 Module => M))));
                   Insert_Symbol
-                    (E, WNE_Pointer_Open,
+                    (E, WNE_Open,
                      New_Identifier
-                       (Symb   => NID ("__open"),
+                       (Symb   => NID (To_String (WNE_Open)),
                         Module => M_C,
                         Domain => EW_Term,
                         Typ    => W_Des_Ty));
                   Insert_Symbol
-                    (E, WNE_Pointer_Close,
+                    (E, WNE_Close,
                      New_Identifier
-                       (Symb   => NID ("__close"),
+                       (Symb   => NID (To_String (WNE_Close)),
                         Module => M_C,
                         Domain => EW_Term,
                         Typ    => New_Named_Type

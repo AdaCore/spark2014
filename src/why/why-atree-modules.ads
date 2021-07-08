@@ -111,7 +111,7 @@ package Why.Atree.Modules is
    Rep_Proj_32            : W_Module_Id;
    Rep_Proj_64            : W_Module_Id;
    Rep_Proj_128           : W_Module_Id;
-   Access_To_Incomp_Ty    : W_Module_Id;
+   Incomp_Ty_Conv         : W_Module_Id;
    Pledge                 : W_Module_Id;
 
    Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
@@ -132,7 +132,6 @@ package Why.Atree.Modules is
       Module            : W_Module_Id;
       Private_Type      : W_Type_Id;
       Private_Bool_Eq   : W_Identifier_Id;
-      Null_Extension    : W_Identifier_Id;
       Fixed_Type        : W_Type_Id;
       Bool_Not          : W_Identifier_Id;
       Return_Exc        : W_Name_Id;
@@ -408,6 +407,8 @@ package Why.Atree.Modules is
       Power          : W_Identifier_Id;
       To_Int         : W_Identifier_Id;
       Of_Int         : W_Identifier_Id;
+      UC_To_Int      : W_Identifier_Id;  --  bitwise conversion for UC
+      UC_Of_Int      : W_Identifier_Id;  --  bitwise conversion for UC
       Udiv           : W_Identifier_Id;
       Urem           : W_Identifier_Id;
       BW_And         : W_Identifier_Id;

@@ -1,6 +1,6 @@
 main.adb:15:25: info: data dependencies proved
 main.adb:16:07: medium: memory leak might occur at end of scope
-main.adb:16:29: medium: initialization check might fail [possible fix: subprogram at line 15 should mention X in a precondition]
+main.adb:16:29: medium: initialization check might fail [possible fix: subprogram at line 15 should mention X'Initialized in a precondition]
 main.adb:21:25: info: data dependencies proved
 main.adb:21:45: low: unused global "X"
 main.adb:22:07: medium: memory leak might occur at end of scope

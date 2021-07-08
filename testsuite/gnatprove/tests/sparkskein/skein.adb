@@ -182,8 +182,6 @@ is
 
    function Skein_512_State_Words_To_Bytes is new
      Ada.Unchecked_Conversion (Skein_512_State_Words, Skein_512_State_Bytes);
-
-
    --  Local package body stubs
    package body Trace is separate;
 

@@ -52,7 +52,7 @@ is
    subtype I64  is U64 range 0 .. 63;
    subtype I128 is U64 range 0 .. 127;
 
-   type Byte_Seq is array (U64 range <>) of Byte;
+   type Byte_Seq is array (U64 range <>) of Byte with Pack;
    subtype Byte_Seq_Pred is Byte_Seq with Predicate => Byte_Seq_Pred'Last < U64'Last;
    for Byte_Seq'Alignment use 8;
 
@@ -66,7 +66,7 @@ is
    subtype Word_Count_T is U64 range 0 .. (2**61 - 1);
    subtype Positive_Word_Count_T is U64 range 1 .. Word_Count_T'Last;
 
-   type U64_Seq is array (Word_Count_T range <>) of U64;
+   type U64_Seq is array (Word_Count_T range <>) of U64 with Pack;
    for U64_Seq'Alignment use 8;
 
    subtype U64_Seq_3  is U64_Seq (I3);

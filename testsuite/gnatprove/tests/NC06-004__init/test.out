@@ -1,5 +1,5 @@
 circle_demo.adb:10:04: info: initialization of "My_Circle" proved
-circle_demo.adb:14:14: medium: precondition might fail, cannot prove In_Bounds (C)
+circle_demo.adb:14:14: medium: precondition might fail
 shapes5.adb:8:09: medium: refined postcondition might fail, cannot prove Make_Circle'Result.Center_X + Make_Circle'Result.Radius in Coordinate_Type
 shapes5.adb:8:37: info: float overflow check proved (Trivial)
 shapes5.adb:10:37: info: float overflow check proved (Trivial)

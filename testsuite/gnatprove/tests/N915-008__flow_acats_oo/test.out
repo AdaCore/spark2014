@@ -4,41 +4,41 @@ c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900053.adb:106:10: info: initialization of "Alarm" proved
-c3900053.adb:109:19: medium: precondition might fail, cannot prove False
-c3900053.adb:115:19: medium: precondition might fail, cannot prove False
-c3900053.adb:127:13: medium: precondition might fail, cannot prove False
+c3900053.adb:109:19: medium: precondition might fail
+c3900053.adb:115:19: medium: precondition might fail
+c3900053.adb:127:13: medium: precondition might fail
 c3900053.adb:134:10: info: initialization of "Low_Alarm" proved
-c3900053.adb:138:19: medium: precondition might fail, cannot prove False
-c3900053.adb:144:19: medium: precondition might fail, cannot prove False
-c3900053.adb:156:13: medium: precondition might fail, cannot prove False
+c3900053.adb:138:19: medium: precondition might fail
+c3900053.adb:144:19: medium: precondition might fail
+c3900053.adb:156:13: medium: precondition might fail
 c3900053.adb:163:10: info: initialization of "Medium_Alarm" proved
-c3900053.adb:167:19: medium: precondition might fail, cannot prove False
-c3900053.adb:173:19: medium: precondition might fail, cannot prove False
-c3900053.adb:185:13: medium: precondition might fail, cannot prove False
+c3900053.adb:167:19: medium: precondition might fail
+c3900053.adb:173:19: medium: precondition might fail
+c3900053.adb:185:13: medium: precondition might fail
 c3900060.adb:18:76: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at c3900060.ads:76 should mention A and Display_Count_For in a precondition]
 c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
 c3900063.adb:110:10: info: initialization of "Medium_Alarm" proved
-c3900063.adb:114:19: medium: precondition might fail, cannot prove False
-c3900063.adb:120:19: medium: precondition might fail, cannot prove False
-c3900063.adb:132:13: medium: precondition might fail, cannot prove False
+c3900063.adb:114:19: medium: precondition might fail
+c3900063.adb:120:19: medium: precondition might fail
+c3900063.adb:132:13: medium: precondition might fail
 c392004.adb:9:03: info: initialization of "My_Car" proved
 c392004.adb:10:03: info: initialization of "Your_Car" proved
 c392004.adb:12:13: info: add a contract to analyze it separately from calling contexts
 c392004.adb:12:13: info: local subprogram "TC_Assert" only analyzed in the context of calls
 c392004.adb:12:13: warning: subprogram "TC_Assert" has no effect
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:26
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:29
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:33
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:36
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:40
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:43
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:47
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:50
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:54
-c392004.adb:15:13: medium: precondition might fail, cannot prove False, in call inlined at c392004.adb:57
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:26
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:29
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:33
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:36
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:40
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:43
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:47
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:50
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:54
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:57
 c392004.adb:26:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:29:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:33:03: info: analyzing call to "TC_Assert" in context
@@ -49,11 +49,11 @@ c392004.adb:47:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:50:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:54:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:57:03: info: analyzing call to "TC_Assert" in context
-c392004_1.adb:8:16: medium: precondition might fail, cannot prove False
+c392004_1.adb:8:16: medium: precondition might fail
 c392004_1.ads:56:22: info: initialization of "The_Vehicle" proved
 c392004_1.ads:57:22: warning: unused initial value of "The_Vehicle"
-c392004_2.adb:11:28: medium: precondition might fail, cannot prove False
-c392004_2.adb:21:28: medium: precondition might fail, cannot prove False
+c392004_2.adb:11:28: medium: precondition might fail
+c392004_2.adb:21:28: medium: precondition might fail
 c392004_2.ads:14:21: info: initialization of "The_Car" proved
 c392004_2.ads:18:21: info: initialization of "The_Limo" proved
 c392008.adb:57:04: info: no contextual analysis of "New_Account" (possible check on input parameters)
@@ -63,11 +63,11 @@ c392008.adb:58:17: high: "C_Acct.Overdraft_Fee" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Current_Balance" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Overdraft_Fee" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Rate" is not initialized
-c392008.adb:65:13: medium: precondition might fail, cannot prove False
+c392008.adb:65:13: medium: precondition might fail
 c392008.adb:69:04: info: no contextual analysis of "Annual_Interest" (possible check on input parameters)
-c392008.adb:78:13: medium: precondition might fail, cannot prove False
+c392008.adb:78:13: medium: precondition might fail
 c392008.adb:82:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on input parameters)
-c392008.adb:92:13: medium: precondition might fail, cannot prove False
+c392008.adb:92:13: medium: precondition might fail
 c392008_0.adb:11:46: medium: overflow check might fail [reason for check: result of addition must fit in a 16-bits machine integer] [possible fix: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
 c392008_0.adb:11:46: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
 c392008_0.adb:17:46: medium: overflow check might fail [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
@@ -137,10 +137,10 @@ cc1311a.adb:446:06: info: in instantiation at line 330
 cc1311a.adb:447:06: info: analyzing call to "P2" in context
 cc1311a.adb:447:06: info: in instantiation at line 345
 cc1311a.adb:447:16: warning: subprogram "NPROC2" has no effect
-cc1311a.adb:452:17: medium: precondition might fail, cannot prove False
-cc1311a.adb:457:17: medium: precondition might fail, cannot prove False
-cc1311a.adb:467:17: medium: precondition might fail, cannot prove False
-cc1311a.adb:474:17: medium: precondition might fail, cannot prove False
+cc1311a.adb:452:17: medium: precondition might fail
+cc1311a.adb:457:17: medium: precondition might fail
+cc1311a.adb:467:17: medium: precondition might fail
+cc1311a.adb:474:17: medium: precondition might fail
 report.ads:115:18: info: data dependencies proved
 report.ads:121:18: info: data dependencies proved
 report.ads:127:18: info: data dependencies proved

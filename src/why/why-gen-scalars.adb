@@ -1183,14 +1183,13 @@ package body Why.Gen.Scalars is
       --  Otherwise, we declare logic functions for them, with arguments for
       --  the variables they may read. These functions will be defined later
       --  in the axiom module of E.
-      --  Compute the binders as the objects are not declared at that point.
       --  First and Last attributes of Itypes are never used, do not declare
       --  them.
 
       if not (Type_Is_Modeled_As_Base (E) and then Is_Itype (E)) then
          declare
             Binders : Item_Array := Get_Binders_From_Expression
-              (Low_Bound (Rng), Compute => True);
+              (Low_Bound (Rng));
          begin
             Localize_Binders (Binders, Only_Variables => False);
             Emit (Th,
@@ -1206,7 +1205,7 @@ package body Why.Gen.Scalars is
          end;
          declare
             Binders : Item_Array := Get_Binders_From_Expression
-              (High_Bound (Rng), Compute => True);
+              (High_Bound (Rng));
          begin
             Localize_Binders (Binders, Only_Variables => False);
             Emit (Th,

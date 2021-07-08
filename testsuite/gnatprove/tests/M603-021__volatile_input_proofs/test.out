@@ -1,12 +1,12 @@
 port.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
 port.adb:5:48: info: type is suitable as source for unchecked conversion (Trivial)
 port.adb:5:53: info: type is suitable for unchecked conversion (Trivial)
-port.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
+port.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U8 and type Boolean differ]
 port.adb:7:49: info: type is suitable as source for unchecked conversion (Trivial)
-port.adb:7:53: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Boolean has 2 values but has Object_Size 8]
-port.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+port.adb:7:53: info: type is suitable for unchecked conversion (Trivial)
+port.adb:9:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U8 and type E differ]
 port.adb:9:49: info: type is suitable as source for unchecked conversion (Trivial)
-port.adb:9:53: high: type is unsuitable as a target for unchecked conversion [possible explanation: type E has 3 values but has Object_Size 8]
+port.adb:9:53: high: type is unsuitable as a target for unchecked conversion [possible explanation: type E has 3 values but has Size 4]
 port.adb:22:07: info: initialization of "Tmp" proved
 port.adb:29:16: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 port.adb:35:07: info: initialization of "T" proved

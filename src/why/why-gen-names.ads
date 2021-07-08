@@ -29,6 +29,7 @@ with Snames;                 use Snames;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Types;                  use Types;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Ids;                use Why.Ids;
 with Why.Inter;              use Why.Inter;
 with Why.Sinfo;              use Why.Sinfo;
@@ -50,7 +51,14 @@ package Why.Gen.Names is
 
    function Conversion_Name
       (From : W_Type_Id;
-       To   : W_Type_Id) return W_Identifier_Id;
+       To   : W_Type_Id) return W_Identifier_Id
+     with Pre =>
+       (if Get_Type_Kind (From) = EW_Builtin
+          and then Get_Type_Kind (To) in EW_Abstract | EW_Split
+        then Base_Why_Type (To) = From
+        elsif Get_Type_Kind (To) = EW_Builtin
+          and then Get_Type_Kind (From) in EW_Abstract | EW_Split
+        then Base_Why_Type (From) = To);
    --  Return the name of the conversion function between the two types
 
    function Range_Pred_Name
@@ -306,12 +314,29 @@ package Why.Gen.Names is
       --  Name of the program function for variant checks on subprogram calls
       WNE_Check_Subprogram_Variants,
 
+      --  Symbols to introduce a bijection between an abstract type and its
+      --  completion.
+      WNE_Open,
+      WNE_Close,
+
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 
+      --  Symbols for extensions of tagged types
+
+      --  Name of the Why3 field representing potential unknown extension
+      --  components in a tagged derivation.
+      WNE_Hidden_Extension,  --  rec__hidden_ext__
+
+      --  Type for the extension components of a tagged type
+      WNE_Extension_Type,    --  __ext_type
+
+      --  Constant standing for the empty extension
+      WNE_Null_Extension,    --  __null_ext__
+
       --  Name of the Why3 field representing extension components in a tagged
       --  type or a class-wide type.
-      WNE_Rec_Extension,  --  rec__ext__
+      WNE_Rec_Extension,     --  rec__ext__
 
       --  Suffix of the above extension field, to be used in related functions
       WNE_Rec_Extension_Suffix,  --  ext__
@@ -404,7 +429,6 @@ package Why.Gen.Names is
       WNE_To_Fixed,
       WNE_To_Float32,             --  for fixed-point
       WNE_To_Float64,             --  for fixed-point
-      WNE_To_BitVector,
 
       WNE_Empty,                   --  dummy value for Why_Name_Enum
 
@@ -415,8 +439,6 @@ package Why.Gen.Names is
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Assign_Null_Check,      --  "__assign_null_check"
       WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
-      WNE_Pointer_Open,           --  "__open"
-      WNE_Pointer_Close,          --  "__close"
       WNE_Is_Moved,               --  "__is_moved"
       WNE_Move,                   --  "__move"
       WNE_Moved_Relation,         --  "__moved_relation"

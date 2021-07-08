@@ -1,7 +1,7 @@
 extension_pkg.adb:3:21: info: assertion proved (CVC4: 1 VC)
 extension_pkg.ads:4:08: info: initial condition proved (CVC4: 1 VC)
 extension_pkg.ads:9:28: warning: unused variable "X"
-extension_pkg.ads:12:13: medium: precondition might fail, cannot prove Y.Get
+extension_pkg.ads:12:13: medium: precondition might fail
 root_pkg.adb:10:14: info: precondition proved (CVC4: 1 VC)
 root_pkg.ads:5:06: info: data dependencies proved
 root_pkg.ads:5:39: low: unused global "Body_Elaborated"

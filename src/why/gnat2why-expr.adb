@@ -3854,12 +3854,27 @@ package body Gnat2Why.Expr is
 
                            --  If Field has a default expression, use it
 
-                           T_Comp := Transform_Expr
-                             (Expr          =>
-                                Expression (Enclosing_Declaration (Field)),
-                              Expected_Type => Type_Of_Node (Etype (Field)),
-                              Domain        => EW_Prog,
-                              Params        => Params);
+                           declare
+                              F_Ty   : constant Entity_Id := Etype (Field);
+                              Exp_Ty : constant W_Type_Id :=
+                                (if Is_Scalar_Type (F_Ty)
+                                 then Type_Of_Node (F_Ty)
+                                 else EW_Abstract
+                                   (F_Ty, Has_Relaxed_Init (F_Ty)));
+                              --  For scalar types, if we have a value, it is
+                              --  initialized. Otherwise we only expect a
+                              --  partially initialized type if the type of the
+                              --  component is marked with
+                              --  Relaxed_Initialization.
+
+                           begin
+                              T_Comp := Transform_Expr
+                                (Expr          =>
+                                   Expression (Enclosing_Declaration (Field)),
+                                 Expected_Type => Exp_Ty,
+                                 Domain        => EW_Prog,
+                                 Params        => Params);
+                           end;
                         else
 
                            --  Otherwise, use its Field's Etype default value
@@ -4128,24 +4143,48 @@ package body Gnat2Why.Expr is
          --  should not exist in the Ada declaration.
 
          if Present (Expression (Enclosing_Declaration (E))) then
-            P := +New_Comparison
-              (Symbol => Why_Eq,
-               Left   => Insert_Simple_Conversion
-                 (Domain => EW_Term,
-                  Expr   => +F_Expr,
-                  To     => Type_Of_Node (F_Ty)),
-               Right  => New_Tag_Update
-                 (Domain => EW_Term,
-                  Name   => Transform_Expr
-                    (Expr          => Expression (Enclosing_Declaration (E)),
-                     Expected_Type => Type_Of_Node (F_Ty),
-                     Domain        => EW_Term,
-                     Params        => Params),
-                  Ty     => F_Ty),
-               Domain => EW_Pred);
+            declare
+               Exp_Ty : constant W_Type_Id :=
+                 (if Is_Scalar_Type (F_Ty) then Type_Of_Node (F_Ty)
+                  else EW_Abstract (F_Ty, Has_Relaxed_Init (F_Ty)));
+               --  For scalar types, if we have a value, it is initialized.
+               --  Otherwise we only expect a partially initialized type if the
+               --  type of the component is marked with Relaxed_Initialization.
 
-            --  otherwise, use its Field's Etype default value.
-            --   default_init (<Expr>.rec__field1, Etype (Field1)))
+            begin
+               P := +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +F_Expr,
+                     To     => Exp_Ty),
+                  Right  => New_Tag_Update
+                    (Domain => EW_Term,
+                     Name   => Transform_Expr
+                       (Expr          => Expression
+                            (Enclosing_Declaration (E)),
+                        Expected_Type => Exp_Ty,
+                        Domain        => EW_Term,
+                        Params        => Params),
+                     Ty     => F_Ty),
+                  Domain => EW_Pred);
+
+               --  If F_Expr has a wrapper for initialization and not Exp_Ty,
+               --  set the init flag to True.
+
+               if Is_Init_Wrapper_Type (Get_Type (+F_Expr))
+                 and then not Is_Init_Wrapper_Type (Exp_Ty)
+               then
+                  P := +New_And_Expr
+                    (Left   => +P,
+                     Right  => +Compute_Is_Initialized
+                       (F_Ty, +F_Expr, Params.Ref_Allowed, Domain => EW_Pred),
+                     Domain => EW_Pred);
+               end if;
+            end;
+
+         --  otherwise, use its Field's Etype default value.
+         --   default_init (<Expr>.rec__field1, Etype (Field1)))
 
          else
             P := +Compute_Default_Init
@@ -4153,18 +4192,6 @@ package body Gnat2Why.Expr is
                F_Ty,
                Params => Params,
                Use_Pred => Use_Pred);
-         end if;
-
-         --  If F_Ty has a wrapper for initialization, set the init flag
-
-         if Is_Init_Wrapper_Type (Get_Type (+F_Expr))
-           and then Present (Expression (Enclosing_Declaration (E)))
-         then
-            P := +New_And_Expr
-              (Left   => +P,
-               Right  => +Compute_Is_Initialized
-                    (F_Ty, +F_Expr, Params.Ref_Allowed, Domain => EW_Pred),
-               Domain => EW_Pred);
          end if;
 
          return P;
@@ -5108,7 +5135,7 @@ package body Gnat2Why.Expr is
                declare
                   My_Params : Transformation_Params := Params;
                begin
-                  My_Params.Gen_Marker := GM_Node_Only;
+                  My_Params.Gen_Marker := GM_Toplevel;
                   Res := +New_And_Then_Expr
                     (Left   => +Dynamic_Predicate_Expression
                        (Expr      => +Expr,
@@ -15617,7 +15644,7 @@ package body Gnat2Why.Expr is
 
                      Suitable_For_UC_Target
                        (Retysp (Etype (Defining_Identifier (Decl))),
-                        Valid, Explanation);
+                        True, Valid, Explanation);
                      Emit_Static_Proof_Result
                        (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
@@ -15656,7 +15683,8 @@ package body Gnat2Why.Expr is
                      Explanation : Unbounded_String;
                   begin
                      Suitable_For_UC_Target
-                       (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
+                       (Retysp (Etype (Prefix (Expr))),
+                        True, Valid, Explanation);
                      Emit_Static_Proof_Result
                        (Expr, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
@@ -16096,15 +16124,30 @@ package body Gnat2Why.Expr is
 
    begin
       --  We check whether we need to generate a pretty printing label. If we
-      --  do, we set the corresponding flag to "False" so that the label is not
-      --  printed for subterms.
+      --  do, we set the corresponding flag to "GM_None" so that the label is
+      --  not printed for subterms.
+      --  Our intention is to skip printing pretty-printing labels when not
+      --  needed (predicate is just a single item, without conjunction,
+      --  quantification, etc). So we skip the printing at the top level of the
+      --  term, and set label generation for subterms, unless we are already at
+      --  a terminal node.
 
-      if Domain = EW_Pred
-        and then Local_Params.Gen_Marker /= GM_None
-        and then Is_Terminal_Node (Expr)
-      then
-         Pretty_Label := New_Sub_VC_Marker (Expr);
-         Local_Params.Gen_Marker := GM_None;
+      if Domain = EW_Pred then
+         case Local_Params.Gen_Marker is
+            when GM_Label =>
+               if Is_Terminal_Node (Expr) then
+                  Pretty_Label := New_Sub_VC_Marker (Expr);
+                  Local_Params.Gen_Marker := GM_None;
+               end if;
+            when GM_Toplevel =>
+               if Is_Terminal_Node (Expr) then
+                  Local_Params.Gen_Marker := GM_None;
+               else
+                  Local_Params.Gen_Marker := GM_Label;
+               end if;
+            when GM_None =>
+               null;
+         end case;
       end if;
 
       --  Expressions that cannot be translated to predicates directly are
@@ -17186,6 +17229,18 @@ package body Gnat2Why.Expr is
                                     Local_Params);
             end if;
 
+            --  Insert static memory leak if the conversion is a move
+
+            if Domain = EW_Prog
+              and then Conversion_Is_Move_To_Constant (Expr)
+              and then not Value_Is_Never_Leaked (Expr)
+            then
+               Emit_Static_Proof_Result
+                 (Expr, VC_Memory_Leak, False, Current_Subp,
+                  Explanation =>
+                    "conversion to access-to-constant type leaks memory");
+            end if;
+
             --  Invariant checks are introduced explicitly as they need only be
             --  performed on actual type conversions (and not view
             --  conversions).
@@ -17355,6 +17410,7 @@ package body Gnat2Why.Expr is
                Call     : W_Expr_Id;
                New_Expr : constant Node_Id := Expression (Expr);
                Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
+               To_Const : constant Boolean := Is_Access_Constant (Exp_Ty);
                Des_Ty   : constant Entity_Id :=
                  Directly_Designated_Type (Exp_Ty);
 
@@ -17362,12 +17418,16 @@ package body Gnat2Why.Expr is
                --  Insert static memory leak if needed
 
                if Domain = EW_Prog
-                 and then In_Assertion_Expression_Pragma (Expr)
+                 and then (if To_Const then not Value_Is_Never_Leaked (Expr)
+                           else In_Assertion_Expression_Pragma (Expr))
                then
                   Emit_Static_Proof_Result
                     (Expr, VC_Memory_Leak, False, Current_Subp,
                      Explanation =>
-                       "allocator inside an assertion leaks memory");
+                       (if To_Const
+                        then "allocator for an access-to-constant type"
+                        else "allocator inside an assertion")
+                        & " leaks memory");
                end if;
 
                --  Uninitialized allocator
@@ -17630,18 +17690,11 @@ package body Gnat2Why.Expr is
       --  This label will be used for pretty printing the expression
 
       if Pretty_Label /= No_Symbol then
-         declare
-            Label_Set : Symbol_Set := Symbol_Sets.To_Set (Pretty_Label);
-         begin
-            if Params.Gen_Marker = GM_All then
-               Label_Set.Include (New_Located_Label (Expr, Left_Most => True));
-            end if;
-            T :=
-              New_Label (Labels => Label_Set,
-                         Def => T,
-                         Domain => Domain,
-                         Typ    => Get_Type (T));
-         end;
+         T :=
+           New_Label (Labels => Symbol_Sets.To_Set (Pretty_Label),
+                      Def => T,
+                      Domain => Domain,
+                      Typ    => Get_Type (T));
       end if;
 
       --  Insert an overflow check if flag Do_Overflow_Check is set. No
@@ -19219,7 +19272,7 @@ package body Gnat2Why.Expr is
                   Result := New_Ignore
                     (Prog =>
                        +Transform_Expr (Expr, EW_Prog, Params => Params));
-                  Params.Gen_Marker := GM_All;
+                  Params.Gen_Marker := GM_Label;
                   Result := Sequence
                     (Result,
                      New_Located_Assert
@@ -19578,7 +19631,7 @@ package body Gnat2Why.Expr is
 
       if Present (Expr) then
          Runtime := +Transform_Expr (Expr, EW_Prog, Params => Params);
-         Params.Gen_Marker := GM_All;
+         Params.Gen_Marker := GM_Toplevel;
          Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
          return;
       else
@@ -21754,23 +21807,18 @@ package body Gnat2Why.Expr is
                         end if;
 
                         Else_Stmt :=
-                          New_Label
-                            (Labels =>
-                               Symbol_Sets.To_Set (New_Located_Label (Cur)),
-                             Def    =>
-                             +New_Simpl_Conditional
-                               (Condition =>
-                                  New_Counterexample_Assign (Cur,
-                                  Transform_Expr_With_Actions
-                                    (Condition (Cur),
-                                     Condition_Actions (Cur),
-                                     EW_Bool_Type,
-                                     EW_Prog,
-                                     Params => Body_Params)),
-                                Then_Part => +Cur_Stmt,
-                                Else_Part => +Else_Stmt,
-                                Domain    => EW_Prog),
-                                Typ       => EW_Unit_Type);
+                          +New_Simpl_Conditional
+                          (Condition =>
+                             New_Counterexample_Assign (Cur,
+                               Transform_Expr_With_Actions
+                                 (Condition (Cur),
+                                  Condition_Actions (Cur),
+                                  EW_Bool_Type,
+                                  EW_Prog,
+                                  Params => Body_Params)),
+                           Then_Part => +Cur_Stmt,
+                           Else_Part => +Else_Stmt,
+                           Domain    => EW_Prog);
                         Prev (Cur);
                      end loop;
                   end;
@@ -21890,10 +21938,7 @@ package body Gnat2Why.Expr is
             Assert_And_Cut_Expr => Cut_Assertion_Expr,
             Assert_And_Cut      => Cut_Assertion));
    begin
-      Sequence_Append (Seq,
-                       New_Label (Labels => Symbol_Sets.To_Set
-                                  (New_Located_Label (Stmt_Or_Decl)),
-                                  Def    => +Prog));
+      Sequence_Append (Seq, Prog);
 
       --  If we are translating a label, catch the exception which may have
       --  been raised by goto statements referencing this label.

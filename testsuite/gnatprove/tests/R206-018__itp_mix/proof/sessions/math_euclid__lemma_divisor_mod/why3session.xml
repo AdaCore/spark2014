@@ -41,7 +41,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0" timelimit="1" memlimit="1000"><result status="unknown" steps="4257"/></proof>
+  <proof prover="0" timelimit="1" memlimit="1000"><result status="unknown" steps="11273"/></proof>
   <transf name="introduce_premises" proved="true" >
    <goal name="def&#39;vc.8.0" proved="true">
    <transf name="assert" proved="true" arg1="mod1 A B = B * (-div1 A B) + A">
@@ -50,23 +50,24 @@
     <proof prover="1"><result status="valid" steps="9872"/></proof>
     </goal>
     <goal name="def&#39;vc.8.0.1" proved="true">
-    <proof prover="0"><result status="unknown" steps="4834"/></proof>
-    <proof prover="1"><result status="unknown" steps="147593"/></proof>
+    <proof prover="0"><result status="unknown" steps="5676"/></proof>
+    <proof prover="1"><result status="unknown" steps="148413"/></proof>
     <transf name="assert" proved="true" arg1="B = X * div1 B X">
      <goal name="def&#39;vc.8.0.1.0" proved="true">
      <proof prover="0"><result status="valid" steps="6791"/></proof>
      </goal>
      <goal name="def&#39;vc.8.0.1.1" proved="true">
-     <proof prover="0"><result status="unknown" steps="5532"/></proof>
-     <transf name="assert" proved="true" arg1="mod1 A  B = X * ((div1 B X) * (-div1 A B)) + A">
+     <proof prover="0"><result status="unknown" steps="6081"/></proof>
+     <transf name="assert" proved="true" arg1="mod1 A B  = X * ((div1 B X) * (-div1 A B)) + A">
       <goal name="def&#39;vc.8.0.1.1.0" proved="true">
       <proof prover="0"><result status="valid" steps="5520"/></proof>
       </goal>
       <goal name="def&#39;vc.8.0.1.1.1" proved="true">
-      <proof prover="0"><result status="unknown" steps="10627"/></proof>
+      <proof prover="0"><result status="unknown" steps="6377"/></proof>
       <transf name="assert" proved="true" arg1="mod1 (mod1 A B) X = 0">
        <goal name="def&#39;vc.8.0.1.1.1.0" proved="true">
        <proof prover="0"><result status="unknown" steps="6382"/></proof>
+       <proof prover="1"><result status="unknown" steps="28789529"/></proof>
        <transf name="rewrite" proved="true" arg1="h1">
         <goal name="def&#39;vc.8.0.1.1.1.0.0" proved="true">
         <transf name="rewrite" proved="true" arg1="Mod_mult">
@@ -81,7 +82,8 @@
        </transf>
        </goal>
        <goal name="def&#39;vc.8.0.1.1.1.1" proved="true">
-       <proof prover="0"><result status="valid" steps="6985"/></proof>
+       <proof prover="0"><result status="timeout"/></proof>
+       <proof prover="1"><result status="valid" steps="10774"/></proof>
        </goal>
       </transf>
       </goal>

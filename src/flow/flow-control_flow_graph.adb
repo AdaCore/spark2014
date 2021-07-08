@@ -1751,7 +1751,6 @@ package body Flow.Control_Flow_Graph is
          declare
             Vars_Defined : Flow_Id_Sets.Set;
             Vars_Used    : Flow_Id_Sets.Set;
-            Vars_Proof   : Flow_Id_Sets.Set;
 
             Slice_Update : Boolean;
 
@@ -1763,7 +1762,6 @@ package body Flow.Control_Flow_Graph is
                Use_Computed_Globals => not FA.Generating_Globals,
                Vars_Defined         => Vars_Defined,
                Vars_Used            => Vars_Used,
-               Vars_Proof           => Vars_Proof,
                Partial_Definition   => Slice_Update);
 
             pragma Assert (Partial = Slice_Update);

@@ -4,7 +4,7 @@ procedure Safe is
 
    function To_Float_NO is new Ada.Unchecked_Conversion(Integer, Float); --@UNCHECKED_CONVERSION:FAIL
 
-   function To_Nat_NO is new Ada.Unchecked_Conversion (Float, Natural);  --@UNCHECKED_CONVERSION:FAIL
+   function To_Nat_NO is new Ada.Unchecked_Conversion (Float, Natural);  --@UNCHECKED_CONVERSION_SIZE:FAIL
 
    function To_Integer_OK is new Ada.Unchecked_Conversion (Float, Integer);
 
@@ -17,7 +17,7 @@ procedure Safe is
 
    function To_U8_OK is new Ada.Unchecked_Conversion (Short_Short, U8);
    function To_SS_OK is new Ada.Unchecked_Conversion (U8, Short_Short);
-   function To_SS_Nat_NO is new Ada.Unchecked_Conversion (U8, SS_Nat); --@UNCHECKED_CONVERSION:FAIL
+   function To_SS_Nat_NO is new Ada.Unchecked_Conversion (U8, SS_Nat); --@UNCHECKED_CONVERSION_SIZE:FAIL
 
    type HRec is record
       C      : Character;
@@ -35,8 +35,8 @@ procedure Safe is
    type HRec2 is record
       C      : Integer;
       I      : Integer;
-   end record;
-   for Hrec2'Object_Size use 64;
+   end record
+   with Size => 64, Object_Size => 64;
 
    function To_Hrec_NO is new Ada.Unchecked_Conversion (U64, Hrec); --@UNCHECKED_CONVERSION:FAIL
 
@@ -55,7 +55,7 @@ procedure Safe is
    type Arr2 is array (1 .. 8) of Character;
    for Arr2'Object_Size use 64;
 
-   function To_Arr_NO is new Ada.Unchecked_Conversion (U64, Arr); --@UNCHECKED_CONVERSION:FAIL
+   function To_Arr_NO is new Ada.Unchecked_Conversion (U64, Arr);
    function To_Arr_OK is new Ada.Unchecked_Conversion (U64, Arr2);
 
 
@@ -127,7 +127,7 @@ procedure Safe is
       A : U7;
       B : Boolean;
    end record
-   with Object_Size => 8;
+   with Object_Size => 8, Size => 8;
 
    function R_OK is new Ada.Unchecked_Conversion (U8, R);
 

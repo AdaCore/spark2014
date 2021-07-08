@@ -34,22 +34,22 @@ formals.adb:89:07: info: predicate check proved (CVC4: 1 VC)
 formals.adb:90:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:91:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:92:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:92:07: medium: predicate check might fail, cannot prove Constr_Int /= 0 (e.g. when Z = 0) [possible fix: call at line 91 should mention A (for argument Z) in a postcondition]
+formals.adb:92:07: medium: predicate check might fail (e.g. when Z = 0) [possible fix: call at line 91 should mention A (for argument Z) in a postcondition]
 formals.adb:93:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:94:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:94:19: medium: predicate check might fail, cannot prove Constr_Int /= 0 (e.g. when Z = 0) [possible fix: call at line 93 should mention A (for argument Z) in a postcondition]
+formals.adb:94:19: medium: predicate check might fail (e.g. when Z = 0) [possible fix: call at line 93 should mention A (for argument Z) in a postcondition]
 formals.adb:95:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:96:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:96:16: medium: predicate check might fail [possible fix: call at line 95 should mention A (for argument W) in a postcondition]
 formals.adb:97:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:98:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:98:21: medium: predicate check might fail, cannot prove Constr_Int_2 /= 0 (e.g. when Z = 0) [possible fix: call at line 97 should mention A (for argument Z) in a postcondition]
+formals.adb:98:21: medium: predicate check might fail (e.g. when Z = 0) [possible fix: call at line 97 should mention A (for argument Z) in a postcondition]
 formals.adb:99:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:16: medium: predicate check might fail [possible fix: call at line 99 should mention A (for argument V) in a postcondition]
 formals.adb:101:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:102:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:102:08: medium: predicate check might fail, cannot prove Constr_Int /= 0 [possible fix: call at line 102 should mention A (for argument W) in a postcondition]
+formals.adb:102:08: medium: predicate check might fail [possible fix: call at line 102 should mention A (for argument W) in a postcondition]
 formals.adb:103:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:103:07: info: predicate check proved (CVC4: 1 VC)
 formals.adb:104:04: info: precondition proved (Trivial: 1 VC)

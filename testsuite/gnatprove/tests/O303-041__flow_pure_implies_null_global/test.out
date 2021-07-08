@@ -5,6 +5,6 @@ a-ngelfu.ads:129:36: info: division check proved (CVC4: 1 VC), in instantiation 
 a-ngelfu.ads:129:65: info: float overflow check proved (Trivial), in instantiation at ff.ads:3
 a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
 a.adb:12:32: warning: no Global contract available for "Unit_Vector"
-foo.adb:5:09: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at line 3 should mention N in a precondition]
+foo.adb:5:09: medium: precondition might fail [possible fix: subprogram at line 3 should mention N in a precondition]
 foo.adb:5:09: warning: assuming "Log" has no effect on global items
 foo.adb:5:09: warning: no Global contract available for "Log"

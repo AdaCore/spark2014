@@ -8,5 +8,5 @@ module Main__subprogram_def
    (__void_param : unit)
    =
    assert { [#"main.adb" 15 0 0] [@vc:annotation] [@keep_on_simp] [@GP_Check:1:VC_RANGE_CHECK:main.adb:15:32] [@GP_Shape:call_get__typeconv] (0 = 0)};
-   assert { [#"main.adb" 15 0 0] [@vc:annotation] [@keep_on_simp] [@GP_Check:0:VC_RANGE_CHECK:main.adb:15:32] [@GP_Shape:call_get__typeconv] [@GP_Sloc:main.adb:15:32] (0 = 3)};
+   assert { [#"main.adb" 15 0 0] [@vc:annotation] [@keep_on_simp] [@GP_Check:0:VC_RANGE_CHECK:main.adb:15:32] [@GP_Shape:call_get__typeconv] (0 = 3)};
 end

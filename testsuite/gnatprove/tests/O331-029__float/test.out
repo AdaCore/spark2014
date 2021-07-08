@@ -297,7 +297,7 @@ sensfusion6_pack.adb:177:07: info: initialization of "Q2_Tmp" proved
 sensfusion6_pack.adb:177:07: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:256
 sensfusion6_pack.adb:178:07: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:178:07: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:256
-sensfusion6_pack.adb:187:24: medium: precondition might fail, cannot prove X >= Float'succ, in call inlined at sensfusion6_pack.adb:256
+sensfusion6_pack.adb:187:24: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:256
 sensfusion6_pack.adb:188:16: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:256
 sensfusion6_pack.adb:188:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:256
 sensfusion6_pack.adb:188:26: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:256
@@ -366,7 +366,7 @@ sensfusion6_pack.adb:227:35: medium: float overflow check might fail, in call in
 sensfusion6_pack.adb:227:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:227:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point subtraction must be bounded]
 sensfusion6_pack.adb:227:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]
-sensfusion6_pack.adb:230:21: medium: precondition might fail, cannot prove X >= Float'succ, in call inlined at sensfusion6_pack.adb:256
+sensfusion6_pack.adb:230:21: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:256
 sensfusion6_pack.adb:230:38: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:230:47: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point addition must be bounded]
 sensfusion6_pack.adb:230:56: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]

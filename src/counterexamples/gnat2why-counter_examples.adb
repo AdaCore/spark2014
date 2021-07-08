@@ -833,7 +833,7 @@ package body Gnat2Why.Counter_Examples is
          begin
             while Present (Discr) loop
                Visibility_Map.Insert
-                 (Root_Record_Component (Discr), Regular);
+                 (Root_Discriminant (Discr), Regular);
                Next_Discriminant (Discr);
             end loop;
          end;

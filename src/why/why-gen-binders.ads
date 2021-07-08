@@ -190,12 +190,6 @@ package Why.Gen.Binders is
       Pred     : W_Pred_Id)
       return W_Pred_Id;
 
-   function New_Existential_Quantif
-     (Ada_Node : Node_Id := Empty;
-      Binders  : Binder_Array;
-      Pred     : W_Pred_Id)
-      return W_Pred_Id;
-
    function New_Call
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
@@ -370,7 +364,6 @@ package Why.Gen.Binders is
 
    function Get_Binders_From_Variables
      (Variables   : Flow_Id_Sets.Set;
-      Compute     : Boolean := False;
       Ignore_Self : Boolean := False)
       return Item_Array
    with Pre => (for all V of Variables =>
@@ -379,8 +372,6 @@ package Why.Gen.Binders is
    --  From a set of names returned by flow analysis, compute an array of
    --  items representing the variables in Why.
    --  @param Variables a set of names returned by flow analysis
-   --  @param Compute Should be True if we want to compute binders missing from
-   --  the Symbol_Table.
    --  @param Ignore_Self True if we want to discard references to protected
    --  components.
    --  Should only be put to True if only localized versions of names are used.
@@ -413,14 +404,10 @@ package Why.Gen.Binders is
    --  done by providing the binders for variables referenced in the
    --  expression).
 
-   function Get_Binders_From_Expression
-     (Expr    : Node_Id;
-      Compute : Boolean := False) return Item_Array
+   function Get_Binders_From_Expression (Expr : Node_Id) return Item_Array
    with Pre => Nkind (Expr) in N_Subexpr;
    --  Compute an array of items representing the variables of E in Why.
    --  @param Expr Ada node for an expression
-   --  @param Compute Should be True if we want to compute binders missing from
-   --    the Symbol_Table. Only put it to True when the names are localized.
    --  @result An array of items used to represent these variales in Why
 
    procedure Localize_Binders

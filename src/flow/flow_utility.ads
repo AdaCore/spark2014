@@ -381,7 +381,6 @@ package Flow_Utility is
       Use_Computed_Globals : Boolean;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
-      Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
    with Pre  => Is_Valid_Assignment_Target (N),
         Post => (if not Is_Empty_Record_Type (Etype (N))

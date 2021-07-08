@@ -38,10 +38,10 @@ default_init.ads:5:09: info: default initial condition proved (CVC4: 1 VC)
 default_init.ads:7:09: info: default initial condition proved (CVC4: 1 VC)
 default_init.ads:9:09: medium: default initial condition might fail
 default_init.ads:11:09: info: default initial condition proved (CVC4: 1 VC)
-default_init.ads:12:35: medium: precondition might fail, cannot prove (Pre_Rte_Ok)
+default_init.ads:12:35: medium: precondition might fail
 default_init.ads:13:09: medium: default initial condition might fail
 default_init.ads:15:09: medium: default initial condition might fail
-default_init.ads:17:09: info: default initial condition proved (CVC4: 1 VC)
+default_init.ads:17:09: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
 default_init.ads:19:09: medium: default initial condition might fail
 default_init.ads:36:14: warning: subprogram "Def_Simple" has no effect
 default_init.ads:38:14: warning: subprogram "Def_Wrong" has no effect

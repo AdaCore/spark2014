@@ -22,7 +22,4 @@ package Access_To_Constants with SPARK_Mode is
    Y : constant C_Rec_Acc := new Rec'(F => X); --  This is a move
    X_2 : constant C_Int_Acc := new Integer'(15);
    Y_2 : constant C_Rec_2_Acc := new Rec_2'(F => X_2); -- should be ok
-
-   Z : Int_Acc := new Integer'(15);
-   Z_2 : constant C_Int_Acc := C_Int_Acc (Z); --  This is a move
 end Access_To_Constants;

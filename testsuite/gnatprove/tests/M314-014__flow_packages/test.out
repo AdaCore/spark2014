@@ -36,7 +36,7 @@ other.ads:3:08: info: flow dependencies proved
 pkg_a.adb:7:04: high: "A" constituent of "State_A" is not initialized in "Pkg_A"
 pkg_a.adb:7:04: high: initialization of "Pkg_A.State_A" is specified at pkg_a.ads:3
 pkg_a.adb:11:61: info: overflow check proved (CVC4: 1 VC)
-pkg_a.adb:16:09: medium: precondition might fail, cannot prove X in -100 .. 100
+pkg_a.adb:16:09: medium: precondition might fail
 pkg_a.adb:16:23: high: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
 pkg_a.ads:2:36: warning: no procedure exists that can initialize abstract state "Pkg_A.State_B"

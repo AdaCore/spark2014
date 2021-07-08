@@ -1,14 +1,14 @@
 harness.adb:3:11: warning: subprogram "Harness" has no effect
 harness.adb:6:04: info: initialization of "R" proved
 harness.adb:7:04: info: initialization of "H" proved
-harness.adb:10:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
-harness.adb:11:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 62593, Length => 0))
-harness.adb:12:04: medium: precondition might fail, cannot prove not Is_Empty (R) (e.g. when R = (Data => (0 => 0, others => 0), First => 1, Length => 0))
+harness.adb:10:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
+harness.adb:11:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 62593, Length => 0))
+harness.adb:12:04: medium: precondition might fail (e.g. when R = (Data => (0 => 0, others => 0), First => 1, Length => 0))
 harness.adb:13:19: medium: assertion might fail (e.g. when H = 1 and X = 0) [possible fix: subprogram at line 3 should mention X in a precondition]
-harness.adb:14:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
-harness.adb:15:04: medium: precondition might fail, cannot prove not Is_Empty (R) (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
+harness.adb:14:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
+harness.adb:15:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
 harness.adb:16:19: medium: assertion might fail (e.g. when H = 1 and Y = 0) [possible fix: subprogram at line 3 should mention Y in a precondition]
-harness.adb:17:04: medium: precondition might fail, cannot prove not Is_Empty (R) (e.g. when R = (Data => (0 => 0, others => 0), First => 1, Length => 0))
+harness.adb:17:04: medium: precondition might fail (e.g. when R = (Data => (0 => 0, others => 0), First => 1, Length => 0))
 harness.adb:18:19: medium: assertion might fail (e.g. when H = 1 and Z = 0) [possible fix: subprogram at line 3 should mention Z in a precondition]
 ring_buf.adb:15:37: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC4: 1 VC)
@@ -25,9 +25,9 @@ ring_buf.ads:51:51: medium: range check might fail [reason for check: slice boun
 ring_buf.ads:58:21: info: initialization of "R" proved
 ring_buf.ads:59:19: medium: postcondition might fail
 ring_buf.ads:63:17: medium: postcondition might fail
-ring_buf.ads:63:31: medium: precondition might fail, cannot prove M'Length > 0 (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
+ring_buf.ads:63:31: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
 ring_buf.ads:67:19: medium: postcondition might fail (e.g. when R = (Data => (others => 0), First => 32768, Length => 0) and R'Old = (Data => (others => 0), First => 32768, Length => 0) and X = 0)
 ring_buf.ads:69:43: info: initialization of "Element" proved
 ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old) (e.g. when R = (Data => (others => 0), First => 0, Length => Length_Type'Last-1) and R'Old = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
-ring_buf.ads:71:34: medium: precondition might fail, cannot prove M'Length > 0 (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
-ring_buf.ads:72:24: medium: precondition might fail, cannot prove M'Length > 0 (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
+ring_buf.ads:71:34: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
+ring_buf.ads:72:24: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))

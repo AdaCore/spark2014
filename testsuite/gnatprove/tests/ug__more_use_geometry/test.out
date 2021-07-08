@@ -4,7 +4,7 @@ more_use_geometry.adb:8:06: info: precondition proved
 more_use_geometry.adb:11:09: info: precondition proved
 more_use_geometry.adb:15:06: info: precondition proved
 
-more_use_geometry.adb:17:06: medium: precondition might fail, cannot prove Valid (S)
+more_use_geometry.adb:17:06: medium: precondition might fail
    17 |   S4.Operate;
       |   ~~^~~~~~~~
   possible fix: precondition of subprogram at line 3 should mention S4

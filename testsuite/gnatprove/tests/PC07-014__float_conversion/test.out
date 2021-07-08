@@ -3,7 +3,7 @@ simple_trajectory.adb:10:52: info: float overflow check proved (Trivial)
 simple_trajectory.adb:10:52: info: range check proved (Trivial)
 simple_trajectory.adb:12:30: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 simple_trajectory.adb:16:22: info: assertion proved (CVC4: 2 VC)
-simple_trajectory.adb:17:22: medium: assertion might fail (e.g. when Old_Speed = -6.9186915559E+156)
+simple_trajectory.adb:17:22: medium: assertion might fail (e.g. when Old_Speed = -8.9251069373E+144)
 simple_trajectory.adb:18:22: medium: assertion might fail (e.g. when N = 1)
 simple_trajectory.adb:19:22: info: assertion proved (Z3: 1 VC)
 simple_trajectory.adb:23:22: medium: assertion might fail (e.g. when New_Speed = 0.0 and Old_Speed = 0.0)
@@ -12,7 +12,7 @@ simple_trajectory.adb:24:22: info: assertion proved (Z3: 1 VC)
 simple_trajectory.adb:25:22: medium: assertion might fail (e.g. when N = 0 and Old_Speed = 0.0)
 simple_trajectory.adb:25:32: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 simple_trajectory.adb:25:55: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
-simple_trajectory.adb:26:22: medium: assertion might fail
+simple_trajectory.adb:26:22: medium: assertion might fail (e.g. when N = 0 and New_Speed = 0.0)
 simple_trajectory.adb:26:49: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 simple_trajectory.adb:28:22: medium: assertion might fail
 simple_trajectory.adb:28:30: info: range check proved (Trivial)
@@ -23,14 +23,14 @@ simple_trajectory.adb:28:62: info: float overflow check proved (Trivial)
 simple_trajectory.adb:30:22: medium: assertion might fail
 simple_trajectory.adb:30:36: info: float overflow check proved (Z3: 1 VC)
 simple_trajectory.adb:30:57: info: range check proved (CVC4: 1 VC)
-simple_trajectory.adb:31:22: medium: assertion might fail
+simple_trajectory.adb:31:22: medium: assertion might fail (e.g. when N = 0 and New_Speed = 0.0)
 simple_trajectory.adb:31:47: info: range check proved (CVC4: 1 VC)
 simple_trajectory.adb:35:22: medium: assertion might fail (e.g. when New_Speed = 0.0 and Old_Speed = 0.0)
 simple_trajectory.adb:35:45: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 simple_trajectory.adb:36:22: info: assertion proved (Z3: 1 VC)
 simple_trajectory.adb:37:22: medium: assertion might fail (e.g. when N = 0 and Old_Speed = 0.0)
 simple_trajectory.adb:37:32: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
-simple_trajectory.adb:37:54: info: float overflow check proved (Z3: 1 VC)
+simple_trajectory.adb:37:54: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 simple_trajectory.adb:38:22: medium: assertion might fail (e.g. when N = 0 and New_Speed = 0.0)
 simple_trajectory.adb:38:48: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 simple_trajectory.adb:40:22: medium: assertion might fail

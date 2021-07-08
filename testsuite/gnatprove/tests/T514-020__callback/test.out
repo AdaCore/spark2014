@@ -10,10 +10,10 @@ test_callback.adb:37:48: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:37:48: info: precondition proved (CVC4: 1 VC)
 test_callback.adb:42:14: medium: postcondition might fail (e.g. when Call_Incr_Bad'Result = 100 and X = 100)
 test_callback.adb:45:14: info: pointer dereference check proved (CVC4: 1 VC)
-test_callback.adb:45:14: medium: precondition might fail, cannot prove X < 100 (e.g. when X = 100)
+test_callback.adb:45:14: medium: precondition might fail (e.g. when X = 100)
 test_callback.adb:50:14: medium: postcondition might fail (e.g. when Call_Incr_Bad2'Result = Integer'First and X = 0)
 test_callback.adb:53:14: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 48 should mention F]
-test_callback.adb:53:14: medium: precondition might fail, cannot prove X < 50 (e.g. when X = 50)
+test_callback.adb:53:14: medium: precondition might fail (e.g. when X = 50)
 test_callback.adb:58:14: info: postcondition proved (CVC4: 1 VC)
 test_callback.adb:61:26: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:61:29: info: pointer dereference check proved (CVC4: 1 VC)
@@ -21,15 +21,15 @@ test_callback.adb:61:29: info: precondition proved (CVC4: 1 VC)
 test_callback.adb:66:14: info: postcondition proved (CVC4: 1 VC)
 test_callback.adb:69:26: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:69:29: info: pointer dereference check proved (CVC4: 1 VC)
-test_callback.adb:69:29: medium: precondition might fail, cannot prove X < 50 (e.g. when X = 50)
+test_callback.adb:69:29: medium: precondition might fail (e.g. when X = 50)
 test_callback.adb:76:24: info: null exclusion check proved (CVC4: 1 VC)
-test_callback.adb:76:24: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove 'Result >= X
-test_callback.adb:76:24: medium: precondition of target might not be strong enough to imply precondition of source, cannot prove X < 50
+test_callback.adb:76:24: medium: postcondition of source might not be strong enough to imply postcondition of target
+test_callback.adb:76:24: medium: precondition of target might not be strong enough to imply precondition of source
 test_callback.adb:76:27: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:76:27: info: precondition proved (CVC4: 1 VC)
 test_callback.adb:82:14: warning: subprogram "Call_Null_Proc" has no effect
 test_callback.adb:86:09: info: pointer dereference check proved (CVC4: 1 VC)
-test_callback.adb:86:09: medium: precondition might fail, cannot prove False
+test_callback.adb:86:09: medium: precondition might fail
 test_callback.adb:97:36: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:104:30: info: initialization of "F" proved
 test_callback.adb:106:14: info: pointer dereference check proved (CVC4: 1 VC)
@@ -43,9 +43,9 @@ test_callback.adb:109:21: info: predicate check proved (CVC4: 1 VC)
 test_callback.adb:112:20: info: postcondition of source is strong enough to imply postcondition of target (CVC4: 1 VC)
 test_callback.adb:112:20: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:112:29: info: null exclusion check proved (Trivial: 1 VC)
-test_callback.adb:113:56: medium: precondition of target might not be strong enough to imply precondition of source, cannot prove X < Integer'last
+test_callback.adb:113:56: medium: precondition of target might not be strong enough to imply precondition of source
 test_callback.adb:114:20: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
-test_callback.adb:114:20: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove 'Result >= X
+test_callback.adb:114:20: medium: postcondition of source might not be strong enough to imply postcondition of target
 test_callback.adb:114:31: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:116:19: info: assertion proved (CVC4: 1 VC)
 test_callback.adb:116:19: info: pointer dereference check proved (CVC4: 1 VC)

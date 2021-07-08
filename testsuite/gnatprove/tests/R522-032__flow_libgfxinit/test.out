@@ -78,12 +78,20 @@ hw-gfx-edid.adb:113:07: info: initialization of "Mode" proved
 hw-gfx-edid.ads:25:57: info: initialization of "Success" proved
 hw-gfx-framebuffer_filler.adb:25:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-framebuffer_filler.adb:25:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
+hw-gfx-framebuffer_filler.adb:35:09: warning: this statement is never reached
+hw-gfx-framebuffer_filler.adb:36:47: warning: this statement is never reached
+hw-gfx-framebuffer_filler.adb:38:48: warning: this statement is never reached
+hw-gfx-framebuffer_filler.adb:40:15: warning: this statement is never reached
+hw-gfx-framebuffer_filler.adb:42:21: warning: this statement is never reached
+hw-gfx-framebuffer_filler.ads:24:14: warning: subprogram "Fill" has no effect
 hw-gfx-gma-config.ads:17:04: info: flow dependencies proved
 hw-gfx-gma-config_helpers.adb:89:07: info: initialization of "Success" proved
 hw-gfx-gma-config_helpers.adb:95:10: info: initialization of "Enabled" proved
 hw-gfx-gma-config_helpers.adb:114:47: info: non-aliasing of formal parameters "Link" and "Mode" proved
 hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma-config_helpers.ads:34:07: info: initialization of "Success" proved
+hw-gfx-gma-connector_info.adb:42:13: warning: statement has no effect
+hw-gfx-gma-connector_info.adb:45:21: warning: this statement is never reached
 hw-gfx-gma-connector_info.adb:55:36: info: non-aliasing of formal parameters "Link" and "Mode" proved
 hw-gfx-gma-connector_info.adb:74:33: info: non-aliasing of formal parameters "Link" and "Mode" proved
 hw-gfx-gma-connector_info.ads:21:07: info: initialization of "Success" proved
@@ -95,6 +103,13 @@ hw-gfx-gma-connectors-edp.ads:22:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:73:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:135:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:210:07: info: initialization of "Success" proved
+hw-gfx-gma-connectors-fdi.adb:273:07: warning: statement has no effect
+hw-gfx-gma-connectors-fdi.adb:274:10: warning: this statement is never reached
+hw-gfx-gma-connectors-fdi.adb:278:22: warning: this statement is never reached
+hw-gfx-gma-connectors-fdi.adb:281:10: warning: this statement is never reached
+hw-gfx-gma-connectors-fdi.adb:282:22: warning: this statement is never reached
+hw-gfx-gma-connectors-fdi.adb:311:40: warning: this statement is never reached
+hw-gfx-gma-connectors-fdi.adb:313:40: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.ads:38:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors.ads:29:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors.ads:35:07: info: initialization of "Success" proved
@@ -115,6 +130,11 @@ hw-gfx-gma-dp_aux_request.adb:211:10: info: initialization of "Value" proved
 hw-gfx-gma-dp_aux_request.adb:212:10: info: initialization of "Count" proved
 hw-gfx-gma-dp_aux_request.adb:242:07: info: initialization of "Busy" proved
 hw-gfx-gma-dp_aux_request.adb:243:07: info: initialization of "Status" proved
+hw-gfx-gma-dp_aux_request.adb:248:07: warning: statement has no effect
+hw-gfx-gma-dp_aux_request.adb:249:19: warning: this statement is never reached
+hw-gfx-gma-dp_aux_request.adb:252:19: warning: this statement is never reached
+hw-gfx-gma-dp_aux_request.adb:317:07: warning: statement has no effect
+hw-gfx-gma-dp_aux_request.adb:318:19: warning: this statement is never reached
 hw-gfx-gma-dp_aux_request.ads:23:07: info: initialization of "Response" proved
 hw-gfx-gma-dp_aux_request.ads:24:07: info: initialization of "Response_Length" proved
 hw-gfx-gma-dp_aux_request.ads:25:07: info: initialization of "Success" proved
@@ -122,6 +142,10 @@ hw-gfx-gma-i2c.adb:124:27: info: initialization of "Result" proved
 hw-gfx-gma-i2c.adb:126:07: info: initialization of "GMBUS2" proved
 hw-gfx-gma-i2c.adb:135:27: info: initialization of "Success" proved
 hw-gfx-gma-i2c.adb:146:43: info: initialization of "Success" proved
+hw-gfx-gma-i2c.adb:150:07: warning: statement has no effect
+hw-gfx-gma-i2c.adb:151:19: warning: this statement is never reached
+hw-gfx-gma-i2c.adb:188:07: warning: statement has no effect
+hw-gfx-gma-i2c.adb:189:19: warning: this statement is never reached
 hw-gfx-gma-i2c.adb:202:07: info: initialization of "GMBUS2" proved
 hw-gfx-gma-i2c.adb:203:07: info: initialization of "GMBUS3" proved
 hw-gfx-gma-i2c.adb:205:07: info: initialization of "Current" proved
@@ -132,6 +156,12 @@ hw-gfx-gma-panel.adb:160:40: info: initialization of "Power_Up_Timer" constituen
 hw-gfx-gma-panel.adb:160:56: info: initialization of "Delays_US" constituent of "Panel_State" proved
 hw-gfx-gma-panel.adb:186:07: info: initialization of "Power_Delay" proved
 hw-gfx-gma-panel.adb:186:20: info: initialization of "Port_Select" proved
+hw-gfx-gma-panel.adb:219:10: warning: statement has no effect
+hw-gfx-gma-panel.adb:220:13: warning: statement has no effect
+hw-gfx-gma-panel.adb:221:28: warning: this statement is never reached
+hw-gfx-gma-panel.adb:226:25: warning: this statement is never reached
+hw-gfx-gma-panel.adb:255:07: warning: statement has no effect
+hw-gfx-gma-panel.adb:262:19: warning: this statement is never reached
 hw-gfx-gma-panel.adb:283:07: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:316:07: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:369:07: info: initialization of "Reg" proved
@@ -143,26 +173,68 @@ hw-gfx-gma-panel.ads:31:07: info: data dependencies proved
 hw-gfx-gma-panel.ads:35:07: info: flow dependencies proved
 hw-gfx-gma-panel.ads:59:33: info: initialization of "Level" proved
 hw-gfx-gma-pch-dp.ads:20:07: info: initialization of "Success" proved
+hw-gfx-gma-pch-fdi.adb:239:07: warning: statement has no effect
+hw-gfx-gma-pch-fdi.adb:240:14: warning: this statement is never reached
+hw-gfx-gma-pch-fdi.adb:241:19: warning: this statement is never reached
+hw-gfx-gma-pch-fdi.adb:247:19: warning: this statement is never reached
 hw-gfx-gma-pch-fdi.ads:23:07: info: initialization of "Success" proved
 hw-gfx-gma-pch-sideband.adb:109:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.adb:120:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.adb:132:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.ads:27:07: info: initialization of "Value" proved
+hw-gfx-gma-pch-transcoder.adb:163:07: warning: statement has no effect
 hw-gfx-gma-pch-transcoder.adb:192:13: info: initialization of "Data_M" proved
 hw-gfx-gma-pch-transcoder.adb:192:21: info: initialization of "Link_M" proved
 hw-gfx-gma-pch-transcoder.adb:193:13: info: initialization of "Data_N" proved
 hw-gfx-gma-pch-transcoder.adb:193:21: info: initialization of "Link_N" proved
+hw-gfx-gma-pch-transcoder.adb:217:10: warning: statement has no effect
+hw-gfx-gma-pch-transcoder.adb:239:07: warning: statement has no effect
+hw-gfx-gma-pch-transcoder.adb:262:07: warning: statement has no effect
+hw-gfx-gma-pch-transcoder.adb:268:07: warning: statement has no effect
+hw-gfx-gma-pch-transcoder.adb:274:07: warning: statement has no effect
+hw-gfx-gma-pch-vga.adb:69:07: warning: initialization of "Sync_Disable" has no effect
+hw-gfx-gma-pch-vga.adb:73:07: warning: statement has no effect
 hw-gfx-gma-pch-vga.adb:123:07: info: initialization of "Aux_Div" proved
 hw-gfx-gma-pch-vga.adb:124:07: info: initialization of "Div_Sel" proved
 hw-gfx-gma-pch-vga.adb:125:07: info: initialization of "Phase_Inc" proved
 hw-gfx-gma-pch-vga.adb:126:07: info: initialization of "Phase_Dir" proved
 hw-gfx-gma-pipe_setup.adb:205:07: info: data dependencies proved
 hw-gfx-gma-pipe_setup.adb:206:07: info: flow dependencies proved
-hw-gfx-gma-pipe_setup.adb:222:13: info: initialization of "Stride" proved
-hw-gfx-gma-pipe_setup.adb:222:21: info: initialization of "Offset" proved
+hw-gfx-gma-pipe_setup.adb:220:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:222:13: warning: unused variable "Stride"
+hw-gfx-gma-pipe_setup.adb:222:21: warning: unused variable "Offset"
+hw-gfx-gma-pipe_setup.adb:223:13: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:223:13: warning: unused variable constant with variable input "Width"
+hw-gfx-gma-pipe_setup.adb:224:13: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:224:13: warning: unused variable constant with variable input "Height"
+hw-gfx-gma-pipe_setup.adb:226:13: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:227:25: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:228:25: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:231:25: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:232:25: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:235:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:242:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:243:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:244:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:245:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:246:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:249:10: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:268:13: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:283:07: warning: unused variable "Dither_BPC"
+hw-gfx-gma-pipe_setup.adb:284:07: warning: unused variable "Dither"
 hw-gfx-gma-pipe_setup.adb:286:07: info: data dependencies proved
-hw-gfx-gma-pipe_setup.adb:287:07: info: flow dependencies proved
+hw-gfx-gma-pipe_setup.adb:287:07: medium: missing dependency "null => Dither"
+hw-gfx-gma-pipe_setup.adb:287:07: medium: missing dependency "null => Dither_BPC"
+hw-gfx-gma-pipe_setup.adb:293:16: medium: incorrect dependency "Registers.Register_State constituent of GMA.Device_State => Dither_BPC"
+hw-gfx-gma-pipe_setup.adb:294:16: medium: incorrect dependency "Registers.Register_State constituent of GMA.Device_State => Dither"
 hw-gfx-gma-pipe_setup.adb:304:07: info: initialization of "Reg8" proved
+hw-gfx-gma-pipe_setup.adb:308:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:309:10: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:313:10: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:314:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:318:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:344:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:345:19: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:403:07: info: initialization of "Width" proved
 hw-gfx-gma-pipe_setup.adb:404:07: info: initialization of "Height" proved
 hw-gfx-gma-pipe_setup.adb:463:07: info: initialization of "Width" proved
@@ -174,10 +246,37 @@ hw-gfx-gma-pipe_setup.adb:508:10: info: initialization of "Y" proved
 hw-gfx-gma-pipe_setup.adb:565:07: info: initialization of "In_Use" proved
 hw-gfx-gma-pipe_setup.adb:582:38: info: initialization of "Pipe" proved
 hw-gfx-gma-pipe_setup.adb:584:07: info: initialization of "Used_For_Secondary" proved
-hw-gfx-gma-pipe_setup.adb:596:07: info: initialization of "Pipe_Using_PF" proved
-hw-gfx-gma-pipe_setup.adb:645:07: info: initialization of "PF_Enabled" proved
+hw-gfx-gma-pipe_setup.adb:596:07: warning: unused variable "Pipe_Using_PF"
+hw-gfx-gma-pipe_setup.adb:599:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:600:19: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:601:19: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:602:10: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:605:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:606:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:608:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:609:10: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:610:10: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:611:22: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:630:10: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:631:13: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:632:10: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:633:13: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:644:07: warning: initialization of "Pipe_Using_PF" has no effect
+hw-gfx-gma-pipe_setup.adb:645:07: warning: unused variable "PF_Enabled"
+hw-gfx-gma-pipe_setup.adb:647:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:648:19: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:652:10: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:653:13: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:656:20: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:708:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:709:19: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:712:07: warning: statement has no effect
+hw-gfx-gma-pipe_setup.adb:713:10: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:714:19: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:715:19: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:735:07: info: initialization of "Reg8" proved
 hw-gfx-gma-pipe_setup.ads:60:32: info: initialization of "Available" proved
+hw-gfx-gma-pipe_setup.ads:60:57: warning: unused variable "Pipe"
 hw-gfx-gma-plls.adb:183:08: info: initialization of "Result" proved
 hw-gfx-gma-plls.adb:184:08: info: initialization of "Valid" proved
 hw-gfx-gma-plls.adb:186:07: info: data dependencies proved
@@ -207,8 +306,14 @@ hw-gfx-gma-plls.ads:32:07: info: initialization of "Success" proved
 hw-gfx-gma-port_detect.adb:58:07: info: initialization of "Internal_Detected" proved
 hw-gfx-gma-port_detect.adb:59:07: info: initialization of "HDMI_Detected" proved
 hw-gfx-gma-port_detect.adb:60:07: info: initialization of "DP_Detected" proved
+hw-gfx-gma-port_detect.adb:81:22: warning: this statement is never reached
+hw-gfx-gma-port_detect.adb:86:31: warning: this statement is never reached
 hw-gfx-gma-port_detect.adb:122:07: info: initialization of "Ctl32" proved
 hw-gfx-gma-port_detect.ads:21:07: info: initialization of "Detected" proved
+hw-gfx-gma-power_and_clocks_ironlake.adb:45:07: warning: statement has no effect
+hw-gfx-gma-power_and_clocks_ironlake.adb:47:19: warning: this statement is never reached
+hw-gfx-gma-power_and_clocks_ironlake.adb:50:19: warning: this statement is never reached
+hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: this statement is never reached
 hw-gfx-gma-registers.adb:41:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma-registers.adb:41:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:22
@@ -216,6 +321,8 @@ hw-gfx-gma-registers.adb:54:04: warning: writing to "MMIO" is assumed to have no
 hw-gfx-gma-registers.adb:92:07: info: initialization of "Reg32" proved
 hw-gfx-gma-registers.adb:128:07: info: initialization of "Fence_Upper" proved
 hw-gfx-gma-registers.adb:128:20: info: initialization of "Fence_Lower" proved
+hw-gfx-gma-registers.adb:150:07: warning: statement has no effect
+hw-gfx-gma-registers.adb:158:13: warning: this statement is never reached
 hw-gfx-gma-registers.adb:240:07: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:261:07: info: initialization of "Current" proved
 hw-gfx-gma-registers.adb:262:07: info: initialization of "Timeout" proved
@@ -249,8 +356,20 @@ hw-gfx-gma-transcoder.adb:156:07: info: initialization of "Data_M" proved
 hw-gfx-gma-transcoder.adb:156:15: info: initialization of "Link_M" proved
 hw-gfx-gma-transcoder.adb:157:07: info: initialization of "Data_N" proved
 hw-gfx-gma-transcoder.adb:157:15: info: initialization of "Link_N" proved
+hw-gfx-gma-transcoder.adb:184:07: warning: statement has no effect
+hw-gfx-gma-transcoder.adb:185:19: warning: this statement is never reached
+hw-gfx-gma-transcoder.adb:245:07: warning: statement has no effect
+hw-gfx-gma-transcoder.adb:246:19: warning: this statement is never reached
 hw-gfx-gma-transcoder.adb:270:07: info: initialization of "Enabled" proved
-hw-gfx-gma-transcoder.adb:295:07: info: initialization of "DDI_Func_Ctl" proved
+hw-gfx-gma-transcoder.adb:288:07: warning: statement has no effect
+hw-gfx-gma-transcoder.adb:289:19: warning: this statement is never reached
+hw-gfx-gma-transcoder.adb:295:07: warning: unused variable "DDI_Func_Ctl"
+hw-gfx-gma-transcoder.adb:297:07: warning: statement has no effect
+hw-gfx-gma-transcoder.adb:298:19: warning: this statement is never reached
+hw-gfx-gma-transcoder.adb:299:23: warning: this statement is never reached
+hw-gfx-gma-transcoder.adb:301:10: warning: this statement is never reached
+hw-gfx-gma-transcoder.adb:305:13: warning: this statement is never reached
+hw-gfx-gma-transcoder.ads:26:07: warning: unused initial value of "Scale"
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
@@ -288,12 +407,21 @@ hw-gfx-gma.adb:391:07: info: initialization of "PCI_MMIO_Base" proved
 hw-gfx-gma.adb:391:22: info: initialization of "PCI_GTT_Base" proved
 hw-gfx-gma.adb:395:33: info: initialization of "Success" proved
 hw-gfx-gma.adb:397:10: info: initialization of "Audio_VID_DID" proved
+hw-gfx-gma.adb:401:25: warning: this statement is never reached
+hw-gfx-gma.adb:403:25: warning: this statement is never reached
 hw-gfx-gma.adb:422:37: info: initialization of "Success" proved
 hw-gfx-gma.adb:425:10: info: initialization of "Vendor" proved
 hw-gfx-gma.adb:425:18: info: initialization of "Device" proved
+hw-gfx-gma.adb:509:07: warning: statement has no effect
 hw-gfx-gma.adb:667:07: info: initialization of "GTT_Size" proved
 hw-gfx-gma.adb:668:07: info: initialization of "Stolen_Size" proved
 hw-gfx-gma.adb:676:07: info: initialization of "GGC" proved
+hw-gfx-gma.adb:681:25: warning: this statement is never reached
+hw-gfx-gma.adb:682:25: warning: this statement is never reached
+hw-gfx-gma.adb:687:25: warning: this statement is never reached
+hw-gfx-gma.adb:688:25: warning: this statement is never reached
+hw-gfx-gma.adb:690:25: warning: this statement is never reached
+hw-gfx-gma.adb:691:25: warning: this statement is never reached
 hw-gfx-gma.adb:696:50: info: initialization of "Valid" proved
 hw-gfx-gma.adb:701:07: info: initialization of "GTT_Size" proved
 hw-gfx-gma.adb:701:17: info: initialization of "Aperture_Size" proved

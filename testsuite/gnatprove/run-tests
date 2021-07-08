@@ -264,11 +264,6 @@ class UGTestDriver(DiffTestDriver):
         else:
             cmd += ["--steps=100"]
 
-        # test access6 requires use of lemma library SPARK.Heap, which in turn
-        # requires defining env var SPARK_HEAP_OBJECT_DIR
-        if self.test_env["test_name"] == "ug__access6":
-            cmd += ["-XSPARK_HEAP_OBJECT_DIR=."]
-
         start_time = time.time()
         self.shell(cmd, catch_error=False)
         self.result.time = time.time() - start_time
