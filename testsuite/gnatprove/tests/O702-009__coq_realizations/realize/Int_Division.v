@@ -7,32 +7,35 @@ Require int.Abs.
 Require int.EuclideanDivision.
 Require int.ComputerDivision.
 
-(* Why3 assumption *)
-Definition unit := unit.
+(* separated with a blank line in order to be kept when regenerating
+   the file *)
+Require Import Coq.Bool.Bool.
+Require Import Coq.ZArith.BinInt.
+Require Import Coq.ZArith.Zbool.
 
 (* Why3 goal *)
-Definition qtmark : Type.
-exact unit.
+Definition mod1 :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
+Proof.
+exact (fun (x y : Z) => if (Zlt_bool 0%Z x && Zlt_bool 0%Z y) || (Zlt_bool x 0%Z && Zlt_bool y 0%Z) then ZArith.BinInt.Z.rem x y
+else if Zeq_bool 0%Z (ZArith.BinInt.Z.rem x y) then 0%Z
+else ((ZArith.BinInt.Z.rem x y) + y)%Z).
 Defined.
 
-(* Why3 goal *)
-Definition mod1: Z -> Z -> Z.
-exact (fun (x y : Z) => if Zlt_bool 0%Z y then int.EuclideanDivision.mod1 x y
-else (int.EuclideanDivision.mod1 x y) + y)%Z.
-Defined.
+Ltac des_lt x y := pose proof (Zlt_cases x y); destruct (x <? y)%Z.
+Ltac des_eq x y := pose proof (Zeq_bool_if x y); destruct (Zeq_bool x y).
 
 (* Why3 goal *)
 Lemma mod'def :
-forall (x:Z) (y:Z),
- ((0%Z < y)%Z -> ((mod1 x y) = (int.EuclideanDivision.mod1 x y)))
- /\ ((~ (0%Z < y)%Z) ->
-     ((mod1 x y) = ((int.EuclideanDivision.mod1 x y) + y)%Z)).
-intros x y; split; intro H1; unfold mod1;
-pose proof (Zlt_cases 0 y) as hh; revert hh;
-case (Zlt_bool 0%Z y); intro H2.
-reflexivity.
-contradiction.
-contradiction.
-reflexivity.
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  ((0%Z < x)%Z /\ (0%Z < y)%Z \/ (x < 0%Z)%Z /\ (y < 0%Z)%Z ->
+   ((mod1 x y) = (ZArith.BinInt.Z.rem x y))) /\
+  (~ ((0%Z < x)%Z /\ (0%Z < y)%Z \/ (x < 0%Z)%Z /\ (y < 0%Z)%Z) ->
+   (((ZArith.BinInt.Z.rem x y) = 0%Z) -> ((mod1 x y) = 0%Z)) /\
+   (~ ((ZArith.BinInt.Z.rem x y) = 0%Z) ->
+    ((mod1 x y) = ((ZArith.BinInt.Z.rem x y) + y)%Z))).
+Proof.
+intros x y. unfold mod1.
+des_lt 0%Z x; des_lt 0%Z y; des_lt x 0%Z; des_lt y 0%Z; des_eq 0%Z (Z.rem x y);
+split; intro Hyp; try (split; intro Hyp2); try omega; simpl; try contradiction; trivial.
 Qed.
-
