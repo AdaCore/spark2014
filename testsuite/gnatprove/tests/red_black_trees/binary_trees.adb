@@ -225,35 +225,50 @@ package body Binary_Trees with SPARK_Mode is
             --  Update model R for the left child. Add it to the ToDo list.
             J := F.C (I).Left;
             if J /= Empty then
-               pragma Assert (Length (Unseen) > 0);
-               R (J).K  := True;
-               R (J).A  := Add (R (F.C (J).Parent).A, Left);
+               pragma Assert (not Is_Empty (Unseen));
+               R (J)    := (K => True,
+                            A => Add (R (I).A, Left));
                ToDo (J) := True;
             end if;
+            --  Restate part of the invariant to help proof
+            pragma Assert
+              (for all J in Index_Type =>
+                 (if R (J).K then
+                      (for all K in Index_Type =>
+                           (if R (K).K and R (K).A = R (J).A
+                            then J = K))));
+            pragma Assert
+              (for all J in Index_Type =>
+                 (if ToDo (J) and I /= J then
+                      (for all K in Index_Type =>
+                           (if R (K).K then not (R (J).A < R (K).A)))));
 
             --  Update model R for the right child. Add it to the ToDo list.
             J := F.C (I).Right;
             if J /= Empty then
-               pragma Assert (Length (Unseen) > 0);
-               R (J).K  := True;
-               R (J).A  := Add (R (F.C (J).Parent).A, Right);
+               pragma Assert (not Is_Empty (Unseen));
+               R (J)    := (K => True,
+                            A => Add (R (I).A, Right));
                ToDo (J) := True;
             end if;
+            --  Restate part of the invariant to help proof
+            pragma Assert
+              (for all J in Index_Type =>
+                 (if R (J).K then
+                      (for all K in Index_Type =>
+                           (if R (K).K and R (K).A = R (J).A
+                            then J = K))));
+            pragma Assert
+              (for all J in Index_Type =>
+                 (if ToDo (J) and I /= J then
+                      (for all K in Index_Type =>
+                           (if R (K).K then not (R (J).A < R (K).A)))));
          end;
 
          --  Nothing more to do for node I
          ToDo (I) := False;
          I := Next (ToDo);
       end loop;
-
-      --  Restate part of the loop invariant after the last iteration of the
-      --  loop.
-      pragma Assert
-        (for all J in Index_Type =>
-          (if J /= Root then
-            (if F.C (J).Parent /= Empty and then R (F.C (J).Parent).K
-             then R (J).K or ToDo (F.C (J).Parent)
-             else not R (J).K)));
 
       return R;
    end Model;
@@ -315,19 +330,21 @@ package body Binary_Trees with SPARK_Mode is
              (if Model (F1, Root) (I).K and Length (Model (F1, Root) (I).A) < N then
                 Model (F2, Root) (I).K));
 
-         --  Nodes from F1 which are less than N links away from the root have
-         --  the same path in F1 and F2.
-         pragma Loop_Invariant
-           (for all I in Index_Type =>
-             (if Model (F1, Root) (I).K and Length (Model (F1, Root) (I).A) < N then
-                Model (F2, Root) (I).A = Model (F1, Root) (I).A));
-
          --  Nodes from F2 which are less than N links away from the root are
          --  also in the tree rooted at Root in F1.
          pragma Loop_Invariant
            (for all I in Index_Type =>
              (if Model (F2, Root) (I).K and Length (Model (F2, Root) (I).A) < N then
                 Model (F1, Root) (I).K));
+      end loop;
+
+      for N in Index_Type loop
+         --  Nodes from F1 which are less than N links away from the root have
+         --  the same path in F1 and F2.
+         pragma Loop_Invariant
+           (for all I in Index_Type =>
+             (if Model (F1, Root) (I).K and Length (Model (F1, Root) (I).A) < N then
+                Model (F2, Root) (I).A = Model (F1, Root) (I).A));
 
          --  Nodes that are exactly N links away from the root have the same
          --  path in F1 and F2.
@@ -489,12 +506,6 @@ package body Binary_Trees with SPARK_Mode is
                         Model (F_Old, R) = Model (F, R)))
       is
       begin
-         pragma Assert (F.C (Root).Position = Top);
-         pragma Assert
-           (for all I in Index_Type =>
-             (if F.C (I).Parent > Empty and then Model (F, V) (F.C (I).Parent).K
-              then I /= V and then Model (F, V) (I).K));
-         pragma Assert (not (Model (F, Root) (V).K));
          for N in Index_Type loop
 
             --  Nodes from F_Old which are less than N links away from the root
@@ -521,6 +532,9 @@ package body Binary_Trees with SPARK_Mode is
               (for all I in Index_Type =>
                 (if Model (F, V) (I).K and then Length (Model (F, V) (I).A) <= N - 1
                  then Model (F_Old, Root) (I).K));
+         end loop;
+
+         for N in Index_Type loop
 
             --  Nodes from F_Old which are less than N links away from the root
             --  and still in the tree rooted at Root have the same path in F_Old
@@ -623,14 +637,7 @@ package body Binary_Trees with SPARK_Mode is
          F.C (V).Parent := Empty;
       end if;
 
-      pragma Assert
-        (for all I in Index_Type =>
-          (if F.C (I).Parent /= Empty and then F.C (I).Position = Left
-           then F.C (F.C (I).Parent).Left = I));
-      pragma Assert
-        (for all I in Index_Type =>
-          (if F.C (I).Parent /= Empty and then F.C (I).Position = Right
-           then F.C (F.C (I).Parent).Right = I));
+      pragma Assert (Tree_Structure (F));
 
       if V /= Empty then
          Prove_Post;
@@ -733,13 +740,6 @@ package body Binary_Trees with SPARK_Mode is
                         Model (F_Old, R) = Model (F, R)))
       is
       begin
-         pragma Assert
-           (for all I in Index_Type =>
-             (if Model (F, Root) (I).K
-                and then Model (F, Root) (V).A <= Model (F, Root) (I).A
-                and then F.C (I).Parent /= Empty
-              then I = V
-                or else Model (F, Root) (V).A <= Model (F, Root) (F.C (I).Parent).A));
          for N in Index_Type loop
             pragma Loop_Invariant
               (for all I in Index_Type =>
@@ -767,7 +767,9 @@ package body Binary_Trees with SPARK_Mode is
                    and then Length (Model (F_Old, V) (I).A) <= N - 1
                    and then Model (F, Root) (F.C (V).Parent).K
                  then Model (F, Root) (I).K));
+         end loop;
 
+         for N in Index_Type loop
             --  Nodes from F which are less than N links away from the root and
             --  are also in the tree rooted at Root in F_Old have the same path
             --  in F_Old and F.
@@ -842,15 +844,6 @@ package body Binary_Trees with SPARK_Mode is
                                    P => Model (F, Root) (I).A))));
             end loop;
          end loop;
-         pragma Assert
-           (for all I in Index_Type =>
-             (if Model (F_Old, V) (I).K then Model (F, Root) (I).K));
-         pragma Assert
-           (for all I in Index_Type =>
-             (if Model (F, Root) (I).K then
-               (if Model (F, Root) (V).A <= Model (F, Root) (I).A
-                then Model (F_Old, V) (I).K
-                else Model (F_Old, Root) (I).K)));
 
          --  All other trees in the forest are preserved
          for R in 1 .. F_Old.S loop
@@ -1060,15 +1053,6 @@ package body Binary_Trees with SPARK_Mode is
       end if;
 
       F.S := F.S + 1;
-
-      pragma Assert
-        (for all I in Index_Type =>
-             (if F.C (I).Parent /= Empty and then F.C (I).Position = Left
-              then F.C (F.C (I).Parent).Left = I));
-      pragma Assert
-        (for all I in Index_Type =>
-             (if F.C (I).Parent /= Empty and then F.C (I).Position = Right
-              then F.C (F.C (I).Parent).Right = I));
       Prove_Post;
    end Insert;
 

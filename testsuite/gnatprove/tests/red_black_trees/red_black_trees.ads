@@ -42,7 +42,8 @@ private
    function Color (T : Rbt; I : Extended_Index_Type) return Color_Type is
       (if I = Empty then Black else T.Color (I));
 
-   function Same_Nb_Blacks (T : Rbt) return Boolean with Ghost;
+   function Same_Nb_Blacks (T : Rbt) return Boolean with Ghost,
+     Post => Same_Nb_Blacks'Result in Boolean;
 
    function Invariant (T : Rbt) return Boolean is
      ((for all I in Index_Type =>
