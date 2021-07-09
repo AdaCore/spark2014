@@ -1,0 +1,10 @@
+project Test is
+
+  package Compiler is
+     for Switches("Ada") use ("-gnat2022");
+  end Compiler;
+
+  package Prove is
+    for Proof_Dir use "proof";
+  end Prove;
+end Test;
