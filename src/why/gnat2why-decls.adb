@@ -23,14 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings;         use Ada.Strings;
+with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
+with Checked_Types;       use Checked_Types;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Sinput;              use Sinput;
-with Ada.Strings;         use Ada.Strings;
-with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
+with Types;               use Types;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
@@ -49,8 +51,7 @@ package body Gnat2Why.Decls is
    -- Translate_Constant --
    ------------------------
 
-   procedure Translate_Constant (E : Entity_Id)
-   is
+   procedure Translate_Constant (E : Object_Kind_Id) is
       B  : constant Item_Type := Ada_Ent_To_Why.Element (Symbol_Table, E);
       pragma Assert (B.Kind = Regular and then not B.Main.Mutable);
       Th : Theory_UC;
@@ -89,11 +90,9 @@ package body Gnat2Why.Decls is
    -- Translate_Constant_Value --
    ------------------------------
 
-   procedure Translate_Constant_Value (E : Entity_Id)
-   is
-
-      Decl : constant Node_Id := Enclosing_Declaration (E);
-      Expr : constant Node_Id := Expression (Decl);
+   procedure Translate_Constant_Value (E : E_Constant_Id) is
+      Decl : constant N_Object_Declaration_Id := Enclosing_Declaration (E);
+      Expr : constant Opt_N_Subexpr_Id := Expression (Decl);
 
       --  Always use the Ada type for the equality between the constant result
       --  and the translation of its initialization expression. Using "int"
@@ -220,8 +219,7 @@ package body Gnat2Why.Decls is
    -- Translate_Loop_Entity --
    ---------------------------
 
-   procedure Translate_Loop_Entity (E : Entity_Id)
-   is
+   procedure Translate_Loop_Entity (E : E_Loop_Id) is
       Th : Theory_UC;
    begin
       Th := Open_Theory
@@ -248,8 +246,7 @@ package body Gnat2Why.Decls is
    -- Translate_Variable --
    ------------------------
 
-   procedure Translate_Variable (E : Entity_Id)
-   is
+   procedure Translate_Variable (E : Object_Kind_Id) is
       Var : constant Item_Type := Mk_Item_Of_Entity (E);
       Th : Theory_UC;
    begin

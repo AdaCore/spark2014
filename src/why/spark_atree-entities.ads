@@ -69,9 +69,12 @@ package SPARK_Atree.Entities is
    subtype Type_Kind            is Einfo.Entities.Type_Kind;
 
    subtype E_Constant_Id            is Einfo.Entities.E_Constant_Id;
+   subtype E_Component_Id           is Einfo.Entities.E_Component_Id;
    subtype E_Discriminant_Id        is Einfo.Entities.E_Discriminant_Id;
-   subtype E_In_Parameter_Id        is Einfo.Entities.E_In_Parameter_Id;
    subtype E_Enumeration_Literal_Id is Einfo.Entities.E_Enumeration_Literal_Id;
+   subtype E_In_Parameter_Id        is Einfo.Entities.E_In_Parameter_Id;
+   subtype E_Loop_Id                is Einfo.Entities.E_Loop_Id;
+   subtype E_Loop_Parameter_Id      is Einfo.Entities.E_Loop_Parameter_Id;
    subtype E_Function_Id            is Einfo.Entities.E_Function_Id;
    subtype E_Package_Id             is Einfo.Entities.E_Package_Id;
    subtype E_Package_Body_Id        is Einfo.Entities.E_Package_Body_Id;

@@ -37,6 +37,15 @@ package Checked_Types is
    -- Subtypes of nodes --
    -----------------------
 
+   subtype Opt_N_Case_Statement_Alternative_Id is Node_Id with
+     Predicate => No (Opt_N_Case_Statement_Alternative_Id)
+     or else Opt_N_Case_Statement_Alternative_Id
+       in N_Case_Statement_Alternative_Id;
+
+   subtype Opt_N_Component_Association_Id is Node_Id with
+     Predicate => No (Opt_N_Component_Association_Id)
+       or else Opt_N_Component_Association_Id in N_Component_Association_Id;
+
    subtype Opt_N_Declaration_Id is Node_Id with
      Predicate => No (Opt_N_Declaration_Id)
        or else Opt_N_Declaration_Id in N_Declaration_Id;
@@ -45,9 +54,23 @@ package Checked_Types is
      Predicate => No (Opt_N_Entry_Body_Id)
        or else Opt_N_Entry_Body_Id in N_Entry_Body_Id;
 
+   subtype Opt_N_Iteration_Scheme_Id is Node_Id with
+     Predicate => No (Opt_N_Iteration_Scheme_Id)
+       or else Opt_N_Iteration_Scheme_Id in N_Iteration_Scheme_Id;
+
+   subtype Opt_N_Loop_Parameter_Specification_Id is Node_Id with
+     Predicate => No (Opt_N_Loop_Parameter_Specification_Id)
+     or else Opt_N_Loop_Parameter_Specification_Id
+       in N_Loop_Parameter_Specification_Id;
+
    subtype Opt_N_Object_Declaration is Node_Id with
      Predicate => No (Opt_N_Object_Declaration)
        or else Opt_N_Object_Declaration in N_Object_Declaration_Id;
+
+   subtype Opt_N_Pragma_Argument_Association_Id is Node_Id with
+     Predicate => No (Opt_N_Pragma_Argument_Association_Id)
+     or else Opt_N_Pragma_Argument_Association_Id
+       in N_Pragma_Argument_Association_Id;
 
    subtype Opt_N_Pragma_Id is Node_Id with
      Predicate => No (Opt_N_Pragma_Id)
@@ -105,6 +128,10 @@ package Checked_Types is
    subtype Opt_E_Function_Id is Entity_Id with
      Predicate => No (Opt_E_Function_Id)
        or else Opt_E_Function_Id in E_Function_Id;
+
+   subtype Opt_E_Loop_Parameter_Id is Entity_Id with
+     Predicate => No (Opt_E_Loop_Parameter_Id)
+       or else Opt_E_Loop_Parameter_Id in E_Loop_Parameter_Id;
 
    subtype Opt_E_Package_Id is Entity_Id with
      Predicate => No (Opt_E_Package_Id)

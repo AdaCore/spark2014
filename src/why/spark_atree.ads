@@ -62,6 +62,12 @@ package SPARK_Atree is
    subtype N_Subprogram_Call is Sinfo.Nodes.N_Subprogram_Call;
 
    subtype N_Block_Statement_Id       is Sinfo.Nodes.N_Block_Statement_Id;
+   subtype N_Component_Association_Id is
+     Sinfo.Nodes.N_Component_Association_Id;
+   subtype N_Exit_Statement_Id        is Sinfo.Nodes.N_Exit_Statement_Id;
+   subtype N_Iteration_Scheme_Id      is Sinfo.Nodes.N_Iteration_Scheme_Id;
+   subtype N_Loop_Statement_Id        is Sinfo.Nodes.N_Loop_Statement_Id;
+   subtype N_Object_Declaration_Id    is Sinfo.Nodes.N_Object_Declaration_Id;
    subtype N_Package_Body_Id          is Sinfo.Nodes.N_Package_Body_Id;
    subtype N_Package_Specification_Id is
      Sinfo.Nodes.N_Package_Specification_Id;

@@ -26,7 +26,7 @@
 package Gnat2Why.Expr.Loops.Inv is
 
    function Generate_Frame_Condition
-     (Loop_Stmt          : Node_Id;
+     (Loop_Stmt          : N_Loop_Statement_Id;
       Low_Id             : W_Expr_Id;
       High_Id            : W_Expr_Id;
       Has_Loop_Invariant : Boolean)
