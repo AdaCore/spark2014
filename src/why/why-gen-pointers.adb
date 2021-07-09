@@ -1028,6 +1028,14 @@ package body Why.Gen.Pointers is
                          Name => Name);
    end Get_Rep_Pointer_Module;
 
+   -------------------------------------
+   -- Has_Predeclared_Move_Predicates --
+   -------------------------------------
+
+   function Has_Predeclared_Move_Predicates (E : Entity_Id) return Boolean is
+     (Has_Incomplete_Access (E)
+      and then Is_General_Access_Type (Retysp (Get_Incomplete_Access (E))));
+
    ----------------------------------
    -- Insert_Pointer_Subtype_Check --
    ----------------------------------
@@ -1047,14 +1055,13 @@ package body Why.Gen.Pointers is
          return Expr;
       else
          return
-           +New_VC_Call
+           New_VC_Call
              (Ada_Node => Ada_Node,
               Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun),
               Progs    =>
                 Prepare_Args_For_Access_Subtype_Check (Check_Ty, +Expr),
               Reason   => (if Has_Array_Type (Des_Ty) then VC_Range_Check
                            else VC_Discriminant_Check),
-              Domain   => EW_Prog,
               Typ      => Get_Type (+Expr));
       end if;
    end Insert_Pointer_Subtype_Check;
@@ -1063,19 +1070,54 @@ package body Why.Gen.Pointers is
    -- Move_Param_Item --
    ---------------------
 
-   function Move_Param_Item
-     (Typ : Entity_Id) return Item_Type
-   is
+   function Move_Param_Item (Typ : Entity_Id) return Item_Type is
       Init_Wrapper : constant Boolean := Might_Contain_Relaxed_Init (Typ);
       --  Use the init wrapper type for types which have one
 
    begin
+      --  For a general access type, we call the __move function, which only
+      --  takes the value part as a reference.
+      --
+      --  __move expr.pointer_value_ref expr.pointer_is_null
+      --       expr.pointer_is_moved
+      --
+      --  Note that the pointer_is_moved parameter is useless as it is always
+      --  False on general access types.
+
+      if Is_Access_Type (Typ) then
+         declare
+            Des_Ty : constant Entity_Id := Directly_Designated_Type (Typ);
+            P_Value    : constant Binder_Type :=
+              (B_Name  => New_Temp_Identifier
+                 (Base_Name => "pointer_value",
+                  Typ       => EW_Abstract
+                    (Des_Ty, Has_Relaxed_Init (Des_Ty))),
+               Mutable => True,
+               others  => <>);
+            P_Is_Null  : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "is_null",
+                                   Typ       => EW_Bool_Type);
+            P_Is_Moved : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "is_moved",
+                                   Typ       => EW_Bool_Type);
+         begin
+            return
+              Item_Type'(Kind     => Pointer,
+                         Local    => True,
+                         Init     => (Present => False),
+                         Value    => P_Value,
+                         Is_Null  => P_Is_Null,
+                         Is_Moved => P_Is_Moved,
+                         P_Typ    => Typ,
+                         Mutable  => False);
+         end;
+
       --  For a record, we call the __move function, which only takes the
       --  fields part as a reference.
       --
       --  __move expr.fields_ref expr.discr expr.tag
 
-      if Is_Record_Type_In_Why (Typ) then
+      elsif Is_Record_Type_In_Why (Typ) then
          declare
             P_Fields : constant Opt_Binder :=
               (Present => True,
@@ -1324,7 +1366,6 @@ package body Why.Gen.Pointers is
            (Ada_Node => Ada_Node,
             Name     => To_Program_Space (Field),
             Progs    => (1 => +Name),
-            Domain   => EW_Prog,
             Reason   => VC_Null_Pointer_Dereference,
             Typ      => Get_Typ (Field));
       elsif Designates_Incomplete_Type (Repr_Pointer_Type (Retysp (E))) then
@@ -1395,15 +1436,14 @@ package body Why.Gen.Pointers is
       return W_Expr_Id
    is
       E        : constant Entity_Id := I.Value.Ada_Node;
-      Ty       : constant Entity_Id := Etype (E);
+      Ty       : constant Entity_Id := I.P_Typ;
       Value    : W_Expr_Id;
       Is_Null  : W_Expr_Id;
       Is_Moved : W_Expr_Id;
 
    begin
       if I.Value.Mutable and then Ref_Allowed then
-         Value := New_Deref
-           (E, I.Value.B_Name, Get_Typ (I.Value.B_Name));
+         Value := New_Deref (E, I.Value.B_Name, Get_Typ (I.Value.B_Name));
       else
          Value := +I.Value.B_Name;
       end if;

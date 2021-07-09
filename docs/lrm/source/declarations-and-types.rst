@@ -405,7 +405,7 @@ The rules which accomplish all of this are described below.
 
 Only the following (named or anonymous) access types are in |SPARK|:
 
-- a (named) pool-specific access type,
+- a named access-to-object type,
 
 - the anonymous type of a stand-alone object (including a generic formal **in**
   mode object) which is not Part_Of a protected object,
@@ -413,15 +413,12 @@ Only the following (named or anonymous) access types are in |SPARK|:
 - the anonymous type of an object renaming declaration,
 
 - an anonymous type occurring as a parameter type, or as a function result type
-  of a traversal function (defined below),
-
-- a named access-to-constant type, or
+  of a traversal function (defined below), or
 
 - an access-to-subprogram type associated with the "Ada" calling convention.
 
-[Redundant: For example, named general access-to-variable types, access
-discriminants, and access-to-subprogram types with the "protected" calling
-convention are not in |SPARK|.]
+[Redundant: For example, access discriminants and access-to-subprogram types
+with the "protected" calling convention are not in |SPARK|.]
 
 .. index:: access type; owning
            access type; observing
@@ -570,8 +567,8 @@ A name that denotes a managed object can be in one of the
 following ownership states: Unrestricted, Observed, Borrowed, or Moved.
 A name that denotes an object which is not managed but is used as a
 prefix of a reference to the Access attribute or as the first parameter of a
-call to a traversal function can also be in the Unrestricted, Observed, or
-Borrowed state.
+call to a traversal function can also be in the Unrestricted, Observed,
+Borrowed, or Moved state.
 
 A given name may take on different states at different points in the
 program. For example, within a block_statement which declares an observer
@@ -768,8 +765,17 @@ be an owning type).]
 1. At the point of a move operation the state of the source object (if any) and
    all of its reachable elements shall be Unrestricted. After a move operation,
    the state of any access parts of the source object (if there is one) becomes
-   Moved.
+   Moved. In addition, if the source is a reference to the Access attribute,
+   the state of the first enclosing access part of the source object becomes
+   Moved if there is one. Otherwise, the object can no longer be read or
+   written in the rest of the program.
 
+..
+  _This is not entirely True. The parts of the last dereference or complete
+  object (if no such dereference) that are not moved can still be
+  read/written. This cannot easily be stated without making a difference
+  between the permissions Write_Only and No_Access for moves, and without
+  describing the effects of moves on prefixes/suffixes of moved expressions.
 
 2. An owning object's state shall be Moved or Unrestricted at any point where
 
@@ -914,27 +920,34 @@ be an owning type).]
     to the primitive equality on access types, unless one of the operands is
     syntactically null.
 
+18. Instances of Unchecked_Deallocation shall not have a general access type
+    as a parameter.
+
 .. centered:: **Verification Rules**
 
 .. index:: memory leak; for objects
            deallocation, Unchecked_Deallocation
 
-18. When an owning access object other than a borrower, an observer,
-    or an object in the Moved state is finalized, or when such an object
+19. When an access object of a pool-specific access type which is not
+    in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
-
-    [Redundant: This rule disallows storage leaks. Without this rule,
-    it would be possible to "lose" the last reference to an allocated
-    object.]
 
     [Redundant: This rule applies to any finalization associated with a
     call to an instance of Ada.Unchecked_Deallocation. For details, see
     the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
     the object designated by X".]
 
+20. Allocators and conversions from a pool-specific access type to a named
+    access-to-constant type or a general access-to-variable type shall only
+    occur at library level.
 
-19. When converting from a [named or anonymous] access-to-subprogram type
+    [Redundant: Together with the previous one, this rule disallows storage
+    leaks. Without these rules, it would be possible to "lose" the last
+    reference to an allocated object.]
+
+
+21. When converting from a [named or anonymous] access-to-subprogram type
     to another, if the converted expression is not null,
     a verification condition is introduced to ensure that the
     precondition of the source of the conversion is implied by the

@@ -169,7 +169,7 @@ auditlog.adb:299:37: info: range check proved (CVC4: 1 VC)
 auditlog.adb:357:11: info: flow dependencies proved
 auditlog.adb:362:07: info: initialization of "Archive" proved
 auditlog.adb:365:22: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:365:45: info: predicate check proved (CVC4: 1 VC)
+auditlog.adb:365:45: info: predicate check proved (CVC4: 2 VC)
 auditlog.adb:365:45: info: range check proved (CVC4: 1 VC)
 auditlog.adb:386:11: info: data dependencies proved
 auditlog.adb:389:11: info: flow dependencies proved
@@ -250,7 +250,7 @@ auditlog.adb:972:39: info: initialization of "Status" proved
 auditlog.adb:974:16: info: flow dependencies proved
 auditlog.adb:982:12: info: initialization of "OK" proved
 auditlog.adb:984:12: info: initialization of "TimeCount" proved
-auditlog.adb:990:37: info: predicate check proved (CVC4: 1 VC)
+auditlog.adb:990:37: info: predicate check proved (CVC4: 2 VC)
 auditlog.adb:990:37: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1014:55: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1070:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -288,7 +288,7 @@ auditlog.adb:1250:07: info: initialization of "ArchivedFileCount" proved
 auditlog.adb:1251:07: info: initialization of "FileIndex" proved
 auditlog.adb:1252:07: info: initialization of "FileIndexInUsedList" proved
 auditlog.adb:1254:22: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:1254:45: info: predicate check proved (CVC4: 1 VC)
+auditlog.adb:1254:45: info: predicate check proved (CVC4: 2 VC)
 auditlog.adb:1254:45: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1256:22: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:1289:16: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -353,7 +353,7 @@ bio.adb:187:23: info: range check proved (CVC4: 4 VC)
 bio.adb:193:22: info: analyzing call to "GetReturnCode" in context
 bio.adb:244:07: info: initialization of "NumericReturn" proved
 bio.adb:269:18: info: precondition proved (CVC4: 1 VC)
-bio.adb:274:35: info: predicate check proved (CVC4: 1 VC)
+bio.adb:274:35: info: predicate check proved (CVC4: 3 VC)
 bio.adb:274:35: info: range check proved (CVC4: 1 VC)
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:41:11: info: data dependencies proved
@@ -474,7 +474,7 @@ certificatestore.adb:224:45: info: length check proved (CVC4: 3 VC; Trivial: 1 V
 certificatestore.adb:265:42: info: initialization of "NextSerialNumber" constituent of "State" proved
 certificatestore.adb:266:42: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:280:07: info: initialization of "ReadOK" proved
-certificatestore.adb:283:31: info: predicate check proved (CVC4: 1 VC)
+certificatestore.adb:283:31: info: predicate check proved (CVC4: 2 VC)
 certificatestore.adb:283:31: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:291:21: info: precondition proved (CVC4: 1 VC)
 certificatestore.adb:317:41: info: initialization of "Overflow" constituent of "State" proved
@@ -795,7 +795,7 @@ configdata.adb:1256:37: info: initialization of "MinPreservedLogSize" constituen
 configdata.adb:1257:37: info: initialization of "AlarmThresholdSize" constituent of "State" proved
 configdata.adb:1258:37: info: initialization of "SystemMaxFar" constituent of "State" proved
 configdata.adb:1259:14: info: flow dependencies proved
-configdata.adb:1296:32: info: predicate check proved (CVC4: 1 VC)
+configdata.adb:1296:32: info: predicate check proved (CVC4: 2 VC)
 configdata.adb:1296:32: info: range check proved (CVC4: 1 VC)
 configdata.adb:1373:43: info: initialization of "LatchUnlockDuration" constituent of "State" proved
 configdata.adb:1374:43: info: initialization of "AlarmSilentDuration" constituent of "State" proved
@@ -1268,20 +1268,20 @@ enrolment.adb:133:10: info: initialization of "TheSubject" proved
 enrolment.adb:134:10: info: initialization of "TheIssuer" proved
 enrolment.adb:135:10: info: initialization of "ThePublicKey" proved
 enrolment.adb:137:10: info: initialization of "Extracted" proved
-enrolment.adb:201:31: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:201:31: info: predicate check proved (CVC4: 3 VC)
 enrolment.adb:201:31: info: range check proved (CVC4: 1 VC)
-enrolment.adb:204:31: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:204:31: info: predicate check proved (CVC4: 3 VC)
 enrolment.adb:204:31: info: range check proved (CVC4: 1 VC)
-enrolment.adb:206:44: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:206:44: info: predicate check proved (CVC4: 3 VC)
 enrolment.adb:206:44: info: range check proved (CVC4: 1 VC)
-enrolment.adb:224:41: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:224:41: info: predicate check proved (CVC4: 3 VC)
 enrolment.adb:224:41: info: range check proved (CVC4: 1 VC)
 enrolment.adb:229:27: info: overflow check proved (CVC4: 1 VC)
 enrolment.adb:238:33: info: loop invariant initialization proved (CVC4: 1 VC)
 enrolment.adb:238:33: info: loop invariant preservation proved (CVC4: 1 VC)
 enrolment.adb:239:33: info: loop invariant initialization proved (CVC4: 1 VC)
 enrolment.adb:239:33: info: loop invariant preservation proved (CVC4: 1 VC)
-enrolment.adb:258:41: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:258:41: info: predicate check proved (CVC4: 3 VC)
 enrolment.adb:258:41: info: range check proved (CVC4: 1 VC)
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
@@ -1337,26 +1337,26 @@ keystore.adb:211:67: info: overflow check proved (CVC4: 2 VC)
 keystore.adb:220:22: info: precondition proved (CVC4: 5 VC)
 keystore.adb:232:36: info: range check proved (CVC4: 1 VC)
 keystore.adb:248:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:252:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:252:60: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:252:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:256:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:260:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:260:60: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:260:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:264:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:268:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:268:59: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:268:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:287:07: info: initialization of "Handles" proved
 keystore.adb:288:11: info: data dependencies proved
 keystore.adb:293:11: info: flow dependencies proved
 keystore.adb:306:07: info: initialization of "RetValIni" proved
 keystore.adb:327:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:331:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:331:60: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:331:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:335:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:339:58: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:339:58: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:339:58: info: range check proved (CVC4: 1 VC)
 keystore.adb:343:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:347:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:347:59: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:347:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:365:33: info: initialization of "IssuerKey" proved
 keystore.adb:366:11: info: data dependencies proved
@@ -1374,7 +1374,7 @@ keystore.adb:497:41: info: initialization of "ThisTISInfo" constituent of "State
 keystore.adb:508:07: info: initialization of "RetVal" proved
 keystore.adb:509:07: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:522:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:526:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:526:60: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:526:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:573:07: info: initialization of "TheIssuerKey" proved
 keystore.adb:615:07: info: initialization of "TheDigest" proved
@@ -1382,19 +1382,19 @@ keystore.adb:616:07: info: initialization of "Digested" proved
 keystore.adb:617:07: info: initialization of "TheIssuerKey" proved
 keystore.adb:618:07: info: initialization of "RetVal" proved
 keystore.adb:638:21: info: precondition proved (CVC4: 1 VC)
-keystore.adb:642:64: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:642:64: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:642:64: info: range check proved (CVC4: 1 VC)
 keystore.adb:683:07: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:684:07: info: initialization of "TheDigest" proved
 keystore.adb:686:07: info: initialization of "Digested" proved
 keystore.adb:687:07: info: initialization of "RetVal" proved
 keystore.adb:718:21: info: precondition proved (CVC4: 1 VC)
-keystore.adb:722:63: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:722:63: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:722:63: info: range check proved (CVC4: 1 VC)
 keystore.adb:775:07: info: initialization of "TheKeyTemplate" proved
 keystore.adb:776:07: info: initialization of "RetVal" proved
 keystore.adb:803:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:807:61: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:807:61: info: predicate check proved (CVC4: 3 VC)
 keystore.adb:807:61: info: range check proved (CVC4: 1 VC)
 keystore.adb:823:41: info: initialization of "ThisTISInfo" constituent of "State" proved
 keystore.ads:31:08: info: flow dependencies proved
@@ -1756,7 +1756,7 @@ tokenreader.adb:311:24: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:322:21: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:333:18: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:338:15: info: precondition proved (Trivial: 1 VC)
-tokenreader.adb:338:31: info: predicate check proved (CVC4: 1 VC)
+tokenreader.adb:338:31: info: predicate check proved (CVC4: 3 VC)
 tokenreader.adb:338:31: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:372:07: info: initialization of "ResponseCode" proved
 tokenreader.adb:373:07: info: initialization of "RawNewState" proved
@@ -1788,7 +1788,7 @@ tokenreader.adb:645:13: info: flow dependencies proved
 tokenreader.adb:669:43: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:689:21: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:694:18: info: precondition proved (Trivial: 1 VC)
-tokenreader.adb:694:34: info: predicate check proved (CVC4: 1 VC)
+tokenreader.adb:694:34: info: predicate check proved (CVC4: 3 VC)
 tokenreader.adb:694:34: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:766:07: info: initialization of "StatusOK" proved
 tokenreader.adb:768:07: info: initialization of "ResponseCode" proved

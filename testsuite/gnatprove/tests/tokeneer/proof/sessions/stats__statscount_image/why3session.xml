@@ -12,13 +12,19 @@
 <theory name="Stats__statscount_image__subprogram_def">
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="19487"/></proof>
-  <proof prover="2"><result status="unknown" steps="129"/></proof>
-  <proof prover="3"><result status="unknown" steps="156"/></proof>
+  <goal name="def&#39;vc.0" proved="true">
+  <proof prover="2"><result status="valid" steps="49"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" proved="true">
+  <goal name="def&#39;vc.1">
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="18575"/></proof>
+  <proof prover="2"><result status="unknown" steps="103"/></proof>
+  <proof prover="3"><result status="unknown" steps="121"/></proof>
+  </goal>
+  <goal name="def&#39;vc.2" proved="true">
+  <proof prover="2"><result status="valid" steps="59"/></proof>
+  </goal>
+  <goal name="def&#39;vc.3" proved="true">
   <proof prover="2"><result status="valid" steps="106"/></proof>
   </goal>
  </transf>

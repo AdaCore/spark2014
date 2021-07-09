@@ -1476,7 +1476,7 @@ Rewriting the Code in |SPARK|
 Depending on the violation, it may be more or less easy to rewrite the code in
 |SPARK|:
 
-* General access types should in general be rewritten as private types of a
+* Unsupported types should in general be rewritten as private types of a
   package whose public part is marked ``SPARK_Mode => On`` and whose private
   part is marked ``SPARK_Mode => Off``. Thus, the body of that package cannot be
   analyzed by |GNATprove|, but clients of the package can be analyzed.
@@ -1518,8 +1518,8 @@ can be used in different ways:
 * Even when most of the code is in |SPARK|, it may be more cost effective to
   apply ``SPARK_Mode => On`` selectively rather than by default. This is the
   case in particular when some units have non-|SPARK| declarations in the
-  public part of their package spec (for example general access type
-  definitions). Rewriting the code of these units to isolate the non-|SPARK|
+  public part of their package spec.
+  Rewriting the code of these units to isolate the non-|SPARK|
   declarations in a part that can be marked ``SPARK_Mode => Off`` may be more
   costly than specifying no ``SPARK_Mode`` for these units, which allows
   |SPARK| code elsewhere in the program to refer to the |SPARK| entities in
@@ -1754,6 +1754,5 @@ and instead that part of the code should be marked ``SPARK_Mode => Off``. To
 minimize the parts of the code that need to be marked ``SPARK_Mode => Off``, it
 is in general preferable to apply ``SPARK_Mode => On`` selectively rather than
 by default, so that units that have non-|SPARK| declarations in the public part
-of their package spec (for example general access type definitions) need not be
-marked ``SPARK_Mode => Off``. See
+of their package spec need not be marked ``SPARK_Mode => Off``. See
 :ref:`Using SPARK_Mode to Select or Exclude Code` for details.

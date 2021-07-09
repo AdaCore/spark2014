@@ -74,8 +74,9 @@ should be documented in the User Guide for the tool.
    (see section 7.1.2 for the definition of Volatile_Function).
 
 4. A reference to the Access attribute whose type is an anonymous
-   access-to-object type shall occur directly inside a stand-alone object
-   declaration, an assignment, or a return statement.
+   access-to-object type or a named access-to-variable type shall occur
+   directly inside a stand-alone object declaration, an assignment, or a
+   return statement.
 
 5. The prefix of an Access attribute reference whose type is a named
    access-to-constant type shall either be a name denoting a part of a

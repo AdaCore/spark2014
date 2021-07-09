@@ -12,13 +12,21 @@
 <theory name="Privtypes__classt_image__subprogram_def">
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="19134"/></proof>
-  <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="unknown" steps="142"/></proof>
+  <goal name="def&#39;vc.0" proved="true">
+  <proof prover="2"><result status="valid" steps="49"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" proved="true">
+  <goal name="def&#39;vc.1">
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="18254"/></proof>
+  <proof prover="2"><result status="unknown" steps="103"/></proof>
+  </goal>
+  <goal name="def&#39;vc.2">
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="16607"/></proof>
+  <proof prover="2"><result status="unknown" steps="101"/></proof>
+  <proof prover="3"><result status="unknown" steps="119"/></proof>
+  </goal>
+  <goal name="def&#39;vc.3" proved="true">
   <proof prover="2"><result status="valid" steps="106"/></proof>
   </goal>
  </transf>

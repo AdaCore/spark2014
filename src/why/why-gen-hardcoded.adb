@@ -258,39 +258,30 @@ package body Why.Gen.Hardcoded is
                --  Divide, Mod, Rem and Gcd need a division or precondition
                --  check.
 
-               if Domain = EW_Prog
-                 and then
-                   (Chars (Subp) in Name_Op_Divide
-                                  | Name_Op_Mod
-                                  | Name_Op_Rem
-                      or else Name_String = BIN.Gcd)
-               then
-                  pragma Assert (Present (Ada_Node));
+               declare
+                  Check : constant Boolean :=
+                    Domain = EW_Prog
+                    and then
+                      (Chars (Subp) in Name_Op_Divide
+                                     | Name_Op_Mod
+                                     | Name_Op_Rem
+                        or else Name_String = BIN.Gcd);
+                  pragma Assert (if Check then Present (Ada_Node));
 
-                  declare
-                     Reason : constant VC_Kind :=
-                       (if Name_String = BIN.Gcd
-                        then VC_Precondition
-                        else VC_Division_Check);
-                  begin
-                     T :=
-                       New_VC_Call
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Name     => To_Program_Space (Name),
-                          Progs    => (1 => Left_Rep, 2 => Right_Rep),
-                          Reason   => Reason,
-                          Typ      => Base);
-                  end;
-               else
-                  T := New_Call
+                  Reason : constant VC_Kind :=
+                    (if Name_String = BIN.Gcd
+                     then VC_Precondition
+                     else VC_Division_Check);
+               begin
+                  T := New_Operator_Call
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
                      Name     => Name,
-                     Args     => (1 => Left_Rep,
-                                  2 => Right_Rep),
+                     Args     => (1 => Left_Rep, 2 => Right_Rep),
+                     Reason   => Reason,
+                     Check    => Check,
                      Typ      => Base);
-               end if;
+               end;
             end;
 
          --  This block transforms the unary operators, Is_Valid, and
@@ -332,23 +323,14 @@ package body Why.Gen.Hardcoded is
                     Name     => Of_String_Id,
                     Args     => (1 => Args (1)));
 
-               if Domain = EW_Prog then
-                  T := New_VC_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => To_Program_Space
-                       (M_Builtin_From_Image.Int_Value),
-                     Progs    => (1 => T),
-                     Reason   => VC_Precondition,
-                     Typ      => EW_Int_Type);
-               else
-                  T := New_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => M_Builtin_From_Image.Int_Value,
-                     Args     => (1 => T),
-                     Typ      => EW_Int_Type);
-               end if;
+               T := New_Operator_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => M_Builtin_From_Image.Int_Value,
+                  Args     => (1 => T),
+                  Reason   => VC_Precondition,
+                  Check    => Domain = EW_Prog,
+                  Typ      => EW_Int_Type);
 
                T := New_Label
                  (Ada_Node => Ada_Node,
@@ -416,37 +398,22 @@ package body Why.Gen.Hardcoded is
                begin
                   --  Translate each operand from an image to an integer
 
-                  if Domain = EW_Prog then
-                     Num := New_VC_Call
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Name     => To_Program_Space
-                          (M_Builtin_From_Image.Int_Value),
-                        Progs    => (1 => Num),
-                        Reason   => VC_Precondition,
-                        Typ      => EW_Int_Type);
-                     Den := New_VC_Call
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Name     => To_Program_Space
-                          (M_Builtin_From_Image.Int_Value),
-                        Progs    => (1 => Den),
-                        Reason   => VC_Precondition,
-                        Typ      => EW_Int_Type);
-                  else
-                     Num := New_Call
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Name     => M_Builtin_From_Image.Int_Value,
-                        Args     => (1 => Num),
-                        Typ      => EW_Int_Type);
-                     Den := New_Call
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Name     => M_Builtin_From_Image.Int_Value,
-                        Args     => (1 => Den),
-                        Typ      => EW_Int_Type);
-                  end if;
+                  Num := New_Operator_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => M_Builtin_From_Image.Int_Value,
+                     Args     => (1 => Num),
+                     Reason   => VC_Precondition,
+                     Check    => Domain = EW_Prog,
+                     Typ      => EW_Int_Type);
+                  Den := New_Operator_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => M_Builtin_From_Image.Int_Value,
+                     Args     => (1 => Den),
+                     Reason   => VC_Precondition,
+                     Check    => Domain = EW_Prog,
+                     Typ      => EW_Int_Type);
 
                   --  Insert a conversion to real on both operands
 
@@ -463,25 +430,15 @@ package body Why.Gen.Hardcoded is
 
                   --  Reconstruct the real value by doing the division
 
-                  if Domain = EW_Prog then
-                     pragma Assert (Present (Ada_Node));
-                     T :=
-                       New_VC_Call
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Name     => Real_Infix_Div,
-                          Progs    => (1 => Num, 2 => Den),
-                          Reason   => VC_Division_Check,
-                          Typ      => EW_Real_Type);
-                  else
-                     T :=
-                       New_Call
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Name     => Real_Infix_Div,
-                          Args     => (1 => Num, 2 => Den),
-                          Typ      => EW_Real_Type);
-                  end if;
+                  T := New_Operator_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => Real_Infix_Div,
+                     Fix_Name => True,
+                     Args     => (1 => Num, 2 => Den),
+                     Reason   => VC_Division_Check,
+                     Check    => Domain = EW_Prog,
+                     Typ      => EW_Real_Type);
 
                   T := New_Label
                     (Ada_Node => Ada_Node,
@@ -590,29 +547,23 @@ package body Why.Gen.Hardcoded is
 
                   --  Divide needs a division check
 
-                  if Domain = EW_Prog
-                    and then Chars (Subp) = Name_Op_Divide
-                  then
-                     pragma Assert (Present (Ada_Node));
+                  declare
+                     Check : constant Boolean :=
+                       Domain = EW_Prog
+                       and then Chars (Subp) = Name_Op_Divide;
+                  begin
+                     pragma Assert (if Check then Present (Ada_Node));
 
-                     T :=
-                       New_VC_Call
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Name     => Name,
-                          Progs    => (1 => Left_Rep, 2 => Right_Rep),
-                          Reason   => VC_Division_Check,
-                          Typ      => Base);
-                  else
-                     T :=
-                       New_Call
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Name     => Name,
-                          Args     => (1 => Left_Rep,
-                                       2 => Right_Rep),
-                          Typ      => Base);
-                  end if;
+                     T := New_Operator_Call
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Name     => Name,
+                        Fix_Name => True,
+                        Args     => (1 => Left_Rep, 2 => Right_Rep),
+                        Reason   => VC_Division_Check,
+                        Check    => Check,
+                        Typ      => Base);
+                  end;
                end;
             end if;
 
@@ -655,23 +606,14 @@ package body Why.Gen.Hardcoded is
                     Name     => Of_String_Id,
                     Args     => (1 => Args (1)));
 
-               if Domain = EW_Prog then
-                  T := New_VC_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => To_Program_Space
-                       (M_Builtin_From_Image.Real_Value),
-                     Progs    => (1 => T),
-                     Reason   => VC_Precondition,
-                     Typ      => EW_Real_Type);
-               else
-                  T := New_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => M_Builtin_From_Image.Real_Value,
-                     Args     => (1 => T),
-                     Typ      => EW_Real_Type);
-               end if;
+               T := New_Operator_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => M_Builtin_From_Image.Real_Value,
+                  Args     => (1 => T),
+                  Reason   => VC_Precondition,
+                  Check    => Domain = EW_Prog,
+                  Typ      => EW_Real_Type);
 
                T := New_Label
                  (Ada_Node => Ada_Node,
@@ -920,23 +862,19 @@ package body Why.Gen.Hardcoded is
                      2 => New_Real_Constant
                        (Ada_Node => String_Literal,
                         Value    => UR_From_Uint (Den)));
+                  Name      : constant W_Identifier_Id :=
+                    (if Subdomain = EW_Prog then Real_Infix_Div
+                     else M_Real.Div);
                begin
-                  if Subdomain = EW_Prog then
-                     Result := New_VC_Call
-                       (Ada_Node => Call,
-                        Domain   => Subdomain,
-                        Name     => Real_Infix_Div,
-                        Progs    => W_Args,
-                        Reason   => VC_Division_Check,
-                        Typ      => EW_Real_Type);
-                  else
-                     Result := New_Call
-                       (Ada_Node => Call,
-                        Domain   => Subdomain,
-                        Name     => M_Real.Div,
-                        Args     => W_Args,
-                        Typ      => EW_Real_Type);
-                  end if;
+                  Result := New_Operator_Call
+                    (Ada_Node => Call,
+                     Domain   => Subdomain,
+                     Name     => Name,
+                     Fix_Name => True,
+                     Args     => W_Args,
+                     Reason   => VC_Division_Check,
+                     Check    => Subdomain = EW_Prog,
+                     Typ      => EW_Real_Type);
                end;
 
                return New_Label
@@ -1001,23 +939,19 @@ package body Why.Gen.Hardcoded is
                      2 => New_Real_Constant
                        (Ada_Node => Den_Literal,
                         Value    => UR_From_Uint (Den_Val)));
+                  Name      : constant W_Identifier_Id :=
+                    (if Subdomain = EW_Prog then Real_Infix_Div
+                     else M_Real.Div);
                begin
-                  if Subdomain = EW_Prog then
-                     Result := New_VC_Call
-                       (Ada_Node => Call,
-                        Domain   => Subdomain,
-                        Name     => Real_Infix_Div,
-                        Progs    => W_Args,
-                        Reason   => VC_Division_Check,
-                        Typ      => EW_Real_Type);
-                  else
-                     Result := New_Call
-                       (Ada_Node => Call,
-                        Domain   => Subdomain,
-                        Name     => M_Real.Div,
-                        Args     => W_Args,
-                        Typ      => EW_Real_Type);
-                  end if;
+                  Result := New_Operator_Call
+                    (Ada_Node => Call,
+                     Domain   => Subdomain,
+                     Name     => Name,
+                     Fix_Name => True,
+                     Args     => W_Args,
+                     Reason   => VC_Division_Check,
+                     Check    => Subdomain = EW_Prog,
+                     Typ      => EW_Real_Type);
                end;
 
                return New_Label

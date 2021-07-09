@@ -25,7 +25,8 @@ Generic Instantiation
 
 
 [For example, a generic which takes a formal limited private type
-would be in |SPARK|. An instantiation which passes in a general access type
+would be in |SPARK|. An instantiation which passes in a tagged type with
+subcomponents of an access type
 as the actual type would not be in |SPARK|; another instantiation
 of the same generic which passes in, for example, Standard.Integer,
 might be in |SPARK|.]

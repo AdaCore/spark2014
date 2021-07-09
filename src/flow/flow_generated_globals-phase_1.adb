@@ -76,8 +76,6 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Protected objects or records/array objects that have a protected type
    --  as a field/component.
 
-   Part_Of_States : Node_Maps.Map;
-
    ----------------------------------------------------------------------
    --  Protected types information
    ----------------------------------------------------------------------
@@ -179,6 +177,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
       Globals          : Flow_Nodes;
 
+      Local_Packages   : Node_Sets.Set;
       Local_Variables  : Node_Sets.Set;
 
       Entries_Called   : Entry_Call_Sets.Set;
@@ -294,22 +293,6 @@ package body Flow_Generated_Globals.Phase_1 is
                   pragma Assert (not Local_Vars);
                   Remote_States.Include (E);
                end if;
-
-               if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
-                  declare
-                     State : constant Entity_Id := Encapsulating_State (E);
-                     --  This is either an abstract state, a single concurrent
-                     --  object or an Empty entity.
-
-                  begin
-                     if Present (State)
-                       and then Ekind (State) = E_Abstract_State
-                       and then Contains (Part_Of_Constituents (State), E)
-                     then
-                        Part_Of_States.Include (Key => E, New_Item => State);
-                     end if;
-                  end;
-               end if;
             end if;
          end loop;
       end Process_Volatiles_And_States;
@@ -397,6 +380,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Serialize (Globals.Calls.Conditional_Calls, "calls_conditional");
 
       if Ekind (E) = E_Package then
+         Serialize (Local_Packages, "local_packages");
          Serialize (Local_Variables, "local_var");
       end if;
 
@@ -739,19 +723,6 @@ package body Flow_Generated_Globals.Phase_1 is
          Register_PO_Info (PO, Etype (PO), Unique_Name (PO));
       end loop;
 
-      for C in Part_Of_States.Iterate loop
-         declare
-            Part_Of : Entity_Id renames Node_Maps.Key (C);
-            State   : Entity_Id renames Part_Of_States (C);
-
-         begin
-            New_GG_Line (EK_Part_Of);
-            Serialize (State);
-            Serialize (Part_Of);
-            Terminate_GG_Line;
-         end;
-      end loop;
-
       --  Write the finalization string
       New_GG_Line (EK_End_Marker);
       Terminate_GG_Line;
@@ -813,6 +784,25 @@ package body Flow_Generated_Globals.Phase_1 is
       end if;
 
       Terminate_GG_Line;
+
+      if Ekind (E) = E_Package
+        and then Has_Non_Null_Abstract_State (E)
+      then
+         for State of Iter (Abstract_States (E)) loop
+            declare
+               Part_Ofs : constant Elist_Id := Part_Of_Constituents (State);
+            begin
+               if Present (Part_Ofs)
+                 and then not Is_Empty_Elmt_List (Part_Of_Constituents (State))
+               then
+                  New_GG_Line (EK_Part_Of);
+                  Serialize (State);
+                  Serialize (Part_Of_Constituents (State));
+                  Terminate_GG_Line;
+               end if;
+            end;
+         end loop;
+      end if;
    end GG_Register_Flow_Scope;
 
 end Flow_Generated_Globals.Phase_1;

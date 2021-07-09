@@ -159,7 +159,7 @@ package body Why.Gen.Binders is
    function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id is
    begin
       case B.Kind is
-         when Regular | UCArray | Func | Pointer
+         when Regular | UCArray | Func
             =>
             if Present (Get_Ada_Node_From_Item (B)) then
                return Etype (Get_Ada_Node_From_Item (B));
@@ -175,6 +175,9 @@ package body Why.Gen.Binders is
 
          when DRecord =>
             return B.Typ;
+
+         when Pointer =>
+            return B.P_Typ;
       end case;
    end Get_Ada_Type_From_Item;
 
@@ -389,9 +392,7 @@ package body Why.Gen.Binders is
             --  Currently, we do not create wrapper modules for pointers
 
             return
-              EW_Abstract
-                (Etype (B.Value.Ada_Node),
-                 Relaxed_Init => False);
+              EW_Abstract (B.P_Typ, Relaxed_Init => False);
 
          when Func =>
             return Get_Typ (B.For_Logic.B_Name);
@@ -871,6 +872,7 @@ package body Why.Gen.Binders is
                Local   => Local,
                Init    => New_Init_Id (Name),
                Mutable => not Is_Constant_Object (E),
+               P_Typ   => Ty,
                others  => <>);
 
          begin
@@ -1000,6 +1002,7 @@ package body Why.Gen.Binders is
 
    function New_Defining_Bool_Axiom
      (Ada_Node : Node_Id := Empty;
+      Fun_Name : String := "";
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
       Pre      : W_Pred_Id := Why_Empty;
@@ -1017,7 +1020,8 @@ package body Why.Gen.Binders is
            Args => (+Left, +Def),
            Typ  => EW_Bool_Type);
       Axiom_Name : constant String :=
-        (if Ada_Node /= Empty then Short_Name (Ada_Node) & "__"
+        (if Fun_Name /= "" then Fun_Name & "__"
+         elsif Ada_Node /= Empty then Short_Name (Ada_Node) & "__"
          else "") & Def_Axiom;
    begin
       return New_Guarded_Axiom

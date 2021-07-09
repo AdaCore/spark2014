@@ -165,14 +165,15 @@ package body Gnat2Why.Expr.Loops is
          declare
             Expr : constant Node_Id := Expression (Variant);
          begin
-            Prog :=
-              Sequence (Prog,
-                        New_Ignore (Prog =>
-                          +Transform_Expr (Expr          => Expr,
-                                           Expected_Type =>
-                                             Base_Why_Type_No_Bool (Expr),
-                                           Domain        => EW_Prog,
-                                           Params        => Body_Params)));
+            Append
+              (Prog,
+               New_Ignore
+                 (Prog =>
+                      +Transform_Expr (Expr          => Expr,
+                                       Expected_Type =>
+                                         Base_Why_Type_No_Bool (Expr),
+                                       Domain        => EW_Prog,
+                                       Params        => Body_Params)));
             Next (Variant);
          end;
       end loop;
@@ -340,14 +341,16 @@ package body Gnat2Why.Expr.Loops is
            First_Parent_With_Property (Is_Loop_Or_Block);
 
          Scop : Node_Id := Stmt;
-         Res  : W_Prog_Id := +Void;
+         Res  : W_Statement_Sequence_Id := Void_Sequence;
+
       begin
          loop
             Scop := Enclosing_Block_Stmt (Scop);
             exit when Nkind (Scop) = N_Loop_Statement;
-            Res := Sequence (Res, +Havoc_Borrowed_From_Block (Scop));
+            Append (Res, Havoc_Borrowed_From_Block (Scop));
          end loop;
-         return Res;
+
+         return +Res;
       end Havoc_Borrowed_On_Exit;
 
       Exc_Name   : constant W_Name_Id :=
@@ -356,7 +359,7 @@ package body Gnat2Why.Expr.Loops is
         (Ada_Node => Stmt,
          Name => Exc_Name);
    begin
-      Raise_Stmt := Sequence (Havoc_Borrowed_On_Exit, Raise_Stmt);
+      Prepend (Havoc_Borrowed_On_Exit, Raise_Stmt);
 
       if No (Condition (Stmt)) then
          return Raise_Stmt;
@@ -393,9 +396,9 @@ package body Gnat2Why.Expr.Loops is
 
          if Nkind (Instr) = N_Block_Statement then
             if Present (Declarations (Instr)) then
-               Sequence_Append (Body_Prog,
-                 +Havoc_Borrowed_From_Block (Instr));
-               Sequence_Append (Body_Prog,
+               Append (Body_Prog,
+                 Havoc_Borrowed_From_Block (Instr));
+               Append (Body_Prog,
                  Check_No_Memory_Leaks_At_End_Of_Scope (Declarations (Instr)));
             end if;
          else
@@ -782,7 +785,8 @@ package body Gnat2Why.Expr.Loops is
                function Constraint_For_Iterable
                  (Domain : EW_Domain) return W_Expr_Id
                with
-                 Pre => not Over_Range;
+                 Pre => Domain in EW_Prog | EW_Pred
+                   and then not Over_Range;
                --  @param Domain in which the constraint should be created
                --  @result Has_Element (W_Container, Iter_Deref)
 
@@ -798,7 +802,9 @@ package body Gnat2Why.Expr.Loops is
 
                function Loop_Index_Value (Domain : EW_Domain) return W_Expr_Id
                with
-                 Pre => not Over_Range and then Of_Present (LParam_Spec);
+                 Pre => Domain in EW_Prog | EW_Term
+                   and then not Over_Range
+                   and then Of_Present (LParam_Spec);
                --  @result Element (W_Container, Iter_Deref)
 
                function Update_Index return W_Prog_Id
@@ -812,7 +818,8 @@ package body Gnat2Why.Expr.Loops is
                -----------------------------
 
                function Constraint_For_Iterable
-                 (Domain : EW_Domain) return W_Expr_Id is
+                 (Domain : EW_Domain) return W_Expr_Id
+               is
                   H_Elmt   : constant Entity_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Has_Element);
@@ -822,33 +829,24 @@ package body Gnat2Why.Expr.Loops is
                                Expr   => H_Elmt,
                                Ent    => H_Elmt,
                                Domain => Domain);
-                  Cur_Expr  : constant W_Expr_Id :=
+                  Cur_Expr : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain => EW_Term,
                        Expr   => +Iter_Deref,
                        To     => Typ_For_Iter);
+                  Check    : constant Boolean := Domain = EW_Prog;
                begin
-                  if Domain in EW_Prog | EW_Pterm then
-                     pragma Assert (W_Container /= Why_Empty);
-                     return +New_VC_Call
-                       (Ada_Node => LParam_Spec,
-                        Name     => W_H_Elmt,
-                        Progs    => (1 => W_Container,
-                                     2 => Cur_Expr),
-                        Reason   => VC_Precondition,
-                        Domain   => Domain,
-                        Typ      => EW_Bool_Type);
-                  else
-                     pragma Assert (W_Container_T /= Why_Empty);
-                     return New_Function_Call
-                       (Ada_Node => LParam_Spec,
-                        Domain   => Domain,
-                        Subp     => H_Elmt,
-                        Name     => W_H_Elmt,
-                        Args     => (1 => W_Container_T,
-                                     2 => Cur_Expr),
-                        Typ      => EW_Bool_Type);
-                  end if;
+                  pragma Assert (W_Container_T /= Why_Empty);
+                  return +New_Function_Call
+                    (Ada_Node => LParam_Spec,
+                     Subp     => H_Elmt,
+                     Name     => W_H_Elmt,
+                     Args     => (1 => (if Check then W_Container
+                                        else W_Container_T),
+                                  2 => Cur_Expr),
+                     Domain   => Domain,
+                     Check    => Check,
+                     Typ      => EW_Bool_Type);
                end Constraint_For_Iterable;
 
                ---------------------------------
@@ -897,10 +895,8 @@ package body Gnat2Why.Expr.Loops is
                                          Progs    => (1 => W_Container,
                                                       2 => Cur_Expr),
                                          Reason   => VC_Precondition,
-                                         Domain   => EW_Prog,
                                          Typ      => EW_Bool_Type)),
                                    Reason   => VC_Precondition,
-                                   Domain   => EW_Prog,
                                    Typ      => EW_Bool_Type)));
                end Exit_Condition_For_Iterable;
 
@@ -926,7 +922,6 @@ package body Gnat2Why.Expr.Loops is
                                Domain => EW_Prog)),
                      Progs    => (1 => W_Container),
                      Reason   => VC_Precondition,
-                     Domain   => EW_Prog,
                      Typ      => Typ_For_Iter);
                begin
                   return +Call_First;
@@ -952,30 +947,19 @@ package body Gnat2Why.Expr.Loops is
                        Expr   => Elmt,
                        Ent    => Elmt,
                        Domain => Domain);
+                  Check    : constant Boolean := Domain = EW_Prog;
                begin
-                  if Domain in EW_Prog | EW_Pterm then
-                     pragma Assert (W_Container /= Why_Empty);
-                     return New_VC_Call
-                       (Ada_Node => LParam_Spec,
-                        Name     => W_Elmt,
-                        Progs    =>
-                          (1 => W_Container,
-                           2 => Cur_Expr),
-                        Reason   => VC_Precondition,
-                        Domain   => EW_Prog,
-                        Typ      => Type_Of_Node (Etype (Elmt)));
-                  else
-                     pragma Assert (W_Container_T /= Why_Empty);
-                     return New_Function_Call
-                       (Ada_Node => LParam_Spec,
-                        Domain   => Domain,
-                        Subp     => Elmt,
-                        Name     => W_Elmt,
-                        Args     =>
-                          (1 => W_Container_T,
-                           2 => Cur_Expr),
-                        Typ      => Type_Of_Node (Etype (Elmt)));
-                  end if;
+                  pragma Assert (W_Container /= Why_Empty);
+                  return New_Function_Call
+                    (Ada_Node => LParam_Spec,
+                     Subp     => Elmt,
+                     Name     => W_Elmt,
+                     Args     =>
+                       (1 => (if Check then W_Container else W_Container_T),
+                        2 => Cur_Expr),
+                     Domain   => Domain,
+                     Check    => Check,
+                     Typ      => Type_Of_Node (Etype (Elmt)));
                end Loop_Index_Value;
 
                ------------------
@@ -1249,7 +1233,6 @@ package body Gnat2Why.Expr.Loops is
                            Progs    => (1 => W_Container,
                                         2 => Cur_Expr),
                            Reason   => VC_Precondition,
-                           Domain   => EW_Prog,
                            Typ      => Typ_For_Iter);
                         Upd_Next  : constant W_Prog_Id :=
                           New_Assignment
@@ -1569,8 +1552,7 @@ package body Gnat2Why.Expr.Loops is
                            Domain => EW_Prog);
                      end if;
 
-                     Initial_Prog := Sequence
-                       (Skip_Empty_Iterations, Initial_Prog);
+                     Prepend (Skip_Empty_Iterations, Initial_Prog);
                   end if;
 
                   Entire_Loop :=
@@ -1593,10 +1575,7 @@ package body Gnat2Why.Expr.Loops is
                                  (if Loop_Invariants.Is_Empty then Empty
                                   else Loop_Invariants.Last_Element));
 
-                  Entire_Loop :=
-                    Sequence
-                      (Construct_Init_Prog,
-                       Entire_Loop);
+                  Prepend (Construct_Init_Prog, Entire_Loop);
                end if;
 
                --  Create new variable for iterator if needed
@@ -1657,14 +1636,13 @@ package body Gnat2Why.Expr.Loops is
                --  subtype_indication is compatible with the given subtype.
 
                if Nkind (Over_Node) = N_Subtype_Indication then
-                  Entire_Loop :=
-                    Sequence
-                      (Check_Subtype_Indication
-                         (Params   => Body_Params,
-                          N        => Over_Node,
-                          Sub_Type =>
-                            Etype (Defining_Identifier (LParam_Spec))),
-                       Entire_Loop);
+                  Prepend
+                    (Check_Subtype_Indication
+                       (Params   => Body_Params,
+                        N        => Over_Node,
+                        Sub_Type =>
+                          Etype (Defining_Identifier (LParam_Spec))),
+                     Entire_Loop);
                end if;
 
                return Entire_Loop;

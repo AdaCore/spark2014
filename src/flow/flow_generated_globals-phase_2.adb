@@ -92,6 +92,10 @@ package body Flow_Generated_Globals.Phase_2 is
    pragma Unreferenced (Internal); --  ???
    --  Regexp for internal entities; for these we do not generate ALI info
 
+   Wrapper_Package : constant Pattern_Matcher :=
+     Compile ("GP[1-9][0-9]*$") with Ghost;
+   --  Regexp for wrapper packages
+
    ----------------------------------------------------
    -- Constant Entity_Name for function Current_Task --
    ----------------------------------------------------
@@ -398,6 +402,12 @@ package body Flow_Generated_Globals.Phase_2 is
 
    --  ??? This routine historically belongs to Flow_Refinement, but we can't
    --  have it there and keep name visibility a private child of Phase_2.
+
+   procedure Up_Project (Vars      :     Name_Sets.Set;
+                         Scope     :     Name_Scope;
+                         Projected : out Name_Sets.Set;
+                         Partial   : out Name_Sets.Set);
+   --  Same as above but lifted to sets of objects
 
    procedure Up_Project (Vars           :     Global_Names;
                          Projected_Vars : out Global_Names;
@@ -1211,6 +1221,7 @@ package body Flow_Generated_Globals.Phase_2 is
                           "calls_conditional");
 
                if V.Kind = E_Package then
+                  Serialize (V.Local_Packages, "local_packages");
                   Serialize (V.Local_Variables, "local_var");
                end if;
 
@@ -1298,8 +1309,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Part_Of =>
                   declare
-                     State   : Entity_Name;
-                     Part_Of : Entity_Name;
+                     State    : Entity_Name;
+                     Part_Ofs : Name_Sets.Set;
 
                      State_Pos : Name_Graphs.Cursor;
                      Part_Pos  : Name_Maps.Cursor;
@@ -1307,23 +1318,26 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   begin
                      Serialize (State);
-                     Serialize (Part_Of);
+                     Serialize (Part_Ofs);
+                     pragma Assert (not Part_Ofs.Is_Empty);
 
                      State_Part_Map.Insert (Key      => State,
                                             Position => State_Pos,
                                             Inserted => Inserted);
 
-                     State_Part_Map (State_Pos).Include (Part_Of);
+                     State_Part_Map (State_Pos).Union (Part_Ofs);
 
-                     Part_State_Map.Insert (Key      => Part_Of,
-                                            New_Item => State,
-                                            Position => Part_Pos,
-                                            Inserted => Inserted);
+                     for Part_Of of Part_Ofs loop
+                        Part_State_Map.Insert (Key      => Part_Of,
+                                               New_Item => State,
+                                               Position => Part_Pos,
+                                               Inserted => Inserted);
 
-                     pragma Assert
-                       (Inserted
-                          or else
-                        Part_State_Map (Part_Pos) = State);
+                        pragma Assert
+                          (Inserted
+                             or else
+                           Part_State_Map (Part_Pos) = State);
+                     end loop;
 
                      State_Abstractions.Include (State);
                   end;
@@ -1708,6 +1722,13 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Returns True iff the initialization expression of E is resolved as
          --  dependend on a variable input.
 
+         function States_And_Objects (E : Entity_Name) return Name_Sets.Set
+         with Pre => Phase_1_Info (E).Kind = E_Package;
+         --  Returns states and objects allowed to appear on the LHS of an
+         --  Initializes contract of a package E. There is a corresponding
+         --  routine that works on Entity_Id in phase 1, but here we take child
+         --  packages into account as well.
+
          procedure Strip_Constants
            (From           : in out Flow_Names;
             Constant_Graph :        Constant_Graphs.Graph);
@@ -1983,25 +2004,51 @@ package body Flow_Generated_Globals.Phase_2 is
                --  ??? by keeping these separate we don't have to care about
                --  maintaing the Global_Nodes invariant.
 
-               procedure Children_Initializes (Parent : Entity_Name);
-               --  Recursive routine to pull objects initialized in child
-               --  packages into own refined outputs, so that Part_Of
-               --  constituents declared in child units contribute to the
-               --  initialization of Abstract_States declared in the parent.
-               --  ??? generic child units should be filtered earlier
+               --  Local variables
 
-               --------------------------
-               -- Children_Initializes --
-               --------------------------
+               Result : Flow_Names;
 
-               procedure Children_Initializes (Parent : Entity_Name) is
-               begin
-                  for Child of Child_Packages (Parent) loop
-                     Children_Initializes (Child);
-                     --  Pick the Initializes contract computed in the current
-                     --  iteration of Do_Global.
-                     --  ??? if Patches was a map, we could just pick what we
-                     --  need and not have to scan it.
+            begin
+               --  Pick reads from nested packages whose Initializes contract
+               --  is being generated, because reads in nested packages are
+               --  just like reads in subprogram calls. Writes from nested
+               --  packages are handled separately.
+
+               for Local of Phase_1_Info (Caller).Local_Packages loop
+                  --  Use contract from the current iteration of Do_Global;
+                  --  this is particularly important when picking writes, but
+                  --  for consistency we do this also when picking reads.
+
+                  --  ??? if Patches was a map, we could just pick what we need
+                  --  and not have to scan it.
+
+                  for Patch of Patches loop
+                     if Patch.Entity = Local then
+                        Result_Proof_Ins.Union
+                          (Patch.Contract.Proper.Proof_Ins);
+                        Result_Inputs.Union
+                          (Patch.Contract.Proper.Inputs);
+                        exit;
+                     end if;
+                  end loop;
+               end loop;
+
+               --  Similar for child packages
+
+               if Caller /= Standard_Standard
+                 and then Phase_1_Info (Caller).Kind = E_Package
+               then
+                  for Child of Child_Packages (Caller) loop
+                     --  Wrapper packages and generics have no generated
+                     --  contracts. ??? they should be filtered earlier
+                     pragma Assert
+                       (Contracts.Contains (Child)
+                          or else
+                        Match
+                          (Wrapper_Package,
+                           Strip_Child_Prefixes (To_String (Child)))
+                          or else
+                        True);  --  ??? generic package
 
                      for Patch of Patches loop
                         if Patch.Entity = Child then
@@ -2009,25 +2056,14 @@ package body Flow_Generated_Globals.Phase_2 is
                              (Patch.Contract.Proper.Proof_Ins);
                            Result_Inputs.Union
                              (Patch.Contract.Proper.Inputs);
-                           Result_Outputs.Union (Patch.Contract.Initializes);
                            exit;
                         end if;
                      end loop;
                   end loop;
-               end Children_Initializes;
-
-               Result : Flow_Names;
-
-            begin
-               Result.Calls := Categorize_Calls (Caller, Analyzed, Contracts);
-
-               if Caller /= Standard_Standard then
-                  Children_Initializes (Caller);
-                  Result_Outputs.Union
-                    (Contracts (Caller).Refined_Initializes);
                end if;
 
-               --  Now collect their globals
+               --  Now determine genuine calls and collect their globals
+               Result.Calls := Categorize_Calls (Caller, Analyzed, Contracts);
 
                for Callee of Result.Calls.Definite_Calls loop
                   declare
@@ -2104,6 +2140,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
             --  Local variables
 
+            Folded_Scope : constant Name_Scope :=
+              (Ent => Folded, Part => Visible_Part);
+
             Update : Flow_Names;
 
          --  Start of processing for Fold
@@ -2133,16 +2172,81 @@ package body Flow_Generated_Globals.Phase_2 is
             pragma Assert (Phase_1_Info.Contains (Folded));
 
             --  Handle package Initializes aspect
-            if Phase_1_Info (Folded).Kind = E_Package then
+            if Folded /= Standard_Standard
+              and then Phase_1_Info (Folded).Kind = E_Package
+            then
                declare
                   P : Partial_Contract renames Phase_1_Info (Folded);
 
-                  True_Outputs : constant Name_Sets.Set :=
-                    (Update.Proper.Outputs - Update.Proper.Inputs) or
-                    Original.Initializes;
+                  Projected, Partial : Name_Sets.Set;
 
                begin
-                  Update.Initializes := True_Outputs and P.Local_Variables;
+                  --  What has been initialized stays initialized
+
+                  Update.Refined_Initializes := Original.Refined_Initializes;
+
+                  --  Then it is extended by pure outputs of subprograms called
+                  --  when elaborating the current package.
+
+                  Update.Refined_Initializes.Union
+                    (Update.Refined.Outputs - Update.Refined.Inputs);
+
+                  --  Pull objects initialized in child packages into own
+                  --  refined outputs, so that Part_Of constituents declared
+                  --  in child units contribute to the initialization of
+                  --  Abstract_States declared in the parent.
+                  --  ??? generic child units should be filtered earlier
+
+                  for Child of Child_Packages (Folded) loop
+                     --  Pick the Initializes contract computed in the current
+                     --  iteration of Do_Global.
+                     --  ??? if Patches was a map, we could just pick what we
+                     --  need and not have to scan it.
+
+                     for Patch of Patches loop
+                        if Patch.Entity = Child then
+                           Update.Refined_Initializes.Union
+                             (Patch.Contract.Initializes);
+                           exit;
+                        end if;
+                     end loop;
+                  end loop;
+
+                  --  Similar for nested packages
+
+                  for Local of Phase_1_Info (Folded).Local_Packages loop
+                     --  Pick the Initializes contract computed in the current
+                     --  iteration of Do_Global.
+
+                     for Patch of Patches loop
+                        if Patch.Entity = Local then
+                           Update.Refined_Initializes.Union
+                             (Patch.Contract.Initializes);
+                           exit;
+                        end if;
+                     end loop;
+                  end loop;
+
+                  Up_Project (Update.Refined_Initializes, Folded_Scope,
+                              Projected, Partial);
+
+                  for State of Partial loop
+                     if Is_Fully_Contained (State, Update.Refined_Initializes,
+                                            Folded_Scope)
+                     then
+                        Projected.Include (State);
+                     end if;
+                  end loop;
+
+                  --  ??? the intersection below should be only necessary for
+                  --  pure outputs added the Refined_Initializes, but actually
+                  --  in the ALI file we only record objects allowed to appear
+                  --  in the up-projected Initializes. To be fixed.
+
+                  Projected.Intersection (States_And_Objects (Folded));
+
+                  Name_Sets.Move (Target => Update.Initializes,
+                                  Source => Projected);
 
                   Initialized_Vars_And_States.Union (Update.Initializes);
 
@@ -2155,11 +2259,11 @@ package body Flow_Generated_Globals.Phase_2 is
                   Update.Proper.Inputs.Difference (P.Local_Variables);
                   Update.Proper.Proof_Ins.Difference (P.Local_Variables);
 
-                  --  We used Outputs sets only to compute the Initializes set.
-                  --  Now we clear them to make sure that the remaining GG
-                  --  computation do not depend on them. The outside world
-                  --  should only use the proper Initializes, Inputs and
-                  --  Proof_Ins, which correspond to an explicit contract like:
+                  --  We use Outputs only to compute the Initializes. Now we
+                  --  clear them to make sure that the remaining GG computation
+                  --  does not depend on them. The outside world should only
+                  --  use the proper Initializes, Inputs and Proof_Ins, which
+                  --  correspond to an explicit contract like:
                   --
                   --    with Initializes => (... => ..., null => ...);
                   --
@@ -2237,6 +2341,7 @@ package body Flow_Generated_Globals.Phase_2 is
             -------------
 
             function To_List (E : Entity_Name) return Name_Lists.List is
+               pragma Annotate (CodePeer, Skip_Analysis);
                Singleton : Name_Lists.List;
             begin
                Singleton.Append (E);
@@ -2442,6 +2547,33 @@ package body Flow_Generated_Globals.Phase_2 is
 
             Constant_Graph.Close;
          end Resolve_Constants;
+
+         ------------------------
+         -- States_And_Objects --
+         ------------------------
+
+         function States_And_Objects (E : Entity_Name) return Name_Sets.Set is
+            C : constant Phase_1_Info_Maps.Cursor := Phase_1_Info.Find (E);
+
+            Local_Variables : Name_Sets.Set;
+            --  Data owned by the package itself (with its nested packages)
+            --  and by its child packages.
+
+         begin
+            for Child of Child_Packages (E) loop
+               if Phase_1_Info.Contains (Child)
+                 and then Phase_1_Info (Child).Kind = E_Package
+               then
+                  Local_Variables.Union (States_And_Objects (Child));
+               end if;
+            end loop;
+
+            if Phase_1_Info_Maps.Has_Element (C) then
+               Local_Variables.Union (Phase_1_Info (C).Local_Variables);
+            end if;
+
+            return Local_Variables;
+         end States_And_Objects;
 
          --------------------------------
          -- Resolved_To_Variable_Input --
@@ -3753,6 +3885,43 @@ package body Flow_Generated_Globals.Phase_2 is
       else
          return Var;
       end if;
+   end Up_Project;
+
+   procedure Up_Project (Vars      :     Name_Sets.Set;
+                         Scope     :     Name_Scope;
+                         Projected : out Name_Sets.Set;
+                         Partial   : out Name_Sets.Set)
+   is
+   begin
+      Projected.Clear;
+      Partial.Clear;
+
+      for Var of Vars loop
+         if GG_Is_Constituent (Var) then
+
+            --  We project depending on whether the constituent is visible (and
+            --  not its enclosing state refinement), because when projecting
+            --  to a private part of a package spec where that constituent
+            --  is declared (as a Part_Of an abstract state) we want the
+            --  constituent, which is the most precise result we can get.
+
+            declare
+               State : constant Entity_Name := GG_Encapsulating_State (Var);
+
+            begin
+               if State_Refinement_Is_Visible (State, Scope)
+                 or else (GG_Is_Part_Of_Constituent (Var)
+                          and then Part_Of_Is_Visible (State, Scope))
+               then
+                  Projected.Include (Var);
+               else
+                  Partial.Include (State);
+               end if;
+            end;
+         else
+            Projected.Include (Var);
+         end if;
+      end loop;
    end Up_Project;
 
    procedure Up_Project (Vars           :     Global_Names;

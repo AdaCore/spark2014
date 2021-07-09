@@ -40,6 +40,69 @@ package Why.Gen.Progs is
    True_Prog  : constant W_Prog_Id := New_Literal (Value => EW_True);
    False_Prog : constant W_Prog_Id := New_Literal (Value => EW_False);
 
+   ----------------------------------------------------------------------------
+   --  Creating sequences of statements in Why3 can be done in multiple ways,
+   --  depending on the types of nodes involved:
+   --
+   --  * functions Sequence return a new sequence node based on their
+   --    arguments, optimizing out the Void statements
+   --  * procedures Append update their first argument by creating a new
+   --    sequence node chaining all arguments (obtained by calling Sequence)
+   --  * procedures Prepend update their last argument by creating a new
+   --    sequence node chaining all arguments (obtained by calling Sequence)
+   --
+   --  Procedures Append/Prepend that operate on types W_Prog_Id and W_Expr_Id
+   --  (which should also be program nodes, only with more general type
+   --  W_Expr_Id) do not mutate their input values. A new node is created if
+   --  needed, and the first/last parameter is updated to refer to this node.
+   --
+   --  Procedures Append/Prepend that operate on type W_Statement_Sequence_Id
+   --  on the contrary directly mutate the underlying Why3 node. This is an
+   --  optimization for cases where there is a risk of creating too deep Why3
+   --  programs, which causes scalabilty issues. The mutated parameter is of
+   --  mode IN OUT to clearly signal to callers that the argument is mutated.
+   --  Note that this should only be applied when the node is not already
+   --  shared in the AST, otherwise the changes apply to all subtrees that
+   --  include it.
+   ----------------------------------------------------------------------------
+
+   pragma Annotate (Xcov, Exempt_On, "Ghost code");
+   function Has_Empty_Or_Unit_Type (Prog : W_Prog_Id) return Boolean is
+     (Get_Type (+Prog) = Why_Empty
+      or else Get_Type (+Prog) = EW_Unit_Type)
+   with Ghost;
+   pragma Annotate (Xcov, Exempt_Off);
+
+   procedure Append
+     (Left  : in out W_Prog_Id;
+      Right : W_Prog_Id)
+   with Pre => Has_Empty_Or_Unit_Type (Left);
+
+   procedure Append
+     (Left           : in out W_Prog_Id;
+      Right1, Right2 : W_Prog_Id)
+   with Pre => Has_Empty_Or_Unit_Type (Left)
+     and then Has_Empty_Or_Unit_Type (Right1);
+
+   procedure Append
+     (Left  : in out W_Expr_Id;
+      Right : W_Prog_Id)
+   with Pre => Has_Empty_Or_Unit_Type (+Left);
+
+   procedure Append
+     (Left           : in out W_Expr_Id;
+      Right1, Right2 : W_Prog_Id)
+   with Pre => Has_Empty_Or_Unit_Type (+Left)
+     and then Has_Empty_Or_Unit_Type (Right1);
+
+   procedure Append
+     (Left  : in out W_Statement_Sequence_Id;
+      Right : W_Statement_Sequence_Id);
+
+   procedure Append
+     (Left : in out W_Statement_Sequence_Id;
+      Right : W_Prog_Id);
+
    procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;
       Check_Kind : Scalar_Check_Kind);
@@ -111,19 +174,48 @@ package Why.Gen.Progs is
    --  Build a "any" expression whose type is a simple type, satisfying
    --  proposition Pred.
 
-   function Sequence (Ada_Node    : Node_Id;
-                      Left, Right : W_Prog_Id) return W_Prog_Id;
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Prog_Id)
+   with Pre => Has_Empty_Or_Unit_Type (Left);
+
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Expr_Id)
+   with Pre => Has_Empty_Or_Unit_Type (Left);
+
+   procedure Prepend
+     (Left1, Left2  : W_Prog_Id;
+      Right         : in out W_Prog_Id)
+   with Pre => Has_Empty_Or_Unit_Type (Left1)
+     and then Has_Empty_Or_Unit_Type (Left2);
+
+   procedure Prepend
+     (Left1, Left2  : W_Prog_Id;
+      Right         : in out W_Expr_Id)
+   with Pre => Has_Empty_Or_Unit_Type (Left1)
+     and then Has_Empty_Or_Unit_Type (Left2);
+
+   procedure Prepend
+     (Left  : W_Statement_Sequence_Id;
+      Right : in out W_Statement_Sequence_Id);
+
+   procedure Prepend
+     (Left  : W_Prog_Id;
+      Right : in out W_Statement_Sequence_Id)
+   with Pre => Has_Empty_Or_Unit_Type (Left);
+
+   function Sequence
+     (Ada_Node    : Node_Id;
+      Left, Right : W_Prog_Id)
+      return W_Prog_Id
+   with Pre => Has_Empty_Or_Unit_Type (Left);
+
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
      (Sequence (Empty, Left, Right))
-   with Pre => Get_Type (+Left) = Why_Empty
-     or else Get_Type (+Left) = EW_Unit_Type;
-   --  Build a statement sequence of the two arguments, but try to minimize
-   --  nesting of W_Statement_Sequence constructors.
+   with Pre => Has_Empty_Or_Unit_Type (Left);
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id
    with Pre => Progs'Length /= 0;
-
-   procedure Sequence_Append (Seq : in out W_Statement_Sequence_Id;
-                              Elt : W_Prog_Id);
 
 end Why.Gen.Progs;

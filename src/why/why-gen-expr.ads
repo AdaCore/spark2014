@@ -178,25 +178,39 @@ package Why.Gen.Expr is
 
    function New_Function_Call
      (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
       Subp     : Node_Id;
       Selector : Selection_Kind := Why.Inter.Standard;
       Name     : W_Identifier_Id;
       Args     : W_Expr_Array;
+      Check    : Boolean;
+      Domain   : EW_Domain;
       Typ      : W_Type_Id) return W_Expr_Id
-   with Pre => Domain in EW_Term | EW_Pred;
-   --  Create a function call in the term or pred domain. Uses an epsilon or a
-   --  direct call as appropriate.
+   with Pre => (if Check then Domain = EW_Prog);
+   --  If Check is True, build a call to Name(Args) with VC and location
+   --  labels. Otherwise, build a call in the appropriate domain. In the
+   --  term or pred domain, use an epsilon or a direct call as appropriate.
+
+   function New_Operator_Call
+      (Ada_Node : Node_Id;
+       Name     : W_Identifier_Id;
+       Fix_Name : Boolean := False;
+       Args     : W_Expr_Array;
+       Reason   : VC_Kind;
+       Check    : Boolean;
+       Domain   : EW_Domain;
+       Typ      : W_Type_Id) return W_Expr_Id
+   with Pre => (if Check then Domain = EW_Prog);
+   --  If Check is True, build a call to Name(Progs) using New_VC_Call. When
+   --  Fix_Name is True, adjust Name to the program space. Otherwise, build a
+   --  call in the appropriate domain.
 
    function New_VC_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
-       Domain   : EW_Domain;
-       Typ      : W_Type_Id) return W_Expr_Id;
-   --  If we are not in the term domain, build a call with VC and location
-   --  labels.
+       Typ      : W_Type_Id) return W_Prog_Id;
+   --  Build a call to Name(Progs) with VC and location labels
 
    function New_VC_Expr
       (Ada_Node : Node_Id;

@@ -3,7 +3,6 @@ package Nest_In_Task is
       entry E;
       procedure Proc with Annotate => (GNATprove, Terminating);
    private
-      A : Integer := 1;
       Flag : Boolean := True;
    end PT;
 

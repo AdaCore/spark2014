@@ -1846,7 +1846,7 @@ package body Flow_Utility is
          begin
             for V of Get_Variables_For_Proof
               (Expr_N  => Get_Expr_From_Return_Only_Func (E),
-               Scope_N => Etype (First_Formal (E)))
+               Scope_N => E)
             loop
                if V.Kind = Direct_Mapping
                  and then V.Node = Param
@@ -4800,8 +4800,7 @@ package body Flow_Utility is
             --  Handle clauses like "X'Result => ..." and "X.Y'Result => ..."
 
             when N_Attribute_Reference =>
-               pragma Assert (Get_Attribute_Id (Attribute_Name (Item)) =
-                              Attribute_Result);
+               pragma Assert (Attribute_Name (Item) = Name_Result);
 
                if Entity (Prefix (Item)) = Output then
                   Needle := First_Name_Node (Prefix (Item));
@@ -4833,8 +4832,7 @@ package body Flow_Utility is
 
                         when N_Attribute_Reference =>
                            pragma Assert
-                             (Get_Attribute_Id (Attribute_Name (Single_Item)) =
-                                Attribute_Result);
+                             (Attribute_Name (Single_Item) = Name_Result);
 
                            if Entity (Prefix (Single_Item)) = Output then
                               Needle := First_Name_Node (Prefix (Single_Item));
@@ -5241,7 +5239,7 @@ package body Flow_Utility is
       --  things being equal to the example above) we include Obj.C => Foo.
       --
       --  If the Input is Empty (because we're looking at a box in an
-      --  aggregate), then we don't do anything.
+      --  aggregate), then we add an empty map entry for it.
 
       function Untangle_Delta_Aggregate
         (Pref   : Node_Id;
@@ -5286,35 +5284,37 @@ package body Flow_Utility is
          F   : constant Flow_Id := Add_Component (Map_Root, Component);
          Tmp : Flow_Id_Maps.Map;
       begin
-         case Ekind (Get_Type (Component, Scope)) is
-            when Record_Kind =>
-               if Present (Input) then
-                  Tmp := Recurse_On (Input, F);
+         if Is_Record_Type (Get_Type (Component, Scope)) then
+            if Present (Input) then
+               Tmp := Recurse_On (Input, F);
 
-                  for C in Tmp.Iterate loop
-                     declare
-                        Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                        Inputs : Flow_Id_Sets.Set renames Tmp (C);
-                     begin
-                        M.Insert (Output, Inputs);
-                     end;
-                  end loop;
-               end if;
-
-            when others =>
-               declare
-                  Outputs : constant Flow_Id_Sets.Set :=
-                    Flatten_Variable (F, Scope);
-
-                  Inputs  : constant Flow_Id_Sets.Set :=
-                    Get_Vars_Wrapper (Input);
-
-               begin
-                  for Output of Outputs loop
+               for C in Tmp.Iterate loop
+                  declare
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
+                  begin
                      M.Insert (Output, Inputs);
-                  end loop;
-               end;
-         end case;
+                  end;
+               end loop;
+            else
+               for Output of Flatten_Variable (F, Scope) loop
+                  M.Insert (Output, Flow_Id_Sets.Empty_Set);
+               end loop;
+            end if;
+         else
+            declare
+               Outputs : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (F, Scope);
+
+               Inputs  : constant Flow_Id_Sets.Set :=
+                 Get_Vars_Wrapper (Input);
+
+            begin
+               for Output of Outputs loop
+                  M.Insert (Output, Inputs);
+               end loop;
+            end;
+         end if;
       end Merge;
 
       ------------------------------
@@ -5419,10 +5419,17 @@ package body Flow_Utility is
 
                Input  : Node_Id;
                Target : Node_Id;
-               Done   : Node_Sets.Set;
 
             begin
                Component_Association := First (Component_Associations (N));
+
+               --  If it is a null record aggregate, then the entire object is
+               --  assigned an empty data.
+
+               if No (Component_Association) then
+                  M.Insert (Map_Root, Flow_Id_Sets.Empty_Set);
+               end if;
+
                while Present (Component_Association) loop
                   if Box_Present (Component_Association) then
                      Input := Empty;  -- ??? use default component expression
@@ -5433,29 +5440,12 @@ package body Flow_Utility is
                   Target := First (Choices (Component_Association));
                   Merge (M, Component => Unique_Component (Entity (Target)),
                          Input => Input);
-                  Done.Insert (Unique_Component (Entity (Target)));
-                  --  ??? repeated calls to Unique_Component
 
                   --  Multiple component updates are expanded into individual
                   --  component associations.
                   pragma Assert (No (Next (Target)));
 
                   Next (Component_Association);
-               end loop;
-
-               --  If the aggregate is more constrained than the type would
-               --  suggest, we fill in the "missing" fields with null, so
-               --  that they appear initialized.
-               for Component of Unique_Components (Map_Type) loop
-                  if not Done.Contains (Component) then
-                     for F of
-                       Flatten_Variable
-                         (Add_Component (Map_Root, Component),
-                          Scope)
-                     loop
-                        M.Insert (F, Flow_Id_Sets.Empty_Set);
-                     end loop;
-                  end if;
                end loop;
             end;
 
@@ -5535,6 +5525,11 @@ package body Flow_Utility is
                   LHS_Ext : constant Flow_Id :=
                     (Map_Root with delta Facet => Extension_Part);
 
+                  LHS_Ext_Inputs   : Flow_Id_Sets.Set;
+                  LHS_Ext_Position : Flow_Id_Maps.Cursor;
+                  Unused           : Boolean;
+                  --  LHS extension, its inputs and position in the map
+
                   RHS : Flow_Id_Sets.Set :=
                     (if Nkind (N) = N_Target_Name then
                        Flatten_Variable (Target_Name, Scope)
@@ -5560,12 +5555,6 @@ package body Flow_Utility is
                         Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
 
                      else Flatten_Variable (E, Scope));
-
-                  To_Ext : Flow_Id_Sets.Set;
-                  F      : Flow_Id;
-
-                  LHS_Pos : Flow_Id_Maps.Cursor;
-                  Unused  : Boolean;
 
                begin
                   if (Is_Class_Wide_Type (Map_Type)
@@ -5604,26 +5593,36 @@ package body Flow_Utility is
                   end if;
 
                   for Input of RHS loop
-                     F := Join (Map_Root, Input);
-                     if LHS.Contains (F) then
-                        M.Insert (F, (if Is_Pure_Constant
-                                  then Flow_Id_Sets.Empty_Set
-                                  else Flow_Id_Sets.To_Set (Input)));
-                     else
-                        To_Ext.Insert (Input);
-                     end if;
+                     declare
+                        F : constant Flow_Id :=
+                          Join
+                            (Map_Root, Input,
+                             Offset =>
+                               (if Is_Concurrent_Component_Or_Discr (E)
+                                  or else Is_Part_Of_Concurrent_Object (E)
+                                then 1
+                                else 0));
+                     begin
+                        if LHS.Contains (F) then
+                           M.Insert (F, (if Is_Pure_Constant
+                                         then Flow_Id_Sets.Empty_Set
+                                         else Flow_Id_Sets.To_Set (Input)));
+                        else
+                           LHS_Ext_Inputs.Insert (Input);
+                        end if;
+                     end;
                   end loop;
 
-                  if not To_Ext.Is_Empty
+                  if not LHS_Ext_Inputs.Is_Empty
                     and then Is_Tagged_Type (Map_Type)
                   then
                      --  Attempt to insert an empty set
                      M.Insert (Key      => LHS_Ext,
-                               Position => LHS_Pos,
+                               Position => LHS_Ext_Position,
                                Inserted => Unused);
 
                      if not Is_Pure_Constant then
-                        M (LHS_Pos).Union (To_Ext);
+                        M (LHS_Ext_Position).Union (LHS_Ext_Inputs);
                      end if;
                   end if;
                end;
@@ -5719,29 +5718,23 @@ package body Flow_Utility is
             M := Recurse_On (Expression (N), Map_Root, Map_Type);
 
          when N_Attribute_Reference =>
-            case Get_Attribute_Id (Attribute_Name (N)) is
-               when Attribute_Update =>
-                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
-                  if Debug_Trace_Untangle_Record then
-                     Write_Str ("processing attribute Update");
-                     Write_Eol;
-                  end if;
-                  pragma Annotate (Xcov, Exempt_Off);
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
+            if Debug_Trace_Untangle_Record then
+               Write_Str ("processing attribute ");
+               Write_Name (Attribute_Name (N));
+               Write_Eol;
+            end if;
+            pragma Annotate (Xcov, Exempt_Off);
 
+            case Attribute_Name (N) is
+               when Name_Update =>
                   pragma Assert (List_Length (Expressions (N)) = 1);
                   M :=
                     Untangle_Delta_Aggregate
                       (Prefix (N),
                        Component_Associations (First (Expressions (N))));
 
-               when Attribute_Result =>
-                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
-                  if Debug_Trace_Untangle_Record then
-                     Write_Str ("processing attribute Result");
-                     Write_Eol;
-                  end if;
-                  pragma Annotate (Xcov, Exempt_Off);
-
+               when Name_Result =>
                   declare
                      Class_Wide_Conversion : constant Boolean :=
                        not Is_Class_Wide_Type (Get_Type (N, Scope))
@@ -5757,7 +5750,7 @@ package body Flow_Utility is
 
                when others =>
                   Error_Msg_N ("cannot untangle attribute", N);
-                  raise Why.Not_Implemented;
+                  raise Program_Error;
             end case;
 
          when N_Explicit_Dereference

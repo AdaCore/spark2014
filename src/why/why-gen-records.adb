@@ -3472,14 +3472,13 @@ package body Why.Gen.Records is
          Tmp      => Tmp_Expr,
          Context  => +Sequence
            (Ada_Node => Ada_Node,
-            Left     => +New_VC_Call
+            Left     => New_VC_Call
               (Ada_Node => Ada_Node,
                Name     => Range_Check_Name (Root, RCK_Range),
                Progs    => Prepare_Args_For_Subtype_Check
                  (Check_Ty, Tmp_Expr),
-               Domain   => EW_Prog,
                Reason   => VC_Discriminant_Check,
-               Typ      => Get_Type (+Expr)),
+               Typ      => EW_Unit_Type),
             Right    => +Tmp_Expr));
    end Insert_Subtype_Discriminant_Check;
 
@@ -3577,11 +3576,10 @@ package body Why.Gen.Records is
         and then Has_Variant_Info (Rec, Field)
       then
          return
-           New_VC_Call
+           +New_VC_Call
              (Ada_Node => Ada_Node,
               Name     => To_Program_Space (Call_Id),
               Progs    => (1 => Name),
-              Domain   => Domain,
               Reason   => VC_Discriminant_Check,
               Typ      => Ret_Ty);
 

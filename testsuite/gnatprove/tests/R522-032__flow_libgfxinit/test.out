@@ -204,9 +204,7 @@ hw-gfx-gma-pipe_setup.adb:220:07: warning: statement has no effect
 hw-gfx-gma-pipe_setup.adb:222:13: warning: unused variable "Stride"
 hw-gfx-gma-pipe_setup.adb:222:21: warning: unused variable "Offset"
 hw-gfx-gma-pipe_setup.adb:223:13: warning: this statement is never reached
-hw-gfx-gma-pipe_setup.adb:223:13: warning: unused variable constant with variable input "Width"
 hw-gfx-gma-pipe_setup.adb:224:13: warning: this statement is never reached
-hw-gfx-gma-pipe_setup.adb:224:13: warning: unused variable constant with variable input "Height"
 hw-gfx-gma-pipe_setup.adb:226:13: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:227:25: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:228:25: warning: this statement is never reached

@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;                       use Atree;
+with Common_Containers;           use Common_Containers;
 with Einfo.Entities;              use Einfo.Entities;
 with Einfo.Utils;                 use Einfo.Utils;
 with Errout;                      use Errout;
@@ -45,7 +46,7 @@ with SPARK_Util.Types;            use SPARK_Util.Types;
 with Treepr;                      use Treepr;
 
 with Ada.Unchecked_Deallocation;
-with GNAT.Dynamic_HTables; use GNAT.Dynamic_HTables;
+with GNAT.Dynamic_HTables;        use GNAT.Dynamic_HTables;
 
 package body Gnat2Why.Borrow_Checker is
 
@@ -682,6 +683,10 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id);
    --  Check expression Expr originating in Root was not observed
 
+   procedure Check_Not_Moved (Expr : Expr_Or_Ent; Root : Entity_Id) with
+     Pre => not Is_Deep (Etype (Root));
+   --  Check expression Expr originating in Root was not moved
+
    function Check_On_Borrowed (Expr : Expr_Or_Ent) return Node_Id;
    --  Return a previously borrowed expression in conflict with Expr if any
 
@@ -745,6 +750,10 @@ package body Gnat2Why.Borrow_Checker is
          Global_Var : Boolean);
    procedure Handle_Globals (Subp : Entity_Id; Loc : Node_Id);
    --  Handling of globals is factored in a generic instantiated below
+
+   procedure Handle_Move_Of_Shallow (Expr : Node_Id) with
+     Pre => not Is_Deep (Etype (Get_Root_Object (Expr)));
+   --  Check that Expr can be moved and store it in the Shallow_Moves set
 
    function Has_Array_Component (Expr : Node_Id) return Boolean;
    pragma Precondition (Is_Path_Expression (Expr));
@@ -849,14 +858,19 @@ package body Gnat2Why.Borrow_Checker is
    --    RW for any shallow extension with same number of .all
 
    function Set_Perm_Prefixes
-     (N    : Expr_Or_Ent;
-      Perm : Perm_Kind_Option;
-      Expl : Node_Id) return Perm_Tree_Access;
+     (N           : Expr_Or_Ent;
+      Perm        : Perm_Kind_Option;
+      Expl        : Node_Id;
+      Move_Access : Boolean := False) return Perm_Tree_Access;
    pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
+   pragma Precondition (if Move_Access then Perm = No_Access);
    --  This function modifies the permissions of a given node in the permission
    --  environment as well as all the prefixes of the path, to the new
    --  permission Perm. The general rule here is that everybody updates the
    --  permission of the subtree they are returning.
+   --  If Move_Access is True, the prefixes of the path are set to the
+   --  permission No_Access until a dereference is found, and Write_Only
+   --  afterward.
 
    procedure Set_Perm_Prefixes_Assign (N : Expr_Or_Ent);
    pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
@@ -937,7 +951,10 @@ package body Gnat2Why.Borrow_Checker is
    Current_Observers : Variable_Mapping;
    --  Mapping from observers to the path observed
 
-   Permission_Error : Boolean := False;
+   Shallow_Moves     : Node_Sets.Set;
+   --  Set of all the local shallow paths which have been moved
+
+   Permission_Error  : Boolean := False;
    --  Should be set to true when an error message is emitted
 
    --------------------
@@ -1124,7 +1141,7 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Local variables
 
-      Target_Typ  : constant Node_Id := Etype (Target);
+      Target_Typ  : constant Entity_Id := Etype (Target);
       Target_Root : Entity_Id;
       Expr_Root   : Entity_Id;
       Perm        : Perm_Kind;
@@ -1410,7 +1427,7 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Declaration (Decl : Node_Id) is
       Target     : constant Entity_Id := Defining_Identifier (Decl);
-      Target_Typ : constant Node_Id := Etype (Target);
+      Target_Typ : constant Entity_Id := Etype (Target);
       Expr       : Node_Id;
 
    begin
@@ -1954,16 +1971,31 @@ package body Gnat2Why.Borrow_Checker is
                Read_Expression (Discrete_Range (Expr));
 
             when N_Function_Call =>
-               --  If the called entity is annotated with At_End_Borrow,
-               --  check that its parameter is rooted at a borrowed
-               --  expression or at a borrower.
+               declare
+                  Fun : constant Entity_Id := Get_Called_Entity (Expr);
 
-               if Has_At_End_Borrow_Annotation (Get_Called_Entity (Expr)) then
-                  Check_At_End_Borrow_Call (Expr);
-               end if;
+               begin
+                  --  Ignore predicate function calls if the entity is not in
+                  --  SPARK.
 
-               Read_Params (Expr);
-               Check_Globals (Get_Called_Entity (Expr), Expr);
+                  if Ekind (Fun) = E_Function
+                    and then Is_Predicate_Function (Fun)
+                    and then not Entity_In_SPARK (Fun)
+                  then
+                     return;
+                  end if;
+
+                  --  If the called entity is annotated with At_End_Borrow,
+                  --  check that its parameter is rooted at a borrowed
+                  --  expression or at a borrower.
+
+                  if Has_At_End_Borrow_Annotation (Fun) then
+                     Check_At_End_Borrow_Call (Expr);
+                  end if;
+
+                  Read_Params (Expr);
+                  Check_Globals (Fun, Expr);
+               end;
 
             when N_Qualified_Expression
                | N_Type_Conversion
@@ -3052,6 +3084,35 @@ package body Gnat2Why.Borrow_Checker is
       end;
    end Check_Not_Borrowed;
 
+   ---------------------
+   -- Check_Not_Moved --
+   ---------------------
+
+   procedure Check_Not_Moved (Expr : Expr_Or_Ent; Root : Entity_Id) is
+   begin
+      --  Try to match the expression with one of the moved expressions.
+      --  For every moved object, check that:
+      --    * the moved expression is not a prefix of Expr
+      --    * Expr is not a prefix of the moved expression.
+
+      for Moved of Shallow_Moves loop
+         if Is_Prefix_Or_Almost (Pref => Moved, Expr => Expr)
+           or else
+             (if Expr.Is_Ent then Get_Root_Object (Moved) = Expr.Ent
+              else Is_Prefix_Or_Almost (Expr.Expr, +Moved))
+         then
+            Error_Msg_Sloc := Sloc (Moved);
+            if Expr.Is_Ent then
+               Error_Msg_NE ("& was moved #", Expr.Loc, Expr.Ent);
+            else
+               Error_Msg_N ("object was moved #", Expr.Expr);
+            end if;
+            Permission_Error := True;
+            return;
+         end if;
+      end loop;
+   end Check_Not_Moved;
+
    ------------------------
    -- Check_Not_Observed --
    ------------------------
@@ -4025,6 +4086,9 @@ package body Gnat2Why.Borrow_Checker is
                               Nkind (N.Expr) = N_Attribute_Reference);
 
                            if Nkind (N.Expr) = N_Attribute_Reference then
+                              pragma Assert
+                                (Attribute_Name (N.Expr) in
+                                     Name_Last | Name_First | Name_Length);
                               return (R                => Folded,
                                       Found_Permission =>
                                         Bounds_Permission (C.Tree_Access),
@@ -4115,6 +4179,32 @@ package body Gnat2Why.Borrow_Checker is
             return P2;
       end case;
    end Glb;
+
+   ----------------------------
+   -- Handle_Move_Of_Shallow --
+   ----------------------------
+
+   procedure Handle_Move_Of_Shallow (Expr : Node_Id) is
+      Root : constant Entity_Id := Get_Root_Object (Expr);
+      Scop : constant Entity_Id := Enclosing_Unit (Root);
+
+   begin
+      pragma Assert (Present (Current_Subp));
+
+      --  If Root is a parameter or global variable of Current_Subp, it will be
+      --  moved at the end of Current_Subp.
+
+      if Ekind (Root) in Formal_Kind or else Scop /= Current_Subp then
+         Perm_Error_Subprogram_End
+           (E          => Root,
+            Subp       => Current_Subp,
+            Perm       => Read_Write,
+            Found_Perm => Write_Only,
+            Expl       => Expr);
+      end if;
+
+      Shallow_Moves.Insert (Expr);
+   end Handle_Move_Of_Shallow;
 
    -------------------------
    -- Has_Array_Component --
@@ -4843,28 +4933,7 @@ package body Gnat2Why.Borrow_Checker is
    begin
       --  Nothing to do if the path is not rooted in an object
 
-      if No (Root)
-        or else not Is_Object (Root)
-      then
-         return;
-
-      --  If the root type is not deep, it can still be borrowed or observed
-
-      elsif not Is_Deep (Etype (Root)) then
-
-         --  Check path was not borrowed
-
-         Check_Not_Borrowed (Expr, Root);
-
-         --  For modes that require W permission, check path was not observed
-
-         case Mode is
-            when Read | Observe =>
-               null;
-            when Assign | Move | Free | Borrow =>
-               Check_Not_Observed (Expr, Root);
-         end case;
-
+      if No (Root) or else not Is_Object (Root) then
          return;
       end if;
 
@@ -4872,7 +4941,50 @@ package body Gnat2Why.Borrow_Checker is
 
       Root := Unique_Entity (Root);
 
-      if Get (Current_Perm_Env, Root) = null then
+      --  Check path was not borrowed
+
+      Check_Not_Borrowed (Expr, Root);
+
+      --  For modes that require W permission, check path was not observed
+
+      case Mode is
+         when Read | Observe =>
+            null;
+         when Assign | Move | Free | Borrow =>
+            Check_Not_Observed (Expr, Root);
+      end case;
+
+      --  If the root is not deep, it can still be moved. Check inside the
+      --  map for moved shallow types.
+
+      if not Is_Deep (Etype (Root)) then
+         Check_Not_Moved (Expr, Root);
+
+         pragma Assert (Mode /= Free);
+         pragma Assert (Mode /= Assign or else not Is_Deep (Expr_Type));
+
+         if Is_Deep (Expr_Type) and then Mode = Move then
+            pragma Assert
+              (not Expr.Is_Ent
+               and then Nkind (Expr.Expr) = N_Attribute_Reference
+               and then Attribute_Name (Expr.Expr) = Name_Access);
+
+            --  Move forbidden in elaboration
+
+            if Inside_Elaboration then
+               if not Inside_Procedure_Call then
+                  Error_Msg_N ("illegal move during elaboration", Loc);
+                  Permission_Error := True;
+               end if;
+
+               return;
+            end if;
+
+            Handle_Move_Of_Shallow (Prefix (Expr.Expr));
+         end if;
+         return;
+
+      elsif Get (Current_Perm_Env, Root) = null then
 
          --  If the root object is not in the current environment, then it must
          --  be a constant without variable input. It can only be read.
@@ -5016,19 +5128,6 @@ package body Gnat2Why.Borrow_Checker is
             end if;
       end case;
 
-      --  Check path was not borrowed
-
-      Check_Not_Borrowed (Expr, Root);
-
-      --  For modes that require W permission, check path was not observed
-
-      case Mode is
-         when Read | Observe =>
-            null;
-         when Assign | Move | Free | Borrow =>
-            Check_Not_Observed (Expr, Root);
-      end case;
-
       --  Do not update permission environment when handling calls
 
       if Inside_Procedure_Call then
@@ -5056,11 +5155,25 @@ package body Gnat2Why.Borrow_Checker is
 
             if Present (Root) then
                declare
-                  Tree : constant Perm_Tree_Access :=
-                    Set_Perm_Prefixes (Expr, Write_Only, Expl => Loc);
+                  Is_Access : constant Boolean :=
+                    not Expr.Is_Ent
+                    and then Nkind (Expr.Expr) = N_Attribute_Reference;
+                  pragma Assert
+                    (if Is_Access
+                     then Attribute_Name (Expr.Expr) = Name_Access);
+                  Tree      : constant Perm_Tree_Access :=
+                    (if Is_Access
+                     then Set_Perm_Prefixes
+                       (+Prefix (Expr.Expr), No_Access, Loc,
+                        Move_Access => True)
+                     else Set_Perm_Prefixes (Expr, Write_Only, Expl => Loc));
                begin
                   pragma Assert (Tree /= null);
-                  Set_Perm_Extensions_Move (Tree, Expr_Type, Expl => Loc);
+                  if Is_Access then
+                     Set_Perm_Extensions (Tree, No_Access, Expl => Loc);
+                  else
+                     Set_Perm_Extensions_Move (Tree, Expr_Type, Expl => Loc);
+                  end if;
                end;
             end if;
 
@@ -5424,9 +5537,10 @@ package body Gnat2Why.Borrow_Checker is
    -----------------------
 
    function Set_Perm_Prefixes
-     (N    : Expr_Or_Ent;
-      Perm : Perm_Kind_Option;
-      Expl : Node_Id) return Perm_Tree_Access
+     (N           : Expr_Or_Ent;
+      Perm        : Perm_Kind_Option;
+      Expl        : Node_Id;
+      Move_Access : Boolean := False) return Perm_Tree_Access
    is
 
       function Set_Perm_Prefixes
@@ -5473,7 +5587,10 @@ package body Gnat2Why.Borrow_Checker is
          when N_Explicit_Dereference =>
             declare
                C : constant Perm_Tree_Access :=
-                 Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl);
+                 Set_Perm_Prefixes
+                   (+Prefix (N.Expr),
+                    (if Move_Access then Write_Only else Perm),
+                    Expl);
                pragma Assert (C /= null);
                pragma Assert (Kind (C) = Entire_Object
                               or else Kind (C) = Reference);
@@ -5528,7 +5645,7 @@ package body Gnat2Why.Borrow_Checker is
          when N_Selected_Component =>
             declare
                C : constant Perm_Tree_Access :=
-                 Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl);
+                 Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl, Move_Access);
                pragma Assert (C /= null);
                pragma Assert (Kind (C) = Entire_Object
                               or else Kind (C) = Record_Component);
@@ -5623,7 +5740,7 @@ package body Gnat2Why.Borrow_Checker is
          =>
             declare
                C : constant Perm_Tree_Access :=
-                 Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl);
+                 Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl, Move_Access);
                pragma Assert (C /= null);
                pragma Assert (Kind (C) = Entire_Object
                               or else Kind (C) = Array_Component);
@@ -5679,7 +5796,8 @@ package body Gnat2Why.Borrow_Checker is
             | N_Type_Conversion
             | N_Unchecked_Type_Conversion
          =>
-            return Set_Perm_Prefixes (+Expression (N.Expr), Perm, Expl);
+            return Set_Perm_Prefixes
+              (+Expression (N.Expr), Perm, Expl, Move_Access);
 
          when others =>
             raise Program_Error;

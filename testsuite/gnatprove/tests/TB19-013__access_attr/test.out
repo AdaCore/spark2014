@@ -1,5 +1,5 @@
-ext.ads:10:28: error: Access attribute of a private type is not allowed in SPARK
-ext.ads:10:28: error: violation of aspect SPARK_Mode at line 10
+ext.ads:6:13: error: object was moved at line 10
+ext.ads:6:13: error: return from "F" with moved value for "C"
 test_access.adb:11:19: info: assertion proved (CVC4: 1 VC)
 test_access.adb:11:21: info: pointer dereference check proved (CVC4: 1 VC)
 test_access.adb:14:31: info: pointer dereference check proved (CVC4: 1 VC)

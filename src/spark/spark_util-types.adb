@@ -551,6 +551,95 @@ package body SPARK_Util.Types is
       end if;
    end Check_Needed_On_Conversion;
 
+   ------------------------------
+   -- Contains_Allocated_Parts --
+   ------------------------------
+
+   function Contains_Allocated_Parts (Typ : Entity_Id) return Boolean is
+      Seen : Node_Sets.Set;
+      --  Set of general access types already traversed. This is used to avoid
+      --  infinite recursion on recursive structures with general access types.
+
+      function Contains_Allocated_Parts_Ann (Typ : Entity_Id) return Boolean;
+      --  Recursive function looking for parts of a pool specific access type
+      --  in Typ.
+
+      ----------------------------------
+      -- Contains_Allocated_Parts_Ann --
+      ----------------------------------
+
+      function Contains_Allocated_Parts_Ann (Typ : Entity_Id) return Boolean is
+         Rep_Ty : constant Entity_Id := Retysp (Typ);
+      begin
+         if Is_Array_Type (Rep_Ty) then
+            return Contains_Allocated_Parts_Ann (Component_Type (Rep_Ty));
+
+         elsif Is_Record_Type (Rep_Ty) then
+
+            --  Tagged types with cannot contain access types currently
+
+            if Is_Tagged_Type (Rep_Ty) then
+               return False;
+            else
+               declare
+                  Comp : Entity_Id := First_Component (Rep_Ty);
+               begin
+                  while Present (Comp) loop
+                     if Component_Is_Visible_In_SPARK (Comp)
+                       and then Contains_Allocated_Parts_Ann (Etype (Comp))
+                     then
+                        return True;
+                     end if;
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
+
+            return False;
+
+         elsif Is_Access_Type (Rep_Ty) then
+
+            --  If Rep_Ty is a general access type, look at its designated
+            --  type.
+
+            if Is_General_Access_Type (Rep_Ty) then
+               declare
+                  Inserted : Boolean;
+                  Position : Node_Sets.Cursor;
+                  Des_Ty   : constant Entity_Id :=
+                    Directly_Designated_Type (Rep_Ty);
+               begin
+                  Seen.Insert (Rep_Ty, Position, Inserted);
+
+                  return not Inserted
+                    or else Contains_Allocated_Parts_Ann
+                      (if Is_Incomplete_Type (Des_Ty) then Full_View (Des_Ty)
+                       else Des_Ty);
+               end;
+
+            --  Otherwise, the type contains allocated parts if it is a pool
+            --  specific access type or an anonymous access-to-object type.
+
+            else
+               return Is_Access_Object_Type (Rep_Ty)
+                 and then (not Is_Access_Constant (Rep_Ty)
+                           or else Is_Anonymous_Access_Type (Rep_Ty));
+            end if;
+         else
+            pragma Assert
+              (Is_Private_Type (Rep_Ty)
+               or else Is_Scalar_Type (Rep_Ty)
+               or else Is_Concurrent_Type (Rep_Ty));
+            return False;
+         end if;
+      end Contains_Allocated_Parts_Ann;
+
+   --  Start of processing for Contains_Allocated_Parts
+
+   begin
+      return Contains_Allocated_Parts_Ann (Typ);
+   end Contains_Allocated_Parts;
+
    ---------------------------------
    -- Contains_Relaxed_Init_Parts --
    ---------------------------------
@@ -983,6 +1072,27 @@ package body SPARK_Util.Types is
             return False;
       end case;
    end Is_Deep;
+
+   ----------------------------
+   -- Is_General_Access_Type --
+   ----------------------------
+
+   function Is_General_Access_Type (T : Entity_Id) return Boolean is
+      Base : Entity_Id := T;
+   begin
+      if Ekind (Base) = E_Access_Subtype then
+         Base := Base_Type (Base);
+
+         if Is_Private_Type (Base) then
+            Base := Full_View (Base);
+         end if;
+
+         pragma Assert (Is_Access_Type (Base));
+      end if;
+
+      return Ekind (Base) = E_General_Access_Type
+        and then not Is_Access_Constant (Base);
+   end Is_General_Access_Type;
 
    -------------------
    -- Is_Null_Range --

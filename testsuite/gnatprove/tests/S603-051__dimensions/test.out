@@ -10,7 +10,7 @@ a-ngelfu.ads:129:65: info: float overflow check proved (Trivial), in instantiati
 a-ngelfu.ads:129:65: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:380
 camera_types.ads:19:42: info: division check proved (CVC4: 1 VC)
 camera_types.ads:19:72: info: division check proved (CVC4: 1 VC)
-camera_types.ads:21:36: info: predicate check proved (CVC4: 1 VC)
+camera_types.ads:21:36: info: predicate check proved (CVC4: 2 VC)
 dimensions.ads:377:07: info: float overflow check proved (CVC4: 1 VC)
 dimensions.ads:377:11: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 dimensions.ads:377:14: info: float overflow check proved (CVC4: 1 VC)
@@ -19,6 +19,6 @@ image_golf_hole.adb:14:17: info: local subprogram "Set_Position" only analyzed i
 image_golf_hole.adb:14:17: warning: subprogram "Set_Position" has no effect
 image_golf_hole.adb:16:10: info: initialization of "Blob" proved
 image_golf_hole.adb:16:10: info: initialization of "Blob" proved, in call inlined at image_golf_hole.adb:32
-image_golf_hole.adb:16:10: info: predicate check proved on default value (CVC4: 1 VC), in call inlined at image_golf_hole.adb:32
-image_golf_hole.adb:19:18: info: predicate check proved (CVC4: 1 VC), in call inlined at image_golf_hole.adb:32
+image_golf_hole.adb:16:10: info: predicate check proved on default value (CVC4: 2 VC), in call inlined at image_golf_hole.adb:32
+image_golf_hole.adb:19:18: info: predicate check proved (CVC4: 2 VC), in call inlined at image_golf_hole.adb:32
 image_golf_hole.ads:5:14: warning: subprogram "Process_Image" has no effect

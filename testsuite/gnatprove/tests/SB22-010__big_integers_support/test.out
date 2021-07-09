@@ -1,13 +1,13 @@
 big_integers_test.adb:18:04: warning: analyzing unreferenced procedure "Nat_Predicate_Check_Fail"
 big_integers_test.adb:18:40: info: initialization of "Nat" proved
 big_integers_test.adb:20:11: warning: unused assignment
-big_integers_test.adb:20:16: medium: predicate check might fail
-big_integers_test.adb:21:16: info: predicate check proved (CVC4: 1 VC)
+big_integers_test.adb:20:16: medium: predicate check might fail, cannot prove Big_Natural >= To_Big_Integer (0)
+big_integers_test.adb:21:16: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 big_integers_test.adb:24:04: warning: analyzing unreferenced procedure "Pos_Predicate_Check_Fail"
 big_integers_test.adb:24:40: info: initialization of "Pos" proved
 big_integers_test.adb:26:11: warning: unused assignment
-big_integers_test.adb:26:16: medium: predicate check might fail
-big_integers_test.adb:27:16: info: predicate check proved (CVC4: 1 VC)
+big_integers_test.adb:26:16: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+big_integers_test.adb:27:16: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 big_integers_test.adb:30:04: warning: analyzing unreferenced procedure "BI_Range_Check_Fail"
 big_integers_test.adb:30:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:30:63: info: initialization of "Int" proved
@@ -49,10 +49,10 @@ big_integers_test.adb:72:14: warning: subprogram "Gcd_Precondition_Fail" has no 
 big_integers_test.adb:75:12: medium: precondition might fail [possible fix: subprogram at line 72 should mention Big_Int in a precondition]
 big_integers_test.adb:75:37: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:75:46: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:80:26: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:81:25: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:94:11: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:95:11: info: predicate check proved (CVC4: 1 VC)
+big_integers_test.adb:80:26: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
+big_integers_test.adb:81:25: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
+big_integers_test.adb:94:11: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
+big_integers_test.adb:95:11: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 big_integers_test.adb:98:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:98:19: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:98:23: info: predicate check proved (CVC4: 1 VC)

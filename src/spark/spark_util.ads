@@ -517,6 +517,13 @@ package SPARK_Util is
    -- Queries related to pragmas --
    --------------------------------
 
+   function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Pragma;
+   --  @param N pragma
+   --  @return True iff N is a pragma Check that can be ignored by analysis,
+   --     because it is already taken into account elsewhere (precondition,
+   --     postcondition, predicates).
+
    function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean;
    --  @param N any node
    --  @param Name pragma name
@@ -529,14 +536,6 @@ package SPARK_Util is
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a pragma Check (Name, ...);
-
-   function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Pragma;
-   --  @param N pragma
-   --  @return True iff N is a pragma Check that can be ignored by analysis,
-   --     because it is already taken into account elsewhere (precondition and
-   --     postcondition, static predicate), or because it is completely ignored
-   --     with a warning in SPARK.Definition (dynamic predicate).
 
    function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Pragma;
@@ -944,8 +943,7 @@ package SPARK_Util is
 
    function Value_Is_Never_Leaked (Expr : Node_Id) return Boolean with
      Pre => Nkind (Expr) in N_Subexpr
-     and then Is_Access_Type (Etype (Expr))
-     and then Is_Access_Constant (Etype (Expr));
-   --  Checks whether a created access-to-constant value is known to never leak
+     and then Is_Access_Type (Etype (Expr));
+   --  Checks whether a created access value is known to never leak
 
 end SPARK_Util;

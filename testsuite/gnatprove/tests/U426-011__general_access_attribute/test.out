@@ -1,0 +1,70 @@
+bad_access.adb:9:24: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:10:33: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:11:27: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:13:12: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:13:26: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_moves_of_deep.adb:11:25: info: data dependencies proved
+bad_moves_of_deep.adb:17:23: error: object was moved at line 14
+bad_moves_of_deep.adb:17:23: error: part of "X" is not readable
+bad_moves_of_deep.adb:19:08: error: object was moved at line 14
+bad_moves_of_deep.adb:19:08: error: part of "X" is not writable
+bad_moves_of_deep.adb:20:07: error: "X" is not writable
+bad_moves_of_deep.adb:20:07: error: object was moved at line 14
+bad_moves_of_deep.adb:23:25: info: data dependencies proved
+bad_moves_of_deep.adb:31:27: error: object was moved at line 28
+bad_moves_of_deep.adb:31:27: error: part of "X" is not readable
+bad_moves_of_deep.adb:33:12: error: object was moved at line 28
+bad_moves_of_deep.adb:33:12: error: part of "X" is not writable
+bad_moves_of_deep.adb:35:27: error: object was moved at line 28
+bad_moves_of_deep.adb:35:27: error: part of "X" is not readable
+bad_moves_of_deep.adb:37:12: error: object was moved at line 28
+bad_moves_of_deep.adb:37:12: error: part of "X" is not writable
+bad_moves_of_deep.adb:38:07: error: "X" is not writable
+bad_moves_of_deep.adb:38:07: error: object was moved at line 28
+bad_moves_of_deep.adb:42:25: info: data dependencies proved
+bad_moves_of_deep.adb:46:26: error: object was moved at line 44
+bad_moves_of_deep.adb:46:26: error: part of dereference from "X" is not readable
+bad_moves_of_deep.adb:48:11: error: object was moved at line 44
+bad_moves_of_deep.adb:48:11: error: part of dereference from "X" is not writable
+bad_moves_of_deep.adb:53:25: info: data dependencies proved
+bad_moves_of_deep.adb:59:30: error: object was moved at line 57
+bad_moves_of_deep.adb:59:30: error: part of dereference from "X" is not readable
+bad_moves_of_deep.adb:61:15: error: object was moved at line 57
+bad_moves_of_deep.adb:61:15: error: part of dereference from "X" is not writable
+bad_moves_of_deep.adb:64:30: error: object was moved at line 57
+bad_moves_of_deep.adb:64:30: error: part of dereference from "X" is not readable
+bad_moves_of_deep.adb:66:15: error: object was moved at line 57
+bad_moves_of_deep.adb:66:15: error: part of dereference from "X" is not writable
+bad_moves_of_deep.adb:73:25: info: data dependencies proved
+bad_moves_of_deep.adb:78:26: error: object was moved at line 76
+bad_moves_of_deep.adb:78:26: error: part of dereference from "X" is not readable
+bad_moves_of_deep.adb:79:23: error: object was moved at line 76
+bad_moves_of_deep.adb:79:23: error: part of "X" is not readable
+bad_moves_of_deep.adb:80:11: error: object was moved at line 76
+bad_moves_of_deep.adb:80:11: error: part of dereference from "X" is not writable
+bad_moves_of_deep.adb:81:08: error: object was moved at line 76
+bad_moves_of_deep.adb:81:08: error: part of "X" is not writable
+bad_moves_of_deep.adb:82:07: error: "X" is not writable
+bad_moves_of_deep.adb:82:07: error: object was moved at line 76
+bad_moves_of_deep.adb:85:13: error: object was moved at line 86
+bad_moves_of_deep.adb:85:13: error: return from "Get" with moved value for "X"
+bad_moves_of_deep.adb:89:21: error: dereference from "X" is not readable
+bad_moves_of_deep.adb:89:21: error: object was moved at line 9
+bad_moves_of_deep.adb:90:06: error: dereference from "X" is not writable
+bad_moves_of_deep.adb:90:06: error: object was moved at line 9
+bad_moves_of_shallow.adb:10:25: error: illegal move during elaboration
+bad_moves_of_shallow.adb:13:14: error: object was moved at line 14
+bad_moves_of_shallow.adb:13:14: error: return from "Bad_1" with moved value for "X1"
+bad_moves_of_shallow.adb:13:25: info: data dependencies proved
+bad_moves_of_shallow.adb:16:22: error: object was moved at line 14
+bad_moves_of_shallow.adb:19:14: error: object was moved at line 21
+bad_moves_of_shallow.adb:19:14: error: return from "Bad_2" with moved value for "X"
+bad_moves_of_shallow.adb:19:21: warning: "X" is not modified, could be IN
+bad_moves_of_shallow.adb:19:54: info: data dependencies proved
+bad_moves_of_shallow.adb:21:07: warning: initialization of "Z" has no effect
+bad_moves_of_shallow.adb:23:22: error: object was moved at line 21
+bad_moves_of_shallow.adb:26:13: error: object was moved at line 27
+bad_moves_of_shallow.adb:26:13: error: return from "Get" with moved value for "X3"
+bad_moves_of_shallow.adb:30:04: error: object was moved at line 6
+bad_moves_of_shallow.adb:31:19: error: object was moved at line 6
+gnatprove: error during flow analysis and proof

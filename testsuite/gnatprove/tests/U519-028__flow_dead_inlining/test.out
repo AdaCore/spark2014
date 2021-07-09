@@ -5,4 +5,17 @@ main.adb:10:19: warning: unused variable "J"
 main.adb:10:37: info: data dependencies proved
 main.adb:12:23: info: cannot unroll loop (value of loop bounds)
 main.adb:13:10: warning: this statement is never reached
-main.adb:13:10: warning: unused variable constant with variable input "C2b"
+main_private_rec.adb:5:14: info: add a contract to analyze it separately from calling contexts
+main_private_rec.adb:5:14: info: local subprogram "Foo" only analyzed in the context of calls
+main_private_rec.adb:5:14: warning: subprogram "Foo" has no effect
+main_private_rec.adb:12:19: warning: unused variable "J"
+main_private_rec.adb:12:41: info: data dependencies proved
+main_private_rec.adb:14:23: info: cannot unroll loop (value of loop bounds)
+main_private_rec.adb:15:10: warning: this statement is never reached
+main_rec.adb:7:14: info: add a contract to analyze it separately from calling contexts
+main_rec.adb:7:14: info: local subprogram "Foo" only analyzed in the context of calls
+main_rec.adb:7:14: warning: subprogram "Foo" has no effect
+main_rec.adb:14:19: warning: unused variable "J"
+main_rec.adb:14:33: info: data dependencies proved
+main_rec.adb:16:23: info: cannot unroll loop (value of loop bounds)
+main_rec.adb:17:10: warning: this statement is never reached

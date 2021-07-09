@@ -4909,10 +4909,17 @@ is an extra information added to a specific check/goal so that, in the case
 where this goal is not proved, the part of the program is reprinted: ``overflow
 check might fail: cannot prove (In_range (B))``.
 
-``GP_Subp`` ???
+``GP_Subp`` attribute that is attached to some top-level definitions in Why3
+  code. Used to implement "Prove Subprogram" functionality.
 
 ``GP_Already_Proved`` indicates that the VC is already proved (probably by
 Codepeer).
+
+``GP_Inline`` indicates that the corresponding symbol should be inlined to
+  increase splitting of VCs. This attribute is generated in gnat2why.
+
+``GP_Inlined`` indicates that this part of the VC was obtained by inlining a
+symbol. This attribute is generated in gnatwhy3.
 
 ``keep_on_simp`` prevents Why3 from simplifying inside a term that has this
 label. For example, ``a /\ "keep_on_simp" true`` cannot be simplified to

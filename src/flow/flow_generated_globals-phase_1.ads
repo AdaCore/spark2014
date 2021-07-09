@@ -66,6 +66,7 @@ package Flow_Generated_Globals.Phase_1 is
 
       Globals          : Flow_Nodes;
 
+      Local_Packages   : Node_Sets.Set;
       Local_Variables  : Node_Sets.Set;
 
       Entries_Called   : Entry_Call_Sets.Set;

@@ -626,10 +626,6 @@ package body Configuration is
             Long_Switch => "--codepeer=");
          Define_Switch
            (Config,
-            CL_Switches.Counterexamples'Access,
-            Long_Switch => "--counterexamples=");
-         Define_Switch
-           (Config,
             CL_Switches.CWE'Access,
             Long_Switch => "--cwe");
          Define_Switch
@@ -786,6 +782,10 @@ package body Configuration is
            (Config,
             CL_Switches.Memlimit'Access,
             Long_Switch => "--memlimit=");
+         Define_Switch
+           (Config,
+            CL_Switches.Counterexamples'Access,
+            Long_Switch => "--counterexamples=");
          Define_Switch
            (Config,
             CL_Switches.No_Counterexample'Access,

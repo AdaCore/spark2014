@@ -131,6 +131,7 @@ package Why.Gen.Binders is
          --  designated value only).
 
          when Pointer =>
+            P_Typ     : Entity_Id;
             Value     : Binder_Type;
             Is_Null   : W_Identifier_Id;
             Is_Moved  : W_Identifier_Id;
@@ -273,6 +274,7 @@ package Why.Gen.Binders is
 
    function New_Defining_Bool_Axiom
      (Ada_Node : Node_Id := Empty;
+      Fun_Name : String := "";
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
       Pre      : W_Pred_Id := Why_Empty;

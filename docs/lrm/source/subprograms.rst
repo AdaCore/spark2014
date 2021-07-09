@@ -1315,7 +1315,7 @@ Decreases) then the expression value obtained for the call is greater
    dispatching call or a call through an access-to-subprogram value.]
    No runtime check is performed if the Subprogram_Variant assertion policy
    in effect at the point of the call is not Check.
-    
+
 .. centered:: **Verification Rules**
 
 9.  Statically mutually recursive subprograms shall have compatible variants.
@@ -1464,7 +1464,7 @@ calls.
 
    * it is an anonymous access-to-constant parameter; or
 
-   * it is of mode **in** and not of an access type.
+   * it is of mode **in** and not of an access-to-object type.
 
    Otherwise, the formal parameter is said to be *mutable*.
 

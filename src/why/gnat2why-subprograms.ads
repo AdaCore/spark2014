@@ -68,10 +68,11 @@ package Gnat2Why.Subprograms is
 
    Current_Subp : Entity_Id := Empty;
 
-   function Compute_Deep_Outputs (E : Entity_Id) return Entity_Sets.Set
+   function Compute_Outputs_With_Allocated_Parts
+     (E : Entity_Id) return Entity_Sets.Set
      with Pre => Ekind (E) in E_Entry | E_Procedure | E_Subprogram_Type;
-   --  Compute the set of deep outputs for a procedure or entry E, which
-   --  consist in output parameters and globals of mode Output.
+   --  Compute the set of outputs with allocated parts for a procedure or
+   --  entry E, which consist in output parameters and globals of mode Output.
 
    procedure Generate_VCs_For_Subprogram (E : Entity_Id)
      with Pre =>

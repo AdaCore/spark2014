@@ -363,11 +363,10 @@ package body Gnat2Why.Subprograms is
                           Expression
                             (First (Pragma_Argument_Associations (Init_Cond)));
                      begin
-                        Assumption :=
-                          Sequence
-                            (Assumption,
-                             New_Assume_Statement
-                               (Pred => +Transform_Expr
+                        Append
+                          (Assumption,
+                           New_Assume_Statement
+                             (Pred => +Transform_Expr
                                   (Expr, EW_Bool_Type, EW_Pred, Params)));
                      end;
                   end if;
@@ -579,7 +578,7 @@ package body Gnat2Why.Subprograms is
                                           VC_Ceiling_Priority_Protocol,
                                         Kind     => EW_Check);
                begin
-                  S := Sequence (S, Check);
+                  Append (S, Check);
                end;
             end loop;
          end loop;
@@ -765,8 +764,7 @@ package body Gnat2Why.Subprograms is
                   if Ekind (Ent) = E_Procedure
                     and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
                   then
-                     Stat := Sequence (Stat,
-                                       Single_Attach_Handler_Check (Ent));
+                     Append (Stat, Single_Attach_Handler_Check (Ent));
                   end if;
                end;
             end if;
@@ -823,7 +821,7 @@ package body Gnat2Why.Subprograms is
         (Ada_Node => E,
          Effects  => +Compute_Effects (E, Global_Params => True));
 
-      Call_Effects := Sequence
+      Append
         (Call_Effects,
          New_Assume_Statement
            (Ada_Node => E,
@@ -831,106 +829,6 @@ package body Gnat2Why.Subprograms is
 
       return Call_Effects;
    end Compute_Call_Effects;
-
-   --------------------------
-   -- Compute_Deep_Outputs --
-   --------------------------
-
-   function Compute_Deep_Outputs (E : Entity_Id) return Entity_Sets.Set is
-      Outputs : Entity_Sets.Set;
-   begin
-      declare
-         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-      begin
-         Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                         Reads           => Read_Ids,
-                                         Writes          => Write_Ids,
-                                         Erase_Constants => True);
-
-         for Write_Id of Write_Ids loop
-            case Write_Id.Kind is
-               when Direct_Mapping =>
-                  declare
-                     Entity : constant Entity_Id :=
-                       Get_Direct_Mapping_Id (Write_Id);
-                     Typ    : constant Entity_Id := Retysp (Etype (Entity));
-
-                  begin
-                     if not Is_Concurrent_Type (Entity)
-                       and then not Read_Ids.Contains (Write_Id)
-                       and then Is_Deep (Typ)
-                       and then not Is_Anonymous_Access_Type (Typ)
-                     then
-                        Outputs.Insert (Entity);
-                     end if;
-                  end;
-
-               when Magic_String =>
-                  null;
-
-               when others =>
-                  raise Program_Error;
-            end case;
-         end loop;
-      end;
-
-      declare
-         Formal : Entity_Id := First_Formal (E);
-      begin
-         while Present (Formal) loop
-            declare
-               Typ : constant Entity_Id := Retysp (Etype (Formal));
-            begin
-               if Is_Deep (Typ)
-                 and then not Is_Anonymous_Access_Type (Typ)
-                 and then Ekind (Formal) = E_Out_Parameter
-               then
-                  Outputs.Insert (Formal);
-               end if;
-
-               Next_Formal (Formal);
-            end;
-         end loop;
-      end;
-
-      return Outputs;
-   end Compute_Deep_Outputs;
-
-   ---------------------------------------------
-   -- Compute_Moved_Property_For_Deep_Outputs --
-   ---------------------------------------------
-
-   function Compute_Moved_Property_For_Deep_Outputs
-     (E      : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-   is
-      Assume : W_Prog_Id := +Void;
-   begin
-      if Ekind (E) in E_Function | E_Package | E_Task_Type then
-         return +Void;
-      end if;
-
-      declare
-         Outputs : constant Entity_Sets.Set := Compute_Deep_Outputs (E);
-      begin
-         for Obj of Outputs loop
-            declare
-               Typ : constant Entity_Id := Retysp (Etype (Obj));
-            begin
-               Assume := Sequence (Assume,
-                 New_Assume_Statement (Pred =>
-                   Compute_Is_Moved_Property
-                     (+Transform_Identifier (Params => Params,
-                                             Expr   => Obj,
-                                             Ent    => Obj,
-                                             Domain => EW_Term), Typ)));
-            end;
-         end loop;
-      end;
-
-      return Assume;
-   end Compute_Moved_Property_For_Deep_Outputs;
 
    -----------------------------------------
    -- Compute_Dynamic_Property_For_Inputs --
@@ -1357,6 +1255,110 @@ package body Gnat2Why.Subprograms is
       end loop;
       return Pred;
    end Compute_Guard_Formula;
+
+   ---------------------------------------------
+   -- Compute_Moved_Property_For_Deep_Outputs --
+   ---------------------------------------------
+
+   function Compute_Moved_Property_For_Deep_Outputs
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      Assume : W_Prog_Id := +Void;
+   begin
+      if Ekind (E) in E_Function | E_Package | E_Task_Type then
+         return +Void;
+      end if;
+
+      declare
+         Outputs : constant Entity_Sets.Set :=
+           Compute_Outputs_With_Allocated_Parts (E);
+      begin
+         for Obj of Outputs loop
+            declare
+               Typ : constant Entity_Id := Retysp (Etype (Obj));
+            begin
+               Append
+                 (Assume,
+                  New_Assume_Statement
+                    (Pred => Compute_Is_Moved_Property
+                       (+Transform_Identifier (Params => Params,
+                                               Expr   => Obj,
+                                               Ent    => Obj,
+                                               Domain => EW_Term), Typ)));
+            end;
+         end loop;
+      end;
+
+      return Assume;
+   end Compute_Moved_Property_For_Deep_Outputs;
+
+   ------------------------------------------
+   -- Compute_Outputs_With_Allocated_Parts --
+   ------------------------------------------
+
+   function Compute_Outputs_With_Allocated_Parts
+     (E : Entity_Id) return Entity_Sets.Set
+   is
+      Outputs : Entity_Sets.Set;
+   begin
+      declare
+         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      begin
+         Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                         Reads           => Read_Ids,
+                                         Writes          => Write_Ids,
+                                         Erase_Constants => True);
+
+         for Write_Id of Write_Ids loop
+            case Write_Id.Kind is
+               when Direct_Mapping =>
+                  declare
+                     Entity : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Write_Id);
+                     Typ    : constant Entity_Id := Retysp (Etype (Entity));
+
+                  begin
+                     if not Is_Concurrent_Type (Entity)
+                       and then not Read_Ids.Contains (Write_Id)
+                       and then Contains_Allocated_Parts (Typ)
+                       and then not Is_Anonymous_Access_Type (Typ)
+                     then
+                        Outputs.Insert (Entity);
+                     end if;
+                  end;
+
+               when Magic_String =>
+                  null;
+
+               when others =>
+                  raise Program_Error;
+            end case;
+         end loop;
+      end;
+
+      declare
+         Formal : Entity_Id := First_Formal (E);
+      begin
+         while Present (Formal) loop
+            declare
+               Typ : constant Entity_Id := Retysp (Etype (Formal));
+            begin
+               if Contains_Allocated_Parts (Typ)
+                 and then not Is_Anonymous_Access_Type (Typ)
+                 and then Ekind (Formal) = E_Out_Parameter
+               then
+                  Outputs.Insert (Formal);
+               end if;
+
+               Next_Formal (Formal);
+            end;
+         end loop;
+      end;
+
+      return Outputs;
+   end Compute_Outputs_With_Allocated_Parts;
 
    ------------------------------------
    -- Compute_Subprogram_Parameters  --
@@ -1935,7 +1937,7 @@ package body Gnat2Why.Subprograms is
         and then (if List_Length (Component_Associations (Aggr)) = 2
                   then not Has_Others)
       then
-         Result := Sequence
+         Append
            (Result,
             New_Assert
               (Pred     =>
@@ -1956,7 +1958,7 @@ package body Gnat2Why.Subprograms is
       --  is no OTHER guard.
 
       if not Has_Others then
-         Result := Sequence
+         Append
            (Result,
             New_Assert
               (Pred       =>
@@ -2098,8 +2100,7 @@ package body Gnat2Why.Subprograms is
             Enabled     : constant W_Expr_Id := +Guard_Ident;
 
          begin
-            Result := Sequence
-              (Result, Do_One_Contract_Case (Contract_Case, Enabled));
+            Append (Result, Do_One_Contract_Case (Contract_Case, Enabled));
          end;
 
          Next (Contract_Case);
@@ -2319,7 +2320,7 @@ package body Gnat2Why.Subprograms is
         (if Is_Expression_Function_Or_Completion (E)
          and then not Has_Contracts (E, Pragma_Postcondition)
          and then not Present (Get_Pragma (E, Pragma_Contract_Cases))
-         then Symbol_Sets.To_Set (NID ("inline_marker"))
+         then Symbol_Sets.To_Set (NID (GP_Inline_Marker))
          else Symbol_Sets.Empty_Set);
 
       Def : W_Expr_Id;
@@ -2527,11 +2528,7 @@ package body Gnat2Why.Subprograms is
               Typ   => Type_Of_Node (E));
       end if;
 
-      Params :=
-        (Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => Use_Map);
+      Params := Contract_Params;
 
       --  First retrieve contracts specified on the subprogram and the
       --  subprograms it overrides.
@@ -2779,7 +2776,7 @@ package body Gnat2Why.Subprograms is
             Subset => Old_Parts);
       end if;
 
-      Why_Body := Sequence (Why_Body, Classwide_Post_RTE);
+      Append (Why_Body, Classwide_Post_RTE);
 
       --  Insert bindings for variants, they may be needed to check recursive
       --  calls in the classwide post. We use EW_Pterm as a domain here as RTE
@@ -2793,7 +2790,7 @@ package body Gnat2Why.Subprograms is
 
       --  Assume dynamic property of inputs before the checks
 
-      Why_Body := Sequence
+      Prepend
         (Compute_Dynamic_Property_For_Inputs (Params => Params,
                                               E      => E),
          Why_Body);
@@ -2877,10 +2874,7 @@ package body Gnat2Why.Subprograms is
 
       Register_VC_Entity (E);
 
-      Params := (Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => GM_None,
-                 Ref_Allowed => True,
-                 Old_Policy  => Use_Map);
+      Params := Body_Params;
 
       --  Reset the toplevel exceptions for exit paths
 
@@ -2949,11 +2943,10 @@ package body Gnat2Why.Subprograms is
          if Present (Handled_Statement_Sequence (Body_N))
            and then Body_Statements_In_SPARK (E)
          then
-            Why_Body :=
-              Sequence
-                (Transform_Statements_And_Declarations
-                   (Statements (Handled_Statement_Sequence (Body_N))),
-                 Why_Body);
+            Prepend
+              (Transform_Statements_And_Declarations
+                 (Statements (Handled_Statement_Sequence (Body_N))),
+               Why_Body);
          end if;
 
          Why_Body :=
@@ -2963,7 +2956,7 @@ package body Gnat2Why.Subprograms is
 
          if Is_Compilation_Unit (E) then
             Params.Phase := Generate_VCs_For_Contract;
-            Why_Body := Sequence
+            Prepend
               (Assume_Initial_Condition_Of_Withed_Units
                  (Package_Body_Entity (Body_N), Params),
                Why_Body);
@@ -2974,22 +2967,17 @@ package body Gnat2Why.Subprograms is
       --  initialized by the package.
 
       declare
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
-         Check : constant W_Pred_Id :=
+         Params : constant Transformation_Params := Contract_Params;
+         Check  : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Package (E, Params);
       begin
          if not Is_True_Boolean (+Check) then
-            Why_Body :=
-              Sequence
-                (Why_Body,
-                 New_Assert
-                      (Pred        =>
-                         +New_VC_Expr (E, +Check, VC_Invariant_Check, EW_Pred),
-                       Assert_Kind => EW_Assert));
+            Append
+              (Why_Body,
+               New_Assert
+                 (Pred        =>
+                      +New_VC_Expr (E, +Check, VC_Invariant_Check, EW_Pred),
+                  Assert_Kind => EW_Assert));
          end if;
       end;
 
@@ -3013,7 +3001,7 @@ package body Gnat2Why.Subprograms is
 
       if Is_Compilation_Unit (E) then
          Params.Phase := Generate_VCs_For_Contract;
-         Why_Body := Sequence
+         Prepend
            (Assume_Initial_Condition_Of_Withed_Units (E, Params), Why_Body);
       end if;
 
@@ -3058,8 +3046,7 @@ package body Gnat2Why.Subprograms is
                   end;
                end if;
 
-               Why_Body := Sequence
-                 (New_Assume_Statement (Pred => Pre), Why_Body);
+               Prepend (New_Assume_Statement (Pred => Pre), Why_Body);
             end;
          end if;
       end;
@@ -3069,11 +3056,10 @@ package body Gnat2Why.Subprograms is
 
       Params.Phase := Generate_VCs_For_Contract;
 
-      Why_Body :=
-        Sequence
-          (Compute_Dynamic_Property_For_Inputs (Params => Params,
-                                                E      => E),
-           Why_Body);
+      Prepend
+        (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                              E      => E),
+         Why_Body);
 
       --  Assume values of constants
 
@@ -3255,7 +3241,7 @@ package body Gnat2Why.Subprograms is
                   --  Generate a range check, but with a reason of ceiling
                   --  check, as specified in RM index for "Ceiling_Check".
 
-                  Why_Body := Sequence
+                  Append
                     (Why_Body,
                      New_Located_Assert
                        (Ada_Node => E,
@@ -3287,9 +3273,9 @@ package body Gnat2Why.Subprograms is
       --  Check that no Attach_Handler expression of the protected object
       --  corresponds to a reserved interrupt; see RM C.3.1(10/3).
 
-      Why_Body := Sequence (Why_Body,
-                            Compute_Attach_Handler_Check
-                              (Base_Type (E), Body_Params));
+      Append (Why_Body,
+              Compute_Attach_Handler_Check
+                (Base_Type (E), Body_Params));
 
       --  Translate public and private declarations of the package
 
@@ -3326,7 +3312,7 @@ package body Gnat2Why.Subprograms is
                   end if;
 
                   if F_Check /= +Void then
-                     Sequence_Append
+                     Append
                        (Checks,
                         New_Ignore
                           (Ada_Node => Etype (Field),
@@ -3334,7 +3320,8 @@ package body Gnat2Why.Subprograms is
                   end if;
                end if;
             end loop;
-            Why_Body := Sequence (Why_Body, +Checks);
+
+            Append (Why_Body, +Checks);
          end;
 
          Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
@@ -3368,8 +3355,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Subprogram --
    ---------------------------------
 
-   procedure Generate_VCs_For_Subprogram (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_Subprogram (E : Entity_Id) is
       Body_N : constant Node_Id := Get_Body (E);
 
       function Assume_For_Input return W_Prog_Id;
@@ -3438,9 +3424,6 @@ package body Gnat2Why.Subprograms is
       --  return verification of the contract cases, plus runtime checks for
       --  the Post
 
-      Body_Params     : Transformation_Params;
-      Contract_Params : Transformation_Params;
-
       function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id;
 
       function Warn_On_Inconsistent_Pre return W_Prog_Id;
@@ -3465,11 +3448,7 @@ package body Gnat2Why.Subprograms is
                First_Formal (E)
             else
                Empty);
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          if Ekind (E) = E_Procedure and then Null_Present (E) then
             return +Void;
@@ -3497,11 +3476,7 @@ package body Gnat2Why.Subprograms is
       -----------------------
 
       function Assume_For_Output return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          if Ekind (E) = E_Procedure and then Null_Present (E) then
             return +Void;
@@ -3521,11 +3496,7 @@ package body Gnat2Why.Subprograms is
       -----------------------------
 
       function Assume_Or_Assert_Of_Pre return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Pre_Node : constant Node_Id :=
            Get_Location_For_Aspect (E, Pragma_Precondition);
          Pre : W_Pred_Id :=
@@ -3587,11 +3558,7 @@ package body Gnat2Why.Subprograms is
       ---------------------
 
       function CC_And_RTE_Post return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          return
            Sequence
@@ -3621,9 +3588,9 @@ package body Gnat2Why.Subprograms is
             begin
                if B.Init.Present then
                   pragma Assert (Ekind (Param) = E_Out_Parameter);
-                  Checks := Sequence
-                    (Left  => Checks,
-                     Right => New_Located_Assert
+                  Append
+                    (Checks,
+                     New_Located_Assert
                        (Ada_Node => Param,
                         Pred     => Pred_Of_Boolean_Term
                           (New_Deref (Right => B.Init.Id,
@@ -3643,11 +3610,7 @@ package body Gnat2Why.Subprograms is
 
       function Check_Inline_For_Proof return W_Prog_Id is
          Value  : constant Node_Id := Retrieve_Inline_Annotation (E);
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
       begin
          if Present (Value) and then
            (not Is_Expression_Function_Or_Completion (E)
@@ -3682,11 +3645,7 @@ package body Gnat2Why.Subprograms is
       ---------------------------------
 
       function Check_Invariants_Of_Outputs return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Check : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Subprogram (E, False, Params);
       begin
@@ -3708,22 +3667,15 @@ package body Gnat2Why.Subprograms is
       -- Checking_Of_Refined_Post --
       ------------------------------
 
-      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id
-      is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
-
-         Prog : W_Prog_Id := Arg;
+      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id is
+         Params : constant Transformation_Params := Contract_Params;
+         Prog   : W_Prog_Id := Arg;
       begin
          if Has_Contracts (E, Pragma_Refined_Post) then
-            Prog :=
-              Sequence
-                (Prog,
-                 New_Ignore
-                   (Prog => +Compute_Spec
+            Append
+              (Prog,
+               New_Ignore
+                 (Prog => +Compute_Spec
                       (Params, E, Pragma_Refined_Post, EW_Prog)));
             Prog :=
               New_Located_Abstract
@@ -3732,7 +3684,7 @@ package body Gnat2Why.Subprograms is
                  Reason => VC_Refined_Post,
                  Post => +Compute_Spec
                    (Params, E, Pragma_Refined_Post, EW_Pred));
-            Prog := Sequence
+            Append
               (Prog,
                New_Assume_Statement
                  (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
@@ -3785,7 +3737,7 @@ package body Gnat2Why.Subprograms is
                      end;
                   end if;
 
-                  Prog := Sequence
+                  Append
                     (Prog,
                      New_Assume_Statement (Pred => Dyn_Prop));
                end;
@@ -3850,8 +3802,8 @@ package body Gnat2Why.Subprograms is
                   CC_Old.Clear;
                   Collect_Old_Parts (Expression (Contract_Case), CC_Old);
                   Case_Guard := First (Choice_List (Contract_Case));
-                  R := Sequence
-                    (Left  => New_Conditional
+                  Prepend
+                    (New_Conditional
                        (Condition =>
                             +(if Nkind (Case_Guard) = N_Others_Choice
                               then Others_Guard_Ident
@@ -3863,7 +3815,7 @@ package body Gnat2Why.Subprograms is
                                 Expr   => +Void,
                                 Domain => EW_Prog,
                                 Subset => CC_Old))),
-                     Right => R);
+                     R);
 
                   Next (Contract_Case);
                end loop;
@@ -3907,7 +3859,7 @@ package body Gnat2Why.Subprograms is
 
          if Ekind (E) /= E_Function then
             for E of Borrows loop
-               Sequence_Append
+               Append
                  (Result,
                   Havoc_Borrowed_Expression (E));
             end loop;
@@ -3977,15 +3929,9 @@ package body Gnat2Why.Subprograms is
       ----------------
 
       function RTE_Of_Pre return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
-
-         Pre   : constant W_Prog_Id :=
+         Params : constant Transformation_Params := Contract_Params;
+         Pre    : constant W_Prog_Id :=
            +Compute_Spec (Params, E, Pragma_Precondition, EW_Prog);
-
       begin
          return
            Sequence
@@ -4018,8 +3964,7 @@ package body Gnat2Why.Subprograms is
                                   else "")));
 
             for Prag of Prags loop
-               Result :=
-                 Sequence (Result, Transform_Pragma (Prag, Force => True));
+               Append (Result, Transform_Pragma (Prag, Force => True));
             end loop;
          end if;
 
@@ -4047,11 +3992,7 @@ package body Gnat2Why.Subprograms is
       -------------------------------
 
       function Warn_On_Inconsistent_Post return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Post : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Postcondition);
          Stmt : W_Prog_Id;
@@ -4087,11 +4028,7 @@ package body Gnat2Why.Subprograms is
       ------------------------------
 
       function Warn_On_Inconsistent_Pre return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => True,
-            Old_Policy  => Use_Map);
+         Params : constant Transformation_Params := Contract_Params;
          Pre : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Precondition);
          Stmt : W_Prog_Id;
@@ -4203,18 +4140,6 @@ package body Gnat2Why.Subprograms is
       Current_Subp := E;
 
       Register_VC_Entity (E);
-
-      Body_Params :=
-        (Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => Use_Map);
-
-      Contract_Params :=
-        (Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => As_Old);
 
       --  Reset the toplevel exceptions for exit paths
 
@@ -4562,11 +4487,10 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Task_Type --
    --------------------------------
 
-   procedure Generate_VCs_For_Task_Type (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_Task_Type (E : Entity_Id) is
       Name   : constant String  := Full_Name (E);
       Body_N : constant Node_Id := Task_Body (E);
-      Params : Transformation_Params;
+      Params : constant Transformation_Params := Body_Params;
 
       Why_Body   : W_Prog_Id;
       Priv_Decls : constant List_Id := Private_Declarations_Of_Task_Type (E);
@@ -4593,11 +4517,6 @@ package body Gnat2Why.Subprograms is
 
       Register_VC_Entity (E);
 
-      Params := (Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => GM_None,
-                 Ref_Allowed => True,
-                 Old_Policy  => Use_Map);
-
       --  Reset the toplevel exceptions for exit paths
 
       Clear_Exceptions;
@@ -4618,10 +4537,9 @@ package body Gnat2Why.Subprograms is
          --  We check that the call graph starting from this task respects the
          --  ceiling priority protocol.
 
-         Why_Body :=
-           Sequence
-             (Check_Ceiling_Protocol (Params, E),
-              Why_Body);
+         Prepend
+           (Check_Ceiling_Protocol (Params, E),
+            Why_Body);
       else
          Why_Body := +Void;
       end if;
@@ -4644,11 +4562,10 @@ package body Gnat2Why.Subprograms is
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type.
 
-      Why_Body :=
-        Sequence
-          (Compute_Dynamic_Property_For_Inputs (Params => Params,
-                                                E      => E),
-           Why_Body);
+      Prepend
+        (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                              E      => E),
+         Why_Body);
 
       --  Assume values of constants
 
@@ -5277,6 +5194,7 @@ package body Gnat2Why.Subprograms is
                                  Subp   => Descendant_E,
                                  Name   => Desc_Id,
                                  Args   => Desc_Args,
+                                 Check  => False,
                                  Typ    => Desc_Ty),
                               To     => Anc_Ty),
                            Right  => Anc_Call,

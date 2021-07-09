@@ -521,6 +521,8 @@ package body Flow is
       Format_Item ("Is_Global_Parameter",
                    Boolean'Image (A.Is_Global_Parameter));
       Format_Item ("Is_Neverending", Boolean'Image (A.Is_Neverending));
+      Format_Item ("Is_Declaration_Node",
+                   Boolean'Image (A.Is_Declaration_Node));
       Format_Item ("Execution", Execution_Kind_T'Image (A.Execution));
       Format_Item ("Perform_IPFA", Boolean'Image (A.Perform_IPFA));
 

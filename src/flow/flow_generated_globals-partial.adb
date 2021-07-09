@@ -89,6 +89,7 @@ package body Flow_Generated_Globals.Partial is
    -------------
 
    function To_List (E : Entity_Id) return Node_Lists.List is
+      pragma Annotate (CodePeer, Skip_Analysis);
       Singleton : Node_Lists.List;
    begin
       Singleton.Append (E);
@@ -156,6 +157,7 @@ package body Flow_Generated_Globals.Partial is
       --
       --  ### What is the TN for this?
 
+      Local_Packages  : Callee_Set;
       Local_Variables : Global_Set;
 
       --  ### Intention for these is to only capture the obvious (for
@@ -406,7 +408,24 @@ package body Flow_Generated_Globals.Partial is
             Proof_Calls           => Contr.Globals.Calls.Proof_Calls,
             Definite_Calls        => Contr.Globals.Calls.Definite_Calls,
             Conditional_Calls     => Contr.Globals.Calls.Conditional_Calls,
-            Local_Definite_Writes => Contr.Globals.Initializes.Refined);
+            Local_Definite_Writes => Contr.Globals.Initializes.Refined,
+            Local_Packages        => Contr.Local_Packages);
+
+         --  Add states that are trivially initialized because they have null
+         --  refinements (their initialization is missed while looking at the
+         --  initialization of the constituents). When up-projected, they will
+         --  simply appear in the generated Initializes contract.
+
+         if Ekind (FA.Spec_Entity) = E_Package
+           and then Has_Non_Null_Abstract_State (FA.Spec_Entity)
+           and then Entity_Body_In_SPARK (FA.Spec_Entity)
+         then
+            for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+               if Has_Null_Refinement (State) then
+                  Contr.Globals.Initializes.Refined.Insert (State);
+               end if;
+            end loop;
+         end if;
 
          Contr.Local_Variables := FA.GG.Local_Variables;
 
@@ -423,10 +442,9 @@ package body Flow_Generated_Globals.Partial is
 
             when E_Package =>
 
-               --  We want to store objects from the LHSs of explicit
-               --  Initializes contracts in the ALI file to know that are
-               --  claimed to be initialized even if they are only known by
-               --  Entity_Name.
+               --  Store objects from the LHSs of explicit Initializes
+               --  contracts in the ALI file to know that are claimed to be
+               --  initialized even if they are only known by Entity_Name.
 
                for Clause in Parse_Initializes (E, Get_Flow_Scope (E)).Iterate
                loop
@@ -444,7 +462,23 @@ package body Flow_Generated_Globals.Partial is
                      then
                         Contr.Globals.Initializes.Proper.Insert (LHS);
                      end if;
+
+                     --  Same for the refined view, so that in phase 2 we can
+                     --  give it the same treatment as generated Initializes.
+                     --  (In phase 1 we won't do anything with explicit
+                     --  Initializes, both for simplicity and for performance).
+
+                     for Refined of Down_Project (LHS, FA.B_Scope) loop
+
+                        if Ekind (Refined) /= E_Constant
+                          or else Has_Variable_Input (Refined)
+                        then
+                           Contr.Globals.Initializes.Refined.Insert (Refined);
+                        end if;
+                     end loop;
                   end;
+
+                  --  ??? probably we should also give the RHS to the GG
                end loop;
 
             when E_Protected_Type =>
@@ -1570,10 +1604,30 @@ package body Flow_Generated_Globals.Partial is
          Result : Flow_Nodes;
 
       begin
-         --  First collect callees
-         Result.Calls := Categorize_Calls (E, Analyzed, Contracts);
+         --  Pick reads from nested packages whose Initializes contract is
+         --  being generated, because reads in nested packages are just like
+         --  reads in subprogram calls. Writes from nested packages are handled
+         --  separately.
 
-         --  Now collect their globals
+         for Local of Full_Contract.Local_Packages loop
+            --  Use contract from the current iteration of Do_Global; this is
+            --  particularly important when picking writes, but for consistency
+            --  we do this also when picking reads.
+
+            --  ??? if Patches was a map, we could just pick what we need and
+            --  not have to scan it.
+
+            for Patch of Patches loop
+               if Patch.Entity = Local then
+                  Result_Proof_Ins.Union (Patch.Globals.Proper.Proof_Ins);
+                  Result_Inputs.Union (Patch.Globals.Proper.Inputs);
+                  exit;
+               end if;
+            end loop;
+         end loop;
+
+         --  Now determine genuine callees and collect their globals
+         Result.Calls := Categorize_Calls (E, Analyzed, Contracts);
 
          for Callee of Result.Calls.Definite_Calls loop
             declare
@@ -1709,17 +1763,39 @@ package body Flow_Generated_Globals.Partial is
          --  needed and explicit contracts are passed without modification).
 
          if Present (Get_Pragma (Folded, Pragma_Initializes)) then
-            Update.Initializes.Proper := Original.Initializes.Proper;
+            Update.Initializes := Original.Initializes;
          else
             declare
                Projected, Partial : Node_Sets.Set;
 
             begin
-               Update.Initializes.Refined :=
-                 Original.Initializes.Refined or
+               --  What has been initialized stays initialized
+
+               Update.Initializes.Refined := Original.Initializes.Refined;
+
+               --  Then it is extended by a local variables that are purely
+               --  written.
+
+               Update.Initializes.Refined.Union
                  ((Update.Refined.Outputs - Update.Refined.Inputs)
                     and
                   Full_Contract.Local_Variables);
+
+               --  Pick initialized items from nested packages whose
+               --  Initializes contract is being generated. Those items
+               --  directly contribute to the Initializes contract of the
+               --  current package, even when they are not purely written,
+               --  e.g. when the current package both reads and writes them.
+
+               for Local of Full_Contract.Local_Packages loop
+                  for Patch of Patches loop
+                     if Patch.Entity = Local then
+                        Update.Initializes.Refined.Union
+                          (Patch.Globals.Initializes.Proper);
+                        exit;
+                     end if;
+                  end loop;
+               end loop;
 
                Up_Project (Update.Initializes.Refined, Folded_Scope,
                            Projected, Partial);
@@ -1732,22 +1808,23 @@ package body Flow_Generated_Globals.Partial is
                   end if;
                end loop;
 
-               --  Add states that are trivially initialized because they
-               --  have null refinements (their initialization is missed
-               --  while looking at the initialization of the constituents).
-
-               if Has_Non_Null_Abstract_State (Folded)
-                 and then Entity_Body_In_SPARK (Folded)
-               then
-                  for State of Iter (Abstract_States (Folded)) loop
-                     if Has_Null_Refinement (State) then
-                        Projected.Insert (State);
-                     end if;
-                  end loop;
-               end if;
-
                Node_Sets.Move (Target => Update.Initializes.Proper,
                                Source => Projected);
+
+               --  We use Outputs only to compute the Initializes. Now we clear
+               --  them to make sure that the remaining GG computation does not
+               --  depend on them. The outside world should only use the proper
+               --  Initializes, Inputs and Proof_Ins, which correspond to an
+               --  explicit contract like:
+               --
+               --    with Initializes => (... => ..., null => ...);
+               --
+               --  Their refined versions are kept to generate a more
+               --  complete Initializes contract in subsequent iterations of
+               --  Do_Global, but they should not be queried.
+
+               Update.Proper.Outputs.Clear;
+               Update.Refined.Outputs.Clear;
             end;
          end if;
       end if;
@@ -2600,6 +2677,7 @@ package body Flow_Generated_Globals.Partial is
             Origin           => Origin_Flow,      --  ??? dummy
             Globals          => Contr.Globals,
 
+            Local_Packages   => Contr.Local_Packages,
             Local_Variables  => (if Ekind (E) = E_Package
                                  then States_And_Objects (E)
                                  else Node_Sets.Empty_Set),

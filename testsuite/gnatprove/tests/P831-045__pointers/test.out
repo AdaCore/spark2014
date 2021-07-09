@@ -1,17 +1,54 @@
-n01.adb:14:12: error: general access-to-variable type is not allowed in SPARK
-n01.adb:14:12: error: violation of aspect SPARK_Mode at line 9
-n011.adb:12:12: error: general access-to-variable type is not allowed in SPARK
-n011.adb:12:12: error: violation of aspect SPARK_Mode at line 7
-n02.adb:13:12: error: general access-to-variable type is not allowed in SPARK
-n02.adb:13:12: error: violation of aspect SPARK_Mode at line 8
-n02.adb:14:12: error: general access-to-variable type is not allowed in SPARK
-n02.adb:14:12: error: violation of aspect SPARK_Mode at line 8
-n04.adb:14:08: error: general access-to-variable type is not allowed in SPARK
-n04.adb:14:08: error: violation of aspect SPARK_Mode at line 12
-n05.adb:11:08: error: general access-to-variable type is not allowed in SPARK
-n05.adb:11:08: error: violation of aspect SPARK_Mode at line 9
+n01.adb:21:39: error: object was moved at line 19
+n01.adb:26:39: error: object was moved at line 19
+n01.adb:30:04: error: object was moved at line 19
+n01.adb:33:39: error: object was moved at line 19
+n011.adb:21:12: error: object was moved at line 19
+n02.adb:21:47: error: object was moved at line 19
+n02.adb:21:47: error: part of dereference from "X" is not readable
+n02.adb:27:47: error: object was moved at line 19
+n02.adb:27:47: error: part of dereference from "X" is not readable
+n04.adb:18:18: high: "var1" is not initialized
+n04.adb:20:13: error: object was moved at line 28
+n04.adb:20:13: error: return from "Z_In" with moved value for "YY"
+n04.adb:24:12: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(17))
+n04.adb:28:07: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(17))
+n04.adb:36:03: info: initialization of "X" proved
+n04.adb:37:03: info: initialization of "Y" proved
+n04.adb:40:08: high: "var0" is not initialized
+n04.adb:42:12: warning: "Y" is set by "Z_In" but not used after the call
+n05.adb:15:20: medium: "A" is not set in "Out_A"
 n05.adb:15:20: warning: formal parameter "A" is not referenced [-gnatwf]
+n05.adb:15:20: warning: unused variable "A"
+n05.adb:22:19: warning: "A" is not modified, parameter type could be rewritten as 'access constant Integer'
+n05.adb:22:19: warning: unused variable "A"
+n05.adb:29:20: warning: "A" is not modified, parameter type could be rewritten as 'access constant Integer'
+n05.adb:29:36: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
+n05.adb:29:52: info: initialization of "C" proved
+n05.adb:31:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: precondition of subprogram at line 29 should mention A]
+n05.adb:31:22: medium: overflow check might fail (e.g. when A.all = -1 and B.all = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 29 should mention A and B]
+n05.adb:31:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: precondition of subprogram at line 29 should mention B]
+n05.adb:36:21: warning: "A" is not modified, could be IN
+n05.adb:36:41: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
+n05.adb:36:57: info: initialization of "C" proved
+n05.adb:38:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: subprogram at line 36 should mention A in a precondition]
+n05.adb:38:22: medium: overflow check might fail (e.g. when A.all = -1 and B.all = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention A and B in a precondition]
+n05.adb:38:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: subprogram at line 36 should mention B in a precondition]
+n05.adb:42:03: info: initialization of "AA0" proved
+n05.adb:42:08: info: initialization of "AA1" proved
+n05.adb:44:03: warning: unused variable "C"
 n05.adb:44:03: warning: variable "C" is never read and never assigned [-gnatwv]
+n05.adb:48:07: warning: unused assignment
+n05.adb:48:10: high: "a0" is not initialized
+n05.adb:49:07: warning: unused assignment
+n05.adb:49:10: high: "a1" is not initialized
+n05.adb:50:07: info: pointer dereference check proved (CVC4: 1 VC)
+n05.adb:50:11: warning: unused assignment
+n05.adb:51:05: medium: pointer dereference check might fail (e.g. when B = null)
+n05.adb:51:09: warning: unused assignment
+n05.adb:52:05: warning: unused assignment
+n05.adb:53:03: info: precondition proved (Trivial: 1 VC)
+n05.adb:53:10: warning: "AA0" is set by "Out_A" but not used after the call
+n05.adb:54:05: warning: unused assignment
 observingcomposite.adb:20:20: error: uninitialized allocator without default initialization is not allowed in SPARK
 observingcomposite.adb:20:20: error: violation of aspect SPARK_Mode at line 6
 observingcomposite.adb:21:20: error: uninitialized allocator without default initialization is not allowed in SPARK
@@ -70,27 +107,17 @@ pointers2.ads:20:14: error: object was moved at pointers2.adb:36
 pointers2.ads:20:14: error: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-simple.adb:6:09: error: general access-to-variable type is not allowed in SPARK
-simple.adb:6:09: error: violation of aspect SPARK_Mode at line 5
-simple.adb:8:09: error: general access-to-variable type is not allowed in SPARK
-simple.adb:8:09: error: violation of aspect SPARK_Mode at line 5
 simple.adb:12:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
 simple.adb:12:04: error: violation of aspect SPARK_Mode at line 5
 simple.adb:22:04: error: "X" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 simple.adb:22:04: error: violation of aspect SPARK_Mode at line 5
-test.adb:8:09: error: general access-to-variable type is not allowed in SPARK
-test.adb:8:09: error: violation of aspect SPARK_Mode at line 7
-test.adb:9:09: error: general access-to-variable type is not allowed in SPARK
-test.adb:9:09: error: violation of aspect SPARK_Mode at line 7
-test.adb:10:09: error: general access-to-variable type is not allowed in SPARK
-test.adb:10:09: error: violation of aspect SPARK_Mode at line 7
+simple.adb:22:09: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(7))
+simple.adb:22:09: error: violation of aspect SPARK_Mode at line 5
 test.adb:13:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
 test.adb:13:04: error: violation of aspect SPARK_Mode at line 7
 test.adb:20:12: warning: variable "varPtr2" is read but never assigned [-gnatwv]
 test.adb:24:30: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:24:30: error: violation of aspect SPARK_Mode at line 7
-test.adb:28:08: error: general access-to-variable type is not allowed in SPARK
-test.adb:28:08: error: violation of aspect SPARK_Mode at line 7
 test.adb:64:09: warning: variable "X" is read but never assigned [-gnatwv]
 test.adb:78:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:78:03: error: violation of aspect SPARK_Mode at line 7
@@ -101,4 +128,6 @@ test.adb:86:11: warning: "x0" may be referenced before it has a value [enabled b
 test.adb:87:08: info: analyzing call to "g" in context
 test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:89:03: error: violation of aspect SPARK_Mode at line 7
+test.adb:89:08: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+test.adb:89:08: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof
