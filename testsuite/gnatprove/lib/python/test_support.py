@@ -765,7 +765,7 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
     fullopt += ["-P", project, "--quiet"]
     if codepeer:
         fullopt += ["--codepeer=on"]
-    if replay:
+    if replay and not benchmark_mode():
         fullopt += ["--replay"]
 
     if level is None:
