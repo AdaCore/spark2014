@@ -41,7 +41,6 @@ test.adb:121:14: info: flow dependencies proved
 test.adb:128:15: info: data dependencies proved
 test.adb:128:37: info: initialization of "Temp" proved
 test.adb:129:15: info: flow dependencies proved
-test.adb:135:07: warning: "Temp" is set by "Initialize_Temp" but not used after the call
 test.adb:135:07: warning: statement has no effect
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
 test.adb:150:24: medium: overflow check might fail, cannot prove upper bound for Val * Factorial (Val - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 147 should mention Val in a precondition]

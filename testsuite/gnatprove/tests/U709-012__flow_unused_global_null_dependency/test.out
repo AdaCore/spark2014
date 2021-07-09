@@ -3,7 +3,6 @@ gen_state.ads:3:23: info: data dependencies proved, in instantiation at tests.ad
 gen_state.ads:4:23: info: flow dependencies proved, in instantiation at tests.adb:15
 tests.adb:11:11: warning: "Error" is set by "Run" but not used after the call
 tests.adb:11:11: warning: statement has no effect
-tests.adb:18:11: warning: "Inst.State" is set by "Run" but not used after the call
 tests.adb:18:11: warning: statement has no effect
 tests.adb:31:07: info: precondition proved (Trivial: 1 VC)
 tests.adb:31:07: warning: "A" is set by "Run" but not used after the call
@@ -11,5 +10,4 @@ tests.adb:31:07: warning: statement has no effect
 tests.adb:38:09: info: data dependencies proved
 tests.adb:38:31: info: initialization of "A" proved
 tests.adb:39:09: info: flow dependencies proved
-tests.adb:47:07: warning: "A" is set by "Run" but not used after the call
 tests.adb:47:07: warning: statement has no effect

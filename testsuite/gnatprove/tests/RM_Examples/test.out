@@ -133,7 +133,6 @@ multiple_ports.ads:45:11: warning: indirect writes to "V_Out_2" through a potent
 multiple_ports.ads:45:11: warning: writing to "V_Out_2" is assumed to have no effects on other non-volatile objects
 multiple_ports.ads:55:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 multiple_ports.ads:56:11: warning: writing to "V_In_Out" is assumed to have no effects on other non-volatile objects
-outer-public_child.adb:7:15: warning: "Hidden_State" constituent of "A2" is set by "Init_A2" but not used after the call
 outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved
 outer-public_child.ads:7:14: info: data dependencies proved
 outer-public_child.ads:7:41: info: initialization of "Outer.A2" proved

@@ -1,4 +1,3 @@
-outer-public_child.adb:7:12: warning: "Hidden_State" constituent of "A2" is set by "Init_A2" but not used after the call
 outer-public_child.ads:6:14: info: initialization of "Hidden_State" constituent of "A2" proved
 outer-public_child.ads:7:11: info: data dependencies proved
 outer-public_child.ads:7:38: info: initialization of "Outer.A2" proved
