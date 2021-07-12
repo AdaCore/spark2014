@@ -25,12 +25,14 @@ with Ada.Containers;      use Ada.Containers;
 with Flow_Classwide;      use Flow_Classwide;
 with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Utility;        use Flow_Utility;
+with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Output;              use Output;
 with Sem_Aux;             use Sem_Aux;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo.Utils;         use Sinfo.Utils;
+with Snames;              use Snames;
 with Sprint;              use Sprint;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
@@ -228,9 +230,6 @@ package body Flow.Analysis.Antialiasing is
                --  Selected components
                | N_Selected_Component
 
-               --  Attribute references (the only interesting one is 'Access
-               --  which is not in SPARK).
-
                --  Type conversion
                | N_Qualified_Expression
                | N_Type_Conversion
@@ -238,6 +237,13 @@ package body Flow.Analysis.Antialiasing is
                | N_Unchecked_Type_Conversion
             =>
                return True;
+
+            --  The only interesting attribute references is 'Access but it is
+            --  not yet supported by the borrow checker.
+
+            when N_Attribute_Reference =>
+               pragma Assert (Attribute_Name (N) /= Name_Access);
+               return False;
 
             --  Detect calls to instances of unchecked conversion. Other
             --  function calls are not interesting, including those returning
