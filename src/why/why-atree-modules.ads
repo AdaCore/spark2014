@@ -25,11 +25,11 @@
 
 with Ada;                            use Ada;
 with Ada.Containers.Hashed_Maps;
+with Checked_Types;                  use Checked_Types;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
 with SPARK_Definition;               use SPARK_Definition;
-with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Why.Ids;                        use Why.Ids;
 with Why.Gen.Names;                  use Why.Gen.Names;
 
@@ -707,14 +707,13 @@ package Why.Atree.Modules is
    --  with a node which is not an entity, and no module is known for this
    --  entity.
 
-   function Get_Logic_Function (E : Entity_Id) return W_Identifier_Id with
-     Pre => Is_Function_Or_Function_Type (E);
+   function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the logic function __call associated with the profile of a
    --  function or function type.
 
-   function Get_Logic_Function_Guard (E : Entity_Id) return W_Identifier_Id
-   with
-     Pre => Is_Function_Or_Function_Type (E);
+   function Get_Logic_Function_Guard
+     (E : Function_Kind_Id)
+      return W_Identifier_Id;
    --  Return the guard predicate __pred_call associated with the profile of a
    --  function or function type.
 

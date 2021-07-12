@@ -16327,10 +16327,8 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Character_Literal =>
-
-            T :=
-              New_Integer_Constant (Ada_Node => Expr,
-                                    Value    => Char_Literal_Value (Expr));
+            T := New_Integer_Constant (Ada_Node => Expr,
+                                       Value    => Char_Literal_Value (Expr));
 
             --  Deal with identifiers:
             --  * Enumeration literals: deal with special cases True and
@@ -16379,7 +16377,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_Minus =>  --  unary minus
             declare
-               Right : constant Node_Id := Right_Opnd (Expr);
+               Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                Typ   : constant W_Type_Id := Base_Why_Type (Right);
 
                Minus_Ident : constant W_Identifier_Id :=
@@ -16438,7 +16436,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_Plus =>  --  unary plus
             declare
-               Right : constant Node_Id := Right_Opnd (Expr);
+               Right : constant N_Subexpr_Id := Right_Opnd (Expr);
             begin
                T := Transform_Expr
                  (Right, Base_Why_Type (Right), Domain, Local_Params);
@@ -16446,7 +16444,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_Abs =>
             declare
-               Right : constant Node_Id := Right_Opnd (Expr);
+               Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                Typ   : constant W_Type_Id := Base_Why_Type (Right);
 
                Right_Rep : constant W_Expr_Id :=
@@ -16465,8 +16463,8 @@ package body Gnat2Why.Expr is
             | N_Op_Subtract
          =>
             declare
-               Left       : constant Node_Id := Left_Opnd (Expr);
-               Right      : constant Node_Id := Right_Opnd (Expr);
+               Left       : constant N_Subexpr_Id := Left_Opnd (Expr);
+               Right      : constant N_Subexpr_Id := Right_Opnd (Expr);
                Base       : constant W_Type_Id := Base_Why_Type (Left, Right);
                Left_Expr  : constant W_Expr_Id :=
                  Transform_Expr (Left,
@@ -16494,8 +16492,8 @@ package body Gnat2Why.Expr is
             | N_Op_Divide
          =>
             declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
+               Left  : constant N_Subexpr_Id := Left_Opnd (Expr);
+               Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                L_Type, R_Type : W_Type_Id;
                L_Why, R_Why : W_Expr_Id;
             begin
@@ -16555,11 +16553,10 @@ package body Gnat2Why.Expr is
             | N_Op_Mod
          =>
             declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
+               Left  : constant N_Subexpr_Id := Left_Opnd (Expr);
+               Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                Base  : constant W_Type_Id := Base_Why_Type (Left, Right);
             begin
-
                T := New_Binary_Op_Expr
                  (Op          => Nkind (Expr),
                   Left        => Transform_Expr (Left,
@@ -16590,8 +16587,8 @@ package body Gnat2Why.Expr is
             --  floating-points exponentiation.
 
             N_Op_Expon_Case : declare
-               Left      : constant Node_Id := Left_Opnd (Expr);
-               Right     : constant Node_Id := Right_Opnd (Expr);
+               Left      : constant N_Subexpr_Id := Left_Opnd (Expr);
+               Right     : constant N_Subexpr_Id := Right_Opnd (Expr);
                W_Right   : constant W_Expr_Id :=
                  Transform_Expr (Right,
                                  EW_Int_Type,
@@ -16603,7 +16600,7 @@ package body Gnat2Why.Expr is
                                  Base_Type,
                                  Domain,
                                  Local_Params);
-               Left_Type : constant Entity_Id := Etype (Left);
+               Left_Type : constant Type_Kind_Id := Etype (Left);
 
                One : constant W_Expr_Id :=
                  (if Has_Modular_Integer_Type (Left_Type) then
@@ -16617,8 +16614,11 @@ package body Gnat2Why.Expr is
                        +MF_Floats (Base_Type).One
                   else raise Program_Error);
 
-               function Square (X : W_Expr_Id; T : Entity_Id)
-                                return W_Expr_Id is
+               function Square
+                 (X : W_Expr_Id;
+                  T : Type_Kind_Id)
+                  return W_Expr_Id
+               is
                  (New_Binary_Op_Expr (Op          => N_Op_Multiply,
                                       Left        => X,
                                       Right       => X,
@@ -16628,7 +16628,11 @@ package body Gnat2Why.Expr is
                                       Domain      => Domain,
                                       Ada_Node    => Expr));
 
-               function Cube (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id is
+               function Cube
+                 (X : W_Expr_Id;
+                  T : Type_Kind_Id)
+                  return W_Expr_Id
+               is
                  (New_Binary_Op_Expr (Op          => N_Op_Multiply,
                                       Left        => X,
                                       Right       => Square (X, T),
@@ -16638,11 +16642,17 @@ package body Gnat2Why.Expr is
                                       Domain      => Domain,
                                       Ada_Node    => Expr));
 
-               function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id;
+               function Inv
+                 (X : W_Expr_Id;
+                  T : Type_Kind_Id)
+                  return W_Expr_Id;
                --  Return 1 / X
                --  Insert a division check depending on the domain
 
-               function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id
+               function Inv
+                 (X : W_Expr_Id;
+                  T : Type_Kind_Id)
+                  return W_Expr_Id
                is
                   Tmp : constant W_Expr_Id := New_Temp_For_Expr
                     (X, Need_Temp => Domain = EW_Prog);
@@ -17017,9 +17027,10 @@ package body Gnat2Why.Expr is
 
          when N_If_Expression =>
             declare
-               Cond        : constant Node_Id := First (Expressions (Expr));
-               Then_Part   : constant Node_Id := Next (Cond);
-               Else_Part   : constant Node_Id := Next (Then_Part);
+               Cond        : constant N_Subexpr_Id :=
+                 First (Expressions (Expr));
+               Then_Part   : constant N_Subexpr_Id := Next (Cond);
+               Else_Part   : constant Opt_N_Subexpr_Id := Next (Then_Part);
                Cond_Domain : constant EW_Domain :=
                  (if Domain = EW_Term then EW_Pred else Domain);
                Phase       : constant Transformation_Phase :=

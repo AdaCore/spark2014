@@ -62,7 +62,8 @@ package body Why.Gen.Expr is
      (Ty     : Entity_Id;
       Expr   : W_Expr_Id;
       Domain : EW_Terms;
-      Params : Transformation_Params := Body_Params) return W_Expr_Array;
+      Params : Transformation_Params := Body_Params)
+      return W_Expr_Array;
    --  Computes the arguments to be used for a call to the dynamic property
    --  of a scalar type.
 
@@ -70,7 +71,8 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       To       : W_Type_Id;
-      Expr     : W_Expr_Id) return W_Expr_Id;
+      Expr     : W_Expr_Id)
+      return W_Expr_Id;
    --  Assuming that there is at most one step between To and From in the
    --  type hierarchy (i.e. that there exists a conversion from From
    --  to To; a counterexample would be two abstract types whose base
@@ -81,7 +83,8 @@ package body Why.Gen.Expr is
       Domain   : EW_Domain;
       From     : W_Type_Id;
       To       : W_Type_Id;
-      Expr     : W_Expr_Id) return W_Expr_Id;
+      Expr     : W_Expr_Id)
+      return W_Expr_Id;
    --  Same as above, except the From type is explicitly given. This is useful
    --  for conversions with fixed-point types, as the base type EW_Fixed does
    --  not allow retrieving the name of the appropriate conversion function,
@@ -107,8 +110,10 @@ package body Why.Gen.Expr is
    --  @param a list of Why nodes
    --  @return True if all elements of the list are void
 
-   function Compute_VC_Sloc (N         : Node_Id;
-                             Left_Most : Boolean := False) return Source_Ptr;
+   function Compute_VC_Sloc
+     (N         : Node_Id;
+      Left_Most : Boolean := False)
+      return Source_Ptr;
    --  @param N a node where a Check is located
    --  @param Left_Most whether the returned source_pointer should be oriented
    --    at the left_most of the tree rooted in N
@@ -125,7 +130,8 @@ package body Why.Gen.Expr is
      (Ty     : Entity_Id;
       Expr   : W_Expr_Id;
       Domain : EW_Terms;
-      Params : Transformation_Params := Body_Params) return W_Expr_Array
+      Params : Transformation_Params := Body_Params)
+      return W_Expr_Array
    is
    begin
       return (1 => New_Attribute_Expr
@@ -168,7 +174,6 @@ package body Why.Gen.Expr is
          declare
             E : constant W_Expr_Id := +Element (C);
          begin
-
             --  we delete the entry, so that the map doesn't grow too much.
 
             Temp_Names_Map.Delete (C);
@@ -181,8 +186,8 @@ package body Why.Gen.Expr is
                  Def      => E,
                  Context  => Context);
          end;
-      else
 
+      else
          --  Otherwise Tmp is not a temp associated with an expression.
          --  Presumably, no temp variable was actually created for it during
          --  a call of New_Temp_For_Expr. We just return the context.
@@ -197,7 +202,8 @@ package body Why.Gen.Expr is
 
    function Boolean_Expr_Of_Pred
      (W      : W_Pred_Id;
-      Domain : EW_Domain) return W_Expr_Id
+      Domain : EW_Domain)
+      return W_Expr_Id
    is
    begin
       case Domain is
@@ -240,8 +246,10 @@ package body Why.Gen.Expr is
    -- Compute_VC_Sloc --
    ---------------------
 
-   function Compute_VC_Sloc (N         : Node_Id;
-                             Left_Most : Boolean := False) return Source_Ptr
+   function Compute_VC_Sloc
+     (N         : Node_Id;
+      Left_Most : Boolean := False)
+      return Source_Ptr
    is
       Slc : Source_Ptr;
    begin
@@ -414,15 +422,18 @@ package body Why.Gen.Expr is
 
       function Insert_Array_Index_Check
         (Expr   : W_Expr_Id;
-         To_Ent : Entity_Id) return W_Prog_Id;
+         To_Ent : Entity_Id)
+         return W_Prog_Id;
 
       function Insert_Length_Check
         (Expr   : W_Expr_Id;
-         To_Ent : Entity_Id) return W_Prog_Id;
+         To_Ent : Entity_Id)
+         return W_Prog_Id;
 
       function Insert_Array_Range_Check
         (Expr   : W_Expr_Id;
-         To_Ent : Entity_Id) return W_Prog_Id;
+         To_Ent : Entity_Id)
+         return W_Prog_Id;
 
       ------------------------------
       -- Insert_Array_Range_Check --
@@ -430,7 +441,8 @@ package body Why.Gen.Expr is
 
       function Insert_Array_Range_Check
         (Expr   : W_Expr_Id;
-         To_Ent : Entity_Id) return W_Prog_Id
+         To_Ent : Entity_Id)
+         return W_Prog_Id
       is
          Check : W_Pred_Id;
 
@@ -456,7 +468,8 @@ package body Why.Gen.Expr is
 
       function Insert_Array_Index_Check
         (Expr   : W_Expr_Id;
-         To_Ent : Entity_Id) return W_Prog_Id
+         To_Ent : Entity_Id)
+         return W_Prog_Id
       is
          Constrained : constant Boolean := Is_Constrained (To_Ent);
          Check       : W_Pred_Id;
@@ -522,7 +535,8 @@ package body Why.Gen.Expr is
 
       function Insert_Length_Check
         (Expr   : W_Expr_Id;
-         To_Ent : Entity_Id) return W_Prog_Id
+         To_Ent : Entity_Id)
+         return W_Prog_Id
       is
          Check : constant W_Pred_Id :=
            New_Length_Equality
@@ -950,7 +964,8 @@ package body Why.Gen.Expr is
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
       Lvalue   : Boolean := False;
-      No_Init  : Boolean := False) return W_Expr_Id
+      No_Init  : Boolean := False)
+      return W_Expr_Id
    is
 
       --  When converting between Ada types, detect cases where a check is not
@@ -961,7 +976,6 @@ package body Why.Gen.Expr is
       T            : W_Expr_Id := Expr;
 
    begin
-
       if not Need_Conversion (Expr) then
          return Expr;
       end if;
@@ -1080,7 +1094,8 @@ package body Why.Gen.Expr is
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False;
-      No_Init    : Boolean := False) return W_Expr_Id
+      No_Init    : Boolean := False)
+      return W_Expr_Id
    is
       From   : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
@@ -1237,7 +1252,8 @@ package body Why.Gen.Expr is
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False;
-      No_Init    : Boolean := False) return W_Expr_Id
+      No_Init    : Boolean := False)
+      return W_Expr_Id
    is
       From   : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
@@ -1347,7 +1363,8 @@ package body Why.Gen.Expr is
    function Insert_Cnt_Loc_Label
      (Ada_Node     : Node_Id;
       E            : W_Expr_Id;
-      Is_Loop_Head : Boolean := False) return W_Expr_Id
+      Is_Loop_Head : Boolean := False)
+      return W_Expr_Id
    is
    begin
       if Present (Ada_Node)
@@ -1398,7 +1415,8 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Arr_Expr : W_Expr_Id;
       W_Expr   : W_Expr_Id;
-      Dim      : Positive) return W_Prog_Id
+      Dim      : Positive)
+      return W_Prog_Id
    is
       Tmp        : constant W_Expr_Id :=
         New_Temp_For_Expr (W_Expr);
@@ -1440,7 +1458,8 @@ package body Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;
       W_Expr     : W_Expr_Id;
-      Check_Kind : Scalar_Check_Kind) return W_Prog_Id
+      Check_Kind : Scalar_Check_Kind)
+      return W_Prog_Id
    is
       W_Type : constant W_Type_Id :=
         (if Get_Type_Kind (Get_Type (W_Expr)) = EW_Split
@@ -1763,7 +1782,8 @@ package body Why.Gen.Expr is
       To       : W_Type_Id;
       Do_Check : Boolean := False;
       Lvalue   : Boolean := False;
-      No_Init  : Boolean := False) return W_Expr_Id
+      No_Init  : Boolean := False)
+      return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1825,7 +1845,8 @@ package body Why.Gen.Expr is
       Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False;
       No_Init    : Boolean := False;
-      Skip_Pred  : Boolean := False) return W_Expr_Id
+      Skip_Pred  : Boolean := False)
+      return W_Expr_Id
    is
       From    : constant W_Type_Id := Get_Type (Expr);
       To_Conc : constant W_Type_Id :=
@@ -2202,7 +2223,8 @@ package body Why.Gen.Expr is
       Domain         : EW_Domain;
       Expr           : W_Expr_Id;
       To             : W_Type_Id;
-      Force_No_Slide : Boolean := False) return W_Expr_Id
+      Force_No_Slide : Boolean := False)
+      return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -2260,7 +2282,8 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       To       : W_Type_Id;
-      Expr     : W_Expr_Id) return W_Expr_Id
+      Expr     : W_Expr_Id)
+      return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
    begin
@@ -2332,7 +2355,8 @@ package body Why.Gen.Expr is
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False;
-      No_Init    : Boolean := False) return W_Expr_Id
+      No_Init    : Boolean := False)
+      return W_Expr_Id
    is
       From   : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
@@ -2504,6 +2528,7 @@ package body Why.Gen.Expr is
    -----------------
 
    function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
+
       function First_Constrained_Parent (Ty : Entity_Id) return Entity_Id with
         Pre => Is_Constrained (Ty);
       --  Traverse the parents of Ty to find the first constrained type
@@ -2621,9 +2646,10 @@ package body Why.Gen.Expr is
    ----------------------
 
    function New_Ada_Equality
-     (Typ         : Entity_Id;
+     (Typ         : Type_Kind_Id;
       Domain      : EW_Domain;
-      Left, Right : W_Expr_Id) return W_Expr_Id
+      Left, Right : W_Expr_Id)
+      return W_Expr_Id
    is
       Why_Type   : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
@@ -2710,7 +2736,8 @@ package body Why.Gen.Expr is
 
    function New_And_Expr
       (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id is
+       Domain      : EW_Domain)
+       return W_Expr_Id is
    begin
       if Is_True_Boolean (+Left) then
          return Right;
@@ -2796,7 +2823,9 @@ package body Why.Gen.Expr is
 
    function New_And_Then_Expr
       (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id is
+       Domain      : EW_Domain)
+       return W_Expr_Id
+   is
    begin
       if Is_True_Boolean (+Left) then
          return Right;
@@ -2824,7 +2853,9 @@ package body Why.Gen.Expr is
      (Ty        : Entity_Id;
       Domain    : EW_Domain;
       Attr      : Supported_Attribute_Id;
-      Params    : Transformation_Params := Body_Params) return W_Expr_Id is
+      Params    : Transformation_Params := Body_Params)
+      return W_Expr_Id
+   is
       Subdomain : constant EW_Domain :=
         (if Domain in EW_Prog | EW_Pterm then EW_Pterm else EW_Term);
 
@@ -2905,6 +2936,7 @@ package body Why.Gen.Expr is
                raise Program_Error;
             end case;
          end;
+
       elsif Is_Standard_Boolean_Type (Ty) then
          case Attr is
             when Attribute_First => return +M_Boolean.First;
@@ -2914,6 +2946,7 @@ package body Why.Gen.Expr is
             when others =>
                raise Program_Error;
          end case;
+
       else
          case Attr is
             when Attribute_First       => return +E_Symb (Ty, WNE_Attr_First);
@@ -2963,7 +2996,8 @@ package body Why.Gen.Expr is
    function New_Comparison
      (Symbol      : W_Identifier_Id;
       Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id
+      Domain      : EW_Domain)
+      return W_Expr_Id
    is
       Operator : W_Identifier_Id := Symbol;
       Left1    : W_Expr_Id;
@@ -3021,7 +3055,8 @@ package body Why.Gen.Expr is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Expr   : W_Expr_Id;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id
+      Params : Transformation_Params := Body_Params)
+      return W_Expr_Id
    is
    begin
       --  For now, only supports dynamic scalar types, unconstrained array
@@ -3040,6 +3075,7 @@ package body Why.Gen.Expr is
                             Args_For_Scalar_Dynamic_Property
                               (Ty, Expr, Term_Domain (Domain), Params),
                           Typ    => EW_Bool_Type);
+
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare
             Dim   : constant Positive := Positive (Number_Dimensions (Ty));
@@ -3067,6 +3103,7 @@ package body Why.Gen.Expr is
 
             return New_Dynamic_Property (Domain, Ty, Args, Params);
          end;
+
       elsif Count_Discriminants (Ty) > 0 and then Is_Constrained (Ty) then
          declare
             Base_Expr : constant W_Expr_Id :=
@@ -3083,6 +3120,7 @@ package body Why.Gen.Expr is
                Domain => Domain,
                Typ    => EW_Bool_Type);
          end;
+
       else
          raise Program_Error;
       end if;
@@ -3096,7 +3134,8 @@ package body Why.Gen.Expr is
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
       Right  : W_Expr_Id;
-      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id
+      Typ    : W_Type_Id := Why_Empty)
+      return W_Expr_Id
    is
       Rep_Type : constant W_Type_Id :=
         (if Typ = Why_Empty
@@ -3135,7 +3174,8 @@ package body Why.Gen.Expr is
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
       Right  : W_Expr_Id;
-      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id
+      Typ    : W_Type_Id := Why_Empty)
+      return W_Expr_Id
    is
       Rep_Type : constant W_Type_Id :=
         (if Typ = Why_Empty
@@ -3173,7 +3213,9 @@ package body Why.Gen.Expr is
    function New_Discrete_Constant
      (Ada_Node : Node_Id := Empty;
       Value    : Uint;
-      Typ      : W_Type_Id) return W_Expr_Id is
+      Typ      : W_Type_Id)
+      return W_Expr_Id
+   is
      (if Why_Type_Is_BitVector (Typ)
       then New_Modular_Constant (Ada_Node, Value, Typ)
       else New_Integer_Constant (Ada_Node, Value));
@@ -3224,7 +3266,6 @@ package body Why.Gen.Expr is
 
    function New_Shape_Label (Node : Node_Id) return Symbol is
       Buf : constant String := Shape_Of_Node (Node);
-
    begin
       if Buf /= "" then
          return NID (GP_Shape_Marker & Buf);
@@ -3314,16 +3355,16 @@ package body Why.Gen.Expr is
    -- New_Counterexample_Assign --
    -------------------------------
 
-   function New_Counterexample_Assign (If_Node   : Node_Id;
-                                       Condition : W_Expr_Id)
-                                       return W_Expr_Id
+   function New_Counterexample_Assign
+     (If_Node   : Node_Id;
+      Condition : W_Expr_Id)
+      return W_Expr_Id
    is
       Node_Label : constant Symbol_Sets.Set :=
         Symbol_Sets.To_Set
           (NID (Branch_Id_Label &
                 Ada.Strings.Fixed.Trim (Source => Node_Id'Image (If_Node),
                                         Side   => Left)));
-
    begin
       return
         +Sequence
@@ -3353,7 +3394,9 @@ package body Why.Gen.Expr is
 
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id is
+      Domain      : EW_Domain)
+      return W_Expr_Id
+   is
    begin
       if Is_False_Boolean (Left) then
          return Right;
@@ -3376,7 +3419,9 @@ package body Why.Gen.Expr is
 
    function New_Or_Expr
      (Conjuncts : W_Expr_Array;
-      Domain    : EW_Domain) return W_Expr_Id is
+      Domain    : EW_Domain)
+      return W_Expr_Id
+   is
    begin
       if Conjuncts'Length = 0 then
          return +True_Pred;
@@ -3416,7 +3461,9 @@ package body Why.Gen.Expr is
    function New_Or_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Type_Id) return W_Expr_Id is
+       Base        : W_Type_Id)
+       return W_Expr_Id
+   is
    begin
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
@@ -3429,8 +3476,10 @@ package body Why.Gen.Expr is
                      Name   => MF_BVs (Base).BW_Or,
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
+
       elsif Base = EW_Bool_Type then
          return New_Or_Expr (Left, Right, Domain);
+
       else
          declare
             Left2  : constant W_Expr_Id :=
@@ -3457,7 +3506,8 @@ package body Why.Gen.Expr is
 
    function New_Or_Else_Expr
      (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id
+      Domain      : EW_Domain)
+      return W_Expr_Id
    is
    begin
       if Is_False_Boolean (Left) then
@@ -3482,8 +3532,7 @@ package body Why.Gen.Expr is
    -- New_Sub_VC_Marker --
    -----------------------
 
-   function New_Sub_VC_Marker (N : Node_Id) return Symbol
-   is
+   function New_Sub_VC_Marker (N : Node_Id) return Symbol is
       Used_Node : Node_Id := N;
    begin
       --  String_Of_Node almost systematically prints the original node of the
@@ -3513,7 +3562,8 @@ package body Why.Gen.Expr is
      (Domain    : EW_Domain;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id;
-      Pretty    : Boolean := False) return W_Expr_Id
+      Pretty    : Boolean := False)
+      return W_Expr_Id
    is
       Ty : constant W_Type_Id :=
         (if Get_Type_Kind (Get_Type (Low)) = EW_Split
@@ -3564,7 +3614,8 @@ package body Why.Gen.Expr is
       (Condition : W_Expr_Id;
        Then_Part : W_Expr_Id;
        Else_Part : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id
+       Domain    : EW_Domain)
+       return W_Expr_Id
    is
    begin
       if Is_True_Boolean (Condition) then
@@ -3637,7 +3688,8 @@ package body Why.Gen.Expr is
       Name     : W_Identifier_Id;
       Def      : W_Expr_Id;
       Context  : W_Expr_Id)
-      return W_Expr_Id is
+      return W_Expr_Id
+   is
    begin
       return
         New_Binding
@@ -3656,7 +3708,8 @@ package body Why.Gen.Expr is
       Args     : W_Expr_Array;
       Check    : Boolean;
       Domain   : EW_Domain;
-      Typ      : W_Type_Id) return W_Expr_Id
+      Typ      : W_Type_Id)
+      return W_Expr_Id
    is
       Call : constant W_Expr_Id :=
         New_Call
@@ -3722,7 +3775,8 @@ package body Why.Gen.Expr is
        Reason   : VC_Kind;
        Check    : Boolean;
        Domain   : EW_Domain;
-       Typ      : W_Type_Id) return W_Expr_Id
+       Typ      : W_Type_Id)
+       return W_Expr_Id
    is
       Name_Spec : constant W_Identifier_Id :=
         (if Check and not Fix_Name then To_Program_Space (Name) else Name);
@@ -3752,7 +3806,8 @@ package body Why.Gen.Expr is
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
-       Typ      : W_Type_Id) return W_Prog_Id
+       Typ      : W_Type_Id)
+       return W_Prog_Id
    is
       Call : constant W_Expr_Id :=
         New_Call (Ada_Node => Ada_Node,
@@ -3775,7 +3830,8 @@ package body Why.Gen.Expr is
       (Ada_Node : Node_Id;
        Expr     : W_Expr_Id;
        Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
+       Domain   : EW_Domain)
+       return W_Expr_Id
    is
    begin
       return
@@ -3796,7 +3852,8 @@ package body Why.Gen.Expr is
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind) return Symbol_Set
+      Reason : VC_Kind)
+      return Symbol_Set
    is
       --  A GNATprove label in Why3 has the following form
       --
@@ -3856,8 +3913,9 @@ package body Why.Gen.Expr is
    function New_Xor_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Type_Id) return W_Expr_Id is
-
+       Base        : W_Type_Id)
+       return W_Expr_Id
+   is
    begin
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
@@ -3926,8 +3984,10 @@ package body Why.Gen.Expr is
    -- Why_Default_Value --
    -----------------------
 
-   function Why_Default_Value (Domain : EW_Domain;
-                               E      : Entity_Id) return W_Expr_Id
+   function Why_Default_Value
+     (Domain : EW_Domain;
+      E      : Type_Kind_Id)
+      return W_Expr_Id
    is
       Why_Ent : constant Entity_Id :=
         Get_Ada_Node (+EW_Abstract (E));

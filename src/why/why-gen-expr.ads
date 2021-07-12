@@ -64,7 +64,8 @@ package Why.Gen.Expr is
 
    function Boolean_Expr_Of_Pred
      (W      : W_Pred_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id;
    --  @param W a Why3 pred expression
    --  @param Domain translation domain
    --  @return the equivalent Why3 expression, depending on the [Domain]
@@ -82,7 +83,8 @@ package Why.Gen.Expr is
 
    function New_And_Expr
       (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id;
+       Domain      : EW_Domain)
+       return W_Expr_Id;
 
    function New_And_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
       (+New_And_Expr (+Left, +Right, EW_Prog));
@@ -96,7 +98,8 @@ package Why.Gen.Expr is
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Type_Id) return W_Expr_Id;
+       Base        : W_Type_Id)
+       return W_Expr_Id;
    --  Generate the expression "Left and Right"; choose the right "and"
    --  operation depending on "Base", e.g. for modular or boolean types.
 
@@ -104,31 +107,37 @@ package Why.Gen.Expr is
 
    function New_And_Then_Expr
       (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id;
+       Domain      : EW_Domain)
+       return W_Expr_Id;
 
    function New_Comparison
      (Symbol      : W_Identifier_Id;
       Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id;
 
    function New_Comparison
      (Symbol      : W_Identifier_Id;
-      Left, Right : W_Prog_Id) return W_Prog_Id
+      Left, Right : W_Prog_Id)
+      return W_Prog_Id
    is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Prog)));
 
    function New_Comparison
      (Symbol      : W_Identifier_Id;
-      Left, Right : W_Term_Id) return W_Term_Id
+      Left, Right : W_Term_Id)
+      return W_Term_Id
    is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Term)));
 
    function New_Comparison
      (Symbol      : W_Identifier_Id;
-      Left, Right : W_Term_Id) return W_Pred_Id
+      Left, Right : W_Term_Id)
+      return W_Pred_Id
    is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Pred)));
 
-   function New_Counterexample_Assign (If_Node   : Node_Id;
-                                       Condition : W_Expr_Id)
-                                       return W_Expr_Id;
+   function New_Counterexample_Assign
+     (If_Node   : Node_Id;
+      Condition : W_Expr_Id)
+      return W_Expr_Id;
    --  This takes a condition of an if-statement (or case statement)
    --  [Condition] and builds an assignment to a variable spark__branch with
    --  label [If_Node] , which is then dereferenced to yield the value of the
@@ -138,11 +147,10 @@ package Why.Gen.Expr is
    --  ("node_id:If_Node" spark__branch).bool__content]
 
    function New_Ada_Equality
-     (Typ         : Entity_Id;
+     (Typ         : Type_Kind_Id;
       Domain      : EW_Domain;
       Left, Right : W_Expr_Id)
-      return W_Expr_Id
-   with Pre => Is_Type (Typ);
+      return W_Expr_Id;
    --  Generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is the one of type Typ.
    --  If the type has a user-provided primitive equality and if its most
@@ -151,7 +159,8 @@ package Why.Gen.Expr is
 
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id;
 
    function New_Or_Term (Left, Right : W_Term_Id) return W_Term_Id is
      (+New_Or_Expr (+Left, +Right, EW_Term));
@@ -162,35 +171,41 @@ package Why.Gen.Expr is
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
       Domain      : EW_Domain;
-      Base        : W_Type_Id) return W_Expr_Id;
+      Base        : W_Type_Id)
+      return W_Expr_Id;
    --  Generate the expression "Left or Right"; choose the right "or" operation
    --  depending on "Base", e.g. for modular or boolean types.
 
    function New_Or_Expr
      (Conjuncts : W_Expr_Array;
-      Domain    : EW_Domain) return W_Expr_Id;
+      Domain    : EW_Domain)
+      return W_Expr_Id;
 
    function New_Or_Else_Expr
      (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain) return W_Expr_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id;
 
    function New_Xor_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Type_Id) return W_Expr_Id;
+       Base        : W_Type_Id)
+       return W_Expr_Id;
    --  Build an expression "Left xor Right", and choose the right xor operation
    --  depending on "Base", which is either EW_Bool_Type or EW_Int_Type.
 
-   function Why_Default_Value (Domain : EW_Domain; E : Entity_Id)
-                               return W_Expr_Id
-   with Pre => Is_Type (E);
+   function Why_Default_Value
+     (Domain : EW_Domain;
+      E      : Type_Kind_Id)
+      return W_Expr_Id;
    --  Return the default value for a given type
 
    function New_Simpl_Conditional
       (Condition : W_Expr_Id;
        Then_Part : W_Expr_Id;
        Else_Part : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id;
+       Domain    : EW_Domain)
+       return W_Expr_Id;
    --  Conditional, simplify if condition is true/false.
 
    function New_Shape_Label (Node : Node_Id) return Symbol;
@@ -198,7 +213,10 @@ package Why.Gen.Expr is
    --  input node. This label is used to name the VC file for manual proof.
 
    function New_Comment_Label
-     (Node : Node_Id; Loc : Symbol; Reason : VC_Kind) return Symbol;
+     (Node   : Node_Id;
+      Loc    : Symbol;
+      Reason : VC_Kind)
+      return Symbol;
    --  Return a label with the tag "comment" in order to display VC information
    --  in VC generated files.
 

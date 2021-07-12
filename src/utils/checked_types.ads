@@ -54,6 +54,10 @@ package Checked_Types is
      Predicate => No (Opt_N_Entry_Body_Id)
        or else Opt_N_Entry_Body_Id in N_Entry_Body_Id;
 
+   subtype Opt_N_Identifier_Id is Node_Id with
+     Predicate => No (Opt_N_Identifier_Id)
+       or else Opt_N_Identifier_Id in N_Identifier_Id;
+
    subtype Opt_N_Iteration_Scheme_Id is Node_Id with
      Predicate => No (Opt_N_Iteration_Scheme_Id)
        or else Opt_N_Iteration_Scheme_Id in N_Iteration_Scheme_Id;
