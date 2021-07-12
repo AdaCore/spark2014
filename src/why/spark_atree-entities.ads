@@ -35,169 +35,212 @@ with SPARK_Util.Subprograms;
 
 package SPARK_Atree.Entities is
 
+   package EE renames Einfo.Entities;
+
    --  Renamings are either
    --  * trivial in the .ads file or
    --  * with Pre/Post contract completed-by-renaming in the .adb file.
 
-   subtype Entity_Kind is Einfo.Entities.Entity_Kind;
+   subtype Entity_Kind is EE.Entity_Kind;
 
-   subtype Access_Kind          is Einfo.Entities.Access_Kind;
-   subtype Array_Kind           is Einfo.Entities.Array_Kind;
-   subtype Class_Wide_Kind      is Einfo.Entities.Class_Wide_Kind;
+   subtype Access_Kind          is EE.Access_Kind;
+   subtype Array_Kind           is EE.Array_Kind;
+   subtype Class_Wide_Kind      is EE.Class_Wide_Kind;
    subtype Constant_Or_Variable_Kind_Id is
-     Einfo.Entities.Constant_Or_Variable_Kind_Id;
-   subtype Composite_Kind       is Einfo.Entities.Composite_Kind;
-   subtype Concurrent_Kind      is Einfo.Entities.Concurrent_Kind;
-   subtype Discrete_Kind        is Einfo.Entities.Discrete_Kind;
-   subtype Entry_Kind           is Einfo.Entities.Entry_Kind;
-   subtype Enumeration_Kind     is Einfo.Entities.Enumeration_Kind;
-   subtype Fixed_Point_Kind     is Einfo.Entities.Fixed_Point_Kind;
-   subtype Float_Kind           is Einfo.Entities.Float_Kind;
-   subtype Formal_Kind          is Einfo.Entities.Formal_Kind;
-   subtype Integer_Kind         is Einfo.Entities.Integer_Kind;
-   subtype Modular_Integer_Kind is Einfo.Entities.Modular_Integer_Kind;
-   subtype Named_Kind           is Einfo.Entities.Named_Kind;
-   subtype Object_Kind          is Einfo.Entities.Object_Kind;
-   subtype Private_Kind         is Einfo.Entities.Private_Kind;
-   subtype Protected_Kind       is Einfo.Entities.Protected_Kind;
-   subtype Real_Kind            is Einfo.Entities.Real_Kind;
-   subtype Record_Kind          is Einfo.Entities.Record_Kind;
-   subtype Record_Field_Kind    is Einfo.Entities.Record_Field_Kind;
-   subtype Scalar_Kind          is Einfo.Entities.Scalar_Kind;
-   subtype Subprogram_Kind      is Einfo.Entities.Subprogram_Kind;
-   subtype Task_Kind            is Einfo.Entities.Task_Kind;
-   subtype Type_Kind            is Einfo.Entities.Type_Kind;
+     EE.Constant_Or_Variable_Kind_Id;
+   subtype Composite_Kind       is EE.Composite_Kind;
+   subtype Concurrent_Kind      is EE.Concurrent_Kind;
+   subtype Discrete_Kind        is EE.Discrete_Kind;
+   subtype Entry_Kind           is EE.Entry_Kind;
+   subtype Enumeration_Kind     is EE.Enumeration_Kind;
+   subtype Fixed_Point_Kind     is EE.Fixed_Point_Kind;
+   subtype Float_Kind           is EE.Float_Kind;
+   subtype Formal_Kind          is EE.Formal_Kind;
+   subtype Integer_Kind         is EE.Integer_Kind;
+   subtype Modular_Integer_Kind is EE.Modular_Integer_Kind;
+   subtype Named_Kind           is EE.Named_Kind;
+   subtype Object_Kind          is EE.Object_Kind;
+   subtype Private_Kind         is EE.Private_Kind;
+   subtype Protected_Kind       is EE.Protected_Kind;
+   subtype Real_Kind            is EE.Real_Kind;
+   subtype Record_Kind          is EE.Record_Kind;
+   subtype Record_Field_Kind    is EE.Record_Field_Kind;
+   subtype Scalar_Kind          is EE.Scalar_Kind;
+   subtype Subprogram_Kind      is EE.Subprogram_Kind;
+   subtype Task_Kind            is EE.Task_Kind;
+   subtype Type_Kind            is EE.Type_Kind;
 
-   subtype E_Constant_Id            is Einfo.Entities.E_Constant_Id;
-   subtype E_Component_Id           is Einfo.Entities.E_Component_Id;
-   subtype E_Discriminant_Id        is Einfo.Entities.E_Discriminant_Id;
-   subtype E_Enumeration_Literal_Id is Einfo.Entities.E_Enumeration_Literal_Id;
-   subtype E_In_Parameter_Id        is Einfo.Entities.E_In_Parameter_Id;
-   subtype E_Loop_Id                is Einfo.Entities.E_Loop_Id;
-   subtype E_Loop_Parameter_Id      is Einfo.Entities.E_Loop_Parameter_Id;
-   subtype E_Function_Id            is Einfo.Entities.E_Function_Id;
-   subtype E_Package_Id             is Einfo.Entities.E_Package_Id;
-   subtype E_Package_Body_Id        is Einfo.Entities.E_Package_Body_Id;
-   subtype E_Procedure_Id           is Einfo.Entities.E_Procedure_Id;
-   subtype E_Protected_Type_Id      is Einfo.Entities.E_Protected_Type_Id;
-   subtype E_Return_Statement_Id    is Einfo.Entities.E_Return_Statement_Id;
-   subtype E_String_Literal_Subtype_Id is
-     Einfo.Entities.E_String_Literal_Subtype_Id;
-   subtype E_Subprogram_Type_Id     is Einfo.Entities.E_Subprogram_Type_Id;
+   subtype E_Constant_Id            is EE.E_Constant_Id;
+   subtype E_Component_Id           is EE.E_Component_Id;
+   subtype E_Discriminant_Id        is EE.E_Discriminant_Id;
+   subtype E_Enumeration_Literal_Id is EE.E_Enumeration_Literal_Id;
+   subtype E_In_Parameter_Id        is EE.E_In_Parameter_Id;
+   subtype E_Loop_Id                is EE.E_Loop_Id;
+   subtype E_Loop_Parameter_Id      is EE.E_Loop_Parameter_Id;
+   subtype E_Function_Id            is EE.E_Function_Id;
+   subtype E_Package_Id             is EE.E_Package_Id;
+   subtype E_Package_Body_Id        is EE.E_Package_Body_Id;
+   subtype E_Procedure_Id           is EE.E_Procedure_Id;
+   subtype E_Protected_Type_Id      is EE.E_Protected_Type_Id;
+   subtype E_Return_Statement_Id    is EE.E_Return_Statement_Id;
+   subtype E_String_Literal_Subtype_Id is EE.E_String_Literal_Subtype_Id;
+   subtype E_Subprogram_Type_Id     is EE.E_Subprogram_Type_Id;
 
-   subtype Access_Kind_Id          is Einfo.Entities.Access_Kind_Id;
-   subtype Array_Kind_Id           is Einfo.Entities.Array_Kind_Id;
-   subtype Class_Wide_Kind_Id      is Einfo.Entities.Class_Wide_Kind_Id;
-   subtype Composite_Kind_Id       is Einfo.Entities.Composite_Kind_Id;
-   subtype Concurrent_Kind_Id      is Einfo.Entities.Concurrent_Kind_Id;
-   subtype Discrete_Kind_Id        is Einfo.Entities.Discrete_Kind_Id;
-   subtype Entry_Kind_Id           is Einfo.Entities.Entry_Kind_Id;
-   subtype Enumeration_Kind_Id     is Einfo.Entities.Enumeration_Kind_Id;
-   subtype Fixed_Point_Kind_Id     is Einfo.Entities.Fixed_Point_Kind_Id;
-   subtype Float_Kind_Id           is Einfo.Entities.Float_Kind_Id;
-   subtype Formal_Kind_Id          is Einfo.Entities.Formal_Kind_Id;
-   subtype Integer_Kind_Id         is Einfo.Entities.Integer_Kind_Id;
-   subtype Modular_Integer_Kind_Id is Einfo.Entities.Modular_Integer_Kind_Id;
-   subtype Named_Kind_Id           is Einfo.Entities.Named_Kind_Id;
-   subtype Object_Kind_Id          is Einfo.Entities.Object_Kind_Id;
-   subtype Private_Kind_Id         is Einfo.Entities.Private_Kind_Id;
-   subtype Protected_Kind_Id       is Einfo.Entities.Protected_Kind_Id;
-   subtype Real_Kind_Id            is Einfo.Entities.Real_Kind_Id;
-   subtype Record_Kind_Id          is Einfo.Entities.Record_Kind_Id;
-   subtype Record_Field_Kind_Id    is Einfo.Entities.Record_Field_Kind_Id;
-   subtype Scalar_Kind_Id          is Einfo.Entities.Scalar_Kind_Id;
-   subtype Subprogram_Kind_Id      is Einfo.Entities.Subprogram_Kind_Id;
-   subtype Task_Kind_Id            is Einfo.Entities.Task_Kind_Id;
-   subtype Type_Kind_Id            is Einfo.Entities.Type_Kind_Id;
+   subtype Opt_E_Constant_Id        is EE.Opt_E_Constant_Id;
+   subtype Opt_E_Component_Id       is EE.Opt_E_Component_Id;
+   subtype Opt_E_Discriminant_Id    is EE.Opt_E_Discriminant_Id;
+   subtype Opt_E_Enumeration_Literal_Id is EE.Opt_E_Enumeration_Literal_Id;
+   subtype Opt_E_In_Parameter_Id    is EE.Opt_E_In_Parameter_Id;
+   subtype Opt_E_Loop_Id            is EE.Opt_E_Loop_Id;
+   subtype Opt_E_Loop_Parameter_Id  is EE.Opt_E_Loop_Parameter_Id;
+   subtype Opt_E_Function_Id        is EE.Opt_E_Function_Id;
+   subtype Opt_E_Package_Id         is EE.Opt_E_Package_Id;
+   subtype Opt_E_Package_Body_Id    is EE.Opt_E_Package_Body_Id;
+   subtype Opt_E_Procedure_Id       is EE.Opt_E_Procedure_Id;
+   subtype Opt_E_Protected_Type_Id  is EE.Opt_E_Protected_Type_Id;
+   subtype Opt_E_Return_Statement_Id is EE.Opt_E_Return_Statement_Id;
+   subtype Opt_E_String_Literal_Subtype_Id is
+     EE.Opt_E_String_Literal_Subtype_Id;
+   subtype Opt_E_Subprogram_Type_Id is EE.Opt_E_Subprogram_Type_Id;
+
+   subtype Access_Kind_Id          is EE.Access_Kind_Id;
+   subtype Array_Kind_Id           is EE.Array_Kind_Id;
+   subtype Class_Wide_Kind_Id      is EE.Class_Wide_Kind_Id;
+   subtype Composite_Kind_Id       is EE.Composite_Kind_Id;
+   subtype Concurrent_Kind_Id      is EE.Concurrent_Kind_Id;
+   subtype Discrete_Kind_Id        is EE.Discrete_Kind_Id;
+   subtype Entry_Kind_Id           is EE.Entry_Kind_Id;
+   subtype Enumeration_Kind_Id     is EE.Enumeration_Kind_Id;
+   subtype Fixed_Point_Kind_Id     is EE.Fixed_Point_Kind_Id;
+   subtype Float_Kind_Id           is EE.Float_Kind_Id;
+   subtype Formal_Kind_Id          is EE.Formal_Kind_Id;
+   subtype Integer_Kind_Id         is EE.Integer_Kind_Id;
+   subtype Modular_Integer_Kind_Id is EE.Modular_Integer_Kind_Id;
+   subtype Named_Kind_Id           is EE.Named_Kind_Id;
+   subtype Object_Kind_Id          is EE.Object_Kind_Id;
+   subtype Private_Kind_Id         is EE.Private_Kind_Id;
+   subtype Protected_Kind_Id       is EE.Protected_Kind_Id;
+   subtype Real_Kind_Id            is EE.Real_Kind_Id;
+   subtype Record_Kind_Id          is EE.Record_Kind_Id;
+   subtype Record_Field_Kind_Id    is EE.Record_Field_Kind_Id;
+   subtype Scalar_Kind_Id          is EE.Scalar_Kind_Id;
+   subtype Subprogram_Kind_Id      is EE.Subprogram_Kind_Id;
+   subtype Task_Kind_Id            is EE.Task_Kind_Id;
+   subtype Type_Kind_Id            is EE.Type_Kind_Id;
+
+   subtype Opt_Access_Kind_Id          is EE.Opt_Access_Kind_Id;
+   subtype Opt_Array_Kind_Id           is EE.Opt_Array_Kind_Id;
+   subtype Opt_Class_Wide_Kind_Id      is EE.Opt_Class_Wide_Kind_Id;
+   subtype Opt_Composite_Kind_Id       is EE.Opt_Composite_Kind_Id;
+   subtype Opt_Concurrent_Kind_Id      is EE.Opt_Concurrent_Kind_Id;
+   subtype Opt_Discrete_Kind_Id        is EE.Opt_Discrete_Kind_Id;
+   subtype Opt_Entry_Kind_Id           is EE.Opt_Entry_Kind_Id;
+   subtype Opt_Enumeration_Kind_Id     is EE.Opt_Enumeration_Kind_Id;
+   subtype Opt_Fixed_Point_Kind_Id     is EE.Opt_Fixed_Point_Kind_Id;
+   subtype Opt_Float_Kind_Id           is EE.Opt_Float_Kind_Id;
+   subtype Opt_Formal_Kind_Id          is EE.Opt_Formal_Kind_Id;
+   subtype Opt_Integer_Kind_Id         is EE.Opt_Integer_Kind_Id;
+   subtype Opt_Modular_Integer_Kind_Id is EE.Opt_Modular_Integer_Kind_Id;
+   subtype Opt_Named_Kind_Id           is EE.Opt_Named_Kind_Id;
+   subtype Opt_Object_Kind_Id          is EE.Opt_Object_Kind_Id;
+   subtype Opt_Private_Kind_Id         is EE.Opt_Private_Kind_Id;
+   subtype Opt_Protected_Kind_Id       is EE.Opt_Protected_Kind_Id;
+   subtype Opt_Real_Kind_Id            is EE.Opt_Real_Kind_Id;
+   subtype Opt_Record_Kind_Id          is EE.Opt_Record_Kind_Id;
+   subtype Opt_Record_Field_Kind_Id    is EE.Opt_Record_Field_Kind_Id;
+   subtype Opt_Scalar_Kind_Id          is EE.Opt_Scalar_Kind_Id;
+   subtype Opt_Subprogram_Kind_Id      is EE.Opt_Subprogram_Kind_Id;
+   subtype Opt_Task_Kind_Id            is EE.Opt_Task_Kind_Id;
+   subtype Opt_Type_Kind_Id            is EE.Opt_Type_Kind_Id;
 
    E_Abstract_State              : Entity_Kind renames
-     Einfo.Entities.E_Abstract_State;
+     EE.E_Abstract_State;
    E_Access_Subtype              : Entity_Kind renames
-     Einfo.Entities.E_Access_Subtype;
+     EE.E_Access_Subtype;
    E_Access_Subprogram_Type      : Entity_Kind renames
-     Einfo.Entities.E_Access_Subprogram_Type;
+     EE.E_Access_Subprogram_Type;
    E_Access_Type                 : Entity_Kind renames
-     Einfo.Entities.E_Access_Type;
+     EE.E_Access_Type;
    E_Array_Subtype               : Entity_Kind renames
-     Einfo.Entities.E_Array_Subtype;
+     EE.E_Array_Subtype;
    E_Array_Type                  : Entity_Kind renames
-     Einfo.Entities.E_Array_Type;
+     EE.E_Array_Type;
    E_Class_Wide_Subtype          : Entity_Kind renames
-     Einfo.Entities.E_Class_Wide_Subtype;
+     EE.E_Class_Wide_Subtype;
    E_Class_Wide_Type             : Entity_Kind renames
-     Einfo.Entities.E_Class_Wide_Type;
+     EE.E_Class_Wide_Type;
    E_Component                   : Entity_Kind renames
-     Einfo.Entities.E_Component;
+     EE.E_Component;
    E_Constant                    : Entity_Kind renames
-     Einfo.Entities.E_Constant;
+     EE.E_Constant;
    E_Discriminant                : Entity_Kind renames
-     Einfo.Entities.E_Discriminant;
+     EE.E_Discriminant;
    E_Entry                       : Entity_Kind renames
-     Einfo.Entities.E_Entry;
+     EE.E_Entry;
    E_Enumeration_Literal         : Entity_Kind renames
-     Einfo.Entities.E_Enumeration_Literal;
+     EE.E_Enumeration_Literal;
    E_Exception_Type              : Entity_Kind renames
-     Einfo.Entities.E_Exception_Type;
+     EE.E_Exception_Type;
    E_Function                    : Entity_Kind renames
-     Einfo.Entities.E_Function;
+     EE.E_Function;
    E_General_Access_Type         : Entity_Kind renames
-     Einfo.Entities.E_General_Access_Type;
+     EE.E_General_Access_Type;
    E_In_Parameter                : Entity_Kind renames
-     Einfo.Entities.E_In_Parameter;
+     EE.E_In_Parameter;
    E_In_Out_Parameter            : Entity_Kind renames
-     Einfo.Entities.E_In_Out_Parameter;
+     EE.E_In_Out_Parameter;
    E_Incomplete_Subtype          : Entity_Kind renames
-     Einfo.Entities.E_Incomplete_Subtype;
+     EE.E_Incomplete_Subtype;
    E_Incomplete_Type             : Entity_Kind renames
-     Einfo.Entities.E_Incomplete_Type;
+     EE.E_Incomplete_Type;
    E_Label                       : Entity_Kind renames
-     Einfo.Entities.E_Label;
+     EE.E_Label;
    E_Loop_Parameter              : Entity_Kind renames
-     Einfo.Entities.E_Loop_Parameter;
+     EE.E_Loop_Parameter;
    E_Loop                        : Entity_Kind renames
-     Einfo.Entities.E_Loop;
+     EE.E_Loop;
    E_Operator                    : Entity_Kind renames
-     Einfo.Entities.E_Operator;
+     EE.E_Operator;
    E_Out_Parameter               : Entity_Kind renames
-     Einfo.Entities.E_Out_Parameter;
+     EE.E_Out_Parameter;
    E_Package                     : Entity_Kind renames
-     Einfo.Entities.E_Package;
+     EE.E_Package;
    E_Package_Body                : Entity_Kind renames
-     Einfo.Entities.E_Package_Body;
+     EE.E_Package_Body;
    E_Private_Subtype             : Entity_Kind renames
-     Einfo.Entities.E_Private_Subtype;
+     EE.E_Private_Subtype;
    E_Procedure                   : Entity_Kind renames
-     Einfo.Entities.E_Procedure;
+     EE.E_Procedure;
    E_Protected_Type              : Entity_Kind renames
-     Einfo.Entities.E_Protected_Type;
+     EE.E_Protected_Type;
    E_Protected_Subtype           : Entity_Kind renames
-     Einfo.Entities.E_Protected_Subtype;
+     EE.E_Protected_Subtype;
    E_Task_Subtype                : Entity_Kind renames
-     Einfo.Entities.E_Task_Subtype;
+     EE.E_Task_Subtype;
    E_Record_Subtype              : Entity_Kind renames
-     Einfo.Entities.E_Record_Subtype;
+     EE.E_Record_Subtype;
    E_Record_Subtype_With_Private : Entity_Kind renames
-     Einfo.Entities.E_Record_Subtype_With_Private;
+     EE.E_Record_Subtype_With_Private;
    E_Record_Type                 : Entity_Kind renames
-     Einfo.Entities.E_Record_Type;
+     EE.E_Record_Type;
    E_String_Literal_Subtype      : Entity_Kind renames
-     Einfo.Entities.E_String_Literal_Subtype;
+     EE.E_String_Literal_Subtype;
    E_Subprogram_Body             : Entity_Kind renames
-     Einfo.Entities.E_Subprogram_Body;
+     EE.E_Subprogram_Body;
    E_Subprogram_Type             : Entity_Kind renames
-     Einfo.Entities.E_Subprogram_Type;
+     EE.E_Subprogram_Type;
    E_Task_Type                   : Entity_Kind renames
-     Einfo.Entities.E_Task_Type;
+     EE.E_Task_Type;
    E_Variable                    : Entity_Kind renames
-     Einfo.Entities.E_Variable;
+     EE.E_Variable;
    E_Void                        : Entity_Kind renames
-     Einfo.Entities.E_Void;
+     EE.E_Void;
 
    function "=" (L, R : Entity_Kind) return Boolean renames
-     Einfo.Entities."=";
+     EE."=";
 
    function Ekind (E : Entity_Id) return Entity_Kind renames
-     Einfo.Entities.Ekind;
+     EE.Ekind;
 
    function Get_Pragma (E : Entity_Id; Id : Pragma_Id) return Node_Id renames
      Einfo.Utils.Get_Pragma;
@@ -224,10 +267,10 @@ package SPARK_Atree.Entities is
      Einfo.Utils.Is_Boolean_Type;
 
    function Is_Character_Type (E : Type_Kind_Id) return Boolean renames
-     Einfo.Entities.Is_Character_Type;
+     EE.Is_Character_Type;
 
    function Is_Compilation_Unit (E : Entity_Id) return Boolean renames
-     Einfo.Entities.Is_Compilation_Unit;
+     EE.Is_Compilation_Unit;
 
    function Is_Composite_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Composite_Type;
@@ -275,10 +318,10 @@ package SPARK_Atree.Entities is
      Einfo.Utils.Is_Generic_Unit;
 
    function Is_Imported (E : Entity_Id) return Boolean renames
-     Einfo.Entities.Is_Imported;
+     EE.Is_Imported;
 
    function Is_Itype (E : Type_Kind_Id) return Boolean renames
-     Einfo.Entities.Is_Itype;
+     EE.Is_Itype;
 
    function Is_Library_Level_Entity (E : Entity_Id) return Boolean renames
      Sem_Util.Is_Library_Level_Entity;
@@ -349,7 +392,7 @@ package SPARK_Atree.Entities is
    function Cloned_Subtype (Typ : Type_Kind_Id) return Entity_Id;
 
    function First_Subtype (Typ : Type_Kind_Id) return Entity_Id
-     with Post => Einfo.Entities.Is_First_Subtype (First_Subtype'Result);
+     with Post => EE.Is_First_Subtype (First_Subtype'Result);
 
    function Get_Cursor_Type (Typ : Type_Kind_Id) return Entity_Id
      with Pre =>
@@ -373,7 +416,7 @@ package SPARK_Atree.Entities is
    --  renamings.
 
    function Has_Default_Aspect (Typ : Type_Kind_Id) return Boolean;
-   --  Same as Einfo.Entities.Has_Default_Aspect except that it goes to the
+   --  Same as EE.Has_Default_Aspect except that it goes to the
    --  Base_Retysp.
 
    function Has_DIC (Typ : Type_Kind_Id) return Boolean;
@@ -597,15 +640,15 @@ package SPARK_Atree.Entities is
    --  the designated type.
 
    function Can_Never_Be_Null (E : Access_Kind_Id) return Boolean renames
-     Einfo.Entities.Can_Never_Be_Null;
+     EE.Can_Never_Be_Null;
 
    function Is_Access_Constant (E : Access_Kind_Id) return Boolean renames
-     Einfo.Entities.Is_Access_Constant;
+     EE.Is_Access_Constant;
 
    function Access_Subprogram_Wrapper
      (E : E_Subprogram_Type_Id)
       return Opt_Subprogram_Kind_Id
-   is (Einfo.Entities.Access_Subprogram_Wrapper (E));
+   is (EE.Access_Subprogram_Wrapper (E));
 
    ------------------
    --  For Objects --
@@ -711,7 +754,7 @@ package SPARK_Atree.Entities is
    --  wrappers.
 
    function No_Return (Subp : Callable_Kind_Id) return Boolean renames
-     Einfo.Entities.No_Return;
+     EE.No_Return;
 
    function Null_Present (Subp : E_Procedure_Id) return Boolean;
    --  Applies Sinfo.Null_Present on the specification of Subp.

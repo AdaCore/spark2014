@@ -25,7 +25,6 @@
 
 with Ada.Strings;         use Ada.Strings;
 with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
-with Checked_Types;       use Checked_Types;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
