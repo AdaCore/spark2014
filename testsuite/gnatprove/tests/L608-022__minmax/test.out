@@ -15,11 +15,11 @@ minmax.adb:51:28: info: initialization of "MinT" proved
 minmax.adb:51:34: info: initialization of "MaxT" proved
 minmax.adb:58:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:59:22: info: assertion proved (CVC4: 1 VC)
-minmax.adb:64:27: medium: overflow check might fail (e.g. when X = 1 and Y = T'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-minmax.adb:65:24: info: overflow check proved (CVC4: 1 VC)
+minmax.adb:64:27: medium: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = 64 and Y = 65) [reason for check: result of addition must fit in a 8-bits machine integer]
+minmax.adb:65:24: info: overflow check proved (CVC4: 2 VC)
 minmax.adb:66:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:67:22: info: assertion proved (CVC4: 1 VC)
-minmax.adb:67:31: info: overflow check proved (CVC4: 1 VC)
+minmax.adb:67:31: info: overflow check proved (CVC4: 2 VC)
 minmax.adb:71:06: info: data dependencies proved
 minmax.adb:71:28: info: initialization of "MinE" proved
 minmax.adb:71:34: info: initialization of "MaxE" proved
@@ -27,7 +27,7 @@ minmax.adb:78:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:79:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:83:04: info: precondition proved (CVC4: 1 VC)
 minmax.adb:84:04: info: precondition proved (CVC4: 1 VC)
-minmax.adb:84:09: info: range check proved (CVC4: 1 VC)
-minmax.adb:84:12: info: range check proved (CVC4: 1 VC)
+minmax.adb:84:09: info: range check proved (CVC4: 2 VC)
+minmax.adb:84:12: info: range check proved (CVC4: 2 VC)
 minmax.adb:85:04: info: precondition proved (CVC4: 1 VC)
 minmax.adb:86:04: info: precondition proved (CVC4: 1 VC)

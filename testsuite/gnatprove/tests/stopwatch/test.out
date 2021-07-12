@@ -3,7 +3,7 @@ display.adb:20:04: info: object is suitable for aliasing via address clause (Tri
 display.adb:23:06: warning: consider annotating "Port" with Async_Writers
 display.adb:23:06: warning: indirect writes to "Port" through a potential alias are ignored
 display.adb:23:06: warning: writing to "Port" is assumed to have no effects on other non-volatile objects
-display.adb:37:32: info: overflow check proved (CVC4: 1 VC)
+display.adb:37:32: info: overflow check proved (CVC4: 2 VC)
 display.ads:10:06: info: data dependencies proved
 display.ads:11:06: info: flow dependencies proved
 display.ads:14:06: info: data dependencies proved

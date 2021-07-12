@@ -1,5 +1,5 @@
 
-account8.adb:7:31: medium: overflow check might fail
+account8.adb:7:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1
     7 |         The_Data := The_Data + 1;
       |                     ~~~~~~~~~^~~
   reason for check: result of addition must fit in a 32-bits machine integer

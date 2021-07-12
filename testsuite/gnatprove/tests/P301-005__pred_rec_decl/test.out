@@ -25,16 +25,16 @@ preds.adb:64:07: info: initialization of "Tmp" proved
 preds.adb:69:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_Bad"
 preds.adb:69:35: info: initialization of "X" proved
 preds.adb:70:07: info: initialization of "Tmp" proved
-preds.ads:4:23: info: range check proved (CVC4: 1 VC)
-preds.ads:8:23: info: range check proved (CVC4: 1 VC)
+preds.ads:4:23: info: range check proved (CVC4: 2 VC)
+preds.ads:8:23: info: range check proved (CVC4: 2 VC)
 preds.ads:11:29: info: initialization of "X" proved
 preds.ads:12:30: info: initialization of "X" proved
-preds.ads:15:23: info: range check proved (CVC4: 1 VC)
-preds.ads:18:23: info: range check proved (CVC4: 1 VC)
+preds.ads:15:23: info: range check proved (CVC4: 2 VC)
+preds.ads:18:23: info: range check proved (CVC4: 2 VC)
 preds.ads:26:33: info: initialization of "X" proved
 preds.ads:27:34: info: initialization of "X" proved
-preds.ads:33:23: info: range check proved (CVC4: 1 VC)
-preds.ads:36:23: info: range check proved (CVC4: 1 VC)
+preds.ads:33:23: info: range check proved (CVC4: 2 VC)
+preds.ads:36:23: info: range check proved (CVC4: 2 VC)
 preds.ads:38:34: info: initialization of "X" proved
 preds.ads:39:35: info: initialization of "X" proved
 preds.ads:49:29: info: initialization of "X" proved
@@ -45,7 +45,7 @@ preds.ads:61:07: medium: predicate check might fail on default value
 preds.ads:62:07: medium: predicate check might fail on default value, cannot prove Arr_Bad (K) /= 0 (e.g. when K = 1)
 preds.ads:66:29: info: initialization of "X" proved
 preds.ads:67:30: info: initialization of "X" proved
-preds.ads:70:23: info: range check proved (CVC4: 1 VC)
-preds.ads:74:23: info: range check proved (CVC4: 1 VC)
+preds.ads:70:23: info: range check proved (CVC4: 2 VC)
+preds.ads:74:23: info: range check proved (CVC4: 2 VC)
 preds.ads:78:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.ads:82:07: medium: predicate check might fail on default value

@@ -53,6 +53,9 @@
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="37"/></proof>
   </goal>
+  <goal name="def&#39;vc.12" proved="true">
+  <proof prover="0" timelimit="20"><result status="valid" steps="5"/></proof>
+  </goal>
  </transf>
  </goal>
 </theory>

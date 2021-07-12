@@ -1,6 +1,6 @@
 frame_condition.adb:4:07: info: initialization of "K" proved
 frame_condition.adb:5:07: info: initialization of "Max" proved
-frame_condition.adb:11:13: info: range check proved (CVC4: 1 VC)
+frame_condition.adb:11:13: info: range check proved (CVC4: 2 VC)
 frame_condition.adb:15:16: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:16:23: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:18:13: info: index check proved (CVC4: 4 VC)
@@ -13,8 +13,8 @@ frame_condition.adb:23:13: info: loop invariant initialization proved (CVC4: 1 V
 frame_condition.adb:23:13: info: loop invariant preservation proved (CVC4: 1 VC)
 frame_condition.adb:25:23: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:25:38: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:27:17: info: overflow check proved (CVC4: 1 VC)
-frame_condition.adb:30:13: info: range check proved (CVC4: 1 VC)
+frame_condition.adb:27:17: info: overflow check proved (CVC4: 2 VC)
+frame_condition.adb:30:13: info: range check proved (CVC4: 2 VC)
 frame_condition.adb:34:16: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:35:23: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:37:13: info: index check proved (CVC4: 4 VC)
@@ -27,23 +27,23 @@ frame_condition.adb:42:13: info: loop invariant initialization proved (CVC4: 1 V
 frame_condition.adb:42:13: info: loop invariant preservation proved (CVC4: 1 VC)
 frame_condition.adb:44:23: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:44:38: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:46:17: info: range check proved (CVC4: 1 VC)
-frame_condition.adb:57:40: info: range check proved (CVC4: 1 VC)
-frame_condition.adb:58:40: info: range check proved (CVC4: 1 VC)
+frame_condition.adb:46:17: info: range check proved (CVC4: 2 VC)
+frame_condition.adb:57:40: info: range check proved (CVC4: 2 VC)
+frame_condition.adb:58:40: info: range check proved (CVC4: 2 VC)
 frame_condition.adb:68:18: info: postcondition proved (CVC4: 3 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:68:18: info: postcondition proved (CVC4: 3 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:70:30: info: index check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:70:30: info: index check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:70:42: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:70:42: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:70:51: info: range check proved (CVC4: 1 VC), in instantiation at frame_condition.adb:122
-frame_condition.adb:70:51: info: range check proved (CVC4: 1 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:70:51: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
+frame_condition.adb:70:51: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:74:34: info: index check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:74:34: info: index check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:74:46: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:74:46: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:74:55: info: range check proved (CVC4: 1 VC), in instantiation at frame_condition.adb:122
-frame_condition.adb:74:55: info: range check proved (CVC4: 1 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:74:55: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
+frame_condition.adb:74:55: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:75:16: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:75:16: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:75:31: info: data dependencies proved, in instantiation at frame_condition.adb:122
@@ -72,14 +72,14 @@ frame_condition.adb:93:30: info: index check proved (CVC4: 4 VC), in instantiati
 frame_condition.adb:93:30: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:93:42: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:93:42: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:93:51: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
-frame_condition.adb:93:51: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:93:51: info: range check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
+frame_condition.adb:93:51: info: range check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:97:34: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:97:34: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:97:46: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:97:46: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:97:55: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
-frame_condition.adb:97:55: info: range check proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:97:55: info: range check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
+frame_condition.adb:97:55: info: range check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:98:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:98:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:98:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at frame_condition.adb:122
@@ -88,7 +88,7 @@ frame_condition.adb:98:39: info: precondition proved (CVC4: 4 VC), in instantiat
 frame_condition.adb:98:39: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:104:20: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:104:20: info: local subprogram "Increment_Left" only analyzed in the context of calls
-frame_condition.adb:106:28: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:122
+frame_condition.adb:106:28: info: overflow check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:122
 frame_condition.adb:109:20: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:109:20: info: local subprogram "Set_Max_Left" only analyzed in the context of calls
 frame_condition.adb:111:16: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:122
@@ -97,7 +97,7 @@ frame_condition.adb:119:40: info: index check proved (CVC4: 2 VC)
 frame_condition.adb:119:58: info: index check proved (CVC4: 2 VC)
 frame_condition.adb:130:20: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:130:20: info: local subprogram "Increment_Right" only analyzed in the context of calls
-frame_condition.adb:132:28: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:150
+frame_condition.adb:132:28: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:150
 frame_condition.adb:135:20: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:135:20: info: local subprogram "Set_Max_Right" only analyzed in the context of calls
 frame_condition.adb:137:16: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:150
@@ -111,11 +111,11 @@ frame_condition.adb:160:10: info: precondition proved (CVC4: 1 VC)
 frame_condition.adb:167:17: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:167:17: info: local subprogram "Increment" only analyzed in the context of calls
 frame_condition.adb:170:33: warning: this statement is never reached, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
-frame_condition.adb:170:42: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
-frame_condition.adb:170:42: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
+frame_condition.adb:170:42: info: overflow check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
+frame_condition.adb:170:42: info: overflow check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:171:33: warning: this statement is never reached, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
-frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
-frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
+frame_condition.adb:171:42: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
+frame_condition.adb:171:42: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:175:17: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:175:17: info: local subprogram "Set_Max" only analyzed in the context of calls
 frame_condition.adb:178:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
@@ -126,14 +126,14 @@ frame_condition.adb:179:30: info: index check proved (CVC4: 4 VC), in call inlin
 frame_condition.adb:179:47: warning: this statement is never reached, in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
 frame_condition.adb:183:17: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:183:17: info: local subprogram "Update_One_Max" only analyzed in the context of calls
-frame_condition.adb:190:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:190:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:191:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:191:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:194:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:194:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:195:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:195:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:190:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:190:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:191:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:191:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:194:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:194:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:195:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:195:31: info: range check proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:201:19: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:201:19: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:202:26: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233

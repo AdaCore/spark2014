@@ -1,11 +1,11 @@
 test_vdll.adb:9:04: info: initialization of "L1" proved
-test_vdll.adb:9:16: info: range check proved (CVC4: 1 VC)
+test_vdll.adb:9:16: info: range check proved (CVC4: 2 VC)
 test_vdll.adb:10:04: info: initialization of "L2" proved
-test_vdll.adb:10:16: info: range check proved (CVC4: 1 VC)
+test_vdll.adb:10:16: info: range check proved (CVC4: 2 VC)
 test_vdll.adb:11:04: info: initialization of "L3" proved
-test_vdll.adb:11:16: info: range check proved (CVC4: 1 VC)
+test_vdll.adb:11:16: info: range check proved (CVC4: 2 VC)
 test_vdll.adb:12:04: info: initialization of "L4" proved
-test_vdll.adb:12:16: info: range check proved (CVC4: 1 VC)
+test_vdll.adb:12:16: info: range check proved (CVC4: 2 VC)
 test_vdll.adb:13:04: info: initialization of "C" proved
 test_vdll.adb:20:07: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:25:19: info: assertion proved (CVC4: 1 VC)
@@ -102,7 +102,7 @@ test_vdll.adb:141:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:141:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:142:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:142:36: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:143:19: info: assertion proved (Z3: 1 VC)
+test_vdll.adb:143:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:143:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:143:37: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:146:19: info: assertion proved (CVC4: 1 VC)
@@ -120,7 +120,7 @@ test_vdll.adb:168:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:171:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:172:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:172:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:175:19: info: assertion proved (Z3: 1 VC)
+test_vdll.adb:175:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:175:40: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:178:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:178:19: info: precondition proved (CVC4: 1 VC)

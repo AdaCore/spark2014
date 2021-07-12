@@ -11,32 +11,32 @@ a-cofove.ads:294:08: info: dynamic accessibility check proved (Trivial), in inst
 a-cofove.ads:300:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:6
 a-cofove.ads:319:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
 a-cofove.ads:319:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:342:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:384:73: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:417:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:452:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:498:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:522:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:563:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:628:28: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:628:57: info: range check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:342:51: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:384:73: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:417:51: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:452:59: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:498:59: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:522:51: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:563:59: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:628:28: info: overflow check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:628:57: info: range check proved (CVC4: 2 VC), in instantiation at prim_eq_vect.adb:6
 a-cofove.ads:756:23: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
 a-cofove.ads:792:14: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
-prim_eq_vect.adb:9:52: info: range check proved (CVC4: 1 VC)
+prim_eq_vect.adb:9:52: info: range check proved (CVC4: 2 VC)
 prim_eq_vect.adb:28:14: info: postcondition proved (CVC4: 1 VC)
 prim_eq_vect.adb:28:26: info: precondition proved (CVC4: 1 VC)
 prim_eq_vect.adb:28:59: info: precondition proved (CVC4: 1 VC)

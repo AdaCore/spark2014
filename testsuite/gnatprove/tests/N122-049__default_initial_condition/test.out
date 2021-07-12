@@ -6,8 +6,8 @@ p.ads:125:04: medium: type "T5" is not fully initialized
 p.ads:178:04: medium: type "T10" is not fully initialized
 p.ads:188:04: medium: type "T11" is not fully initialized
 q.ads:37:04: medium: type "T1" is not fully initialized
-q.ads:40:28: info: range check proved (CVC4: 1 VC)
+q.ads:40:28: info: range check proved (CVC4: 2 VC)
 q.ads:42:04: medium: type "T3" is not fully initialized
 q.ads:47:04: medium: type "T5" is not fully initialized
-types.ads:9:28: info: range check proved (CVC4: 1 VC)
-types.ads:12:28: info: range check proved (CVC4: 1 VC)
+types.ads:9:28: info: range check proved (CVC4: 2 VC)
+types.ads:12:28: info: range check proved (CVC4: 2 VC)

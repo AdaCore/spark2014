@@ -8,7 +8,7 @@ attempt_1.adb:25:33: info: initialization of "New_Speed" proved
 attempt_1.adb:26:33: info: initialization of "Average" proved
 attempt_1.adb:27:09: info: data dependencies proved
 attempt_1.adb:30:19: medium: postcondition might fail
-attempt_1.adb:30:32: info: range check proved (CVC4: 1 VC)
+attempt_1.adb:30:32: info: range check proved (CVC4: 2 VC)
 attempt_1.adb:33:30: info: float overflow check proved (CodePeer)
 attempt_1.adb:33:40: info: float overflow check proved (Trivial)
 attempt_1.adb:33:44: info: float overflow check proved (Trivial)
@@ -16,18 +16,18 @@ attempt_1.adb:34:31: info: float overflow check proved (CodePeer)
 attempt_1.adb:34:44: info: division check proved (CodePeer)
 attempt_1.adb:34:44: info: float overflow check proved (Trivial)
 attempt_2.adb:16:18: info: range check proved (Trivial)
-attempt_2.adb:16:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at line 15 should mention N in a precondition]
+attempt_2.adb:16:18: medium: overflow check might fail, cannot prove upper bound for N*N [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at line 15 should mention N in a precondition]
 attempt_2.adb:16:22: info: float overflow check proved (Trivial)
 attempt_2.adb:16:37: info: float overflow check proved (Trivial)
 attempt_2.adb:19:18: info: range check proved (Trivial)
-attempt_2.adb:19:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at line 18 should mention N in a precondition]
+attempt_2.adb:19:18: medium: overflow check might fail, cannot prove upper bound for N*N [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at line 18 should mention N in a precondition]
 attempt_2.adb:19:22: info: float overflow check proved (Trivial)
 attempt_2.adb:19:36: info: float overflow check proved (Trivial)
 attempt_2.adb:27:33: info: initialization of "New_Speed" proved
 attempt_2.adb:28:33: info: initialization of "Average" proved
 attempt_2.adb:29:09: info: data dependencies proved
 attempt_2.adb:32:19: medium: postcondition might fail
-attempt_2.adb:32:32: info: range check proved (CVC4: 1 VC)
+attempt_2.adb:32:32: info: range check proved (CVC4: 2 VC)
 attempt_2.adb:35:30: info: float overflow check proved (CodePeer)
 attempt_2.adb:35:40: info: float overflow check proved (Trivial)
 attempt_2.adb:35:44: info: float overflow check proved (Trivial)
@@ -42,7 +42,7 @@ attempt_3.adb:32:33: info: initialization of "New_Speed" proved
 attempt_3.adb:33:33: info: initialization of "Average" proved
 attempt_3.adb:35:09: info: data dependencies proved
 attempt_3.adb:38:19: info: postcondition proved (CVC4: 1 VC)
-attempt_3.adb:38:32: info: range check proved (CVC4: 1 VC)
+attempt_3.adb:38:32: info: range check proved (CVC4: 2 VC)
 attempt_3.adb:40:48: info: float overflow check proved (Trivial)
 attempt_3.adb:40:52: info: float overflow check proved (Trivial)
 attempt_3.adb:40:52: info: range check proved (Trivial)
@@ -66,23 +66,23 @@ attempt_3.adb:60:49: info: range check proved (Trivial)
 attempt_3.adb:60:53: info: float overflow check proved (Trivial)
 attempt_3.adb:60:53: info: range check proved (Trivial)
 attempt_3.adb:62:25: info: assertion proved (CodePeer)
-attempt_3.adb:62:27: info: overflow check proved (CVC4: 1 VC)
-attempt_3.adb:62:32: info: overflow check proved (CVC4: 1 VC)
-attempt_3.adb:62:45: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
+attempt_3.adb:62:27: info: overflow check proved (CVC4: 2 VC)
+attempt_3.adb:62:32: info: overflow check proved (CVC4: 2 VC)
+attempt_3.adb:62:45: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer]
 attempt_3.adb:63:25: medium: assertion might fail
 attempt_3.adb:63:35: info: overflow check proved (CodePeer)
-attempt_3.adb:63:40: info: overflow check proved (CVC4: 1 VC)
+attempt_3.adb:63:40: info: overflow check proved (CVC4: 2 VC)
 attempt_3.adb:63:40: info: range check proved (Trivial)
 attempt_3.adb:63:62: info: range check proved (Trivial)
-attempt_3.adb:63:62: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
+attempt_3.adb:63:62: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer]
 attempt_3.adb:64:25: medium: assertion might fail
 attempt_3.adb:64:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:64:49: info: overflow check proved (CodePeer)
-attempt_3.adb:64:54: info: overflow check proved (CVC4: 1 VC)
+attempt_3.adb:64:54: info: overflow check proved (CVC4: 2 VC)
 attempt_3.adb:64:54: info: range check proved (Trivial)
 attempt_3.adb:65:25: medium: assertion might fail
 attempt_3.adb:65:49: info: range check proved (Trivial)
-attempt_3.adb:65:49: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
+attempt_3.adb:65:49: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer]
 attempt_3.adb:66:25: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:66:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:22: info: assertion proved (CodePeer)
@@ -131,7 +131,7 @@ attempt_4.adb:30:71: info: float overflow check proved (Trivial)
 attempt_4.adb:36:34: info: initialization of "Average" proved
 attempt_4.adb:37:09: info: data dependencies proved
 attempt_4.adb:40:19: medium: postcondition might fail
-attempt_4.adb:40:32: info: range check proved (CVC4: 1 VC)
+attempt_4.adb:40:32: info: range check proved (CVC4: 2 VC)
 attempt_4.adb:44:25: info: float overflow check proved (CodePeer)
 attempt_4.adb:44:35: info: float overflow check proved (Trivial)
 attempt_4.adb:44:39: info: float overflow check proved (Trivial)

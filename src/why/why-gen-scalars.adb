@@ -31,6 +31,7 @@ with Sinput;              use Sinput;
 with Stand;               use Stand;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;
+with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
@@ -658,7 +659,8 @@ package body Why.Gen.Scalars is
                                     +New_Range_Expr (Domain => EW_Pred,
                                                      Low    => +Fst,
                                                      High   => +Lst,
-                                                     Expr   => +Var));
+                                                     Expr   => +Var,
+                                                     Pretty => True));
          end if;
 
          --  Emit range predicate if the type is static, a dynamic_property
@@ -682,7 +684,7 @@ package body Why.Gen.Scalars is
                      Name     => To_Local (E_Symb (E, Name)),
                      Def      => +Def,
                      Location => No_Location,
-                     Labels   => Symbol_Sets.Empty_Set,
+                     Labels   => Symbol_Sets.To_Set (NID (GP_Inline_Marker)),
                      Binders  => Binders));
 
             --  in case we're dealing with bitvectors, we also need to generate

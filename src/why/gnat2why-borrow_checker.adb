@@ -3407,11 +3407,15 @@ package body Gnat2Why.Borrow_Checker is
 
       case Prag_Id is
          when Pragma_Check =>
-            declare
-               Expr : constant Node_Id := Expression (Arg2);
-            begin
-               Check_Expression (Expr, Read);
-            end;
+            --  Ignored Pragma_Check are not marked. Ignore them.
+
+            if not Is_Ignored_Pragma_Check (Prag) then
+               declare
+                  Expr : constant Node_Id := Expression (Arg2);
+               begin
+                  Check_Expression (Expr, Read);
+               end;
+            end if;
 
          --  There is no need to check contracts, as these can only access
          --  inputs and outputs of the subprogram. Inputs are checked

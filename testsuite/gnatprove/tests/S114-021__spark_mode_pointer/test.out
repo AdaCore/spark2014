@@ -1,7 +1,7 @@
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at spark_boundary.ads:3
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at spark_boundary.ads:3
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at spark_boundary.ads:3
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at spark_boundary.ads:3
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at spark_boundary.ads:3
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at spark_boundary.ads:3
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at spark_boundary.ads:3
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at spark_boundary.ads:3
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at spark_boundary.ads:3
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at spark_boundary.ads:3
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at spark_boundary.ads:3
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at spark_boundary.ads:3

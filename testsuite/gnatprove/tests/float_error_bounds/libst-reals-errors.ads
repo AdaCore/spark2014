@@ -7,7 +7,7 @@ package Libst.Reals.Errors with SPARK_Mode is
      Post =>
        abs (To_Big_Real (Sum_Weight_Rec (Weights, I)) -
               Sum_Weight_Rec (Weights, I))
-         <= To_Real (I - 1) * 1.01E-7 * Sum_Weight_Rec (Weights, I);
+         <= To_Real (I - 1) * 1.001E-7 * Sum_Weight_Rec (Weights, I);
    --  Error bound on the computation of Sum_Weight_Rec
 
    procedure Error_For_SW (Weights : Weight_Array)
@@ -62,7 +62,7 @@ package Libst.Reals.Errors with SPARK_Mode is
      Post =>
        abs (To_Big_Real (Weighted_Sum_Rec (Weights, Values, I)) -
               Weighted_Sum_Rec (Weights, Values, I))
-         <= 2.5E-45 * To_Real (I) + (1.0E-7 + 1.01E-7 * To_Real (I - 1))
+         <= 2.01E-45 * To_Real (I) + (1.0E-7 + 1.01E-7 * To_Real (I - 1))
            * Weighted_Sum_Abs_Rec (Weights, Values, I);
    --  Error bound on the computation of Weighted_Sum_Rec
 
@@ -74,7 +74,7 @@ package Libst.Reals.Errors with SPARK_Mode is
      Post =>
          abs (To_Big_Real (Weighted_Sum (Weights, Values)) -
                 Weighted_Sum (Weights, Values))
-           <= 1.25E-45 + 2.52E-43 / Sum_Weight (Weights)
+           <= 1.01E-45 + 2.03E-43 / Sum_Weight (Weights)
             + 2.05E-5 * Weighted_Sum_Abs (Weights, Values);
    --  Error bound on the computation of Weighted_Sum
 
@@ -84,7 +84,7 @@ package Libst.Reals.Errors with SPARK_Mode is
    with
        Pre  => Sum_Weight (Weights) /= Float'(0.0),
        Post => Float'(Weighted_Sum (Weights, Values))
-         in - 1.00003 * Max_Value .. 1.00003 * Max_Value;
+         in - (Max_Value + 2.0) .. Max_Value + 2.0;
    --  Precise bound for Weighted_Sum obtained through error bound computation
 
 end Libst.Reals.Errors;

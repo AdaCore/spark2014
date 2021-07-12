@@ -1,44 +1,44 @@
-with_default.adb:4:69: medium: range check might fail (e.g. when C = 1) [reason for check: default value must fit in the type]
+with_default.adb:4:69: medium: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default value must fit in the type]
 with_default.adb:5:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:13:69: info: range check proved (CVC4: 1 VC)
+with_default.adb:13:69: info: range check proved (CVC4: 2 VC)
 with_default.adb:14:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:16:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:18:07: info: initialization of "Ok_Def" proved
-with_default.adb:19:38: info: range check proved (CVC4: 1 VC)
+with_default.adb:19:38: info: range check proved (CVC4: 2 VC)
 with_default.adb:23:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:27:69: medium: range check might fail (e.g. when C = 1) [reason for check: default value must fit in the type]
+with_default.adb:27:69: medium: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default value must fit in the type]
 with_default.adb:28:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:37:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:39:41: medium: range check might fail (e.g. when C = 1) [reason for check: default component value must fit in the component type]
-with_default.adb:46:69: info: range check proved (CVC4: 1 VC)
+with_default.adb:39:41: medium: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default component value must fit in the component type]
+with_default.adb:46:69: info: range check proved (CVC4: 2 VC)
 with_default.adb:47:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:49:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:54:41: info: range check proved (CVC4: 1 VC)
-with_default.adb:58:41: info: range check proved (CVC4: 1 VC)
-with_default.adb:62:51: info: range check proved (CVC4: 1 VC)
+with_default.adb:54:41: info: range check proved (CVC4: 2 VC)
+with_default.adb:58:41: info: range check proved (CVC4: 2 VC)
+with_default.adb:62:51: info: range check proved (CVC4: 2 VC)
 with_default.adb:64:07: info: initialization of "All_0" proved
 with_default.adb:65:07: info: initialization of "All_1" proved
 with_default.adb:66:07: info: initialization of "All_2" proved
 with_default.adb:69:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:70:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:71:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:75:69: info: range check proved (CVC4: 1 VC)
+with_default.adb:75:69: info: range check proved (CVC4: 2 VC)
 with_default.adb:76:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:80:36: medium: range check might fail (e.g. when C = 1) [reason for check: default component value must fit in the type]
-with_default.adb:89:69: medium: range check might fail (e.g. when C = 1) [reason for check: default value must fit in the type]
+with_default.adb:80:36: medium: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default component value must fit in the type]
+with_default.adb:89:69: medium: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default value must fit in the type]
 with_default.adb:90:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:102:29: info: range check proved (CVC4: 1 VC)
-with_default.adb:108:69: info: range check proved (CVC4: 1 VC)
-with_default.adb:108:69: medium: range check might fail (e.g. when C = 1) [reason for check: default value must fit in the type]
+with_default.adb:108:69: info: range check proved (CVC4: 2 VC)
+with_default.adb:108:69: medium: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default value must fit in the type]
 with_default.adb:109:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:127:69: info: range check proved (CVC4: 1 VC)
+with_default.adb:127:69: info: range check proved (CVC4: 2 VC)
 with_default.adb:128:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:130:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:134:36: info: range check proved (CVC4: 1 VC)
-with_default.adb:169:43: info: range check proved (CVC4: 1 VC)
+with_default.adb:134:36: info: range check proved (CVC4: 2 VC)
+with_default.adb:169:43: info: range check proved (CVC4: 2 VC)
 with_default.adb:180:10: info: range check proved (CVC4: 2 VC)
 with_default.adb:184:40: info: range check proved (CVC4: 1 VC)
-with_default.adb:187:57: info: range check proved (CVC4: 1 VC)
+with_default.adb:187:57: info: range check proved (CVC4: 2 VC)
 with_default.adb:188:07: info: initialization of "Simple" proved
 with_default.adb:189:07: info: initialization of "W_Disc" proved
 with_default.adb:189:32: info: range check proved (CVC4: 1 VC)
@@ -58,9 +58,9 @@ with_default.adb:201:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:26: info: range check proved (CVC4: 1 VC)
 with_default.adb:202:34: info: discriminant check proved (CVC4: 1 VC)
-with_default.adb:206:39: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at with_default.ads:22 should mention C in a precondition]
-with_default.adb:219:39: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at with_default.ads:24 should mention C in a precondition]
-with_default.adb:233:40: info: range check proved (CVC4: 1 VC)
+with_default.adb:206:39: medium: range check might fail, cannot prove lower bound for C [reason for check: default component value must fit in the type] [possible fix: subprogram at with_default.ads:22 should mention C in a precondition]
+with_default.adb:219:39: medium: range check might fail, cannot prove lower bound for C [reason for check: default component value must fit in the type] [possible fix: subprogram at with_default.ads:24 should mention C in a precondition]
+with_default.adb:233:40: info: range check proved (CVC4: 2 VC)
 with_default.ads:3:14: warning: subprogram "Bad_Scalar" has no effect
 with_default.ads:5:14: warning: subprogram "OK_Scalar" has no effect
 with_default.ads:7:14: warning: subprogram "Bad_Array1" has no effect

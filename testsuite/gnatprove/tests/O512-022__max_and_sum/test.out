@@ -1,6 +1,6 @@
 maxandsum.adb:11:33: info: loop invariant initialization proved (CVC4: 1 VC)
 maxandsum.adb:11:33: info: loop invariant preservation proved (CVC4: 1 VC)
-maxandsum.adb:12:21: info: overflow check proved (CVC4: 1 VC)
+maxandsum.adb:12:21: info: overflow check proved (CVC4: 2 VC)
 maxandsum.adb:16:25: info: assertion proved (CVC4: 1 VC)
 maxandsum.ads:11:43: info: initialization of "Sum" proved
 maxandsum.ads:11:62: info: initialization of "Max" proved

@@ -1,6 +1,6 @@
-repro.adb:11:42: info: overflow check proved (CVC4: 1 VC)
-repro.adb:19:17: info: overflow check proved (CVC4: 1 VC)
-repro.adb:20:17: info: overflow check proved (CVC4: 1 VC)
+repro.adb:11:42: info: overflow check proved (CVC4: 2 VC)
+repro.adb:19:17: info: overflow check proved (CVC4: 2 VC)
+repro.adb:20:17: info: overflow check proved (CVC4: 2 VC)
 repro.ads:4:03: info: flow dependencies proved
 repro.ads:5:03: info: initial condition proved (CVC4: 3 VC)
 repro.ads:14:14: info: postcondition proved (CVC4: 3 VC)

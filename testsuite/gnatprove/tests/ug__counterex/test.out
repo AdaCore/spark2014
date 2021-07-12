@@ -1,9 +1,9 @@
 
-counterex.adb:10:17: medium: overflow check might fail
+counterex.adb:10:17: medium: overflow check might fail, cannot prove lower bound for R + In2
    10 |         R := R + In2;
       |              ~~^~~~~
-  e.g. when In2 = -1
-        and R = Integer'First
+  e.g. when In2 = -1073741824
+        and R = -1073741825
   reason for check: result of addition must fit in a 32-bits machine integer
 
 counterex.adb:11:25: medium: assertion might fail

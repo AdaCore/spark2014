@@ -1,34 +1,34 @@
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at test_route.adb:38
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at test_route.adb:38
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at test_route.adb:38
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at test_route.adb:38
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at test_route.adb:38
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at test_route.adb:38
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at test_route.adb:38
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at test_route.adb:38
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_route.adb:38
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at test_route.adb:38
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at test_route.adb:38
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at test_route.adb:38
 test_route.adb:11:30: info: pointer dereference check proved (CVC4: 1 VC)
-test_route.adb:11:49: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:11:49: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:12:21: info: pointer dereference check proved (CVC4: 1 VC)
-test_route.adb:12:41: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:12:41: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:13:14: info: postcondition proved (CVC4: 2 VC)
 test_route.adb:13:15: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:13:21: info: pointer dereference check proved (CVC4: 1 VC)
-test_route.adb:13:28: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:13:28: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:14:11: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:14:17: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:17:08: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:17:15: info: pointer dereference check proved (CVC4: 1 VC)
-test_route.adb:17:18: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:17:18: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:28:13: info: implicit function contract might not be available on recursive calls
 test_route.adb:29:07: medium: "Length" is recursive, terminating annotation could be incorrect
 test_route.adb:30:52: info: pointer dereference check proved (CVC4: 1 VC)
-test_route.adb:30:60: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:30:60: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:33:13: info: implicit function contract might not be available on recursive calls
 test_route.adb:34:07: medium: "Nth_X" is recursive, terminating annotation could be incorrect
 test_route.adb:34:22: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:34:30: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:34:38: info: precondition proved (CVC4: 1 VC)
 test_route.adb:34:46: info: pointer dereference check proved (CVC4: 1 VC)
-test_route.adb:34:55: info: range check proved (CVC4: 1 VC)
+test_route.adb:34:55: info: range check proved (CVC4: 2 VC)
 test_route.adb:44:14: info: postcondition proved (CVC4: 2 VC)
 test_route.adb:46:15: info: precondition proved (CVC4: 2 VC)
 test_route.adb:46:39: info: precondition proved (CVC4: 1 VC)
@@ -53,15 +53,15 @@ test_route.adb:80:18: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:82:17: info: function contract not available for proof ("Nth_Point" might not return)
 test_route.adb:82:17: info: precondition proved (CVC4: 1 VC)
 test_route.adb:82:29: info: pointer dereference check proved (CVC4: 1 VC)
-test_route.adb:82:38: info: range check proved (CVC4: 1 VC)
+test_route.adb:82:38: info: range check proved (CVC4: 2 VC)
 test_route.adb:88:30: info: precondition proved (CVC4: 1 VC)
-test_route.adb:88:59: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:88:59: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:89:21: info: precondition proved (CVC4: 1 VC)
-test_route.adb:89:51: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:89:51: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:90:14: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
 test_route.adb:91:15: info: precondition proved (CVC4: 1 VC)
 test_route.adb:91:30: info: precondition proved (CVC4: 1 VC)
-test_route.adb:91:47: info: overflow check proved (CVC4: 1 VC)
+test_route.adb:91:47: info: overflow check proved (CVC4: 2 VC)
 test_route.adb:93:31: info: precondition proved (CVC4: 1 VC)
 test_route.adb:93:46: info: precondition proved (CVC4: 2 VC)
 test_route.adb:95:27: info: function contract not available for proof ("Nth_Point" might not return)

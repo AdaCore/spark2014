@@ -19,7 +19,7 @@ ownership_transfer_at_call.adb:11:18: medium: pointer dereference check might fa
     7 |   procedure Proc (Y : in out Int_Ptr)
       |   ^ here
 
-ownership_transfer_at_call.adb:11:22: medium: overflow check might fail
+ownership_transfer_at_call.adb:11:22: medium: overflow check might fail, cannot prove upper bound for Y.all + 1
    11 |      Y.all := Y.all + 1;
       |               ~~~~~~^~~
   e.g. when Y.all = Integer'Last
@@ -44,7 +44,7 @@ ownership_transfer_at_call.adb:12:18: medium: pointer dereference check might fa
     7 |   procedure Proc (Y : in out Int_Ptr)
       |   ^ here
 
-ownership_transfer_at_call.adb:12:22: medium: overflow check might fail
+ownership_transfer_at_call.adb:12:22: medium: overflow check might fail, cannot prove upper bound for X.all + 1
    12 |      X.all := X.all + 1;
       |               ~~~~~~^~~
   e.g. when X.all = Integer'Last

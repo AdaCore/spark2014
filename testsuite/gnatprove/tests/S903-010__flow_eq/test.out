@@ -14,34 +14,34 @@ x.adb:110:19: medium: loop might be nonterminating, terminating annotation on ov
 x.adb:110:19: warning: statement has no effect
 x.adb:118:19: medium: loop might be nonterminating, terminating annotation on overriding operator "mod" could be incorrect
 x.adb:118:19: warning: statement has no effect
-x.adb:121:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:121:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:126:19: medium: loop might be nonterminating, terminating annotation on overriding operator "not" could be incorrect
 x.adb:126:19: warning: statement has no effect
 x.adb:134:19: medium: loop might be nonterminating, terminating annotation on overriding operator "or" could be incorrect
 x.adb:134:19: warning: statement has no effect
 x.adb:142:19: medium: loop might be nonterminating, terminating annotation on overriding operator "rem" could be incorrect
 x.adb:142:19: warning: statement has no effect
-x.adb:145:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:145:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:150:19: medium: loop might be nonterminating, terminating annotation on overriding operator "xor" could be incorrect
 x.adb:150:19: warning: statement has no effect
 x.adb:158:19: medium: loop might be nonterminating, terminating annotation on overriding operator "+" could be incorrect
 x.adb:158:19: warning: statement has no effect
-x.adb:161:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:161:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:166:19: medium: loop might be nonterminating, terminating annotation on overriding operator "-" could be incorrect
 x.adb:166:19: warning: statement has no effect
-x.adb:169:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:169:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:174:19: medium: loop might be nonterminating, terminating annotation on overriding operator "&" could be incorrect
 x.adb:174:19: warning: statement has no effect
-x.adb:177:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:177:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:182:19: medium: loop might be nonterminating, terminating annotation on overriding operator "*" could be incorrect
 x.adb:182:19: warning: statement has no effect
-x.adb:185:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:185:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:190:19: medium: loop might be nonterminating, terminating annotation on overriding operator "/" could be incorrect
 x.adb:190:19: warning: statement has no effect
-x.adb:193:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:193:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:198:19: medium: loop might be nonterminating, terminating annotation on overriding operator "**" could be incorrect
 x.adb:198:19: warning: statement has no effect
-x.adb:201:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:201:29: info: overflow check proved (CVC4: 2 VC)
 x.adb:207:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
 x.adb:207:21: info: precondition proved (Trivial: 1 VC)
 x.adb:208:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]

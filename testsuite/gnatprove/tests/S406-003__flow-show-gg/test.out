@@ -50,7 +50,7 @@ Generated contracts for bar
       G1
       G2
 bar.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
-bar.adb:24:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
+bar.adb:24:21: medium: overflow check might fail, cannot prove lower bound for G1 + G2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
 bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
 Generated contracts for proxy
    Global =>
@@ -80,7 +80,7 @@ Generated contracts for get
          Y
 Generated contracts for inner
 Generated contracts for outer
-foo.ads:7:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
+foo.ads:7:47: medium: overflow check might fail, cannot prove lower bound for Outer.X + Outer.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
 Generated contracts for main
    Global =>
       Input =>
@@ -107,7 +107,7 @@ Generated contracts for get
 Generated contracts for inner
 Generated contracts for outer
 outer.ads:7:21: warning: unused variable "B"
-outer.ads:12:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention X and Y in a precondition]
+outer.ads:12:47: medium: overflow check might fail, cannot prove lower bound for Outer.X + Outer.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention X and Y in a precondition]
 Generated global .gg contents:
 filename: gnatprove/bar.gg
 contents:

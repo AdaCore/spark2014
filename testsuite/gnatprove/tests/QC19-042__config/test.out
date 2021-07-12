@@ -1,8 +1,8 @@
-add.adb:5:16: info: overflow check proved (altergo2: 1 VC)
-add.ads:3:47: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer]
-add.ads:3:62: info: overflow check proved (altergo2: 1 VC)
+add.adb:5:16: info: overflow check proved (altergo2: 2 VC)
+add.ads:3:47: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer]
+add.ads:3:62: info: overflow check proved (altergo2: 2 VC)
 add.ads:4:29: info: postcondition proved (altergo2: 1 VC)
-add.ads:4:47: info: overflow check proved (altergo2: 1 VC)
+add.ads:4:47: info: overflow check proved (altergo2: 2 VC)
 gnatprove: Could not find driver file alt_ergo_gnatprove.drv referenced from wrong_driver_file.conf. If this is a user-generated file, consider removing it. If not, please report.
 gnatprove: error during flow analysis and proof
 gnatprove: redefine_predefined.conf attempts to redefine built-in prover cvc4

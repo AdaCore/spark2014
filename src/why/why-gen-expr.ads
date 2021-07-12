@@ -232,9 +232,12 @@ package Why.Gen.Expr is
    function New_Range_Expr
      (Domain    : EW_Domain;
       Low, High : W_Expr_Id;
-      Expr      : W_Expr_Id) return W_Expr_Id;
+      Expr      : W_Expr_Id;
+      Pretty    : Boolean := False) return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
-   --  comparisons being in Base_Type (int or real)
+   --  comparisons being in Base_Type (int or real). If Pretty is set to true,
+   --  the two parts of a conjunction get a GP_Pretty_Ada attribute, which can
+   --  be used for identifying the unproved part of a range or overflow check.
 
    function New_Discrete_Add
      (Domain : EW_Domain;

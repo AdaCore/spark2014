@@ -2,15 +2,15 @@ a-cfinve.ads:315:08: info: dynamic accessibility check proved (Trivial), in inst
 a-cfinve.ads:321:08: info: dynamic accessibility check proved (Trivial), in instantiation at objt_types_jauge.ads:20
 a-cfinve.ads:340:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
 a-cfinve.ads:340:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:649:57: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:649:57: info: range check proved (CVC4: 2 VC), in instantiation at objt_types_jauge.ads:20
 a-cfinve.ads:777:23: info: precondition proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:780:38: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:780:38: info: range check proved (CVC4: 2 VC), in instantiation at objt_types_jauge.ads:20
 a-cfinve.ads:813:14: info: precondition proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:817:35: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:817:35: info: range check proved (CVC4: 2 VC), in instantiation at objt_types_jauge.ads:20
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at objt_types_jauge.ads:20

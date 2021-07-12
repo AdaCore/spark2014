@@ -19,7 +19,7 @@
   <proof prover="2"><result status="valid" steps="3359"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="7543"/></proof>
   <proof prover="1"><result status="unknown" steps="5921"/></proof>
   <proof prover="2"><result status="unknown" steps="6394"/></proof>
   </goal>

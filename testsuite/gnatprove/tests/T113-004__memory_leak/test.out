@@ -185,7 +185,7 @@ pointers.adb:65:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:66:15: medium: memory leak might occur
 pointers.adb:68:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:69:09: medium: memory leak might occur
-pointers.adb:92:27: info: range check proved (CVC4: 1 VC)
+pointers.adb:92:27: info: range check proved (CVC4: 2 VC)
 pointers.adb:100:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointers.adb:100:07: info: initialization of "U" proved
 pointers.adb:101:07: info: initialization of "V" proved
@@ -195,7 +195,7 @@ pointers.adb:102:07: medium: memory leak might occur at end of scope
 pointers.adb:104:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointers.adb:105:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointers.adb:107:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-pointers.adb:108:15: info: range check proved (CVC4: 1 VC)
+pointers.adb:108:15: info: range check proved (CVC4: 2 VC)
 pointers.adb:110:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointers.adb:110:07: info: initialization of "H" proved
 pointers.adb:111:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)

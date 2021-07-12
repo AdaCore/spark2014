@@ -770,7 +770,7 @@ package SPARK_Atree.Entities is
    --  For other entities --
    -------------------------
 
-   function Alignment (Ent : Entity_Id) return Uint with
+   function Alignment (Ent : Entity_Id) return Unat with
      Pre => (Is_Type (Ent) or else Is_Object (Ent))
        and then Known_Alignment (Ent);
 

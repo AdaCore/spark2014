@@ -12,6 +12,9 @@
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
+  <goal name="def&#39;vc.1" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
  </transf>
  </goal>
 </theory>

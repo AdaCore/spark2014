@@ -1,32 +1,32 @@
-decadriver.adb:73:21: medium: range check might fail (e.g. when Frame'First = 0 and Frame'Last = Integer'Last)
+decadriver.adb:73:21: medium: range check might fail, cannot prove upper bound for Frame'Length (e.g. when Frame'First = 0 and Frame'Last = Integer'Last)
 decadriver.adb:74:16: info: range check proved (CVC4: 4 VC)
-decadriver.adb:74:50: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:74:50: info: overflow check proved (CVC4: 2 VC)
 decadriver.adb:75:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:75:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:75:45: info: range check proved (CVC4: 4 VC)
 decadriver.adb:78:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:78:49: info: range check proved (CVC4: 4 VC)
-decadriver.adb:78:67: info: range check proved (CVC4: 1 VC)
-decadriver.adb:84:34: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
+decadriver.adb:78:67: info: range check proved (CVC4: 2 VC)
+decadriver.adb:84:34: medium: range check might fail, cannot prove lower bound for Rx_Count - 1 [reason for check: result of subtraction must fit in the target type of the assignment]
 decadriver.adb:99:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Enable_Rx"
 decadriver.adb:105:10: info: initialization of "RX_FINFO_Reg" proved
 decadriver.adb:107:10: info: initialization of "Frame_Length" proved
 decadriver.adb:108:10: info: initialization of "Next_Idx" proved
 decadriver.adb:112:35: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
 decadriver.adb:116:25: info: assertion proved (CVC4: 1 VC)
-decadriver.adb:123:63: info: range check proved (CVC4: 1 VC)
-decadriver.adb:125:37: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:123:63: info: range check proved (CVC4: 2 VC)
+decadriver.adb:125:37: info: overflow check proved (CVC4: 2 VC)
 decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: predicate check proved (CVC4: 2 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
 decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0 (e.g. when Frame_Length = 127 and Next_Idx = 0)
-decadriver.adb:133:50: info: range check proved (CVC4: 1 VC)
+decadriver.adb:133:50: info: range check proved (CVC4: 2 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC4: 2 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC4: 2 VC)
 decadriver.adb:145:10: info: initialization of "Next_Idx" proved
-decadriver.adb:152:60: info: range check proved (CVC4: 1 VC)
-decadriver.adb:154:34: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:152:60: info: range check proved (CVC4: 2 VC)
+decadriver.adb:154:34: info: overflow check proved (CVC4: 2 VC)
 decadriver.adb:156:35: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0 (e.g. when Next_Idx = 0)
 decadriver.adb:157:35: info: predicate check proved (CVC4: 2 VC)
 decadriver.adb:158:35: info: predicate check proved (CVC4: 2 VC)
@@ -48,7 +48,7 @@ decadriver.adb:259:26: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:260:39: info: range check proved (CVC4: 2 VC)
 decadriver.adb:266:48: info: unrolling loop
 decadriver.adb:267:29: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
-decadriver.adb:267:56: info: range check proved (CVC4: 12 VC)
+decadriver.adb:267:56: info: range check proved (CVC4: 24 VC)
 decadriver.adb:276:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:280:40: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:282:40: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Initialize"
@@ -103,12 +103,12 @@ decadriver.ads:144:14: info: flow dependencies proved
 decadriver.ads:150:34: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0
 decadriver.ads:180:14: info: data dependencies proved
 decadriver.ads:181:09: info: flow dependencies proved
-decadriver.ads:187:21: info: range check proved (CVC4: 1 VC)
-decadriver.ads:187:29: info: overflow check proved (CVC4: 1 VC)
+decadriver.ads:187:21: info: range check proved (CVC4: 2 VC)
+decadriver.ads:187:29: info: overflow check proved (CVC4: 2 VC)
 decadriver.ads:188:07: warning: no check message justified by this pragma
 decadriver.ads:195:14: info: data dependencies proved
 decadriver.ads:196:09: info: flow dependencies proved
-decadriver.ads:202:24: info: overflow check proved (CVC4: 1 VC)
+decadriver.ads:202:24: info: overflow check proved (CVC4: 2 VC)
 decadriver.ads:203:07: warning: no check message justified by this pragma
 decadriver.ads:210:27: info: initialization of "Result" proved
 decadriver.ads:211:14: info: data dependencies proved

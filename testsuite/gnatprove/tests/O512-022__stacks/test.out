@@ -1,6 +1,6 @@
 main.adb:7:04: info: initialization of "Max" proved
-main.adb:10:09: medium: range check might fail [reason for check: output value must fit in argument type] [possible fix: postcondition of call at line 10 should mention Item (for argument Max)]
-main.adb:15:18: info: range check proved (CVC4: 1 VC)
+main.adb:10:09: medium: range check might fail, cannot prove lower bound for Max [reason for check: output value must fit in argument type] [possible fix: postcondition of call at line 10 should mention Item (for argument Max)]
+main.adb:15:18: info: range check proved (CVC4: 2 VC)
 main.adb:22:13: info: initialization of "Cmd" proved
 main.adb:23:13: info: initialization of "Last" proved
 main.adb:24:13: info: initialization of "V" proved
@@ -12,13 +12,13 @@ main.adb:35:21: info: range check proved (CVC4: 4 VC)
 main.adb:35:41: warning: "Pos" is set by "Get" but not used after the call
 main.adb:36:16: medium: private part of "S" might not be initialized
 main.adb:36:17: medium: precondition might fail (e.g. when S = (Max => ?, Top => 1, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible fix: loop at line 18 should mention S in a loop invariant]
-stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
+stacks.adb:11:22: medium: overflow check might fail, cannot prove upper bound for S.Top + 1 (e.g. when S = (Max => ?, Top => Natural'Last, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 stacks.adb:12:16: medium: array index check might fail (e.g. when E = 0 and S = (Max => ?, Top => 3, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: value must be a valid index into the array]
-stacks.adb:21:22: info: range check proved (CVC4: 1 VC)
+stacks.adb:21:22: info: range check proved (CVC4: 2 VC)
 stacks.adb:27:35: info: cannot unroll loop (too many loop iterations)
 stacks.adb:28:38: medium: array index check might fail (e.g. when J = 2 and S = (Max => 1, Top => 2, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: value must be a valid index into the array]
 stacks.ads:28:20: info: postcondition proved (CVC4: 1 VC)
-stacks.ads:28:40: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
+stacks.ads:28:40: medium: overflow check might fail, cannot prove upper bound for S.Size'Old + 1 (e.g. when S = (Max => ?, Top => Natural'Last, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 stacks.ads:48:20: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:75:07: info: range check proved (CVC4: 2 VC)
 stacks.ads:84:58: medium: array index check might fail (e.g. when S = (Max => 1, Top => 2, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: value must be a valid index into the array]

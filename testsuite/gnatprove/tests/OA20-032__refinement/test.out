@@ -46,7 +46,7 @@ patris.adb:178:36: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:178:36: info: loop invariant preservation proved (CVC4: 1 VC)
 patris.adb:179:36: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:179:36: info: loop invariant preservation proved (CVC4: 1 VC)
-patris.adb:183:35: info: range check proved (CVC4: 1 VC)
+patris.adb:183:35: info: range check proved (CVC4: 2 VC)
 patris.adb:184:31: info: assertion proved (CVC4: 1 VC)
 patris.adb:214:07: info: initialization of "Candidate" proved
 patris.adb:217:23: info: precondition proved (CVC4: 1 VC)
@@ -73,9 +73,9 @@ patris.adb:306:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:323:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:408:07: info: initialization of "Success" proved
 patris.adb:419:13: info: precondition proved (CVC4: 2 VC)
-patris.adb:421:57: info: overflow check proved (CVC4: 1 VC)
+patris.adb:421:57: info: overflow check proved (CVC4: 2 VC)
 patris.adb:432:56: info: division check proved (CVC4: 1 VC)
-patris.adb:432:64: info: range check proved (CVC4: 1 VC)
+patris.adb:432:64: info: range check proved (CVC4: 2 VC)
 patris.adb:434:41: info: division check proved (CVC4: 1 VC)
 patris.ads:33:03: info: flow dependencies proved
 patris.ads:59:11: info: data dependencies proved
@@ -87,10 +87,10 @@ patris.ads:158:57: info: index check proved (CVC4: 2 VC)
 patris.ads:184:46: info: index check proved (CVC4: 2 VC)
 patris.ads:216:77: info: range check proved (CVC4: 1 VC)
 patris.ads:218:77: info: range check proved (CVC4: 1 VC)
-patris.ads:229:49: info: range check proved (CVC4: 1 VC)
-patris.ads:230:49: info: range check proved (CVC4: 1 VC)
-patris.ads:231:49: info: range check proved (CVC4: 1 VC)
-patris.ads:232:66: info: range check proved (CVC4: 1 VC)
+patris.ads:229:49: info: range check proved (CVC4: 2 VC)
+patris.ads:230:49: info: range check proved (CVC4: 2 VC)
+patris.ads:231:49: info: range check proved (CVC4: 2 VC)
+patris.ads:232:66: info: range check proved (CVC4: 2 VC)
 patris.ads:236:37: info: initialization of "Success" proved
 patris.ads:239:14: info: postcondition proved (CVC4: 1 VC)
 patris.ads:242:06: info: data dependencies proved

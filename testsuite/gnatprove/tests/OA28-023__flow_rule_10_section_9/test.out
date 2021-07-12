@@ -1,5 +1,5 @@
-po_t.adb:13:34: info: overflow check proved (CVC4: 1 VC)
-po_t.adb:20:52: info: overflow check proved (CVC4: 1 VC)
-po_t.adb:29:52: info: overflow check proved (CVC4: 1 VC)
+po_t.adb:13:34: info: overflow check proved (CVC4: 2 VC)
+po_t.adb:20:52: info: overflow check proved (CVC4: 2 VC)
+po_t.adb:29:52: info: overflow check proved (CVC4: 2 VC)
 po_t.ads:13:21: high: variable "Not_CAE" cannot be referenced in precondition of protected operation "Get" (SPARK RM 9(10))
 po_t.ads:16:21: high: variable "Not_CAE" cannot be referenced in precondition of protected operation "Increase" (SPARK RM 9(10))

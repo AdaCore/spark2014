@@ -84,7 +84,7 @@ norm-reals-errors.adb:134:22: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:135:22: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:141:10: info: precondition proved (CVC4: 2 VC)
 norm-reals-errors.adb:143:10: info: subprogram variant proved (CVC4: 1 VC)
-norm-reals-errors.adb:143:39: info: range check proved (CVC4: 1 VC)
+norm-reals-errors.adb:143:39: info: range check proved (CVC4: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:146:60: medium: float overflow check might fail (e.g. when I = 2 and Values = (1 => 1.7189792E+0, others => -1.5140641E+38)) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:146:60: medium: range check might fail (e.g. when I = 2 and Values = (1 => 1.8820515E+0, others => 1.4977547E+19)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
@@ -149,7 +149,7 @@ norm-reals.ads:16:14: info: postcondition proved (Z3: 1 VC)
 norm-reals.ads:16:43: info: predicate check proved (CVC4: 1 VC)
 norm-reals.ads:22:29: info: predicate check proved (CVC4: 1 VC)
 norm-reals.ads:23:12: info: subprogram variant proved (CVC4: 1 VC)
-norm-reals.ads:23:42: info: range check proved (CVC4: 1 VC)
+norm-reals.ads:23:42: info: range check proved (CVC4: 2 VC)
 norm-reals.ads:24:32: info: index check proved (CVC4: 2 VC)
 norm-reals.ads:24:59: info: index check proved (CVC4: 2 VC)
 norm-reals.ads:27:07: info: precondition proved (CVC4: 1 VC)
@@ -172,37 +172,37 @@ norm.adb:35:39: info: float overflow check proved (Trivial)
 norm.adb:35:48: info: range check proved (Trivial)
 norm.adb:35:51: info: float overflow check proved (Trivial)
 norm.adb:36:33: info: float overflow check proved (Trivial)
-norm.adb:36:44: info: overflow check proved (CVC4: 1 VC)
+norm.adb:36:44: info: overflow check proved (CVC4: 2 VC)
 norm.adb:36:44: info: range check proved (Trivial)
 norm.adb:43:13: medium: assertion might fail
 norm.adb:43:28: info: float overflow check proved (Trivial)
 norm.adb:43:37: info: range check proved (Trivial)
-norm.adb:44:54: info: overflow check proved (CVC4: 1 VC)
+norm.adb:44:54: info: overflow check proved (CVC4: 2 VC)
 norm.adb:44:54: info: range check proved (Trivial)
 norm.adb:46:13: medium: assertion might fail
 norm.adb:46:28: info: float overflow check proved (Trivial)
 norm.adb:46:37: info: range check proved (Trivial)
 norm.adb:46:40: info: float overflow check proved (Trivial)
-norm.adb:47:43: info: overflow check proved (CVC4: 1 VC)
-norm.adb:47:47: info: overflow check proved (CVC4: 1 VC)
+norm.adb:47:43: info: overflow check proved (CVC4: 2 VC)
+norm.adb:47:47: info: overflow check proved (CVC4: 2 VC)
 norm.adb:47:47: info: range check proved (Trivial)
 norm.adb:50:13: medium: assertion might fail
 norm.adb:50:28: info: float overflow check proved (Trivial)
-norm.adb:50:39: info: overflow check proved (CVC4: 1 VC)
+norm.adb:50:39: info: overflow check proved (CVC4: 2 VC)
 norm.adb:50:39: info: range check proved (Trivial)
-norm.adb:51:43: info: overflow check proved (CVC4: 1 VC)
+norm.adb:51:43: info: overflow check proved (CVC4: 2 VC)
 norm.adb:51:43: info: range check proved (Trivial)
-norm.adb:51:48: info: overflow check proved (CVC4: 1 VC)
+norm.adb:51:48: info: overflow check proved (CVC4: 2 VC)
 norm.adb:58:10: medium: precondition might fail, cannot prove Max2 <= Float'Last / 2.0 [possible fix: subprogram at norm.ads:27 should mention Values in a precondition]
 norm.adb:59:29: info: index check proved (CVC4: 2 VC)
 norm.adb:61:21: info: subprogram variant proved (CVC4: 1 VC)
-norm.adb:61:51: info: range check proved (CVC4: 1 VC)
+norm.adb:61:51: info: range check proved (CVC4: 2 VC)
 norm.adb:62:36: info: float overflow check proved (Trivial)
 norm.adb:62:47: info: range check proved (Trivial)
 norm.adb:63:10: info: precondition proved (CVC4: 1 VC)
-norm.adb:63:42: info: range check proved (CVC4: 1 VC)
+norm.adb:63:42: info: range check proved (CVC4: 2 VC)
 norm.adb:64:17: info: subprogram variant proved (CVC4: 1 VC)
-norm.adb:64:47: info: range check proved (CVC4: 1 VC)
+norm.adb:64:47: info: range check proved (CVC4: 2 VC)
 norm.adb:64:52: medium: float overflow check might fail (e.g. when I = 0 and Values = (others => 3.6843682E+19)) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at norm.ads:27 should mention I and Values in a precondition]
 norm.adb:64:62: info: index check proved (CVC4: 4 VC)
 norm.adb:64:65: medium: float overflow check might fail (e.g. when I = 0 and Values = (others => 3.3230700E+35)) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm.ads:27 should mention I and Values in a precondition]
@@ -215,7 +215,7 @@ norm.ads:19:07: info: assertion proved (Trivial)
 norm.ads:27:13: info: function contract might not be available on recursive calls
 norm.ads:32:14: info: postcondition proved (CVC4: 3 VC)
 norm.ads:34:16: info: subprogram variant proved (CVC4: 1 VC)
-norm.ads:34:46: info: range check proved (CVC4: 1 VC)
+norm.ads:34:46: info: range check proved (CVC4: 2 VC)
 norm.ads:34:51: info: float overflow check proved (CVC4: 1 VC)
 norm.ads:34:61: info: index check proved (CVC4: 4 VC)
 norm.ads:34:64: info: float overflow check proved (CVC4: 1 VC)
@@ -232,36 +232,36 @@ spark-floating_point_arithmetic_lemmas.ads:207:13: info: subprogram "Is_Integer_
 spark-floating_point_arithmetic_lemmas.ads:207:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:211:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:211:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:211:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:211:33: medium: range check might fail, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 (e.g. when F = 0.0) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 207 should mention F in a precondition]
+spark-floating_point_arithmetic_lemmas.ads:211:33: info: range check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:211:33: medium: range check might fail, cannot prove lower bound for F, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 (e.g. when F = 0.0) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 207 should mention F in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:215:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:215:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:219:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:219:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:219:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:219:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:219:33: info: range check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:219:33: medium: range check might fail, cannot prove lower bound for F, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 (e.g. when F = -1.0737419435E+9) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 215 should mention F in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:224:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:224:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:228:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:228:29: medium: range check might fail, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 224 should mention I in a precondition]
+spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:228:29: info: range check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:228:29: medium: range check might fail, cannot prove lower bound for Fl (I), in instantiation at spark-float_arithmetic_lemmas.ads:32 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 224 should mention I in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:228:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:228:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:233:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:233:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:237:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:237:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:235:38: info: overflow check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:237:29: medium: range check might fail, cannot prove lower bound for Fl (I), in instantiation at spark-float_arithmetic_lemmas.ads:32 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 233 should mention I in a precondition]
+spark-floating_point_arithmetic_lemmas.ads:237:29: medium: range check might fail, cannot prove lower bound for Fl (I), in instantiation at spark-long_float_arithmetic_lemmas.ads:32 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 233 should mention I in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:237:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:237:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:241:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:241:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:248:19: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:248:19: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:80:52: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
@@ -279,10 +279,10 @@ spark-mod_arithmetic_lemmas.ads:119:32: info: division check proved (CVC4: 1 VC)
 spark-mod_arithmetic_lemmas.ads:127:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:127:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-test_array_lemmas.ads:64:41: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:64:41: info: overflow check proved (CVC4: 1 VC)
+spark-test_array_lemmas.ads:64:41: info: overflow check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:64:53: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:41: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:73:41: info: overflow check proved (CVC4: 1 VC)
+spark-test_array_lemmas.ads:73:41: info: overflow check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:53: info: index check proved (CVC4: 2 VC)
 sqrt_spec.ads:13:19: info: assertion proved (Trivial)
 sqrt_spec.ads:16:19: info: assertion proved (Trivial)

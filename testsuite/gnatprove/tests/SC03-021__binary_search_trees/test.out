@@ -1,5 +1,5 @@
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at binary_search.adb:116
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at binary_search.adb:116
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at binary_search.adb:116
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at binary_search.adb:116
 binary_search.adb:16:07: info: dynamic accessibility check proved (Trivial)
 binary_search.adb:21:08: medium: "M_Contains" is recursive, terminating annotation could be incorrect
 binary_search.adb:22:18: info: pointer dereference check proved (CVC4: 1 VC)
@@ -56,12 +56,12 @@ binary_search.adb:113:30: info: discriminant check proved (CVC4: 1 VC)
 binary_search.adb:119:13: info: implicit function contract might not be available on recursive calls
 binary_search.adb:120:07: medium: "Size" is recursive, terminating annotation could be incorrect
 binary_search.adb:121:20: info: pointer dereference check proved (CVC4: 1 VC)
-binary_search.adb:121:42: info: overflow check proved (CVC4: 1 VC)
+binary_search.adb:121:42: info: overflow check proved (CVC4: 2 VC)
 binary_search.adb:121:51: info: pointer dereference check proved (CVC4: 1 VC)
 binary_search.adb:122:19: info: pointer dereference check proved (CVC4: 1 VC)
-binary_search.adb:122:26: info: overflow check proved (CVC4: 1 VC)
+binary_search.adb:122:26: info: overflow check proved (CVC4: 2 VC)
 binary_search.adb:122:35: info: pointer dereference check proved (CVC4: 1 VC)
-binary_search.adb:122:43: info: overflow check proved (CVC4: 1 VC)
+binary_search.adb:122:43: info: overflow check proved (CVC4: 2 VC)
 binary_search.adb:127:13: info: function contract might not be available on recursive calls
 binary_search.adb:131:14: info: postcondition proved (CVC4: 3 VC)
 binary_search.adb:135:14: info: initialization of "S" proved
@@ -90,8 +90,8 @@ binary_search.adb:172:36: info: loop invariant initialization proved (CVC4: 2 VC
 binary_search.adb:172:36: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_search.adb:174:16: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_search.adb:174:16: info: loop invariant preservation proved (CVC4: 1 VC)
-binary_search.adb:174:65: info: overflow check proved (CVC4: 2 VC)
-binary_search.adb:174:65: info: range check proved (CVC4: 2 VC)
+binary_search.adb:174:65: info: overflow check proved (CVC4: 4 VC)
+binary_search.adb:174:65: info: range check proved (CVC4: 4 VC)
 binary_search.adb:176:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_search.adb:176:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_search.adb:179:16: info: loop invariant initialization proved (CVC4: 1 VC)

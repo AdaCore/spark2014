@@ -55,5 +55,5 @@ test_convert.adb:9:08: info: range check proved (Z3: 2 VC)
 test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations)
 test_convert.adb:9:44: warning: statement has no effect
 test_convert.adb:10:09: warning: unused assignment
-test_convert.adb:12:35: info: range check proved (Z3: 1 VC)
+test_convert.adb:12:35: info: range check proved (Z3: 2 VC)
 test_convert.adb:13:06: warning: unused assignment

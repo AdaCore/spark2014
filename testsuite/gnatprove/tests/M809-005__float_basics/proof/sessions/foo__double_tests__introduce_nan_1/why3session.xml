@@ -16,12 +16,12 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3986"/></proof>
   <proof prover="1"><result status="unknown" steps="1297"/></proof>
   <proof prover="2"><result status="unknown" steps="5460"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="4061"/></proof>
   <proof prover="1"><result status="unknown" steps="2041281"/></proof>
   <proof prover="2"><result status="unknown" steps="7952"/></proof>
   </goal>

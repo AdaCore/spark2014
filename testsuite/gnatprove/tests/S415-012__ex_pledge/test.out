@@ -1,14 +1,14 @@
 in_out_pledge.adb:11:14: info: implicit function contract might not be available on recursive calls
 in_out_pledge.adb:12:08: medium: "Length_Aux" is recursive, terminating annotation could be incorrect
 in_out_pledge.adb:13:27: info: pointer dereference check proved (CVC4: 1 VC)
-in_out_pledge.adb:15:15: info: overflow check proved (CVC4: 1 VC)
+in_out_pledge.adb:15:15: info: overflow check proved (CVC4: 2 VC)
 in_out_pledge.adb:15:30: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:20:14: info: implicit function contract might not be available on recursive calls
 in_out_pledge.adb:21:08: medium: "Get_Nth_Val" is recursive, terminating annotation could be incorrect
 in_out_pledge.adb:21:23: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:21:35: info: precondition proved (CVC4: 1 VC)
 in_out_pledge.adb:21:49: info: pointer dereference check proved (CVC4: 1 VC)
-in_out_pledge.adb:21:58: info: range check proved (CVC4: 1 VC)
+in_out_pledge.adb:21:58: info: range check proved (CVC4: 2 VC)
 in_out_pledge.adb:28:14: info: postcondition proved (CVC4: 3 VC)
 in_out_pledge.adb:29:57: info: index check proved (CVC4: 2 VC)
 in_out_pledge.adb:29:62: info: precondition proved (CVC4: 1 VC)
@@ -35,7 +35,7 @@ in_out_pledge.adb:63:20: info: postcondition proved (CVC4: 4 VC)
 in_out_pledge.adb:63:40: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:64:37: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:64:47: info: pointer dereference check proved (CVC4: 1 VC)
-in_out_pledge.adb:65:75: info: overflow check proved (CVC4: 1 VC)
+in_out_pledge.adb:65:75: info: overflow check proved (CVC4: 2 VC)
 in_out_pledge.adb:66:72: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:69:19: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:72:25: info: assertion proved (CVC4: 1 VC)

@@ -19,6 +19,7 @@ package body Libst with SPARK_Mode is
       if I = 0 then
          return 0.0;
       else
+         Lemma_Add_Is_Monotonic (Sum_Weight_Rec (Weights, I - 1), Float (I - 1), Weights (I));
          Lemma_Add_Exact_On_Index (I - 1, 1);
          return Sum_Weight_Rec (Weights, I - 1) + Weights (I);
       end if;
@@ -42,13 +43,7 @@ package body Libst with SPARK_Mode is
 
       procedure Lemma_Add_Is_Monotonic
         (Min1, Val1, Max1, Min2, Val2, Max2 : Float)
-      is
-      begin
-         Lemma_Add_Is_Monotonic (Val1, Max1, Val2);
-         Lemma_Add_Is_Monotonic (Val2, Max2, Max1);
-         Lemma_Add_Is_Monotonic (Min1, Val1, Val2);
-         Lemma_Add_Is_Monotonic (Min2, Val2, Min1);
-      end Lemma_Add_Is_Monotonic;
+      is null;
 
       procedure Lemma_Add_Exact_On_Max_Value (I : Natural) with
         Ghost,

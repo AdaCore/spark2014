@@ -13,14 +13,14 @@ big_integers_test.adb:30:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:30:63: info: initialization of "Int" proved
 big_integers_test.adb:33:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:34:11: warning: unused assignment
-big_integers_test.adb:34:14: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
+big_integers_test.adb:34:14: medium: range check might fail, cannot prove upper bound for To_Integer (Big_Int) [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:34:26: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:38:04: warning: analyzing unreferenced procedure "MSC_Range_Check_Fail"
 big_integers_test.adb:38:37: info: initialization of "Big_Int" proved
 big_integers_test.adb:38:64: info: initialization of "LL_Int" proved
 big_integers_test.adb:41:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:42:14: warning: unused assignment
-big_integers_test.adb:42:20: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
+big_integers_test.adb:42:20: medium: range check might fail, cannot prove upper bound for MSC.From_Big_Integer (Big_Int) [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:42:39: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:46:04: warning: analyzing unreferenced procedure "MUC_Range_Check_Fail"
 big_integers_test.adb:46:36: info: initialization of "Big_Int" proved
@@ -104,9 +104,9 @@ big_integers_test.adb:113:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:114:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:114:29: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:116:07: warning: function Is_Valid is assumed to return True
-big_integers_test.adb:121:09: info: range check proved (CVC4: 1 VC)
+big_integers_test.adb:121:09: info: range check proved (CVC4: 2 VC)
 big_integers_test.adb:121:21: info: predicate check proved (CVC4: 2 VC)
-big_integers_test.adb:122:14: info: range check proved (CVC4: 1 VC)
+big_integers_test.adb:122:14: info: range check proved (CVC4: 2 VC)
 big_integers_test.adb:122:33: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:123:12: info: range check proved (CVC4: 1 VC)
 big_integers_test.adb:123:31: info: predicate check proved (CVC4: 2 VC)
@@ -166,7 +166,7 @@ conversion.ads:15:26: info: index check proved (CVC4: 2 VC)
 conversion.ads:15:32: info: predicate check proved (CVC4: 1 VC)
 conversion.ads:17:10: info: precondition proved (CVC4: 4 VC)
 conversion.ads:17:10: info: predicate check proved (CVC4: 1 VC)
-conversion.ads:17:39: info: range check proved (CVC4: 1 VC)
+conversion.ads:17:39: info: range check proved (CVC4: 2 VC)
 conversion.ads:17:51: info: index check proved (CVC4: 2 VC)
 conversion.ads:17:57: info: predicate check proved (CVC4: 1 VC)
 conversion.ads:17:75: info: index check proved (CVC4: 2 VC)
@@ -174,12 +174,12 @@ conversion.ads:21:13: info: subprogram "Partial_Conversion" will terminate, term
 conversion.ads:26:32: info: precondition proved (CVC4: 4 VC)
 conversion.ads:30:13: info: subprogram "To_Integer_255" will terminate, terminating annotation has been proved
 conversion.ads:31:07: info: precondition proved (CVC4: 3 VC)
-curve25519.adb:39:27: info: overflow check proved (CVC4: 2 VC)
+curve25519.adb:39:27: info: overflow check proved (CVC4: 4 VC)
 curve25519.adb:41:33: info: loop invariant initialization proved (CVC4: 1 VC)
 curve25519.adb:41:33: info: loop invariant preservation proved (CVC4: 1 VC)
 curve25519.adb:42:40: info: index check proved (CVC4: 4 VC)
 curve25519.adb:42:48: info: index check proved (CVC4: 4 VC)
-curve25519.adb:42:51: info: overflow check proved (CVC4: 2 VC)
+curve25519.adb:42:51: info: overflow check proved (CVC4: 4 VC)
 curve25519.adb:42:56: info: index check proved (CVC4: 4 VC)
 curve25519.adb:48:19: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:48:38: info: predicate check proved (CVC4: 2 VC)
@@ -190,12 +190,12 @@ curve25519.adb:50:44: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:52:25: info: assertion proved (CVC4: 2 VC)
 curve25519.adb:52:36: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:53:38: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:54:35: info: overflow check proved (CVC4: 2 VC)
+curve25519.adb:54:35: info: overflow check proved (CVC4: 4 VC)
 curve25519.adb:54:47: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:55:25: info: assertion proved (CVC4: 2 VC)
-curve25519.adb:55:31: info: overflow check proved (CVC4: 2 VC)
+curve25519.adb:55:31: info: overflow check proved (CVC4: 4 VC)
 curve25519.adb:56:25: info: assertion proved (altergo: 2 VC)
-curve25519.adb:56:35: info: overflow check proved (CVC4: 2 VC)
+curve25519.adb:56:35: info: overflow check proved (CVC4: 4 VC)
 curve25519.adb:56:47: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:57:40: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:59:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -222,7 +222,7 @@ curve25519.adb:63:35: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:64:35: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:64:35: info: predicate check proved (CVC4: 2 VC)
 curve25519.ads:17:14: info: postcondition proved (CVC4: 2 VC)
-curve25519.ads:18:40: info: overflow check proved (CVC4: 1 VC)
+curve25519.ads:18:40: info: overflow check proved (CVC4: 2 VC)
 curve25519.ads:19:26: info: predicate check proved (CVC4: 1 VC)
 curve25519.ads:20:29: info: predicate check proved (CVC4: 1 VC)
 curve25519.ads:20:50: info: predicate check proved (CVC4: 1 VC)

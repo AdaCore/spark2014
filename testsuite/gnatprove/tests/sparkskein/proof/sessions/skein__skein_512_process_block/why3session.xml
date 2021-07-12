@@ -559,15 +559,21 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.172" proved="true">
-  <proof prover="0"><result status="valid" steps="2794"/></proof>
-  </goal>
-  <goal name="def&#39;vc.173" proved="true">
-  <proof prover="0"><result status="valid" steps="2053"/></proof>
-  </goal>
-  <goal name="def&#39;vc.174" proved="true">
   <proof prover="0"><result status="valid" steps="2056"/></proof>
   </goal>
+  <goal name="def&#39;vc.173" proved="true">
+  <proof prover="0"><result status="valid" steps="2056"/></proof>
+  </goal>
+  <goal name="def&#39;vc.174" proved="true">
+  <proof prover="0"><result status="valid" steps="2053"/></proof>
+  </goal>
   <goal name="def&#39;vc.175" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.176" proved="true">
+  <proof prover="0"><result status="valid" steps="2056"/></proof>
+  </goal>
+  <goal name="def&#39;vc.177" proved="true">
   <proof prover="0"><result status="valid" steps="2053"/></proof>
   </goal>
  </transf>
