@@ -79,7 +79,7 @@ package SPARK_Atree is
    subtype Opt_N_Attribute_Reference_Id   is SN.Opt_N_Attribute_Reference_Id;
    subtype Opt_N_Block_Statement_Id       is SN.Opt_N_Block_Statement_Id;
    subtype Opt_N_Case_Statement_Alternative_Id is
-     SN.Opt_N_Case_Expression_Alternative_Id;
+     SN.Opt_N_Case_Statement_Alternative_Id;
    subtype Opt_N_Component_Association_Id is SN.Opt_N_Component_Association_Id;
    subtype Opt_N_Declaration_Id           is SN.Opt_N_Declaration_Id;
    subtype Opt_N_Exit_Statement_Id        is SN.Opt_N_Exit_Statement_Id;
