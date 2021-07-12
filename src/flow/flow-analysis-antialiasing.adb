@@ -306,15 +306,19 @@ package body Flow.Analysis.Antialiasing is
       --     * Wibble (X)  ->  X
 
       function Path_To_Root (N : Node_Id) return Node_Lists.List
-        with Pre  => Is_Interesting (N),
-        Post => Is_Root (Nkind (Path_To_Root'Result.First_Element))
-        or else not Is_Interesting (Path_To_Root'Result.First_Element);
+      with Pre  => Nkind (N) in N_Defining_Identifier | N_Subexpr,
+           Post => Path_To_Root'Result.Is_Empty
+                     or else
+                   Is_Root (Nkind (Path_To_Root'Result.First_Element));
       --  Calls Down_One_Level, prepending the result of each such call to the
       --  returned list, until we find an identifier. For example:
       --    * R.X.Y       ->  [R, R.X, R.X.Y]
       --    * A (12)      ->  A
       --    * Wibble (X)  ->  X
-      --  The root, if found, is the first element in the returned list.
+      --  When calling Down_One_Level, we inspect the original version of the
+      --  node if it has been inlined-for-proof.
+      --  If the parameter names an object, then the result starts with the
+      --  root object; otherwise, the returned list is empty.
       --  Up_Ignoring_Conversions is the opposite of this routine.
 
       function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
@@ -366,34 +370,52 @@ package body Flow.Analysis.Antialiasing is
       ------------------
 
       function Path_To_Root (N : Node_Id) return Node_Lists.List is
-         L       : Node_Lists.List;
-         Context : Node_Id;
-         Orig    : Node_Id;
+         Path    : Node_Lists.List;
+         Context : N_Subexpr_Id;
       begin
-         L.Prepend (N);
-         while Is_Interesting (L.First_Element) loop
-            --  Nodes that have been rewritten for proof may misleadingly
-            --  appear root-like; in these cases call Down_One_Level against
-            --  the original version.
-            Context := L.First_Element;
-            Orig := Original_Node (Context);
+         --  If we are dealing with a global parameter, then return a list with
+         --  its entity.
 
-            if not Is_Root (Nkind (Context)) then
-               --  The context element is interesting and not the root; keep
-               --  going down.
-               L.Prepend (Down_One_Level (Context));
-            elsif Is_Root (Nkind (Orig))
-              or else not Is_Interesting (Orig)
-            then
-               exit; -- The first element, even if rewritten, is the root
+         if Nkind (N) = N_Defining_Identifier then
+            Path.Prepend (N);
+            return Path;
+         end if;
+
+         --  Otherwise find the root object of the actual parameter expression
+
+         Context := N;
+
+         loop
+            --  The root object will appear as an identifier
+
+            if Nkind (Context) in N_Identifier | N_Expanded_Name then
+
+               --  For objects created by inlining-for-proof switch to their
+               --  original expression and continue.
+
+               if Is_Rewrite_Substitution (Context) then
+                  Context := Original_Node (Context);
+
+               --  For ordinary objects just prepend them to the result and we
+               --  are done.
+
+               else
+                  Path.Prepend (Context);
+                  return Path;
+               end if;
+
+            --  Add name components to the path
+
+            elsif Is_Interesting (Context) then
+               Path.Prepend (Context);
+               Context := Down_One_Level (Context);
+
+            --  Other subexpressions are not object names, so terminate
+
             else
-               --  The original version of the node is interesting and not the
-               --  root; continue using the original.
-               L.Replace_Element (L.First, Orig);
-               L.Prepend (Down_One_Level (Orig));
+               return Node_Lists.Empty_List;
             end if;
          end loop;
-         return L;
       end Path_To_Root;
 
       -----------------------------
@@ -411,6 +433,8 @@ package body Flow.Analysis.Antialiasing is
          end loop;
       end Up_Ignoring_Conversions;
 
+      --  Local variables
+
       List_A, List_B : Node_Lists.List;
       Head_A, Head_B : Node_Id;
 
@@ -423,17 +447,6 @@ package body Flow.Analysis.Antialiasing is
                        Node1 => A,
                        Text2 => " <--> ",
                        Node2 => B);
-
-      --  First we check if either of the nodes is interesting as
-      --  non-interesting nodes cannot introduce aliasing.
-
-      if not Is_Interesting (A) then
-         Trace_Line ("   -> A is not interesting");
-         return Impossible;
-      elsif not Is_Interesting (B) then
-         Trace_Line ("   -> B is not interesting");
-         return Impossible;
-      end if;
 
       --  Now check the cases involving immutable formal parameters from the
       --  SPARK RM 6.4.2(3).
@@ -469,6 +482,17 @@ package body Flow.Analysis.Antialiasing is
 
       List_A := Path_To_Root (A);
       List_B := Path_To_Root (B);
+
+      --  Aliasing requires both parameters to name an object
+
+      if List_A.Is_Empty then
+         Trace_Line ("   -> A is not interesting");
+         return Impossible;
+      elsif List_B.Is_Empty then
+         Trace_Line ("   -> B is not interesting");
+         return Impossible;
+      end if;
+
       Head_A := List_A.First_Element; --  Root node of A
       Head_B := List_B.First_Element; --  Root node of B
 
@@ -477,14 +501,6 @@ package body Flow.Analysis.Antialiasing is
                        Text2     => "   -> root of B: ",
                        Node2     => Head_B,
                        Two_Lines => True);
-
-      if not Is_Root (Nkind (Head_A)) then
-         Trace_Line ("   -> root of A is not interesting");
-         return Impossible;
-      elsif not Is_Root (Nkind (Head_B)) then
-         Trace_Line ("   -> root of B is not interesting");
-         return Impossible;
-      end if;
 
       --  A quick sanity check. If the root nodes refer to different entities
       --  then we cannot have aliasing.
