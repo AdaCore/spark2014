@@ -18,7 +18,7 @@ max_steps = 200
 default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
-default_provers = ["cvc4", "altergo", "z3"]
+default_provers = ["cvc4", "altergo", "z3", "colibri"]
 provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo|colibri).*\)")
 default_ada = 2020
 
