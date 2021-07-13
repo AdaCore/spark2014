@@ -42,9 +42,22 @@ package Checked_Types is
                                        | N_Delta_Aggregate_Id
                                        | N_Extension_Aggregate_Id;
 
+   subtype N_Case_Kind_Id is Node_Id with
+     Predicate => N_Case_Kind_Id in N_Case_Expression_Id
+                                  | N_Case_Statement_Id;
+
+   subtype N_Identifier_Kind_Id is Node_Id with
+     Predicate => N_Identifier_Kind_Id in N_Identifier_Id
+                                        | N_Expanded_Name_Id;
+
    subtype N_Call_Id is Node_Id with
      Predicate => N_Call_Id in N_Entry_Call_Statement_Id
                              | N_Subprogram_Call_Id;
+
+   subtype N_Raise_Kind_Id is Node_Id with
+     Predicate => N_Raise_Kind_Id in N_Raise_xxx_Error_Id
+                                   | N_Raise_Statement_Id
+                                   | N_Raise_Expression_Id;
 
    --------------------------
    -- Subtypes of entities --
@@ -81,6 +94,17 @@ package Checked_Types is
    subtype Opt_Callable_Kind_Id is Entity_Id with
      Predicate => No (Opt_Callable_Kind_Id)
        or else Opt_Callable_Kind_Id in Callable_Kind_Id;
+
+   --  Runnable entities consist in callable entities plus task types, which
+   --  are not directly called, but started during elaboration. These entities
+   --  may have a Global/Depends contract.
+   subtype Runnable_Kind_Id is Entity_Id with
+     Predicate => Runnable_Kind_Id in Callable_Kind_Id
+                                    | E_Task_Type_Id;
+
+   subtype Opt_Runnable_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Runnable_Kind_Id)
+       or else Opt_Runnable_Kind_Id in Runnable_Kind_Id;
 
    subtype Function_Kind_Id is Entity_Id with
      Predicate => Function_Kind_Id in E_Function_Id

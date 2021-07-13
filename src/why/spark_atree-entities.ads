@@ -85,6 +85,7 @@ package SPARK_Atree.Entities is
    subtype E_Return_Statement_Id    is EE.E_Return_Statement_Id;
    subtype E_String_Literal_Subtype_Id is EE.E_String_Literal_Subtype_Id;
    subtype E_Subprogram_Type_Id     is EE.E_Subprogram_Type_Id;
+   subtype E_Task_Type_Id           is EE.E_Task_Type_Id;
 
    subtype Opt_E_Constant_Id        is EE.Opt_E_Constant_Id;
    subtype Opt_E_Component_Id       is EE.Opt_E_Component_Id;

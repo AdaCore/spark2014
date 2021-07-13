@@ -24,6 +24,7 @@
 --  This package contains a bunch of procedures used throughout flow analysis
 
 with Atree;                use Atree;
+with Checked_Types;        use Checked_Types;
 with Common_Containers;    use Common_Containers;
 with Einfo.Entities;       use Einfo.Entities;
 with Einfo.Utils;          use Einfo.Utils;
@@ -108,11 +109,11 @@ package Flow_Utility is
    --  relation.
 
    procedure Get_Depends
-     (Subprogram           : Entity_Id;
-      Scope                : Flow_Scope;
-      Classwide            : Boolean;
+     (Subprogram           :     Runnable_Kind_Id;
+      Scope                :     Flow_Scope;
+      Classwide            :     Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals : Boolean := True)
+      Use_Computed_Globals :     Boolean := True)
    with Pre  => Ekind (Subprogram) in E_Entry
                                     | E_Function
                                     | E_Procedure
@@ -143,12 +144,13 @@ package Flow_Utility is
    --  globals phase. It prevents us from attempting to use generated globals
    --  before they have actually been produced.
 
-   procedure Get_Globals (Subprogram          : Entity_Id;
-                          Scope               : Flow_Scope;
-                          Classwide           : Boolean;
-                          Globals             : out Global_Flow_Ids;
-                          Use_Deduced_Globals : Boolean := True;
-                          Ignore_Depends      : Boolean := False)
+   procedure Get_Globals
+     (Subprogram          :     Runnable_Kind_Id;
+      Scope               :     Flow_Scope;
+      Classwide           :     Boolean;
+      Globals             : out Global_Flow_Ids;
+      Use_Deduced_Globals :     Boolean := True;
+      Ignore_Depends      :     Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Entry
                                     | E_Function
                                     | E_Procedure
@@ -187,18 +189,13 @@ package Flow_Utility is
    --  If Ignore_Depends is True then we do not use the Refined_Depends
    --  contract to trim the Globals.
 
-   procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
-                                Reads           : out Flow_Id_Sets.Set;
-                                Writes          : out Flow_Id_Sets.Set;
-                                Erase_Constants :     Boolean;
-                                Scop            :     Flow_Scope :=
-                                  Null_Flow_Scope)
-   with Pre  => Ekind (Subprogram) in E_Entry
-                                    | E_Function
-                                    | E_Procedure
-                                    | E_Task_Type
-                                    | E_Subprogram_Type,
-        Post => (for all G of Reads =>
+   procedure Get_Proof_Globals
+     (Subprogram      :     Runnable_Kind_Id;
+      Reads           : out Flow_Id_Sets.Set;
+      Writes          : out Flow_Id_Sets.Set;
+      Erase_Constants :     Boolean;
+      Scop            :     Flow_Scope := Null_Flow_Scope)
+   with Post => (for all G of Reads =>
                    Is_Entire_Variable (G) and then G.Variant = Normal_Use)
        and then (for all G of Writes =>
                    Is_Entire_Variable (G) and then G.Variant = Normal_Use);
@@ -220,8 +217,7 @@ package Flow_Utility is
    with Pre => F.Kind = Magic_String, Ghost;
    --  Returns True iff the internal structure of F is not visible to proof
 
-   function Has_Proof_Globals (Subprogram : Entity_Id) return Boolean
-   with Pre => Ekind (Subprogram) = E_Function;
+   function Has_Proof_Globals (Subprogram : E_Function_Id) return Boolean;
    --  Returns True if Subprogram has a non-empty global inputs or outputs
    --  (whether user-defined or generated).
 
@@ -236,7 +232,8 @@ package Flow_Utility is
    function Get_Functions
      (N                  : Node_Id;
       Include_Predicates : Boolean)
-      return Node_Sets.Set with
+      return Node_Sets.Set
+   with
      Pre => Nkind (N) in N_Subexpr;
    --  Collect functions called in an expression N. If Include_Predicates is
    --  True, then also include implicit calls to predicate functions.
@@ -274,9 +271,10 @@ package Flow_Utility is
    --       the variables referenced in their initialization expression;
    --       similar for variables that come from inlining-for-proof.
 
-   function Get_Variables_For_Proof (Expr_N  : Node_Id;
-                                     Scope_N : Node_Id)
-                                     return Flow_Id_Sets.Set
+   function Get_Variables_For_Proof
+     (Expr_N  : Node_Id;
+      Scope_N : Node_Id)
+      return Flow_Id_Sets.Set
    with Pre  => Nkind (Expr_N) in N_Subexpr
                 and then Present (Scope_N),
         Post => (for all F of Get_Variables_For_Proof'Result =>
@@ -359,7 +357,7 @@ package Flow_Utility is
    --  Valid_Assignment_Kinds only.
 
    procedure Get_Assignment_Target_Properties
-     (N                  : Node_Id;
+     (N                  :     Node_Id;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
       Map_Root           : out Flow_Id;
@@ -376,13 +374,13 @@ package Flow_Utility is
    --  * Seq: items used to derive Map_Root.
 
    procedure Untangle_Assignment_Target
-     (N                    : Node_Id;
-      Scope                : Flow_Scope;
-      Use_Computed_Globals : Boolean;
+     (N                    :     Node_Id;
+      Scope                :     Flow_Scope;
+      Use_Computed_Globals :     Boolean;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
-   with Pre  => Is_Valid_Assignment_Target (N),
+     with Pre  => Is_Valid_Assignment_Target (N),
         Post => (if not Is_Empty_Record_Type (Etype (N))
                  then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,
@@ -456,9 +454,10 @@ package Flow_Utility is
    --  precondition and the condition(s) of its Contract_Cases (or return
    --  the empty list if none of these exist).
 
-   function Get_Postcondition_Expressions (E       : Entity_Id;
-                                           Refined : Boolean)
-                                           return Node_Lists.List
+   function Get_Postcondition_Expressions
+     (E       : Entity_Id;
+      Refined : Boolean)
+      return Node_Lists.List
    with Pre  => Ekind (E) in Entry_Kind
                            | E_Function
                            | E_Package
@@ -477,9 +476,10 @@ package Flow_Utility is
    --  Returns true if the flattened variable for F contains at least one
    --  discriminant.
 
-   function Is_Initialized_At_Elaboration (F : Flow_Id;
-                                           S : Flow_Scope)
-                                           return Boolean;
+   function Is_Initialized_At_Elaboration
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean;
    --  Returns True iff F is covered by either a user-provided or a generated
    --  initializes aspect.
    --
@@ -487,16 +487,18 @@ package Flow_Utility is
    --  Flow_Refinement and GG_Is_Initialized_At_Elaboration from
    --  Flow_Generated_Globals.
 
-   function Is_Initialized_In_Specification (F : Flow_Id;
-                                             S : Flow_Scope)
-                                             return Boolean
+   function Is_Initialized_In_Specification
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
    with Pre => Is_Initialized_At_Elaboration (F, S);
    --  Returns true for an entity which is initialized at elaboration *and*
    --  the initialization occurs in the specification of the enclosing
    --  package of F.
 
-   procedure Add_Loop_Writes (Loop_E : Entity_Id;
-                              Writes : Flow_Id_Sets.Set)
+   procedure Add_Loop_Writes
+     (Loop_E : Entity_Id;
+      Writes : Flow_Id_Sets.Set)
    with Pre => Ekind (Loop_E) = E_Loop;
    --  Adds Writes to the set of variables written by the loop entity Loop_E
 
@@ -572,9 +574,10 @@ package Flow_Utility is
    --  @param E is the entity of an entry/task/subprogram
    --  @return explicit and implicit formal parameters of E
 
-   function Extensions_Visible (E     : Entity_Id;
-                                Scope : Flow_Scope)
-                                return Boolean
+   function Extensions_Visible
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
+      return Boolean
    with Pre => Ekind (E) in E_Abstract_State
                           | E_Function
                           | E_Protected_Type
@@ -588,9 +591,10 @@ package Flow_Utility is
    --  Has_Extensions_Visible_Aspect from Flow_Tree_Utilities instead.
    --  ??? there is no such a function and even no such a package
 
-   function Extensions_Visible (F     : Flow_Id;
-                                Scope : Flow_Scope)
-                                return Boolean
+   function Extensions_Visible
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Boolean
    with Pre => (if F.Kind in Direct_Mapping | Record_Field
                 then Ekind (Get_Direct_Mapping_Id (F)) in E_Abstract_State
                                                         | E_Function
@@ -599,10 +603,11 @@ package Flow_Utility is
                                                         | Object_Kind);
    --  As above, but using a Flow_Id
 
-   function Search_Depends_Contract (Unit   : Entity_Id;
-                                     Output : Entity_Id;
-                                     Input  : Entity_Id := Empty)
-                                     return Node_Id
+   function Search_Depends_Contract
+     (Unit   : Entity_Id;
+      Output : Entity_Id;
+      Input  : Entity_Id := Empty)
+      return Node_Id
    with Pre  => Ekind (Unit) in E_Function
                               | E_Procedure
                               | E_Entry
@@ -626,10 +631,11 @@ package Flow_Utility is
    --  If we can't find what we're looking for, we return either the Unit
    --  itself or the corresponding contract (if it exists).
 
-   function Search_Initializes_Contract (Unit   : Entity_Id;
-                                         Output : Entity_Id;
-                                         Input  : Entity_Id := Empty)
-                                         return Node_Id
+   function Search_Initializes_Contract
+     (Unit   : Entity_Id;
+      Output : Entity_Id;
+      Input  : Entity_Id := Empty)
+      return Node_Id
    with Pre  => Ekind (Unit) = E_Package
                 and then Ekind (Output) in E_Variable
                                          | E_Abstract_State
@@ -761,8 +767,9 @@ package Flow_Utility is
    --  Same as above but for Flow_Ids; returns Null_Flow_Id instead of Empty
 
    procedure Map_Generic_In_Formals
-     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set;
-      Entire : Boolean := True);
+     (Scop    :        Flow_Scope;
+      Objects : in out Flow_Id_Sets.Set;
+      Entire  :        Boolean := True);
    --  Map generic IN formal parameters, which are visible inside of generic
    --  instances (e.g. might appear in Global and Initializes contracts) into
    --  objects used in their corresponding generic actual parameter expression.

@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Checked_Types;        use Checked_Types;
 with Common_Containers;    use Common_Containers;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree;          use SPARK_Atree;
@@ -69,64 +70,62 @@ package Gnat2Why.Subprograms is
    Current_Subp : Entity_Id := Empty;
 
    function Compute_Outputs_With_Allocated_Parts
-     (E : Entity_Id) return Entity_Sets.Set
-     with Pre => Ekind (E) in E_Entry | E_Procedure | E_Subprogram_Type;
+     (E : Callable_Kind_Id)
+      return Entity_Sets.Set
+   with Pre => Ekind (E) /= E_Function;
    --  Compute the set of outputs with allocated parts for a procedure or
    --  entry E, which consist in output parameters and globals of mode Output.
 
-   procedure Generate_VCs_For_Subprogram (E : Entity_Id)
-     with Pre =>
-       Ekind (E) in E_Entry | E_Function | E_Procedure | E_Subprogram_Type;
+   procedure Generate_VCs_For_Subprogram (E : Callable_Kind_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in E.
 
-   procedure Generate_VCs_For_Package_Elaboration (E : Entity_Id) with
-     Pre => Ekind (E) = E_Package;
+   procedure Generate_VCs_For_Package_Elaboration (E : E_Package_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the Initial_Condition of E and the absence of run-time
    --  errors in the declarations and body statements of E.
 
-   procedure Generate_VCs_For_LSP (E : Entity_Id) with
-     Pre => Ekind (E) in E_Function | E_Procedure;
+   procedure Generate_VCs_For_LSP (E : Subprogram_Kind_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the verification of LSP for dispatching subprogram E.
 
-   procedure Generate_VCs_For_Task_Type (E : Entity_Id)
-   with Pre => Ekind (E) = E_Task_Type;
+   procedure Generate_VCs_For_Task_Type (E : E_Task_Type_Id);
    --  @param File the file and section in which the VCs should be generated
    --  @param E the task entity to be translated
 
-   procedure Generate_VCs_For_Protected_Type (E : Entity_Id)
-   with Pre => Ekind (E) = E_Protected_Type;
+   procedure Generate_VCs_For_Protected_Type (E : E_Protected_Type_Id);
 
-   procedure Translate_Subprogram_Spec (E : Entity_Id) with
+   procedure Translate_Subprogram_Spec (E : Callable_Kind_Id) with
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why logic declaration that corresponds to an Ada subprogram
 
    function Get_Logic_Args
      (E           : Entity_Id;
-      Ref_Allowed : Boolean) return W_Expr_Array;
+      Ref_Allowed : Boolean)
+      return W_Expr_Array;
    --  Get the expressions to use in a function call for an additional logic
    --  binders.
 
-   procedure Generate_Subprogram_Completion (E : Entity_Id) with
+   procedure Generate_Subprogram_Completion (E : Callable_Kind_Id) with
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why program declaration and potentially a defining axiom for
    --  an Ada subprogram.
 
-   procedure Translate_Expression_Function_Body (E : Entity_Id)
+   procedure Translate_Expression_Function_Body (E : E_Function_Id)
    with Pre => Is_Expression_Function_Or_Completion (E);
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
    --  = E". Also generate a program function for E.
 
    function Compute_Subprogram_Parameters
-     (E      : Entity_Id;
-      Domain : EW_Domain) return Item_Array;
+     (E      : Callable_Kind_Id;
+      Domain : EW_Domain)
+      return Item_Array;
    --  Return Why binders for the parameters of subprogram E.
    --  If Domain is EW_Term also generates binders for E's read effects.
 
-   procedure Update_Symbol_Table_For_Inherited_Contracts (E : Entity_Id);
+   procedure Update_Symbol_Table_For_Inherited_Contracts
+     (E : Callable_Kind_Id);
    --  The inherited precondition and postcondition for E is expressed wrt the
    --  overridden's subprogram parameters. Make sure these are mapped in the
    --  symbol table to the current subprogram'ms parameters. The result symbol
@@ -135,14 +134,14 @@ package Gnat2Why.Subprograms is
    procedure Insert_Exception (Exc : W_Name_Id);
    --  Add a new exception that should be declared before the unit
 
-   function Need_Self_Binder (E : Entity_Id) return Boolean;
+   function Need_Self_Binder (E : Callable_Kind_Id) return Boolean;
    --  Return True on entries and subprograms located within a protected object
 
 private
 
    procedure Declare_Logic_Functions
      (Th           : Theory_UC;
-      E            : Entity_Id;
+      E            : Callable_Kind_Id;
       Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>));
    --  @param File section in which the expression should be translated
    --  @param E entry or subprogram or subprogram type entity
@@ -153,7 +152,7 @@ private
 
    procedure Generate_Subprogram_Program_Fun
      (Th                     : Theory_UC;
-      E                      : Entity_Id;
+      E                      : Callable_Kind_Id;
       Prog_Id                : W_Identifier_Id;
       Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
       Is_Access_Subp_Wrapper : Boolean := False);
@@ -170,7 +169,7 @@ private
 
    procedure Generate_Axiom_For_Post
      (Th                     : Theory_UC;
-      E                      : Entity_Id;
+      E                      : Callable_Kind_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
       Is_Access_Subp_Wrapper : Boolean := False)
@@ -193,9 +192,10 @@ private
    --  is equivalent to Spec_Guard.
 
    function Compute_Dynamic_Property_For_Inputs
-     (E              : Entity_Id;
+     (E              : Unit_Kind_Id;
       Params         : Transformation_Params;
-      Pred_Fun_Param : Entity_Id := Empty) return W_Prog_Id
+      Pred_Fun_Param : Entity_Id := Empty)
+      return W_Prog_Id
    with
        Pre => Ekind (E) in E_Procedure |
                            E_Function  |
@@ -214,8 +214,9 @@ private
    --  @result an assumption including the dynamic property of every external
    --     dynamic objects that are referenced in E.
 
-   function Compute_Binders_For_Effects (E : Entity_Id) return Item_Array
-   with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Subprogram_Type;
+   function Compute_Binders_For_Effects
+     (E : Callable_Kind_Id)
+      return Item_Array;
    --  @param E an enity for a subprogram
    --  @param Compute True if binders should be created when not in the
    --    symbol table.
@@ -224,28 +225,27 @@ private
 
    function Compute_Call_Effects
      (Params : Transformation_Params;
-      E      : Entity_Id)
+      E      : Callable_Kind_Id)
       return W_Prog_Id;
    --  Generate a Why3 program simulating the effects of a call of the
    --  subprogram.
 
-   function Same_Globals (Subp_1, Subp_2 : Entity_Id) return Boolean with
-     Pre => Ekind (Subp_1) in Subprogram_Kind | E_Entry | E_Subprogram_Type
-        and Ekind (Subp_2) in Subprogram_Kind | E_Entry | E_Subprogram_Type;
+   function Same_Globals (Subp_1, Subp_2 : Callable_Kind_Id) return Boolean;
    --  Return True if Subp_1 and Sup2 access the same set of global variables
 
    function Compute_Contract_Cases_Postcondition
      (Params : Transformation_Params;
-      E      : Entity_Id) return W_Pred_Id;
+      E      : Callable_Kind_Id)
+      return W_Pred_Id;
    --  Returns the postcondition corresponding to the Contract_Cases pragma for
    --  subprogram E (if any), to be used in the postcondition of the program
    --  function.
 
    procedure Collect_Old_For_Subprogram
-     (E                 : Entity_Id;
+     (E                 :        Callable_Kind_Id;
       Old_Parts         : in out Node_Sets.Set;
-      Exclude_Classwide : Boolean := True;
-      Exclude_CC        : Boolean := False);
+      Exclude_Classwide :        Boolean := True;
+      Exclude_CC        :        Boolean := False);
    --  Collects the set of old attributes occuring in the postcondition of E.
    --  If Exclude_CC is False, also collects old attributes and guards from
    --  the contract case if any.

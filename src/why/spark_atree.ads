@@ -63,17 +63,23 @@ package SPARK_Atree is
    subtype N_Subexpr         is SN.N_Subexpr;
    subtype N_Subprogram_Call is SN.N_Subprogram_Call;
 
+   subtype N_Assignment_Statement_Id  is SN.N_Assignment_Statement_Id;
    subtype N_Attribute_Reference_Id   is SN.N_Attribute_Reference_Id;
    subtype N_Block_Statement_Id       is SN.N_Block_Statement_Id;
    subtype N_Component_Association_Id is SN.N_Component_Association_Id;
    subtype N_Exit_Statement_Id        is SN.N_Exit_Statement_Id;
+   subtype N_Function_Call_Id         is SN.N_Function_Call_Id;
    subtype N_Iteration_Scheme_Id      is SN.N_Iteration_Scheme_Id;
    subtype N_Loop_Statement_Id        is SN.N_Loop_Statement_Id;
+   subtype N_Membership_Test_Id       is SN.N_Membership_Test_Id;
    subtype N_Object_Declaration_Id    is SN.N_Object_Declaration_Id;
    subtype N_Op_Id                    is SN.N_Op_Id;
    subtype N_Package_Body_Id          is SN.N_Package_Body_Id;
    subtype N_Package_Specification_Id is SN.N_Package_Specification_Id;
    subtype N_Pragma_Id                is SN.N_Pragma_Id;
+   subtype N_Quantified_Expression_Id is SN.N_Quantified_Expression_Id;
+   subtype N_Slice_Id                 is SN.N_Slice_Id;
+   subtype N_String_Literal_Id        is SN.N_String_Literal_Id;
    subtype N_Subexpr_Id               is SN.N_Subexpr_Id;
 
    subtype Opt_N_Attribute_Reference_Id   is SN.Opt_N_Attribute_Reference_Id;

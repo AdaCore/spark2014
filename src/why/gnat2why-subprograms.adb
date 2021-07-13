@@ -601,10 +601,10 @@ package body Gnat2Why.Subprograms is
    --------------------------------
 
    procedure Collect_Old_For_Subprogram
-     (E                 : Entity_Id;
+     (E                 :        Callable_Kind_Id;
       Old_Parts         : in out Node_Sets.Set;
-      Exclude_Classwide : Boolean := True;
-      Exclude_CC        : Boolean := False)
+      Exclude_Classwide :        Boolean := True;
+      Exclude_CC        :        Boolean := False)
    is
       CC_Prag   : constant Node_Id :=
         (if Exclude_CC then Empty
@@ -812,7 +812,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Call_Effects
      (Params : Transformation_Params;
-      E      : Entity_Id)
+      E      : Callable_Kind_Id)
       return W_Prog_Id
    is
       Call_Effects : W_Prog_Id;
@@ -835,9 +835,10 @@ package body Gnat2Why.Subprograms is
    -----------------------------------------
 
    function Compute_Dynamic_Property_For_Inputs
-     (E              : Entity_Id;
+     (E              : Unit_Kind_Id;
       Params         : Transformation_Params;
-      Pred_Fun_Param : Entity_Id := Empty) return W_Prog_Id
+      Pred_Fun_Param : Entity_Id := Empty)
+      return W_Prog_Id
    is
       Includes : Node_Sets.Set;
 
@@ -1298,7 +1299,8 @@ package body Gnat2Why.Subprograms is
    ------------------------------------------
 
    function Compute_Outputs_With_Allocated_Parts
-     (E : Entity_Id) return Entity_Sets.Set
+     (E : Callable_Kind_Id)
+      return Entity_Sets.Set
    is
       Outputs : Entity_Sets.Set;
    begin
@@ -1365,8 +1367,9 @@ package body Gnat2Why.Subprograms is
    ------------------------------------
 
    function Compute_Subprogram_Parameters
-     (E      : Entity_Id;
-      Domain : EW_Domain) return Item_Array
+     (E      : Callable_Kind_Id;
+      Domain : EW_Domain)
+      return Item_Array
    is
       Raw_Binders : constant Item_Array := Compute_Raw_Binders (E);
    begin
@@ -1663,9 +1666,11 @@ package body Gnat2Why.Subprograms is
    -- Add_Logic_Binders --
    -----------------------
 
-   function Add_Logic_Binders (E           : Entity_Id;
-                               Raw_Binders : Item_Array)
-                                     return Item_Array is
+   function Add_Logic_Binders
+     (E           : Entity_Id;
+      Raw_Binders : Item_Array)
+      return Item_Array
+   is
       Effect_Binders : Item_Array :=
         Compute_Binders_For_Effects (E);
    begin
@@ -1677,7 +1682,10 @@ package body Gnat2Why.Subprograms is
    -- Compute_Binders_For_Effects --
    ---------------------------------
 
-   function Compute_Binders_For_Effects (E : Entity_Id) return Item_Array is
+   function Compute_Binders_For_Effects
+     (E : Callable_Kind_Id)
+      return Item_Array
+   is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
@@ -2125,7 +2133,8 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Contract_Cases_Postcondition
      (Params : Transformation_Params;
-      E      : Entity_Id) return W_Pred_Id
+      E      : Callable_Kind_Id)
+      return W_Pred_Id
    is
       Prag          : constant Node_Id :=
         Get_Pragma (E, Pragma_Contract_Cases);
@@ -2246,7 +2255,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Declare_Logic_Functions
      (Th           : Theory_UC;
-      E            : Entity_Id;
+      E            : Callable_Kind_Id;
       Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>))
    is
       --  Local subprograms
@@ -2455,8 +2464,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_LSP --
    --------------------------
 
-   procedure Generate_VCs_For_LSP (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_LSP (E : Subprogram_Kind_Id) is
       Name      : constant String := Full_Name (E);
       Params    : Transformation_Params;
 
@@ -2832,8 +2840,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Package_Elaboration --
    ------------------------------------------
 
-   procedure Generate_VCs_For_Package_Elaboration (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_Package_Elaboration (E : E_Package_Id) is
       Name       : constant String  := Full_Name (E);
       Body_N     : constant Node_Id := Package_Body (E);
       Vis_Decls  : constant List_Id :=
@@ -3085,8 +3092,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Protected_Type --
    -------------------------------------
 
-   procedure Generate_VCs_For_Protected_Type (E : Entity_Id)
-   is
+   procedure Generate_VCs_For_Protected_Type (E : E_Protected_Type_Id) is
       type Discr is record
          Id  : W_Identifier_Id;
          Val : W_Expr_Id;
@@ -3346,7 +3352,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Subprogram --
    ---------------------------------
 
-   procedure Generate_VCs_For_Subprogram (E : Entity_Id) is
+   procedure Generate_VCs_For_Subprogram (E : Callable_Kind_Id) is
       Body_N : constant Node_Id := Get_Body (E);
 
       function Assume_For_Input return W_Prog_Id;
@@ -4476,7 +4482,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Task_Type --
    --------------------------------
 
-   procedure Generate_VCs_For_Task_Type (E : Entity_Id) is
+   procedure Generate_VCs_For_Task_Type (E : E_Task_Type_Id) is
       Name   : constant String  := Full_Name (E);
       Body_N : constant Node_Id := Task_Body (E);
       Params : constant Transformation_Params := Body_Params;
@@ -4637,7 +4643,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Generate_Axiom_For_Post
      (Th                     : Theory_UC;
-      E                      : Entity_Id;
+      E                      : Callable_Kind_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
       Is_Access_Subp_Wrapper : Boolean := False)
@@ -5402,7 +5408,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_Subprogram_Completion --
    ------------------------------------
 
-   procedure Generate_Subprogram_Completion (E : Entity_Id) is
+   procedure Generate_Subprogram_Completion (E : Callable_Kind_Id) is
       Th : Theory_UC;
    begin
       Th :=
@@ -5465,7 +5471,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Generate_Subprogram_Program_Fun
      (Th                     : Theory_UC;
-      E                      : Entity_Id;
+      E                      : Callable_Kind_Id;
       Prog_Id                : W_Identifier_Id;
       Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
       Is_Access_Subp_Wrapper : Boolean := False)
@@ -6162,7 +6168,7 @@ package body Gnat2Why.Subprograms is
    -- Need_Self_Binder --
    ----------------------
 
-   function Need_Self_Binder (E : Entity_Id) return Boolean is
+   function Need_Self_Binder (E : Callable_Kind_Id) return Boolean is
      (Is_Subprogram_Or_Entry (E) and then Within_Protected_Type (E));
 
    -----------------------------
@@ -6186,7 +6192,7 @@ package body Gnat2Why.Subprograms is
    -- Same_Globals --
    ------------------
 
-   function Same_Globals (Subp_1, Subp_2 : Entity_Id) return Boolean is
+   function Same_Globals (Subp_1, Subp_2 : Callable_Kind_Id) return Boolean is
       use type Flow_Types.Flow_Id_Sets.Set;
 
       Subp_1_Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
@@ -6215,8 +6221,7 @@ package body Gnat2Why.Subprograms is
    -- Translate_Expression_Function_Body --
    ----------------------------------------
 
-   procedure Translate_Expression_Function_Body (E : Entity_Id)
-   is
+   procedure Translate_Expression_Function_Body (E : E_Function_Id) is
       Expr : constant Node_Id := Expression (Get_Expression_Function (E));
 
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
@@ -6445,8 +6450,7 @@ package body Gnat2Why.Subprograms is
    -- Translate_Subprogram_Spec --
    -------------------------------
 
-   procedure Translate_Subprogram_Spec (E : Entity_Id)
-   is
+   procedure Translate_Subprogram_Spec (E : Callable_Kind_Id) is
       Th : Theory_UC;
    begin
       Th :=
@@ -6479,8 +6483,8 @@ package body Gnat2Why.Subprograms is
    -- Update_Symbol_Table_For_Inherited_Contracts --
    -------------------------------------------------
 
-   procedure Update_Symbol_Table_For_Inherited_Contracts (E : Entity_Id) is
-
+   procedure Update_Symbol_Table_For_Inherited_Contracts (E : Callable_Kind_Id)
+   is
       procedure Relocate_Symbols (Overridden : Entity_Id);
       --  Relocate parameters and result from Overridden subprogram to E
 
