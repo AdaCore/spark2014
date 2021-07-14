@@ -301,17 +301,14 @@ package body Flow.Analysis.Antialiasing is
 
       function Path_To_Root (N : Node_Id) return Node_Lists.List
         with Pre  => Is_Interesting (N),
-        Post => Is_Root (Nkind (Original_Node
-                         (Path_To_Root'Result.First_Element)))
+        Post => Is_Root (Nkind (Path_To_Root'Result.First_Element))
         or else not Is_Interesting (Path_To_Root'Result.First_Element);
       --  Calls Down_One_Level, prepending the result of each such call to the
       --  returned list, until we find an identifier. For example:
       --    * R.X.Y       ->  [R, R.X, R.X.Y]
       --    * A (12)      ->  A
       --    * Wibble (X)  ->  X
-      --  When calling Down_One_Level, we inspect the original version of the
-      --  node if it has been rewritten for proof.
-      --  The root is the first element in the returned list.
+      --  The root, if found, is the first element in the returned list.
       --  Up_Ignoring_Conversions is the opposite of this routine.
 
       function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
@@ -363,20 +360,29 @@ package body Flow.Analysis.Antialiasing is
 
       function Path_To_Root (N : Node_Id) return Node_Lists.List is
          L       : Node_Lists.List;
-         Context : Node_Id := N;
+         Context : Node_Id;
+         Orig    : Node_Id;
       begin
          L.Prepend (N);
          while Is_Interesting (L.First_Element) loop
+            --  Nodes that have been rewritten for proof may misleadingly
+            --  appear root-like; in these cases call Down_One_Level against
+            --  the original version.
             Context := L.First_Element;
-            --  If the context element is not the root, keep going down. Note
-            --  that rewritten nodes may appear "root-like" when the original
-            --  form of the node is not.
+            Orig := Original_Node (Context);
+
             if not Is_Root (Nkind (Context)) then
+               --  The context element is interesting and not the root; keep
+               --  going down.
                L.Prepend (Down_One_Level (Context));
-            elsif not Is_Root (Nkind (Original_Node (Context))) then
-               L.Prepend (Down_One_Level (Original_Node (Context)));
+            elsif Is_Root (Nkind (Orig))
+              or else not Is_Interesting (Orig)
+            then
+               exit; -- The first element, even if rewritten, is the root
             else
-               exit; -- Found the root
+               --  The original version of the node is interesting and not the
+               --  root; continue using the original.
+               L.Prepend (Down_One_Level (Orig));
             end if;
          end loop;
          return L;
