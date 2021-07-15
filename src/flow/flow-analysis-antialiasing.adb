@@ -382,6 +382,7 @@ package body Flow.Analysis.Antialiasing is
             else
                --  The original version of the node is interesting and not the
                --  root; continue using the original.
+               L.Replace_Element (L.First, Orig);
                L.Prepend (Down_One_Level (Orig));
             end if;
          end loop;
