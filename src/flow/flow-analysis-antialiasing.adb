@@ -315,7 +315,8 @@ package body Flow.Analysis.Antialiasing is
       is (case Nkind (N) is
              when N_Defining_Identifier => N,
              when others => Entity (N))
-      with Pre => Is_Root (Nkind (N));
+      with Pre  => Is_Root (Nkind (N)),
+           Post => Is_Object (Get_Root_Entity'Result);
       --  Returns the entity attached to N, which is either an identifier of an
       --  actual or a defining entity of a global.
 
@@ -450,6 +451,9 @@ package body Flow.Analysis.Antialiasing is
            and then Is_By_Copy_Not_Access (Formal_B)
          then
             Trace_Line ("   -> B does not require aa checking");
+            return Impossible;
+         elsif No (Formal_B) and then Ekind (B) = E_Abstract_State then
+            Trace_Line ("   -> B is an abstract state");
             return Impossible;
          end if;
       end;
