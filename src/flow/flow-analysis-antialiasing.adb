@@ -321,6 +321,9 @@ package body Flow.Analysis.Antialiasing is
       --  root object; otherwise, the returned list is empty.
       --  Up_Ignoring_Conversions is the opposite of this routine.
 
+      function Root_Count (Path : Node_Lists.List) return Natural with Ghost;
+      --  Returns the number of root nodes on the path
+
       function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
       is (case Nkind (N) is
              when N_Defining_Identifier => N,
@@ -418,6 +421,36 @@ package body Flow.Analysis.Antialiasing is
          end loop;
       end Path_To_Root;
 
+      ----------------
+      -- Root_Count --
+      ----------------
+
+      function Root_Count (Path : Node_Lists.List) return Natural is
+         Count : Natural := 0;
+      begin
+         --  If the path represents a global parameter, it will consist of a
+         --  single N_Defining_Identifier node.
+
+         if Nkind (Path.First_Element) = N_Defining_Identifier then
+            pragma Assert (Path.Length = 1);
+            return 1;
+         end if;
+
+         --  Otherwise it is a sequence starting from an (expanded) name
+
+         pragma Assert
+           (Nkind (Path.First_Element) in N_Identifier | N_Expanded_Name);
+
+         for Node of Path loop
+            if Is_Root (Nkind (Node)) then
+               Count := Count + 1;
+            else
+               pragma Assert (Is_Interesting (Node));
+            end if;
+         end loop;
+         return Count;
+      end Root_Count;
+
       -----------------------------
       -- Up_Ignoring_Conversions --
       -----------------------------
@@ -501,6 +534,9 @@ package body Flow.Analysis.Antialiasing is
                        Text2     => "   -> root of B: ",
                        Node2     => Head_B,
                        Two_Lines => True);
+
+      pragma Assert (Root_Count (List_A) = 1);
+      pragma Assert (Root_Count (List_B) = 1);
 
       --  A quick sanity check. If the root nodes refer to different entities
       --  then we cannot have aliasing.
