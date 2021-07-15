@@ -30,7 +30,6 @@ with Flow_Refinement;        use Flow_Refinement;
 with Flow_Generated_Globals.Phase_2;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
-with Lib;                    use Lib;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with Sinfo.Nodes;            use Sinfo.Nodes;
@@ -234,7 +233,7 @@ package body Flow_Sanity is
              (Has_User_Supplied_Globals (E)
                 or else
               (not Flow_Generated_Globals.Phase_2.GG_Has_Globals (E)
-               and then not In_Predefined_Unit (E)))
+               and then not Is_Ignored_Internal (E)))
            and then
              (if Ekind (E) = E_Function
               then not Is_Predicate_Function (E)

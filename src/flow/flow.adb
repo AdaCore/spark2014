@@ -50,7 +50,6 @@ with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
-with Lib;                              use Lib;
 with Namet;                            use Namet;
 with Osint;                            use Osint;
 with Output;                           use Output;
@@ -1484,7 +1483,7 @@ package body Flow is
                  Analysis_Requested (E, With_Inlined => True)
                  and then Entity_In_SPARK (E)
                  and then Entity_Spec_In_SPARK (E)
-                 and then not In_Predefined_Unit (E)
+                 and then not Is_Ignored_Internal (E)
                  and then not Is_Wrapper_Package (E);
 
             when E_Protected_Type =>

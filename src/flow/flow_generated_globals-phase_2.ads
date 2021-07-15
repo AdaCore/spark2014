@@ -26,7 +26,6 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Multisets;
 with Einfo.Utils;                        use Einfo.Utils;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
-with Lib;                                use Lib;
 with Sinfo.Nodes;                        use Sinfo.Nodes;
 with Snames;                             use Snames;
 with SPARK_Definition;                   use SPARK_Definition;
@@ -266,7 +265,7 @@ package Flow_Generated_Globals.Phase_2 is
       return External_Call
    with Pre  => GG_Has_Been_Generated
                 and then Ekind (E) in E_Procedure | E_Function | E_Package
-                and then not In_Predefined_Unit (E)
+                and then not Is_Ignored_Internal (E)
                 and then Ekind (Context) = E_Protected_Type;
    --  Returns a detailed info about an external call on the same target as
    --  that of a protected action, if such a call exists.

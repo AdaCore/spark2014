@@ -36,7 +36,6 @@ with Flow_Utility;                     use Flow_Utility;
 with Flow_Visibility;                  use Flow_Visibility;
 with Gnat2Why_Args;                    use Gnat2Why_Args;
 with Graphs;
-with Lib;                              use Lib;
 with Opt;                              use Opt;
 with Sem_Aux;                          use Sem_Aux;
 with Sem_Prag;                         use Sem_Prag;
@@ -544,7 +543,7 @@ package body Flow_Generated_Globals.Partial is
          (for some Callee of FA.Direct_Calls =>
              Ekind (Callee) = E_Subprogram_Type
                or else
-             (In_Predefined_Unit (Callee) and then No_Return (Callee))));
+             (Is_Ignored_Internal (Callee) and then No_Return (Callee))));
 
       --  Check for potentially blocking statements in bodies of callable
       --  entities, i.e. entries and subprograms. Specs never contain any
@@ -701,7 +700,7 @@ package body Flow_Generated_Globals.Partial is
          --  instantiation, except for predefined arithmetic operators, because
          --  they are irrelevant.
          if Ekind (E) in E_Function | E_Procedure
-           and then In_Predefined_Unit (E)
+           and then Is_Ignored_Internal (E)
          then
             declare
                Enclosing_Instance : Entity_Id := E;
@@ -719,7 +718,7 @@ package body Flow_Generated_Globals.Partial is
                               Contr.Direct_Calls.Include (S);
 
                            when E_Operator =>
-                              pragma Assert (In_Predefined_Unit (S));
+                              pragma Assert (Is_Ignored_Internal (S));
 
                            when others =>
                               raise Program_Error;
@@ -741,7 +740,7 @@ package body Flow_Generated_Globals.Partial is
          --    No_Return.
 
          Contr.Nonreturning := not
-           (In_Predefined_Unit (E)
+           (Is_Ignored_Internal (E)
               or else
             Is_Imported (E)
               or else
@@ -757,7 +756,7 @@ package body Flow_Generated_Globals.Partial is
 
          Contr.Nonblocking :=
            (if Is_Callee (E)
-            then (if In_Predefined_Unit (E)
+            then (if Is_Ignored_Internal (E)
                     and then Ekind (E) in E_Function | E_Procedure
                   then not Is_Predefined_Potentially_Blocking (E)
                   else False)
@@ -2315,7 +2314,7 @@ package body Flow_Generated_Globals.Partial is
 
             for F of Get_Functions (Expr, Include_Predicates => False) loop
                if not Has_User_Supplied_Globals (F)
-                 and then not In_Predefined_Unit (F)
+                 and then not Is_Ignored_Internal (F)
                then
                   Inputs.Append (F);
                end if;
