@@ -565,21 +565,19 @@ package SPARK_Atree.Entities is
    function Has_Defaulted_Discriminants (Typ : Type_Kind_Id) return Boolean;
 
    function Has_Discriminants (Typ : Type_Kind_Id) return Boolean;
-   --  Same as Einfo.Has_Discriminants except that it ignores completely
-   --  hidden discriminants.
+   --  Same as Einfo.Has_Discriminants except that it ignores hidden
+   --  discriminants.
 
    function First_Discriminant (Typ : Type_Kind_Id) return E_Discriminant_Id
    with
      Pre  => Has_Discriminants (Typ),
      Post => SPARK_Util.Is_Not_Hidden_Discriminant (First_Discriminant'Result);
-   --  Same as Sem_Aux.First_Discriminants except that it ignores completely
-   --  hidden discriminants.
+   --  Same as Sem_Aux.First_Discriminants
 
    procedure Next_Discriminant (Discr : in out Opt_E_Discriminant_Id)
      with Post => (if Present (Discr) then
                      SPARK_Util.Is_Not_Hidden_Discriminant (Discr));
-   --  Same as Einfo.Next_Discriminants except that it ignores completely
-   --  hidden discriminants.
+   --  Same as Einfo.Next_Discriminants
 
    function Stored_Constraint (Typ : Type_Kind_Id) return Elist_Id
      with Pre => Ekind (Typ) in Record_Kind

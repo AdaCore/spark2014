@@ -249,18 +249,7 @@ package body SPARK_Atree.Entities is
    ------------------------
 
    function First_Discriminant (Typ : Type_Kind_Id) return E_Discriminant_Id is
-      Discr : Entity_Id := Sem_Aux.First_Discriminant (Typ);
-   begin
-      loop
-         if SPARK_Util.Is_Not_Hidden_Discriminant (Discr) then
-            return Discr;
-         end if;
-         Einfo.Utils.Next_Discriminant (Discr);
-         exit when No (Discr);
-      end loop;
-
-      raise Program_Error;
-   end First_Discriminant;
+      (Sem_Aux.First_Discriminant (Typ));
 
    ------------------
    -- First_Formal --
@@ -412,16 +401,16 @@ package body SPARK_Atree.Entities is
          return False;
       end if;
 
+      --  If Type has discriminants in Ada, check that its discriminants are
+      --  not hidden in SPARK. It can happen for subtypes of private types
+      --  whose full view has discriminants but is not in SPARK and whose
+      --  partial view does not have discriminants.
+
       declare
-         Discr : Entity_Id := Sem_Aux.First_Discriminant (Typ);
+         Discr : constant Entity_Id := Sem_Aux.First_Discriminant (Typ);
       begin
-         while Present (Discr) loop
-            if SPARK_Util.Is_Not_Hidden_Discriminant (Discr) then
-               return True;
-            end if;
-            Einfo.Utils.Next_Discriminant (Discr);
-         end loop;
-         return False;
+         return Present (Discr)
+           and then SPARK_Util.Is_Not_Hidden_Discriminant (Discr);
       end;
    end Has_Discriminants;
 
@@ -778,11 +767,7 @@ package body SPARK_Atree.Entities is
 
    procedure Next_Discriminant (Discr : in out Opt_E_Discriminant_Id) is
    begin
-      loop
-         Einfo.Utils.Next_Discriminant (Discr);
-         exit when No (Discr)
-           or else SPARK_Util.Is_Not_Hidden_Discriminant (Discr);
-      end loop;
+      Einfo.Utils.Next_Discriminant (Discr);
    end Next_Discriminant;
 
    -----------------
