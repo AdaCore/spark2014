@@ -49,7 +49,7 @@ errorexamplefloat.adb:24:07: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:29:22: info: assertion proved (CVC4: 1 VC)
 errorexamplefloat.adb:39:43: info: float overflow check proved (CodePeer)
 errorexamplefloat.adb:39:65: info: division check proved (CodePeer)
-errorexamplefloat.adb:39:65: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at errorexamplefloat.ads:18 should mention Calculated_Force]
+errorexamplefloat.adb:39:65: info: float overflow check proved (colibri: 1 VC)
 errorexamplefloat.adb:48:22: medium: assertion might fail
 errorexamplefloat.ads:21:08: info: initialization of "Relative_Error" proved
 simulink_functions.adb:32:13: info: types in unchecked conversion have the same size (Trivial)
@@ -134,21 +134,21 @@ simulink_functions.adb:349:47: info: division check proved (CodePeer)
 simulink_functions.adb:349:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
 simulink_functions.adb:349:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
 simulink_functions.adb:362:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
-simulink_functions.adb:363:29: medium: range check might fail, cannot prove lower bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
+simulink_functions.adb:363:29: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
 simulink_functions.adb:363:44: info: range check proved (Trivial)
 simulink_functions.adb:363:50: info: division check proved (CodePeer)
 simulink_functions.adb:363:50: info: float overflow check proved (CodePeer)
 simulink_functions.adb:363:59: info: range check proved (Trivial)
 simulink_functions.adb:363:68: medium: overflow check might fail, cannot prove lower bound for Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
 simulink_functions.adb:376:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
-simulink_functions.adb:377:30: medium: range check might fail, cannot prove lower bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
+simulink_functions.adb:377:30: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
 simulink_functions.adb:377:45: info: range check proved (Trivial)
 simulink_functions.adb:377:51: info: division check proved (CodePeer)
 simulink_functions.adb:377:51: info: float overflow check proved (CodePeer)
 simulink_functions.adb:377:60: info: range check proved (Trivial)
 simulink_functions.adb:377:69: medium: overflow check might fail, cannot prove lower bound for Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
 simulink_functions.adb:390:22: info: overflow check proved (CVC4: 2 VC)
-simulink_functions.adb:391:30: medium: range check might fail, cannot prove lower bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
+simulink_functions.adb:391:30: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
 simulink_functions.adb:391:45: info: range check proved (Trivial)
 simulink_functions.adb:391:51: info: division check proved (CodePeer)
 simulink_functions.adb:391:51: info: float overflow check proved (CodePeer)
@@ -158,7 +158,7 @@ simulink_functions.adb:404:30: info: division check proved (CodePeer)
 simulink_functions.adb:417:30: info: division check proved (CodePeer)
 simulink_functions.adb:430:30: info: division check proved (CodePeer)
 simulink_functions.adb:443:22: info: overflow check proved (CVC4: 2 VC)
-simulink_functions.adb:444:27: medium: range check might fail, cannot prove lower bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
+simulink_functions.adb:444:27: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
 simulink_functions.adb:444:42: info: range check proved (Trivial)
 simulink_functions.adb:444:48: info: division check proved (CodePeer)
 simulink_functions.adb:444:48: info: float overflow check proved (CodePeer)
@@ -276,11 +276,11 @@ smoothing.adb:27:07: info: initialization of "Abs_New_Delta_out1" proved
 smoothing.adb:33:42: info: float overflow check proved (CodePeer)
 smoothing.adb:46:22: info: assertion proved (CVC4: 1 VC)
 smoothing.adb:54:22: info: assertion proved (CVC4: 1 VC)
-smoothing.adb:65:44: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+smoothing.adb:65:44: info: float overflow check proved (colibri: 1 VC)
 smoothing.adb:65:60: info: float overflow check proved (CodePeer)
 smoothing.adb:65:77: info: division check proved (CodePeer)
 smoothing.adb:65:77: info: float overflow check proved (CodePeer)
-smoothing.adb:76:56: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+smoothing.adb:76:56: info: float overflow check proved (colibri: 1 VC)
 smoothing.adb:86:22: medium: assertion might fail
-smoothing.adb:98:22: medium: assertion might fail
+smoothing.adb:98:22: info: assertion proved (colibri: 1 VC)
 smoothing.ads:20:08: info: initialization of "Smoothed_Value" proved

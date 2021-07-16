@@ -30,7 +30,7 @@ pragmarc-b_strings.adb:86:19: info: length check proved (CVC4: 3 VC; Trivial: 1 
 pragmarc-b_strings.adb:86:19: info: range check proved (CVC4: 4 VC)
 pragmarc-b_strings.adb:86:50: info: overflow check proved (CVC4: 2 VC)
 pragmarc-b_strings.adb:86:59: info: overflow check proved (CVC4: 2 VC)
-pragmarc-b_strings.adb:92:48: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => ?) and Left.Value'First = 1 and Left.Value'Last = 0 and Right = (Max_Length => 1, Len => 1, Value => (others => 'NUL'))) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:49 should mention Left in a precondition]
+pragmarc-b_strings.adb:92:48: info: range check proved (CVC4: 2 VC; colibri: 2 VC)
 pragmarc-b_strings.adb:92:78: medium: range check might fail (e.g. when Right = (Max_Length => 0, Len => 1, Value => ?) and Right.Value'First = 1 and Right.Value'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:49 should mention Right in a precondition]
 pragmarc-b_strings.adb:98:18: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => ?) and Left.Value'First = 1 and Left.Value'Last = 0 and Right = (Max_Length => 0, Len => 0, Value => (others => 'NUL'))) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:50 should mention Left in a precondition]
 pragmarc-b_strings.adb:98:48: medium: range check might fail (e.g. when Right = (Max_Length => 0, Len => 1, Value => ?) and Right.Value'First = 1 and Right.Value'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:50 should mention Right in a precondition]
@@ -49,3 +49,4 @@ pragmarc-b_strings.ads:57:07: info: range check proved (CVC4: 2 VC)
 pragmarc-b_strings.ads:57:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.ads:57:43: info: range check proved (CVC4: 2 VC)
 pragmarc-b_strings.ads:57:46: info: range check proved (CVC4: 2 VC)
+
