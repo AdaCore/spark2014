@@ -2521,6 +2521,13 @@ package body Configuration is
          Args.Append ("z3_ce");
       end if;
 
+      Args.Append ("--warn-prover");
+      if SPARK_Install.CVC4_Present then
+         Args.Append ("cvc4");
+      else
+         Args.Append ("alt-ergo");
+      end if;
+
       Args.Append ("--ce-timeout");
       Args.Append (Image (FS.CE_Timeout, 1));
 
