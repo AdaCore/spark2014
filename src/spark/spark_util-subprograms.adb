@@ -739,7 +739,7 @@ package body SPARK_Util.Subprograms is
    begin
       return
         Original_Node
-          (if Is_Rewrite_Substitution (Decl_N)
+          (if Nkind (Original_Node (Decl_N)) = N_Expression_Function
            then Decl_N
            else Subprogram_Body (E));
    end Get_Expression_Function;
