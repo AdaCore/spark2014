@@ -370,7 +370,6 @@ package body Gnat2Why.Driver is
       Main_Lib_Id := Scan_ALI
         (F             => Main_Lib_File,
          T             => Text,
-         Ignore_ED     => False,
          Err           => False,
          Ignore_Errors => Debug_Flag_I);
       Free (Text);
