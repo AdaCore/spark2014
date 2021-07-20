@@ -650,6 +650,10 @@ package body Configuration is
             Long_Switch => "--debug-trivial");
          Define_Switch
            (Config,
+            CL_Switches.Debug_Prover_Errors'Access,
+            Long_Switch => "--debug-prover-errors");
+         Define_Switch
+           (Config,
             CL_Switches.Flow_Debug'Access,
             Long_Switch => "--flow-debug");
          Define_Switch
@@ -2526,6 +2530,10 @@ package body Configuration is
          Args.Append ("cvc4");
       else
          Args.Append ("alt-ergo");
+      end if;
+
+      if CL_Switches.Debug_Prover_Errors then
+         Args.Append ("--debug-prover-errors");
       end if;
 
       Args.Append ("--ce-timeout");
