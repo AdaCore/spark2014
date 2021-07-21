@@ -979,14 +979,14 @@ def check_output_file(sort=False):
     To avoid such differences:
     - replace all sequences of spaces by a single space
     - replace all sequences of '-' characters by a single one
-    - filter out substrings starting with '(CVC4', '(altergo' or '(Z3', up
+    - filter out substrings starting with '(<provername>', up
       to the following closing parenthesis.
 
     This ensures a common output whatever the order of provers used.
     """
 
     filename = os.path.join('gnatprove', 'gnatprove.out')
-    prover_tag = re.compile(r"(^.*)(\((CVC4|altergo|Z3)[^\)]*\))(.*$\n)")
+    prover_tag = re.compile(r"(^.*)(\((CVC4|altergo|Z3|colibri)[^\)]*\))(.*$\n)")
     output = ""
 
     with open(filename, 'r') as f:
