@@ -2529,7 +2529,7 @@ package body Configuration is
       if SPARK_Install.CVC4_Present then
          Args.Append ("cvc4");
       else
-         Args.Append ("alt-ergo");
+         Args.Append ("altergo");
       end if;
 
       if CL_Switches.Debug_Prover_Errors then
