@@ -783,6 +783,10 @@ package SPARK_Atree.Entities is
      (Pack : N_Package_Body_Id)
       return E_Package_Body_Id;
 
+   function Package_Body
+     (Pack : E_Package_Id)
+      return Opt_N_Package_Body_Id;
+
    function Package_Spec
      (Pack : E_Package_Id)
       return N_Package_Specification_Id;

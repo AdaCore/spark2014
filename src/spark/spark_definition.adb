@@ -8622,7 +8622,7 @@ package body SPARK_Definition is
 
             when E_Package_Body =>
                if List_Containing (Decl) =
-                 Declarations (Package_Body (Scop))
+                 Declarations (Package_Body (Unique_Entity (Scop)))
                then
                   return SPARK_Pragma (Scop);
                else
@@ -8634,7 +8634,7 @@ package body SPARK_Definition is
 
             when E_Protected_Type
                | E_Task_Type
-               =>
+            =>
                raise Program_Error;
 
             when others =>

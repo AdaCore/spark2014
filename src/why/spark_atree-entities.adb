@@ -858,6 +858,15 @@ package body SPARK_Atree.Entities is
    is (Sem_Util.Defining_Entity (Pack));
 
    ------------------
+   -- Package_Body --
+   ------------------
+
+   function Package_Body
+     (Pack : E_Package_Id)
+      return Opt_N_Package_Body_Id
+   is (Sem_Aux.Package_Body (Pack));
+
+   ------------------
    -- Package_Spec --
    ------------------
 
