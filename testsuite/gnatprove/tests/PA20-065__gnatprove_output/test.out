@@ -63,6 +63,7 @@ gnatprove advanced switches:
  --counterexamples=c  Enable or disable counterexamples (c=on,off*)
  -d, --debug          Debug mode
  --debug-save-vcs     Do not delete intermediate files for provers
+ --debug-exec-rac     Only execute runtime assertion checking (RAC) and exit
  --flow-debug         Extra debugging for flow analysis (requires graphviz)
  --limit-line=f:l     Limit analysis to given file and line
  --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of

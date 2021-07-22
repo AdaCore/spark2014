@@ -183,6 +183,10 @@ package Gnat2Why_Opts.Reading is
 
    Check_Counterexamples : Boolean;
 
+   --  Only execute RAC and quit
+
+   Debug_Exec_RAC : Boolean;
+
    --  Prevent loop unrolling
 
    No_Loop_Unrolling : Boolean;

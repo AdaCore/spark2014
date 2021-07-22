@@ -799,6 +799,10 @@ package body Configuration is
             Long_Switch => "--check-counterexamples=");
          Define_Switch
            (Config,
+            CL_Switches.Debug_Exec_RAC'Access,
+            Long_Switch => "--debug-exec-rac");
+         Define_Switch
+           (Config,
             CL_Switches.No_Counterexample'Access,
             Long_Switch => "--no-counterexample");
          Define_Switch
@@ -1428,6 +1432,7 @@ package body Configuration is
          SPARK_Install.Colibri_Present := On_Path ("colibri");
 
          Debug := CL_Switches.D or CL_Switches.Flow_Debug;
+         Debug_Exec_RAC := CL_Switches.Debug_Exec_RAC;
 
          --  Subprograms with no contracts (and a few other criteria) may be
          --  inlined, as this can help provability. In particular it helps as

@@ -90,6 +90,7 @@ package Configuration is
       D                     : aliased Boolean;
       Dbg_No_Sem            : aliased Boolean;
       --  disable use of semaphores for ease of debugging
+      Debug_Exec_RAC        : aliased Boolean;
       Debug_Save_VCs        : aliased Boolean;
       Debug_Trivial         : aliased Boolean;
       Debug_Prover_Errors   : aliased Boolean;
@@ -193,6 +194,7 @@ package Configuration is
 
    CodePeer       : Boolean;
    Debug          : Boolean;
+   Debug_Exec_RAC : Boolean;
    GnateT_Switch  : GNAT.Strings.String_Access;
    Mode           : GP_Mode;
    Use_Semaphores : Boolean;

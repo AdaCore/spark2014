@@ -94,6 +94,7 @@ package body Gnat2Why_Opts.Reading is
       Output_Mode             :=
         Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
 
+      Debug_Exec_RAC          := Get_Opt (V, Debug_Exec_RAC_Name);
       Debug_Mode              := Get_Opt (V, Debug_Mode_Name);
       Flow_Advanced_Debug     := Get_Opt (V, Flow_Advanced_Debug_Name);
       Flow_Generate_Contracts := Get_Opt (V, Flow_Generate_Contracts_Name);

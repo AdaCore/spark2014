@@ -126,6 +126,7 @@ package body Gnat2Why_Opts.Writing is
 
       --  Always store debug options
 
+      Set_Field (Obj, Debug_Exec_RAC_Name,      Debug_Exec_RAC);
       Set_Field (Obj, Debug_Mode_Name,          Debug);
       Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Extra_Debug);
       Set_Field (Obj, Flow_Generate_Contracts_Name,
