@@ -392,9 +392,6 @@ package SPARK_Atree.Entities is
 
    function Cloned_Subtype (Typ : Type_Kind_Id) return Entity_Id;
 
-   function First_Subtype (Typ : Type_Kind_Id) return Entity_Id
-     with Post => EE.Is_First_Subtype (First_Subtype'Result);
-
    function Get_Cursor_Type (Typ : Type_Kind_Id) return Entity_Id
      with Pre =>
        Present (Aspects.Find_Aspect (Typ, A => Aspects.Aspect_Iterable));
@@ -421,8 +418,6 @@ package SPARK_Atree.Entities is
    --  Base_Retysp.
 
    function Has_DIC (Typ : Type_Kind_Id) return Boolean;
-
-   function Has_Own_DIC (Typ : Type_Kind_Id) return Boolean;
 
    function Has_Predicates (Typ : Type_Kind_Id) return Boolean;
 
@@ -657,18 +652,6 @@ package SPARK_Atree.Entities is
 
    function Component_Clause (Obj : Record_Field_Kind_Id) return Node_Id;
 
-   function Component_First_Bit (Obj : Record_Field_Kind_Id) return Uint
-     with Pre => Known_Component_First_Bit (Obj);
-   --  Returns the first bit of a component if it has been supplied
-
-   function Component_Last_Bit (Obj : Record_Field_Kind_Id) return Uint
-     with Pre => Known_Component_Last_Bit (Obj);
-   --  Returns the last bit of a component if it has been supplied
-
-   function Component_Position (Obj : Record_Field_Kind_Id) return Uint
-     with Pre => Present (Component_Clause (Obj));
-   --  Returns the position of a component if it has been supplied
-
    function Constant_Value (Obj : E_Constant_Id) return N_Subexpr_Id;
 
    function Discriminal_Link (Obj : Object_Kind_Id) return E_Discriminant_Id
@@ -756,17 +739,7 @@ package SPARK_Atree.Entities is
      EE.No_Return;
 
    function Null_Present (Subp : E_Procedure_Id) return Boolean;
-   --  Applies Sinfo.Null_Present on the specification of Subp.
-
-   function Subprogram_Specification (Subp : Callable_Kind_Id) return Node_Id
-   with
-     Pre  => Ekind (Subp) in Subprogram_Kind | E_Entry,
-     Post => Nkind (Subprogram_Specification'Result) in
-         N_Function_Specification
-       | N_Procedure_Specification
-       | N_Entry_Declaration;
-   --  Same as Sem_Aux.Subprogram_Specification except that it also works on
-   --  entries.
+   --  Applies Sinfo.Null_Present on the specification of Subp
 
    function Is_Unchecked_Conversion_Instance
      (Subp : Callable_Kind_Id)
@@ -786,10 +759,6 @@ package SPARK_Atree.Entities is
    function Package_Body
      (Pack : E_Package_Id)
       return Opt_N_Package_Body_Id;
-
-   function Package_Spec
-     (Pack : E_Package_Id)
-      return N_Package_Specification_Id;
 
    function Private_Declarations_Of_Package
      (Pack : E_Package_Id)

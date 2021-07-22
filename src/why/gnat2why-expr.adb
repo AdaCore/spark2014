@@ -13638,81 +13638,54 @@ package body Gnat2Why.Expr is
             declare
                Component : constant Entity_Id := Entity (Selector_Name (Var));
 
-            begin
-               if Known_Component_First_Bit (Component) then
-                  pragma Annotate
-                    (Xcov, Exempt_On,
-                     "'First_Bit is expanded by the frontend when statically"
-                     & " known");
-                  return New_Integer_Constant
-                    (Expr, Component_First_Bit (Component));
-                  pragma Annotate (Xcov, Exempt_Off);
-               else
-                  declare
-                     Name : constant W_Identifier_Id :=
-                       E_Symb (Component, WNE_Attr_First_Bit);
+               --  First_Bit is expanded by the frontend when statically known
 
-                  begin
-                     return New_Call (Ada_Node => Expr,
-                                      Domain   => Domain,
-                                      Name     => Name,
-                                      Typ      => EW_Int_Type);
-                  end;
-               end if;
+               pragma Assert (not Known_Component_First_Bit (Component));
+
+               Name : constant W_Identifier_Id :=
+                 E_Symb (Component, WNE_Attr_First_Bit);
+
+            begin
+               return New_Call (Ada_Node => Expr,
+                                Domain   => Domain,
+                                Name     => Name,
+                                Typ      => EW_Int_Type);
             end;
 
          when Attribute_Last_Bit =>
             declare
                Component : constant Entity_Id := Entity (Selector_Name (Var));
 
-            begin
-               if Known_Component_Last_Bit (Component) then
-                  pragma Annotate
-                    (Xcov, Exempt_On,
-                     "'Last_Bit is expanded by the frontend when statically"
-                     & " known");
-                  return New_Integer_Constant
-                    (Expr, Component_Last_Bit (Component));
-                  pragma Annotate (Xcov, Exempt_Off);
-               else
-                  declare
-                     Name : constant W_Identifier_Id :=
-                       E_Symb (Component, WNE_Attr_Last_Bit);
+               --  Last_Bit is expanded by the frontend when statically known
 
-                  begin
-                     return New_Call (Ada_Node => Expr,
-                                      Domain   => Domain,
-                                      Name     => Name,
-                                      Typ      => EW_Int_Type);
-                  end;
-               end if;
+               pragma Assert (not Known_Component_Last_Bit (Component));
+
+               Name : constant W_Identifier_Id :=
+                 E_Symb (Component, WNE_Attr_Last_Bit);
+
+            begin
+               return New_Call (Ada_Node => Expr,
+                                Domain   => Domain,
+                                Name     => Name,
+                                Typ      => EW_Int_Type);
             end;
 
          when Attribute_Position =>
             declare
                Component : constant Entity_Id := Entity (Selector_Name (Var));
 
-            begin
-               if Present (Component_Clause (Component)) then
-                  pragma Annotate
-                    (Xcov, Exempt_On,
-                     "'Position is expanded by the frontend when statically"
-                     & " known");
-                  return New_Integer_Constant
-                    (Expr, Component_Position (Component));
-                  pragma Annotate (Xcov, Exempt_Off);
-               else
-                  declare
-                     Name : constant W_Identifier_Id :=
-                       E_Symb (Component, WNE_Attr_Position);
+               --  Position is expanded by the frontend when statically known
 
-                  begin
-                     return New_Call (Ada_Node => Expr,
-                                      Domain   => Domain,
-                                      Name     => Name,
-                                      Typ      => EW_Int_Type);
-                  end;
-               end if;
+               pragma Assert (No (Component_Clause (Component)));
+
+               Name : constant W_Identifier_Id :=
+                 E_Symb (Component, WNE_Attr_Position);
+
+            begin
+               return New_Call (Ada_Node => Expr,
+                                Domain   => Domain,
+                                Name     => Name,
+                                Typ      => EW_Int_Type);
             end;
 
          --  The Initialized attribute is used to express that a value has been

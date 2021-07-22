@@ -31,7 +31,6 @@ with Sem_Ch7;          use Sem_Ch7;
 with Sem_Util;
 with Sem_Prag;
 with SPARK_Util.Types;
-with Ttypes;
 with Interfaces;
 
 package body SPARK_Atree.Entities is
@@ -77,58 +76,6 @@ package body SPARK_Atree.Entities is
 
    function Component_Clause (Obj : Record_Field_Kind_Id) return Node_Id is
      (Einfo.Entities.Component_Clause (Obj));
-
-   -------------------------
-   -- Component_First_Bit --
-   -------------------------
-
-   function Component_First_Bit (Obj : Record_Field_Kind_Id) return Uint is
-   begin
-      if Present (Component_Clause (Obj))
-        and then Opt.Ada_Version >= Opt.Ada_2005
-        and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj))
-      then
-         return Expr_Value (First_Bit (Component_Clause (Obj)));
-      else
-         pragma Assert (Einfo.Utils.Known_Normalized_First_Bit (Obj));
-         return Einfo.Entities.Normalized_First_Bit (Obj);
-      end if;
-   end Component_First_Bit;
-
-   ------------------------
-   -- Component_Last_Bit --
-   ------------------------
-
-   function Component_Last_Bit (Obj : Record_Field_Kind_Id) return Uint is
-   begin
-      if Present (Component_Clause (Obj))
-        and then Opt.Ada_Version >= Opt.Ada_2005
-        and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj))
-      then
-         return Expr_Value (Last_Bit (Component_Clause (Obj)));
-
-      else
-         pragma Assert (Einfo.Utils.Known_Static_Component_Bit_Offset (Obj)
-                        and then Einfo.Utils.Known_Static_Esize (Obj));
-         return Einfo.Entities.Component_Bit_Offset (Obj) mod
-           Ttypes.System_Storage_Unit + Einfo.Entities.Esize (Obj) - 1;
-      end if;
-   end Component_Last_Bit;
-
-   ------------------------
-   -- Component_Position --
-   ------------------------
-
-   function Component_Position (Obj : Record_Field_Kind_Id) return Uint is
-   begin
-      if Opt.Ada_Version >= Opt.Ada_2005
-        and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj))
-      then
-         return Expr_Value (Sinfo.Nodes.Position (Component_Clause (Obj)));
-      else
-         return Einfo.Entities.Normalized_Position (Obj);
-      end if;
-   end Component_Position;
 
    --------------------
    -- Component_Type --
@@ -285,13 +232,6 @@ package body SPARK_Atree.Entities is
       return E_Enumeration_Literal_Id
    is (Einfo.Entities.First_Literal (Typ));
 
-   -------------------
-   -- First_Subtype --
-   -------------------
-
-   function First_Subtype (Typ : Type_Kind_Id) return Entity_Id is
-     (Sem_Aux.First_Subtype (Typ));
-
    ---------------
    -- Full_View --
    ---------------
@@ -429,13 +369,6 @@ package body SPARK_Atree.Entities is
 
    function Has_Interrupt_Handler (Typ : E_Protected_Type_Id) return Boolean is
      (Einfo.Utils.Has_Interrupt_Handler (Typ));
-
-   -----------------
-   -- Has_Own_DIC --
-   -----------------
-
-   function Has_Own_DIC (Typ : Type_Kind_Id) return Boolean is
-     (Einfo.Entities.Has_Own_DIC (Typ));
 
    ----------------------------------
    -- Has_Pragma_Volatile_Function --
@@ -775,16 +708,10 @@ package body SPARK_Atree.Entities is
    -----------------
 
    function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id is
-      Next : Entity_Id := Einfo.Utils.Next_Formal (Formal);
+      Next : Entity_Id := Formal;
 
    begin
-      --  There should never be more than one formal for subp wrappers
-
-      if Present (Next)
-        and then SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (Next)
-      then
-         Einfo.Utils.Next_Formal (Next);
-      end if;
+      Next_Formal (Next);
       return Next;
    end Next_Formal;
 
@@ -866,15 +793,6 @@ package body SPARK_Atree.Entities is
       return Opt_N_Package_Body_Id
    is (Sem_Aux.Package_Body (Pack));
 
-   ------------------
-   -- Package_Spec --
-   ------------------
-
-   function Package_Spec
-     (Pack : E_Package_Id)
-      return N_Package_Specification_Id
-   is (Sem_Aux.Package_Spec (Pack));
-
    ---------------------------
    -- Partial_DIC_Procedure --
    ---------------------------
@@ -939,15 +857,6 @@ package body SPARK_Atree.Entities is
      (Typ : E_String_Literal_Subtype_Id)
       return Node_Id
    is (Einfo.Entities.String_Literal_Low_Bound (Typ));
-
-   -------------------------------
-   --  Subprogram_Specification --
-   -------------------------------
-
-   function Subprogram_Specification (Subp : Callable_Kind_Id) return Node_Id
-   is
-     (if Einfo.Utils.Is_Entry (Subp) then Atree.Parent (Subp)
-      else Sem_Aux.Subprogram_Specification (Subp));
 
    ---------------------
    -- Type_High_Bound --
