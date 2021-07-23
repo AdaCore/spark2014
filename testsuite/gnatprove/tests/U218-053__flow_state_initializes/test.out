@@ -5,11 +5,13 @@ p1.ads:1:43: info: flow dependencies proved
 p1.ads:2:25: info: data dependencies proved
 q.ads:7:04: high: possible data race when accessing variable "p1.state1"
 q.ads:7:04: high: possible data race when accessing variable "q.other"
-q.ads:7:04: high: with task "q.t1"
-q.ads:7:04: high: with task "q.t2"
-r1.adb:7:07: high: possible data race when accessing variable "r1.r2.r3.u3"
-r1.adb:7:07: high: with task "r1.r2.to2a"
-r1.adb:7:07: high: with task "r1.r2.to2b"
+q.ads:7:04: high: task "q.t1" accesses "p1.state1"
+q.ads:7:04: high: task "q.t1" accesses "q.other"
+q.ads:7:04: high: task "q.t2" accesses "p1.state1"
+q.ads:7:04: high: task "q.t2" accesses "q.other"
+r1.adb:7:07: high: possible data race when accessing variable "r1.u1"
+r1.adb:7:07: high: task "r1.r2.to2a" accesses "r1.u1"
+r1.adb:7:07: high: task "r1.r2.to2b" accesses "r1.u1"
 r1.adb:7:07: info: initialization of "TO2A" constituent of "S2" proved
 r1.adb:7:13: info: initialization of "TO2B" constituent of "S2" proved
 r1.ads:7:03: info: flow dependencies proved

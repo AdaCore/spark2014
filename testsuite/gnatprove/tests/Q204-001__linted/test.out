@@ -71,12 +71,14 @@ linted-io_pool.adb:97:04: error: call to operation of a formal protected paramet
 linted-io_pool.adb:97:04: error: instantiation error at linted-channels.adb:17
 linted-io_pool.adb:97:04: error: instantiation error at linted-channels.adb:22
 linted-io_pool.adb:97:04: error: instantiation error at linted-channels.adb:31
-linted-poller.ads:18:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
-linted-poller.ads:18:16: high: with task "linted.io_pool.worker_tasks"
-linted-reader.ads:21:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
-linted-reader.ads:21:16: high: with task "linted.io_pool.worker_tasks"
-linted-stdio.adb:22:21: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
-linted-stdio.adb:22:21: high: with task "linted.io_pool.worker_tasks"
+linted-io_pool.ads:25:08: high: possible data race when accessing variable "linted.io_pool.command_queue"
+linted-io_pool.ads:25:08: high: possible data race when accessing variable "linted.io_pool.command_queue"
+linted-io_pool.ads:25:08: high: possible data race when accessing variable "linted.io_pool.command_queue"
+linted-io_pool.ads:25:08: high: possible data race when accessing variable "linted.io_pool.command_queue"
+linted-io_pool.ads:25:08: high: task "linted.io_pool.worker_tasks" accesses "linted.io_pool.command_queue"
+linted-io_pool.ads:25:08: high: task "linted.io_pool.worker_tasks" accesses "linted.io_pool.command_queue"
+linted-io_pool.ads:25:08: high: task "linted.io_pool.worker_tasks" accesses "linted.io_pool.command_queue"
+linted-io_pool.ads:25:08: high: task "linted.io_pool.worker_tasks" accesses "linted.io_pool.command_queue"
 linted-timer.adb:23:04: error: call to operation of a formal protected parameter is not yet supported
 linted-timer.adb:23:04: error: call to operation of a formal protected parameter is not yet supported
 linted-timer.adb:23:04: error: call to operation of a formal protected parameter is not yet supported
@@ -237,6 +239,4 @@ linted-update.adb:100:33: info: range check proved (CVC4: 2 VC)
 linted-update.ads:40:38: info: initialization of "S" proved
 linted-update.ads:41:41: info: initialization of "U" proved
 linted-windows.ads:26:41: info: initialization of "W" proved
-linted-writer.ads:21:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
-linted-writer.ads:21:16: high: with task "linted.io_pool.worker_tasks"
 gnatprove: error during flow analysis and proof

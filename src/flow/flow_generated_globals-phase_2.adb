@@ -3311,8 +3311,6 @@ package body Flow_Generated_Globals.Phase_2 is
          for C of State_Part_Map (AS) loop
             Constituents.Union (GG_Expand_Abstract_State (C));
          end loop;
-
-         Constituents.Insert (AS);
       else
          Constituents.Insert (AS);
       end if;
