@@ -176,6 +176,8 @@ class CVC4(Prover):
                 time = float(Prover.regex_get(self.time_reg, output, 1))
             except ValueError:
                 pass
+            except TypeError:
+                pass
             return {"filename": fn, "status": status, "steps": steps, "time": time}
         except ValueError:
             return {"filename": fn, "status": "error", "output": output}
