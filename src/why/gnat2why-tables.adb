@@ -193,7 +193,7 @@ package body Gnat2Why.Tables is
             | E_Protected_Subtype
             | E_Task_Subtype
          =>
-            return Retysp (Etype (Ty));
+            return Find_Rec_Node_For_Variant (Etype (Ty));
 
          --  Record types always have their own variant part
 
