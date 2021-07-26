@@ -239,10 +239,13 @@ package body Flow.Analysis.Antialiasing is
                return True;
 
             --  The only interesting attribute references is 'Access but it is
-            --  not yet supported by the borrow checker.
+            --  not yet supported by the borrow checker, so we are only seeing
+            --  access-to-subprogram values here.
 
             when N_Attribute_Reference =>
-               pragma Assert (Attribute_Name (N) /= Name_Access);
+               pragma Assert
+                 (if Attribute_Name (N) = Name_Access
+                  then Is_Subprogram (Entity (Prefix (N))));
                return False;
 
             --  Detect calls to instances of unchecked conversion. Other
