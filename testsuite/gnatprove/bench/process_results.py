@@ -33,7 +33,7 @@ def parse_arguments():
 
 
 def compute_stat_count(fn):
-    results = {}
+    results = {'unsat' : 0}
     with open(fn) as f:
         data = json.load(f)
     for elt in data["results"]:
@@ -52,6 +52,8 @@ def compare_baseline(n, results):
     total = 0
     for s in results.values():
         total += s
+    if total == 0:
+        return False
     if results["unsat"] * 100 // total < n:
         return False
     else:
