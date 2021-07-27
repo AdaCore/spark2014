@@ -17466,7 +17466,8 @@ package body Gnat2Why.Expr is
                   --       Constr_ty.dynamic_invariant result })
 
                   declare
-                     Constr_Ty : constant Entity_Id := Entity (New_Expr);
+                     Constr_Ty : constant Entity_Id :=
+                       Retysp (Entity (New_Expr));
                      pragma Assert
                        (Default_Initialization (Constr_Ty) in
                           Full_Default_Initialization |
