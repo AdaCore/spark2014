@@ -1491,22 +1491,14 @@ package body Why.Gen.Scalars is
          return New_Fixed_Constant
            (Value => Expr_Value (N), Typ => Base_Why_Type (Ty));
       elsif Is_Floating_Point_Type (Ty) then
-         if Is_Fixed_Point_Type (Etype (N))
-           and then From_Real_Range_Specification (N)
-         then
-            --  Allow Real ranges to use fixed point values; see acats c35704a
-            return +Insert_Simple_Conversion
-              (Ada_Node       => N,
-               Domain         => EW_Term,
-               Expr           =>
-                 New_Fixed_Constant
-                 (Value => Expr_Value (N),
-                  Typ   => Base_Why_Type (Etype (N))),
-               To             => Base_Why_Type (Ty));
-         else
-            return New_Float_Constant (Value => Expr_Value_R (N),
-                                       Typ   => Base_Why_Type (Ty));
-         end if;
+
+         --  Real ranges can use fixed point values, but they have to be static
+         --  and the compiler inlines them; see acats c35704a.
+
+         pragma Assert (not Is_Fixed_Point_Type (Etype (N)));
+
+         return New_Float_Constant (Value => Expr_Value_R (N),
+                                    Typ   => Base_Why_Type (Ty));
       else
          return New_Real_Constant (Value => Expr_Value_R (N));
       end if;

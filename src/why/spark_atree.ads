@@ -412,11 +412,6 @@ package SPARK_Atree is
    function Condition_Actions (N : Node_Id) return List_Id with
      Pre => Nkind (N) in N_Elsif_Part | N_Iteration_Scheme;
 
-   function Constant_Present (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in N_Access_Definition
-                       | N_Access_To_Object_Definition
-                       | N_Object_Declaration;
-
    function Context_Items (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_Compilation_Unit;
 
@@ -532,15 +527,8 @@ package SPARK_Atree is
    function First_Actual (Node : Node_Id) return Node_Id renames
      Sem_Util.First_Actual;
 
-   function First_Bit (N : Node_Id) return Node_Id with
-     Pre => Nkind (N) = N_Component_Clause;
-
    function From_Aspect_Specification (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Pragma;
-
-   function From_Real_Range_Specification (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in N_Subexpr;
-   --  Return True if N is the bound of a Real_Range_Specification
 
    function Get_Address_Expr (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Subprogram_Declaration | N_Object_Declaration;
@@ -656,9 +644,6 @@ package SPARK_Atree is
    function Is_Iterator_Over_Array (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Iterator_Specification;
 
-   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
-   --  Returns True if node N is defined locally to a loop
-
    function Is_Rewritten_Op_Eq (N : Node_Id) return Boolean;
    --  Return true if N is a function call and its original node is an equality
    --  operation. This is used to handle specifically dispatching calls to
@@ -667,7 +652,9 @@ package SPARK_Atree is
    function Is_Tag_Indeterminate (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Subexpr;
 
-   function Is_Type_Renaming (Decl : Node_Id) return Boolean;
+   function Is_Type_Renaming (Decl : Node_Id) return Boolean with
+     Pre => Nkind (Decl) in N_Subtype_Declaration
+                          | N_Full_Type_Declaration;
    --  Returns whether type declaration Decl defines a new name for an
    --  existing type, either through a subtype:
    --     subtype Sub is Existing;
@@ -696,9 +683,6 @@ package SPARK_Atree is
 
    function Itype (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) = N_Itype_Reference;
-
-   function Last_Bit (N : Node_Id) return Node_Id with
-     Pre => Nkind (N) = N_Component_Clause;
 
    function Left_Opnd (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_And_Then
@@ -731,11 +715,6 @@ package SPARK_Atree is
 
    function Of_Present (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Iterator_Specification;
-
-   function Parameter_Specifications (N : Node_Id) return List_Id with
-     Pre => Nkind (N) in N_Entry_Declaration
-                       | N_Function_Specification
-                       | N_Procedure_Specification;
 
    function Pragma_Argument_Associations (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_Pragma;

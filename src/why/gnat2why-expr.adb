@@ -9675,7 +9675,7 @@ package body Gnat2Why.Expr is
                     Mk_Item_Of_Entity (Name, Local => True);
 
                begin
-                  pragma Assert (Constant_Present (N));
+                  pragma Assert (Ekind (Name) = E_Constant);
                   pragma Assert (Item.Kind = Regular);
 
                   T :=
@@ -9768,7 +9768,7 @@ package body Gnat2Why.Expr is
                   Item : constant Item_Type :=
                     Mk_Item_Of_Entity (Name, Local => True);
                begin
-                  pragma Assert (Constant_Present (N));
+                  pragma Assert (Ekind (Name) = E_Constant);
                   pragma Assert (Item.Kind = Regular);
 
                   Ada_Ent_To_Why.Insert (Symbol_Table, Name, Item);
