@@ -392,6 +392,7 @@ package VC_Kinds is
    GP_Subp_Marker           : constant String := "GP_Subp:";
    GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
    GP_Inline_Marker         : constant String := "GP_Inline";
+   GP_Inlined_Marker        : constant String := "GP_Inlined";
 
    --  A few labels are used in Why3 to identify variables and terms whose
    --  value is interesting in counter-examples.

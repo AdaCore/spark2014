@@ -5141,15 +5141,27 @@ package body Gnat2Why.Expr is
                declare
                   My_Params : Transformation_Params := Params;
                begin
+                  --  We set the Gen_Marker param to GM_Toplevel to instruct
+                  --  the translation to generate pretty-printing labels for
+                  --  the parts of the predicate. We also indicate that the
+                  --  predicate is effectively inlined here by using the
+                  --  GP_Inlined_Marker (this last part avoids using the
+                  --  location of the predicate to place the error message,
+                  --  which is not desired here).
+
                   My_Params.Gen_Marker := GM_Toplevel;
-                  Res := +New_And_Then_Expr
-                    (Left   => +Dynamic_Predicate_Expression
-                       (Expr      => +Expr,
-                        Pred_Subp => Pred_Fun,
-                        Domain    => EW_Pred,
-                        Params    => My_Params),
-                     Right  => +Res,
-                     Domain => EW_Pred);
+                  Res :=
+                    New_Label
+                      (Labels => Symbol_Sets.To_Set (NID (GP_Inlined_Marker)),
+                       Def =>
+                         +New_And_Then_Expr
+                         (Left   => +Dynamic_Predicate_Expression
+                            (Expr      => +Expr,
+                             Pred_Subp => Pred_Fun,
+                             Domain    => EW_Pred,
+                             Params    => My_Params),
+                          Right  => +Res,
+                          Domain => EW_Pred));
                end;
             end if;
 

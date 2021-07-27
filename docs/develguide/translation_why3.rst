@@ -4925,7 +4925,8 @@ Codepeer).
   increase splitting of VCs. This attribute is generated in gnat2why.
 
 ``GP_Inlined`` indicates that this part of the VC was obtained by inlining a
-symbol. This attribute is generated in gnatwhy3.
+symbol. This attribute is mostly generated in gnatwhy3 generally, but gnat2why
+also sometimes uses it when it inlines definitions of predicates.
 
 ``keep_on_simp`` prevents Why3 from simplifying inside a term that has this
 label. For example, ``a /\ "keep_on_simp" true`` cannot be simplified to
