@@ -889,9 +889,8 @@ particular:
   strings only and not on their content. Preconditions protect from exceptions
   specified in the Ada RM (A.4.4, A.4.5).
 
-* Type ``String_Access`` and procedure ``Free`` in ``Ada.Strings.Unbounded`` are not
-  in SPARK and cannot be denoted in SPARK program text, unless they are hidden
-  from GNATprove, due to the use of a general access type.
+* The procedure ``Free`` in ``Ada.Strings.Unbounded`` is not in SPARK as it
+  could be wrongly called by the user on a pointer to the stack.
 
 Inside these packages, ``Translation_Error`` (in ``Ada.Strings.Maps``),
 ``Index_Error`` and ``Pattern_Error`` are fully handled.
