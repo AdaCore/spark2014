@@ -83,22 +83,22 @@ max steps used for successful proof: 138
 
 Analyzed 1 unit
 in unit skein, 8 subprograms and packages out of 8 analyzed
- Skein at skein.ads:6 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Skein at skein.ads:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Skein fully established
- Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Skein.Put_64_LSB_First depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
- Skein.Skein_512_Context at skein.ads:88 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Skein.Skein_512_Context at skein.ads:88 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Skein.Skein_512_Context fully established
- Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks and 15 warnings) and not proved, 17 checks out of 20 proved
- Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks, 15 warnings and 0 pragma Assume statements) and not proved, 17 checks out of 20 proved
+ Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Set_B_Counter depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
- Skein.Skein_512_Final.Zero_Pad_B at skein.adb:84 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Skein.Skein_512_Final.Zero_Pad_B at skein.adb:84 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Zero_Pad_B fully established
- Skein.Skein_Start_New_Type at skein.adb:42 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Skein.Skein_Start_New_Type at skein.adb:42 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_Start_New_Type fully established
- Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (1 checks)
+ Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
 effects on parameters and Global variables of Skein.Zero_Pad fully established
 absence of run-time errors of Skein.Zero_Pad fully established
 

@@ -43,19 +43,29 @@ package Report_Database is
    type Suppressed_Warning is record
       Reason : Unbounded_String;
       File   : Unbounded_String;
-      Line   : Integer;
-      Column : Integer;
-      --  ??? Line and Column are Positive (or at least Natural)
+      Line   : Positive;
+      Column : Positive;
+   end record;
+
+   type Pragma_Assume is record
+      File   : Unbounded_String;
+      Line   : Positive;
+      Column : Positive;
+      Subp   : Subp_Type;
    end record;
 
    package Warning_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Suppressed_Warning, "=");
+
+   package Pragma_Assume_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Pragma_Assume, "=");
 
    --  Record of results obtained for a given subprogram or package
    type Stat_Rec is record
       SPARK           : Boolean;            --  In SPARK or not
       Analysis        : Analysis_Status;    --  Status of analysis performed
       Suppr_Msgs      : Warning_Lists.List; --  List of suppressed messages
+      Pragma_Assumes  : Pragma_Assume_Lists.List; -- List of pragma Assumes
       Flow_Warnings   : Natural;            --  Number of flow analysis warning
       Flow_Errors     : Natural;            --  Number of flow analysis errors
       Flow_Checks     : Natural;            --  Number of flow analysis checks
@@ -115,6 +125,14 @@ package Report_Database is
    --  For the subprogram in the given unit, register a flow result, which is
    --  either a warning or an error.
 
+   procedure Add_Pragma_Assume_Result
+     (Unit   : Unit_Type;
+      File   : String;
+      Line   : Positive;
+      Column : Positive;
+      Subp   : Subp_Type);
+   --  For the subprogram in the given unit, register a pragma assume result
+
    procedure Add_Proof_Result
      (Unit   : Unit_Type;
       Subp   : Subp_Type;
@@ -134,8 +152,8 @@ package Report_Database is
       Subp   : Subp_Type;
       Reason : String;
       File   : String;
-      Line   : Integer;
-      Column : Integer);
+      Line   : Positive;
+      Column : Positive);
    --  For the subprogram in the given unit, register a suppressed warning with
    --  a reason.
 

@@ -201,8 +201,8 @@ max steps used for successful proof: 1
 
 Analyzed 1 unit
 in unit p, 1 subprograms and packages out of 1 analyzed
- P at p.adb:1 flow analyzed (0 errors, 0 checks and 2 warnings) and proved (1 checks)
- suppressed messages:
+ P at p.adb:1 flow analyzed (0 errors, 0 checks, 2 warnings and 0 pragma Assume statements) and proved (1 checks)
+ Justified messages:
  p.adb:4:4: 
  p.adb:7:4: unused Z2, but that's OK
  p.adb:10:4: unused Z3, but that's also OK

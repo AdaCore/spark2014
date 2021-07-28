@@ -10,10 +10,10 @@ max steps used for successful proof: 1
 
 
 
- Assume_Call at assume_call.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
- Assume_Call.Caller at assume_call.adb:14 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (1 checks)
- Assume_Call.Wrong_Pre at assume_call.adb:7 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (0 checks)
- Assume_Call.f1 at assume_call.ads:3 flow analyzed (0 errors, 0 checks and 0 warnings) and not proved, 2 checks out of 3 proved
+ Assume_Call at assume_call.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Assume_Call.Caller at assume_call.adb:14 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (1 checks)
+ Assume_Call.Wrong_Pre at assume_call.adb:7 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Assume_Call.f1 at assume_call.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 2 checks out of 3 proved
  absence of run-time errors of Assume_Call.f1
  effects on parameters and Global variables of Assume_Call.Wrong_Pre
  the postcondition of Assume_Call.f1

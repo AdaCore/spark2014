@@ -41,6 +41,7 @@ with Einfo.Entities;                  use Einfo.Entities;
 with Einfo.Utils;                     use Einfo.Utils;
 with Errout;                          use Errout;
 with Flow;                            use Flow;
+with Flow.Analysis.Assumptions;       use Flow.Analysis.Assumptions;
 with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
@@ -328,6 +329,7 @@ package body Gnat2Why.Driver is
    begin
       Set_Field (Full, "spark", Create (Get_SPARK_JSON));
       Set_Field (Full, "flow", Create (Get_Flow_JSON));
+      Set_Field (Full, "pragma_assume", Create (Get_Pragma_Assume_JSON));
       if Proof_Done then
          Set_Field (Full, "session_map", Get_Session_Map_JSON);
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
@@ -933,7 +935,6 @@ package body Gnat2Why.Driver is
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
    begin
-
       --  If the maximum is reached, we wait for one process to finish first
 
       if Output_File_Map.Length = Max_Subprocesses then

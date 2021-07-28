@@ -34,6 +34,7 @@ with Debug;
 with Elists;                         use Elists;
 with Errout;                         use Errout;
 with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
+with Flow.Analysis.Assumptions;      use Flow.Analysis.Assumptions;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
@@ -19722,6 +19723,7 @@ package body Gnat2Why.Expr is
          if Is_Pragma_Check (Prag, Name_Assume) then
             Append (T, New_Assume_Statement (Pred => Pred));
             Append (T, Warn_On_Inconsistent_Assume (Prag));
+            Register_Pragma_Assume_Statement (Prag);
          else
             Append (T,
               New_Located_Assert (Expr, Pred, Reason, EW_Assert));

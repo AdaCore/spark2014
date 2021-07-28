@@ -13,14 +13,14 @@ max steps used for successful proof: 1
 
 
 
- Full at full.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
- Full.Bump at full.ads:9 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (3 checks)
- Full.Id at full.ads:7 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
- Full.Use_Bump at full.ads:13 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (2 checks)
- My_Pack at my_pack.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Full at full.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Full.Bump at full.ads:9 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (3 checks)
+ Full.Id at full.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Full.Use_Bump at full.ads:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
+ My_Pack at my_pack.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
  My_Pack.Bump at my_pack.ads:9 skipped
- My_Pack.Id at my_pack.ads:7 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
- My_Pack.Use_Bump at my_pack.ads:13 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (3 checks)
+ My_Pack.Id at my_pack.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+ My_Pack.Use_Bump at my_pack.ads:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (3 checks)
  absence of run-time errors of My_Pack.Bump
  absence of run-time errors of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump

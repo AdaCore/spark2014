@@ -41,6 +41,7 @@ package body Report_Database is
      Stat_Rec'(SPARK           => False,
                Analysis        => No_Analysis,
                Suppr_Msgs      => Warning_Lists.Empty_List,
+               Pragma_Assumes  => Pragma_Assume_Lists.Empty_List,
                Flow_Warnings   => 0,
                Flow_Errors     => 0,
                Flow_Checks     => 0,
@@ -148,6 +149,35 @@ package body Report_Database is
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Flow_Result;
 
+   ------------------------------
+   -- Add_Pragma_Assume_Result --
+   ------------------------------
+
+   procedure Add_Pragma_Assume_Result
+     (Unit   : Unit_Type;
+      File   : String;
+      Line   : Positive;
+      Column : Positive;
+      Subp   : Subp_Type)
+   is
+      procedure Process (Stat : in out Stat_Rec);
+      --  Do the actual work
+
+      procedure Process (Stat : in out Stat_Rec) is
+      begin
+         Stat.Pragma_Assumes.Append
+           (Pragma_Assume'(File   => To_Unbounded_String (File),
+                           Line   => Line,
+                           Column => Column,
+                           Subp   => Subp));
+      end Process;
+
+   --  Start of processing for Add_Pragma_Assume_Result
+
+   begin
+      Update_Subp_Entry (Unit, Subp, Process'Access);
+   end Add_Pragma_Assume_Result;
+
    ----------------------
    -- Add_Proof_Result --
    ----------------------
@@ -220,8 +250,8 @@ package body Report_Database is
       Subp   : Subp_Type;
       Reason : String;
       File   : String;
-      Line   : Integer;
-      Column : Integer)
+      Line   : Positive;
+      Column : Positive)
    is
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work

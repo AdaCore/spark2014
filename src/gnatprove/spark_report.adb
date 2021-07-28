@@ -75,6 +75,9 @@ procedure SPARK_Report is
    procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type);
    --  Parse and extract all information from a flow result array
 
+   procedure Handle_Pragma_Assume_Items (V : JSON_Array; Unit : Unit_Type);
+   --  Parse and extract all information from a pragma assume result array
+
    procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type);
    --  Parse and extract all information from a proof result array
 
@@ -528,6 +531,30 @@ procedure SPARK_Report is
       end loop;
    end Handle_Flow_Items;
 
+   --------------------------------
+   -- Handle_Pragma_Assume_Items --
+   --------------------------------
+
+   procedure Handle_Pragma_Assume_Items (V : JSON_Array; Unit : Unit_Type) is
+   begin
+      for Index in 1 .. Length (V) loop
+         declare
+            Result : constant JSON_Value := Get (V, Index);
+            File   : constant String := Get (Result, "file");
+            Line   : constant Positive := Get (Result, "line");
+            Column : constant Positive := Get (Result, "col");
+            Subp   : constant Subp_Type :=
+              From_JSON (Get (Result, "entity"));
+         begin
+            Add_Pragma_Assume_Result (Unit   => Unit,
+                                      File   => File,
+                                      Line   => Line,
+                                      Column => Column,
+                                      Subp   => Subp);
+         end;
+      end loop;
+   end Handle_Pragma_Assume_Items;
+
    ------------------------
    -- Handle_Proof_Items --
    ------------------------
@@ -667,11 +694,12 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
-      Dict      : constant JSON_Value := Read_File_Into_JSON (Fn);
-      Basename  : constant String := Ada.Directories.Base_Name (Fn);
-      Unit      : constant Unit_Type := Mk_Unit (Basename);
-      Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
-      Has_Proof : constant Boolean := Has_Field (Dict, "proof");
+      Dict        : constant JSON_Value := Read_File_Into_JSON (Fn);
+      Basename    : constant String := Ada.Directories.Base_Name (Fn);
+      Unit        : constant Unit_Type := Mk_Unit (Basename);
+      Has_Flow    : constant Boolean := Has_Field (Dict, "flow");
+      Has_Assumes : constant Boolean := Has_Field (Dict, "pragma_assume");
+      Has_Proof   : constant Boolean := Has_Field (Dict, "proof");
 
       --  Status of analysis performed on all subprograms and packages of a
       --  unit depend on presence of the "flow" and "proof" files present in
@@ -712,6 +740,9 @@ procedure SPARK_Report is
       end loop;
       if Has_Flow then
          Handle_Flow_Items (Get (Get (Dict, "flow")), Unit);
+      end if;
+      if Has_Assumes then
+         Handle_Pragma_Assume_Items (Get (Get (Dict, "pragma_assume")), Unit);
       end if;
       if Has_Proof then
          Handle_Proof_Items (Get (Get (Dict, "proof")), Unit);
@@ -806,8 +837,10 @@ procedure SPARK_Report is
                      Put (Handle,
                           " flow analyzed ("
                           & Image (Stat.Flow_Errors, 1) & " errors, "
-                          & Image (Stat.Flow_Checks, 1) & " checks and "
-                          & Image (Stat.Flow_Warnings, 1) & " warnings)");
+                          & Image (Stat.Flow_Checks, 1) & " checks, "
+                          & Image (Stat.Flow_Warnings, 1) & " warnings and "
+                          & Image (Natural (Stat.Pragma_Assumes.Length), 1)
+                          & " pragma Assume " & "statements)");
                   end if;
 
                   if Stat.Analysis = Flow_And_Proof then
@@ -830,7 +863,7 @@ procedure SPARK_Report is
                   Put_Line (Handle, "");
 
                   if not Stat.Suppr_Msgs.Is_Empty then
-                     Put_Line (Handle, "   suppressed messages:");
+                     Put_Line (Handle, "   Justified messages:");
                      for Msg of Stat.Suppr_Msgs loop
                         Put_Line (Handle,
                                   "    " &
@@ -839,6 +872,17 @@ procedure SPARK_Report is
                                     Image (Msg.Column, 1) & ": " &
                                     Ada.Strings.Unbounded.To_String
                                     (Msg.Reason));
+                     end loop;
+                  end if;
+
+                  if not Stat.Pragma_Assumes.Is_Empty then
+                     Put_Line (Handle, "   pragma Assume statements:");
+                     for Assm of Stat.Pragma_Assumes loop
+                        Put_Line (Handle,
+                                  "    " &
+                                    Ada.Strings.Unbounded.To_String
+                                    (Assm.File) & ":" & Image (Assm.Line, 1) &
+                                    ":" & Image (Assm.Column, 1));
                      end loop;
                   end if;
 

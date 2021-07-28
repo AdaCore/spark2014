@@ -26,25 +26,25 @@ max steps used for successful proof: 0
 
 Analyzed 1 unit
 in unit p, 13 subprograms and packages out of 13 analyzed
-  P at p.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
-  P.CF1 at p.adb:8 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P at p.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+  P.CF1 at p.adb:8 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.CF1 fully established
-  P.CF2 at p.adb:9 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P.CF2 at p.adb:9 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.CF2 fully established
-  P.CF3 at p.adb:10 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P.CF3 at p.adb:10 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.CF3 fully established
-  P.CF4 at p.adb:11 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P.CF4 at p.adb:11 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.CF4 fully established
-  P.F1 at p.ads:2 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P.F1 at p.ads:2 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.F1 fully established
-  P.F2 at p.ads:3 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P.F2 at p.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.F2 fully established
-  P.F3 at p.ads:4 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P.F3 at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.F3 fully established
-  P.F4 at p.ads:5 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  P.F4 at p.ads:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of P.F4 fully established
-  P.P1 at p.adb:13 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (0 checks)
-  P.P2 at p.adb:21 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (0 checks)
-  P.P3 at p.adb:29 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (0 checks)
-  P.P4 at p.adb:37 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (0 checks)
+  P.P1 at p.adb:13 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+  P.P2 at p.adb:21 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+  P.P3 at p.adb:29 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+  P.P4 at p.adb:37 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
 
