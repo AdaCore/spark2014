@@ -850,7 +850,10 @@ def no_crash():
     Only attempt to detect crashes and other unexpected behavior. No expected
     tool output is filed for such tests.
     """
-    gnatprove(no_output=True, exit_status=0)
+    if benchmark_mode():
+        prove_all()
+    else:
+        gnatprove(no_output=True, exit_status=0)
 
 
 def clean():
