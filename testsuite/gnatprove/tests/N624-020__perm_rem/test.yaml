@@ -2,4 +2,4 @@ prove_all:
   prover: ["cvc4", "z3"]
   procs: 4
   counterexample: False
-  steps: 5000
+  steps: 30000

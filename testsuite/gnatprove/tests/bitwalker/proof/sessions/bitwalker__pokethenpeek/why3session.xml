@@ -86,11 +86,11 @@
   <proof prover="1"><result status="valid" steps="2866"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0"><result status="valid" steps="3863"/></proof>
+  <proof prover="0"><result status="valid" steps="3690"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
-  <proof prover="0"><result status="valid" steps="3793"/></proof>
+  <proof prover="0"><result status="valid" steps="3704"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
