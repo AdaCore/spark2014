@@ -6024,12 +6024,13 @@ package body Flow_Utility is
 
                when N_Derived_Type_Definition =>
                   declare
-                     Root_T : constant Entity_Id :=
-                       Etype (Subtype_Indication (Def));
-                     Ext    : constant Node_Id := Record_Extension_Part (Def);
+                     Ext : constant Node_Id := Record_Extension_Part (Def);
                   begin
-                     return Is_Empty_Record_Type (Root_T)
-                       and then
+                     return
+                       Is_Entity_Name (Subtype_Indication (Def))
+                         and then
+                       Is_Empty_Record_Type (Entity (Subtype_Indication (Def)))
+                         and then
                        (No (Ext)
                           or else Null_Present (Ext)
                           or else No (Component_List (Ext)));
@@ -6042,7 +6043,10 @@ package body Flow_Utility is
          when N_Subtype_Declaration =>
             --  A subtype can be null too, we just check if the thing we're
             --  deriving it from is null.
-            return Is_Empty_Record_Type (Etype (Subtype_Indication (Decl)));
+            return
+              Is_Entity_Name (Subtype_Indication (Decl))
+                and then
+              Is_Empty_Record_Type (Entity (Subtype_Indication (Decl)));
 
          when others =>
             null;
