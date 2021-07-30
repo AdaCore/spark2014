@@ -46,7 +46,8 @@ begin
    Ptr_Compare (A, A, Tmp);  -- Aliasing hazard
    Glob_Compare (A, Tmp);  -- Aliasing hazard
 
-   --  These calls are *not* at risk of aliasing
+   --  These calls are not actually at risk of aliasing, however
+   --  flow analysis cannot guarantee this.
    Ptr_Compare2 (A, A, Tmp);
    Glob_Compare2 (A, Tmp);
 end P;

@@ -75,12 +75,16 @@ package body Flow.Analysis.Antialiasing is
    --  Check if the given formal parameter is immutable, as per the rules
    --  of the SPARK RM section 6.4.2(2).
 
-   function Is_By_Copy_Not_Access (F : Entity_Id) return Boolean
-   with Pre => Is_Formal (F) and then Is_Immutable (F);
-   --  Check if the given formal immutable parameter cannot possibly alias with
-   --  others: it is of a by-copy type that is not an access type.
-   --  This implements commmon conditionality from the SPARK RM section 6.4.2
-   --  paragraphs (3) and (4).
+   function Is_Conservatively_By_Copy_Type (F : Entity_Id) return Boolean
+     with Pre => Is_Formal (F) and then Is_Immutable (F);
+   --  Check whether the (formal immutable) parameter should be regarded as a
+   --  by-copy type for the purposes of aliasing.
+
+   function Is_Anonymous_Access_To_Constant (Typ : Entity_Id) return Boolean is
+     (Is_Anonymous_Access_Type (Typ) and then Is_Access_Constant (Typ))
+   with Pre => (Is_Type (Typ));
+   --  Implement anonymous access-to-constant via the intersection of
+   --  'anonymous access' and 'access constant'.
 
    procedure Check_Node_Against_Node
      (FA       : in out Flow_Analysis_Graphs;
@@ -239,14 +243,11 @@ package body Flow.Analysis.Antialiasing is
             =>
                return True;
 
-            --  The only interesting attribute references is 'Access but it is
-            --  not yet supported by the borrow checker, so we are only seeing
-            --  access-to-subprogram values here.
+            --  The only interesting attribute reference is 'Access. However
+            --  access-to-object is not yet supported by the borrow checker.
 
             when N_Attribute_Reference =>
-               pragma Assert
-                 (if Attribute_Name (N) = Name_Access
-                  then Is_Subprogram (Entity (Prefix (N))));
+               pragma Assert (Attribute_Name (N) /= Name_Access);
                return False;
 
             --  Detect calls to instances of unchecked conversion. Other
@@ -507,29 +508,52 @@ package body Flow.Analysis.Antialiasing is
                        Text2 => " <--> ",
                        Node2 => B);
 
-      --  Now check the cases involving immutable formal parameters from the
+      --  Check the cases involving two actual parameters, with immutable
+      --  and/or anonymous acess constant 'in' formal parameter(s) from the
       --  SPARK RM 6.4.2(3).
       declare
-         A_Is_Immutable : constant Boolean := Is_Immutable (Formal_A);
-         B_Present_And_Immutable : constant Boolean := Present (Formal_B)
+         A_Is_Immutable : constant Boolean :=
+           Is_Immutable (Formal_A);
+         A_Is_Anonymous_Access_Constant_In : constant Boolean :=
+           Ekind (Formal_A) = E_In_Parameter
+           and then Is_Anonymous_Access_To_Constant (Etype (Formal_A));
+         B_Present_And_Immutable : constant Boolean :=
+           Present (Formal_B)
            and then Is_Immutable (Formal_B);
+         B_Present_And_Anonymous_Access_Constant_In : constant Boolean :=
+           Present (Formal_B)
+           and then Ekind (Formal_B) = E_In_Parameter
+           and then Is_Anonymous_Access_To_Constant (Etype (Formal_B));
       begin
-         if A_Is_Immutable and then B_Present_And_Immutable then
-            Trace_Line ("   -> A and B are both immutable formal parameters");
+         --  Determine if two actual parameters are both either immutable or
+         --  anonymous access-to-constant "in" parameters.
+         if (A_Is_Immutable
+             or else A_Is_Anonymous_Access_Constant_In)
+           and then (B_Present_And_Immutable
+                     or else B_Present_And_Anonymous_Access_Constant_In)
+         then
+            Trace_Line ("   -> formal parameters A and B are both either " &
+                          "immutable or mode 'in' anonymous " &
+                          "access-to-constant.");
             return Impossible;
 
          --  Determine if at least one of the corresponding formal
-         --  parameters is immutable and a by-copy type that is not
-         --  an access type
+         --  parameters is immutable and a by-copy type.
 
-         elsif A_Is_Immutable and then Is_By_Copy_Not_Access (Formal_A) then
+         elsif A_Is_Immutable and then Present (Formal_B)
+           and then Is_Conservatively_By_Copy_Type (Formal_A)
+         then
             Trace_Line ("   -> A does not require aa checking");
             return Impossible;
+
          elsif B_Present_And_Immutable
-           and then Is_By_Copy_Not_Access (Formal_B)
+           and then Is_Conservatively_By_Copy_Type (Formal_B)
          then
             Trace_Line ("   -> B does not require aa checking");
             return Impossible;
+
+         --  We also want to avoid checking abstract state
+
          elsif No (Formal_B) and then Ekind (B) = E_Abstract_State then
             Trace_Line ("   -> B is an abstract state");
             return Impossible;
@@ -762,34 +786,29 @@ package body Flow.Analysis.Antialiasing is
       Typ : constant Entity_Id := Etype (F);
    begin
       return
-        --  The SPARK RM 6.4.2(2) states that anonymous access-to-constant
-        --  parameters are immutable. We implement via the intersection of
-        --  'anonymous access' and 'access constant'.
-        (Is_Anonymous_Access_Type (Typ)
-         and then Is_Access_Constant (Typ))
-        or else
-
-        --  It is of mode 'in' and not of an access-to-object type
-        (Ekind (F) = E_In_Parameter
-         and then not Is_Access_Object_Type (Typ));
+        --  Immutable formal parameters are of mode 'in' and neither of an
+        --  access-to-variable type, nor of an anonymous access-to-constant
+        --  type.
+        Ekind (F) = E_In_Parameter
+        and then not Is_Access_Variable (Typ)
+        and then not Is_Anonymous_Access_To_Constant (Typ);
    end Is_Immutable;
 
-   ---------------------------
-   -- Is_By_Copy_Not_Access --
-   ---------------------------
+   ------------------------------------
+   -- Is_Conservatively_By_Copy_Type --
+   ------------------------------------
 
-   function Is_By_Copy_Not_Access (F : Entity_Id) return Boolean is
+   function Is_Conservatively_By_Copy_Type (F : Entity_Id) return Boolean is
+      Typ : constant Entity_Id := Etype (F);
    begin
-      --  According to SPARK and Ada RMs here we should test for by-copy type
-      --  (e.g. using Is_By_Copy_Type). However, it seems better to treat
-      --  private types as really private and check if by-copy property can
-      --  be deduced from the public declaration only. If not then we are
-      --  conservative and assume the worst case, i.e. that the type is
-      --  by-reference. See O916-007.
-
-      return Is_Elementary_Type (Etype (F))
-        and then not Is_Access_Type (Etype (F));
-   end Is_By_Copy_Not_Access;
+      return
+        --  We need to take a somewhat conservative approach, as anonymous
+        --  access-to-constant parameters are strictly pass-by-copy but
+        --  actually copy a reference and thus need to be treated more like
+        --  pass-by-reference. See notes of SPARK LRM 6.4.2(3).
+        Is_By_Copy_Type (Typ)
+        and then not Is_Anonymous_Access_To_Constant (Typ);
+   end Is_Conservatively_By_Copy_Type;
 
    -----------------------------
    -- Check_Node_Against_Node --
@@ -937,10 +956,17 @@ package body Flow.Analysis.Antialiasing is
 
          pragma Assert (No (Other_Actual));
 
-         --  The rules of SPARK RM 6.4.2(4) are such that:
-         --  * If the formal parameter is immutable, there cannot be aliasing
-         --    between it and any read-only global.
-         if Formal_Is_Immutable then
+         --  The rules of SPARK RM 6.4.2(4) are such that we can split the
+         --  cases handling read-only globals separately from Output + In_Out
+         --  globals.
+         --  If a global item is read-only, there cannot be aliasing between it
+         --  and the corresponding formal parameter if the latter is either
+         --  * immutable; or
+         --  * of mode "in" and anonymous access-to-constant type.
+         if Formal_Is_Immutable
+           or else (Ekind (Formal) = E_In_Parameter
+                    and then Is_Anonymous_Access_To_Constant (Etype (Formal)))
+         then
             if not Reads_Only.Is_Empty then
                Trace_Line ("   -> A does not require aa checking against " &
                              "read-only globals");
@@ -959,10 +985,13 @@ package body Flow.Analysis.Antialiasing is
             end loop;
          end if;
 
-         --  * If the formal parameter is an immutable by-copy type that is not
-         --  an access type, then there cannot be aliasing between it and any
-         --  output or in-out global.
-         if Formal_Is_Immutable and then Is_By_Copy_Not_Access (Formal) then
+         --  From SPARK RM 6.4.2(4):
+         --  * If the global item's mode is Output or In_Out, then the
+         --    corresponding formal parameter shall be immutable and of a
+         --    by-copy type.
+         if Formal_Is_Immutable
+           and then Is_Conservatively_By_Copy_Type (Formal)
+         then
             if not Writes_Or_Reads.Is_Empty then
                Trace_Line ("   -> A does not require aa checking against " &
                              "OUT or IN_OUT globals");
