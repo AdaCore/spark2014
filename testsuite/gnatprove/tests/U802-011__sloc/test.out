@@ -3,4 +3,4 @@ repr.adb:4:21: warning: "D2" is not modified, could be IN
 repr.adb:4:25: warning: "D3" is not modified, could be IN
 repr.adb:4:29: warning: "D4" is not modified, could be IN
 repr.adb:4:33: warning: "D5" is not modified, could be IN
-repr.adb:6:14: medium: postcondition might fail, cannot prove D1 (e.g. when D3 = False)
+repr.adb:8:15: medium: postcondition might fail, cannot prove D1 (e.g. when D3 = False)
