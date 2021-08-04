@@ -822,7 +822,7 @@ package body VC_Kinds is
             declare
                JS_Array     : constant JSON_Array := Get (V, "val");
                Indice_Array : Cntexmp_Value_Array.Map;
-               Other_Ptr    : Cntexmp_Value_Ptr := null;
+               Other_Ptr    : Cntexmp_Value_Ptr;
 
             begin
                for Index in 1 .. Length (JS_Array) loop

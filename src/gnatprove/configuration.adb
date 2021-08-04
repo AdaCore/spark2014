@@ -1496,7 +1496,7 @@ package body Configuration is
 
          if not All_Projects then
             declare
-               Limit_String : GNAT.Strings.String_Access := null;
+               Limit_String : GNAT.Strings.String_Access;
 
             begin
                --  Limit_Line, Limit_Region, and Limit_Subp all imply -u for

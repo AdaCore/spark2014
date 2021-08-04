@@ -770,7 +770,7 @@ procedure SPARK_Report is
       use Ada.Command_Line;
 
       type String_Ptr is access String;
-      Source_Dirs : String_Ptr := null;
+      Source_Dirs : String_Ptr;
 
    begin
       for Index in 1 .. Argument_Count loop

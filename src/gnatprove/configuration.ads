@@ -301,7 +301,7 @@ package Configuration is
    --  The fact that the phase 1 dir is a subdir of phase2 makes copying files
    --  easier later on, and makes cleaning up easier as well.
 
-   Proof_Dir : GNAT.Strings.String_Access := null;
+   Proof_Dir : GNAT.Strings.String_Access;
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).
 
