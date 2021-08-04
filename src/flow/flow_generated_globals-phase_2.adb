@@ -2807,23 +2807,6 @@ package body Flow_Generated_Globals.Phase_2 is
       end if;
    end Part_Of_Constituents;
 
-   ----------------------
-   -- Get_Constituents --
-   ----------------------
-
-   function Get_Constituents (E : Entity_Name) return Name_Sets.Set is
-      C : constant Name_Graphs.Cursor := State_Comp_Map.Find (E);
-   begin
-      --  If we have information about the refined state constituents in the
-      --  State_Comp_Map, use that. If not (e.g. we have a spec file declaring
-      --  abstract state with no body to refine it) we return the Part_Of
-      --  constituent information.
-      return (if Name_Graphs.Has_Element (C) then
-                 State_Comp_Map (C)
-              else
-                 Part_Of_Constituents (E));
-   end Get_Constituents;
-
    ----------------------------
    -- GG_Encapsulating_State --
    ----------------------------

@@ -5347,7 +5347,7 @@ package body Flow.Analysis is
                function Get_Msg_Object (Object : Entity_Name)
                                         return Entity_Name
                is
-                  Current_Abstraction  : Entity_Name   := Object;
+                  Current_Abstraction  : Entity_Name := Object;
                   Current_Constituents : Name_Sets.Set;
                   --  While going from the innermost object to its outermost
                   --  encapsulating state, these will represent the current
@@ -5393,6 +5393,7 @@ package body Flow.Analysis is
                      --  encapsulating abstract state, if any.
                   end loop;
                end Get_Msg_Object;
+
             begin
                --  Violation occurs when the resource is accessed by:
                --  * instances of several task types
