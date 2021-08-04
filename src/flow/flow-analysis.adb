@@ -4576,6 +4576,7 @@ package body Flow.Analysis is
 
                   if Ekind (Constituent) = E_Constant
                     and then Entity_In_SPARK (Constituent)
+                    and then not Is_Access_Variable (Etype (Constituent))
                     and then not Has_Variable_Input (Constituent)
                   then
                      Error_Msg (Declaration_Node (Constituent),
