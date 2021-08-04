@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;                       use Atree;
 with Elists;                      use Elists;
 with Lib;                         use Lib;
 with Namet;                       use Namet;

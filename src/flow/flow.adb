@@ -28,6 +28,7 @@ with Ada.Strings;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Assumptions;                      use Assumptions;
+with Atree;                            use Atree;
 with Errout;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -568,31 +569,6 @@ package body Flow is
                    and then X.Entries.Is_Empty
                    and then (for all Info of X.Tasking => Info.Is_Empty))
       );
-
-   -------------------------------
-   -- Loop_Parameter_From_Loop  --
-   -------------------------------
-
-   function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id is
-      N : Node_Id;
-   begin
-      N := Parent (E);
-      pragma Assert (Nkind (N) = N_Implicit_Label_Declaration);
-
-      N := Label_Construct (N);
-      pragma Assert (Nkind (N) = N_Loop_Statement);
-
-      N := Iteration_Scheme (N);
-      pragma Assert (Nkind (N) = N_Iteration_Scheme);
-
-      N := Loop_Parameter_Specification (N);
-      if No (N) then
-         return Empty;
-      end if;
-      pragma Assert (Nkind (N) = N_Loop_Parameter_Specification);
-
-      return Defining_Identifier (N);
-   end Loop_Parameter_From_Loop;
 
    -----------------
    -- Print_Graph --

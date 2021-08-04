@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;               use Atree;
 with Ada.Containers;      use Ada.Containers;
 with Flow_Classwide;      use Flow_Classwide;
 with Flow_Error_Messages; use Flow_Error_Messages;

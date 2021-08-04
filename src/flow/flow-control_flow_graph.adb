@@ -23,6 +23,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Atree;                              use Atree;
 with Elists;                             use Elists;
 with Lib;                                use Lib;
 with Namet;                              use Namet;

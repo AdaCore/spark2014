@@ -24,6 +24,7 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Atree;                          use Atree;
 with Checked_Types;                  use Checked_Types;
 with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Utility;                   use Flow_Utility;
