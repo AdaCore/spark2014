@@ -1325,6 +1325,7 @@ package body Flow.Analysis.Sanity is
       end case;
 
       if not Sane then
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA       => FA,
@@ -1334,6 +1335,7 @@ package body Flow.Analysis.Sanity is
                Severity => Error_Kind,
                F1       => Direct_Mapping_Id (FA.Spec_Entity));
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
       end if;
    end Check_Expressions;
 
