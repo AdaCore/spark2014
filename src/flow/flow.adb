@@ -1672,7 +1672,6 @@ package body Flow is
                         Analysis.Check_Initializes_Contract (FA);
                      end if;
                      Analysis.Check_Refined_State_Contract (FA);
-                     Analysis.Check_State_Volatility_Escalation (FA);
                      Analysis.Check_Calls_With_Constant_After_Elaboration (FA);
                   end;
             end case;
