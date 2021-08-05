@@ -1,0 +1,5 @@
+main.adb:10:20: info: initialization of "A" proved
+main.adb:10:23: info: initialization of "B" proved
+main.adb:17:20: info: initialization of "A" proved
+main.adb:17:49: info: data dependencies proved
+main.adb:17:70: info: initialization of "X" proved
