@@ -329,9 +329,6 @@ package body Flow.Analysis.Antialiasing is
       --  Returns the number of root nodes on the path
 
       function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
-      is (case Nkind (N) is
-             when N_Defining_Identifier => N,
-             when others => Entity (N))
       with Pre  => Is_Root (Nkind (N)),
            Post => Is_Object (Get_Root_Entity'Result);
       --  Returns the entity attached to N, which is either an identifier of an
@@ -371,6 +368,30 @@ package body Flow.Analysis.Antialiasing is
                raise Program_Error;
          end case;
       end Down_One_Level;
+
+      ---------------------
+      -- Get_Root_Entity --
+      ---------------------
+
+      function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id is
+         E : Entity_Id;
+      begin
+         if Nkind (N) = N_Defining_Identifier then
+            return N;
+         end if;
+
+         E := Entity (N);
+
+         --  Detect overlay with an Address representation clause
+
+         if Ekind (E) in E_Constant | E_Variable
+           and then Present (Ultimate_Overlaid_Entity (E))
+         then
+            return Ultimate_Overlaid_Entity (E);
+         else
+            return E;
+         end if;
+      end Get_Root_Entity;
 
       ------------------
       -- Path_To_Root --
@@ -474,6 +495,7 @@ package body Flow.Analysis.Antialiasing is
 
       List_A, List_B : Node_Lists.List;
       Head_A, Head_B : Node_Id;
+      Root_A, Root_B : Entity_Id;
 
       Definitive_Result : Boolean := True;
 
@@ -545,7 +567,10 @@ package body Flow.Analysis.Antialiasing is
       --  A quick sanity check. If the root nodes refer to different entities
       --  then we cannot have aliasing.
 
-      if Entity (Head_A) /= Get_Root_Entity (Head_B) then
+      Root_A := Get_Root_Entity (Head_A);
+      Root_B := Get_Root_Entity (Head_B);
+
+      if Root_A /= Root_B then
          Trace_Line ("   -> different root entities");
          return Impossible;
       end if;
@@ -556,9 +581,9 @@ package body Flow.Analysis.Antialiasing is
       --  unsynchronised or it is synchronised only due to being constant after
       --  elaboration.
 
-      if Is_Synchronized_Object (Entity (Head_A))
-        and then (Ekind (Entity (Head_A)) /= E_Variable
-                  or else not Is_Constant_After_Elaboration (Entity (Head_A)))
+      if Is_Synchronized_Object (Root_A)
+        and then (Ekind (Root_A) /= E_Variable
+                  or else not Is_Constant_After_Elaboration (Root_A))
       then
          Trace_Line ("   -> non-interfering objects");
          return Impossible;
