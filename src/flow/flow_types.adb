@@ -851,10 +851,6 @@ package body Flow_Types is
                      Nam := Overridden_Operation (N);
                   end if;
 
-                  while Present (Homonym (Nam)) loop
-                     Nam := Homonym (Nam);
-                  end loop;
-
                when E_Task_Type | E_Protected_Type =>
                   --  For single concurrent units return the original name,
                   --  i.e. without the "tk" or "t" suffixes added by expansion.

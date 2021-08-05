@@ -56,9 +56,9 @@ p.adb:198:17: high: call to potentially blocking subprogram "Wait" in protected 
 p.adb:205:10: high: call to potentially blocking subprogram "File_Proc" in protected operation "File_Entry"
 p.adb:209:10: high: call to potentially blocking predefined subprogram "Is_Open" in protected operation "File_Proc"
 p.adb:209:10: info: initialization of "F" proved
-p.adb:211:21: high: call to potentially blocking predefined subprogram "open" in protected operation "File_Proc"
+p.adb:211:21: high: call to potentially blocking predefined subprogram "Open" in protected operation "File_Proc"
 p.adb:211:21: info: precondition proved (CVC4: 1 VC)
-p.adb:211:28: warning: "F" is set by "open" but not used after the call
+p.adb:211:28: warning: "F" is set by "Open" but not used after the call
 p.adb:218:10: high: call to potentially blocking subprogram "Text_Proc" in protected operation "Text_Entry"
 p.adb:223:21: high: call to potentially blocking predefined subprogram "Put_Line" in protected operation "Text_Proc"
 p.adb:233:26: high: call to potentially blocking predefined subprogram "Put" in protected operation "My_Text_Entry"

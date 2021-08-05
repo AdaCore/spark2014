@@ -6,5 +6,5 @@ gf.adb:25:07: high: alignment of overlayed object might not be an integral multi
 gf.adb:25:07: info: object is suitable for aliasing via address clause (Trivial), in instantiation at main.ads:3
 gf.adb:27:21: high: object is unsuitable for aliasing via address clause, in instantiation at main.ads:3 [possible explanation: floating-point types have invalid bit patterns for SPARK]
 gf.adb:27:21: high: types of aliased objects do not have the same size, in instantiation at main.ads:3 [possible explanation: Object_Sizes of type Payload_As_Arr_Type and type Float differ]
-gf.adb:31:31: warning: "Data" is set by "IN_DATAR" but not used after the call, in instantiation at main.ads:3
+gf.adb:31:31: warning: "Data" is set by "In_Data" but not used after the call, in instantiation at main.ads:3
 gf.ads:4:25: info: initialization of "Data" proved, in instantiation at main.ads:3
