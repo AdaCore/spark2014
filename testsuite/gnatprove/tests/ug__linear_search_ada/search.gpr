@@ -2,6 +2,6 @@ project Search is
    for Source_Dirs use (".");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnatwa");
+      for Switches ("Ada") use ("-gnatwa");
    end Compiler;
 end Search;

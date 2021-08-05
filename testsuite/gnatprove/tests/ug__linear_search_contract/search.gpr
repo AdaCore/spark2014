@@ -4,7 +4,7 @@ project Search is
    for Main use ("test_search.adb", "test_search.adb");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnatwa", "-gnata", "-g", "-O0");
+      for Switches ("ada") use ("-gnatwa", "-gnata", "-g", "-O0");
    end Compiler;
 
    package Pretty_Printer is
