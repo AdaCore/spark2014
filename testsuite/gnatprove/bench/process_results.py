@@ -70,9 +70,9 @@ def compare_baseline(n, results, prover, fn):
 
 def compute_test_status(testsuitedir, outdir, test, results, resultfile):
     baseline_file = os.path.join(testsuitedir, "tests", test, "bench.yaml")
-    shutil.copyfile(baseline_file, os.path.join(outdir, test + ".expected"))
     if os.path.exists(baseline_file):
         baseline = e3.yaml.load_with_config(baseline_file, {})
+        shutil.copyfile(baseline_file, os.path.join(outdir, test + ".expected"))
     else:
         baseline = {"cvc4": 100, "altergo": 100, "z3": 100}
     res = True
