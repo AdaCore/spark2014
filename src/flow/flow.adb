@@ -147,7 +147,7 @@ package body Flow is
 
    begin
       Write_Str ("Generated contracts for ");
-      Sprint_Node (FA.Spec_Entity);
+      Write_Str (Full_Source_Name (FA.Spec_Entity));
       Write_Eol;
       Indent;
 

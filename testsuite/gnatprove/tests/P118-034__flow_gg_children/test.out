@@ -1,4 +1,4 @@
-Generated contracts for p1
+Generated contracts for A.P1
    Global =>
       Output =>
          A.State_A
@@ -6,7 +6,7 @@ Generated contracts for p1
       Output =>
          G
          I
-Generated contracts for p2
+Generated contracts for A.P2
    Global =>
       In_Out =>
          A.State_A
@@ -15,29 +15,29 @@ Generated contracts for p2
          G
       Output =>
          I
-Generated contracts for p3
+Generated contracts for A.P3
    Global =>
       In_Out =>
          A.State_A
    Refined_Global =>
       Output =>
          I
-Generated contracts for p8
+Generated contracts for A.P8
    Global =>
       In_Out =>
          A.State_A
    Refined_Global =>
       Output =>
          G
-Generated contracts for a
-Generated contracts for p4
+Generated contracts for A
+Generated contracts for A.Child.P4
    Global =>
       In_Out =>
          A.State_A
    Refined_Global =>
       Output =>
          G
-Generated contracts for p5
+Generated contracts for A.Child.P5
    Global =>
       In_Out =>
          A.State_A
@@ -45,7 +45,7 @@ Generated contracts for p5
       In_Out =>
          G
          A.State_A
-Generated contracts for p6
+Generated contracts for A.Child.P6
    Global =>
       Input =>
          A.State_A
@@ -57,7 +57,7 @@ Generated contracts for p6
       Output =>
          H
          J
-Generated contracts for p7
+Generated contracts for A.Child.P7
    Global =>
       In_Out =>
          A.State_A
@@ -65,16 +65,16 @@ Generated contracts for p7
       In_Out =>
          G
          A.State_A
-Generated contracts for child
+Generated contracts for A.Child
 a~child.adb:15:07: warning: "G" constituent of "State_A" is set by "P3" but not used after the call
-Generated contracts for p4
+Generated contracts for B.Child.P4
    Global =>
       In_Out =>
          B.State_A
    Refined_Global =>
       Output =>
          G
-Generated contracts for p5
+Generated contracts for B.Child.P5
    Global =>
       In_Out =>
          B.State_A
@@ -82,7 +82,7 @@ Generated contracts for p5
       In_Out =>
          G
          B.State_A
-Generated contracts for p7
+Generated contracts for B.Child.P7
    Global =>
       In_Out =>
          B.State_A
@@ -90,7 +90,7 @@ Generated contracts for p7
       In_Out =>
          G
          B.State_A
-Generated contracts for child
+Generated contracts for B.Child
 b-child.adb:15:07: warning: "G" constituent of "State_A" is set by "P3" but not used after the call
 b-child.adb:20:52: info: initialization of "H" constituent of "State_B" proved
 b-child.adb:20:55: info: initialization of "J" constituent of "State_B" proved
@@ -98,7 +98,7 @@ b-child.ads:4:22: info: data dependencies proved
 b-child.ads:6:22: info: data dependencies proved
 b-child.ads:8:22: info: data dependencies proved
 b-child.ads:11:22: info: data dependencies proved
-Generated contracts for b
+Generated contracts for B
 b.adb:6:52: info: initialization of "G" constituent of "State_A" proved
 b.adb:6:55: info: initialization of "I" constituent of "State_A" proved
 b.adb:14:51: info: initialization of "I" constituent of "State_A" proved

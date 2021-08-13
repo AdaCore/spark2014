@@ -1,4 +1,4 @@
-Generated contracts for p_1
+Generated contracts for A.P_1
    Global =>
       In_Out =>
          A.State_A
@@ -9,7 +9,7 @@ Generated contracts for p_1
          H
       In_Out =>
          G
-Generated contracts for f_1
+Generated contracts for A.F_1
    Global =>
       Input =>
          A.State_A
@@ -18,7 +18,7 @@ Generated contracts for f_1
          G
          H
          Priv.I
-Generated contracts for f_2
+Generated contracts for A.F_2
    Global =>
       Input =>
          A.State_A
@@ -27,34 +27,34 @@ Generated contracts for f_2
          G
          H
          Priv.I
-Generated contracts for f_3
+Generated contracts for A.F_3
    Global =>
       Input =>
          A.State_A
    Refined_Global =>
       Input =>
          G
-Generated contracts for f_4
+Generated contracts for A.F_4
    Global =>
       Input =>
          A.State_A
    Refined_Global =>
       Input =>
          G
-Generated contracts for a
+Generated contracts for A
 a.adb:10:14: medium: overflow check might fail, cannot prove upper bound for G + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at a.ads:5 should mention G in a precondition]
 a.adb:12:22: medium: assertion might fail [possible fix: subprogram at a.ads:5 should mention Priv.I in a precondition]
 a.adb:15:38: medium: overflow check might fail, cannot prove lower bound for H + Priv(Priv.f_6) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at a.ads:7 should mention G and H and Priv.I in a precondition]
 a.ads:2:22: warning: no procedure exists that can initialize abstract state "A.State_A"
 a.ads:5:19: info: initialization of "X" proved
-Generated contracts for f_5
+Generated contracts for A.Priv.F_5
    Global =>
       Input =>
          Priv.I
    Refined_Global =>
       Input =>
          Priv.I
-Generated contracts for f_6
+Generated contracts for A.Priv.F_6
    Global =>
       Input =>
          G
@@ -65,4 +65,4 @@ Generated contracts for f_6
          G
          A.State_A
          Priv.I
-Generated contracts for priv
+Generated contracts for A.Priv

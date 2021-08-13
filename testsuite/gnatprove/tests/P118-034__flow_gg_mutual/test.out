@@ -1,11 +1,11 @@
-Generated contracts for terminal_a
+Generated contracts for A.Terminal_A
    Global =>
       In_Out =>
          A.State_A
    Refined_Global =>
       Output =>
          Flag_A_0
-Generated contracts for do_a_b
+Generated contracts for A.Do_A_B
    Global =>
       In_Out =>
          A.State_A
@@ -15,7 +15,7 @@ Generated contracts for do_a_b
          B.State_B
       Output =>
          Flag_A_1
-Generated contracts for do_a_c
+Generated contracts for A.Do_A_C
    Global =>
       In_Out =>
          A.State_A
@@ -25,56 +25,11 @@ Generated contracts for do_a_c
          C.State_C
       Output =>
          Flag_A_2
-Generated contracts for do_a_b_a
+Generated contracts for A.Do_A_B_A
    Global =>
       In_Out =>
          A.State_A
          B.State_B
-   Refined_Global =>
-      In_Out =>
-         Flag_A_0
-         Flag_A_1
-         Flag_A_2
-         Flag_A_3
-         Flag_A_4
-         Flag_A_5
-         Flag_A_6
-         Flag_A_7
-         B.State_B
-Generated contracts for do_a_b_c
-   Global =>
-      In_Out =>
-         A.State_A
-         B.State_B
-         C.State_C
-   Refined_Global =>
-      In_Out =>
-         B.State_B
-         C.State_C
-      Output =>
-         Flag_A_4
-Generated contracts for do_a_c_a
-   Global =>
-      In_Out =>
-         A.State_A
-         C.State_C
-   Refined_Global =>
-      In_Out =>
-         Flag_A_0
-         Flag_A_1
-         Flag_A_2
-         Flag_A_3
-         Flag_A_4
-         Flag_A_5
-         Flag_A_6
-         Flag_A_7
-         C.State_C
-Generated contracts for do_a_b_c_a
-   Global =>
-      In_Out =>
-         A.State_A
-         B.State_B
-         C.State_C
    Refined_Global =>
       In_Out =>
          Flag_A_0
@@ -86,8 +41,35 @@ Generated contracts for do_a_b_c_a
          Flag_A_6
          Flag_A_7
          B.State_B
+Generated contracts for A.Do_A_B_C
+   Global =>
+      In_Out =>
+         A.State_A
+         B.State_B
          C.State_C
-Generated contracts for do_a_b_c_b_a
+   Refined_Global =>
+      In_Out =>
+         B.State_B
+         C.State_C
+      Output =>
+         Flag_A_4
+Generated contracts for A.Do_A_C_A
+   Global =>
+      In_Out =>
+         A.State_A
+         C.State_C
+   Refined_Global =>
+      In_Out =>
+         Flag_A_0
+         Flag_A_1
+         Flag_A_2
+         Flag_A_3
+         Flag_A_4
+         Flag_A_5
+         Flag_A_6
+         Flag_A_7
+         C.State_C
+Generated contracts for A.Do_A_B_C_A
    Global =>
       In_Out =>
          A.State_A
@@ -105,17 +87,35 @@ Generated contracts for do_a_b_c_b_a
          Flag_A_7
          B.State_B
          C.State_C
-Generated contracts for a
+Generated contracts for A.Do_A_B_C_B_A
+   Global =>
+      In_Out =>
+         A.State_A
+         B.State_B
+         C.State_C
+   Refined_Global =>
+      In_Out =>
+         Flag_A_0
+         Flag_A_1
+         Flag_A_2
+         Flag_A_3
+         Flag_A_4
+         Flag_A_5
+         Flag_A_6
+         Flag_A_7
+         B.State_B
+         C.State_C
+Generated contracts for A
    Initializes =>
       A.State_A
-Generated contracts for terminal_b
+Generated contracts for B.Terminal_B
    Global =>
       In_Out =>
          B.State_B
    Refined_Global =>
       Output =>
          Flag_B_0
-Generated contracts for do_b_a
+Generated contracts for B.Do_B_A
    Global =>
       In_Out =>
          A.State_A
@@ -125,7 +125,7 @@ Generated contracts for do_b_a
          A.State_A
       Output =>
          Flag_B_1
-Generated contracts for do_b_c
+Generated contracts for B.Do_B_C
    Global =>
       In_Out =>
          B.State_B
@@ -135,7 +135,7 @@ Generated contracts for do_b_c
          C.State_C
       Output =>
          Flag_B_2
-Generated contracts for do_b_c_a
+Generated contracts for B.Do_B_C_A
    Global =>
       In_Out =>
          A.State_A
@@ -147,7 +147,7 @@ Generated contracts for do_b_c_a
          C.State_C
       Output =>
          Flag_B_3
-Generated contracts for do_b_c_b_a
+Generated contracts for B.Do_B_C_B_A
    Global =>
       In_Out =>
          A.State_A
@@ -162,17 +162,17 @@ Generated contracts for do_b_c_b_a
          Flag_B_3
          Flag_B_4
          C.State_C
-Generated contracts for b
+Generated contracts for B
    Initializes =>
       B.State_B
-Generated contracts for terminal_c
+Generated contracts for C.Terminal_C
    Global =>
       In_Out =>
          C.State_C
    Refined_Global =>
       Output =>
          Flag_C_0
-Generated contracts for do_c_a
+Generated contracts for C.Do_C_A
    Global =>
       In_Out =>
          A.State_A
@@ -182,7 +182,7 @@ Generated contracts for do_c_a
          A.State_A
       Output =>
          Flag_C_1
-Generated contracts for do_c_b_a
+Generated contracts for C.Do_C_B_A
    Global =>
       In_Out =>
          A.State_A
@@ -194,6 +194,6 @@ Generated contracts for do_c_b_a
          B.State_B
       Output =>
          Flag_C_2
-Generated contracts for c
+Generated contracts for C
    Initializes =>
       C.State_C

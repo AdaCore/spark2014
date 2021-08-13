@@ -1,4 +1,4 @@
-Generated contracts for test_01
+Generated contracts for A.Test_01
    Global =>
       Input =>
          A.State
@@ -10,7 +10,7 @@ Generated contracts for test_01
          Sensor
       In_Out =>
          Actuator
-Generated contracts for test_02
+Generated contracts for A.Test_02
    Global =>
       In_Out =>
          A.Ext_State
@@ -19,7 +19,7 @@ Generated contracts for test_02
          Sensor
       Output =>
          Actuator
-Generated contracts for a
+Generated contracts for A
    Initializes =>
       A.Ext_State
       A.State
@@ -29,27 +29,27 @@ a.adb:14:04: high: object is unsuitable for aliasing via address clause [possibl
 a.adb:17:11: warning: indirect writes to "Actuator" through a potential alias are ignored
 a.adb:17:11: warning: consider annotating "Actuator" with Async_Writers
 a.adb:17:11: warning: writing to "Actuator" is assumed to have no effects on other non-volatile objects
-Generated contracts for p_read_state
+Generated contracts for B.Priv.P_Read_State
    Global =>
       Input =>
          Priv.State
    Refined_Global =>
       Input =>
          Flag_3
-Generated contracts for p_read_atomic_state
+Generated contracts for B.Priv.P_Read_Atomic_State
    Global =>
       In_Out =>
          Priv.Atomic_State
    Refined_Global =>
       In_Out =>
          Flag_4
-Generated contracts for priv
+Generated contracts for B.Priv
    Initializes =>
       Priv.Atomic_State
 b-priv.ads:2:24: warning: no procedure exists that can initialize abstract state "Priv.State" constituent of "B.State"
 b-priv.ads:6:28: info: initialization of "X" proved
 b-priv.ads:7:35: info: initialization of "X" proved
-Generated contracts for read_state
+Generated contracts for B.Read_State
    Global =>
       Input =>
          B.State
@@ -57,7 +57,7 @@ Generated contracts for read_state
       Input =>
          Priv.State
          Flag_1
-Generated contracts for read_atomic_state
+Generated contracts for B.Read_Atomic_State
    Global =>
       In_Out =>
          B.Atomic_State
@@ -66,7 +66,7 @@ Generated contracts for read_atomic_state
          Flag_2
       In_Out =>
          Priv.Atomic_State
-Generated contracts for b
+Generated contracts for B
    Initializes =>
       B.Atomic_State
 b.ads:2:23: warning: no procedure exists that can initialize abstract state "B.State"
