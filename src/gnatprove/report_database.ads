@@ -40,6 +40,11 @@ package Report_Database is
       Proof_Only,       --  Only proof was performed on the unit
       Flow_And_Proof);  --  Flow analysis and proof were performed on the unit
 
+   type SPARK_Mode_Status is
+     (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK
+      Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK
+      Not_In_SPARK);      --  Not in SPARK
+
    type Suppressed_Warning is record
       Reason : Unbounded_String;
       File   : Unbounded_String;
@@ -62,7 +67,7 @@ package Report_Database is
 
    --  Record of results obtained for a given subprogram or package
    type Stat_Rec is record
-      SPARK           : Boolean;            --  In SPARK or not
+      SPARK           : SPARK_Mode_Status;  --  SPARK On, only Spec, or Off
       Analysis        : Analysis_Status;    --  Status of analysis performed
       Suppr_Msgs      : Warning_Lists.List; --  List of suppressed messages
       Pragma_Assumes  : Pragma_Assume_Lists.List; -- List of pragma Assumes
@@ -142,7 +147,7 @@ package Report_Database is
    procedure Add_SPARK_Status
      (Unit         : Unit_Type;
       Subp         : Subp_Type;
-      SPARK_Status : Boolean;
+      SPARK_Status : SPARK_Mode_Status;
       Analysis     : Analysis_Status);
    --  Register the SPARK status as well as the level of analysis performed
    --  for the given unit.

@@ -38,7 +38,7 @@ package body Report_Database is
         "="             => "=");
 
    Default_Stat : constant Stat_Rec :=
-     Stat_Rec'(SPARK           => False,
+     Stat_Rec'(SPARK           => Not_In_SPARK,
                Analysis        => No_Analysis,
                Suppr_Msgs      => Warning_Lists.Empty_List,
                Pragma_Assumes  => Pragma_Assume_Lists.Empty_List,
@@ -215,7 +215,7 @@ package body Report_Database is
    procedure Add_SPARK_Status
      (Unit         : Unit_Type;
       Subp         : Subp_Type;
-      SPARK_Status : Boolean;
+      SPARK_Status : SPARK_Mode_Status;
       Analysis     : Analysis_Status) is
 
       procedure Process (Stat : in out Stat_Rec);
@@ -438,7 +438,7 @@ package body Report_Database is
       procedure Update (Subp : Subp_Type; Stat : Stat_Rec) is
          pragma Unreferenced (Subp);
       begin
-         if Stat.SPARK then
+         if Stat.SPARK = All_In_SPARK then
             Count := Count + 1;
          end if;
       end Update;

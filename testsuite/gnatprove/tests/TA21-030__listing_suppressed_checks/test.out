@@ -27,7 +27,7 @@ Total                             7         .          .     5 (71%)     2 (29%)
 
 max steps used for successful proof: 1
 
-Analyzed 5 units
+Analyzed 7 units
 in unit main, 1 subprograms and packages out of 1 analyzed
   Main at main.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Main depends on
@@ -57,12 +57,18 @@ absence of run-time errors of P.Annotate_Intentional depends on
     p.adb:30:7
 effects on parameters and Global variables of P.Assume_Natural fully established
 absence of run-time errors of P.Assume_Natural fully established
-  P.Inner at p.adb:4 skipped
-  P.Inner.Do_Nothing at p.adb:5 skipped
+  P.Inner at p.adb:4 skipped; body is SPARK_Mode => Off
+  P.Inner.Do_Nothing at p.adb:5 skipped; body is SPARK_Mode => Off
 in unit q, 0 subprograms and packages out of 1 analyzed
-  Q at q.adb:1 skipped
+  Q at q.adb:1 skipped; SPARK_Mode => Off
 in unit q2, 0 subprograms and packages out of 1 analyzed
-  Q2 at q2.adb:1 skipped
+  Q2 at q2.adb:1 skipped; SPARK_Mode => Off
 in unit q3, 0 subprograms and packages out of 1 analyzed
-  Q3 at q3.adb:1 skipped
+  Q3 at q3.adb:1 skipped; SPARK_Mode => Off
+in unit r, 1 subprograms and packages out of 2 analyzed
+  R at r.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+  R.File_Type at r.ads:7 skipped; SPARK_Mode => Off
+in unit r-child, 1 subprograms and packages out of 2 analyzed
+  R.Child at r-child.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+  R.Child.T1 at r-child.ads:2 skipped; SPARK_Mode => Off
 

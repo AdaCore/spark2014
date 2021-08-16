@@ -694,6 +694,12 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
+      function Get_SPARK_Status (Status : String) return SPARK_Mode_Status
+      is (if Status = "all" then All_In_SPARK
+          elsif Status = "spec" then Spec_Only_In_SPARK
+          else Not_In_SPARK);
+      --  Returns the SPARK Mode given the "spark" entry string
+
       Dict        : constant JSON_Value := Read_File_Into_JSON (Fn);
       Basename    : constant String := Ada.Directories.Base_Name (Fn);
       Unit        : constant Unit_Type := Mk_Unit (Basename);
@@ -719,21 +725,21 @@ procedure SPARK_Report is
    begin
       for Index in 1 .. Length (Entries) loop
          declare
-            Result   : constant JSON_Value := Get (Entries, Index);
-            In_SPARK : constant Boolean :=
-              Get (Get (Result, "spark")) = "all";
+            Result       : constant JSON_Value := Get (Entries, Index);
+            SPARK_Status : constant SPARK_Mode_Status :=
+              Get_SPARK_Status (Get (Result, "spark"));
          begin
             Add_SPARK_Status
               (Unit         => Unit,
                Subp         => From_JSON (Result),
-               SPARK_Status => In_SPARK,
+               SPARK_Status => SPARK_Status,
                Analysis     => Analysis);
 
             --  If at least one subprogram or package was analyzed (either
             --  flow analysis or proof), then record that the analysis was
             --  effective.
 
-            if In_SPARK and Analysis /= No_Analysis then
+            if SPARK_Status = All_In_SPARK and Analysis /= No_Analysis then
                No_Analysis_Done := False;
             end if;
          end;
@@ -829,7 +835,7 @@ procedure SPARK_Report is
                  "  " & Subp_Name (Subp) & " at " &
                    To_String (Subp_Sloc (Subp)));
 
-            if Stat.SPARK then
+            if Stat.SPARK = All_In_SPARK then
                if Stat.Analysis = No_Analysis then
                   Put_Line (Handle, " not analyzed");
                else
@@ -905,7 +911,12 @@ procedure SPARK_Report is
                end if;
 
             else
-               Put_Line (Handle, " skipped");
+               Put (Handle, " skipped; ");
+               if Stat.SPARK = Not_In_SPARK then
+                  Put_Line (Handle, "SPARK_Mode => Off");
+               else
+                  Put_Line (Handle, "body is SPARK_Mode => Off");
+               end if;
             end if;
          end For_Each_Subp;
 
