@@ -67,62 +67,52 @@ a-strbou.ads:1192:50: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-strbou.ads:1294:46: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
 a-strbou.ads:1295:29: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
 a-strbou.ads:1296:65: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1297:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:1298:38: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1299:14: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1322:37: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1323:14: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1426:46: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1427:29: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1428:65: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1429:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:1430:38: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1431:14: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1451:37: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1452:14: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1545:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1547:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:1548:52: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1565:51: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1659:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1661:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:1662:52: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1678:51: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1772:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1774:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:1775:49: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1800:48: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1858:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1860:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:1861:49: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:1886:48: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2099:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2128:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2154:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2185:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2212:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2248:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2273:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2310:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2344:41: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2344:63: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2357:65: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2382:39: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2382:60: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2384:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2385:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2385:56: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2394:27: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2394:48: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2416:62: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2418:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2419:60: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2428:50: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2461:61: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2468:25: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
-a-strbou.ads:2475:31: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.ads:6
-a-strbou.ads:2475:31: info: predicate check proved (CVC4: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
-test.ads:6:04: warning: in instantiation at a-strbou.ads:2471
+a-strbou.ads:1311:46: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1312:29: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1313:65: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1323:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1325:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:1326:52: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1343:51: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1437:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1439:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:1440:52: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1456:51: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1550:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1552:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:1553:49: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1578:48: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1636:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1638:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:1639:49: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1664:48: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1793:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:1822:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1848:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:1879:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1906:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:1942:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:1967:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2004:18: info: overflow check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:2038:41: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:2038:63: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2051:65: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2076:39: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:2076:60: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2078:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2079:34: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:2079:56: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2088:27: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:2088:48: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2110:62: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2112:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2113:60: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2122:50: info: division check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2155:61: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:2162:25: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:6
+a-strbou.ads:2169:31: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.ads:6
+a-strbou.ads:2169:31: info: predicate check proved (CVC4: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
+test.ads:6:04: warning: in instantiation at a-strbou.ads:2165
 test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 test.ads:12:04: info: function contract not available for proof ("<=" might not return)
 test.ads:12:04: info: function contract not available for proof ("<=" might not return)
