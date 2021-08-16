@@ -33,4 +33,5 @@ Round-Nearest-Even (RNE) mode, where a real result is rounded to the nearest
 floating point value, and ties are resolved to the floating-point with a zero
 in the last place. This mode of rounding (the default in GNAT) should be forced
 if needed on the hardware to be able to rely on the results of GNATprove
-regarding floating point arithmetic.
+regarding floating point arithmetic (e.g. when using SSE arithmetic, the
+MXCSR register should specify RNE mode, which it does by default).
