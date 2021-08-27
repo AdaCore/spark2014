@@ -7,7 +7,7 @@ import os.path
 import shutil
 import subprocess
 
-descr = """Compute results from json files for provers"""
+descr = """Compute testsuite-like results from json files for provers"""
 
 all_provers = ["cvc4", "altergo", "z3"]
 

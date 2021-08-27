@@ -214,3 +214,4 @@ benchmark:
 	testsuite/gnatprove/bench/create_benchmarks.py --testsuite-dir=testsuite/gnatprove --target-dir=$(BENCHDIR) --testlist=testsuite/gnatprove/MANIFEST.bench
 	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHDIR)/bench
 	testsuite/gnatprove/bench/process_results.py $(BENCHDIR)/bench $(RESULTSDIR) --testsuite-dir=testsuite/gnatprove
+	testsuite/gnatprove/bench/compute_stats.py $(BENCHDIR)/bench $(RESULTSDIR)
