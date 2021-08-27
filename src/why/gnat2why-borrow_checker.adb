@@ -5147,9 +5147,12 @@ package body Gnat2Why.Borrow_Checker is
             end if;
       end case;
 
-      --  Do not update permission environment when handling calls
+      --  Do not update permission environment when handling calls, unless this
+      --  is call to an instance of Unchecked_Deallocation for which Mode=Free.
 
-      if Inside_Procedure_Call then
+      if Inside_Procedure_Call
+        and then Mode /= Free
+      then
          return;
       end if;
 
@@ -5160,12 +5163,19 @@ package body Gnat2Why.Borrow_Checker is
          when Read =>
             null;
 
-         --  Actual parameter of call to instance of Unchecked_Deallocation
-         --  needs no permission update, this is taken care of automatically
-         --  when returning from the call as it is an IN OUT parameter.
-
          when Free =>
-            null;
+            --  Set permission RW for the path and its extensions
+
+            declare
+               Tree : constant Perm_Tree_Access := Get_Perm_Tree (Expr);
+            begin
+               Tree.all.Tree.Permission := Read_Write;
+               Set_Perm_Extensions (Tree, Read_Write, Expl => Loc);
+
+               --  Normalize the permission tree
+
+               Set_Perm_Prefixes_Assign (Expr);
+            end;
 
          when Move =>
 
