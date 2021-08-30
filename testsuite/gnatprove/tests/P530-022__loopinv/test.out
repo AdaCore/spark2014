@@ -60,7 +60,7 @@ x86.adb:614:07: info: initialization of "Retval" proved
 x86.adb:626:07: info: initialization of "Retval" proved
 x86.adb:644:07: info: initialization of "Mem" proved
 x86.adb:660:17: info: postcondition proved (CVC4: 1 VC; altergo: 7 VC)
-x86.adb:682:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
+x86.adb:684:23: medium: postcondition might fail, cannot prove ReadMem64(RDI_Start+(I*8)) = RAX
 x86.adb:689:31: info: assertion proved (CVC4: 2 VC)
 x86.adb:691:16: info: precondition proved (CVC4: 20 VC; Trivial: 2 VC; altergo: 16 VC)
 x86.adb:693:36: info: loop invariant initialization proved (CVC4: 8 VC; Trivial: 1 VC)
