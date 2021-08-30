@@ -121,7 +121,7 @@ class Altergo(Prover):
             elif ae_status == "Timeout":
                 status = "timeout"
             elif ae_status == "I don't know":
-                status = "unkown"
+                status = "unknown"
             else:
                 raise ValueError
 
