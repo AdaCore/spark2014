@@ -67,3 +67,22 @@ This directive replaces the default timeout of 300s (5 minutes) for this test.
 Tests with the prefix `ug__` are part of the special SPARK UG testsuite and
 don't interpret test.yaml or test.py files. They run a fixed `gnatprove`
 command. See the `UGTestDriver` in `run-tests` for details.
+
+
+Benchmarking
+============
+
+A separate testsuite called "sparkbench" is run for the tests listed in
+`MANIFEST.bench`. The scripts for this testsuite are in the `bench`
+subdirectory. There is also a `bench` target in the main Makefile. The scripts
+generate, for each prover, all VCs for each test, then run each prover on all
+of its VCs.
+For each test, the file `bench.yaml` constitutes the baseline for this test.
+The file contains entries of the form:
+```
+prover_name: percentage
+```
+The test is considered passed if for each prover, the actual percentage of
+proved VCs for this test is at least as high as the percentage in this file. If
+no percentage is given, or the `bench.yaml` file is absent, 100% is assumed to
+be the baseline.

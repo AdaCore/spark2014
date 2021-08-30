@@ -62,7 +62,7 @@ class Stats:
 
     def print_stats(self, f):
         f.write(str(self.status_count) + "\n")
-        f.write("Time/Steps needed to prove x % of all VCS:\n")
+        f.write("Time/Steps needed to prove x % of all proved VCS:\n")
         f.write(str(self.get_threshold_list(self.proved_entries_time)) + "\n")
         f.write(str(self.get_threshold_list(self.proved_entries_steps)) + "\n")
 
