@@ -184,7 +184,7 @@ S'Max_Alignment_For_Allocation 	      No	             Restricted access types
 S'Max_Size_In_Storage_Elements 	      No		     Restricted access types
 S'Min				      Yes
 S'Mod				      Yes
-S'Model				      Yes
+S'Model				      Yes                    Only supported with static attribute expressions
 S'Model_Emin			      Yes
 S'Model_Epsilon			      Yes
 S'Model_Mantissa		      Yes
