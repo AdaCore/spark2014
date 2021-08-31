@@ -250,6 +250,12 @@ than T'Base'Last. If this is the case, then the type T is not in |SPARK|.
 specified in the ``real_range_specification`` of an
 ``ordinary_fixed_point_definition`` define a null range.]
 
+Real types
+~~~~~~~~~~
+
+Non-static expressions of type *root_real* are not supported [because the
+accuracy of their run-time evaluation depends on the implementation].
+
 Array Types
 -----------
 
