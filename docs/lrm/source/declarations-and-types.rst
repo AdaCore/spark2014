@@ -649,7 +649,7 @@ and identify a corresponding *observer*:
 
 Such an operation is called an *observing operation*.
 
-In the region of program text beween the point where a name denoting an
+In the region of program text between the point where a name denoting an
 object is observed and the end of the scope of the observer, the
 ownership state of the name is Observed. While a name that denotes an
 object is in the Observed state it provides a constant view
@@ -694,7 +694,7 @@ Such an operation is called a *borrowing operation*.
 The *borrowed name* of the source of a borrow operation is the smallest
 name that is borrowed in the borrow operation.
 
-In the region of program text beween the point where a name denoting an
+In the region of program text between the point where a name denoting an
 object is borrowed and the end of the scope of the borrower, the
 ownership state of the name is Borrowed.
 
