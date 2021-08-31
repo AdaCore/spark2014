@@ -1,14 +1,9 @@
-main.adb:7:29: error: attribute "Exponent" is not allowed in SPARK
-main.adb:7:29: error: violation of pragma SPARK_Mode at test.adc:1
-main.adb:10:27: error: attribute "Compose" is not allowed in SPARK
-main.adb:10:27: error: violation of pragma SPARK_Mode at test.adc:1
-main.adb:13:27: error: attribute "Fraction" is not allowed in SPARK
-main.adb:13:27: error: violation of pragma SPARK_Mode at test.adc:1
+main.adb:7:34: error: non-static attribute "Exponent" is not yet supported
+main.adb:10:32: error: non-static attribute "Compose" is not yet supported
+main.adb:13:32: error: non-static attribute "Fraction" is not yet supported
 main.adb:16:32: error: non-static attribute "Scaling" is not yet supported
 main.adb:19:32: error: non-static attribute "Unbiased_Rounding" is not yet supported
-main.adb:22:27: error: attribute "Machine_Rounding" is not allowed in SPARK
-main.adb:22:27: error: violation of pragma SPARK_Mode at test.adc:1
+main.adb:22:32: error: non-static attribute "Machine_Rounding" is not yet supported
 main.adb:25:32: error: non-static attribute "Adjacent" is not yet supported
-main.adb:28:27: error: attribute "Leading_Part" is not allowed in SPARK
-main.adb:28:27: error: violation of pragma SPARK_Mode at test.adc:1
+main.adb:28:32: error: non-static attribute "Leading_Part" is not yet supported
 gnatprove: error during flow analysis and proof

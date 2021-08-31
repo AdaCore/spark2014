@@ -3009,13 +3009,17 @@ package body SPARK_Definition is
          when Attribute_Adjacent
             | Attribute_Aft
             | Attribute_Caller
+            | Attribute_Compose
             | Attribute_Definite
             | Attribute_Delta
             | Attribute_Denorm
             | Attribute_Digits
+            | Attribute_Exponent
             | Attribute_First_Valid
             | Attribute_Fore
+            | Attribute_Fraction
             | Attribute_Last_Valid
+            | Attribute_Leading_Part
             | Attribute_Machine
             | Attribute_Machine_Emax
             | Attribute_Machine_Emin
@@ -3023,6 +3027,7 @@ package body SPARK_Definition is
             | Attribute_Machine_Overflows
             | Attribute_Machine_Radix
             | Attribute_Machine_Rounds
+            | Attribute_Machine_Rounding
             | Attribute_Model
             | Attribute_Model_Emin
             | Attribute_Model_Epsilon
