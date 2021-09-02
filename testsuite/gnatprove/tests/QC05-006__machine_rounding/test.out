@@ -1,3 +1,2 @@
-test.adb:3:17: error: attribute "Machine_Rounding" is not allowed in SPARK
-test.adb:3:17: error: violation of pragma SPARK_Mode at test.adc:1
+test.adb:3:22: error: non-static attribute "Machine_Rounding" is not yet supported
 gnatprove: error during flow analysis and proof
