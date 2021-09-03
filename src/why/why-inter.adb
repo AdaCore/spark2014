@@ -968,25 +968,6 @@ package body Why.Inter is
        Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Left))) and then
        Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Right))));
 
-   ---------------------
-   -- Need_Conversion --
-   ---------------------
-
-   function Need_Conversion (Expr : W_Expr_Id) return Boolean is
-   begin
-      if Get_Kind (+Expr) = W_Identifier then
-         declare
-            Expr2 : constant W_Identifier_Id := W_Identifier_Id (Expr);
-            Name  : constant W_Name_Id := Get_Name (Expr2);
-         begin
-            return Img (Get_Symb (Name)) /= To_String (WNE_Null_Pointer);
-         end;
-
-      else
-         return True;
-      end if;
-   end Need_Conversion;
-
    ---------
    -- LCA --
    ---------
