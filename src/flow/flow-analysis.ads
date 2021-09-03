@@ -83,31 +83,6 @@ package Flow.Analysis is
    procedure Find_Stable_Conditions (FA : in out Flow_Analysis_Graphs);
    --  Find stable loop conditions
 
-   procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
-   --  This procedure looks for hidden state variables and missing Part_Of
-   --  indicators. Also detects hidden state that has a Part_Of indicator but
-   --  is not mentioned in any refinement.
-   --
-   --  In particular:
-   --
-   --  1. It issues a medium check for Part_Of constituents that are not listed
-   --     in the refinement (when there is one).
-   --
-   --  2. It issues a medium check for hidden states in the package body that
-   --     are not constituents of any state abstraction.
-   --
-   --  3. It emits an error if there is any missing Part_Of indicator for
-   --     constants with variable input (SPARK RM 7.2.6(2-3)) that are:
-   --     * declared immediately within the private part of a given package;
-   --     * part of the visible state of a package that is declared immediately
-   --       within the private part of a given package;
-   --     * part of the visible state of a private child.
-   --
-   --  Note that the front-end enforces Part_Of on hidden state in all cases
-   --  except for constants, since it cannot tell between a constant with
-   --  variable input (which needs Part_Of) and one without (which does not)
-   --  and this is why we have this check here.
-
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Package;
@@ -162,12 +137,6 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Check_Consistent_AS_For_Private_Child
-     (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind = Kind_Package;
-   --  Check if the refinement of the parent package contains the state of the
-   --  private child with Part_Of aspect.
-
    procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs);
    --  Check each procedure call for aliasing
    --
@@ -200,6 +169,22 @@ package Flow.Analysis is
    with Pre => FA.Kind = Kind_Subprogram;
    --  Check if the ghost procedure has any non-ghost (global) outputs. This is
    --  to enforce SPARK RM 6.9(20).
+
+   procedure Check_Hidden_State (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind = Kind_Package;
+   --  Check state hidden in a package for restrictions that cannot be enforced
+   --  in the frontend, i.e.:
+   --
+   --  * examine constants (because frontend can't determine whether they have
+   --    variable inputs),
+   --
+   --  * re-examine hidden variables and states that are implicitly lifted to
+   --    singleton abstract states (because frontend only deals with explicitly
+   --    annotated code),
+   --
+   --  * check consistency between the Part_Of in a child unit and
+   --    Refined_State in its parent unit (because frontend can see only one
+   --    unit at a time).
 
    procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id)
    with Pre => Nkind (GNAT_Root) = N_Compilation_Unit;

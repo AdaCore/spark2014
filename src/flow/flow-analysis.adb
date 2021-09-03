@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;                       use Atree;
-with Elists;                      use Elists;
 with Lib;                         use Lib;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
@@ -3169,273 +3168,6 @@ package body Flow.Analysis is
       end if;
    end Find_Illegal_Reads_Of_Proof_Ins;
 
-   ---------------------------------
-   -- Find_Hidden_Unexposed_State --
-   ---------------------------------
-
-   procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs) is
-      Pkg_Spec : constant Node_Id := Package_Specification (FA.Spec_Entity);
-      Pkg_Body : constant Node_Id := Package_Body (FA.Spec_Entity);
-
-      procedure Check_Hidden_State_Variables_And_Missing_Part_Of
-        (E       : Entity_Id;
-         Part_Of : Boolean)
-        with Pre => Ekind (E) in E_Constant | E_Variable
-                    and not Is_Internal (E)
-                    and not Is_Part_Of_Concurrent_Object (E);
-      --  Emits a message if:
-      --  * a state variable is not mentioned as a constituent of an abstract
-      --    state when it should be;
-      --  * a state variable is missing the Part_Of indicator which is required
-      --    by SPARK RM 7.2.6(2-3). This check is guarded by the Part_Of flag.
-
-      procedure Traverse_Declarations (L       : List_Id;
-                                       Part_Of : Boolean := False);
-      --  Traverse declarations in L.
-      --  Part_Of is set to True when we are in the private part of a package
-      --  or in the visible part of a private child. We use this parameter to
-      --  remember where we come from in the traveral and pass it to
-      --  Check_Hidden_State_Variables_And_Missing_Part_Of to only emit a check
-      --  about a missing Part_Of (SPARK RM 7.2.6(2-3)).
-
-      ------------------------------------------------------
-      -- Check_Hidden_State_Variables_And_Missing_Part_Of --
-      ------------------------------------------------------
-
-      procedure Check_Hidden_State_Variables_And_Missing_Part_Of
-        (E       : Entity_Id;
-         Part_Of : Boolean)
-      is
-      begin
-         if Is_Constituent (E) then
-
-            --  Detect state variable that is a Part_Of some state, but not
-            --  listed in its refinement.
-
-            declare
-               State : constant Entity_Id := Encapsulating_State (E);
-
-            begin
-               if Refinement_Exists (State)
-                 and then not Find_In_Refinement (State, E)
-               then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& needs to be listed in the refinement of &",
-                     N        => E,
-                     F1       => Direct_Mapping_Id (E),
-                     F2       => Direct_Mapping_Id (State),
-                     Tag      => Hidden_Unexposed_State,
-                     Severity => Medium_Check_Kind);
-               end if;
-            end;
-
-         else
-
-            --  Detect constants with variable inputs without Part_Of that do
-            --  require one (SPARK RM 7.2.6(2-3)) and emit a check.
-
-            if Part_Of
-              and then Ekind (E) = E_Constant
-            then
-               declare
-                  S : constant Node_Id := Scope (E);
-
-                  Msg : constant String :=
-                    (if Is_Child_Unit (S)
-                     then "visible part of the private child"
-                     else "private part of package");
-
-                  SRM_Ref : constant String :=
-                    (if Is_Child_Unit (S)
-                     then "7.2.6(3)"
-                     else "7.2.6(2)");
-
-               begin
-                  pragma Assert (if Is_Child_Unit (S)
-                                 then Is_Private_Descendant (S)
-                                 and then In_Visible_Declarations
-                                            (Enclosing_Declaration (E)));
-
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "indicator Part_Of is required in this "
-                                 & "context: & is declared in the "
-                                 & Msg & " &",
-                     SRM_Ref  => SRM_Ref,
-                     N        => E,
-                     Severity => Error_Kind,
-                     F1       => Direct_Mapping_Id (E),
-                     F2       => Direct_Mapping_Id (FA.Spec_Entity));
-               end;
-
-            --  Detect hidden state and emit a message
-
-            else
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "& needs to be a constituent " &
-                              "of some state abstraction",
-                  N        => E,
-                  F1       => Direct_Mapping_Id (E),
-                  Tag      => Hidden_Unexposed_State,
-                  Severity => Medium_Check_Kind);
-            end if;
-         end if;
-      end Check_Hidden_State_Variables_And_Missing_Part_Of;
-
-      ---------------------------
-      -- Traverse_Declarations --
-      ---------------------------
-
-      procedure Traverse_Declarations (L       : List_Id;
-                                       Part_Of : Boolean := False) is
-         N : Node_Id := First (L);
-      begin
-         while Present (N) loop
-            case Nkind (N) is
-               when N_Object_Declaration =>
-                  declare
-                     E : constant Entity_Id := Defining_Entity (N);
-
-                  begin
-                     if (Ekind (E) = E_Variable
-                         or else Is_Access_Variable (Etype (E))
-                         or else Has_Variable_Input (E))
-                       and then not Is_Internal (E)
-                       and then not Is_Part_Of_Concurrent_Object (E)
-                     then
-
-                        --  Detect which of the state variables are hidden or
-                        --  are missing a Part_Of indicator and emit a message.
-
-                        Check_Hidden_State_Variables_And_Missing_Part_Of
-                          (E, Part_Of);
-                     end if;
-                  end;
-
-               --  N is a nested package. If the relative part is in SPARK, we
-               --  recursively traverse its visible, private and body
-               --  declarations.
-
-               when N_Package_Declaration =>
-                  declare
-                     E        : constant Entity_Id := Defining_Entity (N);
-
-                     Pkg_Spec : constant Node_Id := Package_Specification (E);
-                     Pkg_Body : constant Node_Id := Package_Body (E);
-
-                  begin
-                     if Entity_Spec_In_SPARK (E) then
-
-                        --  Here we traverse the visible declarations of the
-                        --  nested package and we use the parameter Part_Of to
-                        --  remember if we were looking for missing Part_Of
-                        --  indicators.
-
-                        Traverse_Declarations
-                          (Visible_Declarations (Pkg_Spec), Part_Of);
-
-                        --  The following is for packages that have hidden
-                        --  states not exposed through an abstract state. The
-                        --  case where they have abstract states will be
-                        --  checked when analyzing the package itself.
-
-                        if No (Abstract_States (E))
-                          and then Private_Spec_In_SPARK (E)
-                        then
-                           Traverse_Declarations
-                             (Private_Declarations (Pkg_Spec));
-
-                           if Entity_Body_In_SPARK (E) then
-                              Traverse_Declarations (Declarations (Pkg_Body));
-                           end if;
-                        end if;
-                     end if;
-                  end;
-
-               when others =>
-                  null;
-            end case;
-
-            Next (N);
-         end loop;
-      end Traverse_Declarations;
-
-   --  Start of processing for Find_Hidden_Unexposed_State
-
-   begin
-      if Is_Child_Unit (FA.Spec_Entity)
-        and then Is_Private_Descendant (FA.Spec_Entity)
-      then
-         --  For a private child (or public descendant thereof) we enforce
-         --  SPARK RM 7.2.6(3) and therefore we traverse its visible
-         --  declarations setting the flag Part_Of to True. Note that whether
-         --  or not the child itself has abstract state does not influence
-         --  this because the Part_Of indicator could also denote a state
-         --  abstraction declared by a parent unit of the private unit or by
-         --  a public descendant of that parent unit.
-
-         --  Traverse locally-visibly-declared abstract state
-         Traverse_Declarations (Visible_Declarations (Pkg_Spec),
-                                Part_Of => True);
-
-         --  If the child unit does not declare an abstract state but any
-         --  ancestor of that child does, then we need to check if the child
-         --  contains any hidden state which is effectively part of the
-         --  ancestor's abstract state.
-
-         if No (Abstract_States (FA.Spec_Entity)) then
-
-            --  Search upwards through the Spec_Entity's scope and the scope of
-            --  its ancestors, until we find a declaration of abstract state or
-            --  run out of ancestry i.e. hitting "Standard_Standard".
-
-            declare
-               Ancestor_Id : Entity_Id := FA.Spec_Entity;
-            begin
-               loop
-                  Ancestor_Id := Scope (Ancestor_Id);
-
-                  if Ancestor_Id = Standard_Standard then
-                     exit;
-
-                  elsif Present (Abstract_States (Ancestor_Id)) then
-
-                     --  We must traverse the private and body part of the
-                     --  child to check state declared therein.
-
-                     Traverse_Declarations (Private_Declarations (Pkg_Spec));
-
-                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                        Traverse_Declarations (Declarations (Pkg_Body));
-                     end if;
-
-                     exit;
-                  end if;
-               end loop;
-            end;
-         end if;
-      else
-
-         if Present (Abstract_States (FA.Spec_Entity)) then
-
-            --  For a package with abstract states we enforce SPARK RM 7.2.6(2)
-            --  and therefore we traverse its private declarations setting the
-            --  flag Part_Of to True.
-
-            Traverse_Declarations (Private_Declarations (Pkg_Spec),
-                                   Part_Of => True);
-
-            --  We also detect hidden state in the body part
-
-            if Entity_Body_In_SPARK (FA.Spec_Entity) then
-               Traverse_Declarations (Declarations (Pkg_Body));
-            end if;
-         end if;
-      end if;
-   end Find_Hidden_Unexposed_State;
-
    -----------------------------------------
    -- Find_Impossible_To_Initialize_State --
    -----------------------------------------
@@ -4115,42 +3847,273 @@ package body Flow.Analysis is
       end if;
    end Check_Ghost_Procedure_Outputs;
 
-   -------------------------------------------
-   -- Check_Consistent_AS_For_Private_Child --
-   -------------------------------------------
+   ------------------------
+   -- Check_Hidden_State --
+   ------------------------
 
-   procedure Check_Consistent_AS_For_Private_Child
-     (FA : in out Flow_Analysis_Graphs)
-   is
-   begin
-      if Is_Child_Unit (FA.Spec_Entity)
-        and then Is_Private_Descendant (FA.Spec_Entity)
-      then
-         for Child_State of Iter (Abstract_States (FA.Spec_Entity)) loop
-            declare
-               Encapsulating : constant Entity_Id :=
-                 Encapsulating_State (Child_State);
+   procedure Check_Hidden_State (FA : in out Flow_Analysis_Graphs) is
 
-            begin
-               if Present (Encapsulating) then
-                  if Refinement_Exists (Encapsulating)
-                    and then not Find_In_Refinement (Encapsulating,
-                                                     Child_State)
+      procedure Examine_Own_Variable
+        (E       : Entity_Id;
+         Owner   : Entity_Id;
+         Visible : Boolean)
+      with Pre => Ekind (E) in E_Abstract_State | E_Constant | E_Variable
+                    and then Ekind (Owner) = E_Package;
+      --  Examine whether state variable E is legally belonging to Owner
+
+      procedure Examine_Declarations (L : List_Id; Visible : Boolean);
+      --  Examine objects from the declaration L, which are either visible
+      --  to outside of the current package or hidden in its private and
+      --  body parts.
+
+      --------------------------
+      -- Examine_Own_Variable --
+      --------------------------
+
+      procedure Examine_Own_Variable
+        (E       : Entity_Id;
+         Owner   : Entity_Id;
+         Visible : Boolean)
+      is
+         procedure Check_Enclosing_Package;
+         --  Check if E is a legal state variable of the enclosing package of
+         --  the Owner.
+
+         procedure Illegal_Constituent;
+         --  Complain about a state variable that should be a consituent
+
+         function Is_Private_State (Item : Entity_Id) return Boolean
+         with Pre => Ekind (Item) in E_Constant | E_Package;
+         --  Returns True if Item appears in the private part of the Owner
+
+         -----------------------------
+         -- Check_Enclosing_Package --
+         -----------------------------
+
+         procedure Check_Enclosing_Package is
+            Enclosing_Pkg : constant Entity_Id := Scope (Owner);
+
+         begin
+            if Ekind (Enclosing_Pkg) /= E_Package then
+               return;
+
+            elsif Enclosing_Pkg = Standard_Standard then
+               return;
+            end if;
+
+            Examine_Own_Variable
+              (E, Enclosing_Pkg,
+               Visible =>
+                 (if Is_Child_Unit (Owner)
                   then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "refinement of % shall mention %",
-                        Severity => Error_Kind,
-                        F1       => Direct_Mapping_Id (Encapsulating),
-                        F2       => Direct_Mapping_Id (Child_State),
-                        N        => Scope (Encapsulating),
-                        SRM_Ref  => "7.2.6(6)");
-                  end if;
+                    not Is_Private_Descendant (Owner)
+                  else
+                    List_Containing (Package_Spec (Owner)) =
+                      Visible_Declarations
+                        (Package_Specification (Enclosing_Pkg))));
+         end Check_Enclosing_Package;
+
+         -------------------------
+         -- Illegal_Constituent --
+         -------------------------
+
+         procedure Illegal_Constituent is
+         begin
+            --  If possible, we prefer to complain specifically about a missing
+            --  Part_Of. Frontend does this reliably for abstract states and
+            --  variables, so we only need to worry about constants.
+
+            if Ekind (E) = E_Constant and then Is_Private_State (E) then
+               declare
+                  Context : constant Entity_Id := Scope (E);
+                  Msg     : constant String :=
+                    (if Is_Child_Unit (Context)
+                     then "visible part of the private child"
+                     else "private part of package");
+                  SRM_Ref : constant String :=
+                    (if Is_Child_Unit (Context)
+                     then "7.2.6(3)"
+                     else "7.2.6(2)");
+               begin
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "indicator Part_Of is required in this " &
+                                 "context: & is declared in the " & Msg & " &",
+                     SRM_Ref  => SRM_Ref,
+                     N        => E,
+                     Severity => Error_Kind,
+                     F1       => Direct_Mapping_Id (E),
+                     F2       => Direct_Mapping_Id (Owner));
+               end;
+            else
+               --  ??? This is a legality and not a verification rule, so the
+               --  violation should be reported as an error and not as a check.
+
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "& needs to be a constituent " &
+                              "of some state abstraction",
+                  N        => E,
+                  F1       => Direct_Mapping_Id (E),
+                  Tag      => Hidden_Unexposed_State,
+                  Severity => Medium_Check_Kind);
+            end if;
+         end Illegal_Constituent;
+
+         ----------------------
+         -- Is_Private_State --
+         ----------------------
+
+         function Is_Private_State (Item : Entity_Id) return Boolean is
+            Context : constant Entity_Id := Scope (Item);
+
+            Context_Specification : constant Node_Id :=
+              Package_Specification (Context);
+
+         begin
+            --  We reclimb the scope hierarchy, just like when detecting the
+            --  owner of a state variable, but without the implicit conversion
+            --  of objects declared in package bodies to singleton abstract
+            --  states. This partly repeates the discovery of the Owner, but
+            --  it seems easier to have those two climbs separated.
+
+            if Context = Owner then
+               return List_Containing (Enclosing_Declaration (Item)) =
+                 Private_Declarations (Context_Specification)
+                   or else
+                (Is_Private_Descendant (Context)
+                 and then List_Containing (Enclosing_Declaration (Item)) =
+                           Visible_Declarations (Context_Specification));
+            else
+               if Is_Child_Unit (Item) then
+                  pragma Assert (not Is_Private_Descendant (Item));
+                  return Is_Private_State (Context);
+               else
+                  return List_Containing (Enclosing_Declaration (Item)) =
+                      Visible_Declarations (Context_Specification)
+                    and then Is_Private_State (Context);
                end if;
-            end;
+            end if;
+         end Is_Private_State;
+
+      --  Start of processing for Examine_Own_Variable
+
+      begin
+         --  Variable is exposed in the visible part of the package spec
+
+         if Visible then
+
+            --  Private child units must have their visible variables
+            --  annotated with a Part_Of that is consistent with the
+            --  corresponding Refined_State in the parent unit body, if any.
+
+            if Is_Child_Unit (Owner)
+              and then Is_Private_Descendant (Owner)
+            then
+               declare
+                  Parent_State : constant Entity_Id := Encapsulating_State (E);
+               begin
+                  if Present (Parent_State) then
+                     if Refinement_Exists (Parent_State)
+                       and then not Find_In_Refinement (Parent_State, E)
+                     then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "refinement of % shall mention %",
+                           Severity => Error_Kind,
+                           F1       => Direct_Mapping_Id (Parent_State),
+                           F2       => Direct_Mapping_Id (E),
+                           N        => Scope (Parent_State),
+                           SRM_Ref  => "7.2.6(6)");
+                     end if;
+                  else
+                     Illegal_Constituent;
+                  end if;
+               end;
+            else
+               Check_Enclosing_Package;
+            end if;
+
+         --  Otherwise the variable is hidden, either in the private part of
+         --  package spec or in the package body.
+
+         else
+            --  If the owner package explicitly declares an abstract state,
+            --  then the hidden variable must be explicitly a constituent.
+
+            if Present (Get_Pragma (Owner, Pragma_Abstract_State))
+              and then No (Encapsulating_State (E))
+            then
+               Illegal_Constituent;
+
+            --  Otherwise, keep checking because either some of the enclosing
+            --  packages might have an abstract state or it might be a private
+            --  child that requires us to check consistency between Part_Of and
+            --  Refined_State contracts.
+
+            else
+               Check_Enclosing_Package;
+            end if;
+         end if;
+      end Examine_Own_Variable;
+
+      --------------------------
+      -- Examine_Declarations --
+      --------------------------
+
+      procedure Examine_Declarations (L : List_Id; Visible : Boolean) is
+         N : Node_Id := First (L);
+      begin
+         while Present (N) loop
+            if Nkind (N) = N_Object_Declaration then
+               declare
+                  E : constant Entity_Id := Defining_Entity (N);
+               begin
+                  if Is_Internal (E) then
+                     null;
+
+                  elsif Ekind (E) = E_Variable
+                    or else Is_Access_Variable (Etype (E))
+                    or else Has_Variable_Input (E)
+                  then
+                     Examine_Own_Variable (E, FA.Spec_Entity, Visible);
+                  end if;
+               end;
+            end if;
+
+            Next (N);
+         end loop;
+      end Examine_Declarations;
+
+      --  Local variables
+
+      Pkg_Spec : constant Node_Id := Package_Specification (FA.Spec_Entity);
+      Pkg_Body : constant Node_Id := Package_Body (FA.Spec_Entity);
+
+   --  Start of processing for Check_Hidden_State
+
+   begin
+      --  Examine all state declared in the current package, i.e. its abstract
+      --  states and objects declared within the visible, private and body
+      --  declarations (while respecting the SPARK_Mode => Off boundary).
+
+      if Has_Non_Null_Abstract_State (FA.Spec_Entity) then
+         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+            Examine_Own_Variable (State, FA.Spec_Entity, Visible => True);
          end loop;
       end if;
-   end Check_Consistent_AS_For_Private_Child;
+
+      Examine_Declarations (Visible_Declarations (Pkg_Spec), Visible => True);
+
+      if Private_Spec_In_SPARK (FA.Spec_Entity) then
+         Examine_Declarations
+           (Private_Declarations (Pkg_Spec), Visible => False);
+
+         if Entity_Body_In_SPARK (FA.Spec_Entity) then
+            Examine_Declarations (Declarations (Pkg_Body), Visible => False);
+         end if;
+      end if;
+   end Check_Hidden_State;
 
    --------------------------------
    -- Check_Initializes_Contract --

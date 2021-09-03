@@ -4,5 +4,5 @@ is
    procedure Dummy;
    function F return Integer is (G);
 private
-   B : constant Integer := F;
+   B : constant Integer := F; -- needs Part_Of
 end;
