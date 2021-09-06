@@ -1,0 +1,34 @@
+main.adb:33:04: error: "B2" is not allowed in SPARK (due to duplicate value of a type with ownership)
+main.adb:33:04: error: violation of aspect SPARK_Mode at line 2
+main.adb:33:17: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:33:17: error: singleton choice required to prevent aliasing
+main.adb:33:17: error: violation of aspect SPARK_Mode at line 2
+main.adb:34:04: error: "B3" is not allowed in SPARK (due to duplicate value of a type with ownership)
+main.adb:34:04: error: violation of aspect SPARK_Mode at line 2
+main.adb:34:17: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:34:17: error: singleton choice required to prevent aliasing
+main.adb:34:17: error: violation of aspect SPARK_Mode at line 2
+main.adb:35:04: error: "B4" is not allowed in SPARK (due to duplicate value of a type with ownership)
+main.adb:35:04: error: violation of aspect SPARK_Mode at line 2
+main.adb:35:26: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:35:26: error: singleton choice required to prevent aliasing
+main.adb:35:26: error: violation of aspect SPARK_Mode at line 2
+main.adb:36:04: error: "B5" is not allowed in SPARK (due to duplicate value of a type with ownership)
+main.adb:36:04: error: violation of aspect SPARK_Mode at line 2
+main.adb:36:17: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:36:17: error: singleton choice required to prevent aliasing
+main.adb:36:17: error: violation of aspect SPARK_Mode at line 2
+main.adb:37:04: error: "B6" is not allowed in SPARK (due to duplicate value of a type with ownership)
+main.adb:37:04: error: violation of aspect SPARK_Mode at line 2
+main.adb:37:17: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:37:17: error: singleton choice required to prevent aliasing
+main.adb:37:17: error: violation of aspect SPARK_Mode at line 2
+main.adb:38:04: error: "B7" is not allowed in SPARK (due to duplicate value of a type with ownership)
+main.adb:38:04: error: violation of aspect SPARK_Mode at line 2
+main.adb:38:17: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:38:17: error: singleton choice required to prevent aliasing
+main.adb:38:17: error: violation of aspect SPARK_Mode at line 2
+main.adb:38:50: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:38:50: error: singleton choice required to prevent aliasing
+main.adb:38:50: error: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof

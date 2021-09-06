@@ -858,6 +858,7 @@ package body SPARK_Definition is
 
             when N_Aggregate
                | N_Component_Association
+               | N_Iterated_Component_Association
                | N_Delta_Aggregate
                | N_Extension_Aggregate
             =>
@@ -1058,10 +1059,88 @@ package body SPARK_Definition is
       ---------------------------------------
 
       procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id) is
+
+         function Can_Be_Duplicated (N : Node_Id) return Boolean;
+         --  Return True if the value N can be duplicated in an aggregate
+         --  without creating an alias.
+
+         -----------------------
+         -- Can_Be_Duplicated --
+         -----------------------
+
+         function Can_Be_Duplicated (N : Node_Id) return Boolean is
+         begin
+            --  If the type is not deep, then no aliases can occur
+
+            if not Is_Deep (Etype (N)) then
+               return True;
+            end if;
+
+            case Nkind (N) is
+
+               --  Null can always be safely duplicated
+
+               when N_Null =>
+                  return True;
+
+               --  Allocators are fine as long as the allocated value itself
+               --  can be duplicated.
+
+               when N_Allocator =>
+                  return Nkind (Expression (N)) /= N_Qualified_Expression
+                    or else Can_Be_Duplicated (Expression (N));
+
+               when N_Qualified_Expression =>
+                  return Can_Be_Duplicated (Expression (N));
+
+               --  Allocating function calls are fine, they necessarily return
+               --  new data-structures.
+
+               when N_Function_Call =>
+                  return Is_Allocating_Function (Get_Called_Entity (N));
+
+               --  Aggregates are safe if all their expressions can be
+               --  duplicated.
+
+               when N_Aggregate =>
+                  declare
+                     Assocs : constant List_Id := Component_Associations (N);
+                     Exprs  : constant List_Id := Expressions (N);
+                     Assoc  : Node_Id := Nlists.First (Assocs);
+                     Expr   : Node_Id := Nlists.First (Exprs);
+                  begin
+                     while Present (Assoc) loop
+                        if not Box_Present (Assoc)
+                          and then not Can_Be_Duplicated (Expression (Assoc))
+                        then
+                           return False;
+                        end if;
+                        Next (Assoc);
+                     end loop;
+
+                     while Present (Expr) loop
+                        if not Can_Be_Duplicated (Expr) then
+                           return False;
+                        end if;
+                        Next (Expr);
+                     end loop;
+
+                     return True;
+                  end;
+
+               --  Other expressions are not handled precisely yet
+
+               when others =>
+                  return False;
+            end case;
+         end Can_Be_Duplicated;
+
          Assocs       : constant List_Id :=
            Component_Associations (N);
          Assoc        : Node_Id := Nlists.First (Assocs);
          Choices      : List_Id;
+
+      --  Start of processing for Check_No_Deep_Duplicates_In_Assoc
 
       begin
          while Present (Assoc) loop
@@ -1071,9 +1150,8 @@ package body SPARK_Definition is
             --  in order to avoid aliasing.
 
             if not Box_Present (Assoc)
-              and then Is_Deep (Etype (Expression (Assoc)))
               and then not Is_Singleton_Choice (Choices)
-              and then Nkind (Expression (Assoc)) /= N_Null
+              and then not Can_Be_Duplicated (Expression (Assoc))
             then
                Mark_Violation
                  ("duplicate value of a type with ownership",
