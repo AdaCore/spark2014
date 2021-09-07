@@ -412,6 +412,9 @@ package VC_Kinds is
    VC_Annotation_Label : constant String := "vc:annotation";
    Model_VC_Post_Label : constant String := "model_vc_post";
    Branch_Id_Label     : constant String := "branch_id=";
+   RAC_Assume_Label    : constant String := "RAC:assume";
+   --  When a logical annotation is a conjunction and is checked during
+   --  RAC, conjuncts marked by this label are assumed to be true.
 
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
