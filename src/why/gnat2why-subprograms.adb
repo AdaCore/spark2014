@@ -2819,7 +2819,7 @@ package body Gnat2Why.Subprograms is
               (Domain   => EW_Prog,
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
-               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.Empty_Set,
                Location => Safe_First_Sloc (E),
                Def      => +Why_Body));
 
@@ -3075,7 +3075,7 @@ package body Gnat2Why.Subprograms is
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
                Location => Safe_First_Sloc (E),
-               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.Empty_Set,
                Post     => Post,
                Def      => +Why_Body));
 
@@ -3336,7 +3336,7 @@ package body Gnat2Why.Subprograms is
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
                Location => Safe_First_Sloc (E),
-               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.Empty_Set,
                Def      => +Why_Body));
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -4411,7 +4411,7 @@ package body Gnat2Why.Subprograms is
               (Domain   => EW_Prog,
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
-               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.Empty_Set,
                Location => Safe_First_Sloc (E),
                Post     => Post_As_Pred,
                Def      => +Prog));
@@ -4588,7 +4588,7 @@ package body Gnat2Why.Subprograms is
                   Name     => Def_Name,
                   Binders  => (1 => Unit_Param),
                   Location => Safe_First_Sloc (E),
-                  Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
+                  Labels   => Symbol_Sets.Empty_Set,
                   Post     => Post,
                   Def      => +Why_Body));
       end;

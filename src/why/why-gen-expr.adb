@@ -38,7 +38,6 @@ with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
 with GNATCOLL.Utils;                use GNATCOLL.Utils;
 with Sinput;                        use Sinput;
 with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
 with Urealp;                        use Urealp;
@@ -273,15 +272,6 @@ package body Why.Gen.Expr is
       end if;
       return Slc;
    end Compute_VC_Sloc;
-
-   -------------------
-   -- Cur_Subp_Sloc --
-   -------------------
-
-   function Cur_Subp_Sloc return Symbol is
-   begin
-      return NID (GP_Subp_Marker & Subp_Location (Current_Subp));
-   end Cur_Subp_Sloc;
 
    --------------
    -- Get_Type --
