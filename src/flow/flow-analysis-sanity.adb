@@ -330,10 +330,16 @@ package body Flow.Analysis.Sanity is
                end;
 
             when N_Slice =>
-               Detect_Variable_Inputs
-                 (N        => Discrete_Range (N),
-                  Err_Desc => "renamed slice");
-
+               declare
+                  R : constant Node_Id := Discrete_Range (N);
+               begin
+                  Detect_Variable_Inputs
+                    (N        =>
+                       (if Nkind (R) = N_Subtype_Indication
+                        then Range_Expression (Constraint (R))
+                        else R),
+                     Err_Desc => "renamed slice");
+               end;
             when others =>
                null;
          end case;

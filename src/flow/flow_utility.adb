@@ -3606,10 +3606,23 @@ package body Flow_Utility is
                         not Comes_From_Source (Entity (N)));
                      Variables.Union
                        (Recurse (Expression (Parent (Entity (N)))));
+
+                  elsif Is_Type (Entity (N))
+                    and then Nkind (Parent (N)) = N_Slice
+                  then
+                     declare
+                        R : constant Node_Id :=
+                          Get_Range (Discrete_Range (Parent (N)));
+                     begin
+                        Variables.Union (Recurse (Low_Bound (R)));
+                        Variables.Union (Recurse (High_Bound (R)));
+                     end;
+
                   else
-                     --  Within expressions identifiers are processed depending
-                     --  on the context. We can only traverse them when this
-                     --  routine is executed in a special mode for statements.
+                     --  Within expressions, type identifiers are processed
+                     --  depending on the context. We can only traverse them
+                     --  when this routine is executed in a special mode for
+                     --  statements.
 
                      pragma Assert
                        (if Is_Type (Entity (N))
@@ -3620,7 +3633,7 @@ package body Flow_Utility is
                end if;
                return Skip;
 
-            --  Within expression, a defining identifier only appears as a
+            --  Within expressions, a defining identifier only appears as a
             --  declaration for a compiler-generated temporary or as a
             --  parameter of a quantified expression (effectively, it declares
             --  a local object). Such identifiers are not considered as "uses"
