@@ -770,6 +770,9 @@ package body Configuration is
            (Config, CL_Switches.Why3_Debug'Access,
             Long_Switch => "--why3-debug=");
          Define_Switch
+           (Config, CL_Switches.Why3_Server'Access,
+            Long_Switch => "--why3-server=");
+         Define_Switch
            (Config,
             CL_Switches.Z3_Counterexample'Access,
             Long_Switch => "--z3-counterexample");
@@ -2465,7 +2468,13 @@ package body Configuration is
       Args.Append (To_String (FS.Proof));
 
       Args.Append ("--socket");
-      Args.Append (Socket_Name.all);
+      if CL_Switches.Why3_Server /= null
+        and then CL_Switches.Why3_Server.all /= ""
+      then
+         Args.Append (CL_Switches.Why3_Server.all);
+      else
+         Args.Append (Socket_Name.all);
+      end if;
 
       if Debug then
          Args.Append ("--debug");

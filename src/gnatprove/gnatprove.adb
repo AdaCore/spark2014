@@ -152,10 +152,11 @@ procedure Gnatprove with SPARK_Mode is
    --  @param Proj the project tree object
    --  @param Status out parameter which indicates an error; 0 = OK
 
-   function Spawn_VC_Server
+   function Spawn_VC_Server_And_Semaphore
      (Proj_Type : Project_Type)
       return Process_Descriptor;
-   --  Spawn the VC server of Why3
+   --  Spawn the VC server of Why3 and create the semaphore used for gnatwhy3
+   --  processes.
 
    function Text_Of_Step (Step : Gnatprove_Step) return String;
 
@@ -506,7 +507,6 @@ procedure Gnatprove with SPARK_Mode is
       declare
          use String_Lists;
          Args     : String_Lists.List;
-         Del_Succ : Boolean;
          Id       : Process_Descriptor;
       begin
          Args.Append ("--subdirs=" & Phase2_Subdir.Display_Full_Name);
@@ -528,7 +528,7 @@ procedure Gnatprove with SPARK_Mode is
                       else "--complete-output");
 
          if Configuration.Mode in GPM_All | GPM_Prove then
-            Id := Spawn_VC_Server (Proj.Root_Project);
+            Id := Spawn_VC_Server_And_Semaphore (Proj.Root_Project);
          end if;
 
          Call_Gprbuild (Project_File,
@@ -539,13 +539,21 @@ procedure Gnatprove with SPARK_Mode is
                         Status            => Status);
 
          if Configuration.Mode in GPM_All | GPM_Prove then
-            Close (Id);
-            GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
+            if CL_Switches.Why3_Server = null
+              or else CL_Switches.Why3_Server.all = ""
+            then
+               declare
+                  Del_Succ : Boolean;
+               begin
+                  Close (Id);
+                  GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
+                  pragma Assert (Del_Succ);
+               end;
+            end if;
             if Use_Semaphores then
                Close (Why3_Semaphore);
             end if;
             Delete (Base_Name (Socket_Name.all));
-            pragma Assert (Del_Succ);
          end if;
       end;
    end Flow_Analysis_And_Proof;
@@ -883,7 +891,7 @@ procedure Gnatprove with SPARK_Mode is
    -- Spawn_VC_Server --
    ---------------------
 
-   function Spawn_VC_Server
+   function Spawn_VC_Server_And_Semaphore
      (Proj_Type : Project_Type)
       return Process_Descriptor
    is
@@ -891,17 +899,21 @@ procedure Gnatprove with SPARK_Mode is
       Cur  : constant String := Ada.Directories.Current_Directory;
       Id   : Process_Descriptor;
    begin
-      Ada.Directories.Set_Directory
-        (Proj_Type.Artifacts_Dir.Display_Full_Name);
-      Args.Append ("-j");
-      Args.Append (Image (Parallel, 1));
-      Args.Append ("--socket");
-      Args.Append (Socket_Name.all);
-      if Debug then
-         Args.Append ("--logging");
+      if CL_Switches.Why3_Server = null
+        or else CL_Switches.Why3_Server.all = ""
+      then
+         Ada.Directories.Set_Directory
+           (Proj_Type.Artifacts_Dir.Display_Full_Name);
+         Args.Append ("-j");
+         Args.Append (Image (Parallel, 1));
+         Args.Append ("--socket");
+         Args.Append (Socket_Name.all);
+         if Debug then
+            Args.Append ("--logging");
+         end if;
+         Id := Non_Blocking_Spawn ("why3server", Args);
+         Ada.Directories.Set_Directory (Cur);
       end if;
-      Id := Non_Blocking_Spawn ("why3server", Args);
-      Ada.Directories.Set_Directory (Cur);
       if Use_Semaphores then
          declare
             Sem_Name : constant String := Base_Name (Socket_Name.all);
@@ -911,7 +923,7 @@ procedure Gnatprove with SPARK_Mode is
          end;
       end if;
       return Id;
-   end Spawn_VC_Server;
+   end Spawn_VC_Server_And_Semaphore;
 
    ------------------
    -- Text_Of_Step --

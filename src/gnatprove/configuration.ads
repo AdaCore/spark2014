@@ -143,6 +143,7 @@ package Configuration is
       Warnings             : aliased GNAT.Strings.String_Access;
       Why3_Conf            : aliased GNAT.Strings.String_Access;
       Why3_Debug           : aliased GNAT.Strings.String_Access;
+      Why3_Server          : aliased GNAT.Strings.String_Access;
       X                    : String_Lists.List;
       --  Scenario variables to be passed to gprbuild
       Z3_Counterexample    : aliased Boolean;
