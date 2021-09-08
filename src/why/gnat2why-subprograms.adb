@@ -188,6 +188,14 @@ package body Gnat2Why.Subprograms is
    --  For every object in the binder array, build a predicate for the dynamic
    --  invariant of the object and join everything together with a conjunction.
 
+   function Compute_Guard_For_Dispatch
+     (Subp    : Entity_Id;
+      Binders : Item_Array;
+      W_Tag   : W_Term_Id;
+      Params  : Transformation_Params) return W_Pred_Id;
+   --  For every object in the binder array whose type matches the dispatching
+   --  type of Subp, state that the tag of the object is equal to W_Tag.
+
    function Compute_Inlined_Expr
      (Function_Entity    : Entity_Id;
       Logic_Func_Binders : Item_Array;
@@ -1193,6 +1201,54 @@ package body Gnat2Why.Subprograms is
 
       return +Eff;
    end Compute_Effects;
+
+   --------------------------------
+   -- Compute_Guard_For_Dispatch --
+   --------------------------------
+
+   function Compute_Guard_For_Dispatch
+     (Subp    : Entity_Id;
+      Binders : Item_Array;
+      W_Tag   : W_Term_Id;
+      Params  : Transformation_Params) return W_Pred_Id
+   is
+      D_Ty : constant Entity_Id :=
+        Find_Dispatching_Type (Subp);
+      Pred : W_Pred_Id := True_Pred;
+   begin
+      for B of Binders loop
+         if D_Ty = Get_Ada_Type_From_Item (B) then
+            case B.Kind is
+               when Regular =>
+                  Pred := New_And_Pred
+                    (Left  => Pred,
+                     Right => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => W_Tag,
+                        Right  => +New_Tag_Access
+                          (Domain => EW_Term,
+                           Name   =>
+                             (if Params.Ref_Allowed
+                              then New_Deref
+                                (Right => B.Main.B_Name,
+                                 Typ   => EW_Abstract (D_Ty))
+                              else +B.Main.B_Name),
+                           Ty     => D_Ty)));
+               when DRecord =>
+                  pragma Assert (B.Tag.Present);
+                  Pred := New_And_Pred
+                    (Left  => Pred,
+                     Right => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => W_Tag,
+                        Right  => +B.Tag.Id));
+               when others =>
+                  raise Program_Error;
+            end case;
+         end if;
+      end loop;
+      return Pred;
+   end Compute_Guard_For_Dispatch;
 
    ---------------------------
    -- Compute_Guard_Formula --
@@ -5026,14 +5082,18 @@ package body Gnat2Why.Subprograms is
             Emit_Post_Axiom (Post_Axiom, Why.Inter.Standard, Pre, Post);
          end if;
 
-         --  ??? clean up this code duplication for dispatch and refine
-
          if Is_Visible_Dispatching_Operation (E) then
             pragma Assert (Present (Dispatch_Pre)
                             and then Present (Dispatch_Post));
             Emit_Post_Axiom (Post_Dispatch_Axiom,
                              Dispatch,
-                             Dispatch_Pre,
+                             New_And_Pred
+                               (Left  => Compute_Guard_For_Dispatch
+                                  (Subp    => E,
+                                   Binders => Logic_Func_Binders,
+                                   W_Tag   => +Tag_Binder.B_Name,
+                                   Params  => Params),
+                                Right => Dispatch_Pre),
                              Dispatch_Post);
          end if;
 
