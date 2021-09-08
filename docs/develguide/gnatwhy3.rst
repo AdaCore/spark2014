@@ -30,8 +30,9 @@ gnatwhy3's option ``--debug-why3``. The possible flags are actually those of
 Why3, you can query the exhaustive list using a Why3 executable such as
 ``why3ide --list-debug-flag``.
 
-The error message will be packed inside the standard GNATprove debug
-information.
+Usually, the error message will be packed inside the standard GNATprove debug
+information. If the environment variable ``GNATWHY3LOG`` is defined, the Why3
+log is written to the file given by the value of the variable.
 
 For example, to get the stacktrace from gnatprove in a standard test, you can
 do:
