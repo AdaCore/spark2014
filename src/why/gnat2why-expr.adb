@@ -14524,7 +14524,11 @@ package body Gnat2Why.Expr is
                              Domain   => Subdomain,
                              Name     =>
                                E_Symb (Root, WNE_Dispatch_Eq),
-                             Args     => Args,
+                             Args     => New_Tag_Access
+                               (Domain => Subdomain,
+                                Name   => Args (1),
+                                Ty     => Root)
+                             & Args,
                              Typ      => EW_Bool_Type),
                         Domain => Subdomain);
 
