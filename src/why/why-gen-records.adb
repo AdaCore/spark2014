@@ -3989,7 +3989,7 @@ package body Why.Gen.Records is
                              Domain => Domain,
                              Attr   => Attribute_Tag),
                           Value  => Value)),
-                  Typ      => EW_Abstract (Ty)));
+                  Typ      => Get_Type (Name)));
          end;
       else
          return Name;

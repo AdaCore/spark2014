@@ -338,6 +338,11 @@ package SPARK_Util.Types is
    --  Return True if Ty is is handled as an incomplete type to decide whether
    --  the type designated by an access type should be deferred.
 
+   function Is_Derived_Type_With_Null_Ext (Ty : Type_Kind_Id) return Boolean
+   with Ghost;
+   --  Return True if Ty is declared as a derived type with a null record
+   --  extension. It is only used in assertions currently.
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

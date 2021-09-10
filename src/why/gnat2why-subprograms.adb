@@ -5202,6 +5202,7 @@ package body Gnat2Why.Subprograms is
                        (Name   => E_Symb (E, WNE_Dispatch_Func_Guard),
                         Args   => Anc_Call & Dispatch_Args,
                         Typ    => EW_Bool_Type));
+                  Call         : W_Term_Id;
                   --  The axiom is protected by the dispatching post predicate
                   --  of E.
 
@@ -5218,6 +5219,31 @@ package body Gnat2Why.Subprograms is
                           Expr   => +Anc_Binders (I).B_Name,
                           To     => Get_Typ (Desc_Binders (I).B_Name));
                   end loop;
+
+                  Call := +New_Function_Call
+                    (Domain => EW_Term,
+                     Subp   => Descendant_E,
+                     Name   => Desc_Id,
+                     Args   => Desc_Args,
+                     Check  => False,
+                     Typ    => Desc_Ty);
+
+                  --  If Descendant is a derived type with a null extension,
+                  --  Descendant_E can be inherited even if it has a
+                  --  controlling result. In this case, we need to update the
+                  --  tag after the call manually.
+
+                  if Has_Controlling_Result (Descendant_E)
+                    and then Base_Retysp (Descendant) /=
+                    Base_Retysp (Etype (Descendant_E))
+                  then
+                     pragma Assert
+                       (Is_Derived_Type_With_Null_Ext (Descendant));
+                     Call := +New_Tag_Update
+                       (Domain => EW_Term,
+                        Name   => +Call,
+                        Ty     => Descendant);
+                  end if;
 
                   Emit
                     (Th,
@@ -5240,13 +5266,7 @@ package body Gnat2Why.Subprograms is
 
                            Left   => Insert_Simple_Conversion
                              (Domain => EW_Term,
-                              Expr   => New_Function_Call
-                                (Domain => EW_Term,
-                                 Subp   => Descendant_E,
-                                 Name   => Desc_Id,
-                                 Args   => Desc_Args,
-                                 Check  => False,
-                                 Typ    => Desc_Ty),
+                              Expr   => +Call,
                               To     => Anc_Ty),
                            Right  => Anc_Call,
                            Domain => EW_Term)));

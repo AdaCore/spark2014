@@ -18221,12 +18221,38 @@ package body Gnat2Why.Expr is
       --  which mandate checks in parameters and possibly also a store for
       --  volatile functions. This can only occur in the program domain.
 
-      if Context.Is_Empty then
-         return T;
-      else
+      if not Context.Is_Empty then
          pragma Assert (Domain = EW_Prog);
-         return +Insert_Ref_Context (Expr, +T, Context, Store);
+         T := +Insert_Ref_Context (Expr, +T, Context, Store);
       end if;
+
+      --  If Subp has a controlling result, its result might not have
+      --  the correct tag if Subp was inherited. Update the tag
+      --  explicitly.
+
+      if Ekind (Subp) = E_Function
+        and then Has_Controlling_Result (Subp)
+        and then Base_Retysp (Etype (Subp)) /= Base_Retysp (Etype (Expr))
+      then
+         pragma Assert (Is_Derived_Type_With_Null_Ext (Etype (Expr)));
+         T := New_Tag_Update
+           (Ada_Node  => Expr,
+            Domain    => Domain,
+            Name      => T,
+            Ty        => Etype (Expr));
+
+         --  If we are in the program domain, we might need to
+         --  introduce a predicate check or a discriminant check.
+
+         if Domain = EW_Prog then
+            T := Insert_Checked_Conversion
+              (Ada_Node => Expr,
+               Domain   => EW_Prog,
+               Expr     => T,
+               To       => Type_Of_Node (Etype (Expr)));
+         end if;
+      end if;
+      return T;
    end Transform_Function_Call;
 
    --------------------------
