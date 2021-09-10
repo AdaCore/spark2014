@@ -7,45 +7,45 @@ loop_types.ads:54:20: info: pointer dereference check proved
 loop_types.ads:54:30: info: pointer dereference check proved
 loop_types.ads:55:35: info: pointer dereference check proved
 loop_types.ads:55:44: info: pointer dereference check proved
-a-cfdlli.ads:391:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:397:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:416:39: info: pointer dereference check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:521:49: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:662:49: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:752:57: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:818:57: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:905:28: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:905:39: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1081:43: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1262:06: info: disjoint contract cases proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1401:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1416:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1431:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1446:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1468:14: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1474:23: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1523:14: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1530:23: info: precondition proved, in instantiation at loop_types.ads:16
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:74, in instantiation at loop_types.ads:16
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at loop_types.ads:13
-a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cofove.ads:92, in instantiation at loop_types.ads:13
-a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cfdlli.ads:74, in instantiation at loop_types.ads:16
-a-cofuve.ads:237:63: info: range check proved, in instantiation at a-cofove.ads:92, in instantiation at loop_types.ads:13
-a-cofuve.ads:237:63: info: range check proved, in instantiation at a-cfdlli.ads:74, in instantiation at loop_types.ads:16
-a-cofuve.ads:238:59: info: overflow check proved, in instantiation at a-cofove.ads:92, in instantiation at loop_types.ads:13
-a-cofuve.ads:238:59: info: overflow check proved, in instantiation at a-cfdlli.ads:74, in instantiation at loop_types.ads:16
-a-cofuve.ads:238:76: info: overflow check proved, in instantiation at a-cofove.ads:92, in instantiation at loop_types.ads:13
-a-cofuve.ads:238:76: info: overflow check proved, in instantiation at a-cfdlli.ads:74, in instantiation at loop_types.ads:16
-a-cofuve.ads:239:30: info: range check proved, in instantiation at a-cofove.ads:92, in instantiation at loop_types.ads:13
-a-cofuve.ads:239:30: info: range check proved, in instantiation at a-cfdlli.ads:74, in instantiation at loop_types.ads:16
-a-cofuve.ads:300:52: info: overflow check proved, in instantiation at a-cofove.ads:92, in instantiation at loop_types.ads:13
-a-cofuve.ads:300:52: info: overflow check proved, in instantiation at a-cfdlli.ads:74, in instantiation at loop_types.ads:16
-a-cofove.ads:294:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:300:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:319:39: info: pointer dereference check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:319:69: info: pointer dereference check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:628:57: info: range check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:756:23: info: precondition proved, in instantiation at loop_types.ads:13
-a-cofove.ads:759:38: info: range check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:792:14: info: precondition proved, in instantiation at loop_types.ads:13
-a-cofove.ads:796:35: info: range check proved, in instantiation at loop_types.ads:13
+a-cfdlli.ads:392:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:398:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:417:39: info: pointer dereference check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:522:49: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:663:49: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:753:57: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:819:57: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:906:28: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:906:39: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1082:43: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1263:06: info: disjoint contract cases proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1402:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1417:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1432:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1447:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1469:14: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1475:23: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1524:14: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1531:23: info: precondition proved, in instantiation at loop_types.ads:16
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at loop_types.ads:16
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at loop_types.ads:13
+a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cofove.ads:93, in instantiation at loop_types.ads:13
+a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cfdlli.ads:75, in instantiation at loop_types.ads:16
+a-cofuve.ads:237:63: info: range check proved, in instantiation at a-cofove.ads:93, in instantiation at loop_types.ads:13
+a-cofuve.ads:237:63: info: range check proved, in instantiation at a-cfdlli.ads:75, in instantiation at loop_types.ads:16
+a-cofuve.ads:238:59: info: overflow check proved, in instantiation at a-cofove.ads:93, in instantiation at loop_types.ads:13
+a-cofuve.ads:238:59: info: overflow check proved, in instantiation at a-cfdlli.ads:75, in instantiation at loop_types.ads:16
+a-cofuve.ads:238:76: info: overflow check proved, in instantiation at a-cofove.ads:93, in instantiation at loop_types.ads:13
+a-cofuve.ads:238:76: info: overflow check proved, in instantiation at a-cfdlli.ads:75, in instantiation at loop_types.ads:16
+a-cofuve.ads:239:30: info: range check proved, in instantiation at a-cofove.ads:93, in instantiation at loop_types.ads:13
+a-cofuve.ads:239:30: info: range check proved, in instantiation at a-cfdlli.ads:75, in instantiation at loop_types.ads:16
+a-cofuve.ads:300:52: info: overflow check proved, in instantiation at a-cofove.ads:93, in instantiation at loop_types.ads:13
+a-cofuve.ads:300:52: info: overflow check proved, in instantiation at a-cfdlli.ads:75, in instantiation at loop_types.ads:16
+a-cofove.ads:295:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:301:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:320:39: info: pointer dereference check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:320:69: info: pointer dereference check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:629:57: info: range check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:757:23: info: precondition proved, in instantiation at loop_types.ads:13
+a-cofove.ads:760:38: info: range check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:793:14: info: precondition proved, in instantiation at loop_types.ads:13
+a-cofove.ads:797:35: info: range check proved, in instantiation at loop_types.ads:13

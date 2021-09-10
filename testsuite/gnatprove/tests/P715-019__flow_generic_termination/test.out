@@ -1,16 +1,16 @@
-a-cfhase.ads:129:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:271:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:549:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:1252:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cofuma.ads:305:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:192, in instantiation at term.ads:15
-a-cofuma.ads:306:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:192, in instantiation at term.ads:15
-a-cofuse.ads:73:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:95, in instantiation at term.ads:15
-a-cofuse.ads:120:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:95, in instantiation at term.ads:15
-a-cofuse.ads:159:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:95, in instantiation at term.ads:15
-a-cofuse.ads:252:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:95, in instantiation at term.ads:15
-a-cofuve.ads:95:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:107, in instantiation at term.ads:15
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:107, in instantiation at term.ads:15
-a-cofuve.ads:339:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:107, in instantiation at term.ads:15
+a-cfhase.ads:130:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:272:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:550:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:1253:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cofuma.ads:305:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:193, in instantiation at term.ads:15
+a-cofuma.ads:306:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:193, in instantiation at term.ads:15
+a-cofuse.ads:73:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:96, in instantiation at term.ads:15
+a-cofuse.ads:120:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:96, in instantiation at term.ads:15
+a-cofuse.ads:159:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:96, in instantiation at term.ads:15
+a-cofuse.ads:252:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:96, in instantiation at term.ads:15
+a-cofuve.ads:95:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:108, in instantiation at term.ads:15
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:108, in instantiation at term.ads:15
+a-cofuve.ads:339:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:108, in instantiation at term.ads:15
 term.adb:5:07: medium: "Eq" and "Contains" are mutually recursive, terminating annotation on "Eq" could be incorrect
 term.ads:13:13: info: subprogram "Hash" will terminate, terminating annotation has been proved
 term.ads:13:19: warning: unused variable "X"
