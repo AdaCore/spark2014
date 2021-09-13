@@ -1,0 +1,4 @@
+p.ads:5:21: info: postcondition proved (CVC4: 1 VC)
+p.ads:5:21: info: postcondition proved (CVC4: 1 VC), in inherited contract at p.ads:11
+p.ads:11:18: warning: unused variable "O1"
+p.ads:11:22: warning: unused variable "O2"
