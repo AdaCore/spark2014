@@ -4,7 +4,7 @@ bad_ext_ax.ads:5:20: info: overflow check proved (CVC4: 2 VC)
 bad_ext_ax_with_body.adb:2:43: medium: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = T'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 bad_ext_ax_with_body.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored
 bad_ext_ax_with_body.ads:5:20: info: overflow check proved (CVC4: 2 VC)
-bad_ext_ax_with_both.adb:2:43: medium: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = 1 and Y = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at bad_ext_ax_with_both.ads:4 should mention X and Y in a precondition]
+bad_ext_ax_with_both.adb:2:43: medium: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = T'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at bad_ext_ax_with_both.ads:4 should mention X and Y in a precondition]
 bad_ext_ax_with_both.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored
 bad_ext_ax_with_private.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored
-bad_ext_ax_with_private.ads:7:43: medium: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = 1 and Y = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention X and Y in a precondition]
+bad_ext_ax_with_private.ads:7:43: medium: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = T'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention X and Y in a precondition]

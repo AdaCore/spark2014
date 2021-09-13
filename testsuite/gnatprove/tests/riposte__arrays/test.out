@@ -39,7 +39,7 @@ arrays.adb:191:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arrays.adb:191:41: info: range check proved (CVC4: 4 VC)
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: medium: "R" might not be initialized
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) (e.g. when C = 'SOH' and I = 'SOH')
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) (e.g. when C = 'NUL' and I = 'NUL')
 arrays.adb:206:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arrays.adb:206:41: info: range check proved (CVC4: 4 VC)
@@ -59,7 +59,7 @@ arrays.adb:242:07: info: initialization of "A" proved
 arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:249:11: info: flow dependencies proved
 arrays.adb:251:07: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail (e.g. when A = (1 => 0, others => 1)) [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
+arrays.adb:254:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> S = ('a' => True, others => False)
   trace at arrays.adb:58 --> C = 'NUL'
@@ -93,10 +93,10 @@ counterexample expected for check at arrays.adb:148
   trace at arrays.adb:146 --> R = (A => (1 => 0, others => 5), Exists => True)
   trace at arrays.adb:148 --> R = (A => (1 => 0, others => 5), Exists => True)
 counterexample expected for check at arrays.adb:199
-  trace at arrays.adb:197 --> C = 'SOH'
-  trace at arrays.adb:199 --> C = 'SOH' and I = 'SOH'
-  trace at arrays.adb:203 --> R = ('SOH' => False, others => True) and X = 'NUL'
-  trace at arrays.adb:204 --> C = 'SOH' and R = ('NUL' => False, 'SOH' => False, others => True)
-  trace at arrays.adb:206 --> C = 'SOH'
-[PREVIOUS]  trace at arrays.adb:206 --> R = ('SOH' => True, others => False) and X = 'LC_Y_Diaeresis'
-  trace at arrays.adb:209 --> R = ('SOH' => True, others => False) and Single_Char_Set_Broken'Result = ('SOH' => True, others => False)
+  trace at arrays.adb:197 --> C = 'NUL'
+  trace at arrays.adb:199 --> C = 'NUL' and I = 'NUL'
+  trace at arrays.adb:203 --> R = (others => False) and X = 'NUL'
+  trace at arrays.adb:204 --> C = 'NUL' and R = ('NUL' => True, others => False)
+  trace at arrays.adb:206 --> C = 'NUL'
+[PREVIOUS]  trace at arrays.adb:206 --> R = ('NUL' => True, others => False) and X = 'LC_Y_Diaeresis'
+  trace at arrays.adb:209 --> R = ('NUL' => True, others => False) and Single_Char_Set_Broken'Result = ('NUL' => True, others => False)

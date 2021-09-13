@@ -1,4 +1,4 @@
 eval.adb:5:17: info: index check proved (CVC4: 2 VC)
 eval.ads:6:50: info: initialization of "V" proved
 eval.ads:7:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-eval.ads:7:42: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and J = 0) [reason for check: value must be a valid index into the array] [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry] [possible fix: subprogram at line 6 should mention J in a precondition]
+eval.ads:7:42: medium: array index check might fail (e.g. when A'First = 0 and A'Last = -1 and J = -1) [reason for check: value must be a valid index into the array] [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry] [possible fix: subprogram at line 6 should mention J in a precondition]

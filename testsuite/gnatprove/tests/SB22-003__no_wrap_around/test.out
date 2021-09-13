@@ -38,10 +38,10 @@ nwa.adb:93:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:94:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:95:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:96:14: info: division check proved (CVC4: 1 VC)
-nwa.adb:103:14: medium: overflow check might fail (e.g. when X = NvU17'Last and Y = NvU17'Last) [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at nwa.ads:34 should mention X and Y in a precondition]
+nwa.adb:103:14: medium: overflow check might fail (e.g. when X = 8 and Y = 3) [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at nwa.ads:34 should mention X and Y in a precondition]
 nwa.adb:104:14: medium: divide by zero might fail [possible fix: subprogram at nwa.ads:34 should mention X and Y in a precondition]
-nwa.adb:105:14: medium: overflow check might fail (e.g. when X = NvU17'Last and Y = NvU17'Last) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: subprogram at nwa.ads:34 should mention X and Y in a precondition]
-nwa.adb:106:14: medium: overflow check might fail (e.g. when X = 0 and Y = NvU17'Last) [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: subprogram at nwa.ads:34 should mention X and Y in a precondition]
+nwa.adb:105:14: medium: overflow check might fail (e.g. when X = 8 and Y = NvU17'Last) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: subprogram at nwa.ads:34 should mention X and Y in a precondition]
+nwa.adb:106:14: medium: overflow check might fail (e.g. when X = 0 and Y = 8) [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: subprogram at nwa.ads:34 should mention X and Y in a precondition]
 nwa.adb:107:12: medium: overflow check might fail (e.g. when X = 1) [reason for check: result of negation must fit in a 8-bits machine integer] [possible fix: subprogram at nwa.ads:34 should mention X in a precondition]
 nwa.adb:114:15: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:117:14: info: overflow check proved (CVC4: 1 VC)
@@ -59,14 +59,14 @@ nwa.adb:142:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:143:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:144:14: info: division check proved (CVC4: 1 VC)
 nwa.adb:151:14: info: overflow check proved (CVC4: 1 VC)
-nwa.adb:151:14: medium: range check might fail, cannot prove upper bound for X * Y (e.g. when X = 512 and Y = 512) [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
+nwa.adb:151:14: medium: range check might fail, cannot prove upper bound for X * Y (e.g. when X = 810 and Y = 839) [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
 nwa.adb:152:14: medium: divide by zero might fail [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
 nwa.adb:153:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:153:14: medium: range check might fail, cannot prove upper bound for X + Y (e.g. when X = 1 and Y = NvU32b'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
-nwa.adb:154:14: medium: overflow check might fail (e.g. when X = 0 and Y = 99) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
-nwa.adb:154:14: medium: range check might fail, cannot prove upper bound for X - Y (e.g. when X = 0 and Y = 32) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
-nwa.adb:155:12: medium: overflow check might fail (e.g. when X = 128) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: subprogram at nwa.ads:46 should mention X in a precondition]
-nwa.adb:155:12: medium: range check might fail, cannot prove upper bound for - X (e.g. when X = 256) [reason for check: result of negation must fit in the target type of the assignment] [possible fix: subprogram at nwa.ads:46 should mention X in a precondition]
+nwa.adb:154:14: medium: overflow check might fail (e.g. when X = 1 and Y = 511) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
+nwa.adb:154:14: medium: range check might fail, cannot prove upper bound for X - Y (e.g. when X = 0 and Y = 1) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at nwa.ads:46 should mention X and Y in a precondition]
+nwa.adb:155:12: medium: overflow check might fail (e.g. when X = 4) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: subprogram at nwa.ads:46 should mention X in a precondition]
+nwa.adb:155:12: medium: range check might fail, cannot prove upper bound for - X (e.g. when X = 4) [reason for check: result of negation must fit in the target type of the assignment] [possible fix: subprogram at nwa.ads:46 should mention X in a precondition]
 nwa.adb:162:15: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:162:15: info: range check proved (CVC4: 2 VC)
 nwa.adb:165:14: info: overflow check proved (CVC4: 1 VC)

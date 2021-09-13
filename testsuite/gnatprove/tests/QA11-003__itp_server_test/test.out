@@ -15,8 +15,10 @@ goal def'vc :
   dynamic_invariant A True False True True ->
   A > 0 ->
   (forall test__parity__result:int.
+    let test__parity__result'unused = int__ref'mk test__parity__result in
     test__parity__result = A ->
-    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))))
+    (let result'unused'unused = test__parity__result in
+     exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))))
 
 
 Process Ended

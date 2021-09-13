@@ -24,5 +24,5 @@ succ_floats.adb:22:31: info: overflow check proved (CVC4: 1 VC)
 succ_floats.adb:26:24: medium: overflow check might fail (e.g. when X = -3.4028235E+38) [reason for check: value must fit in a 32-bits machine integer]
 succ_floats.adb:28:22: info: assertion proved (CVC4: 1 VC)
 succ_floats.adb:28:34: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:30:19: medium: assertion might fail (e.g. when X = -3.4028235E+38)
+succ_floats.adb:30:19: medium: assertion might fail
 succ_floats.adb:30:31: info: overflow check proved (CVC4: 1 VC)

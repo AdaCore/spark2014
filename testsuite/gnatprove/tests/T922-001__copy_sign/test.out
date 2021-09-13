@@ -4,4 +4,4 @@ conv.adb:16:19: medium: assertion might fail (e.g. when Z1_Sign = False)
 conv2.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 conv2.adb:11:51: info: type is suitable as source for unchecked conversion (Trivial)
 conv2.adb:11:58: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Bytes has 255 values but has Size 8]
-conv2.adb:21:19: medium: assertion might fail (e.g. when Z1_Bytes = (others => 0) and Z2_Bytes = (others => 0))
+conv2.adb:21:19: medium: assertion might fail (e.g. when Z1_Bytes = (others => 245) and Z2_Bytes = (others => 247))

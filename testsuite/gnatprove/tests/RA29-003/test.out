@@ -1,5 +1,5 @@
 repr.adb:6:09: warning: initialization of "X" has no effect
-repr.adb:6:24: info: range check proved (altergo: 1 VC)
+repr.adb:6:24: info: range check proved (CVC4: 1 VC)
 repr.adb:7:09: warning: initialization of "Z" has no effect
 repr.adb:7:24: info: range check proved (altergo: 1 VC)
 repr.adb:7:32: info: division check proved (CVC4: 1 VC)

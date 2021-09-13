@@ -7,7 +7,6 @@ predicates.ads:32:19: medium: overflow check might fail, cannot prove upper boun
    32 |         Get_GCD (abs (X), abs (Y))
       |                  ^~~~~~~
   e.g. when X = Integer'First
-        and Y = 0
   reason for check: result of absolute value must fit in a 32-bits machine integer
   possible fix: subprogram at line 30 should mention X in a precondition
    30 |   function Get_GCD (X, Y : Integer) return Natural is

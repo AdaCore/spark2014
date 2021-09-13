@@ -6,7 +6,7 @@ interpol.adb:12:34: info: index check proved (CVC4: 2 VC)
 interpol.adb:12:39: info: overflow check proved (Z3: 2 VC)
 interpol.adb:12:44: info: overflow check proved (altergo: 2 VC)
 interpol.adb:12:49: info: division check proved (CVC4: 1 VC)
-interpol.adb:14:22: medium: assertion might fail (e.g. when E = 0 and F'First = 0 and F'Last = 0) [possible fix: precondition of subprogram at line 4 should mention F]
+interpol.adb:14:22: medium: assertion might fail (e.g. when E = 0 and F = (1 => (X => 0, Y => 0), 2 => (X => 0, Y => ?)) and F'First = 0 and F'Last = 2 and K = 1) [possible fix: precondition of subprogram at line 4 should mention F]
 interpol.adb:14:29: info: index check proved (CVC4: 2 VC)
 interpol.adb:14:40: info: index check proved (CVC4: 2 VC)
 interpol.adb:18:11: info: data dependencies proved

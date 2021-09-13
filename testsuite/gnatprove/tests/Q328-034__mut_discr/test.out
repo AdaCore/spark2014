@@ -10,7 +10,7 @@ input.adb:69:24: info: range check proved (CVC4: 2 VC)
 input.adb:71:28: info: range check proved (CVC4: 2 VC)
 input.adb:71:35: info: division check proved (CVC4: 1 VC)
 input.adb:84:14: info: range check proved (CVC4: 4 VC)
-input.adb:93:37: medium: overflow check might fail, cannot prove upper bound for First_Char + (N - 1) (e.g. when First_Char = 2 and N = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 34 should mention N and First_Char in a precondition]
+input.adb:93:37: medium: overflow check might fail, cannot prove upper bound for First_Char + (N - 1) (e.g. when First_Char = 1025 and N = 2147482624) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 34 should mention N and First_Char in a precondition]
 input.adb:144:18: medium: array index check might fail (e.g. when First_Char = 1025) [reason for check: value must be a valid index into the array]
 input.adb:145:32: info: range check proved (CVC4: 2 VC)
 input.adb:220:35: info: range check proved (CVC4: 2 VC), in call inlined at input.adb:242, in call inlined at input.adb:254
@@ -25,7 +25,7 @@ input.adb:269:27: info: cannot unroll loop (too many loop iterations)
 input.adb:270:16: info: index check proved (CVC4: 2 VC)
 input.adb:270:59: info: index check proved (CVC4: 2 VC)
 input.adb:273:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-input.adb:273:17: low: range check might fail, cannot prove upper bound for S & (1 .. V'Length - S'Length => ' ') (e.g. when S = (1024 => 'A') and S'First = 1024 and S'Last = 1024 and V'First = 1 and V'Last = Integer'Last) [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: loop at line 269 should mention S in a loop invariant]
+input.adb:273:17: low: range check might fail, cannot prove upper bound for S & (1 .. V'Length - S'Length => ' ') (e.g. when S = (1024 => 'Z') and S'First = 1024 and S'Last = 1024 and V'First = 1 and V'Last = Integer'Last) [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: loop at line 269 should mention S in a loop invariant]
 input.adb:273:19: info: range check proved (CVC4: 2 VC)
 input.adb:273:22: info: range check proved (CVC4: 2 VC)
 input.adb:273:26: info: range check proved (CVC4: 2 VC)
@@ -101,7 +101,7 @@ values-operations.adb:44:12: info: precondition proved (CVC4: 1 VC)
 values-operations.adb:63:28: info: overflow check proved (CVC4: 2 VC)
 values-operations.adb:66:28: info: division check proved (CVC4: 1 VC)
 values-operations.adb:66:28: medium: overflow check might fail, cannot prove upper bound for V1.E / V2.E (e.g. when V1 = (E => Integer'First) and V2 = (E => -1)) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 44 should mention V (for argument V1)]
-values-operations.adb:69:28: medium: overflow check might fail, cannot prove lower bound for V1.E * V2.E (e.g. when V1 = (E => 2) and V2 = (E => -2)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 44 should mention V (for argument V1)]
+values-operations.adb:69:28: medium: overflow check might fail, cannot prove lower bound for V1.E * V2.E (e.g. when V1 = (E => -2) and V2 = (E => 2)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 44 should mention V (for argument V1)]
 values-operations.adb:72:28: info: overflow check proved (CVC4: 2 VC)
 values-operations.adb:78:12: info: precondition proved (CVC4: 1 VC)
 values.adb:14:12: info: precondition proved (CVC4: 1 VC)

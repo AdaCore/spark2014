@@ -2,6 +2,6 @@
 addition.adb:4:16: medium: overflow check might fail, cannot prove lower bound for X + Y
     4 |  Pre     => X + Y in Integer,
       |             ~~^~~
-  e.g. when X = -1
-        and Y = Integer'First
+  e.g. when X = Integer'First
+        and Y = -1
   reason for check: result of addition must fit in a 32-bits machine integer

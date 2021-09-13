@@ -42,11 +42,11 @@ do_checks.adb:167:59: info: range check proved (CVC4: 2 VC)
 do_checks.adb:167:67: medium: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:210:32: warning: "Y" is not modified, could be IN
 do_checks.adb:212:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-do_checks.adb:212:26: medium: length check might fail (e.g. when X'Last = 0 and Y'First = 0 and Y'Last = -1) [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 210 should mention X and Y]
+do_checks.adb:212:26: medium: length check might fail (e.g. when Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 210 should mention X and Y]
 do_checks.adb:217:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:221:32: warning: "Y" is not modified, could be IN
 do_checks.adb:223:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-do_checks.adb:223:26: medium: length check might fail (e.g. when X'Last = 0 and Y'First = 0 and Y'Last = -1) [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 221 should mention X and Y]
+do_checks.adb:223:26: medium: length check might fail (e.g. when Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 221 should mention X and Y]
 do_checks.adb:228:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:234:37: info: initialization of "Y" proved
 do_checks.adb:236:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X]

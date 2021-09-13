@@ -3,7 +3,7 @@ private_a.adb:13:11: info: flow dependencies proved
 private_a.adb:14:22: info: postcondition proved (CVC4: 1 VC)
 private_a.adb:21:30: info: initialization of "Dst" proved
 private_a.adb:22:11: info: flow dependencies proved
-private_a.adb:23:22: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Create or turning it into an expression function in its unit spec]
+private_a.adb:23:22: medium: postcondition might fail (e.g. when Dst = (R => -1, I => 0) and N = 0) [possible fix: you should consider adding a postcondition to function Create or turning it into an expression function in its unit spec]
 private_a.adb:30:30: info: initialization of "Dst" proved
 private_a.adb:31:11: info: flow dependencies proved
 private_a.adb:32:22: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Create or turning it into an expression function in its unit spec]

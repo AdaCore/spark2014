@@ -54,5 +54,5 @@ tester.adb:25:04: info: precondition proved (CVC4: 1 VC)
 tester.adb:25:09: info: predicate check proved (CVC4: 5 VC)
 tester.adb:28:08: info: range check proved (CVC4: 2 VC)
 tester.adb:28:40: info: cannot unroll loop (too many loop iterations)
-tester.adb:29:07: medium: precondition might fail, cannot prove not Empty (Buffer) (e.g. when X = (Max_Size => ?, Count => 0, Head => 4, Tail => 3, Items => (others => 1))) [possible fix: loop at line 28 should mention X in a loop invariant]
+tester.adb:29:07: medium: precondition might fail, cannot prove not Empty (Buffer) (e.g. when X.Head = 2 and X.Tail = 1 and X.Items(1) = 1 and X.Items(2) = 3 and X.Items(3) = 4) [possible fix: loop at line 28 should mention X in a loop invariant]
 tester.adb:29:12: info: predicate check proved (CVC4: 5 VC)

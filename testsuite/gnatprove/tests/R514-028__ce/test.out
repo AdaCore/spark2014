@@ -1,5 +1,5 @@
-saturation.adb:11:23: medium: postcondition might fail (e.g. when Val = (Value => Unsigned_16'Last-1, Upper_Bound => Unsigned_16'Last-1) and Val'Old = (Value => 1, Upper_Bound => Unsigned_16'Last-1))
+saturation.adb:11:23: medium: postcondition might fail (e.g. when Val = (Value => 36830, Upper_Bound => 36830) and Val'Old = (Value => 28705, Upper_Bound => 36830))
 counterexample expected for check at saturation.adb:11
-  trace at saturation.adb:10 --> Val = (Value => 1, Upper_Bound => Unsigned_16'Last-1)
-  trace at saturation.adb:11 --> Val = (Value => Unsigned_16'Last-1, Upper_Bound => Unsigned_16'Last-1) and Val'Old = (Value => 1, Upper_Bound => Unsigned_16'Last-1)
-  trace at saturation.adb:15 --> Val = (Value => Unsigned_16'Last-1, Upper_Bound => Unsigned_16'Last-1)
+  trace at saturation.adb:10 --> Val = (Value => 28705, Upper_Bound => 36830)
+  trace at saturation.adb:11 --> Val = (Value => 36830, Upper_Bound => 36830) and Val'Old = (Value => 28705, Upper_Bound => 36830)
+  trace at saturation.adb:15 --> Val = (Value => 36830, Upper_Bound => 36830)

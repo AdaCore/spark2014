@@ -12,11 +12,11 @@ counterex_unprovable.adb:20:27: medium: range check might fail, cannot prove low
 counterex_unprovable.ads:13:14: medium: postcondition might fail
    13 |     Post => X = 2 * X'Old;
       |             ^~~~~~~~~~~~~
-  e.g. when X = 1
+  e.g. when X = 0
         and X'Old = 1
 
 counterex_unprovable.ads:17:14: medium: postcondition might fail
    17 |     Post => X = 2 * X'Old;
       |             ^~~~~~~~~~~~~
-  e.g. when X = 1
-        and X'Old = 1
+  e.g. when X = -1
+        and X'Old = 0

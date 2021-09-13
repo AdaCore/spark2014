@@ -4,8 +4,8 @@ p.adb:9:07: info: initialization of "Tmp_S" proved
 p.adb:11:07: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:11:17: warning: subprogram "Proc_Loop" has no effect
 p.adb:12:10: info: initialization of "Tmp_S" proved
-p.adb:16:14: medium: range check might fail (e.g. when X = 2 and X = 0)
-p.adb:16:34: medium: overflow check might fail, cannot prove lower bound for Y - X (e.g. when X = 1 and Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X and Y in a precondition]
+p.adb:16:14: medium: range check might fail (e.g. when X = 2)
+p.adb:16:34: medium: overflow check might fail, cannot prove lower bound for Y - X (e.g. when X = Integer'Last and Y = -2) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X and Y in a precondition]
 p.adb:16:38: info: cannot unroll loop (too many loop iterations)
 p.adb:17:28: info: overflow check proved (CodePeer)
 p.adb:21:16: info: range check proved (CodePeer)
@@ -17,7 +17,7 @@ p.adb:24:25: medium: range check might fail, cannot prove upper bound for Tmp_S 
 p.adb:28:04: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:28:14: warning: subprogram "Proc_Loop" has no effect
 p.adb:29:07: info: initialization of "Tmp_S" proved
-p.adb:33:11: medium: range check might fail (e.g. when X = -1 and Y = Integer'Last)
-p.adb:33:37: medium: overflow check might fail, cannot prove lower bound for Y - X (e.g. when X = 1 and Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 28 should mention X and Y in a precondition]
+p.adb:33:11: medium: range check might fail (e.g. when X = Integer'First and Y = 0)
+p.adb:33:37: medium: overflow check might fail, cannot prove lower bound for Y - X (e.g. when X = Integer'Last and Y = -2) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 28 should mention X and Y in a precondition]
 p.adb:33:41: info: cannot unroll loop (too many loop iterations)
 p.adb:34:25: info: overflow check proved (CodePeer)
