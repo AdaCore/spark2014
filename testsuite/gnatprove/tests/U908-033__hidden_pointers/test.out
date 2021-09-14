@@ -1,0 +1,61 @@
+example_tagged_obj.adb:14:26: info: postcondition proved (CVC4: 2 VC)
+example_tagged_obj.adb:14:26: info: postcondition proved (CVC4: 2 VC), in inherited contract at example_tagged_obj.adb:30
+example_tagged_obj.adb:14:40: info: predicate check proved (CVC4: 1 VC)
+example_tagged_obj.adb:14:55: info: predicate check proved (CVC4: 1 VC)
+example_tagged_obj.adb:35:04: info: initialization of "X1" proved
+example_tagged_obj.adb:36:04: info: initialization of "X2" proved
+example_tagged_obj.adb:37:04: info: initialization of "X3" proved
+example_tagged_obj.adb:40:14: info: postcondition proved (CVC4: 2 VC)
+example_tagged_obj.adb:50:14: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:50:14: medium: postcondition might fail, cannot prove Deref (X) = Deref (Y)'old
+example_tagged_obj.adb:50:26: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:50:44: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:50:56: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:51:14: info: precondition proved (Trivial: 1 VC)
+example_tagged_obj.adb:52:14: info: precondition proved (Trivial: 1 VC)
+example_tagged_obj.adb:53:14: info: precondition proved (Trivial: 1 VC)
+example_tagged_obj.adb:54:60: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:54:81: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:56:38: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:58:07: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:58:18: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:59:07: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:66:04: info: precondition proved (CVC4: 2 VC)
+example_tagged_obj.adb:67:19: medium: assertion might fail
+example_tagged_obj.adb:67:26: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:67:26: info: tag check proved (CVC4: 1 VC)
+example_tagged_obj.adb:68:19: medium: assertion might fail
+example_tagged_obj.adb:68:26: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:68:26: info: tag check proved (CVC4: 1 VC)
+example_tagged_obj.adb:69:19: medium: assertion might fail
+example_tagged_obj.adb:69:26: info: precondition proved (CVC4: 1 VC)
+example_tagged_obj.adb:69:26: info: tag check proved (CVC4: 1 VC)
+example_untagged_obj.adb:14:04: info: initialization of "X1" proved
+example_untagged_obj.adb:15:04: info: initialization of "X2" proved
+example_untagged_obj.adb:16:04: info: initialization of "X3" proved
+example_untagged_obj.adb:19:14: info: postcondition proved (CVC4: 2 VC)
+example_untagged_obj.adb:29:14: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+example_untagged_obj.adb:29:14: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:29:26: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:29:44: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:29:56: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:30:14: info: precondition proved (Trivial: 1 VC)
+example_untagged_obj.adb:31:14: info: precondition proved (Trivial: 1 VC)
+example_untagged_obj.adb:32:14: info: precondition proved (Trivial: 1 VC)
+example_untagged_obj.adb:33:60: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:33:81: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:35:32: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:37:07: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:37:18: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:38:07: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:45:04: info: precondition proved (CVC4: 2 VC)
+example_untagged_obj.adb:46:19: info: assertion proved (CVC4: 1 VC)
+example_untagged_obj.adb:46:19: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:47:19: info: assertion proved (CVC4: 1 VC)
+example_untagged_obj.adb:47:19: info: precondition proved (CVC4: 1 VC)
+example_untagged_obj.adb:48:19: info: assertion proved (CVC4: 1 VC)
+example_untagged_obj.adb:48:19: info: precondition proved (CVC4: 1 VC)
+hidden_pointers.ads:14:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+hidden_pointers.ads:14:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:9
+hidden_pointers.ads:49:04: info: initialization of "My_Memory" proved, in instantiation at example_tagged_obj.adb:18
+hidden_pointers.ads:49:04: info: initialization of "My_Memory" proved, in instantiation at example_untagged_obj.adb:9
