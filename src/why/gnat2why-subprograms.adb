@@ -5238,7 +5238,8 @@ package body Gnat2Why.Subprograms is
                     Base_Retysp (Etype (Descendant_E))
                   then
                      pragma Assert
-                       (Is_Derived_Type_With_Null_Ext (Descendant));
+                       (Is_Derived_Type_With_Null_Ext
+                          (Base_Type (Descendant)));
                      Call := +New_Tag_Update
                        (Domain => EW_Term,
                         Name   => +Call,

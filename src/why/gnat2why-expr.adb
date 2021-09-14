@@ -18234,7 +18234,8 @@ package body Gnat2Why.Expr is
         and then Has_Controlling_Result (Subp)
         and then Base_Retysp (Etype (Subp)) /= Base_Retysp (Etype (Expr))
       then
-         pragma Assert (Is_Derived_Type_With_Null_Ext (Etype (Expr)));
+         pragma Assert
+           (Is_Derived_Type_With_Null_Ext (Base_Type (Etype (Expr))));
          T := New_Tag_Update
            (Ada_Node  => Expr,
             Domain    => Domain,
