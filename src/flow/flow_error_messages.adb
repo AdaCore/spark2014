@@ -2220,9 +2220,9 @@ package body Flow_Error_Messages is
             --  parameter N, or Empty otherwise.
 
             procedure Get_Subprogram_Inputs
-              (Subp      : Runnable_Kind_Id;
-               In_Vars   : out Flow_Id_Sets.Set;
-               Out_Vars  : out Flow_Id_Sets.Set);
+              (Subp     : Runnable_Kind_Id;
+               In_Vars  : out Flow_Id_Sets.Set;
+               Out_Vars : out Flow_Id_Sets.Set);
             --  Get all inputs of subprogram Subp: inputs in In_Vars; outputs
             --  of unconstrained array/record type in Out_Vars, as their
             --  bounds/discriminants are passed as inputs.
@@ -2266,9 +2266,9 @@ package body Flow_Error_Messages is
             -----------------------------------
 
             procedure Get_Subprogram_Inputs
-              (Subp      : Runnable_Kind_Id;
-               In_Vars   : out Flow_Id_Sets.Set;
-               Out_Vars  : out Flow_Id_Sets.Set)
+              (Subp     : Runnable_Kind_Id;
+               In_Vars  : out Flow_Id_Sets.Set;
+               Out_Vars : out Flow_Id_Sets.Set)
             is
                Ignore_Vars : Flow_Id_Sets.Set;
             begin
