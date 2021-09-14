@@ -225,6 +225,13 @@ package body Gnat2Why.Types is
         with Pre => Has_Invariants_In_SPARK (E);
       --  Create a function to express type E's invariant
 
+      procedure Generate_Axioms_For_Equality
+        (Th : Theory_UC;
+         E  : Type_Kind_Id)
+      with Pre => not Is_Limited_View (E);
+      --  Generate axioms defining the equality functions __user_eq and
+      --  __dispatch_eq on E.
+
       ----------------------------------
       -- Complete_Predicates_For_Move --
       ----------------------------------
@@ -800,7 +807,220 @@ package body Gnat2Why.Types is
          end;
       end Create_Type_Invariant;
 
-      Ty : constant W_Type_Id := EW_Abstract (E);
+      -----------------------------------
+      -- Generate_Axioms_For_Equality  --
+      -----------------------------------
+
+      procedure Generate_Axioms_For_Equality
+        (Th : Theory_UC;
+         E  : Type_Kind_Id)
+      is
+         Eq : constant Entity_Id := Get_User_Defined_Eq (Base_Type (E));
+         Ty : constant W_Type_Id := EW_Abstract (E);
+      begin
+
+         --  When there is a user-provided equality, generate an axiom to give
+         --  the value of the user_eq symbol.
+
+         if not Use_Predefined_Equality_For_Type (E)
+           and then Entity_In_SPARK (Eq)
+         then
+            declare
+               Var_A : constant W_Identifier_Id :=
+                 New_Identifier (Ada_Node => E,
+                                 Name     => "a",
+                                 Typ      => Ty);
+               Var_B : constant W_Identifier_Id :=
+                 New_Identifier (Ada_Node => E,
+                                 Name     => "b",
+                                 Typ      => Ty);
+               Arg_A : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => +Var_A,
+                    To     => Type_Of_Node (Etype (First_Formal (Eq))));
+               Arg_B : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => +Var_B,
+                    To     => Type_Of_Node
+                      (Etype (Next_Formal (First_Formal (Eq)))));
+               Def   : constant W_Expr_Id :=
+                 (if Is_Hardcoded_Entity (Eq)
+
+                  --  If the equality is hardcoded, we define user_eq as its
+                  --  hardcoded definition.
+
+                  then Transform_Hardcoded_Function_Call
+                    (Subp     => Eq,
+                     Args     => (Arg_A, Arg_B),
+                     Domain   => EW_Term,
+                     Ada_Node => Eq)
+                  else New_Function_Call
+                    (Ada_Node => Eq,
+                     Domain   => EW_Term,
+                     Name     => To_Why_Id (E      => Eq,
+                                            Domain => EW_Term,
+                                            Typ    => EW_Bool_Type),
+                     Subp     => Eq,
+                     Args     => (1 => Arg_A, 2 => Arg_B),
+                     Check    => False,
+                     Typ      => EW_Bool_Type));
+            begin
+               Emit
+                 (Th,
+                  New_Defining_Axiom
+                    (Ada_Node => E,
+                     Binders  =>
+                       (1 => Binder_Type'(B_Name => Var_A, others => <>),
+                        2 => Binder_Type'(B_Name => Var_B, others => <>)),
+                     Name     =>
+                       New_Identifier
+                         (Module => E_Module (E),
+                          Name   => "user_eq"),
+                     Def      => +Def));
+
+               --  If E is the root of a tagged hierarchy, also generate a
+               --  definition for the dispatching equality symbol.
+
+               if Is_Tagged_Type (E) and then Root_Retysp (E) = E then
+
+                  --  We don't handle hardcoded dispatching equality yet
+
+                  if Is_Hardcoded_Entity (Eq) then
+                     raise Program_Error;
+                  end if;
+
+                  declare
+                     Tag_Id : constant W_Identifier_Id := New_Identifier
+                       (Name   => To_String (WNE_Attr_Tag),
+                        Typ    => EW_Int_Type);
+                  begin
+                     Emit
+                       (Th,
+                        New_Defining_Axiom
+                          (Ada_Node => E,
+                           Binders  =>
+                             (1 => Binder_Type'
+                                (B_Name => Tag_Id, others => <>),
+                              2 => Binder_Type'
+                                (B_Name => Var_A, others => <>),
+                              3 => Binder_Type'
+                                (B_Name => Var_B, others => <>)),
+                           Name     => E_Symb (E, WNE_Dispatch_Eq),
+                           Def      => +New_Function_Call
+                             (Ada_Node => Eq,
+                              Domain   => EW_Term,
+                              Selector => Dispatch,
+                              Name     => To_Why_Id
+                                (E        => Eq,
+                                 Domain   => EW_Term,
+                                 Typ      => EW_Bool_Type,
+                                 Selector => Dispatch),
+                              Subp     => Eq,
+                              Args     => (1 => +Tag_Id,
+                                           2 => Arg_A,
+                                           3 => Arg_B),
+                              Check    => False,
+                              Typ      => EW_Bool_Type)));
+                  end;
+               end if;
+            end;
+         end if;
+
+         --  If E is a tagged type, emit a compatibility axiom for its
+         --  dispatching equality. No need for a compatibility axiom if the
+         --  equality on the root type was redefined, because in this case we
+         --  already have a defining axiom for the dispatching equality.
+
+         if Is_Tagged_Type (E)
+           and then Use_Predefined_Equality_For_Type (Root_Retysp (E))
+         then
+            declare
+               Root  : constant Entity_Id := Root_Retysp (E);
+               Var_A : constant W_Identifier_Id :=
+                 New_Identifier (Ada_Node => E,
+                                 Name     => "a",
+                                 Typ      => EW_Abstract (Root));
+               Var_B : constant W_Identifier_Id :=
+                 New_Identifier (Ada_Node => E,
+                                 Name     => "b",
+                                 Typ      => EW_Abstract (Root));
+               E_Tag : constant W_Identifier_Id := E_Symb (E, WNE_Tag);
+
+            begin
+               --  Generate:
+               --
+               --  axiom <E>__compat_axiom:
+               --    forall a :root, b : root [__dispatch_eq <E>.__tag a b].
+               --      (attr__tag a = <E>.__tag /\ attr__tag b = <E>.__tag) ->
+               --         __dispatch_eq <E>.__tag a b =
+               --           <E>.bool_eq (<E>.of_base a) (<E>.of_base b)
+               --
+               --  if E uses the predefined equality, and
+               --
+               --  axiom <E>__compat_axiom:
+               --    forall a :root, b : root [__dispatch_eq <E>.__tag a b].
+               --      (attr__tag a = <E>.__tag /\ attr__tag b = <E>.__tag) ->
+               --         __dispatch_eq <E>.__tag a b =
+               --            <E>.user_eq  (<E>.of_base a) (<E>.of_base b)
+               --
+               --  otherwise.
+
+               Emit
+                 (Th,
+                  New_Guarded_Axiom
+                    (Ada_Node => E,
+                     Binders  =>
+                       (1 => Binder_Type'(B_Name => Var_A, others => <>),
+                        2 => Binder_Type'(B_Name => Var_B, others => <>)),
+                     Triggers => New_Triggers
+                       (Triggers =>
+                            (1 => New_Trigger
+                                 (Terms =>
+                                    (1 => +W_Term_Id'(New_Call
+                                     (Name =>
+                                        E_Symb (Root, WNE_Dispatch_Eq),
+                                      Args => (+E_Tag, +Var_A, +Var_B),
+                                      Typ  => EW_Bool_Type)))))),
+                     Name     =>
+                       NID (Full_Name (E) & "__" & Compat_Axiom),
+                     Pre      => New_And_Pred
+                       (Left  => New_Comparison
+                            (Symbol   => Why_Eq,
+                             Left     => +New_Tag_Access
+                               (Domain => EW_Term,
+                                Name   => +Var_A,
+                                Ty     => Root),
+                             Right    => +E_Symb (E, WNE_Tag)),
+                        Right => New_Comparison
+                          (Symbol   => Why_Eq,
+                           Left     => +New_Tag_Access
+                             (Domain => EW_Term,
+                              Name   => +Var_B,
+                              Ty     => Root),
+                           Right    => +E_Symb (E, WNE_Tag))),
+                     Def      => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Call
+                          (Name => E_Symb (Root, WNE_Dispatch_Eq),
+                           Args => (+E_Tag, +Var_A, +Var_B),
+                           Typ  => EW_Bool_Type),
+                        Right  => +New_Ada_Equality
+                          (Typ    => E,
+                           Domain => EW_Term,
+                           Left   => +W_Term_Id'(New_Call
+                             (Name => E_Symb (E, WNE_Of_Base),
+                              Args => (1 => +Var_A),
+                              Typ  => EW_Abstract (E))),
+                           Right  => +W_Term_Id'(New_Call
+                             (Name => E_Symb (E, WNE_Of_Base),
+                              Args => (1 => +Var_B),
+                              Typ  => EW_Abstract (E)))))));
+            end;
+         end if;
+      end Generate_Axioms_For_Equality;
+
       Th : Theory_UC;
 
    --  Start of processing for Generate_Type_Completion
@@ -841,76 +1061,9 @@ package body Gnat2Why.Types is
          Complete_Tagged_Record_Type (Th, E);
       end if;
 
-      declare
-         Eq : constant Entity_Id := Get_User_Defined_Eq (Base_Type (E));
-      begin
-
-         --  This module only contains an axiom when there is a user-provided
-         --  equality. The user equality is only declared for record types.
-
-         if Present (Eq)
-           and then Entity_In_SPARK (Eq)
-           and then Is_Record_Type (Unchecked_Full_Type (E))
-         then
-            declare
-               Var_A : constant W_Identifier_Id :=
-                 New_Identifier (Ada_Node => E,
-                                 Name     => "a",
-                                 Typ      => Ty);
-               Var_B : constant W_Identifier_Id :=
-                 New_Identifier (Ada_Node => E,
-                                 Name     => "b",
-                                 Typ      => Ty);
-               Arg_A : constant W_Expr_Id :=
-                 Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => +Var_A,
-                    To     => Type_Of_Node (Etype (First_Formal (Eq))));
-               Arg_B : constant W_Expr_Id :=
-                 Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => +Var_B,
-                    To     => Type_Of_Node
-                      (Etype (Next_Formal (First_Formal (Eq)))));
-               Def   : constant W_Expr_Id :=
-                 (if Is_Hardcoded_Entity (Eq)
-
-                  --  If the equality is hardcoded, we define user_eq as its
-                  --  hardcoded definition.
-
-                  then
-                     Transform_Hardcoded_Function_Call
-                    (Subp     => Eq,
-                     Args     => (Arg_A, Arg_B),
-                     Domain   => EW_Pred,
-                     Ada_Node => Eq)
-                  else
-                     New_Function_Call
-                    (Ada_Node => Eq,
-                     Domain   => EW_Pred,
-                     Name     => To_Why_Id (E => Eq,
-                                            Domain => EW_Pred,
-                                            Typ => EW_Bool_Type),
-                     Subp     => Eq,
-                     Args     => (1 => Arg_A, 2 => Arg_B),
-                     Check    => False,
-                     Typ      => EW_Bool_Type));
-            begin
-               Emit
-                 (Th,
-                  New_Defining_Axiom
-                    (Ada_Node => E,
-                     Binders  =>
-                       (1 => Binder_Type'(B_Name => Var_A, others => <>),
-                        2 => Binder_Type'(B_Name => Var_B, others => <>)),
-                     Name     =>
-                       New_Identifier
-                         (Module => E_Module (E),
-                          Name   => "user_eq"),
-                     Def      => +Def));
-            end;
-         end if;
-      end;
+      if not Is_Limited_View (E) then
+         Generate_Axioms_For_Equality (Th, E);
+      end if;
 
       --  Generate a predicate for E's dynamic property. For provability, it is
       --  inlined by Why3.

@@ -6,8 +6,8 @@ example_tagged_obj.adb:35:04: info: initialization of "X1" proved
 example_tagged_obj.adb:36:04: info: initialization of "X2" proved
 example_tagged_obj.adb:37:04: info: initialization of "X3" proved
 example_tagged_obj.adb:40:14: info: postcondition proved (CVC4: 2 VC)
+example_tagged_obj.adb:50:14: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
 example_tagged_obj.adb:50:14: info: precondition proved (CVC4: 1 VC)
-example_tagged_obj.adb:50:14: medium: postcondition might fail, cannot prove Deref (X) = Deref (Y)'old
 example_tagged_obj.adb:50:26: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:50:44: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:50:56: info: precondition proved (CVC4: 1 VC)
@@ -21,13 +21,13 @@ example_tagged_obj.adb:58:07: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:58:18: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:59:07: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:66:04: info: precondition proved (CVC4: 2 VC)
-example_tagged_obj.adb:67:19: medium: assertion might fail
+example_tagged_obj.adb:67:19: info: assertion proved (CVC4: 1 VC)
 example_tagged_obj.adb:67:26: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:67:26: info: tag check proved (CVC4: 1 VC)
-example_tagged_obj.adb:68:19: medium: assertion might fail
+example_tagged_obj.adb:68:19: info: assertion proved (CVC4: 1 VC)
 example_tagged_obj.adb:68:26: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:68:26: info: tag check proved (CVC4: 1 VC)
-example_tagged_obj.adb:69:19: medium: assertion might fail
+example_tagged_obj.adb:69:19: info: assertion proved (CVC4: 1 VC)
 example_tagged_obj.adb:69:26: info: precondition proved (CVC4: 1 VC)
 example_tagged_obj.adb:69:26: info: tag check proved (CVC4: 1 VC)
 example_untagged_obj.adb:14:04: info: initialization of "X1" proved
