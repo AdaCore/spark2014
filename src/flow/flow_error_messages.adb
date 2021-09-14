@@ -2293,7 +2293,7 @@ package body Flow_Error_Messages is
                if Subp in Callable_Kind_Id then
                   declare
                      Formal : Entity_Id := First_Formal (Subp);
-                     Id     : Flow_Id;
+                     Id     : Flow_Id (Direct_Mapping);
                   begin
                      while Present (Formal) loop
                         Id := Direct_Mapping_Id (Formal);
@@ -2303,7 +2303,7 @@ package body Flow_Error_Messages is
                         then
                            --  Include the formal in the variables read in the
                            --  subprogram.
-                           In_Vars.Include (Id);
+                           In_Vars.Insert (Id);
 
                         --  Only keep in Out_Vars output formals of
                         --  unconstrained array/record type whose
@@ -2314,7 +2314,7 @@ package body Flow_Error_Messages is
                                       or else
                                     Has_Discriminants (Etype (Formal)))
                         then
-                           Out_Vars.Include (Id);
+                           Out_Vars.Insert (Id);
                         end if;
 
                         Next_Formal (Formal);
