@@ -12,7 +12,7 @@ test.adb:40:07: info: initialization of "I" proved
 test.adb:53:29: warning: unused initial value of "A"
 test.adb:70:07: info: initialization of "Tmp" proved
 test.adb:79:07: info: initialization of "Tmp" proved
-test.adb:119:19: medium: overflow check might fail, cannot prove upper bound for N * Factorial (N - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 114 should mention N in a precondition]
+test.adb:119:19: medium: overflow check might fail, cannot prove upper bound for N * Factorial (N - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (N * Factorial (N - 1) in Integer) to subprogram at line 114]
 test.adb:119:34: info: range check proved (CVC4: 2 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
 test.adb:130:26: medium: range check might fail, cannot prove lower bound for N [reason for check: input value must fit in parameter type] [possible fix: subprogram at line 123 should mention N in a precondition]

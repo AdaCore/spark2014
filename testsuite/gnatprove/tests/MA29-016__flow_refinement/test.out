@@ -60,8 +60,8 @@ levels.adb:16:12: info: data dependencies proved
 levels.adb:18:26: info: initialization of "A" proved
 levels.adb:19:12: info: data dependencies proved
 levels.adb:20:20: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
-levels.adb:20:39: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + (Read_Partial_1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
-levels.adb:20:56: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 + (Read_Partial_1_Inner) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
+levels.adb:20:39: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + (Read_Partial_1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+levels.adb:20:56: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 + (Read_Partial_1_Inner) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 levels.adb:22:28: info: initialization of "X" proved
 levels.adb:23:12: info: data dependencies proved
 levels.adb:24:12: info: flow dependencies proved
@@ -100,7 +100,7 @@ levels.ads:12:11: info: data dependencies proved
 levels.ads:15:11: info: data dependencies proved
 levels.ads:16:21: info: postcondition proved (CVC4: 1 VC)
 levels.ads:20:21: info: postcondition proved (CVC4: 1 VC)
-levels.ads:20:36: medium: overflow check might fail, cannot prove upper bound for Read_Partial_0 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_0 or turning it into an expression function]
+levels.ads:20:36: medium: overflow check might fail, cannot prove upper bound for Read_Partial_0 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 levels.ads:22:23: info: initialization of "A" proved
 levels.ads:23:09: info: data dependencies proved
 levels.ads:25:25: info: initialization of "X" proved

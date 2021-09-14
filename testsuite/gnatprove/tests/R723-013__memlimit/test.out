@@ -1,19 +1,5 @@
-add.adb:5:16: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer]
-add.ads:3:47: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer]
-add.ads:3:62: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer]
+add.adb:5:16: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + Y in Integer) to subprogram at add.ads:2]
+add.ads:3:47: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+add.ads:3:62: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 add.ads:4:29: medium: postcondition might fail
-add.ads:4:47: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+add.ads:4:47: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]

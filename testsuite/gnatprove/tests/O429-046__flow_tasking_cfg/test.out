@@ -24,7 +24,7 @@ prot.adb:25:37: medium: overflow check might fail, cannot prove lower bound for 
 prot.ads:3:08: info: flow dependencies proved
 prot.ads:8:22: info: initialization of "X" proved
 q.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
-support.adb:5:29: medium: overflow check might fail, cannot prove upper bound for Summary + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at support.ads:4 should mention X in a precondition]
+support.adb:5:29: medium: overflow check might fail, cannot prove upper bound for Summary + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Summary + X in Integer) to subprogram at support.ads:4]
 support.ads:11:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved

@@ -39,8 +39,8 @@ hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 1 
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 4 VC)
 hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 3 VC)
 hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 3 VC)
-hermes-der-decode.adb:135:99: medium: overflow check might fail, cannot prove upper bound for 128*256**(I - 2) [reason for check: result of multiplication must fit in a 32-bits machine integer]
-hermes-der-decode.adb:135:103: medium: overflow check might fail, cannot prove upper bound for 256**(I - 2) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+hermes-der-decode.adb:135:99: medium: overflow check might fail, cannot prove upper bound for 128*256**(I - 2) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+hermes-der-decode.adb:135:103: medium: overflow check might fail, cannot prove upper bound for 256**(I - 2) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 hermes-der-decode.adb:135:108: info: range check proved (CVC4: 4 VC)
 hermes-der-decode.adb:137:31: info: overflow check proved (CVC4: 2 VC)
 hermes-der-decode.adb:137:38: info: overflow check proved (CVC4: 2 VC)
@@ -104,9 +104,9 @@ hermes-der-decode.adb:314:52: info: initialization of "Stop" proved
 hermes-der-decode.adb:314:58: info: initialization of "Value" proved
 hermes-der-decode.adb:314:65: info: initialization of "Status" proved
 hermes-der-decode.adb:315:11: info: flow dependencies proved
-hermes-der-decode.adb:322:32: medium: overflow check might fail, cannot prove upper bound for Length_Stop + Length [reason for check: result of addition must fit in a 32-bits machine integer]
-hermes-der-decode.adb:326:34: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
-hermes-der-decode.adb:326:34: medium: overflow check might fail, cannot prove upper bound for Length_Stop + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+hermes-der-decode.adb:322:32: medium: overflow check might fail, cannot prove upper bound for Length_Stop + Length [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop + Length in Integer) to subprogram at line 310]
+hermes-der-decode.adb:326:34: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Length_Stop + 1 in Natural) to subprogram at line 310]
+hermes-der-decode.adb:326:34: medium: overflow check might fail, cannot prove upper bound for Length_Stop + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop + 1 in Integer) to subprogram at line 310]
 hermes-der-decode.adb:327:17: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:328:29: medium: overflow check might fail, cannot prove lower bound for 256*Result [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 327 should mention Result in a loop invariant]
@@ -449,7 +449,7 @@ timestamp_messages-server.adb:28:89: medium: range check might fail, cannot prov
 timestamp_messages-server.adb:32:42: medium: range check might fail, cannot prove upper bound for Put_Integer_Value(Stamp.Version) & Put_OID_Value(Stamp.Policy) [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:33:42: medium: range check might fail, cannot prove upper bound for Put_Integer_Value(Stamp.Version) & Put_OID_Value(Stamp.Policy) & Message_Imprint_Value [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:34:42: medium: range check might fail, cannot prove upper bound for Put_Integer_Value(Stamp.Version) & Put_OID_Value(Stamp.Policy) & Message_Imprint_Value & Put_Integer_Value(Integer(Stamp.Serial_Number)) [reason for check: default component value must fit in the type] [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
-timestamp_messages-server.adb:35:40: medium: range check might fail, cannot prove upper bound for Stamp.Serial_Number [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
+timestamp_messages-server.adb:35:40: medium: range check might fail, cannot prove upper bound for Stamp.Serial_Number [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Stamp.Serial_Number in Integer) to subprogram at timestamp_messages-server.ads:19]
 timestamp_messages-server.adb:42:46: info: range check proved (CVC4: 2 VC)
 timestamp_messages-server.adb:42:73: medium: range check might fail, cannot prove upper bound for TST_Info'Length [reason for check: input value must fit in parameter type]
 timestamp_messages-server.adb:42:82: medium: range check might fail, cannot prove upper bound for Make_Leading_Identifier (Tag_Class => Class_Universal, Structured_Flag => Constructed, Tag => Tag_Sequence) & Put_Length_Value(TST_Info'Length) & TST_Info [reason for check: returned value must fit in the result type of the function] [possible fix: you should consider adding a postcondition to function Make_Leading_Identifier or turning it into an expression function in its unit spec]

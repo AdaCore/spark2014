@@ -26,7 +26,7 @@ foo.adb:108:26: info: initialization of "R" proved
 foo.adb:109:09: info: data dependencies proved
 foo.adb:110:09: info: flow dependencies proved
 foo.adb:114:12: medium: precondition might fail [possible fix: subprogram at line 106 should mention G2 in a precondition]
-foo.adb:115:40: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 106 should mention A in a precondition]
+foo.adb:115:40: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A + 1 in Integer) to subprogram at line 106]
 foo.adb:116:29: medium: precondition might fail [possible fix: subprogram at line 106 should mention G2 and B in a precondition]
 foo.adb:122:25: info: initialization of "R" proved
 foo.adb:123:09: info: data dependencies proved

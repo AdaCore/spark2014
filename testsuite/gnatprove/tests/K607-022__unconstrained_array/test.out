@@ -63,8 +63,8 @@ simple_unc_arrays.adb:139:10: info: initialization of "Pivot_Index" proved
 simple_unc_arrays.adb:139:23: info: initialization of "Right" proved
 simple_unc_arrays.adb:139:30: info: initialization of "Left" proved
 simple_unc_arrays.adb:140:10: info: initialization of "Pivot_Value" proved
-simple_unc_arrays.adb:143:35: medium: overflow check might fail, cannot prove upper bound for First + Last [reason for check: result of addition must fit in a 32-bits machine integer]
-simple_unc_arrays.adb:143:42: medium: overflow check might fail, cannot prove upper bound for First + Last + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+simple_unc_arrays.adb:143:35: medium: overflow check might fail, cannot prove upper bound for First + Last [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First + Last in Integer) to subprogram at line 135]
+simple_unc_arrays.adb:143:42: medium: overflow check might fail, cannot prove upper bound for First + Last + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First + Last + 1 in Integer) to subprogram at line 135]
 simple_unc_arrays.adb:143:47: info: division check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:144:33: medium: array index check might fail [reason for check: value must be a valid index into the array]
 simple_unc_arrays.adb:153:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Left in a loop invariant]

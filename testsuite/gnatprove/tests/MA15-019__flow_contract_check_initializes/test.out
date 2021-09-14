@@ -12,7 +12,7 @@ init_2.ads:8:08: medium: initial condition might fail
 init_2.ads:8:31: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer]
 initializes_legal.adb:6:04: info: initialization of "Z" constituent of "AS" proved
 initializes_legal.adb:9:04: info: initialization of "M" constituent of "AS2" proved
-initializes_legal.adb:11:55: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializes_legal.ads:19 should mention X and Y in a precondition]
+initializes_legal.adb:11:55: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + Y in Integer) to subprogram at initializes_legal.ads:19]
 initializes_legal.ads:7:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))
 initializes_legal.ads:7:27: medium: initialization of V must not depend on Init.State (SPARK RM 7.1.5(11))
 initializes_legal.ads:17:04: info: initialization of "X" proved

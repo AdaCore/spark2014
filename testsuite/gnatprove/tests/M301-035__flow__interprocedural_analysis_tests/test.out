@@ -29,7 +29,7 @@ single_compilation_unit.adb:50:39: info: initialization of "Fact" proved
 single_compilation_unit.adb:53:25: info: range check proved (CVC4: 2 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail, cannot prove upper bound for Fact * Var [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 53 should mention Fact (for argument Fact) in a postcondition]
 single_compilation_unit.adb:69:30: info: overflow check proved (CVC4: 2 VC)
-single_compilation_unit.adb:69:35: medium: overflow check might fail, cannot prove lower bound for Fibonacci (N - 1) + Fibonacci (N - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 64 should mention N in a precondition]
+single_compilation_unit.adb:69:35: medium: overflow check might fail, cannot prove lower bound for Fibonacci (N - 1) + Fibonacci (N - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Fibonacci (N - 1) + Fibonacci (N - 2) in Integer) to subprogram at line 64]
 single_compilation_unit.adb:69:50: info: overflow check proved (CVC4: 2 VC)
 single_compilation_unit.adb:94:17: medium: overflow check might fail, cannot prove lower bound for 2 * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 27 should mention X in a precondition]
 single_compilation_unit.adb:108:17: medium: overflow check might fail, cannot prove lower bound for 2 * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 31 should mention Y in a precondition]
