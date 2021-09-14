@@ -64,8 +64,8 @@ bingo_basket.adb:37:30: info: range check proved (CVC4: 2 VC)
 bingo_basket.ads:8:18: info: postcondition proved (CVC4: 1 VC)
 bingo_basket.ads:10:20: info: initialization of "Letter" proved
 bingo_basket.ads:11:20: info: initialization of "Number" proved
-bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array]
-bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array]
+bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue.ads:15]
+bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue.ads:19]
 bounded_queue.adb:38:32: info: division check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:38:51: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:39:25: info: index check proved (CVC4: 2 VC), in instantiation at bounded_queue_example.adb:7
@@ -76,7 +76,7 @@ bounded_queue.adb:48:53: info: overflow check proved (CVC4: 2 VC), in instantiat
 bounded_queue.adb:49:34: medium: range check might fail, cannot prove lower bound for Queue.Count - 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of subtraction must fit in the target type of the assignment]
 bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
 bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
-bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
+bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 bounded_queue.ads:33:18: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
@@ -110,8 +110,8 @@ bounded_queue_example_v2.adb:12:07: medium: precondition might fail [possible fi
 bounded_queue_example_v2.adb:14:38: info: unrolling loop
 bounded_queue_example_v2.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:20:42: info: range check proved (CVC4: 2 VC)
-bounded_queue_v1.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
-bounded_queue_v1.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
+bounded_queue_v1.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:21]
+bounded_queue_v1.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:25]
 bounded_queue_v1.adb:38:32: info: division check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:38:51: info: overflow check proved (CVC4: 2 VC)
 bounded_queue_v1.adb:39:25: info: index check proved (CVC4: 2 VC)
@@ -123,13 +123,13 @@ bounded_queue_v1.adb:49:34: medium: range check might fail, cannot prove lower b
 bounded_queue_v1.ads:12:09: info: range check proved (CVC4: 2 VC)
 bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
 bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
-bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
+bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 bounded_queue_v1.ads:39:18: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
 bounded_queue_v1.ads:45:25: info: precondition proved (CVC4: 1 VC)
-bounded_queue_v2.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
-bounded_queue_v2.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
+bounded_queue_v2.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:15]
+bounded_queue_v2.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:19]
 bounded_queue_v2.adb:38:32: info: division check proved (CVC4: 1 VC)
 bounded_queue_v2.adb:38:51: info: overflow check proved (CVC4: 2 VC)
 bounded_queue_v2.adb:39:25: info: index check proved (CVC4: 2 VC)
@@ -140,7 +140,7 @@ bounded_queue_v2.adb:48:53: info: overflow check proved (CVC4: 2 VC)
 bounded_queue_v2.adb:49:34: medium: range check might fail, cannot prove lower bound for Queue.Count - 1 [reason for check: result of subtraction must fit in the target type of the assignment]
 bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
 bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
-bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
+bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 bounded_queue_v2.ads:33:18: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
 bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
@@ -247,9 +247,9 @@ control_structures.adb:23:14: info: add a contract to analyze it separately from
 control_structures.adb:23:14: info: local subprogram "Calculate_Valve" only analyzed in the context of calls
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
 control_structures.adb:26:24: medium: overflow check might fail, cannot prove lower bound for 2 * Current_Temp, in call inlined at control_structures.adb:184 [reason for check: result of multiplication must fit in a 32-bits machine integer]
-control_structures.adb:31:08: medium: overflow check might fail, cannot prove upper bound for abs Second [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at line 29 should mention Second in a precondition]
-control_structures.adb:31:23: medium: overflow check might fail, cannot prove upper bound for 2 * abs First [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 29 should mention First in a precondition]
-control_structures.adb:31:25: medium: overflow check might fail, cannot prove upper bound for abs First [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at line 29 should mention First in a precondition]
+control_structures.adb:31:08: medium: overflow check might fail, cannot prove upper bound for abs Second [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second in Integer) to subprogram at line 29]
+control_structures.adb:31:23: medium: overflow check might fail, cannot prove upper bound for 2 * abs First [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First in Integer) to subprogram at line 29]
+control_structures.adb:31:25: medium: overflow check might fail, cannot prove upper bound for abs First [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First in Integer) to subprogram at line 29]
 control_structures.adb:35:06: warning: unused assignment
 control_structures.adb:36:06: warning: unused assignment
 control_structures.adb:37:06: warning: unused assignment
@@ -714,7 +714,7 @@ operator_overload.adb:21:04: info: initialization of "P1" proved
 operator_overload.adb:22:04: info: initialization of "P2" proved
 operator_overload.adb:30:10: info: analyzing call to "<=" in context
 operator_overload.adb:37:07: info: analyzing call to "<=" in context
-overflow.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at overflow.ads:3 should mention A and B in a precondition]
+overflow.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A + B in Integer) to subprogram at overflow.ads:3]
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
 palindrome.adb:4:13: info: add a contract to analyze it separately from calling contexts
@@ -898,7 +898,7 @@ shapes5.ads:4:08: info: flow dependencies proved
 shapes5.ads:14:18: medium: postcondition might fail
 shapes5.ads:25:11: info: data dependencies proved
 silly.adb:3:21: info: initialization of "Result" proved
-silly.adb:6:21: medium: overflow check might fail, cannot prove upper bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer]
+silly.adb:6:21: medium: overflow check might fail, cannot prove upper bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 silly.adb:6:26: info: division check proved (CVC4: 1 VC)
 silly.adb:12:22: info: division check proved (CVC4: 1 VC)
 simple_math.adb:6:07: info: initialization of "Q" proved
@@ -969,7 +969,7 @@ sqrt.adb:6:21: info: float overflow check proved (Trivial)
 sqrt.adb:6:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-stacks-more.adb:4:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks-more.ads:2 should mention Stack in a precondition]
+stacks-more.adb:4:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Stack.Top in 1 .. Max_Size) to subprogram at stacks-more.ads:2]
 stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Stack.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
 stacks.adb:15:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
 stacks.adb:21:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:10 should mention Stack in a precondition]
@@ -1144,7 +1144,7 @@ transitive.adb:25:07: info: initialization of "X_Last" proved
 transitive.adb:31:33: info: loop invariant initialization proved (CVC4: 1 VC)
 transitive.adb:31:33: info: loop invariant preservation proved (CVC4: 1 VC)
 transitive.ads:10:19: info: postcondition proved (CVC4: 1 VC)
-unused_parameter.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + A [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at unused_parameter.ads:3 should mention A in a precondition]
+unused_parameter.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + A [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A + A in Integer) to subprogram at unused_parameter.ads:3]
 unused_parameter.adb:7:20: info: division check proved (CVC4: 1 VC)
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
@@ -1156,7 +1156,7 @@ utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
 various.adb:7:27: info: unrolling loop
 various.adb:12:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 various.adb:20:21: info: assertion proved (CVC4: 2 VC)
-various.adb:20:23: medium: overflow check might fail, cannot prove upper bound for X+Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at various.ads:12 should mention X and Y in a precondition]
+various.adb:20:23: medium: overflow check might fail, cannot prove upper bound for X+Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 various.adb:20:26: info: division check proved (CVC4: 1 VC)
 various.adb:21:13: info: division check proved (CVC4: 1 VC)
 very_longs-divide.adb:15:12: info: range check proved (CVC4: 2 VC)
@@ -1165,7 +1165,7 @@ very_longs-divide.adb:26:04: info: initialization of "N" proved
 very_longs-divide.adb:27:04: info: initialization of "M" proved
 very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
 very_longs-divide.adb:29:04: info: initialization of "U" proved
-very_longs-divide.adb:29:48: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1
+very_longs-divide.adb:29:48: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length + 1 in Digit_Index_Type) to subprogram at very_longs.ads:65]
 very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:30:39: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
@@ -1251,7 +1251,7 @@ very_longs-divide.adb:187:08: info: data dependencies proved
 very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
 very_longs-divide.adb:192:07: info: initialization of "Sum" proved
-very_longs-divide.adb:194:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 185 should mention J in a precondition]
+very_longs-divide.adb:194:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 185]
 very_longs-divide.adb:194:40: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition]
 very_longs-divide.adb:198:31: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC4: 2 VC)
@@ -1411,7 +1411,7 @@ very_longs.adb:300:65: info: index check proved (CVC4: 2 VC)
 very_longs.adb:302:37: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:302:41: info: index check proved (CVC4: 2 VC)
 very_longs.adb:312:07: info: initialization of "Result" proved
-very_longs.adb:312:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: subprogram at very_longs.ads:61 should mention L and R in a precondition]
+very_longs.adb:312:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length + R.Length in Digit_Index_Type) to subprogram at very_longs.ads:61]
 very_longs.adb:313:07: info: initialization of "L_Digit" proved
 very_longs.adb:314:07: info: initialization of "R_Digit" proved
 very_longs.adb:315:07: info: initialization of "T_Digit" proved
@@ -1448,5 +1448,5 @@ workspaces.adb:5:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC4: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC4: 2 VC)
-workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for Size + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at workspaces.ads:4 should mention Size in a precondition]
+workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for Size + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size + 1 in Integer) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC4: 2 VC)
