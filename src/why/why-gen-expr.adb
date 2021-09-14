@@ -513,6 +513,16 @@ package body Why.Gen.Expr is
 
          Check := New_And_Pred (Eqs (1 .. Count));
 
+         --  For a simple one-dimensional array, record the index type used for
+         --  the index check associated with the Ada node.
+
+         if Dim = 1 then
+            Add_Range_Kind_Information
+              (Ada_Node,
+               K  => VC_Index_Check,
+               Ty => Nth_Index_Type (To_Ent, 1));
+         end if;
+
          return New_Located_Assert (Ada_Node,
                                     Check,
                                     VC_Index_Check,
@@ -1422,6 +1432,16 @@ package body Why.Gen.Expr is
                                              Dim    => Dim));
       T : W_Prog_Id;
    begin
+      --  For arrays of dimension 1 only, record the index type used for the
+      --  index check associated with the Ada node.
+
+      if Number_Dimensions (Get_Ada_Node (+Get_Type (Arr_Expr))) = 1 then
+         Add_Range_Kind_Information
+           (Ada_Node,
+            K  => VC_Index_Check,
+            Ty => Nth_Index_Type (Get_Ada_Node (+Get_Type (Arr_Expr)), 1));
+      end if;
+
       T := New_Located_Assert (Ada_Node => Ada_Node,
                                Reason   => VC_Index_Check,
                                Pred     => +New_Range_Expr
@@ -1447,6 +1467,7 @@ package body Why.Gen.Expr is
       Check_Kind : Scalar_Check_Kind)
       return W_Prog_Id
    is
+      Reason : constant VC_Range_Kind := To_VC_Kind (Check_Kind);
       W_Type : constant W_Type_Id :=
         (if Get_Type_Kind (Get_Type (W_Expr)) = EW_Split
          then Base_Why_Type (Get_Ada_Node (+Get_Type (W_Expr)))
@@ -1455,6 +1476,13 @@ package body Why.Gen.Expr is
       W_Fun  : W_Identifier_Id;  --  range checking function
 
    begin
+      --  Record the type used for the range check associated with the Ada node
+
+      Add_Range_Kind_Information
+        (Ada_Node,
+         K  => Reason,
+         Ty => Ty);
+
       --  When the range check comes from a modular type, either the expression
       --  is a bitvector and we apply the check on the largest bitvector type
       --  involved, or the expression is an int and we need to apply the check
@@ -1512,7 +1540,7 @@ package body Why.Gen.Expr is
                                  Progs    => (1 => W_First,
                                               2 => W_Last,
                                               3 => W_Int_Tmp),
-                                 Reason   => To_VC_Kind (Check_Kind),
+                                 Reason   => Reason,
                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
@@ -1534,7 +1562,7 @@ package body Why.Gen.Expr is
                Result := New_VC_Call (Ada_Node => Ada_Node,
                                       Name     => W_Fun,
                                       Progs    => (1 => +W_Expr),
-                                      Reason   => To_VC_Kind (Check_Kind),
+                                      Reason   => Reason,
                                       Typ      => Get_Type (W_Expr));
             end if;
 
@@ -1611,7 +1639,7 @@ package body Why.Gen.Expr is
                               Progs    => (1 => W_First,
                                            2 => W_Last,
                                            3 => W_Expr_Rounded),
-                              Reason   => To_VC_Kind (Check_Kind),
+                              Reason   => Reason,
                               Typ      => Get_Type (W_Expr));
             end;
 
@@ -1635,7 +1663,7 @@ package body Why.Gen.Expr is
                     New_VC_Call (Ada_Node => Ada_Node,
                                  Name     => W_Fun,
                                  Progs    => W_Args,
-                                 Reason   => To_VC_Kind (Check_Kind),
+                                 Reason   => Reason,
                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
@@ -1672,7 +1700,7 @@ package body Why.Gen.Expr is
                                            (Domain => EW_Prog,
                                             Expr   => W_Expr,
                                             To     => Range_Typ)),
-                                    Reason   => To_VC_Kind (Check_Kind),
+                                    Reason   => Reason,
                                     Typ      => Range_Typ),
                      To     => W_Type);
                end;
@@ -1710,7 +1738,7 @@ package body Why.Gen.Expr is
                                           Progs    => (1 => W_First,
                                                        2 => W_Last,
                                                        3 => +W_Expr),
-                                          Reason   => To_VC_Kind (Check_Kind),
+                                          Reason   => Reason,
                                           Typ      => W_Type);
                end;
             end if;
@@ -1735,7 +1763,7 @@ package body Why.Gen.Expr is
                Result := New_VC_Call (Ada_Node => Ada_Node,
                                       Name     => W_Fun,
                                       Progs    => W_Args,
-                                      Reason   => To_VC_Kind (Check_Kind),
+                                      Reason   => Reason,
                                       Typ      => Get_Type (W_Expr));
                Result :=
                  +Binding_For_Temp (Domain  => EW_Prog,
@@ -1749,7 +1777,7 @@ package body Why.Gen.Expr is
             Result := New_VC_Call (Ada_Node => Ada_Node,
                                    Name     => W_Fun,
                                    Progs    => (1 => +W_Expr),
-                                   Reason   => To_VC_Kind (Check_Kind),
+                                   Reason   => Reason,
                                    Typ      => Get_Type (W_Expr));
          end if;
       end if;

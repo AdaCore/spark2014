@@ -29,6 +29,7 @@ with Ada.Text_IO;
 with Aspects;                   use Aspects;
 with Assumption_Types;          use Assumption_Types;
 with Atree;                     use Atree;
+with Checked_Types;             use Checked_Types;
 with Common_Containers;         use Common_Containers;
 with Einfo;                     use Einfo;
 with Einfo.Entities;            use Einfo.Entities;
@@ -39,6 +40,7 @@ with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why.Expr.Loops;
+with Gnat2Why.Util;             use Gnat2Why.Util;
 with Gnat2Why_Args;             use Gnat2Why_Args;
 with Gnat2Why_Opts;             use Gnat2Why_Opts;
 with GNATCOLL.Utils;            use GNATCOLL.Utils;
@@ -2217,6 +2219,18 @@ package body Flow_Error_Messages is
             --  Return the corresponding formal parameter for an actual
             --  parameter N, or Empty otherwise.
 
+            procedure Get_Subprogram_Inputs
+              (Subp      : Runnable_Kind_Id;
+               In_Vars   : out Flow_Id_Sets.Set;
+               Out_Vars  : out Flow_Id_Sets.Set);
+            --  Get all inputs of subprogram Subp: inputs in In_Vars; outputs
+            --  of unconstrained array/record type in Out_Vars, as their
+            --  bounds/discriminants are passed as inputs.
+
+            ------------------------------
+            -- Get_Corresponding_Formal --
+            ------------------------------
+
             function Get_Corresponding_Formal (N : Node_Id) return Entity_Id is
                This   : Node_Id := N;
                Par    : Node_Id := Parent (N);
@@ -2247,6 +2261,85 @@ package body Flow_Error_Messages is
                return Empty;
             end Get_Corresponding_Formal;
 
+            -----------------------------------
+            -- Get_Subprogram_Inputs_Outputs --
+            -----------------------------------
+
+            procedure Get_Subprogram_Inputs
+              (Subp      : Runnable_Kind_Id;
+               In_Vars   : out Flow_Id_Sets.Set;
+               Out_Vars  : out Flow_Id_Sets.Set)
+            is
+               Ignore_Vars : Flow_Id_Sets.Set;
+            begin
+               --  Get the variables read in the subprogram, both global
+               --  variables and parameters.
+
+               --  Currently, we do not add to Out_Vars any global variables
+               --  only written in the subprogram, even those of unconstrained
+               --  array/record type whose bounds/discriminants are passed as
+               --  inputs, contrary to what we do for parameters.
+
+               Get_Proof_Globals (Subprogram      => Subp,
+                                  Reads           => In_Vars,
+                                  Writes          => Ignore_Vars,
+                                  Erase_Constants => True,
+                                  Scop            =>
+                                    (Ent => Subp, Part => Body_Part));
+
+               --  Include the formals in the variables read/written in the
+               --  subprogram.
+
+               if Subp in Callable_Kind_Id then
+                  declare
+                     Formal : Entity_Id := First_Formal (Subp);
+                     Id     : Flow_Id;
+                  begin
+                     while Present (Formal) loop
+                        Id := Direct_Mapping_Id (Formal);
+
+                        if Ekind (Formal) in E_In_Parameter
+                                           | E_In_Out_Parameter
+                        then
+                           --  Include the formal in the variables read in the
+                           --  subprogram.
+                           In_Vars.Include (Id);
+
+                        --  Only keep in Out_Vars output formals of
+                        --  unconstrained array/record type whose
+                        --  bounds/discriminants are passed as inputs.
+
+                        elsif not Is_Constrained (Etype (Formal))
+                          and then (Is_Array_Type (Etype (Formal))
+                                      or else
+                                    Has_Discriminants (Etype (Formal)))
+                        then
+                           Out_Vars.Include (Id);
+                        end if;
+
+                        Next_Formal (Formal);
+                     end loop;
+                  end;
+               end if;
+            end Get_Subprogram_Inputs;
+
+            --  Local variables
+
+            Instr : constant Node_Id := Enclosing_Stmt_Or_Prag_Or_Decl (N);
+
+            Check_Inside_Pre : constant Boolean :=
+              Is_Pragma (Instr, Pragma_Precondition);
+            --  Check is inside the subprogram precondition
+
+            Check_Inside_Assertion : constant Boolean :=
+              Nkind (Instr) = N_Pragma
+                and then Get_Pragma_Id (Pragma_Name (Instr)) in
+                   Pragma_Precondition
+                 | Pragma_Postcondition
+                 | Pragma_Check
+                 | Pragma_Loop_Variant;
+            --  Check is inside an assertion
+
             Check_Vars  : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
             --  Retrieve variables from the node associated to the failed
             --  proof. This set can be reduced during our traversal back in the
@@ -2268,6 +2361,11 @@ package body Flow_Error_Messages is
             Expl        : Unbounded_String;
             Prag_N      : Node_Id;
 
+            --  Input/output variables for the current subprogram
+            --  Enclosing_Subp. Only the input part is used.
+            Input_Vars  : Flow_Id_Sets.Set;
+            Output_Vars : Flow_Id_Sets.Set;
+
             use type Flow_Id_Sets.Set;
 
          begin
@@ -2278,6 +2376,54 @@ package body Flow_Error_Messages is
 
             if Nkind (Prag_N) /= N_Pragma then
                Prag_N := Empty;
+            end if;
+
+            --  Special case of a check inside a precondition, which might not
+            --  be provable simply because the conjuncts are joined with "and"
+            --  instead of "and then".
+
+            if Check_Inside_Pre then
+               declare
+                  function Is_Conjunct (N : Node_Id) return Boolean is
+                    (Nkind (Parent (N)) in N_Pragma | N_Op_And);
+
+                  function Get_Conjunct is new
+                    First_Parent_With_Property (Is_Conjunct);
+
+                  Conjunct   : constant Node_Id :=
+                    (if Is_Conjunct (N) then N else Get_Conjunct (N));
+                  Par        : constant Node_Id := Parent (Conjunct);
+                  Previous   : Node_Id;
+
+                  Check_Vars : Flow_Id_Sets.Set :=
+                    Get_Variables_From_Node (N, Tag);
+                  Vars       : Flow_Id_Sets.Set;
+
+               begin
+                  if Nkind (Par) = N_Op_And
+                    and then Right_Opnd (Par) = Conjunct
+                  then
+                     Previous := Left_Opnd (Par);
+                     Vars :=
+                       Get_Filtered_Variables_For_Proof (Previous, Previous);
+                     Check_Vars.Intersection (Vars);
+
+                     if not Check_Vars.Is_Empty then
+                        return "use ""and then"" instead of ""and"""
+                          & " in precondition";
+                     end if;
+                  end if;
+               end;
+            end if;
+
+            --  If an overflow check is reported inside an assertion, suggest
+            --  to use pragma Overflow_Mode or -gnato13 or Big_Integers.
+
+            if Check_Inside_Assertion
+              and then Tag = VC_Overflow_Check
+            then
+               return "use pragma Overflow_Mode or switch -gnato13 or "
+                 & "unit Ada.Numerics.Big_Numerics.Big_Integers";
             end if;
 
             --  Filter out variables which are generated by the compiler
@@ -2299,6 +2445,108 @@ package body Flow_Error_Messages is
 
             if Check_Vars.Is_Empty then
                goto END_OF_SEARCH;
+            end if;
+
+            --  Recognize a constraint on inputs that can directly be expressed
+            --  as a precondition. Note that this is sufficient precondition,
+            --  not a necessary one, as this program point may be unreachable,
+            --  or reached only under some conditions.
+
+            --  As a proxy measure of the constraint dependencies, we're
+            --  looking only at the dependencies of the node to which the VC is
+            --  associated. For example, for a range check on Expr against type
+            --  T, we'll look at dependencies of Expr but not at dependencies
+            --  of T to decide if the constraint can be expressed as a
+            --  precondition.
+
+            if Enclosing_Subp in Runnable_Kind_Id then
+
+               --  Retrieve the subprogram inputs
+
+               Get_Subprogram_Inputs
+                 (Subp     => Enclosing_Subp,
+                  In_Vars  => Input_Vars,
+                  Out_Vars => Output_Vars);
+
+               if (for all V of Check_Vars =>
+                     Input_Vars.Contains (V)
+                       and then V.Kind = Direct_Mapping
+                       and then Nkind (V.Node) in N_Entity
+                       and then not Is_Mutable_In_Why (V.Node))
+               then
+                  --  Do not deal with range checks on string concatenation or
+                  --  Succ/Pred on enumerations yet. Also do not issue a fix
+                  --  "add precondition (Expr in Integer)" when Expr is itself
+                  --  inside the precondition.
+
+                  if Tag in VC_Range_Kind
+                    and then Is_Integer_Type (Etype (N))
+                    and then
+                      (if Check_Inside_Pre then Tag not in VC_Overflow_Kind)
+                  then
+                     declare
+                        Key : constant Check_Key :=
+                          Check_Key'(N => N, K => Tag);
+                        Typ : constant Type_Kind_Id :=
+                          (if Check_Information.Contains (Key) then
+                             Check_Information (Key).Ty
+                           else
+                              Etype (N));
+                        Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
+                        Hi  : constant N_Subexpr_Id := Type_High_Bound (Typ);
+
+                        Lo_Image   : constant String :=
+                          (if Nkind (Lo) = N_Integer_Literal then
+                             UI_Image (SPARK_Atree.Expr_Value (Lo), Decimal)
+                           else
+                             String_Of_Node (Lo));
+                        Hi_Image   : constant String :=
+                          (if Nkind (Hi) = N_Integer_Literal then
+                             UI_Image (SPARK_Atree.Expr_Value (Hi), Decimal)
+                           else
+                             String_Of_Node (Hi));
+                        Constraint : constant String :=
+                          (if Comes_From_Source (Typ)
+                             or else Is_Standard_Type (Typ)
+                           then
+                             Source_Name (Typ)
+                           else
+                             Lo_Image & " .. " & Hi_Image);
+                     begin
+                        return "add precondition ("
+                          & String_Of_Node (N) & " in " & Constraint
+                          & ") to subprogram "
+                          & Get_Line_Number (N, Sloc (Enclosing_Subp));
+                     end;
+
+                  elsif Tag in VC_Division_Check then
+                     declare
+                        pragma Assert
+                          (if Nkind (N) = N_Attribute_Reference
+                           then Attribute_Name (N) = Name_Remainder);
+
+                        Key : constant Check_Key :=
+                          Check_Key'(N => N, K => Tag);
+                     begin
+                        if Check_Information.Contains (Key) then
+                           declare
+                              Opnd : constant N_Extended_Subexpr_Id :=
+                                Check_Information (Key).Divisor;
+                              Name : constant String :=
+                                (if Nkind (Opnd) in N_Defining_Identifier then
+                                   Source_Name (Opnd)
+                                 else
+                                   String_Of_Node (Opnd));
+                           begin
+                              return "add precondition ("
+                                & Name & " /= 0"
+                                & ") to subprogram "
+                                & Get_Line_Number (N, Sloc (Enclosing_Subp));
+                           end;
+                        end if;
+                     end;
+                  end if;
+               end if;
             end if;
 
             --  Start looking for an explanation
@@ -2714,48 +2962,11 @@ package body Flow_Error_Messages is
                         goto END_OF_SEARCH;
                      end if;
 
-                     --  Get the variables read in the subprogram, both global
-                     --  variables and parameters.
+                     --  Get the subprogram inputs
 
-                     Get_Proof_Globals (Subprogram      => Proc,
-                                        Reads           => Read_Vars,
-                                        Writes          => Ignore_Vars,
-                                        Erase_Constants => True,
-                                        Scop            =>
-                                          (Ent => Proc, Part => Body_Part));
-
-                     --  Include the formal in the variables read/written in
-                     --  the subprogram.
-
-                     declare
-                        Formal : Entity_Id := First_Formal (Proc);
-                        Id     : Flow_Id;
-                     begin
-                        while Present (Formal) loop
-                           Id := Direct_Mapping_Id (Formal);
-
-                           if Ekind (Formal) in E_In_Parameter
-                                              | E_In_Out_Parameter
-                           then
-                              --  Include the formal in the variables read in
-                              --  the subprogram.
-                              Read_Vars.Include (Id);
-
-                           --  Only keep in Out_Vars output formals of
-                           --  unconstrained array/record type whose
-                           --  bounds/discriminants are passed as inputs.
-
-                           elsif not Is_Constrained (Etype (Formal))
-                             and then (Is_Array_Type (Etype (Formal))
-                                         or else
-                                       Has_Discriminants (Etype (Formal)))
-                           then
-                              Out_Vars.Include (Id);
-                           end if;
-
-                           Next_Formal (Formal);
-                        end loop;
-                     end;
+                     Get_Subprogram_Inputs (Subp     => Proc,
+                                            In_Vars  => Read_Vars,
+                                            Out_Vars => Out_Vars);
 
                      --  Retrieve those variables mentioned in a precondition
 
@@ -2836,46 +3047,6 @@ package body Flow_Error_Messages is
             end loop;
 
             << END_OF_SEARCH >>
-
-            --  Special case of a check inside a precondition, which might not
-            --  be provable simply because the conjuncts are joined with "and"
-            --  instead of "and then".
-
-            if Is_Pragma
-              (Enclosing_Stmt_Or_Prag_Or_Decl (N), Pragma_Precondition)
-            then
-               declare
-                  function Is_Conjunct (N : Node_Id) return Boolean is
-                    (Nkind (Parent (N)) in N_Pragma | N_Op_And);
-
-                  function Get_Conjunct is new
-                    First_Parent_With_Property (Is_Conjunct);
-
-                  Conjunct   : constant Node_Id :=
-                    (if Is_Conjunct (N) then N else Get_Conjunct (N));
-                  Par        : constant Node_Id := Parent (Conjunct);
-                  Previous   : Node_Id;
-
-                  Check_Vars : Flow_Id_Sets.Set :=
-                    Get_Variables_From_Node (N, Tag);
-                  Vars       : Flow_Id_Sets.Set;
-
-               begin
-                  if Nkind (Par) = N_Op_And
-                    and then Right_Opnd (Par) = Conjunct
-                  then
-                     Previous := Left_Opnd (Par);
-                     Vars :=
-                       Get_Filtered_Variables_For_Proof (Previous, Previous);
-                     Check_Vars.Intersection (Vars);
-
-                     if not Check_Vars.Is_Empty then
-                        return "use ""and then"" instead of ""and"""
-                          & " in precondition";
-                     end if;
-                  end if;
-               end;
-            end if;
 
             --  No explanation was found based on the variables referenced in
             --  the node associated to the check. Look for function calls in

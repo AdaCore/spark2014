@@ -8242,6 +8242,10 @@ package body Gnat2Why.Expr is
                   Expr     => Right,
                   To       => R_Type);
 
+               Add_Division_Check_Information
+                 (Ada_Node,
+                  Divisor => Get_Ada_Node (+Right));
+
                T := New_Operator_Call
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
@@ -8276,6 +8280,10 @@ package body Gnat2Why.Expr is
                         elsif Op = N_Op_Rem then
                           M_Int_Div.Rem_Id
                         else M_Int_Div.Mod_Id);
+
+               Add_Division_Check_Information
+                 (Ada_Node,
+                  Divisor => Get_Ada_Node (+Right));
 
                T := New_Operator_Call
                  (Ada_Node => Ada_Node,
@@ -8371,6 +8379,10 @@ package body Gnat2Why.Expr is
                              Reason   => VC_Division_Check,
                              Kind     => EW_Assert);
                      begin
+                        Add_Division_Check_Information
+                          (Ada_Node,
+                           Divisor => Get_Ada_Node (+Right));
+
                         Prepend (Ass, T);
                      end;
                   end if;
@@ -13480,6 +13492,10 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
             begin
+               Add_Division_Check_Information
+                 (Expr,
+                  Divisor => Next (First (Expressions (Expr))));
+
                --  The front end does not insert a Do_Division_Check flag on
                --  remainder attribute so we systematically do the check.
                T := New_Operator_Call
@@ -16749,6 +16765,10 @@ package body Gnat2Why.Expr is
                              Reason   => VC_Division_Check,
                              Kind     => EW_Assert);
                      begin
+                        Add_Division_Check_Information
+                          (Expr,
+                           Divisor => Left);
+
                         Prepend (Check, E);
                      end;
                   end if;
