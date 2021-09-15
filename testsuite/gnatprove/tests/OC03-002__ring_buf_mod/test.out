@@ -2,14 +2,14 @@ harness.adb:3:11: warning: subprogram "Harness" has no effect
 harness.adb:6:04: info: initialization of "R" proved
 harness.adb:7:04: info: initialization of "H" proved
 harness.adb:10:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
-harness.adb:11:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 62593, Length => 0))
-harness.adb:12:04: medium: precondition might fail (e.g. when R = (Data => (0 => 0, others => 0), First => 1, Length => 0))
-harness.adb:13:19: medium: assertion might fail (e.g. when H = 1 and X = 0) [possible fix: subprogram at line 3 should mention X in a precondition]
-harness.adb:14:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
-harness.adb:15:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
-harness.adb:16:19: medium: assertion might fail (e.g. when H = 1 and Y = 0) [possible fix: subprogram at line 3 should mention Y in a precondition]
-harness.adb:17:04: medium: precondition might fail (e.g. when R = (Data => (0 => 0, others => 0), First => 1, Length => 0))
-harness.adb:18:19: medium: assertion might fail (e.g. when H = 1 and Z = 0) [possible fix: subprogram at line 3 should mention Z in a precondition]
+harness.adb:11:04: medium: precondition might fail
+harness.adb:12:04: medium: precondition might fail (e.g. when R = (Data => (0 => 0, others => 0), First => 3, Length => 0))
+harness.adb:13:19: medium: assertion might fail (e.g. when H = 0 and X = -1) [possible fix: subprogram at line 3 should mention X in a precondition]
+harness.adb:14:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 4, Length => 0))
+harness.adb:15:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 3, Length => 0))
+harness.adb:16:19: medium: assertion might fail (e.g. when H = 0 and Y = -1) [possible fix: subprogram at line 3 should mention Y in a precondition]
+harness.adb:17:04: medium: precondition might fail (e.g. when R = (Data => (0 => 0, others => 0), First => 3, Length => 0))
+harness.adb:18:19: medium: assertion might fail (e.g. when H = 0 and Z = -1) [possible fix: subprogram at line 3 should mention Z in a precondition]
 ring_buf.adb:15:37: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC4: 2 VC)
 ring_buf.adb:24:28: info: range check proved (CVC4: 2 VC)
@@ -23,10 +23,10 @@ ring_buf.ads:47:58: info: index check proved (CVC4: 2 VC)
 ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (Ar_Index'Last => 0) and M'First = Ar_Index'Last and M'Last = Ar_Index'Last and X = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition]
 ring_buf.ads:51:51: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 51 should mention M]
 ring_buf.ads:58:21: info: initialization of "R" proved
-ring_buf.ads:59:19: medium: postcondition might fail
+ring_buf.ads:59:19: medium: postcondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:63:17: medium: postcondition might fail
 ring_buf.ads:63:31: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
-ring_buf.ads:67:19: medium: postcondition might fail (e.g. when R = (Data => (others => 0), First => 32768, Length => 0) and R'Old = (Data => (others => 0), First => 32768, Length => 0) and X = 0)
+ring_buf.ads:67:19: medium: postcondition might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => 3) and R'Old = (Data => (others => 0), First => Ar_Index'Last, Length => 2) and X = 0)
 ring_buf.ads:69:43: info: initialization of "Element" proved
 ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old) (e.g. when R = (Data => (others => 0), First => 0, Length => Length_Type'Last-1) and R'Old = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
 ring_buf.ads:71:34: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))

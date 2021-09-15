@@ -11,7 +11,7 @@ test_callback.adb:37:48: info: precondition proved (CVC4: 1 VC)
 test_callback.adb:42:14: medium: postcondition might fail (e.g. when Call_Incr_Bad'Result = 100 and X = 100)
 test_callback.adb:45:14: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:45:14: medium: precondition might fail (e.g. when X = 100)
-test_callback.adb:50:14: medium: postcondition might fail (e.g. when Call_Incr_Bad2'Result = Integer'First and X = 0)
+test_callback.adb:50:14: medium: postcondition might fail (e.g. when Call_Incr_Bad2'Result = 0 and X = 1)
 test_callback.adb:53:14: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 48 should mention F]
 test_callback.adb:53:14: medium: precondition might fail (e.g. when X = 50)
 test_callback.adb:58:14: info: postcondition proved (CVC4: 1 VC)
