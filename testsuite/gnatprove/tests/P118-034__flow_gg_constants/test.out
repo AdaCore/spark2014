@@ -15,9 +15,9 @@ Generated contracts for A
    Initializes =>
       Var
       VI1
-a.adb:4:55: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + Y in Integer) to subprogram at a.ads:3]
-a.adb:6:65: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + Y in Integer) to subprogram at a.ads:4]
-a.adb:10:10: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + Y in Integer) to subprogram at line 8]
+a.adb:4:55: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at a.ads:3]
+a.adb:6:65: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at a.ads:4]
+a.adb:10:10: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at line 8]
 a.adb:11:09: info: data dependencies proved
 a.adb:30:54: info: data dependencies proved
 a.adb:31:54: info: data dependencies proved

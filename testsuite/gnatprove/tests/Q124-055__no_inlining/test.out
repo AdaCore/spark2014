@@ -26,10 +26,10 @@ ident.adb:55:22: medium: assertion might fail (e.g. when Y = 0) [possible fix: c
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 ident.ads:9:45: info: initialization of "Y" proved
-incr_expr_fun.adb:4:62: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at incr_expr_fun.ads:11]
-incr_expr_fun.adb:6:63: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at incr_expr_fun.ads:22]
-incr_expr_fun.adb:8:58: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at line 8]
-incr_expr_fun.adb:11:63: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at line 10]
+incr_expr_fun.adb:4:62: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at incr_expr_fun.ads:11]
+incr_expr_fun.adb:6:63: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at incr_expr_fun.ads:22]
+incr_expr_fun.adb:8:58: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 8]
+incr_expr_fun.adb:11:63: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 10]
 incr_expr_fun.adb:16:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:16:39: info: overflow check proved (CVC4: 2 VC)
 incr_expr_fun.adb:17:22: info: assertion proved (CVC4: 1 VC)
@@ -48,9 +48,9 @@ incr_expr_fun.adb:23:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:23:40: info: overflow check proved (CVC4: 2 VC)
 incr_expr_fun.adb:24:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:24:45: info: overflow check proved (CVC4: 2 VC)
-incr_expr_fun.ads:4:57: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at line 4]
-incr_expr_fun.ads:7:61: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at line 6]
+incr_expr_fun.ads:4:57: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 4]
+incr_expr_fun.ads:7:61: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 6]
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
-incr_expr_fun.ads:15:62: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at line 9]
-incr_expr_fun.ads:17:58: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at line 17]
-incr_expr_fun.ads:20:63: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X + 1 in Integer) to subprogram at line 19]
+incr_expr_fun.ads:15:62: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 9]
+incr_expr_fun.ads:17:58: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 17]
+incr_expr_fun.ads:20:63: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 19]

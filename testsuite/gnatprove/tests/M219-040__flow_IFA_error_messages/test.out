@@ -6,7 +6,7 @@ test.adb:31:07: medium: exception might be raised
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
 test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
 test.adb:40:23: info: cannot unroll loop (too many loop iterations)
-test.adb:41:20: medium: overflow check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A + B in Integer) to subprogram at line 38]
+test.adb:41:20: medium: overflow check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if B >= 0 then A <= Integer'Last - B else A >= Integer'First - B) to subprogram at line 38]
 test.adb:41:25: info: division check proved (CVC4: 1 VC)
 test.adb:45:27: info: overflow check proved (CVC4: 2 VC)
 test.adb:45:32: info: division check proved (CVC4: 1 VC)

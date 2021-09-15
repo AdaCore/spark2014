@@ -51,7 +51,7 @@ string_utilities.ads:4:48: info: range check proved (CVC4: 4 VC)
 string_utilities.ads:4:59: medium: overflow check might fail, cannot prove upper bound for S'First +1 (e.g. when S'First = Integer'Last and S'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer]
 string_utilities.ads:10:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:11:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
-string_utilities.ads:17:15: medium: overflow check might fail, cannot prove upper bound for 1 + Slow_LCS_Length (Tail (S1), Tail (S2)) (e.g. when S1'First = 1 and S1'Last = 0 and S2'First = 1 and S2'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 + Slow_LCS_Length (Tail (S1), Tail (S2)) in Integer) to subprogram at line 13]
+string_utilities.ads:17:15: medium: overflow check might fail, cannot prove upper bound for 1 + Slow_LCS_Length (Tail (S1), Tail (S2)) (e.g. when S1'First = 1 and S1'Last = 0 and S2'First = 1 and S2'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 <= Integer'Last - Slow_LCS_Length (Tail (S1), Tail (S2))) to subprogram at line 13]
 string_utilities.ads:17:17: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:17:17: info: implicit function contract not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:19:21: info: expression function body not available for proof ("Slow_LCS_Length" might not return)

@@ -1,3 +1,3 @@
-tetris.adb:7:23: medium: range check might fail, cannot prove lower bound for Y - 1 (e.g. when Y = 1) [reason for check: value must fit in the type of the expression] [possible fix: add precondition (Y - 1 in Y_Coord) to subprogram at line 4]
+tetris.adb:7:23: medium: range check might fail, cannot prove lower bound for Y - 1 (e.g. when Y = 1) [reason for check: value must fit in the type of the expression] [possible fix: add precondition (Y >= Y_Coord'First + 1) to subprogram at line 4]
 tetris.adb:14:07: info: initialization of "tmp" proved
-tetris.adb:17:19: medium: range check might fail, cannot prove lower bound for y - 1 (e.g. when Y = 1) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: add precondition (y - 1 in Y_Coord) to subprogram at line 11]
+tetris.adb:17:19: medium: range check might fail, cannot prove lower bound for y - 1 (e.g. when Y = 1) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: add precondition (Y >= Y_Coord'First + 1) to subprogram at line 11]

@@ -1,8 +1,8 @@
 update_checks_1.adb:9:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:9:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Index) to subprogram at update_checks_1.ads:5]
 update_checks_1.adb:14:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-update_checks_1.adb:14:23: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (I + 1 in Index) to subprogram at update_checks_1.ads:8]
-update_checks_1.adb:14:23: medium: range check might fail, cannot prove upper bound for I + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (I + 1 in Index) to subprogram at update_checks_1.ads:8]
+update_checks_1.adb:14:23: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (I <= Index'Last - 1) to subprogram at update_checks_1.ads:8]
+update_checks_1.adb:14:23: medium: range check might fail, cannot prove upper bound for I + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (I <= Index'Last - 1) to subprogram at update_checks_1.ads:8]
 update_checks_1.adb:19:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:19:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (1 .. I in Index) to subprogram at update_checks_1.ads:11]
 update_checks_1.adb:26:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

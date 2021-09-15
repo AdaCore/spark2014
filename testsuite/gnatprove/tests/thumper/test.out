@@ -104,9 +104,9 @@ hermes-der-decode.adb:314:52: info: initialization of "Stop" proved
 hermes-der-decode.adb:314:58: info: initialization of "Value" proved
 hermes-der-decode.adb:314:65: info: initialization of "Status" proved
 hermes-der-decode.adb:315:11: info: flow dependencies proved
-hermes-der-decode.adb:322:32: medium: overflow check might fail, cannot prove upper bound for Length_Stop + Length [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop + Length in Integer) to subprogram at line 310]
-hermes-der-decode.adb:326:34: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Length_Stop + 1 in Natural) to subprogram at line 310]
-hermes-der-decode.adb:326:34: medium: overflow check might fail, cannot prove upper bound for Length_Stop + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop + 1 in Integer) to subprogram at line 310]
+hermes-der-decode.adb:322:32: medium: overflow check might fail, cannot prove upper bound for Length_Stop + Length [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop <= Integer'Last - Length) to subprogram at line 310]
+hermes-der-decode.adb:326:34: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Length_Stop <= Natural'Last - 1) to subprogram at line 310]
+hermes-der-decode.adb:326:34: medium: overflow check might fail, cannot prove upper bound for Length_Stop + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop <= Integer'Last - 1) to subprogram at line 310]
 hermes-der-decode.adb:327:17: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:328:29: medium: overflow check might fail, cannot prove lower bound for 256*Result [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 327 should mention Result in a loop invariant]
