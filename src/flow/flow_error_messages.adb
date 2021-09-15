@@ -2227,6 +2227,12 @@ package body Flow_Error_Messages is
             --  of unconstrained array/record type in Out_Vars, as their
             --  bounds/discriminants are passed as inputs.
 
+            type Sign is (Negative_Or_Null, Positive_Or_Null, Unknown);
+
+            function Sign_Is_Known (Arg : N_Subexpr_Id) return Sign;
+            --  Determine whether the sign of Arg is known from its value (for
+            --  a literal) or type.
+
             ------------------------------
             -- Get_Corresponding_Formal --
             ------------------------------
@@ -2323,6 +2329,39 @@ package body Flow_Error_Messages is
                end if;
             end Get_Subprogram_Inputs;
 
+            -------------------
+            -- Sign_Is_Known --
+            -------------------
+
+            function Sign_Is_Known (Arg : N_Subexpr_Id) return Sign is
+            begin
+               if SPARK_Atree.Compile_Time_Known_Value (Arg) then
+                  if SPARK_Atree.Expr_Value (Arg) >= 0 then
+                     return Positive_Or_Null;
+                  else
+                     return Negative_Or_Null;
+                  end if;
+               end if;
+
+               declare
+                  Typ : constant Type_Kind_Id := Unique_Entity (Etype (Arg));
+                  Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
+                  Hi  : constant N_Subexpr_Id := Type_High_Bound (Typ);
+               begin
+                  if SPARK_Atree.Compile_Time_Known_Value (Lo)
+                    and then SPARK_Atree.Expr_Value (Lo) >= 0
+                  then
+                     return Positive_Or_Null;
+                  elsif SPARK_Atree.Compile_Time_Known_Value (Hi)
+                    and then SPARK_Atree.Expr_Value (Hi) <= 0
+                  then
+                     return Negative_Or_Null;
+                  end if;
+               end;
+
+               return Unknown;
+            end Sign_Is_Known;
+
             --  Local variables
 
             Instr : constant Node_Id := Enclosing_Stmt_Or_Prag_Or_Decl (N);
@@ -2336,11 +2375,12 @@ package body Flow_Error_Messages is
                 and then Get_Pragma_Id (Pragma_Name (Instr)) in
                    Pragma_Precondition
                  | Pragma_Postcondition
+                 | Pragma_Contract_Cases
                  | Pragma_Check
                  | Pragma_Loop_Variant;
             --  Check is inside an assertion
 
-            Check_Vars  : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
+            Check_Vars : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
             --  Retrieve variables from the node associated to the failed
             --  proof. This set can be reduced during our traversal back in the
             --  control-flow graph, as we bump into assignments that provide a
@@ -2475,14 +2515,10 @@ package body Flow_Error_Messages is
                        and then not Is_Mutable_In_Why (V.Node))
                then
                   --  Do not deal with range checks on string concatenation or
-                  --  Succ/Pred on enumerations yet. Also do not issue a fix
-                  --  "add precondition (Expr in Integer)" when Expr is itself
-                  --  inside the precondition.
+                  --  Succ/Pred on enumerations yet.
 
                   if Tag in VC_Range_Kind
                     and then Is_Integer_Type (Etype (N))
-                    and then
-                      (if Check_Inside_Pre then Tag not in VC_Overflow_Kind)
                   then
                      declare
                         Key : constant Check_Key :=
@@ -2491,17 +2527,24 @@ package body Flow_Error_Messages is
                           (if Check_Information.Contains (Key) then
                              Check_Information (Key).Ty
                            else
-                              Etype (N));
+                             Etype (N));
                         Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
                         Hi  : constant N_Subexpr_Id := Type_High_Bound (Typ);
 
+                        Use_Typ    : constant Boolean :=
+                          Comes_From_Source (Typ)
+                            or else Is_Standard_Type (Typ);
                         Lo_Image   : constant String :=
-                          (if Nkind (Lo) = N_Integer_Literal then
+                          (if Use_Typ then
+                             Source_Name (Typ) & "'First"
+                           elsif Nkind (Lo) = N_Integer_Literal then
                              UI_Image (SPARK_Atree.Expr_Value (Lo), Decimal)
                            else
                              String_Of_Node (Lo));
                         Hi_Image   : constant String :=
-                          (if Nkind (Hi) = N_Integer_Literal then
+                          (if Use_Typ then
+                             Source_Name (Typ) & "'Last"
+                           elsif Nkind (Hi) = N_Integer_Literal then
                              UI_Image (SPARK_Atree.Expr_Value (Hi), Decimal)
                            else
                              String_Of_Node (Hi));
@@ -2512,9 +2555,76 @@ package body Flow_Error_Messages is
                              Source_Name (Typ)
                            else
                              Lo_Image & " .. " & Hi_Image);
+
+                        --  When possible, put the suggested precondition in
+                        --  a form that will avoid overflows. So we prefer
+                        --  (A <= Integer'Last - B) to (A + B in Integer) when
+                        --  we know that B is non-negative.
+                        Pre        : constant String :=
+                          (if Nkind (N) = N_Op_Add then
+                            (declare
+                               Left_Str  : constant String :=
+                                 String_Of_Node (Left_Opnd (N));
+                               Right_Str : constant String :=
+                                 String_Of_Node (Right_Opnd (N));
+                               Pos_Right  : constant String :=
+                                 Left_Str & " <= " & Hi_Image & " - "
+                                 & Right_Str;
+                               Neg_Right  : constant String :=
+                                 Left_Str & " >= " & Lo_Image & " - "
+                                 & Right_Str;
+                               Pos_Left : constant String :=
+                                 Right_Str & " <= " & Hi_Image & " - "
+                                 & Left_Str;
+                               Neg_Left  : constant String :=
+                                 Right_Str & " >= " & Lo_Image & " - "
+                                 & Left_Str;
+                             begin
+                                (case Sign_Is_Known (Right_Opnd (N)) is
+                                   when Positive_Or_Null => Pos_Right,
+                                   when Negative_Or_Null => Neg_Right,
+                                   when Unknown =>
+                                     (case Sign_Is_Known (Left_Opnd (N)) is
+                                        when Positive_Or_Null => Pos_Left,
+                                        when Negative_Or_Null => Neg_Left,
+                                        when Unknown =>
+                                          "if " & Right_Str & " >= 0 then "
+                                          & Pos_Right & " else " & Neg_Right)))
+
+                          elsif Nkind (N) = N_Op_Subtract then
+                            (declare
+                               Left_Str  : constant String :=
+                                 String_Of_Node (Left_Opnd (N));
+                               Right_Str : constant String :=
+                                 String_Of_Node (Right_Opnd (N));
+                               Neg_Right  : constant String :=
+                                 Left_Str & " <= " & Hi_Image & " + "
+                                 & Right_Str;
+                               Pos_Right  : constant String :=
+                                 Left_Str & " >= " & Lo_Image & " + "
+                                 & Right_Str;
+                               Pos_Left : constant String :=
+                                 Right_Str & " >= " & Left_Str & " - "
+                                 & Hi_Image;
+                               Neg_Left  : constant String :=
+                                 Right_Str & " <= " & Left_Str & " - "
+                                 & Lo_Image;
+                             begin
+                                (case Sign_Is_Known (Right_Opnd (N)) is
+                                   when Positive_Or_Null => Pos_Right,
+                                   when Negative_Or_Null => Neg_Right,
+                                   when Unknown =>
+                                     (case Sign_Is_Known (Left_Opnd (N)) is
+                                        when Positive_Or_Null => Pos_Left,
+                                        when Negative_Or_Null => Neg_Left,
+                                        when Unknown =>
+                                          "if " & Right_Str & " >= 0 then "
+                                          & Pos_Right & " else " & Neg_Right)))
+
+                           else
+                             String_Of_Node (N) & " in " & Constraint);
                      begin
-                        return "add precondition ("
-                          & String_Of_Node (N) & " in " & Constraint
+                        return "add precondition (" & Pre
                           & ") to subprogram "
                           & Get_Line_Number (N, Sloc (Enclosing_Subp));
                      end;
