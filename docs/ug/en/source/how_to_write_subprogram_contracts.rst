@@ -759,7 +759,7 @@ Subprogram Termination
 ----------------------
 
 By default, |GNATprove| does not attempt to verify termination of subprograms.
-It is only concerned with partial correctness of
+By default, it is only concerned with partial correctness of
 subprograms, that is, it only checks that the contract of a subprogram holds
 when it terminates normally. What is more, |GNATprove| will enforce that no
 exception will be raised at runtime. Together, these two points ensure that
