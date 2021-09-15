@@ -3,5 +3,6 @@ p.adb:2:14: warning: subprogram "A" has no effect
 p.adb:4:20: warning: loop condition is stable
 p.adb:9:04: warning: analyzing unreferenced procedure "B"
 p.adb:9:14: warning: subprogram "B" has no effect
+p.adb:12:10: warning: loop exit condition is stable
 p.adb:16:04: warning: analyzing unreferenced procedure "C"
 p.adb:16:14: warning: subprogram "C" has no effect

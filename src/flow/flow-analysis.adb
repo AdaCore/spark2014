@@ -2891,66 +2891,93 @@ package body Flow.Analysis is
 
    procedure Find_Stable_Conditions (FA : in out Flow_Analysis_Graphs) is
 
-      function Is_While_Loop (F : Flow_Id) return Boolean is
-        (F.Kind = Direct_Mapping
-         and then Nkind (F.Node) = N_Loop_Statement
-         and then Present (Condition (Iteration_Scheme (F.Node))));
+      function Is_While_Loop (N : N_Loop_Statement_Id) return Boolean is
+        (Present (Condition (Iteration_Scheme (N))));
       --  Returns True if F is a WHILE loop
 
-      function Defined_In_Loop_Body (Loop_Id : Entity_Id)
-                                     return Flow_Id_Sets.Set
-        with Pre => Ekind (Loop_Id) = E_Loop;
-      --  Returns all the variables defined in the given loop's body
+      function Is_Stable (Loop_Id        : E_Loop_Id;
+                          Condition_Vars : Flow_Id_Sets.Set) return Boolean
+        with Pre => not Condition_Vars.Is_Empty;
+      --  True if none of the Condition_Vars is written inside the Loop_Id body
 
-      --------------------------
-      -- Defined_In_Loop_Body --
-      --------------------------
+      procedure Error_Msg (Msg : String; N : Node_Id);
+      --  Output an error message attached to the loop identifier
 
-      function Defined_In_Loop_Body (Loop_Id : Entity_Id)
-                                     return Flow_Id_Sets.Set
-      is
-         Result : Flow_Id_Sets.Set;
+      ---------------
+      -- Is_Stable --
+      ---------------
+
+      function Is_Stable (Loop_Id        : E_Loop_Id;
+                          Condition_Vars : Flow_Id_Sets.Set) return Boolean is
       begin
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
             declare
                Atr : V_Attributes renames FA.Atr (V);
             begin
-               if Atr.Loops.Contains (Loop_Id) then
-                  Result.Union (Atr.Variables_Defined);
+               if Atr.Loops.Contains (Loop_Id)
+                 and then (for some Var_Def of Atr.Variables_Defined =>
+                             Condition_Vars.Contains (Var_Def))
+               then
+                  return False;
                end if;
             end;
          end loop;
-         return Result;
-      end Defined_In_Loop_Body;
+
+         return True;
+      end Is_Stable;
+
+      ---------------
+      -- Error_Msg --
+      ---------------
+
+      procedure Error_Msg (Msg : String; N : Node_Id) is
+      begin
+         Error_Msg_Flow
+           (FA       => FA,
+            Msg      => Msg,
+            N        => N,
+            Tag      => Stable,
+            Severity => Warning_Kind);
+      end Error_Msg;
 
    --  Start of processing for Find_Stable_Conditions
 
    begin
-      for N_Loop of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Cond_Id  : constant Flow_Id := FA.CFG.Get_Key (N_Loop);
-            Cond_Atr : V_Attributes renames FA.Atr (N_Loop);
+            Cond_Id  : constant Flow_Id := FA.CFG.Get_Key (V);
+            Cond_Atr : V_Attributes renames FA.Atr (V);
 
          begin
-            --  If this vertex is a WHILE loop with variables, i.e.
-            --  not a simple 'while True loop ...'.
             if not Cond_Atr.Variables_Used.Is_Empty
-              and then Is_While_Loop (Cond_Id)
-              and then Flow_Id_Sets.Intersection
-                (Cond_Atr.Variables_Used,
-                 Defined_In_Loop_Body
-                   (Entity (Identifier (Cond_Id.Node)))).Is_Empty
+              and then Cond_Id.Kind = Direct_Mapping
             then
-               --  If none of the variables used in the loop condition are
-               --  modified in the loop body, then the loop condition is
-               --  stable.
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "loop condition is stable",
-                  N        => Error_Location (FA.CFG, FA.Atr, N_Loop),
-                  Tag      => Stable,
-                  Severity => Warning_Kind,
-                  Vertex   => N_Loop);
+               case Nkind (Cond_Id.Node) is
+                  --  If none of the variables used in the loop condition are
+                  --  modified in the loop body, then the loop is considered
+                  --  stable.
+                  when N_Loop_Statement =>
+                     if Is_While_Loop (Cond_Id.Node)
+                       and then
+                         Is_Stable (Loop_Id        =>
+                                      Entity (Identifier (Cond_Id.Node)),
+                                    Condition_Vars => Cond_Atr.Variables_Used)
+                     then
+                        Error_Msg (Msg => "loop condition is stable",
+                                   N   => Cond_Id.Node);
+                     end if;
+                  when N_Exit_Statement =>
+                     if Is_Stable (Loop_Id        =>
+                                     Loop_Entity_Of_Exit_Statement
+                                       (Cond_Id.Node),
+                                   Condition_Vars => Cond_Atr.Variables_Used)
+                     then
+                        Error_Msg (Msg => "loop exit condition is stable",
+                                   N   => Cond_Id.Node);
+                     end if;
+                  when others =>
+                     null;
+               end case;
             end if;
          end;
       end loop;
