@@ -15,6 +15,8 @@ formal verification.
 Aspect ``Constant_After_Elaboration``
 -------------------------------------
 
+[SPARK]
+
 Aspect ``Constant_After_Elaboration`` can be specified on a library level
 variable that has an initialization expression. When specified, the
 corresponding variable can only be changed during the elaboration of its
@@ -62,6 +64,8 @@ unsynchronized modifications (see :ref:`Tasks and Data Races`).
 Aspect ``No_Caching``
 ---------------------
 
+[SPARK]
+
 Aspect ``No_Caching`` can be specified for a volatile variable to indicate that
 this variable can be analyzed as non-volatile by |GNATprove|. This is typically
 used to hold the value of local variables guarding the access to some critical
@@ -94,6 +98,8 @@ one cannot declare it inside a subprogram.
 
 Aspect ``Relaxed_Initialization`` and Attribute ``Initialized``
 ---------------------------------------------------------------
+
+[SPARK]
 
 Modes on parameters and data dependency contracts in |SPARK| have a stricter
 meaning than in Ada (see :ref:`Data Initialization Policy`). In general, this
@@ -635,6 +641,218 @@ type. Attribute ``Result`` can also be used inside consequence expressions in
 Aggregates
 ----------
 
+Aggregates are expressions, and as such can appear in assertions and contracts
+to specify the value of a composite type (record or array), without having to
+specify the value of each component of the object separately.
+
+Record Aggregates
+^^^^^^^^^^^^^^^^^
+
+[Ada 83]
+
+Since the first version, Ada has a compact syntax for expressing the value of a
+record type, optionally allowing to name the components. Given the following
+declaration of type ``Point``:
+
+.. code-block:: ada
+
+   type Point is record
+      X, Y, Z : Float;
+   end record;
+
+the value of the origin can be expressed with a named notation:
+
+.. code-block:: ada
+
+   Origin : constant Point := (X => 0.0, Y => 0.0, Z => 0.0);
+
+or with a positional notation, where the values for components are taken in the
+order in which they are declared in type ``Point``, so the following is
+equivalent to the above named notation:
+
+.. code-block:: ada
+
+   Origin : constant Point := (0.0, 0.0, 0.0);
+
+With named notation, components can be given in any order:
+
+.. code-block:: ada
+
+   Origin : constant Point := (Z => 0.0, Y => 0.0, X => 0.0);
+
+Positional notation and named notation can be mixed, but, in that case, named
+associations should always follow positional associations, so positional
+notation will refer to the first components of the record, and named notation
+will refer to the last components of the record:
+
+.. code-block:: ada
+
+   Origin : constant Point := (0.0, Y => 0.0, Z => 0.0);
+   Origin : constant Point := (0.0, 0.0, Z => 0.0);
+
+Choices can be grouped with the bar symbol ``|`` to denote sets:
+
+.. code-block:: ada
+
+   Origin : constant Point := (X | Y | Z => 0.0);
+
+The choice ``others`` can be used with a value to refer to all other
+components, provided these components have the same type, and the ``others``
+choice should come last:
+
+.. code-block:: ada
+
+   Origin : constant Point := (X => 0.0, others => 0.0);
+   Origin : constant Point := (Z => 0.0, others => 0.0);
+   Origin : constant Point := (0.0, others => 0.0);  --  positional for X
+   Origin : constant Point := (others => 0.0);
+
+The box notation ``<>`` can be used instead of an explicit value to denote the
+default value of the corresponding type:
+
+.. code-block:: ada
+
+   Origin : constant Point := (X => <>, Y => 0.0, Z => <>);
+
+In SPARK, this is only allowed if the types of the corresponding components
+have a default value, for example here:
+
+.. code-block:: ada
+
+   type Zero_Init_Float is new Float with Default_Value => 0.0;
+
+   type Point is record
+      X : Float := 0.0;
+      Y : Float;
+      Z : Zero_Init_Float;
+   end record;
+
+Note that, when using box notation ``<>`` with an ``others`` choice, it is not
+required that these components have the same type.
+
+Array Aggregates
+^^^^^^^^^^^^^^^^
+
+[Ada 83]
+
+Since the first version, Ada has the same compact syntax for expressing the
+value of an array type as for record types, optionally allowing to name the
+indexes. Given the following declaration of type ``Point``:
+
+.. code-block:: ada
+
+   type Dimension is (X, Y, Z);
+
+   type Point is array (Dimension) of Float;
+
+the value of the origin can be expressed with a named notation:
+
+.. code-block:: ada
+
+   Origin : constant Point := (X => 0.0, Y => 0.0, Z => 0.0);
+
+or with a positional notation, where the values for components are taken in the
+order in which they are declared in type ``Point``, so the following is
+equivalent to the above named notation:
+
+.. code-block:: ada
+
+   Origin : constant Point := (0.0, 0.0, 0.0);
+
+With the difference that named notation and positional notation cannot be mixed
+in an array aggregate, all other explanations presented for aggregates of
+record type ``Point`` in :ref:`Record Aggregates` are applicable to array
+aggregates here, so all the following declarations are valid:
+
+.. code-block:: ada
+
+   Origin : constant Point := (Z => 0.0, Y => 0.0, X => 0.0);
+   Origin : constant Point := (X | Y | Z => 0.0);
+   Origin : constant Point := (X => 0.0, others => 0.0);
+   Origin : constant Point := (Z => 0.0, others => 0.0);
+   Origin : constant Point := (0.0, others => 0.0);  --  positional for X
+   Origin : constant Point := (others => 0.0);
+
+while the use of box notation ``<>`` is only allowed in SPARK if array
+components have a default value, either through their type, or through aspect
+``Default_Component_Value`` on the array type:
+
+.. code-block:: ada
+
+   type Point is array (Dimension) of Float
+     with Default_Component_Value => 0.0;
+
+Note that in many cases, indexes take an integer value rather than an
+enumeration value:
+
+.. code-block:: ada
+
+   type Dimension is range 1 .. 3;
+
+   type Point is array (Dimension) of Float;
+
+In that case, choices will take an integer value too:
+
+.. code-block:: ada
+
+   Origin : constant Point := (3 => 0.0, 2 => 0.0, 1 => 0.0);
+   Origin : constant Point := (1 | 2 | 3 => 0.0);
+   Origin : constant Point := (1 => 0.0, others => 0.0);
+   Origin : constant Point := (3 => 0.0, others => 0.0);
+   Origin : constant Point := (0.0, others => 0.0);  --  positional for 1
+   Origin : constant Point := (others => 0.0);
+
+Note that one can also use X, Y and Z in place of literals 1, 2 and 3 with the
+prior definition of suitable named numbers:
+
+.. code-block:: ada
+
+   X : constant := 1;
+   Y : constant := 2;
+   Z : constant := 3;
+
+Note that allocators are allowed inside expressions, and that values in
+aggregates are evaluated for each corresponding choice, so it is possible to
+write the following without violating the :ref:`Memory Ownership Policy` of
+SPARK:
+
+.. code-block:: ada
+
+   type Ptr is access Integer;
+   type Data is array (1 .. 10) of Ptr;
+
+   Database : Data := (others => new Integer'(0));
+
+This would be also possible in a record aggregate, but it is more common in
+array aggregates.
+
+Iterated Component Associations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Ada 2022]
+
+It is possible to have the value of an association depending on the choice,
+with the feature called `iterated component associations`. Here is how we can
+express that ``Ident`` is the identity mapping from values in ``Index`` to
+themselves:
+
+.. code-block:: ada
+
+   type Index is range 1 .. 100;
+   type Mapping is array (Index) of Index;
+
+   Ident : constant Mapping := (for J in Index => J);
+
+Such an iterated component association can appear next to other associations in
+an array aggregate using named notation. Here is how we can express that
+``Saturation`` is the identity mapping between 10 and 90, and saturates outside
+of this range:
+
+.. code-block:: ada
+
+   Saturation : constant Mapping :=
+     (1 .. 10 => 10, for J in 11 .. 89 => J, 90 .. 100 => 90);
+
 .. index:: delta aggregate
 
 Delta Aggregates
@@ -1000,7 +1218,7 @@ expression function is declared in the unit spec and defined in the unit body.
 Ghost Code
 ----------
 
-[|SPARK|]
+[SPARK]
 
 Sometimes, the variables and functions that are present in a program are not
 sufficient to specify intended properties and to verify these properties with
@@ -1591,6 +1809,46 @@ either an array or a container (see :ref:`Formal Containers Library`):
 * an `existentially quantified expression` using ``for some`` expresses a
   property that holds for at least one element of a collection
 
+Iteration can be expressed either directly over the content of the collection,
+or over the range of positions of elements in the collection. The former is
+preferred when the property involved does not refer to the position of elements
+in the collection or to the previous value of the element at the same position
+in the collection (e.g. in a postcondition). Otherwise, the latter is
+needed. For example, consider the procedure ``Nullify_Array`` that sets each
+element of its array parameter ``X`` to zero. Its postcondition can be
+expressed using a universally quantified expression iterating over the content
+of the array as follows:
+
+.. code-block:: ada
+
+   procedure Nullify_Array (X : out Integer_Array) with
+     Post => (for all E in X => E = 0);
+
+or using a universally quantified expression iterating over the range of the
+array as follows:
+
+.. code-block:: ada
+
+   procedure Nullify_Array (X : out Integer_Array) with
+     Post => (for all J in X'Range => X(J) = 0);
+
+Quantification over formal containers can similarly iterate over their content,
+using the syntax ``for .. of``, or their positions, using the syntax
+``for .. in``, see examples in :ref:`Loop Examples`.
+
+Iteration over positions is needed when the property refers to the position of
+elements in the collection. For example, consider the procedure
+``Initialize_Array`` that sets each element of its array parameter ``X`` to its
+position. Its postcondition can be expressed using a universally quantified
+expression as follows:
+
+.. code-block:: ada
+
+   procedure Initialize_Array (X : out Integer_Array) with
+     Post => (for all J in X'Range => X(J) = J);
+
+Iteration over positions is also needed when the property refers to the
+previous value of the element at the same position in the collection.
 For example, consider the procedure ``Increment_Array`` that increments each
 element of its array parameter ``X`` by one. Its postcondition can be expressed
 using a universally quantified expression as follows:
@@ -1635,4 +1893,3 @@ the entire range ``I in 1 .. 10`` (including ``I = 3``) so it issues a check
 message for a possible division by zero in this case.
 
 Quantified expressions should always be parenthesized.
-
