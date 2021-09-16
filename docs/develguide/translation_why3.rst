@@ -1750,14 +1750,17 @@ only the F component:
 
 On the other hand, when comparing objects of a classwide type, a check
 is first made that the tags match and then the appropriate equality is
-used. This behavior is not modelled precisely in SPARK. Instead, an
-abstract function __dispatch_eq is introduced in every root type to
+used. This behavior is modelled using an abstract function
+__dispatch_eq which is introduced in every root type to
 stand for the dispatching equality in the hierarchy (see
 ``Gnat2why.Expr.New_Op_Expr``):
 
 .. code-block:: whyml
 
-     function __dispatch_eq (a : __rep) (b : __rep) : bool
+     function __dispatch_eq (attr_tag : int) (a : __rep) (b : __rep) : bool
+
+The abstract function is axiomatized in the completion module for the
+type. 
 
 Record Attributes and Component Attributes
 """"""""""""""""""""""""""""""""""""""""""
@@ -2380,6 +2383,47 @@ value of the generic primitive equality function ``user_eq`` introduced for
 
  axiom user_eq__def_axiom :
   (forall a b : t_rec__. P__t_rec.user_eq a b = P__Oeq.oeq a b)
+
+Dispatching equality
+""""""""""""""""""""
+
+For tagged types which are not marked as limited, axioms are generated in
+the completion module to define the dispatching equality on those types.
+There are two cases. If the primitive equality is overridden by a function
+``Oeq`` on the root type of the hierarchy, then a single axiom is generated.
+It states that ``__dispatch_eq`` is equal to the dispatching version of
+``Oeq``:
+ 
+.. code-block:: whyml
+
+  axiom __dispatch_eq__def_axiom:
+    forall attr__tag : int.
+      forall a : root, b : root [__dispatch_eq attr__tag a b].
+        __dispatch_eq attr__tag a b = Dispatch.oeq attr__tag a b
+
+Otherwise, the dispatching equality is define specifically for each new
+derivation of the root type. A compatibility axiom is generated for each
+type ``Child`` of the hierarchy giving a value to the ``__dispatch_eq``
+function when the tag is known to be the tag of ``Child``. This is similar
+to what is done for other primitive functions of tagged type. It gives
+one of the axioms below depending on whether or not the primitive equality
+was redefined on the type ``Child``:
+ 
+.. code-block:: whyml
+
+  axiom child__compat_axiom:
+    forall a :root, b : root [__dispatch_eq Child.__tag a b].
+      (attr__tag a = Child.__tag /\ attr__tag b = Child.__tag) ->
+         __dispatch_eq Child.__tag a b =
+           Child.bool_eq (Child.of_base a) (Child.of_base b)
+ 
+.. code-block:: whyml
+
+  axiom child__compat_axiom:
+    forall a :root, b : root [__dispatch_eq Child.__tag a b].
+      (attr__tag a = Child.__tag /\ attr__tag b = Child.__tag) ->
+         __dispatch_eq Child.__tag a b =
+            Child.user_eq  (Child.of_base a) (Child.of_base b)
 
 Wrapper types for Relaxed_Initialization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
