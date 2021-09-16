@@ -90,6 +90,343 @@ Without ``No_Caching``, the volatile variable is assumed to be used for
 :ref:`Interfaces to the Physical World`, |GNATprove| analyses it specially and
 one cannot declare it inside a subprogram.
 
+.. _Aspect Relaxed_Initialization:
+
+Aspect ``Relaxed_Initialization`` and Attribute ``Initialized``
+---------------------------------------------------------------
+
+Modes on parameters and data dependency contracts in |SPARK| have a stricter
+meaning than in Ada (see :ref:`Data Initialization Policy`). In general, this
+allows |GNATprove| to ensure correct initialization of data in a quick and
+scalable way through flow analysis, without the need for user-supplied
+annotations.
+However, in some cases, the initialization policy may be considered too
+constraining. In particular, it does not permit initializing composite objects
+by part through different subprograms, or leaving data uninitialized on return
+if an error occurred.
+
+.. index:: Relaxed_Initialization
+
+Aspect ``Relaxed_Initialization``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To handle these cases, it is possible to relax the standard data initialization
+policy of |SPARK| using the ``Relaxed_Initialization`` aspect. This aspect can
+be used:
+
+* on objects, to state that the object should not be subjected to the
+  initialization policy of |SPARK|,
+
+* on types, so that it applies to every object or component of the type, or
+
+* on subprograms, to annotate the parameters or result.
+
+Here are some examples:
+
+.. code-block:: ada
+
+   type My_Rec is record
+      F, G : Positive;
+   end record;
+
+   G : My_Rec with Relaxed_Initialization;
+   procedure Init_G_If_No_Errors (Error : out Boolean) with
+      Global => (Output => G);
+   --  G is only initialized if the Error flag is False
+
+In the snippet above, the aspect ``Relaxed_Initialization`` is used to annotate
+the object ``G`` so that |SPARK| will allow returning from
+``Init_G_If_No_Errors`` with an uninitialized value in ``G`` in case of errors
+in the initialization routine.
+
+On a subprogram, the ``Relaxed_Initialization`` aspect expects some parameters
+to specify to which objects it applies. For example, the parameter ``X`` of
+the procedures below is concerned by the aspect:
+
+.. code-block:: ada
+
+   procedure Init_Only_F (X : out My_Rec) with
+     Relaxed_Initialization => X;
+   --  Initialize the F component of X,
+   --  X.G should not be read after the call.
+
+   procedure Init_Only_G (X : in out My_Rec) with
+     Relaxed_Initialization => X;
+   --  Initialize the G component of X,
+   --  X.F can be read after the call if it was already initialized.
+
+The procedures ``Init_Only_F`` and ``Init_Only_G`` above differ only by the
+mode of parameter ``X``. Just like for ``Init_G_If_No_Errors``, the
+mode ``out`` in ``Init_Only_F`` does not mean that ``X`` should be
+entirely initialized by the call. Its purpose is mostly for data dependencies
+(see :ref:`Data Dependencies`). It states that the value on entry of the
+procedure call should not leak into the parts of the output value which are
+read after the call. To ensure that, |GNATprove| considers that ``out``
+parameters may not be copied when entering a procedure call, and so, even for
+parameters which are in fact passed by reference.
+
+To exempt the value returned by a function from the data initialization policy
+of |SPARK|, the result attribute can be specified as a parameter of the
+``Relaxed_Initialization`` aspect, as in ``Read_G`` below. It is also
+possible to give several objects to the aspect using an aggregate notation:
+
+.. code-block:: ada
+
+   procedure Copy (Source : My_Rec; Target : out My_Rec) with
+     Relaxed_Initialization => (Source, Target);
+   --  Can copy a partially initialized record
+
+   function Read_G return My_Rec with
+     Relaxed_Initialization => Read_G'Result;
+   --  The result of Read_G might not be initialized
+
+.. note::
+
+   The ``Relaxed_Initialization`` aspect has no effect on subprogram parameters
+   or function results of a scalar type with relaxed initialization. Indeed,
+   the Ada semantics mandates a copy of scalars on entry and return of
+   subprograms, which is considered to be an error if the object was not
+   initialized.
+
+Finally, if we want to exempt all objects of a type from the data
+initialization policy of |SPARK|, it is possible to specify the
+``Relaxed_Initialization`` aspect on a type. This also allows to exempt a
+single component of a record, like in the following example:
+
+.. code-block:: ada
+
+   type Content_Type is array (Positive range 1 .. 100) of Integer with
+     Relaxed_Initialization;
+   type Stack is record
+      Top     : Natural := 0;
+      Content : Content_Type;
+   end record
+     with Predicate => Top in 0 .. 100;
+   --  Elements located after Top in Content do not need to be initialized
+
+A stack is made of two components: an array ``Content`` storing the actual
+content of the stack, and the index ``Top`` of the topmost element currently
+allocated on the stack. If the stack is initialized, the ``Top`` component
+necessarily holds a meaningful value. However, because of the API of the stack,
+it is not possible to read a value stored above the ``Top`` index in
+``Content`` without writing it first. For this reason, it is not necessary to
+initialize all elements of the stack at creation. To express that, we use in
+the type ``Stack``, which itself is subjected to the standard initialization
+policy, an array with the ``Relaxed_Initialization`` aspect for the ``Content``
+field.
+
+.. note::
+
+  The ``Relaxed_Initialization`` aspect is not allowed on subtypes, so a
+  derived type is necessary to add the aspect to an existing type.
+
+.. index:: Initialized
+
+Attribute ``Initialized``
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As explained above, the standard data initialization policy does not apply to
+objects annotated with the ``Relaxed_Initialization`` aspect. As a result, it
+becomes necessary to annotate which parts of accessed objects are initialized on
+entry and exit of subprograms in contracts. This can be done using the
+``Initialized`` attribute. This attribute can be applied to (parts of) objects
+annotated with the ``Relaxed_Initialization`` aspect. If the object is
+completely initialized, this attribute evaluates to ``True``.
+
+.. note::
+
+  It is not true that the ``Initialized`` aspect necessarily evaluates to
+  ``False`` on uninitialized data. This is to comply with execution, where
+  some values may happen to be valid even if they have not been initialized.
+  However, it is not possible to prove that the ``Initialized`` aspect
+  evaluates to ``True`` if the object has not been entirely initialized.
+
+As an example, let's add some contracts to the subprograms presented in the
+previous example to replace the comments. The case of ``Init_G_If_No_Errors``
+is straightforward:
+
+.. code-block:: ada
+
+   procedure Init_G_If_No_Errors (Error : out Boolean) with
+     Post => (if not Error then G'Initialized);
+
+It states that if no errors have occurred (``Error`` is ``False`` on exit),
+``G`` has been initialized by the call.
+
+The postcondition of ``Read_G`` is a
+bit more complicated. We want to state that the function returns the value
+stored in ``G``. However, we cannot use equality, as it would evaluate the
+components of both operands and fail if ``G`` is not entirely initialized. What
+we really want to say is that each component of the result of ``Read_G`` will
+be initialized if and only if the corresponding component in ``G`` is
+initialized, and then that the values of the components necessarily match in
+this case. To
+express that, we introduce safe accessors for the record components, which
+check whether the field is initialized before returning it. If the component
+is not initialized, they return ``0`` which is an invalid value since both
+components of ``My_Rec`` are of type ``Positive``. This allows to encode both
+the initialization status and the value of the field in one go:
+
+.. code-block:: ada
+
+   function Get_F (X : My_Rec) return Integer is
+      (if X.F'Initialized then X.F else 0)
+   with Ghost,
+     Relaxed_Initialization => X;
+
+   function Get_G (X : My_Rec) return Integer is
+      (if X.G'Initialized then X.G else 0)
+   with Ghost,
+     Relaxed_Initialization => X;
+
+Using these accessors, we can define an equality which can safely be called on
+uninitialized data, and use it in the postcondition of ``Read_G``:
+
+.. code-block:: ada
+
+   function Safe_Eq (X, Y : My_Rec) return Boolean is
+     (Get_F (X) = Get_F (Y) and Get_G (X) = Get_G (Y))
+   with Ghost,
+     Relaxed_Initialization => (X, Y);
+
+   function Read_G return My_Rec with
+     Relaxed_Initialization => Read_G'Result,
+     Post => Safe_Eq (Read_G'Result, G);
+
+The same safe equality function can be used for the postcondition of ``Copy``:
+
+.. code-block:: ada
+
+   procedure Copy (Source : My_Rec; Target : out My_Rec) with
+     Relaxed_Initialization => (Source, Target),
+     Post => Safe_Eq (Source, Target);
+
+Remain the procedures ``Init_Only_F`` and ``Init_Only_G``. We reflect the
+asymmetry of their parameter modes in their postconditions:
+
+.. code-block:: ada
+
+   procedure Init_Only_F (X : out My_Rec) with
+     Relaxed_Initialization => X,
+     Post => X.F'Initialized;
+
+   procedure Init_Only_G (X : in out My_Rec) with
+     Relaxed_Initialization => X,
+     Post => X.G'Initialized and Get_F (X) = Get_F (X)'Old;
+
+The procedure ``Init_Only_G`` preserves the value of ``X.F`` whereas
+``Init_Only_F`` does not preserve ``X.G``. Note that a postcondition similar
+to the one of ``Init_Only_G`` would be proved on ``Init_Only_F``, but it will be
+of no use as ``out`` parameters are considered to be havocked at the beginning
+of procedure calls, so ``Get_G (X)'Old`` wouldn't actually refer to the value
+of ``G`` before the call.
+
+Finally, let's consider the type ``Stack`` defined above. We have annotated
+the array type used for its content with the ``Relaxed_Initialization`` aspect,
+so that we do not need to initialize all of its components at declaration.
+However, we still need to know that elements up to ``Top`` have been
+initialized to ensure that poping an element returns an initialized value.
+This can be stated by extending the subtype predicate of ``Stack`` in the
+following way:
+
+.. code-block:: ada
+
+   type Stack is record
+      Top     : Natural := 0;
+      Content : Content_Type;
+   end record
+     with Predicate => Top in 0 .. 100
+     and then (for all I in 1 .. Top => Content (I)'Initialized);
+
+.. note::
+
+  When the ``Relaxed_Initialization`` aspect is used, correct initialization is verified by proof (``--mode=all`` or ``--mode=silver``), and not flow analysis (``--mode=flow`` or ``--mode=bronze``).
+
+  It is possible to annotate an object with the ``Relaxed_Initialization``
+  aspect to use proof to verify its initialization. For example, it allows to
+  workaround limitations in flow analysis with respect to initialization
+  of arrays. However, if this initialization goes through a loop, using the
+  ``Initialized`` attribute in a loop invariant might be required for proof to
+  verify the program.
+
+.. index:: Loop_Entry
+           loop; and Loop_Entry
+
+.. _Attribute Loop_Entry:
+
+Attribute ``Loop_Entry``
+------------------------
+
+[|SPARK|]
+
+It is sometimes convenient to refer to the value of variables at loop entry. In
+many cases, the variable has not been modified between the subprogram entry and
+the start of the loop, so this value is the same as the value at subprogram
+entry. But :ref:`Attribute Old` cannot be used in that case. Instead, we can
+use attribute ``Loop_Entry``. For example, we can express that after ``J``
+iterations of the loop, the value of parameter array ``X`` at index ``J`` is
+equal to its value at loop entry plus one:
+
+.. code-block:: ada
+
+   procedure Increment_Array (X : in out Integer_Array) is
+   begin
+      for J in X'Range loop
+         X(J) := X(J) + 1;
+         pragma Assert (X(J) = X'Loop_Entry(J) + 1);
+      end loop
+   end Increment_Array;
+
+At run time, a copy of the variable ``X`` is made when entering the loop. This
+copy is then read when evaluating the expression ``X'Loop_Entry``. No copy is
+made if the loop is never entered. Because it requires copying the value of
+``X``, the type of ``X`` cannot be limited.
+
+Attribute ``Loop_Entry`` can only be used in top-level :ref:`Assertion Pragmas`
+inside a loop. It is mostly useful for expressing complex :ref:`Loop
+Invariants` which relate the value of a variable at a given iteration of the
+loop and its value at loop entry. For example, we can express that after ``J``
+iterations of the loop, the value of parameter array ``X`` at all indexes
+already seen is equal to its value at loop entry plus one, and that its value
+at all indexes not yet seen is unchanged, using :ref:`Quantified Expressions`:
+
+.. code-block:: ada
+
+   procedure Increment_Array (X : in out Integer_Array) is
+   begin
+      for J in X'Range loop
+         X(J) := X(J) + 1;
+         pragma Loop_Invariant (for all K in X'First .. J => X(K) = X'Loop_Entry(K) + 1);
+         pragma Loop_Invariant (for all K in J + 1 .. X'Last => X(K) = X'Loop_Entry(K));
+      end loop;
+   end Increment_Array;
+
+Attribute ``Loop_Entry`` may be indexed by the name of the loop to which it
+applies, which is useful to refer to the value of a variable on entry to an
+outter loop. When used without loop name, the attribute applies to the closest
+enclosing loop. For examples, ``X'Loop_Entry`` is the same as
+``X'Loop_Entry(Inner)`` in the loop below, which is not the same as
+``X'Loop_Entry(Outter)`` (although all three assertions are true):
+
+.. code-block:: ada
+
+   procedure Increment_Matrix (X : in out Integer_Matrix) is
+   begin
+      Outter: for J in X'Range(1) loop
+         Inner: for K in X'Range(2) loop
+            X(J,K) := X(J,K) + 1;
+            pragma Assert (X(J,K) = X'Loop_Entry(J,K) + 1);
+            pragma Assert (X(J,K) = X'Loop_Entry(Inner)(J,K) + 1);
+            pragma Assert (X(J,K) = X'Loop_Entry(Outter)(J,K) + 1);
+         end loop Inner;
+      end loop Outter;
+   end Increment_Matrix;
+
+By default, similar restrictions exist for the use of attribute ``Loop_Entry``
+and the use of attribute ``Old`` :ref:`In a Potentially Unevaluated
+Expression`. The same solutions apply here, in particular the use of |GNAT Pro|
+pragma ``Unevaluated_Use_Of_Old``.
+
 .. index:: Old
 
 .. _Attribute Old:
@@ -293,90 +630,17 @@ the value, hence it can be applied to functions that return a limited
 type. Attribute ``Result`` can also be used inside consequence expressions in
 :ref:`Contract Cases`.
 
-.. index:: Loop_Entry
-           loop; and Loop_Entry
+.. index:: aggregate
 
-.. _Attribute Loop_Entry:
-
-Attribute ``Loop_Entry``
-------------------------
-
-[|SPARK|]
-
-It is sometimes convenient to refer to the value of variables at loop entry. In
-many cases, the variable has not been modified between the subprogram entry and
-the start of the loop, so this value is the same as the value at subprogram
-entry. But :ref:`Attribute Old` cannot be used in that case. Instead, we can
-use attribute ``Loop_Entry``. For example, we can express that after ``J``
-iterations of the loop, the value of parameter array ``X`` at index ``J`` is
-equal to its value at loop entry plus one:
-
-.. code-block:: ada
-
-   procedure Increment_Array (X : in out Integer_Array) is
-   begin
-      for J in X'Range loop
-         X(J) := X(J) + 1;
-         pragma Assert (X(J) = X'Loop_Entry(J) + 1);
-      end loop
-   end Increment_Array;
-
-At run time, a copy of the variable ``X`` is made when entering the loop. This
-copy is then read when evaluating the expression ``X'Loop_Entry``. No copy is
-made if the loop is never entered. Because it requires copying the value of
-``X``, the type of ``X`` cannot be limited.
-
-Attribute ``Loop_Entry`` can only be used in top-level :ref:`Assertion Pragmas`
-inside a loop. It is mostly useful for expressing complex :ref:`Loop
-Invariants` which relate the value of a variable at a given iteration of the
-loop and its value at loop entry. For example, we can express that after ``J``
-iterations of the loop, the value of parameter array ``X`` at all indexes
-already seen is equal to its value at loop entry plus one, and that its value
-at all indexes not yet seen is unchanged, using :ref:`Quantified Expressions`:
-
-.. code-block:: ada
-
-   procedure Increment_Array (X : in out Integer_Array) is
-   begin
-      for J in X'Range loop
-         X(J) := X(J) + 1;
-         pragma Loop_Invariant (for all K in X'First .. J => X(K) = X'Loop_Entry(K) + 1);
-         pragma Loop_Invariant (for all K in J + 1 .. X'Last => X(K) = X'Loop_Entry(K));
-      end loop;
-   end Increment_Array;
-
-Attribute ``Loop_Entry`` may be indexed by the name of the loop to which it
-applies, which is useful to refer to the value of a variable on entry to an
-outter loop. When used without loop name, the attribute applies to the closest
-enclosing loop. For examples, ``X'Loop_Entry`` is the same as
-``X'Loop_Entry(Inner)`` in the loop below, which is not the same as
-``X'Loop_Entry(Outter)`` (although all three assertions are true):
-
-.. code-block:: ada
-
-   procedure Increment_Matrix (X : in out Integer_Matrix) is
-   begin
-      Outter: for J in X'Range(1) loop
-         Inner: for K in X'Range(2) loop
-            X(J,K) := X(J,K) + 1;
-            pragma Assert (X(J,K) = X'Loop_Entry(J,K) + 1);
-            pragma Assert (X(J,K) = X'Loop_Entry(Inner)(J,K) + 1);
-            pragma Assert (X(J,K) = X'Loop_Entry(Outter)(J,K) + 1);
-         end loop Inner;
-      end loop Outter;
-   end Increment_Matrix;
-
-By default, similar restrictions exist for the use of attribute ``Loop_Entry``
-and the use of attribute ``Old`` :ref:`In a Potentially Unevaluated
-Expression`. The same solutions apply here, in particular the use of |GNAT Pro|
-pragma ``Unevaluated_Use_Of_Old``.
+Aggregates
+----------
 
 .. index:: delta aggregate
 
 Delta Aggregates
-----------------
+^^^^^^^^^^^^^^^^
 
-[Ada 202X]
+[Ada 2022]
 
 It is quite common in :ref:`Postconditions` to relate the input and output
 values of parameters. While this can be as easy as ``X = X'Old + 1`` in the
@@ -549,72 +813,12 @@ A last case of ``others`` can be used to denote all cases not covered by
 previous conditions. If-expressions and case-expressions should always be
 parenthesized.
 
-.. index:: quantified-expression
-
-Quantified Expressions
-----------------------
-
-[Ada 2012]
-
-A quantified expression is a way to express a property over a collection,
-either an array or a container (see :ref:`Formal Containers Library`):
-
-* a `universally quantified expression` using ``for all`` expresses a property
-  that holds for all elements of a collection
-* an `existentially quantified expression` using ``for some`` expresses a
-  property that holds for at least one element of a collection
-
-For example, consider the procedure ``Increment_Array`` that increments each
-element of its array parameter ``X`` by one. Its postcondition can be expressed
-using a universally quantified expression as follows:
-
-.. code-block:: ada
-
-   procedure Increment_Array (X : in out Integer_Array) with
-     Post => (for all J in X'Range => X(J) = X'Old(J) + 1);
-
-The negation of a universal property being an existential property (the
-opposite is true too), the postcondition above can be expressed also using an
-existentially quantified expression as follows:
-
-.. code-block:: ada
-
-   procedure Increment_Array (X : in out Integer_Array) with
-     Post => not (for some J in X'Range => X(J) /= X'Old(J) + 1);
-
-At run time, a quantified expression is executed like a loop, which exits as
-soon as the value of the expression is known: if the property does not hold
-(resp. holds) for a given element of a universally (resp. existentially)
-quantified expression, execution of the loop does not proceed with remaining
-elements and returns the value ``False`` (resp. ``True``) for the expression.
-
-When a quantified expression is analyzed with |GNATprove|, it uses the logical
-counterpart of the quantified expression. |GNATprove| also checks that the
-expression is free from run-time errors. For this checking, |GNATprove| checks
-that the enclosed expression is free from run-time errors over the *entire
-range* of the quantification, not only at points that would actually be reached
-at run time. As an example, consider the following expression:
-
-.. code-block:: ada
-
-    (for all I in 1 .. 10 => 1 / (I - 3) > 0)
-
-This quantified expression cannot raise a run-time error, because the enclosed
-expression ``1 / (I - 3) > 0`` is false for the first value of the range ``I =
-1``, so the execution of the loop exits immediately with the value ``False``
-for the quantified expression. |GNATprove| is stricter and requires the
-enclosed expression ``1 / (I - 3) > 0`` to be free from run-time errors over
-the entire range ``I in 1 .. 10`` (including ``I = 3``) so it issues a check
-message for a possible division by zero in this case.
-
-Quantified expressions should always be parenthesized.
-
 .. index:: declare-expression
 
 Declare Expressions
 -------------------
 
-[Ada 202X]
+[Ada 2022]
 
 Declare expressions are used to factorize parts of an expression. They allow to
 declare constants and renamings which are local to the expression. A
@@ -1372,261 +1576,63 @@ executable. For example on Unix-like platforms::
 
   nm <object files or executable> | grep my_unit
 
-.. _Aspect Relaxed_Initialization:
+.. index:: quantified-expression
 
-Aspect ``Relaxed_Initialization`` and Attribute ``Initialized``
----------------------------------------------------------------
+Quantified Expressions
+----------------------
 
-Modes on parameters and data dependency contracts in |SPARK| have a stricter
-meaning than in Ada (see :ref:`Data Initialization Policy`). In general, this
-allows |GNATprove| to ensure correct initialization of data in a quick and
-scalable way through flow analysis, without the need for user-supplied
-annotations.
-However, in some cases, the initialization policy may be considered too
-constraining. In particular, it does not permit initializing composite objects
-by part through different subprograms, or leaving data uninitialized on return
-if an error occurred.
+[Ada 2012]
 
-.. index:: Relaxed_Initialization
+A quantified expression is a way to express a property over a collection,
+either an array or a container (see :ref:`Formal Containers Library`):
 
-Aspect ``Relaxed_Initialization``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* a `universally quantified expression` using ``for all`` expresses a property
+  that holds for all elements of a collection
+* an `existentially quantified expression` using ``for some`` expresses a
+  property that holds for at least one element of a collection
 
-To handle these cases, it is possible to relax the standard data initialization
-policy of |SPARK| using the ``Relaxed_Initialization`` aspect. This aspect can
-be used:
-
-* on objects, to state that the object should not be subjected to the
-  initialization policy of |SPARK|,
-
-* on types, so that it applies to every object or component of the type, or
-
-* on subprograms, to annotate the parameters or result.
-
-Here are some examples:
+For example, consider the procedure ``Increment_Array`` that increments each
+element of its array parameter ``X`` by one. Its postcondition can be expressed
+using a universally quantified expression as follows:
 
 .. code-block:: ada
 
-   type My_Rec is record
-      F, G : Positive;
-   end record;
+   procedure Increment_Array (X : in out Integer_Array) with
+     Post => (for all J in X'Range => X(J) = X'Old(J) + 1);
 
-   G : My_Rec with Relaxed_Initialization;
-   procedure Init_G_If_No_Errors (Error : out Boolean) with
-      Global => (Output => G);
-   --  G is only initialized if the Error flag is False
-
-In the snippet above, the aspect ``Relaxed_Initialization`` is used to annotate
-the object ``G`` so that |SPARK| will allow returning from
-``Init_G_If_No_Errors`` with an uninitialized value in ``G`` in case of errors
-in the initialization routine.
-
-On a subprogram, the ``Relaxed_Initialization`` aspect expects some parameters
-to specify to which objects it applies. For example, the parameter ``X`` of
-the procedures below is concerned by the aspect:
+The negation of a universal property being an existential property (the
+opposite is true too), the postcondition above can be expressed also using an
+existentially quantified expression as follows:
 
 .. code-block:: ada
 
-   procedure Init_Only_F (X : out My_Rec) with
-     Relaxed_Initialization => X;
-   --  Initialize the F component of X,
-   --  X.G should not be read after the call.
+   procedure Increment_Array (X : in out Integer_Array) with
+     Post => not (for some J in X'Range => X(J) /= X'Old(J) + 1);
 
-   procedure Init_Only_G (X : in out My_Rec) with
-     Relaxed_Initialization => X;
-   --  Initialize the G component of X,
-   --  X.F can be read after the call if it was already initialized.
+At run time, a quantified expression is executed like a loop, which exits as
+soon as the value of the expression is known: if the property does not hold
+(resp. holds) for a given element of a universally (resp. existentially)
+quantified expression, execution of the loop does not proceed with remaining
+elements and returns the value ``False`` (resp. ``True``) for the expression.
 
-The procedures ``Init_Only_F`` and ``Init_Only_G`` above differ only by the
-mode of parameter ``X``. Just like for ``Init_G_If_No_Errors``, the
-mode ``out`` in ``Init_Only_F`` does not mean that ``X`` should be
-entirely initialized by the call. Its purpose is mostly for data dependencies
-(see :ref:`Data Dependencies`). It states that the value on entry of the
-procedure call should not leak into the parts of the output value which are
-read after the call. To ensure that, |GNATprove| considers that ``out``
-parameters may not be copied when entering a procedure call, and so, even for
-parameters which are in fact passed by reference.
-
-To exempt the value returned by a function from the data initialization policy
-of |SPARK|, the result attribute can be specified as a parameter of the
-``Relaxed_Initialization`` aspect, as in ``Read_G`` below. It is also
-possible to give several objects to the aspect using an aggregate notation:
+When a quantified expression is analyzed with |GNATprove|, it uses the logical
+counterpart of the quantified expression. |GNATprove| also checks that the
+expression is free from run-time errors. For this checking, |GNATprove| checks
+that the enclosed expression is free from run-time errors over the *entire
+range* of the quantification, not only at points that would actually be reached
+at run time. As an example, consider the following expression:
 
 .. code-block:: ada
 
-   procedure Copy (Source : My_Rec; Target : out My_Rec) with
-     Relaxed_Initialization => (Source, Target);
-   --  Can copy a partially initialized record
+    (for all I in 1 .. 10 => 1 / (I - 3) > 0)
 
-   function Read_G return My_Rec with
-     Relaxed_Initialization => Read_G'Result;
-   --  The result of Read_G might not be initialized
+This quantified expression cannot raise a run-time error, because the enclosed
+expression ``1 / (I - 3) > 0`` is false for the first value of the range ``I =
+1``, so the execution of the loop exits immediately with the value ``False``
+for the quantified expression. |GNATprove| is stricter and requires the
+enclosed expression ``1 / (I - 3) > 0`` to be free from run-time errors over
+the entire range ``I in 1 .. 10`` (including ``I = 3``) so it issues a check
+message for a possible division by zero in this case.
 
-.. note::
+Quantified expressions should always be parenthesized.
 
-   The ``Relaxed_Initialization`` aspect has no effect on subprogram parameters
-   or function results of a scalar type with relaxed initialization. Indeed,
-   the Ada semantics mandates a copy of scalars on entry and return of
-   subprograms, which is considered to be an error if the object was not
-   initialized.
-
-Finally, if we want to exempt all objects of a type from the data
-initialization policy of |SPARK|, it is possible to specify the
-``Relaxed_Initialization`` aspect on a type. This also allows to exempt a
-single component of a record, like in the following example:
-
-.. code-block:: ada
-
-   type Content_Type is array (Positive range 1 .. 100) of Integer with
-     Relaxed_Initialization;
-   type Stack is record
-      Top     : Natural := 0;
-      Content : Content_Type;
-   end record
-     with Predicate => Top in 0 .. 100;
-   --  Elements located after Top in Content do not need to be initialized
-
-A stack is made of two components: an array ``Content`` storing the actual
-content of the stack, and the index ``Top`` of the topmost element currently
-allocated on the stack. If the stack is initialized, the ``Top`` component
-necessarily holds a meaningful value. However, because of the API of the stack,
-it is not possible to read a value stored above the ``Top`` index in
-``Content`` without writing it first. For this reason, it is not necessary to
-initialize all elements of the stack at creation. To express that, we use in
-the type ``Stack``, which itself is subjected to the standard initialization
-policy, an array with the ``Relaxed_Initialization`` aspect for the ``Content``
-field.
-
-.. note::
-
-  The ``Relaxed_Initialization`` aspect is not allowed on subtypes, so a
-  derived type is necessary to add the aspect to an existing type.
-
-.. index:: Initialized
-
-Attribute ``Initialized``
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-As explained above, the standard data initialization policy does not apply to
-objects annotated with the ``Relaxed_Initialization`` aspect. As a result, it
-becomes necessary to annotate which parts of accessed objects are initialized on
-entry and exit of subprograms in contracts. This can be done using the
-``Initialized`` attribute. This attribute can be applied to (parts of) objects
-annotated with the ``Relaxed_Initialization`` aspect. If the object is
-completely initialized, this attribute evaluates to ``True``.
-
-.. note::
-
-  It is not true that the ``Initialized`` aspect necessarily evaluates to
-  ``False`` on uninitialized data. This is to comply with execution, where
-  some values may happen to be valid even if they have not been initialized.
-  However, it is not possible to prove that the ``Initialized`` aspect
-  evaluates to ``True`` if the object has not been entirely initialized.
-
-As an example, let's add some contracts to the subprograms presented in the
-previous example to replace the comments. The case of ``Init_G_If_No_Errors``
-is straightforward:
-
-.. code-block:: ada
-
-   procedure Init_G_If_No_Errors (Error : out Boolean) with
-     Post => (if not Error then G'Initialized);
-
-It states that if no errors have occurred (``Error`` is ``False`` on exit),
-``G`` has been initialized by the call.
-
-The postcondition of ``Read_G`` is a
-bit more complicated. We want to state that the function returns the value
-stored in ``G``. However, we cannot use equality, as it would evaluate the
-components of both operands and fail if ``G`` is not entirely initialized. What
-we really want to say is that each component of the result of ``Read_G`` will
-be initialized if and only if the corresponding component in ``G`` is
-initialized, and then that the values of the components necessarily match in
-this case. To
-express that, we introduce safe accessors for the record components, which
-check whether the field is initialized before returning it. If the component
-is not initialized, they return ``0`` which is an invalid value since both
-components of ``My_Rec`` are of type ``Positive``. This allows to encode both
-the initialization status and the value of the field in one go:
-
-.. code-block:: ada
-
-   function Get_F (X : My_Rec) return Integer is
-      (if X.F'Initialized then X.F else 0)
-   with Ghost,
-     Relaxed_Initialization => X;
-
-   function Get_G (X : My_Rec) return Integer is
-      (if X.G'Initialized then X.G else 0)
-   with Ghost,
-     Relaxed_Initialization => X;
-
-Using these accessors, we can define an equality which can safely be called on
-uninitialized data, and use it in the postcondition of ``Read_G``:
-
-.. code-block:: ada
-
-   function Safe_Eq (X, Y : My_Rec) return Boolean is
-     (Get_F (X) = Get_F (Y) and Get_G (X) = Get_G (Y))
-   with Ghost,
-     Relaxed_Initialization => (X, Y);
-
-   function Read_G return My_Rec with
-     Relaxed_Initialization => Read_G'Result,
-     Post => Safe_Eq (Read_G'Result, G);
-
-The same safe equality function can be used for the postcondition of ``Copy``:
-
-.. code-block:: ada
-
-   procedure Copy (Source : My_Rec; Target : out My_Rec) with
-     Relaxed_Initialization => (Source, Target),
-     Post => Safe_Eq (Source, Target);
-
-Remain the procedures ``Init_Only_F`` and ``Init_Only_G``. We reflect the
-asymmetry of their parameter modes in their postconditions:
-
-.. code-block:: ada
-
-   procedure Init_Only_F (X : out My_Rec) with
-     Relaxed_Initialization => X,
-     Post => X.F'Initialized;
-
-   procedure Init_Only_G (X : in out My_Rec) with
-     Relaxed_Initialization => X,
-     Post => X.G'Initialized and Get_F (X) = Get_F (X)'Old;
-
-The procedure ``Init_Only_G`` preserves the value of ``X.F`` whereas
-``Init_Only_F`` does not preserve ``X.G``. Note that a postcondition similar
-to the one of ``Init_Only_G`` would be proved on ``Init_Only_F``, but it will be
-of no use as ``out`` parameters are considered to be havocked at the beginning
-of procedure calls, so ``Get_G (X)'Old`` wouldn't actually refer to the value
-of ``G`` before the call.
-
-Finally, let's consider the type ``Stack`` defined above. We have annotated
-the array type used for its content with the ``Relaxed_Initialization`` aspect,
-so that we do not need to initialize all of its components at declaration.
-However, we still need to know that elements up to ``Top`` have been
-initialized to ensure that poping an element returns an initialized value.
-This can be stated by extending the subtype predicate of ``Stack`` in the
-following way:
-
-.. code-block:: ada
-
-   type Stack is record
-      Top     : Natural := 0;
-      Content : Content_Type;
-   end record
-     with Predicate => Top in 0 .. 100
-     and then (for all I in 1 .. Top => Content (I)'Initialized);
-
-.. note::
-
-  When the ``Relaxed_Initialization`` aspect is used, correct initialization is verified by proof (``--mode=all`` or ``--mode=silver``), and not flow analysis (``--mode=flow`` or ``--mode=bronze``).
-
-  It is possible to annotate an object with the ``Relaxed_Initialization``
-  aspect to use proof to verify its initialization. For example, it allows to
-  workaround limitations in flow analysis with respect to initialization
-  of arrays. However, if this initialization goes through a loop, using the
-  ``Initialized`` attribute in a loop invariant might be required for proof to
-  verify the program.
