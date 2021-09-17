@@ -243,9 +243,10 @@ following dictionary for entities::
 
 A ``.spark`` file is of this form::
 
-  { "spark" : list spark_result,
-    "flow"  : list flow_result,
-    "proof" : list proof_result }
+  { "spark"         : list spark_result,
+    "flow"          : list flow_result,
+    "pragma_assume" : list assume_result,
+    "proof"         : list proof_result }
 
 Each entry is mapped to a list of entries whose format is described below.
 
@@ -313,6 +314,18 @@ Entries for proof are of the following form::
 Flow entries are of the same form as for proof. Differences are in the
 possible values for "rule", which can only be the ones for flow messages.
 Also "how_proved" field is never set.
+
+The pragma Assume entries are of the form::
+
+  assume_result = { "file"   : string,
+                    "line"   : int,
+                    "col"    : int,
+                    "entity" : entity }
+
+* ("file", "line", "col") describe the source location of the pragma Assume
+  statement.
+* "entity" contains the entity dictionary for the entity that this pragma
+   Assume belongs to.
 
 .. index:: --proof; proof strategies
 
