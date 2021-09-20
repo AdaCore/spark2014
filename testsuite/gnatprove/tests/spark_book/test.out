@@ -714,7 +714,7 @@ operator_overload.adb:21:04: info: initialization of "P1" proved
 operator_overload.adb:22:04: info: initialization of "P2" proved
 operator_overload.adb:30:10: info: analyzing call to "<=" in context
 operator_overload.adb:37:07: info: analyzing call to "<=" in context
-overflow.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A + B in Integer) to subprogram at overflow.ads:3]
+overflow.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - B) to subprogram at overflow.ads:3]
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
 palindrome.adb:4:13: info: add a contract to analyze it separately from calling contexts
@@ -1144,7 +1144,7 @@ transitive.adb:25:07: info: initialization of "X_Last" proved
 transitive.adb:31:33: info: loop invariant initialization proved (CVC4: 1 VC)
 transitive.adb:31:33: info: loop invariant preservation proved (CVC4: 1 VC)
 transitive.ads:10:19: info: postcondition proved (CVC4: 1 VC)
-unused_parameter.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + A [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A + A in Integer) to subprogram at unused_parameter.ads:3]
+unused_parameter.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + A [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - A) to subprogram at unused_parameter.ads:3]
 unused_parameter.adb:7:20: info: division check proved (CVC4: 1 VC)
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
@@ -1165,7 +1165,7 @@ very_longs-divide.adb:26:04: info: initialization of "N" proved
 very_longs-divide.adb:27:04: info: initialization of "M" proved
 very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
 very_longs-divide.adb:29:04: info: initialization of "U" proved
-very_longs-divide.adb:29:48: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length + 1 in Digit_Index_Type) to subprogram at very_longs.ads:65]
+very_longs-divide.adb:29:48: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length <= Digit_Index_Type'Last - 1) to subprogram at very_longs.ads:65]
 very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:30:39: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
@@ -1411,7 +1411,7 @@ very_longs.adb:300:65: info: index check proved (CVC4: 2 VC)
 very_longs.adb:302:37: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:302:41: info: index check proved (CVC4: 2 VC)
 very_longs.adb:312:07: info: initialization of "Result" proved
-very_longs.adb:312:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length + R.Length in Digit_Index_Type) to subprogram at very_longs.ads:61]
+very_longs.adb:312:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
 very_longs.adb:313:07: info: initialization of "L_Digit" proved
 very_longs.adb:314:07: info: initialization of "R_Digit" proved
 very_longs.adb:315:07: info: initialization of "T_Digit" proved
@@ -1448,5 +1448,5 @@ workspaces.adb:5:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC4: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC4: 2 VC)
-workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for Size + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size + 1 in Integer) to subprogram at workspaces.ads:4]
+workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for Size + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC4: 2 VC)
