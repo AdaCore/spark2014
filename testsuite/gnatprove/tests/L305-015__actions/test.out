@@ -21,6 +21,7 @@ actions.adb:37:25: info: assertion proved (altergo: 2 VC)
 actions.adb:40:04: warning: statement has no effect
 actions.adb:41:35: info: overflow check proved (CVC4: 2 VC)
 actions.adb:41:45: info: index check proved (CVC4: 2 VC)
+actions.adb:41:53: warning: loop condition is stable
 actions.adb:41:53: warning: statement has no effect
 actions.adb:47:10: warning: initialization of "V" has no effect
 actions.adb:51:22: info: overflow check proved (CVC4: 2 VC)

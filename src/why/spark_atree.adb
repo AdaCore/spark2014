@@ -1408,7 +1408,8 @@ package body SPARK_Atree is
    ------------------------
 
    procedure Traverse_More_Proc (Node : Node_Id) is
-      procedure Traverse_Proc is new Sem_Util.Traverse_More_Proc (Process);
+      procedure Traverse_Proc is new Sem_Util.Traverse_More_Proc
+        (Process, Process_Itypes => True);
    begin
       Traverse_Proc (Node);
    end Traverse_More_Proc;

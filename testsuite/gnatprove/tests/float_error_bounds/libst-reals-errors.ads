@@ -19,21 +19,21 @@ package Libst.Reals.Errors with SPARK_Mode is
    function Weighted_Sum_Abs_Rec
      (Weights : Weight_Array;
       Values  : Value_Array;
-      I       : Extended_Index) return Valid_Big_Real
+      I       : Extended_Index) return Big_Real
    is
-     (if I = 0 then Valid_Big_Real'(0.0)
+     (if I = 0 then Big_Real'(0.0)
       else Weighted_Sum_Abs_Rec (Weights, Values, I - 1)
       + To_Big_Real (Weights (I)) * abs (To_Big_Real (Values (I))))
    with Subprogram_Variant => (Decreases => I),
        Post => Weighted_Sum_Abs_Rec'Result >= 0.0;
 
-   function Weighted_Sum_Abs
+   function Weighted_Average_Abs
      (Weights : Weight_Array;
-      Values  : Value_Array) return Valid_Big_Real
+      Values  : Value_Array) return Big_Real
    is
      (Weighted_Sum_Abs_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights))
-   with Pre => Sum_Weight (Weights) /= Valid_Big_Real'(0.0);
-   --  Weighted sum of the absolute values of elements of the Values array
+   with Pre => Sum_Weight (Weights) /= Big_Real'(0.0);
+   --  Weighted average of the absolute values of elements of the Values array
 
    procedure Sum_Less_Than_Sum_Abs
      (Weights : Weight_Array;
@@ -66,25 +66,25 @@ package Libst.Reals.Errors with SPARK_Mode is
            * Weighted_Sum_Abs_Rec (Weights, Values, I);
    --  Error bound on the computation of Weighted_Sum_Rec
 
-   procedure Error_For_Sum
+   procedure Error_For_Average
      (Weights : Weight_Array;
       Values  : Value_Array)
    with
-     Pre  => Sum_Weight (Weights) /= Valid_Big_Real'(0.0),
+     Pre  => Sum_Weight (Weights) /= Big_Real'(0.0),
      Post =>
-         abs (To_Big_Real (Weighted_Sum (Weights, Values)) -
-                Weighted_Sum (Weights, Values))
+         abs (To_Big_Real (Weighted_Average (Weights, Values)) -
+                Weighted_Average (Weights, Values))
            <= 1.01E-45 + 2.03E-43 / Sum_Weight (Weights)
-            + 2.05E-5 * Weighted_Sum_Abs (Weights, Values);
+            + 2.05E-5 * Weighted_Average_Abs (Weights, Values);
    --  Error bound on the computation of Weighted_Sum
 
-   procedure Precise_Bounds_For_Sum
+   procedure Precise_Bounds_For_Average
      (Weights : Weight_Array;
       Values  : Value_Array)
    with
        Pre  => Sum_Weight (Weights) /= Float'(0.0),
-       Post => Float'(Weighted_Sum (Weights, Values))
-         in - (Max_Value + 2.0) .. Max_Value + 2.0;
-   --  Precise bound for Weighted_Sum obtained through error bound computation
+       Post => Float'(Weighted_Average (Weights, Values))
+         in - (Max_Value + 3.5) .. Max_Value + 3.5;
+   --  Precise bound for Weighted_Average obtained through error bound computation
 
 end Libst.Reals.Errors;

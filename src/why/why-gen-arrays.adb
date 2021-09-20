@@ -37,7 +37,6 @@ with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
 with Why.Atree.Builders;    use Why.Atree.Builders;
-with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Init;          use Why.Gen.Init;
 with Why.Gen.Names;         use Why.Gen.Names;
@@ -433,7 +432,7 @@ package body Why.Gen.Arrays is
 
    function Array_From_Split_Form
      (I           : Item_Type;
-      Ref_Allowed : Boolean) return W_Expr_Id
+      Ref_Allowed : Boolean) return W_Term_Id
    is
       Ty           : constant W_Type_Id := Get_Typ (I.Content.B_Name);
       Ty_Ent       : constant Entity_Id := Get_Ada_Node (+Ty);
@@ -458,7 +457,7 @@ package body Why.Gen.Arrays is
            (EW_Term, +I.Bounds (Count).Last);
       end loop;
 
-      return Array_Convert_From_Base
+      return +Array_Convert_From_Base
         (Domain       => EW_Term,
          Args         => Arr & Args,
          Ty           => Ty_Ent,
@@ -2488,7 +2487,7 @@ package body Why.Gen.Arrays is
    ----------------------
 
    function New_Array_Access
-     (Ada_Node : Node_Id;
+     (Ada_Node : Node_Id := Empty;
       Ar       : W_Expr_Id;
       Index    : W_Expr_Array;
       Domain   : EW_Domain) return W_Expr_Id
@@ -2619,16 +2618,15 @@ package body Why.Gen.Arrays is
    -------------------------
 
    function New_Bounds_Equality
-     (Left_Arr     : W_Expr_Id;
+     (Left_Arr     : W_Term_Id;
       Right_Bounds : W_Expr_Array;
-      Dim          : Positive;
-      Domain       : EW_Domain := EW_Pred) return W_Expr_Id
+      Dim          : Positive) return W_Pred_Id
    is
-      Result : W_Expr_Id := +True_Pred;
+      Result : W_Pred_Id := True_Pred;
    begin
       for I in 1 .. Dim loop
          Result :=
-           New_And_Expr
+           New_And_Pred
              (Conjuncts =>
                 (1 => Result,
 
@@ -2637,37 +2635,34 @@ package body Why.Gen.Arrays is
                  2 => New_Comparison
                    (Symbol => Why_Eq,
                     Left   =>
-                      Insert_Conversion_To_Rep_No_Bool
-                        (Domain,
+                      +Insert_Conversion_To_Rep_No_Bool
+                        (EW_Term,
                          Get_Array_Attr (Domain => EW_Term,
-                                         Expr   => Left_Arr,
+                                         Expr   => +Left_Arr,
                                          Attr   => Attribute_First,
                                          Dim    => I)),
-                    Right  => Right_Bounds (2 * I - 1),
-                    Domain => Domain),
+                    Right  => +Right_Bounds (2 * I - 1)),
 
                  --  <left_arr>.last__I = <right_arr>.last__I
 
                  3 => New_Comparison
                    (Symbol => Why_Eq,
                     Left   =>
-                      Insert_Conversion_To_Rep_No_Bool
-                        (Domain,
+                      +Insert_Conversion_To_Rep_No_Bool
+                        (EW_Term,
                          Get_Array_Attr (Domain => EW_Term,
-                                         Expr   => Left_Arr,
+                                         Expr   => +Left_Arr,
                                          Attr   => Attribute_Last,
                                          Dim    => I)),
-                    Right  => Right_Bounds (2 * I),
-                    Domain => Domain)),
-              Domain    => Domain);
+                    Right  => +Right_Bounds (2 * I))));
       end loop;
 
       return +Result;
    end New_Bounds_Equality;
 
    function New_Bounds_Equality
-     (Left_Arr  : W_Expr_Id;
-      Right_Arr : W_Expr_Id;
+     (Left_Arr  : W_Term_Id;
+      Right_Arr : W_Term_Id;
       Dim       : Positive) return W_Pred_Id
    is
       Right_Bounds : W_Expr_Array (1 .. 2 * Dim);
@@ -2675,19 +2670,18 @@ package body Why.Gen.Arrays is
    begin
       for I in 1 .. Dim loop
          Add_Attr_Arg
-           (EW_Term, Right_Bounds, Right_Arr, Attribute_First, I, Count);
+           (EW_Term, Right_Bounds, +Right_Arr, Attribute_First, I, Count);
          Add_Attr_Arg
-           (EW_Term, Right_Bounds, Right_Arr, Attribute_Last,  I, Count);
+           (EW_Term, Right_Bounds, +Right_Arr, Attribute_Last,  I, Count);
       end loop;
 
-      return +New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
+      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
    end New_Bounds_Equality;
 
    function New_Bounds_Equality
-     (Left_Arr : W_Expr_Id;
+     (Left_Arr : W_Term_Id;
       Right_Ty : Entity_Id;
-      Domain   : EW_Domain := EW_Pred;
-      Params   : Transformation_Params := Body_Params) return W_Expr_Id
+      Params   : Transformation_Params := Body_Params) return W_Pred_Id
    is
       Dim          : constant Positive :=
         Positive (Number_Dimensions (Right_Ty));
@@ -2702,7 +2696,7 @@ package body Why.Gen.Arrays is
            (EW_Term, Right_Bounds, Right_Ty, Attribute_Last, I, Count, Params);
       end loop;
 
-      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim, Domain);
+      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
    end New_Bounds_Equality;
 
    ---------------------
@@ -2857,11 +2851,10 @@ package body Why.Gen.Arrays is
 
       return New_Conditional
         (Condition => New_Call
-           (Domain   => EW_Pred,
-            Name     => Le_Op,
+           (Name     => Le_Op,
             Args     => (L_First_E, L_Last_E),
             Typ      => EW_Bool_Type),
-         Then_Part => New_And_Then_Expr
+         Then_Part => +New_And_Then_Expr
            (Left   => New_Call
                 (Domain   => EW_Pred,
                  Name     => Le_Op,
@@ -2882,8 +2875,7 @@ package body Why.Gen.Arrays is
                Domain => EW_Pred),
             Domain => EW_Pred),
          Else_Part => New_Call
-           (Domain => EW_Pred,
-            Name   => Lt_Op,
+           (Name   => Lt_Op,
             Args   => (R_Last_E, R_First_E),
             Typ    => Base_Ty),
          Typ       => EW_Bool_Type);
@@ -2898,7 +2890,7 @@ package body Why.Gen.Arrays is
       R_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Right_Arr));
       Is_Static : constant Boolean := Has_Static_Array_Type (L_Ty)
         and then Has_Static_Array_Type (R_Ty);
-      Result    : W_Expr_Id := +True_Pred;
+      Result    : W_Pred_Id := True_Pred;
 
    begin
       for I in 1 .. Dim loop
@@ -2949,12 +2941,11 @@ package body Why.Gen.Arrays is
                     To     => Base_Ty);
             begin
                Result :=
-                 New_And_Expr
+                 New_And_Pred
                    (Conjuncts =>
                       (1 => Result,
-                       2 => +New_Length_Equality
-                         (L_First_E, L_Last_E, R_First_E, R_Last_E, Base_Ty)),
-                    Domain    => EW_Pred);
+                       2 => New_Length_Equality
+                         (L_First_E, L_Last_E, R_First_E, R_Last_E, Base_Ty)));
             end;
          end if;
       end loop;
@@ -2970,7 +2961,7 @@ package body Why.Gen.Arrays is
       L_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Left_Arr));
       Is_Static : constant Boolean := Has_Static_Array_Type (L_Ty)
         and then Has_Static_Array_Type (Right);
-      Result    : W_Expr_Id := +True_Pred;
+      Result    : W_Pred_Id := True_Pred;
 
    begin
       for I in 1 .. Dim loop
@@ -3021,12 +3012,11 @@ package body Why.Gen.Arrays is
                     To     => Base_Ty);
             begin
                Result :=
-                 New_And_Expr
+                 New_And_Pred
                    (Conjuncts =>
                       (1 => Result,
-                       2 => +New_Length_Equality
-                         (L_First_E, L_Last_E, R_First_E, R_Last_E, Base_Ty)),
-                    Domain    => EW_Pred);
+                       2 => New_Length_Equality
+                         (L_First_E, L_Last_E, R_First_E, R_Last_E, Base_Ty)));
             end;
          end if;
       end loop;

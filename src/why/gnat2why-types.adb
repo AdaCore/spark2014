@@ -711,7 +711,7 @@ package body Gnat2Why.Types is
                Bounds => Get_Args_From_Binders
                  (Binders (Binders'First + 1 .. Binders'Last),
                   Ref_Allowed => True))
-            else Reconstruct_Item (Param));
+            else +Reconstruct_Item (Param));
          --  Reconstructed parameter. If the parameter is a split array,
          --  reconstruct it to be able to query the bounds since Param
          --  is not tied to a real Ada objects.

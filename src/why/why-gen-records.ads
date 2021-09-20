@@ -30,6 +30,7 @@ with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Ids;              use Why.Ids;
+with Why.Conversions;      use Why.Conversions;
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Types;            use Why.Types;
 
@@ -71,7 +72,7 @@ package Why.Gen.Records is
    --  functions and attributes except for the tag of tagged types.
 
    function New_Ada_Record_Access
-     (Ada_Node : Node_Id;
+     (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
@@ -87,6 +88,15 @@ package Why.Gen.Records is
    --  @param Ty        the type of the record
    --  @return a Why expression which corresponds to the Ada record
    --    access
+
+   function New_Ada_Record_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Term_Id;
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Term_Id
+   is (+W_Expr_Id'
+         (New_Ada_Record_Access (Ada_Node, EW_Term, +Name, Field, Ty)));
 
    function New_Ada_Record_Check_For_Field
      (Ada_Node : Node_Id := Empty;
@@ -254,7 +264,7 @@ package Why.Gen.Records is
    function Record_From_Split_Form
      (I           : Item_Type;
       Ref_Allowed : Boolean)
-      return W_Expr_Id
+      return W_Term_Id
    with
        Pre => I.Kind = DRecord;
    --  Reconstructs a complete record from an item in split form.
@@ -264,7 +274,7 @@ package Why.Gen.Records is
       A            : W_Expr_Array;
       Ty           : Entity_Id;
       Init_Wrapper : Boolean := False)
-      return W_Expr_Id;
+      return W_Term_Id;
    --  Reconstructs a complete record of type Ty from an array of expressions
    --  representing a split form. A should contain first the fields, then the
    --  discriminants, the 'Constrained attribute and the 'Tag attribute.

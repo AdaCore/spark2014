@@ -53,7 +53,7 @@ floating_point.adb:108:13: info: assertion proved (colibri: 2 VC)
 floating_point.adb:118:67: info: range check proved (Trivial)
 floating_point.adb:118:70: info: float overflow check proved (Trivial)
 floating_point.adb:119:22: info: float overflow check proved (colibri: 1 VC)
-floating_point.adb:120:22: medium: assertion might fail [possible fix: subprogram at floating_point.ads:39 should mention State and X in a precondition]
+floating_point.adb:120:22: info: assertion proved (colibri: 2 VC)
 floating_point.adb:120:48: info: range check proved (Trivial)
 floating_point.adb:120:53: info: float overflow check proved (Trivial)
 floating_point.adb:128:16: info: types in unchecked conversion have the same size (Trivial)
@@ -128,7 +128,7 @@ floating_point.adb:260:22: info: assertion proved (colibri: 1 VC)
 floating_point.adb:267:37: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:87 should mention B in a precondition]
 floating_point.adb:268:16: info: division check proved (colibri: 1 VC)
 floating_point.adb:268:16: info: float overflow check proved (colibri: 1 VC)
-floating_point.adb:269:22: info: assertion proved (colibri: 1 VC)
+floating_point.adb:269:22: medium: assertion might fail
 floating_point.adb:280:17: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention C in a precondition]
 floating_point.adb:280:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention A and C in a precondition]
 floating_point.adb:280:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention A and B and C and D in a precondition]

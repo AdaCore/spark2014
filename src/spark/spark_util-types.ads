@@ -334,6 +334,12 @@ package SPARK_Util.Types is
      Pre  => Is_Type (Ty),
      Post => No (Parent_Type'Result) or else Is_Type (Parent_Type'Result);
    --  Compute the first parent in the derivation tree of Ty if any. Otherwise
+   --  return Etype (Ty). This also takes into account subtypes.
+
+   function Parent_Retysp (Ty : Entity_Id) return Entity_Id with
+     Pre  => Is_Type (Ty),
+     Post => No (Parent_Retysp'Result) or else Is_Type (Parent_Retysp'Result);
+   --  Compute the first parent in the derivation tree of Ty if any. Otherwise
    --  return Empty. This also takes into account subtypes, and only considers
    --  derivations visible from SPARK code (using Retysp).
 
@@ -349,6 +355,11 @@ package SPARK_Util.Types is
      Pre => Is_Type (Ty) and then not Is_Concurrent_Type (Retysp (Ty));
    --  Return True if the predefined equality of Ty uses the predefined
    --  equality on access types.
+
+   function Acts_As_Incomplete_Type (Ty : Entity_Id) return Boolean with
+     Pre => Is_Type (Ty);
+   --  Return True if Ty is is handled as an incomplete type to decide whether
+   --  the type designated by an access type should be deferred.
 
    --------------------------------
    -- Queries related to records --

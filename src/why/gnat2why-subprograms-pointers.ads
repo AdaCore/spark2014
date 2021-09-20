@@ -53,7 +53,7 @@ package Gnat2Why.Subprograms.Pointers is
 
    function New_Dynamic_Property_For_Subprogram
      (Ty     : Entity_Id;
-      Expr   : W_Expr_Id;
+      Expr   : W_Term_Id;
       Params : Transformation_Params) return W_Pred_Id
    with
      Pre => Is_Access_Subprogram_Type (Ty);

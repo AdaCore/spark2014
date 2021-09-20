@@ -1,6 +1,6 @@
 constant_with_relaxed.adb:17:25: info: data dependencies proved
-constant_with_relaxed.adb:20:22: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+constant_with_relaxed.adb:20:22: info: initialization check proved (CVC4: 3 VC; Trivial: 6 VC)
 constant_with_relaxed.adb:25:25: info: data dependencies proved
-constant_with_relaxed.adb:28:22: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+constant_with_relaxed.adb:28:22: info: initialization check proved (CVC4: 3 VC; Trivial: 6 VC)
 constant_with_relaxed.adb:33:25: info: data dependencies proved
-constant_with_relaxed.adb:37:29: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+constant_with_relaxed.adb:37:29: info: initialization check proved (CVC4: 3 VC; Trivial: 6 VC)

@@ -282,10 +282,11 @@ package body SPARK_Definition.Violations is
    --------------------
 
    procedure Mark_Violation
-     (Msg           : String;
-      N             : Node_Id;
-      SRM_Reference : String := "";
-      Cont_Msg      : String := "") is
+     (Msg            : String;
+      N              : Node_Id;
+      SRM_Reference  : String := "";
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "") is
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.
@@ -295,7 +296,8 @@ package body SPARK_Definition.Violations is
       --  Define the root cause
 
       if Emit_Messages then
-         Add_Violation_Root_Cause (N, Msg);
+         Add_Violation_Root_Cause
+           (N, Msg => (if Root_Cause_Msg /= "" then Root_Cause_Msg else Msg));
       end if;
 
       --  If SPARK_Mode is On, raise an error

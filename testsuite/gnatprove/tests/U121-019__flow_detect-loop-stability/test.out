@@ -1,2 +1,13 @@
 p.adb:6:12: info: data dependencies proved
-p.adb:15:20: info: range check proved (CVC4: 1 VC)
+p.adb:10:20: warning: loop condition is stable
+p.adb:15:20: info: range check proved (CVC4: 2 VC)
+q.adb:6:12: info: data dependencies proved
+q.adb:10:20: warning: loop condition is stable
+q.adb:15:20: info: range check proved (CVC4: 2 VC)
+q.adb:17:22: warning: loop condition is stable
+q.adb:20:23: info: range check proved (CVC4: 2 VC)
+r.adb:6:12: info: data dependencies proved
+r.adb:12:17: info: overflow check proved (CVC4: 2 VC)
+r.adb:13:22: warning: loop condition is stable
+r.adb:16:23: info: range check proved (CVC4: 2 VC)
+s.adb:5:15: warning: loop condition is stable

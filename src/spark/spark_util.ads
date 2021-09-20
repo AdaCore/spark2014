@@ -158,24 +158,22 @@ package SPARK_Util is
    --  @return True iff E is the partial view of a private type or deferred
    --     constant
 
-   procedure Set_Specific_Tagged (E, V : Entity_Id);
+   procedure Set_Specific_Tagged (E : Class_Wide_Kind_Id; V : Record_Kind_Id);
    --  Create a link from the classwide type to its specific tagged type
    --  in SPARK, which can be either V or its partial view if the full view of
    --  V is not in SPARK.
    --  @param E classwide type
    --  @param V specific tagged type corresponding to the classwide type E
 
-   function Specific_Tagged (E : Entity_Id) return Entity_Id;
+   function Specific_Tagged (E : Class_Wide_Kind_Id) return Record_Kind_Id;
    --  @param E classwide type
    --  @return the specific tagged type corresponding to classwide type E
 
-   procedure Set_Overlay_Alias (New_Id, Old_Id : Entity_Id)
-   with Pre => Is_Object (New_Id) and then Is_Object (Old_Id);
+   procedure Set_Overlay_Alias (New_Id, Old_Id : Object_Kind_Id);
    --  Register that New_Id is aliasing Old_Id via overlays
 
-   function Overlay_Alias (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Is_Object (E),
-        Post => not Overlay_Alias'Result.Contains (E);
+   function Overlay_Alias (E : Object_Kind_Id) return Node_Sets.Set
+   with Post => not Overlay_Alias'Result.Contains (E);
    --  Return the objects which are aliases of E via overlays. This does not
    --  return E itself.
 
@@ -223,9 +221,9 @@ package SPARK_Util is
    -- General queries related to entities --
    -----------------------------------------
 
-   function Enclosing_Generic_Instance (E : Entity_Id) return Entity_Id
-   with Post => (if Present (Enclosing_Generic_Instance'Result)
-                 then Ekind (Enclosing_Generic_Instance'Result) = E_Package);
+   function Enclosing_Generic_Instance
+     (E : Entity_Id)
+      return Empty_Or_Package_Id;
    --  @param E any entity
    --  @return entity of the enclosing generic instance package, if any
 
@@ -241,7 +239,8 @@ package SPARK_Util is
    --  task type, or subprogram type enclosing E.
 
    function Directly_Enclosing_Subprogram_Or_Entry
-     (E : Entity_Id) return Entity_Id;
+     (E : Entity_Id)
+      return Empty_Or_Subprogram_Kind_Id;
    --  Returns the entity of the first subprogram or entry enclosing E. Returns
    --  Empty if there is no such subprogram or if something else than a package
    --  (a concurrent type or a block statement) is encountered while going up
@@ -249,16 +248,14 @@ package SPARK_Util is
 
    function Entity_Comes_From_Source (E : Entity_Id) return Boolean is
       (Comes_From_Source (E)
-        or else Comes_From_Source (Atree.Parent (E)))
-   with Pre => Nkind (E) in N_Entity;
+        or else Comes_From_Source (Atree.Parent (E)));
    --  Ideally we should only look at whether entity E comes from source,
    --  but in various cases this is not properly set in the frontend (for
    --  subprogram inlining and generic instantiations), which cannot be fixed
    --  easily. So we also look at whether the parent node comes from source,
    --  which is more often correct.
 
-   function Full_Name (E : Entity_Id) return String
-     with Pre => Nkind (E) in N_Entity;
+   function Full_Name (E : Entity_Id) return String;
    --  @param E any entity
    --  @return the name to use for E in Why3
 
@@ -303,8 +300,7 @@ package SPARK_Util is
    --  @param E any entity
    --  @return True iff E is declared in the private part of a package
 
-   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
-     with Pre => Nkind (E) in N_Entity;
+   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
    --  Use this routine to ensure that the entity will be processed only by one
    --  invocation of gnat2why within a single pass of gnatprove. Technically,
    --  the "analyzed files" means either the spec alone or the spec and body.
@@ -345,16 +341,14 @@ package SPARK_Util is
    --     into Why3, i.e. it is a discriminant (which cannot be hidden in
    --     SPARK) or the full view of the enclosing record is in SPARK.
 
-   function Enclosing_Concurrent_Type (E : Entity_Id) return Entity_Id
+   function Enclosing_Concurrent_Type (E : Entity_Id) return Concurrent_Kind_Id
    with Pre  => Is_Part_Of_Concurrent_Object (E) or else
-                Is_Concurrent_Component_Or_Discr (E),
-        Post => Ekind (Enclosing_Concurrent_Type'Result) in E_Protected_Type |
-                                                            E_Task_Type;
+                Is_Concurrent_Component_Or_Discr (E);
    --  @param E is the entity of a component, discriminant or Part of
    --     concurrent type
    --  @return concurrent type
 
-   function Has_Volatile (E : Checked_Entity_Id) return Boolean
+   function Has_Volatile (E : N_Entity_Id) return Boolean
    with Pre  => Ekind (E) in E_Abstract_State
                            | E_Protected_Type
                            | E_Task_Type
@@ -367,11 +361,10 @@ package SPARK_Util is
    --  @return True iff E is an external state or a volatile object or type
 
    function Has_Volatile_Property
-     (E : Checked_Entity_Id;
+     (E : N_Entity_Id;
       P : Volatile_Pragma_Id)
       return Boolean
-   with Pre => Has_Volatile (E)
-     and then Ekind (E) /= E_Constant;
+   with Pre => Has_Volatile (E);
    --  @param E an external state, a volatile object or type, or a protected
    --     component
    --  @return True iff E has the specified property P of volatility, either
@@ -380,13 +373,11 @@ package SPARK_Util is
    function Int_Image (Val : Int) return String;
    --  Return the image of Val without leading whitespace
 
-   function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) = E_Variable;
+   function Is_Constant_After_Elaboration (E : E_Variable_Id) return Boolean;
    --  @param E entity of a variable
    --  @return True iff a Constant_After_Elaboration applies to E
 
-   function Is_Constant_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Is_Object (E);
+   function Is_Constant_In_SPARK (E : Object_Kind_Id) return Boolean;
    --  Return True if E is a constant in SPARK (ie. a constant which is not
    --  of access-to-variable type).
 
@@ -395,7 +386,7 @@ package SPARK_Util is
    --  @return True iff the entity is a component or discriminant of a
    --            concurrent type
 
-   function Is_Constant_Borrower (E : Entity_Id) return Boolean with
+   function Is_Constant_Borrower (E : Object_Kind_Id) return Boolean with
      Pre => Is_Local_Borrower (E);
    --  Return True is E is a local borrower which is acting like an observer
    --  (it is directly or indirectly rooted at the first parameter of a
@@ -408,8 +399,7 @@ package SPARK_Util is
    --  Return True is E is a constant or a variable of an anonymous access to
    --  variable type.
 
-   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) = E_Discriminant;
+   function Is_Not_Hidden_Discriminant (E : E_Discriminant_Id) return Boolean;
    --  @param E entity of a discriminant
    --  @return Return True if E is visible in SPARK
 
@@ -470,25 +460,25 @@ package SPARK_Util is
    --  @param E entity of a procedure or entry formal parameter of mode IN
    --  @return True if E can be written despite being of mode IN
 
-   function Root_Discriminant (E : Entity_Id) return Entity_Id
-   with Pre => Ekind (E) = E_Discriminant;
+   function Root_Discriminant (E : E_Discriminant_Id) return Entity_Id;
    --  Given discriminant of a record (sub-)type, return the corresponding
    --  discriminant of the root type, if any. This is the identity when E is
    --  the discriminant of a root type.
    --  ??? Same update needed as for Root_Retysp
 
    function Search_Component_By_Name
-     (Rec  : Entity_Id;
-      Comp : Entity_Id) return Entity_Id
-   with Pre => Ekind (Comp) in E_Component | E_Discriminant;
+     (Rec  : Record_Like_Kind_Id;
+      Comp : Record_Field_Kind_Id)
+      return Empty_Or_Record_Field_Kind_Id;
    --  Given a record type entity and a component/discriminant entity, search
    --  in Rec a component/discriminant entity with the same name and the same
    --  original record component. Returns Empty if no such component is found.
    --  In particular returns empty on hidden components.
 
-   function Unique_Component (E : Entity_Id) return Entity_Id
-   with Pre  => Ekind (E) in E_Component | E_Discriminant,
-        Post => Ekind (Unique_Component'Result) = Ekind (E);
+   function Unique_Component
+     (E : Record_Field_Kind_Id)
+      return Record_Field_Kind_Id
+   with Post => Ekind (Unique_Component'Result) = Ekind (E);
    --  Given an entity of a record component or discriminant, possibly from a
    --  derived type, return the corresponding component or discriminant from
    --  the base type. The returned entity provides a unique representation of
@@ -501,11 +491,11 @@ package SPARK_Util is
    --  frontend to flow representation of discriminants and components.
 
    procedure Objects_Have_Compatible_Alignments
-     (X, Y        : Entity_Id;
+     (X           : Constant_Or_Variable_Kind_Id;
+      Y           : Object_Kind_Id;
       Result      : out Boolean;
       Explanation : out Unbounded_String)
-   with Pre  => Ekind (X) in E_Constant | E_Variable and then Is_Object (Y),
-        Post => Result = (Explanation = Null_Unbounded_String);
+   with Post => Result = (Explanation = Null_Unbounded_String);
    --  @param X a stand-alone object that overlays the other
    --            (object with Address clause)
    --  @param Y object that is overlaid (object whose 'Address is used in
@@ -517,8 +507,7 @@ package SPARK_Util is
    -- Queries related to pragmas --
    --------------------------------
 
-   function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Pragma;
+   function Is_Ignored_Pragma_Check (N : N_Pragma_Id) return Boolean;
    --  @param N pragma
    --  @return True iff N is a pragma Check that can be ignored by analysis,
    --     because it is already taken into account elsewhere (precondition,
@@ -537,8 +526,7 @@ package SPARK_Util is
    --  @param N any node
    --  @return True iff N is a pragma Check (Name, ...);
 
-   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Pragma;
+   function Is_Pragma_Assert_And_Cut (N : N_Pragma_Id) return Boolean;
    --  @param N pragma
    --  @return True iff N is a pragma Assert_And_Cut
 
@@ -546,8 +534,7 @@ package SPARK_Util is
    -- Queries for arbitrary nodes --
    ---------------------------------
 
-   function String_Of_Node (N : Node_Id) return String
-   with Pre => Nkind (N) in N_Subexpr;
+   function String_Of_Node (N : N_Subexpr_Id) return String;
    --  @param N any expression node
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
@@ -555,15 +542,14 @@ package SPARK_Util is
       with function Property (N : Node_Id) return Boolean;
    function First_Parent_With_Property (N : Node_Id) return Node_Id with
      Post => No (First_Parent_With_Property'Result)
-     or else Property (First_Parent_With_Property'Result);
+       or else Property (First_Parent_With_Property'Result);
    --  @param N any node
    --  @return the first node in the chain of parents of N for which Property
    --     returns True.
 
-   function Get_Initialized_Object (N : Node_Id) return Entity_Id with
-     Pre  => Nkind (N) in N_Subexpr,
-     Post => No (Get_Initialized_Object'Result)
-     or else Is_Object (Get_Initialized_Object'Result);
+   function Get_Initialized_Object
+     (N : N_Subexpr_Id)
+      return Empty_Or_Object_Kind_Id;
    --  @param N any expression node
    --  @return if N is used to initialize an object, return this object. Return
    --      Empty otherwise. This is used to get a stable name for aggregates
@@ -589,9 +575,7 @@ package SPARK_Util is
    ----------------------------------
 
    function Aggregate_Is_In_Assignment (Expr : Node_Id) return Boolean with
-     Pre => Nkind (Expr) in N_Aggregate
-                          | N_Delta_Aggregate
-                          | N_Extension_Aggregate
+     Pre => Expr in N_Aggregate_Kind_Id
        or else Is_Attribute_Update (Expr);
    --  Returns whether Expr is on the rhs of an assignment, either directly or
    --  through other enclosing aggregates, with possible type conversions and
@@ -607,17 +591,16 @@ package SPARK_Util is
      );
 
    function Is_Selected_For_Loop_Unrolling
-     (Loop_Stmt : Node_Id) return Boolean
-   with Pre => Nkind (Loop_Stmt) = N_Loop_Statement;
+     (Loop_Stmt : N_Loop_Statement_Id)
+      return Boolean;
    --  Return whether [Loop_Stmt] is unrolled or not
 
    procedure Candidate_For_Loop_Unrolling
-     (Loop_Stmt   : Node_Id;
+     (Loop_Stmt   : N_Loop_Statement_Id;
       Output_Info : Boolean;
       Result      : out Unrolling_Type;
       Low_Val     : out Uint;
-      High_Val    : out Uint)
-   with Pre => Nkind (Loop_Stmt) = N_Loop_Statement;
+      High_Val    : out Uint);
    --  @param Output_Info whether the reason for not unrolling should be
    --         displayed when the loop has no loop invariant, and a positive
    --         message that the loop is unrolled when applicable.
@@ -634,22 +617,21 @@ package SPARK_Util is
    --     protected object or a protected component within a composite object
    --  @return a name that uniquely identifies the prefix
 
-   function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Ekind (E) = E_Package and then Is_Generic_Instance (E),
+   function Generic_Actual_Subprograms (E : E_Package_Id) return Node_Sets.Set
+   with Pre  => Is_Generic_Instance (E),
         Post => (for all S of Generic_Actual_Subprograms'Result =>
                     Is_Subprogram (S));
    --  @param E instance of a generic package (or a wrapper package for
    --    instances of generic subprograms)
    --  @return actual subprogram parameters of E
 
-   function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
-     with Pre  => Nkind (Actual) in N_Subexpr
-                    and then
-                  Nkind (Parent (Actual)) in N_Subprogram_Call
-                                           | N_Entry_Call_Statement
-                                           | N_Parameter_Association
-                                           | N_Unchecked_Type_Conversion,
-          Post => Is_Formal (Get_Formal_From_Actual'Result);
+   function Get_Formal_From_Actual
+     (Actual : N_Subexpr_Id)
+      return Formal_Kind_Id
+   with Pre  => Nkind (Parent (Actual)) in N_Subprogram_Call
+                                         | N_Entry_Call_Statement
+                                         | N_Parameter_Association
+                                         | N_Unchecked_Type_Conversion;
    --  @param Actual actual parameter of a call (or expression of an unchecked
    --    conversion which comes from a rewritten call to instance of
    --    Ada.Unchecked_Conversion)
@@ -668,15 +650,18 @@ package SPARK_Util is
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
-   function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id with
+   function Get_Observed_Or_Borrowed_Expr
+     (Expr : N_Subexpr_Id)
+      return N_Subexpr_Id
+   with
      Pre => Is_Path_Expression (Expr);
    --  Return the expression being borrowed/observed when borrowing or
    --  observing Expr, as computed by Get_Observed_Or_Borrowed_Info.
 
    procedure Get_Observed_Or_Borrowed_Info
-     (Expr   : Node_Id;
-      B_Expr : out Node_Id;
-      B_Ty   : in out Entity_Id)
+     (Expr   : N_Subexpr_Id;
+      B_Expr : out N_Subexpr_Id;
+      B_Ty   : in out Empty_Or_Type_Kind_Id)
    with Pre => Is_Path_Expression (Expr);
    --  Compute both the expression being borrowed/observed when borrowing or
    --  observing Expr and the type used for this borrow/observe.
@@ -691,41 +676,45 @@ package SPARK_Util is
    --      access type.
 
    function Get_Observed_Or_Borrowed_Ty
-     (Expr : Node_Id;
-      Ty   : Entity_Id) return Entity_Id
+     (Expr : N_Subexpr_Id;
+      Ty   : Type_Kind_Id)
+      return Type_Kind_Id
    with Pre => Is_Path_Expression (Expr);
    --  Return the type of the first borrower/observer in Expr, as computed by
    --  Get_Observed_Or_Borrowed_Info.
 
    function Get_Root_Object
-     (Expr              : Node_Id;
-      Through_Traversal : Boolean := True) return Entity_Id
+     (Expr              : N_Subexpr_Id;
+      Through_Traversal : Boolean := True)
+      return Empty_Or_Object_Kind_Id
    with
      Pre => Is_Path_Expression (Expr);
    --  Return the root of the path expression Expr, or Empty for an allocator,
    --  NULL, or a function call. Through_Traversal is True if it should follow
    --  through calls to traversal functions.
 
-   function Is_Action (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Object_Declaration;
+   function Is_Action (N : N_Object_Declaration_Id) return Boolean;
    --  @param N is an object declaration
    --  @return if the given node N is an action
 
    function Is_Additional_Param_Of_Access_Subp_Wrapper
-     (E : Entity_Id) return Boolean
-   with Pre => Is_Formal (E);
+     (E : Formal_Kind_Id)
+      return Boolean;
    --  Return True if E is the in parameter introduced for the
    --  access-to-subprogram object in a wrapper generated for an
    --  access-to-subprogram type with a contract.
 
-   function Is_Converted_Actual_Output_Parameter (N : Node_Id) return Boolean
-     with Pre => Nkind (N) in N_Subexpr;
+   function Is_Converted_Actual_Output_Parameter
+     (N : N_Subexpr_Id)
+      return Boolean;
    --  @param N expression
    --  @return True iff N is either directly an out or in out actual parameter,
    --     or under one or multiple type conversions, where the most enclosing
    --     type conversion is an out or in out actual parameter.
 
-   function Is_Call_Arg_To_Predicate_Function (N : Node_Id) return Boolean;
+   function Is_Call_Arg_To_Predicate_Function
+     (N : Empty_Or_Subexpr_Id)
+      return Boolean;
    --  @param N expression node or Empty
    --  @return True iff N is the argument to a call to a frontend-generated
    --     predicate function. This should only occur when analyzing the code
@@ -733,11 +722,12 @@ package SPARK_Util is
    --     should take the form of a type conversion. Node N should be the
    --     expression being converted rather than the type conversion itself.
 
-   function Is_Empty_Others (N : Node_Id) return Boolean
-     with Pre  => Nkind (N) = N_Case_Statement_Alternative,
-          Post => (if Is_Empty_Others'Result
-                   then No (Next (N)) and then
-                        List_Length (Discrete_Choices (N)) = 1);
+   function Is_Empty_Others
+     (N : N_Case_Statement_Alternative_Id)
+      return Boolean
+   with Post => (if Is_Empty_Others'Result
+                 then No (Next (N))
+                   and then List_Length (Discrete_Choices (N)) = 1);
    --  Returns True iff N is an "others" case alternative with empty set
    --  of discrite choices (this set is statically determined by the front
    --  end). Such an alternative must not be followed by other alternatives
@@ -749,10 +739,8 @@ package SPARK_Util is
    --    . a pragma Assert (False)
    --    . a call to an error-signaling procedure
 
-   function Is_External_Call (N : Node_Id) return Boolean
-   with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call
-                 and then
-               Within_Protected_Type (Get_Called_Entity (N));
+   function Is_External_Call (N : N_Call_Id) return Boolean
+   with Pre => Within_Protected_Type (Get_Called_Entity (N));
    --  @param N call node
    --  @return True iff N is an external call to a protected subprogram or
    --     a protected entry.
@@ -762,7 +750,7 @@ package SPARK_Util is
    --  However, the front end rejects these two cases. For the SPARK back end,
    --  this routine gives correct results.
 
-   function Is_Path_Expression (Expr : Node_Id) return Boolean;
+   function Is_Path_Expression (Expr : N_Subexpr_Id) return Boolean;
    --  Return whether Expr corresponds to a path
 
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
@@ -776,8 +764,9 @@ package SPARK_Util is
    --  @param Expr any node
    --  @return True iff Expr is a call to a traversal function
 
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id
-     with Pre => Nkind (N) = N_Exit_Statement;
+   function Loop_Entity_Of_Exit_Statement
+     (N : N_Exit_Statement_Id)
+      return Entity_Id;
    --  Return the Defining_Identifier of the loop that belongs to an exit
    --  statement.
 
@@ -786,37 +775,36 @@ package SPARK_Util is
    --  @return the number of N_Component_Association nodes in N.
 
    function Expr_Has_Relaxed_Init
-     (Expr    : Node_Id;
+     (Expr    : N_Subexpr_Id;
       No_Eval : Boolean := True) return Boolean;
    --  Return True if Expr is an expression with relaxed initialization. If
    --  No_Eval is True, then we don't consider the expression to be evaluated.
 
-   function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean;
+   function Obj_Has_Relaxed_Init (Obj : Object_Kind_Id) return Boolean;
    --  Return True if Obj is an object with relaxed initialization
 
-   function Fun_Has_Relaxed_Init (Subp : Entity_Id) return Boolean with
-     Pre => Ekind (Subp) = E_Function;
+   function Fun_Has_Relaxed_Init (Subp : E_Function_Id) return Boolean;
    --  Return True if the result of Subp has relaxed initialization
 
    function Borrower_For_At_End_Borrow_Call
-     (Call : Node_Id) return Entity_Id
-   with Pre => Nkind (Call) = N_Function_Call;
+     (Call : N_Function_Call_Id)
+      return Entity_Id;
    --  From a call to a function annotated with At_End_Borrow, get the entity
    --  whose scope the at end refers to.
 
    procedure Set_At_End_Borrow_Call
-     (Call     : Node_Id;
-      Borrower : Entity_Id)
-   with Pre => Nkind (Call) = N_Function_Call;
+     (Call     : N_Function_Call_Id;
+      Borrower : Entity_Id);
    --  Store the link between a call to a function annotated with
    --  At_End_Borrow and the entity whose scope the at end refers to.
 
-   function Traverse_Access_To_Constant (Expr : Node_Id) return Boolean with
+   function Traverse_Access_To_Constant (Expr : N_Subexpr_Id) return Boolean
+   with
      Pre => Is_Path_Expression (Expr);
    --  Return True if the path from Expr goes through a dereference of an
    --  access-to-constant type.
 
-   function Is_Rooted_In_Constant (Expr : Node_Id) return Boolean;
+   function Is_Rooted_In_Constant (Expr : N_Subexpr_Id) return Boolean;
    --  Return True is Expr is a path rooted inside a constant part of an
    --  object. We do not return True if Expr is rooted inside an IN parameter,
    --  as the actual might be a variable object.
@@ -921,12 +909,11 @@ package SPARK_Util is
    --  Approximation of cases where we know that the Constrained attribute of
    --  N is known statically.
 
-   function Statement_Enclosing_Label (E : Entity_Id) return Node_Id with
-     Pre => Ekind (E) = E_Label;
+   function Statement_Enclosing_Label (E : E_Label_Id) return Node_Id;
    --  Return the parent of the N_Label node associated to E
 
-   function States_And_Objects (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Ekind (E) = E_Package and not Is_Wrapper_Package (E),
+   function States_And_Objects (E : E_Package_Id) return Node_Sets.Set
+   with Pre  => not Is_Wrapper_Package (E),
         Post => (for all Obj of States_And_Objects'Result =>
                     Ekind (Obj) in E_Abstract_State | E_Constant | E_Variable);
    --  Return objects that can appear on the LHS of the Initializes contract
@@ -941,9 +928,8 @@ package SPARK_Util is
    --    * The prefix is not part of a constant and we are not in an assertion,
    --      otherwise this is not a move.
 
-   function Value_Is_Never_Leaked (Expr : Node_Id) return Boolean with
-     Pre => Nkind (Expr) in N_Subexpr
-     and then Is_Access_Type (Etype (Expr));
+   function Value_Is_Never_Leaked (Expr : N_Subexpr_Id) return Boolean with
+     Pre => Is_Access_Type (Etype (Expr));
    --  Checks whether a created access value is known to never leak
 
 end SPARK_Util;

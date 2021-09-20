@@ -41,7 +41,6 @@ with VC_Kinds;             use VC_Kinds;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Modules;    use Why.Atree.Modules;
-with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Gen.Hardcoded;    use Why.Gen.Hardcoded;
@@ -282,7 +281,6 @@ package body Why.Gen.Records is
                             then First_Discriminant (Ty_Ext)
                             else Empty);
       T_Comp  : W_Pred_Id;
-      T_Guard : W_Pred_Id;
       R_Acc1  : W_Expr_Id;
       R_Acc2  : W_Expr_Id;
       Tmps    : W_Identifier_Array (1 .. Discrs);
@@ -345,8 +343,9 @@ package body Why.Gen.Records is
       else
          declare
             Fields    : Component_Sets.Set renames Get_Component_Set (Ty_Ext);
-            Conjuncts : W_Expr_Array (1 .. Natural (Fields.Length));
+            Conjuncts : W_Pred_Array (1 .. Natural (Fields.Length));
             Count     : Natural := 0;
+            T_Guard   : W_Pred_Id;
          begin
             for Field of Fields loop
 
@@ -376,18 +375,14 @@ package body Why.Gen.Records is
 
                      Count := Count + 1;
                      Conjuncts (Count) := New_Conditional
-                       (Domain    => EW_Pred,
-                        Condition => +T_Guard,
-                        Then_Part => +T_Comp);
+                       (Condition => T_Guard,
+                        Then_Part => T_Comp);
                   end if;
                end if;
             end loop;
 
             if Count > 0 then
-               T := +New_And_Then_Expr
-                 (+T,
-                  New_And_Expr (Conjuncts (1 .. Count), EW_Pred),
-                  EW_Pred);
+               T := New_And_Pred (T & Conjuncts (1 .. Count));
             end if;
          end;
       end if;
@@ -742,13 +737,12 @@ package body Why.Gen.Records is
                      Def      => New_Binding
                        (Name     => E_Open_Ext_Id,
                         Def      => New_Call
-                          (Domain => EW_Term,
-                           Name   => New_Identifier
+                          (Name   => New_Identifier
                              (Name => To_String (WNE_Open)),
                            Args   =>
                              (1 => +Hide_Binders (Num_Binders).B_Name),
                            Typ    => Get_Typ (E_Open_Ext_Id)),
-                        Context  => New_Comparison
+                        Context  => +New_Comparison
                           (Symbol => Why_Eq,
                            Left   => New_Call
                              (Domain => EW_Term,
@@ -792,13 +786,12 @@ package body Why.Gen.Records is
                      Def     => New_Binding
                        (Name     => R_Open_Ext_Id,
                         Def      => New_Call
-                          (Domain => EW_Term,
-                           Name   => New_Identifier
+                          (Name   => New_Identifier
                              (Name   => To_String (WNE_Open),
                               Module => Get_Rep_Record_Completion (Root)),
                            Args   => (1 => +Root_Ext_Id),
                            Typ    => Get_Typ (R_Open_Ext_Id)),
-                        Context  => New_Comparison
+                        Context  => +New_Comparison
                           (Symbol => Why_Eq,
                            Left   => New_Call
                              (Domain => EW_Term,
@@ -2852,7 +2845,7 @@ package body Why.Gen.Records is
                   begin
                      if not Comp_Set.Is_Empty then
                         declare
-                           Conjuncts : W_Expr_Array
+                           Conjuncts : W_Pred_Array
                              (1 .. Positive (Comp_Set.Length));
                            I         : Positive := 1;
                         begin
@@ -2877,22 +2870,19 @@ package body Why.Gen.Records is
                                    or else Ekind (Comp) /= E_Component;
                               begin
                                  Conjuncts (I) :=
-                                   (if Always_Present then +Comparison
+                                   (if Always_Present then Comparison
                                     else
                                        New_Connection
-                                      (Domain => EW_Pred,
-                                       Op     => EW_Imply,
+                                      (Op     => EW_Imply,
                                        Left   =>
-                                         +Discriminant_Check_Pred_Call
+                                         Discriminant_Check_Pred_Call
                                          (E, Comp, A_Ident),
-                                       Right  => +Comparison));
+                                       Right  => Comparison));
                                  I := I + 1;
                               end;
                            end loop;
-                           Condition :=
-                             +New_And_Expr (+Condition,
-                                            New_And_Expr (Conjuncts, EW_Pred),
-                                            EW_Pred);
+
+                           Condition := New_And_Pred (Condition & Conjuncts);
                         end;
                      end if;
                   end;
@@ -3531,7 +3521,7 @@ package body Why.Gen.Records is
    ---------------------------
 
    function New_Ada_Record_Access
-     (Ada_Node : Node_Id;
+     (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
@@ -4109,7 +4099,7 @@ package body Why.Gen.Records is
       A            : W_Expr_Array;
       Ty           : Entity_Id;
       Init_Wrapper : Boolean := False)
-      return W_Expr_Id
+      return W_Term_Id
    is
       Associations : W_Field_Association_Array (A'Range);
       Index        : Positive := A'First;
@@ -4156,7 +4146,7 @@ package body Why.Gen.Records is
    function Record_From_Split_Form
      (I           : Item_Type;
       Ref_Allowed : Boolean)
-      return W_Expr_Id
+      return W_Term_Id
    is
       E            : constant Entity_Id :=
         (if I.Fields.Present then I.Fields.Binder.Ada_Node

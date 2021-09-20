@@ -3598,7 +3598,6 @@ package body Flow.Control_Flow_Graph is
       --  loop. Please note that we don't flag the loop statement
       --  itself as part of the loop, hence the corresponding delete
       --  is here as well.
-      FA.Loops.Insert (Loop_Id);
       Ctx.Current_Loops.Insert (Loop_Id);
       Ctx.Entry_References.Insert (Loop_Id, Node_Sets.Empty_Set);
       Ctx.Termination_Proved := False;
@@ -4299,8 +4298,10 @@ package body Flow.Control_Flow_Graph is
                      pragma Assert
                        (Is_Bound (F)
                           or else
-                        (for some Comp_Id of F.Component =>
-                           Is_Declared_Within_Variant (Comp_Id))
+                        (F.Kind = Record_Field
+                          and then
+                         (for some Comp_Id of F.Component =>
+                           Is_Declared_Within_Variant (Comp_Id)))
                           or else
                         Ctx.In_Nested_Package);
                   end loop;
@@ -5529,7 +5530,6 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (Ctx);
       Typ : constant Entity_Id := Defining_Identifier (N);
-      V   : Flow_Graphs.Vertex_Id;
    begin
       if Is_Scalar_Type (Typ) then
          declare
@@ -5548,6 +5548,7 @@ package body Flow.Control_Flow_Graph is
                  Target_Name          => Null_Flow_Id,
                  Use_Computed_Globals => not FA.Generating_Globals);
 
+            V : Flow_Graphs.Vertex_Id;
          begin
             Add_Vertex
               (FA,

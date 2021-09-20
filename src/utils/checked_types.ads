@@ -26,19 +26,56 @@
 --  particular Node_Id and Entity_Id) with predicates that enforce various
 --  assumptions.
 
-with Types;          use Types;
 with Atree;          use Atree;
 with Einfo.Entities; use Einfo.Entities;
 with Sinfo.Nodes;    use Sinfo.Nodes;
+with Types;          use Types;
 
 package Checked_Types is
 
-   subtype Checked_Entity_Id is Entity_Id with
-     Predicate => Nkind (Checked_Entity_Id) in N_Entity;
+   -----------------------
+   -- Subtypes of nodes --
+   -----------------------
 
-   subtype Checked_Entity_Id_Or_Empty is Entity_Id with
-     Predicate => (if Present (Checked_Entity_Id_Or_Empty)
-                   then Checked_Entity_Id_Or_Empty in Checked_Entity_Id);
+   subtype Empty_Or_Subexpr_Id is Node_Id with
+     Predicate => No (Empty_Or_Subexpr_Id)
+       or else Empty_Or_Subexpr_Id in N_Subexpr_Id;
+
+   subtype N_Aggregate_Kind_Id is Node_Id with
+     Predicate => N_Aggregate_Kind_Id in N_Aggregate_Id
+                                       | N_Delta_Aggregate_Id
+                                       | N_Extension_Aggregate_Id;
+
+   subtype N_Call_Id is Node_Id with
+     Predicate => N_Call_Id in N_Entry_Call_Statement_Id
+                             | N_Subprogram_Call_Id;
+
+   --------------------------
+   -- Subtypes of entities --
+   --------------------------
+
+   subtype Empty_Or_Object_Kind_Id is Entity_Id with
+     Predicate => No (Empty_Or_Object_Kind_Id)
+       or else Empty_Or_Object_Kind_Id in Object_Kind_Id;
+
+   subtype Empty_Or_Package_Id is Entity_Id with
+     Predicate => No (Empty_Or_Package_Id)
+       or else Empty_Or_Package_Id in E_Package_Id;
+
+   subtype Empty_Or_Record_Field_Kind_Id is Entity_Id with
+     Predicate => No (Empty_Or_Record_Field_Kind_Id)
+       or else Empty_Or_Record_Field_Kind_Id in Record_Field_Kind_Id;
+
+   subtype Empty_Or_Type_Kind_Id is Entity_Id with
+     Predicate => No (Empty_Or_Type_Kind_Id)
+       or else Empty_Or_Type_Kind_Id in Type_Kind_Id;
+
+   --  Entities which may contain components or discriminants, like record
+   subtype Record_Like_Kind_Id is Entity_Id with
+     Predicate => Record_Like_Kind_Id in Private_Kind_Id
+                                       | Protected_Kind_Id
+                                       | Record_Kind_Id
+                                       | Task_Kind_Id;
 
    -----------------
    -- Subprograms --
@@ -48,24 +85,13 @@ package Checked_Types is
    --  generics to be subprograms. We also exclude E_Operator here as we will
    --  never get this in SPARK (if the Expander works as intended).
 
-   subtype Subprogram_Id is Checked_Entity_Id with
+   subtype Subprogram_Id is N_Entity_Id with
      Predicate => Ekind (Subprogram_Id) in E_Function
                                          | E_Procedure
                                          | Entry_Kind;
 
-   subtype Subprogram_Id_Or_Empty is Checked_Entity_Id_Or_Empty with
-     Predicate => (if Present (Subprogram_Id_Or_Empty)
-                   then Subprogram_Id_Or_Empty in Subprogram_Id);
-
-   -----------
-   -- Types --
-   -----------
-
-   subtype Type_Id is Checked_Entity_Id with
-     Predicate => Ekind (Type_Id) in Type_Kind;
-
-   subtype Type_Id_Or_Empty is Checked_Entity_Id_Or_Empty with
-     Predicate => (if Present (Type_Id_Or_Empty)
-                   then Type_Id_Or_Empty in Type_Id);
+   subtype Empty_Or_Subprogram_Kind_Id is Entity_Id with
+     Predicate => No (Empty_Or_Subprogram_Kind_Id)
+       or else Empty_Or_Subprogram_Kind_Id in Subprogram_Id;
 
 end Checked_Types;

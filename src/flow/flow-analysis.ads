@@ -80,10 +80,8 @@ package Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs);
    --  Detect Proof_In globals used in non-assertion expressions
 
-   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
-   --  Find stable loop statements.
-   --
-   --  Complexity is O(N^2)
+   procedure Find_Stable_Conditions (FA : in out Flow_Analysis_Graphs);
+   --  Find stable loop conditions
 
    procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
    --  This procedure looks for hidden state variables and missing Part_Of

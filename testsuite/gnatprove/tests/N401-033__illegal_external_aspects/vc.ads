@@ -45,22 +45,22 @@ is
 
    --  Constants
 
-   C1 : constant Integer -- illegal in SPARK
+   C1 : constant Integer
      with Volatile, Import, Convention => C;
 
-   C2 : constant Integer -- illegal in SPARK
+   C2 : constant Integer
      with Volatile,
-          Async_Readers, -- also illegal - not a variable
+          Async_Readers,
           Import,
           Convention => C;
 
-   C3 : constant Integer -- illegal in SPARK
+   C3 : constant Integer
      with Volatile,
-          Async_Readers => True, -- also illegal - not a variable
+          Async_Readers => True,
           Import,
           Convention => C;
 
-   C4 : constant Integer -- illegal in SPARK
+   C4 : constant Integer
      with Volatile,
           Async_Readers => False, -- also illegal - not a variable
           Import,

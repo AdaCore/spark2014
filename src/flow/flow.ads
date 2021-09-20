@@ -171,9 +171,6 @@ package Flow is
       All_Vars : Flow_Id_Sets.Set;
       --  Flattened variables accessible in the body
 
-      Loops : Node_Sets.Set;
-      --  Loops (identified by labels)
-
       Has_Potentially_Nonterminating_Loops : Boolean;
       --  True for entities that contain loops that may not terminate, i.e. a:
       --  * plain

@@ -109,7 +109,8 @@ package body SPARK_Util is
    -- Set_Specific_Tagged --
    -------------------------
 
-   procedure Set_Specific_Tagged (E, V : Entity_Id) is
+   procedure Set_Specific_Tagged (E : Class_Wide_Kind_Id; V : Record_Kind_Id)
+   is
    begin
       Specific_Tagged_Types.Insert
         (E,
@@ -119,14 +120,20 @@ package body SPARK_Util is
           else V));
    end Set_Specific_Tagged;
 
-   function Specific_Tagged (E : Entity_Id) return Entity_Id
-     renames Specific_Tagged_Types.Element;
+   ---------------------
+   -- Specific_Tagged --
+   ---------------------
+
+   function Specific_Tagged (E : Class_Wide_Kind_Id) return Record_Kind_Id is
+   begin
+      return Specific_Tagged_Types.Element (E);
+   end Specific_Tagged;
 
    -----------------------
    -- Set_Overlay_Alias --
    -----------------------
 
-   procedure Set_Overlay_Alias (New_Id, Old_Id : Entity_Id) is
+   procedure Set_Overlay_Alias (New_Id, Old_Id : Object_Kind_Id) is
       New_Aliases : Node_Sets.Set;
       C           : Node_Graphs.Cursor;
       Inserted    : Boolean;
@@ -165,7 +172,7 @@ package body SPARK_Util is
    -- Overlay_Alias --
    -------------------
 
-   function Overlay_Alias (E : Entity_Id) return Node_Sets.Set is
+   function Overlay_Alias (E : Object_Kind_Id) return Node_Sets.Set is
       C : constant Node_Graphs.Cursor := Overlay_Aliases.Find (E);
       use Node_Graphs;
    begin
@@ -198,7 +205,8 @@ package body SPARK_Util is
    -------------------------------------
 
    function Borrower_For_At_End_Borrow_Call
-     (Call : Node_Id) return Entity_Id
+     (Call : N_Function_Call_Id)
+      return Entity_Id
    is
       Cu : constant Node_Maps.Cursor := At_End_Borrow_Call_Map.Find (Call);
    begin
@@ -228,7 +236,7 @@ package body SPARK_Util is
    ----------------------------
 
    procedure Set_At_End_Borrow_Call
-     (Call     : Node_Id;
+     (Call     : N_Function_Call_Id;
       Borrower : Entity_Id)
    is
       Inserted : Boolean;
@@ -382,7 +390,7 @@ package body SPARK_Util is
    ----------------------------------
 
    procedure Candidate_For_Loop_Unrolling
-     (Loop_Stmt   : Node_Id;
+     (Loop_Stmt   : N_Loop_Statement_Id;
       Output_Info : Boolean;
       Result      : out Unrolling_Type;
       Low_Val     : out Uint;
@@ -951,7 +959,8 @@ package body SPARK_Util is
    --------------------------------------------
 
    function Directly_Enclosing_Subprogram_Or_Entry
-     (E : Entity_Id) return Entity_Id
+     (E : Entity_Id)
+      return Empty_Or_Subprogram_Kind_Id
    is
       S : Entity_Id := Scope (E);
    begin
@@ -975,7 +984,8 @@ package body SPARK_Util is
    -- Enclosing_Concurrent_Type --
    -------------------------------
 
-   function Enclosing_Concurrent_Type (E : Entity_Id) return Entity_Id is
+   function Enclosing_Concurrent_Type (E : Entity_Id) return Concurrent_Kind_Id
+   is
      (if Is_Part_Of_Concurrent_Object (E)
       then Etype (Encapsulating_State (E))
       else Scope (E));
@@ -984,7 +994,10 @@ package body SPARK_Util is
    -- Enclosing_Generic_Instance --
    --------------------------------
 
-   function Enclosing_Generic_Instance (E : Entity_Id) return Entity_Id is
+   function Enclosing_Generic_Instance
+     (E : Entity_Id)
+      return Empty_Or_Package_Id
+   is
       S : Entity_Id := Scope (E);
    begin
       loop
@@ -1073,7 +1086,7 @@ package body SPARK_Util is
    ---------------------------
 
    function Expr_Has_Relaxed_Init
-     (Expr    : Node_Id;
+     (Expr    : N_Subexpr_Id;
       No_Eval : Boolean := True) return Boolean
    is
 
@@ -1378,7 +1391,7 @@ package body SPARK_Util is
    -- Fun_Has_Relaxed_Init --
    --------------------------
 
-   function Fun_Has_Relaxed_Init (Subp : Entity_Id) return Boolean is
+   function Fun_Has_Relaxed_Init (Subp : E_Function_Id) return Boolean is
    begin
       --  It is illegal to return an uninitialized scalar object
 
@@ -1394,7 +1407,8 @@ package body SPARK_Util is
    -- Generic_Actual_Subprograms --
    --------------------------------
 
-   function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set is
+   function Generic_Actual_Subprograms (E : E_Package_Id) return Node_Sets.Set
+   is
       Results : Node_Sets.Set;
 
       Instance : constant Node_Id := Get_Unit_Instantiation_Node (E);
@@ -1498,7 +1512,10 @@ package body SPARK_Util is
    -- Get_Formal_From_Actual --
    ----------------------------
 
-   function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
+   function Get_Formal_From_Actual
+     (Actual : N_Subexpr_Id)
+      return Formal_Kind_Id
+   is
       Formal : Entity_Id;
       Call   : Node_Id;
    begin
@@ -1510,7 +1527,10 @@ package body SPARK_Util is
    -- Get_Initialized_Object --
    ----------------------------
 
-   function Get_Initialized_Object (N : Node_Id) return Entity_Id is
+   function Get_Initialized_Object
+     (N : N_Subexpr_Id)
+      return Empty_Or_Object_Kind_Id
+   is
       Context : constant Node_Id := Unqual_Conv (Parent (N));
       --  Skip qualifications and type conversions between the aggregate and
       --  the object declaration.
@@ -1527,7 +1547,10 @@ package body SPARK_Util is
    -- Get_Observed_Or_Borrowed_Expr --
    -----------------------------------
 
-   function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id is
+   function Get_Observed_Or_Borrowed_Expr
+     (Expr : N_Subexpr_Id)
+      return N_Subexpr_Id
+   is
       B_Expr : Node_Id;
       B_Ty   : Entity_Id := Empty;
    begin
@@ -1540,11 +1563,10 @@ package body SPARK_Util is
    -----------------------------------
 
    procedure Get_Observed_Or_Borrowed_Info
-     (Expr   : Node_Id;
-      B_Expr : out Node_Id;
-      B_Ty   : in out Entity_Id)
+     (Expr   : N_Subexpr_Id;
+      B_Expr : out N_Subexpr_Id;
+      B_Ty   : in out Empty_Or_Type_Kind_Id)
    is
-
       function Find_Func_Call (Expr : Node_Id) return Node_Id;
       --  Search for function calls in the prefixes of Expr
 
@@ -1618,8 +1640,9 @@ package body SPARK_Util is
    ---------------------------------
 
    function Get_Observed_Or_Borrowed_Ty
-     (Expr : Node_Id;
-      Ty   : Entity_Id) return Entity_Id
+     (Expr : N_Subexpr_Id;
+      Ty   : Type_Kind_Id)
+      return Type_Kind_Id
    is
       B_Expr : Node_Id;
       B_Ty   : Entity_Id := Ty;
@@ -1696,8 +1719,9 @@ package body SPARK_Util is
    ---------------------
 
    function Get_Root_Object
-     (Expr              : Node_Id;
-      Through_Traversal : Boolean := True) return Entity_Id
+     (Expr              : N_Subexpr_Id;
+      Through_Traversal : Boolean := True)
+      return Empty_Or_Object_Kind_Id
    is
       function GRO (Expr : Node_Id) return Entity_Id;
       --  Local wrapper on the actual function, to propagate the values of
@@ -1724,7 +1748,14 @@ package body SPARK_Util is
          when N_Expanded_Name
             | N_Identifier
          =>
-            return Entity (Expr);
+            --  There is no root object for an enumeration literal or a type,
+            --  which may occur as the prefix of an attribute reference.
+
+            if Is_Object (Entity (Expr)) then
+               return Entity (Expr);
+            else
+               return Empty;
+            end if;
 
          when N_Explicit_Dereference
             | N_Indexed_Component
@@ -1798,7 +1829,7 @@ package body SPARK_Util is
    -- Has_Volatile --
    ------------------
 
-   function Has_Volatile (E : Checked_Entity_Id) return Boolean is
+   function Has_Volatile (E : N_Entity_Id) return Boolean is
      (case Ekind (E) is
          when E_Abstract_State =>
             Is_External_State (E),
@@ -1813,7 +1844,7 @@ package body SPARK_Util is
    ---------------------------
 
    function Has_Volatile_Property
-     (E : Checked_Entity_Id;
+     (E : N_Entity_Id;
       P : Volatile_Pragma_Id)
       return Boolean
    is
@@ -1827,6 +1858,7 @@ package body SPARK_Util is
 
       case Ekind (E) is
          when E_Abstract_State
+            | E_Constant
             | E_Variable
             | E_Component
             | Type_Kind
@@ -1883,7 +1915,8 @@ package body SPARK_Util is
    ------------------------------------------------
 
    function Is_Additional_Param_Of_Access_Subp_Wrapper
-     (E : Entity_Id) return Boolean
+     (E : Formal_Kind_Id)
+      return Boolean
    is (Ekind (E) = E_In_Parameter
        and then Is_Access_Subprogram_Type (Etype (E))
        and then Scope (E) = Access_Subprogram_Wrapper
@@ -1893,8 +1926,7 @@ package body SPARK_Util is
    -- Is_Action --
    ---------------
 
-   function Is_Action (N : Node_Id) return Boolean
-   is
+   function Is_Action (N : N_Object_Declaration_Id) return Boolean is
       L : constant List_Id := List_Containing (N);
       P : constant Node_Id := Parent (N);
    begin
@@ -1930,7 +1962,7 @@ package body SPARK_Util is
    -- Is_Constant_After_Elaboration --
    -----------------------------------
 
-   function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean is
+   function Is_Constant_After_Elaboration (E : E_Variable_Id) return Boolean is
       Prag : constant Node_Id :=
         Get_Pragma (E, Pragma_Constant_After_Elaboration);
    begin
@@ -1965,7 +1997,7 @@ package body SPARK_Util is
    -- Is_Constant_Borrower --
    --------------------------
 
-   function Is_Constant_Borrower (E : Entity_Id) return Boolean is
+   function Is_Constant_Borrower (E : Object_Kind_Id) return Boolean is
       Root : Entity_Id := E;
 
    begin
@@ -1988,7 +2020,7 @@ package body SPARK_Util is
    -- Is_Constant_In_SPARK --
    --------------------------
 
-   function Is_Constant_In_SPARK (E : Entity_Id) return Boolean is
+   function Is_Constant_In_SPARK (E : Object_Kind_Id) return Boolean is
    begin
       case Ekind (E) is
          when E_In_Parameter =>
@@ -2008,7 +2040,9 @@ package body SPARK_Util is
    -- Is_Converted_Actual_Output_Parameter --
    ------------------------------------------
 
-   function Is_Converted_Actual_Output_Parameter (N : Node_Id) return Boolean
+   function Is_Converted_Actual_Output_Parameter
+     (N : N_Subexpr_Id)
+      return Boolean
    is
       Formal : Entity_Id;
       Call   : Node_Id;
@@ -2033,7 +2067,10 @@ package body SPARK_Util is
    -- Is_Call_Arg_To_Predicate_Function --
    ---------------------------------------
 
-   function Is_Call_Arg_To_Predicate_Function (N : Node_Id) return Boolean is
+   function Is_Call_Arg_To_Predicate_Function
+     (N : Empty_Or_Subexpr_Id)
+      return Boolean
+   is
      (Present (N)
         and then Present (Parent (N))
         and then Nkind (Parent (N)) in N_Type_Conversion
@@ -2118,7 +2155,9 @@ package body SPARK_Util is
    -- Is_Empty_Others --
    ---------------------
 
-   function Is_Empty_Others (N : Node_Id) return Boolean
+   function Is_Empty_Others
+     (N : N_Case_Statement_Alternative_Id)
+      return Boolean
    is
       First_Choice : constant Node_Id := First (Discrete_Choices (N));
    begin
@@ -2186,7 +2225,7 @@ package body SPARK_Util is
    -- Is_External_Call --
    ----------------------
 
-   function Is_External_Call (N : Node_Id) return Boolean is
+   function Is_External_Call (N : N_Call_Id) return Boolean is
       Nam : constant Node_Id := Name (N);
    begin
       --  External calls are those with the selected_component syntax and whose
@@ -2227,7 +2266,7 @@ package body SPARK_Util is
    -- Is_Ignored_Pragma_Check --
    -----------------------------
 
-   function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean is
+   function Is_Ignored_Pragma_Check (N : N_Pragma_Id) return Boolean is
    begin
       return Is_Pragma_Check (N, Name_Precondition)
                or else
@@ -2417,9 +2456,9 @@ package body SPARK_Util is
    -- Is_Not_Hidden_Discriminant  --
    ---------------------------------
 
-   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
-     (not (Is_Completely_Hidden (E)
-             or else No (Root_Discriminant (E))));
+   function Is_Not_Hidden_Discriminant (E : E_Discriminant_Id) return Boolean
+   is (not (Is_Completely_Hidden (E)
+         or else No (Root_Discriminant (E))));
 
    ----------------------
    -- Is_Others_Choice --
@@ -2493,7 +2532,7 @@ package body SPARK_Util is
    -- Is_Path_Expression --
    ------------------------
 
-   function Is_Path_Expression (Expr : Node_Id) return Boolean is
+   function Is_Path_Expression (Expr : N_Subexpr_Id) return Boolean is
 
       function Is_Path_Expression_Ann (Expr : Node_Id) return Boolean;
       --  Check whether Expr is the prefix of a path
@@ -2604,9 +2643,8 @@ package body SPARK_Util is
    -- Is_Pragma_Assert_And_Cut --
    ------------------------------
 
-   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean is
+   function Is_Pragma_Assert_And_Cut (N : N_Pragma_Id) return Boolean is
       Orig : constant Node_Id := Original_Node (N);
-
    begin
       return Present (Orig)
         and then Is_Pragma (Orig, Pragma_Assert_And_Cut);
@@ -2686,7 +2724,7 @@ package body SPARK_Util is
    -- Is_Rooted_In_Constant --
    ---------------------------
 
-   function Is_Rooted_In_Constant (Expr : Node_Id) return Boolean is
+   function Is_Rooted_In_Constant (Expr : N_Subexpr_Id) return Boolean is
       Root : constant Entity_Id :=
         (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
          else Empty);
@@ -2722,7 +2760,8 @@ package body SPARK_Util is
    ------------------------------------
 
    function Is_Selected_For_Loop_Unrolling
-     (Loop_Stmt : Node_Id) return Boolean
+     (Loop_Stmt : N_Loop_Statement_Id)
+      return Boolean
    is
       --  Variables used in loop unrolling
       Low_Val  : Uint;
@@ -2794,7 +2833,10 @@ package body SPARK_Util is
    -- Loop_Entity_Of_Exit_Statement --
    -----------------------------------
 
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id is
+   function Loop_Entity_Of_Exit_Statement
+     (N : N_Exit_Statement_Id)
+      return Entity_Id
+   is
       function Is_Loop_Statement (N : Node_Id) return Boolean is
         (Nkind (N) = N_Loop_Statement);
       --  Returns True if N is a loop statement
@@ -2841,7 +2883,7 @@ package body SPARK_Util is
    -- Value_Is_Never_Leaked --
    ---------------------------
 
-   function Value_Is_Never_Leaked (Expr : Node_Id) return Boolean is
+   function Value_Is_Never_Leaked (Expr : N_Subexpr_Id) return Boolean is
       Context : Node_Id := Parent (Expr);
       Nested  : Boolean := False;
 
@@ -2932,9 +2974,8 @@ package body SPARK_Util is
    -- Obj_Has_Relaxed_Init --
    --------------------------
 
-   function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean is
+   function Obj_Has_Relaxed_Init (Obj : Object_Kind_Id) return Boolean is
    begin
-
       --  Discriminants are always initialized
 
       if Ekind (Obj) in E_Discriminant then
@@ -3036,7 +3077,8 @@ package body SPARK_Util is
    ----------------------------------------
 
    procedure Objects_Have_Compatible_Alignments
-     (X, Y        : Entity_Id;
+     (X           : Constant_Or_Variable_Kind_Id;
+      Y           : Object_Kind_Id;
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
@@ -3173,7 +3215,7 @@ package body SPARK_Util is
    -- Root_Discriminant --
    -----------------------
 
-   function Root_Discriminant (E : Entity_Id) return Entity_Id is
+   function Root_Discriminant (E : E_Discriminant_Id) return Entity_Id is
       Rec_Type : constant Entity_Id := Retysp (Scope (E));
       Root     : constant Entity_Id := Root_Retysp (Rec_Type);
 
@@ -3255,8 +3297,9 @@ package body SPARK_Util is
    ------------------------------
 
    function Search_Component_By_Name
-     (Rec  : Entity_Id;
-      Comp : Entity_Id) return Entity_Id
+     (Rec  : Record_Like_Kind_Id;
+      Comp : Record_Field_Kind_Id)
+      return Empty_Or_Record_Field_Kind_Id
    is
       Specific_Rec : constant Entity_Id :=
         (if Is_Class_Wide_Type (Rec)
@@ -3618,7 +3661,7 @@ package body SPARK_Util is
    -- Source_Name --
    -----------------
 
-   function Source_Name (N : Entity_Id) return String is
+   function Source_Name (N : Node_Id) return String is
       Buf : Bounded_String;
 
    begin
@@ -3636,7 +3679,7 @@ package body SPARK_Util is
    -- String_Of_Node --
    --------------------
 
-   function String_Of_Node (N : Node_Id) return String is
+   function String_Of_Node (N : N_Subexpr_Id) return String is
 
       -----------------------
       -- Local Subprograms --
@@ -3777,7 +3820,7 @@ package body SPARK_Util is
    -- Statement_Enclosing_Label --
    -------------------------------
 
-   function Statement_Enclosing_Label (E : Entity_Id) return Node_Id is
+   function Statement_Enclosing_Label (E : E_Label_Id) return Node_Id is
       Label : constant Node_Id := Label_Construct (Parent (E));
       pragma Assert (Nkind (Label) = N_Label);
 
@@ -3789,7 +3832,7 @@ package body SPARK_Util is
    -- Traverse_Access_To_Constant --
    ---------------------------------
 
-   function Traverse_Access_To_Constant (Expr : Node_Id) return Boolean is
+   function Traverse_Access_To_Constant (Expr : N_Subexpr_Id) return Boolean is
    begin
       case Nkind (Expr) is
 
@@ -3890,7 +3933,10 @@ package body SPARK_Util is
    -- Unique_Component --
    ----------------------
 
-   function Unique_Component (E : Entity_Id) return Entity_Id is
+   function Unique_Component
+     (E : Record_Field_Kind_Id)
+      return Record_Field_Kind_Id
+   is
    begin
       if Ekind (E) = E_Discriminant
         and then Present (Corresponding_Discriminant (E))
@@ -3907,7 +3953,7 @@ package body SPARK_Util is
    -- States_And_Objects --
    ------------------------
 
-   function States_And_Objects (E : Entity_Id) return Node_Sets.Set is
+   function States_And_Objects (E : E_Package_Id) return Node_Sets.Set is
       procedure Register_Object (Obj : Entity_Id)
         with Pre => Ekind (Obj) in E_Abstract_State
                                  | E_Constant

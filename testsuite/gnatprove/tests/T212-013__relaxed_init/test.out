@@ -11,7 +11,7 @@ test_init_by_proof.adb:37:26: info: overflow check proved (CVC4: 2 VC)
 test_init_by_proof.adb:38:22: medium: initialization check might fail
 test_init_by_proof.adb:38:25: info: overflow check proved (CVC4: 2 VC)
 test_init_by_proof.adb:43:14: warning: subprogram "Test_Init_Attr" has no effect
-test_init_by_proof.adb:47:22: info: assertion proved (CVC4: 6 VC; Trivial: 8 VC)
+test_init_by_proof.adb:47:22: info: assertion proved (CVC4: 6 VC; Trivial: 11 VC)
 test_init_by_proof.adb:50:14: warning: subprogram "Test_Init_Attr_2" has no effect
 test_init_by_proof.adb:54:22: medium: assertion might fail
 test_init_by_proof.adb:57:04: warning: analyzing unreferenced procedure "P1"
@@ -52,7 +52,7 @@ test_init_by_proof.adb:123:14: warning: subprogram "P9" has no effect
 test_init_by_proof.adb:125:19: medium: initialization check might fail
 test_init_by_proof.adb:129:04: warning: analyzing unreferenced procedure "P10"
 test_init_by_proof.adb:129:14: warning: subprogram "P10" has no effect
-test_init_by_proof.adb:135:13: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+test_init_by_proof.adb:135:13: info: initialization check proved (CVC4: 2 VC; Trivial: 3 VC)
 test_init_by_proof.adb:137:04: warning: analyzing unreferenced procedure "Q"
 test_init_by_proof.adb:137:14: warning: subprogram "Q" has no effect
 test_init_by_proof.adb:138:07: info: initialization of parts of "X" without Relaxed_Initialization proved
@@ -60,7 +60,7 @@ test_init_by_proof.adb:142:14: medium: initialization check might fail (e.g. whe
 test_init_by_proof.adb:144:04: warning: analyzing unreferenced procedure "Q1"
 test_init_by_proof.adb:144:14: warning: subprogram "Q1" has no effect
 test_init_by_proof.adb:145:07: info: initialization of parts of "X" without Relaxed_Initialization proved
-test_init_by_proof.adb:149:14: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+test_init_by_proof.adb:149:14: info: initialization check proved (CVC4: 2 VC; Trivial: 3 VC)
 test_init_by_proof_conv.adb:10:27: info: range check proved (CVC4: 1 VC)
 test_init_by_proof_conv.adb:12:27: info: range check proved (CVC4: 1 VC)
 test_init_by_proof_conv.adb:18:35: info: discriminant check proved (CVC4: 1 VC)
@@ -79,14 +79,14 @@ test_init_by_proof_mem.adb:34:22: info: assertion proved (Trivial)
 test_init_by_proof_mem.adb:35:22: info: assertion proved (CVC4: 2 VC)
 test_init_by_proof_mem.adb:37:22: info: assertion proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:37:22: medium: initialization check might fail
-test_init_by_proof_mem.adb:37:36: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+test_init_by_proof_mem.adb:37:36: info: initialization check proved (CVC4: 2 VC; Trivial: 3 VC)
 test_init_by_proof_mem.adb:38:22: info: assertion proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:38:22: medium: initialization check might fail
 test_init_by_proof_mem.adb:38:39: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_init_by_proof_mem.adb:40:22: info: assertion proved (CVC4: 1 VC)
-test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC4: 1 VC; Trivial: 5 VC)
-test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
-test_init_by_proof_mem.adb:40:36: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
+test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC4: 1 VC; Trivial: 6 VC)
+test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC4: 2 VC; Trivial: 3 VC)
+test_init_by_proof_mem.adb:40:36: info: initialization check proved (CVC4: 2 VC; Trivial: 3 VC)
 test_init_by_proof_mem.adb:41:22: info: assertion proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:41:22: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_init_by_proof_mem.adb:41:39: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)

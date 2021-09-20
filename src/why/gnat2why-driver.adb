@@ -385,6 +385,11 @@ package body Gnat2Why.Driver is
    procedure Do_Generate_VCs (E : Entity_Id) is
       Old_Num : constant Natural := Num_Registered_VCs_In_Why3;
    begin
+      --  Check that the global variables are cleared before and after this
+      --  routine; this is an assertion rather than a pre/post condition,
+      --  because the caller shouldn't really care about it.
+
+      pragma Assert (No (Current_Subp));
 
       --  Delete all theories in main so that we start this file with no other
       --  VCs.
@@ -467,6 +472,8 @@ package body Gnat2Why.Driver is
             Run_Gnatwhy3 (File_Name);
          end;
       end if;
+
+      Current_Subp := Empty;
    end Do_Generate_VCs;
 
    ---------------------------
@@ -1270,10 +1277,6 @@ package body Gnat2Why.Driver is
    ------------------------------
 
    procedure Translate_Hidden_Globals (E : Entity_Id) is
-      Unused_Node : Node_Sets.Cursor;
-      Unused_Name : Name_Sets.Cursor;
-      Inserted    : Boolean;
-
    begin
       if (case Ekind (E) is
           when Entry_Kind | E_Task_Type => True,
@@ -1286,8 +1289,10 @@ package body Gnat2Why.Driver is
       )
       then
          declare
-            Reads  : Flow_Types.Flow_Id_Sets.Set;
-            Writes : Flow_Types.Flow_Id_Sets.Set;
+            Reads       : Flow_Types.Flow_Id_Sets.Set;
+            Writes      : Flow_Types.Flow_Id_Sets.Set;
+            Unused_Name : Name_Sets.Cursor;
+            Inserted    : Boolean;
          begin
             --  Collect global variables potentially read and written
             Flow_Utility.Get_Proof_Globals (Subprogram      => E,

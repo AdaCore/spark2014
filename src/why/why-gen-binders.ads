@@ -29,6 +29,7 @@ with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Snames;               use Snames;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Why.Conversions;     use Why.Conversions;
 with SPARK_Definition;     use SPARK_Definition;
 with SPARK_Util;           use SPARK_Util;
 with Types;                use Types;
@@ -209,6 +210,14 @@ package Why.Gen.Binders is
 
    --  Top-level entities
 
+   function New_Call
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Typ      : W_Type_Id := Why_Empty)
+      return W_Term_Id
+   is (+W_Expr_Id'(New_Call (Ada_Node, EW_Term, Name, Binders, Typ)));
+
    function New_Function_Decl
      (Ada_Node    : Node_Id := Empty;
       Domain      : EW_Domain;
@@ -357,7 +366,7 @@ package Why.Gen.Binders is
 
    function Reconstruct_Item
      (E           : Item_Type;
-      Ref_Allowed : Boolean := True) return W_Expr_Id;
+      Ref_Allowed : Boolean := True) return W_Term_Id;
    --  Create an expression out of an item. It does not havoc the content
    --  of volatile objects.
    --  @param E item to be reconstructed.

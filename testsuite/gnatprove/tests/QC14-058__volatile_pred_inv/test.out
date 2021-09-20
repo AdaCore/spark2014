@@ -6,8 +6,8 @@ p.ads:11:04: error: type invariant on effectively volatile type is not allowed i
 p.ads:11:04: error: violation of pragma SPARK_Mode at test.adc:1
 q.ads:3:09: error: subtype predicate on effectively volatile type for reading is not allowed in SPARK (SPARK RM 3.2.4(3))
 q.ads:3:09: error: violation of pragma SPARK_Mode at test.adc:1
-q.ads:4:09: error: subtype predicate on effectively volatile type for reading is not allowed in SPARK (SPARK RM 3.2.4(3))
-q.ads:4:09: error: violation of pragma SPARK_Mode at test.adc:1
+q.ads:4:04: error: "T2" is not allowed in SPARK (due to subtype predicate on effectively volatile type for reading)
+q.ads:4:04: error: violation of pragma SPARK_Mode at test.adc:1
 r.ads:3:09: error: subtype predicate on effectively volatile type for reading is not allowed in SPARK (SPARK RM 3.2.4(3))
 r.ads:3:09: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

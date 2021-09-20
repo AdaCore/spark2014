@@ -25,7 +25,6 @@
 
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
-with Flow_Utility;               use Flow_Utility;
 with Gnat2Why.Util;              use Gnat2Why.Util;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
@@ -187,7 +186,7 @@ package Gnat2Why.Expr is
    --         initialization of Expr of type Ty.
 
    function Compute_Default_Init
-     (Expr             : W_Expr_Id;
+     (Expr             : W_Term_Id;
       Ty               : Entity_Id;
       Params           : Transformation_Params := Body_Params;
       Skip_Last_Cond   : W_Term_Id := False_Term;
@@ -464,11 +463,59 @@ package Gnat2Why.Expr is
    --  False, then references are not allowed, for example in the context of an
    --  axiom or a logic function definition.
 
+   function Transform_Prog
+     (Expr          : Node_Id;
+      Expected_Type : W_Type_Id;
+      Params        : Transformation_Params;
+      Checks        : Boolean := True) return W_Prog_Id
+   is
+     (+Transform_Expr
+        (Expr,
+         Expected_Type,
+         (if Checks then EW_Prog else EW_Pterm),
+         Params));
+
+   function Transform_Term
+     (Expr          : Node_Id;
+      Expected_Type : W_Type_Id;
+      Params        : Transformation_Params) return W_Term_Id
+   is
+     (+Transform_Expr (Expr, Expected_Type, EW_Term, Params));
+
+   function Transform_Pred
+     (Expr          : Node_Id;
+      Expected_Type : W_Type_Id;
+      Params        : Transformation_Params) return W_Pred_Id
+   is
+     (+Transform_Expr (Expr, Expected_Type, EW_Pred, Params));
+
    function Transform_Expr
      (Expr    : Node_Id;
       Domain  : EW_Domain;
       Params  : Transformation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
+
+   function Transform_Prog
+     (Expr   : Node_Id;
+      Params : Transformation_Params;
+      Checks : Boolean := True) return W_Prog_Id
+   is
+     (+Transform_Expr
+        (Expr,
+         (if Checks then EW_Prog else EW_Pterm),
+         Params));
+
+   function Transform_Term
+     (Expr   : Node_Id;
+      Params : Transformation_Params) return W_Term_Id
+   is
+     (+Transform_Expr (Expr, EW_Term, Params));
+
+   function Transform_Pred
+     (Expr   : Node_Id;
+      Params : Transformation_Params) return W_Pred_Id
+   is
+     (+Transform_Expr (Expr, EW_Pred, Params));
 
    function Transform_Expr_With_Actions
      (Expr          : Node_Id;
@@ -583,8 +630,8 @@ package Gnat2Why.Expr is
 
    function Warn_On_Dead_Branch
      (N     : Node_Id;
-      W     : W_Expr_Id;
-      Phase : Transformation_Phase) return W_Expr_Id;
+      W     : W_Prog_Id;
+      Phase : Transformation_Phase) return W_Prog_Id;
    --  In cases where we want to detect unreachable branches, wrap program
    --  expression W with a warning by proof on reachability. Otherwise simply
    --  return W (which may or not be a program in that case).
@@ -637,9 +684,7 @@ package Gnat2Why.Expr is
       Expr   : W_Expr_Id;
       Domain : EW_Domain;
       Subset : Node_Sets.Set;
-      As_Old : Boolean := False) return W_Expr_Id
-   with Pre => (for all N of Subset => Map.Contains (N)
-                or else Get_Variables_For_Proof (N, N).Is_Empty);
+      As_Old : Boolean := False) return W_Expr_Id;
    --  Same as above but only bind the nodes from Subset. If As_Old is True,
    --  the expressions in Map should be evaluated in the pre state.
 

@@ -365,12 +365,12 @@ package body Gnat2Why.Subprograms.Pointers is
             Checks := New_Binding
               (Ada_Node => Ada_Node,
                Name     => Result_Name,
-               Def      => New_Call
+               Def      => +W_Expr_Id'(New_Call
                  (Domain  => EW_Pterm,
                   Name    => Get_Logic_Function (To_Profile),
                   Args    => Subp_Value & Formal_Args,
-                  Typ     => Get_Typ (Result_Name)),
-               Context  => +Sequence
+                  Typ     => Get_Typ (Result_Name))),
+               Context  => Sequence
                  (Ada_Node => Ada_Node,
                   Left     => New_Assume_Statement
                     (Ada_Node => Ada_Node,
@@ -379,7 +379,7 @@ package body Gnat2Why.Subprograms.Pointers is
                         Args => (1 => +Result_Name, 2 => Subp_Value)
                           & Formal_Args,
                         Typ  => Get_Typ (Result_Name))),
-                  Right    => +Checks),
+                  Right    => Checks),
                Typ      => EW_Unit_Type);
 
             --  Restore the result name
@@ -408,7 +408,7 @@ package body Gnat2Why.Subprograms.Pointers is
                Def      => New_Any_Expr
                  (Return_Type => Get_Typ (Binder.B_Name),
                   Labels      => Symbol_Sets.Empty_Set),
-               Context  => +Checks,
+               Context  => Checks,
                Typ      => EW_Unit_Type);
          end if;
       end loop;
@@ -432,12 +432,11 @@ package body Gnat2Why.Subprograms.Pointers is
 
       Checks := New_Conditional
         (Condition => New_Not
-           (Domain => EW_Prog,
-            Right  => New_Record_Access
-              (Name  => Expr,
+           (Right  => New_Record_Access
+              (Name  => +Expr,
                Field => M_Subprogram_Access.Rec_Is_Null,
                Typ   => EW_Bool_Type)),
-         Then_Part => +New_Ignore
+         Then_Part => New_Ignore
            (Ada_Node => Ada_Node,
             Prog     => Checks),
          Typ       => EW_Unit_Type);
@@ -787,13 +786,11 @@ package body Gnat2Why.Subprograms.Pointers is
                Base_Name => "result");
             Pred_Eq      : constant W_Pred_Id := New_Connection
               (Left  => New_Call
-                 (Domain => EW_Pred,
-                  Name   => Guard_Predicate_Name (Subp),
+                 (Name   => Guard_Predicate_Name (Subp),
                   Args   => (1 => +Result_Ident) & Args,
                   Typ    => EW_Bool_Type),
                Right => New_Call
-                 (Domain => EW_Pred,
-                  Name   => Get_Logic_Function_Guard
+                 (Name   => Get_Logic_Function_Guard
                     (Directly_Designated_Type (Etype (Expr))),
                   Args   => (1 => +Result_Ident, 2 => +Logic_Id) & Args,
                   Typ    => EW_Bool_Type),
@@ -832,20 +829,18 @@ package body Gnat2Why.Subprograms.Pointers is
 
    function New_Dynamic_Property_For_Subprogram
      (Ty     : Entity_Id;
-      Expr   : W_Expr_Id;
+      Expr   : W_Term_Id;
       Params : Transformation_Params) return W_Pred_Id
    is (New_Conditional
          (Condition   => New_Not
-            (Domain => EW_Pred,
-             Right  => +Pred_Of_Boolean_Term
+            (Right  => Pred_Of_Boolean_Term
                (W => New_Record_Access
                     (Name  => Expr,
                      Field => M_Subprogram_Access.Rec_Is_Null,
                      Typ   => EW_Bool_Type))),
           Then_Part   => New_Call
-            (Domain => EW_Pred,
-             Name   => E_Symb (Ty, WNE_Range_Pred),
-             Args   => (1 => New_Record_Access
+            (Name   => E_Symb (Ty, WNE_Range_Pred),
+             Args   => (1 => +New_Record_Access
                         (Name  => Expr,
                          Field => M_Subprogram_Access.Rec_Value,
                          Typ   => M_Subprogram_Access.Subprogram_Type)),

@@ -36,7 +36,6 @@ with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Expr;        use Why.Gen.Expr;
@@ -156,7 +155,7 @@ package body Why.Gen.Pointers is
 
          Ty        : constant Entity_Id := Etype (E);
          Condition : W_Pred_Id          := True_Pred;
-         Top_Field : constant W_Expr_Id := +New_Pointer_Is_Null_Access
+         Top_Field : constant W_Expr_Id := New_Pointer_Is_Null_Access
            (E, +To_Local (E_Symb (Ty, WNE_Null_Pointer)), Local => True);
 
          Axiom_Name : constant String :=
@@ -203,7 +202,7 @@ package body Why.Gen.Pointers is
                   Location => No_Location,
                   Labels   => Symbol_Sets.Empty_Set,
                   Def      => New_Not (Domain => EW_Term,
-                                       Right  => +New_Pointer_Is_Null_Access
+                                       Right  => New_Pointer_Is_Null_Access
                                          (E, +A_Ident, Local => True))));
 
          Emit (Th,
@@ -286,12 +285,10 @@ package body Why.Gen.Pointers is
 
          R_Ident    : constant W_Identifier_Id :=
            New_Identifier (Name => "r", Typ => Root_Abstr);
-         R_Val      : constant W_Expr_Id :=
+         R_Val      : constant W_Term_Id :=
            New_Pointer_Value_Access
-             (Ada_Node => Empty,
-              E        => Root,
-              Name     => +R_Ident,
-              Domain   => EW_Term);
+             (E        => Root,
+              Name     => +R_Ident);
          Post       : constant W_Pred_Id :=
            New_Call
              (Name => Why_Eq,
@@ -341,7 +338,7 @@ package body Why.Gen.Pointers is
             --  Check that the bounds of R_Val match the bounds of Des_Ty
 
             Check_Pred :=
-              +New_Bounds_Equality
+              New_Bounds_Equality
                 (R_Val, Args (1 .. Num),
                  Dim => Positive (Number_Dimensions (Des_Ty)));
          else
@@ -377,7 +374,7 @@ package body Why.Gen.Pointers is
                 (Name => E_Symb (Root_Retysp (Des_Ty), WNE_Range_Pred),
                  Args => Args (1 .. Num) & New_Discriminants_Access
                  (Domain => EW_Term,
-                  Name   => R_Val,
+                  Name   => +R_Val,
                   Ty     => Des_Ty),
                  Typ  => EW_Bool_Type);
          end if;
@@ -387,11 +384,12 @@ package body Why.Gen.Pointers is
          Check_Pred :=
            New_Conditional
              (Condition => New_Not
-                (Domain => EW_Pred,
-                 Right  => New_Pointer_Is_Null_Access
-                   (E     => Root,
-                    Name  => +R_Ident)),
-              Then_Part => +Check_Pred,
+                (Right  =>
+                   Pred_Of_Boolean_Term
+                   (New_Pointer_Is_Null_Access
+                        (E     => Root,
+                         Name  => +R_Ident))),
+              Then_Part => Check_Pred,
               Typ       => EW_Bool_Type);
 
          Emit (Th,
@@ -432,7 +430,7 @@ package body Why.Gen.Pointers is
          declare
             Root_Ty : constant W_Type_Id := EW_Abstract (Root);
             Des_Ty  : constant Entity_Id := Directly_Designated_Type (Root);
-            Def     : constant W_Expr_Id :=
+            Def     : constant W_Term_Id :=
               Pointer_From_Split_Form
                 (A  =>
                    (1 => Insert_Simple_Conversion
@@ -469,12 +467,12 @@ package body Why.Gen.Pointers is
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => Root_Ty,
-                  Def         => Def));
+                  Def         => +Def));
          end;
 
          declare
             Des_Ty  : constant Entity_Id := Directly_Designated_Type (E);
-            Def     : constant W_Expr_Id :=
+            Def     : constant W_Term_Id :=
               Pointer_From_Split_Form
                 (A     =>
                    (1 => Insert_Simple_Conversion
@@ -509,7 +507,7 @@ package body Why.Gen.Pointers is
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => Abstr_Ty,
-                  Def         => Def));
+                  Def         => +Def));
          end;
       end Declare_Conversion_Functions;
 
@@ -903,23 +901,20 @@ package body Why.Gen.Pointers is
       -------------------------------
 
       procedure Declare_Equality_Function is
-         B_Ident            : constant W_Identifier_Id :=
+         B_Ident           : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => Abstr_Ty);
 
-         Sec_Condition      : W_Expr_Id;
+         Sec_Condition     : W_Pred_Id;
 
-         Comparison_Null    : constant W_Pred_Id :=
-           +New_Comparison
-           (Domain => EW_Pred,
-            Symbol => Why_Eq,
-            Left   => +New_Pointer_Is_Null_Access (E, +A_Ident, Local => True),
-            Right  => +New_Pointer_Is_Null_Access (E, +B_Ident, Local => True)
-           );
+         Comparison_Null   : constant W_Pred_Id :=
+           New_Comparison
+           (Symbol => Why_Eq,
+            Left   => New_Pointer_Is_Null_Access (E, +A_Ident, Local => True),
+            Right  => New_Pointer_Is_Null_Access (E, +B_Ident, Local => True));
 
-         Comparison_Value  : constant W_Pred_Id :=
-           +New_Comparison
-           (Domain => EW_Pred,
-            Symbol => Why_Eq,
+         Comparison_Value : constant W_Pred_Id :=
+           New_Comparison
+           (Symbol => Why_Eq,
             Left   => New_Record_Access
               (Name  => +A_Ident,
                Field => Value_Id,
@@ -927,19 +922,17 @@ package body Why.Gen.Pointers is
             Right  => New_Record_Access
               (Name  => +B_Ident,
                Field => Value_Id,
-               Typ   => Get_Typ (Value_Id))
-           );
+               Typ   => Get_Typ (Value_Id)));
 
       begin
          --  Compare Pointer_Address field and assume pointer value equality if
          --  addresses are equal.
 
          Sec_Condition := New_Conditional
-           (Domain    => EW_Pred,
-            Condition => New_Not (Domain => EW_Pred,
-                                  Right  => +New_Pointer_Is_Null_Access
-                                    (E, +A_Ident, Local => True)),
-            Then_Part => +Comparison_Value);
+           (Condition => New_Not (Right  => Pred_Of_Boolean_Term
+                                  (New_Pointer_Is_Null_Access
+                                       (E, +A_Ident, Local => True))),
+            Then_Part => Comparison_Value);
 
          Emit
            (Th,
@@ -953,8 +946,7 @@ package body Why.Gen.Pointers is
                Location    => No_Location,
                Labels      => Symbol_Sets.Empty_Set,
                Def         =>
-                 +New_And_Expr
-                    (+Comparison_Null, +Sec_Condition, EW_Pred)));
+                 +New_And_Pred (Comparison_Null, Sec_Condition)));
       end Declare_Equality_Function;
 
    --  Start of processing for Declare_Rep_Pointer_Type
@@ -1347,7 +1339,7 @@ package body Why.Gen.Pointers is
    ------------------------------
 
    function New_Pointer_Value_Access
-     (Ada_Node : Node_Id;
+     (Ada_Node : Node_Id := Empty;
       E        : Entity_Id;
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
@@ -1433,7 +1425,7 @@ package body Why.Gen.Pointers is
    function Pointer_From_Split_Form
      (I           : Item_Type;
       Ref_Allowed : Boolean)
-      return W_Expr_Id
+      return W_Term_Id
    is
       E        : constant Entity_Id := I.Value.Ada_Node;
       Ty       : constant Entity_Id := I.P_Typ;
@@ -1471,7 +1463,7 @@ package body Why.Gen.Pointers is
       A        : W_Expr_Array;
       Ty       : Entity_Id;
       Local    : Boolean := False)
-      return W_Expr_Id
+      return W_Term_Id
    is
       Ty_Ext     : constant Entity_Id := Retysp (Ty);
       Value      : W_Expr_Id := A (1);

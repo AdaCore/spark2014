@@ -1,5 +1,5 @@
 package Libst with SPARK_Mode is
-   Max_Exact_Integer_Computation : constant := 2.0 ** 23;
+   Max_Exact_Integer_Computation : constant := 2.0 ** 24;
    --  Upper bound of the interval on which integer computations are exact
    Float_Sqrt : constant Float := 2.0 ** 63;
    --  Safe bound for multiplication
@@ -21,7 +21,7 @@ package Libst with SPARK_Mode is
      Predicate => Weight in 0.0 | Min_Weight .. 1.0;
    type Weight_Array is array (Index) of Weight;
 
-   --  Definition of the weighted sum on an array of values using floating
+   --  Definition of the weighted average on an array of values using floating
    --  point computation.
 
    subtype Sum_Of_Weights is Float range 0.0 .. Float (Max_Index) with
@@ -30,12 +30,13 @@ package Libst with SPARK_Mode is
      (Weights : Weight_Array;
       I       : Extended_Index) return Float
    with
+     Ghost,
      Subprogram_Variant => (Decreases => I),
      Post => Sum_Weight_Rec'Result =
          (if I = 0 then 0.0 else Sum_Weight_Rec (Weights, I - 1) + Weights (I))
        and then Sum_Weight_Rec'Result in 0.0 |  Min_Weight .. Float (I);
-   function Sum_Weight (Weights : Weight_Array) return Sum_Of_Weights is
-     (Sum_Weight_Rec (Weights, Max_Index));
+   function Sum_Weight (Weights : Weight_Array) return Sum_Of_Weights with
+     Post => Sum_Weight'Result = Sum_Weight_Rec (Weights, Max_Index);
    --  Sum of an array of weights
 
    Max_Sum_Of_Values : constant := Max_Value * Float (Max_Index) / Min_Weight;
@@ -45,17 +46,18 @@ package Libst with SPARK_Mode is
       Values  : Value_Array;
       I       : Extended_Index) return Float
    with
+     Ghost,
      Subprogram_Variant => (Decreases => I),
      Post => Weighted_Sum_Rec'Result =
          (if I = 0 then 0.0
           else Weighted_Sum_Rec (Weights, Values, I - 1) + Weights (I) * Values (I))
        and then Weighted_Sum_Rec'Result in
              -(Max_Value * Float (I)) .. Max_Value * Float (I);
-   function Weighted_Sum
+   function Weighted_Average
      (Weights : Weight_Array;
       Values  : Value_Array) return Sum_Of_Values
-   is
-     (Weighted_Sum_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights))
-   with Pre => Sum_Weight (Weights) /= 0.0;
-   --  Weighted sum of an array of values
+   with
+       Pre  => Sum_Weight (Weights) /= 0.0,
+       Post => Weighted_Average'Result = Weighted_Sum_Rec (Weights, Values, Max_Index) / Sum_Weight (Weights);
+   --  Weighted average of an array of values
 end Libst;

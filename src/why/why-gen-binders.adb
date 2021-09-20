@@ -29,7 +29,6 @@ with Namet;               use Namet;
 with SPARK_Util.Types;    use SPARK_Util.Types;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Init;        use Why.Gen.Init;
@@ -1348,9 +1347,9 @@ package body Why.Gen.Binders is
 
    function Reconstruct_Item
      (E           : Item_Type;
-      Ref_Allowed : Boolean := True) return W_Expr_Id
+      Ref_Allowed : Boolean := True) return W_Term_Id
    is
-      T           : W_Expr_Id;
+      T : W_Term_Id;
    begin
       case E.Kind is
          when Func =>
@@ -1364,7 +1363,7 @@ package body Why.Gen.Binders is
             if E.Main.Mutable and then Ref_Allowed then
                T := New_Deref (Ada_Node => Get_Ada_Node (+T),
                                Right    => +T,
-                               Typ      => Get_Type (T));
+                               Typ      => Get_Type (+T));
             end if;
 
          when UCArray =>

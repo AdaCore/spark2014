@@ -1169,7 +1169,8 @@ package body Gnat2Why.Borrow_Checker is
                      then "observed" else "borrowed");
                begin
                   Error_Msg_N
-                    (Operation & " object is aliased through address clauses",
+                    (Operation & " object aliased through address clauses"
+                     & " is not supported yet",
                      Target);
                   Permission_Error := True;
                end;
@@ -2042,7 +2043,9 @@ package body Gnat2Why.Borrow_Checker is
       if Is_Type_Name (Expr) then
          return;
 
-      elsif Is_Path_Expression (Expr) then
+      elsif Expr in N_Subexpr_Id
+        and then Is_Path_Expression (Expr)
+      then
          if Mode /= Assign then
             Read_Indexes (Expr);
          end if;
@@ -4207,6 +4210,18 @@ package body Gnat2Why.Borrow_Checker is
             Expl       => Expr);
       end if;
 
+      --  Check that the root of the moved expression does not have overlays.
+      --  We could also only consider visible overlays, or even move all
+      --  overlays visible at this point in the program.
+
+      if not Overlay_Alias (Root).Is_Empty then
+         Error_Msg_N
+           ("moved object aliased through address clauses is not supported"
+            & " yet",
+            Expr);
+         Permission_Error := True;
+      end if;
+
       Shallow_Moves.Insert (Expr);
    end Handle_Move_Of_Shallow;
 
@@ -5402,8 +5417,12 @@ package body Gnat2Why.Borrow_Checker is
       E    : Entity_Id;
       Expl : Node_Id)
    is
-      Check_Ty : constant Entity_Id := Retysp (E);
+      Check_Ty : Entity_Id := Retysp (E);
    begin
+      if Is_Class_Wide_Type (Check_Ty) then
+         Check_Ty := Get_Specific_Type_From_Classwide (Check_Ty);
+      end if;
+
       --  Shallow extensions are set to RW
 
       if not Is_Node_Deep (T) then
@@ -5680,6 +5699,7 @@ package body Gnat2Why.Borrow_Checker is
                   declare
                      pragma Assert (Kind (C) = Entire_Object);
 
+                     Pref_Ty : Entity_Id := Retysp (Etype (Prefix (N.Expr)));
                      D       : Perm_Tree_Access;
                      D_This  : Perm_Tree_Access;
                      Comp    : Node_Id;
@@ -5689,9 +5709,11 @@ package body Gnat2Why.Borrow_Checker is
                      --  Create an empty hash table
 
                   begin
-                     Comp :=
-                       First_Component_Or_Discriminant
-                         (Retysp (Etype (Prefix (N.Expr))));
+                     if Is_Class_Wide_Type (Pref_Ty) then
+                        Pref_Ty := Get_Specific_Type_From_Classwide (Pref_Ty);
+                     end if;
+
+                     Comp := First_Component_Or_Discriminant (Pref_Ty);
 
                      while Present (Comp) loop
                         if Perm /= None

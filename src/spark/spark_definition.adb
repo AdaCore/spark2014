@@ -3395,14 +3395,14 @@ package body SPARK_Definition is
                      Mark_Violation
                        ("prefix of """ & Astring
                         & """ attribute which is not a function call",
-                        P, "SPARK RM 3.10(13)");
+                        P, SRM_Reference => "SPARK RM 3.10(13)");
 
                   elsif Is_Traversal_Function_Call (P) then
                      Mark_Violation
                        ("prefix of """ & Astring
                         & """ attribute which is a call to a traversal "
                         & "function",
-                        P, "SPARK RM 3.10(13)");
+                        P, SRM_Reference => "SPARK RM 3.10(13)");
                   end if;
                end;
             end if;
@@ -4519,12 +4519,9 @@ package body SPARK_Definition is
                                   (Node_Maps.Element (Pos))) /=
                                 E_Subprogram_Type
                               and then
-                                (Is_Incomplete_Type
-                                     (Directly_Designated_Type
-                                          (Node_Maps.Element (Pos)))
-                                 or else Is_Partial_View
-                                   (Directly_Designated_Type
-                                        (Node_Maps.Element (Pos)))));
+                                Acts_As_Incomplete_Type
+                                (Directly_Designated_Type
+                                     (Node_Maps.Element (Pos))));
                         end;
                      end if;
 
@@ -4747,17 +4744,6 @@ package body SPARK_Definition is
          Encap_Id : constant Entity_Id := Encapsulating_State (E);
 
       begin
-         --  A constant object (other than a formal parameter of mode in) shall
-         --  not be effectively volatile (SPARK RM 7.1.3(4)). This legality
-         --  rule is checked by the frontend for code with SPARK_Mode On, but
-         --  needs to be checked here for code with SPARK_Mode Auto.
-
-         if Ekind (E) = E_Constant
-           and then Is_Effectively_Volatile_For_Reading (T)
-         then
-            Mark_Violation ("volatile constant", Def);
-         end if;
-
          --  A variable whose Part_Of pragma specifies a single concurrent
          --  type as encapsulator must be (SPARK RM 9.4):
          --    * Of a type that defines full default initialization, or
@@ -4806,14 +4792,14 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("object of anonymous access not declared "
                      & "immediately within a subprogram, entry or block",
-                     N, "SPARK RM 3.10(4)");
+                     N, SRM_Reference => "SPARK RM 3.10(4)");
                end if;
             end;
 
             if No (Expr) then
                Mark_Violation
                  ("uninitialized object of anonymous access type",
-                  N, "SPARK RM 3.10(4)");
+                  N, SRM_Reference => "SPARK RM 3.10(4)");
             end if;
          end if;
 
@@ -5726,11 +5712,13 @@ package body SPARK_Definition is
             return;
          end if;
 
+         --  Look at the parent type for subtypes and derived types
+
          declare
-            Anc_Subt : constant Entity_Id := Ancestor_Subtype (E);
+            Anc_Subt : constant Entity_Id := Parent_Type (E);
          begin
-            if Present (Anc_Subt)
-              and then not In_SPARK (Anc_Subt)
+            if Anc_Subt /= Etype (E)
+              and then not Retysp_In_SPARK (Anc_Subt)
             then
                Mark_Violation (E, From => Anc_Subt);
             end if;
@@ -5923,19 +5911,21 @@ package body SPARK_Definition is
 
             if Has_Inheritable_Invariants (E) then
                Mark_Violation
-                 ("classwide invariant", E, "SPARK RM 7.3.2(2)");
+                 ("classwide invariant", E,
+                  SRM_Reference => "SPARK RM 7.3.2(2)");
 
             --  Partial invariants are not allowed in SPARK
 
             elsif Present (Partial_Invariant_Procedure (E)) then
                Mark_Violation
                  ("type invariant on private_type_declaration or"
-                  & " private_type_extension", E, "SPARK RM 7.3.2(2)");
+                  & " private_type_extension", E,
+                  SRM_Reference => "SPARK RM 7.3.2(2)");
 
             elsif Is_Effectively_Volatile_For_Reading (E) then
                Mark_Violation
                  ("type invariant on effectively volatile type",
-                  E, "SPARK RM 7.3.2(4)");
+                  E, SRM_Reference => "SPARK RM 7.3.2(4)");
 
             --  Only mark the invariant as part of the type's fullview
 
@@ -5963,7 +5953,8 @@ package body SPARK_Definition is
                   then
                      Mark_Violation
                        ("type invariant on completion of "
-                        & "private_type_extension", E, "SPARK RM 7.3.2(2)");
+                        & "private_type_extension", E,
+                        SRM_Reference => "SPARK RM 7.3.2(2)");
 
                   --  We currently do not support invariants on type
                   --  declared in a nested package. This restriction results
@@ -6034,7 +6025,7 @@ package body SPARK_Definition is
          then
             Mark_Violation
               ("subtype predicate on effectively volatile type for reading",
-               E, "SPARK RM 3.2.4(3)");
+               E, SRM_Reference => "SPARK RM 3.2.4(3)");
          end if;
 
          --  We currently do not support invariants on components of tagged
@@ -6210,17 +6201,11 @@ package body SPARK_Definition is
                Specific_Type : constant Entity_Id :=
                  Get_Specific_Type_From_Classwide (E);
             begin
-               if not Retysp_In_SPARK (Specific_Type)
-                 or else not Is_Tagged_Type (Retysp (Specific_Type))
-                 or else Is_Deep (Specific_Type)
-               then
-                  Mark_Violation (E, From => Specific_Type);
-
                --  Constrained class-wide types are not supported yet as it is
                --  unclear wether we should do discriminant checks for them
                --  or not.
 
-               elsif Has_Discriminants (Retysp (Specific_Type))
+               if Has_Discriminants (Retysp (Specific_Type))
                  and then Is_Constrained (Retysp (Specific_Type))
                then
                   Mark_Unsupported
@@ -6369,10 +6354,12 @@ package body SPARK_Definition is
                declare
                   Comp              : Entity_Id := First_Component (E);
                   Comp_Type         : Entity_Id;
-                  Needs_No_UU_Check : constant Boolean :=
+                  Is_Tagged_Ext : constant Boolean :=
                     not Is_Nouveau_Type (E)
                     and then Underlying_Type (Etype (E)) /= E
-                    and then Is_Tagged_Type (E)
+                    and then Is_Tagged_Type (E);
+                  Needs_No_UU_Check : constant Boolean :=
+                      Is_Tagged_Ext
                     and then not Has_Unconstrained_UU_Component (Etype (E));
                   --  True if we need to make sure that the type contains no
                   --  component with an unconstrained unchecked union type.
@@ -6396,12 +6383,22 @@ package body SPARK_Definition is
                            Mark_Violation (Comp, From => Comp_Type);
                         else
 
-                           --  Tagged types cannot be owning in SPARK
+                           --  Tagged extensions cannot have owning components
+                           --  in SPARK.
 
-                           if Is_Tagged_Type (E) and then Is_Deep (Comp_Type)
+                           if Is_Tagged_Ext
+                             and then Is_Deep (Comp_Type)
+                             and then Underlying_Type
+                               (Scope (Original_Record_Component (Comp)))
+                             = Underlying_Type (E)
                            then
+                              Error_Msg_Node_1 := Comp_Type;
+                              Error_Msg_Node_2 := E;
                               Mark_Violation
-                                ("owning component of a tagged type", Comp);
+                                ("owning component & of tagged extension &",
+                                 Comp,
+                                 Root_Cause_Msg =>
+                                   "owning component of tagged extension");
                            end if;
 
                            --  Tagged types with components with relaxed init
@@ -6410,9 +6407,14 @@ package body SPARK_Definition is
                            if Is_Tagged_Type (E)
                              and then Contains_Relaxed_Init_Parts (Comp_Type)
                            then
+                              Error_Msg_Node_1 := Comp_Type;
+                              Error_Msg_Node_2 := E;
                               Mark_Violation
-                                ("component of a tagged type with relaxed"
-                                 & " initialization", Comp);
+                                ("component & of tagged type & with relaxed"
+                                 & " initialization", Comp,
+                                 Root_Cause_Msg =>
+                                   "component of tagged type with relaxed"
+                                   & " Initialization");
                            end if;
 
                            --  Check that the component is not of an anonymous
@@ -6504,96 +6506,102 @@ package body SPARK_Definition is
             end if;
 
          elsif Is_Access_Type (E) then
+            declare
+               Des_Ty : constant Entity_Id := Directly_Designated_Type (E);
 
-            --  For access-to-subprogram types, mark the designated profile
+            begin
+               --  For access-to-subprogram types, mark the designated profile
 
-            if Ekind (Directly_Designated_Type (E)) = E_Subprogram_Type then
-               declare
-                  Profile : constant Entity_Id :=
-                    Directly_Designated_Type  (E);
-                  Wrapper : constant Entity_Id :=
-                    Access_Subprogram_Wrapper (Profile);
+               if Ekind (Des_Ty) = E_Subprogram_Type then
+                  declare
+                     Profile : constant Entity_Id := Des_Ty;
+                     Wrapper : constant Entity_Id :=
+                       Access_Subprogram_Wrapper (Profile);
 
-               begin
-                  --  We do not support access to protected subprograms yet
+                  begin
+                     --  We do not support access to protected subprograms yet
 
-                  if Ekind (Base_Type (E)) in
-                      E_Access_Protected_Subprogram_Type
-                    | E_Anonymous_Access_Protected_Subprogram_Type
+                     if Ekind (Base_Type (E)) in
+                           E_Access_Protected_Subprogram_Type
+                         | E_Anonymous_Access_Protected_Subprogram_Type
+                     then
+                        Mark_Unsupported ("access to protected subprogram", E);
+
+                     --  Borrowing traversal functions need a pledge, we do not
+                     --  support storing them into an access for now.
+
+                     elsif Is_Function_Type (Profile)
+                       and then Is_Anonymous_Access_Object_Type
+                         (Etype (Profile))
+                       and then not Is_Access_Constant (Etype (Profile))
+                     then
+                        Mark_Unsupported
+                          ("access to borrowing traversal function", E);
+
+                     --  If the profile has a contract, it is located on a
+                     --  wrapper subprogram. We need to mark it to mark the
+                     --  contracts.
+                     --  ??? Messages on formal parameters of the wrapper seem
+                     --  to be incorrectly located on the access-to-subprogram
+                     --  type instead of on the corresponding formal of the
+                     --  profile.
+
+                     elsif Present (Wrapper) and then not In_SPARK (Wrapper)
+                     then
+                        Mark_Violation (E, From => Wrapper);
+
+                     --  Mark the profile type. If a wrapper subprogram exists,
+                     --  this should not lead to new violation, but we still
+                     --  need to mark the formals of the profile which are
+                     --  different entities than those of the wrapper.
+
+                     else
+                        Mark_Subprogram_Entity (Profile);
+                     end if;
+                  end;
+
+               --  Storage_Pool is not in SPARK
+
+               elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
+                 and then Present (Associated_Storage_Pool
+                                   (Underlying_Type (Root_Type (E))))
+               then
+                  Mark_Violation ("access type with Storage_Pool", E);
+
+               --  Storage_Size is not in SPARK
+
+               elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
+                 and then Has_Storage_Size_Clause
+                   (Underlying_Type (Root_Type (E)))
+               then
+                  Mark_Violation ("access type with Storage_Size", E);
+
+               --  Store the type in the Incomplete_Type map to be marked later
+
+               elsif Acts_As_Incomplete_Type (Des_Ty) then
+                  --  Do not pull types declared in private parts with no
+                  --  SPARK_mode to avoid crashes if they are out of SPARK
+                  --  later.
+
+                  if Is_Declared_In_Private (Des_Ty)
+                    and then No (SPARK_Pragma_Of_Entity (Des_Ty))
                   then
-                     Mark_Unsupported ("access to protected subprogram", E);
-
-                  --  Borrowing traversal functions need a pledge, we do not
-                  --  support storing them into an access for now.
-
-                  elsif Is_Function_Type (Profile)
-                    and then Is_Anonymous_Access_Object_Type (Etype (Profile))
-                    and then not Is_Access_Constant (Etype (Profile))
+                     Mark_Violation (E, From => Des_Ty);
+                  elsif not Is_Class_Wide_Type (Des_Ty)
+                    and then No (Full_View (Des_Ty))
                   then
                      Mark_Unsupported
-                       ("access to borrowing traversal function", E);
-
-                  --  If the profile has a contract, it is located on a wrapper
-                  --  subprogram. We need to mark it to mark the contracts.
-                  --  ??? Messages on formal parameters of the wrapper seem to
-                  --  be incorrectly located on the access-to-subprogram type
-                  --  instead of on the corresponding formal of the profile.
-
-                  elsif Present (Wrapper) and then not In_SPARK (Wrapper) then
-                     Mark_Violation (E, From => Wrapper);
-
-                  --  Mark the profile type. If a wrapper subprogram exists,
-                  --  this should not lead to new violation, but we still need
-                  --  to mark the formals of the profile which are different
-                  --  entities than those of the wrapper.
-
+                       ("incomplete type with deferred full view",
+                        Directly_Designated_Type (E));
+                     Mark_Violation (E, From => Des_Ty);
                   else
-                     Mark_Subprogram_Entity (Profile);
+                     Access_To_Incomplete_Types.Append (E);
                   end if;
-               end;
 
-            --  Storage_Pool is not in SPARK
-
-            elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
-              and then Present (Associated_Storage_Pool
-                (Underlying_Type (Root_Type (E))))
-            then
-               Mark_Violation ("access type with Storage_Pool", E);
-
-            --  Storage_Size is not in SPARK
-
-            elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
-              and then Has_Storage_Size_Clause
-                (Underlying_Type (Root_Type (E)))
-            then
-               Mark_Violation ("access type with Storage_Size", E);
-
-            --  Store the type in the Incomplete_Type map to be marked later.
-
-            elsif Is_Incomplete_Type (Directly_Designated_Type (E))
-              or else Is_Partial_View (Directly_Designated_Type (E))
-            then
-               if No (Full_View (Directly_Designated_Type (E))) then
-                  Mark_Unsupported
-                    ("incomplete type with deferred full view",
-                     Directly_Designated_Type (E));
-                  Mark_Violation (E, From => Directly_Designated_Type (E));
-
-               --  Do not pull types declared in private parts with no
-               --  SPARK_mode to avoid crashes if they are out of SPARK later.
-
-               elsif Is_Declared_In_Private (Directly_Designated_Type (E))
-                 and then
-                   No (SPARK_Pragma_Of_Entity (Directly_Designated_Type (E)))
-               then
-                  Mark_Violation (E, From => Directly_Designated_Type (E));
-               else
-                  Access_To_Incomplete_Types.Append (E);
+               elsif not Retysp_In_SPARK (Des_Ty) then
+                  Mark_Violation (E, From => Des_Ty);
                end if;
-
-            elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
-               Mark_Violation (E, From => Directly_Designated_Type (E));
-            end if;
+            end;
 
          elsif Is_Concurrent_Type (E) then
 
@@ -7157,7 +7165,7 @@ package body SPARK_Definition is
          Mark_Violation
            ("extended return applying to a traversal function",
             N,
-            "SPARK RM 3.10(5)");
+            SRM_Reference => "SPARK RM 3.10(5)");
       end if;
 
       Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));
