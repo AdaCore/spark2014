@@ -1809,6 +1809,11 @@ either an array or a container (see :ref:`Formal Containers Library`):
 * an `existentially quantified expression` using ``for some`` expresses a
   property that holds for at least one element of a collection
 
+Quantified expressions should always be parenthesized.
+
+Iteration Over Content vs. Over Positions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Iteration can be expressed either directly over the content of the collection,
 or over the range of positions of elements in the collection. The former is
 preferred when the property involved does not refer to the position of elements
@@ -1867,6 +1872,9 @@ existentially quantified expression as follows:
    procedure Increment_Array (X : in out Integer_Array) with
      Post => not (for some J in X'Range => X(J) /= X'Old(J) + 1);
 
+Execution vs. Proof
+^^^^^^^^^^^^^^^^^^^
+
 At run time, a quantified expression is executed like a loop, which exits as
 soon as the value of the expression is known: if the property does not hold
 (resp. holds) for a given element of a universally (resp. existentially)
@@ -1892,4 +1900,14 @@ enclosed expression ``1 / (I - 3) > 0`` to be free from run-time errors over
 the entire range ``I in 1 .. 10`` (including ``I = 3``) so it issues a check
 message for a possible division by zero in this case.
 
-Quantified expressions should always be parenthesized.
+Iterator Filters
+^^^^^^^^^^^^^^^^
+
+The set of values or positions over which iteration is performed can be
+filtered with an `iterator filter` introduced by the keyword ``when``. For
+example, we can express a property for all prime numbers in a given range as
+follows:
+
+.. code-block:: ada
+
+    (for all N in 1 .. 1000 when Is_Prime (N) => ...)
