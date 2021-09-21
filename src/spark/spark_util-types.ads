@@ -45,20 +45,16 @@ package SPARK_Util.Types is
    --  the chain of Underlying_Type links at the boundary between SPARK and
    --  non-SPARK. For non-private types, Retysp is the identity.s
 
-   function Retysp (T : Entity_Id) return Entity_Id
-   with Pre  => Is_Type (T),
-        Post => Is_Type (Retysp'Result);
+   function Retysp (T : Type_Kind_Id) return Type_Kind_Id;
    --  @param T any type
    --  @return the "Representative Type in SPARK" of type T
    --  It should only be called on marked type entities (except for Itypes).
 
-   function Retysp_Kind (T : Entity_Id) return Entity_Kind
-   with Pre => Is_Type (T);
+   function Retysp_Kind (T : Type_Kind_Id) return Type_Kind;
    --  @param T any type
    --  @return the entity kind of the "Representative Type in SPARK" of type T.
 
-   function Base_Retysp (T : Entity_Id) return Entity_Id
-   with Pre => Is_Type (T);
+   function Base_Retysp (T : Type_Kind_Id) return Type_Kind_Id;
    --  @param T any type
    --  @return the representative of the base type of T, or the result of
    --    Base_Retysp on this representative if it is a subtype.
@@ -69,57 +65,57 @@ package SPARK_Util.Types is
    --  confusion, the wrapper for function Einfo.Is_Such_And_Such_Type is
    --  called Has_Such_And_Such_Type.
 
-   function Has_Access_Type (T : Entity_Id) return Boolean is
+   function Has_Access_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Access_Kind);
 
-   function Has_Array_Type (T : Entity_Id) return Boolean is
+   function Has_Array_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Array_Kind);
 
-   function Has_Boolean_Type (T : Entity_Id) return Boolean is
+   function Has_Boolean_Type (T : Type_Kind_Id) return Boolean is
      (Root_Type (Retysp (T)) = Standard_Boolean);
 
-   function Has_Discrete_Type (T : Entity_Id) return Boolean is
+   function Has_Discrete_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Discrete_Kind);
 
-   function Has_Integer_Type (T : Entity_Id) return Boolean is
+   function Has_Integer_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Integer_Kind);
 
-   function Has_Modular_Integer_Type (T : Entity_Id) return Boolean is
+   function Has_Modular_Integer_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Modular_Integer_Kind);
 
-   function Has_Record_Type (T : Entity_Id) return Boolean is
+   function Has_Record_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Record_Kind);
 
-   function Has_Private_Type (T : Entity_Id) return Boolean is
+   function Has_Private_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Private_Kind);
 
-   function Has_Scalar_Type (T : Entity_Id) return Boolean is
+   function Has_Scalar_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Scalar_Kind);
 
-   function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
+   function Has_Signed_Integer_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Signed_Integer_Kind);
 
-   function Has_Fixed_Point_Type (T : Entity_Id) return Boolean is
+   function Has_Fixed_Point_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Fixed_Point_Kind);
 
-   function Has_Floating_Point_Type (T : Entity_Id) return Boolean is
+   function Has_Floating_Point_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Float_Kind);
 
-   function Has_Single_Precision_Floating_Point_Type (T : Entity_Id)
+   function Has_Single_Precision_Floating_Point_Type (T : Type_Kind_Id)
                                                       return Boolean is
      (Is_Single_Precision_Floating_Point_Type (Retysp (T)));
 
-   function Has_Double_Precision_Floating_Point_Type (T : Entity_Id)
+   function Has_Double_Precision_Floating_Point_Type (T : Type_Kind_Id)
                                                       return Boolean is
      (Is_Double_Precision_Floating_Point_Type (Retysp (T)));
 
-   function Has_Static_Predicate (T : Entity_Id) return Boolean is
+   function Has_Static_Predicate (T : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Has_Static_Predicate (Retysp (T)));
 
-   function Static_Discrete_Predicate (T : Entity_Id) return List_Id is
+   function Static_Discrete_Predicate (T : Type_Kind_Id) return List_Id is
      (Einfo.Entities.Static_Discrete_Predicate (Retysp (T)));
 
-   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean with
+   function Has_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean with
      Pre => Has_Scalar_Type (T);
    --  Returns whether type T has a scalar subtype with statically known
    --  bounds. This includes looking past private types.
@@ -128,7 +124,7 @@ package SPARK_Util.Types is
    -- General Queries For Types --
    -------------------------------
 
-   function Can_Be_Default_Initialized (Typ : Entity_Id) return Boolean is
+   function Can_Be_Default_Initialized (Typ : Type_Kind_Id) return Boolean is
      ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
       and then (not (Retysp_Kind (Typ) in
                          Record_Kind | Private_Kind | Concurrent_Kind)
@@ -140,48 +136,46 @@ package SPARK_Util.Types is
    --  @param Typ any type
    --  @return False if Typ is unconstrained.
 
-   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean
-   with Pre => Is_Type (From) and then Is_Type (To);
+   function Check_Needed_On_Conversion
+     (From, To : Type_Kind_Id)
+      return Boolean;
    --  @param From type of expression to be converted
    --  @param To target type of the conversion
    --  @return whether a check may be needed when converting an expression
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.
 
-   function Unchecked_Full_Type (E : Entity_Id) return Entity_Id
-   with Pre  => Is_Type (E),
-        Post => Is_Type (Unchecked_Full_Type'Result)
-                  and then
-                not Is_Private_Type (Unchecked_Full_Type'Result);
+   function Unchecked_Full_Type (E : Type_Kind_Id) return Type_Kind_Id
+   with Post => not Is_Private_Type (Unchecked_Full_Type'Result);
    --  Get the type of the given entity. This function looks through private
    --  types and should be used with extreme care.
 
-   function Use_Predefined_Equality_For_Type (Typ : Entity_Id) return Boolean
-   with Pre  => Is_Type (Typ);
+   function Use_Predefined_Equality_For_Type
+     (Typ : Type_Kind_Id)
+      return Boolean;
    --  Return True if membership tests and equality of components of
    --  composite types of type Typ use the predefined equality and not the
    --  primitive one (ie. Type is not an unlimited record type or it does
    --  not have a redefined equality).
 
-   function Get_Parent_Type_If_Check_Needed (N : Node_Id) return Entity_Id
-     with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
+   function Get_Parent_Type_If_Check_Needed
+     (N : N_Declaration_Id)
+      return Opt_Type_Kind_Id
+   with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
    --  @param N a (sub)type declaration
    --  @return If the type declaration requires a check, return the "parent"
    --    type mentionend in the type declaration. Return empty otherwise.
 
-   function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
+   function Has_Invariants_In_SPARK (E : Type_Kind_Id) return Boolean;
    --  @params E any type
    --  @returns True if E has a type invariant and the invariant is in SPARK.
 
-   function Has_Unconstrained_UU_Component (Typ : Entity_Id) return Boolean
-   with Pre => Is_Type (Typ);
+   function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean;
    --  Returns True iff Typ has a component visible in SPARK whose type is an
    --  unchecked union type which is unconstrained.
    --  Should be called on marked types.
 
-   function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean
-   with Pre => Is_Type (Ty);
+   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean;
    --  @param Ty type entity
    --  @return True if Ty has a top level invariant which needs to be checked
    --          in the current compilation unit and False if it can be assumed
@@ -190,22 +184,20 @@ package SPARK_Util.Types is
    --  is enough to check if the type is declared in the main compilation unit
    --  to decide whether or not it should be checked in this unit.
 
-   function Invariant_Check_Needed (Ty : Entity_Id) return Boolean
-   with Pre => Is_Type (Ty);
+   function Invariant_Check_Needed (Ty : Type_Kind_Id) return Boolean;
    --  @param Ty type entity
    --  @return True if there is an invariant that needs to be checked for type
    --          Ty. It can come from Ty itself, from one of its ancestors, or
    --          from one of its components.
 
-   function May_Need_DIC_Checking (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
+   function May_Need_DIC_Checking (E : Type_Kind_Id) return Boolean;
    --  @param E type entity
    --  @return True iff E is the entity for a declaration that may require
    --     checking the DIC, either because it has its own DIC, or because it
    --     is a tagged type which inherits a DIC which requires rechecking.
 
-   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean with
-     Pre => Present (Partial_DIC_Procedure (E));
+   function Check_DIC_At_Declaration (E : Type_Kind_Id) return Boolean
+     with Pre => Present (Partial_DIC_Procedure (E));
    --  @param E type entity with a DIC (inherited or not)
    --  @return True if the DIC expression depends on the current type instance.
    --        If it depends on the type instance, it is considered as a
@@ -213,17 +205,15 @@ package SPARK_Util.Types is
    --        and is checked at declaration. Otherwise, it is considered as a
    --        precondition of the default initialization, and is checked at use.
 
-   function Is_Anonymous_Access_Object_Type (T : Entity_Id) return Boolean is
-     (Ekind (T) = E_Anonymous_Access_Type);
+   function Is_Anonymous_Access_Object_Type (T : Type_Kind_Id) return Boolean
+   is (Ekind (T) = E_Anonymous_Access_Type);
 
-   function Is_General_Access_Type (T : Entity_Id) return Boolean
-   with Pre => Is_Type (T);
+   function Is_General_Access_Type (T : Type_Kind_Id) return Boolean;
    --  @param T any type
    --  @returns True iff T is (a subtype of) a general access-to-variable type
 
-   function Is_Nouveau_Type (T : Entity_Id) return Boolean is
-     (Etype (T) = T)
-   with Pre => Is_Type (T);
+   function Is_Nouveau_Type (T : Type_Kind_Id) return Boolean is
+     (Etype (T) = T);
    --  @param T any type
    --  @return True iff T is neither a derived type, nor a subtype, nor
    --     a classwide type (see description of Etype field in einfo.ads),
@@ -231,79 +221,74 @@ package SPARK_Util.Types is
    --     a "nouveau" type. [Calling it a "new" type would be confusing with
    --     derived types.]
 
-   function Is_Null_Range (T : Entity_Id) return Boolean
-   with Pre => Is_Type (T);
+   function Is_Null_Range (T : Type_Kind_Id) return Boolean;
    --  @param T any type
    --  @returns True iff T is a scalar type whose range is statically known to
    --     be empty
 
-   function Is_Standard_Boolean_Type (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
+   function Is_Standard_Boolean_Type (E : Type_Kind_Id) return Boolean;
    --  @param E type
    --  @return True if we can determine that E is Standard_Boolean or a subtype
    --    of Standard_Boolean which also ranges over False .. True.
    --    Always return False if the type might be contained in a type with
    --    relaxed initialization.
 
-   function Is_Standard_Type (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
+   function Is_Standard_Type (E : Type_Kind_Id) return Boolean;
    --  Returns True iff type E is declared in Standard
 
-   function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
+   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean;
    --  @param E type
    --  @return True if E needs a specific module to check its default
    --     expression at declaration.
 
-   function Is_Deep (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Is_Deep (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if the type passed as argument is deep
 
-   procedure Find_Predicate_Item (Ty : Entity_Id; Rep_Item : in out Node_Id)
-   with Pre => Is_Type (Ty);
+   procedure Find_Predicate_Item
+     (Ty       :        Type_Kind_Id;
+      Rep_Item : in out Node_Id);
    --  Go over the items linked from Rep_Item to search for a predicate
    --  pragma or aspect applying to Ty.
 
-   procedure Suitable_For_UC (Typ         : Entity_Id;
-                              Use_Esize   : Boolean;
-                              Result      : out Boolean;
-                              Explanation : out Unbounded_String)
-     with Pre => Is_Type (Typ);
+   procedure Suitable_For_UC
+     (Typ         :     Type_Kind_Id;
+      Use_Esize   :     Boolean;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
    --  This procedure implements the notion of "suitable for unchecked
    --  conversion" of SPARK RM 13.9.
 
-   procedure Suitable_For_UC_Target (Typ         : Entity_Id;
-                                     Use_Esize   : Boolean;
-                                     Result      : out Boolean;
-                                     Explanation : out Unbounded_String)
-     with Pre => Is_Type (Typ);
+   procedure Suitable_For_UC_Target
+     (Typ         :     Type_Kind_Id;
+      Use_Esize   :     Boolean;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
    --  This procedure implements the notion of "suitable as a target of an
    --  unchecked conversion" of SPARK RM 13.9.
 
-   procedure Have_Same_Known_Esize (A, B        : Entity_Id;
-                                    Result      : out Boolean;
-                                    Explanation : out Unbounded_String)
-     with Pre => Is_Type (A) and then Is_Type (B);
+   procedure Have_Same_Known_Esize
+     (A, B        :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
    --  If types A and B have the same Esize, then set Result to True; otherwise
    --  set Result to False and Explanation to a possible fix.
 
-   procedure Have_Same_Known_RM_Size (A, B        : Entity_Id;
-                                      Result      : out Boolean;
-                                      Explanation : out Unbounded_String)
-     with Pre => Is_Type (A) and then Is_Type (B);
+   procedure Have_Same_Known_RM_Size
+     (A, B        :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
    --  Same as Have_Same_Known_Esize, but checks the RM_Size.
 
-   function Contains_Allocated_Parts (Typ : Entity_Id) return Boolean with
-     Pre  => Is_Type (Typ),
-     Post => (if Contains_Allocated_Parts'Result then Is_Deep (Typ));
+   function Contains_Allocated_Parts (Typ : Type_Kind_Id) return Boolean
+     with Post => (if Contains_Allocated_Parts'Result then Is_Deep (Typ));
    --  Returns True if Typ has subcomponents whose type is a pool specific
    --  access type (and these subcomponents are not in a constant part of Typ).
 
    function Contains_Relaxed_Init_Parts
-     (Typ        : Entity_Id;
-      Ignore_Top : Boolean := False) return Boolean
+     (Typ        : Type_Kind_Id;
+      Ignore_Top : Boolean := False)
+      return Boolean
    with
-     Pre  => Is_Type (Typ),
      Post => (if Contains_Relaxed_Init_Parts'Result
               then Might_Contain_Relaxed_Init (Typ));
    --  Returns True if Typ has subcomponents whose type is annotated with
@@ -311,8 +296,8 @@ package SPARK_Util.Types is
    --  If Ignore_Top is True, ignore a potential Relaxed_Initialization
    --  aspect on the type itself.
 
-   function Contains_Only_Relaxed_Init (Typ : Entity_Id) return Boolean with
-     Pre  => Is_Type (Typ),
+   function Contains_Only_Relaxed_Init (Typ : Type_Kind_Id) return Boolean
+   with
      Post => (if Contains_Only_Relaxed_Init'Result
               then Contains_Relaxed_Init_Parts (Typ));
    --  Returns True if Typ has at least a subcomponent whose type is annotated
@@ -321,43 +306,35 @@ package SPARK_Util.Types is
    --  These types are considered to have relaxed initialization even if they
    --  don't have the aspect.
 
-   function Might_Contain_Relaxed_Init (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   function Might_Contain_Relaxed_Init (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has subcomponents whose type may be used for
    --  expressions with relaxed initialization.
 
-   function Num_Literals (Ty : Entity_Id) return Positive
-     with Pre => Is_Enumeration_Type (Ty);
+   function Num_Literals (Ty : Enumeration_Kind_Id) return Positive;
    --  Returns the number of literals for an enumeration type
 
-   function Parent_Type (Ty : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Ty),
-     Post => No (Parent_Type'Result) or else Is_Type (Parent_Type'Result);
+   function Parent_Type (Ty : Type_Kind_Id) return Opt_Type_Kind_Id;
    --  Compute the first parent in the derivation tree of Ty if any. Otherwise
    --  return Etype (Ty). This also takes into account subtypes.
 
-   function Parent_Retysp (Ty : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Ty),
-     Post => No (Parent_Retysp'Result) or else Is_Type (Parent_Retysp'Result);
+   function Parent_Retysp (Ty : Type_Kind_Id) return Opt_Type_Kind_Id;
    --  Compute the first parent in the derivation tree of Ty if any. Otherwise
    --  return Empty. This also takes into account subtypes, and only considers
    --  derivations visible from SPARK code (using Retysp).
 
    generic
       with procedure Process_DIC_Expression
-        (Type_Instance  : Entity_Id;
+        (Type_Instance  : Type_Kind_Id;
          DIC_Expression : Node_Id);
-   procedure Iterate_Applicable_DIC (Ty : Entity_Id) with
-     Pre => Is_Type (Ty);
+   procedure Iterate_Applicable_DIC (Ty : Type_Kind_Id);
    --  Traverse all default initial conditions associated to the type Ty
 
-   function Predefined_Eq_Uses_Pointer_Eq (Ty : Entity_Id) return Boolean with
-     Pre => Is_Type (Ty) and then not Is_Concurrent_Type (Retysp (Ty));
+   function Predefined_Eq_Uses_Pointer_Eq (Ty : Type_Kind_Id) return Boolean
+     with Pre => not Is_Concurrent_Type (Retysp (Ty));
    --  Return True if the predefined equality of Ty uses the predefined
    --  equality on access types.
 
-   function Acts_As_Incomplete_Type (Ty : Entity_Id) return Boolean with
-     Pre => Is_Type (Ty);
+   function Acts_As_Incomplete_Type (Ty : Type_Kind_Id) return Boolean;
    --  Return True if Ty is is handled as an incomplete type to decide whether
    --  the type designated by an access type should be deferred.
 
@@ -374,8 +351,9 @@ package SPARK_Util.Types is
    --  ??? Add a precondition to Count_Why_Regular_Fields and
    --  Count_Why_Top_Level_Fields that Retysp (E) = E ?
 
-   function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
-   with Pre => Is_Class_Wide_Type (E);
+   function Get_Specific_Type_From_Classwide
+     (E : Class_Wide_Kind_Id)
+      return Type_Kind_Id;
    --  Returns the specific type associated with a class wide type.
    --  If E's Etype is a fullview, returns its partial view instead.
    --  For classwide subtypes, return their Etype's specific type.
@@ -384,32 +362,28 @@ package SPARK_Util.Types is
    --  a full view is currently not available soon enough.
 
    function Get_Constraint_For_Discr
-     (Ty    : Entity_Id;
-      Discr : Entity_Id)
-      return Node_Id
+     (Ty    : Type_Kind_Id;
+      Discr : E_Discriminant_Id)
+      return N_Subexpr_Id
    with Pre => Has_Discriminants (Ty)
-               and then Is_Constrained (Ty)
-               and then Ekind (Discr) = E_Discriminant,
-        Post => Nkind (Get_Constraint_For_Discr'Result) in N_Subexpr;
+               and then Is_Constrained (Ty);
    --  @param Ty a constrained type with discriminants
    --  @param Discr a discriminant of Ty
    --  @return the constraint for Discr in Ty
 
-   function Has_Private_Fields (E : Entity_Id) return Boolean with
-     Pre => Has_Private_Type (E) or else Has_Record_Type (E);
+   function Has_Private_Fields (E : Type_Kind_Id) return Boolean
+     with Pre => Has_Private_Type (E) or else Has_Record_Type (E);
    --  @param E a private or record type
    --  @return True iff E's translation into Why3 requires the use of a main
    --     field to represent invisible fields that are not derived from an
    --     ancestor.
 
-   function Root_Retysp (E : Entity_Id) return Entity_Id
-   with Pre  => Is_Type (E),
-        Post => Is_Type (Root_Retysp'Result);
+   function Root_Retysp (E : Type_Kind_Id) return Type_Kind_Id;
    --  Given a type, return the root type, including traversing private types.
    --  ??? Need to update comment to reflect dependence on Retysp of root by
    --  calling Full_View_Not_In_SPARK.
 
-   function Is_Ancestor (Anc : Entity_Id; E : Entity_Id) return Boolean is
+   function Is_Ancestor (Anc, E : Type_Kind_Id) return Boolean is
      (if not Is_Class_Wide_Type (Anc) then Sem_Type.Is_Ancestor (Anc, E)
       else Sem_Type.Is_Ancestor (Get_Specific_Type_From_Classwide (Anc), E));
    --  @param Anc A tagged type (which may or not be class-wide).
@@ -420,25 +394,26 @@ package SPARK_Util.Types is
    -- Queries related to arrays --
    --------------------------------
 
-   function Is_Static_Array_Type (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
+   function Is_Static_Array_Type (E : Type_Kind_Id) return Boolean;
    --  @param E any type
    --  @return True iff E is a constrained array type with statically known
    --     bounds
 
-   function Has_Static_Array_Type (T : Entity_Id) return Boolean is
+   function Has_Static_Array_Type (T : Type_Kind_Id) return Boolean is
      (Is_Static_Array_Type (Retysp (T)));
 
-   function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
-   with Pre => Is_Array_Type (E);
+   function Nth_Index_Type
+     (E   : Array_Kind_Id;
+      Dim : Positive)
+      return Type_Kind_Id;
    --  @param E array type
    --  @param Dim dimension
    --  @return the argument E in the special case where E is a string literal
    --    subtype; otherwise the index type entity which corresponds to the
    --    selected dimension
 
-   function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint
-   with Pre => Is_Static_Array_Type (E);
+   function Static_Array_Length (E : Array_Kind_Id; Dim : Positive) return Uint
+     with Pre => Is_Static_Array_Type (E);
    --  @param E constrained array type with statically known bounds
    --  @param Dim dimension
    --  @return the static length of dimension Dim of E
@@ -447,38 +422,33 @@ package SPARK_Util.Types is
    -- Queries related to task types --
    -----------------------------------
 
-   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
-   with Pre => Ekind (E) = E_Task_Type;
+   function Private_Declarations_Of_Task_Type
+     (E : E_Task_Type_Id)
+      return List_Id;
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty
    --    list of not available
 
-   function Task_Body (E : Entity_Id) return Node_Id
-   with Pre  => Ekind (E) = E_Task_Type,
-        Post => (if Present (Task_Body'Result)
-                 then Nkind (Task_Body'Result) = N_Task_Body);
+   function Task_Body (E : E_Task_Type_Id) return Opt_N_Task_Body_Id;
    --  @param E task type
    --  @return the task body for the given type, similar to what
    --    Subprogram_Body might produce.
 
-   function Task_Body_Entity (E : Entity_Id) return Entity_Id
-   with Pre  => Ekind (E) = E_Task_Type,
-        Post => (if Present (Task_Body_Entity'Result)
-                 then Ekind (Task_Body_Entity'Result) = E_Task_Body);
+   function Task_Body_Entity (E : E_Task_Type_Id) return Opt_E_Task_Body_Id;
    --  @param E task type
    --  @return the entity of the task body for the given type, similar
    --    to what Subprogram_Body_Entity might produce.
 
-   function Task_Type_Definition (E : Entity_Id) return Node_Id
-   is (Task_Definition (Parent (E)))
-   with Pre  => Ekind (E) = E_Task_Type,
-        Post => (if Present (Task_Type_Definition'Result) then
-                 Nkind (Task_Type_Definition'Result) = N_Task_Definition);
+   function Task_Type_Definition
+     (E : E_Task_Type_Id)
+      return Opt_N_Task_Definition_Id
+   is (Task_Definition (Parent (E)));
    --  @param E a task type entity
    --  @return the definition of the task type
 
-   function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
-   with Pre => Ekind (E) = E_Task_Type;
+   function Visible_Declarations_Of_Task_Type
+     (E : E_Task_Type_Id)
+      return List_Id;
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty
    --    list if not available
@@ -487,36 +457,36 @@ package SPARK_Util.Types is
    -- Queries related to protected types --
    ----------------------------------------
 
-   function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
-   with Pre => Is_Protected_Type (E);
+   function Private_Declarations_Of_Prot_Type
+     (E : Protected_Kind_Id)
+      return List_Id;
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
 
-   function Protected_Body (E : Entity_Id) return Node_Id
-   with Pre  => Ekind (E) = E_Protected_Type,
-        Post => (if Present (Protected_Body'Result)
-                 then Nkind (Protected_Body'Result) = N_Protected_Body);
+   function Protected_Body
+     (E : Protected_Kind_Id)
+      return Opt_N_Protected_Body_Id;
    --  @param E protected type
    --  @return the protected body for the given type, similar to what
    --    subprogram_body might produce.
 
-   function Protected_Type_Definition (E : Entity_Id) return Node_Id
-   with Pre  => Ekind (E) = E_Protected_Type,
-        Post => (if Present (Protected_Type_Definition'Result)
-                 then Nkind (Protected_Type_Definition'Result) =
-                        N_Protected_Definition);
+   function Protected_Type_Definition
+     (E : Protected_Kind_Id)
+      return Opt_N_Protected_Definition_Id;
    --  @param E protected type
    --  @return the protected definition for the given type
 
-   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) = E_Protected_Type;
+   function Requires_Interrupt_Priority
+     (E : Protected_Kind_Id)
+      return Boolean;
    --  @param E the entity of a protected type
    --  @return True if E contains a protected procedure with Attach_Handler
    --  specified. Note that Interrupt_Handler cannot be True with the Ravenscar
    --  profile.
 
-   function Visible_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
-   with Pre => Is_Protected_Type (E);
+   function Visible_Declarations_Of_Prot_Type
+     (E : Protected_Kind_Id)
+      return List_Id;
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
 

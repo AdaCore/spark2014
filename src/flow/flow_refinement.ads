@@ -294,9 +294,10 @@ package Flow_Refinement is
                                            return Boolean;
    --  Returns True iff S is nested inside a concurrent type T
 
-   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Id;
-                                             Typ        : Type_Kind_Id)
-                                             return Boolean
+   function Is_Boundary_Subprogram_For_Type
+     (Subprogram : Callable_Kind_Id;
+      Typ        : Type_Kind_Id)
+      return Boolean
    with Pre => Has_Invariants_In_SPARK (Typ);
    --  Returns True iff Subprogram is a boundary subprogram for Typ, i.e. if it
    --  is declared inside the immediate scope of Typ, and it is visible outside

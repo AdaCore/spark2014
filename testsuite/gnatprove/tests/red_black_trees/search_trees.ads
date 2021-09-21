@@ -58,6 +58,8 @@ package Search_Trees with SPARK_Mode is
        --  are preserved.
        (Contains (Values (T), V) =>
           I = Empty
+          and then Root (T) = Root (T'Old)
+          and then Size (T) = Size (T)'Old
           and then Values (T) = Values (T'Old)
           and then (for all J in Index_Type => Parent (T, J) = Parent (T'Old, J))
           and then (for all J in Index_Type =>
@@ -327,7 +329,8 @@ private
 
    with
      Ghost,
-     Pre => Valid_Root (F, Root);
+     Pre  => Valid_Root (F, Root),
+     Post => Ordered_Leafs'Result in Boolean;
 
    function Model (T : Search_Tree) return Model_Type is
      (Model (T.Struct, T.Root));

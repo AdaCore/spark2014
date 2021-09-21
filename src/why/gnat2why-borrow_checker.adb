@@ -23,13 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Unchecked_Deallocation;
 with Atree;                       use Atree;
+with Checked_Types;               use Checked_Types;
 with Common_Containers;           use Common_Containers;
 with Einfo.Entities;              use Einfo.Entities;
 with Einfo.Utils;                 use Einfo.Utils;
 with Errout;                      use Errout;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
+with GNAT.Dynamic_HTables;        use GNAT.Dynamic_HTables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
@@ -44,9 +47,6 @@ with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with Treepr;                      use Treepr;
-
-with Ada.Unchecked_Deallocation;
-with GNAT.Dynamic_HTables;        use GNAT.Dynamic_HTables;
 
 package body Gnat2Why.Borrow_Checker is
 
@@ -1554,7 +1554,7 @@ package body Gnat2Why.Borrow_Checker is
 
          when E_Package =>
             declare
-               Scope : constant Entity_Id :=
+               Scope : constant Opt_Unit_Kind_Id :=
                  (if Is_Compilation_Unit (E) then Empty
                   else Enclosing_Unit (E));
 
@@ -4192,8 +4192,8 @@ package body Gnat2Why.Borrow_Checker is
    ----------------------------
 
    procedure Handle_Move_Of_Shallow (Expr : Node_Id) is
-      Root : constant Entity_Id := Get_Root_Object (Expr);
-      Scop : constant Entity_Id := Enclosing_Unit (Root);
+      Root : constant Object_Kind_Id := Get_Root_Object (Expr);
+      Scop : constant Unit_Kind_Id := Enclosing_Unit (Root);
 
    begin
       pragma Assert (Present (Current_Subp));

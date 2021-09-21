@@ -37,10 +37,6 @@ package Checked_Types is
    -- Subtypes of nodes --
    -----------------------
 
-   subtype Empty_Or_Subexpr_Id is Node_Id with
-     Predicate => No (Empty_Or_Subexpr_Id)
-       or else Empty_Or_Subexpr_Id in N_Subexpr_Id;
-
    subtype N_Aggregate_Kind_Id is Node_Id with
      Predicate => N_Aggregate_Kind_Id in N_Aggregate_Id
                                        | N_Delta_Aggregate_Id
@@ -54,28 +50,19 @@ package Checked_Types is
    -- Subtypes of entities --
    --------------------------
 
-   subtype Empty_Or_Object_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Object_Kind_Id)
-       or else Empty_Or_Object_Kind_Id in Object_Kind_Id;
-
-   subtype Empty_Or_Package_Id is Entity_Id with
-     Predicate => No (Empty_Or_Package_Id)
-       or else Empty_Or_Package_Id in E_Package_Id;
-
-   subtype Empty_Or_Record_Field_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Record_Field_Kind_Id)
-       or else Empty_Or_Record_Field_Kind_Id in Record_Field_Kind_Id;
-
-   subtype Empty_Or_Type_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Type_Kind_Id)
-       or else Empty_Or_Type_Kind_Id in Type_Kind_Id;
-
    --  Entities which may contain components or discriminants, like record
    subtype Record_Like_Kind_Id is Entity_Id with
      Predicate => Record_Like_Kind_Id in Private_Kind_Id
                                        | Protected_Kind_Id
                                        | Record_Kind_Id
                                        | Task_Kind_Id;
+
+   --  Extension of the notion of objects with protected types, which serve as
+   --  placeholders for the corresponding "self" object during the analysis of
+   --  protected operations.
+   subtype Extended_Object_Kind_Id is Entity_Id with
+     Predicate => Extended_Object_Kind_Id in Object_Kind_Id
+                                           | Protected_Kind_Id;
 
    -----------------
    -- Subprograms --
@@ -85,13 +72,33 @@ package Checked_Types is
    --  generics to be subprograms. We also exclude E_Operator here as we will
    --  never get this in SPARK (if the Expander works as intended).
 
-   subtype Subprogram_Id is N_Entity_Id with
-     Predicate => Ekind (Subprogram_Id) in E_Function
-                                         | E_Procedure
-                                         | Entry_Kind;
+   subtype Callable_Kind_Id is Entity_Id with
+     Predicate => Callable_Kind_Id in E_Function_Id
+                                    | E_Procedure_Id
+                                    | Entry_Kind_Id
+                                    | E_Subprogram_Type_Id;
 
-   subtype Empty_Or_Subprogram_Kind_Id is Entity_Id with
-     Predicate => No (Empty_Or_Subprogram_Kind_Id)
-       or else Empty_Or_Subprogram_Kind_Id in Subprogram_Id;
+   subtype Opt_Callable_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Callable_Kind_Id)
+       or else Opt_Callable_Kind_Id in Callable_Kind_Id;
+
+   subtype Function_Kind_Id is Entity_Id with
+     Predicate => Function_Kind_Id in E_Function_Id
+                                    | E_Generic_Function_Id
+                                    | E_Subprogram_Type_Id;
+
+   subtype Package_Kind_Id is Entity_Id with
+     Predicate => Package_Kind_Id in E_Package_Id
+                                   | E_Generic_Package_Id;
+
+   subtype Unit_Kind_Id is Entity_Id with
+     Predicate => Unit_Kind_Id in Callable_Kind_Id
+                                | E_Package_Id
+                                | E_Protected_Type_Id
+                                | E_Task_Type_Id;
+
+   subtype Opt_Unit_Kind_Id is Entity_Id with
+     Predicate => No (Opt_Unit_Kind_Id)
+       or else Opt_Unit_Kind_Id in Unit_Kind_Id;
 
 end Checked_Types;

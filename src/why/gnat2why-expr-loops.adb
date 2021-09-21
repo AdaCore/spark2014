@@ -84,12 +84,12 @@ package body Gnat2Why.Expr.Loops is
    --     after the last select loop (in)variant, or all the statements of the
    --     loop if there is no loop (in)variant in the loop.
 
-   function Transform_Loop_Variant (Stmt : Node_Id) return W_Variants_Id;
+   function Transform_Loop_Variant (Stmt : N_Pragma_Id) return W_Variants_Id;
    --  Given a pragma Loop_Variant in Stmt, returns the Variants Why3 node that
    --  contains the same information in Why3 syntax (the variant expression as
    --  a term).
 
-   function Check_Loop_Variant (Stmt : Node_Id) return W_Prog_Id;
+   function Check_Loop_Variant (Stmt : N_Pragma_Id) return W_Prog_Id;
    --  Given a pragma Loop_Variant in Stmt, returns the Why node for checking
    --  that a loop variant does not raise run-time errors.
 
@@ -99,7 +99,7 @@ package body Gnat2Why.Expr.Loops is
    --  declaration Instrs from a loop body.
 
    function Unroll_Loop
-     (Loop_Id         : Entity_Id;
+     (Loop_Id         : E_Loop_Id;
       Loop_Index      : W_Identifier_Id;
       Loop_Index_Type : W_Type_Id;
       Low_Val         : Uint;
@@ -110,7 +110,7 @@ package body Gnat2Why.Expr.Loops is
    --  Returns the unrolled loop expression in Why3
 
    function Wrap_Loop
-     (Loop_Id            : Entity_Id;
+     (Loop_Id            : E_Loop_Id;
       Loop_Start         : W_Prog_Id;
       Loop_End           : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
@@ -123,7 +123,7 @@ package body Gnat2Why.Expr.Loops is
       Update_Stmt        : W_Prog_Id := Why_Empty;
       First_Stmt         : Node_Id;
       Next_Stmt          : Node_Id := Empty;
-      Last_Inv           : Node_Id := Empty)
+      Last_Inv           : Opt_N_Pragma_Id := Empty)
       return W_Prog_Id;
    --  Returns the loop expression in Why
    --
@@ -156,14 +156,14 @@ package body Gnat2Why.Expr.Loops is
    -- Check_Loop_Variant --
    ------------------------
 
-   function Check_Loop_Variant (Stmt : Node_Id) return W_Prog_Id is
+   function Check_Loop_Variant (Stmt : N_Pragma_Id) return W_Prog_Id is
       Prog    : W_Prog_Id := +Void;
-      Variant : Node_Id;
+      Variant : Opt_N_Pragma_Argument_Association_Id;
    begin
       Variant := First (Pragma_Argument_Associations (Stmt));
       while Present (Variant) loop
          declare
-            Expr : constant Node_Id := Expression (Variant);
+            Expr : constant N_Subexpr_Id := Expression (Variant);
          begin
             Append
               (Prog,
@@ -191,7 +191,8 @@ package body Gnat2Why.Expr.Loops is
       Final_Stmts     : out Node_Lists.List)
    is
       function Is_Last_Invariant_Or_Variant_In_Loop
-        (N : Node_Id) return Boolean;
+        (N : Node_Id)
+         return Boolean;
       --  Returns whether N is the last (in)variant in the loop
 
       ------------------------------------------
@@ -199,7 +200,8 @@ package body Gnat2Why.Expr.Loops is
       ------------------------------------------
 
       function Is_Last_Invariant_Or_Variant_In_Loop
-        (N : Node_Id) return Boolean
+        (N : Node_Id)
+         return Boolean
       is
          Cur : Node_Id := Next (N);
       begin
@@ -296,7 +298,10 @@ package body Gnat2Why.Expr.Loops is
       end if;
    end Get_Loop_Invariant;
 
-   function Get_Loop_Invariant (Loop_Stmt : Node_Id) return Node_Lists.List is
+   function Get_Loop_Invariant
+     (Loop_Stmt : N_Loop_Statement_Id)
+      return Node_Lists.List
+   is
       Loop_Body       : constant List_Id := Statements (Loop_Stmt);
       Loop_Stmts      : Node_Lists.List;
       Initial_Stmts   : Node_Lists.List;
@@ -318,18 +323,20 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Exit_Statement --
    ------------------------------
 
-   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id is
+   function Transform_Exit_Statement
+     (Stmt : N_Exit_Statement_Id)
+      return W_Prog_Id
+   is
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id;
+      --  Havoc the local borrowers and check for memory leaks for objects
+      --  declared in blocks traversed by an exit statement.
 
-      function Havoc_Borrowed_On_Exit return W_Prog_Id;
-      --  Havoc the local borrowers declared in blocks traversed by the exit
-      --  statement.
+      -----------------------------------------------
+      -- Havoc_Borrowed_And_Check_No_Leaks_On_Exit --
+      -----------------------------------------------
 
-      ----------------------------
-      -- Havoc_Borrowed_On_Exit --
-      ----------------------------
-
-      function Havoc_Borrowed_On_Exit return W_Prog_Id is
-         Loop_Id : constant Entity_Id := Loop_Entity_Of_Exit_Statement (Stmt);
+      function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id is
+         Loop_Id : constant E_Loop_Id := Loop_Entity_Of_Exit_Statement (Stmt);
 
          function Is_Loop_Or_Block (N : Node_Id) return Boolean is
            (Nkind (N) = N_Block_Statement
@@ -347,10 +354,12 @@ package body Gnat2Why.Expr.Loops is
             Scop := Enclosing_Block_Stmt (Scop);
             exit when Nkind (Scop) = N_Loop_Statement;
             Append (Res, Havoc_Borrowed_From_Block (Scop));
+            Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
+                    (Declarations (Scop)));
          end loop;
 
          return +Res;
-      end Havoc_Borrowed_On_Exit;
+      end Havoc_Borrowed_And_Check_No_Leaks_On_Exit;
 
       Exc_Name   : constant W_Name_Id :=
         Loop_Exception_Name (Loop_Entity_Of_Exit_Statement (Stmt));
@@ -358,7 +367,7 @@ package body Gnat2Why.Expr.Loops is
         (Ada_Node => Stmt,
          Name => Exc_Name);
    begin
-      Prepend (Havoc_Borrowed_On_Exit, Raise_Stmt);
+      Prepend (Havoc_Borrowed_And_Check_No_Leaks_On_Exit, Raise_Stmt);
 
       if No (Condition (Stmt)) then
          return Raise_Stmt;
@@ -413,20 +422,25 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Loop_Statement --
    ------------------------------
 
-   function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id is
+   function Transform_Loop_Statement
+     (Stmt : N_Loop_Statement_Id)
+      return W_Prog_Id
+   is
+      function Transform_Loop_Variants
+        (List : Node_Lists.List)
+         return W_Variants_Array;
 
-      function Transform_Loop_Variants (List : Node_Lists.List)
-                                        return W_Variants_Array;
-
-      function Check_Loop_Variants (List : Node_Lists.List)
-                                    return W_Prog_Id;
+      function Check_Loop_Variants
+        (List : Node_Lists.List)
+         return W_Prog_Id;
 
       -------------------------
       -- Check_Loop_Variants --
       -------------------------
 
-      function Check_Loop_Variants (List : Node_Lists.List)
-                                    return W_Prog_Id
+      function Check_Loop_Variants
+        (List : Node_Lists.List)
+         return W_Prog_Id
       is
          Stmts : W_Prog_Array (1 .. Natural (List.Length));
          Counter : Positive := 1;
@@ -445,8 +459,9 @@ package body Gnat2Why.Expr.Loops is
       -- Transform_Loop_Variants --
       -----------------------------
 
-      function Transform_Loop_Variants (List : Node_Lists.List)
-                                        return W_Variants_Array
+      function Transform_Loop_Variants
+        (List : Node_Lists.List)
+         return W_Variants_Array
       is
          Variants_Ar : W_Variants_Array (1 .. Natural (List.Length));
          Count       : Integer := 1;
@@ -458,9 +473,12 @@ package body Gnat2Why.Expr.Loops is
          return Variants_Ar;
       end Transform_Loop_Variants;
 
+      --  Local variables
+
       Loop_Body : constant List_Id   := Statements (Stmt);
-      Scheme    : constant Node_Id   := Iteration_Scheme (Stmt);
-      Loop_Id   : constant Entity_Id := Entity (Identifier (Stmt));
+      Scheme    : constant Opt_N_Iteration_Scheme_Id :=
+        Iteration_Scheme (Stmt);
+      Loop_Id   : constant E_Loop_Id := Entity (Identifier (Stmt));
       Next_Stmt : constant Node_Id   := Next (Stmt);
 
       Loop_Stmts      : Node_Lists.List;
@@ -482,7 +500,7 @@ package body Gnat2Why.Expr.Loops is
 
       Dyn_Types_Inv   : W_Pred_Id := True_Pred;
 
-      Loop_Param_Ent  : Entity_Id := Empty;
+      Loop_Param_Ent  : Opt_E_Loop_Parameter_Id := Empty;
       Loop_Index      : W_Identifier_Id := Why_Empty;
       Loop_Index_Type : W_Type_Id := EW_Int_Type;
       --  These three variables hold the loop parameter in Ada and Why, if any
@@ -578,7 +596,7 @@ package body Gnat2Why.Expr.Loops is
 
                for Loop_Invariant of reverse Loop_Invariants loop
                   declare
-                     Expr          : Node_Id;
+                     Expr          : N_Subexpr_Id;
                      One_Inv_Check : W_Prog_Id;
                      One_Invariant : W_Pred_Id;
                      One_Inv_Var   : constant W_Identifier_Id :=
@@ -818,15 +836,15 @@ package body Gnat2Why.Expr.Loops is
                function Constraint_For_Iterable
                  (Domain : EW_Domain) return W_Expr_Id
                is
-                  H_Elmt   : constant Entity_Id :=
+                  H_Elmt   : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Has_Element);
                   W_H_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
-                              (Params => Body_Params,
-                               Expr   => H_Elmt,
-                               Ent    => H_Elmt,
-                               Domain => Domain);
+                      (Params => Body_Params,
+                       Expr   => H_Elmt,
+                       Ent    => H_Elmt,
+                       Domain => Domain);
                   Cur_Expr : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain => EW_Term,
@@ -852,7 +870,7 @@ package body Gnat2Why.Expr.Loops is
                ---------------------------------
 
                function Exit_Condition_For_Iterable return W_Expr_Id is
-                  H_Elmt   : constant Entity_Id :=
+                  H_Elmt   : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Has_Element);
                   W_H_Elmt : constant W_Identifier_Id :=
@@ -861,7 +879,7 @@ package body Gnat2Why.Expr.Loops is
                      Expr   => H_Elmt,
                      Ent    => H_Elmt,
                      Domain => EW_Prog);
-                  N_Elmt   : constant Entity_Id :=
+                  N_Elmt   : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Next);
                   W_N_Elmt : constant W_Identifier_Id :=
@@ -903,7 +921,7 @@ package body Gnat2Why.Expr.Loops is
                ---------------
 
                function Init_Iter return W_Prog_Id is
-                  First      : constant Entity_Id :=
+                  First      : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_First);
 
@@ -931,7 +949,7 @@ package body Gnat2Why.Expr.Loops is
 
                function Loop_Index_Value (Domain : EW_Domain) return W_Expr_Id
                is
-                  Elmt     : constant Entity_Id :=
+                  Elmt     : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Element);
                   Cur_Expr : constant W_Expr_Id :=
@@ -1211,7 +1229,7 @@ package body Gnat2Why.Expr.Loops is
                      end;
                   else
                      declare
-                        Next      : constant Entity_Id :=
+                        Next      : constant E_Function_Id :=
                           Get_Iterable_Type_Primitive
                             (Etype (Over_Node), Name_Next);
                         Cur_Expr  : constant W_Expr_Id :=
@@ -1644,8 +1662,8 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Loop_Variant --
    ----------------------------
 
-   function Transform_Loop_Variant (Stmt : Node_Id) return W_Variants_Id is
-      Variant : Node_Id;
+   function Transform_Loop_Variant (Stmt : N_Pragma_Id) return W_Variants_Id is
+      Variant : Opt_N_Pragma_Argument_Association_Id;
       Count   : Natural := 0;
    begin
       --  Count Variant items in the Loop_Variant pragma
@@ -1663,7 +1681,7 @@ package body Gnat2Why.Expr.Loops is
       begin
          for I in Variants'Range loop
             declare
-               Expr : constant Node_Id := Expression (Variant);
+               Expr : constant N_Subexpr_Id := Expression (Variant);
                WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
                Cmp  : constant W_Identifier_Id :=
                  (if Chars (Variant) = Name_Decreases
@@ -1689,6 +1707,7 @@ package body Gnat2Why.Expr.Loops is
                                        Domain        => EW_Pterm,
                                        Params        => Assert_Params));
             end;
+
             Next (Variant);
          end loop;
 
@@ -1701,7 +1720,7 @@ package body Gnat2Why.Expr.Loops is
    -----------------
 
    function Unroll_Loop
-     (Loop_Id         : Entity_Id;
+     (Loop_Id         : E_Loop_Id;
       Loop_Index      : W_Identifier_Id;
       Loop_Index_Type : W_Type_Id;
       Low_Val         : Uint;
@@ -1843,7 +1862,7 @@ package body Gnat2Why.Expr.Loops is
    --  exit the loop, this try-catch block is nested inside the outer one.
 
    function Wrap_Loop
-     (Loop_Id            : Entity_Id;
+     (Loop_Id            : E_Loop_Id;
       Loop_Start         : W_Prog_Id;
       Loop_End           : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
@@ -1856,7 +1875,7 @@ package body Gnat2Why.Expr.Loops is
       Update_Stmt        : W_Prog_Id := Why_Empty;
       First_Stmt         : Node_Id;
       Next_Stmt          : Node_Id := Empty;
-      Last_Inv           : Node_Id := Empty)
+      Last_Inv           : Opt_N_Pragma_Id := Empty)
       return W_Prog_Id
    is
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);

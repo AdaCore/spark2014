@@ -4719,6 +4719,7 @@ package body Flow_Utility is
    is
      (Ekind (E) = E_Constant
       and then In_Generic_Actual (E)
+      and then not Is_Access_Variable (Etype (E))
       and then not Has_Variable_Input (E));
 
    ---------------------

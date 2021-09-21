@@ -25,14 +25,18 @@
 
 package Gnat2Why.Expr.Loops is
 
-   function Get_Loop_Invariant (Loop_Stmt : Node_Id) return Node_Lists.List;
+   function Get_Loop_Invariant
+     (Loop_Stmt : N_Loop_Statement_Id)
+      return Node_Lists.List;
    --  Return the list of nodes corresponding to loop invariants if any
 
-   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
-   with Pre => Nkind (Stmt) = N_Exit_Statement;
+   function Transform_Exit_Statement
+     (Stmt : N_Exit_Statement_Id)
+      return W_Prog_Id;
 
-   function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id
-   with Pre => Nkind (Stmt) = N_Loop_Statement;
+   function Transform_Loop_Statement
+     (Stmt : N_Loop_Statement_Id)
+      return W_Prog_Id;
 
    function Is_In_Loop_Initial_Statements return Boolean with Ghost;
    --  Return True when analyzing the initial statements of a loop

@@ -112,14 +112,14 @@ package SPARK_Util.Subprograms is
    --  Return True if we need to check that variants progress on Call.
    --  Enclosing_Ent should be set as the entity enclosing Call.
 
-   function Compatible_Variants (E1, E2 : Entity_Id) return Boolean with
-     Pre => Is_Subprogram_Or_Entry (E1)
-     and then Is_Subprogram_Or_Entry (E2);
+   function Compatible_Variants
+     (E1, E2 : Callable_Kind_Id)
+      return Boolean;
    --  Return True if E1 and E2 have compatible variants. For now, this means
    --  that they have the same number of variants, which matching subtypes and
    --  modes.
 
-   function Containing_Protected_Type (E : Entity_Id) return Entity_Id
+   function Containing_Protected_Type (E : Entity_Id) return Protected_Kind_Id
    with Pre => (case Ekind (E) is
                    when E_Component    |
                         E_Discriminant =>
@@ -132,8 +132,7 @@ package SPARK_Util.Subprograms is
                       Within_Protected_Type (E),
 
                    when others =>
-                      False),
-   Post => Is_Protected_Type (Containing_Protected_Type'Result);
+                      False);
    --  @param E a subprogram or entry or field which is part of a protected
    --            type
    --  @return the enclosing protected type
@@ -163,7 +162,10 @@ package SPARK_Util.Subprograms is
    --           subprogram, task or entry is returned. Otherwise, Empty is
    --           returned.
 
-   function Find_Contract (E : Entity_Id; Prag : Pragma_Id) return Node_Id
+   function Find_Contract
+     (E    : Entity_Id;
+      Prag : Pragma_Id)
+      return Opt_N_Pragma_Id
    with Pre  => (case Prag is
                     when Pragma_Global
                        | Pragma_Depends
@@ -178,9 +180,7 @@ package SPARK_Util.Subprograms is
 
                     when others
                     =>
-                        False),
-        Post => (if Present (Find_Contract'Result)
-                 then Nkind (Find_Contract'Result) = N_Pragma);
+                        False);
    --  Contract pragmas might be attached to non-obvious entities, e.g. for
    --  single concurrent types they are attached to the corresponding anonymous
    --  concurrent object and "refined" pragmas are attached to the body. This
@@ -282,9 +282,9 @@ package SPARK_Util.Subprograms is
    --    and Task_Body_Entity.
 
    function Get_Execution_Kind
-     (E        : Entity_Id;
+     (E        : E_Procedure_Id;
       After_GG : Boolean := True) return Execution_Kind_T
-   with Pre  => Ekind (E) = E_Procedure and then No_Return (E),
+   with Pre  => No_Return (E),
         Post => Get_Execution_Kind'Result in Abnormal_Termination
                                            | Infinite_Loop;
    --  @param E is a non-returning procedure
@@ -317,14 +317,17 @@ package SPARK_Util.Subprograms is
    --     lied about contracts (as in, stated it has no outputs), then
    --     this is not a "new" failure.
 
-   function Get_Expression_Function (E : Entity_Id) return Node_Id
-   with Pre  => Is_Expression_Function_Or_Completion (E),
-        Post => Nkind (Get_Expression_Function'Result) = N_Expression_Function;
+   function Get_Expression_Function
+     (E : E_Function_Id)
+      return N_Expression_Function_Id
+   with Pre  => Is_Expression_Function_Or_Completion (E);
    --  @param E entity of an expression function (or a function declaration
    --     completed by an expression_function)
    --  @return the corresponding N_Expression_Function original node
 
-   function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
+   function Get_Expr_From_Check_Only_Proc
+     (E : E_Procedure_Id)
+      return Opt_N_Subexpr_Id
    with Pre  => Is_DIC_Procedure (E)
                   or else
                 Is_Invariant_Procedure (E)
@@ -340,7 +343,9 @@ package SPARK_Util.Subprograms is
    --  Extract a condition checked for aspect Default_Initialization and
    --  Type_Invariant.
 
-   function Get_Expr_From_Return_Only_Func (E : Entity_Id) return Node_Id
+   function Get_Expr_From_Return_Only_Func
+     (E : E_Function_Id)
+      return Opt_N_Subexpr_Id
    with Pre => Is_Predicate_Function (E);
    --  @param E a predicate function
    --  @return the expression in the first return statement found in the body
@@ -348,7 +353,9 @@ package SPARK_Util.Subprograms is
    --  Extract a condition checked by a function generated for aspect
    --  [Dynamic_]Predicate.
 
-   function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
+   function Get_Priority_Or_Interrupt_Priority
+     (E : Entity_Id)
+      return Opt_N_Subexpr_Id
    with Pre => Ekind (E) in Protected_Kind |
                             E_Function     |
                             E_Procedure    |
@@ -387,12 +394,15 @@ package SPARK_Util.Subprograms is
    --  @return True iff Extensions_Visible is specified for E
 
    function Has_Subprogram_Variant (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Entry_Kind
-                          | E_Function
-                          | E_Procedure
-                          | E_Task_Type;
+   with Pre  => Ekind (E) in Entry_Kind
+                           | E_Function
+                           | E_Procedure
+                           | E_Task_Type,
+        Post => (if Ekind (E) = E_Task_Type then
+                 not Has_Subprogram_Variant'Result);
    --  @param E is a subprogram, entry or task
-   --  @return True iff E is annotated with the Subprogram_Variant aspect
+   --  @return True iff E is annotated with the Subprogram_Variant aspect,
+   --    which cannot be the case for a task.
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function  |
@@ -439,15 +449,12 @@ package SPARK_Util.Subprograms is
    --     and is considered to always terminate abnormally.
    --  Note: this routine is meant to be only used in phase 2
 
-   function Is_Intrinsic (E : Entity_Id) return Boolean
-   is
+   function Is_Intrinsic (E : Entity_Id) return Boolean is
      (Ekind (E) in E_Function | E_Procedure
       and then Is_Intrinsic_Subprogram (E));
-   --  @param E subprogram
    --  @return True iff E is an intrinsic subprogram
 
    function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
-   --  @param E subprogram
    --  @return True iff E is a local subprogram that is always inlined by the
    --     frontend in GNATprove mode
 
@@ -464,7 +471,9 @@ package SPARK_Util.Subprograms is
    --           such a procedure
    --  @return True iff E has aspect No_Return or annotation Might_Not_Return
 
-   function Is_Predefined_Potentially_Blocking (E : Entity_Id) return Boolean
+   function Is_Predefined_Potentially_Blocking
+     (E : Subprogram_Kind_Id)
+      return Boolean
    with Pre => Ekind (E) in E_Function | E_Procedure;
    --  @param E subprogram
    --  @return True iff E is a predefined potentially blocking subprogram
@@ -507,13 +516,11 @@ package SPARK_Util.Subprograms is
    --  Return True if we are in a case where we support checking progress on
    --  the variants of the called entity.
 
-   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
-   with Pre => Is_Subprogram (E);
-   --  @param E any subprogram
+   function Is_Volatile_For_Internal_Calls (E : E_Function_Id) return Boolean;
    --  @return True iff E is volatile for internal calls, see SPARK RM 7.1.2
 
-   function Might_Be_Main (E : Entity_Id) return Boolean
-   with Pre => Is_Subprogram (E) and then Is_In_Analyzed_Files (E);
+   function Might_Be_Main (E : Subprogram_Kind_Id) return Boolean
+   with Pre => Is_In_Analyzed_Files (E);
    --  @param E subprogram from the current compilation unit (because this
    --     property should be only relevant for subprogram that are analysed
    --     and irrelevant for subprograms that are merely referenced from the
@@ -571,7 +578,9 @@ package SPARK_Util.Subprograms is
    --    identify the entity by its source position and is used e.g. for the
    --    --limit-subp switch of GNATprove.
 
-   function Subp_Needs_Invariant_Checks (E : Entity_Id) return Boolean;
+   function Subp_Needs_Invariant_Checks
+     (E : Callable_Kind_Id)
+      return Boolean;
    --  @param E subprogram or entry
    --  @return True whenever an invariant check may be needed when calling E
    --          from inside the current compilation unit.
@@ -585,7 +594,9 @@ package SPARK_Util.Subprograms is
    --  Queries related to dispatching operations --
    ------------------------------------------------
 
-   function Corresponding_Primitive (Subp, Ty : Entity_Id) return Entity_Id
+   function Corresponding_Primitive
+     (Subp : Subprogram_Kind_Id;
+      Ty   : Type_Kind_Id) return Subprogram_Kind_Id
    with
        Pre  => Is_Dispatching_Operation (Subp)
                and then Present (Find_Dispatching_Type (Subp)),
@@ -594,23 +605,25 @@ package SPARK_Util.Subprograms is
    --  @params Ty a descendant of the dispatching type of Subp
    --  @return the primitive of Ty that corresponds to Subp
 
-   function Find_Dispatching_Parameter (E : Entity_Id) return Entity_Id with
-     Pre  => Ekind (E) = E_Procedure
-             and then Is_Dispatching_Operation (E)
-             and then Present (Find_Dispatching_Type (E)),
-     Post => Present (Find_Dispatching_Parameter'Result);
+   function Find_Dispatching_Parameter
+     (E : E_Procedure_Id)
+      return Formal_Kind_Id
+     with
+       Pre  => Is_Dispatching_Operation (E)
+         and then Present (Find_Dispatching_Type (E));
    --  @param E a dispatching procedure
    --  @return a parameter of E which has the dispatching type
 
-   function Find_Dispatching_Type (E : Entity_Id) return Entity_Id with
-     Pre => Is_Dispatching_Operation (E);
+   function Find_Dispatching_Type
+     (E : Subprogram_Kind_Id)
+      return Opt_Type_Kind_Id
+     with
+       Pre => Is_Dispatching_Operation (E);
    --  @param E a dispatching operation
    --  @return type on which E dispatches. It can return empty if E is not
    --     considered to be dispatching in SPARK, either because the Retysp of
    --     its dispatching type is not tagged or because it is an invisible
    --     dispatching operation.
-   --  @param E any entity
-   --  @return True if E is a dispatching operation visible in SPARK
 
    subtype Subprogram_List is Sem_Disp.Subprogram_List;
 
@@ -629,7 +642,8 @@ package SPARK_Util.Subprograms is
      Inheritance_Utilities_Inst.Inherited_Subprograms;
 
    function Is_Invisible_Dispatching_Operation
-     (E : Entity_Id) return Boolean
+     (E : Callable_Kind_Id)
+      return Boolean
    with Pre => Is_Dispatching_Operation (E);
    --  @param E subprogram
    --  @return True iff E has is a public operation on a private type whose
@@ -643,21 +657,16 @@ package SPARK_Util.Subprograms is
    -- Queries related to entries --
    --------------------------------
 
-   function Entry_Body (E : Entity_Id) return Node_Id
-   with Pre  => Ekind (E) in Entry_Kind and then
-                Nkind (Parent (E)) = N_Entry_Declaration,
-        Post => (if Present (Entry_Body'Result)
-                 then Nkind (Entry_Body'Result) = N_Entry_Body);
+   function Entry_Body (E : Entry_Kind_Id) return Opt_N_Entry_Body_Id
+   with Pre => Nkind (Parent (E)) = N_Entry_Declaration;
    --  @param E entry
    --  @return the entry body for the given entry, similar to what
    --    Subprogram_Body might produce.
 
-   function Entry_Body_Entity (E : Entity_Id) return Node_Id
-   with Pre  => Ekind (E) in Entry_Kind and then
-                Nkind (Parent (E)) = N_Entry_Declaration,
+   function Entry_Body_Entity (E : Entry_Kind_Id) return Opt_Entry_Kind_Id
+   with Pre  => Nkind (Parent (E)) = N_Entry_Declaration,
         Post => (if Present (Entry_Body_Entity'Result)
-                 then Ekind (Entry_Body_Entity'Result) in Entry_Kind and then
-                      Nkind (Parent (Entry_Body_Entity'Result)) =
+                 then Nkind (Parent (Entry_Body_Entity'Result)) =
                         N_Entry_Body);
    --  @param E entry
    --  @return the entry body entity for the given entry

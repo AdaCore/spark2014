@@ -32,7 +32,7 @@ with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
 package body SPARK_Util.Types is
 
-   function Type_Name_For_Explanation (Typ : Entity_Id) return String
+   function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String
      is (if Is_Itype (Typ) then "anonymous type"
          else "type " & Source_Name (Typ))
      with Pre => Is_Type (Typ);
@@ -41,12 +41,12 @@ package body SPARK_Util.Types is
 
    generic
       with procedure Examine
-        (Typ         : Entity_Id;
+        (Typ         :     Type_Kind_Id;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
    procedure Minimal_Size
-     (Typ         : Entity_Id;
+     (Typ         :     Type_Kind_Id;
       Result      : out Boolean;
       Size        : out Uint;
       Explanation : out Unbounded_String)
@@ -58,23 +58,25 @@ package body SPARK_Util.Types is
    --  of the type (RM_Size). Otherwise, Size is undefined and Explanation
    --  contains a string explaining why the size could not be computed.
 
-   procedure Check_Known_RM_Size (Typ         : Entity_Id;
-                                  Result      : out Boolean;
-                                  Explanation : out Unbounded_String);
+   procedure Check_Known_RM_Size
+     (Typ         :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
    --  If the RM_Size of the type is known, set Result to True. Otherwise, set
    --  Result to False and save an explanation string in Explanation.
 
-   procedure Check_Known_Esize (Typ         : Entity_Id;
-                                Result      : out Boolean;
-                                Explanation : out Unbounded_String);
+   procedure Check_Known_Esize
+     (Typ         :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
    --  same as Check_Known_RM_Size, but for Esize
 
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
 
-   function Base_Retysp (T : Entity_Id) return Entity_Id is
-      E : Entity_Id := Retysp (T);
+   function Base_Retysp (T : Type_Kind_Id) return Type_Kind_Id is
+      E : Type_Kind_Id := Retysp (T);
    begin
       while not Is_Base_Type (E) loop
          E := Retysp (Base_Type (E));
@@ -90,10 +92,10 @@ package body SPARK_Util.Types is
    -- Has_Static_Scalar_Subtype --
    -------------------------------
 
-   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean is
-      Under_T  : constant Entity_Id := Underlying_Type (T);
-      Base_T   : constant Entity_Id := Base_Type (Under_T);
-      Anc_Subt : Entity_Id;
+   function Has_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean is
+      Under_T  : constant Type_Kind_Id := Underlying_Type (T);
+      Base_T   : constant Type_Kind_Id := Base_Type (Under_T);
+      Anc_Subt : Opt_Type_Kind_Id;
 
    begin
       if Base_T = Under_T then
@@ -116,8 +118,8 @@ package body SPARK_Util.Types is
    -- Retysp --
    ------------
 
-   function Retysp (T : Entity_Id) return Entity_Id is
-      Typ : Entity_Id := T;
+   function Retysp (T : Type_Kind_Id) return Type_Kind_Id is
+      Typ : Type_Kind_Id := T;
 
    begin
       --  Itypes may not be marked. Use their Etype.
@@ -263,16 +265,14 @@ package body SPARK_Util.Types is
    -- Retysp_Kind --
    -----------------
 
-   function Retysp_Kind (T : Entity_Id) return Entity_Kind is
-   begin
-      return Ekind (Retysp (T));
-   end Retysp_Kind;
+   function Retysp_Kind (T : Type_Kind_Id) return Type_Kind is
+     (Ekind (Retysp (T)));
 
    ---------------------------------
    -- Has_Visible_Type_Invariants --
    ---------------------------------
 
-   function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean is
+   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean is
       Real_Node : constant Node_Id :=
         (if Is_Itype (Ty)
          then Associated_Node_For_Itype (Ty)
@@ -287,8 +287,9 @@ package body SPARK_Util.Types is
    -- Has_Unconstrained_UU_Component --
    ------------------------------------
 
-   function Has_Unconstrained_UU_Component (Typ : Entity_Id) return Boolean is
-      Rep_Ty : constant Entity_Id := Root_Retysp (Typ);
+   function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean
+   is
+      Rep_Ty : constant Type_Kind_Id := Root_Retysp (Typ);
       --  For tagged types, go to the root type. UU_Components cannot be
       --  contained in derivations, as this would be rejected in marking.
 
@@ -322,7 +323,7 @@ package body SPARK_Util.Types is
    ------------------
 
    procedure Minimal_Size
-     (Typ         : Entity_Id;
+     (Typ         :     Type_Kind_Id;
       Result      : out Boolean;
       Size        : out Uint;
       Explanation : out Unbounded_String)
@@ -349,7 +350,7 @@ package body SPARK_Util.Types is
          end if;
 
          declare
-            Comp_Typ  : constant Entity_Id := Retysp (Component_Type (Typ));
+            Comp_Typ  : constant Type_Kind_Id := Retysp (Component_Type (Typ));
             Comp_Size : Uint;
             Index     : Node_Id;
          begin
@@ -375,11 +376,11 @@ package body SPARK_Util.Types is
 
       elsif Is_Record_Type (Typ) then
          declare
-            Comp : Entity_Id := First_Component (Typ);
+            Comp : Opt_E_Component_Id := First_Component (Typ);
          begin
             while Present (Comp) loop
                declare
-                  Comp_Ty   : constant Entity_Id := Retysp (Etype (Comp));
+                  Comp_Ty   : constant Type_Kind_Id := Retysp (Etype (Comp));
                   Comp_Size : Uint;
                begin
                   Examine (Comp_Ty, Result, Comp_Size, Explanation);
@@ -403,7 +404,7 @@ package body SPARK_Util.Types is
    -- Acts_As_Incomplete_Type --
    -----------------------------
 
-   function Acts_As_Incomplete_Type (Ty : Entity_Id) return Boolean is
+   function Acts_As_Incomplete_Type (Ty : Type_Kind_Id) return Boolean is
      (Is_Incomplete_Type (Ty)
       or else Is_Partial_View (Ty)
       or else
@@ -416,11 +417,12 @@ package body SPARK_Util.Types is
    -- Check_DIC_At_Declaration --
    ------------------------------
 
-   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean is
-      Default_Init_Subp : constant Entity_Id := Partial_DIC_Procedure (E);
-      Default_Init_Expr : constant Node_Id :=
+   function Check_DIC_At_Declaration (E : Type_Kind_Id) return Boolean is
+      Default_Init_Subp : constant E_Procedure_Id :=
+        Partial_DIC_Procedure (E);
+      Default_Init_Expr : constant N_Subexpr_Id :=
         Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
-      Init_Param        : constant Entity_Id :=
+      Init_Param        : constant Formal_Kind_Id :=
         First_Formal (Default_Init_Subp);
 
       function Is_Ref_Through_Discr (N : Node_Id) return Boolean with
@@ -486,9 +488,10 @@ package body SPARK_Util.Types is
    -- Check_Known_Esize --
    -----------------------
 
-   procedure Check_Known_Esize (Typ         : Entity_Id;
-                                Result      : out Boolean;
-                                Explanation : out Unbounded_String)
+   procedure Check_Known_Esize
+     (Typ         :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
    is
    begin
       if not Known_Esize (Typ) then
@@ -506,9 +509,10 @@ package body SPARK_Util.Types is
    -- Check_Known_RM_Size --
    -------------------------
 
-   procedure Check_Known_RM_Size (Typ         : Entity_Id;
-                                  Result      : out Boolean;
-                                  Explanation : out Unbounded_String)
+   procedure Check_Known_RM_Size
+     (Typ         :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
    is
    begin
       if not Known_RM_Size (Typ) then
@@ -526,9 +530,12 @@ package body SPARK_Util.Types is
    -- Check_Needed_On_Conversion --
    --------------------------------
 
-   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean is
-      To_R   : constant Entity_Id := Retysp (To);
-      From_R : constant Entity_Id := Retysp (From);
+   function Check_Needed_On_Conversion
+     (From, To : Type_Kind_Id)
+      return Boolean
+   is
+      To_R   : constant Type_Kind_Id := Retysp (To);
+      From_R : constant Type_Kind_Id := Retysp (From);
    begin
       --  No check needed if same type
 
@@ -568,12 +575,14 @@ package body SPARK_Util.Types is
    -- Contains_Allocated_Parts --
    ------------------------------
 
-   function Contains_Allocated_Parts (Typ : Entity_Id) return Boolean is
+   function Contains_Allocated_Parts (Typ : Type_Kind_Id) return Boolean is
       Seen : Node_Sets.Set;
       --  Set of general access types already traversed. This is used to avoid
       --  infinite recursion on recursive structures with general access types.
 
-      function Contains_Allocated_Parts_Ann (Typ : Entity_Id) return Boolean;
+      function Contains_Allocated_Parts_Ann
+        (Typ : Type_Kind_Id)
+         return Boolean;
       --  Recursive function looking for parts of a pool specific access type
       --  in Typ.
 
@@ -581,8 +590,11 @@ package body SPARK_Util.Types is
       -- Contains_Allocated_Parts_Ann --
       ----------------------------------
 
-      function Contains_Allocated_Parts_Ann (Typ : Entity_Id) return Boolean is
-         Rep_Ty : constant Entity_Id := Retysp (Typ);
+      function Contains_Allocated_Parts_Ann
+        (Typ : Type_Kind_Id)
+         return Boolean
+      is
+         Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
       begin
          if Is_Array_Type (Rep_Ty) then
             return Contains_Allocated_Parts_Ann (Component_Type (Rep_Ty));
@@ -595,7 +607,7 @@ package body SPARK_Util.Types is
                return False;
             else
                declare
-                  Comp : Entity_Id := First_Component (Rep_Ty);
+                  Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
                begin
                   while Present (Comp) loop
                      if Component_Is_Visible_In_SPARK (Comp)
@@ -619,7 +631,7 @@ package body SPARK_Util.Types is
                declare
                   Inserted : Boolean;
                   Position : Node_Sets.Cursor;
-                  Des_Ty   : constant Entity_Id :=
+                  Des_Ty   : constant Type_Kind_Id :=
                     Directly_Designated_Type (Rep_Ty);
                begin
                   Seen.Insert (Rep_Ty, Position, Inserted);
@@ -658,10 +670,11 @@ package body SPARK_Util.Types is
    ---------------------------------
 
    function Contains_Relaxed_Init_Parts
-     (Typ        : Entity_Id;
-      Ignore_Top : Boolean := False) return Boolean
+     (Typ        : Type_Kind_Id;
+      Ignore_Top : Boolean := False)
+      return Boolean
    is
-      Rep_Ty : constant Entity_Id := Retysp (Typ);
+      Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
    begin
       if not Ignore_Top and then Has_Relaxed_Init (Typ) then
          return True;
@@ -682,7 +695,7 @@ package body SPARK_Util.Types is
             return False;
          else
             declare
-               Comp : Entity_Id := First_Component (Rep_Ty);
+               Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
             begin
                while Present (Comp) loop
                   if Component_Is_Visible_In_SPARK (Comp)
@@ -706,8 +719,8 @@ package body SPARK_Util.Types is
    -- Contains_Only_Relaxed_Init --
    --------------------------------
 
-   function Contains_Only_Relaxed_Init (Typ : Entity_Id) return Boolean is
-      Rep_Ty : constant Entity_Id := Retysp (Typ);
+   function Contains_Only_Relaxed_Init (Typ : Type_Kind_Id) return Boolean is
+      Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
    begin
       if Has_Relaxed_Init (Typ) then
          return True;
@@ -732,7 +745,8 @@ package body SPARK_Util.Types is
 
          else
             declare
-               Comp             : Entity_Id := First_Component (Rep_Ty);
+               Comp             : Opt_E_Component_Id :=
+                 First_Component (Rep_Ty);
                Has_Visible_Comp : Boolean := False;
             begin
                while Present (Comp) loop
@@ -814,7 +828,10 @@ package body SPARK_Util.Types is
    -- Find_Predicate_Item --
    -------------------------
 
-   procedure Find_Predicate_Item (Ty : Entity_Id; Rep_Item : in out Node_Id) is
+   procedure Find_Predicate_Item
+     (Ty       :        Type_Kind_Id;
+      Rep_Item : in out Node_Id)
+   is
    begin
       while Present (Rep_Item) loop
          case Nkind (Rep_Item) is
@@ -853,7 +870,10 @@ package body SPARK_Util.Types is
    -- Get_Parent_Type_If_Check_Needed --
    -------------------------------------
 
-   function Get_Parent_Type_If_Check_Needed (N : Node_Id) return Entity_Id is
+   function Get_Parent_Type_If_Check_Needed
+     (N : N_Declaration_Id)
+      return Opt_Type_Kind_Id
+   is
    begin
       if Nkind (N) = N_Full_Type_Declaration then
          declare
@@ -891,9 +911,10 @@ package body SPARK_Util.Types is
    -- Get_Specific_Type_From_Classwide --
    --------------------------------------
 
-   function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
+   function Get_Specific_Type_From_Classwide (E : Class_Wide_Kind_Id)
+                                              return Type_Kind_Id
    is
-      Specific_Type : constant Entity_Id := Etype (Base_Type (E));
+      Specific_Type : constant Type_Kind_Id := Etype (Base_Type (E));
 
    begin
       if Is_Full_View (Specific_Type) then
@@ -908,11 +929,11 @@ package body SPARK_Util.Types is
    ------------------------------
 
    function Get_Constraint_For_Discr
-     (Ty    : Entity_Id;
-      Discr : Entity_Id)
-      return Node_Id
+     (Ty    : Type_Kind_Id;
+      Discr : E_Discriminant_Id)
+      return N_Subexpr_Id
    is
-      Current : Entity_Id := First_Discriminant (Ty);
+      Current : E_Discriminant_Id := First_Discriminant (Ty);
       Elmt    : Elmt_Id := First_Elmt (Discriminant_Constraint (Ty));
    begin
       while Current /= Discr loop
@@ -926,7 +947,7 @@ package body SPARK_Util.Types is
    -- Has_Invariants_In_SPARK --
    -----------------------------
 
-   function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean is
+   function Has_Invariants_In_SPARK (E : Type_Kind_Id) return Boolean is
      (Has_Own_Invariants (E)
       and then Is_Base_Type (E)
       and then (if Is_Partial_View (E) then Entity_In_SPARK (Full_View (E))));
@@ -935,8 +956,8 @@ package body SPARK_Util.Types is
    -- Has_Private_Fields --
    ------------------------
 
-   function Has_Private_Fields (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Retysp (E);
+   function Has_Private_Fields (E : Type_Kind_Id) return Boolean is
+      Ty : constant Type_Kind_Id := Retysp (E);
    begin
       if not Full_View_Not_In_SPARK (Ty) then
          return False;
@@ -965,11 +986,10 @@ package body SPARK_Util.Types is
    -- Invariant_Check_Needed --
    ----------------------------
 
-   function Invariant_Check_Needed (Ty : Entity_Id) return Boolean
-   is
-      Rep_Ty  : constant Entity_Id := Retysp (Ty);
-      Current : Entity_Id := Rep_Ty;
-      Parent  : Entity_Id;
+   function Invariant_Check_Needed (Ty : Type_Kind_Id) return Boolean is
+      Rep_Ty  : constant Type_Kind_Id := Retysp (Ty);
+      Current : Type_Kind_Id := Rep_Ty;
+      Parent  : Type_Kind_Id;
 
    begin
       --  Check for invariants on the type and its ancestors
@@ -995,7 +1015,7 @@ package body SPARK_Util.Types is
       then
          if Has_Discriminants (Rep_Ty) then
             declare
-               Discr : Entity_Id := First_Discriminant (Rep_Ty);
+               Discr : Opt_E_Discriminant_Id := First_Discriminant (Rep_Ty);
             begin
                while Present (Discr) loop
                   if Invariant_Check_Needed (Etype (Discr)) then
@@ -1028,8 +1048,8 @@ package body SPARK_Util.Types is
    -- Is_Deep --
    -------------
 
-   function Is_Deep (Typ : Entity_Id) return Boolean is
-      Rep_Typ : constant Entity_Id := Retysp (Typ);
+   function Is_Deep (Typ : Type_Kind_Id) return Boolean is
+      Rep_Typ : constant Type_Kind_Id := Retysp (Typ);
    begin
       case Type_Kind'(Ekind (Rep_Typ)) is
          when Access_Kind =>
@@ -1059,7 +1079,8 @@ package body SPARK_Util.Types is
             --  Otherwise, go over the list of components
 
             declare
-               Comp : Entity_Id := First_Component_Or_Discriminant (Rep_Typ);
+               Comp : Opt_Record_Field_Kind_Id :=
+                 First_Component_Or_Discriminant (Rep_Typ);
             begin
                while Present (Comp) loop
 
@@ -1099,8 +1120,8 @@ package body SPARK_Util.Types is
    -- Is_General_Access_Type --
    ----------------------------
 
-   function Is_General_Access_Type (T : Entity_Id) return Boolean is
-      Base : Entity_Id := T;
+   function Is_General_Access_Type (T : Type_Kind_Id) return Boolean is
+      Base : Type_Kind_Id := T;
    begin
       if Ekind (Base) = E_Access_Subtype then
          Base := Base_Type (Base);
@@ -1120,7 +1141,7 @@ package body SPARK_Util.Types is
    -- Is_Null_Range --
    -------------------
 
-   function Is_Null_Range (T : Entity_Id) return Boolean is
+   function Is_Null_Range (T : Type_Kind_Id) return Boolean is
      (Is_Discrete_Type (T)
       and then Has_Static_Scalar_Subtype (T)
       and then Expr_Value (Type_Low_Bound (T)) >
@@ -1132,7 +1153,7 @@ package body SPARK_Util.Types is
 
    --  E might be a standard type or the implicit base type of such a standard
    --  type.
-   function Is_Standard_Type (E : Entity_Id) return Boolean is
+   function Is_Standard_Type (E : Type_Kind_Id) return Boolean is
      (for some S_Type in S_Types =>
          E = Standard_Entity (S_Type) or E = Etype (Standard_Entity (S_Type)));
 
@@ -1140,7 +1161,7 @@ package body SPARK_Util.Types is
    -- Is_Standard_Boolean_Type --
    ------------------------------
 
-   function Is_Standard_Boolean_Type (E : Entity_Id) return Boolean is
+   function Is_Standard_Boolean_Type (E : Type_Kind_Id) return Boolean is
      ((E = Standard_Boolean
        or else
          (Ekind (E) = E_Enumeration_Subtype
@@ -1153,7 +1174,7 @@ package body SPARK_Util.Types is
    -- Is_Static_Array_Type --
    --------------------------
 
-   function Is_Static_Array_Type (E : Entity_Id) return Boolean is
+   function Is_Static_Array_Type (E : Type_Kind_Id) return Boolean is
      (Is_Array_Type (E)
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
@@ -1162,9 +1183,9 @@ package body SPARK_Util.Types is
    -- Iterate_Applicable_DIC --
    ----------------------------
 
-   procedure Iterate_Applicable_DIC (Ty : Entity_Id) is
-      Rep_Ty : Entity_Id := Retysp (Ty);
-      Proc   : Entity_Id;
+   procedure Iterate_Applicable_DIC (Ty : Type_Kind_Id) is
+      Rep_Ty : Opt_Type_Kind_Id := Retysp (Ty);
+      Proc   : Opt_E_Procedure_Id;
    begin
       while Present (Rep_Ty) and then Has_DIC (Rep_Ty) loop
          Proc := Partial_DIC_Procedure (Rep_Ty);
@@ -1181,7 +1202,7 @@ package body SPARK_Util.Types is
    -- May_Need_DIC_Checking --
    ---------------------------
 
-   function May_Need_DIC_Checking (E : Entity_Id) return Boolean is
+   function May_Need_DIC_Checking (E : Type_Kind_Id) return Boolean is
      (Has_Own_DIC (E) and then Present (Partial_DIC_Procedure (E)));
    --  ??? has_own_dic returns true on a type with a DIC that defaults to True
    --  but no partial_DIC_procedure is created.
@@ -1190,7 +1211,7 @@ package body SPARK_Util.Types is
    -- Needs_Default_Checks_At_Decl --
    ----------------------------------
 
-   function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean is
+   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean is
       Decl : constant Node_Id := Parent (E);
 
    begin
@@ -1221,8 +1242,8 @@ package body SPARK_Util.Types is
    -- Might_Contain_Relaxed_Init --
    --------------------------------
 
-   function Might_Contain_Relaxed_Init (Typ : Entity_Id) return Boolean is
-      Rep_Ty : constant Entity_Id := Base_Retysp (Typ);
+   function Might_Contain_Relaxed_Init (Typ : Type_Kind_Id) return Boolean is
+      Rep_Ty : constant Type_Kind_Id := Base_Retysp (Typ);
    begin
       if In_Relaxed_Init (Typ) then
          return True;
@@ -1262,9 +1283,8 @@ package body SPARK_Util.Types is
          return Might_Contain_Relaxed_Init (Component_Type (Rep_Ty));
       elsif Is_Record_Type (Rep_Ty) then
          declare
-            Comp : Entity_Id := First_Component (Rep_Ty);
+            Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
          begin
-
             --  If it is a scalar type, a component of a record can only
             --  contain relaxed initialization if its type is annotated
             --  with relaxed initialization. Note that the same does not
@@ -1292,7 +1312,11 @@ package body SPARK_Util.Types is
    -- Nth_Index_Type --
    --------------------
 
-   function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id is
+   function Nth_Index_Type
+     (E   : Array_Kind_Id;
+      Dim : Positive)
+      return Type_Kind_Id
+   is
       Cur   : Positive := 1;
       Index : Node_Id := First_Index (E);
 
@@ -1314,8 +1338,8 @@ package body SPARK_Util.Types is
    -- Num_Literals --
    ------------------
 
-   function Num_Literals (Ty : Entity_Id) return Positive is
-      Lit : Entity_Id := First_Literal (Ty);
+   function Num_Literals (Ty : Enumeration_Kind_Id) return Positive is
+      Lit   : Opt_E_Enumeration_Literal_Id := First_Literal (Ty);
       Count : Positive := 1;
    begin
       loop
@@ -1330,9 +1354,9 @@ package body SPARK_Util.Types is
    -- Parent_Retysp --
    -------------------
 
-   function Parent_Retysp (Ty : Entity_Id) return Entity_Id is
-      Rep_Ty  : constant Entity_Id := Retysp (Ty);
-      Next_Ty : constant Entity_Id :=
+   function Parent_Retysp (Ty : Type_Kind_Id) return Opt_Type_Kind_Id is
+      Rep_Ty  : constant Type_Kind_Id := Retysp (Ty);
+      Next_Ty : constant Type_Kind_Id :=
         Retysp (Parent_Type (Rep_Ty));
    begin
       if Next_Ty = Rep_Ty then
@@ -1346,7 +1370,7 @@ package body SPARK_Util.Types is
    -- Parent_Type --
    -----------------
 
-   function Parent_Type (Ty : Entity_Id) return Entity_Id is
+   function Parent_Type (Ty : Type_Kind_Id) return Opt_Type_Kind_Id is
       Decl   : constant Node_Id := Original_Node (Parent (Ty));
       --  Derived type definitions are sometimes rewritten into record
       --  definitions by the frontend.
@@ -1375,16 +1399,18 @@ package body SPARK_Util.Types is
    -- Private_Declarations_Of_Prot_Type --
    ---------------------------------------
 
-   function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
+   function Private_Declarations_Of_Prot_Type
+     (E : Protected_Kind_Id)
+      return List_Id
    is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
 
    -----------------------------------
    -- Predefined_Eq_Uses_Pointer_Eq --
    -----------------------------------
 
-   function Predefined_Eq_Uses_Pointer_Eq (Ty : Entity_Id) return Boolean is
+   function Predefined_Eq_Uses_Pointer_Eq (Ty : Type_Kind_Id) return Boolean is
 
-      function Uses_Pointer_Eq_Comp (Ty : Entity_Id) return Boolean is
+      function Uses_Pointer_Eq_Comp (Ty : Type_Kind_Id) return Boolean is
         (not (Is_Record_Type (Unchecked_Full_Type (Ty))
               and then Present (Get_User_Defined_Eq (Base_Type (Ty))))
          and then Predefined_Eq_Uses_Pointer_Eq (Ty));
@@ -1392,7 +1418,7 @@ package body SPARK_Util.Types is
       --  if the predefined equality is used for components of this type and
       --  this equality uses predefined equality on pointers.
 
-      Rep_Ty : constant Entity_Id := Retysp (Ty);
+      Rep_Ty : constant Type_Kind_Id := Retysp (Ty);
    begin
       if Is_Access_Type (Rep_Ty) then
          return True;
@@ -1419,8 +1445,8 @@ package body SPARK_Util.Types is
 
          if Is_Tagged_Type (Rep_Ty) then
             declare
-               Base   : constant Entity_Id := Base_Retysp (Rep_Ty);
-               Parent : constant Entity_Id := Retysp (Etype (Base));
+               Base   : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
+               Parent : constant Type_Kind_Id := Retysp (Etype (Base));
             begin
                return Parent /= Base
                  and then Predefined_Eq_Uses_Pointer_Eq (Parent);
@@ -1438,7 +1464,9 @@ package body SPARK_Util.Types is
    -- Private_Declarations_Of_Task_Type --
    ---------------------------------------
 
-   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
+   function Private_Declarations_Of_Task_Type
+     (E : E_Task_Type_Id)
+      return List_Id
    is
       Def : constant Node_Id := Task_Type_Definition (E);
    begin
@@ -1453,9 +1481,11 @@ package body SPARK_Util.Types is
    -- Protected_Body --
    --------------------
 
-   function Protected_Body (E : Entity_Id) return Node_Id is
+   function Protected_Body
+     (E : Protected_Kind_Id)
+      return Opt_N_Protected_Body_Id
+   is
       Ptr : constant Node_Id := Parent (E);
-
    begin
       pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
       return Parent (Corresponding_Body (Ptr));
@@ -1465,7 +1495,10 @@ package body SPARK_Util.Types is
    -- Protected_Type_Definition --
    -------------------------------
 
-   function Protected_Type_Definition (E : Entity_Id) return Node_Id is
+   function Protected_Type_Definition
+     (E : Protected_Kind_Id)
+      return Opt_N_Protected_Definition_Id
+   is
       Decl : constant Node_Id := Parent (E);
       pragma Assert (Nkind (Decl) = N_Protected_Type_Declaration);
 
@@ -1477,8 +1510,10 @@ package body SPARK_Util.Types is
    -- Requires_Interrupt_Priority --
    ---------------------------------
 
-   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean is
-
+   function Requires_Interrupt_Priority
+     (E : Protected_Kind_Id)
+      return Boolean
+   is
       function Decl_Has_Attach_Handler (Decl : Node_Id) return Boolean;
       --  Check whether the declaration is a subprogram with an attach_handler
       --  pragma attached.
@@ -1525,9 +1560,9 @@ package body SPARK_Util.Types is
    -- Root_Retysp --
    -----------------
 
-   function Root_Retysp (E : Entity_Id) return Entity_Id is
-      Result   : Entity_Id := Empty;
-      Ancestor : Entity_Id :=
+   function Root_Retysp (E : Type_Kind_Id) return Type_Kind_Id is
+      Result   : Opt_Type_Kind_Id := Empty;
+      Ancestor : Type_Kind_Id :=
         (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
          else E);
    begin
@@ -1546,13 +1581,14 @@ package body SPARK_Util.Types is
    -- Static_Array_Length --
    -------------------------
 
-   function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint is
+   function Static_Array_Length (E : Array_Kind_Id; Dim : Positive) return Uint
+   is
    begin
       if Ekind (E) = E_String_Literal_Subtype then
          return String_Literal_Length (E);
       else
          declare
-            F_Index : constant Entity_Id := Nth_Index_Type (E, Dim);
+            F_Index : constant Type_Kind_Id := Nth_Index_Type (E, Dim);
 
             Rng   : constant Node_Id := Get_Range (F_Index);
             First : constant Uint := Expr_Value (Low_Bound (Rng));
@@ -1571,15 +1607,22 @@ package body SPARK_Util.Types is
    -- Suitable_For_UC --
    ---------------------
 
-   procedure Suitable_For_UC (Typ         : Entity_Id;
-                              Use_Esize   : Boolean;
-                              Result      : out Boolean;
-                              Explanation : out Unbounded_String)
+   procedure Suitable_For_UC
+     (Typ         :     Type_Kind_Id;
+      Use_Esize   :     Boolean;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
    is
+      procedure Suitable_For_UC_Callback
+        (Typ         :     Type_Kind_Id;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String);
+      --  Same as Suitable_For_UC_Internal, but Top_Level is fixed to False.
 
       procedure Suitable_For_UC_Internal
-        (Typ         : Entity_Id;
-         Use_Esize   : Boolean;
+        (Typ         :     Type_Kind_Id;
+         Use_Esize   :     Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
@@ -1590,19 +1633,12 @@ package body SPARK_Util.Types is
       --  type is not suitable for unchecked conversion, Explanation contains
       --  a string which explains why it is not suitable.
 
-      procedure Suitable_For_UC_Callback
-        (Typ         : Entity_Id;
-         Result      : out Boolean;
-         Typ_Size    : out Uint;
-         Explanation : out Unbounded_String);
-      --  Same as Suitable_For_UC_Internal, but Top_Level is fixed to False.
-
       ------------------------------
       -- Suitable_For_UC_Callback --
       ------------------------------
 
       procedure Suitable_For_UC_Callback
-        (Typ         : Entity_Id;
+        (Typ         :     Type_Kind_Id;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String) is
@@ -1620,17 +1656,15 @@ package body SPARK_Util.Types is
       ------------------------------
 
       procedure Suitable_For_UC_Internal
-        (Typ         : Entity_Id;
-         Use_Esize   : Boolean;
+        (Typ         :     Type_Kind_Id;
+         Use_Esize   :     Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String)
       is
-
          function Typ_Name return String is (Type_Name_For_Explanation (Typ));
 
       begin
-
          --  Default initialization for Codepeer
          Typ_Size := Uint_0;
 
@@ -1731,10 +1765,11 @@ package body SPARK_Util.Types is
    -- Suitable_For_UC_Target --
    ----------------------------
 
-   procedure Suitable_For_UC_Target (Typ         : Entity_Id;
-                                     Use_Esize   : Boolean;
-                                     Result      : out Boolean;
-                                     Explanation : out Unbounded_String)
+   procedure Suitable_For_UC_Target
+     (Typ         :     Type_Kind_Id;
+      Use_Esize   :     Boolean;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
    is
       --  The property to be "suitable for unchecked conversion" is *not*
       --  compositional.
@@ -1758,27 +1793,27 @@ package body SPARK_Util.Types is
       --  The structure of this subprogram is identical to Suitable_For_UC. See
       --  there for some comments.
 
-      procedure Suitable_For_UC_Target_Internal
-        (Typ         : Entity_Id;
-         Use_Esize   : Boolean;
-         Result      : out Boolean;
-         Typ_Size    : out Uint;
-         Explanation : out Unbounded_String);
-
       procedure Suitable_For_UC_Target_Callback
-        (Typ         : Entity_Id;
+        (Typ         :     Type_Kind_Id;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
       --  Same as Suitable_For_UC_Target_Internal, but Top_Level fixed to
       --  False.
 
+      procedure Suitable_For_UC_Target_Internal
+        (Typ         :     Type_Kind_Id;
+         Use_Esize   :     Boolean;
+         Result      : out Boolean;
+         Typ_Size    : out Uint;
+         Explanation : out Unbounded_String);
+
       -------------------------------------
       -- Suitable_For_UC_Target_Callback --
       -------------------------------------
 
       procedure Suitable_For_UC_Target_Callback
-        (Typ         : Entity_Id;
+        (Typ         :     Type_Kind_Id;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String) is
@@ -1794,8 +1829,8 @@ package body SPARK_Util.Types is
       -------------------------------------
 
       procedure Suitable_For_UC_Target_Internal
-        (Typ         : Entity_Id;
-         Use_Esize   : Boolean;
+        (Typ         :     Type_Kind_Id;
+         Use_Esize   :     Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String)
@@ -1977,7 +2012,7 @@ package body SPARK_Util.Types is
    -- Task_Body --
    ---------------
 
-   function Task_Body (E : Entity_Id) return Node_Id is
+   function Task_Body (E : E_Task_Type_Id) return Opt_N_Task_Body_Id is
       Ptr : constant Node_Id := Parent (E);
    begin
       pragma Assert (Nkind (Ptr) = N_Task_Type_Declaration);
@@ -1988,7 +2023,8 @@ package body SPARK_Util.Types is
    -- Task_Body_Entity --
    ----------------------
 
-   function Task_Body_Entity (E : Entity_Id) return Entity_Id is
+   function Task_Body_Entity (E : E_Task_Type_Id) return Opt_E_Task_Body_Id
+   is
       T_Body : constant Node_Id := Task_Body (E);
    begin
       if Present (T_Body) then
@@ -2003,9 +2039,10 @@ package body SPARK_Util.Types is
    -- Have_Same_Known_Esize --
    ---------------------------
 
-   procedure Have_Same_Known_Esize (A, B        : Entity_Id;
-                                    Result      : out Boolean;
-                                    Explanation : out Unbounded_String)
+   procedure Have_Same_Known_Esize
+     (A, B        :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
    is
    begin
       Check_Known_Esize (A, Result, Explanation);
@@ -2033,9 +2070,10 @@ package body SPARK_Util.Types is
    -- Have_Same_Known_RM_Size --
    -----------------------------
 
-   procedure Have_Same_Known_RM_Size (A, B        : Entity_Id;
-                                      Result      : out Boolean;
-                                      Explanation : out Unbounded_String)
+   procedure Have_Same_Known_RM_Size
+     (A, B        :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
    is
    begin
       Check_Known_RM_Size (A, Result, Explanation);
@@ -2062,7 +2100,7 @@ package body SPARK_Util.Types is
    -- Unchecked_Full_Type --
    -------------------------
 
-   function Unchecked_Full_Type (E : Entity_Id) return Entity_Id is
+   function Unchecked_Full_Type (E : Type_Kind_Id) return Type_Kind_Id is
    begin
       if Is_Private_Type (E)
         and then Present (Underlying_Full_View (E))
@@ -2086,7 +2124,9 @@ package body SPARK_Util.Types is
    -- Use_Predefined_Equality_For_Type --
    --------------------------------------
 
-   function Use_Predefined_Equality_For_Type (Typ : Entity_Id) return Boolean
+   function Use_Predefined_Equality_For_Type
+     (Typ : Type_Kind_Id)
+      return Boolean
    is
      (not (Is_Record_Type (Unchecked_Full_Type (Typ))
       or else Is_Limited_View (Typ))
@@ -2096,14 +2136,18 @@ package body SPARK_Util.Types is
    -- Visible_Declarations_Of_Prot_Type --
    ---------------------------------------
 
-   function Visible_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
+   function Visible_Declarations_Of_Prot_Type
+     (E : Protected_Kind_Id)
+      return List_Id
    is (Visible_Declarations (Protected_Type_Definition (Base_Type (E))));
 
    ---------------------------------------
    -- Visible_Declarations_Of_Task_Type --
    ---------------------------------------
 
-   function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
+   function Visible_Declarations_Of_Task_Type
+     (E : E_Task_Type_Id)
+      return List_Id
    is
       Def : constant Node_Id := Task_Type_Definition (E);
    begin

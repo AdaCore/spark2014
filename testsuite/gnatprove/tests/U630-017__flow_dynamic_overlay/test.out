@@ -1,0 +1,8 @@
+early_init.ads:3:14: warning: subprogram "Dummy" has no effect
+early_init.ads:6:09: info: flow dependencies proved
+early_init.ads:7:09: medium: initial condition might fail
+early_init.ads:9:07: info: initialization of "V1" proved
+early_init.ads:10:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but has Object_Size 32]
+early_init.ads:10:07: info: alignment of overlaid objects is compatible (Trivial)
+early_init.ads:10:42: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but has Object_Size 32]
+early_init.ads:10:42: info: types of aliased objects have the same size (Trivial)

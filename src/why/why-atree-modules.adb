@@ -28,6 +28,7 @@ with Ada.Containers;             use Ada.Containers;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Common_Containers;          use Common_Containers;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
@@ -304,7 +305,7 @@ package body Why.Atree.Modules is
    -- Get_Logic_Function --
    ------------------------
 
-   function Get_Logic_Function (E : Entity_Id) return W_Identifier_Id is
+   function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id is
       Name : constant Symbol := Get_Profile_Theory_Name (E);
    begin
       return M_Subprogram_Profiles (Name).Call_Id;
@@ -314,7 +315,10 @@ package body Why.Atree.Modules is
    -- Get_Logic_Function_Guard --
    ------------------------------
 
-   function Get_Logic_Function_Guard (E : Entity_Id) return W_Identifier_Id is
+   function Get_Logic_Function_Guard
+     (E : Function_Kind_Id)
+      return W_Identifier_Id
+   is
       Name : constant Symbol := Get_Profile_Theory_Name (E);
    begin
       return M_Subprogram_Profiles (Name).Pred_Id;
@@ -2014,11 +2018,6 @@ package body Why.Atree.Modules is
         New_Identifier (Module => M,
                         Domain => EW_Term,
                         Symb   => NID ("div"),
-                        Typ    => EW_Int_Type);
-      M_Int_Div.Euclid :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symb   => NID ("euclid_div"),
                         Typ    => EW_Int_Type);
       M_Int_Div.Rem_Id :=
         New_Identifier (Module => M,

@@ -23,11 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Checked_Types;          use Checked_Types;
 with Common_Containers;      use Common_Containers;
 with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
 with Snames;                 use Snames;
 with SPARK_Util;             use SPARK_Util;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Types;                  use Types;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Ids;                use Why.Ids;
@@ -171,22 +171,18 @@ package Why.Gen.Names is
    --  the name of the corresponding entity in logic space.
 
    function Logic_Function_Name
-     (E                      : Entity_Id;
+     (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
       Is_Access_Subp_Wrapper : Boolean := False)
-      return W_Identifier_Id
-   with
-     Pre => Is_Function_Or_Function_Type (E);
+      return W_Identifier_Id;
    --  Compute the name to be used to call a function or a function profile in
    --  the logic domain.
 
    function Guard_Predicate_Name
-     (E                      : Entity_Id;
+     (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
       Is_Access_Subp_Wrapper : Boolean := False)
-      return W_Identifier_Id
-   with
-      Pre => Is_Function_Or_Function_Type (E);
+      return W_Identifier_Id;
    --  Compute the name to be used for the guard of a function or a function
    --  profile.
 

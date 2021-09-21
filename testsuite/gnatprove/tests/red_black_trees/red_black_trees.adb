@@ -14,7 +14,8 @@ package body Red_Black_Trees with SPARK_Mode is
    --  same value for Count.
 
    function Eq (X, Y : Black_Count) return Boolean is
-     (X.Status = Y.Status and X.Count = Y.Count);
+     (X.Status = Y.Status and X.Count = Y.Count)
+   with Post => Eq'Result in Boolean;
    --  Equivalence between Black_Counts. The Depth field is ignored here.
 
    type Count_Array is array (Extended_Index_Type) of Black_Count;
@@ -201,11 +202,37 @@ package body Red_Black_Trees with SPARK_Mode is
    --  Return True if the number of black nodes is the same in every branch of
    --  the tree.
 
-   procedure Prove_Same_Nb_Blacks (T_Old, T : Rbt) with Ghost
+   procedure Prove_Same_Nb_Blacks (T_Old, T : Rbt) with
    --  Same_Nb_Blacks holds for T_Old and T is T_Old with possibly one or more
    --  additionnal red leafs or a differently colored root.
    --  Prove by induction over the depth of nodes that Same_Nb_Blacks holds for T.
 
+     Ghost,
+     Pre => Same_Nb_Blacks (T_Old)
+     and then
+       (for all I in Index_Type =>
+          (if Size (T.Struct) /= 0 and then Model (T.Struct) (I).K
+           then (Size (T_Old.Struct) /= 0 and then Model (T_Old.Struct) (I).K)
+           or else (Nb_Blacks (T) (I).Status and Nb_Blacks (T) (I).Count = 0)))
+     and then Size (T.Struct) >= Size (T_Old.Struct)
+     and then
+       (for all I in Index_Type =>
+          (if Size (T_Old.Struct) /= 0 and then Model (T_Old.Struct) (I).K
+           then Model (T.Struct) (I).K))
+     and then
+       (for all I in Index_Type =>
+          (if Size (T_Old.Struct) /= 0 and then
+             Model (T_Old.Struct) (I).K and then I /= Root (T.Struct)
+           then T_Old.Color (I) = T.Color (I)))
+     and then (if Size (T_Old.Struct) /= 0 then Root (T.Struct) = Root (T_Old.Struct))
+     and then
+       (for all I in Index_Type =>
+          (for all D in Direction =>
+             (if Size (T_Old.Struct) /= 0 and then Model (T_Old.Struct) (I).K
+              then Peek (T_Old.Struct, I, D) = Peek (T.Struct, I, D)
+              or else (Peek (T_Old.Struct, I, D) = Empty
+                       and then not Model (T_Old.Struct) (Peek (T.Struct, I, D)).K)))),
+     Post => Same_Nb_Blacks (T)
    is
    begin
       if Size (T_Old.Struct) > 0 then
@@ -214,29 +241,61 @@ package body Red_Black_Trees with SPARK_Mode is
             --  For each node that was already in T_Old and which is not the
             --  root, the values of Black_Count are equivalent in T_Old and T.
 
+            pragma Assert
+              (for all I in Index_Type =>
+                 (for all D in Direction =>
+                      (if Model (T_Old.Struct) (I).K
+                       and then Nb_Blacks (T_Old) (I).Depth = N - 1
+                       then Nb_Blacks (T) (Peek (T.Struct, I, D)).Count =
+                         Nb_Blacks (T_Old) (Peek (T_Old.Struct, I, D)).Count)));
+
             pragma Loop_Invariant
               (for all I in Index_Type =>
                  (if Model (T_Old.Struct) (I).K
                     and then Nb_Blacks (T_Old) (I).Depth < N
                     and then I /= Root (T.Struct)
-                  then Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I))));
+                  then Nb_Blacks (T) (I).Count = Nb_Blacks (T_Old) (I).Count));
+            pragma Loop_Invariant
+              (for all I in Index_Type =>
+                 (if Model (T_Old.Struct) (I).K
+                    and then Nb_Blacks (T_Old) (I).Depth < N
+                  then Nb_Blacks (T) (I).Status));
          end loop;
-         pragma Assert (Same_Nb_Blacks (T));
       end if;
-      pragma Assert_And_Cut (Same_Nb_Blacks (T));
    end Prove_Same_Nb_Blacks;
 
    procedure Prove_Same_Nb_Blacks_Swap
      (T_Old, T : Rbt;
-      Except   : Index_Type) with Ghost
+      Except   : Index_Type)
    --  Same_Nb_Blacks holds for T_Old and T is T_Old where Except has been
    --  colored Red (it was black in T_Old) and its children have been colored
    --  Black (they were red in T_Old).
    --  Prove by induction over the depth of nodes that Same_Nb_Blacks holds for T.
-
+   with Ghost,
+     Pre  => Same_Nb_Blacks (T_Old)
+     and then Size (T.Struct) /= 0 and then Model (T.Struct) (Except).K
+     and then Size (T.Struct) = Size (T_Old.Struct)
+     and then (for all J in Index_Type =>
+                 Model (T.Struct) (J).K = Model (T_Old.Struct) (J).K)
+     and then
+       (for all I in Index_Type =>
+          (for all D in Direction =>
+                 (if Model (T.Struct) (I).K
+                  then Peek (T_Old.Struct, I, D) = Peek (T.Struct, I, D))))
+     and then T.Color (Except) = Red and then T_Old.Color (Except) = Black
+     and then
+       (for all D in Direction =>
+          Peek (T.Struct, Except, D) /= Empty
+           and then T.Color (Peek (T.Struct, Except, D)) = Black
+           and then T_Old.Color (Peek (T.Struct, Except, D)) = Red)
+     and then
+       (for all I in Index_Type =>
+          (if I not in Except | Peek (T.Struct, Except, Left)
+                              | Peek (T.Struct, Except, Right)
+           then T.Color (I) = T_Old.Color (I))),
+     Post => Same_Nb_Blacks (T)
    is
    begin
-      pragma Assert (Same_Nb_Blacks (T_Old));
       for N in Index_Type loop
 
          --  For each reachable node, the values of Black_Count are
@@ -248,30 +307,65 @@ package body Red_Black_Trees with SPARK_Mode is
               (if Model (T_Old.Struct) (I).K
                and then Nb_Blacks (T_Old) (I).Depth < N
                then
-                 (if Parent (T.Struct, I) = Except then
-                       Nb_Blacks (T) (I).Status
-                  and Nb_Blacks (T) (I).Count =
-                      Nb_Blacks (T_Old) (I).Count + 1
-                  else Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)))));
-         if Nb_Blacks (T_Old) (Except).Depth <= N then
+                 (if I in Peek (T.Struct, Except, Left)
+                        | Peek (T.Struct, Except, Right)
+                  then Nb_Blacks (T) (I).Count = Nb_Blacks (T_Old) (I).Count + 1
+                  else Nb_Blacks (T) (I).Count = Nb_Blacks (T_Old) (I).Count)));
+         pragma Loop_Invariant
+           (for all I in Index_Type =>
+              (if Model (T_Old.Struct) (I).K
+               and then Nb_Blacks (T_Old) (I).Depth < N
+               then Nb_Blacks (T) (I).Status));
+
+         if Nb_Blacks (T_Old) (Except).Depth = N then
             pragma Assert (Nb_Blacks (T) (Except).Status);
             pragma Assert (Nb_Blacks (T) (Except).Count =
                              Nb_Blacks (T_Old) (Except).Count);
          end if;
       end loop;
-      pragma Assert_And_Cut (Same_Nb_Blacks (T));
+      pragma Assert
+        (for all I in Index_Type =>
+           (if Model (T_Old.Struct) (I).K then Nb_Blacks (T) (I).Status));
    end Prove_Same_Nb_Blacks_Swap;
 
    procedure Prove_Same_Nb_Blacks_Rotate
      (T_Old, T : Rbt;
-      X        : Index_Type) with Ghost
+      X        : Index_Type;
+      D1, D2   : Direction)
    --  Same_Nb_Blacks holds for T_Old and T is T_Old rotated around X.
    --  Both X and the child which has taken its place are red.
    --  Prove by induction over the depth of nodes that Same_Nb_Blacks holds for T.
 
+   with Ghost,
+     Pre  => Same_Nb_Blacks (T_Old) and then D1 /= D2
+     and then Size (T_Old.Struct) /= 0 and then Model (T_Old.Struct) (X).K
+     and then Peek (T_Old.Struct, X, D2) /= Empty
+     and then Parent (T_Old.Struct, X) /= Empty
+     and then Size (T.Struct) = Size (T_Old.Struct)
+     and then (for all J in Index_Type =>
+                 Model (T.Struct) (J).K = Model (T_Old.Struct) (J).K)
+     and then T.Color (X) = Red and then T.Color (Peek (T_Old.Struct, X, D2)) = Red
+     and then Peek (T.Struct, X, D2) =
+       Peek (T_Old.Struct, Peek (T_Old.Struct, X, D2), D1)
+     and then Peek (T.Struct, Parent (T_Old.Struct, X), Position (T_Old.Struct, X)) =
+                      Peek (T_Old.Struct, X, D2)
+     and then Peek (T.Struct, Peek (T_Old.Struct, X, D2), D1) = X
+     and then
+       (for all J in Index_Type =>
+           (for all D in Direction =>
+               (if (J /= X or D = D1)
+                 and (J /= Parent (T_Old.Struct, X) or else D /= Position (T_Old.Struct, X))
+                 and (J /= Peek (T_Old.Struct, X, D2) or else D = D2)
+                 and Model (T.Struct) (J).K
+                then Peek (T.Struct, J, D) = Peek (T_Old.Struct, J, D))))
+     and then
+       (for all I in Index_Type => T.Color (I) = T_Old.Color (I)),
+     Post => Same_Nb_Blacks (T)
    is
-      Y : constant Index_Type := Parent (T.Struct, X);
+      Y : constant Index_Type := Peek (T_Old.Struct, X, D2);
    begin
+      pragma Assert (Nb_Blacks (T_Old) (X).Count = Nb_Blacks (T_Old) (Y).Count);
+
       for N in Index_Type loop
 
          --  For each reachable node, the values of Black_Count are equivalent
@@ -284,34 +378,81 @@ package body Red_Black_Trees with SPARK_Mode is
          pragma Loop_Invariant
            (for all I in Index_Type =>
               (if Model (T_Old.Struct) (I).K
-               and then Nb_Blacks (T_Old) (I).Depth < N
                and then I /= Y
-               then Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I))));
+               and then Nb_Blacks (T_Old) (I).Depth < N
+               then Nb_Blacks (T) (I).Count = Nb_Blacks (T_Old) (I).Count));
          pragma Loop_Invariant
            (if Nb_Blacks (T_Old) (X).Depth < N
-            then Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)));
+            then Nb_Blacks (T) (Y).Count = Nb_Blacks (T_Old) (Y).Count);
+         pragma Loop_Invariant
+           (for all I in Index_Type =>
+              (if Model (T_Old.Struct) (I).K
+               and then I /= Y
+               and then Nb_Blacks (T_Old) (I).Depth < N
+               then Nb_Blacks (T) (I).Status));
+         pragma Loop_Invariant
+           (if Nb_Blacks (T_Old) (X).Depth < N
+            then Nb_Blacks (T) (Y).Status);
 
-         pragma Assert (if Nb_Blacks (T_Old) (X).Depth <= N then
-                           Eq (Nb_Blacks (T) (X), Nb_Blacks (T_Old) (X)));
-         pragma Assert (if Nb_Blacks (T_Old) (Parent (T.Struct, Y)).Depth <= N then
-                           Eq (Nb_Blacks (T) (Parent (T.Struct, Y)),
-                               Nb_Blacks (T_Old) (Parent (T.Struct, Y))));
+         if Nb_Blacks (T_Old) (X).Depth = N then
+            pragma Assert (Nb_Blacks (T) (X).Status);
+            pragma Assert (Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (X).Count);
+            pragma Assert (Nb_Blacks (T) (Y).Status);
+            pragma Assert (Nb_Blacks (T) (Y).Count = Nb_Blacks (T_Old) (Y).Count);
+         end if;
+         if Nb_Blacks (T_Old) (Parent (T_Old.Struct, X)).Depth = N then
+            pragma Assert (Nb_Blacks (T) (Parent (T_Old.Struct, X)).Count =
+                             Nb_Blacks (T_Old) (Parent (T_Old.Struct, X)).Count);
+         end if;
       end loop;
-      pragma Assert_And_Cut (Same_Nb_Blacks (T));
+      pragma Assert
+        (for all I in Index_Type =>
+           (if Model (T_Old.Struct) (I).K then Nb_Blacks (T) (I).Status));
    end Prove_Same_Nb_Blacks_Rotate;
 
    procedure Prove_Same_Nb_Blacks_Rotate_Swap
      (T_Old, T : Rbt;
-      X        : Index_Type) with Ghost
+      X        : Index_Type;
+      D1, D2   : Direction)
    --  Same_Nb_Blacks holds for T_Old and T is T_Old rotated around X where X
    --  has been colored Red (it was black in T_Old) and the child which has
    --  taken its place has been colored Black (it was red in T_Old).
    --  Prove by induction over the depth of nodes that Same_Nb_Blacks holds for T.
 
+   with Ghost,
+     Pre  => Same_Nb_Blacks (T_Old) and then D1 /= D2
+     and then Size (T_Old.Struct) /= 0 and then Model (T_Old.Struct) (X).K
+     and then Peek (T_Old.Struct, X, D2) /= Empty
+     and then Peek (T_Old.Struct, Peek (T_Old.Struct, X, D2), D2) /= Empty
+     and then Size (T.Struct) = Size (T_Old.Struct)
+     and then (for all J in Index_Type =>
+                 Model (T.Struct) (J).K = Model (T_Old.Struct) (J).K)
+     and then T_Old.Color (X) = Black
+     and then T_Old.Color (Peek (T_Old.Struct, X, D2)) = Red
+     and then T_Old.Color (Peek (T_Old.Struct, Peek (T_Old.Struct, X, D2), D2)) = Red
+     and then Peek (T.Struct, X, D2) =
+       Peek (T_Old.Struct, Peek (T_Old.Struct, X, D2), D1)
+     and then (if Parent (T_Old.Struct, X) /= Empty
+               then Peek (T.Struct, Parent (T_Old.Struct, X), Position (T_Old.Struct, X)) =
+                    Peek (T_Old.Struct, X, D2))
+     and then Peek (T.Struct, Peek (T_Old.Struct, X, D2), D1) = X
+     and then
+       (for all J in Index_Type =>
+           (for all D in Direction =>
+               (if (J /= X or D = D1)
+                 and (J /= Parent (T_Old.Struct, X) or else D /= Position (T_Old.Struct, X))
+                 and (J /= Peek (T_Old.Struct, X, D2) or else D = D2)
+                 and Model (T.Struct) (J).K
+                then Peek (T.Struct, J, D) = Peek (T_Old.Struct, J, D))))
+     and then T.Color (X) = Red
+     and then T.Color (Peek (T_Old.Struct, X, D2)) = Black
+     and then
+       (for all I in Index_Type =>
+          (if I not in X | Peek (T_Old.Struct, X, D2) then T.Color (I) = T_Old.Color (I))),
+     Post => Same_Nb_Blacks (T)
    is
-      Y : constant Index_Type := Parent (T.Struct, X);
+      Y : constant Index_Type := Peek (T_Old.Struct, X, D2);
    begin
-      pragma Assert (Model (T_Old.Struct) (X).K);
       for N in Index_Type loop
 
          --  For each reachable node, the values of Black_Count are equivalent
@@ -329,34 +470,46 @@ package body Red_Black_Trees with SPARK_Mode is
                and then Nb_Blacks (T_Old) (I).Depth < N
                and then I /= Y
                and then I /= X
-               then Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I))));
+               then Nb_Blacks (T) (I).Count = Nb_Blacks (T_Old) (I).Count));
+         pragma Loop_Invariant
+           (for all I in Index_Type =>
+              (if Model (T_Old.Struct) (I).K
+               and then Nb_Blacks (T_Old) (I).Depth < N
+               and then I /= Y
+               and then I /= X
+               then Nb_Blacks (T) (I).Status));
          pragma Loop_Invariant
            (if Nb_Blacks (T_Old) (X).Depth < N
             then Nb_Blacks (T) (X).Status
-            and Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count);
-         pragma Loop_Invariant
-           (if Nb_Blacks (T_Old) (X).Depth < N
-            then Nb_Blacks (T) (Y).Status
+            and Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count
+            and Nb_Blacks (T) (Y).Status
             and Nb_Blacks (T) (Y).Count = Nb_Blacks (T_Old) (X).Count);
 
-         pragma Assert (if Nb_Blacks (T_Old) (X).Depth <= N
-                        then Nb_Blacks (T) (X).Status
-                        and Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (X).Count - 1);
-         pragma Assert (if Nb_Blacks (T_Old) (X).Depth <= N
-                        then Nb_Blacks (T) (Y).Status
-                        and Nb_Blacks (T) (Y).Count = Nb_Blacks (T) (X).Count + 1);
-         pragma Assert (if Nb_Blacks (T_Old) (Parent (T.Struct, Y)).Depth <= N then
-                           Nb_Blacks (T) (Parent (T.Struct, Y)).Status
-                        and Nb_Blacks (T) (Parent (T.Struct, Y)).Count =
-                            Nb_Blacks (T) (Parent (T.Struct, Y)).Count);
+         if Nb_Blacks (T_Old) (X).Depth = N then
+            pragma Assert (Nb_Blacks (T) (X).Status
+                           and Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (X).Count - 1);
+            pragma Assert (Nb_Blacks (T) (Y).Status
+                           and Nb_Blacks (T) (Y).Count = Nb_Blacks (T) (X).Count + 1);
+         end if;
+         if Parent (T_Old.Struct, X) /= Empty
+           and then Nb_Blacks (T_Old) (Parent (T_Old.Struct, X)).Depth = N
+         then
+            pragma Assert (Nb_Blacks (T_Old) (X).Depth < N);
+            pragma Assert (Nb_Blacks (T) (Parent (T_Old.Struct, X)).Status
+                           and Nb_Blacks (T) (Parent (T_Old.Struct, X)).Count =
+                             Nb_Blacks (T) (Parent (T_Old.Struct, X)).Count);
+         end if;
       end loop;
-      pragma Assert_And_Cut (Same_Nb_Blacks (T));
+      pragma Assert
+        (for all I in Index_Type =>
+           (if Model (T_Old.Struct) (I).K then Nb_Blacks (T) (I).Status));
    end Prove_Same_Nb_Blacks_Rotate_Swap;
 
 
    procedure Insert (T : in out Rbt; V : Natural) is
       X, Y  : Extended_Index_Type;
       T_Old : Rbt := T with Ghost;
+      V_Old : Value_Set := Values (T) with Ghost;
 
    begin
       Insert (T.Struct, V, X);
@@ -365,7 +518,9 @@ package body Red_Black_Trees with SPARK_Mode is
          return;
       end if;
       T.Color (X) := Red;
+      pragma Assert (Nb_Blacks (T) (X).Status);
       Prove_Same_Nb_Blacks (T_Old, T);
+      pragma Assert (Is_Add (V_Old, V, Values (T.Struct)));
 
       pragma Assert
         (for all I in Index_Type =>
@@ -413,7 +568,7 @@ package body Red_Black_Trees with SPARK_Mode is
                --  The grand parent may now break the invariant
 
                X := Parent (T.Struct, Y);
-               Prove_Same_Nb_Blacks_Swap (T_Old, T, Parent (T.Struct, Y));
+               Prove_Same_Nb_Blacks_Swap (T_Old, T, X);
             else
 
                --  Y is black. We will color the grand parent red and rotate it
@@ -424,7 +579,7 @@ package body Red_Black_Trees with SPARK_Mode is
                if X = Peek (T.Struct, Parent (T.Struct, X), Right) then
                   X := Parent (T.Struct, X);
                   Left_Rotate (T.Struct, X);
-                  Prove_Same_Nb_Blacks_Rotate (T_Old, T, X);
+                  Prove_Same_Nb_Blacks_Rotate (T_Old, T, X, Left, Right);
                   T_Old := T;
                end if;
 
@@ -438,7 +593,7 @@ package body Red_Black_Trees with SPARK_Mode is
                T.Color (Parent (T.Struct, Parent (T.Struct, X))) := Red;
                Right_Rotate (T.Struct, Parent (T.Struct, Parent (T.Struct, X)));
                Prove_Same_Nb_Blacks_Rotate_Swap
-                 (T_Old, T, Parent (T_Old.Struct, Parent (T_Old.Struct, X)));
+                 (T_Old, T, Parent (T_Old.Struct, Parent (T_Old.Struct, X)), Right, Left);
 
                --  We should now be done
 
@@ -449,6 +604,7 @@ package body Red_Black_Trees with SPARK_Mode is
                     (if Parent (T.Struct, I) = Empty
                         or else T.Color (Parent (T.Struct, I)) = Red
                      then T.Color (I) = Black));
+               pragma Assert (Is_Add (V_Old, V, Values (T.Struct)));
             end if;
          else
 
@@ -468,7 +624,7 @@ package body Red_Black_Trees with SPARK_Mode is
                --  The grand parent may now break the invariant
 
                X := Parent (T.Struct, Y);
-               Prove_Same_Nb_Blacks_Swap (T_Old, T, Parent (T.Struct, Y));
+               Prove_Same_Nb_Blacks_Swap (T_Old, T, X);
             else
 
                --  Y is black. We will color the grand parent red and rotate it
@@ -479,7 +635,7 @@ package body Red_Black_Trees with SPARK_Mode is
                if X = Peek (T.Struct, Parent (T.Struct, X), Left) then
                   X := Parent (T.Struct, X);
                   Right_Rotate (T.Struct, X);
-                  Prove_Same_Nb_Blacks_Rotate (T_Old, T, X);
+                  Prove_Same_Nb_Blacks_Rotate (T_Old, T, X, Right, Left);
                   T_Old := T;
                end if;
 
@@ -493,7 +649,7 @@ package body Red_Black_Trees with SPARK_Mode is
                T.Color (Parent (T.Struct, Parent (T.Struct, X))) := Red;
                Left_Rotate (T.Struct, Parent (T.Struct, Parent (T.Struct, X)));
                Prove_Same_Nb_Blacks_Rotate_Swap
-                 (T_Old, T, Parent (T_Old.Struct, Parent (T_Old.Struct, X)));
+                 (T_Old, T, Parent (T_Old.Struct, Parent (T_Old.Struct, X)), Left, Right);
 
                --  We should now be done
 
@@ -504,11 +660,11 @@ package body Red_Black_Trees with SPARK_Mode is
                     (if Parent (T.Struct, I) = Empty
                         or else T.Color (Parent (T.Struct, I)) = Red
                      then T.Color (I) = Black));
+               pragma Assert (Is_Add (V_Old, V, Values (T.Struct)));
             end if;
          end if;
       end loop;
-      T_Old := T;
-
+      pragma Assert (Is_Add (V_Old, V, Values (T.Struct)));
       pragma Assert
         (for all I in Index_Type =>
            (if I /= Root (T.Struct)
@@ -518,6 +674,7 @@ package body Red_Black_Trees with SPARK_Mode is
 
       --  If we have colored the top red, we can safely color it back to black
 
+      T_Old := T;
       T.Color (Root (T.Struct)) := Black;
       Prove_Same_Nb_Blacks (T_Old, T);
    end Insert;

@@ -4386,10 +4386,19 @@ package body Flow.Control_Flow_Graph is
                     Etype (if F.Component.Length = 1
                            then Get_Direct_Mapping_Id (F)
                            else F.Component (F.Component.Last_Index - 1));
-                  --  Composite type discriminated by F
+                  --  Composite type discriminated by F. We must use the type
+                  --  of the constrained composite object and not simply the
+                  --  scope of the discriminant.
+
+                  Full_Composite : constant Entity_Id :=
+                    (if Present (Full_View (Composite))
+                     then Full_View (Composite)
+                     else Composite);
+                  --  Full view of the composite type
 
                   Constraint_Expr : constant Node_Id :=
-                    Constraint (T => Composite, D => F.Component.Last_Element);
+                    Constraint (T => Full_Composite,
+                                D => F.Component.Last_Element);
                   --  Constraint expression that initializes discriminant F
 
                   Funcs : Node_Sets.Set;

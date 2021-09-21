@@ -439,10 +439,12 @@ SPARK Lemma Library
 -------------------
 
 As part of the |SPARK| product, a library of lemmas is available through the
-project file :file:`<spark-install>/lib/gnat/spark_lemmas.gpr`. Header files of
-the lemma library are available through :menuselection:`Help --> SPARK -->
-Lemmas` menu item in GNAT Studio. To use this library in a program, you need to
-add a corresponding dependency in your project file, for example:
+project file :file:`<spark-install>/lib/gnat/spark_lemmas.gpr` (or through the
+extended project file :file:`<spark-install>/lib/gnat/spark_lemmas_zfp.gpr` in
+an environment without unit ``Ada.Numerics.Big_Numbers``). Header files of the
+lemma library are available through :menuselection:`Help --> SPARK --> Lemmas`
+menu item in GNAT Studio. To use this library in a program, you need to add a
+corresponding dependency in your project file, for example:
 
 .. code-block:: gpr
 

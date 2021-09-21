@@ -101,7 +101,7 @@ big_integers_test.adb:112:28: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:113:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:113:19: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:113:24: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:114:19: info: assertion proved (CVC4: 1 VC)
+big_integers_test.adb:114:19: info: assertion proved (CVC4: 2 VC)
 big_integers_test.adb:114:29: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:116:07: warning: function Is_Valid is assumed to return True
 big_integers_test.adb:121:09: info: range check proved (CVC4: 2 VC)

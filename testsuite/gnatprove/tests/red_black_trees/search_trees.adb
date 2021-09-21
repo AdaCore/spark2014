@@ -41,6 +41,19 @@ package body Search_Trees with SPARK_Mode is
       return S;
    end Values;
 
+   --------------------
+   -- Ordered_Prefix --
+   --------------------
+
+   --  If Model (I).A is a prefix of Model (J).A, their values are ordered as expected
+
+   function Ordered_Prefix (Model : Model_Type; Values : Value_Array; I, J : Index_Type) return Boolean is
+     (if Get (Model (J).A, Length (Model (I).A) + 1) = Left
+      then Values (J) < Values (I)
+      else Values (J) > Values (I))
+   with Pre => Model (I).K and then Model (J).K and then Model (I).A < Model (J).A,
+     Post => Ordered_Prefix'Result in Boolean;
+
    -------------------
    -- Ordered_Leafs --
    -------------------
@@ -51,11 +64,32 @@ package body Search_Trees with SPARK_Mode is
          (if Model (F, Root) (I).K
             and then Model (F, Root) (J).K
             and then Model (F, Root) (I).A < Model (F, Root) (J).A
-          then (if Get (Model (F, Root) (J).A,
-                        Length (Model (F, Root) (I).A) + 1)
-                   = Left
-                then Values (J) < Values (I)
-                else Values (J) > Values (I)))));
+          then Ordered_Prefix (Model (F, Root), Values, I, J))));
+
+   -------------------
+   -- Correct_Place --
+   -------------------
+
+   --  The tree rooted at V in F can be inserted as path A in the tree rooted at Root in F
+
+   function All_Less_Than (F : Forest; Root : Index_Type; Values : Value_Array; V : Natural) return Boolean is
+     (for all J in Index_Type =>
+        (if Model (F, Root) (J).K then Values (J) < V))
+   with Ghost, Pre => Valid_Root (F, Root);
+   function All_More_Than (F : Forest; Root : Index_Type; Values : Value_Array; V : Natural) return Boolean is
+     (for all J in Index_Type =>
+        (if Model (F, Root) (J).K then Values (J) > V))
+   with Ghost, Pre => Valid_Root (F, Root);
+
+   function Correct_Place (F : Forest; A : Sequence; Root, V : Index_Type; Values : Value_Array) return Boolean is
+     (Valid_Root (F, Root) and then Valid_Root (F, V)
+      and then (for all I in Index_Type =>
+                    (if Model (F, Root) (I).K and Model (F, Root) (I).A < A
+                     then
+                       (if Get (A, Length (Model (F, Root) (I).A) + 1) = Left
+                        then All_Less_Than (F, V, Values, Values (I))
+                        else All_More_Than (F, V, Values, Values (I))))))
+   with Ghost;
 
    ---------------
    -- Find_Root --
@@ -100,8 +134,7 @@ package body Search_Trees with SPARK_Mode is
       while KI /= KJ loop
          pragma Loop_Variant (Decreases => Length (M (KI).A), Decreases => Length (M (KJ).A));
          pragma Loop_Invariant (M (KI).K and then M (KI).A <= M (I).A);
-         pragma Loop_Invariant (M (KJ).A <= M (J).A);
-         pragma Loop_Invariant (M (KJ).K);
+         pragma Loop_Invariant (M (KJ).K and then M (KJ).A <= M (J).A);
          pragma Loop_Invariant
            (if Length (M (KI).A) > Length (M (KJ).A) then KJ = J);
          pragma Loop_Invariant
@@ -117,6 +150,72 @@ package body Search_Trees with SPARK_Mode is
       end loop;
       return KI;
    end Find_Root;
+
+   ------------------------
+   -- Prove_Reverse_Peek --
+   ------------------------
+
+   procedure Prove_Reverse_Peek (F : Forest; Root, V : Index_Type; D : Direction) with
+     Ghost,
+     Pre => Valid_Root (F, Root) and then Model (F, Root) (V).K
+     and then Peek (F, V, D) /= Empty,
+     Post => Get (Model (F, Root) (Peek (F, V, D)).A, Length (Model (F, Root) (V).A) + 1) = D
+   is
+   begin
+      null;
+   end Prove_Reverse_Peek;
+
+   --------------------------
+   -- Prove_Order_No_Right --
+   --------------------------
+
+   --  The tree at Root in F has no Right children, its values are all smaller
+   --  than any value V bigger than its root.
+
+   procedure Prove_Order_No_Right (F : Forest; Root : Index_Type; Values : Value_Array; V : Natural) with
+     Ghost,
+     Pre  => Valid_Root (F, Root) and then Peek (F, Root, Right) = Empty and then Ordered_Leafs (F, Root, Values) and then Values (Root) < V,
+     Post => All_Less_Than (F, Root, Values, V)
+   is
+   begin
+      Prove_Model_Total (F, Root, Root, Right);
+   end Prove_Order_No_Right;
+
+   --------------------------
+   -- Prove_Order_No_Left --
+   --------------------------
+
+   --  The tree at Root in F has no Left children, its values are all bigger
+   --  than any value V smaller than its root.
+
+   procedure Prove_Order_No_Left (F : Forest; Root : Index_Type; Values : Value_Array; V : Natural) with
+     Ghost,
+     Pre  => Valid_Root (F, Root) and then Peek (F, Root, Left) = Empty and then Ordered_Leafs (F, Root, Values) and then V < Values (Root),
+     Post => All_More_Than (F, Root, Values, V)
+   is
+   begin
+      Prove_Model_Total (F, Root, Root, Left);
+   end Prove_Order_No_Left;
+
+   -----------------------------------
+   -- Prove_Correct_Place_Top_Level --
+   -----------------------------------
+
+   --  Prove that a sutree can be insert at the correct place either as the root
+   --  left or right child.
+
+   procedure Prove_Correct_Place_Top_Level (F : Forest; A : Sequence; Root, V : Index_Type; Values : Value_Array) with
+     Ghost,
+     Pre  => Valid_Root (F, Root) and then Valid_Root (F, V)
+     and then Length (A) = 1 and then Peek (F, Root, Get (A, 1)) = Empty
+     and then Ordered_Leafs (F, Root, Values)
+     and then (if Get (A, 1) = Left then All_Less_Than (F, V, Values, Values (Root))
+               else All_More_Than (F, V, Values, Values (Root))),
+     Post => Correct_Place (F, A, Root, V, Values)
+   is
+   begin
+      null;
+   end Prove_Correct_Place_Top_Level;
 
    -------------------------
    -- Prove_Extract_Order --
@@ -166,23 +265,24 @@ package body Search_Trees with SPARK_Mode is
        --  All the nodes in the tree rooted at V are correctly ordered wrt all
        --  nodes on the path from Root to V in F_Old, so that they would indeed
        --  be inserted at V in a modified tree.
-       and then (for all I in Index_Type =>
-                  (if Model (F, Root) (I).K
-                     and Model (F, Root) (I).A < Model (F_Old, Root) (V).A
-                   then
-                     (if Get (Model (F_Old, Root) (V).A,
-                              Length (Model (F, Root) (I).A) + 1) = Left
-                      then
-                        (for all J in Index_Type =>
-                          (if Model (F, V) (J).K
-                           then Values (J) < Values (I)))
-                      else
-                        (for all J in Index_Type =>
-                          (if Model (F, V) (J).K
-                           then Values (J) > Values (I))))))
+       and then Correct_Place (F, Model (F_Old, Root) (V).A, Root, V, Values)
    is
    begin
-      --  First prove that the tree rooted at Root respects property
+      --  First prove the last part of the postcondition
+
+      for I in Index_Type loop
+         pragma Loop_Invariant
+           (for all K in 1 .. I =>
+              (if Model (F, Root) (K).K
+               and Model (F, Root) (K).A < Model (F_Old, Root) (V).A
+               then
+                 (if Get (Model (F_Old, Root) (V).A,
+                  Length (Model (F, Root) (K).A) + 1) = Left
+                  then All_Less_Than (F, V, Values, Values (K))
+                  else All_More_Than (F, V, Values, Values (K)))));
+      end loop;
+
+      --  Then prove that the tree rooted at Root respects property
       --  Ordered_Leafs.
 
       for I in Index_Type loop
@@ -194,11 +294,7 @@ package body Search_Trees with SPARK_Mode is
                (if Model (F, Root) (K).K
                   and then Model (F, Root) (J).K
                   and then Model (F, Root) (K).A < Model (F, Root) (J).A
-                then (if Get (Model (F, Root) (J).A,
-                              Length (Model (F, Root) (K).A) + 1)
-                         = Left
-                      then Values (J) < Values (K)
-                      else Values (J) > Values (K)))));
+                then Ordered_Prefix (Model (F, Root), Values, K, J))));
 
          for J in Index_Type loop
 
@@ -210,12 +306,7 @@ package body Search_Trees with SPARK_Mode is
               and then Model (F, Root) (I).A < Model (F, Root) (J).A
             then
                pragma Assert (Model (F_Old, Root) (I).A < Model (F_Old, Root) (J).A);
-               pragma Assert
-                 (if Get (Model (F, Root) (J).A,
-                          Length (Model (F, Root) (I).A) + 1)
-                     = Left
-                  then Values (J) < Values (I)
-                  else Values (J) > Values (I));
+               pragma Assert (Ordered_Prefix (Model (F_Old, Root), Values, I, J));
             end if;
 
             --  Property Ordered_Leafs holds up to nodes I and J
@@ -224,11 +315,7 @@ package body Search_Trees with SPARK_Mode is
                 (if Model (F, Root) (I).K
                    and then Model (F, Root) (K).K
                    and then Model (F, Root) (I).A < Model (F, Root) (K).A
-                 then (if Get (Model (F, Root) (K).A,
-                               Length (Model (F, Root) (I).A) + 1)
-                          = Left
-                       then Values (K) < Values (I)
-                       else Values (K) > Values (I))));
+                 then Ordered_Prefix (Model (F, Root), Values, I, K)));
          end loop;
       end loop;
 
@@ -239,11 +326,7 @@ package body Search_Trees with SPARK_Mode is
             (if Model (F, Root) (K).K
                and then Model (F, Root) (J).K
                and then Model (F, Root) (K).A < Model (F, Root) (J).A
-             then (if Get (Model (F, Root) (J).A,
-                           Length (Model (F, Root) (K).A) + 1)
-                       = Left
-                   then Values (J) < Values (K)
-                   else Values (J) > Values (K)))));
+             then Ordered_Prefix (Model (F, Root), Values, K, J))));
 
       --  State explicitly property Ordered_Leafs for automatic provers
       pragma Assert (Ordered_Leafs (F, Root, Values));
@@ -259,11 +342,7 @@ package body Search_Trees with SPARK_Mode is
                (if Model (F, V) (K).K
                   and then Model (F, V) (J).K
                   and then Model (F, V) (K).A < Model (F, V) (J).A
-                then (if Get (Model (F, V) (J).A,
-                              Length (Model (F, V) (K).A) + 1)
-                         = Left
-                      then Values (J) < Values (K)
-                      else Values (J) > Values (K)))));
+                then Ordered_Prefix (Model (F, V), Values, K, J))));
 
          for J in Index_Type loop
 
@@ -275,12 +354,7 @@ package body Search_Trees with SPARK_Mode is
               and then Model (F, V) (I).A < Model (F, V) (J).A
             then
                pragma Assert (Model (F_Old, Root) (I).A < Model (F_Old, Root) (J).A);
-               pragma Assert
-                 (if Get (Model (F, V) (J).A,
-                          Length (Model (F, V) (I).A) + 1)
-                     = Left
-                  then Values (J) < Values (I)
-                  else Values (J) > Values (I));
+               pragma Assert (Ordered_Prefix (Model (F_Old, Root), Values, I, J));
             end if;
 
             --  Property Ordered_Leafs holds up to nodes I and J
@@ -289,11 +363,7 @@ package body Search_Trees with SPARK_Mode is
                 (if Model (F, V) (I).K
                    and then Model (F, V) (K).K
                    and then Model (F, V) (I).A < Model (F, V) (K).A
-                 then (if Get (Model (F, V) (K).A,
-                               Length (Model (F, V) (I).A) + 1)
-                          = Left
-                       then Values (K) < Values (I)
-                       else Values (K) > Values (I))));
+                 then Ordered_Prefix (Model (F, V), Values, I, K)));
          end loop;
       end loop;
 
@@ -304,17 +374,10 @@ package body Search_Trees with SPARK_Mode is
             (if Model (F, V) (K).K
                and then Model (F, V) (J).K
                and then Model (F, V) (K).A < Model (F, V) (J).A
-             then (if Get (Model (F, V) (J).A,
-                           Length (Model (F, V) (K).A) + 1)
-                      = Left
-                   then Values (J) < Values (K)
-                   else Values (J) > Values (K)))));
+             then Ordered_Prefix (Model (F, V), Values, K, J))));
 
       --  State explicitly property Ordered_Leafs for automatic provers
       pragma Assert (Ordered_Leafs (F, V, Values));
-
-      --  The last part of the postcondition gets proved automatically, as a
-      --  consequence of the fact that property Ordered_Leafs holds for F_Old.
    end Prove_Extract_Order;
 
    ----------------------
@@ -338,19 +401,7 @@ package body Search_Trees with SPARK_Mode is
        and then Model (F, Root) (V).K
        and then Ordered_Leafs (F_Old, Root, Values)
        and then Ordered_Leafs (F_Old, V, Values)
-       and then (for all I in Index_Type =>
-                  (if Model (F_Old, Root) (I).K
-                     and Model (F_Old, Root) (I).A < Model (F, Root) (V).A
-                   then (if Get (Model (F, Root) (V).A,
-                                 Length (Model (F_Old, Root) (I).A) + 1) = Left
-                         then
-                           (for all J in Index_Type =>
-                             (if Model (F_Old, V) (J).K
-                              then Values (J) < Values (I)))
-                         else
-                           (for all J in Index_Type =>
-                             (if Model (F_Old, V) (J).K
-                              then Values (J) > Values (I))))))
+       and then Correct_Place (F_Old, Model (F, Root) (V).A, Root, V, Values)
        and then (for all I in Index_Type =>
                   (if Model (F, Root) (I).K then
                     (if Model (F, Root) (V).A <= Model (F, Root) (I).A
@@ -381,11 +432,7 @@ package body Search_Trees with SPARK_Mode is
                (if Model (F, Root) (K).K
                   and then Model (F, Root) (J).K
                   and then Model (F, Root) (K).A < Model (F, Root) (J).A
-                then (if Get (Model (F, Root) (J).A,
-                              Length (Model (F, Root) (K).A) + 1)
-                         = Left
-                      then Values (J) < Values (K)
-                      else Values (J) > Values (K)))));
+                then Ordered_Prefix (Model (F, Root), Values, K, J))));
 
          for J in Index_Type loop
 
@@ -397,13 +444,13 @@ package body Search_Trees with SPARK_Mode is
               and then Model (F_Old, Root) (J).K
               and then Model (F, Root) (I).A < Model (F, Root) (J).A
             then
-               pragma Assert (Model (F_Old, Root) (I).A < Model (F_Old, Root) (J).A);
-               pragma Assert
-                 (if Get (Model (F, Root) (J).A,
-                          Length (Model (F, Root) (I).A) + 1)
-                     = Left
-                  then Values (J) < Values (I)
-                  else Values (J) > Values (I));
+               begin
+                  pragma Assert (Model (F_Old, Root) (I).A = Model (F, Root) (I).A);
+                  pragma Assert (Model (F_Old, Root) (J).A = Model (F, Root) (J).A);
+                  pragma Assert (Model (F_Old, Root) (I).A < Model (F_Old, Root) (J).A);
+                  pragma Assert (Ordered_Prefix (Model (F_Old, Root), Values, I, J));
+                  pragma Assert_And_Cut (Ordered_Prefix (Model (F, Root), Values, I, J));
+               end;
             end if;
 
             --  If both I and J were in the tree rooted at V in F_Old, and
@@ -414,17 +461,11 @@ package body Search_Trees with SPARK_Mode is
               and then Model (F_Old, V) (J).K
               and then Model (F, Root) (I).A < Model (F, Root) (J).A
             then
-               pragma Assert (Model (F_Old, V) (I).A < Model (F_Old, V) (J).A);
-               pragma Assert (Get (Model (F, Root) (J).A,
-                                   Length (Model (F, Root) (I).A) + 1)
-                            = Get (Model (F_Old, V) (J).A,
-                                   Length (Model (F_Old, V) (I).A) + 1));
-               pragma Assert
-                 (if Get (Model (F, Root) (J).A,
-                          Length (Model (F, Root) (I).A) + 1)
-                     = Left
-                  then Values (J) < Values (I)
-                  else Values (J) > Values (I));
+               begin
+                  pragma Assert (Model (F_Old, V) (I).A < Model (F_Old, V) (J).A);
+                  pragma Assert (Ordered_Prefix (Model (F_Old, V), Values, I, J));
+                  pragma Assert_And_Cut (Ordered_Prefix (Model (F, Root), Values, I, J));
+               end;
             end if;
 
             --  If I was in the tree rooted at Root in F_Old, and J was in the
@@ -435,32 +476,26 @@ package body Search_Trees with SPARK_Mode is
               and then Model (F_Old, V) (J).K
               and then Model (F, Root) (I).A < Model (F, Root) (J).A
             then
-               --  Use Prove_Model_Distinct to prove that the trees rooted
-               --  at Root and V in F_Old share no nodes. As both I and V are
-               --  on the path to J, one of them comes first. If V was on the
-               --  path to I, then by a part of the precondition, I would have
-               --  to come from the tree rooted at V in F_Old, but this is
-               --  impossible as I already comes from the tree rooted at Root in
-               --  F_Old, and these trees share no nodes. Hence I is on the path
-               --  to V.
+               begin
+                  --  Use Prove_Model_Distinct to prove that the trees rooted
+                  --  at Root and V in F_Old share no nodes. As both I and V are
+                  --  on the path to J, one of them comes first. If V was on the
+                  --  path to I, then by a part of the precondition, I would have
+                  --  to come from the tree rooted at V in F_Old, but this is
+                  --  impossible as I already comes from the tree rooted at Root in
+                  --  F_Old, and these trees share no nodes. Hence I is on the path
+                  --  to V.
 
-               pragma Assert (Model (F, Root) (V).A <= Model (F, Root) (J).A);
-               Prove_Model_Distinct (F_Old, Root, V);
-               pragma Assert (Model (F_Old, Root) (I).A < Model (F, Root) (V).A);
+                  pragma Assert (Model (F, Root) (V).A <= Model (F, Root) (J).A);
+                  begin
+                     Prove_Model_Distinct (F_Old, Root, V);
+                     pragma Assert_And_Cut (Model (F_Old, Root) (I).A < Model (F, Root) (V).A);
+                  end;
+                  pragma Assert (Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) =
+                                   Get (Model (F, Root) (V).A, Length (Model (F, Root) (I).A) + 1));
 
-               --  Intermediate assertion trivially true (a tautology) which
-               --  provides a useful term to instantiate the part of the
-               --  precondition proving that the values at I and J respect
-               --  property Ordered_Leafs.
-               pragma Assert
-                 (Get (Model (F, Root) (V).A, Length (Model (F, Root) (I).A) + 1)
-                = Get (Model (F, Root) (V).A, Length (Model (F, Root) (I).A) + 1));
-               pragma Assert
-                 (if Get (Model (F, Root) (J).A,
-                          Length (Model (F, Root) (I).A) + 1)
-                     = Left
-                  then Values (J) < Values (I)
-                  else Values (J) > Values (I));
+                  pragma Assert_And_Cut (Ordered_Prefix (Model (F, Root), Values, I, J));
+               end;
             end if;
 
             --  If I was in the tree rooted at V in F_Old, and J was in the tree
@@ -488,27 +523,52 @@ package body Search_Trees with SPARK_Mode is
                 (if Model (F, Root) (I).K
                    and then Model (F, Root) (K).K
                    and then Model (F, Root) (I).A < Model (F, Root) (K).A
-                 then (if Get (Model (F, Root) (K).A,
-                               Length (Model (F, Root) (I).A) + 1)
-                          = Left
-                       then Values (K) < Values (I)
-                       else Values (K) > Values (I))));
+                 then (Ordered_Prefix (Model (F, Root), Values, I, K))));
          end loop;
       end loop;
-
-      --  Restate property Ordered_Leafs for automatic provers
-      pragma Assert
-        (for all I in Index_Type =>
-          (for all J in Index_Type =>
-            (if Model (F, Root) (I).K
-               and then Model (F, Root) (J).K
-               and then Model (F, Root) (I).A < Model (F, Root) (J).A
-             then (if Get (Model (F, Root) (J).A,
-                           Length (Model (F, Root) (I).A) + 1)
-                      = Left
-                   then Values (J) < Values (I)
-                   else Values (J) > Values (I)))));
    end Prove_Plug_Order;
+
+   -----------------------------------
+   -- Prove_Preserved_Correct_Place --
+   -----------------------------------
+
+   --  If the tree routed at Root in F1 and F2 is the same, and the tree rooted
+   --  at V1 in F1 can be inserted at path A in it, then a tree rooted at V2 in
+   --  F2 holding the same values can also be inserted at path A.
+   procedure Prove_Preserve_Correct_Place
+     (F1, F2 : Forest; A : Sequence; Root, V1, V2 : Index_Type; Values : Value_Array)
+   with
+     Ghost,
+     Pre => Correct_Place (F1, A, Root, V1, Values)
+     and then Valid_Root (F2, Root) and then Valid_Root (F2, V2)
+     and then Model (F1, Root) = Model (F2, Root)
+     and then (for all I in Index_Type =>
+                 (if Model (F2, V2) (I).K then Model (F1, V1) (I).K)),
+     Post => Correct_Place (F2, A, Root, V2, Values)
+   is
+   begin
+      for I in Index_Type loop
+         if Model (F2, Root) (I).K and then Model (F2, Root) (I).A < A then
+            pragma Assert (Model (F1, Root) (I).K and Model (F1, Root) (I).A < A);
+            if Get (A, Length (Model (F2, Root) (I).A) + 1) = Left then
+               pragma Assert (Get (A, Length (Model (F1, Root) (I).A) + 1) = Left);
+               pragma Assert (All_Less_Than (F1, V1, Values, Values (I)));
+               pragma Assert (All_Less_Than (F2, V2, Values, Values (I)));
+            else
+               pragma Assert (Get (A, Length (Model (F1, Root) (I).A) + 1) = Right);
+               pragma Assert (All_More_Than (F1, V1, Values, Values (I)));
+               pragma Assert (All_More_Than (F2, V2, Values, Values (I)));
+            end if;
+         end if;
+         pragma Loop_Invariant
+           (for all K in 1 .. I =>
+              (if Model (F2, Root) (K).K and then Model (F2, Root) (K).A < A
+               then
+                 (if Get (A, Length (Model (F2, Root) (K).A) + 1) = Left
+                  then All_Less_Than (F2, V2, Values, Values (K))
+                  else All_More_Than (F2, V2, Values, Values (K)))));
+      end loop;
+   end Prove_Preserve_Correct_Place;
 
    ---------------------------
    -- Prove_Preserved_Order --
@@ -634,17 +694,7 @@ package body Search_Trees with SPARK_Mode is
          (if Model (T.Struct, T.Root) (I).K then T.Values (I) /= V))
    is
    begin
-      --  Case 1: given a node I which does not have L on its path, consider
-      --  the common ancestor of L and I returned by Find_Root. Instantiating
-      --  Ordered_Leafs once with this common ancestor and L, and another time
-      --  with this common ancestor and I, allows to prove that V cannot be the
-      --  same as the value at I.
-      pragma Assert
-        (for all I in Index_Type =>
-          (if Model (T.Struct, T.Root) (I).K
-           then Model (T.Struct, T.Root) (Find_Root (T.Struct, T.Root, I, L)).K));
-
-      --  Case 2: given a node I which has L on its path, use Prove_Model_Total
+      --  Given a node I which has L on its path, use Prove_Model_Total
       --  to prove that it is necessarily on the other side of where V would be
       --  found.
 
@@ -655,8 +705,7 @@ package body Search_Trees with SPARK_Mode is
       end if;
       pragma Assert
         (for all I in Index_Type =>
-           (if Model (T.Struct, T.Root) (I).K
-            and then Find_Root (T.Struct, T.Root, I, L) = L
+           (if Model (T.Struct, T.Root) (I).K and then Find_Root (T.Struct, T.Root, I, L) = L
             then T.Values (I) /= V));
    end Prove_Order_Total;
 
@@ -677,195 +726,214 @@ package body Search_Trees with SPARK_Mode is
 
       --  Ghost variables to save intermediate versions of the forest, for use
       --  in assertions.
-      F_1, F_2, F_3, F_4, F_5 : Forest := T.Struct with Ghost;
+      Dummy_1, Dummy_2, Dummy_3, Dummy_4, Dummy_5 : Forest with Ghost;
 
-      --  The proof of each step of the algorithm is isolated in local ghost
-      --  lemmas Prove_XXX. None of these have a contract, so that they can
-      --  be inlined during proof.
+      --  The proof of preservation of order and values at each step of the
+      --  algorithm is isolated in local ghost lemmas Prove_XXX. None of these
+      --  have a contract, so that they can be inlined during proof.
 
       procedure Prove_Extract_X with Ghost is
       begin
-         --  Use Prove_Extract_Order to prove that the trees rooted at T.Root
-         --  and X respect the property Ordered_Leafs, and that values in the
-         --  tree rooted at X are as expected for reinsertion of X as left child
-         --  of Y.
+         begin
+            --  Use Prove_Extract_Order to prove that the trees rooted at T.Root
+            --  and X respect the property Ordered_Leafs, and that values in the
+            --  tree rooted at X are as expected for reinsertion of X as left child
+            --  of Y.
 
-         if not Is_Root then
-            Prove_Extract_Order (T.Struct, F_Old, T.Root, X, T.Values);
-         end if;
-         F_1 := T.Struct;
+            if not Is_Root then
+               Prove_Extract_Order (T.Struct, F_Old, T.Root, X, T.Values);
+            end if;
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then (for all I in Index_Type =>
+                             Model (F_Old, Root (T)) (I).K =
+                         (Model (T.Struct, Root (T)) (I).K or Model (T.Struct, X) (I).K)));
+         end;
+         Dummy_1 := T.Struct;
       end Prove_Extract_X;
 
       procedure Prove_Extract_Y with Ghost is
       begin
-         --  Use Prove_Extract_Order to prove that the trees rooted at X and
-         --  Y respect the property Ordered_Leafs, and that values in the tree
-         --  rooted at Y are as expected for reinsertion of Y in the place of X.
+         begin
+            --  Use Prove_Extract_Order to prove that the trees rooted at X and
+            --  Y respect the property Ordered_Leafs.
 
-         Prove_Extract_Order (T.Struct, F_1, X, Y, T.Values);
-         pragma Assert (Get (Model (F_1, X) (Y).A, 1) = Right);
-         pragma Assert (T.Values (X) < T.Values (Y));
+            Prove_Extract_Order (T.Struct, Dummy_1, X, Y, T.Values);
+            pragma Assert (Get (Model (Dummy_1, X) (Y).A, 1) = Right);
+            pragma Assert (T.Values (X) < T.Values (Y));
+            pragma Assert (All_More_Than (T.Struct, Y, T.Values, T.Values (X)));
 
-         --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
-         --  still respects the property Ordered_Leafs.
+            --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
+            --  still respects the property Ordered_Leafs.
 
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_1, T.Root, T.Values);
-         end if;
-         F_2 := T.Struct;
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_1, T.Root, T.Values);
+            end if;
+
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then Peek (T.Struct, X, Right) = Empty
+               and then All_More_Than (T.Struct, Y, T.Values, T.Values (X))
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, X) (I).K =
+                         (Model (T.Struct, X) (I).K or Model (T.Struct, Y) (I).K)));
+         end;
+         Dummy_2 := T.Struct;
       end Prove_Extract_Y;
 
       procedure Prove_Extract_YL with Ghost is
       begin
-         --  Use Prove_Extract_Order to prove that the trees rooted at Y and
-         --  YL respect the property Ordered_Leafs, and that values in the tree
-         --  rooted at YL are as expected for reinsertion of YL as the right
-         --  child of X.
+         begin
+            --  Use Prove_Extract_Order to prove that the trees rooted at Y and
+            --  YL respect the property Ordered_Leafs.
 
-         if YL /= Empty then
-            Prove_Extract_Order (T.Struct, F_2, Y, YL, T.Values);
-            pragma Assert (Get (Model (F_2, Y) (YL).A, 1) = Left);
+            if YL /= Empty then
+               Prove_Extract_Order (T.Struct, Dummy_2, Y, YL, T.Values);
+               pragma Assert (Get (Model (Dummy_2, Y) (YL).A, 1) = Left);
 
-         --  In the case where extraction did nothing, use Prove_Preserved_Order
-         --  to prove that the tree rooted at Y still respects the property
-         --  Ordered_Leafs.
+               --  In the case where extraction did nothing, use Prove_Preserved_Order
+               --  to prove that the tree rooted at Y still respects the property
+               --  Ordered_Leafs.
 
-         else
-            Prove_Preserved_Order (T.Struct, F_2, Y, T.Values);
-         end if;
+            else
+               Prove_Preserved_Order (T.Struct, Dummy_2, Y, T.Values);
+            end if;
 
-         --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
-         --  and X still respect the property Ordered_Leafs.
+            --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
+            --  and X still respect the property Ordered_Leafs.
 
-         Prove_Preserved_Order (T.Struct, F_2, X, T.Values);
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_2, T.Root, T.Values);
-         end if;
-         F_3 := T.Struct;
+            Prove_Preserved_Order (T.Struct, Dummy_2, X, T.Values);
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_2, T.Root, T.Values);
+            end if;
+
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then (if YL /= Empty then Ordered_Leafs (T.Struct, YL, T.Values))
+               and then Peek (T.Struct, X, Right) = Empty
+               and then All_More_Than (T.Struct, Y, T.Values, T.Values (X))
+               and then Peek (T.Struct, Y, Left) = Empty
+               and then (if YL /= Empty then All_Less_Than (T.Struct, YL, T.Values, T.Values (Y)))
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, X) (I).K =
+                         (Model (T.Struct, X) (I).K or Model (T.Struct, Y) (I).K or (YL /= Empty and then Model (T.Struct, YL) (I).K))));
+         end;
+         Dummy_3 := T.Struct;
       end Prove_Extract_YL;
 
       procedure Prove_Plug_YL with Ghost is
       begin
-         if YL /= Empty then
+         begin
+            --  Prove that all elements of X are smaller than Y
 
-            --  YL becomes the right child of X
-            pragma Assert (Get (Model (T.Struct, X) (YL).A, 1) = Right);
+            Prove_Order_No_Right (Dummy_3, X, T.Values, T.Values (Y));
 
-            --  Trees previously rooted at X and YL respect the property
-            --  Ordered_Leafs, and all the values in the tree rooted at YL
-            --  are greater than the value at X.
-            pragma Assert
-              (for all J in Index_Type =>
-                (if Model (F_3, Y) (J).K
-                 then T.Values (J) > T.Values (X)));
-            pragma Assert (Ordered_Leafs (F_3, X, T.Values));
-            pragma Assert (Ordered_Leafs (F_3, YL, T.Values));
+            if YL /= Empty then
 
-            --  Use Prove_Plug_Order to prove that the combined tree respects
-            --  the property Ordered_Leafs.
+               --  YL becomes the right child of X
+               pragma Assert (Get (Model (T.Struct, X) (YL).A, 1) = Right);
 
-            Prove_Plug_Order (T.Struct, F_3, X, YL, T.Values);
+               --  Use Prove_Plug_Order to prove that the combined tree respects
+               --  the property Ordered_Leafs.
 
-         --  In the case where plugging did nothing, use Prove_Preserved_Order
-         --  to prove that the tree rooted at X still respects the property
-         --  Ordered_Leafs.
+               Prove_Correct_Place_Top_Level (Dummy_3, Model (T.Struct, X) (YL).A, X, YL, T.Values);
+               Prove_Plug_Order (T.Struct, Dummy_3, X, YL, T.Values);
 
-         else
-            Prove_Preserved_Order (T.Struct, F_3, X, T.Values);
-         end if;
+            --  In the case where plugging did nothing, use Prove_Preserved_Order
+            --  to prove that the tree rooted at X still respects the property
+            --  Ordered_Leafs.
 
-         --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
-         --  and Y still respect the property Ordered_Leafs.
+            else
+               Prove_Preserved_Order (T.Struct, Dummy_3, X, T.Values);
+            end if;
 
-         Prove_Preserved_Order (T.Struct, F_3, Y, T.Values);
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_3, T.Root, T.Values);
-         end if;
-         F_4 := T.Struct;
+            --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
+            --  and Y still respect the property Ordered_Leafs.
+
+            Prove_Preserved_Order (T.Struct, Dummy_3, Y, T.Values);
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_3, T.Root, T.Values);
+            end if;
+
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then All_Less_Than (T.Struct, X, T.Values, T.Values (Y))
+               and then Peek (T.Struct, Y, Left) = Empty
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, X) (I).K =
+                         (Model (T.Struct, X) (I).K or Model (T.Struct, Y) (I).K)));
+         end;
+         Dummy_4 := T.Struct;
       end Prove_Plug_YL;
 
       procedure Prove_Plug_X with Ghost is
       begin
-         --  Use Prove_Model_Total to prove that any node J for which X is on
-         --  the path in F_2 is necessarily on the other direction from where
-         --  Y was extracted.
+         begin
+            --  Use Prove_Plug_Order to prove that the combined tree respects the
+            --  property Ordered_Leafs.
 
-         pragma Assert (Get (Model (T.Struct, Y) (X).A, 1) = Left);
-         Prove_Model_Total (F_2, X, X, Right);
-         pragma Assert
-           (for all J in Index_Type =>
-              (if Model (F_3, X) (J).K
-               then T.Values (J) <= T.Values (X)));
-         pragma Assert
-           (for all J in Index_Type =>
-              (if Model (F_4, X) (J).K
-               then T.Values (J) < T.Values (Y)));
-         pragma Assert (Ordered_Leafs (F_4, X, T.Values));
-         pragma Assert (Ordered_Leafs (F_4, Y, T.Values));
+            Prove_Reverse_Peek (T.Struct, Y, Y, Left);
 
-         --  Use Prove_Plug_Order to prove that the combined tree respects the
-         --  property Ordered_Leafs.
+            Prove_Correct_Place_Top_Level (Dummy_4, Model (T.Struct, Y) (X).A, Y, X, T.Values);
+            Prove_Plug_Order (T.Struct, Dummy_4, Y, X, T.Values);
 
-         Prove_Plug_Order (T.Struct, F_4, Y, X, T.Values);
+            --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
+            --  still respects the property Ordered_Leafs.
 
-         --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
-         --  still respects the property Ordered_Leafs.
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_4, T.Root, T.Values);
+            end if;
 
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_4, T.Root, T.Values);
-         end if;
-         F_5 := T.Struct;
+            pragma Assert_And_Cut
+              ((if not Is_Root then Ordered_Leafs (T.Struct, T.Root, T.Values))
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, X) (I).K = Model (T.Struct, Y) (I).K));
+         end;
+         Dummy_5 := T.Struct;
       end Prove_Plug_X;
 
-      procedure Prove_Plug_Y is
+      procedure Prove_Plug_Y with Ghost is
       begin
-         --  Use Preserve_Equal to prove that the path from Root to Y is the
-         --  same as the original path from Root to X.
+         begin
+            --  Use Preserve_Equal to prove that the path from Root to Y is the
+            --  same as the original path from Root to X.
 
-         pragma Assert (Model (F_5, T.Root) = Model (F_1, T.Root));
-         Preserve_Equal (S1 => Model (T.Struct, T.Root) (J).A,
-                         S2 => Model (F_Old, T.Root) (J).A,
-                         S3 => Model (T.Struct, T.Root) (Y).A,
-                         S4 => Model (F_Old, T.Root) (X).A,
-                         D  => D);
-         pragma Assert
-           (for all I in Index_Type =>
-             (if Model (F_5, Y) (I).K then Model (F_1, X) (I).K));
-         pragma Assert
-           (for all I in Index_Type =>
-             (if Model (F_5, T.Root) (I).K
-                and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (Y).A
-              then
-                 Model (F_1, T.Root) (I).K
-                 and Model (F_1, T.Root) (I).A < Model (F_Old, T.Root) (X).A));
-         pragma Assert
-           (for all I in Index_Type =>
-             (if Model (F_5, T.Root) (I).K
-                and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (Y).A
-              then
-                Get (Model (F_Old, T.Root) (X).A,
-                     Length (Model (F_1, T.Root) (I).A) + 1)
-              = Get (Model (T.Struct, T.Root) (Y).A,
-                Length (Model (F_5, T.Root) (I).A) + 1)));
-         pragma Assert
-           (for all I in Index_Type =>
-              (if Model (F_5, T.Root) (I).K
-               and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (Y).A
-               then (if Get (Model (T.Struct, T.Root) (Y).A,
-                 Length (Model (F_5, T.Root) (I).A) + 1) = Left
-                 then
-                   (for all J in Index_Type =>
-                      (if Model (F_5, Y) (J).K
-                       then T.Values (J) < T.Values (I)))
-                 else
-                   (for all J in Index_Type =>
-                      (if Model (F_5, Y) (J).K
-                       then T.Values (J) > T.Values (I))))));
+            pragma Assert (Model (Dummy_5, T.Root) = Model (Dummy_1, T.Root));
+            Preserve_Equal (S1 => Model (T.Struct, T.Root) (J).A,
+                            S2 => Model (F_Old, T.Root) (J).A,
+                            S3 => Model (T.Struct, T.Root) (Y).A,
+                            S4 => Model (F_Old, T.Root) (X).A,
+                            D  => D);
 
-         --  Use Prove_Plug_Order to prove that the combined tree respects the
-         --  property Ordered_Leafs.
+            --  Y as the same values of X, it can be inserted in its place
 
-         Prove_Plug_Order (T.Struct, F_5, T.Root, Y, T.Values);
+            Prove_Extract_Order (Dummy_1, F_Old, T.Root, X, T.Values);
+            Prove_Preserve_Correct_Place
+               (Dummy_1, Dummy_5, Model (F_Old, T.Root) (X).A, T.Root, X, Y, T.Values);
+
+            --  Use Prove_Plug_Order to prove that the combined tree respects the
+            --  property Ordered_Leafs.
+
+            Prove_Plug_Order (T.Struct, Dummy_5, T.Root, Y, T.Values);
+            pragma Assert_And_Cut
+              (Valid_Root (T.Struct, T.Root)
+               and then Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then (for all I in Index_Type =>
+                             Model (F_Old, T.Root) (I).K =
+                           Model (T.Struct, T.Root) (I).K));
+         end;
       end Prove_Plug_Y;
 
    begin
@@ -911,6 +979,17 @@ package body Search_Trees with SPARK_Mode is
       end if;
 
       Prove_Preserved_Values (T_Old, T);
+      pragma Assert (for all J in Index_Type =>
+                       (if J not in X | Y | YL
+                        then Parent (T, J) = Parent (T_Old, J)
+                        and then (if Parent (T, J) /= Empty then Position (T, J) = Position (T_Old, J))));
+      pragma Assert (for all I in Index_Type =>
+                       (for all C in Direction =>
+                          (if Size (T) /= 0 and then Model (T) (I).K
+                           and then (I /= J or else D /= C)
+                           and then (I /= X or else C /= Right)
+                           and then (I /= Y or else C /= Left)
+                        then Peek (T, I, C) = Peek (T_Old, I, C))));
    end Left_Rotate;
 
    ------------------
@@ -930,7 +1009,7 @@ package body Search_Trees with SPARK_Mode is
 
       --  Ghost variables to save intermediate versions of the forest, for use
       --  in assertions.
-      F_1, F_2, F_3, F_4, F_5 : Forest := T.Struct with Ghost;
+      Dummy_1, Dummy_2, Dummy_3, Dummy_4, Dummy_5 : Forest := T.Struct with Ghost;
 
       --  The proof of each step of the algorithm is isolated in local ghost
       --  lemmas Prove_XXX. None of these have a contract, so that they can
@@ -938,186 +1017,204 @@ package body Search_Trees with SPARK_Mode is
 
       procedure Prove_Extract_Y with Ghost is
       begin
-         --  Use Prove_Extract_Order to prove that the trees rooted at T.Root
-         --  and Y respect the property Ordered_Leafs, and that values in the
-         --  tree rooted at Y are as expected for reinsertion of Y as right
-         --  child of X.
+         begin
+            --  Use Prove_Extract_Order to prove that the trees rooted at T.Root
+            --  and Y respect the property Ordered_Leafs.
 
-         if not Is_Root then
-            Prove_Extract_Order (T.Struct, F_Old, T.Root, Y, T.Values);
-         end if;
-         F_1 := T.Struct;
+            if not Is_Root then
+               Prove_Extract_Order (T.Struct, F_Old, T.Root, Y, T.Values);
+            end if;
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then (for all I in Index_Type =>
+                             Model (F_Old, Root (T)) (I).K =
+                         (Model (T.Struct, Root (T)) (I).K or Model (T.Struct, Y) (I).K)));
+         end;
+         Dummy_1 := T.Struct;
       end Prove_Extract_Y;
 
       procedure Prove_Extract_X with Ghost is
       begin
-         --  Use Prove_Extract_Order to prove that the trees rooted at Y and
-         --  X respect the property Ordered_Leafs, and that values in the tree
-         --  rooted at X are as expected for reinsertion of X in the place of Y.
+         begin
+            --  Use Prove_Extract_Order to prove that the trees rooted at X and
+            --  Y respect the property Ordered_Leafs.
 
-         Prove_Extract_Order (T.Struct, F_1, Y, X, T.Values);
-         pragma Assert (Get (Model (F_1, Y) (X).A, 1) = Left);
-         pragma Assert (T.Values (X) < T.Values (Y));
+            Prove_Extract_Order (T.Struct, Dummy_1, Y, X, T.Values);
+            pragma Assert (Get (Model (Dummy_1, Y) (X).A, 1) = Left);
+            pragma Assert (T.Values (X) < T.Values (Y));
+            pragma Assert (All_Less_Than (T.Struct, X, T.Values, T.Values (Y)));
 
-         --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
-         --  still respects the property Ordered_Leafs.
+            --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
+            --  still respects the property Ordered_Leafs.
 
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_1, T.Root, T.Values);
-         end if;
-         F_2 := T.Struct;
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_1, T.Root, T.Values);
+            end if;
+
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then Peek (T.Struct, Y, Left) = Empty
+               and then All_Less_Than (T.Struct, X, T.Values, T.Values (Y))
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, Y) (I).K =
+                         (Model (T.Struct, X) (I).K or Model (T.Struct, Y) (I).K)));
+         end;
+         Dummy_2 := T.Struct;
       end Prove_Extract_X;
 
       procedure Prove_Extract_XR with Ghost is
       begin
-         --  Use Prove_Extract_Order to prove that the trees rooted at X and
-         --  XR respect the property Ordered_Leafs, and that values in the tree
-         --  rooted at XR are as expected for reinsertion of XR as the left
-         --  child of Y.
+         begin
+            --  Use Prove_Extract_Order to prove that the trees rooted at X and
+            --  XR respect the property Ordered_Leafs.
 
-         if XR /= Empty then
-            Prove_Extract_Order (T.Struct, F_2, X, XR, T.Values);
-            pragma Assert (Get (Model (F_2, X) (XR).A, 1) = Right);
+            if XR /= Empty then
+               Prove_Extract_Order (T.Struct, Dummy_2, X, XR, T.Values);
+               pragma Assert (Get (Model (Dummy_2, X) (XR).A, 1) = Right);
 
-         --  In the case where extraction did nothing, use Prove_Preserved_Order
-         --  to prove that the tree rooted at X still respects the property
-         --  Ordered_Leafs.
+            --  In the case where extraction did nothing, use Prove_Preserved_Order
+            --  to prove that the tree rooted at Y still respects the property
+            --  Ordered_Leafs.
 
-         else
-            Prove_Preserved_Order (T.Struct, F_2, X, T.Values);
-         end if;
+            else
+               Prove_Preserved_Order (T.Struct, Dummy_2, X, T.Values);
+            end if;
 
-         --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
-         --  and Y still respect the property Ordered_Leafs.
+            --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
+            --  and Y still respect the property Ordered_Leafs.
 
-         Prove_Preserved_Order (T.Struct, F_2, Y, T.Values);
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_2, T.Root, T.Values);
-         end if;
-         F_3 := T.Struct;
+            Prove_Preserved_Order (T.Struct, Dummy_2, Y, T.Values);
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_2, T.Root, T.Values);
+            end if;
+
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then (if XR /= Empty then Ordered_Leafs (T.Struct, XR, T.Values))
+               and then Peek (T.Struct, X, Right) = Empty
+               and then All_Less_Than (T.Struct, X, T.Values, T.Values (Y))
+               and then Peek (T.Struct, Y, Left) = Empty
+               and then (if XR /= Empty then All_More_Than (T.Struct, XR, T.Values, T.Values (X)))
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, Y) (I).K =
+                         (Model (T.Struct, X) (I).K or Model (T.Struct, Y) (I).K or (XR /= Empty and then Model (T.Struct, XR) (I).K))));
+         end;
+         Dummy_3 := T.Struct;
       end Prove_Extract_XR;
 
       procedure Prove_Plug_XR with Ghost is
       begin
-         if XR /= Empty then
+         begin
+            --  Prove that all elements of Y are bigger than X
 
-            --  XR becomes the left child of Y
-            pragma Assert (Get (Model (T.Struct, Y) (XR).A, 1) = Left);
+            Prove_Order_No_Left (Dummy_3, Y, T.Values, T.Values (X));
 
-            --  Trees previously rooted at Y and XR respect the property
-            --  Ordered_Leafs, and all the values in the tree rooted at XR
-            --  are greater than the value at Y.
-            pragma Assert
-              (for all J in Index_Type =>
-                 (if Model (F_3, X) (J).K
-                  then T.Values (J) < T.Values (Y)));
-            pragma Assert (Ordered_Leafs (F_3, Y, T.Values));
+            if XR /= Empty then
 
-            --  Use Prove_Plug_Order to prove that the combined tree respects
-            --  the property Ordered_Leafs.
+               --  XR becomes the left child of Y
+               pragma Assert (Get (Model (T.Struct, Y) (XR).A, 1) = Left);
 
-            Prove_Plug_Order (T.Struct, F_3, Y, XR, T.Values);
+               --  Use Prove_Plug_Order to prove that the combined tree respects
+               --  the property Ordered_Leafs.
 
-         --  In the case where plugging did nothing, use Prove_Preserved_Order
-         --  to prove that the tree rooted at Y still respects the property
-         --  Ordered_Leafs.
+               Prove_Correct_Place_Top_Level (Dummy_3, Model (T.Struct, Y) (XR).A, Y, XR, T.Values);
+               Prove_Plug_Order (T.Struct, Dummy_3, Y, XR, T.Values);
 
-         else
-            Prove_Preserved_Order (T.Struct, F_3, Y, T.Values);
-         end if;
+            --  In the case where plugging did nothing, use Prove_Preserved_Order
+            --  to prove that the tree rooted at Y still respects the property
+            --  Ordered_Leafs.
 
-         --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
-         --  and X still respect the property Ordered_Leafs.
+            else
+               Prove_Preserved_Order (T.Struct, Dummy_3, Y, T.Values);
+            end if;
 
-         Prove_Preserved_Order (T.Struct, F_3, X, T.Values);
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_3, T.Root, T.Values);
-         end if;
-         F_4 := T.Struct;
+            --  Use Prove_Preserved_Order to prove that the trees rooted at T.Root
+            --  and X still respect the property Ordered_Leafs.
+
+            Prove_Preserved_Order (T.Struct, Dummy_3, X, T.Values);
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_3, T.Root, T.Values);
+            end if;
+
+            pragma Assert_And_Cut
+              (Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then Ordered_Leafs (T.Struct, Y, T.Values)
+               and then All_More_Than (T.Struct, Y, T.Values, T.Values (X))
+               and then Peek (T.Struct, X, Right) = Empty
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, Y) (I).K =
+                         (Model (T.Struct, X) (I).K or Model (T.Struct, Y) (I).K)));
+         end;
+         Dummy_4 := T.Struct;
       end Prove_Plug_XR;
 
       procedure Prove_Plug_Y with Ghost is
       begin
-         --  Use Prove_Model_Total to prove that any node J for which Y is on
-         --  the path in F_2 is necessarily on the other direction from where
-         --  X was extracted.
+         begin
+            --  Use Prove_Plug_Order to prove that the combined tree respects the
+            --  property Ordered_Leafs.
 
-         pragma Assert (Get (Model (T.Struct, X) (Y).A, 1) = Right);
-         Prove_Model_Total (F_2, Y, Y, Left);
-         pragma Assert
-           (for all J in Index_Type =>
-              (if XR /= Empty and then Model (F_3, XR) (J).K
-               then T.Values (J) > T.Values (X)));
-         pragma Assert
-           (for all J in Index_Type =>
-              (if Model (F_3, Y) (J).K
-               then T.Values (J) >= T.Values (Y)));
-         pragma Assert
-           (for all J in Index_Type =>
-              (if Model (F_4, Y) (J).K
-               then T.Values (J) > T.Values (X)));
-         pragma Assert (Ordered_Leafs (F_4, X, T.Values));
-         pragma Assert (Ordered_Leafs (F_4, Y, T.Values));
+            Prove_Reverse_Peek (T.Struct, X, X, Right);
 
-         --  Use Prove_Plug_Order to prove that the combined tree respects the
-         --  property Ordered_Leafs.
+            Prove_Correct_Place_Top_Level (Dummy_4, Model (T.Struct, X) (Y).A, X, Y, T.Values);
+            Prove_Plug_Order (T.Struct, Dummy_4, X, Y, T.Values);
 
-         Prove_Plug_Order (T.Struct, F_4, X, Y, T.Values);
+            --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
+            --  still respects the property Ordered_Leafs.
 
-         --  Use Prove_Preserved_Order to prove that the tree rooted at T.Root
-         --  still respects the property Ordered_Leafs.
+            if not Is_Root then
+               Prove_Preserved_Order (T.Struct, Dummy_4, T.Root, T.Values);
+            end if;
 
-         if not Is_Root then
-            Prove_Preserved_Order (T.Struct, F_4, T.Root, T.Values);
-         end if;
-         F_5 := T.Struct;
+            pragma Assert_And_Cut
+              ((if not Is_Root then Ordered_Leafs (T.Struct, T.Root, T.Values))
+               and then Ordered_Leafs (T.Struct, X, T.Values)
+               and then (if not Is_Root then Model (T.Struct, T.Root) = Model (Dummy_1, T.Root))
+               and then (for all I in Index_Type =>
+                             Model (Dummy_1, Y) (I).K = Model (T.Struct, X) (I).K));
+         end;
+         Dummy_5 := T.Struct;
       end Prove_Plug_Y;
 
-      procedure Prove_Plug_X is
+      procedure Prove_Plug_X with Ghost is
       begin
-         --  Use Preserve_Equal to prove that the path from Root to X is the
-         --  same as the original path from Root to Y.
+         begin
+            --  Use Preserve_Equal to prove that the path from Root to X is the
+            --  same as the original path from Root to Y.
 
-         pragma Assert (Model (F_5, T.Root) = Model (F_1, T.Root));
-         Preserve_Equal (Model (T.Struct, T.Root) (J).A, Model (F_Old, T.Root) (J).A,
-                         Model (T.Struct, T.Root) (X).A, Model (F_Old, T.Root) (Y).A, D);
-         pragma Assert
-           (for all I in Index_Type =>
-              (if Model (F_5, X) (I).K then Model (F_1, Y) (I).K));
-         pragma Assert
-           (for all I in Index_Type =>
-              (if Model (F_5, T.Root) (I).K
-               and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (X).A then
-                    Model (F_1, T.Root) (I).K
-               and Model (F_1, T.Root) (I).A < Model (F_Old, T.Root) (Y).A));
-         pragma Assert
-           (for all I in Index_Type =>
-              (if Model (F_5, T.Root) (I).K
-               and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (X).A then
-               Length (Model (F_1, T.Root) (I).A) = Length (Model (F_5, T.Root) (I).A)));
-         pragma Assert
-           (for all I in Index_Type =>
-              (if Model (F_5, T.Root) (I).K
-               and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (X).A then
-               Get (Model (F_Old, T.Root) (Y).A,
-                 Length (Model (F_5, T.Root) (I).A) + 1)
-               = Get (Model (T.Struct, T.Root) (X).A,
-                 Length (Model (F_5, T.Root) (I).A) + 1)));
-         pragma Assert
-           (for all I in Index_Type =>
-              (if Model (F_5, T.Root) (I).K
-               and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (X).A then
-               Get (Model (F_Old, T.Root) (Y).A,
-                 Length (Model (F_1, T.Root) (I).A) + 1)
-               = Get (Model (T.Struct, T.Root) (X).A,
-                 Length (Model (F_5, T.Root) (I).A) + 1)));
-         pragma Assert (Ordered_Leafs (F_5, T.Root, T.Values));
-         pragma Assert (Ordered_Leafs (F_4, X, T.Values));
+            pragma Assert (Model (Dummy_5, T.Root) = Model (Dummy_1, T.Root));
+            Preserve_Equal (S1 => Model (T.Struct, T.Root) (J).A,
+                            S2 => Model (F_Old, T.Root) (J).A,
+                            S3 => Model (T.Struct, T.Root) (X).A,
+                            S4 => Model (F_Old, T.Root) (Y).A,
+                            D  => D);
 
-         --  Use Prove_Plug_Order to prove that the combined tree respects the
-         --  property Ordered_Leafs.
+            --  X as the same values of Y, it can be inserted in its place
 
-         Prove_Plug_Order (T.Struct, F_5, T.Root, X, T.Values);
+            Prove_Extract_Order (Dummy_1, F_Old, T.Root, Y, T.Values);
+            Prove_Preserve_Correct_Place
+               (Dummy_1, Dummy_5, Model (F_Old, T.Root) (Y).A, T.Root, Y, X, T.Values);
+
+            --  Use Prove_Plug_Order to prove that the combined tree respects the
+            --  property Ordered_Leafs.
+
+            Prove_Plug_Order (T.Struct, Dummy_5, T.Root, X, T.Values);
+            pragma Assert_And_Cut
+              (Valid_Root (T.Struct, T.Root)
+               and then Ordered_Leafs (T.Struct, T.Root, T.Values)
+               and then (for all I in Index_Type =>
+                             Model (F_Old, T.Root) (I).K =
+                           Model (T.Struct, T.Root) (I).K));
+         end;
       end Prove_Plug_X;
 
    begin
@@ -1162,10 +1259,18 @@ package body Search_Trees with SPARK_Mode is
          Prove_Plug_X;
       end if;
 
-      pragma Assert
-        (for all J in Index_Type =>
-          (if Model (T_Old) (J).K then Model (T) (J).K));
       Prove_Preserved_Values (T_Old, T);
+      pragma Assert (for all J in Index_Type =>
+                       (if J /= X and then J /= Y and then J /= XR
+                        then Parent (T, J) = Parent (T_Old, J)
+                        and then (if Parent (T, J) /= Empty then Position (T, J) = Position (T_Old, J))));
+      pragma Assert (for all I in Index_Type =>
+                       (for all C in Direction =>
+                          (if Size (T) /= 0 and then Model (T) (I).K
+                           and then (I /= J or else D /= C)
+                           and then (I /= X or else C /= Right)
+                           and then (I /= Y or else C /= Left)
+                        then Peek (T, I, C) = Peek (T_Old, I, C))));
    end Right_Rotate;
 
    ---------
@@ -1175,7 +1280,6 @@ package body Search_Trees with SPARK_Mode is
    function Contains (T : Search_Tree; V : Natural) return Boolean is
       Current  : Extended_Index_Type := T.Root;
       Previous : Extended_Index_Type := T.Root with Ghost;
-      D        : Direction := Left with Ghost;
    begin
       while Current /= Empty loop
          --  Current is in the tree
@@ -1196,10 +1300,8 @@ package body Search_Trees with SPARK_Mode is
          if V = T.Values (Current) then
             return True;
          elsif V < T.Values (Current) then
-            D := Left;
             Current := Peek (T.Struct, Current, Left);
          else
-            D := Right;
             Current := Peek (T.Struct, Current, Right);
          end if;
       end loop;
@@ -1323,9 +1425,7 @@ package body Search_Trees with SPARK_Mode is
                       and then Model (T.Struct, T.Root) (J).K
                       and then J /= I
                       and then Model (T.Struct, T.Root) (KI).A < Model (T.Struct, T.Root) (J).A
-                    then (if Get (Model (T.Struct, T.Root) (J).A, Length (Model (T.Struct, T.Root) (KI).A) + 1) = Left
-                          then T.Values (J) < T.Values (KI)
-                          else T.Values (J) > T.Values (KI))));
+                    then Ordered_Prefix (Model (T_Old.Struct, T_Old.Root), T_Old.Values, KI, J)));
 
                --  Or J is the new node I, in which case KI nodes on its path
                --  are either L or nodes on the path to L.
@@ -1345,9 +1445,7 @@ package body Search_Trees with SPARK_Mode is
                       and then KI /= L
                       and then Model (T.Struct, T.Root) (J).K
                       and then Model (T.Struct, T.Root) (KI).A < Model (T.Struct, T.Root) (J).A
-                    then (if Get (Model (T.Struct, T.Root) (J).A, Length (Model (T.Struct, T.Root) (KI).A) + 1) = Left
-                          then T.Values (J) < T.Values (KI)
-                          else T.Values (J) > T.Values (KI))));
+                    then Ordered_Prefix (Model (T.Struct, T.Root), T.Values, KI, J)));
             end if;
 
             --  The property Ordered_Leafs is respected up to current node KI
@@ -1357,9 +1455,7 @@ package body Search_Trees with SPARK_Mode is
                   (if Model (T.Struct, T.Root) (I).K
                      and then Model (T.Struct, T.Root) (J).K
                      and then Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (J).A
-                   then (if Get (Model (T.Struct, T.Root) (J).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
-                         then T.Values (J) < T.Values (I)
-                         else T.Values (J) > T.Values (I)))));
+                   then Ordered_Prefix (Model (T.Struct, T.Root), T.Values, I, J))));
          end loop;
 
          --  Restate property Ordered_Leafs for the last iteration of the loop
@@ -1369,9 +1465,7 @@ package body Search_Trees with SPARK_Mode is
                (if Model (T.Struct, T.Root) (I).K then
                  (if Model (T.Struct, T.Root) (J).K
                      and then Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (J).A
-                  then (if Get (Model (T.Struct, T.Root) (J).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
-                        then T.Values (J) < T.Values (I)
-                        else T.Values (J) > T.Values (I))))));
+                  then Ordered_Prefix (Model (T.Struct, T.Root), T.Values, I, J)))));
       end Prove_Ordered_Leafs;
 
    begin
@@ -1402,9 +1496,9 @@ package body Search_Trees with SPARK_Mode is
               (for all I in Index_Type =>
                 (if Model (T.Struct, T.Root) (I).K then
                   (if Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (Current).A
-                   then (if Get (Model (T.Struct, T.Root) (Current).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
-                         then V < T.Values (I)
-                         else V > T.Values (I)))));
+                     then (if Get (Model (T.Struct, T.Root) (Current).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
+                           then V < T.Values (I)
+                           else V > T.Values (I)))));
 
             Previous := Current;
             if V = T.Values (Previous) then

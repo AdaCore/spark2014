@@ -40,237 +40,271 @@ with Urealp;      use Urealp;
 
 package SPARK_Atree is
 
+   package SN renames Sinfo.Nodes;
+
    --  Renamings are either
    --  * trivial in the .ads file or
    --  * with Pre/Post contract completed-by-renaming in the .adb file.
 
-   subtype Node_Kind is Sinfo.Nodes.Node_Kind;
+   subtype Node_Kind is SN.Node_Kind;
 
-   subtype N_Binary_Op       is Sinfo.Nodes.N_Binary_Op;
-   subtype N_Delay_Statement is Sinfo.Nodes.N_Delay_Statement;
-   subtype N_Declaration     is Sinfo.Nodes.N_Declaration;
-   subtype N_Entity          is Sinfo.Nodes.N_Entity;
-   subtype N_Has_Entity      is Sinfo.Nodes.N_Has_Entity;
-   subtype N_Has_Etype       is Sinfo.Nodes.N_Has_Etype;
-   subtype N_Membership_Test is Sinfo.Nodes.N_Membership_Test;
-   subtype N_Op              is Sinfo.Nodes.N_Op;
-   subtype N_Op_Compare      is Sinfo.Nodes.N_Op_Compare;
-   subtype N_Op_Shift        is Sinfo.Nodes.N_Op_Shift;
-   subtype N_Raise_xxx_Error is Sinfo.Nodes.N_Raise_xxx_Error;
-   subtype N_Short_Circuit   is Sinfo.Nodes.N_Short_Circuit;
-   subtype N_Subexpr         is Sinfo.Nodes.N_Subexpr;
-   subtype N_Subprogram_Call is Sinfo.Nodes.N_Subprogram_Call;
+   subtype N_Binary_Op       is SN.N_Binary_Op;
+   subtype N_Delay_Statement is SN.N_Delay_Statement;
+   subtype N_Declaration     is SN.N_Declaration;
+   subtype N_Entity          is SN.N_Entity;
+   subtype N_Has_Entity      is SN.N_Has_Entity;
+   subtype N_Has_Etype       is SN.N_Has_Etype;
+   subtype N_Membership_Test is SN.N_Membership_Test;
+   subtype N_Op              is SN.N_Op;
+   subtype N_Op_Compare      is SN.N_Op_Compare;
+   subtype N_Op_Shift        is SN.N_Op_Shift;
+   subtype N_Raise_xxx_Error is SN.N_Raise_xxx_Error;
+   subtype N_Short_Circuit   is SN.N_Short_Circuit;
+   subtype N_Subexpr         is SN.N_Subexpr;
+   subtype N_Subprogram_Call is SN.N_Subprogram_Call;
 
-   subtype N_Subexpr_Id      is Sinfo.Nodes.N_Subexpr_Id;
+   subtype N_Attribute_Reference_Id   is SN.N_Attribute_Reference_Id;
+   subtype N_Block_Statement_Id       is SN.N_Block_Statement_Id;
+   subtype N_Component_Association_Id is SN.N_Component_Association_Id;
+   subtype N_Exit_Statement_Id        is SN.N_Exit_Statement_Id;
+   subtype N_Iteration_Scheme_Id      is SN.N_Iteration_Scheme_Id;
+   subtype N_Loop_Statement_Id        is SN.N_Loop_Statement_Id;
+   subtype N_Object_Declaration_Id    is SN.N_Object_Declaration_Id;
+   subtype N_Op_Id                    is SN.N_Op_Id;
+   subtype N_Package_Body_Id          is SN.N_Package_Body_Id;
+   subtype N_Package_Specification_Id is SN.N_Package_Specification_Id;
+   subtype N_Pragma_Id                is SN.N_Pragma_Id;
+   subtype N_Subexpr_Id               is SN.N_Subexpr_Id;
+
+   subtype Opt_N_Attribute_Reference_Id   is SN.Opt_N_Attribute_Reference_Id;
+   subtype Opt_N_Block_Statement_Id       is SN.Opt_N_Block_Statement_Id;
+   subtype Opt_N_Case_Statement_Alternative_Id is
+     SN.Opt_N_Case_Statement_Alternative_Id;
+   subtype Opt_N_Component_Association_Id is SN.Opt_N_Component_Association_Id;
+   subtype Opt_N_Declaration_Id           is SN.Opt_N_Declaration_Id;
+   subtype Opt_N_Exit_Statement_Id        is SN.Opt_N_Exit_Statement_Id;
+   subtype Opt_N_Identifier_Id            is SN.Opt_N_Identifier_Id;
+   subtype Opt_N_Iteration_Scheme_Id      is SN.Opt_N_Iteration_Scheme_Id;
+   subtype Opt_N_Loop_Parameter_Specification_Id is
+     SN.Opt_N_Loop_Parameter_Specification_Id;
+   subtype Opt_N_Loop_Statement_Id        is SN.Opt_N_Loop_Statement_Id;
+   subtype Opt_N_Object_Declaration_Id    is SN.Opt_N_Object_Declaration_Id;
+   subtype Opt_N_Pragma_Argument_Association_Id is
+     SN.Opt_N_Pragma_Argument_Association_Id;
+   subtype Opt_N_Op_Id                    is SN.Opt_N_Op_Id;
+   subtype Opt_N_Package_Body_Id          is SN.Opt_N_Package_Body_Id;
+   subtype Opt_N_Package_Specification_Id is SN.Opt_N_Package_Specification_Id;
+   subtype Opt_N_Pragma_Id                is SN.Opt_N_Pragma_Id;
+   subtype Opt_N_Subexpr_Id               is SN.Opt_N_Subexpr_Id;
 
    N_Abstract_Subprogram_Declaration : Node_Kind renames
-     Sinfo.Nodes.N_Abstract_Subprogram_Declaration;
+     SN.N_Abstract_Subprogram_Declaration;
    N_Aggregate                       : Node_Kind renames
-     Sinfo.Nodes.N_Aggregate;
+     SN.N_Aggregate;
    N_Allocator                       : Node_Kind renames
-     Sinfo.Nodes.N_Allocator;
+     SN.N_Allocator;
    N_And_Then                        : Node_Kind renames
-     Sinfo.Nodes.N_And_Then;
+     SN.N_And_Then;
    N_Assignment_Statement            : Node_Kind renames
-     Sinfo.Nodes.N_Assignment_Statement;
+     SN.N_Assignment_Statement;
    N_Attribute_Reference             : Node_Kind renames
-     Sinfo.Nodes.N_Attribute_Reference;
+     SN.N_Attribute_Reference;
    N_Block_Statement                 : Node_Kind renames
-     Sinfo.Nodes.N_Block_Statement;
+     SN.N_Block_Statement;
    N_Case_Expression                 : Node_Kind renames
-     Sinfo.Nodes.N_Case_Expression;
+     SN.N_Case_Expression;
    N_Case_Expression_Alternative     : Node_Kind renames
-     Sinfo.Nodes.N_Case_Expression_Alternative;
+     SN.N_Case_Expression_Alternative;
    N_Case_Statement                  : Node_Kind renames
-     Sinfo.Nodes.N_Case_Statement;
+     SN.N_Case_Statement;
    N_Case_Statement_Alternative      : Node_Kind renames
-     Sinfo.Nodes.N_Case_Statement_Alternative;
+     SN.N_Case_Statement_Alternative;
    N_Character_Literal               : Node_Kind renames
-     Sinfo.Nodes.N_Character_Literal;
+     SN.N_Character_Literal;
    N_Component_Association           : Node_Kind renames
-     Sinfo.Nodes.N_Component_Association;
+     SN.N_Component_Association;
    N_Component_Declaration           : Node_Kind renames
-     Sinfo.Nodes.N_Component_Declaration;
+     SN.N_Component_Declaration;
    N_Defining_Identifier             : Node_Kind renames
-     Sinfo.Nodes.N_Defining_Identifier;
+     SN.N_Defining_Identifier;
    N_Defining_Operator_Symbol        : Node_Kind renames
-     Sinfo.Nodes.N_Defining_Operator_Symbol;
+     SN.N_Defining_Operator_Symbol;
    N_Delta_Aggregate                 : Node_Kind renames
-     Sinfo.Nodes.N_Delta_Aggregate;
+     SN.N_Delta_Aggregate;
    N_Derived_Type_Definition         : Node_Kind renames
-     Sinfo.Nodes.N_Derived_Type_Definition;
+     SN.N_Derived_Type_Definition;
    N_Elsif_Part                      : Node_Kind renames
-     Sinfo.Nodes.N_Elsif_Part;
+     SN.N_Elsif_Part;
    N_Entry_Call_Statement            : Node_Kind renames
-     Sinfo.Nodes.N_Entry_Call_Statement;
+     SN.N_Entry_Call_Statement;
    N_Entry_Declaration               : Node_Kind renames
-     Sinfo.Nodes.N_Entry_Declaration;
+     SN.N_Entry_Declaration;
    N_Exit_Statement                  : Node_Kind renames
-     Sinfo.Nodes.N_Exit_Statement;
+     SN.N_Exit_Statement;
    N_Explicit_Dereference            : Node_Kind renames
-     Sinfo.Nodes.N_Explicit_Dereference;
+     SN.N_Explicit_Dereference;
    N_Expression_With_Actions         : Node_Kind renames
-     Sinfo.Nodes.N_Expression_With_Actions;
+     SN.N_Expression_With_Actions;
    N_Extended_Return_Statement       : Node_Kind renames
-     Sinfo.Nodes.N_Extended_Return_Statement;
+     SN.N_Extended_Return_Statement;
    N_Full_Type_Declaration           : Node_Kind renames
-     Sinfo.Nodes.N_Full_Type_Declaration;
+     SN.N_Full_Type_Declaration;
    N_Expanded_Name                   : Node_Kind renames
-     Sinfo.Nodes.N_Expanded_Name;
+     SN.N_Expanded_Name;
    N_Extension_Aggregate             : Node_Kind renames
-     Sinfo.Nodes.N_Extension_Aggregate;
+     SN.N_Extension_Aggregate;
    N_Function_Call                   : Node_Kind renames
-     Sinfo.Nodes.N_Function_Call;
+     SN.N_Function_Call;
    N_Goto_Statement                  : Node_Kind renames
-     Sinfo.Nodes.N_Goto_Statement;
+     SN.N_Goto_Statement;
    N_Handled_Sequence_Of_Statements  : Node_Kind renames
-     Sinfo.Nodes.N_Handled_Sequence_Of_Statements;
+     SN.N_Handled_Sequence_Of_Statements;
    N_Identifier                      : Node_Kind renames
-     Sinfo.Nodes.N_Identifier;
+     SN.N_Identifier;
    N_If_Expression                   : Node_Kind renames
-     Sinfo.Nodes.N_If_Expression;
+     SN.N_If_Expression;
    N_If_Statement                    : Node_Kind renames
-     Sinfo.Nodes.N_If_Statement;
+     SN.N_If_Statement;
    N_In                              : Node_Kind renames
-     Sinfo.Nodes.N_In;
+     SN.N_In;
    N_Indexed_Component               : Node_Kind renames
-     Sinfo.Nodes.N_Indexed_Component;
+     SN.N_Indexed_Component;
    N_Integer_Literal                 : Node_Kind renames
-     Sinfo.Nodes.N_Integer_Literal;
+     SN.N_Integer_Literal;
    N_Iterated_Component_Association  : Node_Kind renames
-     Sinfo.Nodes.N_Iterated_Component_Association;
+     SN.N_Iterated_Component_Association;
    N_Itype_Reference                 : Node_Kind renames
-     Sinfo.Nodes.N_Itype_Reference;
+     SN.N_Itype_Reference;
    N_Label                           : Node_Kind renames
-     Sinfo.Nodes.N_Label;
+     SN.N_Label;
    N_Loop_Statement                  : Node_Kind renames
-     Sinfo.Nodes.N_Loop_Statement;
+     SN.N_Loop_Statement;
    N_Not_In                          : Node_Kind renames
-     Sinfo.Nodes.N_Not_In;
+     SN.N_Not_In;
    N_Null                            : Node_Kind renames
-     Sinfo.Nodes.N_Null;
+     SN.N_Null;
    N_Object_Declaration              : Node_Kind renames
-     Sinfo.Nodes.N_Object_Declaration;
+     SN.N_Object_Declaration;
    N_Object_Renaming_Declaration     : Node_Kind renames
-     Sinfo.Nodes.N_Object_Renaming_Declaration;
+     SN.N_Object_Renaming_Declaration;
    N_Op_Abs                          : Node_Kind renames
-     Sinfo.Nodes.N_Op_Abs;
+     SN.N_Op_Abs;
    N_Op_Add                          : Node_Kind renames
-     Sinfo.Nodes.N_Op_Add;
+     SN.N_Op_Add;
    N_Op_And                          : Node_Kind renames
-     Sinfo.Nodes.N_Op_And;
+     SN.N_Op_And;
    N_Op_Concat                       : Node_Kind renames
-     Sinfo.Nodes.N_Op_Concat;
+     SN.N_Op_Concat;
    N_Op_Divide                       : Node_Kind renames
-     Sinfo.Nodes.N_Op_Divide;
+     SN.N_Op_Divide;
    N_Op_Eq                           : Node_Kind renames
-     Sinfo.Nodes.N_Op_Eq;
+     SN.N_Op_Eq;
    N_Op_Expon                        : Node_Kind renames
-     Sinfo.Nodes.N_Op_Expon;
+     SN.N_Op_Expon;
    N_Op_Ge                           : Node_Kind renames
-     Sinfo.Nodes.N_Op_Ge;
+     SN.N_Op_Ge;
    N_Op_Gt                           : Node_Kind renames
-     Sinfo.Nodes.N_Op_Gt;
+     SN.N_Op_Gt;
    N_Op_Le                           : Node_Kind renames
-     Sinfo.Nodes.N_Op_Le;
+     SN.N_Op_Le;
    N_Op_Lt                           : Node_Kind renames
-     Sinfo.Nodes.N_Op_Lt;
+     SN.N_Op_Lt;
    N_Op_Mod                          : Node_Kind renames
-     Sinfo.Nodes.N_Op_Mod;
+     SN.N_Op_Mod;
    N_Op_Multiply                     : Node_Kind renames
-     Sinfo.Nodes.N_Op_Multiply;
+     SN.N_Op_Multiply;
    N_Op_Or                           : Node_Kind renames
-     Sinfo.Nodes.N_Op_Or;
+     SN.N_Op_Or;
    N_Op_Minus                        : Node_Kind renames
-     Sinfo.Nodes.N_Op_Minus;
+     SN.N_Op_Minus;
    N_Op_Ne                           : Node_Kind renames
-     Sinfo.Nodes.N_Op_Ne;
+     SN.N_Op_Ne;
    N_Op_Not                          : Node_Kind renames
-     Sinfo.Nodes.N_Op_Not;
+     SN.N_Op_Not;
    N_Op_Plus                         : Node_Kind renames
-     Sinfo.Nodes.N_Op_Plus;
+     SN.N_Op_Plus;
    N_Op_Rem                          : Node_Kind renames
-     Sinfo.Nodes.N_Op_Rem;
+     SN.N_Op_Rem;
    N_Op_Rotate_Left                  : Node_Kind renames
-     Sinfo.Nodes.N_Op_Rotate_Left;
+     SN.N_Op_Rotate_Left;
    N_Op_Rotate_Right                 : Node_Kind renames
-     Sinfo.Nodes.N_Op_Rotate_Right;
+     SN.N_Op_Rotate_Right;
    N_Op_Shift_Left                   : Node_Kind renames
-     Sinfo.Nodes.N_Op_Shift_Left;
+     SN.N_Op_Shift_Left;
    N_Op_Shift_Right                  : Node_Kind renames
-     Sinfo.Nodes.N_Op_Shift_Right;
+     SN.N_Op_Shift_Right;
    N_Op_Shift_Right_Arithmetic       : Node_Kind renames
-     Sinfo.Nodes.N_Op_Shift_Right_Arithmetic;
+     SN.N_Op_Shift_Right_Arithmetic;
    N_Op_Subtract                     : Node_Kind renames
-     Sinfo.Nodes.N_Op_Subtract;
+     SN.N_Op_Subtract;
    N_Op_Xor                          : Node_Kind renames
-     Sinfo.Nodes.N_Op_Xor;
+     SN.N_Op_Xor;
    N_Or_Else                         : Node_Kind renames
-     Sinfo.Nodes.N_Or_Else;
+     SN.N_Or_Else;
    N_Others_Choice                   : Node_Kind renames
-     Sinfo.Nodes.N_Others_Choice;
+     SN.N_Others_Choice;
    N_Package_Body                    : Node_Kind renames
-     Sinfo.Nodes.N_Package_Body;
+     SN.N_Package_Body;
    N_Package_Declaration             : Node_Kind renames
-     Sinfo.Nodes.N_Package_Declaration;
+     SN.N_Package_Declaration;
    N_Private_Extension_Declaration   : Node_Kind renames
-     Sinfo.Nodes.N_Private_Extension_Declaration;
+     SN.N_Private_Extension_Declaration;
    N_Private_Type_Declaration        : Node_Kind renames
-     Sinfo.Nodes.N_Private_Type_Declaration;
+     SN.N_Private_Type_Declaration;
    N_Procedure_Call_Statement        : Node_Kind renames
-     Sinfo.Nodes.N_Procedure_Call_Statement;
+     SN.N_Procedure_Call_Statement;
    N_Protected_Body                  : Node_Kind renames
-     Sinfo.Nodes.N_Protected_Body;
+     SN.N_Protected_Body;
    N_Protected_Type_Declaration      : Node_Kind renames
-     Sinfo.Nodes.N_Protected_Type_Declaration;
-   N_Pragma                          : Node_Kind renames Sinfo.Nodes.N_Pragma;
+     SN.N_Protected_Type_Declaration;
+   N_Pragma                          : Node_Kind renames SN.N_Pragma;
    N_Qualified_Expression            : Node_Kind renames
-     Sinfo.Nodes.N_Qualified_Expression;
+     SN.N_Qualified_Expression;
    N_Quantified_Expression           : Node_Kind renames
-     Sinfo.Nodes.N_Quantified_Expression;
+     SN.N_Quantified_Expression;
    N_Real_Literal                    : Node_Kind renames
-     Sinfo.Nodes.N_Real_Literal;
+     SN.N_Real_Literal;
    N_Raise_Expression                : Node_Kind renames
-     Sinfo.Nodes.N_Raise_Expression;
+     SN.N_Raise_Expression;
    N_Raise_Statement                 : Node_Kind renames
-     Sinfo.Nodes.N_Raise_Statement;
+     SN.N_Raise_Statement;
    N_Range                           : Node_Kind renames
-     Sinfo.Nodes.N_Range;
+     SN.N_Range;
    N_Selected_Component              : Node_Kind renames
-     Sinfo.Nodes.N_Selected_Component;
+     SN.N_Selected_Component;
    N_Simple_Return_Statement         : Node_Kind renames
-     Sinfo.Nodes.N_Simple_Return_Statement;
+     SN.N_Simple_Return_Statement;
    N_Slice                           : Node_Kind renames
-     Sinfo.Nodes.N_Slice;
+     SN.N_Slice;
    N_String_Literal                  : Node_Kind renames
-     Sinfo.Nodes.N_String_Literal;
+     SN.N_String_Literal;
    N_Subprogram_Declaration          : Node_Kind renames
-     Sinfo.Nodes.N_Subprogram_Declaration;
+     SN.N_Subprogram_Declaration;
    N_Subprogram_Body                 : Node_Kind renames
-     Sinfo.Nodes.N_Subprogram_Body;
+     SN.N_Subprogram_Body;
    N_Subtype_Declaration             : Node_Kind renames
-     Sinfo.Nodes.N_Subtype_Declaration;
+     SN.N_Subtype_Declaration;
    N_Subtype_Indication              : Node_Kind renames
-     Sinfo.Nodes.N_Subtype_Indication;
+     SN.N_Subtype_Indication;
    N_Target_Name                     : Node_Kind renames
-     Sinfo.Nodes.N_Target_Name;
+     SN.N_Target_Name;
    N_Task_Type_Declaration           : Node_Kind renames
-     Sinfo.Nodes.N_Task_Type_Declaration;
+     SN.N_Task_Type_Declaration;
    N_Task_Body                       : Node_Kind renames
-     Sinfo.Nodes.N_Task_Body;
+     SN.N_Task_Body;
    N_Type_Conversion                 : Node_Kind renames
-     Sinfo.Nodes.N_Type_Conversion;
+     SN.N_Type_Conversion;
    N_Unchecked_Type_Conversion       : Node_Kind renames
-     Sinfo.Nodes.N_Unchecked_Type_Conversion;
+     SN.N_Unchecked_Type_Conversion;
    N_With_Clause                     : Node_Kind renames
-     Sinfo.Nodes.N_With_Clause;
+     SN.N_With_Clause;
 
    Current_Error_Node : Node_Id renames Atree.Current_Error_Node;
 
-   function "=" (L, R : Node_Kind) return Boolean renames Sinfo.Nodes."=";
+   function "=" (L, R : Node_Kind) return Boolean renames SN."=";
 
    function Comes_From_Source (N : Node_Id) return Boolean renames
-     Sinfo.Nodes.Comes_From_Source;
+     SN.Comes_From_Source;
 
    function Enclosing_Comp_Unit_Node (N : Node_Id) return Node_Id with
      Post => No (Enclosing_Comp_Unit_Node'Result)
@@ -283,7 +317,7 @@ package SPARK_Atree is
      Atree.Is_Rewrite_Substitution;
    --  ??? As for Original_Node.
 
-   function Nkind (N : Node_Id) return Node_Kind renames Sinfo.Nodes.Nkind;
+   function Nkind (N : Node_Id) return Node_Kind renames SN.Nkind;
 
    function No (N : Node_Id) return Boolean renames Atree.No;
 
@@ -294,7 +328,7 @@ package SPARK_Atree is
 
    function Present (N : Node_Id) return Boolean renames Atree.Present;
 
-   function Sloc (N : Node_Id) return Source_Ptr renames Sinfo.Nodes.Sloc;
+   function Sloc (N : Node_Id) return Source_Ptr renames SN.Sloc;
 
    ---------------------------
    --  Abstract Syntax Tree --
@@ -342,7 +376,7 @@ package SPARK_Atree is
      Pre => Nkind (N) = N_Character_Literal;
 
    function Chars (N : Node_Id) return Name_Id with
-     Pre => Nkind (N) in Sinfo.Nodes.N_Has_Chars;
+     Pre => Nkind (N) in SN.N_Has_Chars;
 
    function Choice_List (N : Node_Id) return List_Id with
      Pre =>
@@ -399,7 +433,7 @@ package SPARK_Atree is
    function Depends_On_Discriminant (N : Node_Id) return Boolean;
 
    function Defining_Identifier (N : Node_Id) return Entity_Id renames
-     Sinfo.Nodes.Defining_Identifier;
+     SN.Defining_Identifier;
 
    function Discrete_Choices (N : Node_Id) return List_Id with
      Pre => Nkind (N) in N_Case_Expression_Alternative
@@ -416,7 +450,7 @@ package SPARK_Atree is
                        | N_Loop_Parameter_Specification;
 
    function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in Sinfo.Nodes.N_Subexpr;
+     Pre => Nkind (N) in SN.N_Subexpr;
    --  Return True if a check is needed on an expression which requires a
    --  scalar conversion. The check may be either a range check, an index
    --  check, or an overflow check.
@@ -432,7 +466,7 @@ package SPARK_Atree is
                        | N_Type_Conversion;
 
    function Do_Range_Check (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in Sinfo.Nodes.N_Subexpr;
+     Pre => Nkind (N) in SN.N_Subexpr;
 
    function Else_Actions (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_If_Expression;
@@ -460,7 +494,7 @@ package SPARK_Atree is
    --  Return the condition of the entry formal part of N
 
    function Etype (N : Node_Id) return Entity_Id with
-     Pre => Nkind (N) in Sinfo.Nodes.N_Has_Etype;
+     Pre => Nkind (N) in SN.N_Has_Etype;
 
    function Expression (N : Node_Id) return Node_Id with
      Post => No (Expression'Result)

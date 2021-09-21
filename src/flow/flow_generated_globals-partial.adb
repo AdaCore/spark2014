@@ -458,6 +458,7 @@ package body Flow_Generated_Globals.Partial is
                      --  before being stripped from there.
 
                      if Ekind (LHS) /= E_Constant
+                       or else Is_Access_Variable (Etype (LHS))
                        or else Has_Variable_Input (LHS)
                      then
                         Contr.Globals.Initializes.Proper.Insert (LHS);
@@ -471,6 +472,7 @@ package body Flow_Generated_Globals.Partial is
                      for Refined of Down_Project (LHS, FA.B_Scope) loop
 
                         if Ekind (Refined) /= E_Constant
+                          or else Is_Access_Variable (Etype (Refined))
                           or else Has_Variable_Input (Refined)
                         then
                            Contr.Globals.Initializes.Refined.Insert (Refined);
@@ -756,6 +758,7 @@ package body Flow_Generated_Globals.Partial is
          Contr.Nonblocking :=
            (if Is_Callee (E)
             then (if In_Predefined_Unit (E)
+                    and then Ekind (E) in E_Function | E_Procedure
                   then not Is_Predefined_Potentially_Blocking (E)
                   else False)
             else Meaningless);

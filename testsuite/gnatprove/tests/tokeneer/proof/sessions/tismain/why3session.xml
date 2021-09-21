@@ -1554,7 +1554,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.428">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9195"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="9167"/></proof>
   </goal>
   <goal name="def&#39;vc.429" proved="true">
   <transf name="trivial_true" proved="true" >

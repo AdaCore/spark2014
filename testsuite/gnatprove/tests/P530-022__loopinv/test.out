@@ -59,16 +59,16 @@ x86.adb:602:07: info: initialization of "Retval" proved
 x86.adb:614:07: info: initialization of "Retval" proved
 x86.adb:626:07: info: initialization of "Retval" proved
 x86.adb:644:07: info: initialization of "Mem" proved
-x86.adb:660:17: info: postcondition proved (altergo: 1 VC)
+x86.adb:660:17: info: postcondition proved (CVC4: 1 VC; altergo: 7 VC)
 x86.adb:684:23: medium: postcondition might fail, cannot prove ReadMem64(RDI_Start+(I*8)) = RAX
 x86.adb:689:31: info: assertion proved (CVC4: 2 VC)
-x86.adb:691:16: info: precondition proved (CVC4: 6 VC; altergo: 2 VC)
-x86.adb:693:36: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-x86.adb:693:36: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC)
+x86.adb:691:16: info: precondition proved (CVC4: 20 VC; Trivial: 2 VC; altergo: 16 VC)
+x86.adb:693:36: info: loop invariant initialization proved (CVC4: 8 VC; Trivial: 1 VC)
+x86.adb:693:36: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 8 VC)
 x86.adb:703:17: info: postcondition proved (CVC4: 1 VC)
 x86.adb:714:25: info: assertion proved (CVC4: 1 VC; Trivial: 2 VC; Z3: 1 VC)
-x86.adb:722:25: info: assertion proved (CVC4: 1 VC; Trivial: 2 VC; Z3: 1 VC)
-x86.adb:725:10: info: precondition proved (CVC4: 11 VC; Trivial: 4 VC; altergo: 1 VC)
+x86.adb:722:25: info: assertion proved (CVC4: 8 VC; Trivial: 2 VC; Z3: 8 VC)
+x86.adb:725:10: info: precondition proved (CVC4: 32 VC; Trivial: 6 VC; altergo: 8 VC)
 x86.adb:726:10: info: precondition proved (CVC4: 4 VC)
 x86.adb:728:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 x86.adb:728:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
@@ -266,9 +266,9 @@ x86.ads:623:14: info: postcondition proved (CVC4: 4 VC)
 x86.ads:631:06: info: data dependencies proved
 x86.ads:633:06: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
 x86.ads:662:06: info: data dependencies proved
-x86.ads:665:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:665:14: info: postcondition proved (CVC4: 8 VC)
 x86.ads:670:06: info: data dependencies proved
-x86.ads:671:14: info: postcondition proved (CVC4: 2 VC)
+x86.ads:671:14: info: postcondition proved (CVC4: 9 VC; Trivial: 1 VC)
 x86.ads:679:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:683:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:690:14: info: postcondition proved (CVC4: 3 VC)

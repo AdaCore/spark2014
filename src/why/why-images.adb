@@ -182,7 +182,7 @@ package body Why.Images is
       --
       --  BinaryDigit ::=  { 01 }
 
-      if Value = No_Uint then
+      if No (Value) then
          P (O, "?");
          return;
       end if;

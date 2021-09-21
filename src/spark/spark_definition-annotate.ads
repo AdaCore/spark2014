@@ -24,7 +24,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK_Util; use SPARK_Util;
+with Atree;       use Atree;
+with Einfo.Utils; use Einfo.Utils;
+with SPARK_Util;  use SPARK_Util;
 
 package SPARK_Definition.Annotate is
 

@@ -960,7 +960,7 @@ package body SPARK_Util is
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id)
-      return Empty_Or_Subprogram_Kind_Id
+      return Opt_Callable_Kind_Id
    is
       S : Entity_Id := Scope (E);
    begin
@@ -996,7 +996,7 @@ package body SPARK_Util is
 
    function Enclosing_Generic_Instance
      (E : Entity_Id)
-      return Empty_Or_Package_Id
+      return Opt_E_Package_Id
    is
       S : Entity_Id := Scope (E);
    begin
@@ -1020,7 +1020,7 @@ package body SPARK_Util is
    -- Enclosing_Unit --
    --------------------
 
-   function Enclosing_Unit (E : Entity_Id) return Entity_Id is
+   function Enclosing_Unit (E : Entity_Id) return Unit_Kind_Id is
       S : Entity_Id := Scope (E);
 
    begin
@@ -1529,7 +1529,7 @@ package body SPARK_Util is
 
    function Get_Initialized_Object
      (N : N_Subexpr_Id)
-      return Empty_Or_Object_Kind_Id
+      return Opt_Object_Kind_Id
    is
       Context : constant Node_Id := Unqual_Conv (Parent (N));
       --  Skip qualifications and type conversions between the aggregate and
@@ -1565,7 +1565,7 @@ package body SPARK_Util is
    procedure Get_Observed_Or_Borrowed_Info
      (Expr   : N_Subexpr_Id;
       B_Expr : out N_Subexpr_Id;
-      B_Ty   : in out Empty_Or_Type_Kind_Id)
+      B_Ty   : in out Opt_Type_Kind_Id)
    is
       function Find_Func_Call (Expr : Node_Id) return Node_Id;
       --  Search for function calls in the prefixes of Expr
@@ -1721,7 +1721,7 @@ package body SPARK_Util is
    function Get_Root_Object
      (Expr              : N_Subexpr_Id;
       Through_Traversal : Boolean := True)
-      return Empty_Or_Object_Kind_Id
+      return Opt_Object_Kind_Id
    is
       function GRO (Expr : Node_Id) return Entity_Id;
       --  Local wrapper on the actual function, to propagate the values of
@@ -2068,7 +2068,7 @@ package body SPARK_Util is
    ---------------------------------------
 
    function Is_Call_Arg_To_Predicate_Function
-     (N : Empty_Or_Subexpr_Id)
+     (N : Opt_N_Subexpr_Id)
       return Boolean
    is
      (Present (N)
@@ -2255,7 +2255,7 @@ package body SPARK_Util is
       --  here.
 
       (Ekind (E) = E_Constant and then
-         (Is_Access_Type (Etype (E)) or else Has_Variable_Input (E)))
+         (Is_Access_Variable (Etype (E)) or else Has_Variable_Input (E)))
         or else
       (Ekind (E) = E_Abstract_State and then not Is_Null_State (E)));
    --  ??? this could be further restricted basen on what may appear in
@@ -3299,7 +3299,7 @@ package body SPARK_Util is
    function Search_Component_By_Name
      (Rec  : Record_Like_Kind_Id;
       Comp : Record_Field_Kind_Id)
-      return Empty_Or_Record_Field_Kind_Id
+      return Opt_Record_Field_Kind_Id
    is
       Specific_Rec : constant Entity_Id :=
         (if Is_Class_Wide_Type (Rec)
@@ -3955,9 +3955,7 @@ package body SPARK_Util is
 
    function States_And_Objects (E : E_Package_Id) return Node_Sets.Set is
       procedure Register_Object (Obj : Entity_Id)
-        with Pre => Ekind (Obj) in E_Abstract_State
-                                 | E_Constant
-                                 | E_Variable;
+        with Pre => Ekind (Obj) in E_Constant | E_Variable;
       --  Register Obj as either a ghost or an ordinary variable
 
       procedure Traverse_Declarations (L : List_Id);
@@ -3970,7 +3968,9 @@ package body SPARK_Util is
 
       procedure Register_Object (Obj : Entity_Id) is
       begin
-         if Comes_From_Source (Obj) then
+         if Comes_From_Source (Obj)
+           and then No (Ultimate_Overlaid_Entity (Obj))
+         then
             Results.Insert (Obj);
          end if;
       end Register_Object;
@@ -4060,7 +4060,7 @@ package body SPARK_Util is
       --  states are given); however, respect the SPARK_Mode barrier.
       --
       --  Note: objects declared behind a SPARK_Mode => Off barrier might
-      --  sitll leak into flow analysis if they come from the frontend-cross
+      --  still leak into flow analysis if they come from the frontend-cross
       --  references, but then users should properly annotate their package.
 
       Traverse_Declarations (Visible_Declarations (Pkg_Spec));
@@ -4068,7 +4068,7 @@ package body SPARK_Util is
       if Present (Get_Pragma (E, Pragma_Abstract_State)) then
          if Has_Non_Null_Abstract_State (E) then
             for State of Iter (Abstract_States (E)) loop
-               Register_Object (State);
+               Results.Insert (State);
             end loop;
          end if;
       elsif Private_Spec_In_SPARK (E) then

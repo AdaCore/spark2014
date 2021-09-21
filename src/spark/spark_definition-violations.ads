@@ -26,6 +26,7 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
+with Atree;                           use Atree;
 with Opt;                             use Opt;
 
 private package SPARK_Definition.Violations is

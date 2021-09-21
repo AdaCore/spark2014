@@ -516,7 +516,7 @@ package body Why.Gen.Names is
    --------------------------
 
    function Guard_Predicate_Name
-     (E                      : Entity_Id;
+     (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
       Is_Access_Subp_Wrapper : Boolean := False)
       return W_Identifier_Id
@@ -612,7 +612,7 @@ package body Why.Gen.Names is
    -------------------------
 
    function Logic_Function_Name
-     (E                      : Entity_Id;
+     (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
       Is_Access_Subp_Wrapper : Boolean := False)
       return W_Identifier_Id

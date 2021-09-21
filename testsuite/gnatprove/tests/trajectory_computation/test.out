@@ -164,7 +164,7 @@ complex_trajectory.ads:36:50: info: float overflow check proved (Trivial)
 complex_trajectory.ads:36:58: info: float overflow check proved (Trivial)
 complex_trajectory.ads:44:32: info: initialization of "Average" proved
 complex_trajectory.ads:45:09: info: data dependencies proved
-complex_trajectory.ads:48:19: medium: postcondition might fail
+complex_trajectory.ads:48:19: medium: postcondition might fail, cannot prove Speed in Low_Bound (N) .. High_Bound (N)
 complex_trajectory.ads:48:32: info: range check proved (CVC4: 2 VC)
 complex_trajectory_overflow.adb:14:46: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:14:46: info: range check proved (Trivial)

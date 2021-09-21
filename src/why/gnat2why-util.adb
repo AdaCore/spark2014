@@ -32,6 +32,7 @@ with Flow_Utility;
 with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with Lib;
 with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
@@ -143,9 +144,10 @@ package body Gnat2Why.Util is
       -- Insert --
       ------------
 
-      procedure Insert (M : in out Map;
-                        E : Entity_Id;
-                        W : Item_Type)
+      procedure Insert
+        (M : in out Map;
+         E :        Entity_Id;
+         W :        Item_Type)
       is
          Uniq_Ent : constant Entity_Id := Normalize_Entity (E);
          C        : Ent_To_Why.Cursor;
@@ -177,9 +179,11 @@ package body Gnat2Why.Util is
          end if;
       end Insert;
 
-      procedure Insert (M : in out Map;
-                        E : Entity_Name;
-                        W : Item_Type) is
+      procedure Insert
+        (M : in out Map;
+         E :        Entity_Name;
+         W :        Item_Type)
+      is
          C : Name_To_Why_Map.Cursor;
          Inserted : Boolean;
       begin
@@ -275,8 +279,8 @@ package body Gnat2Why.Util is
    -- Get_Base_Of_Type --
    ----------------------
 
-   function Get_Base_Of_Type (T : Entity_Id) return Entity_Id is
-      Ty : Entity_Id := Retysp (T);
+   function Get_Base_Of_Type (T : Type_Kind_Id) return Type_Kind_Id is
+      Ty : Type_Kind_Id := Retysp (T);
    begin
       loop
          exit when not Type_Is_Modeled_As_Base (Ty);
@@ -290,16 +294,16 @@ package body Gnat2Why.Util is
    ----------------------------
 
    procedure Get_Borrows_From_Decls
-     (Decls   : List_Id;
+     (Decls   :        List_Id;
       Borrows : in out Node_Lists.List)
    is
       Cur_Decl : Node_Id := First (Decls);
-
    begin
       while Present (Cur_Decl) loop
          if Nkind (Cur_Decl) = N_Object_Declaration then
             declare
-               E : constant Entity_Id := Defining_Identifier (Cur_Decl);
+               E : constant Constant_Or_Variable_Kind_Id :=
+                 Defining_Identifier (Cur_Decl);
             begin
                if Is_Local_Borrower (E) then
                   Borrows.Prepend (E);
@@ -315,7 +319,8 @@ package body Gnat2Why.Util is
    ---------------------------------------------
 
    function Get_Container_In_Iterator_Specification
-     (N : Node_Id) return Node_Id
+     (N : Node_Id)
+      return Node_Id
    is
       Iter : constant Node_Id := SPARK_Atree.Name (N);
    begin
@@ -328,13 +333,14 @@ package body Gnat2Why.Util is
 
    function Get_Counterexample_Labels
      (E              : Entity_Id;
-      Append_To_Name : String := "") return Symbol_Sets.Set
+      Append_To_Name : String := "")
+      return Symbol_Sets.Set
    is
       Labels : Symbol_Sets.Set;
       Model_Trace : constant Symbol_Sets.Set := Get_Model_Trace_Label
         (E, False, Append_To_Name);
 
-      E_Type : constant Entity_Id := Retysp (Etype (E));
+      E_Type : constant Type_Kind_Id := Retysp (Etype (E));
       --  Taking the full_view of the type to be able to match private
       --  type in the same way as other types because the current intended
       --  behavior is to print private types as if they were public.
@@ -592,7 +598,7 @@ package body Gnat2Why.Util is
    end Collect_Old_Parts;
 
    procedure Collect_Old_Parts
-     (L         : Node_Lists.List;
+     (L         :        Node_Lists.List;
       Old_Parts : in out Node_Sets.Set)
    is
    begin
@@ -608,7 +614,8 @@ package body Gnat2Why.Util is
    function Compute_Spec
      (Params : Transformation_Params;
       Nodes  : Node_Lists.List;
-      Domain : EW_Domain) return W_Expr_Id
+      Domain : EW_Domain)
+      return W_Expr_Id
    is
       Cur_Spec     : W_Expr_Id;
       Local_Params : Transformation_Params := Params;
@@ -648,11 +655,12 @@ package body Gnat2Why.Util is
 
    function Compute_Spec
      (Params    : Transformation_Params;
-      E         : Entity_Id;
+      E         : Callable_Kind_Id;
       Kind      : Pragma_Id;
       Domain    : EW_Domain;
       Classwide : Boolean := False;
-      Inherited : Boolean := False) return W_Expr_Id
+      Inherited : Boolean := False)
+      return W_Expr_Id
    is
       Nodes : constant Node_Lists.List :=
         Find_Contracts (E, Kind, Classwide, Inherited);
@@ -664,20 +672,21 @@ package body Gnat2Why.Util is
    -- Count_Discriminants --
    -------------------------
 
-   function Count_Discriminants (E : Entity_Id) return Natural is
+   function Count_Discriminants (E : Type_Kind_Id) return Natural is
    begin
       if not Has_Discriminants (E) then
          return 0;
       end if;
 
       declare
-         Discr : Entity_Id := First_Discriminant (E);
+         Discr : Opt_E_Discriminant_Id := First_Discriminant (E);
          Count : Natural := 0;
       begin
          while Present (Discr) loop
             Count := Count + 1;
             Next_Discriminant (Discr);
          end loop;
+
          return Count;
       end;
    end Count_Discriminants;
@@ -686,7 +695,7 @@ package body Gnat2Why.Util is
    -- Count_Why_Regular_Fields --
    ------------------------------
 
-   function Count_Why_Regular_Fields (E : Entity_Id) return Natural is
+   function Count_Why_Regular_Fields (E : Type_Kind_Id) return Natural is
       Count : Natural;
 
    begin
@@ -713,7 +722,7 @@ package body Gnat2Why.Util is
    -- Count_Why_Top_Level_Fields --
    --------------------------------
 
-   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural is
+   function Count_Why_Top_Level_Fields (E : Type_Kind_Id) return Natural is
       Count : Natural := 0;
 
    begin
@@ -751,7 +760,8 @@ package body Gnat2Why.Util is
 
    function Create_Zero_Binding
      (Vars : Why_Node_Lists.List;
-      Prog : W_Prog_Id) return W_Prog_Id
+      Prog : W_Prog_Id)
+      return W_Prog_Id
    is
       Result : W_Prog_Id := Prog;
    begin
@@ -773,9 +783,10 @@ package body Gnat2Why.Util is
 
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
-      E      : Entity_Id;
+      E      : Callable_Kind_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id
+      Domain : EW_Domain)
+      return W_Expr_Id
    is
       Conjuncts_List : Node_Lists.List :=
         Find_Contracts (E, Kind, Classwide => True);
@@ -794,8 +805,9 @@ package body Gnat2Why.Util is
 
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
-      E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id is
+      E      : Callable_Kind_Id;
+      Kind   : Pragma_Id)
+      return W_Pred_Id is
    begin
       return +Get_Dispatching_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Dispatching_Call_Contract;
@@ -806,9 +818,10 @@ package body Gnat2Why.Util is
 
    function Get_LSP_Contract
      (Params : Transformation_Params;
-      E      : Entity_Id;
+      E      : Callable_Kind_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id
+      Domain : EW_Domain)
+      return W_Expr_Id
    is
       Conjuncts_List : Node_Lists.List :=
         Find_Contracts (E, Kind, Classwide => True);
@@ -822,8 +835,9 @@ package body Gnat2Why.Util is
 
    function Get_LSP_Contract
      (Params : Transformation_Params;
-      E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id is
+      E      : Callable_Kind_Id;
+      Kind   : Pragma_Id)
+      return W_Pred_Id is
    begin
       return +Get_LSP_Contract (Params, E, Kind, EW_Pred);
    end Get_LSP_Contract;
@@ -879,7 +893,8 @@ package body Gnat2Why.Util is
    function Get_Model_Trace_Label
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False;
-      Append          : String := "") return Symbol_Sets.Set
+      Append          : String := "")
+      return Symbol_Sets.Set
    is
       S : Symbol_Sets.Set :=
        (Symbol_Sets.To_Set
@@ -910,9 +925,10 @@ package body Gnat2Why.Util is
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
-      E      : Entity_Id;
+      E      : Callable_Kind_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id
+      Domain : EW_Domain)
+      return W_Expr_Id
    is
       Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
    begin
@@ -925,8 +941,10 @@ package body Gnat2Why.Util is
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
-      E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id is
+      E      : Callable_Kind_Id;
+      Kind   : Pragma_Id)
+      return W_Pred_Id
+   is
    begin
       return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Static_Call_Contract;
@@ -935,7 +953,7 @@ package body Gnat2Why.Util is
    -- Has_Post_Axiom --
    --------------------
 
-   function Has_Post_Axiom (E : Entity_Id) return Boolean is
+   function Has_Post_Axiom (E : Callable_Kind_Id) return Boolean is
      (Ekind (E) not in E_Procedure | Entry_Kind
       and then not Has_Pragma_Volatile_Function (E)
       and then not
@@ -960,9 +978,11 @@ package body Gnat2Why.Util is
    -- Insert_Entity --
    -------------------
 
-   procedure Insert_Entity (E       : Entity_Id;
-                            Name    : W_Identifier_Id;
-                            Mutable : Boolean := False) is
+   procedure Insert_Entity
+     (E       : Entity_Id;
+      Name    : W_Identifier_Id;
+      Mutable : Boolean := False)
+   is
    begin
       Ada_Ent_To_Why.Insert (Symbol_Table, E,
                              Mk_Tmp_Item_Of_Entity (E, Name, Mutable));
@@ -981,7 +1001,7 @@ package body Gnat2Why.Util is
    -- Is_Initialized_At_Decl --
    ----------------------------
 
-   function Is_Initialized_At_Decl (Obj : Entity_Id) return Boolean is
+   function Is_Initialized_At_Decl (Obj : Object_Kind_Id) return Boolean is
    begin
       return Is_Constant_Object (Obj)
         or else Present (Expression (Enclosing_Declaration (Obj)));
@@ -993,7 +1013,7 @@ package body Gnat2Why.Util is
 
    function Is_Initialized_In_Scope
      (Obj   : Entity_Id;
-      Scope : Entity_Id)
+      Scope : Unit_Kind_Id)
       return Boolean
    is
    begin
@@ -1127,7 +1147,7 @@ package body Gnat2Why.Util is
    -- Is_Private_Intrinsic_Op --
    -----------------------------
 
-   function Is_Private_Intrinsic_Op (N : Node_Id) return Boolean
+   function Is_Private_Intrinsic_Op (N : N_Op_Id) return Boolean
    is (Ekind (Entity (N)) = E_Function
        and then Full_View_Not_In_SPARK (Etype (Right_Opnd (N)))
        and then (if Nkind (N) in N_Binary_Op then
@@ -1137,8 +1157,8 @@ package body Gnat2Why.Util is
    -- Is_Simple_Private_Type --
    ----------------------------
 
-   function Is_Simple_Private_Type (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Retysp (E);
+   function Is_Simple_Private_Type (E : Type_Kind_Id) return Boolean is
+      Ty : constant Type_Kind_Id := Retysp (E);
    begin
       return Is_Private_Type (Ty)
         and then Count_Discriminants (Ty) = 0
@@ -1149,8 +1169,8 @@ package body Gnat2Why.Util is
    -- Is_Range_Type_In_Why --
    --------------------------
 
-   function Is_Range_Type_In_Why (T : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Retysp (T);
+   function Is_Range_Type_In_Why (T : Type_Kind_Id) return Boolean is
+      Ty : constant Type_Kind_Id := Retysp (T);
    begin
       return Is_Signed_Integer_Type (Ty)
         and then not Type_Is_Modeled_As_Base (Ty);
@@ -1160,8 +1180,7 @@ package body Gnat2Why.Util is
    -- Make_Empty_Why_Section --
    ----------------------------
 
-   procedure Make_Empty_Why_Section
-     (Section : out Why_Section) is
+   procedure Make_Empty_Why_Section (Section : out Why_Section) is
    begin
       Section := Why_Node_Lists.Empty_List;
    end Make_Empty_Why_Section;
@@ -1170,8 +1189,7 @@ package body Gnat2Why.Util is
    -- Map_For_Loop_Entry --
    ------------------------
 
-   function Map_For_Loop_Entry
-     (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
+   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
    is
       use Loop_Entry_Nodes;
       C : constant Loop_Entry_Nodes.Cursor := Loop_Entry_Map.Find (Loop_Id);
@@ -1186,15 +1204,18 @@ package body Gnat2Why.Util is
    -- Name_For_Loop_Entry --
    -------------------------
 
-   function Name_For_Loop_Entry (Attr : Node_Id) return W_Identifier_Id is
+   function Name_For_Loop_Entry
+     (Attr : N_Attribute_Reference_Id)
+      return W_Identifier_Id
+   is
       function Is_Loop_Stmt (N : Node_Id) return Boolean is
         (Nkind (N) = N_Loop_Statement);
 
       function Enclosing_Loop_Stmt is new
         First_Parent_With_Property (Is_Loop_Stmt);
 
-      Arg       : constant Node_Id := First (Expressions (Attr));
-      Loop_Id   : Entity_Id;
+      Arg       : constant Opt_N_Identifier_Id := First (Expressions (Attr));
+      Loop_Id   : E_Loop_Id;
       Loop_Stmt : Node_Id;
 
    begin
@@ -1216,13 +1237,14 @@ package body Gnat2Why.Util is
    end Name_For_Loop_Entry;
 
    function Name_For_Loop_Entry
-     (Expr    : Node_Id;
-      Loop_Id : Node_Id) return W_Identifier_Id
+     (Expr    : Node_Or_Entity_Id;
+      Loop_Id : E_Loop_Id)
+      return W_Identifier_Id
    is
       Result : W_Identifier_Id;
 
       procedure Get_Name
-        (Loop_Id  : Node_Id;
+        (Loop_Id  :        Node_Id;
          Loop_Map : in out Ada_To_Why_Ident.Map);
       --  Update the mapping Loop_Map with an entry for Expr if not already
       --  present, and store the corresponding identifier in Result.
@@ -1232,7 +1254,7 @@ package body Gnat2Why.Util is
       --------------
 
       procedure Get_Name
-        (Loop_Id  : Node_Id;
+        (Loop_Id  :        Node_Id;
          Loop_Map : in out Ada_To_Why_Ident.Map)
       is
          Typ : W_Type_Id;
@@ -1377,8 +1399,8 @@ package body Gnat2Why.Util is
    -- Needs_DIC_Check_At_Decl --
    -----------------------------
 
-   function Needs_DIC_Check_At_Decl (Ty : Entity_Id) return Boolean is
-      E : constant Entity_Id := Retysp (Ty);
+   function Needs_DIC_Check_At_Decl (Ty : Type_Kind_Id) return Boolean is
+      E : constant Type_Kind_Id := Retysp (Ty);
    begin
       return May_Need_DIC_Checking (E)
 
@@ -1401,7 +1423,7 @@ package body Gnat2Why.Util is
    -- Needs_DIC_Check_At_Use --
    ----------------------------
 
-   function Needs_DIC_Check_At_Use (Ty : Entity_Id) return Boolean is
+   function Needs_DIC_Check_At_Use (Ty : Type_Kind_Id) return Boolean is
      (May_Need_DIC_Checking (Ty)
        and then not Check_DIC_At_Declaration (Ty));
 
@@ -1409,8 +1431,10 @@ package body Gnat2Why.Util is
    -- Nth_Index_Rep_Type_No_Bool --
    --------------------------------
 
-   function Nth_Index_Rep_Type_No_Bool (E : Entity_Id; Dim : Positive)
-                                        return W_Type_Id
+   function Nth_Index_Rep_Type_No_Bool
+     (E   : Array_Kind_Id;
+      Dim : Positive)
+      return W_Type_Id
    is
      (Base_Why_Type_No_Bool
         (Nth_Index_Type
@@ -1432,7 +1456,7 @@ package body Gnat2Why.Util is
    -- Type_Is_Modeled_As_Base --
    -----------------------------
 
-   function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean is
+   function Type_Is_Modeled_As_Base (T : Type_Kind_Id) return Boolean is
    begin
       return Is_Scalar_Type (T)
         and then (not Has_Static_Scalar_Subtype (T)
@@ -1443,14 +1467,17 @@ package body Gnat2Why.Util is
    -- Type_Needs_Dynamic_Invariant --
    ----------------------------------
 
-   function Type_Needs_Dynamic_Invariant (T : Entity_Id) return Boolean is
+   function Type_Needs_Dynamic_Invariant (T : Type_Kind_Id) return Boolean is
+
       function Has_Potentially_Inherited_Type_Invariants
-        (T : Entity_Id) return Boolean;
+        (T : Type_Kind_Id)
+         return Boolean;
       --  Return True if T or one of its ancestors has a type invariant
 
       function Type_Needs_Dynamic_Invariant
-        (T         : Entity_Id;
-         Top_Level : Boolean) return Boolean;
+        (T         : Type_Kind_Id;
+         Top_Level : Boolean)
+         return Boolean;
       --  Generation of dynamic invariants is slightly different when called
       --  recursively on component types of arrays or records. Top_Level should
       --  be False in recursive calls.
@@ -1464,10 +1491,11 @@ package body Gnat2Why.Util is
       -----------------------------------------------
 
       function Has_Potentially_Inherited_Type_Invariants
-        (T : Entity_Id) return Boolean
+        (T : Type_Kind_Id)
+         return Boolean
       is
-         Current : Entity_Id := T;
-         Parent  : Entity_Id;
+         Current : Type_Kind_Id := T;
+         Parent  : Type_Kind_Id;
       begin
          loop
             if Has_Invariants_In_SPARK (Current) then
@@ -1486,13 +1514,14 @@ package body Gnat2Why.Util is
       ----------------------------------
 
       function Type_Needs_Dynamic_Invariant
-        (T         : Entity_Id;
-         Top_Level : Boolean) return Boolean
+        (T         : Type_Kind_Id;
+         Top_Level : Boolean)
+         return Boolean
       is
-         Ty_Spec   : constant Entity_Id :=
+         Ty_Spec   : constant Type_Kind_Id :=
            (if Is_Class_Wide_Type (T) then Get_Specific_Type_From_Classwide (T)
             else T);
-         Ty_Ext    : constant Entity_Id := Retysp (Ty_Spec);
+         Ty_Ext    : constant Type_Kind_Id := Retysp (Ty_Spec);
 
       begin
          --  Dynamic invariant of the type itself
@@ -1563,7 +1592,7 @@ package body Gnat2Why.Util is
          then
             if Count_Discriminants (Ty_Ext) > 0 then
                declare
-                  Discr : Entity_Id := First_Discriminant (Ty_Ext);
+                  Discr : Opt_E_Discriminant_Id := First_Discriminant (Ty_Ext);
                begin
                   while Present (Discr) loop
                      if Type_Needs_Dynamic_Invariant (Etype (Discr), False)
@@ -1614,8 +1643,8 @@ package body Gnat2Why.Util is
    -- Type_Of_Node --
    ------------------
 
-   function Type_Of_Node (N : Node_Id) return Entity_Id is
-      T : constant Entity_Id :=
+   function Type_Of_Node (N : Node_Id) return Type_Kind_Id is
+      T : constant Type_Kind_Id :=
         (case Nkind (N) is
             when N_Entity =>
               (if Is_Type (N) then
@@ -1639,7 +1668,7 @@ package body Gnat2Why.Util is
    -- Use_Guard_For_Function --
    ----------------------------
 
-   function Use_Guard_For_Function (E : Entity_Id) return Boolean is
+   function Use_Guard_For_Function (E : Function_Kind_Id) return Boolean is
    begin
       return Gnat2Why_Args.Proof_Generate_Guards
 
@@ -1664,7 +1693,7 @@ package body Gnat2Why.Util is
    -- Use_Split_Form_For_Type --
    -----------------------------
 
-   function Use_Split_Form_For_Type (E : Entity_Id) return Boolean is
+   function Use_Split_Form_For_Type (E : Type_Kind_Id) return Boolean is
    begin
       return Is_Scalar_Type (Retysp (E))
         and then not Is_Standard_Boolean_Type (Retysp (E));

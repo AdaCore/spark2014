@@ -40,8 +40,8 @@ package body SPARK_Atree.Entities is
    -- Actual_Subtype --
    --------------------
 
-   function Actual_Subtype (Obj : Entity_Id) return Entity_Id renames
-     Einfo.Entities.Actual_Subtype;
+   function Actual_Subtype (Obj : Object_Kind_Id) return Opt_Type_Kind_Id is
+     (Einfo.Entities.Actual_Subtype (Obj));
 
    ---------------
    -- Alignment --
@@ -54,35 +54,35 @@ package body SPARK_Atree.Entities is
    -- Associated_Node_For_Itype --
    -------------------------------
 
-   function Associated_Node_For_Itype (Id : Entity_Id) return Node_Id renames
-     Einfo.Entities.Associated_Node_For_Itype;
+   function Associated_Node_For_Itype (Id : Type_Kind_Id) return Node_Id is
+     (Einfo.Entities.Associated_Node_For_Itype (Id));
 
    ---------------
    -- Base_Type --
    ---------------
 
-   function Base_Type (Typ : Entity_Id) return Entity_Id renames
-     Einfo.Utils.Base_Type;
+   function Base_Type (Typ : Type_Kind_Id) return Entity_Id is
+     (Einfo.Utils.Base_Type (Typ));
 
    --------------------
    -- Cloned_Subtype --
    --------------------
 
-   function Cloned_Subtype (Typ : Entity_Id) return Entity_Id renames
-     Einfo.Entities.Cloned_Subtype;
+   function Cloned_Subtype (Typ : Type_Kind_Id) return Entity_Id is
+     (Einfo.Entities.Cloned_Subtype (Typ));
 
    ----------------------
    -- Component_Clause --
    ----------------------
 
-   function Component_Clause (Obj : Entity_Id) return Node_Id is
+   function Component_Clause (Obj : Record_Field_Kind_Id) return Node_Id is
      (Einfo.Entities.Component_Clause (Obj));
 
    -------------------------
    -- Component_First_Bit --
    -------------------------
 
-   function Component_First_Bit (Obj : Entity_Id) return Uint is
+   function Component_First_Bit (Obj : Record_Field_Kind_Id) return Uint is
    begin
       if Present (Component_Clause (Obj))
         and then Opt.Ada_Version >= Opt.Ada_2005
@@ -99,7 +99,7 @@ package body SPARK_Atree.Entities is
    -- Component_Last_Bit --
    ------------------------
 
-   function Component_Last_Bit (Obj : Entity_Id) return Uint is
+   function Component_Last_Bit (Obj : Record_Field_Kind_Id) return Uint is
    begin
       if Present (Component_Clause (Obj))
         and then Opt.Ada_Version >= Opt.Ada_2005
@@ -119,7 +119,7 @@ package body SPARK_Atree.Entities is
    -- Component_Position --
    ------------------------
 
-   function Component_Position (Obj : Entity_Id) return Uint is
+   function Component_Position (Obj : Record_Field_Kind_Id) return Uint is
    begin
       if Opt.Ada_Version >= Opt.Ada_2005
         and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj))
@@ -134,21 +134,24 @@ package body SPARK_Atree.Entities is
    -- Component_Type --
    --------------------
 
-   function Component_Type (Typ : Entity_Id) return Entity_Id is
+   function Component_Type (Typ : Array_Kind_Id) return Type_Kind_Id is
      (Einfo.Entities.Component_Type (Typ));
 
    --------------------
    -- Constant_Value --
    --------------------
 
-   function Constant_Value (Obj : Entity_Id) return Node_Id renames
-     Sem_Aux.Constant_Value;
+   function Constant_Value (Obj : E_Constant_Id) return N_Subexpr_Id is
+     (Sem_Aux.Constant_Value (Obj));
 
    ------------------------------------
    -- Default_Aspect_Component_Value --
    ------------------------------------
 
-   function Default_Aspect_Component_Value (Typ : Entity_Id) return Node_Id is
+   function Default_Aspect_Component_Value
+     (Typ : Array_Kind_Id)
+      return Opt_N_Subexpr_Id
+   is
      (Einfo.Entities.Default_Aspect_Component_Value
         (SPARK_Util.Types.Base_Retysp (Typ)));
 
@@ -156,7 +159,10 @@ package body SPARK_Atree.Entities is
    -- Default_Aspect_Value --
    --------------------------
 
-   function Default_Aspect_Value (Typ : Entity_Id) return Node_Id is
+   function Default_Aspect_Value
+     (Typ : Scalar_Kind_Id)
+      return Opt_N_Subexpr_Id
+   is
      (Einfo.Entities.Default_Aspect_Value
        (SPARK_Util.Types.Base_Retysp (Typ)));
 
@@ -164,8 +170,8 @@ package body SPARK_Atree.Entities is
    -- Designates_Incomplete_Type --
    --------------------------------
 
-   function Designates_Incomplete_Type (E : Entity_Id) return Boolean is
-      Des_Ty : constant Entity_Id :=
+   function Designates_Incomplete_Type (E : Access_Kind_Id) return Boolean is
+      Des_Ty : constant Type_Kind_Id :=
         Einfo.Entities.Directly_Designated_Type (E);
    begin
       return SPARK_Util.Types.Acts_As_Incomplete_Type (Des_Ty);
@@ -175,8 +181,9 @@ package body SPARK_Atree.Entities is
    -- Directly_Designated_Type --
    ------------------------------
 
-   function Directly_Designated_Type (E : Entity_Id) return Node_Id is
-      Des_Ty : constant Entity_Id :=
+   function Directly_Designated_Type (E : Access_Kind_Id) return Type_Kind_Id
+   is
+      Des_Ty : constant Type_Kind_Id :=
         Einfo.Entities.Directly_Designated_Type (E);
    begin
       if Einfo.Utils.Is_Incomplete_Type (Des_Ty) then
@@ -190,22 +197,24 @@ package body SPARK_Atree.Entities is
    -- Discriminal_Link --
    ----------------------
 
-   function Discriminal_Link (Obj : Entity_Id) return Node_Id renames
-     Einfo.Entities.Discriminal_Link;
+   function Discriminal_Link (Obj : Object_Kind_Id) return E_Discriminant_Id is
+     (Einfo.Entities.Discriminal_Link (Obj));
 
    -----------------------------
    -- Discriminant_Constraint --
    -----------------------------
 
-   function Discriminant_Constraint (Typ : Entity_Id) return Elist_Id is
+   function Discriminant_Constraint (Typ : Type_Kind_Id) return Elist_Id is
      (Einfo.Entities.Discriminant_Constraint (Typ));
 
    --------------------------------
    -- Discriminant_Default_Value --
    --------------------------------
 
-   function Discriminant_Default_Value (Obj : Entity_Id) return Node_Id renames
-     Einfo.Entities.Discriminant_Default_Value;
+   function Discriminant_Default_Value
+     (Obj : E_Discriminant_Id)
+      return Opt_N_Subexpr_Id
+   is (Einfo.Entities.Discriminant_Default_Value (Obj));
 
    ---------------------------
    -- Enclosing_Declaration --
@@ -218,28 +227,28 @@ package body SPARK_Atree.Entities is
    -- Enclosing_Type --
    --------------------
 
-   function Enclosing_Type (Obj : Entity_Id) return Node_Id is
+   function Enclosing_Type (Obj : Entity_Id) return Type_Kind_Id is
      (Sinfo.Nodes.Scope (Obj));
 
    ---------------------
    -- Enumeration_Pos --
    ---------------------
 
-   function Enumeration_Pos (Obj : Entity_Id) return Uint is
+   function Enumeration_Pos (Obj : E_Enumeration_Literal_Id) return Uint is
      (Einfo.Entities.Enumeration_Pos (Obj));
 
    ---------------------
    -- Enumeration_Rep --
    ---------------------
 
-   function Enumeration_Rep (Obj : Entity_Id) return Uint is
+   function Enumeration_Rep (Obj : E_Enumeration_Literal_Id) return Uint is
      (Einfo.Entities.Enumeration_Rep (Obj));
 
    ------------------------
    -- First_Discriminant --
    ------------------------
 
-   function First_Discriminant (Typ : Entity_Id) return Entity_Id is
+   function First_Discriminant (Typ : Type_Kind_Id) return E_Discriminant_Id is
       Discr : Entity_Id := Sem_Aux.First_Discriminant (Typ);
    begin
       loop
@@ -257,7 +266,7 @@ package body SPARK_Atree.Entities is
    -- First_Formal --
    ------------------
 
-   function First_Formal (Subp : Entity_Id) return Entity_Id  is
+   function First_Formal (Subp : Callable_Kind_Id) return Opt_Formal_Kind_Id is
       First : Entity_Id := Einfo.Utils.First_Formal (Subp);
 
    begin
@@ -275,42 +284,47 @@ package body SPARK_Atree.Entities is
    -- First_Index --
    -----------------
 
-   function First_Index (Typ : Entity_Id) return Node_Id is
+   function First_Index (Typ : Array_Kind_Id) return Node_Id is
      (Einfo.Entities.First_Index (Typ));
 
    -------------------
    -- First_Literal --
    -------------------
 
-   function First_Literal (Typ : Entity_Id) return Entity_Id is
-     (Einfo.Entities.First_Literal (Typ));
+   function First_Literal
+     (Typ : Enumeration_Kind_Id)
+      return E_Enumeration_Literal_Id
+   is (Einfo.Entities.First_Literal (Typ));
 
    -------------------
    -- First_Subtype --
    -------------------
 
-   function First_Subtype (Typ : Entity_Id) return Entity_Id renames
-     Sem_Aux.First_Subtype;
+   function First_Subtype (Typ : Type_Kind_Id) return Entity_Id is
+     (Sem_Aux.First_Subtype (Typ));
 
    ---------------
    -- Full_View --
    ---------------
 
-   function Full_View (Obj : Entity_Id) return Entity_Id renames
-     Einfo.Entities.Full_View;
+   function Full_View (Obj : E_Constant_Id) return E_Constant_Id is
+     (Einfo.Entities.Full_View (Obj));
 
    ---------------------
    -- Get_Cursor_Type --
    ---------------------
 
-   function Get_Cursor_Type (Typ : Entity_Id) return Entity_Id renames
-     Sem_Util.Get_Cursor_Type;
+   function Get_Cursor_Type (Typ : Type_Kind_Id) return Entity_Id is
+     (Sem_Util.Get_Cursor_Type (Typ));
 
    ---------------------------
    -- Get_Enum_Lit_From_Pos --
    ---------------------------
 
-   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Node_Id
+   function Get_Enum_Lit_From_Pos
+     (Typ : Enumeration_Kind_Id;
+      P   : Uint)
+      return Node_Id
    is (Sem_Util.Get_Enum_Lit_From_Pos (Typ, P, No_Location));
 
    ---------------------------------
@@ -318,10 +332,10 @@ package body SPARK_Atree.Entities is
    ---------------------------------
 
    function Get_Iterable_Type_Primitive
-     (Typ : Entity_Id;
+     (Typ : Type_Kind_Id;
       Nam : Name_Id)
-      return Entity_Id
-   renames Sem_Util.Get_Iterable_Type_Primitive;
+      return E_Function_Id
+   is (Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam));
 
    ------------------
    -- Get_Rep_Item --
@@ -336,7 +350,8 @@ package body SPARK_Atree.Entities is
    -- Get_User_Defined_Eq --
    -------------------------
 
-   function Get_User_Defined_Eq (Typ : Entity_Id) return Entity_Id is
+   function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id
+   is
       Eq : constant Entity_Id := Sem_Util.Get_User_Defined_Eq (Typ);
    begin
       if Present (Eq)
@@ -352,21 +367,21 @@ package body SPARK_Atree.Entities is
    -- Has_Attach_Handler --
    ------------------------
 
-   function Has_Attach_Handler (Typ : Entity_Id) return Boolean renames
-     Einfo.Utils.Has_Attach_Handler;
+   function Has_Attach_Handler (Typ : E_Protected_Type_Id) return Boolean is
+     (Einfo.Utils.Has_Attach_Handler (Typ));
 
    ----------------------------
    -- Has_Controlling_Result --
    ----------------------------
 
-   function Has_Controlling_Result (Subp : Entity_Id) return Boolean renames
-     Einfo.Entities.Has_Controlling_Result;
+   function Has_Controlling_Result (Subp : E_Function_Id) return Boolean is
+     (Einfo.Entities.Has_Controlling_Result (Subp));
 
    ------------------------
    -- Has_Default_Aspect --
    ------------------------
 
-   function Has_Default_Aspect (Typ : Entity_Id) return Boolean is
+   function Has_Default_Aspect (Typ : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Has_Default_Aspect (SPARK_Util.Types.Base_Retysp (Typ)));
 
    ---------------------------------
@@ -374,21 +389,22 @@ package body SPARK_Atree.Entities is
    ---------------------------------
 
    function Has_Defaulted_Discriminants
-     (Typ : Entity_Id) return Boolean
-      renames Sem_Util.Has_Defaulted_Discriminants;
+     (Typ : Type_Kind_Id)
+      return Boolean
+   is (Sem_Util.Has_Defaulted_Discriminants (Typ));
 
    -------------
    -- Has_DIC --
    -------------
 
-   function Has_DIC (Typ : Entity_Id) return Boolean renames
-     Einfo.Utils.Has_DIC;
+   function Has_DIC (Typ : Type_Kind_Id) return Boolean is
+     (Einfo.Utils.Has_DIC (Typ));
 
    -----------------------
    -- Has_Discriminants --
    -----------------------
 
-   function Has_Discriminants (Typ : Entity_Id) return Boolean is
+   function Has_Discriminants (Typ : Type_Kind_Id) return Boolean is
    begin
       if not Einfo.Entities.Has_Discriminants (Typ)
         and then not Einfo.Entities.Has_Unknown_Discriminants (Typ)
@@ -413,28 +429,33 @@ package body SPARK_Atree.Entities is
    -- Has_Enumeration_Rep_Clause --
    --------------------------------
 
-   function Has_Enumeration_Rep_Clause (Typ : Entity_Id) return Boolean is
-     (Einfo.Entities.Has_Enumeration_Rep_Clause (Typ));
+   function Has_Enumeration_Rep_Clause
+     (Typ : Enumeration_Kind_Id)
+      return Boolean
+   is (Einfo.Entities.Has_Enumeration_Rep_Clause (Typ));
 
    ---------------------------
    -- Has_Interrupt_Handler --
    ---------------------------
 
-   function Has_Interrupt_Handler (Typ : Entity_Id) return Boolean renames
-     Einfo.Utils.Has_Interrupt_Handler;
+   function Has_Interrupt_Handler (Typ : E_Protected_Type_Id) return Boolean is
+     (Einfo.Utils.Has_Interrupt_Handler (Typ));
 
    -----------------
    -- Has_Own_DIC --
    -----------------
 
-   function Has_Own_DIC (Typ : Entity_Id) return Boolean is
+   function Has_Own_DIC (Typ : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Has_Own_DIC (Typ));
 
    ----------------------------------
    -- Has_Pragma_Volatile_Function --
    ----------------------------------
 
-   function Has_Pragma_Volatile_Function (Subp : Entity_Id) return Boolean is
+   function Has_Pragma_Volatile_Function
+     (Subp : Callable_Kind_Id)
+      return Boolean
+   is
      ((Ekind (Subp) = E_Function
        and then Sem_Util.Is_Unchecked_Conversion_Instance (Subp)
        and then Sem_Util.Has_Effectively_Volatile_Profile (Subp))
@@ -445,21 +466,21 @@ package body SPARK_Atree.Entities is
    -- Has_Predicates --
    --------------------
 
-   function Has_Predicates (Typ : Entity_Id) return Boolean renames
-     Einfo.Entities.Has_Predicates;
+   function Has_Predicates (Typ : Type_Kind_Id) return Boolean is
+     (Einfo.Entities.Has_Predicates (Typ));
 
    -------------------------
    -- Invariant_Procedure --
    -------------------------
 
-   function Invariant_Procedure (Typ : Entity_Id) return Entity_Id renames
-     Einfo.Utils.Invariant_Procedure;
+   function Invariant_Procedure (Typ : Type_Kind_Id) return Opt_E_Procedure_Id
+   is (Einfo.Utils.Invariant_Procedure (Typ));
 
    -------------------------------
    -- Is_Access_Subprogram_Type --
    -------------------------------
 
-   function Is_Access_Subprogram_Type (E : Entity_Id) return Boolean is
+   function Is_Access_Subprogram_Type (E : Type_Kind_Id) return Boolean is
      (Einfo.Utils.Is_Access_Type (E)
         and then
       Einfo.Entities.Ekind
@@ -470,36 +491,36 @@ package body SPARK_Atree.Entities is
    -- Is_Actual_Subtype --
    -----------------------
 
-   function Is_Actual_Subtype (Typ : Entity_Id) return Boolean is
+   function Is_Actual_Subtype (Typ : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Is_Actual_Subtype (Typ));
 
    ----------------
    -- Is_Aliased --
    ----------------
 
-   function Is_Aliased (Obj : Entity_Id) return Boolean renames
-     Einfo.Entities.Is_Aliased;
+   function Is_Aliased (Obj : E_In_Parameter_Id) return Boolean is
+     (Einfo.Entities.Is_Aliased (Obj));
 
    ------------------
    -- Is_Base_Type --
    ------------------
 
-   function Is_Base_Type (Typ : Entity_Id) return Boolean renames
-     Einfo.Utils.Is_Base_Type;
+   function Is_Base_Type (Typ : Type_Kind_Id) return Boolean is
+     (Einfo.Utils.Is_Base_Type (Typ));
 
    ------------------------
    -- Is_Class_Wide_Type --
    ------------------------
 
-   function Is_Class_Wide_Type (Typ : Entity_Id) return Boolean renames
-     Einfo.Utils.Is_Class_Wide_Type;
+   function Is_Class_Wide_Type (Typ : Type_Kind_Id) return Boolean is
+     (Einfo.Utils.Is_Class_Wide_Type (Typ));
 
    --------------------
    -- Is_Constrained --
    --------------------
 
-   function Is_Constrained (Typ : Entity_Id) return Boolean renames
-     Einfo.Entities.Is_Constrained;
+   function Is_Constrained (Typ : Type_Kind_Id) return Boolean is
+     (Einfo.Entities.Is_Constrained (Typ));
 
    --------------------
    -- Is_Entity_Name --
@@ -513,16 +534,17 @@ package body SPARK_Atree.Entities is
    ------------------------------------------
 
    function Is_Expression_Function_Or_Completion
-     (Subp : Entity_Id)
+     (Subp : Callable_Kind_Id)
       return Boolean
-      renames Sem_Util.Is_Expression_Function_Or_Completion;
+   is (Sem_Util.Is_Expression_Function_Or_Completion (Subp));
 
    ----------------------------------------
    -- Is_Fixed_Lower_Bound_Array_Subtype --
    ----------------------------------------
 
    function Is_Fixed_Lower_Bound_Array_Subtype
-     (Typ : Entity_Id) return Boolean
+     (Typ : Type_Kind_Id)
+      return Boolean
    is (Einfo.Entities.Is_Fixed_Lower_Bound_Array_Subtype (Typ));
 
    ----------------------------------------
@@ -530,58 +552,64 @@ package body SPARK_Atree.Entities is
    ----------------------------------------
 
    function Is_Fixed_Lower_Bound_Index_Subtype
-     (Typ : Entity_Id) return Boolean
+     (Typ : Type_Kind_Id)
+      return Boolean
    is (Einfo.Entities.Is_Fixed_Lower_Bound_Index_Subtype (Typ));
 
    ---------------------
    -- Is_Limited_View --
    ---------------------
 
-   function Is_Limited_View (Typ : Entity_Id) return Boolean renames
-     Sem_Aux.Is_Limited_View;
+   function Is_Limited_View (Typ : Type_Kind_Id) return Boolean is
+     (Sem_Aux.Is_Limited_View (Typ));
 
    ---------------------------
    -- Is_Predicate_Function --
    ---------------------------
 
-   function Is_Predicate_Function (Subp : Entity_Id) return Boolean renames
-     Einfo.Entities.Is_Predicate_Function;
+   function Is_Predicate_Function (Subp : Subprogram_Kind_Id) return Boolean is
+     (Einfo.Entities.Is_Predicate_Function (Subp));
 
    --------------------
    -- Is_Tagged_Type --
    --------------------
 
-   function Is_Tagged_Type (Typ : Entity_Id) return Boolean renames
-     Einfo.Entities.Is_Tagged_Type;
+   function Is_Tagged_Type (Typ : Type_Kind_Id) return Boolean is
+     (Einfo.Entities.Is_Tagged_Type (Typ));
 
    --------------------------------------
    -- Is_Unchecked_Conversion_Instance --
    --------------------------------------
 
-   function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
-     renames Sem_Util.Is_Unchecked_Conversion_Instance;
+   function Is_Unchecked_Conversion_Instance
+     (Subp : Callable_Kind_Id)
+      return Boolean
+   is (Sem_Util.Is_Unchecked_Conversion_Instance (Subp));
 
    ------------------------
    -- Is_Unchecked_Union --
    ------------------------
 
-   function Is_Unchecked_Union (E : Entity_Id) return Boolean is
+   function Is_Unchecked_Union (E : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Is_Unchecked_Union (SPARK_Util.Types.Base_Retysp (E)));
 
    --------------------------------------
    -- Is_Visible_Dispatching_Operation --
    --------------------------------------
 
-   function Is_Visible_Dispatching_Operation (Subp : Entity_Id) return Boolean
-   is (Einfo.Entities.Is_Dispatching_Operation (Subp)
+   function Is_Visible_Dispatching_Operation
+     (Subp : Callable_Kind_Id)
+      return Boolean
+   is
+     (Einfo.Entities.Is_Dispatching_Operation (Subp)
        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (Subp)));
 
    ------------------------
    -- Is_Wrapper_Package --
    ------------------------
 
-   function Is_Wrapper_Package (Pack : Entity_Id) return Boolean renames
-     Einfo.Utils.Is_Wrapper_Package;
+   function Is_Wrapper_Package (Pack : E_Package_Id) return Boolean is
+     (Einfo.Utils.Is_Wrapper_Package (Pack));
 
    ---------------------
    -- Known_Alignment --
@@ -594,7 +622,10 @@ package body SPARK_Atree.Entities is
    -- Known_Component_First_Bit --
    -------------------------------
 
-   function Known_Component_First_Bit (Obj : Entity_Id) return Boolean is
+   function Known_Component_First_Bit
+     (Obj : Record_Field_Kind_Id)
+      return Boolean
+   is
      ((Present (Component_Clause (Obj))
        and then Opt.Ada_Version >= Opt.Ada_2005
        and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj)))
@@ -604,7 +635,10 @@ package body SPARK_Atree.Entities is
    -- Known_Component_Last_Bit --
    ------------------------------
 
-   function Known_Component_Last_Bit (Obj : Entity_Id) return Boolean is
+   function Known_Component_Last_Bit
+     (Obj : Record_Field_Kind_Id)
+      return Boolean
+   is
      ((Present (Component_Clause (Obj))
        and then Opt.Ada_Version >= Opt.Ada_2005
        and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj)))
@@ -615,8 +649,8 @@ package body SPARK_Atree.Entities is
    -- Known_Object_Size --
    -----------------------
 
-   function Known_Object_Size (Typ : Entity_Id) return Boolean renames
-     Einfo.Utils.Known_Esize;
+   function Known_Object_Size (Typ : Type_Kind_Id) return Boolean is
+     (Einfo.Utils.Known_Esize (Typ));
 
    ----------------------
    -- Known_To_Precede --
@@ -692,7 +726,7 @@ package body SPARK_Atree.Entities is
    -- Max_Size_Of_Img_Attr --
    --------------------------
 
-   function Max_Size_Of_Img_Attr (Typ : Entity_Id) return Uint is
+   function Max_Size_Of_Img_Attr (Typ : Scalar_Kind_Id) return Uint is
       function Max_Size_Of_Integer (Size : Int) return Int is
         (Interfaces.Unsigned_64'Image (2 ** Natural (Size))'Length + 1);
       --  Maximal size of integer values (positive values are prefixed by a
@@ -713,7 +747,7 @@ package body SPARK_Atree.Entities is
    -- Modular_Size --
    ------------------
 
-   function Modular_Size (Typ : Entity_Id) return Uint is
+   function Modular_Size (Typ : Modular_Integer_Kind_Id) return Uint is
       M : constant Uint := Modulus (Typ);
    begin
       if M <= UI_Expon (Uint_2, Uint_8) then
@@ -735,14 +769,14 @@ package body SPARK_Atree.Entities is
    -- Modulus --
    -------------
 
-   function Modulus (Typ : Entity_Id) return Uint is
+   function Modulus (Typ : Modular_Integer_Kind_Id) return Uint is
      (Einfo.Entities.Modulus (SPARK_Util.Types.Base_Retysp (Typ)));
 
    -----------------------
    -- Next_Discriminant --
    -----------------------
 
-   procedure Next_Discriminant (Discr : in out Entity_Id) is
+   procedure Next_Discriminant (Discr : in out Opt_E_Discriminant_Id) is
    begin
       loop
          Einfo.Utils.Next_Discriminant (Discr);
@@ -755,7 +789,7 @@ package body SPARK_Atree.Entities is
    -- Next_Formal --
    -----------------
 
-   function Next_Formal (Formal : Entity_Id) return Entity_Id is
+   function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id is
       Next : Entity_Id := Einfo.Utils.Next_Formal (Formal);
 
    begin
@@ -769,7 +803,7 @@ package body SPARK_Atree.Entities is
       return Next;
    end Next_Formal;
 
-   procedure Next_Formal (Formal : in out Entity_Id) is
+   procedure Next_Formal (Formal : in out Opt_Formal_Kind_Id) is
    begin
       Einfo.Utils.Next_Formal (Formal);
 
@@ -786,28 +820,28 @@ package body SPARK_Atree.Entities is
    -- No_Binary_Modulus --
    -----------------------
 
-   function Non_Binary_Modulus (Typ : Entity_Id) return Boolean is
-     (Einfo.Entities.Non_Binary_Modulus (SPARK_Util.Types.Base_Retysp (Typ)));
+   function Non_Binary_Modulus (Typ : Modular_Integer_Kind_Id) return Boolean
+   is (Einfo.Entities.Non_Binary_Modulus (SPARK_Util.Types.Base_Retysp (Typ)));
 
    ------------------
    -- Null_Present --
    ------------------
 
-   function Null_Present (Subp : Entity_Id) return Boolean is
+   function Null_Present (Subp : E_Procedure_Id) return Boolean is
      (Sinfo.Nodes.Null_Present (Sem_Aux.Subprogram_Specification (Subp)));
 
    -----------------------
    -- Number_Dimensions --
    -----------------------
 
-   function Number_Dimensions (Typ : Entity_Id) return Pos renames
-     Einfo.Utils.Number_Dimensions;
+   function Number_Dimensions (Typ : Array_Kind_Id) return Pos is
+     (Einfo.Utils.Number_Dimensions (Typ));
 
    --------------------
    -- Number_Formals --
    --------------------
 
-   function Number_Formals (Subp : Entity_Id) return Natural is
+   function Number_Formals (Subp : Callable_Kind_Id) return Natural is
       N      : Natural := 0;
       Formal : Entity_Id := Einfo.Utils.First_Formal (Subp);
    begin
@@ -826,85 +860,98 @@ package body SPARK_Atree.Entities is
    -- Object_Size --
    -----------------
 
-   function Object_Size (Typ : Entity_Id) return Uint renames
-     Einfo.Entities.Esize;
+   function Object_Size (Typ : Type_Kind_Id) return Uint is
+     (Einfo.Entities.Esize (Typ));
 
    -------------------------
    -- Package_Body_Entity --
    -------------------------
 
-   function Package_Body_Entity (Pack : Node_Id) return Entity_Id is
-      (Sem_Util.Defining_Entity (Pack));
+   function Package_Body_Entity
+     (Pack : N_Package_Body_Id)
+      return E_Package_Body_Id
+   is (Sem_Util.Defining_Entity (Pack));
 
    ------------------
    -- Package_Spec --
    ------------------
 
-   function Package_Spec (Pack : Entity_Id) return Node_Id renames
-     Sem_Aux.Package_Spec;
+   function Package_Spec
+     (Pack : E_Package_Id)
+      return N_Package_Specification_Id
+   is (Sem_Aux.Package_Spec (Pack));
 
    ---------------------------
    -- Partial_DIC_Procedure --
    ---------------------------
 
-   function Partial_DIC_Procedure (Typ : Entity_Id) return Entity_Id renames
-     Einfo.Utils.Partial_DIC_Procedure;
+   function Partial_DIC_Procedure
+     (Typ : Type_Kind_Id)
+      return Opt_E_Procedure_Id
+   is (Einfo.Utils.Partial_DIC_Procedure (Typ));
 
    ------------------------
    -- Predicate_Function --
    ------------------------
 
-   function Predicate_Function (Typ : Entity_Id) return Entity_Id renames
-     Einfo.Utils.Predicate_Function;
+   function Predicate_Function (Typ : Type_Kind_Id) return Opt_E_Function_Id is
+     (Einfo.Utils.Predicate_Function (Typ));
 
    -------------------------------------
    -- Private_Declarations_Of_Package --
    -------------------------------------
 
-   function Private_Declarations_Of_Package (Pack : Entity_Id) return List_Id
-   is (Sinfo.Nodes.Private_Declarations
-        (Sem_Aux.Package_Specification (Pack)));
+   function Private_Declarations_Of_Package
+     (Pack : E_Package_Id)
+      return List_Id
+   is
+     (Sinfo.Nodes.Private_Declarations (Sem_Aux.Package_Specification (Pack)));
 
    -----------------------
    -- Return_Applies_To --
    -----------------------
 
-   function Return_Applies_To (E : Entity_Id) return Node_Id renames
-     Einfo.Entities.Return_Applies_To;
+   function Return_Applies_To (E : E_Return_Statement_Id) return Node_Id is
+     (Einfo.Entities.Return_Applies_To (E));
 
    -----------------
    -- Small_Value --
    -----------------
 
-   function Small_Value (Typ : Entity_Id) return Ureal is
+   function Small_Value (Typ : Fixed_Point_Kind_Id) return Ureal is
      (Einfo.Entities.Small_Value (Typ));
 
    -----------------------
    -- Stored_Constraint --
    -----------------------
 
-   function Stored_Constraint (Typ : Entity_Id) return Elist_Id renames
-     Einfo.Entities.Stored_Constraint;
+   function Stored_Constraint (Typ : Type_Kind_Id) return Elist_Id is
+     (Einfo.Entities.Stored_Constraint (Typ));
 
    ----------------------------
    --  String_Literal_Length --
    ----------------------------
 
-   function String_Literal_Length (Typ : Entity_Id) return Uint is
-     (Einfo.Entities.String_Literal_Length (Typ));
+   function String_Literal_Length
+     (Typ : E_String_Literal_Subtype_Id)
+      return Uint
+   is (Einfo.Entities.String_Literal_Length (Typ));
 
    -------------------------------
    --  String_Literal_Low_Bound --
    -------------------------------
 
-   function String_Literal_Low_Bound (Typ : Entity_Id) return Node_Id is
-     (Einfo.Entities.String_Literal_Low_Bound (Typ));
+   function String_Literal_Low_Bound
+     (Typ : E_String_Literal_Subtype_Id)
+      return Node_Id
+   is (Einfo.Entities.String_Literal_Low_Bound (Typ));
 
    -------------------------------
    --  Subprogram_Specification --
    -------------------------------
 
-   function Subprogram_Specification (Subp : Entity_Id) return Node_Id is
+   function Subprogram_Specification (Subp : Callable_Kind_Id) return Node_Id
+   is
      (if Einfo.Utils.Is_Entry (Subp) then Atree.Parent (Subp)
       else Sem_Aux.Subprogram_Specification (Subp));
 
@@ -912,14 +959,14 @@ package body SPARK_Atree.Entities is
    -- Type_High_Bound --
    ---------------------
 
-   function Type_High_Bound (Typ : Entity_Id) return Node_Id renames
-     Einfo.Utils.Type_High_Bound;
+   function Type_High_Bound (Typ : Scalar_Kind_Id) return Opt_N_Subexpr_Id is
+     (Einfo.Utils.Type_High_Bound (Typ));
 
    --------------------
    -- Type_Low_Bound --
    --------------------
 
-   function Type_Low_Bound (Typ : Entity_Id) return Node_Id is
+   function Type_Low_Bound (Typ : Entity_Id) return Opt_N_Subexpr_Id is
      (if Ekind (Typ) = E_String_Literal_Subtype then
            String_Literal_Low_Bound (Typ)
       else Einfo.Utils.Type_Low_Bound (Typ));
@@ -928,7 +975,7 @@ package body SPARK_Atree.Entities is
    -- Ultimate_Ancestor --
    -----------------------
 
-   function Ultimate_Ancestor (Typ : Entity_Id) return Entity_Id is
+   function Ultimate_Ancestor (Typ : Type_Kind_Id) return Type_Kind_Id is
      (Sem_Aux.First_Subtype
        (Einfo.Utils.Root_Type (Einfo.Utils.Base_Type (Typ))));
 
@@ -936,8 +983,11 @@ package body SPARK_Atree.Entities is
    -- Visible_Declarations_Of_Package --
    -------------------------------------
 
-   function Visible_Declarations_Of_Package (Pack : Entity_Id) return List_Id
-   is (Sinfo.Nodes.Visible_Declarations
+   function Visible_Declarations_Of_Package
+     (Pack : E_Package_Id)
+      return List_Id
+   is
+     (Sinfo.Nodes.Visible_Declarations
         (Sem_Aux.Package_Specification (Pack)));
 
 end SPARK_Atree.Entities;

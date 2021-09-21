@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;      use Ada.Containers;
 with Flow_Classwide;      use Flow_Classwide;
 with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Utility;        use Flow_Utility;
@@ -298,18 +299,20 @@ package body Flow.Analysis.Antialiasing is
       --     * A (12)      ->  A
       --     * Wibble (X)  ->  X
 
-      procedure Find_Root (N : in out Node_Id; Depth : out Natural)
-      with Pre  => Is_Interesting (N),
-           Post => Is_Root (Nkind (N))
-                   or else not Is_Interesting (N);
-      --  Calls Down_One_Level until we find an identifier. For example:
-      --    * R.X.Y       ->  R
+      function Path_To_Root (N : Node_Id) return Node_Lists.List
+        with Pre  => Is_Interesting (N),
+        Post => Is_Root (Nkind (Original_Node
+                         (Path_To_Root'Result.First_Element)))
+        or else not Is_Interesting (Path_To_Root'Result.First_Element);
+      --  Calls Down_One_Level, prepending the result of each such call to the
+      --  returned list, until we find an identifier. For example:
+      --    * R.X.Y       ->  [R, R.X, R.X.Y]
       --    * A (12)      ->  A
       --    * Wibble (X)  ->  X
-      --
-      --  The Depth is how many times the Down_One_Level was called; see the
-      --  Up_Ignoring_Conversions (which is the opposite of this routine) for
-      --  why this parameter is needed.
+      --  When calling Down_One_Level, we inspect the original version of the
+      --  node if it has been rewritten for proof.
+      --  The root is the first element in the returned list.
+      --  Up_Ignoring_Conversions is the opposite of this routine.
 
       function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
       is (case Nkind (N) is
@@ -319,24 +322,12 @@ package body Flow.Analysis.Antialiasing is
       --  Returns the entity attached to N, which is either an identifier of an
       --  actual or a defining entity of a global.
 
-      procedure Up_Ignoring_Conversions
-        (N     : in out Node_Id;
-         Depth : in out Natural)
-      with Pre  => Is_Interesting (N) and then Depth > 0,
-           Post => Is_Interesting (N) and then Depth < Depth'Old;
-      --  Goes up the parse tree (calling Parent), but not higher than Depth.
-      --  If we find a type conversion of some kind we keep going.
-      --
-      --  The Depth parameter is needed, because if we are analysing a
-      --  procedure call that has been inlined for proof, then the actual might
-      --  have been relocated under an object renaming declaration. In this
-      --  case, a sequence of calls to Parent will miss the top node of the
-      --  actual parameter (luckily, all but the final call to Parent appear
-      --  reliable). See comments for Original_Node and Relocate_Node.
-      --
-      --  ??? Perhaps it would be more reliable to not call Parent at all and
-      --  detect aliasing similar to how (a simpler version) is implemented in
-      --  the frontend; see Refer_Same_Object for that.
+      procedure Up_Ignoring_Conversions (L : in out Node_Lists.List)
+      with Pre  => Is_Interesting (L.First_Element) and then L.Length > 1,
+        Post => Is_Interesting (L.First_Element)
+        and then L.Length < L'Old.Length;
+      --  Goes up the parse tree; usually only one level but if we find a type
+      --  conversion of some kind we keep going.
 
       --------------------
       -- Down_One_Level --
@@ -366,37 +357,48 @@ package body Flow.Analysis.Antialiasing is
          end case;
       end Down_One_Level;
 
-      ---------------
-      -- Find_Root --
-      ---------------
+      ------------------
+      -- Path_To_Root --
+      ------------------
 
-      procedure Find_Root (N : in out Node_Id; Depth : out Natural) is
+      function Path_To_Root (N : Node_Id) return Node_Lists.List is
+         L       : Node_Lists.List;
+         Context : Node_Id := N;
       begin
-         Depth := 0;
-         while Is_Interesting (N) and then not Is_Root (Nkind (N)) loop
-            N     := Down_One_Level (N);
-            Depth := Depth + 1;
+         L.Prepend (N);
+         while Is_Interesting (L.First_Element) loop
+            Context := L.First_Element;
+            --  If the context element is not the root, keep going down. Note
+            --  that rewritten nodes may appear "root-like" when the original
+            --  form of the node is not.
+            if not Is_Root (Nkind (Context)) then
+               L.Prepend (Down_One_Level (Context));
+            elsif not Is_Root (Nkind (Original_Node (Context))) then
+               L.Prepend (Down_One_Level (Original_Node (Context)));
+            else
+               exit; -- Found the root
+            end if;
          end loop;
-      end Find_Root;
+         return L;
+      end Path_To_Root;
 
       -----------------------------
       -- Up_Ignoring_Conversions --
       -----------------------------
 
       procedure Up_Ignoring_Conversions
-        (N     : in out Node_Id;
-         Depth : in out Natural)
+        (L : in out Node_Lists.List)
       is
       begin
          loop
-            N := Parent (N);
-            Depth := Depth - 1;
-            exit when not Is_Conversion (N) or else Depth = 0;
+            L.Delete_First;
+            exit when not Is_Conversion (Original_Node (L.First_Element))
+              or else L.Length = 1;
          end loop;
       end Up_Ignoring_Conversions;
 
-      Ptr_A, Ptr_B      : Node_Id;
-      Depth_A, Depth_B  : Natural;
+      List_A, List_B : Node_Lists.List;
+      Head_A, Head_B : Node_Id;
 
       Definitive_Result : Boolean := True;
 
@@ -448,22 +450,21 @@ package body Flow.Analysis.Antialiasing is
       --  Ok, so both nodes might potentially alias. We now need to work out
       --  the root nodes of each expression.
 
-      Ptr_A := A;
-      Find_Root (Ptr_A, Depth_A);
-
-      Ptr_B := B;
-      Find_Root (Ptr_B, Depth_B);
+      List_A := Path_To_Root (A);
+      List_B := Path_To_Root (B);
+      Head_A := List_A.First_Element; --  Root node of A
+      Head_B := List_B.First_Element; --  Root node of B
 
       Trace_Two_Nodes (Text1     => "   -> root of A: ",
-                       Node1     => Ptr_A,
+                       Node1     => Head_A,
                        Text2     => "   -> root of B: ",
-                       Node2     => Ptr_B,
+                       Node2     => Head_B,
                        Two_Lines => True);
 
-      if not Is_Root (Nkind (Ptr_A)) then
+      if not Is_Root (Nkind (Head_A)) then
          Trace_Line ("   -> root of A is not interesting");
          return Impossible;
-      elsif not Is_Root (Nkind (Ptr_B)) then
+      elsif not Is_Root (Nkind (Head_B)) then
          Trace_Line ("   -> root of B is not interesting");
          return Impossible;
       end if;
@@ -471,7 +472,7 @@ package body Flow.Analysis.Antialiasing is
       --  A quick sanity check. If the root nodes refer to different entities
       --  then we cannot have aliasing.
 
-      if Entity (Ptr_A) /= Get_Root_Entity (Ptr_B) then
+      if Entity (Head_A) /= Get_Root_Entity (Head_B) then
          Trace_Line ("   -> different root entities");
          return Impossible;
       end if;
@@ -482,9 +483,9 @@ package body Flow.Analysis.Antialiasing is
       --  unsynchronised or it is synchronised only due to being constant after
       --  elaboration.
 
-      if Is_Synchronized_Object (Entity (Ptr_A))
-        and then (Ekind (Entity (Ptr_A)) /= E_Variable
-                  or else not Is_Constant_After_Elaboration (Entity (Ptr_A)))
+      if Is_Synchronized_Object (Entity (Head_A))
+        and then (Ekind (Entity (Head_A)) /= E_Variable
+                  or else not Is_Constant_After_Elaboration (Entity (Head_A)))
       then
          Trace_Line ("   -> non-interfering objects");
          return Impossible;
@@ -500,13 +501,13 @@ package body Flow.Analysis.Antialiasing is
       --     * A,              Wibble (A)  --  illegal
       --  etc.
       --
-      --  Also, we know that Is_Root holds for Ptr_A and Ptr_B, which means
-      --  that we are dealing with an identifier and not an unchecked
-      --  conversion, etc.
+      --  Also, we know that Is_Root holds for the head elements of List_A and
+      --  List_B, which means that we are dealing with an identifier and not an
+      --  unchecked conversion, etc.
 
       Trace_Line ("   -> same root entity");
 
-      while Depth_A > 0 and then Depth_B > 0 loop
+      while List_A.Length > 1 and then List_B.Length > 1 loop
 
          --  Go up the tree one level. If we hit an unchecked conversion or
          --  type conversion we 'ignore' it. For example:
@@ -514,16 +515,18 @@ package body Flow.Analysis.Antialiasing is
          --     * R    ->  Wibble (R).X
          --     * R    ->  Wibble (R)    (if Wibble (R) is the top)
 
-         Up_Ignoring_Conversions (Ptr_A, Depth_A);
-         Up_Ignoring_Conversions (Ptr_B, Depth_B);
+         Up_Ignoring_Conversions (List_A);
+         Up_Ignoring_Conversions (List_B);
 
-         pragma Assert (not Is_Root (Nkind (Ptr_A)));
-         pragma Assert (not Is_Root (Nkind (Ptr_B)));
+         Head_A := List_A.First_Element;
+         Head_B := List_B.First_Element;
+         pragma Assert (not Is_Root (Nkind (Head_A)));
+         pragma Assert (not Is_Root (Nkind (Head_B)));
 
          --  Check if we are dealing with any type conversion *now*. If so, we
          --  have aliasing.
 
-         if Is_Conversion (Ptr_A) or else Is_Conversion (Ptr_B) then
+         if Is_Conversion (Head_A) or else Is_Conversion (Head_B) then
             Trace_Line ("   -> identical tree followed by conversion");
             return Definite_Aliasing;
          end if;
@@ -531,7 +534,7 @@ package body Flow.Analysis.Antialiasing is
          --  We have now gone up one level on each side. We need to check the
          --  two fields.
 
-         if Nkind (Ptr_A) = Nkind (Ptr_B) then
+         if Nkind (Head_A) = Nkind (Head_B) then
 
             --  We definitely need to check this. Some possibilities:
             --     R.X         <-->  R.X.Y
@@ -540,14 +543,14 @@ package body Flow.Analysis.Antialiasing is
             --     A (1 .. 3)  <-->  A (K .. L)
 
             Trace_Two_Nodes (Text1 => "   -> checking same structure at ",
-                             Node1 => Ptr_A,
+                             Node1 => Head_A,
                              Text2 => " <--> ",
-                             Node2 => Ptr_B);
+                             Node2 => Head_B);
 
-            case Nkind (Ptr_A) is
+            case Nkind (Head_A) is
                when N_Selected_Component =>
-                  if Entity (Selector_Name (Ptr_A)) /=
-                     Entity (Selector_Name (Ptr_B))
+                  if Entity (Selector_Name (Head_A)) /=
+                     Entity (Selector_Name (Head_B))
                   then
                      Trace_Line ("   -> selectors differ");
                      return No_Aliasing;
@@ -555,8 +558,8 @@ package body Flow.Analysis.Antialiasing is
 
                when N_Indexed_Component =>
                   declare
-                     Index_A : Node_Id := First (Expressions (Ptr_A));
-                     Index_B : Node_Id := First (Expressions (Ptr_B));
+                     Index_A : Node_Id := First (Expressions (Head_A));
+                     Index_B : Node_Id := First (Expressions (Head_B));
                   begin
                      while Present (Index_A) loop
                         pragma Assert (Present (Index_B));
@@ -584,14 +587,14 @@ package body Flow.Analysis.Antialiasing is
                   end;
 
                when N_Slice =>
-                  case Check_Ranges (Discrete_Range (Ptr_A),
-                                     Discrete_Range (Ptr_B)) is
+                  case Check_Ranges (Discrete_Range (Head_A),
+                                     Discrete_Range (Head_B)) is
                      when No_Aliasing =>
                         Trace_Two_Nodes
                           (Text1 => "   -> slice ",
-                           Node1 => Discrete_Range (Ptr_A),
+                           Node1 => Discrete_Range (Head_A),
                            Text2 => " and ",
-                           Node2 => Discrete_Range (Ptr_B),
+                           Node2 => Discrete_Range (Head_B),
                            Text3 => " statically distinct");
                         return No_Aliasing;
 
@@ -609,10 +612,10 @@ package body Flow.Analysis.Antialiasing is
                   raise Why.Unexpected_Node;
             end case;
 
-         elsif (Nkind (Ptr_A) = N_Slice and then
-                  Nkind (Ptr_B) = N_Indexed_Component) or else
-           (Nkind (Ptr_A) = N_Indexed_Component and then
-              Nkind (Ptr_B) = N_Slice)
+         elsif (Nkind (Head_A) = N_Slice and then
+                  Nkind (Head_B) = N_Indexed_Component) or else
+           (Nkind (Head_A) = N_Indexed_Component and then
+              Nkind (Head_B) = N_Slice)
          then
 
             --  We also need to check this. One possibility:

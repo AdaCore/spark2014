@@ -50,16 +50,15 @@ package SPARK_Util is
    --  Utility types related to entities and nodes  --
    ---------------------------------------------------
 
-   subtype N_Ignored_In_SPARK is Node_Kind with
+   subtype N_Ignored_In_Marking is Node_Kind with
      Predicate =>
-       N_Ignored_In_SPARK in
+       N_Ignored_In_Marking in
            N_Call_Marker
          | N_Exception_Declaration
          | N_Freeze_Entity
          | N_Freeze_Generic_Entity
          | N_Implicit_Label_Declaration
          | N_Incomplete_Type_Declaration
-         | N_Label
          | N_Null_Statement
          | N_Number_Declaration
          | N_Representation_Clause
@@ -82,11 +81,19 @@ package SPARK_Util is
          | N_Subprogram_Instantiation
          | N_Generic_Subprogram_Declaration
          | N_Generic_Package_Declaration
-         | N_Body_Stub
          | N_Use_Package_Clause
          | N_Use_Type_Clause
          | N_Validate_Unchecked_Conversion
          | N_Variable_Reference_Marker;
+
+   --  After marking, ignore also labels (used in marking for targets of goto),
+   --  and body stubs (used in marking to reach out to the proper bodies).
+   subtype N_Ignored_In_SPARK is Node_Kind with
+     Predicate =>
+       N_Ignored_In_SPARK in
+           N_Ignored_In_Marking
+         | N_Label
+         | N_Body_Stub;
 
    subtype N_Entity_Body is Node_Kind
      with Static_Predicate => N_Entity_Body in N_Proper_Body | N_Entry_Body;
@@ -223,24 +230,17 @@ package SPARK_Util is
 
    function Enclosing_Generic_Instance
      (E : Entity_Id)
-      return Empty_Or_Package_Id;
+      return Opt_E_Package_Id;
    --  @param E any entity
    --  @return entity of the enclosing generic instance package, if any
 
-   function Enclosing_Unit (E : Entity_Id) return Entity_Id with
-     Post => Ekind (Enclosing_Unit'Result) in E_Function
-                                            | E_Procedure
-                                            | Entry_Kind
-                                            | E_Protected_Type
-                                            | E_Task_Type
-                                            | E_Package
-                                            | E_Subprogram_Type;
+   function Enclosing_Unit (E : Entity_Id) return Unit_Kind_Id;
    --  Returns the entity of the package, subprogram, entry, protected type,
    --  task type, or subprogram type enclosing E.
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id)
-      return Empty_Or_Subprogram_Kind_Id;
+      return Opt_Callable_Kind_Id;
    --  Returns the entity of the first subprogram or entry enclosing E. Returns
    --  Empty if there is no such subprogram or if something else than a package
    --  (a concurrent type or a block statement) is encountered while going up
@@ -469,7 +469,7 @@ package SPARK_Util is
    function Search_Component_By_Name
      (Rec  : Record_Like_Kind_Id;
       Comp : Record_Field_Kind_Id)
-      return Empty_Or_Record_Field_Kind_Id;
+      return Opt_Record_Field_Kind_Id;
    --  Given a record type entity and a component/discriminant entity, search
    --  in Rec a component/discriminant entity with the same name and the same
    --  original record component. Returns Empty if no such component is found.
@@ -549,7 +549,7 @@ package SPARK_Util is
 
    function Get_Initialized_Object
      (N : N_Subexpr_Id)
-      return Empty_Or_Object_Kind_Id;
+      return Opt_Object_Kind_Id;
    --  @param N any expression node
    --  @return if N is used to initialize an object, return this object. Return
    --      Empty otherwise. This is used to get a stable name for aggregates
@@ -661,7 +661,7 @@ package SPARK_Util is
    procedure Get_Observed_Or_Borrowed_Info
      (Expr   : N_Subexpr_Id;
       B_Expr : out N_Subexpr_Id;
-      B_Ty   : in out Empty_Or_Type_Kind_Id)
+      B_Ty   : in out Opt_Type_Kind_Id)
    with Pre => Is_Path_Expression (Expr);
    --  Compute both the expression being borrowed/observed when borrowing or
    --  observing Expr and the type used for this borrow/observe.
@@ -686,7 +686,7 @@ package SPARK_Util is
    function Get_Root_Object
      (Expr              : N_Subexpr_Id;
       Through_Traversal : Boolean := True)
-      return Empty_Or_Object_Kind_Id
+      return Opt_Object_Kind_Id
    with
      Pre => Is_Path_Expression (Expr);
    --  Return the root of the path expression Expr, or Empty for an allocator,
@@ -713,7 +713,7 @@ package SPARK_Util is
    --     type conversion is an out or in out actual parameter.
 
    function Is_Call_Arg_To_Predicate_Function
-     (N : Empty_Or_Subexpr_Id)
+     (N : Opt_N_Subexpr_Id)
       return Boolean;
    --  @param N expression node or Empty
    --  @return True iff N is the argument to a call to a frontend-generated

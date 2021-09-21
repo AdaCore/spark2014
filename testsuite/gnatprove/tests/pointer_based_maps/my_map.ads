@@ -12,7 +12,8 @@ package My_Map with SPARK_Mode is
    function Model_Contains (M : access constant Map; K : Positive) return Boolean
    with
      Ghost,
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Terminating),
+     Post     => True;
 
    function Model_Value (M : access constant Map; K : Positive) return Integer
    with
