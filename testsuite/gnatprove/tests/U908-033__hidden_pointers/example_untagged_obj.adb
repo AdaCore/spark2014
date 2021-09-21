@@ -14,6 +14,7 @@ procedure Example_Untagged_Obj with SPARK_Mode is
    X1 : Pointer;
    X2 : Pointer;
    X3 : Pointer;
+   X1_B : Pointer;
 
    procedure Swap (X, Y : in out Pointer) with
      Post => X = Y'Old and Y = X'Old
@@ -41,9 +42,12 @@ begin
    Create (Object'(F => 1), X1);
    Create (Object'(F => 2), X2);
    Create (Object'(F => 3), X3);
+   X1_B := X1; --  X1_B is an alias of X1
+   pragma Assert (Deref (X1_B).F = 1);
    Swap (X1, X2);
    Swap_Val (X1, X2);
    pragma Assert (Deref (X1).F = 1);
    pragma Assert (Deref (X2).F = 2);
    pragma Assert (Deref (X3).F = 3);
+   pragma Assert (Deref (X1_B).F = 2); --  X1_B is now an alias of X2
 end Example_Untagged_Obj;
