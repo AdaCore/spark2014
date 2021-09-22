@@ -872,7 +872,7 @@ added to all SPARK subprograms to partially model their effects. In
 particular:
 
 * Effects of subprograms from ``Ada.Strings.Maps``, as specified in the Ada RM
-  (A.4.2), are fully modeled through pre/postconditions.
+  (A.4.2), are fully modeled through pre- and postconditions.
 
 * Effects of most subprograms from ``Ada.Strings.Fixed`` are fully
   modeled through pre- and postconditions. Preconditions protect from
@@ -884,14 +884,29 @@ particular:
   ``Insert``, ``Overwrite``, ``Delete``, ``Trim``, ``Head`` and
   ``Tail``.
 
-* Effects of subprograms from ``Ada.Strings.Bounded`` and ``Ada.Strings.Unbounded``
-  are partially modeled. Postconditions state properties on the Length of the
-  strings only and not on their content. Preconditions protect from exceptions
-  specified in the Ada RM (A.4.4, A.4.5).
+  Under their respective preconditions, the implementation of subprograms from
+  ``Ada.Strings.Fixed`` is proven with |GNATprove| to be free from run-time
+  errors and to comply with their postcondition, except for procedure ``Move``
+  and those procedures based on ``Move``: ``Delete``, ``Head``, ``Insert``,
+  ``Overwrite``, ``Replace_Slice``, ``Tail`` and ``Trim`` (but the
+  corresponding functions are proved).
 
-* Type ``String_Access`` and procedure ``Free`` in ``Ada.Strings.Unbounded`` are not
-  in SPARK and cannot be denoted in SPARK program text, unless they are hidden
-  from GNATprove, due to the use of a general access type.
+* Effects of subprograms from ``Ada.Strings.Bounded`` are fully modeled through
+  pre- and postconditions. Preconditions protect from exceptions specified in
+  the Ada RM (A.4.4).
+
+  Under their respective preconditions, the implementation of subprograms from
+  ``Ada.Strings.Bounded`` is proven with |GNATprove| to be free from run-time
+  errors, and except for subprograms ``Insert``, ``Overwrite`` and
+  ``Replace_Slice``, to comply with their postcondition.
+
+* Effects of subprograms from ``Ada.Strings.Unbounded`` are partially
+  modeled. Postconditions state properties on the Length of the strings only
+  and not on their content. Preconditions protect from exceptions specified in
+  the Ada RM (A.4.5).
+
+* The procedure ``Free`` in ``Ada.Strings.Unbounded`` is not in SPARK as it
+  could be wrongly called by the user on a pointer to the stack.
 
 Inside these packages, ``Translation_Error`` (in ``Ada.Strings.Maps``),
 ``Index_Error`` and ``Pattern_Error`` are fully handled.
@@ -899,13 +914,13 @@ Inside these packages, ``Translation_Error`` (in ``Ada.Strings.Maps``),
 ``Length_Error`` is fully handled in ``Ada.Strings.Bounded`` and
 ``Ada.Strings.Unbounded`` and in functions from ``Ada.Strings.Fixed``.
 
-However, in the procedures ``Move``, ``Replace_Slice``, ``Insert``,
-``Overwrite``, ``Head`` and ``Tail`` from ``Ada.Strings.Fixed``,
-``Length_Error`` may be raised under certain conditions. This is related to
-the call to ``Move``. Each call of these subprograms can be preceded with a
-pragma Assert to check that the actual parameters are consistent, when
-parameter ``Drop`` is set to ``Error`` and the ``Source`` is longer than
-``Target``.
+However, in the procedure ``Move`` and the procedures based on it except for
+``Delete`` and ``Trim`` (``Head``, ``Insert``, ``Overwrite``, ``Replace_Slice``
+and ``Tail``) from ``Ada.Strings.Fixed``, ``Length_Error`` may be raised under
+certain conditions. This is related to the call to ``Move``. Each call of these
+subprograms can be preceded with a pragma Assert to check that the actual
+parameters are consistent, when parameter ``Drop`` is set to ``Error`` and the
+``Source`` is longer than ``Target``.
 
  .. code-block:: ada
 

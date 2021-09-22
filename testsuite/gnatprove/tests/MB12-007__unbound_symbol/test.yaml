@@ -1,0 +1,3 @@
+comment: "colibri disabled because test becomes too slow"
+prove_all:
+  prover: ["cvc4", "z3", "altergo"]

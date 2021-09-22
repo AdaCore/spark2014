@@ -7017,7 +7017,7 @@ package body Flow.Control_Flow_Graph is
             Spec_N := Package_Specification (FA.Spec_Entity);
             Body_N :=
               (if Entity_Body_In_SPARK (FA.Spec_Entity)
-               then Package_Body (Body_Entity (FA.Spec_Entity))
+               then Package_Body (FA.Spec_Entity)
                else Spec_N);
 
       end case;

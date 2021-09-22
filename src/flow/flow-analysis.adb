@@ -1517,11 +1517,11 @@ package body Flow.Analysis is
         (V   : Flow_Graphs.Vertex_Id;
          Atr : V_Attributes)
          return Boolean
-      with Pre => Atr.Is_Parameter;
+      with Pre => Atr.Is_Parameter or else Atr.Is_Global_Parameter;
       --  Returns True iff vertex V (whose attributes are Atr) represents
-      --  an assignment to an OUT mode parameter via a subprogram call and
-      --  there is an explicit "Depends => (... => null)" contract for this
-      --  parameter.
+      --  an assignment to an OUT mode parameter or a global Output via a
+      --  subprogram call and there is an explicit
+      --  "Depends => (... => null)" contract for this parameter.
 
       function Other_Field_Is_Effective (V : Flow_Graphs.Vertex_Id)
                                          return Boolean;
@@ -1806,10 +1806,7 @@ package body Flow.Analysis is
 
                   begin
                      if Atr.Is_Parameter or Atr.Is_Global_Parameter then
-                        if not
-                          (Atr.Is_Parameter
-                           and then Null_Dependency_Assignment (V, Atr))
-                        then
+                        if not Null_Dependency_Assignment (V, Atr) then
                            declare
                               Target : constant Flow_Id :=
                                 (if Atr.Is_Parameter

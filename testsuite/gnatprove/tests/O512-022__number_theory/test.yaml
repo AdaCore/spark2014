@@ -1,0 +1,3 @@
+comment: disable colibri due to spurious output U716-002
+prove_all:
+  prover: ["cvc4", "altergo", "z3"]

@@ -4,4 +4,4 @@ comment: "this test calls a prover which is correctly configured but whose execu
 
 prove_all:
   prover: ["plop"]
-  opt: ["--why3-conf=test.conf"]
+  opt: ["--why3-conf=test.conf", "--debug-prover-errors"]

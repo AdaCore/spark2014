@@ -1,0 +1,1 @@
+p.ads:5:04: low: initialization of "C" must be mentioned in the Initializes contract of "P" (SPARK RM 7.1.5(9))

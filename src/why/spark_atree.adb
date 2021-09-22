@@ -153,13 +153,6 @@ package body SPARK_Atree is
    function Condition_Actions (N : Node_Id) return List_Id is
      (Sinfo.Nodes.Condition_Actions (N));
 
-   ----------------------
-   -- Constant_Present --
-   ----------------------
-
-   function Constant_Present (N : Node_Id) return Boolean is
-     (Sinfo.Nodes.Constant_Present (N));
-
    -------------------
    -- Context_Items --
    -------------------
@@ -452,26 +445,12 @@ package body SPARK_Atree is
    function Expressions (N : Node_Id) return List_Id is
      (Sinfo.Nodes.Expressions (N));
 
-   ---------------
-   -- First_Bit --
-   ---------------
-
-   function First_Bit (N : Node_Id) return Node_Id is
-     (Sinfo.Nodes.First_Bit (N));
-
    -------------------------------
    -- From_Aspect_Specification --
    -------------------------------
 
    function From_Aspect_Specification (N : Node_Id) return Boolean is
      (Sinfo.Nodes.From_Aspect_Specification (N));
-
-   -----------------------------------
-   -- From_Real_Range_Specification --
-   -----------------------------------
-
-   function From_Real_Range_Specification (N : Node_Id) return Boolean is
-     (Nkind (Atree.Parent (N)) = Sinfo.Nodes.N_Real_Range_Specification);
 
    ----------------------
    -- Get_Address_Expr --
@@ -548,15 +527,6 @@ package body SPARK_Atree is
 
       if Nkind (N) = N_Allocator then
          Par := N;
-      end if;
-
-      --  In proof, we use the original node for unchecked conversions
-      --  coming from source.
-
-      if Nkind (Par) = N_Unchecked_Type_Conversion
-        and then Comes_From_Source (Par)
-      then
-         Par := Original_Node (Par);
       end if;
 
       --  Set the appropriate entity in Check_Type giving the bounds for the
@@ -696,14 +666,6 @@ package body SPARK_Atree is
                        Etype (Einfo.Entities.First_Index
                               (Sem_Util.Unique_Entity (Prefix_Type)));
                   end if;
-
-               --  for iterated component associations, N might be either
-               --  in the expression or in the choice.
-
-               elsif Nkind (Par) = N_Iterated_Component_Association
-                 and then Expression (Par) /= N
-               then
-                  Check_Type := Etype (Defining_Identifier (Par));
 
                --  must be a regular record aggregate
 
@@ -1103,27 +1065,6 @@ package body SPARK_Atree is
    function Is_Iterator_Over_Array (N : Node_Id) return Boolean renames
      Sem_Util.Is_Iterator_Over_Array;
 
-   --------------------------------
-   -- Is_Locally_Defined_In_Loop --
-   --------------------------------
-
-   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean is
-      Stmt : Node_Id := Atree.Parent (N);
-   begin
-      while Present (Stmt) loop
-         if Nkind (Stmt) = N_Loop_Statement then
-            return True;
-
-         elsif Sem_Util.Is_Body_Or_Package_Declaration (Stmt) then
-            return False;
-         end if;
-
-         Stmt := Atree.Parent (Stmt);
-      end loop;
-
-      return False;
-   end Is_Locally_Defined_In_Loop;
-
    -----------------------------
    -- Is_OK_Static_Expression --
    -----------------------------
@@ -1196,7 +1137,7 @@ package body SPARK_Atree is
             end if;
 
          when others =>
-            return False;
+            raise Program_Error;
       end case;
    end Is_Type_Renaming;
 
@@ -1234,13 +1175,6 @@ package body SPARK_Atree is
 
    function Itype (N : Node_Id) return Entity_Id is
      (Sinfo.Nodes.Itype (N));
-
-   --------------
-   -- Last_Bit --
-   --------------
-
-   function Last_Bit (N : Node_Id) return Node_Id is
-     (Sinfo.Nodes.Last_Bit (N));
 
    ---------------
    -- Left_Opnd --
@@ -1290,13 +1224,6 @@ package body SPARK_Atree is
 
    function Of_Present (N : Node_Id) return Boolean is
      (Sinfo.Nodes.Of_Present (N));
-
-   ------------------------------
-   -- Parameter_Specifications --
-   ------------------------------
-
-   function Parameter_Specifications (N : Node_Id) return List_Id is
-     (Sinfo.Nodes.Parameter_Specifications (N));
 
    ----------------------------------
    -- Pragma_Argument_Associations --

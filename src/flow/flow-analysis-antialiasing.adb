@@ -25,12 +25,14 @@ with Ada.Containers;      use Ada.Containers;
 with Flow_Classwide;      use Flow_Classwide;
 with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Utility;        use Flow_Utility;
+with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Output;              use Output;
 with Sem_Aux;             use Sem_Aux;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo.Utils;         use Sinfo.Utils;
+with Snames;              use Snames;
 with Sprint;              use Sprint;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
@@ -228,9 +230,6 @@ package body Flow.Analysis.Antialiasing is
                --  Selected components
                | N_Selected_Component
 
-               --  Attribute references (the only interesting one is 'Access
-               --  which is not in SPARK).
-
                --  Type conversion
                | N_Qualified_Expression
                | N_Type_Conversion
@@ -238,6 +237,16 @@ package body Flow.Analysis.Antialiasing is
                | N_Unchecked_Type_Conversion
             =>
                return True;
+
+            --  The only interesting attribute references is 'Access but it is
+            --  not yet supported by the borrow checker, so we are only seeing
+            --  access-to-subprogram values here.
+
+            when N_Attribute_Reference =>
+               pragma Assert
+                 (if Attribute_Name (N) = Name_Access
+                  then Is_Subprogram (Entity (Prefix (N))));
+               return False;
 
             --  Detect calls to instances of unchecked conversion. Other
             --  function calls are not interesting, including those returning
@@ -300,25 +309,30 @@ package body Flow.Analysis.Antialiasing is
       --     * Wibble (X)  ->  X
 
       function Path_To_Root (N : Node_Id) return Node_Lists.List
-        with Pre  => Is_Interesting (N),
-        Post => Is_Root (Nkind (Original_Node
-                         (Path_To_Root'Result.First_Element)))
-        or else not Is_Interesting (Path_To_Root'Result.First_Element);
+      with Pre  => Nkind (N) in N_Defining_Identifier | N_Subexpr,
+           Post => Path_To_Root'Result.Is_Empty
+                     or else
+                   Is_Root (Nkind (Path_To_Root'Result.First_Element));
       --  Calls Down_One_Level, prepending the result of each such call to the
       --  returned list, until we find an identifier. For example:
       --    * R.X.Y       ->  [R, R.X, R.X.Y]
       --    * A (12)      ->  A
       --    * Wibble (X)  ->  X
       --  When calling Down_One_Level, we inspect the original version of the
-      --  node if it has been rewritten for proof.
-      --  The root is the first element in the returned list.
+      --  node if it has been inlined-for-proof.
+      --  If the parameter names an object, then the result starts with the
+      --  root object; otherwise, the returned list is empty.
       --  Up_Ignoring_Conversions is the opposite of this routine.
+
+      function Root_Count (Path : Node_Lists.List) return Natural with Ghost;
+      --  Returns the number of root nodes on the path
 
       function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
       is (case Nkind (N) is
              when N_Defining_Identifier => N,
              when others => Entity (N))
-      with Pre => Is_Root (Nkind (N));
+      with Pre  => Is_Root (Nkind (N)),
+           Post => Is_Object (Get_Root_Entity'Result);
       --  Returns the entity attached to N, which is either an identifier of an
       --  actual or a defining entity of a global.
 
@@ -362,25 +376,83 @@ package body Flow.Analysis.Antialiasing is
       ------------------
 
       function Path_To_Root (N : Node_Id) return Node_Lists.List is
-         L       : Node_Lists.List;
-         Context : Node_Id := N;
+         Path    : Node_Lists.List;
+         Context : N_Subexpr_Id;
       begin
-         L.Prepend (N);
-         while Is_Interesting (L.First_Element) loop
-            Context := L.First_Element;
-            --  If the context element is not the root, keep going down. Note
-            --  that rewritten nodes may appear "root-like" when the original
-            --  form of the node is not.
-            if not Is_Root (Nkind (Context)) then
-               L.Prepend (Down_One_Level (Context));
-            elsif not Is_Root (Nkind (Original_Node (Context))) then
-               L.Prepend (Down_One_Level (Original_Node (Context)));
+         --  If we are dealing with a global parameter, then return a list with
+         --  its entity.
+
+         if Nkind (N) = N_Defining_Identifier then
+            Path.Prepend (N);
+            return Path;
+         end if;
+
+         --  Otherwise find the root object of the actual parameter expression
+
+         Context := N;
+
+         loop
+            --  The root object will appear as an identifier
+
+            if Nkind (Context) in N_Identifier | N_Expanded_Name then
+
+               --  For objects created by inlining-for-proof switch to their
+               --  original expression and continue.
+
+               if Is_Rewrite_Substitution (Context) then
+                  Context := Original_Node (Context);
+
+               --  For ordinary objects just prepend them to the result and we
+               --  are done.
+
+               else
+                  Path.Prepend (Context);
+                  return Path;
+               end if;
+
+            --  Add name components to the path
+
+            elsif Is_Interesting (Context) then
+               Path.Prepend (Context);
+               Context := Down_One_Level (Context);
+
+            --  Other subexpressions are not object names, so terminate
+
             else
-               exit; -- Found the root
+               return Node_Lists.Empty_List;
             end if;
          end loop;
-         return L;
       end Path_To_Root;
+
+      ----------------
+      -- Root_Count --
+      ----------------
+
+      function Root_Count (Path : Node_Lists.List) return Natural is
+         Count : Natural := 0;
+      begin
+         --  If the path represents a global parameter, it will consist of a
+         --  single N_Defining_Identifier node.
+
+         if Nkind (Path.First_Element) = N_Defining_Identifier then
+            pragma Assert (Path.Length = 1);
+            return 1;
+         end if;
+
+         --  Otherwise it is a sequence starting from an (expanded) name
+
+         pragma Assert
+           (Nkind (Path.First_Element) in N_Identifier | N_Expanded_Name);
+
+         for Node of Path loop
+            if Is_Root (Nkind (Node)) then
+               Count := Count + 1;
+            else
+               pragma Assert (Is_Interesting (Node));
+            end if;
+         end loop;
+         return Count;
+      end Root_Count;
 
       -----------------------------
       -- Up_Ignoring_Conversions --
@@ -397,6 +469,8 @@ package body Flow.Analysis.Antialiasing is
          end loop;
       end Up_Ignoring_Conversions;
 
+      --  Local variables
+
       List_A, List_B : Node_Lists.List;
       Head_A, Head_B : Node_Id;
 
@@ -409,17 +483,6 @@ package body Flow.Analysis.Antialiasing is
                        Node1 => A,
                        Text2 => " <--> ",
                        Node2 => B);
-
-      --  First we check if either of the nodes is interesting as
-      --  non-interesting nodes cannot introduce aliasing.
-
-      if not Is_Interesting (A) then
-         Trace_Line ("   -> A is not interesting");
-         return Impossible;
-      elsif not Is_Interesting (B) then
-         Trace_Line ("   -> B is not interesting");
-         return Impossible;
-      end if;
 
       --  Now check the cases involving immutable formal parameters from the
       --  SPARK RM 6.4.2(3).
@@ -444,6 +507,9 @@ package body Flow.Analysis.Antialiasing is
          then
             Trace_Line ("   -> B does not require aa checking");
             return Impossible;
+         elsif No (Formal_B) and then Ekind (B) = E_Abstract_State then
+            Trace_Line ("   -> B is an abstract state");
+            return Impossible;
          end if;
       end;
 
@@ -452,6 +518,17 @@ package body Flow.Analysis.Antialiasing is
 
       List_A := Path_To_Root (A);
       List_B := Path_To_Root (B);
+
+      --  Aliasing requires both parameters to name an object
+
+      if List_A.Is_Empty then
+         Trace_Line ("   -> A is not interesting");
+         return Impossible;
+      elsif List_B.Is_Empty then
+         Trace_Line ("   -> B is not interesting");
+         return Impossible;
+      end if;
+
       Head_A := List_A.First_Element; --  Root node of A
       Head_B := List_B.First_Element; --  Root node of B
 
@@ -461,13 +538,8 @@ package body Flow.Analysis.Antialiasing is
                        Node2     => Head_B,
                        Two_Lines => True);
 
-      if not Is_Root (Nkind (Head_A)) then
-         Trace_Line ("   -> root of A is not interesting");
-         return Impossible;
-      elsif not Is_Root (Nkind (Head_B)) then
-         Trace_Line ("   -> root of B is not interesting");
-         return Impossible;
-      end if;
+      pragma Assert (Root_Count (List_A) = 1);
+      pragma Assert (Root_Count (List_B) = 1);
 
       --  A quick sanity check. If the root nodes refer to different entities
       --  then we cannot have aliasing.

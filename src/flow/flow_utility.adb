@@ -142,8 +142,10 @@ package body Flow_Utility is
    -- Classwide_Pre_Post --
    ------------------------
 
-   function Classwide_Pre_Post (E : Entity_Id; Contract : Pragma_Id)
-                                return Node_Lists.List
+   function Classwide_Pre_Post
+     (E        : Entity_Id;
+      Contract : Pragma_Id)
+      return Node_Lists.List
    is (Find_Contracts (E         => E,
                        Name      => Contract,
                        Classwide => not Present (Overridden_Operation (E)),
@@ -157,8 +159,9 @@ package body Flow_Utility is
    -- Add_Loop_Writes --
    ---------------------
 
-   procedure Add_Loop_Writes (Loop_E : Entity_Id;
-                              Writes : Flow_Id_Sets.Set)
+   procedure Add_Loop_Writes
+     (Loop_E : Entity_Id;
+      Writes : Flow_Id_Sets.Set)
    is
    begin
       pragma Assert (not Loop_Info_Frozen);
@@ -205,8 +208,7 @@ package body Flow_Utility is
       -- Proc --
       ----------
 
-      function Proc (N : Node_Id) return Traverse_Result
-      is
+      function Proc (N : Node_Id) return Traverse_Result is
          P : Node_Id;
       begin
          case Nkind (N) is
@@ -700,7 +702,7 @@ package body Flow_Utility is
    --------------------------------------
 
    procedure Get_Assignment_Target_Properties
-     (N                  : Node_Id;
+     (N                  :     Node_Id;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
       Map_Root           : out Flow_Id;
@@ -798,11 +800,11 @@ package body Flow_Utility is
    -----------------
 
    procedure Get_Depends
-     (Subprogram           : Entity_Id;
-      Scope                : Flow_Scope;
-      Classwide            : Boolean;
+     (Subprogram           :     Runnable_Kind_Id;
+      Scope                :     Flow_Scope;
+      Classwide            :     Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals : Boolean := True)
+      Use_Computed_Globals :     Boolean := True)
    is
       pragma Unreferenced (Classwide);
       --  For now we assume classwide globals are the same as the actual
@@ -1043,9 +1045,10 @@ package body Flow_Utility is
    -- Get_Functions --
    -------------------
 
-   function Get_Functions (N                  : Node_Id;
-                           Include_Predicates : Boolean)
-                           return Node_Sets.Set
+   function Get_Functions
+     (N                  : Node_Id;
+      Include_Predicates : Boolean)
+      return Node_Sets.Set
    is
       Funcs  : Node_Sets.Set := Node_Sets.Empty_Set;
       Unused : Tasking_Info;
@@ -1076,8 +1079,9 @@ package body Flow_Utility is
                                                  | Name_Output
                                                  | Name_Proof_In;
 
-      procedure Process (The_Mode   : Global_Name_Id;
-                         The_Global : Entity_Id);
+      procedure Process
+        (The_Mode   : Global_Name_Id;
+         The_Global : Entity_Id);
       --  Add the given global to Reads, Writes or Proof_Ins, depending
       --  on the mode.
 
@@ -1085,8 +1089,9 @@ package body Flow_Utility is
       -- Process --
       -------------
 
-      procedure Process (The_Mode   : Global_Name_Id;
-                         The_Global : Entity_Id)
+      procedure Process
+        (The_Mode   : Global_Name_Id;
+         The_Global : Entity_Id)
       is
          E : constant Entity_Id :=
            Canonical_Entity (The_Global, Subprogram);
@@ -1222,8 +1227,9 @@ package body Flow_Utility is
    ----------------------------
 
    procedure Map_Generic_In_Formals
-     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set;
-      Entire : Boolean := True)
+     (Scop    :        Flow_Scope;
+      Objects : in out Flow_Id_Sets.Set;
+      Entire  :        Boolean := True)
    is
       Mapped : Flow_Id_Sets.Set;
 
@@ -1292,12 +1298,13 @@ package body Flow_Utility is
    -- Get_Globals --
    -----------------
 
-   procedure Get_Globals (Subprogram          : Entity_Id;
-                          Scope               : Flow_Scope;
-                          Classwide           : Boolean;
-                          Globals             : out Global_Flow_Ids;
-                          Use_Deduced_Globals : Boolean := True;
-                          Ignore_Depends      : Boolean := False)
+   procedure Get_Globals
+     (Subprogram          :     Runnable_Kind_Id;
+      Scope               :     Flow_Scope;
+      Classwide           :     Boolean;
+      Globals             : out Global_Flow_Ids;
+      Use_Deduced_Globals :     Boolean := True;
+      Ignore_Depends      :     Boolean := False)
    is
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
@@ -1600,9 +1607,10 @@ package body Flow_Utility is
    -- Get_Postcondition_Expressions --
    -----------------------------------
 
-   function Get_Postcondition_Expressions (E       : Entity_Id;
-                                           Refined : Boolean)
-                                           return Node_Lists.List
+   function Get_Postcondition_Expressions
+     (E       : Entity_Id;
+      Refined : Boolean)
+      return Node_Lists.List
    is
       P_Expr : Node_Lists.List;
       P_CC   : Node_Id;
@@ -1735,12 +1743,12 @@ package body Flow_Utility is
    -- Get_Proof_Globals --
    -----------------------
 
-   procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
-                                Reads           : out Flow_Id_Sets.Set;
-                                Writes          : out Flow_Id_Sets.Set;
-                                Erase_Constants :     Boolean;
-                                Scop            :     Flow_Scope :=
-                                  Null_Flow_Scope)
+   procedure Get_Proof_Globals
+     (Subprogram      :     Runnable_Kind_Id;
+      Reads           : out Flow_Id_Sets.Set;
+      Writes          : out Flow_Id_Sets.Set;
+      Erase_Constants :     Boolean;
+      Scop            :     Flow_Scope := Null_Flow_Scope)
    is
       Globals : Global_Flow_Ids;
 
@@ -1890,9 +1898,10 @@ package body Flow_Utility is
    -- Get_Type --
    --------------
 
-   function Get_Type (F     : Flow_Id;
-                      Scope : Flow_Scope)
-                      return Entity_Id
+   function Get_Type
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
    is
       E : constant Entity_Id :=
         (case F.Kind is
@@ -1903,9 +1912,10 @@ package body Flow_Utility is
       return Get_Type (E, Scope);
    end Get_Type;
 
-   function Get_Type (N     : Node_Id;
-                      Scope : Flow_Scope)
-                      return Entity_Id
+   function Get_Type
+     (N     : Node_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
    is
       T : Entity_Id;
       --  Will be assigned the type of N
@@ -2009,10 +2019,7 @@ package body Flow_Utility is
    -- Get_Formals --
    -----------------
 
-   function Get_Formals
-     (E : Entity_Id)
-      return Node_Sets.Set
-   is
+   function Get_Formals (E : Entity_Id) return Node_Sets.Set is
       Formals  : Node_Sets.Set;
       Implicit : constant Entity_Id := Get_Implicit_Formal (E);
 
@@ -2112,11 +2119,11 @@ package body Flow_Utility is
    -- Get_Variables_Internal --
    ----------------------------
 
-   function Get_Variables_Internal (N   : Node_Id;
-                                    Ctx : Get_Variables_Context)
-                                    return Flow_Id_Sets.Set
+   function Get_Variables_Internal
+     (N   : Node_Id;
+      Ctx : Get_Variables_Context)
+      return Flow_Id_Sets.Set
    is
-
       ----------------------------------------------------
       -- Subprograms that do *not* write into Variables --
       ----------------------------------------------------
@@ -2763,8 +2770,7 @@ package body Flow_Utility is
       -- Do_Attribute_Reference --
       ----------------------------
 
-      function Do_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
-      is
+      function Do_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set is
          The_Attribute : constant Attribute_Id :=
            Get_Attribute_Id (Attribute_Name (N));
 
@@ -4214,9 +4220,10 @@ package body Flow_Utility is
    -- Get_Variables_For_Proof --
    -----------------------------
 
-   function Get_Variables_For_Proof (Expr_N  : Node_Id;
-                                     Scope_N : Node_Id)
-                                     return Flow_Id_Sets.Set
+   function Get_Variables_For_Proof
+     (Expr_N  : Node_Id;
+      Scope_N : Node_Id)
+      return Flow_Id_Sets.Set
    is
       function Enclosing_Declaration_Or_Statement (N : Node_Id) return Node_Id;
       --  Return the nearest enclosing declaration or statement that houses
@@ -4319,7 +4326,7 @@ package body Flow_Utility is
    -- Has_Proof_Globals --
    -----------------------
 
-   function Has_Proof_Globals (Subprogram : Entity_Id) return Boolean is
+   function Has_Proof_Globals (Subprogram : E_Function_Id) return Boolean is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
    begin
@@ -4516,9 +4523,10 @@ package body Flow_Utility is
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 
-   function Is_Initialized_At_Elaboration (F : Flow_Id;
-                                           S : Flow_Scope)
-                                           return Boolean
+   function Is_Initialized_At_Elaboration
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
    is
    begin
       case F.Kind is
@@ -4541,9 +4549,10 @@ package body Flow_Utility is
    -- Is_Initialized_In_Specification --
    -------------------------------------
 
-   function Is_Initialized_In_Specification (F : Flow_Id;
-                                             S : Flow_Scope)
-                                             return Boolean
+   function Is_Initialized_In_Specification
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
    is
       pragma Unreferenced (S);
    begin
@@ -5211,9 +5220,10 @@ package body Flow_Utility is
       --  Helpful wrapper for recursing. Note that once extensions are not
       --  irrelevant its not right to start ignoring them again.
 
-      function Join (A, B   : Flow_Id;
-                     Offset : Natural := 0)
-                     return Flow_Id
+      function Join
+        (A, B   : Flow_Id;
+         Offset : Natural := 0)
+         return Flow_Id
       with Pre => A.Kind in Direct_Mapping | Record_Field and then
                   B.Kind in Direct_Mapping | Record_Field,
            Post => Join'Result.Facet = B.Facet;
@@ -5224,9 +5234,10 @@ package body Flow_Utility is
       --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
       --  then joining will produce Obj.X'Private_Part.
 
-      procedure Merge (M         : in out Flow_Id_Maps.Map;
-                       Component : Entity_Id;
-                       Input     : Node_Id)
+      procedure Merge
+        (M         : in out Flow_Id_Maps.Map;
+         Component : Entity_Id;
+         Input     : Node_Id)
       with Pre => Is_Unique_Component (Component)
                     and then
                   (No (Input) or else Nkind (Input) in N_Subexpr);
@@ -5255,9 +5266,10 @@ package body Flow_Utility is
       -- Join --
       ----------
 
-      function Join (A, B   : Flow_Id;
-                     Offset : Natural := 0)
-                     return Flow_Id
+      function Join
+        (A, B   : Flow_Id;
+         Offset : Natural := 0)
+         return Flow_Id
       is
          F : Flow_Id := A;
          N : Natural := 0;
@@ -5278,9 +5290,10 @@ package body Flow_Utility is
       -- Merge --
       -----------
 
-      procedure Merge (M         : in out Flow_Id_Maps.Map;
-                       Component : Entity_Id;
-                       Input     : Node_Id)
+      procedure Merge
+        (M         : in out Flow_Id_Maps.Map;
+         Component : Entity_Id;
+         Input     : Node_Id)
       is
          F   : constant Flow_Id := Add_Component (Map_Root, Component);
          Tmp : Flow_Id_Maps.Map;
@@ -5800,9 +5813,9 @@ package body Flow_Utility is
    --------------------------------
 
    procedure Untangle_Assignment_Target
-     (N                    : Node_Id;
-      Scope                : Flow_Scope;
-      Use_Computed_Globals : Boolean;
+     (N                    :     Node_Id;
+      Scope                :     Flow_Scope;
+      Use_Computed_Globals :     Boolean;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)

@@ -38,7 +38,7 @@
 #    This puts the directory install/bin in your path.
 
 .PHONY: clean doc gnat2why gnat2why-nightly gnatprove install \
-	install-all why3 all setup all-nightly doc-nightly
+	install-all why3 all setup all-nightly doc-nightly benchmark
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
@@ -206,5 +206,11 @@ clean:
 	$(MAKE) -C include clean
 	rm -f docs/sphinx_support/confvars.py
 
+BENCHDIR=bench
+RESULTSDIR=benchout
 benchmark:
-	$(MAKE) -C benchmark_script
+	rm -rf $(BENCHDIR)
+	mkdir -p $(BENCHDIR)
+	testsuite/gnatprove/bench/create_benchmarks.py --testsuite-dir=testsuite/gnatprove --target-dir=$(BENCHDIR) --testlist=testsuite/gnatprove/MANIFEST.bench
+	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHDIR)/bench
+	testsuite/gnatprove/bench/process_results.py $(BENCHDIR)/bench $(RESULTSDIR) --testsuite-dir=testsuite/gnatprove

@@ -401,7 +401,9 @@ package SPARK_Util is
 
    function Is_Not_Hidden_Discriminant (E : E_Discriminant_Id) return Boolean;
    --  @param E entity of a discriminant
-   --  @return Return True if E is visible in SPARK
+   --  @return Return True if E is visible in SPARK. A discriminant might not
+   --    be visible if it cames from the full view of a private type which
+   --    is not in SPARK.
 
    function Is_Package_State (E : Entity_Id) return Boolean;
    --  @param E any entity
@@ -462,9 +464,8 @@ package SPARK_Util is
 
    function Root_Discriminant (E : E_Discriminant_Id) return Entity_Id;
    --  Given discriminant of a record (sub-)type, return the corresponding
-   --  discriminant of the root type, if any. This is the identity when E is
+   --  discriminant of the root retysp, if any. This is the identity when E is
    --  the discriminant of a root type.
-   --  ??? Same update needed as for Root_Retysp
 
    function Search_Component_By_Name
      (Rec  : Record_Like_Kind_Id;
@@ -900,10 +901,6 @@ package SPARK_Util is
    --  Wrapper for Lib.Main_Unit_Entity, which deals with library-level
    --  instances of generic subprograms (where the Main_Unit_Entity has a
    --  void Ekind).
-
-   function Package_Body (E : Entity_Id) return Node_Id;
-   --  Given an entity for a package (spec or body), return the corresponding
-   --  package body if any, or else Empty.
 
    function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean;
    --  Approximation of cases where we know that the Constrained attribute of

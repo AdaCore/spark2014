@@ -91,6 +91,7 @@ package Configuration is
       --  disable use of semaphores for ease of debugging
       Debug_Save_VCs       : aliased Boolean;
       Debug_Trivial        : aliased Boolean;
+      Debug_Prover_Errors  : aliased Boolean;
       Dbg_Proof_Only       : aliased Boolean;
       F                    : aliased Boolean;
       File_List            : String_Lists.List;

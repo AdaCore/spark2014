@@ -512,7 +512,6 @@ package body Flow is
       Format_Item ("Is_Import", Boolean'Image (A.Is_Import));
       Format_Item ("Is_Export", Boolean'Image (A.Is_Export));
       Format_Item ("Mode", Param_Mode'Image (A.Mode));
-      Format_Item ("Is_Package_State", Boolean'Image (A.Is_Package_State));
       Format_Item ("Is_Constant", Boolean'Image (A.Is_Constant));
       Format_Item ("Is_Callsite", Boolean'Image (A.Is_Callsite));
       Format_Item ("Is_Parameter", Boolean'Image (A.Is_Parameter));

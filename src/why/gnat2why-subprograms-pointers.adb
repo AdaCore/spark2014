@@ -63,7 +63,8 @@ package body Gnat2Why.Subprograms.Pointers is
    function Check_LSP_For_Subprogram_Access
      (Ada_Node : Node_Id;
       From, To : Entity_Id;
-      Params   : Transformation_Params) return W_Prog_Id
+      Params   : Transformation_Params)
+      return W_Prog_Id
    with Pre =>
        Ekind (From) in Subprogram_Kind | E_Subprogram_Type
        and then Ekind (To) in Subprogram_Kind | E_Subprogram_Type;
@@ -72,7 +73,7 @@ package body Gnat2Why.Subprograms.Pointers is
    --  already set and does not perform sandboxing.
 
    procedure Declare_Theory_For_Access_If_Needed
-     (Expr     : Entity_Id;
+     (Expr     :     Entity_Id;
       Logic_Id : out W_Identifier_Id)
    with Pre => Nkind (Expr) = N_Attribute_Reference
      and then Nkind (Prefix (Expr)) in N_Has_Entity
@@ -92,7 +93,8 @@ package body Gnat2Why.Subprograms.Pointers is
    function Check_LSP_For_Subprogram_Access
      (Ada_Node : Node_Id;
       From, To : Entity_Id;
-      Params   : Transformation_Params) return W_Prog_Id
+      Params   : Transformation_Params)
+      return W_Prog_Id
    is
       Need_Post_Check  : constant Boolean :=
         not Find_Contracts (To, Pragma_Postcondition).Is_Empty
@@ -449,7 +451,9 @@ package body Gnat2Why.Subprograms.Pointers is
    -- Complete_Access_To_Subprogram_Type --
    ----------------------------------------
 
-   procedure Complete_Access_To_Subprogram_Type (Th : Theory_UC; E : Entity_Id)
+   procedure Complete_Access_To_Subprogram_Type
+     (Th : Theory_UC;
+      E  : Access_Kind_Id)
    is
       Spec_Binders       : constant Binder_Array :=
         Binder_Array'(1 => Subp_Binder);
@@ -507,8 +511,7 @@ package body Gnat2Why.Subprograms.Pointers is
    -- Create_Theory_For_Profile_If_Needed --
    -----------------------------------------
 
-   procedure Create_Theory_For_Profile_If_Needed (E : Entity_Id)
-   is
+   procedure Create_Theory_For_Profile_If_Needed (E : Access_Kind_Id) is
       Profile : constant Entity_Id := Directly_Designated_Type (E);
       Name    : constant Symbol := Get_Profile_Theory_Name (Profile);
       Module  : constant W_Module_Id := New_Module
@@ -580,7 +583,9 @@ package body Gnat2Why.Subprograms.Pointers is
    -- Declare_Access_To_Subprogram_Type --
    ---------------------------------------
 
-   procedure Declare_Access_To_Subprogram_Type (Th : Theory_UC; E : Entity_Id)
+   procedure Declare_Access_To_Subprogram_Type
+     (Th : Theory_UC;
+      E  : Access_Kind_Id)
    is
    begin
       --  Export the theory containing the pointer record definition.
@@ -664,7 +669,7 @@ package body Gnat2Why.Subprograms.Pointers is
    -----------------------------------------
 
    procedure Declare_Theory_For_Access_If_Needed
-     (Expr     : Entity_Id;
+     (Expr     :    Entity_Id;
       Logic_Id : out W_Identifier_Id)
    is
       Subp          : constant Entity_Id :=
@@ -827,9 +832,10 @@ package body Gnat2Why.Subprograms.Pointers is
    -----------------------------------------
 
    function New_Dynamic_Property_For_Subprogram
-     (Ty     : Entity_Id;
+     (Ty     : Access_Kind_Id;
       Expr   : W_Term_Id;
-      Params : Transformation_Params) return W_Pred_Id
+      Params : Transformation_Params)
+      return W_Pred_Id
    is (New_Conditional
          (Condition   => New_Not
             (Right  => Pred_Of_Boolean_Term
@@ -872,9 +878,10 @@ package body Gnat2Why.Subprograms.Pointers is
    ----------------------------------------------
 
    function Transform_Access_Attribute_Of_Subprogram
-     (Expr   : Entity_Id;
+     (Expr   : N_Attribute_Reference_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id
+      Params : Transformation_Params)
+      return W_Expr_Id
    is
       Logic_Id : W_Identifier_Id;
       Subp     : constant Entity_Id := Entity (Prefix (Expr));

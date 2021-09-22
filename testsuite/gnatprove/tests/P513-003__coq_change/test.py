@@ -46,7 +46,7 @@ print("=======================================")
 edit_file()
 sleep_on_windows(4)
 # Coq proof should now fail
-prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension|Welcome|File")
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION", "--debug-prover-errors"], steps=None, counterexample=False, filter_output=".*Grammar extension|Welcome|File")
 print("=======================================")
 # Reports that the proof cannot be done
 prove_all(counterexample=False)

@@ -641,9 +641,6 @@ package Flow_Types is
       --  Set for initial and final use vertices which are parameters or
       --  globals.
 
-      Is_Package_State             : Boolean;
-      --  True if the given variable is part of a package' state
-
       Is_Constant                  : Boolean;
       --  True if this value may not be updated
 
@@ -750,7 +747,6 @@ package Flow_Types is
                    Is_Import                       => False,
                    Is_Export                       => False,
                    Mode                            => Mode_Invalid,
-                   Is_Package_State                => False,
                    Is_Constant                     => False,
                    Is_Callsite                     => False,
                    Is_Parameter                    => False,

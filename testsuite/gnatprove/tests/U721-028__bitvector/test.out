@@ -1,0 +1,13 @@
+conv.adb:3:11: warning: subprogram "Conv" has no effect
+conv.adb:5:36: info: range check proved (CVC4: 2 VC)
+conv.adb:7:19: info: assertion proved (CVC4: 1 VC)
+ipv4bitspec.ads:20:48: info: range check proved (CVC4: 2 VC)
+ipv4bitspec.ads:21:48: info: range check proved (CVC4: 2 VC)
+ipv4bitspec.ads:22:48: info: range check proved (CVC4: 2 VC)
+ipv4bitspec.ads:23:48: info: range check proved (CVC4: 2 VC)
+ipv4bitspec.ads:24:12: info: predicate check proved (CVC4: 1 VC)
+ipv4bitspec.ads:28:71: info: index check proved (CVC4: 2 VC)
+ipv4bitspec.ads:29:71: info: index check proved (CVC4: 2 VC)
+ipv4bitspec.ads:30:71: info: index check proved (CVC4: 2 VC)
+ipv4bitspec.ads:31:71: info: index check proved (CVC4: 2 VC)
+ipv4bitspec.ads:34:13: info: postcondition proved (CVC4: 1 VC)

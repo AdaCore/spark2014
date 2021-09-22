@@ -2457,8 +2457,7 @@ package body SPARK_Util is
    ---------------------------------
 
    function Is_Not_Hidden_Discriminant (E : E_Discriminant_Id) return Boolean
-   is (not (Is_Completely_Hidden (E)
-         or else No (Root_Discriminant (E))));
+   is (Present (Root_Discriminant (E)));
 
    ----------------------
    -- Is_Others_Choice --
@@ -3146,38 +3145,6 @@ package body SPARK_Util is
       Explanation := Null_Unbounded_String;
    end Objects_Have_Compatible_Alignments;
 
-   ------------------
-   -- Package_Body --
-   ------------------
-
-   function Package_Body (E : Entity_Id) return Node_Id is
-      N : Node_Id;
-   begin
-      if Ekind (E) = E_Package_Body then
-         N := Parent (E);
-
-         if Nkind (N) = N_Defining_Program_Unit_Name then
-            N := Parent (N);
-         end if;
-
-      else
-         N := Package_Spec (E);
-
-         if Present (Corresponding_Body (N)) then
-            N := Parent (Corresponding_Body (N));
-
-            if Nkind (N) = N_Defining_Program_Unit_Name then
-               N := Parent (N);
-            end if;
-         else
-            N := Empty;
-         end if;
-      end if;
-
-      return N;
-
-   end Package_Body;
-
    ----------------
    -- Real_Image --
    ----------------
@@ -3220,62 +3187,18 @@ package body SPARK_Util is
       Root     : constant Entity_Id := Root_Retysp (Rec_Type);
 
    begin
-      --  If E is the component of a root type, return it
+      --  If Root does not have any discriminants, no match for E can be found
+      --  here.
 
-      if Root = Rec_Type then
-         return Search_Component_By_Name (Rec_Type, E);
+      if not Has_Discriminants (Root) then
+         return Empty;
+
+      --  Otherwise, the discriminant cannot have been renamed since it is not
+      --  allowed in SPARK. Search for it in Root by name.
+
+      else
+         return Search_Component_By_Name (Root, E);
       end if;
-
-      --  Otherwise, we need to climb up the hierarchy of types,
-      --  to get to the corresponding discriminant in the root type. Note that
-      --  there can be more than one corresponding discriminant (because of
-      --  renamings), in this case the frontend has picked one for us.
-
-      declare
-         Cur_Type : Entity_Id := Rec_Type;
-         Comp     : Entity_Id := E;
-
-      begin
-         --  Throughout the loop, maintain the invariant that Comp is a
-         --  component of Cur_Type.
-
-         while Cur_Type /= Root loop
-
-            --  If the discriminant Comp constrains a discriminant of the
-            --  parent type, then locate the corresponding discriminant of the
-            --  parent type by calling Corresponding_Discriminant. This is
-            --  needed because both discriminants may not have the same name.
-            --  Only follow the link if the scope of the corresponding
-            --  discriminant is in SPARK to avoid hopping outside of the
-            --  SPARK bondaries.
-
-            declare
-               Par_Discr : constant Entity_Id :=
-                 Corresponding_Discriminant (Comp);
-            begin
-
-               if Present (Par_Discr)
-                 and then Entity_In_SPARK (Retysp (Scope (Par_Discr)))
-               then
-                  Comp     := Par_Discr;
-                  Cur_Type := Retysp (Scope (Comp));
-
-               --  Otherwise, just climb the type derivation/subtyping chain
-
-               else
-                  declare
-                     Old_Type : constant Entity_Id := Cur_Type;
-                  begin
-                     Cur_Type := Retysp (Etype (Cur_Type));
-                     pragma Assert (Cur_Type /= Old_Type);
-                     Comp := Search_Component_By_Name (Cur_Type, Comp);
-                  end;
-               end if;
-            end;
-         end loop;
-
-         return Comp;
-      end;
    end Root_Discriminant;
 
    ---------------------
@@ -3997,18 +3920,17 @@ package body SPARK_Util is
                         if In_Generic_Actual (Obj) then
                            null;
 
-                        elsif Is_Access_Variable (Etype (Obj)) then
-                           Register_Object (Obj);
-
-                        elsif Has_Variable_Input (Obj) then
+                        elsif Is_Access_Variable (Etype (Obj))
+                          or else Has_Variable_Input (Obj)
+                        then
                            if Present (Expression (N)) then
                               --  Completion of a deferred constant
 
                               if Is_Full_View (Obj) then
                                  null;
 
-                                 --  Ordinary constant with an initialization
-                                 --  expression.
+                              --  Ordinary constant with an initialization
+                              --  expression.
 
                               else
                                  Register_Object (Obj);
@@ -4020,7 +3942,7 @@ package body SPARK_Util is
                               if Present (Full_View (Obj)) then
                                  Register_Object (Full_View (Obj));
 
-                                 --  Imported constant
+                              --  Imported constant
 
                               else
                                  pragma Assert (Is_Imported (Obj));
