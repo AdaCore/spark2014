@@ -14,10 +14,10 @@ records_and_array.ads:16:09: low: initialization of "TT1" must be mentioned in t
 records_and_array.ads:18:14: low: initialization of "Y" must be mentioned in the Initializes contract of "Records_And_Array" (SPARK RM 7.1.5(9))
 records_and_array.ads:24:14: info: nontermination of task proved (CVC4: 1 VC)
 records_and_array.ads:26:04: high: possible data race when accessing variable "records_and_array.z"
-records_and_array.ads:26:04: high: with task "records_and_array.tao"
-records_and_array.ads:26:04: high: with task "records_and_array.trao"
-records_and_array.ads:26:04: high: with task "records_and_array.tro"
-records_and_array.ads:26:04: high: with task "records_and_array.tt2o"
+records_and_array.ads:26:04: high: task "records_and_array.tao" accesses "records_and_array.z"
+records_and_array.ads:26:04: high: task "records_and_array.trao" accesses "records_and_array.z"
+records_and_array.ads:26:04: high: task "records_and_array.tro" accesses "records_and_array.z"
+records_and_array.ads:26:04: high: task "records_and_array.tt2o" accesses "records_and_array.z"
 records_and_array.ads:26:04: low: initialization of "TT2O" must be mentioned in the Initializes contract of "Records_And_Array" (SPARK RM 7.1.5(9))
 records_and_array.ads:30:04: low: initialization of "TAO" must be mentioned in the Initializes contract of "Records_And_Array" (SPARK RM 7.1.5(9))
 records_and_array.ads:36:04: low: initialization of "TRO" must be mentioned in the Initializes contract of "Records_And_Array" (SPARK RM 7.1.5(9))

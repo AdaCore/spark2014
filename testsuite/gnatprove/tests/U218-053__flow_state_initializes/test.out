@@ -3,7 +3,24 @@ p1.adb:3:46: info: flow dependencies proved
 p1.adb:4:28: info: data dependencies proved
 p1.ads:1:43: info: flow dependencies proved
 p1.ads:2:25: info: data dependencies proved
-q.ads:4:04: high: possible data race when accessing variable "p1.p2.state2"
-q.ads:4:04: high: possible data race when accessing variable "p1.z"
-q.ads:4:04: high: with task "q.t1"
-q.ads:4:04: high: with task "q.t2"
+q.ads:7:04: high: possible data race when accessing variable "p1.state1"
+q.ads:7:04: high: possible data race when accessing variable "q.other"
+q.ads:7:04: high: task "q.t1" accesses "p1.state1"
+q.ads:7:04: high: task "q.t1" accesses "q.other"
+q.ads:7:04: high: task "q.t2" accesses "p1.state1"
+q.ads:7:04: high: task "q.t2" accesses "q.other"
+r1.adb:7:07: high: possible data race when accessing variable "r1.u1"
+r1.adb:7:07: high: task "r1.r2.to2a" accesses "r1.u1"
+r1.adb:7:07: high: task "r1.r2.to2b" accesses "r1.u1"
+r1.adb:7:07: info: initialization of "TO2A" constituent of "S2" proved
+r1.adb:7:13: info: initialization of "TO2B" constituent of "S2" proved
+r1.ads:7:03: info: flow dependencies proved
+r1.ads:11:26: info: initialization of "R2.S2" constituent of "R1.S1" proved
+r1.ads:11:51: info: initialization of "R2.U2" constituent of "R1.U1" proved
+r1.ads:12:06: info: flow dependencies proved
+r1.ads:14:17: info: nontermination of task proved (CVC4: 1 VC)
+r1.ads:14:26: info: data dependencies proved
+r1.ads:19:32: info: initialization of "R3.S3" constituent of "R2.S2" proved
+r1.ads:19:57: info: initialization of "R3.U3" constituent of "R2.U2" proved
+r1.ads:20:12: info: flow dependencies proved
+r1.ads:22:33: info: data dependencies proved

@@ -25,9 +25,9 @@ max steps used for successful proof: 0
 
 Analyzed 1 unit
 in unit warn_suppr, 2 subprograms and packages out of 2 analyzed
-  Warn_Suppr at warn_suppr.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+  Warn_Suppr at warn_suppr.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Warn_Suppr fully established
-  Warn_Suppr.P at warn_suppr.ads:3 flow analyzed (0 errors, 0 checks and 1 warnings) and not proved, 0 checks out of 2 proved
-   suppressed messages:
+  Warn_Suppr.P at warn_suppr.ads:3 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 2 proved
+   Justified messages:
     warn_suppr.adb:6:14: deliberately ignored
 

@@ -23,7 +23,7 @@ max steps used for successful proof: 0
 
 Analyzed 1 unit
 in unit empty, 2 subprograms and packages out of 3 analyzed
-  Empty at empty.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
-  Empty.P at empty.ads:4 flow analyzed (0 errors, 0 checks and 1 warnings) and proved (0 checks)
+  Empty at empty.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+  Empty.P at empty.ads:4 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
   Empty.Q at empty.ads:7 skipped
 

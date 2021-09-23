@@ -1714,23 +1714,7 @@ package body Flow_Generated_Globals.Partial is
       function Down_Project (G : Global_Nodes; Caller : Entity_Id)
                              return Global_Nodes
       is
-         Analyzed_View : constant Flow_Scope :=
-           (case Ekind (Caller) is
-               when Entry_Kind
-                  | E_Function
-                  | E_Procedure
-                  | E_Protected_Type
-                  | E_Task_Type
-               =>
-                  Get_Flow_Scope (Get_Body (Caller)),
-
-               when E_Package
-               =>
-                 (Caller, Body_Part),
-
-               when others
-               =>
-                 raise Program_Error);
+         Analyzed_View : constant Flow_Scope := (Caller, Body_Part);
 
       begin
          return

@@ -2,8 +2,8 @@
 bank1.ads:5:04: high: possible data race when accessing variable "account1.num_accounts"
     5 |   Special_Accounts : Account_Management;
       |   ^~~~~~~~~~~~~~~~
-  with task "bank1.special_accounts"
-  with task "bank1.all_accounts"
+  task "bank1.special_accounts" accesses "account1.num_accounts"
+  task "bank1.all_accounts" accesses "account1.num_accounts"
 
 account1.adb:15:39: medium: overflow check might fail, cannot prove upper bound for Num_Accounts + 1
    15 |         Num_Accounts := Num_Accounts + 1;

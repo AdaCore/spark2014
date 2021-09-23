@@ -1,8 +1,8 @@
 p.ads:5:09: info: nontermination of task proved (CVC4: 1 VC)
 p.ads:5:09: low: initialization of "Insider" must be mentioned in the Initializes contract of "P" (SPARK RM 7.1.5(9))
 q.ads:5:09: high: possible data race when accessing variable "p.state"
-q.ads:5:09: high: with task "p.insider"
-q.ads:5:09: high: with task "q.outsider"
+q.ads:5:09: high: task "p.insider" accesses "p.state"
+q.ads:5:09: high: task "q.outsider" accesses "p.state"
 q.ads:5:09: info: nontermination of task proved (CVC4: 1 VC)
 Summary of SPARK analysis
 =========================
@@ -28,19 +28,19 @@ max steps used for successful proof: 1
 
 Analyzed 2 units
 in unit p, 2 subprograms and packages out of 3 analyzed
- P at p.ads:1 flow analyzed (0 errors, 1 checks and 0 warnings) and proved (0 checks)
+ P at p.ads:1 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of P fully established
  P.Flip at p.ads:3 skipped
- P.Insider at p.ads:5 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (1 checks)
+ P.Insider at p.ads:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
 effects on parameters and Global variables of P.Insider depends on
  effects on parameters and Global variables of P.Flip
 absence of run-time errors of P.Insider depends on
  effects on parameters and Global variables of P.Flip
  absence of run-time errors of P.Flip
 in unit q, 2 subprograms and packages out of 2 analyzed
- Q at q.ads:3 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+ Q at q.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Q fully established
- Q.Outsider at q.ads:5 flow analyzed (0 errors, 3 checks and 0 warnings) and proved (1 checks)
+ Q.Outsider at q.ads:5 flow analyzed (0 errors, 3 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
 effects on parameters and Global variables of Q.Outsider depends on
  effects on parameters and Global variables of P.Flip
 absence of run-time errors of Q.Outsider depends on

@@ -2013,10 +2013,14 @@ package body SPARK_Util.Types is
    ---------------
 
    function Task_Body (E : E_Task_Type_Id) return Opt_N_Task_Body_Id is
-      Ptr : constant Node_Id := Parent (E);
+      Decl    : constant N_Task_Type_Declaration_Id := Parent (E);
+      Body_Id : constant Entity_Id := Corresponding_Body (Decl);
    begin
-      pragma Assert (Nkind (Ptr) = N_Task_Type_Declaration);
-      return Parent (Corresponding_Body (Ptr));
+      if Present (Body_Id) then
+         return Parent (Body_Id);
+      else
+         return Empty;
+      end if;
    end Task_Body;
 
    ----------------------

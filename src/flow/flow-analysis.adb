@@ -5306,6 +5306,12 @@ package body Flow.Analysis is
                   "possible data race when accessing variable &");
          --  Main error message
 
+         Msg_Owner_String : constant String :=
+           (case Owning_Kind is
+               when Suspends_On      => "with task &",
+               when Unsynch_Accesses => "task & accesses &");
+         --  Supplementary message
+
          SRM_Ref : constant String :=
            (if Owning_Kind = Suspends_On
             then "9(11)"
@@ -5327,17 +5333,64 @@ package body Flow.Analysis is
                First_Task_Type_Objects : Task_Multisets.Set renames
                  Task_Instances (Owner_Types.First_Element);
 
-               Msg_Object : constant Entity_Name :=
-                 (if GG_Is_Constituent (Object) and then
-                      (for all Const of
-                          Get_Constituents (GG_Encapsulating_State (Object))
-                       => Owned_Objects.Contains (Const))
-                  then GG_Encapsulating_State (Object)
-                  else Object);
-               --  If Owned_Objects contains all the constituents of a state
-               --  abstraction then we issue the message only for the state
-               --  abstraction.
+               function Get_Msg_Object (Object : Entity_Name)
+                                        return Entity_Name;
+               --  Find the outermost encapsulating state of Object whose fully
+               --  refined constituents are owned by all Owner_Types.
 
+               --------------------
+               -- Get_Msg_Object --
+               --------------------
+
+               function Get_Msg_Object (Object : Entity_Name)
+                                        return Entity_Name
+               is
+                  Current_Abstraction  : Entity_Name   := Object;
+                  Current_Constituents : Name_Sets.Set;
+                  --  While going from the innermost object to its outermost
+                  --  encapsulating state, these will represent the current
+                  --  context.
+
+                  Previous_Abstraction : Entity_Name;
+                  --  If we get to an abstract state that doesn't satisfy the
+                  --  criteria, then we will return the previous one that we
+                  --  have seen (which necessarily satisfy the criteria).
+
+               begin
+                  --  The outer loop will terminate because state abstraction
+                  --  is finite and cannot have circular dependence.
+                  loop
+                     if GG_Is_Constituent (Current_Abstraction) then
+                        Previous_Abstraction := Current_Abstraction;
+                        Current_Abstraction  :=
+                          GG_Encapsulating_State (Current_Abstraction);
+                        Current_Constituents :=
+                          GG_Expand_Abstract_State (Current_Abstraction);
+                        --  GG_Expand_Abstract_State can hypothetically return
+                        --  the input state, but it shouldn't in this case -
+                        --  and if it did, the loop may become infinite.
+                        pragma Assert (not Current_Constituents.Contains
+                                       (Current_Abstraction));
+                     else
+                        --  This is the outermost encapsulating state of
+                        --  Object, which may be Object itself.
+                        return Current_Abstraction;
+                     end if;
+
+                     --  Check the criteria for all tasks that own the Object
+
+                     for Owner of Owner_Types loop
+                        if not Current_Constituents.Is_Subset
+                          (Of_Set => Tasking_Objects (Owning_Kind, Owner))
+                        then
+                           return Previous_Abstraction;
+                        end if;
+                     end loop;
+
+                     --  If the criteria are satisfied then retry the
+                     --  encapsulating abstract state, if any.
+                  end loop;
+               end Get_Msg_Object;
             begin
                --  Violation occurs when the resource is accessed by:
                --  * instances of several task types
@@ -5353,16 +5406,17 @@ package body Flow.Analysis is
                then
                   declare
                      Owners : Task_Multisets.Set;
-
                   begin
                      for Task_Type of Owner_Types loop
                         Owners.Union (Task_Instances (Task_Type));
                      end loop;
 
-                     Report_Violations (Object     => Msg_Object,
+                     --  Report common contested state at the most abstract
+                     --  level of abstraction wherever possible.
+                     Report_Violations (Object     => Get_Msg_Object (Object),
                                         Owners     => Owners,
                                         Msg_Object => Msg,
-                                        Msg_Owner  => "with task &",
+                                        Msg_Owner  => Msg_Owner_String,
                                         SRM_Ref    => SRM_Ref);
                   end;
                end if;
@@ -5547,7 +5601,10 @@ package body Flow.Analysis is
             SRM_Ref      => SRM_Ref,
             Continuation => False);
 
-         --  Print all the queueing tasks objects that we found
+         --  Print all the queueing tasks objects that we found. Include the
+         --  Object to ensure that when multiple objects need to be reported
+         --  for contention by the same tasks, they are all reported separately
+         --  (otherwise messages get suppresed giving a confusing output.)
          for Task_Obj of Owners loop
             Error_Msg_Flow
               (E            => Msg_Node,
@@ -5557,6 +5614,7 @@ package body Flow.Analysis is
                Tag          => Concurrent_Access,
                Msg          => Msg_Owner,
                F1           => Magic_String_Id (Task_Obj.Name),
+               F2           => Magic_String_Id (Object),
                Continuation => True);
          end loop;
       end Report_Violations;

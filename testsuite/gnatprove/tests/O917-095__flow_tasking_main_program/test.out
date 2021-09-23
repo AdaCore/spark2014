@@ -1,41 +1,41 @@
 t.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)
 client1.ads:3:04: high: possible data race when accessing variable "t.x"
-client1.ads:3:04: high: with task "client1.t1"
-client1.ads:3:04: high: with task "client2.t2"
+client1.ads:3:04: high: task "client1.t1" accesses "t.x"
+client1.ads:3:04: high: task "client2.t2" accesses "t.x"
 t.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)
 client1.ads:3:04: high: possible data race when accessing variable "t.x"
-client1.ads:3:04: high: with task "client1.t1"
-client1.ads:3:04: high: with task "client3.t3"
+client1.ads:3:04: high: task "client1.t1" accesses "t.x"
+client1.ads:3:04: high: task "client3.t3" accesses "t.x"
 t.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 original_main_func.ads:1:10: high: possible data race when accessing variable "p.x"
-original_main_func.ads:1:10: high: with task "original_main_func"
-original_main_func.ads:1:10: high: with task "pt.t"
+original_main_func.ads:1:10: high: task "original_main_func" accesses "p.x"
+original_main_func.ads:1:10: high: task "pt.t" accesses "p.x"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 original_main_func.ads:1:10: high: possible data race when accessing variable "p.x"
-original_main_func.ads:1:10: high: with task "original_main_func"
-original_main_func.ads:1:10: high: with task "pt.t"
+original_main_func.ads:1:10: high: task "original_main_func" accesses "p.x"
+original_main_func.ads:1:10: high: task "pt.t" accesses "p.x"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 gen_inst.ads:5:11: high: possible data race when accessing variable "p.x"
-gen_inst.ads:5:11: high: with task "gen_inst"
-gen_inst.ads:5:11: high: with task "pt.t"
+gen_inst.ads:5:11: high: task "gen_inst" accesses "p.x"
+gen_inst.ads:5:11: high: task "pt.t" accesses "p.x"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 pt2.ads:2:09: high: possible data race when accessing variable "p.x"
-pt2.ads:2:09: high: with task "pt.t"
-pt2.ads:2:09: high: with task "pt2.t"
+pt2.ads:2:09: high: task "pt.t" accesses "p.x"
+pt2.ads:2:09: high: task "pt2.t" accesses "p.x"
 pt2.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 pt2.ads:2:09: high: possible data race when accessing variable "p.x"
-pt2.ads:2:09: high: with task "pt.t"
-pt2.ads:2:09: high: with task "pt2.t"
+pt2.ads:2:09: high: task "pt.t" accesses "p.x"
+pt2.ads:2:09: high: task "pt2.t" accesses "p.x"
 pt2.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 main_with_no_spec.adb:4:11: high: possible data race when accessing variable "p.x"
-main_with_no_spec.adb:4:11: high: with task "main_with_no_spec"
-main_with_no_spec.adb:4:11: high: with task "pt.t"
+main_with_no_spec.adb:4:11: high: task "main_with_no_spec" accesses "p.x"
+main_with_no_spec.adb:4:11: high: task "pt.t" accesses "p.x"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 main_spec_only.ads:4:11: high: possible data race when accessing variable "p.x"
-main_spec_only.ads:4:11: high: with task "main_spec_only"
-main_spec_only.ads:4:11: high: with task "pt.t"
+main_spec_only.ads:4:11: high: task "main_spec_only" accesses "p.x"
+main_spec_only.ads:4:11: high: task "pt.t" accesses "p.x"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
