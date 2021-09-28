@@ -19,7 +19,6 @@ gnatwhy3
 gprbuild
 gprclean
 gprconfig
-gprdump
 gprls
 gprname
 gprremote
