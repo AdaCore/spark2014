@@ -1,3 +1,4 @@
+warn_suppr.adb:6:14: info: overflow check justified
 warn_suppr.adb:8:14: medium: overflow check might fail, cannot prove lower bound for X * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * Y in Integer) to subprogram at warn_suppr.ads:3]
 warn_suppr.adb:9:14: medium: overflow check might fail, cannot prove lower bound for Z + K (e.g. when K = Integer'First and Z = -1073741822) [reason for check: result of addition must fit in a 32-bits machine integer]
 warn_suppr.ads:3:14: warning: subprogram "P" has no effect

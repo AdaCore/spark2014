@@ -1,2 +1,13 @@
+string_utils.adb:8:38: info: range check justified
+string_utils.adb:8:42: info: range check justified
+string_utils.adb:8:46: info: range check justified
+string_utils.adb:9:38: info: range check justified
+string_utils.adb:9:42: info: range check justified
+string_utils.adb:9:46: info: range check justified
+string_utils.adb:10:38: info: range check justified
+string_utils.adb:10:42: info: range check justified
+string_utils.adb:10:46: info: range check justified
+string_utils.adb:13:23: info: range check justified
+string_utils.adb:13:33: info: range check justified
 string_utils.ads:6:06: info: data dependencies proved
 string_utils.ads:7:16: medium: postcondition might fail

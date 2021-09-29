@@ -39,6 +39,7 @@ textio-get_line.adb:87:07: info: initialization of "Success" proved
 textio-get_line.adb:102:07: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:104:22: info: assertion proved (CVC4: 1 VC)
 textio-get_line.adb:104:27: info: index check proved (CVC4: 2 VC)
+textio-get_line.adb:110:13: info: raise statement or expression justified unreachable
 textio-get_line.adb:120:13: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 textio-get_line.adb:124:12: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:132:10: info: precondition proved (CVC4: 8 VC; Trivial: 1 VC)
@@ -86,6 +87,7 @@ textio-get_line.adb:240:40: info: range check proved (CVC4: 2 VC)
 textio.adb:10:38: info: initialization of "Ch" proved
 textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 textio.adb:12:14: info: postcondition proved (CVC4: 6 VC)
+textio.adb:35:10: info: raise statement or expression justified unreachable
 textio.adb:52:06: info: complete contract cases proved (CVC4: 1 VC)
 textio.adb:52:06: info: disjoint contract cases proved (CVC4: 1 VC)
 textio.adb:76:20: info: range check proved (CVC4: 2 VC)
