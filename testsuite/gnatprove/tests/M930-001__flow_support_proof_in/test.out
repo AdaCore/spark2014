@@ -4,7 +4,7 @@ proof_in_legal.ads:4:08: info: flow dependencies proved
 proof_in_legal.ads:9:11: info: data dependencies proved
 proof_in_legal.ads:12:11: info: data dependencies proved
 proof_in_legal.ads:14:11: info: flow dependencies proved
-proof_in_legal.ads:16:22: info: postcondition proved (CVC4: 1 VC)
+proof_in_legal.ads:16:22: info: postcondition proved (Trivial: 1 VC)
 proof_in_illegal.adb:11:07: info: initialization of "Temp" proved
 proof_in_illegal.adb:13:17: medium: overflow check might fail, cannot prove lower bound for X + Body_Var [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at proof_in_illegal.ads:7 should mention Body_Var and X in a precondition]
 proof_in_illegal.adb:13:19: medium: Proof_In global "Body_Var" constituent of "State" can only be used in assertions (SPARK RM 6.1.4(18))

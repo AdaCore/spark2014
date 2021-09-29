@@ -12,7 +12,7 @@ weird.ads:6:06: error: procedure with aspect Annotate Might_Not_Return must not 
 weird.ads:12:06: error: procedure with aspect Annotate Terminating must not also be marked with Might_Not_Return
 weird.ads:17:06: error: procedure with aspect Annotate Terminating must not also be marked with No_Return
 gnatprove: error during generation of Global contracts
-pack.adb:5:07: medium: exception might be raised (e.g. when B = True)
+pack.adb:5:07: medium: exception might be raised
 pack.adb:11:10: medium: precondition might fail, in instantiation at pack.adb:15
 pack.adb:27:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:36:10: medium: precondition might fail, in instantiation at pack.adb:43

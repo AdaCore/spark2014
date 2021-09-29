@@ -2,8 +2,8 @@ p.adb:8:17: info: overflow check proved (CVC4: 2 VC)
 p.adb:15:17: info: overflow check proved (CVC4: 2 VC)
 p.adb:22:17: info: overflow check proved (CVC4: 2 VC)
 p.adb:29:17: info: overflow check proved (CVC4: 2 VC)
-p.ads:12:14: medium: postcondition might fail (e.g. when Threshold = -1 and X = 0 and X'Old = 0)
-p.ads:12:37: medium: overflow check might fail, cannot prove upper bound for X'Old + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+p.ads:12:14: high: postcondition might fail (e.g. when Threshold = -1 and X = 0 and X'Old = 0)
+p.ads:12:37: high: overflow check might fail, cannot prove upper bound for X'Old + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 p.ads:15:06: info: complete contract cases proved (CVC4: 1 VC)
 p.ads:15:06: info: disjoint contract cases proved (CVC4: 1 VC)
 p.ads:15:40: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)

@@ -1,6 +1,6 @@
 absolute_values.adb:5:13: info: postcondition proved (CVC4: 1 VC)
 absolute_values.adb:5:37: info: overflow check proved (CVC4: 2 VC)
-absolute_values.adb:11:14: medium: overflow check might fail, cannot prove upper bound for -X (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-X in Integer) to subprogram at line 1]
+absolute_values.adb:11:14: high: overflow check might fail, cannot prove upper bound for -X (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-X in Integer) to subprogram at line 1]
 counterexample expected for check at absolute_values.adb:11
   trace at absolute_values.adb:1 --> X = Integer'First
   trace at absolute_values.adb:8 --> X = Integer'First

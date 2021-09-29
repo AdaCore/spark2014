@@ -302,7 +302,7 @@ dynamic_fixed.adb:4:21: info: unrolling loop
 dynamic_fixed.adb:6:18: info: range check proved (CVC4: 20 VC)
 dynamic_fixed.adb:6:40: info: range check proved (CVC4: 20 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 20 VC)
-dynamic_fixed.adb:9:25: medium: assertion might fail (e.g. when I = 1)
+dynamic_fixed.adb:9:25: medium: assertion might fail
 dynamic_fixed.adb:10:25: info: assertion proved (Trivial)
 unsupported.adb:19:13: error: operation between incompatible fixed-point types is not yet supported
 unsupported.adb:20:13: error: operation between incompatible fixed-point types is not yet supported

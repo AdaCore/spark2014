@@ -1,5 +1,5 @@
 
-diff.adb:6:11: medium: range check might fail, cannot prove lower bound for X - Y
+diff.adb:6:11: high: range check might fail, cannot prove lower bound for X - Y
     6 |   Z := X - Y;
       |        ~~^~~
   e.g. when X = 0

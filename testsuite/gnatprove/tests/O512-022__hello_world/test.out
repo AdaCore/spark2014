@@ -1,5 +1,5 @@
 after_tax.adb:7:22: info: overflow check proved (CVC4: 2 VC)
 after_tax.adb:7:22: info: range check proved (CVC4: 1 VC; Z3: 1 VC)
-after_tax.adb:7:36: medium: overflow check might fail, cannot prove upper bound for Before_Tax * Rate (e.g. when Before_Tax = 21262215 and Rate = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Before_Tax * Rate in Integer) to subprogram at after_tax.ads:3]
+after_tax.adb:7:36: medium: overflow check might fail, cannot prove upper bound for Before_Tax * Rate [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Before_Tax * Rate in Integer) to subprogram at after_tax.ads:3]
 after_tax.adb:7:44: info: division check proved (CVC4: 1 VC)
 after_tax.ads:8:11: info: postcondition proved (CVC4: 1 VC)

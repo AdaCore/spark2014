@@ -22,7 +22,6 @@ ownership_transfer_at_call.adb:11:18: medium: pointer dereference check might fa
 ownership_transfer_at_call.adb:11:22: medium: overflow check might fail, cannot prove upper bound for Y.all + 1
    11 |      Y.all := Y.all + 1;
       |               ~~~~~~^~~
-  e.g. when Y.all = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 7 should mention Y in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)
@@ -31,7 +30,6 @@ ownership_transfer_at_call.adb:11:22: medium: overflow check might fail, cannot 
 ownership_transfer_at_call.adb:12:09: medium: pointer dereference check might fail
    12 |      X.all := X.all + 1;
       |      ~~^~~
-  e.g. when X = null
   possible fix: subprogram at line 7 should mention X in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)
       |   ^ here
@@ -39,7 +37,6 @@ ownership_transfer_at_call.adb:12:09: medium: pointer dereference check might fa
 ownership_transfer_at_call.adb:12:18: medium: pointer dereference check might fail
    12 |      X.all := X.all + 1;
       |               ~~^~~
-  e.g. when X = null
   possible fix: subprogram at line 7 should mention X in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)
       |   ^ here
@@ -47,7 +44,6 @@ ownership_transfer_at_call.adb:12:18: medium: pointer dereference check might fa
 ownership_transfer_at_call.adb:12:22: medium: overflow check might fail, cannot prove upper bound for X.all + 1
    12 |      X.all := X.all + 1;
       |               ~~~~~~^~~
-  e.g. when X.all = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 7 should mention X in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)

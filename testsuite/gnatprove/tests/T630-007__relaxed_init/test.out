@@ -6,7 +6,7 @@ relaxed_init_default.adb:28:19: info: assertion proved (Z3: 1 VC)
 relaxed_init_default.adb:28:19: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
 relaxed_init_default.adb:28:24: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
 relaxed_init_default.adb:29:19: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
-relaxed_init_default.adb:29:19: medium: assertion might fail (e.g. when A'First = 1 and A'Last = 5)
+relaxed_init_default.adb:29:19: medium: assertion might fail
 relaxed_init_default.adb:29:23: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
 relaxed_init_default.adb:30:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 relaxed_init_default.adb:30:23: info: range check proved (CVC4: 2 VC)

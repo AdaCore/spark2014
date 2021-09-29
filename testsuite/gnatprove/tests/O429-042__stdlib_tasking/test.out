@@ -24,11 +24,11 @@ ada_real_time.ads:85:48: medium: overflow check might fail, cannot prove lower b
 ada_real_time.ads:85:50: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:89:17: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:90:16: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:91:32: info: overflow check proved (CVC4: 2 VC)
+ada_real_time.ads:91:32: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:91:34: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:92:20: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:93:16: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:94:33: info: overflow check proved (CVC4: 2 VC)
+ada_real_time.ads:94:33: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:94:35: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:108:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:109:18: info: implicit function contract not available for proof ("To_Duration" might not return)
@@ -86,7 +86,7 @@ ada_real_time.ads:152:58: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:152:58: info: overflow check proved (CVC4: 2 VC)
 ada_real_time.ads:152:58: info: range check proved (CVC4: 2 VC)
 ada_real_time.ads:153:56: info: division check proved (CVC4: 1 VC)
-ada_real_time.ads:153:56: medium: overflow check might fail, cannot prove upper bound for Duration_Rep (To_Duration (Time_Span_Last) / Duration (Duration'Small)) / Duration_Rep (Right) (e.g. when Right = -1) [reason for check: result of division must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+ada_real_time.ads:153:56: medium: overflow check might fail, cannot prove upper bound for Duration_Rep (To_Duration (Time_Span_Last) / Duration (Duration'Small)) / Duration_Rep (Right) [reason for check: result of division must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 ada_real_time.ads:161:27: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:161:47: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:161:47: info: overflow check proved (CVC4: 2 VC)
@@ -125,7 +125,7 @@ ada_real_time.ads:181:58: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:181:58: info: overflow check proved (CVC4: 2 VC)
 ada_real_time.ads:181:58: info: range check proved (CVC4: 2 VC)
 ada_real_time.ads:182:56: info: division check proved (CVC4: 1 VC)
-ada_real_time.ads:182:56: medium: overflow check might fail, cannot prove upper bound for Duration_Rep (To_Duration (Time_Span_Last) / Duration (Duration'Small)) / Duration_Rep (Left) (e.g. when Left = -1) [reason for check: result of division must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+ada_real_time.ads:182:56: medium: overflow check might fail, cannot prove upper bound for Duration_Rep (To_Duration (Time_Span_Last) / Duration (Duration'Small)) / Duration_Rep (Left) [reason for check: result of division must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 ada_real_time.ads:188:25: medium: precondition might fail
 ada_real_time.ads:192:31: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:192:50: info: range check proved (CVC4: 2 VC)
@@ -135,10 +135,10 @@ ada_real_time.ads:192:52: info: implicit function contract not available for pro
 ada_real_time.ads:253:23: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:253:23: info: range check proved (CVC4: 2 VC)
 ada_real_time.ads:256:08: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:256:25: info: overflow check proved (CVC4: 2 VC)
+ada_real_time.ads:256:25: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:256:37: info: implicit function contract not available for proof ("TS_SC" might not return)
-ada_real_time.ads:256:37: medium: range check might fail, cannot prove lower bound for TS_SC (TS) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (TS_SC (TS) in Duration) to subprogram at line 255]
-ada_real_time.ads:259:35: medium: overflow check might fail, cannot prove lower bound for SC + TS_SC (TS) (e.g. when SC = -9223372036854775808) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: add precondition (if TS_SC (TS) >= 0 then SC <= 9223372036854775807 - TS_SC (TS) else SC >= -9223372036854775808 - TS_SC (TS)) to subprogram at line 258]
+ada_real_time.ads:256:37: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (TS_SC (TS) in Duration) to subprogram at line 255]
+ada_real_time.ads:259:35: medium: overflow check might fail [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: add precondition (if TS_SC (TS) >= 0 then SC <= 9223372036854775807 - TS_SC (TS) else SC >= -9223372036854775808 - TS_SC (TS)) to subprogram at line 258]
 ada_real_time.ads:259:37: info: implicit function contract not available for proof ("TS_SC" might not return)
 ada_real_time.ads:268:21: info: overflow check proved (CVC4: 2 VC)
 ada_real_time.ads:268:34: info: overflow check proved (CVC4: 2 VC)
@@ -147,14 +147,14 @@ ada_real_time.ads:269:41: info: overflow check proved (CVC4: 2 VC)
 ada_real_time.ads:269:54: info: overflow check proved (CVC4: 2 VC)
 ada_real_time.ads:270:17: info: implicit function contract not available for proof ("Result_SC" might not return)
 ada_real_time.ads:271:26: info: implicit function contract not available for proof ("Result_SC" might not return)
-ada_real_time.ads:271:45: info: overflow check proved (CVC4: 2 VC)
-ada_real_time.ads:271:45: info: range check proved (CVC4: 2 VC)
-ada_real_time.ads:271:54: info: overflow check proved (CVC4: 2 VC)
+ada_real_time.ads:271:45: info: overflow check proved (CVC4: 1 VC)
+ada_real_time.ads:271:45: info: range check proved (CVC4: 1 VC)
+ada_real_time.ads:271:54: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:271:56: info: implicit function contract not available for proof ("TS_Fraction" might not return)
-ada_real_time.ads:272:30: medium: overflow check might fail, cannot prove upper bound for Duration'Last - FudgeD (e.g. when FudgeD = -1/1000000000) [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+ada_real_time.ads:272:30: medium: overflow check might fail, cannot prove upper bound for Duration'Last - FudgeD [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 ada_real_time.ads:274:26: info: implicit function contract not available for proof ("Result_SC" might not return)
-ada_real_time.ads:274:45: info: overflow check proved (CVC4: 2 VC)
-ada_real_time.ads:274:45: info: range check proved (CVC4: 2 VC)
-ada_real_time.ads:274:54: info: overflow check proved (CVC4: 2 VC)
+ada_real_time.ads:274:45: info: overflow check proved (CVC4: 1 VC)
+ada_real_time.ads:274:45: info: range check proved (CVC4: 1 VC)
+ada_real_time.ads:274:54: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:274:56: info: implicit function contract not available for proof ("TS_Fraction" might not return)
-ada_real_time.ads:275:31: medium: overflow check might fail, cannot prove lower bound for Duration'First + FudgeD (e.g. when FudgeD = -1/1000000000) [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+ada_real_time.ads:275:31: medium: overflow check might fail, cannot prove lower bound for Duration'First + FudgeD [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]

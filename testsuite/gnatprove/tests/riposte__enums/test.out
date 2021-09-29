@@ -1,11 +1,11 @@
 enums.adb:10:19: info: postcondition proved (CVC4: 2 VC)
 enums.adb:17:11: info: flow dependencies proved
-enums.adb:19:22: medium: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1)
-enums.adb:27:19: medium: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1)
+enums.adb:19:22: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1)
+enums.adb:27:19: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1)
 enums.adb:36:19: info: postcondition proved (CVC4: 2 VC)
 enums.adb:43:19: info: postcondition proved (CVC4: 2 VC)
 enums.adb:45:07: info: initialization of "R" proved
-enums.adb:67:19: medium: postcondition might fail (e.g. when A = Elem_7)
+enums.adb:67:19: high: postcondition might fail (e.g. when A = Elem_7)
 enums.adb:69:07: info: initialization of "R" proved
 enums.adb:89:19: info: postcondition proved (CVC4: 3 VC)
 enums.adb:91:07: info: initialization of "R" proved
@@ -28,7 +28,7 @@ enums.adb:176:71: info: range check proved (CVC4: 1 VC)
 enums.adb:180:07: info: initialization of "R" proved
 enums.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 enums.adb:191:50: info: range check proved (CVC4: 1 VC)
-enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8) [reason for check: value cannot be maximum value of the type] [possible fix: subprogram at line 190 should mention A in a precondition]
+enums.adb:194:29: high: range check might fail (e.g. when A = Elem_8) [reason for check: value cannot be maximum value of the type] [possible fix: subprogram at line 190 should mention A in a precondition]
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:203:07: info: initialization of "Tmp" proved
 counterexample expected for check at enums.adb:19

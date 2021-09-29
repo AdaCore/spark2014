@@ -1,14 +1,14 @@
 test.adb:9:16: info: postcondition proved (CVC4: 1 VC)
-test.adb:17:17: medium: postcondition might fail (e.g. when Test_2'Result = 'NUL')
-test.adb:20:17: medium: array index check might fail (e.g. when A'First = 2 and A'Last = 0) [reason for check: value must be a valid index into the array]
-test.adb:29:17: medium: postcondition might fail
-test.adb:36:17: medium: postcondition might fail (e.g. when Test_4'Result = 0)
-test.adb:40:14: medium: overflow check might fail, cannot prove upper bound for B + 1 (e.g. when B = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-test.adb:47:17: medium: postcondition might fail (e.g. when Test_5'Result = 1)
-test.adb:56:17: medium: postcondition might fail (e.g. when Test_6'Result = 6.8749905E-2)
+test.adb:17:17: medium: postcondition might fail
+test.adb:20:17: medium: array index check might fail [reason for check: value must be a valid index into the array]
+test.adb:29:17: high: postcondition might fail
+test.adb:36:17: high: postcondition might fail (e.g. when Test_4'Result = 0)
+test.adb:40:14: high: overflow check might fail, cannot prove upper bound for B + 1 (e.g. when B = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:47:17: high: postcondition might fail (e.g. when Test_5'Result = 1)
+test.adb:56:17: medium: postcondition might fail
 test.adb:60:14: info: float overflow check proved (CVC4: 1 VC)
 test.adb:69:17: medium: postcondition might fail
-test.adb:81:16: medium: postcondition might fail (e.g. when X = 2)
+test.adb:81:16: medium: postcondition might fail
 test.adb:81:19: info: overflow check proved (CVC4: 2 VC)
 test.adb:81:24: info: overflow check proved (CVC4: 2 VC)
 test.adb:81:29: info: division check proved (CVC4: 1 VC)

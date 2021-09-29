@@ -1,4 +1,4 @@
 main.adb:1:11: warning: subprogram "Main" has no effect
-main.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]
+main.adb:3:19: high: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]
 main.adb:1:11: warning: subprogram "Main" has no effect
-main.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]
+main.adb:3:19: high: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]

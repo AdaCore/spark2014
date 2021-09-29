@@ -1,5 +1,5 @@
 add.adb:5:16: info: overflow check proved (altergo2: 2 VC)
-add.ads:3:47: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+add.ads:3:47: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 add.ads:3:62: info: overflow check proved (altergo2: 2 VC)
 add.ads:4:29: info: postcondition proved (altergo2: 1 VC)
 add.ads:4:47: info: overflow check proved (altergo2: 2 VC)

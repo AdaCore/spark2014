@@ -5,4 +5,4 @@ loopvariant.adb:13:17: info: overflow check proved (CVC4: 4 VC)
 loopvariant.adb:15:28: info: loop variant proved (CVC4: 1 VC)
 loopvariant.adb:21:17: info: overflow check proved (CVC4: 4 VC)
 loopvariant.adb:24:17: info: overflow check proved (CVC4: 4 VC)
-loopvariant.adb:26:28: medium: loop variant might fail (e.g. when J = 0)
+loopvariant.adb:26:28: medium: loop variant might fail

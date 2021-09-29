@@ -49,20 +49,20 @@ victor_divmod_rules.adb:155:29: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:155:34: info: overflow check proved (CVC4: 2 VC)
 victor_divmod_rules.adb:155:39: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:163:11: info: flow dependencies proved
-victor_divmod_rules.adb:164:24: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 162]
+victor_divmod_rules.adb:164:24: high: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 162]
 victor_divmod_rules.adb:165:22: info: postcondition proved (CVC4: 1 VC)
-victor_divmod_rules.adb:165:24: medium: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 162]
+victor_divmod_rules.adb:165:24: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 162]
 victor_divmod_rules.adb:173:11: info: flow dependencies proved
 victor_divmod_rules.adb:175:22: info: postcondition proved (CVC4: 1 VC)
 victor_divmod_rules.adb:175:24: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:175:34: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:183:11: info: flow dependencies proved
-victor_divmod_rules.adb:184:45: medium: divide by zero might fail [possible fix: use "and then" instead of "and" in precondition]
+victor_divmod_rules.adb:184:45: high: divide by zero might fail [possible fix: use "and then" instead of "and" in precondition]
 victor_divmod_rules.adb:185:22: info: postcondition proved (CVC4: 1 VC)
 victor_divmod_rules.adb:185:24: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:185:34: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:193:11: info: flow dependencies proved
-victor_divmod_rules.adb:194:45: medium: divide by zero might fail [possible fix: use "and then" instead of "and" in precondition]
+victor_divmod_rules.adb:194:45: high: divide by zero might fail [possible fix: use "and then" instead of "and" in precondition]
 victor_divmod_rules.adb:195:22: info: postcondition proved (CVC4: 1 VC)
 victor_divmod_rules.adb:195:24: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:195:34: info: division check proved (CVC4: 1 VC)

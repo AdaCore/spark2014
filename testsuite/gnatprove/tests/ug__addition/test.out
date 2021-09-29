@@ -1,5 +1,5 @@
 
-addition.adb:4:16: medium: overflow check might fail, cannot prove lower bound for X + Y
+addition.adb:4:16: high: overflow check might fail, cannot prove lower bound for X + Y
     4 |  Pre     => X + Y in Integer,
       |             ~~^~~
   e.g. when X = Integer'First

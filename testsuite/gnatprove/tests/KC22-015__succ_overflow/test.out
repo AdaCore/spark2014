@@ -9,4 +9,4 @@ p.adb:37:19: info: range check proved (CVC4: 2 VC)
 p.adb:37:31: info: overflow check proved (CVC4: 1 VC)
 p.adb:37:38: info: overflow check proved (CVC4: 1 VC)
 p.adb:45:31: info: overflow check proved (CVC4: 1 VC)
-p.adb:45:38: medium: overflow check might fail (e.g. when F = 3.4028235E+38) [reason for check: value must fit in a 32-bits machine integer]
+p.adb:45:38: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]

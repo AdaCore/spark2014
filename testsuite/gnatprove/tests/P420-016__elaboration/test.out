@@ -1,2 +1,2 @@
-main.adb:7:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention X in a precondition]
-main.adb:8:19: medium: assertion might fail (e.g. when Y = False) [possible fix: subprogram at line 3 should mention Y in a precondition]
+main.adb:7:19: high: assertion might fail [possible fix: subprogram at line 3 should mention X in a precondition]
+main.adb:8:19: high: assertion might fail (e.g. when Y = False) [possible fix: subprogram at line 3 should mention Y in a precondition]

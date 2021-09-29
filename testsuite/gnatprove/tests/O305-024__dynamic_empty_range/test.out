@@ -1,13 +1,13 @@
 empty_range_as_global.adb:1:11: warning: subprogram "Empty_Range_AS_Global" has no effect
 empty_range_as_global.adb:3:12: info: range check proved (CVC4: 2 VC)
-empty_range_as_global.adb:10:12: medium: range check might fail, cannot prove upper bound for C (e.g. when C = 101) [reason for check: value must fit in the target type of the assignment]
+empty_range_as_global.adb:10:12: medium: range check might fail, cannot prove upper bound for C [reason for check: value must fit in the target type of the assignment]
 empty_range_as_global.adb:13:04: info: precondition proved (Trivial: 1 VC)
 empty_range_in_loop.adb:1:11: warning: subprogram "Empty_Range_In_Loop" has no effect
 empty_range_in_loop.adb:3:12: info: range check proved (CVC4: 2 VC)
 empty_range_in_loop.adb:4:12: info: range check proved (CVC4: 2 VC)
-empty_range_in_loop.adb:4:45: medium: overflow check might fail, cannot prove upper bound for C + 1 (e.g. when C = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (C <= Integer'Last - 1) to subprogram at line 1]
+empty_range_in_loop.adb:4:45: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (C <= Integer'Last - 1) to subprogram at line 1]
 empty_range_in_loop.adb:7:22: info: cannot unroll loop (too many loop iterations)
-empty_range_in_loop.adb:8:12: medium: range check might fail, cannot prove upper bound for C (e.g. when C = 101) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (C in May_Be_Empty1) to subprogram at line 1]
+empty_range_in_loop.adb:8:12: medium: range check might fail, cannot prove upper bound for C [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (C in May_Be_Empty1) to subprogram at line 1]
 empty_range_in_loop.adb:10:22: info: cannot unroll loop (too many loop iterations)
 empty_range_in_loop.adb:12:33: info: overflow check proved (CVC4: 2 VC)
-empty_range_in_loop.adb:12:33: medium: range check might fail, cannot prove upper bound for C + 1 (e.g. when C = 100) [reason for check: default component value must fit in the type] [possible fix: add precondition (C <= May_Be_Empty2'Last - 1) to subprogram at line 1]
+empty_range_in_loop.adb:12:33: medium: range check might fail, cannot prove upper bound for C + 1 [reason for check: default component value must fit in the type] [possible fix: add precondition (C <= May_Be_Empty2'Last - 1) to subprogram at line 1]

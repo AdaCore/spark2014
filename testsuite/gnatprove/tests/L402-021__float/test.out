@@ -1,9 +1,9 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:7:19: info: assertion proved (CVC4: 1 VC)
-p.adb:8:19: medium: assertion might fail (e.g. when C = -3.0948497E+26 and X = -3.0948497E+26) [possible fix: subprogram at line 1 should mention X in a precondition]
+p.adb:8:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]
 p.adb:8:20: info: float overflow check proved (CVC4: 1 VC)
 p.adb:9:19: info: assertion proved (CVC4: 1 VC)
-p.adb:10:19: medium: assertion might fail (e.g. when F = 1.6777216E+7 and X = 1.6777216E+7) [possible fix: subprogram at line 1 should mention X in a precondition]
+p.adb:10:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]
 p.adb:10:20: info: float overflow check proved (CVC4: 1 VC)
 p.adb:11:19: info: assertion proved (CVC4: 1 VC)
 p.adb:12:19: info: assertion proved (CVC4: 1 VC)

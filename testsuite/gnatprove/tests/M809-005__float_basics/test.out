@@ -394,8 +394,8 @@ generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, i
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded]
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded]
-generic_interval_tests.adb:42:19: medium: postcondition might fail, in instantiation at bar.ads:12
-generic_interval_tests.adb:42:19: medium: postcondition might fail, in instantiation at bar.ads:8
+generic_interval_tests.adb:42:19: info: postcondition proved (CVC4: 1 VC; colibri: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:42:19: info: postcondition proved (CVC4: 1 VC; colibri: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:50:19: medium: postcondition might fail, in instantiation at bar.ads:12
@@ -410,8 +410,8 @@ generic_interval_tests.adb:58:21: medium: float overflow check might fail, in in
 generic_interval_tests.adb:58:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 56 should mention X]
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:8
-generic_interval_tests.adb:66:19: medium: postcondition might fail, in instantiation at bar.ads:12
-generic_interval_tests.adb:66:19: medium: postcondition might fail, in instantiation at bar.ads:8
+generic_interval_tests.adb:66:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:66:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:66:21: info: division check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:66:21: info: division check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:66:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
@@ -454,8 +454,8 @@ generic_interval_tests.adb:150:14: info: float overflow check proved (CVC4: 1 VC
 generic_interval_tests.adb:150:14: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:154:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:154:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:156:19: medium: postcondition might fail, in instantiation at bar.ads:12
-generic_interval_tests.adb:156:19: medium: postcondition might fail, in instantiation at bar.ads:8
+generic_interval_tests.adb:156:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:156:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:159:15: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:159:15: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:159:22: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
@@ -489,7 +489,7 @@ homothetical.adb:12:21: medium: float overflow check might fail [reason for chec
 homothetical.adb:12:24: info: division check proved (CVC4: 1 VC)
 homothetical.adb:12:24: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 homothetical.adb:13:17: info: precondition proved (CVC4: 1 VC)
-homothetical.adb:13:28: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+homothetical.adb:13:28: info: float overflow check proved (colibri: 1 VC)
 homothetical.adb:41:33: info: loop invariant initialization proved (CVC4: 1 VC)
 homothetical.adb:41:33: info: loop invariant preservation proved (CVC4: 1 VC)
 homothetical.adb:42:40: info: index check proved (CVC4: 4 VC)

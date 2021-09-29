@@ -1,5 +1,5 @@
 
-justifications.adb:6:14: medium: overflow check might fail, cannot prove lower bound for X + Y
+justifications.adb:6:14: high: overflow check might fail, cannot prove lower bound for X + Y
     6 |      X := X + Y;
       |           ~~^~~
   e.g. when X = Integer'First
@@ -9,7 +9,7 @@ justifications.adb:6:14: medium: overflow check might fail, cannot prove lower b
     4 |   procedure Do_Something_1 (X, Y : in out Integer) with
       |   ^ here
 
-justifications.adb:7:14: medium: overflow check might fail, cannot prove upper bound for Y + 1
+justifications.adb:7:14: high: overflow check might fail, cannot prove upper bound for Y + 1
     7 |      Y := Y + 1;
       |           ~~^~~
   e.g. when Y = Integer'Last
@@ -18,7 +18,7 @@ justifications.adb:7:14: medium: overflow check might fail, cannot prove upper b
     4 |   procedure Do_Something_1 (X, Y : in out Integer) with
       |   ^ here
 
-justifications.adb:12:14: medium: overflow check might fail, cannot prove lower bound for X + Y
+justifications.adb:12:14: high: overflow check might fail, cannot prove lower bound for X + Y
    12 |      X := X + Y;
       |           ~~^~~
   e.g. when X = Integer'First
@@ -28,7 +28,7 @@ justifications.adb:12:14: medium: overflow check might fail, cannot prove lower 
     9 |   procedure Do_Something_2 (X, Y : in out Integer) with
       |   ^ here
 
-justifications.adb:13:14: medium: overflow check might fail, cannot prove upper bound for Y + 1
+justifications.adb:13:14: high: overflow check might fail, cannot prove upper bound for Y + 1
    13 |      Y := Y + 1;
       |           ~~^~~
   e.g. when Y = Integer'Last

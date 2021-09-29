@@ -1,1 +1,1 @@
-spark_modes.ads:5:14: medium: postcondition might fail
+spark_modes.ads:5:14: high: postcondition might fail

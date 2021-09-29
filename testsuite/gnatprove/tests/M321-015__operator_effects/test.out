@@ -1,18 +1,18 @@
-opers.adb:5:16: medium: overflow check might fail, cannot prove lower bound for X + X, in instantiation at opers.adb:10 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then X <= Integer'Last - X else X >= Integer'First - X) to subprogram at line 10]
-opers.adb:5:16: medium: overflow check might fail, cannot prove lower bound for X + X, in instantiation at opers.adb:8 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then X <= Integer'Last - X else X >= Integer'First - X) to subprogram at line 8]
-opers.adb:46:35: medium: range check might fail, cannot prove lower bound for A [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:5:16: high: overflow check might fail, cannot prove lower bound for X + X, in instantiation at opers.adb:10 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then X <= Integer'Last - X else X >= Integer'First - X) to subprogram at line 10]
+opers.adb:5:16: high: overflow check might fail, cannot prove lower bound for X + X, in instantiation at opers.adb:8 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then X <= Integer'Last - X else X >= Integer'First - X) to subprogram at line 8]
+opers.adb:46:35: high: range check might fail, cannot prove lower bound for A [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:47:35: info: range check proved (CVC4: 2 VC)
-opers.adb:48:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
-opers.adb:49:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
-opers.adb:50:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:48:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:49:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:50:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:50:44: info: range check proved (CVC4: 2 VC)
-opers.adb:51:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:51:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:51:44: info: range check proved (CVC4: 2 VC)
-opers.adb:52:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
-opers.adb:53:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
-opers.adb:54:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:52:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:53:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:54:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:54:47: info: range check proved (CVC4: 2 VC)
-opers.adb:55:22: medium: assertion might fail (e.g. when A = 1) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:55:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:55:47: info: range check proved (CVC4: 2 VC)
 opers.ads:5:18: warning: unused variable "X"
 opers.ads:5:21: warning: unused variable "Y"

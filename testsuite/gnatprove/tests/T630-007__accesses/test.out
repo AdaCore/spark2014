@@ -8,4 +8,4 @@ access_types.adb:12:33: info: pointer dereference check proved (CVC4: 1 VC)
 access_types.adb:15:09: info: absence of memory leak proved (CVC4: 1 VC)
 access_types.adb:15:09: warning: unused assignment
 access_types.adb:15:12: medium: predicate check might fail
-access_types.adb:17:22: medium: assertion might fail (e.g. when Y = -1 and Z = 0)
+access_types.adb:17:22: medium: assertion might fail

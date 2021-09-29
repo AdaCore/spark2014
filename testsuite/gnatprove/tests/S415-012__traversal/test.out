@@ -1,15 +1,15 @@
-borrow.adb:11:15: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 9 should mention X]
+borrow.adb:11:15: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 9 should mention X]
 borrow.adb:17:38: info: precondition proved (Trivial: 1 VC)
 borrow.adb:17:44: info: precondition proved (Trivial: 1 VC)
-borrow.adb:19:18: medium: pointer dereference check might fail (e.g. when Y = null)
+borrow.adb:19:18: medium: pointer dereference check might fail
 borrow.adb:23:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 borrow.adb:23:10: info: initialization of "X" proved
 borrow.adb:24:29: info: precondition proved (Trivial: 1 VC)
 borrow.adb:24:35: info: precondition proved (Trivial: 1 VC)
-borrow.adb:26:18: medium: pointer dereference check might fail (e.g. when Y = null)
+borrow.adb:26:18: medium: pointer dereference check might fail
 borrow.adb:29:26: info: precondition proved (Trivial: 1 VC)
 borrow.adb:29:32: info: precondition proved (Trivial: 1 VC)
-borrow.adb:31:08: medium: pointer dereference check might fail (e.g. when Y = null)
+borrow.adb:31:08: medium: pointer dereference check might fail
 traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC4: 1 VC)
 traversal_funcs.adb:14:14: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:18:26: info: precondition proved (Trivial: 1 VC)

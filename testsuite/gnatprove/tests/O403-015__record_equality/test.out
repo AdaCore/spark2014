@@ -12,10 +12,10 @@ record_equality.adb:14:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:15:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:16:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:17:22: info: assertion proved (CVC4: 1 VC)
-record_equality.adb:18:22: medium: assertion might fail (e.g. when C_Pu1 = (C => ?, F1 => 0, F2 => 0) and R_Pu1 = (C => ?, F1 => 0))
+record_equality.adb:18:22: medium: assertion might fail
 record_equality.adb:21:07: info: initialization of "C_Pu1" proved
 record_equality.adb:21:22: info: range check proved (CVC4: 2 VC)
-record_equality.adb:25:22: medium: assertion might fail (e.g. when G_Pu1 = (C => ?, F1 => 0, F2 => 0, F3 => 0) and G_Pu2 = (C => ?, F1 => 0, F2 => 0, F3 => 1))
+record_equality.adb:25:22: medium: assertion might fail
 record_equality.adb:28:07: info: initialization of "R_Pu1" proved
 record_equality.adb:28:21: info: range check proved (CVC4: 2 VC)
 record_equality.adb:29:07: info: initialization of "C_Pu1" proved
@@ -23,10 +23,10 @@ record_equality.adb:29:22: info: range check proved (CVC4: 2 VC)
 record_equality.adb:31:22: medium: assertion might fail
 record_equality.adb:34:07: info: initialization of "C_Pu1" proved
 record_equality.adb:34:22: info: range check proved (CVC4: 2 VC)
-record_equality.adb:38:22: medium: assertion might fail (e.g. when G_Pu1 = (C => ?, F1 => 0, F2 => 0, F3 => 0) and G_Pu2 = (C => ?, F1 => 0, F2 => 0, F3 => 1))
+record_equality.adb:38:22: medium: assertion might fail
 record_equality.adb:41:07: info: initialization of "C_Pu1" proved
 record_equality.adb:41:22: info: range check proved (CVC4: 2 VC)
-record_equality.adb:47:22: medium: assertion might fail (e.g. when R_G1 = (C => ?, F1 => 0) and R_G2 = (C => ?, F1 => 0))
+record_equality.adb:47:22: medium: assertion might fail
 record_equality.ads:12:33: info: range check proved (CVC4: 2 VC)
 record_equality.ads:13:35: info: range check proved (CVC4: 2 VC)
 record_equality.ads:15:14: warning: subprogram "Test_Eq_Ok" has no effect

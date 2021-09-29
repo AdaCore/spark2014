@@ -22,5 +22,5 @@ p3.adb:4:52: info: range check proved (CVC4: 2 VC)
 p3.adb:16:03: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 p3.adb:16:21: info: range check proved (CVC4: 2 VC)
 p3.adb:18:03: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-p3.adb:18:29: info: range check proved (CVC4: 2 VC)
-p3.adb:18:31: medium: range check might fail, cannot prove upper bound for (Seven) [reason for check: value must fit in the type of the qualification]
+p3.adb:18:29: info: range check proved (CVC4: 1 VC)
+p3.adb:18:31: medium: range check might fail [reason for check: value must fit in the type of the qualification]

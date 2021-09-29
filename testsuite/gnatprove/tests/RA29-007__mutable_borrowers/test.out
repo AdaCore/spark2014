@@ -5,7 +5,7 @@ traversal.adb:17:04: info: absence of memory leak at end of scope proved (CVC4: 
 traversal.adb:18:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 traversal.adb:21:29: info: precondition proved (CVC4: 1 VC)
 traversal.adb:23:09: info: pointer dereference check proved (CVC4: 1 VC)
-traversal.adb:26:19: medium: assertion might fail (e.g. when X.all = (Fst => (all => 0), Snd => (all => 0)))
+traversal.adb:26:19: medium: assertion might fail
 traversal.adb:26:20: info: pointer dereference check proved (CVC4: 1 VC)
 traversal.adb:26:25: info: pointer dereference check proved (CVC4: 1 VC)
 walker.adb:9:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
@@ -13,5 +13,5 @@ walker.adb:9:04: info: initialization of "X" proved
 walker.adb:11:10: info: absence of memory leak proved (CVC4: 1 VC)
 walker.adb:12:10: info: absence of memory leak proved (CVC4: 1 VC)
 walker.adb:17:09: info: pointer dereference check proved (CVC4: 1 VC)
-walker.adb:19:19: medium: assertion might fail (e.g. when X = (Fst => (all => 3), Snd => (all => 2)))
+walker.adb:19:19: medium: assertion might fail
 walker.adb:19:25: info: pointer dereference check proved (CVC4: 1 VC)

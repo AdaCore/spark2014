@@ -10,7 +10,7 @@ test_tagged_records_loop.adb:21:32: info: pointer dereference check proved (CVC4
 test_tagged_records_loop.adb:25:10: info: assertion proved (CVC4: 1 VC)
 test_tagged_records_loop.adb:25:39: info: pointer dereference check proved (CVC4: 1 VC)
 test_tagged_records_loop.adb:29:22: info: pointer dereference check proved (CVC4: 1 VC)
-test_tagged_records_loop.adb:29:46: medium: assertion might fail, cannot prove Child'Class (A (K).all).J = 2 (e.g. when A(99).all.F = 1 and A(99).all.I = 1 and A(100).all.I = 1 and K = 99) [possible fix: loop at line 18 should mention A in a loop invariant]
+test_tagged_records_loop.adb:29:46: medium: assertion might fail, cannot prove Child'Class (A (K).all).J = 2 [possible fix: loop at line 18 should mention A in a loop invariant]
 test_tagged_records_loop.adb:29:65: info: pointer dereference check proved (CVC4: 1 VC)
 test_tagged_records_loop.adb:29:65: info: tag check proved (CVC4: 1 VC)
 test_tagged_records_loop.adb:34:43: info: pointer dereference check proved (CVC4: 1 VC)

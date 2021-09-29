@@ -1,3 +1,3 @@
 p.adb:6:30: medium: range check might fail, cannot prove upper bound for PO'Size [reason for check: default component value must fit in the type]
 p.adb:8:10: info: initialization of "X" proved
-p.adb:10:25: medium: assertion might fail
+p.adb:10:25: high: assertion might fail

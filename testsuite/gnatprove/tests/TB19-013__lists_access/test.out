@@ -3,7 +3,7 @@ test_list.adb:15:07: medium: "Length" is recursive, terminating annotation could
 test_list.adb:15:40: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_list.adb:15:48: info: predicate check proved (CVC4: 1 VC)
 test_list.adb:15:60: info: pointer dereference check proved (CVC4: 1 VC)
-test_list.adb:15:65: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
+test_list.adb:15:65: info: predicate check proved (CVC4: 1 VC)
 test_list.adb:15:67: info: predicate check proved (CVC4: 1 VC)
 test_list.adb:19:13: info: implicit function contract might not be available on recursive calls
 test_list.adb:20:07: medium: "Nth_Int" is recursive, terminating annotation could be incorrect

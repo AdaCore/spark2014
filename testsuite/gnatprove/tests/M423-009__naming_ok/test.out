@@ -1,1 +1,1 @@
-p_body.adb:5:18: medium: overflow check might fail, cannot prove upper bound for T.X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:2 should mention X in a precondition]
+p_body.adb:5:18: high: overflow check might fail, cannot prove upper bound for T.X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:2 should mention X in a precondition]

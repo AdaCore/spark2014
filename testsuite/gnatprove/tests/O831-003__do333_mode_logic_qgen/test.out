@@ -508,7 +508,7 @@ modes_off_at_startup.adb:26:07: info: initialization of "Unit_Delay_out1" proved
 modes_off_at_startup.adb:27:07: info: initialization of "Modes_On_out1" proved
 modes_off_at_startup.adb:28:07: info: initialization of "NOT_out1" proved
 modes_off_at_startup.adb:29:07: info: initialization of "OR_out1" proved
-modes_off_at_startup.adb:53:22: info: assertion proved (colibri: 1 VC)
+modes_off_at_startup.adb:53:22: medium: assertion might fail (e.g. when OR_out1 = False)
 modes_on_iff_fd_on_or_ap_engaged.adb:31:07: info: initialization of "Unit_Delay_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:32:07: info: initialization of "FD_On_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:33:07: info: initialization of "Is_AP_Engaged_out1" proved

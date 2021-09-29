@@ -1,3 +1,3 @@
 q.ads:3:14: warning: subprogram "Proc" has no effect
 q.ads:6:24: info: initialization of "X" proved
-q.ads:6:72: medium: postcondition might fail
+q.ads:6:72: high: postcondition might fail

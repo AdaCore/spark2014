@@ -1,4 +1,4 @@
-div_zero.adb:6:11: medium: divide by zero might fail
+div_zero.adb:6:11: high: divide by zero might fail
 div_zero.adb:6:11: medium: overflow check might fail, cannot prove lower bound for C / C [reason for check: result of division must fit in a 32-bits machine integer]
 gene.adb:5:07: warning: statement has no effect, in instantiation at main.adb:4
 gene.adb:8:10: warning: this statement is never reached, in instantiation at main.adb:4

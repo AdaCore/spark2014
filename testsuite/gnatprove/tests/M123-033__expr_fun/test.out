@@ -26,10 +26,10 @@ p.adb:41:28: info: assertion proved (CVC4: 1 VC)
 p.adb:43:28: medium: assertion might fail [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function in its unit spec]
 p.adb:45:28: medium: assertion might fail [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
 p.adb:47:28: medium: assertion might fail
-p.ads:4:38: info: overflow check proved (CVC4: 2 VC)
-p.ads:4:43: info: overflow check proved (CVC4: 2 VC)
-p.ads:6:38: medium: overflow check might fail, cannot prove upper bound for F3 + (G3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
-p.ads:6:43: info: overflow check proved (CVC4: 2 VC)
+p.ads:4:38: info: overflow check proved (CVC4: 1 VC)
+p.ads:4:43: info: overflow check proved (CVC4: 1 VC)
+p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
+p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
 private_main.adb:8:25: info: assertion proved (CVC4: 1 VC)
 private_main.adb:10:25: info: assertion proved (CVC4: 1 VC)
 private_main.adb:12:25: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function in its unit spec]
@@ -58,10 +58,10 @@ private_p.adb:39:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:41:28: medium: assertion might fail [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function in its unit spec]
 private_p.adb:43:28: medium: assertion might fail [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
 private_p.adb:45:28: medium: assertion might fail
-private_p.ads:8:38: medium: overflow check might fail, cannot prove upper bound for F3 + (G3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
-private_p.ads:8:43: info: overflow check proved (CVC4: 2 VC)
-private_p.ads:9:38: info: overflow check proved (CVC4: 2 VC)
-private_p.ads:9:43: info: overflow check proved (CVC4: 2 VC)
+private_p.ads:8:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
+private_p.ads:8:43: info: overflow check proved (CVC4: 1 VC)
+private_p.ads:9:38: info: overflow check proved (CVC4: 1 VC)
+private_p.ads:9:43: info: overflow check proved (CVC4: 1 VC)
 private_q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 private_q.adb:4:14: warning: subprogram "Q1" has no effect
 private_q.adb:8:28: info: assertion proved (CVC4: 1 VC)
@@ -82,10 +82,10 @@ private_q.adb:40:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:42:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:44:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:46:28: info: assertion proved (CVC4: 1 VC)
-private_q.adb:52:38: info: overflow check proved (CVC4: 2 VC)
-private_q.adb:52:43: info: overflow check proved (CVC4: 2 VC)
-private_q.ads:7:38: info: overflow check proved (CVC4: 2 VC)
-private_q.ads:7:43: info: overflow check proved (CVC4: 2 VC)
+private_q.adb:52:38: info: overflow check proved (CVC4: 1 VC)
+private_q.adb:52:43: info: overflow check proved (CVC4: 1 VC)
+private_q.ads:7:38: info: overflow check proved (CVC4: 1 VC)
+private_q.ads:7:43: info: overflow check proved (CVC4: 1 VC)
 q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 q.adb:4:14: warning: subprogram "Q1" has no effect
 q.adb:8:28: info: assertion proved (CVC4: 1 VC)
@@ -96,8 +96,8 @@ q.adb:16:28: info: assertion proved (CVC4: 1 VC)
 q.adb:18:28: info: assertion proved (CVC4: 1 VC)
 q.adb:20:28: info: assertion proved (CVC4: 1 VC)
 q.adb:22:28: info: assertion proved (CVC4: 1 VC)
-q.adb:28:38: info: overflow check proved (CVC4: 2 VC)
-q.adb:28:43: info: overflow check proved (CVC4: 2 VC)
+q.adb:28:38: info: overflow check proved (CVC4: 1 VC)
+q.adb:28:43: info: overflow check proved (CVC4: 1 VC)
 q.adb:31:04: warning: analyzing unreferenced procedure "Q2"
 q.adb:31:14: warning: subprogram "Q2" has no effect
 q.adb:35:28: info: assertion proved (CVC4: 1 VC)
@@ -108,8 +108,8 @@ q.adb:43:28: info: assertion proved (CVC4: 1 VC)
 q.adb:45:28: info: assertion proved (CVC4: 1 VC)
 q.adb:47:28: info: assertion proved (CVC4: 1 VC)
 q.adb:49:28: info: assertion proved (CVC4: 1 VC)
-q.ads:5:38: info: overflow check proved (CVC4: 2 VC)
-q.ads:5:43: info: overflow check proved (CVC4: 2 VC)
+q.ads:5:38: info: overflow check proved (CVC4: 1 VC)
+q.ads:5:43: info: overflow check proved (CVC4: 1 VC)
 reorder_main.adb:8:25: info: assertion proved (CVC4: 1 VC)
 reorder_main.adb:10:25: info: assertion proved (CVC4: 1 VC)
 reorder_main.adb:12:25: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function in its unit spec]
@@ -138,10 +138,10 @@ reorder_p.adb:39:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:41:28: medium: assertion might fail [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function in its unit spec]
 reorder_p.adb:43:28: medium: assertion might fail [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
 reorder_p.adb:45:28: medium: assertion might fail
-reorder_p.ads:4:38: info: overflow check proved (CVC4: 2 VC)
-reorder_p.ads:4:43: info: overflow check proved (CVC4: 2 VC)
-reorder_p.ads:6:38: medium: overflow check might fail, cannot prove upper bound for F3 + (G3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
-reorder_p.ads:6:43: info: overflow check proved (CVC4: 2 VC)
+reorder_p.ads:4:38: info: overflow check proved (CVC4: 1 VC)
+reorder_p.ads:4:43: info: overflow check proved (CVC4: 1 VC)
+reorder_p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function in its unit spec]
+reorder_p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
 reorder_q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 reorder_q.adb:4:14: warning: subprogram "Q1" has no effect
 reorder_q.adb:8:28: info: assertion proved (CVC4: 1 VC)
@@ -162,7 +162,7 @@ reorder_q.adb:40:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:42:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:44:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:46:28: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:52:38: info: overflow check proved (CVC4: 2 VC)
-reorder_q.adb:52:43: info: overflow check proved (CVC4: 2 VC)
-reorder_q.ads:5:38: info: overflow check proved (CVC4: 2 VC)
-reorder_q.ads:5:43: info: overflow check proved (CVC4: 2 VC)
+reorder_q.adb:52:38: info: overflow check proved (CVC4: 1 VC)
+reorder_q.adb:52:43: info: overflow check proved (CVC4: 1 VC)
+reorder_q.ads:5:38: info: overflow check proved (CVC4: 1 VC)
+reorder_q.ads:5:43: info: overflow check proved (CVC4: 1 VC)

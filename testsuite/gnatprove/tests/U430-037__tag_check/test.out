@@ -1,8 +1,8 @@
 test_tagged_records.adb:19:04: medium: memory leak might occur at end of scope
-test_tagged_records.adb:22:07: medium: tag check might fail (e.g. when C = (F => 1))
-test_tagged_records.adb:24:07: medium: tag check might fail (e.g. when P.all = (F => 1))
+test_tagged_records.adb:22:07: medium: tag check might fail
+test_tagged_records.adb:24:07: medium: tag check might fail
 test_tagged_records.adb:24:17: info: pointer dereference check proved (CVC4: 1 VC)
-test_tagged_records.adb:26:07: medium: tag check might fail (e.g. when C = (F => 1))
-test_tagged_records.adb:28:07: medium: tag check might fail (e.g. when C = (F => 1))
-test_tagged_records.adb:30:12: medium: tag check might fail (e.g. when C = (F => 1))
+test_tagged_records.adb:26:07: medium: tag check might fail
+test_tagged_records.adb:28:07: medium: tag check might fail
+test_tagged_records.adb:30:12: medium: tag check might fail
 test_tagged_records.adb:32:17: info: tag check proved (CVC4: 1 VC)

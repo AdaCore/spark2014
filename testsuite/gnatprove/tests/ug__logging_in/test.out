@@ -1,5 +1,5 @@
 
-logging_in.adb:6:28: medium: overflow check might fail, cannot prove upper bound for Log_Size + 1
+logging_in.adb:6:28: high: overflow check might fail, cannot prove upper bound for Log_Size + 1
     6 |      Log_Size := Log_Size + 1;
       |                  ~~~~~~~~~^~~
   e.g. when Log_Size = Natural'Last

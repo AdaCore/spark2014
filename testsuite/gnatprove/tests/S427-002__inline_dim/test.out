@@ -22,7 +22,7 @@ challenges.adb:11:13: info: local subprogram "Get_Distance" only analyzed in the
 challenges.adb:12:48: info: float overflow check proved (Trivial), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:12:48: info: range check proved (CVC4: 1 VC), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:13:48: info: float overflow check proved (Trivial), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
-challenges.adb:13:48: info: range check proved (Z3: 1 VC), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:13:48: info: range check proved (CVC4: 1 VC), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:20:13: info: add a contract to analyze it separately from calling contexts
 challenges.adb:20:13: info: local subprogram "Get_Remaining_Distance" only analyzed in the context of calls
 challenges.adb:24:61: info: float overflow check proved (Trivial), in call inlined at challenges.adb:33, in call inlined at challenges.adb:38

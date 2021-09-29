@@ -3,7 +3,7 @@ bad_lsp.adb:9:57: info: overflow check proved (CVC4: 2 VC)
 bad_lsp.ads:8:35: info: initialization of "Res" proved
 bad_lsp.ads:10:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 bad_lsp.ads:10:21: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC), in inherited contract at bad_lsp.ads:15
-bad_lsp.ads:10:46: medium: overflow check might fail, cannot prove upper bound for X.F + X.G (e.g. when X = (F => Natural'Last, G => 1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+bad_lsp.ads:10:46: medium: overflow check might fail, cannot prove upper bound for X.F + X.G [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 bad_lsp.ads:15:36: info: initialization of "Res" proved
 bad_lsp.ads:16:19: info: class-wide precondition is weaker than overridden one (Trivial: 1 VC)
 test_lsp.adb:6:11: info: precondition proved (Trivial: 1 VC)

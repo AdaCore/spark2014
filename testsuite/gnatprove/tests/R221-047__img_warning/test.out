@@ -8,4 +8,4 @@ p_warn.ads:16:19: info: assertion proved (CVC4: 1 VC)
 p_warn.ads:17:19: info: assertion proved (CVC4: 1 VC)
 p_warn.ads:21:19: info: assertion proved (CVC4: 1 VC)
 p_warn.ads:22:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:23:19: medium: assertion might fail (e.g. when X4 = 1)
+p_warn.ads:23:19: medium: assertion might fail

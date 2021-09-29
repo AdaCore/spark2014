@@ -1,15 +1,15 @@
 fail.adb:5:14: info: postcondition proved (CVC4: 2 VC)
 fail.adb:7:07: info: range check proved (CVC4: 2 VC)
 fail.adb:7:28: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-fail.adb:17:11: medium: range check might fail (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last)
+fail.adb:17:11: medium: range check might fail
 fail.adb:19:14: info: range check proved (CVC4: 1 VC)
 fail.adb:27:21: info: index check proved (CVC4: 2 VC)
 fail.adb:27:35: info: index check proved (CVC4: 2 VC)
-fail.adb:35:11: medium: range check might fail, cannot prove upper bound for C'Length (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last)
+fail.adb:35:11: medium: range check might fail, cannot prove upper bound for C'Length
 fail.adb:37:14: info: range check proved (CVC4: 2 VC)
 fail.adb:42:14: warning: subprogram "P4" has no effect
 fail.adb:45:22: info: assertion proved (CVC4: 1 VC)
-fail.adb:45:23: medium: range check might fail, cannot prove upper bound for C'Length (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last)
+fail.adb:45:23: medium: range check might fail, cannot prove upper bound for C'Length
 fail.adb:48:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:49:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:50:04: info: precondition proved (CVC4: 2 VC)

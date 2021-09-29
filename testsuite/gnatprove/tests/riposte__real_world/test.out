@@ -3,10 +3,10 @@ real_world.adb:26:07: info: initialization of "R" proved
 real_world.adb:44:22: info: assertion proved (CVC4: 1 VC)
 real_world.adb:45:21: info: range check proved (CVC4: 1 VC)
 real_world.adb:54:11: info: flow dependencies proved
-real_world.adb:56:24: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-real_world.adb:56:51: medium: overflow check might fail, cannot prove lower bound for C2 + Y (e.g. when C2 = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+real_world.adb:56:24: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+real_world.adb:56:51: high: overflow check might fail, cannot prove lower bound for C2 + Y (e.g. when C2 = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 real_world.adb:57:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 real_world.adb:69:11: info: flow dependencies proved
-real_world.adb:71:21: medium: overflow check might fail, cannot prove lower bound for X - Y (e.g. when X = Integer'First and Y = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-real_world.adb:71:48: medium: overflow check might fail, cannot prove lower bound for C2 - Y (e.g. when C2 = -2 and Y = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+real_world.adb:71:21: high: overflow check might fail, cannot prove lower bound for X - Y (e.g. when X = Integer'First and Y = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+real_world.adb:71:48: high: overflow check might fail, cannot prove lower bound for C2 - Y (e.g. when C2 = -2 and Y = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 real_world.adb:72:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)

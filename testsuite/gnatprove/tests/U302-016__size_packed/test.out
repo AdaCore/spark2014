@@ -16,16 +16,16 @@ use_bytes.adb:15:07: info: object is suitable for aliasing via address clause (T
 use_bytes.adb:16:25: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes.adb:16:25: info: types of aliased objects have the same size (Trivial)
 use_bytes.adb:19:29: info: unrolling loop
-use_bytes.adb:26:19: medium: assertion might fail (e.g. when R = (A => 0, B => 1, C => 41)) [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
+use_bytes.adb:26:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
 use_bytes2.adb:16:07: info: range check proved (CVC4: 2 VC)
 use_bytes2.adb:17:07: info: alignment of overlaid objects is compatible (Trivial)
 use_bytes2.adb:17:07: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes2.adb:18:25: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes2.adb:18:25: info: types of aliased objects have the same size (Trivial)
 use_bytes2.adb:21:29: info: unrolling loop
-use_bytes2.adb:28:19: medium: assertion might fail (e.g. when R = (A => 0, B => 1, C => 41)) [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
+use_bytes2.adb:28:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
 use_bytes_gen.adb:11:04: info: in instantiation at bytes.adb:12
 use_bytes_gen.adb:11:04: info: unrolling loop
 use_bytes_gen.adb:12:04: info: in instantiation at bytes.adb:23
 use_bytes_gen.adb:12:04: info: unrolling loop
-use_bytes_gen.adb:15:19: medium: assertion might fail (e.g. when R = (A => 0, B => 1, C => 41)) [possible fix: you should consider adding a postcondition to function Extract_Gen or turning it into an expression function]
+use_bytes_gen.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Extract_Gen or turning it into an expression function]

@@ -1,4 +1,4 @@
-p.adb:8:09: medium: discriminant check might fail (e.g. when X = (I => A, others => ?))
+p.adb:8:09: medium: discriminant check might fail
 p.adb:14:09: info: discriminant check proved (CVC4: 1 VC)
 p.ads:3:14: warning: subprogram "Bad" has no effect
 p.ads:5:14: warning: subprogram "Good" has no effect

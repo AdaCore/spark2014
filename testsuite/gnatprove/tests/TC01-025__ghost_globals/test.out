@@ -1,5 +1,5 @@
 caller_package-ghost.ads:6:03: info: initial condition proved (CVC4: 4 VC)
-caller_package.adb:12:22: medium: refined postcondition might fail (e.g. when Global_Ghost_c = True and Global_Ghost_d = True and Global_b = True)
+caller_package.adb:12:22: medium: refined postcondition might fail
 caller_package.adb:15:07: info: precondition proved (CVC4: 1 VC)
 caller_package.adb:16:07: medium: precondition might fail
 caller_package.ads:6:03: info: flow dependencies proved

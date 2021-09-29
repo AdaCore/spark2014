@@ -178,7 +178,7 @@ test_accessibility_list.adb:13:07: medium: "Length" is recursive, terminating an
 test_accessibility_list.adb:13:40: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_accessibility_list.adb:13:48: info: predicate check proved (CVC4: 1 VC)
 test_accessibility_list.adb:13:60: info: pointer dereference check proved (CVC4: 1 VC)
-test_accessibility_list.adb:13:65: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
+test_accessibility_list.adb:13:65: info: predicate check proved (CVC4: 1 VC)
 test_accessibility_list.adb:13:67: info: predicate check proved (CVC4: 1 VC)
 test_accessibility_list.adb:17:13: info: implicit function contract might not be available on recursive calls
 test_accessibility_list.adb:18:07: medium: "Nth_Int" is recursive, terminating annotation could be incorrect

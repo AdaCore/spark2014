@@ -8,7 +8,7 @@ test_loop.adb:27:15: info: pointer dereference check proved (CVC4: 1 VC)
 test_loop.adb:27:21: info: pointer dereference check proved (CVC4: 1 VC)
 test_loop.adb:31:25: info: cannot unroll loop (too many loop iterations)
 test_loop.adb:32:15: info: pointer dereference check proved (CVC4: 1 VC)
-test_loop.adb:45:14: medium: postcondition might fail (e.g. when A'Old.all = (B => False, F => 0)) [possible fix: loop at line 49 should mention A in a loop invariant]
+test_loop.adb:45:14: medium: postcondition might fail [possible fix: loop at line 49 should mention A in a loop invariant]
 test_loop.adb:45:15: info: pointer dereference check proved (CVC4: 1 VC)
 test_loop.adb:45:21: info: pointer dereference check proved (CVC4: 1 VC)
 test_loop.adb:49:25: info: cannot unroll loop (too many loop iterations)
