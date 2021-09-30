@@ -1,3 +1,2 @@
-p.ads:7:41: error: expected type "Object" defined at line 2
-p.ads:7:41: error: found type "Child" defined at line 9
-gnatprove: error during generation of Global contracts
+p.ads:7:21: info: postcondition proved (CVC4: 3 VC)
+p.ads:7:21: info: postcondition proved (CVC4: 3 VC), in inherited contract at p.ads:13
