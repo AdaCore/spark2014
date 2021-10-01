@@ -1496,7 +1496,7 @@ package body Configuration is
 
          if not All_Projects then
             declare
-               Limit_String : GNAT.Strings.String_Access := null;
+               Limit_String : GNAT.Strings.String_Access;
 
             begin
                --  Limit_Line, Limit_Region, and Limit_Subp all imply -u for
@@ -1830,10 +1830,15 @@ package body Configuration is
            and then Prj_Attr.Prove.Proof_Dir.all /= ""
          then
             declare
-               Dir_Name : constant Virtual_File :=
+               My_Proof_Dir : constant Virtual_File :=
+                 Create (+Prj_Attr.Prove.Proof_Dir.all);
+               Proj_Dir     : constant Virtual_File :=
                  Create (Tree.Root_Project.Project_Path.Dir_Name);
-               Full_Name : constant Virtual_File :=
-                 Create_From_Dir (Dir_Name, +Prj_Attr.Prove.Proof_Dir.all);
+               Full_Name    : constant Virtual_File :=
+                 (if Is_Absolute_Path (My_Proof_Dir) then My_Proof_Dir
+                  else
+                     Create_From_Dir
+                       (Proj_Dir, +Prj_Attr.Prove.Proof_Dir.all));
             begin
                Full_Name.Normalize_Path;
                Proof_Dir := new String'(Full_Name.Display_Full_Name);

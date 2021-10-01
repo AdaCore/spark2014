@@ -295,10 +295,6 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff the E calls potentially nonreturning subprograms,
    --  trusting their Terminating annotations.
 
-   function Get_Constituents (E : Entity_Name) return Name_Sets.Set
-   with Pre => GG_Is_Abstract_State (E);
-   --  Returns the constituents for abstract state E
-
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
    --  Returns True iff E does not return directly because of a

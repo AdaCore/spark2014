@@ -1,11 +1,11 @@
-Generated contracts for test
+Generated contracts for Main.Test
    Global =>
       Proof_In =>
          X
    Refined_Global =>
       Proof_In =>
          X
-Generated contracts for main
+Generated contracts for Main
    Global =>
    Refined_Global =>
 main.adb:5:14: warning: subprogram "Test" has no effect

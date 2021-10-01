@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;                       use Atree;
 with Elists;                      use Elists;
 with Lib;                         use Lib;
 with Namet;                       use Namet;
@@ -4575,6 +4576,7 @@ package body Flow.Analysis is
 
                   if Ekind (Constituent) = E_Constant
                     and then Entity_In_SPARK (Constituent)
+                    and then not Is_Access_Variable (Etype (Constituent))
                     and then not Has_Variable_Input (Constituent)
                   then
                      Error_Msg (Declaration_Node (Constituent),
@@ -5345,7 +5347,7 @@ package body Flow.Analysis is
                function Get_Msg_Object (Object : Entity_Name)
                                         return Entity_Name
                is
-                  Current_Abstraction  : Entity_Name   := Object;
+                  Current_Abstraction  : Entity_Name := Object;
                   Current_Constituents : Name_Sets.Set;
                   --  While going from the innermost object to its outermost
                   --  encapsulating state, these will represent the current
@@ -5391,6 +5393,7 @@ package body Flow.Analysis is
                      --  encapsulating abstract state, if any.
                   end loop;
                end Get_Msg_Object;
+
             begin
                --  Violation occurs when the resource is accessed by:
                --  * instances of several task types

@@ -23,10 +23,10 @@ convert.adb:43:53: info: float overflow check proved (Trivial)
 convert.adb:44:32: info: float overflow check proved (Trivial)
 convert.adb:44:44: info: range check proved (Trivial)
 convert.adb:45:47: info: range check proved (Z3: 2 VC)
-convert.adb:48:35: info: float overflow check proved (Z3: 1 VC)
-convert.adb:48:45: info: float overflow check proved (Z3: 1 VC)
+convert.adb:48:35: info: float overflow check proved (CVC4: 1 VC)
+convert.adb:48:45: info: float overflow check proved (colibri: 1 VC)
 convert.adb:49:18: info: float overflow check proved (colibri: 1 VC)
-convert.adb:49:42: info: float overflow check proved (Z3: 1 VC)
+convert.adb:49:42: info: float overflow check proved (colibri: 1 VC)
 convert.adb:50:18: info: float overflow check proved (colibri: 1 VC)
 convert.ads:42:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 convert.ads:45:45: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
@@ -47,7 +47,7 @@ convert.ads:61:11: medium: postcondition might fail
 convert.ads:65:30: info: range check proved (colibri: 2 VC)
 convert.ads:67:17: info: precondition proved (Z3: 2 VC)
 convert.ads:72:64: info: range check proved (colibri: 2 VC)
-convert.ads:75:23: medium: precondition might fail, cannot prove Low <= Last_Float_As_Uns64
+convert.ads:75:23: info: precondition proved (Z3: 1 VC; colibri: 1 VC)
 convert.ads:76:63: info: overflow check proved (Z3: 1 VC)
 convert.ads:79:23: medium: precondition might fail, cannot prove Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64
 convert.ads:81:63: info: overflow check proved (Z3: 1 VC)

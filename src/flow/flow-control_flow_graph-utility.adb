@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;                  use Atree;
 with Flow_Utility;           use Flow_Utility;
 with Sem_Aux;                use Sem_Aux;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;

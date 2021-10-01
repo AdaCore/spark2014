@@ -1,17 +1,17 @@
-Generated contracts for add
+Generated contracts for A.Add
    Global =>
    Refined_Global =>
-Generated contracts for test_01
+Generated contracts for A.Test_01
    Global =>
    Refined_Global =>
-Generated contracts for test_02
+Generated contracts for A.Test_02
    Global =>
       Input =>
          VI1
    Refined_Global =>
       Input =>
          VI1
-Generated contracts for a
+Generated contracts for A
    Initializes =>
       Var
       VI1

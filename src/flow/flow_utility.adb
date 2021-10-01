@@ -4322,22 +4322,6 @@ package body Flow_Utility is
       return Present (Find_Contract (Subprogram, Pragma_Depends));
    end Has_Depends;
 
-   -----------------------
-   -- Has_Proof_Globals --
-   -----------------------
-
-   function Has_Proof_Globals (Subprogram : E_Function_Id) return Boolean is
-      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-   begin
-      Get_Proof_Globals (Subprogram      => Subprogram,
-                         Reads           => Read_Ids,
-                         Writes          => Write_Ids,
-                         Erase_Constants => True);
-
-      return not Read_Ids.Is_Empty or else not Write_Ids.Is_Empty;
-   end Has_Proof_Globals;
-
    ------------------------
    -- Has_Variable_Input --
    ------------------------

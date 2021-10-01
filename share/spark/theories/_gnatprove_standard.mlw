@@ -338,14 +338,13 @@ end
 module Floating_power
   (* Ada's exponentiation operator "**" axiomatization:
 
-     As said in the Ada RM (sec 4.5.6), "X**N" can be equal equal to
-     any one of the possible factorizations of the exponentiation:
-     "multiplications are associated in an arbitrary order". Also, it
-     is guaranteed that for "N" negative "the result is the reciprocal
-     of the result using the absolute value of "N"". Hence, since
-     multiplication on floats is commutative but not associative, we
-     can only be sure of the value of "X**N" for "N" between -3 and
-     3. *)
+     As said in the Ada RM (sec 4.5.6), "X**N" can be equal to any one of the
+     possible factorizations of the exponentiation: "multiplications are
+     associated in an arbitrary order". Also, it is guaranteed that for "N"
+     negative "the result is the reciprocal of the result using the absolute
+     value of "N"". Hence, since multiplication on floats is commutative but
+     not associative, we can only be sure of the value of "X**N" for "N"
+     between -3 and 3. *)
 
   type t
 

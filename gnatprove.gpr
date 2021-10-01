@@ -75,7 +75,8 @@ project GNATprove is
         ("assumptions.ads",
          "assumptions.adb",
          "print_table.adb",
-         "configuration.adb");
+         "configuration.adb",
+         "report_database.ads"); --  spurious codepeer violation U804-011
 
       for Switches use ("-j0",
                         "--no-infer",

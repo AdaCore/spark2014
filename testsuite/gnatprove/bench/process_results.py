@@ -19,7 +19,9 @@ def parse_arguments():
         "resultsdir", metavar="F", help="directory which contains proof results"
     )
     parser.add_argument(
-        "outdir", metavar="F", help="directory which contains proof results"
+        "outdir",
+        metavar="F",
+        help="directory where results/diffs for GAIA will be stored",
     )
     parser.add_argument(
         "--testsuite-dir",
@@ -33,7 +35,7 @@ def parse_arguments():
 
 
 def compute_stat_count(fn):
-    results = {'unsat' : 0}
+    results = {"unsat": 0}
     with open(fn) as f:
         data = json.load(f)
     for elt in data["results"]:
@@ -44,7 +46,7 @@ def compute_stat_count(fn):
     return results
 
 
-def compare_baseline(n, results):
+def compare_baseline(n, results, prover, fn):
     """n is a percentage (integer). results is a dictionary that maps prover
     status to count. We check that unsat is at least percentage expressed by
     n.
@@ -53,22 +55,32 @@ def compare_baseline(n, results):
     for s in results.values():
         total += s
     if total == 0:
+        fn.write("VC count for " + prover + " is 0\n")
         return False
-    if results["unsat"] * 100 // total < n:
+    percent = results["unsat"] * 100 // total
+    if percent < n:
+        fn.write(
+            f"{prover} proved {results['unsat']} out of {total} VCs"
+            + f"({percent}%), but {n}% was required.\n"
+        )
         return False
     else:
         return True
 
 
-def compute_test_status(testsuitedir, test, results, resultfile):
+def compute_test_status(testsuitedir, outdir, test, results, resultfile):
     baseline_file = os.path.join(testsuitedir, "tests", test, "bench.yaml")
     if os.path.exists(baseline_file):
         baseline = e3.yaml.load_with_config(baseline_file, {})
+        shutil.copyfile(baseline_file, os.path.join(outdir, test + ".expected"))
     else:
         baseline = {"cvc4": 100, "altergo": 100, "z3": 100}
     res = True
-    for p in all_provers:
-        res = res and compare_baseline(baseline[p], results[p])
+    with open(os.path.join(outdir, test + ".diff"), "w") as diff_fn:
+        for prover in all_provers:
+            res = res and compare_baseline(
+                baseline[prover], results[prover], prover, diff_fn
+            )
     if res:
         resultfile.write(test + ":OK\n")
     else:
@@ -88,7 +100,7 @@ def compute_results(resultdir, outdir, testsuitedir, resultfile):
                 f.write(p + ":")
                 f.write(str(results[p]))
                 f.write("\n")
-        compute_test_status(testsuitedir, test, results, resultfile)
+        compute_test_status(testsuitedir, outdir, test, results, resultfile)
 
 
 def produce_version_output(outdir, resultfile):

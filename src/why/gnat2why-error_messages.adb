@@ -850,9 +850,18 @@ package body Gnat2Why.Error_Messages is
 
       type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
 
+      type Inline_Info (Inline : Boolean := False) is record
+         case Inline is
+            when False =>
+               null;
+            when True =>
+               Inline_Node : Node_Id;
+         end case;
+      end record;
+
       type Extra_Info is record
          Node       : Node_Id;
-         Inline     : Boolean;
+         Inline     : Inline_Info;
          Bound_Info : Bound_Info_Type;
       end record;
 
@@ -953,21 +962,33 @@ package body Gnat2Why.Error_Messages is
          CP_Msg  : constant String :=
            (if not Rec.Result then Compute_Cannot_Prove_Message (Rec, VC) else
             "");
+         Can_Relocate : constant Boolean :=
+           Rec.Kind not in VC_Precondition
+                         | VC_LSP_Kind
+                         | VC_Predicate_Check
+                         | VC_Predicate_Check_On_Default_Value;
          Node       : constant Node_Id :=
            (if Present (Rec.EI.Node)
-            and then not Rec.EI.Inline
-            and then Rec.Kind not in VC_Precondition
-                                   | VC_LSP_Kind
-                                   | VC_Predicate_Check
-                                   | VC_Predicate_Check_On_Default_Value
-            then Rec.EI.Node else VC.Node);
-         --  Extra_Info contains the locations of the first failing part of the
-         --  VC (which is required in messages). VC_Sloc contains the location
-         --  of the check (required in messages for manual provers).
-         --  We do not use this node if the node may switch the context, this
-         --  can happen for the pre (the node will be in the callee context
-         --  instead of the caller context) and LSP VCs as well as predicate
-         --  checks.
+            and then not Rec.EI.Inline.Inline
+            and then Can_Relocate
+            then
+               Rec.EI.Node
+            elsif Rec.EI.Inline.Inline
+            and then Present (Rec.EI.Inline.Inline_Node)
+            and then Can_Relocate
+            then
+               Rec.EI.Inline.Inline_Node
+            else VC.Node);
+         --  VC_Sloc contains the location of the check (required in messages
+         --  for manual provers). The extra info data ("EI") may contain a more
+         --  precise location which is used to place the error message.
+         --  If the inline flag is set, we don't use the EI node, but we
+         --  may use the EI.Inline node, which contains the context before
+         --  inlining.
+         --  We do not any of those extra nodes if the node may switch the
+         --  context, (negation of the Can_Relocate flag) this can happen for
+         --  the pre (the node will be in the callee context instead of the
+         --  caller context) and LSP VCs as well as predicate checks.
          VC_Sloc    : constant Node_Id := VC.Node;
       begin
          Emit_Proof_Result
@@ -1016,7 +1037,7 @@ package body Gnat2Why.Error_Messages is
 
       function Parse_Why3_Prove_Result (V : JSON_Value)
                                         return Why3_Prove_Result is
-         E : Extra_Info := (0, False, No_Bound);
+         E : Extra_Info := (0, Inline_Info'(Inline => False), No_Bound);
       begin
          if Has_Field (V, "extra_info") then
             declare
@@ -1030,7 +1051,18 @@ package body Gnat2Why.Error_Messages is
                else
                   E.Node := Node_Id (I);
                end if;
-               E.Inline := Get (Get (Get (V, "extra_info"), "inline"));
+            end;
+            declare
+               I : constant Integer :=
+                 Integer'(Get (Get (V, "extra_info"), "inline"));
+            begin
+               if I < 0 then
+                  E.Inline := Inline_Info'(True, 0);
+               elsif I = 0 then
+                  E.Inline := Inline_Info'(Inline => False);
+               else
+                  E.Inline := Inline_Info'(True, Node_Id (I));
+               end if;
             end;
          end if;
          return Why3_Prove_Result'

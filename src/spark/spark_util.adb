@@ -1966,31 +1966,7 @@ package body SPARK_Util is
       Prag : constant Node_Id :=
         Get_Pragma (E, Pragma_Constant_After_Elaboration);
    begin
-      if Present (Prag) then
-         declare
-            PAA : constant List_Id := Pragma_Argument_Associations (Prag);
-         begin
-            --  The pragma has an optional Boolean expression. The related
-            --  property is enabled only when the expression evaluates to True.
-            if Present (PAA) then
-               declare
-                  Expr : constant Node_Id := Expression (First (PAA));
-               begin
-                  return Is_True (Expr_Value (Get_Pragma_Arg (Expr)));
-               end;
-
-            --  The lack of expression means the property is enabled
-
-            else
-               return True;
-            end if;
-         end;
-
-      --  No pragma means not constant after elaboration
-
-      else
-         return False;
-      end if;
+      return Present (Prag) and then Is_Enabled_Pragma (Prag);
    end Is_Constant_After_Elaboration;
 
    --------------------------

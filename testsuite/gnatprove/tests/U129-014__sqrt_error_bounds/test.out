@@ -86,7 +86,7 @@ norm-reals-errors.adb:141:10: info: precondition proved (CVC4: 2 VC)
 norm-reals-errors.adb:143:10: info: subprogram variant proved (CVC4: 1 VC)
 norm-reals-errors.adb:143:39: info: range check proved (CVC4: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC4: 1 VC)
-norm-reals-errors.adb:146:60: medium: float overflow check might fail (e.g. when I = 2 and Values = (1 => 1.7189792E+0, others => -1.5140641E+38)) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: info: float overflow check proved (Z3: 1 VC)
 norm-reals-errors.adb:146:60: medium: range check might fail (e.g. when I = 2 and Values = (1 => 1.8820515E+0, others => 1.4977547E+19)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when Values = (others => 1.0423259E+0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC4: 1 VC)
@@ -161,7 +161,7 @@ norm.adb:19:27: info: float overflow check proved (colibri: 1 VC)
 norm.adb:19:49: info: float overflow check proved (CVC4: 1 VC)
 norm.adb:19:54: info: float overflow check proved (CVC4: 1 VC)
 norm.adb:26:10: info: precondition proved (CVC4: 7 VC)
-norm.adb:27:10: info: precondition proved (CVC4: 6 VC; Z3: 1 VC)
+norm.adb:27:10: info: precondition proved (CVC4: 6 VC; colibri: 1 VC)
 norm.adb:28:10: info: precondition proved (CVC4: 7 VC)
 norm.adb:28:39: info: float overflow check proved (CVC4: 1 VC)
 norm.adb:28:50: info: float overflow check proved (CVC4: 1 VC)

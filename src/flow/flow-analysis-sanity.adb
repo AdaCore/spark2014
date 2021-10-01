@@ -24,6 +24,7 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Atree;                          use Atree;
 with Checked_Types;                  use Checked_Types;
 with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Utility;                   use Flow_Utility;
@@ -82,6 +83,7 @@ package body Flow.Analysis.Sanity is
                   Tag      => Side_Effects);
             end loop;
 
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Gnat2Why_Args.Debug_Mode then
                Error_Msg_Flow
                  (FA       => FA,
@@ -91,6 +93,8 @@ package body Flow.Analysis.Sanity is
                   Severity => Error_Kind,
                   F1       => Direct_Mapping_Id (FA.Spec_Entity));
             end if;
+            pragma Annotate (Xcov, Exempt_Off);
+
          end if;
       end if;
    end Check_Function_Side_Effects;
@@ -1322,6 +1326,7 @@ package body Flow.Analysis.Sanity is
       end case;
 
       if not Sane then
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA       => FA,
@@ -1331,6 +1336,7 @@ package body Flow.Analysis.Sanity is
                Severity => Error_Kind,
                F1       => Direct_Mapping_Id (FA.Spec_Entity));
          end if;
+         pragma Annotate (Xcov, Exempt_Off);
       end if;
    end Check_Expressions;
 

@@ -217,10 +217,6 @@ package Flow_Utility is
    with Pre => F.Kind = Magic_String, Ghost;
    --  Returns True iff the internal structure of F is not visible to proof
 
-   function Has_Proof_Globals (Subprogram : E_Function_Id) return Boolean;
-   --  Returns True if Subprogram has a non-empty global inputs or outputs
-   --  (whether user-defined or generated).
-
    function Rely_On_Generated_Global
      (E     : Entity_Id;
       Scope : Flow_Scope)

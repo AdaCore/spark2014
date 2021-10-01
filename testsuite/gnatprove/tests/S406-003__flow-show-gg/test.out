@@ -1,11 +1,11 @@
-Generated contracts for wobble
+Generated contracts for Bar.Wobble
    Global =>
       Input =>
          B
    Refined_Global =>
       Input =>
          B
-Generated contracts for wibble
+Generated contracts for Bar.Wibble
    Global =>
       Input =>
          G1
@@ -14,21 +14,21 @@ Generated contracts for wibble
       Input =>
          G1
          G2
-Generated contracts for donk
+Generated contracts for Bar.Donk
    Global =>
       Input =>
          G1
    Refined_Global =>
       Input =>
          G1
-Generated contracts for flip
+Generated contracts for Bar.Flip
    Global =>
       In_Out =>
          B
    Refined_Global =>
       In_Out =>
          B
-Generated contracts for flop
+Generated contracts for Bar.Flop
    Global =>
       Input =>
          G1
@@ -41,10 +41,10 @@ Generated contracts for flop
       Output =>
          B
          G2
-Generated contracts for no_globals
+Generated contracts for Bar.No_Globals
    Global =>
    Refined_Global =>
-Generated contracts for bar
+Generated contracts for Bar
    Initializes =>
       B
       G1
@@ -52,24 +52,24 @@ Generated contracts for bar
 bar.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
 bar.adb:24:21: medium: overflow check might fail, cannot prove lower bound for G1 + G2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
 bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
-Generated contracts for proxy
+Generated contracts for Entity_Name.Proxy
    Global =>
       Input =>
          Hidden
    Refined_Global =>
       Input =>
          Hidden
-Generated contracts for entity_name
+Generated contracts for Entity_Name
    Initializes =>
       Hidden
-Generated contracts for get
+Generated contracts for Outer.Inner.Get
    Global =>
       Input =>
          X
    Refined_Global =>
       Input =>
          X
-Generated contracts for get
+Generated contracts for Outer.Inner.Get
    Global =>
       Input =>
          X
@@ -78,24 +78,24 @@ Generated contracts for get
       Input =>
          X
          Y
-Generated contracts for inner
-Generated contracts for outer
+Generated contracts for Outer.Inner
+Generated contracts for Outer
 foo.ads:7:47: medium: overflow check might fail, cannot prove lower bound for Outer.X + Outer.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
-Generated contracts for main
+Generated contracts for Main
    Global =>
       Input =>
          entity_name__hidden
    Refined_Global =>
       Input =>
          entity_name__hidden
-Generated contracts for get
+Generated contracts for Outer.Inner.Get
    Global =>
       Input =>
          X
    Refined_Global =>
       Input =>
          X
-Generated contracts for get
+Generated contracts for Outer.Inner.Get
    Global =>
       Input =>
          X
@@ -104,8 +104,8 @@ Generated contracts for get
       Input =>
          X
          Y
-Generated contracts for inner
-Generated contracts for outer
+Generated contracts for Outer.Inner
+Generated contracts for Outer
 outer.ads:7:21: warning: unused variable "B"
 outer.ads:12:47: medium: overflow check might fail, cannot prove lower bound for Outer.X + Outer.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention X and Y in a precondition]
 Generated global .gg contents:

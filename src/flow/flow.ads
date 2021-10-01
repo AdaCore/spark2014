@@ -25,7 +25,6 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo.Entities;             use Einfo.Entities;
 with Einfo.Utils;                use Einfo.Utils;
@@ -250,17 +249,6 @@ package Flow is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
-
-   ----------------------------------------------------------------------
-   --  Utilities
-   ----------------------------------------------------------------------
-
-   function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
-   with Pre  => Ekind (E) = E_Loop,
-        Post => No (Loop_Parameter_From_Loop'Result) or else
-                Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
-   --  Given a loop label, returns the identifier of the loop
-   --  parameter or Empty.
 
    ----------------------------------------------------------------------
    --  Debug
