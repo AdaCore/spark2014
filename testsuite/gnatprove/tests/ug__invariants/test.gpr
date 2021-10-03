@@ -9,7 +9,8 @@ project Test is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=all");
+      for Proof_Switches ("Ada")
+      use ("--report=all", "--level=2", "--check-counterexamples=off");
    end Prove;
 
 end Test;

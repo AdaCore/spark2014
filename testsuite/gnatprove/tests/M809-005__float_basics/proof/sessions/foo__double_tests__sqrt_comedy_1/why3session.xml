@@ -5,6 +5,7 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
+<prover id="3" name="colibri" version="2137" timelimit="120" steplimit="11000" memlimit="0"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__double_tests__sqrt_comedy_1.gnat-json"/>
@@ -12,14 +13,16 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="steplimitexceeded" steps="3897"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450147"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="248448"/></proof>
   <proof prover="2"><result status="unknown" steps="8010"/></proof>
+  <proof prover="3"><result status="unknown" steps="157"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="steplimitexceeded" steps="2022"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450166"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450414"/></proof>
   <proof prover="2"><result status="unknown" steps="15010"/></proof>
+  <proof prover="3"><result status="unknown" steps="172"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -30,9 +33,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="steplimitexceeded" steps="5153"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450149"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="496014"/></proof>
   <proof prover="2"><result status="unknown" steps="153399"/></proof>
+  <proof prover="3"><result status="unknown" steps="182"/></proof>
   </goal>
  </transf>
  </goal>

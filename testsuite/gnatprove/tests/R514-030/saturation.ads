@@ -9,6 +9,6 @@ is
    end record;
 
    procedure Saturate (Val : in out Saturable_Value) with
-     Postcondition => Val = Val'Old; --  @COUNTEREXAMPLE
+     Postcondition => Val = Val'Old; --  @ COUNTEREXAMPLE
 
 end Saturation;

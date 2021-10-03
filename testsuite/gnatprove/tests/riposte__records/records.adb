@@ -83,7 +83,7 @@ is
    function Safe_Add_Pair_B (A, B : in Pair) return Pair
      with Post => (if (A.A + B.A in Unsigned_Byte and
                          A.B + B.B in Unsigned_Byte)
-                   then Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+                   then Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
                                                        A.B + B.B))
    is
       R : Pair;
@@ -163,7 +163,7 @@ is
    procedure Optimised_Copy_B (Src : in     Optional_Pair;
                                Dst :    out Optional_Pair)
      with Depends => (Dst => Src),
-          Post    => Dst = Src  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => Dst = Src  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
    is
       pragma Annotate (Gnatprove, False_Positive, "might not be initialized", "");
    begin
@@ -192,7 +192,7 @@ is
           Post    => (X.Exists = X'Old.Exists)
                        and (if X.Exists
                               then (X.The_Pair.A = X'Old.The_Pair.B
-                                      and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+                                      and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
    is
       Tmp : Unsigned_Byte;
    begin
@@ -206,7 +206,7 @@ is
           Post    => (X.Exists = X'Old.Exists)
                         and (if X.Exists
                                then (X.The_Pair.A = X'Old.The_Pair.B
-                                       and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+                                       and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
    is
       Tmp   : Unsigned_Byte;
       X_Old : constant Optional_Pair := X;
@@ -253,7 +253,7 @@ is
 
    procedure Swap_Fields_B_2 (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
                                          X'Old.The_Pair'Update
                                            (A => X'Old.The_Pair.B,
                                             B => X'Old.The_Pair.A))
@@ -267,7 +267,7 @@ is
 
    procedure Swap_Fields_B_3 (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
                                          X'Old.The_Pair'Update
                                            (A => X'Old.The_Pair.B,
                                             B => X'Old.The_Pair.A))
@@ -297,7 +297,7 @@ is
           Post    => (X.Exists = X'Old.Exists)
                         and (if X.Exists
                                then (X.The_Pair.A = X'Old.The_Pair.B
-                                       and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+                                       and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
    is
    begin
       X.The_Pair := Pair'(X.The_Pair.B, 5);
@@ -320,7 +320,7 @@ is
                       N: in Unsigned_Byte)
                      return Optional_Pair
      with Pre  => N < Unsigned_Byte'Last,
-          Post => Update_B'Result = X'Update(The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post => Update_B'Result = X'Update(The_Pair =>  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
                                                X.The_Pair'Update (A => N))
    is
       Tmp : Optional_Pair;
@@ -415,7 +415,7 @@ is
    is
    begin
       X := X;
-      pragma Assert (X.The_Pair.A = X.The_Pair.B);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (X.The_Pair.A = X.The_Pair.B);  --  @ASSERT:FAIL @ COUNTEREXAMPLE
    end Test_D;
 
    procedure Test_E (X: in out Optional_Pair)

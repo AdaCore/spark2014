@@ -2,3 +2,4 @@ prove_all:
   prover: ["cvc4"]
   steps: 1
   opt: ["--no-loop-unrolling"]
+  check_counterexamples: false

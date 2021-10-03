@@ -5,6 +5,7 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
+<prover id="3" name="colibri" version="2137" timelimit="120" steplimit="11000" memlimit="0"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__double_tests__bad_optimisation_1.gnat-json"/>
@@ -19,31 +20,35 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="steplimitexceeded" steps="4548"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450131"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="2495414"/></proof>
   <proof prover="2"><result status="unknown" steps="6480"/></proof>
+  <proof prover="3"><result status="unknown" steps="162"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="steplimitexceeded" steps="1731"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450150"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450392"/></proof>
   <proof prover="2"><result status="unknown" steps="23946"/></proof>
+  <proof prover="3"><result status="unknown" steps="194"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="0"><result status="steplimitexceeded" steps="1936"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450172"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450414"/></proof>
   <proof prover="2"><result status="unknown" steps="19976"/></proof>
+  <proof prover="3"><result status="unknown" steps="251"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.7">
-  <proof prover="0"><result status="steplimitexceeded" steps="1976"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450158"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450400"/></proof>
   <proof prover="2"><result status="unknown" steps="40667"/></proof>
+  <proof prover="3"><result status="unknown" steps="213"/></proof>
   </goal>
  </transf>
  </goal>

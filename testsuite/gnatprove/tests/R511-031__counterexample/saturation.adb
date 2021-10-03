@@ -9,7 +9,7 @@ package body Saturation with SPARK_Mode is
 
    procedure Saturate (Val : in out Saturable_Value) with
      Contract_Cases =>
-       (Val.Value <= Val.Upper_Bound => --  @COUNTEREXAMPLE
+       (Val.Value <= Val.Upper_Bound => --  @ COUNTEREXAMPLE
           Val = Val'Old,
         Val.Value > Val.Upper_Bound  =>
           Val = Val'Old'Update (Value => Val'Old.Upper_Bound));

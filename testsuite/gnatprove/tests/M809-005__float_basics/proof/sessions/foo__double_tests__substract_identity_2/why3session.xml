@@ -5,6 +5,7 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
+<prover id="3" name="colibri" version="2137" timelimit="120" steplimit="11000" memlimit="0"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__double_tests__substract_identity_2.gnat-json"/>
@@ -19,18 +20,20 @@
   <proof prover="2"><result status="valid" steps="3538"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="steplimitexceeded" steps="5100"/></proof>
-  <proof prover="1"><result status="unknown" steps="6223820"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="2183329"/></proof>
   <proof prover="2"><result status="unknown" steps="21720"/></proof>
+  <proof prover="3"><result status="unknown" steps="212"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="steplimitexceeded" steps="5877"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450123"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="1437013"/></proof>
   <proof prover="2"><result status="unknown" steps="365002"/></proof>
+  <proof prover="3"><result status="unknown" steps="2449"/></proof>
   </goal>
  </transf>
  </goal>
