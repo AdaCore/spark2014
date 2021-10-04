@@ -12,6 +12,7 @@ abstract_state_illegal.ads:66:07: error: indicator Part_Of is required in this c
 abstract_state_illegal.ads:66:07: error: package "Null_Abstract_State_With_Hidden_State" has null abstract state
 abstract_state_illegal.ads:77:07: error: "S1" conflicts with declaration at line 75
 abstract_state_illegal_2.ads:14:48: error: "=>" expected (positional association cannot follow named association)
+abstract_state_illegal_3.ads:6:26: error: package body should have Refined_State for state "State" with constituents
 abstract_state_illegal_3.ads:6:26: error: state "State" requires refinement
 abstract_state_illegal_4-pub_child.adb:5:57: error: "Pr_State" cannot act as constituent of state "Pub_State"
 abstract_state_illegal_4-pub_child.adb:5:57: error: Part_Of indicator specifies encapsulator "State"
