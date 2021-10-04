@@ -798,14 +798,12 @@ package body Gnat2Why.Borrow_Checker is
    procedure Perm_Error_Subprogram_End
      (E          : Entity_Id;
       Subp       : Entity_Id;
-      Perm       : Perm_Kind;
       Found_Perm : Perm_Kind;
       Expl       : Node_Id);
    --  A procedure that is called when the permissions found contradict the
    --  rules established by the RM at the end of subprograms. This function is
-   --  called with the node, the node of the returning function, and the
-   --  permission that was expected, and adds an error message with the
-   --  appropriate values.
+   --  called with the node, the node of the returning function, and adds an
+   --  error message with the appropriate values.
 
    procedure Perm_Mismatch
      (N              : Expr_Or_Ent;
@@ -1618,11 +1616,6 @@ package body Gnat2Why.Borrow_Checker is
       --  is rooted at a borrowed expression or at a borrower. Also fill
       --  the At_End_Borrow map.
 
-      procedure Check_Expression_List
-        (L    : List_Id;
-         Mode : Extended_Checking_Mode);
-      --  Read or move expressions in L
-
       function Is_Type_Name (Expr : Node_Id) return Boolean;
       --  Detect when a path expression is in fact a type name
 
@@ -1871,23 +1864,6 @@ package body Gnat2Why.Borrow_Checker is
          end if;
       end Check_At_End_Borrow_Call;
 
-      ---------------------------
-      -- Check_Expression_List --
-      ---------------------------
-
-      procedure Check_Expression_List
-        (L    : List_Id;
-         Mode : Extended_Checking_Mode)
-      is
-         N : Node_Id;
-      begin
-         N := First (L);
-         while Present (N) loop
-            Check_Expression (N, Mode);
-            Next (N);
-         end loop;
-      end Check_Expression_List;
-
       ------------------
       -- Is_Type_Name --
       ------------------
@@ -1912,8 +1888,13 @@ package body Gnat2Why.Borrow_Checker is
       --------------------------
 
       procedure Read_Expression_List (L : List_Id) is
+         N : Node_Id;
       begin
-         Check_Expression_List (L, Read);
+         N := First (L);
+         while Present (N) loop
+            Check_Expression (N, Read);
+            Next (N);
+         end loop;
       end Read_Expression_List;
 
       ------------------
@@ -3697,7 +3678,6 @@ package body Gnat2Why.Borrow_Checker is
                         Perm_Error_Subprogram_End
                           (E          => Obj,
                            Subp       => Subp,
-                           Perm       => Read_Write,
                            Found_Perm => Perm,
                            Expl       => Get_Expl (E_Obj));
                      end if;
@@ -4205,7 +4185,6 @@ package body Gnat2Why.Borrow_Checker is
          Perm_Error_Subprogram_End
            (E          => Root,
             Subp       => Current_Subp,
-            Perm       => Read_Write,
             Found_Perm => Write_Only,
             Expl       => Expr);
       end if;
@@ -4874,7 +4853,6 @@ package body Gnat2Why.Borrow_Checker is
    procedure Perm_Error_Subprogram_End
      (E          : Entity_Id;
       Subp       : Entity_Id;
-      Perm       : Perm_Kind;
       Found_Perm : Perm_Kind;
       Expl       : Node_Id)
    is
@@ -4883,7 +4861,7 @@ package body Gnat2Why.Borrow_Checker is
       Error_Msg_Node_2 := E;
       Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
       Permission_Error := True;
-      Perm_Mismatch (Ent, Perm, Found_Perm, Expl);
+      Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl);
    end Perm_Error_Subprogram_End;
 
    -------------------
@@ -5336,7 +5314,6 @@ package body Gnat2Why.Borrow_Checker is
             Perm_Error_Subprogram_End
               (E          => Id,
                Subp       => Subp,
-               Perm       => Read_Write,
                Found_Perm => Permission (Tree),
                Expl       => Explanation (Tree));
          end if;
