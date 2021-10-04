@@ -125,7 +125,7 @@ Attribute                              Allowed in SPARK      Comment
 P'Access			      No		     Restricted access types
 X'Access	    		      Yes
 X'Address	    		      No                     Only allowed in representation clauses
-S'Adjacent	    		      Yes                    Implicit precondition (Ada RM A.5.3(50))
+S'Adjacent	    		      Yes                    Only supported with static attribute expressions; implicit precondition (Ada RM A.5.3(50))
 S'Aft				      Yes
 S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
@@ -137,7 +137,7 @@ E'Caller	    		      Yes
 S'Ceiling	    		      Yes
 S'Class				      Yes
 X'Component_Size    		      Warn     		     Warning in pedantic mode
-S'Compose	    		      No
+S'Compose	    		      Yes                    Only supported with static attribute expressions
 A'Constrained			      Yes
 S'Copy_Sign	    		      Yes
 E'Count				      No
@@ -145,7 +145,7 @@ S'Definite	    		      Yes
 S'Delta				      Yes
 S'Denorm	    		      Yes
 S'Digits	    		      Yes
-S'Exponent	    		      No
+S'Exponent	    		      Yes                    Only supported with static attribute expressions
 S'External_Tag			      No	             No tags
 A'First				      Yes
 S'First	 			      Yes
@@ -154,7 +154,7 @@ R.C'First_Bit			      Warn		     Warning in Pedantic mode
 S'First_Valid			      Yes
 S'Floor				      Yes
 S'Fore				      Yes
-S'Fraction	    		      No
+S'Fraction	    		      Yes                    Only supported with static attribute expressions
 X'Has_Same_Storage  		      No
 E'Identity	    		      No
 T'Identity	    		      Yes
@@ -167,11 +167,11 @@ S'Last				      Yes
 A'Last(N)	    		      Yes
 R.C'Last_Bit			      Warn		     Warning in pedantic mode
 S'Last_Valid			      Yes
-S'Leading_Part			      No
+S'Leading_Part			      Yes                    Only supported with static attribute expressions
 A'Length	    		      Yes
 A'Length(N)	    		      Yes
 X'Loop_Entry        		      Yes
-S'Machine	    		      Yes
+S'Machine	    		      Yes                    Only supported with static attribute expressions
 S'Machine_Emax			      Yes
 S'Machine_Emin			      Yes
 S'Machine_Mantissa  		      Yes
@@ -184,7 +184,7 @@ S'Max_Alignment_For_Allocation 	      No	             Restricted access types
 S'Max_Size_In_Storage_Elements 	      No		     Restricted access types
 S'Min				      Yes
 S'Mod				      Yes
-S'Model				      Yes
+S'Model				      Yes                    Only supported with static attribute expressions
 S'Model_Emin			      Yes
 S'Model_Epsilon			      Yes
 S'Model_Mantissa		      Yes
@@ -211,7 +211,8 @@ S'Rounding	   		      Yes
 S'Safe_First			      Yes
 S'Safe_Last	    		      Yes
 S'Scale				      Yes
-S'Scaling	   		      Yes
+S'Scaling	   		      Yes                    Only supported with static attribute expressions
+S'Signed_Zeros	   		      Yes
 S'Size				      Warn                   Warning in pedantic
 X'Size				      Warn     		     Warning in pedantic
 S'Small				      Yes
@@ -226,6 +227,7 @@ T'Terminated			      Yes
 System'To_Address 		      Yes
 S'Truncation			      Yes
 S'Truncation			      Yes
+S'Unbiased_Rounding   		      Yes                    Only supported with static attribute expressions
 X'Unchecked_Access  		      No
 X'Update            		      Yes
 S'Val				      Yes                    Implicit precondition (Ada RM 3.5.5(7))

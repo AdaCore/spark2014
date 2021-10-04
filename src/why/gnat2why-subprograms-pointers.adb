@@ -263,10 +263,7 @@ package body Gnat2Why.Subprograms.Pointers is
       Save_Result_Name       : constant W_Identifier_Id := Result_Name;
 
    begin
-      --  Need_Conversion returns False on null which can be of any access
-      --  type. We don't need LSP checks on null.
-
-      if From_Profile = To_Profile or else not Need_Conversion (Expr) then
+      if From_Profile = To_Profile then
          return +Void;
       end if;
 

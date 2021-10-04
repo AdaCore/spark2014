@@ -65,6 +65,11 @@ def benchmark_mode():
 def cache_mode():
     return "cache" in os.environ and os.environ["cache"] == "true"
 
+def why3server_mode():
+    if "why3server" in os.environ:
+        return os.environ["why3server"]
+    else:
+        return None
 
 def get_default_timeout():
     if "vc_timeout" in os.environ:
@@ -805,6 +810,8 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
             fullopt += ["--counterexamples=off"]
         else:
             fullopt += ["--counterexamples=on"]
+    if why3server_mode():
+        fullopt += ["--why3-server="+why3server_mode()]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt

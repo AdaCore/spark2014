@@ -12,10 +12,13 @@ from e3.testsuite.result import binary_repr, Log, truncated
 from e3.testsuite.testcase_finder import ParsedTest, ProbingError, TestFinder
 import e3.yaml
 import glob
+import multiprocessing
 import os
 import os.path
 import re
+import subprocess
 import sys
+import tempfile
 import time
 from typing import AnyStr, List, Optional
 
@@ -453,6 +456,29 @@ class SPARKTestsuite(Testsuite):
             action="store_true",
             help="Run only large tests; implies --disc=large",
         )
+        parser.add_argument(
+            "--share-why3server",
+            action="store_true",
+            help="Use a shared why3server for all tests",
+        )
+
+    def run_why3server(self):
+        cur_dir = os.getcwd()
+        tmpdir = tempfile.gettempdir()
+        try:
+            os.chdir(tmpdir)
+            socketname = os.path.join(tmpdir, "runtests.sock")
+            cmd = [
+                "why3server",
+                "-j",
+                str(multiprocessing.cpu_count()),
+                "--socket",
+                socketname,
+            ]
+            self.why3_process = subprocess.Popen(cmd)
+        finally:
+            os.chdir(cur_dir)
+        return socketname
 
     def compute_environ(self):
         python_lib = os.path.join(self.root_dir, "lib", "python")
@@ -467,10 +493,12 @@ class SPARKTestsuite(Testsuite):
             os.environ["inverse_prover"] = "true"
         if self.main.args.benchmark:
             os.environ["benchmark"] = self.main.args.benchmark
+        if self.main.args.share_why3server:
+            os.environ["why3server"] = self.run_why3server()
         return dict(os.environ)
 
     def set_up(self):
-        super(SPARKTestsuite, self).set_up()
+        super().set_up()
         if self.main.args.diffs:
             self.main.args.show_error_output = True
         if not self.main.args.no_gaia_output:
@@ -486,12 +514,18 @@ class SPARKTestsuite(Testsuite):
         else:
             self.env.only_large = False
         self.env.rewrite_baselines = self.main.args.rewrite
+        self.why3_process = None
         self.env.test_environ = self.compute_environ()
         if self.main.args.testlist:
             with open(self.main.args.testlist, "r") as f:
                 self.testlist = [s.strip() for s in f]
         else:
             self.testlist = []
+
+    def tear_down(self):
+        if self.why3_process:
+            self.why3_process.kill()
+        super().tear_down()
 
 
 if __name__ == "__main__":

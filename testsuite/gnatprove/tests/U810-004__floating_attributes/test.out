@@ -1,0 +1,9 @@
+main.adb:7:34: error: non-static attribute "Exponent" is not yet supported
+main.adb:10:32: error: non-static attribute "Compose" is not yet supported
+main.adb:13:32: error: non-static attribute "Fraction" is not yet supported
+main.adb:16:32: error: non-static attribute "Scaling" is not yet supported
+main.adb:19:32: error: non-static attribute "Unbiased_Rounding" is not yet supported
+main.adb:22:32: error: non-static attribute "Machine_Rounding" is not yet supported
+main.adb:25:32: error: non-static attribute "Adjacent" is not yet supported
+main.adb:28:32: error: non-static attribute "Leading_Part" is not yet supported
+gnatprove: error during flow analysis and proof

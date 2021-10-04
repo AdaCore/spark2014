@@ -70,20 +70,6 @@ package body SPARK_Atree.Entities is
    function Cloned_Subtype (Typ : Type_Kind_Id) return Entity_Id is
      (Einfo.Entities.Cloned_Subtype (Typ));
 
-   ----------------------
-   -- Component_Clause --
-   ----------------------
-
-   function Component_Clause (Obj : Record_Field_Kind_Id) return Node_Id is
-     (Einfo.Entities.Component_Clause (Obj));
-
-   --------------------
-   -- Component_Type --
-   --------------------
-
-   function Component_Type (Typ : Array_Kind_Id) return Type_Kind_Id is
-     (Einfo.Entities.Component_Type (Typ));
-
    --------------------
    -- Constant_Value --
    --------------------
@@ -177,20 +163,6 @@ package body SPARK_Atree.Entities is
    function Enclosing_Type (Obj : Entity_Id) return Type_Kind_Id is
      (Sinfo.Nodes.Scope (Obj));
 
-   ---------------------
-   -- Enumeration_Pos --
-   ---------------------
-
-   function Enumeration_Pos (Obj : E_Enumeration_Literal_Id) return Uint is
-     (Einfo.Entities.Enumeration_Pos (Obj));
-
-   ---------------------
-   -- Enumeration_Rep --
-   ---------------------
-
-   function Enumeration_Rep (Obj : E_Enumeration_Literal_Id) return Uint is
-     (Einfo.Entities.Enumeration_Rep (Obj));
-
    ------------------------
    -- First_Discriminant --
    ------------------------
@@ -215,22 +187,6 @@ package body SPARK_Atree.Entities is
       end if;
       return First;
    end First_Formal;
-
-   -----------------
-   -- First_Index --
-   -----------------
-
-   function First_Index (Typ : Array_Kind_Id) return Node_Id is
-     (Einfo.Entities.First_Index (Typ));
-
-   -------------------
-   -- First_Literal --
-   -------------------
-
-   function First_Literal
-     (Typ : Enumeration_Kind_Id)
-      return E_Enumeration_Literal_Id
-   is (Einfo.Entities.First_Literal (Typ));
 
    ---------------
    -- Full_View --
@@ -354,15 +310,6 @@ package body SPARK_Atree.Entities is
       end;
    end Has_Discriminants;
 
-   --------------------------------
-   -- Has_Enumeration_Rep_Clause --
-   --------------------------------
-
-   function Has_Enumeration_Rep_Clause
-     (Typ : Enumeration_Kind_Id)
-      return Boolean
-   is (Einfo.Entities.Has_Enumeration_Rep_Clause (Typ));
-
    ---------------------------
    -- Has_Interrupt_Handler --
    ---------------------------
@@ -409,13 +356,6 @@ package body SPARK_Atree.Entities is
         (Einfo.Entities.Directly_Designated_Type (E)) =
            Einfo.Entities.E_Subprogram_Type);
 
-   -----------------------
-   -- Is_Actual_Subtype --
-   -----------------------
-
-   function Is_Actual_Subtype (Typ : Type_Kind_Id) return Boolean is
-     (Einfo.Entities.Is_Actual_Subtype (Typ));
-
    ----------------
    -- Is_Aliased --
    ----------------
@@ -459,24 +399,6 @@ package body SPARK_Atree.Entities is
      (Subp : Callable_Kind_Id)
       return Boolean
    is (Sem_Util.Is_Expression_Function_Or_Completion (Subp));
-
-   ----------------------------------------
-   -- Is_Fixed_Lower_Bound_Array_Subtype --
-   ----------------------------------------
-
-   function Is_Fixed_Lower_Bound_Array_Subtype
-     (Typ : Type_Kind_Id)
-      return Boolean
-   is (Einfo.Entities.Is_Fixed_Lower_Bound_Array_Subtype (Typ));
-
-   ----------------------------------------
-   -- Is_Fixed_Lower_Bound_Index_Subtype --
-   ----------------------------------------
-
-   function Is_Fixed_Lower_Bound_Index_Subtype
-     (Typ : Type_Kind_Id)
-      return Boolean
-   is (Einfo.Entities.Is_Fixed_Lower_Bound_Index_Subtype (Typ));
 
    ---------------------
    -- Is_Limited_View --
@@ -826,37 +748,12 @@ package body SPARK_Atree.Entities is
    function Return_Applies_To (E : E_Return_Statement_Id) return Node_Id is
      (Einfo.Entities.Return_Applies_To (E));
 
-   -----------------
-   -- Small_Value --
-   -----------------
-
-   function Small_Value (Typ : Fixed_Point_Kind_Id) return Ureal is
-     (Einfo.Entities.Small_Value (Typ));
-
    -----------------------
    -- Stored_Constraint --
    -----------------------
 
    function Stored_Constraint (Typ : Type_Kind_Id) return Elist_Id is
      (Einfo.Entities.Stored_Constraint (Typ));
-
-   ----------------------------
-   --  String_Literal_Length --
-   ----------------------------
-
-   function String_Literal_Length
-     (Typ : E_String_Literal_Subtype_Id)
-      return Uint
-   is (Einfo.Entities.String_Literal_Length (Typ));
-
-   -------------------------------
-   --  String_Literal_Low_Bound --
-   -------------------------------
-
-   function String_Literal_Low_Bound
-     (Typ : E_String_Literal_Subtype_Id)
-      return Node_Id
-   is (Einfo.Entities.String_Literal_Low_Bound (Typ));
 
    ---------------------
    -- Type_High_Bound --

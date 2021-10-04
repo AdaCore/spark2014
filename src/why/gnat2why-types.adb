@@ -1026,7 +1026,7 @@ package body Gnat2Why.Types is
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
                Location => No_Location,
-               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.Empty_Set,
                Def      => +Why_Body));
 
       Close_Theory (Th,

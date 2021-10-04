@@ -38,7 +38,6 @@ with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
 with GNATCOLL.Utils;                use GNATCOLL.Utils;
 with Sinput;                        use Sinput;
 with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
 with Urealp;                        use Urealp;
@@ -273,15 +272,6 @@ package body Why.Gen.Expr is
       end if;
       return Slc;
    end Compute_VC_Sloc;
-
-   -------------------
-   -- Cur_Subp_Sloc --
-   -------------------
-
-   function Cur_Subp_Sloc return Symbol is
-   begin
-      return NID (GP_Subp_Marker & Subp_Location (Current_Subp));
-   end Cur_Subp_Sloc;
 
    --------------
    -- Get_Type --
@@ -976,10 +966,6 @@ package body Why.Gen.Expr is
       T            : W_Expr_Id := Expr;
 
    begin
-      if not Need_Conversion (Expr) then
-         return Expr;
-      end if;
-
       --  A string literal gets typed with a subtype of the expected type, even
       --  if it does not respect the associated predicate of the expected type.
       --  As a result, do not rely on the call to Check_Needed_On_Conversion in
@@ -2230,11 +2216,9 @@ package body Why.Gen.Expr is
 
    begin
 
-      --  Nothing to do if assigning an allocator or null or else From = To
+      --  Nothing to do if From = To
 
-      if not Need_Conversion (Expr)
-        or else Eq_Base (To, From)
-      then
+      if Eq_Base (To, From) then
          return Expr;
       end if;
 

@@ -426,7 +426,8 @@ package SPARK_Atree.Entities is
        (if Present (Invariant_Procedure'Result) then
           Einfo.Utils.Number_Formals (Invariant_Procedure'Result) = 1);
 
-   function Is_Actual_Subtype (Typ : Type_Kind_Id) return Boolean;
+   function Is_Actual_Subtype (Typ : Type_Kind_Id) return Boolean
+     renames Einfo.Entities.Is_Actual_Subtype;
 
    function Is_Base_Type (Typ : Type_Kind_Id) return Boolean;
 
@@ -436,11 +437,13 @@ package SPARK_Atree.Entities is
 
    function Is_Fixed_Lower_Bound_Array_Subtype
      (Typ : Type_Kind_Id)
-      return Boolean;
+      return Boolean
+     renames Einfo.Entities.Is_Fixed_Lower_Bound_Array_Subtype;
 
    function Is_Fixed_Lower_Bound_Index_Subtype
      (Typ : Type_Kind_Id)
-      return Boolean;
+      return Boolean
+     renames Einfo.Entities.Is_Fixed_Lower_Bound_Index_Subtype;
 
    function Is_Limited_View (Typ : Type_Kind_Id) return Boolean;
 
@@ -497,22 +500,26 @@ package SPARK_Atree.Entities is
    --  For Enumeration Types --
    ----------------------------
 
-   function Enumeration_Pos (Obj : E_Enumeration_Literal_Id) return Uint;
+   function Enumeration_Pos (Obj : E_Enumeration_Literal_Id) return Uint
+     renames Einfo.Entities.Enumeration_Pos;
 
-   function Enumeration_Rep (Obj : E_Enumeration_Literal_Id) return Uint;
+   function Enumeration_Rep (Obj : E_Enumeration_Literal_Id) return Uint
+     renames Einfo.Entities.Enumeration_Rep;
 
    function Has_Enumeration_Rep_Clause
      (Typ : Enumeration_Kind_Id)
-      return Boolean;
+      return Boolean
+     renames Einfo.Entities.Has_Enumeration_Rep_Clause;
 
    function First_Literal
      (Typ : Enumeration_Kind_Id)
-      return E_Enumeration_Literal_Id;
+      return E_Enumeration_Literal_Id
+     renames Einfo.Entities.First_Literal;
 
    function Next_Literal
      (E : E_Enumeration_Literal_Id)
       return Opt_E_Enumeration_Literal_Id
-   renames Einfo.Utils.Next_Literal;
+      renames Einfo.Utils.Next_Literal;
 
    procedure Next_Literal (E : in out Opt_E_Enumeration_Literal_Id) renames
      Einfo.Utils.Next_Literal;
@@ -548,7 +555,8 @@ package SPARK_Atree.Entities is
    --  For Fixed Point Types --
    ----------------------------
 
-   function Small_Value (Typ : Fixed_Point_Kind_Id) return Ureal;
+   function Small_Value (Typ : Fixed_Point_Kind_Id) return Ureal
+     renames Einfo.Entities.Small_Value;
 
    ------------------
    --  For Records --
@@ -591,7 +599,8 @@ package SPARK_Atree.Entities is
    --  For Arrays --
    -----------------
 
-   function Component_Type (Typ : Array_Kind_Id) return Type_Kind_Id;
+   function Component_Type (Typ : Array_Kind_Id) return Type_Kind_Id
+     renames Einfo.Entities.Component_Type;
 
    function Default_Aspect_Component_Value
      (Typ : Array_Kind_Id)
@@ -599,13 +608,14 @@ package SPARK_Atree.Entities is
    --  Same as Einfo.Default_Aspect_Component_Value except that it goes to the
    --  Base_Retysp.
 
-   function First_Index (Typ : Array_Kind_Id) return Node_Id;
+   function First_Index (Typ : Array_Kind_Id) return Node_Id
+     renames Einfo.Entities.First_Index;
 
    procedure Next_Index (Index : in out Node_Id) renames
      Einfo.Utils.Next_Index;
 
    function Next_Index (Index : Node_Id) return Node_Id
-    renames Einfo.Utils.Next_Index;
+     renames Einfo.Utils.Next_Index;
 
    function Number_Dimensions (Typ : Array_Kind_Id) return Pos;
 
@@ -615,11 +625,13 @@ package SPARK_Atree.Entities is
 
    function String_Literal_Length
      (Typ : E_String_Literal_Subtype_Id)
-      return Uint;
+      return Uint
+     renames Einfo.Entities.String_Literal_Length;
 
    function String_Literal_Low_Bound
      (Typ : E_String_Literal_Subtype_Id)
-      return Node_Id;
+      return Node_Id
+     renames Einfo.Entities.String_Literal_Low_Bound;
 
    -----------------------
    --  For Access Types --
@@ -650,7 +662,8 @@ package SPARK_Atree.Entities is
 
    function Actual_Subtype (Obj : Object_Kind_Id) return Opt_Type_Kind_Id;
 
-   function Component_Clause (Obj : Record_Field_Kind_Id) return Node_Id;
+   function Component_Clause (Obj : Record_Field_Kind_Id) return Node_Id
+     renames Einfo.Entities.Component_Clause;
 
    function Constant_Value (Obj : E_Constant_Id) return N_Subexpr_Id;
 

@@ -460,7 +460,7 @@ package body Why.Gen.Names is
             return M_BV_Conv_16_128.To_Small;
          elsif To = EW_BitVector_32_Type then
             return M_BV_Conv_32_128.To_Small;
-         elsif To = EW_BitVector_128_Type then
+         elsif To = EW_BitVector_64_Type then
             return M_BV_Conv_64_128.To_Small;
          elsif To = EW_BitVector_256_Type then
             return M_BV_Conv_128_256.To_Big;

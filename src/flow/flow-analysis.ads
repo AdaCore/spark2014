@@ -215,13 +215,6 @@ package Flow.Analysis is
    --  Checks if the terminating annotation is consistent with the results from
    --  flow analysis, emits a message if not.
 
-   procedure Check_State_Volatility_Escalation
-     (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind = Kind_Package;
-   --  Any external abstract state can be annotated with precise volatility
-   --  information, here we need to make sure that we do not have anything
-   --  exceeding what the contract allows.
-
    procedure Check_Constant_Global_Contracts (E : Entity_Id)
    with Pre => Ekind (E) in E_Function
                           | E_Procedure
