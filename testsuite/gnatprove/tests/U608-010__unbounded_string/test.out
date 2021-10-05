@@ -1,2 +1,2 @@
-main.adb:6:19: high: "U" is not initialized
+main.adb:4:04: info: initialization of "U" proved
 main.adb:6:19: medium: assertion might fail

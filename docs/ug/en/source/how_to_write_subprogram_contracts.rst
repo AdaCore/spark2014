@@ -758,17 +758,18 @@ more time and memory.
 Subprogram Termination
 ----------------------
 
-|GNATprove| is only concerned with partial correctness of subprograms, that is,
-it only checks that the contract of a subprogram holds when it terminates
-normally. What is more, |GNATprove| will enforce that no exception will be
-raised at runtime. Together, these two points ensure that every |SPARK|
-subprogram formally verified using GNATprove will always return normally in a
-state that respects its postcondition, as long as it terminates.
+By default, |GNATprove| does not attempt to verify termination of subprograms.
+By default, it is only concerned with partial correctness of
+subprograms, that is, it only checks that the contract of a subprogram holds
+when it terminates normally. What is more, |GNATprove| will enforce that no
+exception will be raised at runtime. Together, these two points ensure that
+every |SPARK| subprogram formally verified using GNATprove will always return
+normally in a state that respects its postcondition, as long as it terminates.
 
-In general, |GNATprove| does not attempt to verify termination of subprograms.
-It can be instructed to do so using a |GNATprove| specific Annotate pragma. On
-the following example, we instruct |GNATprove| that the five ``F`` functions
-should terminate:
+A user can request from |GNATprove| that it also proves that a program
+terminates by using a specific Annotate pragma. In
+the following example, we specify that the five ``F`` functions
+should terminate, which |GNATprove| will attempt proving:
 
 .. literalinclude:: /examples/ug__terminating_annotations/terminating_annotations.ads
    :language: ada

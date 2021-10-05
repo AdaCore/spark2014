@@ -6,7 +6,7 @@ leading_part.adb:3:16: error: non-static attribute "Leading_Part" is not yet sup
 machine.adb:3:16: error: non-static attribute "Machine" is not yet supported
 machine_rounding.adb:3:16: error: non-static attribute "Machine_Rounding" is not yet supported
 model.adb:3:16: error: non-static attribute "Model" is not yet supported
-remainder.adb:3:16: medium: divide by zero might fail [possible fix: subprogram at remainder.ads:1 should mention X and Y in a precondition]
+remainder.adb:3:16: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at remainder.ads:1]
 scaling.adb:3:16: error: non-static attribute "Scaling" is not yet supported
 unbiased_rounding.adb:3:16: error: non-static attribute "Unbiased_Rounding" is not yet supported
 gnatprove: error during flow analysis and proof

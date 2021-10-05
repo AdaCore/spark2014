@@ -18,7 +18,7 @@ arr_aggregate.ads:20:43: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:22:18: warning: unused initial value of "A"
 arr_aggregate.ads:24:69: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:27:69: info: index check proved (CVC4: 2 VC)
-arr_aggregate.ads:28:67: medium: postcondition might fail, cannot prove A (J) (One'Old) = One'old (e.g. when A = (1 => (1 => 1, 2 => 2), 2 => (1 => 2, 2 => 1)) and B = 0 and J = 2 and One = 1)
+arr_aggregate.ads:28:67: medium: postcondition might fail, cannot prove A (J) (One'Old) = One'old (e.g. when A = (1 => (1 => 1, 2 => 2), 2 => (1 => 2, 2 => 1)) and J = 2 and One = 1)
 arr_aggregate.ads:28:77: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:32:14: info: postcondition proved (CVC4: 2 VC)
 arr_aggregate.ads:37:14: info: postcondition proved (CVC4: 5 VC)

@@ -146,6 +146,62 @@ The above variant is rejected by |GNATprove|:
            Unchecked_Deallocation
            access types; deallocation
 
+.. _Attribute Access:
+
+Attribute ``Access``
+--------------------
+
+Let's consider objects :code:`Variable` and :code:`Const`, respectively a
+variable and constant of type :code:`T`, marked as :code:`aliased` so that it
+is possible to use attribute :code:`Access` on them:
+
+.. code-block:: ada
+
+   Variable : aliased T;
+   Const    : aliased constant T := ...;
+
+Depending on the type of the attribute reference expression, taking an access
+value to an object is interpreted differently in SPARK.
+
+* attribute :code:`'Access` of an anonymous access type:
+
+  .. code-block:: ada
+
+     Variable_Handle : access T := Variable'Access;
+     Const_Handle    : access constant T := Const'Access;
+
+  The :code:`'Access` attribute of an anonymous access-to-variable type, like
+  for :code:`Variable_Handle` above, allows :ref:`Borrowing` a part of an
+  object temporarily, like :code:`Variable` here.  The :code:`'Access`
+  attribute of an anonymous access-to-constant type, like for
+  :code:`Const_Handle` above, allows :ref:`Observing` a part of an object
+  temporarily, like :code:`Const` here.
+
+* attribute :code:`'Access` of a general access-to-variable type:
+
+  .. code-block:: ada
+
+     type General_Ptr is access all T;
+     General_Handle : General_Ptr := Variable'Access;
+
+  The :code:`'Access` attribute of a general access-to-variable type, like for
+  :code:`General_Handle` above, allows moving the ownership of a local object,
+  like :code:`Variable` here, into a pointer. Ownership cannot be reclaimed
+  back by :code:`Variable` which should not be read or written directly
+  afterwards. This is only allowed in SPARK if :code:`Variable` is a local
+  object, i.e. it is declared inside a subprogram.
+
+* attribute :code:`'Access` of a named access-to-constant type:
+
+  .. code-block:: ada
+
+     type Const_Ptr is access constant T;
+     Const_Handle : Const_Ptr := Const'Access;
+
+  The :code:`'Access` attribute of a named access-to-constant type, like for
+  :code:`Const_Handle` above, allows sharing a read-only access to a constant
+  part of an object, like :code:`Const` here.
+
 Deallocation
 ------------
 

@@ -2534,6 +2534,10 @@ package body Configuration is
       Args.Append ("--counterexample");
       Args.Append (if FS.Counterexamples then "on" else "off");
 
+      --  ??? Disable this debug flag for counterexample checking
+      Args.Append ("--debug-why3");
+      Args.Append ("vc:do_not_keep_trace");
+
       if CL_Switches.Z3_Counterexample then
          Args.Append ("--ce-prover");
          Args.Append ("z3_ce");

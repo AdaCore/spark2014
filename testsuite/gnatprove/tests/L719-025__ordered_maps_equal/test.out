@@ -1,27 +1,27 @@
-a-cforma.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at p.ads:8
-a-cforma.ads:405:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:411:08: info: dynamic accessibility check proved (Trivial), in instantiation at p.ads:8
-a-cforma.ads:430:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:468:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:839:39: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:848:17: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:883:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:891:21: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:918:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:926:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:996:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:1011:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:1026:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:1041:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:1081:46: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:1096:40: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
-a-cofuve.ads:237:63: info: range check proved (Z3: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
-a-cofuve.ads:239:30: info: range check proved (Z3: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
+a-cforma.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at p.ads:8
+a-cforma.ads:406:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:412:08: info: dynamic accessibility check proved (Trivial), in instantiation at p.ads:8
+a-cforma.ads:431:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:469:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:840:39: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:849:17: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:884:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:892:21: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:919:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:927:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:997:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:1012:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:1027:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:1042:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:1082:46: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:1097:40: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at p.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (Z3: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at p.ads:8
+a-cofuve.ads:237:63: info: range check proved (Z3: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at p.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (Z3: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at p.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (Z3: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at p.ads:8
+a-cofuve.ads:239:30: info: range check proved (Z3: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at p.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at p.ads:8
 p.adb:5:07: info: precondition proved (Z3: 2 VC)
 p.adb:6:07: info: precondition proved (Z3: 1 VC)
 p.adb:10:27: info: precondition proved (Z3: 1 VC)

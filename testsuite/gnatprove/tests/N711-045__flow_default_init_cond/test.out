@@ -4,8 +4,8 @@ callers_caller.adb:8:22: medium: assertion might fail
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
 dic.adb:3:04: high: "G" is not initialized
 dic.adb:3:04: info: initialization of "B" proved
-dic.adb:11:58: medium: overflow check might fail, cannot prove lower bound for R.X + R.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:22 should mention R in a precondition]
-dic.adb:13:63: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:24 should mention Par in a precondition]
+dic.adb:11:58: medium: overflow check might fail, cannot prove lower bound for R.X + R.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if R.Y >= 0 then R.X <= Integer'Last - R.Y else R.X >= Integer'First - R.Y) to subprogram at dic.ads:22]
+dic.adb:13:63: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Par.Y >= 0 then Par.X <= Integer'Last - Par.Y else Par.X >= Integer'First - Par.Y) to subprogram at dic.ads:24]
 dic.adb:17:14: medium: overflow check might fail, cannot prove lower bound for A.X + A.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:26 should mention A in a precondition]
 dic.ads:9:09: medium: default initial condition might fail
 dic.ads:45:04: medium: type "Pr_Liar_T" is not fully initialized

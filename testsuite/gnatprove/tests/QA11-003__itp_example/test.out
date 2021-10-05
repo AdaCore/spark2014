@@ -5,7 +5,7 @@ test.adb:29:17: medium: postcondition might fail
 test.adb:36:17: medium: postcondition might fail (e.g. when Test_4'Result = 0)
 test.adb:40:14: medium: overflow check might fail, cannot prove upper bound for B + 1 (e.g. when B = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 test.adb:47:17: medium: postcondition might fail (e.g. when Test_5'Result = 1)
-test.adb:56:17: medium: postcondition might fail (e.g. when Test_6'Result = -1.9999999E+0)
+test.adb:56:17: medium: postcondition might fail (e.g. when Test_6'Result = 6.8749905E-2)
 test.adb:60:14: info: float overflow check proved (CVC4: 1 VC)
 test.adb:69:17: medium: postcondition might fail
 test.adb:81:16: medium: postcondition might fail (e.g. when X = 2)

@@ -21,7 +21,7 @@ simple_arrays.adb:79:11: info: flow dependencies proved
 simple_arrays.adb:81:13: info: postcondition proved (CVC4: 2 VC; Trivial: 5 VC; Z3: 1 VC)
 simple_arrays.adb:85:54: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:86:50: info: index check proved (CVC4: 2 VC)
-simple_arrays.adb:89:22: medium: assertion might fail (e.g. when A = (1 => 5, others => Integer'First) and N = 1) [possible fix: subprogram at line 77 should mention A and N in a precondition]
+simple_arrays.adb:89:22: medium: assertion might fail (e.g. when A = (1 => 5, others => Integer'Last) and N = 1) [possible fix: subprogram at line 77 should mention A and N in a precondition]
 simple_arrays.adb:89:36: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:90:32: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:90:56: info: index check proved (CVC4: 2 VC)
@@ -160,7 +160,7 @@ simple_arrays.adb:578:22: medium: postcondition might fail (e.g. when A = (0 => 
 simple_arrays.adb:587:11: info: flow dependencies proved
 simple_arrays.adb:588:22: medium: postcondition might fail (e.g. when A = (23 => Elem_1, others => Elem_0))
 simple_arrays.adb:598:11: info: flow dependencies proved
-simple_arrays.adb:600:22: medium: postcondition might fail (e.g. when A = (-1 => Elem_1, others => Elem_0) and I = 0)
+simple_arrays.adb:600:22: medium: postcondition might fail (e.g. when A = (0 => Elem_1, others => Elem_0) and I = 1)
 simple_arrays.adb:609:11: info: flow dependencies proved
 simple_arrays.adb:610:22: medium: postcondition might fail
 simple_arrays.adb:612:07: info: initialization of "Tmp" proved
@@ -216,7 +216,7 @@ simple_arrays.adb:839:22: medium: postcondition might fail (e.g. when A = (0 => 
 simple_arrays.adb:848:11: info: flow dependencies proved
 simple_arrays.adb:849:22: medium: postcondition might fail (e.g. when A = (23 => 1337, others => 69))
 simple_arrays.adb:859:11: info: flow dependencies proved
-simple_arrays.adb:861:22: medium: postcondition might fail (e.g. when A = (-1 => 1337, others => 69) and I = 0)
+simple_arrays.adb:861:22: medium: postcondition might fail (e.g. when A = (0 => 1337, others => 69) and I = 1)
 simple_arrays.adb:870:11: info: flow dependencies proved
 simple_arrays.adb:871:22: medium: postcondition might fail
 simple_arrays.adb:873:07: info: initialization of "Tmp" proved

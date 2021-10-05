@@ -1983,10 +1983,10 @@ package body SPARK_Definition is
             begin
                if No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   if SPARK_Pragma_Is (Opt.On) then
-                     Apply_Compile_Time_Constraint_Error
-                       (N, "component not present in }",
-                        CE_Discriminant_Check_Failed,
-                        Ent => Prefix_Type);
+                     Error_Msg_NE
+                       ("component not present in }", N, Prefix_Type);
+                     Error_Msg_N
+                       ("\static expression fails Constraint_Check", N);
                   end if;
 
                   return;

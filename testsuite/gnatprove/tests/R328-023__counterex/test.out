@@ -1,3 +1,3 @@
 p.ads:8:14: medium: overflow check might fail, cannot prove lower bound for A'Last - B'first (e.g. when A'First = 0 and A'Last = Integer'First and B'First = 1 and B'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
-p.ads:8:24: medium: overflow check might fail, cannot prove lower bound for A'Last - B'First - 2 * B'length (e.g. when A'First = 0 and A'Last = Integer'First+1 and B = (0 => 0) and B'First = 0 and B'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+p.ads:8:24: medium: overflow check might fail, cannot prove lower bound for A'Last - B'First - 2 * B'length (e.g. when A'First = Integer'First+1 and A'Last = Integer'First and B = (0 => Integer'First+1) and B'First = 0 and B'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.ads:8:31: info: range check proved (CVC4: 2 VC)

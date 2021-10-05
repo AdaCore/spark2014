@@ -3,19 +3,19 @@ test_alias.adb:3:04: info: object is suitable for aliasing via address clause (T
 test_alias.adb:3:64: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:3:64: info: types of aliased objects have the same size (Trivial)
 test_alias.adb:11:25: info: cannot unroll loop (too many loop iterations)
-test_alias.adb:12:25: medium: assertion might fail (e.g. when Y = 1 and Y'Loop_Entry = 0) [possible fix: loop at line 11 should mention Z and Z and Z and X and Y in a loop invariant]
+test_alias.adb:12:25: medium: assertion might fail (e.g. when Y = 0 and Y'Loop_Entry = 1) [possible fix: loop at line 11 should mention Z and Z and Z and X and Y in a loop invariant]
 test_alias.adb:16:25: info: cannot unroll loop (too many loop iterations)
-test_alias.adb:17:25: medium: assertion might fail (e.g. when Y = 1 and Y'Loop_Entry = 0) [possible fix: loop at line 16 should mention Z and Z and Z and X and Y in a loop invariant]
+test_alias.adb:17:25: medium: assertion might fail (e.g. when Y = 0 and Y'Loop_Entry = 1) [possible fix: loop at line 16 should mention Z and Z and Z and X and Y in a loop invariant]
 test_alias.adb:21:25: info: cannot unroll loop (too many loop iterations)
-test_alias.adb:22:25: medium: assertion might fail (e.g. when Y = 1 and Y'Loop_Entry = 0) [possible fix: loop at line 21 should mention Z and Z and Z and X and Y in a loop invariant]
+test_alias.adb:22:25: medium: assertion might fail (e.g. when Y = 0 and Y'Loop_Entry = 1) [possible fix: loop at line 21 should mention Z and Z and Z and X and Y in a loop invariant]
 test_alias.adb:26:25: info: cannot unroll loop (too many loop iterations)
-test_alias.adb:27:25: medium: assertion might fail (e.g. when Y = 1 and Y'Loop_Entry = 0) [possible fix: loop at line 26 should mention Z and Z and Z and X and Y in a loop invariant]
+test_alias.adb:27:25: medium: assertion might fail (e.g. when Y = 0 and Y'Loop_Entry = 1) [possible fix: loop at line 26 should mention Z and Z and Z and X and Y in a loop invariant]
 test_alias.adb:29:13: info: alignment of overlaid objects is compatible (Trivial)
 test_alias.adb:29:13: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:29:73: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:29:73: info: types of aliased objects have the same size (Trivial)
 test_alias.adb:35:25: info: cannot unroll loop (too many loop iterations)
-test_alias.adb:36:25: medium: assertion might fail (e.g. when Y = 1 and Y'Loop_Entry = 0) [possible fix: loop at line 35 should mention Z and Z and Z and X and Y in a loop invariant]
+test_alias.adb:36:25: medium: assertion might fail (e.g. when Y = 0 and Y'Loop_Entry = 1) [possible fix: loop at line 35 should mention Z and Z and Z and X and Y in a loop invariant]
 test_alias.adb:38:13: info: alignment of overlaid objects is compatible (Trivial)
 test_alias.adb:38:13: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:38:70: info: object is suitable for aliasing via address clause (Trivial)

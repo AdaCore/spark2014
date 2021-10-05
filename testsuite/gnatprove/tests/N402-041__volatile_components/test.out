@@ -8,23 +8,23 @@ vc4.adb:24:07: info: initialization of "T1" proved
 vc4.adb:24:11: info: initialization of "T2" proved
 vc4.adb:24:15: info: initialization of "T3" proved
 vc4.adb:24:19: info: initialization of "T4" proved
-vc4.adb:30:22: medium: assertion might fail (e.g. when T1 = 0 and T2 = 1)
-vc4.adb:34:22: medium: assertion might fail (e.g. when T3 = 0 and T4 = 1)
+vc4.adb:30:22: medium: assertion might fail (e.g. when T1 = -1 and T2 = 0)
+vc4.adb:34:22: medium: assertion might fail (e.g. when T3 = -1 and T4 = 0)
 vc4.adb:41:07: info: initialization of "T1" proved
 vc4.adb:41:11: info: initialization of "T2" proved
 vc4.adb:41:15: info: initialization of "T3" proved
 vc4.adb:41:19: info: initialization of "T4" proved
-vc4.adb:47:22: medium: assertion might fail (e.g. when T1 = 0 and T2 = 1)
-vc4.adb:51:22: medium: assertion might fail (e.g. when T3 = 0 and T4 = 1)
+vc4.adb:47:22: medium: assertion might fail (e.g. when T1 = -1 and T2 = 0)
+vc4.adb:51:22: medium: assertion might fail (e.g. when T3 = -1 and T4 = 0)
 vc4.adb:58:07: info: initialization of "T1" proved
 vc4.adb:58:11: info: initialization of "T2" proved
 vc4.adb:58:15: info: initialization of "T3" proved
 vc4.adb:58:19: info: initialization of "T4" proved
-vc4.adb:65:22: medium: assertion might fail (e.g. when T1 = 0 and T2 = 1)
-vc4.adb:69:22: medium: assertion might fail (e.g. when T3 = 0 and T4 = 1)
+vc4.adb:65:22: medium: assertion might fail (e.g. when T1 = -1 and T2 = 0)
+vc4.adb:69:22: medium: assertion might fail (e.g. when T3 = -1 and T4 = 0)
 vc4.adb:76:07: info: initialization of "T1" proved
 vc4.adb:76:11: info: initialization of "T2" proved
-vc4.adb:80:22: medium: assertion might fail (e.g. when T1 = 0 and T2 = 1)
+vc4.adb:80:22: medium: assertion might fail (e.g. when T1 = -1 and T2 = 0)
 vc4.ads:31:29: info: initialization of "R" proved
 vc4.ads:32:11: info: data dependencies proved
 vc4.ads:33:11: info: flow dependencies proved

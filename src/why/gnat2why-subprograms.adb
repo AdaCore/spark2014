@@ -188,6 +188,14 @@ package body Gnat2Why.Subprograms is
    --  For every object in the binder array, build a predicate for the dynamic
    --  invariant of the object and join everything together with a conjunction.
 
+   function Compute_Guard_For_Dispatch
+     (Subp    : Entity_Id;
+      Binders : Item_Array;
+      W_Tag   : W_Term_Id;
+      Params  : Transformation_Params) return W_Pred_Id;
+   --  For every object in the binder array whose type matches the dispatching
+   --  type of Subp, state that the tag of the object is equal to W_Tag.
+
    function Compute_Inlined_Expr
      (Function_Entity    : Entity_Id;
       Logic_Func_Binders : Item_Array;
@@ -1193,6 +1201,54 @@ package body Gnat2Why.Subprograms is
 
       return +Eff;
    end Compute_Effects;
+
+   --------------------------------
+   -- Compute_Guard_For_Dispatch --
+   --------------------------------
+
+   function Compute_Guard_For_Dispatch
+     (Subp    : Entity_Id;
+      Binders : Item_Array;
+      W_Tag   : W_Term_Id;
+      Params  : Transformation_Params) return W_Pred_Id
+   is
+      D_Ty : constant Entity_Id :=
+        Find_Dispatching_Type (Subp);
+      Pred : W_Pred_Id := True_Pred;
+   begin
+      for B of Binders loop
+         if D_Ty = Get_Ada_Type_From_Item (B) then
+            case B.Kind is
+               when Regular =>
+                  Pred := New_And_Pred
+                    (Left  => Pred,
+                     Right => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => W_Tag,
+                        Right  => +New_Tag_Access
+                          (Domain => EW_Term,
+                           Name   =>
+                             (if Params.Ref_Allowed
+                              then New_Deref
+                                (Right => B.Main.B_Name,
+                                 Typ   => EW_Abstract (D_Ty))
+                              else +B.Main.B_Name),
+                           Ty     => D_Ty)));
+               when DRecord =>
+                  pragma Assert (B.Tag.Present);
+                  Pred := New_And_Pred
+                    (Left  => Pred,
+                     Right => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => W_Tag,
+                        Right  => +B.Tag.Id));
+               when others =>
+                  raise Program_Error;
+            end case;
+         end if;
+      end loop;
+      return Pred;
+   end Compute_Guard_For_Dispatch;
 
    ---------------------------
    -- Compute_Guard_Formula --
@@ -5026,14 +5082,18 @@ package body Gnat2Why.Subprograms is
             Emit_Post_Axiom (Post_Axiom, Why.Inter.Standard, Pre, Post);
          end if;
 
-         --  ??? clean up this code duplication for dispatch and refine
-
          if Is_Visible_Dispatching_Operation (E) then
             pragma Assert (Present (Dispatch_Pre)
                             and then Present (Dispatch_Post));
             Emit_Post_Axiom (Post_Dispatch_Axiom,
                              Dispatch,
-                             Dispatch_Pre,
+                             New_And_Pred
+                               (Left  => Compute_Guard_For_Dispatch
+                                  (Subp    => E,
+                                   Binders => Logic_Func_Binders,
+                                   W_Tag   => +Tag_Binder.B_Name,
+                                   Params  => Params),
+                                Right => Dispatch_Pre),
                              Dispatch_Post);
          end if;
 
@@ -5142,6 +5202,7 @@ package body Gnat2Why.Subprograms is
                        (Name   => E_Symb (E, WNE_Dispatch_Func_Guard),
                         Args   => Anc_Call & Dispatch_Args,
                         Typ    => EW_Bool_Type));
+                  Call         : W_Term_Id;
                   --  The axiom is protected by the dispatching post predicate
                   --  of E.
 
@@ -5158,6 +5219,32 @@ package body Gnat2Why.Subprograms is
                           Expr   => +Anc_Binders (I).B_Name,
                           To     => Get_Typ (Desc_Binders (I).B_Name));
                   end loop;
+
+                  Call := +New_Function_Call
+                    (Domain => EW_Term,
+                     Subp   => Descendant_E,
+                     Name   => Desc_Id,
+                     Args   => Desc_Args,
+                     Check  => False,
+                     Typ    => Desc_Ty);
+
+                  --  If Descendant is a derived type with a null extension,
+                  --  Descendant_E can be inherited even if it has a
+                  --  controlling result. In this case, we need to update the
+                  --  tag after the call manually.
+
+                  if Has_Controlling_Result (Descendant_E)
+                    and then Base_Retysp (Descendant) /=
+                    Base_Retysp (Etype (Descendant_E))
+                  then
+                     pragma Assert
+                       (Is_Derived_Type_With_Null_Ext
+                          (Base_Type (Descendant)));
+                     Call := +New_Tag_Update
+                       (Domain => EW_Term,
+                        Name   => +Call,
+                        Ty     => Descendant);
+                  end if;
 
                   Emit
                     (Th,
@@ -5180,13 +5267,7 @@ package body Gnat2Why.Subprograms is
 
                            Left   => Insert_Simple_Conversion
                              (Domain => EW_Term,
-                              Expr   => New_Function_Call
-                                (Domain => EW_Term,
-                                 Subp   => Descendant_E,
-                                 Name   => Desc_Id,
-                                 Args   => Desc_Args,
-                                 Check  => False,
-                                 Typ    => Desc_Ty),
+                              Expr   => +Call,
                               To     => Anc_Ty),
                            Right  => Anc_Call,
                            Domain => EW_Term)));

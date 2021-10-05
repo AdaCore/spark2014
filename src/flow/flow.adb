@@ -1653,7 +1653,7 @@ package body Flow is
                         Analysis.Find_Ineffective_Statements (FA);
                         Analysis.Find_Stable_Conditions (FA);
                         Analysis.Find_Dead_Code (FA);
-                        Analysis.Find_Hidden_Unexposed_State (FA);
+                        Analysis.Check_Hidden_State (FA);
                         if Have_Full_Package_Code then
                            Analysis.Find_Impossible_To_Initialize_State (FA);
                         end if;
@@ -1666,7 +1666,6 @@ package body Flow is
                         Analysis.Check_Potentially_Blocking (FA);
                         Analysis.Check_Terminating_Annotation (FA);
                      end if;
-                     Analysis.Check_Consistent_AS_For_Private_Child (FA);
                      if Have_Full_Package_Code then
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);

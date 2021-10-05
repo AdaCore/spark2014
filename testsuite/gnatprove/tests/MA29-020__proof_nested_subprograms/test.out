@@ -1,7 +1,7 @@
 skein.adb:27:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:27:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
 skein.adb:34:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:139
-skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash'First = 17149707381027370441 and Hash'Last = 10916725496745942989 and Local_Ctx.H.Tweak_Words.Field_Type = U6'Last and Local_Ctx.H.Tweak_Words.First_Block = True and Local_Ctx.H.Tweak_Words.Final_Block = True and Local_Ctx.H.Hash_Bit_Len = 18305769090843128 and Local_Ctx.B(6) = 60 and N = 7) [reason for check: result of addition must be a valid index into the array]
+skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash = (0 => 1) and Hash'First = 0 and Hash'Last = 0 and N = 7) [reason for check: result of addition must be a valid index into the array]
 skein.adb:36:77: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:139
 skein.adb:36:77: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:139
 skein.adb:37:57: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:139
@@ -49,7 +49,7 @@ skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
 skein.adb:111:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:111:10: info: in inlined body at line 87
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
-skein.adb:115:52: medium: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx.H.Tweak_Words.Final_Block = True) [reason for check: result of division must fit in the target type of the assignment]
+skein.adb:115:52: medium: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx.H.Tweak_Words.Byte_Count_LSB = 18446739675663040512 and Local_Ctx.H.Tweak_Words.Final_Block = True and Local_Ctx.H.Byte_Count = 18446739675663040512 and Local_Ctx.X = (others => 18446739675663040512) and Local_Ctx.B = (others => 128)) [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:118:19: warning: unused assignment
 skein.adb:121:44: info: division check proved (CVC4: 1 VC)
 skein.adb:125:10: info: analyzing call to "Set_B_Counter" in context

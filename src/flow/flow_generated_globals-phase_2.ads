@@ -145,8 +145,14 @@ package Flow_Generated_Globals.Phase_2 is
    --  @return true iff EN denotes an abstract state
 
    function Refinement_Exists (AS : Entity_Id) return Boolean
-   with Pre => Ekind (AS) = E_Abstract_State;
+   with Pre => Ekind (AS) = E_Abstract_State
+                 and then Is_Compilation_Unit (Scope (AS));
    --  Returns True iff a refinement has been specified for abstract state AS
+   --
+   --  This routine should be only used for abstract states belonging to
+   --  compilation units, when checking consistency between Part_Of and
+   --  Refined_State contracts; consistency between these contracts within
+   --  a single unit is enforced by the frontend.
 
    function Expand_Abstract_State (F : Flow_Id) return Flow_Id_Sets.Set
    with Post => (for all E of Expand_Abstract_State'Result =>

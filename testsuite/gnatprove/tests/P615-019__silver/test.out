@@ -1,6 +1,6 @@
 contracts.adb:3:04: warning: analyzing unreferenced procedure "Convert_Integer0"
 contracts.adb:3:45: info: initialization of "U" proved
-contracts.adb:5:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 3 should mention X in a precondition]
+contracts.adb:5:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X in Natural) to subprogram at line 3]
 contracts.adb:8:44: info: initialization of "U" proved
 contracts.adb:12:12: info: range check proved (CVC4: 2 VC)
 contracts.adb:15:45: info: initialization of "U" proved
@@ -22,47 +22,47 @@ discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail [possible fix: subprogram at line 17 should mention R in a precondition]
 division_by_zero.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 division_by_zero.adb:9:55: info: initialization of "U" proved
-division_by_zero.adb:12:27: medium: divide by zero might fail [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-division_by_zero.adb:12:27: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-division_by_zero.adb:13:27: medium: divide by zero might fail [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-division_by_zero.adb:14:27: medium: divide by zero might fail [possible fix: subprogram at line 9 should mention X and Y in a precondition]
+division_by_zero.adb:12:27: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 9]
+division_by_zero.adb:12:27: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y in Integer) to subprogram at line 9]
+division_by_zero.adb:13:27: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 9]
+division_by_zero.adb:14:27: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 9]
 division_by_zero.adb:18:04: warning: analyzing unreferenced procedure "Oper_Unsigned"
 division_by_zero.adb:18:57: info: initialization of "U" proved
-division_by_zero.adb:21:27: medium: divide by zero might fail [possible fix: subprogram at line 18 should mention X and Y in a precondition]
-division_by_zero.adb:22:27: medium: divide by zero might fail [possible fix: subprogram at line 18 should mention X and Y in a precondition]
-division_by_zero.adb:23:27: medium: divide by zero might fail [possible fix: subprogram at line 18 should mention X and Y in a precondition]
+division_by_zero.adb:21:27: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 18]
+division_by_zero.adb:22:27: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 18]
+division_by_zero.adb:23:27: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 18]
 division_by_zero.adb:27:04: warning: analyzing unreferenced procedure "Div_Float"
 division_by_zero.adb:27:39: info: initialization of "U" proved
-division_by_zero.adb:29:14: medium: divide by zero might fail [possible fix: subprogram at line 27 should mention X and Y in a precondition]
+division_by_zero.adb:29:14: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 27]
 division_by_zero.adb:29:14: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 27 should mention X and Y in a precondition]
 division_by_zero.adb:32:04: warning: analyzing unreferenced procedure "Div_Fixed"
 division_by_zero.adb:32:39: info: initialization of "U" proved
-division_by_zero.adb:34:14: medium: divide by zero might fail [possible fix: subprogram at line 32 should mention X and Y in a precondition]
+division_by_zero.adb:34:14: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 32]
 division_by_zero.adb:34:14: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 32 should mention X and Y in a precondition]
 division_by_zero.adb:37:04: warning: analyzing unreferenced procedure "Exp_Float"
 division_by_zero.adb:37:49: info: initialization of "U" proved
-division_by_zero.adb:39:14: medium: divide by zero might fail [possible fix: subprogram at line 37 should mention X and Y in a precondition]
+division_by_zero.adb:39:14: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 37]
 division_by_zero.adb:39:14: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 37 should mention X and Y in a precondition]
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
-index_check.adb:5:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 3 should mention J in a precondition]
+index_check.adb:5:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in Positive) to subprogram at line 3]
 index_check.adb:8:04: warning: analyzing unreferenced procedure "Set"
-index_check.adb:10:09: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 8 should mention J in a precondition]
+index_check.adb:10:09: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in S'First .. S'Last) to subprogram at line 8]
 overflow_check.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 overflow_check.adb:9:68: info: initialization of "U" proved
-overflow_check.adb:12:30: medium: overflow check might fail, cannot prove upper bound for -X [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X in a precondition]
-overflow_check.adb:13:30: medium: overflow check might fail, cannot prove upper bound for abs X [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X in a precondition]
-overflow_check.adb:14:32: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-overflow_check.adb:15:32: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-overflow_check.adb:16:32: medium: overflow check might fail, cannot prove lower bound for X * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-overflow_check.adb:17:32: medium: divide by zero might fail [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-overflow_check.adb:17:32: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X and Y in a precondition]
-overflow_check.adb:18:32: medium: overflow check might fail, cannot prove lower bound for X ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention E and X in a precondition]
+overflow_check.adb:12:30: medium: overflow check might fail, cannot prove upper bound for -X [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-X in Integer) to subprogram at line 9]
+overflow_check.adb:13:30: medium: overflow check might fail, cannot prove upper bound for abs X [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs X in Integer) to subprogram at line 9]
+overflow_check.adb:14:32: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at line 9]
+overflow_check.adb:15:32: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X >= Integer'First + Y else X <= Integer'Last + Y) to subprogram at line 9]
+overflow_check.adb:16:32: medium: overflow check might fail, cannot prove lower bound for X * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * Y in Integer) to subprogram at line 9]
+overflow_check.adb:17:32: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 9]
+overflow_check.adb:17:32: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y in Integer) to subprogram at line 9]
+overflow_check.adb:18:32: medium: overflow check might fail, cannot prove lower bound for X ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** E in Integer) to subprogram at line 9]
 overflow_check.adb:22:04: warning: analyzing unreferenced procedure "Oper_Float"
 overflow_check.adb:22:64: info: initialization of "U" proved
 overflow_check.adb:27:32: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 22 should mention X and Y in a precondition]
 overflow_check.adb:28:32: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 22 should mention X and Y in a precondition]
 overflow_check.adb:29:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 22 should mention X and Y in a precondition]
-overflow_check.adb:30:32: medium: divide by zero might fail [possible fix: subprogram at line 22 should mention X and Y in a precondition]
+overflow_check.adb:30:32: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 22]
 overflow_check.adb:30:32: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 22 should mention X and Y in a precondition]
 overflow_check.adb:31:32: info: division check proved (CVC4: 1 VC; Trivial: 1 VC)
 overflow_check.adb:31:32: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 22 should mention E and X in a precondition]
@@ -74,17 +74,17 @@ overflow_check.adb:39:30: medium: overflow check might fail, cannot prove upper 
 overflow_check.adb:40:32: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of fixed-point addition must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
 overflow_check.adb:41:32: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of fixed-point subtraction must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
 overflow_check.adb:42:32: medium: overflow check might fail, cannot prove upper bound for X * Y [reason for check: result of fixed-point multiplication must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
-overflow_check.adb:43:32: medium: divide by zero might fail [possible fix: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:43:32: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 35]
 overflow_check.adb:43:32: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
 range_check.adb:16:04: warning: analyzing unreferenced procedure "Convert_Enum"
 range_check.adb:16:38: info: initialization of "U" proved
 range_check.adb:18:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 16 should mention X in a precondition]
 range_check.adb:21:04: warning: analyzing unreferenced procedure "Convert_Integer"
 range_check.adb:21:44: info: initialization of "U" proved
-range_check.adb:23:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 21 should mention X in a precondition]
+range_check.adb:23:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X in Natural) to subprogram at line 21]
 range_check.adb:26:04: warning: analyzing unreferenced procedure "Convert_Unsigned"
 range_check.adb:26:46: info: initialization of "U" proved
-range_check.adb:28:12: medium: range check might fail, cannot prove upper bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 26 should mention X in a precondition]
+range_check.adb:28:12: medium: range check might fail, cannot prove upper bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X in Small_Unsigned) to subprogram at line 26]
 range_check.adb:31:04: warning: analyzing unreferenced procedure "Convert_Float"
 range_check.adb:31:40: info: initialization of "U" proved
 range_check.adb:33:12: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 31 should mention X in a precondition]

@@ -23,24 +23,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;  use Common_Containers;
-with Errout;             use Errout;
-with Namet;              use Namet;
-with Snames;             use Snames;
-with SPARK_Util.Types;   use SPARK_Util.Types;
-with Stringt;            use Stringt;
-with Uintp;              use Uintp;
-with Urealp;             use Urealp;
-with VC_Kinds;           use VC_Kinds;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Modules;  use Why.Atree.Modules;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Expr;       use Why.Gen.Expr;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Progs;      use Why.Gen.Progs;
-with Why.Inter;          use Why.Inter;
-with Why.Types;          use Why.Types;
+with Common_Containers;   use Common_Containers;
+with Errout;              use Errout;
+with Namet;               use Namet;
+with Snames;              use Snames;
+with SPARK_Util.Types;    use SPARK_Util.Types;
+with Stringt;             use Stringt;
+with Uintp;               use Uintp;
+with Urealp;              use Urealp;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Hardcoded is
    package BIN renames Big_Integers_Names; use BIN;
@@ -273,6 +274,12 @@ package body Why.Gen.Hardcoded is
                      then VC_Precondition
                      else VC_Division_Check);
                begin
+                  if Reason = VC_Division_Check then
+                     Add_Division_Check_Information
+                       (Ada_Node,
+                        Divisor => Get_Ada_Node (+Args (2)));
+                  end if;
+
                   T := New_Operator_Call
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
@@ -430,6 +437,10 @@ package body Why.Gen.Hardcoded is
 
                   --  Reconstruct the real value by doing the division
 
+                  Add_Division_Check_Information
+                    (Ada_Node,
+                     Divisor => Get_Ada_Node (+Args (2)));
+
                   T := New_Operator_Call
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
@@ -553,6 +564,10 @@ package body Why.Gen.Hardcoded is
                        and then Chars (Subp) = Name_Op_Divide;
                   begin
                      pragma Assert (if Check then Present (Ada_Node));
+
+                     Add_Division_Check_Information
+                       (Ada_Node,
+                        Divisor => Get_Ada_Node (+Args (2)));
 
                      T := New_Operator_Call
                        (Ada_Node => Ada_Node,
@@ -848,8 +863,8 @@ package body Why.Gen.Hardcoded is
                   Den := Den * Uint_10 ** (-Exp);
                end if;
 
-               --  Return the appropriate real constant. Only emit a division
-               --  check if Den is 0.
+               --  Return the appropriate real constant. There is no possible
+               --  division by zero, as Den cannot be 0.
 
                declare
                   Subdomain : constant EW_Domain :=
@@ -873,7 +888,7 @@ package body Why.Gen.Hardcoded is
                      Fix_Name => True,
                      Args     => W_Args,
                      Reason   => VC_Division_Check,
-                     Check    => Subdomain = EW_Prog,
+                     Check    => False,
                      Typ      => EW_Real_Type);
                end;
 
@@ -943,6 +958,10 @@ package body Why.Gen.Hardcoded is
                     (if Subdomain = EW_Prog then Real_Infix_Div
                      else M_Real.Div);
                begin
+                  Add_Division_Check_Information
+                    (Call,
+                     Divisor => Den_Literal);
+
                   Result := New_Operator_Call
                     (Ada_Node => Call,
                      Domain   => Subdomain,

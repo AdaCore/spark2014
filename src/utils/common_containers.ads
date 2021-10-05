@@ -27,15 +27,18 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
 
+with Checked_Types;    use Checked_Types;
 with Einfo.Entities;   use Einfo.Entities;
 with GNATCOLL.Symbols; use GNATCOLL.Symbols;
 with Hashing;          use Hashing;
 with Sinfo.Nodes;      use Sinfo.Nodes;
 with Types;            use Types;
+with VC_Kinds;         use VC_Kinds;
 
 --  This package contains a few common types (and expression functions) which
 --  are used throughout gnat2why (frame conditions, flow and why generation).
@@ -165,6 +168,31 @@ package Common_Containers is
       Hash                => GNATCOLL.Symbols.Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
+
+   type Check_Key is record
+      N : Node_Id;
+      K : VC_Kind;
+   end record;
+
+   function Check_Key_Hash (C : Check_Key) return Ada.Containers.Hash_Type
+   is (Node_Hash (C.N));
+
+   type Check_Info (K : VC_Kind) is record
+      case K is
+         when VC_Range_Kind =>
+            Ty      : Type_Kind_Id;
+         when VC_Division_Check =>
+            Divisor : N_Extended_Subexpr_Id;
+         when others =>
+            null;
+      end case;
+   end record;
+
+   package Check_Info_Map is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type        => Check_Key,
+      Element_Type    => Check_Info,
+      Hash            => Check_Key_Hash,
+      Equivalent_Keys => "=");
 
 private
 

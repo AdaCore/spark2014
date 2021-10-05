@@ -46,6 +46,15 @@ package Checked_Types is
      Predicate => N_Case_Kind_Id in N_Case_Expression_Id
                                   | N_Case_Statement_Id;
 
+   subtype N_Extended_Subexpr_Id is Node_Id with
+     Predicate =>
+       N_Extended_Subexpr_Id in N_Defining_Identifier_Id
+                              | N_Subexpr_Id;
+
+   subtype Opt_N_Extended_Subexpr_Id is Node_Id with
+     Predicate => No (Opt_N_Extended_Subexpr_Id)
+       or else Opt_N_Extended_Subexpr_Id in N_Extended_Subexpr_Id;
+
    subtype N_Identifier_Kind_Id is Node_Id with
      Predicate => N_Identifier_Kind_Id in N_Identifier_Id
                                         | N_Expanded_Name_Id;

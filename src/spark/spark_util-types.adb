@@ -1116,6 +1116,25 @@ package body SPARK_Util.Types is
       end case;
    end Is_Deep;
 
+   -----------------------------------
+   -- Is_Derived_Type_With_Null_Ext --
+   -----------------------------------
+
+   function Is_Derived_Type_With_Null_Ext (Ty : Type_Kind_Id) return Boolean is
+      Decl : constant Node_Id := Enclosing_Declaration (Retysp (Ty));
+   begin
+      if No (Decl) or else Nkind (Decl) /= N_Full_Type_Declaration then
+         return False;
+      end if;
+
+      declare
+         Def : constant Node_Id := Type_Definition (Decl);
+      begin
+         return Nkind (Def) = N_Derived_Type_Definition
+           and then Null_Present (Record_Extension_Part (Def));
+      end;
+   end Is_Derived_Type_With_Null_Ext;
+
    ----------------------------
    -- Is_General_Access_Type --
    ----------------------------

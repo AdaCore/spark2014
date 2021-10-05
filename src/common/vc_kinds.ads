@@ -152,6 +152,17 @@ package VC_Kinds is
       VC_Unreachable_Branch,
       VC_Dead_Code);
 
+   subtype VC_Overflow_Kind is VC_Kind range
+     VC_Overflow_Check .. VC_FP_Overflow_Check;
+
+   subtype VC_Range_Kind is VC_Kind with
+     Static_Predicate =>
+       VC_Range_Kind in VC_Overflow_Check
+                      | VC_FP_Overflow_Check
+                      | VC_Range_Check
+                      | VC_Length_Check
+                      | VC_Index_Check;
+
    subtype VC_RTE_Kind is VC_Kind range
      VC_Division_Check .. VC_Task_Termination;
 

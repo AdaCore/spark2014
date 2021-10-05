@@ -1,0 +1,4 @@
+bad.adb:12:04: warning: analyzing unreferenced procedure "Dummy"
+bad.adb:12:14: warning: subprogram "Dummy" has no effect
+bad.adb:15:22: medium: assertion might fail [possible fix: subprogram at line 12 should mention X and Y in a precondition]
+bad.adb:15:26: medium: tag check might fail [possible fix: subprogram at line 12 should mention X and Y in a precondition]

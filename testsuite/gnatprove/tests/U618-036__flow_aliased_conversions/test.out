@@ -26,4 +26,4 @@ test.adb:82:17: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
 test.adb:85:18: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
 test.adb:88:25: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:91:25: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
-types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention Left and Right in a precondition]
+types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Right.Field >= 0 then Left.Field >= Integer'First + Right.Field else Left.Field <= Integer'Last + Right.Field) to subprogram at line 12]

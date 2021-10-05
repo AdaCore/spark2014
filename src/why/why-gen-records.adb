@@ -2925,9 +2925,14 @@ package body Why.Gen.Records is
                  (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Dispatch_Eq)),
                   Return_Type => EW_Bool_Type,
-                  Binders     => R_Binder &
-                    Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                    others => <>)),
+                  Binders     => Binder_Array'
+                    (1 => Binder_Type'(B_Name => New_Identifier
+                                       (Name => To_String (WNE_Attr_Tag),
+                                        Typ  => EW_Int_Type),
+                                       others => <>),
+                     2 => R_Binder (1),
+                     3 => Binder_Type'(B_Name => B_Ident,
+                                       others => <>)),
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set));
          end if;
@@ -3984,7 +3989,7 @@ package body Why.Gen.Records is
                              Domain => Domain,
                              Attr   => Attribute_Tag),
                           Value  => Value)),
-                  Typ      => EW_Abstract (Ty)));
+                  Typ      => Get_Type (Name)));
          end;
       else
          return Name;

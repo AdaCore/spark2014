@@ -8,10 +8,10 @@ lat_long.adb:9:54: info: float overflow check proved (Trivial)
 lat_long.adb:9:58: info: division check proved (CVC4: 1 VC)
 lat_long.adb:9:58: info: float overflow check proved (CVC4: 1 VC)
 lat_long.adb:10:29: info: float overflow check proved (CVC4: 1 VC)
-lat_long.adb:10:41: medium: float overflow check might fail (e.g. when Delta_Lat = 0.0) [reason for check: result of floating-point addition must be bounded]
+lat_long.adb:10:41: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 lat_long.adb:10:54: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:8:34: info: float overflow check proved (CVC4: 1 VC)
-lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1 (e.g. when Cos'Result = -1.0 and X = 1.1718751E+0)
+lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1 (e.g. when Cos'Result = -1.0)
 lat_long.ads:18:26: medium: precondition might fail (e.g. when X = -1.0000001E+0) [possible fix: subprogram at line 17 should mention X in a precondition]
 lat_long.ads:29:14: info: postcondition proved (Z3: 1 VC)
 lat_long.ads:30:57: info: float overflow check proved (CVC4: 1 VC)
@@ -25,4 +25,4 @@ lat_long.ads:39:26: info: float overflow check proved (Trivial)
 lat_long.ads:39:41: info: float overflow check proved (Trivial)
 lat_long.ads:39:45: info: division check proved (CVC4: 1 VC)
 lat_long.ads:39:45: info: float overflow check proved (CVC4: 1 VC)
-lat_long.ads:41:14: medium: postcondition might fail (e.g. when Delta_Long_In_Meters'Result = 2.1649296E+8)
+lat_long.ads:41:14: medium: postcondition might fail (e.g. when Delta_Long_In_Meters'Result = -1.0187911E+8)

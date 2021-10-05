@@ -6,5 +6,5 @@ swap_bad_post.adb:1:26: warning: unused initial value of "X"
 swap_bad_post.adb:3:25: medium: postcondition might fail, cannot prove Y = X'old
     3 |  Post => X = Y'Old and Y = X'Old
       |                        ^~~~~~~~~
-  e.g. when X'Old = 0
-        and Y = 1
+  e.g. when X'Old = 1
+        and Y = 0

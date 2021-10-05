@@ -9,7 +9,7 @@ procedure P is
    procedure B (X : Integer) is
    begin
       loop
-         exit when X < 42; --  stable, but not yet detected
+         exit when X < 42; --  detected correctly as stable
       end loop;
    end B;
 

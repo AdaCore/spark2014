@@ -2,8 +2,8 @@
 justifications.adb:6:14: medium: overflow check might fail, cannot prove lower bound for X + Y
     6 |      X := X + Y;
       |           ~~^~~
-  e.g. when X = -1
-        and Y = Integer'First
+  e.g. when X = Integer'First
+        and Y = -1
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at justifications.ads:4 should mention X and Y in a precondition
     4 |   procedure Do_Something_1 (X, Y : in out Integer) with
@@ -21,8 +21,8 @@ justifications.adb:7:14: medium: overflow check might fail, cannot prove upper b
 justifications.adb:12:14: medium: overflow check might fail, cannot prove lower bound for X + Y
    12 |      X := X + Y;
       |           ~~^~~
-  e.g. when X = -1
-        and Y = Integer'First
+  e.g. when X = Integer'First
+        and Y = -1
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at justifications.ads:9 should mention X and Y in a precondition
     9 |   procedure Do_Something_2 (X, Y : in out Integer) with

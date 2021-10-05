@@ -536,7 +536,7 @@ parser_utilities.ads:122:09: info: flow dependencies proved
 parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
-process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion]
+process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
 process_dns_request.ads:223:50: info: range check proved (CVC4: 2 VC)
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved

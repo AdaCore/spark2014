@@ -25,13 +25,13 @@ n05.adb:29:20: warning: "A" is not modified, parameter type could be rewritten a
 n05.adb:29:36: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:29:52: info: initialization of "C" proved
 n05.adb:31:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: precondition of subprogram at line 29 should mention A]
-n05.adb:31:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all (e.g. when A.all = -1 and B.all = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 29 should mention A and B]
+n05.adb:31:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all (e.g. when A.all = Integer'First and B.all = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 29 should mention A and B]
 n05.adb:31:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: precondition of subprogram at line 29 should mention B]
 n05.adb:36:21: warning: "A" is not modified, could be IN
 n05.adb:36:41: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:36:57: info: initialization of "C" proved
 n05.adb:38:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: subprogram at line 36 should mention A in a precondition]
-n05.adb:38:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all (e.g. when A.all = -1 and B.all = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention A and B in a precondition]
+n05.adb:38:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all (e.g. when A.all = Integer'First and B.all = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention A and B in a precondition]
 n05.adb:38:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: subprogram at line 36 should mention B in a precondition]
 n05.adb:42:03: info: initialization of "AA0" proved
 n05.adb:42:08: info: initialization of "AA1" proved

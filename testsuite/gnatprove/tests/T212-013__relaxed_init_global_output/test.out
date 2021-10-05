@@ -28,4 +28,4 @@ test_global_out.adb:103:33: info: initialization check proved (CVC4: 1 VC)
 test_global_out.adb:105:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 test_global_out.adb:105:33: info: initialization check proved (CVC4: 1 VC)
 test_global_out.adb:107:33: medium: assertion might fail, cannot prove I = 1 (e.g. when I = 0)
-test_global_out.adb:107:33: medium: initialization check might fail (e.g. when B = False)
+test_global_out.adb:107:33: medium: initialization check might fail

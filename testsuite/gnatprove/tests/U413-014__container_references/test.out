@@ -1,163 +1,163 @@
-a-cfdlli.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.adb:5
-a-cfdlli.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.adb:5
-a-cfdlli.ads:416:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:521:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:662:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:752:57: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:818:57: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:905:28: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:905:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1081:43: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1262:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1401:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1416:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1431:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1446:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1468:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1474:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1523:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfdlli.ads:1530:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
-a-cfhama.ads:399:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:399:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:424:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:462:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:775:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:784:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:814:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
-a-cfhama.ads:829:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
-a-cfhase.ads:502:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:828:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:837:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:858:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:859:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:907:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:1084:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:1085:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:1085:44: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:1125:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:1217:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
-a-cfhase.ads:1238:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
-a-cfinve.ads:315:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:321:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:340:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:340:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:363:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:405:73: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:438:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:473:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:519:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:543:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:584:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:649:28: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:649:57: info: range check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:777:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cfinve.ads:813:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
-a-cforma.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:405:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:411:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:430:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:468:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:839:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:848:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:883:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:891:21: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:918:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:926:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:996:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:1011:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:1026:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:1041:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:1081:46: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforma.ads:1096:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
-a-cforse.ads:516:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:885:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:894:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:929:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:937:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:964:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:972:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:989:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:990:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1038:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1208:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1209:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1209:44: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1248:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1352:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1367:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1382:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1397:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1431:47: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cforse.ads:1446:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
-a-cofove.ads:294:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:5
-a-cofove.ads:300:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:5
-a-cofove.ads:319:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:319:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:342:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:384:73: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:417:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:452:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:498:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:522:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:563:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:628:28: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:628:57: info: range check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:756:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
-a-cofove.ads:792:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:95, in instantiation at test_hashed_sets.adb:6
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:100, in instantiation at test_ordered_sets.adb:5
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:95, in instantiation at test_hashed_sets.adb:6
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:100, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:74, in instantiation at test_lists.adb:5
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at test_hashed_maps.adb:6
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:107, in instantiation at test_hashed_sets.adb:6
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:107, in instantiation at test_indefinite_vectors.adb:5
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at test_ordered_maps.adb:5
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:112, in instantiation at test_ordered_sets.adb:5
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at test_vectors.adb:5
+a-cfdlli.ads:392:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.adb:5
+a-cfdlli.ads:398:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.adb:5
+a-cfdlli.ads:417:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:522:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:663:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:753:57: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:819:57: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:906:28: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:906:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1082:43: info: overflow check proved (CVC4: 2 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1263:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1402:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1417:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1432:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1447:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1475:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1524:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfdlli.ads:1531:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_lists.adb:5
+a-cfhama.ads:400:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:400:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:425:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:463:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:776:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:785:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:815:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhama.ads:830:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_maps.adb:6
+a-cfhase.ads:503:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:829:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:838:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:859:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:860:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:908:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1085:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1086:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1086:44: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1126:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1218:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfhase.ads:1239:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_hashed_sets.adb:6
+a-cfinve.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:341:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:341:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:364:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:406:73: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:439:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:474:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:520:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:544:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:585:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:650:28: info: overflow check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:650:57: info: range check proved (CVC4: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:778:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cfinve.ads:814:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_indefinite_vectors.adb:5
+a-cforma.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:406:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:412:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:431:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:469:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:840:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:849:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:884:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:892:21: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:919:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:927:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:997:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1012:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1027:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1042:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1082:46: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforma.ads:1097:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_maps.adb:5
+a-cforse.ads:517:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:886:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:895:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:930:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:938:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:965:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:973:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:990:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:991:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1039:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1209:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1210:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1210:44: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1249:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1353:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1368:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1383:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1398:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1432:47: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cforse.ads:1447:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_ordered_sets.adb:5
+a-cofove.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:5
+a-cofove.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:5
+a-cofove.ads:320:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:320:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:343:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:385:73: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:418:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:453:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:499:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:523:51: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:564:59: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:629:28: info: overflow check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:629:57: info: range check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:757:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofove.ads:793:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_hashed_sets.adb:6
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_ordered_sets.adb:5
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_hashed_sets.adb:6
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:113, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at test_vectors.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at test_vectors.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at test_vectors.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at test_vectors.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at test_vectors.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at test_vectors.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at test_indefinite_vectors.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at test_ordered_maps.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:113, in instantiation at test_ordered_sets.adb:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at test_vectors.adb:5
 test_hashed_maps.adb:15:15: info: precondition proved (CVC4: 1 VC)
 test_hashed_maps.adb:16:15: info: precondition proved (CVC4: 1 VC)
 test_hashed_maps.adb:17:15: info: precondition proved (CVC4: 1 VC)

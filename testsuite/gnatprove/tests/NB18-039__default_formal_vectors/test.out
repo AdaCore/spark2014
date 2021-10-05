@@ -1,25 +1,25 @@
-a-cofove.ads:294:08: info: dynamic accessibility check proved (Trivial), in instantiation at bounded.ads:7
-a-cofove.ads:300:08: info: dynamic accessibility check proved (Trivial), in instantiation at bounded.ads:7
-a-cofove.ads:319:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at bounded.ads:7
-a-cofove.ads:319:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at bounded.ads:7
-a-cofove.ads:342:51: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:384:73: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:417:51: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:452:59: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:498:59: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:522:51: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:563:59: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:628:28: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:628:57: info: range check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
-a-cofove.ads:756:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:7
-a-cofove.ads:792:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:7
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at bounded.ads:7
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at bounded.ads:7
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at bounded.ads:7
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at bounded.ads:7
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at bounded.ads:7
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:92, in instantiation at bounded.ads:7
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:92, in instantiation at bounded.ads:7
+a-cofove.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at bounded.ads:7
+a-cofove.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at bounded.ads:7
+a-cofove.ads:320:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at bounded.ads:7
+a-cofove.ads:320:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at bounded.ads:7
+a-cofove.ads:343:51: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:385:73: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:418:51: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:453:59: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:499:59: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:523:51: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:564:59: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:629:28: info: overflow check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:629:57: info: range check proved (CVC4: 2 VC), in instantiation at bounded.ads:7
+a-cofove.ads:757:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:7
+a-cofove.ads:793:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:7
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at bounded.ads:7
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at bounded.ads:7
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at bounded.ads:7
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at bounded.ads:7
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at bounded.ads:7
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at bounded.ads:7
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at bounded.ads:7
 bounded.adb:6:07: info: initialization of "V" proved
 bounded.adb:6:19: info: range check proved (CVC4: 2 VC)
 bounded.adb:8:07: info: precondition proved (CVC4: 1 VC)

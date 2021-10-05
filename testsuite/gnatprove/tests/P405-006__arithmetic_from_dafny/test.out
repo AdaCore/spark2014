@@ -11,7 +11,7 @@ div_lemmas.adb:37:16: info: division check proved (CVC4: 1 VC)
 div_lemmas.adb:40:42: info: initialization of "Res" proved
 div_lemmas.adb:42:14: info: postcondition proved (CVC4: 1 VC)
 div_lemmas.adb:45:16: info: division check proved (CVC4: 1 VC)
-div_lemmas.adb:45:16: medium: float overflow check might fail (e.g. when X = 1.0001220E+0 and Y = 6.7172643E-40) [reason for check: result of floating-point division must be bounded]
+div_lemmas.adb:45:16: medium: float overflow check might fail (e.g. when X = 1.8484906E+0 and Y = 3.2000822E-39) [reason for check: result of floating-point division must be bounded]
 div_lemmas.adb:48:04: info: initialization of "X" proved
 div_lemmas.adb:48:07: info: initialization of "Y" proved
 div_lemmas.adb:53:04: info: precondition proved (CVC4: 1 VC)
@@ -48,7 +48,7 @@ mod_lemmas.adb:59:17: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:60:20: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:63:65: info: initialization of "Res1" proved
 mod_lemmas.adb:63:71: info: initialization of "Res2" proved
-mod_lemmas.adb:64:32: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when M = 3 and Res1 = 0 and Res2 = 2)
+mod_lemmas.adb:64:32: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when Res1 = 0 and Res2 = 2)
 mod_lemmas.adb:64:61: info: overflow check proved (CVC4: 2 VC)
 mod_lemmas.adb:67:18: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:67:30: info: division check proved (CVC4: 1 VC)

@@ -8242,6 +8242,10 @@ package body Gnat2Why.Expr is
                   Expr     => Right,
                   To       => R_Type);
 
+               Add_Division_Check_Information
+                 (Ada_Node,
+                  Divisor => Get_Ada_Node (+Right));
+
                T := New_Operator_Call
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
@@ -8276,6 +8280,10 @@ package body Gnat2Why.Expr is
                         elsif Op = N_Op_Rem then
                           M_Int_Div.Rem_Id
                         else M_Int_Div.Mod_Id);
+
+               Add_Division_Check_Information
+                 (Ada_Node,
+                  Divisor => Get_Ada_Node (+Right));
 
                T := New_Operator_Call
                  (Ada_Node => Ada_Node,
@@ -8371,6 +8379,10 @@ package body Gnat2Why.Expr is
                              Reason   => VC_Division_Check,
                              Kind     => EW_Assert);
                      begin
+                        Add_Division_Check_Information
+                          (Ada_Node,
+                           Divisor => Get_Ada_Node (+Right));
+
                         Prepend (Ass, T);
                      end;
                   end if;
@@ -13480,6 +13492,10 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
             begin
+               Add_Division_Check_Information
+                 (Expr,
+                  Divisor => Next (First (Expressions (Expr))));
+
                --  The front end does not insert a Do_Division_Check flag on
                --  remainder attribute so we systematically do the check.
                T := New_Operator_Call
@@ -14524,7 +14540,11 @@ package body Gnat2Why.Expr is
                              Domain   => Subdomain,
                              Name     =>
                                E_Symb (Root, WNE_Dispatch_Eq),
-                             Args     => Args,
+                             Args     => New_Tag_Access
+                               (Domain => Subdomain,
+                                Name   => Args (1),
+                                Ty     => Root)
+                             & Args,
                              Typ      => EW_Bool_Type),
                         Domain => Subdomain);
 
@@ -16745,6 +16765,10 @@ package body Gnat2Why.Expr is
                              Reason   => VC_Division_Check,
                              Kind     => EW_Assert);
                      begin
+                        Add_Division_Check_Information
+                          (Expr,
+                           Divisor => Left);
+
                         Prepend (Check, E);
                      end;
                   end if;
@@ -18217,12 +18241,39 @@ package body Gnat2Why.Expr is
       --  which mandate checks in parameters and possibly also a store for
       --  volatile functions. This can only occur in the program domain.
 
-      if Context.Is_Empty then
-         return T;
-      else
+      if not Context.Is_Empty then
          pragma Assert (Domain = EW_Prog);
-         return +Insert_Ref_Context (Expr, +T, Context, Store);
+         T := +Insert_Ref_Context (Expr, +T, Context, Store);
       end if;
+
+      --  If Subp has a controlling result, its result might not have
+      --  the correct tag if Subp was inherited. Update the tag
+      --  explicitly.
+
+      if Ekind (Subp) = E_Function
+        and then Has_Controlling_Result (Subp)
+        and then Base_Retysp (Etype (Subp)) /= Base_Retysp (Etype (Expr))
+      then
+         pragma Assert
+           (Is_Derived_Type_With_Null_Ext (Base_Type (Etype (Expr))));
+         T := New_Tag_Update
+           (Ada_Node  => Expr,
+            Domain    => Domain,
+            Name      => T,
+            Ty        => Etype (Expr));
+
+         --  If we are in the program domain, we might need to
+         --  introduce a predicate check or a discriminant check.
+
+         if Domain = EW_Prog then
+            T := Insert_Checked_Conversion
+              (Ada_Node => Expr,
+               Domain   => EW_Prog,
+               Expr     => T,
+               To       => Type_Of_Node (Etype (Expr)));
+         end if;
+      end if;
+      return T;
    end Transform_Function_Call;
 
    --------------------------
