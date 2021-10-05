@@ -161,8 +161,6 @@ package body Why.Gen.Pointers is
          Axiom_Name : constant String :=
            To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
 
-         True_Term : constant W_Term_Id := New_Literal (Value => EW_True);
-
          Assign_Pointer : constant W_Identifier_Id :=
            To_Local (E_Symb (E, WNE_Assign_Null_Check));
 
@@ -1312,11 +1310,11 @@ package body Why.Gen.Pointers is
    ---------------------------------
 
    function New_Pointer_Is_Moved_Update
-     (E      : Entity_Id;
-      Name   : W_Expr_Id;
-      Value  : W_Expr_Id;
-      Domain : EW_Domain;
-      Local  : Boolean := False) return W_Expr_Id
+     (E     : Entity_Id;
+      Name  : W_Prog_Id;
+      Value : W_Prog_Id;
+      Local : Boolean := False)
+      return W_Prog_Id
    is
       Field : constant W_Identifier_Id :=
         (if Local
@@ -1324,14 +1322,13 @@ package body Why.Gen.Pointers is
          else E_Symb (E, WNE_Is_Moved_Pointer));
    begin
       return New_Record_Update
-        (Ada_Node => Empty,
-         Name     => Name,
-         Updates  =>
+        (Name    => Name,
+         Updates =>
            (1 => New_Field_Association
-                (Domain => Domain,
+                (Domain => EW_Prog,
                  Field  => Field,
-                 Value  => Value)),
-         Typ      => Get_Type (+Name));
+                 Value  => +Value)),
+         Typ     => Get_Type (+Name));
    end New_Pointer_Is_Moved_Update;
 
    ------------------------------

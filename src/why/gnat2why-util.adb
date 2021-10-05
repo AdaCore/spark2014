@@ -660,7 +660,7 @@ package body Gnat2Why.Util is
          Local_Params.Gen_Marker := GM_Toplevel;
       end if;
       if Nodes.Is_Empty then
-         return New_Literal (Value => EW_True, Domain => Domain);
+         return Bool_True (Domain);
       end if;
 
       Cur_Spec := Why_Empty;
@@ -686,16 +686,14 @@ package body Gnat2Why.Util is
    end Compute_Spec;
 
    function Compute_Spec
-     (Params    : Transformation_Params;
-      E         : Callable_Kind_Id;
-      Kind      : Pragma_Id;
-      Domain    : EW_Domain;
-      Classwide : Boolean := False;
-      Inherited : Boolean := False)
+     (Params : Transformation_Params;
+      E      : Callable_Kind_Id;
+      Kind   : Pragma_Id;
+      Domain : EW_Domain)
       return W_Expr_Id
    is
       Nodes : constant Node_Lists.List :=
-        Find_Contracts (E, Kind, Classwide, Inherited);
+        Find_Contracts (E, Kind, Classwide => False, Inherited => False);
    begin
       return Compute_Spec (Params, Nodes, Domain);
    end Compute_Spec;
@@ -851,9 +849,8 @@ package body Gnat2Why.Util is
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Callable_Kind_Id;
-      Kind   : Pragma_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
+      Kind   : Pragma_Id)
+      return W_Pred_Id
    is
       Conjuncts_List : Node_Lists.List :=
         Find_Contracts (E, Kind, Classwide => True);
@@ -862,16 +859,7 @@ package body Gnat2Why.Util is
          Conjuncts_List := Find_Contracts (E, Kind, Inherited => True);
       end if;
 
-      return +Compute_Spec (Params, Conjuncts_List, Domain);
-   end Get_LSP_Contract;
-
-   function Get_LSP_Contract
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id;
-      Kind   : Pragma_Id)
-      return W_Pred_Id is
-   begin
-      return +Get_LSP_Contract (Params, E, Kind, EW_Pred);
+      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
    end Get_LSP_Contract;
 
    -----------------------
@@ -958,27 +946,16 @@ package body Gnat2Why.Util is
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Callable_Kind_Id;
-      Kind   : Pragma_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
+      Kind   : Pragma_Id)
+      return W_Pred_Id
    is
       Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
    begin
       if Conjuncts_List.Is_Empty then
-         return Get_LSP_Contract (Params, E, Kind, Domain);
+         return Get_LSP_Contract (Params, E, Kind);
       end if;
 
-      return +Compute_Spec (Params, Conjuncts_List, Domain);
-   end Get_Static_Call_Contract;
-
-   function Get_Static_Call_Contract
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id;
-      Kind   : Pragma_Id)
-      return W_Pred_Id
-   is
-   begin
-      return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
+      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
    end Get_Static_Call_Contract;
 
    --------------------

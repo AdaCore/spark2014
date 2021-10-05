@@ -306,7 +306,7 @@ package body Why.Gen.Hardcoded is
                if Domain = EW_Prog then
                   T := +Sequence (Ada_Node => Ada_Node,
                                   Left  => New_Ignore (Prog => +Args (1)),
-                                  Right => New_Literal (Value => EW_True));
+                                  Right => True_Prog);
                else
                   T := Why.Conversions."+"(New_Literal (Value  => EW_True,
                                                         Domain => Domain));
@@ -597,10 +597,9 @@ package body Why.Gen.Hardcoded is
                if Domain = EW_Prog then
                   T := +Sequence (Ada_Node => Ada_Node,
                                   Left  => New_Ignore (Prog => +Args (1)),
-                                  Right => New_Literal (Value => EW_True));
+                                  Right => True_Prog);
                else
-                  T := Why.Conversions."+"(New_Literal (Value  => EW_True,
-                                                        Domain => Domain));
+                  T := Bool_True (Domain);
                end if;
 
             --  Imprecise translation of From_String. This is a function taking

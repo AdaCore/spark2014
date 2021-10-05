@@ -116,8 +116,8 @@ package body Why.Gen.Init is
         (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
          Ignore_Private_State => False);
 
-      P    : W_Expr_Id;
-      Tmp  : constant W_Expr_Id := New_Temp_For_Expr (+Name);
+      P   : W_Expr_Id;
+      Tmp : constant W_Expr_Id := New_Temp_For_Expr (+Name);
 
    begin
       --  An object is necessarily initialized if it does not have a wrapper
@@ -130,7 +130,7 @@ package body Why.Gen.Init is
                   or else Exclude_Always_Relaxed
                   or else not Contains_Relaxed_Init_Parts (E))
       then
-         return New_Literal (Value => EW_True, Domain => Domain);
+         return Bool_True (Domain);
       else
 
          --  Initialization of top level type

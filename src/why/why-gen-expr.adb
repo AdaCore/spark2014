@@ -2768,29 +2768,6 @@ package body Why.Gen.Expr is
       end if;
    end New_And_Expr;
 
-   function New_And_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
-   begin
-      if Conjuncts'Length = 0 then
-         return False_Pred;
-
-      elsif Conjuncts'Length = 1 then
-         return Conjuncts (Conjuncts'First);
-
-      else
-         declare
-            More : constant W_Expr_Array :=
-              (for J in Conjuncts'First + 2 .. Conjuncts'Last =>
-                 +Conjuncts (J));
-         begin
-            return New_Connection
-              (Op         => EW_And,
-               Left       => Conjuncts (Conjuncts'First),
-               Right      => Conjuncts (Conjuncts'First + 1),
-               More_Right => More);
-         end;
-      end if;
-   end New_And_Pred;
-
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
@@ -2828,6 +2805,33 @@ package body Why.Gen.Expr is
          end;
       end if;
    end New_And_Expr;
+
+   ------------------
+   -- New_And_Pred --
+   ------------------
+
+   function New_And_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
+   begin
+      if Conjuncts'Length = 0 then
+         return False_Pred;
+
+      elsif Conjuncts'Length = 1 then
+         return Conjuncts (Conjuncts'First);
+
+      else
+         declare
+            More : constant W_Expr_Array :=
+              (for J in Conjuncts'First + 2 .. Conjuncts'Last =>
+                 +Conjuncts (J));
+         begin
+            return New_Connection
+              (Op         => EW_And,
+               Left       => Conjuncts (Conjuncts'First),
+               Right      => Conjuncts (Conjuncts'First + 1),
+               More_Right => More);
+         end;
+      end if;
+   end New_And_Pred;
 
    -----------------------
    -- New_And_Then_Expr --
@@ -3430,47 +3434,6 @@ package body Why.Gen.Expr is
    end New_Or_Expr;
 
    function New_Or_Expr
-     (Conjuncts : W_Expr_Array;
-      Domain    : EW_Domain)
-      return W_Expr_Id
-   is
-   begin
-      if Conjuncts'Length = 0 then
-         return +True_Pred;
-
-      elsif Conjuncts'Length = 1 then
-         return Conjuncts (Conjuncts'First);
-
-      elsif Domain = EW_Pred then
-         return New_Connection
-           (Domain     => Domain,
-            Op         => EW_Or,
-            Left       => +Conjuncts (Conjuncts'First),
-            Right      => +Conjuncts (Conjuncts'First + 1),
-            More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
-
-      else
-         declare
-            Result : W_Expr_Id :=
-              New_Call (Domain => Domain,
-                        Name   => M_Boolean.Orb,
-                        Args   => (1 => +Conjuncts (Conjuncts'First),
-                                   2 => +Conjuncts (Conjuncts'First + 1)));
-         begin
-            for K in Conjuncts'First + 2 .. Conjuncts'Last loop
-               Result := New_Call (Domain => Domain,
-                                   Name   => M_Boolean.Orb,
-                                   Args   => (1 => Result,
-                                              2 => +Conjuncts (K)),
-                                   Typ    => EW_Bool_Type);
-            end loop;
-
-            return Result;
-         end;
-      end if;
-   end New_Or_Expr;
-
-   function New_Or_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
        Base        : W_Type_Id)
@@ -3539,6 +3502,33 @@ package body Why.Gen.Expr is
          end if;
       end if;
    end New_Or_Else_Expr;
+
+   -----------------
+   -- New_Or_Pred --
+   -----------------
+
+   function New_Or_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
+   begin
+      if Conjuncts'Length = 0 then
+         return True_Pred;
+
+      elsif Conjuncts'Length = 1 then
+         return Conjuncts (Conjuncts'First);
+
+      else
+         declare
+            More : constant W_Expr_Array :=
+              (for J in Conjuncts'First + 2 .. Conjuncts'Last =>
+                 +Conjuncts (J));
+         begin
+            return New_Connection
+              (Op         => EW_Or,
+               Left       => Conjuncts (Conjuncts'First),
+               Right      => Conjuncts (Conjuncts'First + 1),
+               More_Right => More);
+         end;
+      end if;
+   end New_Or_Pred;
 
    -----------------------
    -- New_Sub_VC_Marker --

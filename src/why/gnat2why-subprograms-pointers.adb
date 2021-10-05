@@ -925,7 +925,7 @@ package body Gnat2Why.Subprograms.Pointers is
            (1 => New_Field_Association
                 (Domain => Domain,
                  Field  => M_Subprogram_Access.Rec_Is_Null,
-                 Value  => New_Literal (Value => EW_False, Domain => Domain)),
+                 Value  => Bool_False (Domain)),
             2 => New_Field_Association
               (Domain => Domain,
                Field  => M_Subprogram_Access.Rec_Value,

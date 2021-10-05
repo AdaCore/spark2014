@@ -476,6 +476,7 @@ package Why.Gen.Arrays is
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
    --  @param Init_Wrapper True to convert partially initialized expressions.
+   --  ??? Init_Wrapper is always False, is it expected?
 
    function Get_Array_Theory
      (E            : Entity_Id;
@@ -507,6 +508,7 @@ package Why.Gen.Arrays is
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
    --  @param Init_Wrapper True to convert partially initialized expressions.
+   --  ??? Init_Wrapper is always False, is it expected?
 
    function Get_Array_Of_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
      with Pre => Might_Contain_Relaxed_Init (E);
