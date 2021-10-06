@@ -946,6 +946,9 @@ package body SPARK_RAC is
         (Ty => Ty_Enum,
          Enum_Entity =>
            (if Nkind (Lit) = N_Character_Literal then Lit else Entity (Lit)));
+   exception
+      when Constraint_Error =>
+         RAC_Stuck ("Enum_Value: value outside of range");
    end Enum_Value;
 
    ------------------
@@ -2344,12 +2347,13 @@ package body SPARK_RAC is
                elsif Is_Modular_Integer_Type (Etype (N)) then
                   declare
                      L : constant Ulargest :=
-                           Ulargest'Value (To_String (Value_Integer (Left)));
+                       Ulargest'Value (To_String (Value_Integer (Left)));
                      R : constant Ulargest :=
-                           Ulargest'Value (To_String (Value_Integer (Right)));
-                     function From_Ulargest
-                       (U : Ulargest) return Big_Integer is
-                       (From_String (Ulargest'Image (U)));
+                       Ulargest'Value (To_String (Value_Integer (Right)));
+
+                     function From_Ulargest (U : Ulargest) return Big_Integer
+                     is (From_String (Ulargest'Image (U)));
+
                   begin
                      case N_Op_Boolean (Nkind (N)) is
                         when N_Op_Or  =>
@@ -2467,12 +2471,19 @@ package body SPARK_RAC is
          case N_Unary_Op (Nkind (N)) is
             when N_Op_Abs   =>
                return Integer_Value (abs Right.Integer_Content, N);
+
             when N_Op_Minus =>
                return Integer_Value (-Right.Integer_Content, N);
+
             when N_Op_Plus  =>
                return Integer_Value (+Right.Integer_Content, N);
+
             when N_Op_Not   =>
-               return Boolean_Value (not Value_Boolean (Right));
+               if Is_Boolean_Type (Etype (N)) then
+                  return Boolean_Value (not Value_Boolean (Right));
+               else
+                  RAC_Unsupported ("RAC_Unary_Op N_Op_Not", N);
+               end if;
          end case;
       end RAC_Unary_Op;
 
