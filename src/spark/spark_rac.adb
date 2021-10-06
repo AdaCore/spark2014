@@ -539,6 +539,14 @@ package body SPARK_RAC is
       return Scopes.Map;
    --  Create a scope of parameters for a call from the associations Args
 
+   procedure Copy_Out_Parameters
+     (E    : Entity_Id;
+      Args : List_Id;
+      Ctx  : in out Context;
+      Sc   : in out Scopes.Map);
+   --  Copy scalar values of out and in_out parameters from the parameter scope
+   --  Sc to the environment.
+
    ---------------------------
    -- Debugging auxiliaries --
    ---------------------------
@@ -795,6 +803,32 @@ package body SPARK_RAC is
             String_Value (V.String_Content),
          when Ty_Enum    =>
             Enum_Value (V.Enum_Entity));
+
+   -------------------------
+   -- Copy_Out_Parameters --
+   -------------------------
+   procedure Copy_Out_Parameters
+     (E    : Entity_Id;
+      Args : List_Id;
+      Ctx  : in out Context;
+      Sc   : in out Scopes.Map)
+   is
+      Par : Entity_Id  := First_Formal (E);
+      Arg : Node_Id := First (Args);
+   begin
+      while Present (Par) loop
+         pragma Assert (Present (Arg));
+         if
+           Is_Scalar_Type (Etype (Par)) and then
+           Ekind (Par) in E_In_Out_Parameter | E_Out_Parameter
+         then
+            RAC_Expr_LHS (Arg, Ctx).all := Sc (Par).Val.all;
+         end if;
+         Next_Formal (Par);
+         Next (Arg);
+      end loop;
+      pragma Assert (No (Arg));
+   end Copy_Out_Parameters;
 
    -------------------
    -- Default_Value --
@@ -1483,14 +1517,28 @@ package body SPARK_RAC is
             RAC_Unsupported ("Param_Scope association", Arg);
          end if;
 
-         case Formal_Kind (Ekind (Par)) is
+         --  if Is_Scalar_Type (Etype (Par)) then
+         --    -> pass by value; copy out parameters after return
+         --       (see Copy_Out_Parameters)
+         --  elsif Ekind (Par) in E_In_Out_Parameter | E_Out_Parameter then
+         --    -> pass by reference
+         --  else -- Ekind (Par) = E_In_Parameter
+         --    -> pass by copy
+         --  end if
+
+         --  ??? Due to SPARK anti-aliasing rules the copying of scalar values
+         --      could be removed
+
+         if Is_Scalar_Type (Etype (Arg)) then
+            Val := new Value'(Copy (RAC_Expr (Arg, Ctx)));
+         else
+            case Formal_Kind (Ekind (Par)) is
             when E_In_Parameter =>
                Val := new Value'(Copy (RAC_Expr (Arg, Ctx)));
             when E_In_Out_Parameter | E_Out_Parameter =>
-               --  pass scalars by value and copy-back out parameters is
-               --  unnecessary due to SPARK anti-aliasing rules
                Val := RAC_Expr_LHS (Arg, Ctx);
-         end case;
+            end case;
+         end if;
 
          Res.Insert (Par, (Val => Val, others => <>));
          Next (Arg);
@@ -1697,6 +1745,9 @@ package body SPARK_RAC is
 
       Sc := Ctx.Env (Ctx.Env.First);
       Ctx.Env.Delete_First;
+      if not Is_Main then
+         Copy_Out_Parameters (E, Args, Ctx, Sc);
+      end if;
 
       RAC_Trace ("call result of " & Get_Name_String (Chars (E)) &
                    ": " & To_String (Res));
