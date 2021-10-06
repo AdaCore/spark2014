@@ -331,7 +331,7 @@ feasible execution of the program:
 
    .. literalinclude:: /examples/ug__counterex_unprovable/test.out
       :language: none
-      :lines: 12-22
+      :lines: 12-21
 
 #. When some property cannot be proved due to prover shortcomings (see details
    in section on :ref:`Investigating Prover Shortcomings`), the counterexample

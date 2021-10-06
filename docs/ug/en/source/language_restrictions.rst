@@ -291,7 +291,7 @@ argument as ``X`` is already accessed as a global variable by ``Proc``.
 
 .. literalinclude:: /examples/ug__ownership_transfer_at_call/test.out
    :language: none
-   :lines: 56-58
+   :lines: 52-54
 
 It is also possible to transfer the ownership of an object temporarily, for
 the duration of the lifetime of a local object. This can be achieved by
@@ -400,7 +400,7 @@ messages:
 
 .. literalinclude:: /examples/ug__check_aliasing/test.out
    :language: none
-   :lines: 10-12,18-20
+   :lines: 6-8,18-20
 
 Note that |SPARK| currently does not detect aliasing between objects that
 arises due to the use of Address clauses or aspects.
