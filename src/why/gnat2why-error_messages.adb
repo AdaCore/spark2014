@@ -606,6 +606,10 @@ package body Gnat2Why.Error_Messages is
       if SPARK_RAC.Do_RAC_Info then
          Ada.Text_IO.Put_Line ("Cannot find " & To_String (Kind, N));
          for C in VC_Table.Iterate loop
+            pragma Annotate
+              (CodePeer, False_Positive,
+               "loop does not complete normally",
+               "for loop always terminates");
             Ada.Text_IO.Put_Line
               (" - " & To_String (VC_Table (C).Kind, VC_Table (C).Node));
          end loop;

@@ -2190,7 +2190,7 @@ package body SPARK_RAC is
                   Ex  : constant Node_Id := First (Expressions (N));
                   E   : constant Entity_Id := RAC_Expr (Ex, Ctx).Enum_Entity;
                   Ty  : constant Entity_Id := Etype (N);
-                  Res : Entity_Id; -- the resulting enum literal
+                  Res : Entity_Id := Empty; -- the resulting enum literal
                begin
                   case Attribute_Name (N) is
                      when Snames.Name_Succ =>
@@ -2927,6 +2927,10 @@ package body SPARK_RAC is
                if not Present (Scheme) then
                   begin
                      loop
+                        pragma Annotate
+                          (CodePeer, Intentional,
+                           "loop does not complete normally",
+                           "RAC signals loop exit through Exn_RAC_Exit");
                         RAC_List (Statements (N), Ctx);
                      end loop;
                   exception
