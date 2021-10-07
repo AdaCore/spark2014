@@ -2369,6 +2369,7 @@ package body Configuration is
    begin
       raise GNATprove_Success with "";
    end Succeed;
+
    -----------------------
    -- Compute_Why3_Args --
    -----------------------
@@ -2565,7 +2566,11 @@ package body Configuration is
 
       if FS.Check_Counterexamples and then not FS.Provers.Is_Empty then
          Args.Append ("--rac-prover");
-         Args.Append (FS.Provers (String_Lists.First (FS.Provers)));
+         if SPARK_Install.CVC4_Present then
+            Args.Append ("cvc4");
+         else
+            Args.Append ("altergo");
+         end if;
       end if;
 
       if not (FS.Counterexamples and then FS.Check_Counterexamples) then
