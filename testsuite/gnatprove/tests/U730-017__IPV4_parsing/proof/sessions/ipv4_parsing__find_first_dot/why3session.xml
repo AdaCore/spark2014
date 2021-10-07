@@ -8,7 +8,7 @@
 <path name="ipv4_parsing__find_first_dot.gnat-json"/>
 <theory name="Ipv4_parsing__find_first_dot__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_vc_conj" proved="true" >
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="9030"/></proof>
   </goal>
@@ -26,36 +26,36 @@
   <proof prover="0"><result status="valid" steps="1381"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="11447"/></proof>
+  <proof prover="0"><result status="valid" steps="11465"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="11447"/></proof>
+  <proof prover="0"><result status="valid" steps="11465"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="11671"/></proof>
+  <proof prover="0"><result status="valid" steps="11687"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="12414"/></proof>
+  <proof prover="0"><result status="valid" steps="12416"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="12267"/></proof>
+  <proof prover="0"><result status="valid" steps="12269"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="13238"/></proof>
+  <proof prover="0"><result status="valid" steps="13260"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="valid" steps="13196"/></proof>
+  <proof prover="0"><result status="valid" steps="13218"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="13824"/></proof>
+  <proof prover="0"><result status="valid" steps="13844"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="0"><result status="valid" steps="12863"/></proof>
@@ -70,22 +70,22 @@
   <proof prover="0"><result status="valid" steps="13315"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="0"><result status="valid" steps="2157"/></proof>
+  <proof prover="0"><result status="valid" steps="2151"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
-  <proof prover="0"><result status="valid" steps="2157"/></proof>
+  <proof prover="0"><result status="valid" steps="2151"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="17037"/></proof>
+  <proof prover="0"><result status="valid" steps="18967"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
-  <proof prover="0"><result status="valid" steps="16789"/></proof>
+  <proof prover="0"><result status="valid" steps="18719"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0"><result status="valid" steps="17283"/></proof>
+  <proof prover="0"><result status="valid" steps="19263"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
-  <proof prover="0"><result status="valid" steps="17232"/></proof>
+  <proof prover="0"><result status="valid" steps="19212"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
   <transf name="trivial_true" proved="true" >
