@@ -8,7 +8,7 @@
 <path name="auditlog__addelementtofile.gnat-json"/>
 <theory name="Auditlog__addelementtofile__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -29,7 +29,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="0"><result status="unknown" steps="14"/></proof>
+  <proof prover="0"><result status="unknown" steps="18"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -92,7 +92,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.21">
-  <proof prover="0"><result status="unknown" steps="14"/></proof>
+  <proof prover="0"><result status="unknown" steps="16"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -103,7 +103,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.24">
-  <proof prover="0"><result status="unknown" steps="14"/></proof>
+  <proof prover="0"><result status="unknown" steps="18"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
   <transf name="trivial_true" proved="true" >

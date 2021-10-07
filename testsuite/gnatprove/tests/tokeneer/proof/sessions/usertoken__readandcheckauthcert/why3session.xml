@@ -8,7 +8,7 @@
 <path name="usertoken__readandcheckauthcert.gnat-json"/>
 <theory name="Usertoken__readandcheckauthcert__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -22,7 +22,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="unknown" steps="512"/></proof>
+  <proof prover="0"><result status="unknown" steps="395"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -41,7 +41,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.8">
-  <proof prover="0"><result status="unknown" steps="512"/></proof>
+  <proof prover="0"><result status="unknown" steps="395"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <transf name="trivial_true" proved="true" >

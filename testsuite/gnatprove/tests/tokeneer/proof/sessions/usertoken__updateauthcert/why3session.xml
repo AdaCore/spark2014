@@ -8,7 +8,7 @@
 <path name="usertoken__updateauthcert.gnat-json"/>
 <theory name="Usertoken__updateauthcert__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>

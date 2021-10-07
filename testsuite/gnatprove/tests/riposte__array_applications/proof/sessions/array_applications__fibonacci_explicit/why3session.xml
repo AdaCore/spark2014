@@ -111,7 +111,7 @@
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="610952"/></proof>
   <proof prover="2"><result status="unknown" steps="22014"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="22014"/></proof>
   <proof prover="4"><result status="unknown" steps="364"/></proof>
   </goal>
   <goal name="def&#39;vc.31" proved="true">
@@ -201,7 +201,7 @@
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="611039"/></proof>
   <proof prover="2"><result status="unknown" steps="22013"/></proof>
-  <proof prover="3"><result status="timeout" steps="22015"/></proof>
+  <proof prover="3"><result status="unknown" steps="22015"/></proof>
   <proof prover="4"><result status="unknown" steps="559"/></proof>
   </goal>
   <goal name="def&#39;vc.56" proved="true">

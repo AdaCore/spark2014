@@ -8,13 +8,13 @@
 <path name="tokenreader__poll__checkcardstate.gnat-json"/>
 <theory name="Tokenreader__poll__checkcardstate__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="unknown" steps="24"/></proof>
+  <proof prover="0"><result status="unknown" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -25,7 +25,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="unknown" steps="48"/></proof>
+  <proof prover="0"><result status="unknown" steps="33"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -36,14 +36,14 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.7">
-  <proof prover="0"><result status="unknown" steps="54"/></proof>
+  <proof prover="0"><result status="unknown" steps="40"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.9">
-  <proof prover="0"><result status="unknown" steps="55"/></proof>
+  <proof prover="0"><result status="unknown" steps="40"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -54,7 +54,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="0"><result status="unknown" steps="55"/></proof>
+  <proof prover="0"><result status="unknown" steps="41"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -65,7 +65,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.15">
-  <proof prover="0"><result status="unknown" steps="33"/></proof>
+  <proof prover="0"><result status="unknown" steps="15"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
   <transf name="trivial_true" proved="true" >

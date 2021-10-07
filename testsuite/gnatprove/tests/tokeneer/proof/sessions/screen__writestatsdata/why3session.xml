@@ -8,9 +8,9 @@
 <path name="screen__writestatsdata.gnat-json"/>
 <theory name="Screen__writestatsdata__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="unknown" steps="61"/></proof>
+  <proof prover="0"><result status="unknown" steps="195"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -57,7 +57,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="0"><result status="unknown" steps="150"/></proof>
+  <proof prover="0"><result status="unknown" steps="130"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <transf name="trivial_true" proved="true" >

@@ -6,12 +6,13 @@
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="2000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="2000"/>
 <prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="2000"/>
+<prover id="4" name="colibri" version="2137" timelimit="20" steplimit="0" memlimit="2000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="test_higher_order__my_fold_left__acc__prove_last.gnat-json"/>
 <theory name="Test_higher_order__my_fold_left__acc__prove_last__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
@@ -47,9 +48,10 @@
   </goal>
   <goal name="def&#39;vc.10">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="21229"/></proof>
+  <proof prover="1"><result status="unknown" steps="23191"/></proof>
   <proof prover="2"><result status="unknown" steps="99"/></proof>
-  <proof prover="3"><result status="unknown" steps="147"/></proof>
+  <proof prover="3"><result status="unknown" steps="117"/></proof>
+  <proof prover="4"><result status="unknown" steps="756"/></proof>
   </goal>
  </transf>
  </goal>

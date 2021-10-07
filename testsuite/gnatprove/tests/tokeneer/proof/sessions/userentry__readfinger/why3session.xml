@@ -8,7 +8,7 @@
 <path name="userentry__readfinger.gnat-json"/>
 <theory name="Userentry__readfinger__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -25,7 +25,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="unknown" steps="79"/></proof>
+  <proof prover="0"><result status="unknown" steps="63"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -36,7 +36,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.7">
-  <proof prover="0"><result status="unknown" steps="79"/></proof>
+  <proof prover="0"><result status="unknown" steps="63"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -51,7 +51,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.11">
-  <proof prover="0"><result status="unknown" steps="364"/></proof>
+  <proof prover="0"><result status="unknown" steps="344"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -62,7 +62,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="234"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="217"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -91,14 +91,14 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="204"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="202"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.24">
-  <proof prover="0"><result status="unknown" steps="379"/></proof>
+  <proof prover="0"><result status="unknown" steps="356"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
   <transf name="trivial_true" proved="true" >
