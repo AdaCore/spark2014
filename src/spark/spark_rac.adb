@@ -2927,11 +2927,11 @@ package body SPARK_RAC is
                if not Present (Scheme) then
                   begin
                      loop
+                        RAC_List (Statements (N), Ctx);
                         pragma Annotate
                           (CodePeer, Intentional,
                            "loop does not complete normally",
                            "RAC signals loop exit through Exn_RAC_Exit");
-                        RAC_List (Statements (N), Ctx);
                      end loop;
                   exception
                      when Exn_RAC_Exit =>
