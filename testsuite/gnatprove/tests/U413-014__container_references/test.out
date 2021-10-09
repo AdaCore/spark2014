@@ -105,10 +105,10 @@ a-cofove.ads:629:28: info: overflow check proved (CVC4: 2 VC), in instantiation 
 a-cofove.ads:629:57: info: range check proved (CVC4: 2 VC), in instantiation at test_vectors.adb:5
 a-cofove.ads:757:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
 a-cofove.ads:793:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_vectors.adb:5
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_hashed_sets.adb:6
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_ordered_sets.adb:5
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_hashed_sets.adb:6
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_ordered_sets.adb:5
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_hashed_sets.adb:6
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:101, in instantiation at test_ordered_sets.adb:5
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_hashed_sets.adb:6
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:101, in instantiation at test_ordered_sets.adb:5
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at test_lists.adb:5
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at test_hashed_maps.adb:6
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:108, in instantiation at test_hashed_sets.adb:6
@@ -342,23 +342,23 @@ test_ordered_maps.adb:51:56: info: null exclusion check proved (CVC4: 1 VC)
 test_ordered_maps.adb:53:25: info: assertion proved (CVC4: 1 VC)
 test_ordered_maps.adb:53:27: info: pointer dereference check proved (CVC4: 1 VC)
 test_ordered_maps.adb:54:12: info: pointer dereference check proved (CVC4: 1 VC)
-test_ordered_maps.adb:56:22: info: assertion proved (Z3: 1 VC)
-test_ordered_maps.adb:57:22: info: assertion proved (Z3: 1 VC)
-test_ordered_maps.adb:58:22: info: assertion proved (Z3: 1 VC)
-test_ordered_maps.adb:59:22: info: assertion proved (Z3: 1 VC)
-test_ordered_maps.adb:60:22: info: assertion proved (Z3: 1 VC)
-test_ordered_maps.adb:61:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:56:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:57:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:58:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:59:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:60:22: info: assertion proved (CVC4: 1 VC)
+test_ordered_maps.adb:61:22: info: assertion proved (CVC4: 1 VC)
 test_ordered_maps.adb:61:22: info: precondition proved (CVC4: 1 VC)
-test_ordered_maps.adb:62:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:62:22: info: assertion proved (CVC4: 1 VC)
 test_ordered_maps.adb:62:22: info: precondition proved (CVC4: 1 VC)
-test_ordered_maps.adb:63:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:63:22: info: assertion proved (CVC4: 1 VC)
 test_ordered_maps.adb:63:22: info: precondition proved (CVC4: 1 VC)
-test_ordered_maps.adb:64:22: info: assertion proved (Z3: 1 VC)
+test_ordered_maps.adb:64:22: info: assertion proved (CVC4: 1 VC)
 test_ordered_maps.adb:64:22: info: precondition proved (CVC4: 1 VC)
 test_ordered_maps.adb:65:22: info: assertion proved (Z3: 1 VC)
-test_ordered_maps.adb:65:22: info: precondition proved (Z3: 1 VC)
+test_ordered_maps.adb:65:22: info: precondition proved (CVC4: 1 VC)
 test_ordered_maps.adb:66:22: info: assertion proved (Z3: 1 VC)
-test_ordered_maps.adb:66:22: info: precondition proved (Z3: 1 VC)
+test_ordered_maps.adb:66:22: info: precondition proved (CVC4: 1 VC)
 test_ordered_maps.adb:69:04: info: initialization of "M" proved
 test_ordered_maps.adb:69:21: info: range check proved (CVC4: 2 VC)
 test_ordered_maps.adb:71:04: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)

@@ -255,7 +255,7 @@ basicmath_small.ads:107:45: info: initialization of "SignFlag" proved
 basicmath_small.ads:107:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:107:74: info: initialization of "OverflowFlag" proved
 basicmath_small.ads:108:66: warning: "RSP" is not modified, could be INPUT
-basicmath_small.ads:109:14: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:109:14: info: postcondition proved (Trivial: 1 VC)
 basicmath_small.ads:112:03: info: data dependencies proved
 basicmath_small.ads:112:40: low: unused global "Exit_Called"
 basicmath_small.ads:112:40: warning: "Exit_Called" is not modified, could be INPUT
