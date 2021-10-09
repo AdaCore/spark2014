@@ -26,17 +26,19 @@ def parse_options():
 
 
 test_name = sys.argv[1] if sys.argv[1] != '--rewrite' else sys.argv[2]
+test_dir = os.path.join("tests", test_name)
+if not os.path.exists(test_dir):
+    test_dir = os.path.join("internal", test_name)
 
-sys.path.insert(0, os.path.join(curdir, 'tests', test_name))
+sys.path.insert(0, os.path.join(curdir, test_dir))
 sys.path.append(os.path.join(curdir, 'lib', 'python'))
 import test  # noqa This import is required to be here because of change of python path above
 
 
 def main():
     args = parse_options()
-    dir = os.path.join("tests", test_name)
-    print("switching to", dir)
-    os.chdir(dir)
+    print("switching to", test_dir)
+    os.chdir(test_dir)
 
     if not hasattr(test, 'contains_manual_proof'):
         print("""test should define variable 'contains_manual_proof'"""
