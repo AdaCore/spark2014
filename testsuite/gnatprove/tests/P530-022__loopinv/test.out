@@ -67,7 +67,7 @@ x86.adb:693:36: info: loop invariant initialization proved (CVC4: 8 VC; Trivial:
 x86.adb:693:36: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 8 VC)
 x86.adb:703:17: info: postcondition proved (CVC4: 1 VC)
 x86.adb:714:25: info: assertion proved (CVC4: 1 VC; Trivial: 2 VC; Z3: 1 VC)
-x86.adb:722:25: info: assertion proved (CVC4: 8 VC; Trivial: 2 VC; Z3: 8 VC)
+x86.adb:722:25: info: assertion proved (CVC4: 8 VC; Trivial: 2 VC; Z3: 2 VC; altergo: 6 VC)
 x86.adb:725:10: info: precondition proved (CVC4: 32 VC; Trivial: 6 VC; altergo: 8 VC)
 x86.adb:726:10: info: precondition proved (CVC4: 4 VC)
 x86.adb:728:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
