@@ -5329,8 +5329,8 @@ package body Flow_Utility is
          F   : constant Flow_Id := Add_Component (Map_Root, Component);
          Tmp : Flow_Id_Maps.Map;
       begin
-         if Is_Record_Type (Get_Type (Component, Scope)) then
-            if Present (Input) then
+         if Present (Input) then
+            if Is_Record_Type (Get_Type (Component, Scope)) then
                Tmp := Recurse_On (Input, F);
 
                for C in Tmp.Iterate loop
@@ -5342,23 +5342,23 @@ package body Flow_Utility is
                   end;
                end loop;
             else
-               for Output of Flatten_Variable (F, Scope) loop
-                  M.Insert (Output, Flow_Id_Sets.Empty_Set);
-               end loop;
+               declare
+                  Outputs : constant Flow_Id_Sets.Set :=
+                    Flatten_Variable (F, Scope);
+
+                  Inputs  : constant Flow_Id_Sets.Set :=
+                    Get_Vars_Wrapper (Input);
+
+               begin
+                  for Output of Outputs loop
+                     M.Insert (Output, Inputs);
+                  end loop;
+               end;
             end if;
          else
-            declare
-               Outputs : constant Flow_Id_Sets.Set :=
-                 Flatten_Variable (F, Scope);
-
-               Inputs  : constant Flow_Id_Sets.Set :=
-                 Get_Vars_Wrapper (Input);
-
-            begin
-               for Output of Outputs loop
-                  M.Insert (Output, Inputs);
-               end loop;
-            end;
+            for Output of Flatten_Variable (F, Scope) loop
+               M.Insert (Output, Flow_Id_Sets.Empty_Set);
+            end loop;
          end if;
       end Merge;
 
