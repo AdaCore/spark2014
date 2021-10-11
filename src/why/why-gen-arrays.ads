@@ -437,6 +437,12 @@ package Why.Gen.Arrays is
       Is_Component_Right : Boolean) return W_Expr_Id;
    --  Return a call to the concat function in Why array theory
 
+   function New_Const_Call
+     (Domain : EW_Domain;
+      Elt    : W_Expr_Id;
+      Typ    : W_Type_Id) return W_Expr_Id;
+   --  Return a call to the const function in Why array theory
+
    function New_Singleton_Call
      (Domain : EW_Domain;
       Elt    : W_Expr_Id;

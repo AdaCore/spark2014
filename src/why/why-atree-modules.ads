@@ -349,6 +349,7 @@ package Why.Atree.Modules is
       Set     : W_Identifier_Id;
       Bool_Eq : W_Identifier_Id;
       Slide   : W_Identifier_Id;
+      Const   : W_Identifier_Id;
    end record;
 
    --  Symbols for concatenation of one-dimensional arrays. There are four

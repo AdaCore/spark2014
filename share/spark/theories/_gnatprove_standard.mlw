@@ -1043,6 +1043,17 @@ module Array__1__Concat
     forall v : component_type.
     forall i : Index.t  [get (singleton v i) i].
       get (singleton v i) i = v
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   val function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : Index.t  [get (const v) i].
+      get (const v) i = v
 end
 
 module Array__2
@@ -1088,6 +1099,18 @@ module Array__2
       [get (slide a old_first new_first old_first_2 new_first_2) i j].
       get (slide a old_first new_first old_first_2 new_first_2) i j =
         get a (I1.sub i (I1.sub new_first old_first)) (I2.sub j (I2.sub new_first_2 old_first_2))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   val function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t.
+    forall j : I2.t  [get (const v) i j].
+      get (const v) i j = v
 end
 
 module Array__3
@@ -1143,6 +1166,19 @@ module Array__3
         get a (I1.sub i (I1.sub new_first old_first))
               (I2.sub j (I2.sub new_first_2 old_first_2))
               (I3.sub k (I3.sub new_first_3 old_first_3))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   val function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t  [get (const v) i j k].
+      get (const v) i j k = v
 end
 
 module Array__4
@@ -1206,6 +1242,20 @@ module Array__4
               (I2.sub j (I2.sub new_first_2 old_first_2))
               (I3.sub k (I3.sub new_first_3 old_first_3))
               (I4.sub l (I4.sub new_first_4 old_first_4))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   val function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall l : I4.t  [get (const v) i j k l].
+      get (const v) i j k l = v
 end
 
 module BVAda

@@ -23,31 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;        use Common_Containers;
-with GNATCOLL.Symbols;         use GNATCOLL.Symbols;
-with SPARK_Atree;              use SPARK_Atree;
-with SPARK_Definition;         use SPARK_Definition;
-with SPARK_Util;               use SPARK_Util;
-with VC_Kinds;                 use VC_Kinds;
-with Why.Atree.Builders;       use Why.Atree.Builders;
-with Why.Atree.Modules;        use Why.Atree.Modules;
-with Why.Gen.Arrays;           use Why.Gen.Arrays;
-with Why.Gen.Binders;          use Why.Gen.Binders;
-with Why.Gen.Decl;             use Why.Gen.Decl;
-with Why.Gen.Expr;             use Why.Gen.Expr;
-with Why.Gen.Names;            use Why.Gen.Names;
-with Why.Gen.Progs;            use Why.Gen.Progs;
-with Why.Gen.Records;          use Why.Gen.Records;
-with Why.Gen.Terms;            use Why.Gen.Terms;
-with Why.Inter;                use Why.Inter;
-with Why.Types;                use Why.Types;
+with Common_Containers;           use Common_Containers;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
+with SPARK_Atree;                 use SPARK_Atree;
+with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Util;                  use SPARK_Util;
+with VC_Kinds;                    use VC_Kinds;
+with Why.Atree.Builders;          use Why.Atree.Builders;
+with Why.Atree.Modules;           use Why.Atree.Modules;
+with Why.Gen.Arrays;              use Why.Gen.Arrays;
+with Why.Gen.Binders;             use Why.Gen.Binders;
+with Why.Gen.Decl;                use Why.Gen.Decl;
+with Why.Gen.Expr;                use Why.Gen.Expr;
+with Why.Gen.Names;               use Why.Gen.Names;
+with Why.Gen.Progs;               use Why.Gen.Progs;
+with Why.Gen.Records;             use Why.Gen.Records;
+with Why.Gen.Terms;               use Why.Gen.Terms;
+with Why.Images;                  use Why.Images;
+with Why.Inter;                   use Why.Inter;
+with Why.Types;                   use Why.Types;
 
 package body Why.Gen.Init is
-
-   function New_Init_Attribute_Access
-     (E    : Entity_Id;
-      Name : W_Expr_Id) return W_Expr_Id;
-   --  Access the initialization flag of an expression of a wrapper type
 
    ----------------------------
    -- Compute_Is_Initialized --
@@ -170,13 +167,16 @@ package body Why.Gen.Init is
    begin
       if Is_Scalar_Type (E) then
          Declare_Simple_Wrapper_Type
-           (Th          => Th,
-            W_Nam      => To_Why_Type
+           (Th           => Th,
+            W_Nam        => To_Why_Type
               (E, Local => True, Relaxed_Init => True),
-            Init_Val   => To_Local (E_Symb (E, WNE_Init_Value)),
-            Attr_Init  => To_Local (E_Symb (E, WNE_Attr_Init)),
-            Of_Wrapper => To_Local (E_Symb (E, WNE_Of_Wrapper)),
-            To_Wrapper => To_Local (E_Symb (E, WNE_To_Wrapper)));
+            Init_Val     => To_Local (E_Symb (E, WNE_Init_Value)),
+            Attr_Init    => To_Local (E_Symb (E, WNE_Attr_Init)),
+            Of_Wrapper   => To_Local (E_Symb (E, WNE_Of_Wrapper)),
+            To_Wrapper   => To_Local (E_Symb (E, WNE_To_Wrapper)),
+            Dummy        => To_Local (E_Symb (E, WNE_Dummy)),
+            Default_Init =>
+              Default_Initialization (E) = Full_Default_Initialization);
       elsif Is_Record_Type_In_Why (E) then
          Declare_Init_Wrapper_For_Record (Th, E);
       elsif Is_Array_Type (E) then
@@ -191,12 +191,14 @@ package body Why.Gen.Init is
    ---------------------------------
 
    procedure Declare_Simple_Wrapper_Type
-     (Th         : Theory_UC;
-      W_Nam      : W_Name_Id;
-      Init_Val   : W_Identifier_Id;
-      Attr_Init  : W_Identifier_Id;
-      Of_Wrapper : W_Identifier_Id;
-      To_Wrapper : W_Identifier_Id)
+     (Th           : Theory_UC;
+      W_Nam        : W_Name_Id;
+      Init_Val     : W_Identifier_Id;
+      Attr_Init    : W_Identifier_Id;
+      Of_Wrapper   : W_Identifier_Id;
+      To_Wrapper   : W_Identifier_Id;
+      Dummy        : W_Identifier_Id;
+      Default_Init : Boolean)
    is
       W_Ty      : constant W_Type_Id := New_Named_Type (W_Nam);
       A_Ident   : constant W_Identifier_Id :=
@@ -259,6 +261,27 @@ package body Why.Gen.Init is
                         (Domain => EW_Term,
                          Field  => Attr_Init,
                          Value  => +True_Term)))));
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => Dummy,
+            Binders     => Binder_Array'(1 .. 0 => <>),
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Return_Type => W_Ty));
+      Emit
+        (Th,
+         New_Axiom
+           (Ada_Node => Empty,
+            Name     => NID (Img (Get_Symb (Get_Name (Dummy))) & "__def"),
+            Def      => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Record_Access
+                 (Field => Attr_Init,
+                  Name  => +Dummy,
+                  Typ   => EW_Bool_Type),
+               Right  => (if Default_Init then True_Term else False_Term))));
    end Declare_Simple_Wrapper_Type;
 
    ---------------------

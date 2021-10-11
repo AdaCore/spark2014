@@ -2719,6 +2719,26 @@ package body Why.Gen.Arrays is
            Typ    => Typ);
    end New_Concat_Call;
 
+   --------------------
+   -- New_Const_Call --
+   --------------------
+
+   function New_Const_Call
+     (Domain : EW_Domain;
+      Elt    : W_Expr_Id;
+      Typ    : W_Type_Id) return W_Expr_Id
+   is
+      Init_Wrapper : constant Boolean := Is_Init_Wrapper_Type (Typ);
+      E            : constant Entity_Id := Get_Ada_Node (+Typ);
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   => Get_Array_Theory (E, Init_Wrapper).Const,
+           Args   => (1 => Elt),
+           Typ    => EW_Split (E, Relaxed_Init => Init_Wrapper));
+   end New_Const_Call;
+
    ---------------------------
    --  New_Dynamic_Property --
    ---------------------------
