@@ -887,6 +887,11 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symb   => NID ("slide"),
                         Typ    => Ty);
+      M_Array.Const :=
+        New_Identifier (Module => Module,
+                        Domain => EW_Term,
+                        Symb   => NID ("const"),
+                        Typ    => Ty);
 
       return M_Array;
    end Init_Array_Module;
@@ -3062,6 +3067,14 @@ package body Why.Atree.Modules is
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Bool_Type));
+                     Insert_Symbol
+                       (E, WNE_Private_Dummy,
+                        New_Identifier
+                          (Symb   => NID ("__main_dummy"),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => New_Named_Type
+                             (Name => Get_Name (Main_Type))));
 
                      --  If the type needs a wrapper for relaxed
                      --  initialization, introduce names for the components of

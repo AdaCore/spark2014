@@ -23,33 +23,34 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;    use Common_Containers;
-with Elists;               use Elists;
+with Common_Containers;           use Common_Containers;
+with Elists;                      use Elists;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT.Source_Info;
-with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
-with Gnat2Why.Expr;        use Gnat2Why.Expr;
-with Gnat2Why.Tables;      use Gnat2Why.Tables;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Sinput;               use Sinput;
-with Snames;               use Snames;
+with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
+with Gnat2Why.Expr;               use Gnat2Why.Expr;
+with Gnat2Why.Tables;             use Gnat2Why.Tables;
+with Namet;                       use Namet;
+with Nlists;                      use Nlists;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
 with SPARK_Definition;
-with SPARK_Util;           use SPARK_Util;
-with SPARK_Util.Hardcoded; use SPARK_Util.Hardcoded;
-with Uintp;                use Uintp;
-with VC_Kinds;             use VC_Kinds;
-with Why.Atree.Accessors;  use Why.Atree.Accessors;
-with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Atree.Modules;    use Why.Atree.Modules;
-with Why.Gen.Decl;         use Why.Gen.Decl;
-with Why.Gen.Expr;         use Why.Gen.Expr;
-with Why.Gen.Hardcoded;    use Why.Gen.Hardcoded;
-with Why.Gen.Init;         use Why.Gen.Init;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Progs;        use Why.Gen.Progs;
-with Why.Gen.Terms;        use Why.Gen.Terms;
-with Why.Images;           use Why.Images;
-with Why.Inter;            use Why.Inter;
+with SPARK_Util;                  use SPARK_Util;
+with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
+with Uintp;                       use Uintp;
+with VC_Kinds;                    use VC_Kinds;
+with Why.Atree.Accessors;         use Why.Atree.Accessors;
+with Why.Atree.Builders;          use Why.Atree.Builders;
+with Why.Atree.Modules;           use Why.Atree.Modules;
+with Why.Gen.Decl;                use Why.Gen.Decl;
+with Why.Gen.Expr;                use Why.Gen.Expr;
+with Why.Gen.Hardcoded;           use Why.Gen.Hardcoded;
+with Why.Gen.Init;                use Why.Gen.Init;
+with Why.Gen.Names;               use Why.Gen.Names;
+with Why.Gen.Progs;               use Why.Gen.Progs;
+with Why.Gen.Terms;               use Why.Gen.Terms;
+with Why.Images;                  use Why.Images;
+with Why.Inter;                   use Why.Inter;
 
 package body Why.Gen.Records is
 
@@ -355,10 +356,15 @@ package body Why.Gen.Records is
                if not Is_Type (Field) or else not Ignore_Private_State then
                   pragma Assert (Ekind (Field) /= E_Discriminant);
 
-                  R_Acc1 := New_Ada_Record_Access
-                    (Empty, EW_Term, R_Expr1, Field, Ty_Ext);
-                  R_Acc2 := New_Ada_Record_Access
-                    (Empty, EW_Term, R_Expr2, Field, Ty_Ext);
+                  if Is_Simple_Private_Type (Root_Retysp (Ty_Ext)) then
+                     R_Acc1 := R_Expr1;
+                     R_Acc2 := R_Expr2;
+                  else
+                     R_Acc1 := New_Ada_Record_Access
+                       (Empty, EW_Term, R_Expr1, Field, Ty_Ext);
+                     R_Acc2 := New_Ada_Record_Access
+                       (Empty, EW_Term, R_Expr2, Field, Ty_Ext);
+                  end if;
 
                   --  Call Build_Predicate_For_Field on fields
 
@@ -366,7 +372,8 @@ package body Why.Gen.Records is
                     Build_Predicate_For_Field
                       (F_Expr1 => +R_Acc1,
                        F_Expr2 => +R_Acc2,
-                       F_Ty    => Etype (Field),
+                       F_Ty    => (if Is_Type (Field) then Field
+                                   else Etype (Field)),
                        E       => Field);
 
                   if T_Comp /= True_Pred then
@@ -2103,25 +2110,31 @@ package body Why.Gen.Records is
 
       elsif Is_Simple_Private_Type (E) then
          Declare_Simple_Wrapper_Type
-           (Th         => Th,
-            W_Nam      => To_Why_Type
+           (Th           => Th,
+            W_Nam        => To_Why_Type
               (E, Local => True, Relaxed_Init => True),
-            Init_Val   => To_Local (E_Symb (E, WNE_Init_Value)),
-            Attr_Init  => To_Local (E_Symb (E, WNE_Attr_Init)),
-            Of_Wrapper => To_Local (E_Symb (E, WNE_Of_Wrapper)),
-            To_Wrapper => To_Local (E_Symb (E, WNE_To_Wrapper)));
+            Init_Val     => To_Local (E_Symb (E, WNE_Init_Value)),
+            Attr_Init    => To_Local (E_Symb (E, WNE_Attr_Init)),
+            Of_Wrapper   => To_Local (E_Symb (E, WNE_Of_Wrapper)),
+            To_Wrapper   => To_Local (E_Symb (E, WNE_To_Wrapper)),
+            Dummy        => To_Local (E_Symb (E, WNE_Dummy)),
+            Default_Init =>
+              Default_Initialization (E) = Full_Default_Initialization);
       end if;
 
       --  Introduce a wrapper for the private part of E if there is one
 
       if Has_Private_Part (E) and then not Is_Simple_Private_Type (E) then
          Declare_Simple_Wrapper_Type
-           (Th         => Th,
-            W_Nam      => To_Local (E_Symb (E, WNE_Private_Type)),
-            Init_Val   => To_Local (E_Symb (E, WNE_Init_Value)),
-            Attr_Init  => To_Local (E_Symb (E, WNE_Attr_Init)),
-            Of_Wrapper => To_Local (E_Symb (E, WNE_Private_Of_Wrapper)),
-            To_Wrapper => To_Local (E_Symb (E, WNE_Private_To_Wrapper)));
+           (Th           => Th,
+            W_Nam        => To_Local (E_Symb (E, WNE_Private_Type)),
+            Init_Val     => To_Local (E_Symb (E, WNE_Init_Value)),
+            Attr_Init    => To_Local (E_Symb (E, WNE_Attr_Init)),
+            Of_Wrapper   => To_Local (E_Symb (E, WNE_Private_Of_Wrapper)),
+            To_Wrapper   => To_Local (E_Symb (E, WNE_Private_To_Wrapper)),
+            Dummy        => To_Local (E_Symb (E, WNE_Private_Dummy)),
+            Default_Init =>
+              Default_Initialization (E) = Full_Default_Initialization);
       end if;
 
       Declare_Record_Type
@@ -3067,7 +3080,7 @@ package body Why.Gen.Records is
    begin
       --  For types which have a private part, declare a new uninterpreted type
       --  for the private part as well as a new uninterpreted equality
-      --  function.
+      --  function and a dummy declaration of an object of this type.
 
       if not Is_Simple_Private_Type (E) and then Has_Private_Part (E) then
          declare
@@ -3092,6 +3105,15 @@ package body Why.Gen.Records is
                   Name        => To_Local (E_Symb (E, WNE_Private_Eq)),
                   Binders     => Binders,
                   Return_Type => +EW_Bool_Type,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set));
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Private_Dummy)),
+                  Binders     => Binder_Array'(1 .. 0 => <>),
+                  Return_Type => Priv_Ty,
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set));
          end;

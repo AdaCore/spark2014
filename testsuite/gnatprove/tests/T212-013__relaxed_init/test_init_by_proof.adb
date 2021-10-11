@@ -9,6 +9,7 @@ procedure Test_Init_By_Proof with SPARK_Mode is
    type Rec_2 is new Rec with
      Relaxed_Initialization;
    type Holder is record
+      I : Rec;
       F : Rec;
       G : Rec_2;
    end record;
@@ -44,14 +45,14 @@ procedure Test_Init_By_Proof with SPARK_Mode is
      Pre => X.Y'Initialized and Y'Initialized
    is
    begin
-      pragma Assert (Holder'(X, Y)'Initialized);--@ASSERT:PASS
+      pragma Assert (Holder'(Rec (Y), X, Y)'Initialized);--@ASSERT:PASS
    end Test_Init_Attr;
 
    procedure Test_Init_Attr_2 (X : Rec; Y : Rec_2) with
      Pre => X.Y'Initialized or Y'Initialized
    is
    begin
-      pragma Assert (Holder'(X, Y)'Initialized);--@ASSERT:FAIL
+      pragma Assert (Holder'(Rec (Y), X, Y)'Initialized);--@ASSERT:FAIL
    end Test_Init_Attr_2;
 
    procedure P1 is

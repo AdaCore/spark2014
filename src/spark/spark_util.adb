@@ -1094,7 +1094,9 @@ package body SPARK_Util is
       with Pre => Nkind (Aggr) in N_Aggregate
                                 | N_Delta_Aggregate
                                 | N_Extension_Aggregate;
-      --  Check the expressions of an aggregate for relaxed initialization
+      --  Check the expressions of an aggregate for relaxed initialization.
+      --  If the component type has relaxed initialization, its value does not
+      --  impact the status of the aggregate.
 
       ---------------------------
       -- Aggr_Has_Relaxed_Init --
@@ -1113,14 +1115,30 @@ package body SPARK_Util is
             else Empty);
       begin
          while Present (Expr) loop
-            if Expr_Has_Relaxed_Init (Expr, No_Eval => False) then
+            pragma Assert (Is_Array_Type (Etype (Aggr)));
+            if not Has_Relaxed_Init (Component_Type (Etype (Aggr)))
+              and then Expr_Has_Relaxed_Init (Expr, No_Eval => False)
+            then
                return True;
             end if;
             Next (Expr);
          end loop;
 
          while Present (Assoc) loop
-            if Expr_Has_Relaxed_Init (Expression (Assoc), No_Eval => False)
+
+            --  If there is a box in the aggregate, the default value of the
+            --  type is used. It can only have relaxed initialization if the
+            --  component type has relaxed initialization, in which case it
+            --  does not impact the status of the aggregate.
+
+            if not Box_Present (Assoc)
+              and then not Has_Relaxed_Init
+                (if Is_Array_Type (Etype (Aggr))
+                 then Component_Type (Etype (Aggr))
+                 else Etype
+                   (Entity (First (Choice_List (Assoc)))))
+              and then Expr_Has_Relaxed_Init
+                (Expression (Assoc), No_Eval => False)
             then
                return True;
             end if;

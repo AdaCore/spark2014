@@ -313,6 +313,21 @@ package body Gnat2Why.Expr is
    --  are introduced in Context for parameters so that checks are not
    --  duplicated if the returned array is used several times.
 
+   function Compute_Default_Value
+     (Ada_Node     : Node_Id;
+      E            : Type_Kind_Id;
+      Relaxed_Init : Boolean;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params := Body_Params) return W_Expr_Id
+   with Pre => Can_Be_Default_Initialized (Retysp (E))
+     and then not Is_Limited_View (Retysp (E))
+     and then Ekind (Retysp (E)) /= E_String_Literal_Subtype;
+   --  Expression for the default value of an object of type E. In the term
+   --  domain, the values of uninitialized components are set arbitrarily,
+   --  potential default initial conditions are ignored.
+   --  Ada_Node is used to issue info messages on ignored DICs if any when
+   --  --info is set.
+
    procedure Compute_Store
      (Pattern        :        Item_Type;
       Actual         :        Opt_N_Subexpr_Id;
@@ -4004,6 +4019,7 @@ package body Gnat2Why.Expr is
       with Pre => Is_Type (F_Ty)
                     and then
                   (Ekind (E) = E_Component
+                   or else Is_Type (E)
                    or else Is_Part_Of_Protected_Object (E));
       --  @param F_Expr expression for the component
       --  @param F_Ty component type
@@ -4143,14 +4159,34 @@ package body Gnat2Why.Expr is
          return W_Pred_Id
       is
          P : W_Pred_Id;
+
       begin
+         --  For fields standing for the invisible private part of a type, we
+         --  are only concerned with initialization.
+
+         if Is_Type (E) then
+
+            --  If F_Expr has a wrapper for initialization and the type of
+            --  E defines full default initialization, set the init flag to
+            --  True.
+
+            if Is_Init_Wrapper_Type (Get_Type (+F_Expr))
+              and then Default_Initialization (Etype (E)) =
+                Full_Default_Initialization
+            then
+               P := Pred_Of_Boolean_Term
+                 (+New_Init_Attribute_Access (E, +F_Expr));
+            else
+               P := True_Pred;
+            end if;
+
          --  if Field has a default expression, use it.
          --   <Expr>.rec__field1 = Field1.default
 
          --  Access type fields cannot have default initialization. Such fields
          --  should not exist in the Ada declaration.
 
-         if Present (Expression (Enclosing_Declaration (E))) then
+         elsif Present (Expression (Enclosing_Declaration (E))) then
             declare
                Exp_Ty : constant W_Type_Id :=
                  (if Is_Scalar_Type (F_Ty) then Type_Of_Node (F_Ty)
@@ -4209,7 +4245,9 @@ package body Gnat2Why.Expr is
         (Default_Init_For_Comp);
 
       function Default_Init_For_Record is new Build_Predicate_For_Record
-        (Default_Init_For_Discr, Default_Init_For_Field);
+        (Default_Init_For_Discr,
+         Default_Init_For_Field,
+         Ignore_Private_State => False);
 
       Tmp        : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
       Assumption : W_Pred_Id := True_Pred;
@@ -4269,6 +4307,16 @@ package body Gnat2Why.Expr is
                   Right  => Default_Expr,
                   Domain => EW_Pred);
             end;
+
+            --  If Tmp has a wrapper for initialization, set the init flag
+            --  to True.
+
+            if Is_Init_Wrapper_Type (Get_Type (+Tmp)) then
+               Assumption := New_And_Pred
+                 (Left  => Assumption,
+                  Right => +Compute_Is_Initialized
+                    (Ty_Ext, +Tmp, Params.Ref_Allowed, Domain => EW_Pred));
+            end if;
          end if;
       elsif Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
@@ -4426,6 +4474,324 @@ package body Gnat2Why.Expr is
            (Domain => EW_Pred, Tmp => Tmp, Context => +Assumption);
       end if;
    end Compute_Default_Init;
+
+   ---------------------------
+   -- Compute_Default_Value --
+   ---------------------------
+
+   function Compute_Default_Value
+     (Ada_Node     : Node_Id;
+      E            : Type_Kind_Id;
+      Relaxed_Init : Boolean;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params := Body_Params) return W_Expr_Id
+   is
+      function Compute_Default_Value_Rec
+        (E            : Type_Kind_Id;
+         Relaxed_Init : Boolean) return W_Term_Id;
+      --  Compute the default value in the term domain. DIC are ignored
+
+      -------------------------------
+      -- Compute_Default_Value_Rec --
+      -------------------------------
+
+      function Compute_Default_Value_Rec
+        (E            : Type_Kind_Id;
+         Relaxed_Init : Boolean) return W_Term_Id
+      is
+         function Has_Non_Empty_DIC (Ty : Type_Kind_Id) return Boolean;
+         --  Check whether there is at least a non-empty DIC applicable to Ty
+
+         -----------------------
+         -- Has_Non_Empty_DIC --
+         -----------------------
+
+         function Has_Non_Empty_DIC (Ty : Type_Kind_Id) return Boolean is
+            DIC_Found : exception;
+
+            procedure Check_DIC_Is_Non_Empty
+              (Default_Init_Param : Entity_Id;
+               Default_Init_Expr  : Node_Id);
+            --  If Default_Init_Expr is not the True predicate, raise DIC_Found
+
+            ----------------------------
+            -- Check_DIC_Is_Non_Empty --
+            ----------------------------
+
+            procedure Check_DIC_Is_Non_Empty
+              (Default_Init_Param : Entity_Id;
+               Default_Init_Expr  : Node_Id)
+            is
+               pragma Unreferenced (Default_Init_Param);
+            begin
+               if not Compile_Time_Known_Value (Default_Init_Expr)
+                 or else not Is_True (Expr_Value (Default_Init_Expr))
+               then
+                  raise DIC_Found;
+               end if;
+            end Check_DIC_Is_Non_Empty;
+
+            procedure Check_DICs_Are_Non_Empty is new
+              Iterate_Applicable_DIC (Check_DIC_Is_Non_Empty);
+         begin
+            Check_DICs_Are_Non_Empty (Ty);
+            return False;
+         exception
+            when DIC_Found =>
+               return True;
+         end Has_Non_Empty_DIC;
+
+         Ty   : constant Entity_Id := Retysp (E);
+         W_Ty : constant W_Type_Id := EW_Abstract (Ty, Relaxed_Init);
+         Def  : W_Term_Id;
+
+      --  Start of processing for Compute_Default_Value_Rec
+
+      begin
+         if Is_Scalar_Type (Ty) then
+            if Has_Default_Aspect (Ty) then
+               Def := +Transform_Expr
+                 (Expr          => Default_Aspect_Value (Ty),
+                  Expected_Type => W_Ty,
+                  Domain        => EW_Term,
+                  Params        => Params);
+            else
+               Def := +E_Symb (Ty, WNE_Dummy, Relaxed_Init);
+            end if;
+         elsif Is_Array_Type (Ty) then
+            declare
+               Comp_Ty      : constant Entity_Id :=
+                 Retysp (Component_Type (Ty));
+               Comp_Relaxed : constant Boolean :=
+                 Might_Contain_Relaxed_Init (Comp_Ty)
+                 and then (Relaxed_Init or else Has_Relaxed_Init (Comp_Ty));
+               Comp_Default : W_Term_Id;
+
+            begin
+               --  Use the Default_Component_Value if any
+
+               if Has_Default_Aspect (Ty) then
+                  Comp_Default := +Transform_Expr
+                    (Expr          => Default_Aspect_Component_Value (Ty),
+                     Expected_Type => EW_Abstract (Comp_Ty, Comp_Relaxed),
+                     Domain        => EW_Term,
+                     Params        => Params);
+
+               --  Otherwise, compute a default value from the type
+
+               else
+                  Comp_Default := Compute_Default_Value_Rec
+                    (Comp_Ty, Comp_Relaxed);
+               end if;
+
+               --  Create an array with the same element at all indexes
+
+               Def := +New_Const_Call
+                 (Domain => EW_Term,
+                  Elt    => +Comp_Default,
+                  Typ    => W_Ty);
+
+               --  For unconstrained arrays, reconstruct the array
+
+               if not Is_Static_Array_Type (Ty) then
+                  Def := +Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +Def,
+                     To     => W_Ty);
+               end if;
+            end;
+
+         elsif Is_Access_Type (Ty) then
+            Def := +E_Symb (Ty, WNE_Null_Pointer);
+
+         elsif Is_Simple_Private_Type (Ty) then
+            Def := +E_Symb (Ty, WNE_Dummy, Relaxed_Init);
+
+         else
+            pragma Assert (Is_Record_Type_In_Why (Ty));
+            declare
+               Root         : constant Entity_Id := Root_Retysp (Ty);
+               Num_Discr    : constant Natural := Count_Discriminants (Ty);
+               Num_Fields   : constant Natural :=
+                 Count_Why_Regular_Fields (Ty);
+               Discr_Assocs : W_Field_Association_Array (1 .. Num_Discr);
+               Field_Assocs : W_Field_Association_Array (1 .. Num_Fields);
+               Count        : Natural := 1;
+
+            begin
+               --  Get the discriminants from the type constraints
+
+               if Num_Discr > 0 then
+                  pragma Assert (Present (Discriminant_Constraint (Ty)));
+
+                  declare
+                     Discr : Entity_Id := First_Discriminant (Ty);
+                     Elmt  : Elmt_Id :=
+                       First_Elmt (Discriminant_Constraint (Ty));
+                  begin
+                     while Present (Discr) loop
+                        Discr_Assocs (Count) :=
+                          New_Field_Association
+                            (Domain => EW_Term,
+                             Field  => To_Why_Id
+                               (E      => Discr,
+                                Domain => EW_Term,
+                                Rec    => Root,
+                                Typ    => EW_Abstract (Etype (Discr))),
+                             Value  => Transform_Expr
+                               (Domain        => EW_Term,
+                                Params        => Params,
+                                Expr          => Node (Elmt),
+                                Expected_Type => EW_Abstract (Etype (Discr))));
+                        Count := Count + 1;
+                        Next_Elmt (Elmt);
+                        Next_Discriminant (Discr);
+                     end loop;
+                  end;
+               end if;
+
+               if Num_Fields > 0 then
+                  Count := 1;
+                  for Comp of Get_Component_Set (Ty) loop
+
+                     --  Use a dummy value for the private part of the type
+
+                     if Is_Type (Comp) then
+                        declare
+                           W_Comp_Ty : constant W_Type_Id :=
+                             New_Named_Type
+                               (Name => Get_Name
+                                  (E_Symb
+                                     (Comp, WNE_Private_Type,
+                                      Relaxed_Init => Relaxed_Init)));
+                        begin
+                           Field_Assocs (Count) :=
+                             New_Field_Association
+                               (Domain => EW_Term,
+                                Field  => To_Why_Id
+                                  (E            => Comp,
+                                   Domain       => EW_Term,
+                                   Rec          => Ty,
+                                   Typ          => W_Comp_Ty,
+                                   Relaxed_Init => Relaxed_Init),
+                                Value  => +E_Symb
+                                  (Ty, WNE_Private_Dummy, Relaxed_Init));
+                        end;
+                     else
+                        declare
+                           Comp_Ty      : constant Entity_Id :=
+                             Retysp (Etype (Comp));
+                           Comp_Relaxed : constant Boolean :=
+                             Might_Contain_Relaxed_Init (Comp_Ty)
+                             and then
+                               (Relaxed_Init
+                                or else Has_Relaxed_Init (Comp_Ty));
+                           W_Comp_Ty    : constant W_Type_Id := EW_Abstract
+                             (Comp_Ty, Comp_Relaxed);
+                           Comp_Default : W_Term_Id;
+
+                        begin
+                           --  Use the default value of the component
+                           --  declaration if any.
+
+                           if Present
+                             (Expression (Enclosing_Declaration (Comp)))
+                           then
+                              Comp_Default := +New_Tag_Update
+                                (Domain => EW_Term,
+                                 Name   => Transform_Expr
+                                   (Expr          => Expression
+                                        (Enclosing_Declaration (Comp)),
+                                    Expected_Type => W_Comp_Ty,
+                                    Domain        => EW_Term,
+                                    Params        => Params),
+                                 Ty     => Comp_Ty);
+
+                           --  Otherwise, compute a default value from the type
+
+                           else
+                              Comp_Default := Compute_Default_Value_Rec
+                                (Comp_Ty, Comp_Relaxed);
+                           end if;
+
+                           Field_Assocs (Count) :=
+                             New_Field_Association
+                               (Domain => EW_Term,
+                                Field  => To_Why_Id
+                                  (E            => Comp,
+                                   Domain       => EW_Term,
+                                   Rec          => Ty,
+                                   Typ          => W_Comp_Ty,
+                                   Relaxed_Init => Relaxed_Init),
+                                Value  => +Comp_Default);
+                        end;
+                     end if;
+
+                     Count := Count + 1;
+                  end loop;
+               end if;
+
+               Def := +New_Ada_Record_Aggregate
+                 (Domain       => EW_Term,
+                  Discr_Assocs => Discr_Assocs,
+                  Field_Assocs => Field_Assocs,
+                  Ty           => Ty,
+                  Init_Wrapper => Relaxed_Init);
+            end;
+         end if;
+
+         --  If Ty has a default initial condition, it will be ignored. If
+         --  --info is set, warn the user.
+
+         if Debug.Debug_Flag_Underscore_F
+           and then Has_DIC (Ty)
+           and then Has_Non_Empty_DIC (Ty)
+         then
+            Error_Msg_NE
+              ("info: ?default initial condition on type & not available for"
+               & " proof in an assertion context", Ada_Node, Ty);
+         end if;
+         return Def;
+      end Compute_Default_Value_Rec;
+
+   --  Start of processing for Compute_Default_Value
+
+   begin
+      --  In the term domain, go through the type to compute the default value
+
+      if Domain = EW_Term then
+         return +Compute_Default_Value_Rec (E, Relaxed_Init);
+
+      --  In the program domain, generate an any program with the default
+      --  init assumption as a postcondition. This is more precise than the
+      --  term translation as it includes DIC of private types.
+
+      else
+         pragma Assert (Domain in EW_Prog | EW_Pterm);
+
+         declare
+            W_Ty   : constant W_Type_Id := EW_Abstract (E, Relaxed_Init);
+            Result : W_Prog_Id := New_Simpl_Any_Prog
+              (T    => W_Ty,
+               Pred => Compute_Default_Init
+                 (+New_Result_Ident (W_Ty), E, Params));
+
+         begin
+            --  If necessary, also generate the checks for the default
+            --  initialization of the value.
+
+            if Domain = EW_Prog then
+               Result := Sequence
+                 (Left  => New_Ignore
+                    (Ada_Node,
+                     Compute_Default_Check (Ada_Node, E, Params)),
+                  Right => Result);
+            end if;
+
+            return +Result;
+         end;
+      end if;
+   end Compute_Default_Value;
 
    -------------------------------
    -- Compute_Dynamic_Invariant --
@@ -10222,7 +10588,17 @@ package body Gnat2Why.Expr is
                Ident : constant W_Identifier_Id :=
                  New_Temp_Identifier
                    (Typ =>
-                      (if Expr_Has_Relaxed_Init
+                    --  Special case for associations standing boxes in the
+                    --  aggregate.
+                      (if Nkind (Value.Value) in
+                           N_Iterated_Component_Association
+                         | N_Component_Association
+                       then EW_Abstract (Typ,
+                         Relaxed_Init =>
+                           (if Relaxed_Init
+                            then Might_Contain_Relaxed_Init (Typ)
+                            else Has_Relaxed_Init (Typ)))
+                       elsif Expr_Has_Relaxed_Init
                          (Value.Value, No_Eval => False)
                        then EW_Abstract (Typ, Relaxed_Init => True)
                        else Type_Of_Node (Typ)));
@@ -10585,7 +10961,22 @@ package body Gnat2Why.Expr is
             if Nkind (Expr_Or_Association) = N_Component_Association
               and then Box_Present (Expr_Or_Association)
             then
-               null;
+
+               --  Collecting variables and contextual nodes of the default
+               --  expression for later use as parameter.
+
+               if In_Iterated_Assoc then
+                  Variables_In_Default_Init (Comp_Type, Variables);
+
+               --  The default expression is directly used as parameter. Use
+               --  the association as a placeholder.
+
+               else
+                  Values.Append
+                    (Aggregate_Element'
+                       (Value => Expr_Or_Association,
+                        Typ   => Comp_Type));
+               end if;
             else
                --  Get the expression from the association and set
                --  In_Iterated_Assoc.
@@ -10970,7 +11361,9 @@ package body Gnat2Why.Expr is
                      New_Ignore
                        (Ada_Node => SPARK_Atree.Expression (Association),
                         Prog     => +Transform_Aggregate_Value
-                          (Value  => SPARK_Atree.Expression (Association),
+                          (Value  =>
+                               (if Box_Present (Association) then Association
+                                else SPARK_Atree.Expression (Association)),
                            Typ    => Retysp (Component_Type (Expr_Typ)),
                            Domain => Domain,
                            Params => Params)));
@@ -11079,19 +11472,55 @@ package body Gnat2Why.Expr is
          Params : Transformation_Params) return W_Expr_Id
       is
          Result : W_Expr_Id;
-      begin
-         Result :=
-           Transform_Expr
-             (Value,
-              (if Expr_Has_Relaxed_Init (Value, No_Eval => False)
-               then EW_Abstract (Typ, Relaxed_Init => True)
-               else Type_Of_Node (Typ)),
-              --  If a value which is not a scalar type has relaxed
-              --  initialization, so will the aggregate. Go to the wrapper
-              --  type to avoid spurious initialization checks.
 
-              Domain,
-              Params);
+      begin
+         --  Value might be an association with a box. In this case, the
+         --  component is initialized by default.
+
+         if Nkind (Value) in N_Component_Association
+                           | N_Iterated_Component_Association
+         then
+            pragma Assert (Box_Present (Value));
+            declare
+               Comp_Ty      : constant Entity_Id :=
+                 Retysp (Component_Type (Expr_Typ));
+               Comp_Relaxed : constant Boolean :=
+                (if Relaxed_Init then Might_Contain_Relaxed_Init (Comp_Ty)
+                 else Has_Relaxed_Init (Comp_Ty));
+
+            begin
+               --  If Expr_Typ has a Default_Component_Value aspect, use its
+               --  value.
+
+               if Has_Default_Aspect (Expr_Typ) then
+                  Result := +Transform_Expr
+                    (Expr          =>
+                       Default_Aspect_Component_Value (Expr_Typ),
+                     Expected_Type => EW_Abstract (Comp_Ty, Comp_Relaxed),
+                     Domain        => Domain,
+                     Params        => Params);
+
+               --  Otherwise, use the default value of the type
+
+               else
+                  Result := Compute_Default_Value
+                    (Value, Comp_Ty, Comp_Relaxed, Domain, Params);
+               end if;
+            end;
+         else
+            Result :=
+              Transform_Expr
+                (Value,
+                 (if Expr_Has_Relaxed_Init (Value, No_Eval => False)
+                  then EW_Abstract (Typ, Relaxed_Init => True)
+                  else Type_Of_Node (Typ)),
+                 --  If a value which is not a scalar type has relaxed
+                 --  initialization, so will the aggregate. Go to the wrapper
+                 --  type to avoid spurious initialization checks.
+
+                 Domain,
+                 Params);
+         end if;
 
          --  Attributes of record array elements have default values
 
@@ -11184,7 +11613,9 @@ package body Gnat2Why.Expr is
             --  Whenever possible, take advantage of the why3 construct
             --  for range constants. This improves counterexamples.
 
-            if Is_Range_Type_In_Why (Etype (Expr))
+            if Nkind (Expr) not in N_Component_Association
+              | N_Iterated_Component_Association
+              and then Is_Range_Type_In_Why (Etype (Expr))
               and then Compile_Time_Known_Value (Expr)
             then
                return New_Comparison
@@ -11528,6 +11959,7 @@ package body Gnat2Why.Expr is
                Expr : constant Node_Id :=
                  (if Nkind (Expr_Or_Assoc) in N_Iterated_Component_Association
                                             | N_Component_Association
+                  and then not Box_Present (Expr_Or_Assoc)
                   then Expression (Expr_Or_Assoc) else Expr_Or_Assoc);
             begin
                --  For iterated component associations, we need to introduce
@@ -11713,15 +12145,13 @@ package body Gnat2Why.Expr is
                elsif Present (Association) then
                   pragma Assert (No (Next (Association)));
 
-                  if not Box_Present (Association) then
-                     Append
-                       (V    => V_Other_Assocs,
-                        Pred => New_Conditional
-                          (Condition => New_And_Pred
-                             (Pre & To_Array (Condition)),
-                           Then_Part => Transform_Complex_Association
-                             (Dim, Association)));
-                  end if;
+                  Append
+                    (V    => V_Other_Assocs,
+                     Pred => New_Conditional
+                       (Condition => New_And_Pred
+                            (Pre & To_Array (Condition)),
+                        Then_Part => Transform_Complex_Association
+                          (Dim, Association)));
                end if;
             end Transform_Rec_Aggregate;
 
@@ -16907,7 +17337,7 @@ package body Gnat2Why.Expr is
                      end if;
                   end;
 
-               --  Static exponentiation up to 3 are expended into equivalent
+               --  Static exponentiation up to 3 are expanded into equivalent
                --  multiplications.
 
                elsif Nkind (Right) = N_Integer_Literal then
@@ -20800,33 +21230,41 @@ package body Gnat2Why.Expr is
                Component := Search_Component_In_Type (Typ, Entity (Choice));
                pragma Assert (Present (Component));
 
-               if not Box_Present (Association) then
-                  Expr := Transform_Expr
-                    (Expr          => Expression (Association),
-                     Expected_Type =>
-                       EW_Abstract
-                         (Etype (Component),
-                          Relaxed_Init =>
-                            (if Init_Wrapper
-                             then Might_Contain_Relaxed_Init
-                               (Etype (Component))
-                             else Has_Relaxed_Init (Etype (Component)))
-                          and then Ekind (Component) = E_Component),
-                     Domain        => Domain,
-                     Params        => Params);
-               else
-                  pragma Assert (Domain = EW_Prog);
-                  Expr := +New_Simpl_Any_Prog
-                    (T =>
-                       EW_Abstract
-                         (Etype (Component),
-                          Relaxed_Init =>
-                            (if Init_Wrapper
-                             then Might_Contain_Relaxed_Init
-                               (Etype (Component))
-                             else Has_Relaxed_Init (Etype (Component)))
-                          and then Ekind (Component) = E_Component));
-               end if;
+               declare
+                  Comp_Ty      : constant Entity_Id := Etype (Component);
+                  Comp_Relaxed : constant Boolean :=
+                    (if Init_Wrapper
+                     then Might_Contain_Relaxed_Init (Comp_Ty)
+                     else Has_Relaxed_Init (Comp_Ty))
+                    and then Ekind (Component) = E_Component;
+                  W_Comp_Ty    : constant W_Type_Id := EW_Abstract
+                    (Comp_Ty, Comp_Relaxed);
+
+               begin
+                  --  For a regular association, use the provided value
+
+                  if not Box_Present (Association) then
+                     Expr := Transform_Expr
+                       (Expr          => Expression (Association),
+                        Expected_Type => W_Comp_Ty,
+                        Domain        => Domain,
+                        Params        => Params);
+
+                  --  We have a box. If component has a default value in the
+                  --  record declaration, the frontend has expended it.
+
+                  elsif Present
+                    (Expression (Enclosing_Declaration (Component)))
+                  then
+                     raise Program_Error;
+
+                  --  Otherwise, compute the default value of the type
+
+                  else
+                     Expr := Compute_Default_Value
+                       (Association, Comp_Ty, Comp_Relaxed, Domain, Params);
+                  end if;
+               end;
 
                --  Attributes of component's type have default values of their
                --  type.

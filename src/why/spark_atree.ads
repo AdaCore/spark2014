@@ -834,6 +834,8 @@ package SPARK_Atree is
    function Expr_Value_R (N : Node_Id) return Ureal with
      Pre => Compile_Time_Known_Value (N);
 
+   function Is_True (U : Opt_Ubool) return Boolean renames Sem_Util.Is_True;
+
    function Is_OK_Static_Expression (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Subexpr;
 

@@ -36,15 +36,18 @@ package Why.Gen.Init is
    --  This package encapsulates the encoding of initialization by proof.
 
    procedure Declare_Simple_Wrapper_Type
-     (Th         : Theory_UC;
-      W_Nam      : W_Name_Id;
-      Init_Val   : W_Identifier_Id;
-      Attr_Init  : W_Identifier_Id;
-      Of_Wrapper : W_Identifier_Id;
-      To_Wrapper : W_Identifier_Id);
+     (Th           : Theory_UC;
+      W_Nam        : W_Name_Id;
+      Init_Val     : W_Identifier_Id;
+      Attr_Init    : W_Identifier_Id;
+      Of_Wrapper   : W_Identifier_Id;
+      To_Wrapper   : W_Identifier_Id;
+      Dummy        : W_Identifier_Id;
+      Default_Init : Boolean);
    --  Declare a wrapper type with name W_Nam, and fields Init_Val and
    --  Attr_Init. Also generate conversion functions with names
-   --  Of_Wrapper and To_Wrapper.
+   --  Of_Wrapper and To_Wrapper, as well as an initialized object with
+   --  name Dummy. Dummy is initialized iff Default_Init is True.
 
    procedure Declare_Init_Wrapper (Th : Theory_UC; E : Entity_Id) with
      Pre => Is_Type (E);
@@ -77,6 +80,11 @@ package Why.Gen.Init is
    --  these parts which do not have a type with relaxed initialization. This
    --  happens for example when storing the expression in an object of its
    --  type, or when giving it as a parameter to a function call.
+
+   function New_Init_Attribute_Access
+     (E    : Entity_Id;
+      Name : W_Expr_Id) return W_Expr_Id;
+   --  Access the initialization flag of an expression of a wrapper type
 
    function Get_Init_Id_From_Object
      (Obj         : Entity_Id;
