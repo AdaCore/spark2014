@@ -1,5 +1,5 @@
 
-assert_twice.adb:5:19: medium: assertion might fail
+assert_twice.adb:5:19: high: assertion might fail
     5 |   pragma Assert (X > 0);
       |                  ^~~~~
   possible fix: subprogram at line 1 should mention X in a precondition

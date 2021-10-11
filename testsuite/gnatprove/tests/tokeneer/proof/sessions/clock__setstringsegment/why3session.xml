@@ -8,7 +8,7 @@
 <path name="clock__setstringsegment.gnat-json"/>
 <theory name="Clock__setstringsegment__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -35,7 +35,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.7">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="1782"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="1742"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -45,10 +45,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="297"/></proof>
+  <proof prover="0"><result status="valid" steps="313"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="297"/></proof>
+  <proof prover="0"><result status="valid" steps="313"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>

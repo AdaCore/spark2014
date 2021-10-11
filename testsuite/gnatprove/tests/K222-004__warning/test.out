@@ -1,4 +1,4 @@
 pack.adb:6:07: info: initialization of "B" proved
 pack.adb:14:07: info: initialization of "B" proved
-pack.ads:3:19: medium: postcondition might fail (e.g. when F'Result = True)
+pack.ads:3:19: high: postcondition might fail (e.g. when F'Result = True)
 pack.ads:4:14: warning: subprogram "P" has no effect

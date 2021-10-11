@@ -14,9 +14,8 @@ counterex_unprovable.ads:13:14: medium: postcondition might fail
       |             ^~~~~~~~~~~~~
   e.g. when X = 0
         and X'Old = 1
+  possible fix: add or complete related loop invariants or postconditions
 
 counterex_unprovable.ads:17:14: medium: postcondition might fail
    17 |     Post => X = 2 * X'Old;
       |             ^~~~~~~~~~~~~
-  e.g. when X = -1
-        and X'Old = 0

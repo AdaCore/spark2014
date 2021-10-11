@@ -330,7 +330,8 @@
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.87" proved="true">
-  <proof prover="0"><result status="valid" steps="230158"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="130093"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

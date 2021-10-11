@@ -1,4 +1,4 @@
-base_repr.adb:11:14: medium: overflow check might fail, cannot prove upper bound for 1 + Length (L.N) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 <= Integer'Last - Length (L.N)) to subprogram at line 9]
+base_repr.adb:11:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 <= Integer'Last - Length (L.N)) to subprogram at line 9]
 base_repr.adb:11:16: info: expression function body not available for proof ("Length" might not return)
 base_repr.adb:11:16: info: implicit function contract not available for proof ("Length" might not return)
 base_repr.adb:11:25: info: pointer dereference check proved (CVC4: 1 VC)

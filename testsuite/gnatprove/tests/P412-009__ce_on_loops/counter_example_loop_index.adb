@@ -11,7 +11,7 @@ is
    begin
       for I in 1 .. 100 loop
          K := I;
-         pragma Loop_Invariant (J = 0); --@LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
+         pragma Loop_Invariant (J = 0); --@LOOP_INVARIANT_PRESERV:FAIL @ COUNTEREXAMPLE
          J := I;
       end loop;
    end P;
@@ -22,7 +22,7 @@ is
    begin
      for I in 1 .. 100 loop
          pragma Loop_Invariant (True);
-         pragma Loop_Invariant (J <= 50); --@LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
+         pragma Loop_Invariant (J <= 50); --@LOOP_INVARIANT_PRESERV:FAIL @ COUNTEREXAMPLE
          pragma Loop_Invariant (True);
          K := I;
          J := I;
@@ -44,7 +44,7 @@ is
    begin
       for I in 1 .. 100 loop
          pragma Loop_Invariant (True);
-         pragma Loop_Invariant (F (J)); --@PRECONDITION:FAIL @COUNTEREXAMPLE
+         pragma Loop_Invariant (F (J)); --@PRECONDITION:FAIL @ COUNTEREXAMPLE
          pragma Loop_Invariant (True);
          K := I;
          J := I;
@@ -58,7 +58,7 @@ is
    begin
       for I in 1 .. 100 loop
          K := I;
-         pragma Loop_Invariant (J <= 50); --@LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
+         pragma Loop_Invariant (J <= 50); --@LOOP_INVARIANT_PRESERV:FAIL @ COUNTEREXAMPLE
          J := I;
       end loop;
    end P3;
@@ -71,7 +71,7 @@ is
       for I in 1 .. 100 loop
          K := I;
          J := I;
-         pragma Loop_Invariant (J <= 50); --@LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
+         pragma Loop_Invariant (J <= 50); --@LOOP_INVARIANT_PRESERV:FAIL @ COUNTEREXAMPLE
       end loop;
    end P4;
 

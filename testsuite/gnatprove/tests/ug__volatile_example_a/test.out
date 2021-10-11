@@ -18,4 +18,3 @@ volatile_example_a.adb:21:07: info: initialization of "Tmp" proved
 volatile_example_a.adb:27:25: medium: assertion might fail
    27 |         pragma Assert (Tmp.X = Tmp.Y); -- not provable
       |                        ^~~~~~~~~~~~~
-  e.g. when Tmp = (X => -1, Y => 0)

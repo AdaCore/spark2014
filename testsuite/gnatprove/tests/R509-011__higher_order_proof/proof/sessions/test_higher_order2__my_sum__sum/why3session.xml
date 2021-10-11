@@ -8,7 +8,7 @@
 <path name="test_higher_order2__my_sum__sum.gnat-json"/>
 <theory name="Test_higher_order2__my_sum__sum__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+ <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="69"/></proof>
   </goal>

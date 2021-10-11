@@ -8,7 +8,7 @@
 <path name="screen__writeconfigdata__secondsstring.gnat-json"/>
 <theory name="Screen__writeconfigdata__secondsstring__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -24,7 +24,7 @@
   <proof prover="0"><result status="valid" steps="136"/></proof>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="161"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="160"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -39,7 +39,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.8">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="161"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="160"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -56,7 +56,7 @@
   <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="149"/></proof>
+  <proof prover="0"><result status="valid" steps="148"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
@@ -72,10 +72,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="147"/></proof>
+  <proof prover="0"><result status="valid" steps="124"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="0"><result status="valid" steps="219"/></proof>
+  <proof prover="0"><result status="valid" steps="210"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
   <proof prover="0"><result status="valid" steps="126"/></proof>

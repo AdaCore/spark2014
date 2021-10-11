@@ -95,6 +95,49 @@ class SortLinesRefiner(OutputRefiner):
         return "\n".join(lines)
 
 
+class RACTestDriver(DiffTestDriver):
+
+    _baseline = None
+
+    def set_up(self):
+        super().set_up()
+        with open(self.gprfile, 'w') as f:
+            f.write("""
+project Test is
+  for Main use ("main.adb");
+end Test;
+""")
+        compile_cmd = [
+            "gnatmake", "-P", self.gprfile,
+            "-gnata", "-gnatw.A", "-gnat2022"
+        ]
+        self.shell(compile_cmd, analyze_output=False)
+        main_cmd = [os.path.join(self.cwd, "main")]
+        self.shell(main_cmd, analyze_output=True, catch_error=False)
+        self._baseline = str(self.output)
+        self.output = Log("")
+
+    @property
+    def baseline(self):
+        return None, self._baseline, False
+
+    @property
+    def cwd(self):
+        return self.test_env["working_dir"]
+
+    @property
+    def gprfile(self):
+        return os.path.join(self.cwd, "test.gpr")
+
+    def run(self):
+        cmd = [
+            "gnatprove", "-P", self.gprfile,
+            "--quiet", "--debug-exec-rac",
+            "-cargs", "-gnat2022"
+        ]
+        self.shell(cmd, analyze_output=True, catch_error=False)
+
+
 class UGTestDriver(DiffTestDriver):
     """Simple test driver (in principle) that just runs a fixed gnatprove
     command on the UG tests. The output is sorted before comparison as we
@@ -352,6 +395,9 @@ class SPARKTestFinder(TestFinder):
             raise ProbingError("invalid syntax for test.yaml in '{}'".format(testname))
         if test_env is None:
             test_env = {}
+
+        if "__rac" in testname:
+            return ParsedTest(testname, RACTestDriver, {}, dirpath)
 
         # If this is not a large test, but only large was requested, skip
         # test

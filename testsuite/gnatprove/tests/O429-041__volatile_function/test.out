@@ -1,1 +1,1 @@
-main.adb:6:19: medium: assertion might fail (e.g. when X = -1 and Y = 0)
+main.adb:6:19: medium: assertion might fail

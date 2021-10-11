@@ -1,7 +1,7 @@
 diff.adb:13:28: info: overflow check proved (CVC4: 2 VC)
 diff.adb:13:28: info: range check proved (CVC4: 2 VC)
 diff.adb:15:22: info: assertion proved (CVC4: 1 VC)
-diff.adb:22:28: medium: overflow check might fail (e.g. when J = 0 and X = 1) [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 19]
+diff.adb:22:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 19]
 diff.adb:24:22: info: assertion proved (Z3: 1 VC)
 diff.adb:31:34: info: overflow check proved (CVC4: 2 VC)
 diff.adb:31:34: info: range check proved (CVC4: 2 VC)
@@ -10,7 +10,7 @@ diff.adb:33:32: info: overflow check proved (CVC4: 2 VC)
 diff.adb:34:22: info: assertion proved (CVC4: 1 VC)
 diff.adb:34:23: info: overflow check proved (CVC4: 2 VC)
 diff.adb:35:22: info: assertion proved (CVC4: 1 VC)
-diff.adb:42:34: medium: overflow check might fail (e.g. when J = 0 and Pow2_J = 1) [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 39]
+diff.adb:42:34: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 39]
 diff.adb:44:22: info: assertion proved (CVC4: 1 VC)
 diff.adb:44:32: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 diff.adb:45:22: info: assertion proved (CVC4: 1 VC)
@@ -23,7 +23,7 @@ diff.adb:60:34: info: range check proved (CVC4: 2 VC)
 diff.adb:62:22: info: assertion proved (CVC4: 1 VC)
 diff.adb:62:28: info: overflow check proved (CVC4: 2 VC)
 diff.adb:63:22: info: assertion proved (CVC4: 1 VC)
-diff.adb:70:34: medium: overflow check might fail (e.g. when J = 0 and Pow2_J = 1) [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 67]
+diff.adb:70:34: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 67]
 diff.adb:71:34: info: division check proved (CVC4: 1 VC)
 diff.adb:73:22: info: assertion proved (CVC4: 1 VC)
 diff.adb:73:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
@@ -43,7 +43,7 @@ diff2.adb:39:28: info: overflow check proved (CVC4: 1 VC)
 diff2.adb:40:22: info: assertion proved (colibri: 1 VC)
 diff3.adb:11:29: info: overflow check proved (CVC4: 1 VC)
 diff3.adb:12:22: info: assertion proved (Z3: 1 VC)
-diff3.adb:13:29: medium: overflow check might fail (e.g. when J = 127 and Y = 0) [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2**(J+1) in U128) to subprogram at line 8]
+diff3.adb:13:29: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2**(J+1) in U128) to subprogram at line 8]
 diff3.adb:13:33: info: overflow check proved (CVC4: 4 VC)
 diff3.adb:21:35: info: overflow check proved (CVC4: 1 VC)
 diff3.adb:23:22: info: assertion proved (CVC4: 1 VC)

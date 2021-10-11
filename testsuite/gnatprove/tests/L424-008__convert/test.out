@@ -5,7 +5,7 @@ p.adb:9:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:37
 p.adb:12:14: info: add a contract to analyze it separately from calling contexts
 p.adb:12:14: info: local subprogram "Second" only analyzed in the context of calls
 p.adb:12:14: warning: subprogram "Second" has no effect
-p.adb:17:22: medium: assertion might fail, in call inlined at p.adb:38 (e.g. when My_S2 = (others => 1))
+p.adb:17:22: medium: assertion might fail, in call inlined at p.adb:38
 p.adb:20:14: info: add a contract to analyze it separately from calling contexts
 p.adb:20:14: info: local subprogram "Third" only analyzed in the context of calls
 p.adb:20:14: warning: subprogram "Third" has no effect

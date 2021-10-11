@@ -1,4 +1,4 @@
-p.ads:7:14: medium: postcondition might fail (e.g. when F'Result = 1)
+p.ads:7:14: high: postcondition might fail (e.g. when F'Result = 1)
 p.ads:12:14: info: postcondition proved (CVC4: 1 VC)
 p.ads:16:19: info: postcondition proved (CVC4: 1 VC)
 p.ads:19:20: info: postcondition proved (CVC4: 1 VC)

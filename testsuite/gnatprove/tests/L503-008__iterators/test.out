@@ -25,8 +25,8 @@ a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation 
 a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at p.ads:15
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at p.ads:15
 p.adb:23:08: info: initialization of "C" proved
-p.adb:27:22: medium: overflow check might fail, cannot prove lower bound for Sum + My_Lists.Element(X, C) (e.g. when C = (Node => 2) and Sum = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 26 should mention Sum in a loop invariant]
-p.adb:27:32: medium: precondition might fail (e.g. when C = (Node => 2))
-p.adb:28:19: medium: precondition might fail (e.g. when C = (Node => 2))
+p.adb:27:22: medium: overflow check might fail, cannot prove lower bound for Sum + My_Lists.Element(X, C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 26 should mention Sum in a loop invariant]
+p.adb:27:32: medium: precondition might fail
+p.adb:28:19: medium: precondition might fail
 p.ads:18:14: warning: subprogram "Iter_Over_Lists" has no effect
 p.ads:20:14: warning: subprogram "Quant_Over_Lists" has no effect

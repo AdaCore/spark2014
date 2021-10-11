@@ -1,8 +1,8 @@
-stacks.adb:10:22: medium: overflow check might fail, cannot prove upper bound for S.Top + 1 (e.g. when S = (Max => ?, Top => Natural'Last, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-stacks.adb:11:16: medium: array index check might fail (e.g. when S = (Max => ?, Top => 3, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: value must be a valid index into the array]
+stacks.adb:10:22: medium: overflow check might fail, cannot prove upper bound for S.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+stacks.adb:11:16: medium: array index check might fail [reason for check: value must be a valid index into the array]
 stacks.adb:21:22: info: range check proved (CodePeer)
 stacks.ads:21:20: info: postcondition proved (CVC4: 1 VC)
-stacks.ads:21:40: medium: overflow check might fail, cannot prove upper bound for S.Size'Old + 1 (e.g. when S = (Max => ?, Top => Natural'Last, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+stacks.ads:21:40: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 stacks.ads:34:07: info: range check proved (CVC4: 2 VC)
 stacks.ads:34:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-stacks.ads:43:58: medium: array index check might fail (e.g. when S = (Max => 1, Top => 2, Data => (1 => 0)) and S.Data'First = 1 and S.Data'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Top in 1 .. Max) to subprogram at line 27]
+stacks.ads:43:58: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Top in 1 .. Max) to subprogram at line 27]

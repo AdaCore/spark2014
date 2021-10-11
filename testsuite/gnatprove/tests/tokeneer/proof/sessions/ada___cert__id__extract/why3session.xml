@@ -8,7 +8,7 @@
 <path name="ada___cert__id__extract.gnat-json"/>
 <theory name="Ada___cert__id__extract__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -62,7 +62,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.13">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="146"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="140"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -83,7 +83,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.19">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="165"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="157"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
   <transf name="trivial_true" proved="true" >

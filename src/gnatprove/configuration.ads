@@ -78,75 +78,77 @@ package Configuration is
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
 
-      Assumptions          : aliased Boolean;
-      Benchmark            : aliased Boolean;
-      Memcached_Server     : aliased GNAT.Strings.String_Access;
-      Cargs_List           : String_Lists.List;
-      Checks_As_Errors     : aliased Boolean;
-      CodePeer             : aliased GNAT.Strings.String_Access;
-      Counterexamples      : aliased GNAT.Strings.String_Access;
-      CWE                  : aliased Boolean;
-      D                    : aliased Boolean;
-      Dbg_No_Sem           : aliased Boolean;
+      Assumptions           : aliased Boolean;
+      Benchmark             : aliased Boolean;
+      Memcached_Server      : aliased GNAT.Strings.String_Access;
+      Cargs_List            : String_Lists.List;
+      Check_Counterexamples : aliased GNAT.Strings.String_Access;
+      Checks_As_Errors      : aliased Boolean;
+      CodePeer              : aliased GNAT.Strings.String_Access;
+      Counterexamples       : aliased GNAT.Strings.String_Access;
+      CWE                   : aliased Boolean;
+      D                     : aliased Boolean;
+      Dbg_No_Sem            : aliased Boolean;
       --  disable use of semaphores for ease of debugging
-      Debug_Save_VCs       : aliased Boolean;
-      Debug_Trivial        : aliased Boolean;
-      Debug_Prover_Errors  : aliased Boolean;
-      Dbg_Proof_Only       : aliased Boolean;
-      F                    : aliased Boolean;
-      File_List            : String_Lists.List;
+      Debug_Exec_RAC        : aliased Boolean;
+      Debug_Save_VCs        : aliased Boolean;
+      Debug_Trivial         : aliased Boolean;
+      Debug_Prover_Errors   : aliased Boolean;
+      Dbg_Proof_Only        : aliased Boolean;
+      F                     : aliased Boolean;
+      File_List             : String_Lists.List;
       --  The list of files to be compiled
-      Flow_Debug           : aliased Boolean;
-      Flow_Termination     : aliased Boolean;
-      Flow_Show_GG         : aliased Boolean;
-      GPR_Project_Path     : String_Lists.List;
+      Flow_Debug            : aliased Boolean;
+      Flow_Termination      : aliased Boolean;
+      Flow_Show_GG          : aliased Boolean;
+      GPR_Project_Path      : String_Lists.List;
       --  extra paths to look for project files, passed to gnatprove via -aP
-      IDE_Progress_Bar     : aliased Boolean;
-      Info                 : aliased Boolean;
-      J                    : aliased Integer;
-      K                    : aliased Boolean;
-      Level                : aliased Integer;
-      Limit_Line           : aliased GNAT.Strings.String_Access;
-      Limit_Region         : aliased GNAT.Strings.String_Access;
-      Limit_Subp           : aliased GNAT.Strings.String_Access;
-      List_Categories      : aliased Boolean;
-      M                    : aliased Boolean;
-      Memlimit             : aliased Integer;
-      Mode                 : aliased GNAT.Strings.String_Access;
-      No_Axiom_Guard       : aliased Boolean;
-      No_Counterexample    : aliased Boolean;
-      No_Inlining          : aliased Boolean;
-      No_Loop_Unrolling    : aliased Boolean;
-      No_Global_Generation : aliased Boolean;
-      No_Subprojects       : aliased Boolean;
-      Output               : aliased GNAT.Strings.String_Access;
-      Output_Header        : aliased Boolean;
-      Output_Msg_Only      : aliased Boolean;
-      P                    : aliased GNAT.Strings.String_Access;
+      IDE_Progress_Bar      : aliased Boolean;
+      Info                  : aliased Boolean;
+      J                     : aliased Integer;
+      K                     : aliased Boolean;
+      Level                 : aliased Integer;
+      Limit_Line            : aliased GNAT.Strings.String_Access;
+      Limit_Region          : aliased GNAT.Strings.String_Access;
+      Limit_Subp            : aliased GNAT.Strings.String_Access;
+      List_Categories       : aliased Boolean;
+      M                     : aliased Boolean;
+      Memlimit              : aliased Integer;
+      Mode                  : aliased GNAT.Strings.String_Access;
+      No_Axiom_Guard        : aliased Boolean;
+      No_Counterexample     : aliased Boolean;
+      No_Inlining           : aliased Boolean;
+      No_Loop_Unrolling     : aliased Boolean;
+      No_Global_Generation  : aliased Boolean;
+      No_Subprojects        : aliased Boolean;
+      Output                : aliased GNAT.Strings.String_Access;
+      Output_Header         : aliased Boolean;
+      Output_Msg_Only       : aliased Boolean;
+      P                     : aliased GNAT.Strings.String_Access;
       --  The project file name, given with option -P
-      Pedantic             : aliased Boolean;
-      Proof                : aliased GNAT.Strings.String_Access;
-      Proof_Warnings       : aliased Boolean;
-      Prover               : aliased GNAT.Strings.String_Access;
-      Q                    : aliased Boolean;
-      Replay               : aliased Boolean;
-      Report               : aliased GNAT.Strings.String_Access;
-      RTS                  : aliased GNAT.Strings.String_Access;
-      Steps                : aliased Integer;
-      Subdirs              : aliased GNAT.Strings.String_Access;
-      Target               : aliased GNAT.Strings.String_Access;
-      Timeout              : aliased GNAT.Strings.String_Access;
-      U                    : aliased Boolean;
-      UU                   : aliased Boolean;
-      V                    : aliased Boolean;
-      Version              : aliased Boolean;
-      Warnings             : aliased GNAT.Strings.String_Access;
-      Why3_Conf            : aliased GNAT.Strings.String_Access;
-      Why3_Debug           : aliased GNAT.Strings.String_Access;
-      Why3_Server          : aliased GNAT.Strings.String_Access;
-      X                    : String_Lists.List;
+      Pedantic              : aliased Boolean;
+      Proof                 : aliased GNAT.Strings.String_Access;
+      Proof_Warnings        : aliased Boolean;
+      Prover                : aliased GNAT.Strings.String_Access;
+      Q                     : aliased Boolean;
+      Replay                : aliased Boolean;
+      Report                : aliased GNAT.Strings.String_Access;
+      RTS                   : aliased GNAT.Strings.String_Access;
+      Steps                 : aliased Integer;
+      Subdirs               : aliased GNAT.Strings.String_Access;
+      Target                : aliased GNAT.Strings.String_Access;
+      Timeout               : aliased GNAT.Strings.String_Access;
+      U                     : aliased Boolean;
+      UU                    : aliased Boolean;
+      V                     : aliased Boolean;
+      Version               : aliased Boolean;
+      Warnings              : aliased GNAT.Strings.String_Access;
+      Why3_Conf             : aliased GNAT.Strings.String_Access;
+      Why3_Debug            : aliased GNAT.Strings.String_Access;
+      Why3_Server           : aliased GNAT.Strings.String_Access;
+      X                     : String_Lists.List;
       --  Scenario variables to be passed to gprbuild
-      Z3_Counterexample    : aliased Boolean;
+      Z3_Counterexample     : aliased Boolean;
    end CL_Switches;
 
    package Prj_Attr is
@@ -192,6 +194,7 @@ package Configuration is
 
    CodePeer       : Boolean;
    Debug          : Boolean;
+   Debug_Exec_RAC : Boolean;
    GnateT_Switch  : GNAT.Strings.String_Access;
    Mode           : GP_Mode;
    Use_Semaphores : Boolean;
@@ -211,18 +214,19 @@ package Configuration is
    Verbose           : Boolean renames CL_Switches.V;
 
    type File_Specific is record
-      Proof             : Proof_Mode;
-      Lazy              : Boolean;
-      Provers           : String_Lists.List;
-      Timeout           : Integer;
-      Steps             : Integer;
-      Memlimit          : Integer;
-      CE_Timeout        : Integer;
-      No_Inlining       : Boolean;
-      Info              : Boolean;
-      No_Loop_Unrolling : Boolean;
-      Proof_Warnings    : Boolean;
-      Counterexamples   : Boolean;
+      Proof                 : Proof_Mode;
+      Lazy                  : Boolean;
+      Provers               : String_Lists.List;
+      Timeout               : Integer;
+      Steps                 : Integer;
+      Memlimit              : Integer;
+      CE_Timeout            : Integer;
+      No_Inlining           : Boolean;
+      Info                  : Boolean;
+      No_Loop_Unrolling     : Boolean;
+      Proof_Warnings        : Boolean;
+      Counterexamples       : Boolean;
+      Check_Counterexamples : Boolean;
    end record;
 
    package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps

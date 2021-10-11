@@ -8,7 +8,7 @@
 <path name="admin__str_comp.gnat-json"/>
 <theory name="Admin__str_comp__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1400"/></proof>
   </goal>
@@ -24,7 +24,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="2233"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="1429"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -34,13 +34,13 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="252"/></proof>
+  <proof prover="0"><result status="valid" steps="214"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="252"/></proof>
+  <proof prover="0"><result status="valid" steps="214"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <transf name="trivial_true" proved="true" >

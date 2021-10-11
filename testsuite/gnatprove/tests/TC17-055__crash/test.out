@@ -24,4 +24,4 @@ marching_cubes_3.adb:24:33: info: loop invariant initialization proved (Trivial:
 marching_cubes_3.adb:24:33: info: loop invariant preservation proved (Trivial: 1 VC)
 marching_cubes_3.adb:25:10: info: precondition proved (Trivial: 1 VC)
 marching_cubes_3.adb:25:21: warning: "Y" is set by "Q" but not used after the call
-marching_cubes_3.ads:9:14: medium: postcondition might fail (e.g. when X = (C => (all => 0)) and X'Old = (C => null)) [possible fix: loop invariant at marching_cubes_3.adb:24 should mention X]
+marching_cubes_3.ads:9:14: medium: postcondition might fail [possible fix: loop invariant at marching_cubes_3.adb:24 should mention X]

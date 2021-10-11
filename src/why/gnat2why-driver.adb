@@ -28,7 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
-with Ada.Text_IO;
+with Ada.Text_IO;                     use Ada.Text_IO;
 with ALI.Util;                        use ALI.Util;
 with ALI;                             use ALI;
 with Atree;                           use Atree;
@@ -52,6 +52,7 @@ with GNAT.OS_Lib;                     use GNAT.OS_Lib;
 with GNAT.SHA1;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                   use GNATCOLL.JSON;
+with GNATCOLL.Utils;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
@@ -76,6 +77,7 @@ with Sinfo.Nodes;                     use Sinfo.Nodes;
 with Sinput;                          use Sinput;
 with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Definition;                use SPARK_Definition;
+with SPARK_RAC;                       use SPARK_RAC;
 with SPARK_Register;                  use SPARK_Register;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
 with SPARK_Util;                      use SPARK_Util;
@@ -87,7 +89,7 @@ with Stand;                           use Stand;
 with String_Utils;                    use String_Utils;
 with Switch;                          use Switch;
 with Tempdir;                         use Tempdir;
-with VC_Kinds;
+with VC_Kinds;                        use VC_Kinds;
 with Why;                             use Why;
 with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.To_Json;               use Why.Atree.To_Json;
@@ -755,6 +757,44 @@ package body Gnat2Why.Driver is
          --  SPARK code.
 
          Do_Ownership_Checking;
+
+         if Gnat2Why_Args.Debug_Exec_RAC then
+            declare
+
+               function Assertion (VC : VC_Kind) return String is
+                 (case VC is
+                     when VC_Assert => "ADA.ASSERTIONS.ASSERTION_ERROR",
+                     when others    => VC_Kind'Image (VC));
+               --  Return the name of the assertion that is triggered for at
+               --  the given VC.
+
+               Res : constant Result := SPARK_RAC.RAC_Execute
+                 (Unique_Main_Unit_Entity,
+                  VC_Kinds.Cntexample_File_Maps.Empty,
+                  Do_Sideeffects => True);
+            begin
+               case Res.Res_Kind is
+                  when Res_Normal =>
+                     null;
+                  when Res_Failure =>
+                     Put_Line (Standard_Error, "");
+                     Put_Line
+                       (Standard_Error,
+                        "raised " & Assertion (Res.Res_VC_Kind) &
+                          " : " & File_Name (Sloc (Res.Res_Node)) &
+                          ":" & GNATCOLL.Utils.Image
+                          (Integer (Get_Logical_Line_Number
+                           (Sloc (Res.Res_Node))), 0));
+                  when Res_Incomplete =>
+                     Put_Line
+                       (Standard_Error,
+                        "RAC incomplete: " & To_String (Res.Res_Reason));
+                  when Res_Stuck | Res_Not_Executed =>
+                     pragma Assert (False);
+               end case;
+            end;
+            return;
+         end if;
 
          --  Start the translation to Why
 

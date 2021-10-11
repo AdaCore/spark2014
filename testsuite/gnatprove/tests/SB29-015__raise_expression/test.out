@@ -26,9 +26,9 @@ test_raise.adb:60:30: medium: assertion might fail, cannot prove Y = Integer'(..
 test_raise.adb:60:43: medium: exception might be raised
 test_raise.adb:62:25: medium: assertion might fail [possible fix: precondition of subprogram at line 45 should mention X and Y]
 test_raise.adb:62:44: medium: exception might be raised
-test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else ... (e.g. when X = -3 and Y = -3) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
-test_raise.adb:71:07: medium: precondition might fail (e.g. when X = 1) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
-test_raise.adb:73:07: medium: precondition might fail (e.g. when X = -1) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else ... [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:71:07: medium: precondition might fail [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:73:07: medium: precondition might fail [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 test_raise.adb:75:07: info: precondition proved (CVC4: 5 VC; Trivial: 3 VC)
 test_raise.adb:78:19: medium: assertion might fail
 test_raise.adb:78:29: info: precondition proved (CVC4: 1 VC)

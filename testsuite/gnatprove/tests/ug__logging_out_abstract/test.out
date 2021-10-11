@@ -1,6 +1,6 @@
 logging_out_abstract.adb:9:53: info: initialization of "Log_Out" constituent of "State" proved
 
-logging_out_abstract.adb:13:22: medium: overflow check might fail, cannot prove lower bound for Total + Incr
+logging_out_abstract.adb:13:22: high: overflow check might fail, cannot prove lower bound for Total + Incr
    13 |      Total := Total + Incr;
       |               ~~~~~~^~~~~~
   e.g. when Incr = -1

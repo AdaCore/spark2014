@@ -8,34 +8,34 @@
 <path name="ghc_sort__all_sorted.gnat-json"/>
 <theory name="Ghc_sort__all_sorted__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+ <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="3584"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="3650"/></proof>
+  <proof prover="0"><result status="valid" steps="3631"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="19680"/></proof>
+  <proof prover="0"><result status="valid" steps="17951"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="19157"/></proof>
+  <proof prover="0"><result status="valid" steps="17428"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="3750"/></proof>
+  <proof prover="0"><result status="valid" steps="3690"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="11076"/></proof>
+  <proof prover="0"><result status="valid" steps="9221"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="20052"/></proof>
+  <proof prover="0"><result status="valid" steps="18197"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="3842"/></proof>
+  <proof prover="0"><result status="valid" steps="3886"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <transf name="trivial_true" proved="true" >

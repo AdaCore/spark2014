@@ -7,3 +7,4 @@ forgetful_assert.adb:12:19: medium: assertion might fail
    12 |   pragma Assert (X = 1);
       |                  ^~~~~
   e.g. when X = 2
+  possible fix: add or complete related loop invariants or postconditions

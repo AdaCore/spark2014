@@ -11137,16 +11137,13 @@ package body Gnat2Why.Expr is
          -----------------------
 
          function Constrain_Value_At_Index
-           (Expr : Node_Id) return W_Pred_Id;
+           (Expr : Node_Id; Indexes : W_Expr_Array) return W_Pred_Id;
          --  Return the proposition that the array Arr at the indices Indexes
          --  is equal to the value given in Expr.
 
-         function Is_Simple_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id) return Boolean;
-         --  Detect whether aggregate Expr has no "others" or range choices,
-         --  multiple choices in an association, or iterated component
-         --  associations.
+         function Lookup_Value (Arg : Node_Id) return W_Term_Id;
+         --  Lookup the value associated to Arg in the Args and convert it
+         --  to the base type for the index.
 
          function Select_Nth_Index
            (Dim    : Pos;
@@ -11161,28 +11158,19 @@ package body Gnat2Why.Expr is
          --  an aggregate of a delta aggregate, the (possibly dynamic) choices
          --  will be pulled from the arguments to the logic function.
 
-         function Transform_Rec_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id) return W_Pred_Id;
+         procedure Transform_Aggregate_Values
+           (Expr          : Node_Id;
+            Simple_Assocs : out W_Pred_Id;
+            Other_Assocs  : out W_Pred_Id);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
-
-         function Transform_Rec_Simple_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id) return W_Pred_Id
-         with Pre => not In_Delta_Aggregate
-           and then Is_Simple_Aggregate (Dim, Expr);
-         --  Specialized version of Transform_Rec_Aggregate when the aggregate
-         --  is simple, as defined by Is_Simple_Aggregate. We generate a
-         --  conjunctions giving the actual value of each array cell instead of
-         --  a quantified expression.
 
          ------------------------------
          -- Constrain_Value_At_Index --
          ------------------------------
 
          function Constrain_Value_At_Index
-           (Expr : Node_Id) return W_Pred_Id
+           (Expr : Node_Id; Indexes : W_Expr_Array) return W_Pred_Id
          is
             --  Note that Expr here can be the updated expression in the
             --  default case of the logic function of a delta aggregate.
@@ -11334,79 +11322,18 @@ package body Gnat2Why.Expr is
             end if;
          end Constrain_Value_At_Index;
 
-         -------------------------
-         -- Is_Simple_Aggregate --
-         -------------------------
+         ------------------
+         -- Lookup_Value --
+         ------------------
 
-         function Is_Simple_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id) return Boolean
-         is
-            Exprs       : constant List_Id := Expressions (Expr);
-            Assocs      : constant List_Id := Component_Associations (Expr);
-            Association : Node_Id;
-            Expression  : Node_Id;
-
+         function Lookup_Value (Arg : Node_Id) return W_Term_Id is
+            Val : constant W_Term_Id :=
+              +Ada_Ent_To_Why.Element (Args, Arg).Main.B_Name;
          begin
-            Expression  := Nlists.First (Exprs);
-            Association := Nlists.First (Assocs);
-
-            while Present (Expression) loop
-               --  For multi-dimensional aggregates, recurse
-
-               pragma Assert
-                 (if Dim < Num_Dim then Nkind (Expression) = N_Aggregate);
-
-               if Dim < Num_Dim
-                 and then not Is_Simple_Aggregate (Dim + 1, Expression)
-               then
-                  return False;
-               end if;
-
-               Next (Expression);
-            end loop;
-
-            while Present (Association) loop
-
-               --  Check that there are no iterated component associations
-
-               if Nkind (Association) = N_Iterated_Component_Association then
-                  return False;
-               end if;
-
-               --  Check that there is only one choice, and it is neither a
-               --  range not a dynamic value.
-
-               declare
-                  Only_Choice : constant Node_Id :=
-                    First (Choice_List (Association));
-               begin
-                  if List_Length (Choice_List (Association)) /= 1
-                      or else Discrete_Choice_Is_Range (Only_Choice)
-                      or else not Compile_Time_Known_Value (Only_Choice)
-                  then
-                     return False;
-                  end if;
-               end;
-
-               --  For multi-dimensional aggregates, recurse
-
-               Expression := SPARK_Atree.Expression (Association);
-
-               pragma Assert
-                 (if Dim < Num_Dim then Nkind (Expression) = N_Aggregate);
-
-               if Dim < Num_Dim
-                 and then not Is_Simple_Aggregate (Dim + 1, Expression)
-               then
-                  return False;
-               end if;
-
-               Next (Association);
-            end loop;
-
-            return True;
-         end Is_Simple_Aggregate;
+            return Insert_Simple_Conversion
+              (Expr => Val,
+               To   => Base_Why_Type_No_Bool (+Val));
+         end Lookup_Value;
 
          ----------------------
          -- Select_Nth_Index --
@@ -11451,23 +11378,6 @@ package body Gnat2Why.Expr is
            (Dim : Pos;
             L   : List_Id) return W_Pred_Id
          is
-            function Lookup_Value (Arg : Node_Id) return W_Term_Id;
-            --  Lookup the value associated to Arg in the Args and convert it
-            --  to the base type for the index.
-
-            ------------------
-            -- Lookup_Value --
-            ------------------
-
-            function Lookup_Value (Arg : Node_Id) return W_Term_Id is
-               Val : constant W_Term_Id :=
-                 +Ada_Ent_To_Why.Element (Args, Arg).Main.B_Name;
-            begin
-               return Insert_Simple_Conversion
-                 (Expr => Val,
-                  To   => Base_Why_Type_No_Bool (+Val));
-            end Lookup_Value;
-
             Result   : W_Pred_Id := False_Pred;
             Choice   : Node_Id := First (L);
             Rng_Expr : W_Pred_Id;
@@ -11563,280 +11473,417 @@ package body Gnat2Why.Expr is
             return Result;
          end Select_These_Choices;
 
-         -----------------------------
-         -- Transform_Rec_Aggregate --
-         -----------------------------
+         --------------------------------
+         -- Transform_Aggregate_Values --
+         --------------------------------
 
-         function Transform_Rec_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id) return W_Pred_Id
+         procedure Transform_Aggregate_Values
+           (Expr          : Node_Id;
+            Simple_Assocs : out W_Pred_Id;
+            Other_Assocs  : out W_Pred_Id)
          is
-            function Constrain_Value_Or_Recurse
-              (Expr : Node_Id) return W_Pred_Id
-            is (if Dim < Num_Dim and then not In_Delta_Aggregate
-                then Transform_Rec_Aggregate (Dim + 1, Expr)
-                else Constrain_Value_At_Index (Expr));
+            function Transform_Complex_Association
+              (Dim           : Pos;
+               Expr_Or_Assoc : Node_Id) return W_Pred_Id;
+            --  Either constrains the value at Aggr (Indexes) with the value
+            --  Expr_Or_Assoc if we have reached the last dimension, or call
+            --  Transform_Rec_Complex_Aggregate recursively.
+            --  Also stores indexes of iterated component association in the
+            --  symbol map when necessary.
 
-            procedure Transform_Association
-              (Association : Node_Id;
-               Condition   : out W_Pred_Id;
-               Then_Part   : out W_Pred_Id)
-            with Pre => Nkind (Association) in
-                N_Component_Association | N_Iterated_Component_Association;
-            --  Generate expressions corresponding to the condition and
-            --  consequence from an association.
+            procedure Transform_Rec_Aggregate
+              (Dim  : Pos;
+               Expr : Node_Id;
+               Pre  : W_Pred_Id)
+            with Pre => (Dim = 1) = (Pre = True_Pred);
+            --  Stores in V_Simple_Assocs the association corresponding to a
+            --  single value of each index and in V_Other_Assocs the other
+            --  associations. V_Other_Assocs links values of Aggr (Indexes)
+            --  while V_Simple_Assocs gives the value of each association
+            --  directly.
+            --  Pre is the guard expressing that all indexes up to Dim have
+            --  the values of Values.
 
-            ---------------------------
-            -- Transform_Association --
-            ---------------------------
+            function Transform_Rec_Complex_Aggregate
+              (Dim  : Pos;
+               Expr : Node_Id) return W_Pred_Id;
+            --  Generate a predicate giving the definition of Aggr (Indexes)
+            --  for values in Expr.
 
-            procedure Transform_Association
-              (Association : Node_Id;
-               Condition   : out W_Pred_Id;
-               Then_Part   : out W_Pred_Id)
+            Values          : W_Expr_Array (1 .. Positive (Num_Dim));
+            --  Array in which the specific value of each simple index is
+            --  stored.
+            use all type W_Pred_Vectors.Vector;
+            V_Simple_Assocs : W_Pred_Vectors.Vector;
+            V_Other_Assocs  : W_Pred_Vectors.Vector;
+
+            -----------------------------------
+            -- Transform_Complex_Association --
+            -----------------------------------
+
+            function Transform_Complex_Association
+              (Dim           : Pos;
+               Expr_Or_Assoc : Node_Id) return W_Pred_Id
             is
+               Expr : constant Node_Id :=
+                 (if Nkind (Expr_Or_Assoc) in N_Iterated_Component_Association
+                                            | N_Component_Association
+                  then Expression (Expr_Or_Assoc) else Expr_Or_Assoc);
             begin
-               Condition := Select_These_Choices
-                 (Dim, Choice_List (Association));
-
                --  For iterated component associations, we need to introduce
                --  quantified variable in the symbol table. We map it to the
                --  current index variable.
 
-               if Nkind (Association) = N_Iterated_Component_Association then
-                  Insert_Entity (Defining_Identifier (Association),
-                                 +Indexes (Positive (Dim)));
-
-                  Then_Part := Constrain_Value_Or_Recurse
-                    (SPARK_Atree.Expression (Association));
-               else
-                  Then_Part := Constrain_Value_Or_Recurse
-                    (SPARK_Atree.Expression (Association));
+               if Nkind (Expr_Or_Assoc) = N_Iterated_Component_Association then
+                  Insert_Entity
+                    (Defining_Identifier (Expr_Or_Assoc),
+                     +Indexes (Positive (Dim)));
                end if;
-            end Transform_Association;
 
-            Exprs    : constant List_Id :=
-              (if Nkind (Expr) = N_Delta_Aggregate then No_List
-               else Expressions (Expr));
-            Assocs   : constant List_Id := Component_Associations (Expr);
+               if Dim < Num_Dim and then not In_Delta_Aggregate then
+                  return Transform_Rec_Complex_Aggregate (Dim + 1, Expr);
+               else
+                  return Constrain_Value_At_Index (Expr, Indexes);
+               end if;
+            end Transform_Complex_Association;
 
-            Association : Node_Id;
-            Assocs_Len  : Nat := List_Length (Assocs);
-            Expression  : Node_Id;
-            Exprs_Len   : constant Nat := List_Length (Exprs);
-            Else_Part   : W_Pred_Id := True_Pred;
+            -----------------------------
+            -- Transform_Rec_Aggregate --
+            -----------------------------
 
-         --  Start of processing for Transform_Rec_Aggregate
+            procedure Transform_Rec_Aggregate
+              (Dim  : Pos;
+               Expr : Node_Id;
+               Pre  : W_Pred_Id)
+            is
+               Exprs       : constant List_Id :=
+                 (if In_Delta_Aggregate then Empty_List
+                  else Expressions (Expr));
+               Assocs      : constant List_Id := Component_Associations (Expr);
+               Assocs_Len  : constant Natural :=
+                 Integer (List_Length (Assocs));
+               Association : Node_Id;
+               Expression  : Node_Id;
+               Condition   : W_Pred_Vectors.Vector;
 
-         begin
-            --  Starting with last association/expression
+            begin
+               Expression  := Nlists.First (Exprs);
+               Association := Nlists.First (Assocs);
 
-            Association :=
-              (if Nlists.Is_Empty_List (Assocs) then Empty
-               else Nlists.Last (Assocs));
-            Expression :=
-              (if Nlists.Is_Empty_List (Exprs) then Empty
-               else Nlists.Last (Exprs));
+               --  On a positional aggregate, all associations are simple.
+               --  Store the nth index in Values and either constrain the
+               --  value of Aggr or continue the recursion.
 
-            --  First, generate else part
+               if Present (Expression) then
+                  for Offset in 1 .. List_Length (Exprs) loop
+                     declare
+                        Value : constant W_Term_Id :=
+                          Select_Nth_Index (Dim, Offset - 1);
+                        Cond  : constant W_Pred_Id := New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => +Indexes (Integer (Dim)),
+                           Right  => Value);
 
-            if Present (Association) then
+                     begin
+                        Values (Integer (Dim)) := +Value;
+                        Append (V    => Condition,
+                                Pred => New_Not (Right => Cond));
+
+                        if Dim = Num_Dim then
+                           Append (V    => V_Simple_Assocs,
+                                   Pred => Constrain_Value_At_Index
+                                     (Expression, Values));
+                        else
+                           Transform_Rec_Aggregate
+                             (Dim  => Dim + 1,
+                              Expr => Expression,
+                              Pre  => New_And_Pred (Pre, Cond));
+                        end if;
+                     end;
+                     Next (Expression);
+                  end loop;
+
+               else
+                  pragma Assert (Present (Association));
+
+                  --  Go over the choices  which are not the others choice.
+                  --  Note that a single choice is handled as an others choice.
+                  --  Along the way, store in Condition, the condition for the
+                  --  others or default choice.
+
+                  if In_Delta_Aggregate or else Assocs_Len > 1 then
+                     loop
+                        declare
+                           Cond : constant W_Pred_Id := Select_These_Choices
+                             (Dim, Choice_List (Association));
+
+                        begin
+                           Append (V    => Condition,
+                                   Pred => New_Not (Right => Cond));
+
+                           --  An association is simple if there is only one
+                           --  choice, and it is neither a range nor an
+                           --  iterated component association.
+
+                           if Nkind (Association) /=
+                             N_Iterated_Component_Association
+                             and then
+                               List_Length (Choice_List (Association)) = 1
+                             and then not Discrete_Choice_Is_Range
+                               (First (Choice_List (Association)))
+                           then
+
+                              --  The choice is simple, store the value in
+                              --  Values and continue the recursion.
+
+                              declare
+                                 Choice : constant Node_Id := First
+                                   (Choice_List (Association));
+                              begin
+                                 Values (Integer (Dim)) :=
+                                   (if In_Delta_Aggregate
+                                    then +Lookup_Value (Choice)
+                                    else Transform_Expr
+                                      (Expr          => Choice,
+                                       Expected_Type => Base_Why_Type_No_Bool
+                                         (Etype (Choice)),
+                                       Domain        => EW_Term,
+                                       Params        => Params));
+                              end;
+
+                              if Dim = Num_Dim then
+                                 Append
+                                   (V    => V_Simple_Assocs,
+                                    Pred => Constrain_Value_At_Index
+                                      (SPARK_Atree.Expression (Association),
+                                       Values));
+                              else
+                                 Transform_Rec_Aggregate
+                                   (Dim  => Dim + 1,
+                                    Expr =>
+                                      SPARK_Atree.Expression (Association),
+                                    Pre  => New_And_Pred (Pre, Cond));
+                              end if;
+
+                           --  The choice is not simple, we resort to the
+                           --  translation involving a quantifier. We store it
+                           --  in Other_Assocs.
+
+                           else
+                              Append
+                                (V    => V_Other_Assocs,
+                                 Pred => New_Conditional
+                                   (Condition => New_And_Pred (Pre, Cond),
+                                    Then_Part => Transform_Complex_Association
+                                      (Dim, Association)));
+                           end if;
+                           Next (Association);
+
+                           --  Exit the loop when we have reached the end of
+                           --  the associations or the others choice.
+
+                           exit when No (Association)
+                             or else (not In_Delta_Aggregate
+                                      and then List_Length
+                                        (Choice_List (Association)) = 1
+                                      and then Nkind
+                                        (First (Choice_List (Association))) =
+                                          N_Others_Choice);
+                        end;
+                     end loop;
+                  end if;
+               end if;
 
                --  For delta aggregates, the prefix is used for the default
                --  value in the logic function.
 
                if In_Delta_Aggregate then
-                  Else_Part :=
-                    Constrain_Value_Or_Recurse (Update_Prefix);
+                  Append
+                    (V    => V_Other_Assocs,
+                     Pred => New_Conditional
+                       (Condition => New_And_Pred
+                          (Pre & To_Array (Condition)),
+                        Then_Part => Constrain_Value_At_Index
+                          (Update_Prefix, Indexes)));
 
                --  Special case for "others" choice, which must appear alone as
                --  last association and for aggregates with only one
                --  association, as their choice might not be static.
 
-               elsif (List_Length (Choice_List (Association)) = 1
-                      and then Nkind (First (Choice_List (Association))) =
-                        N_Others_Choice)
-                 or else Assocs_Len = 1
-               then
+               elsif Present (Association) then
+                  pragma Assert (No (Next (Association)));
+
                   if not Box_Present (Association) then
-                     if Nkind (Association) = N_Iterated_Component_Association
-                     then
-                        Insert_Entity (Defining_Identifier (Association),
-                                       +Indexes (Positive (Dim)));
+                     Append
+                       (V    => V_Other_Assocs,
+                        Pred => New_Conditional
+                          (Condition => New_And_Pred
+                             (Pre & To_Array (Condition)),
+                           Then_Part => Transform_Complex_Association
+                             (Dim, Association)));
+                  end if;
+               end if;
+            end Transform_Rec_Aggregate;
+
+            -------------------------------------
+            -- Transform_Rec_Complex_Aggregate --
+            -------------------------------------
+
+            function Transform_Rec_Complex_Aggregate
+              (Dim  : Pos;
+               Expr : Node_Id) return W_Pred_Id
+            is
+               Exprs       : constant List_Id :=
+                 (if In_Delta_Aggregate then Empty_List
+                  else Expressions (Expr));
+               Assocs      : constant List_Id := Component_Associations (Expr);
+               Association : Node_Id := (if Is_Empty_List (Assocs) then Empty
+                                         else Nlists.Last (Assocs));
+               Expression  : Node_Id := Nlists.First (Exprs);
+               Assocs_Len  : constant Natural :=
+                 Integer (List_Length (Assocs));
+               Has_Others  : constant Boolean :=
+                 not In_Delta_Aggregate
+                 and then Present (Association)
+                 and then List_Length (Choice_List (Association)) = 1
+                 and then Nkind (First (Choice_List (Association))) =
+                 N_Others_Choice;
+               Else_Part   : constant W_Pred_Id :=
+                 (if In_Delta_Aggregate
+                  then Constrain_Value_At_Index (Update_Prefix, Indexes)
+                  elsif Has_Others and then Assocs_Len > 1
+                  then Transform_Complex_Association (Dim, Association)
+                  else True_Pred);
+
+            begin
+               --  We go over the expressions/associations and generate:
+               --
+               --  if <Choice1> then Aggr (Indexes) = <Expr1>
+               --  elsif <Choice2> then ...
+               --  else Aggr (Indexes) = <Expr_Others>
+               --      or Update_Prefix (Indexes) in case of delta aggregates
+               --
+               --  Associations are taken in the reverse order to accomodate
+               --  the semantics of delta aggregates.
+
+               if Present (Expression) then
+                  pragma Assert (No (Association));
+
+                  declare
+                     Then_Part   : constant W_Pred_Id :=
+                       Transform_Complex_Association (Dim, Expression);
+                     Elsif_Parts : W_Expr_Array
+                       (1 .. Integer (List_Length (Exprs)) - 1);
+                  begin
+                     Next (Expression);
+
+                     for Offset in 1 .. List_Length (Exprs) - 1 loop
+                        pragma Assert (Present (Expression));
+                        Elsif_Parts (Integer (Offset)) := New_Elsif
+                          (Condition =>
+                             New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   => +Indexes (Integer (Dim)),
+                                Right  => +Select_Nth_Index (Dim, Offset),
+                                Domain => EW_Pred),
+                           Then_Part =>
+                             +Transform_Complex_Association (Dim, Expression),
+                           Domain    => EW_Pred);
+                        Next (Expression);
+                     end loop;
+
+                     pragma Assert (No (Expression));
+                     return New_Conditional
+                       (Condition   =>
+                          New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => +Indexes (Integer (Dim)),
+                             Right  => Select_Nth_Index (Dim, 0)),
+                        Then_Part   => Then_Part,
+                        Elsif_Parts => Elsif_Parts,
+                        Else_Part   => Else_Part);
+                  end;
+
+               else
+                  pragma Assert (Present (Association));
+
+                  declare
+                     Cond        : W_Pred_Id;
+                     Then_Part   : W_Pred_Id;
+                     Elsif_Parts : W_Expr_Array
+                       (1 .. Assocs_Len - (if Has_Others then 2 else 1));
+
+                  begin
+                     --  If there is an "others" choice, skip it
+
+                     if Assocs_Len > 1 and then Has_Others then
+                        Prev (Association);
                      end if;
 
-                     Else_Part := Constrain_Value_Or_Recurse
-                       (SPARK_Atree.Expression (Association));
-                  end if;
+                     --  Store the last not "others" choice in Then_Part. We
+                     --  only store the condition in Cond if there is more than
+                     --  1 choice.
 
-                  --  Drop the last element
+                     Cond :=
+                       (if Assocs_Len = 1 and then not In_Delta_Aggregate
+                        then True_Pred
+                        else Select_These_Choices
+                          (Dim, Choice_List (Association)));
 
-                  Prev (Association);
-                  Assocs_Len := Assocs_Len - 1;
-               end if;
-            end if;
+                     Then_Part := Transform_Complex_Association
+                       (Dim, Association);
+                     Prev (Association);
 
-            --  Go over expressions or associations to generate the elsif parts
+                     --  Go over the remaining associations in reverse order
 
-            if Present (Expression) then
-               pragma Assert (No (Association));
+                     for Count in Elsif_Parts'Range loop
+                        pragma Assert (Present (Association));
 
-               declare
-                  Elsif_Parts : W_Expr_Array (1 .. Integer (Exprs_Len) - 1);
-               begin
-                  for Offset in reverse 1 .. Exprs_Len - 1 loop
-                     Elsif_Parts (Integer (Offset)) := +New_Elsif
-                       (Condition =>
-                          New_Comparison
-                            (Symbol    => Why_Eq,
-                             Left      => +Indexes (Integer (Dim)),
-                             Right     => Select_Nth_Index (Dim, Offset)),
-                        Then_Part =>
-                          Constrain_Value_Or_Recurse (Expression));
-                     Prev (Expression);
-                  end loop;
+                        Elsif_Parts (Count) := +New_Elsif
+                          (Condition => Select_These_Choices
+                             (Dim, Choice_List (Association)),
+                           Then_Part => Transform_Complex_Association
+                             (Dim, Association));
 
-                  return New_Conditional
-                    (Condition   =>
-                       New_Comparison
-                         (Symbol    => Why_Eq,
-                          Left      => +Indexes (Integer (Dim)),
-                          Right     => Select_Nth_Index (Dim, 0)),
-                     Then_Part   =>
-                       Constrain_Value_Or_Recurse (Expression),
-                     Elsif_Parts => Elsif_Parts,
-                     Else_Part   => Else_Part);
-               end;
-
-            elsif Present (Association) then
-               declare
-                  Condition   : W_Pred_Id;
-                  Then_Part   : W_Pred_Id;
-                  Elsif_Parts : W_Expr_Array (1 .. Integer (Assocs_Len) - 1);
-               begin
-                  --  The conditional in the logic function axiom must be
-                  --  generated in the reverse order of the associations
-                  --  for delta semantics which allows duplicate choices.
-                  --  For a normal aggregate this order does not matter since
-                  --  they cannot have overlapping choices. So we share this
-                  --  implementation.
-                  --
-                  --  Generate If condition and Then part:
-                  --
-                  --  The first condition (if) in the axiom corresponds to
-                  --  the last association:
-
-                  Transform_Association (Association, Condition, Then_Part);
-                  Prev (Association);
-
-                  --  If we have any more associations they go into
-                  --  the elsif branches, in reverse order:
-
-                  if Present (Association) then
-
-                     --  Loop to generate Elsif Then parts.
-
-                     for Offset in reverse 1 .. Assocs_Len - 1 loop
-
-                        --  Store in reverse order here (Assocs_Len - Offset)
-                        declare
-                           Elsif_Cond : W_Pred_Id;
-                           Elsif_Then : W_Pred_Id;
-                        begin
-                           Transform_Association
-                             (Association, Elsif_Cond, Elsif_Then);
-
-                           Elsif_Parts (Integer (Assocs_Len - Offset)) :=
-                             +New_Elsif
-                               (Condition => Elsif_Cond,
-                                Then_Part => Elsif_Then);
-                        end;
                         Prev (Association);
                      end loop;
-                  end if;
 
-                  --  Finally, generate the whole ITE
-                  return
-                    New_Conditional (Condition   => Condition,
-                                     Then_Part   => Then_Part,
-                                     Elsif_Parts => Elsif_Parts,
-                                     Else_Part   => Else_Part);
-               end;
-            else
-               return Else_Part;
-            end if;
-         end Transform_Rec_Aggregate;
+                     pragma Assert (No (Association));
 
-         ------------------------------------
-         -- Transform_Rec_Simple_Aggregate --
-         ------------------------------------
+                     if Assocs_Len = 1 and then not In_Delta_Aggregate then
+                        return Then_Part;
+                     else
+                        return New_Conditional
+                          (Condition   => Cond,
+                           Then_Part   => Then_Part,
+                           Elsif_Parts => Elsif_Parts,
+                           Else_Part   => Else_Part);
+                     end if;
+                  end;
+               end if;
+            end Transform_Rec_Complex_Aggregate;
 
-         function Transform_Rec_Simple_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id) return W_Pred_Id
-         is
-            function Constrain_Value_Or_Recurse
-              (Expr : Node_Id) return W_Pred_Id
-            is (if Dim < Num_Dim and then not In_Delta_Aggregate
-                then Transform_Rec_Simple_Aggregate (Dim + 1, Expr)
-                else Constrain_Value_At_Index (Expr));
-
-            Exprs       : constant List_Id := Expressions (Expr);
-            Assocs      : constant List_Id := Component_Associations (Expr);
-            Association : Node_Id;
-            Expression  : Node_Id;
+         --  Start of processing for Transform_Aggregate_Values
 
          begin
-            Expression  := Nlists.First (Exprs);
-            Association := Nlists.First (Assocs);
+            --  Use a new scope for indexes of iterated component associations
 
-            if Present (Expression) then
-               pragma Assert (No (Association));
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-               declare
-                  Conjuncts : W_Pred_Array
-                    (1 .. Integer (List_Length (Exprs)));
-               begin
-                  for Offset in 1 .. List_Length (Exprs) loop
-                     Indexes (Integer (Dim)) :=
-                       +Select_Nth_Index (Dim, Offset - 1);
-                     Conjuncts (Integer (Offset)) :=
-                       Constrain_Value_Or_Recurse (Expression);
-                     Next (Expression);
-                  end loop;
+            --  For now, do not try to optimize the translation of delta
+            --  aggregate as the order of values is relevant.
 
-                  return New_And_Pred (Conjuncts);
-               end;
-
+            if In_Delta_Aggregate then
+               Simple_Assocs := True_Pred;
+               Other_Assocs := Transform_Rec_Complex_Aggregate (1, Expr);
             else
-               pragma Assert (Present (Association));
-
-               declare
-                  Conjuncts : W_Pred_Array
-                    (1 .. Integer (List_Length (Assocs)));
-               begin
-                  for Offset in 1 .. List_Length (Assocs) loop
-                     pragma Assert
-                       (List_Length (Choice_List (Association)) = 1);
-                     pragma Assert (not Box_Present (Association));
-
-                     Indexes (Integer (Dim)) :=
-                       Transform_Expr
-                         (Expr          => First (Choice_List (Association)),
-                          Expected_Type => Base_Why_Type_No_Bool
-                            (Etype (First (Choice_List (Association)))),
-                          Domain        => EW_Term,
-                          Params        => Params);
-                     Conjuncts (Integer (Offset)) :=
-                       Constrain_Value_Or_Recurse
-                         (SPARK_Atree.Expression (Association));
-                     Next (Association);
-                  end loop;
-
-                  return New_And_Pred (Conjuncts);
-               end;
+               Transform_Rec_Aggregate (1, Expr, True_Pred);
+               Simple_Assocs := New_And_Pred (To_Array (V_Simple_Assocs));
+               Other_Assocs := New_And_Pred (To_Array (V_Other_Assocs));
             end if;
-         end Transform_Rec_Simple_Aggregate;
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end Transform_Aggregate_Values;
 
       --  Start of processing for Transform_Array_Component_Associations
 
@@ -11862,24 +11909,26 @@ package body Gnat2Why.Expr is
 
          --  Create the proposition defining the aggregate
 
-         if not In_Delta_Aggregate
-           and then Is_Simple_Aggregate (Dim => 1, Expr => Expr)
-         then
-            return +Transform_Rec_Simple_Aggregate (Dim => 1, Expr => Expr);
-         else
-            declare
-               Result : W_Pred_Id;
-            begin
-               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-               Result := New_Universal_Quantif
+         declare
+            Simple_Assocs : W_Pred_Id;
+            Other_Assocs  : W_Pred_Id;
+         begin
+            Transform_Aggregate_Values
+              (Expr          => Expr,
+               Simple_Assocs => Simple_Assocs,
+               Other_Assocs  => Other_Assocs);
+
+            if Is_True_Boolean (+Other_Assocs) then
+               return Simple_Assocs;
+            else
+               Other_Assocs := New_Universal_Quantif
                  (Binders => Binders,
-                  Pred    =>
-                    +Transform_Rec_Aggregate
-                    (Dim => 1, Expr => Expr));
-               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-               return Result;
-            end;
-         end if;
+                  Pred    => Other_Assocs);
+               return New_And_Pred
+                 (Left  => Simple_Assocs,
+                  Right => Other_Assocs);
+            end if;
+         end;
       end Transform_Array_Component_Associations;
 
       --  Elements of the aggregate

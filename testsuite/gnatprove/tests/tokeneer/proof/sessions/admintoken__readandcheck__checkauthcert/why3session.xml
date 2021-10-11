@@ -8,7 +8,7 @@
 <path name="admintoken__readandcheck__checkauthcert.gnat-json"/>
 <theory name="Admintoken__readandcheck__checkauthcert__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -60,41 +60,41 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.13">
-  <proof prover="0"><result status="unknown" steps="20"/></proof>
+  <proof prover="0"><result status="unknown" steps="161"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.15">
-  <proof prover="0"><result status="unknown" steps="20"/></proof>
+  <proof prover="0"><result status="unknown" steps="161"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="43"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="83"/></proof>
   </goal>
   <goal name="def&#39;vc.18">
-  <proof prover="0"><result status="unknown" steps="101"/></proof>
+  <proof prover="0"><result status="unknown" steps="133"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="68"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="83"/></proof>
   </goal>
   <goal name="def&#39;vc.21">
-  <proof prover="0"><result status="unknown" steps="101"/></proof>
+  <proof prover="0"><result status="unknown" steps="95"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="68"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="61"/></proof>
   </goal>
  </transf>
  </goal>

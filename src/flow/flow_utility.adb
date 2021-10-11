@@ -49,6 +49,7 @@ with Flow_Classwide;
 with Flow_Debug;                      use Flow_Debug;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
+with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 
 package body Flow_Utility is
 
@@ -4096,20 +4097,30 @@ package body Flow_Utility is
             when N_Allocator =>
                declare
                   Expr : constant Node_Id := Expression (N);
+                  Def_Expr : Node_Id;
                begin
                   --  If the allocated expression is just a type name, then
-                  --  ignore it.
-                  --  ??? We shall pull dependencies coming from default
-                  --  expressions of the allocated record components.
+                  --  pull dependencies coming from default expressions of
+                  --  direct mappings or allocated record components.
 
                   if Is_Entity_Name (Expr)
                     and then Is_Type (Entity (Expr))
                   then
+                     for F of Flatten_Variable (Entity (Expr), Ctx.Scope) loop
+                        if F.Kind in Direct_Mapping | Record_Field then
+                           Def_Expr := Get_Default_Initialization (F);
+                           if Present (Def_Expr) then
+                              Variables.Union (Recurse (Def_Expr));
+                           end if;
+                        end if;
+                     end loop;
+
                      --  Subpools are not currently allowed in SPARK, but make
                      --  sure that we don't forget to traverse them if they
                      --  become allowed.
 
                      pragma Assert (No (Subpool_Handle_Name (N)));
+
                      return Skip;
                   else
                      return OK;

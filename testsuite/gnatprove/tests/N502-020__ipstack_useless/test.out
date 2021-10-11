@@ -1,21 +1,21 @@
 cascade.adb:1:20: warning: unused initial value of "X"
 cascade.adb:3:57: info: initialization of "Err" proved
 cascade.adb:4:11: info: data dependencies proved
-cascade.adb:7:18: medium: overflow check might fail, cannot prove lower bound for Nid + Buf (e.g. when Buf = -1 and Nid = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Buf >= 0 then Nid <= Integer'Last - Buf else Nid >= Integer'First - Buf) to subprogram at line 3]
+cascade.adb:7:18: high: overflow check might fail, cannot prove lower bound for Nid + Buf (e.g. when Buf = -1 and Nid = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Buf >= 0 then Nid <= Integer'Last - Buf else Nid >= Integer'First - Buf) to subprogram at line 3]
 cascade.adb:10:04: info: initialization of "T1" proved
 cascade.adb:10:08: info: initialization of "T2" proved
 cascade.adb:10:12: info: initialization of "T3" proved
 cascade.adb:10:16: info: initialization of "T4" proved
 cascade.adb:10:20: info: initialization of "T5" proved
 cascade.adb:13:07: warning: unused assignment
-cascade.adb:13:12: medium: overflow check might fail, cannot prove lower bound for X + X (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
+cascade.adb:13:12: high: overflow check might fail, cannot prove lower bound for X + X (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 cascade.adb:14:04: warning: statement has no effect
 cascade.adb:15:10: warning: unused assignment
 cascade.adb:17:10: warning: unused assignment
 cascade.adb:19:07: warning: unused assignment
 cascade.adb:19:13: info: overflow check proved (CVC4: 2 VC)
 cascade.adb:20:07: warning: unused assignment
-cascade.adb:20:12: medium: overflow check might fail, cannot prove upper bound for 2 * T3 (e.g. when T3 = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+cascade.adb:20:12: high: overflow check might fail, cannot prove upper bound for 2 * T3 (e.g. when T3 = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 cascade.adb:21:07: warning: unused assignment
 cascade.adb:23:04: warning: statement has no effect
 cascade.adb:23:24: warning: "Err" is set by "Link_Output" but not used after the call

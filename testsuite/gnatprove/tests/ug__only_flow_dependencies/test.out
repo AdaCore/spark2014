@@ -1,5 +1,5 @@
 
-only_flow_dependencies.adb:6:14: medium: overflow check might fail, cannot prove lower bound for V + X
+only_flow_dependencies.adb:6:14: high: overflow check might fail, cannot prove lower bound for V + X
     6 |      V := V + X;
       |           ~~^~~
   e.g. when V = Integer'First

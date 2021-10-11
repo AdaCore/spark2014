@@ -1,5 +1,5 @@
 
 raised CONSTRAINT_ERROR : sub.adb:2 overflow check failed
-sub.adb:2:13: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-sub.adb:2:17: medium: overflow check might fail, cannot prove lower bound for X + Y - 1 (e.g. when X = Integer'First and Y = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-sub.adb:3:11: medium: postcondition might fail, cannot prove X = Integer'last (e.g. when X = 1)
+sub.adb:2:13: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+sub.adb:2:17: high: overflow check might fail, cannot prove lower bound for X + Y - 1 (e.g. when X = Integer'First and Y = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+sub.adb:3:11: medium: postcondition might fail, cannot prove X = Integer'last

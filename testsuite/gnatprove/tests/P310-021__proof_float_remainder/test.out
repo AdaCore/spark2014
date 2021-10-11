@@ -5,5 +5,5 @@ foo.adb:9:17: medium: range check might fail [reason for check: value must fit i
 foo.adb:9:31: info: float overflow check proved (Trivial)
 foo.adb:12:04: warning: analyzing unreferenced procedure "Test_02"
 foo.adb:13:23: info: initialization of "C" proved
-foo.adb:16:17: medium: divide by zero might fail (e.g. when B = 0.0) [possible fix: add precondition (B /= 0) to subprogram at line 12]
+foo.adb:16:17: medium: divide by zero might fail [possible fix: add precondition (B /= 0) to subprogram at line 12]
 foo.adb:16:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 12 should mention A and B in a precondition]

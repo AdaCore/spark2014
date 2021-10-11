@@ -13,7 +13,7 @@ bounded_table.ads:24:13: info: subprogram "Empty_Table" will terminate, terminat
 bounded_table.ads:25:17: info: postcondition proved (CVC4: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:27:13: info: subprogram "Length" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:28:17: info: postcondition proved (CVC4: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:28:46: info: range check proved (CVC4: 2 VC), in instantiation at repro_main.adb:9
+bounded_table.ads:28:46: info: range check proved (CVC4: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:30:13: info: subprogram "Full" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:33:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:35:13: info: subprogram "Has_Element" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9

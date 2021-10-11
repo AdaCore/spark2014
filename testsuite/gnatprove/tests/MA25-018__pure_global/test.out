@@ -1,10 +1,10 @@
 p.adb:13:07: info: initialization of "L" proved
-p.adb:15:62: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at p.ads:4]
-p.adb:15:62: medium: range check might fail (e.g. when X = -1 and Y = 0) [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: add precondition (if Y >= 0 then X <= Unsigned_32'Last - Y else X >= Unsigned_32'First - Y) to subprogram at p.ads:4]
+p.adb:15:62: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at p.ads:4]
+p.adb:15:62: medium: range check might fail [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: add precondition (if Y >= 0 then X <= Unsigned_32'Last - Y else X >= Unsigned_32'First - Y) to subprogram at p.ads:4]
 p.adb:16:30: info: range check proved (CVC4: 2 VC)
 p.adb:20:07: info: initialization of "L" proved
-p.adb:22:38: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at p.ads:7]
-p.adb:22:38: medium: range check might fail (e.g. when X = -1 and Y = 0) [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: add precondition (if Y >= 0 then X <= Unsigned_32'Last - Y else X >= Unsigned_32'First - Y) to subprogram at p.ads:7]
+p.adb:22:38: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at p.ads:7]
+p.adb:22:38: medium: range check might fail [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: add precondition (if Y >= 0 then X <= Unsigned_32'Last - Y else X >= Unsigned_32'First - Y) to subprogram at p.ads:7]
 p.adb:23:30: info: range check proved (CVC4: 2 VC)
 p.ads:4:38: info: initialization of "Z" proved
 p.ads:5:11: info: flow dependencies proved

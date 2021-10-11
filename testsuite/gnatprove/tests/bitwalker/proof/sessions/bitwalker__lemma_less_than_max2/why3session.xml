@@ -12,7 +12,7 @@
 <path name="bitwalker__lemma_less_than_max2.gnat-json"/>
 <theory name="Bitwalker__lemma_less_than_max2__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+ <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
@@ -28,10 +28,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="2"><result status="valid" steps="40"/></proof>
+  <proof prover="2"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="2"><result status="valid" steps="40"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -48,9 +48,9 @@
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2" timelimit="20" memlimit="2000"><result status="valid" steps="296889"/></proof>
+  <proof prover="2" timelimit="20" memlimit="2000"><result status="valid" steps="117736"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
-  <proof prover="4"><result status="unknown" steps="105"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>

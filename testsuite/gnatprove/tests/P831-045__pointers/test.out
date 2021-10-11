@@ -24,14 +24,14 @@ n05.adb:22:19: warning: unused variable "A"
 n05.adb:29:20: warning: "A" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:29:36: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:29:52: info: initialization of "C" proved
-n05.adb:31:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: precondition of subprogram at line 29 should mention A]
-n05.adb:31:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all (e.g. when A.all = Integer'First and B.all = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 29 should mention A and B]
+n05.adb:31:18: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 29 should mention A]
+n05.adb:31:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 29 should mention A and B]
 n05.adb:31:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: precondition of subprogram at line 29 should mention B]
 n05.adb:36:21: warning: "A" is not modified, could be IN
 n05.adb:36:41: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:36:57: info: initialization of "C" proved
-n05.adb:38:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: subprogram at line 36 should mention A in a precondition]
-n05.adb:38:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all (e.g. when A.all = Integer'First and B.all = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention A and B in a precondition]
+n05.adb:38:18: medium: pointer dereference check might fail [possible fix: subprogram at line 36 should mention A in a precondition]
+n05.adb:38:22: medium: overflow check might fail, cannot prove lower bound for A.all + B..all [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention A and B in a precondition]
 n05.adb:38:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: subprogram at line 36 should mention B in a precondition]
 n05.adb:42:03: info: initialization of "AA0" proved
 n05.adb:42:08: info: initialization of "AA1" proved
@@ -43,7 +43,7 @@ n05.adb:49:07: warning: unused assignment
 n05.adb:49:10: high: "a1" is not initialized
 n05.adb:50:07: info: pointer dereference check proved (CVC4: 1 VC)
 n05.adb:50:11: warning: unused assignment
-n05.adb:51:05: medium: pointer dereference check might fail (e.g. when B = null)
+n05.adb:51:05: medium: pointer dereference check might fail
 n05.adb:51:09: warning: unused assignment
 n05.adb:52:05: warning: unused assignment
 n05.adb:53:03: info: precondition proved (Trivial: 1 VC)

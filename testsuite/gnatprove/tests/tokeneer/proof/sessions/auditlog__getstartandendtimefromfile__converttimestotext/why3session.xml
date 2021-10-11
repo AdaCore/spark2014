@@ -8,7 +8,7 @@
 <path name="auditlog__getstartandendtimefromfile__converttimestotext.gnat-json"/>
 <theory name="Auditlog__getstartandendtimefromfile__converttimestotext__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>
@@ -29,10 +29,10 @@
   <proof prover="0"><result status="valid" steps="61"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="130"/></proof>
+  <proof prover="0"><result status="valid" steps="146"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="130"/></proof>
+  <proof prover="0"><result status="valid" steps="162"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -58,10 +58,10 @@
   <proof prover="0"><result status="valid" steps="61"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="0"><result status="valid" steps="130"/></proof>
+  <proof prover="0"><result status="valid" steps="146"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="0"><result status="valid" steps="130"/></proof>
+  <proof prover="0"><result status="valid" steps="162"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <transf name="trivial_true" proved="true" >

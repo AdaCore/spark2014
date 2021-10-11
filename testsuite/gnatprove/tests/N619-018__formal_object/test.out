@@ -9,4 +9,4 @@ gen.ads:8:06: info: data dependencies proved, in instantiation at user.adb:8
 user.adb:5:04: info: initialization of "X" proved
 user.adb:6:04: info: initialization of "Y" proved
 user.adb:11:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
-user.adb:13:19: medium: assertion might fail (e.g. when Y = 1) [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
+user.adb:13:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]

@@ -12,7 +12,7 @@ subtype_check.adb:31:36: medium: predicate check might fail
 subtype_check.adb:36:14: warning: subprogram "Wrong_3" has no effect
 subtype_check.adb:37:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 subtype_check.adb:37:34: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-subtype_check.adb:37:34: medium: range check might fail (e.g. when Zero = 1) [reason for check: value must fit in the designated type of the allocator]
+subtype_check.adb:37:34: medium: range check might fail [reason for check: value must fit in the designated type of the allocator]
 subtype_check.adb:42:04: medium: memory leak might occur at end of scope
 subtype_check.adb:43:04: medium: memory leak might occur at end of scope
 subtype_check.adb:44:04: medium: memory leak might occur at end of scope

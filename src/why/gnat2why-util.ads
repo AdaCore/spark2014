@@ -174,6 +174,37 @@ package Gnat2Why.Util is
 
    Symbol_Table : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
 
+   package W_Pred_Vectors is
+      type Vector is limited private;
+      --  Ad-hoc type for a vector of predicate ids that can be used to create
+      --  conjunctions without knowing the number of conjuncts beforehand.
+
+      procedure Append (V : in out Vector; Pred : W_Pred_Id);
+      --  Append a predicate to the vector
+
+      function To_Array
+        (V    : in out Vector;
+         Init : EW_Literal := EW_True) return W_Pred_Array with
+        Post => Is_Empty (V);
+      --  Get the content of the vector as an array. Clear the vector. If the
+      --  vector is empty, return (1 => Init).
+
+      function Is_Empty (V : Vector) return Boolean;
+      --  Return true if V has no elements
+
+   private
+      type W_Pred_Array_Acc is access W_Pred_Array;
+
+      type Vector is record
+         Content : W_Pred_Array_Acc;
+         Top     : Natural := 0;
+      end record
+        with Predicate => Top = 0
+        or else (Content /= null and then Top in Content'Range);
+
+      function Is_Empty (V : Vector) return Boolean is (V.Top = 0);
+   end W_Pred_Vectors;
+
    Check_Information : Check_Info_Map.Map;
    --  Global table storing for each check extra information that is useful for
    --  generating better messages.

@@ -1,7 +1,7 @@
 numerics.ads:10:99: info: range check proved (Trivial)
 numerics.ads:13:99: info: range check proved (Trivial)
 numerics.ads:16:99: info: range check proved (Trivial)
-numerics.ads:16:99: medium: float overflow check might fail (e.g. when Left = 1.0458986E+0 and Right = -3.4020623E+38) [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 16 should mention Left and Right]
+numerics.ads:16:99: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 16 should mention Left and Right]
 numerics.ads:18:99: info: division check proved (CVC4: 1 VC)
 numerics.ads:18:99: info: range check proved (Trivial)
-numerics.ads:18:99: medium: float overflow check might fail (e.g. when Left = -1.8443290E+0 and Right = 2.9445330E-39) [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 18 should mention Left]
+numerics.ads:18:99: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 18 should mention Left]

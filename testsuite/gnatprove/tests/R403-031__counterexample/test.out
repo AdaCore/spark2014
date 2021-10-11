@@ -6,8 +6,8 @@ p.adb:25:07: info: initialization of "M" proved
 p.adb:25:10: info: initialization of "Bits_G" proved
 p.adb:25:18: info: initialization of "Res_G" proved
 p.adb:29:22: info: assertion proved (Trivial)
-p.adb:39:25: medium: assertion might fail (e.g. when M = U16'Last and Res = 0 and Res_G = U16'Last) [possible fix: loop at line 37 should mention M and Res and Res_G in a loop invariant]
-p.adb:40:25: medium: assertion might fail (e.g. when Bits_G = 0 and M = U16'Last) [possible fix: loop at line 37 should mention Bits_G and M in a loop invariant]
-p.adb:42:25: medium: assertion might fail (e.g. when B = 21845 and Bits = 21845 and Res = 21845) [possible fix: loop at line 37 should mention B and Res in a loop invariant]
-p.adb:43:25: medium: assertion might fail (e.g. when B = U16'Last and Bits_G = 0 and M = U16'Last and Res_G = 0) [possible fix: loop at line 37 should mention B and Bits_G and M and Res_G in a loop invariant]
+p.adb:39:25: medium: assertion might fail [possible fix: loop at line 37 should mention M and Res and Res_G in a loop invariant]
+p.adb:40:25: medium: assertion might fail [possible fix: loop at line 37 should mention Bits_G and M in a loop invariant]
+p.adb:42:25: medium: assertion might fail [possible fix: loop at line 37 should mention B and Res in a loop invariant]
+p.adb:43:25: medium: assertion might fail [possible fix: loop at line 37 should mention B and Bits_G and M and Res_G in a loop invariant]
 p.adb:53:23: info: division check proved (CVC4: 1 VC)

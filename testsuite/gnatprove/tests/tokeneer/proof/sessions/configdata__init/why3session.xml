@@ -8,12 +8,12 @@
 <path name="configdata__init.gnat-json"/>
 <theory name="Configdata__init__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="80"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="86"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="43"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="5"/></proof>
@@ -31,7 +31,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.6">
-  <proof prover="0"><result status="unknown" steps="127"/></proof>
+  <proof prover="0"><result status="unknown" steps="71"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -42,14 +42,14 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.9">
-  <proof prover="0"><result status="unknown" steps="127"/></proof>
+  <proof prover="0"><result status="unknown" steps="71"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.11">
-  <proof prover="0"><result status="unknown" steps="127"/></proof>
+  <proof prover="0"><result status="unknown" steps="71"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -68,7 +68,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.16">
-  <proof prover="0"><result status="unknown" steps="126"/></proof>
+  <proof prover="0"><result status="unknown" steps="90"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <transf name="trivial_true" proved="true" >

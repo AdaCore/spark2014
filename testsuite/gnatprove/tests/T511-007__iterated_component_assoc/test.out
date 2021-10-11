@@ -1,4 +1,4 @@
-test_aggr.adb:9:14: info: postcondition proved (Z3: 1 VC)
+test_aggr.adb:9:14: info: postcondition proved (CVC4: 1 VC)
 test_aggr.adb:9:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test_aggr.adb:9:46: info: index check proved (CVC4: 2 VC)
 test_aggr.adb:9:49: info: overflow check proved (CVC4: 2 VC)
@@ -32,11 +32,11 @@ test_aggr.adb:44:46: info: range check proved (CVC4: 2 VC)
 test_aggr.adb:44:60: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test_aggr.adb:44:66: info: index check proved (CVC4: 2 VC)
 test_aggr.adb:47:74: info: overflow check proved (CVC4: 2 VC)
-test_aggr.adb:51:41: medium: overflow check might fail, cannot prove upper bound for I + Rand (I) (e.g. when B'First = 1 and B'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
-test_aggr.adb:52:18: medium: range check might fail (e.g. when D'First = 1 and D'Last = 1)
+test_aggr.adb:51:41: medium: overflow check might fail, cannot prove upper bound for I + Rand (I) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
+test_aggr.adb:52:18: medium: range check might fail
 test_aggr.adb:52:30: info: range check proved (CVC4: 2 VC)
-test_aggr.adb:52:42: medium: overflow check might fail, cannot prove upper bound for Rand (0) + 15 (e.g. when D'First = 1 and D'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
-test_aggr.adb:53:33: medium: range check might fail (e.g. when E'First (1) = 15 and E'First (2) = 15 and E'Last (1) = 15 and E'Last (2) = 15)
+test_aggr.adb:52:42: medium: overflow check might fail, cannot prove upper bound for Rand (0) + 15 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
+test_aggr.adb:53:33: medium: range check might fail
 test_aggr.adb:53:36: info: range check proved (CVC4: 2 VC)
-test_aggr.adb:53:49: medium: overflow check might fail, cannot prove upper bound for Rand (-2) + 12 (e.g. when E'First (1) = 15 and E'First (2) = 15 and E'Last (1) = 15 and E'Last (2) = 15) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
+test_aggr.adb:53:49: medium: overflow check might fail, cannot prove upper bound for Rand (-2) + 12 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
 test_aggr.adb:55:04: info: precondition proved (CVC4: 3 VC)

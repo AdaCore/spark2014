@@ -80,10 +80,10 @@ a-cforse.ads:1398:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cforse.ads:1432:47: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
 a-cforse.ads:1447:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
 a-cforse.ads:1800:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:13
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19

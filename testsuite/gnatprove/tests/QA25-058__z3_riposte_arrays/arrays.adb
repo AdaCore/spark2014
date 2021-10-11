@@ -77,7 +77,7 @@ is
    function Is_Id_2 (M : in Char_Map;
                      C : in Character)
                     return Boolean
-     with Post => Is_Id_2'Result = (M (C) = C)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+     with Post => Is_Id_2'Result = (M (C) = C)  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
    is
    begin
       return M (C) = 'a';
@@ -101,7 +101,7 @@ is
    is
    begin
       C := M (C);
-      pragma Assert (C = Character'Val(0));  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (C = Character'Val(0));  --  @ASSERT:FAIL @ COUNTEREXAMPLE
    end Test_Id_2;
 
    procedure Test_A (M : in out Char_Map)
@@ -145,7 +145,7 @@ is
 
       pragma Assert (R.A(3) = 5);  --  @ASSERT:PASS
 
-      pragma Assert (R.A(1) = 5);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (R.A(1) = 5);  --  @ASSERT:FAIL @ COUNTEREXAMPLE
    end Test_I;
 
    procedure Test_J (S : in out String_T)

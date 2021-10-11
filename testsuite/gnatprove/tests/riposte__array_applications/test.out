@@ -25,8 +25,8 @@ array_applications.adb:61:09: info: flow dependencies proved
 array_applications.adb:62:20: medium: postcondition might fail
 array_applications.adb:69:27: medium: overflow check might fail, cannot prove upper bound for A(I - 1) + A(I - 2) [reason for check: result of addition must fit in a 32-bits machine integer]
 array_applications.adb:71:13: info: loop invariant initialization proved (CVC4: 5 VC)
-array_applications.adb:71:13: info: loop invariant preservation proved (CVC4: 5 VC)
 array_applications.adb:73:22: info: range check proved (CVC4: 4 VC)
+array_applications.adb:74:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A(J) = A(J - 1) + A(J - 2)
 array_applications.adb:74:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:74:27: info: index check proved (CVC4: 4 VC)
 array_applications.adb:74:32: medium: overflow check might fail, cannot prove upper bound for A(J - 1) + A(J - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
@@ -34,14 +34,14 @@ array_applications.adb:74:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:75:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:76:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:76:32: info: index check proved (CVC4: 4 VC)
-array_applications.adb:76:38: medium: overflow check might fail, cannot prove upper bound for 2**Natural(J) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+array_applications.adb:76:38: info: overflow check proved (CVC4: 3 VC; colibri: 1 VC)
 array_applications.adb:81:09: info: data dependencies proved
 array_applications.adb:82:09: info: flow dependencies proved
 array_applications.adb:83:20: medium: postcondition might fail
 array_applications.adb:90:27: medium: overflow check might fail, cannot prove upper bound for A(I - 1) + A(I - 2) [reason for check: result of addition must fit in a 32-bits machine integer]
 array_applications.adb:92:13: info: loop invariant initialization proved (CVC4: 5 VC)
-array_applications.adb:92:13: info: loop invariant preservation proved (CVC4: 5 VC)
 array_applications.adb:94:22: info: range check proved (CVC4: 4 VC)
+array_applications.adb:95:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A(J) = A(J - 1) + A(J - 2)
 array_applications.adb:95:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:95:27: info: index check proved (CVC4: 4 VC)
 array_applications.adb:95:32: medium: overflow check might fail, cannot prove upper bound for A(J - 1) + A(J - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
@@ -49,4 +49,4 @@ array_applications.adb:95:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:96:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:97:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:97:32: info: index check proved (CVC4: 4 VC)
-array_applications.adb:97:38: medium: overflow check might fail, cannot prove upper bound for 2**Natural(J) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+array_applications.adb:97:38: info: overflow check proved (CVC4: 3 VC; colibri: 1 VC)

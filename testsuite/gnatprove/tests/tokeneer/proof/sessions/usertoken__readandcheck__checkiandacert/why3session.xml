@@ -8,7 +8,7 @@
 <path name="usertoken__readandcheck__checkiandacert.gnat-json"/>
 <theory name="Usertoken__readandcheck__checkiandacert__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -64,14 +64,14 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.14">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="20"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="171"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.16">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="20"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="171"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -94,7 +94,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.23">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="116"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="143"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -117,7 +117,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.30">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="116"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="110"/></proof>
   </goal>
   <goal name="def&#39;vc.31" proved="true">
   <transf name="trivial_true" proved="true" >

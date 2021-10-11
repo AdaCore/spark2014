@@ -8,20 +8,20 @@
 <path name="configdata__validatefile__readalarmsilent.gnat-json"/>
 <theory name="Configdata__validatefile__readalarmsilent__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="unknown" steps="110"/></proof>
+  <proof prover="0"><result status="unknown" steps="79"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="unknown" steps="110"/></proof>
+  <proof prover="0"><result status="unknown" steps="79"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -32,7 +32,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.6">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="unknown" steps="101"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >

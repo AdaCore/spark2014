@@ -12,7 +12,7 @@ p.adb:18:35: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:21:14: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:21:19: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:22:44: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:23:20: medium: postcondition might fail (e.g. when H'Result = 0 and I = 1)
+p.adb:23:20: medium: postcondition might fail
 rec_inv.adb:13:08: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:15:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 rec_inv.adb:15:19: info: pointer dereference check proved (CVC4: 1 VC)

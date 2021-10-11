@@ -1,5 +1,5 @@
 
-increment.adb:5:11: medium: overflow check might fail, cannot prove upper bound for X + 1
+increment.adb:5:11: high: overflow check might fail, cannot prove upper bound for X + 1
     5 |   X := X + 1;
       |        ~~^~~
   e.g. when X = Integer'Last

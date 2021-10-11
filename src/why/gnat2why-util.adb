@@ -25,6 +25,7 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
+with Ada.Unchecked_Deallocation;
 with Atree;
 with Flow_Generated_Globals.Phase_2;
 with Flow_Types;
@@ -1785,6 +1786,58 @@ package body Gnat2Why.Util is
    begin
       return Typ in EW_Float_32_Type .. EW_Float_64_Type;
    end Why_Type_Is_Float;
+
+   --------------------
+   -- W_Pred_Vectors --
+   --------------------
+
+   package body W_Pred_Vectors is
+      procedure Free is new Ada.Unchecked_Deallocation
+        (W_Pred_Array, W_Pred_Array_Acc);
+
+      ------------
+      -- Append --
+      ------------
+
+      procedure Append (V : in out Vector; Pred : W_Pred_Id) is
+      begin
+         if V.Content = null then
+            V.Content := new W_Pred_Array (1 .. 10);
+         elsif V.Content'Last = V.Top then
+            declare
+               New_Size    : constant Natural := 3 * V.Top / 2;
+               New_Content : constant W_Pred_Array_Acc :=
+                 new W_Pred_Array (1 .. New_Size);
+            begin
+               New_Content (1 .. V.Top) := V.Content.all;
+               Free (V.Content);
+               V.Content := New_Content;
+            end;
+         end if;
+         V.Top := V.Top + 1;
+         V.Content (V.Top) := Pred;
+      end Append;
+
+      --------------
+      -- To_Array --
+      --------------
+
+      function To_Array
+        (V    : in out Vector;
+         Init : EW_Literal := EW_True) return W_Pred_Array
+      is
+      begin
+         if V.Top = 0 then
+            Free (V.Content);
+            return W_Pred_Array'(1 => New_Literal (Value => Init));
+         end if;
+
+         return Res : constant W_Pred_Array := V.Content (1 .. V.Top) do
+            Free (V.Content);
+            V.Top := 0;
+         end return;
+      end To_Array;
+   end W_Pred_Vectors;
 
 begin
    Update_Keywords (Why3_Keywords);

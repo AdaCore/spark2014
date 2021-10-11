@@ -1,5 +1,4 @@
 def my_plan():
-    anod_install("gnatpython", query_range=20)
     anod_install("stable-codepeer-core", query_range=20)
     anod_install("cvc4", query_range=20)
     anod_install("z3", query_range=20)

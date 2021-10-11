@@ -8,7 +8,7 @@
   +-- file [../add__addtwo.gnat-json]
     +-- theory Add__addtwo__subprogram_def
       +-- goal def'vc
-        +-- transformation split_goal_wp_conj
+        +-- transformation split_vc_conj
           +-- goal def'vc.0
           +-- goal def'vc.1
   
@@ -16,7 +16,7 @@
   +-- file [../add__addtwo.gnat-json]
     +-- theory Add__addtwo__subprogram_def
       +-- goal def'vc
-        +-- transformation split_goal_wp_conj
+        +-- transformation split_vc_conj
           +-- goal def'vc.2: CVC4 1.6-gnatprove
           +-- goal def'vc.3: CVC4 1.6-gnatprove
           +-- goal def'vc.5: CVC4 1.6-gnatprove
@@ -29,7 +29,7 @@
   CVC4 1.6-gnatprove  :   7   0.00   0.00   0.00
   
 add.adb:5:16: info: overflow check proved (CVC4: 2 VC)
-add.ads:3:47: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+add.ads:3:47: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 add.ads:3:62: info: overflow check proved (CVC4: 2 VC)
 add.ads:4:29: info: postcondition proved (CVC4: 1 VC)
 add.ads:4:47: info: overflow check proved (CVC4: 2 VC)

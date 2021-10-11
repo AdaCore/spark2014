@@ -1,2 +1,2 @@
 prepost.ads:2:14: warning: subprogram "F" has no effect
-prepost.ads:4:20: medium: postcondition might fail (e.g. when X = 1)
+prepost.ads:4:20: high: postcondition might fail (e.g. when X = 1)

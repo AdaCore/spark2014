@@ -11,5 +11,5 @@ mutable_discrs.adb:29:19: info: assertion proved (Trivial)
 mutable_discrs.adb:30:04: warning: statement has no effect
 mutable_discrs.adb:30:20: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 mutable_discrs.adb:30:20: warning: "A" is set by "Do_Something_3" but not used after the call
-mutable_discrs.adb:31:19: medium: assertion might fail (e.g. when V1 = (D => ?, F => 1) and V2 = (D => ?, F => 1))
+mutable_discrs.adb:31:19: medium: assertion might fail
 tagged_type.adb:20:19: info: assertion proved (Z3: 1 VC)

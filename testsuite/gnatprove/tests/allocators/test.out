@@ -1,9 +1,9 @@
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at list_allocator.ads:45
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at list_mod_allocator.ads:32
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 2 VC), in instantiation at simple_allocator.ads:26
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at list_allocator.ads:45
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at list_mod_allocator.ads:32
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 2 VC), in instantiation at simple_allocator.ads:26
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:45
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:32
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at simple_allocator.ads:26
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:45
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:32
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at simple_allocator.ads:26
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_allocator.ads:41
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_mod_allocator.ads:28
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at list_allocator.ads:41
@@ -20,7 +20,7 @@ a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
 list_allocator.adb:18:39: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:20:39: info: index check proved (CVC4: 2 VC)
-list_allocator.adb:33:26: info: overflow check proved (CVC4: 2 VC)
+list_allocator.adb:33:26: info: overflow check proved (CVC4: 1 VC)
 list_allocator.adb:35:42: info: precondition proved (CVC4: 2 VC)
 list_allocator.adb:40:14: info: precondition proved (CVC4: 2 VC)
 list_allocator.adb:42:20: info: index check proved (CVC4: 2 VC)
@@ -81,7 +81,7 @@ list_allocator.ads:64:19: info: precondition proved (CVC4: 2 VC)
 list_allocator.ads:65:19: info: precondition proved (CVC4: 4 VC; Trivial: 2 VC)
 list_allocator.ads:82:07: info: initialization of "Model" proved
 list_allocator.ads:88:21: info: initialization of "Res" proved
-list_allocator.ads:90:14: info: postcondition proved (CVC4: 1 VC)
+list_allocator.ads:90:14: info: postcondition proved (altergo: 1 VC)
 list_allocator.ads:96:38: info: contract case proved (CVC4: 3 VC; Trivial: 1 VC)
 list_allocator.ads:103:16: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
 list_allocator.ads:110:14: info: postcondition proved (CVC4: 1 VC)
@@ -286,7 +286,7 @@ simple_allocator.adb:42:43: info: precondition proved (CVC4: 4 VC)
 simple_allocator.adb:43:43: info: precondition proved (CVC4: 4 VC)
 simple_allocator.adb:46:16: info: loop invariant initialization proved (CVC4: 6 VC)
 simple_allocator.adb:46:16: info: loop invariant preservation proved (CVC4: 6 VC)
-simple_allocator.adb:46:31: info: overflow check proved (CVC4: 4 VC)
+simple_allocator.adb:46:31: info: overflow check proved (CVC4: 2 VC)
 simple_allocator.adb:48:17: info: precondition proved (Trivial: 2 VC)
 simple_allocator.adb:50:17: info: precondition proved (Trivial: 2 VC)
 simple_allocator.adb:54:69: info: range check proved (CVC4: 4 VC)

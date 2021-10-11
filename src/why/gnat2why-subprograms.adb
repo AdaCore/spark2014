@@ -5740,22 +5740,45 @@ package body Gnat2Why.Subprograms is
                --  logic function.
 
                if not Has_Pragma_Volatile_Function (E) then
-                  Param_Post :=
-                    New_And_Pred
-                    (Conjuncts =>
-                       (1 => New_Call
-                         (Name   => Why_Eq,
-                          Args   => (+Result_Id,
-                                     New_Call
-                                       (Domain => EW_Term,
-                                        Name   => Logic_Id,
-                                        Args   => Tag_Arg & Logic_Func_Args))),
-                        2 => (if Use_Guard_For_Function (E) then
-                                 New_Call
-                                   (Name => Pred_Id,
-                                    Args => Pred_Args)
-                              else True_Pred),
-                        3 => Param_Post));
+                  declare
+
+                     --  Add attribute RAC_Assume to the predicate N. This is
+                     --  used to assume equality with function results and
+                     --  function guards during RAC, because their validity
+                     --  cannot be derived.
+                     function RAC_Assume
+                       (N : W_Pred_Id) return W_Pred_Id
+                     is
+                        (New_Label
+                           (Labels => Symbol_Sets.To_Set
+                                (NID (RAC_Assume_Label)),
+                            Def    => N));
+
+                     Args : constant W_Expr_Array := Tag_Arg & Logic_Func_Args;
+
+                     Logic_Call : constant W_Pred_Id :=
+                                    RAC_Assume
+                                      (New_Call
+                                         (Name => Why_Eq,
+                                          Args => (+Result_Id,
+                                                   New_Call
+                                                     (Domain => EW_Term,
+                                                      Name   => Logic_Id,
+                                                      Args   => Args))));
+
+                     Pred_Call  : constant W_Pred_Id :=
+                                    (if Use_Guard_For_Function (E) then
+                                        RAC_Assume
+                                           (New_Call
+                                              (Name => Pred_Id,
+                                               Args => Pred_Args))
+                                     else True_Pred);
+
+                  begin
+                     Param_Post :=
+                       New_And_Pred
+                         ((1 => Logic_Call, 2 => Pred_Call, 3 => Param_Post));
+                  end;
                end if;
 
                return New_Function_Decl

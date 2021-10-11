@@ -1,4 +1,4 @@
 mod_bound.ads:5:23: warning: unused initial value of "X"
 mod_bound.ads:6:20: info: postcondition proved (CVC4: 1 VC)
 mod_bound.ads:8:25: warning: unused initial value of "X"
-mod_bound.ads:9:20: medium: postcondition might fail (e.g. when X = 0)
+mod_bound.ads:9:20: high: postcondition might fail (e.g. when X = 0)

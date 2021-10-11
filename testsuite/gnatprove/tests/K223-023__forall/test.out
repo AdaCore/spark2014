@@ -1,2 +1,2 @@
 forall.ads:6:20: info: postcondition proved (CVC4: 1 VC)
-forall.ads:10:20: medium: postcondition might fail (e.g. when Has_Zero'Result = -1)
+forall.ads:10:20: medium: postcondition might fail

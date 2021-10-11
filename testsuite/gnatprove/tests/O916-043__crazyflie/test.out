@@ -1,3 +1,4 @@
+log_pack.adb:455:07: warning: representation of "Time" values may change between GNAT versions [-gnatwz]
 log_pack.adb:530:63: warning: "Value" may be referenced before it has a value [enabled by default]
 log_pack.adb:540:63: warning: "Value" may be referenced before it has a value [enabled by default]
 log_pack.adb:550:63: warning: "Value" may be referenced before it has a value [enabled by default]

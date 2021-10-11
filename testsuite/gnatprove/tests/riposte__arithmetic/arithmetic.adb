@@ -110,7 +110,7 @@ is
    end Halve_A;
 
    function Halve_B (N: in Unsigned_Byte) return Unsigned_Byte
-     with Post => Halve_B'Result + Halve_B'Result = N  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+     with Post => Halve_B'Result + Halve_B'Result = N  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
                     or Halve_B'Result + Halve_B'Result + 1 = N
    is
       Half_Range : constant Unsigned_Byte := Unsigned_Byte'Last / 2;
@@ -121,7 +121,7 @@ is
          R := I;
          exit when R + R = N or (R + R) + 1 = N;
          pragma Loop_Invariant
-           (N > R + R + 1 and R in Unsigned_Byte);  --  @LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
+           (N > R + R + 1 and R in Unsigned_Byte);  --  @LOOP_INVARIANT_PRESERV:FAIL @ COUNTEREXAMPLE
       end loop;
       return R;
    end Halve_B;

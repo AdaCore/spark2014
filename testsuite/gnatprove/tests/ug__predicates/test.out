@@ -3,7 +3,7 @@ predicates.ads:20:32: info: division check proved
 predicates.ads:23:58: info: division check proved
 predicates.ads:23:71: info: division check proved
 
-predicates.ads:32:19: medium: overflow check might fail, cannot prove upper bound for abs (X)
+predicates.ads:32:19: high: overflow check might fail, cannot prove upper bound for abs (X)
    32 |         Get_GCD (abs (X), abs (Y))
       |                  ^~~~~~~
   e.g. when X = Integer'First
@@ -12,7 +12,7 @@ predicates.ads:32:19: medium: overflow check might fail, cannot prove upper boun
    30 |   function Get_GCD (X, Y : Integer) return Natural is
       |            ^ here
 
-predicates.ads:32:28: medium: overflow check might fail, cannot prove upper bound for abs (Y)
+predicates.ads:32:28: high: overflow check might fail, cannot prove upper bound for abs (Y)
    32 |         Get_GCD (abs (X), abs (Y))
       |                           ^~~~~~~
   e.g. when Y = Integer'First

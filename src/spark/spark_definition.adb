@@ -1135,10 +1135,9 @@ package body SPARK_Definition is
             end case;
          end Can_Be_Duplicated;
 
-         Assocs       : constant List_Id :=
-           Component_Associations (N);
-         Assoc        : Node_Id := Nlists.First (Assocs);
-         Choices      : List_Id;
+         Assocs  : constant List_Id := Component_Associations (N);
+         Assoc   : Node_Id := First (Assocs);
+         Choices : List_Id;
 
       --  Start of processing for Check_No_Deep_Duplicates_In_Assoc
 
@@ -4447,8 +4446,7 @@ package body SPARK_Definition is
             --  Type of the aggregate; ultimately this will be either an array
             --  or a record.
 
-            pragma Assert (Is_Record_Type (Typ)
-                           or else Is_Array_Type (Typ));
+            pragma Assert (Is_Record_Type (Typ) or else Is_Array_Type (Typ));
 
          begin
             case Ekind (Typ) is

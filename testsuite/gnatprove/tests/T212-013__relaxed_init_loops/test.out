@@ -24,7 +24,7 @@ test_loops.adb:60:07: info: range check proved (CVC4: 1 VC), in call inlined at 
 test_loops.adb:60:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at test_loops.adb:101
 test_loops.adb:60:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at test_loops.adb:74
 test_loops.adb:60:12: info: range check proved (CVC4: 1 VC), in call inlined at test_loops.adb:74
-test_loops.adb:60:12: medium: initialization check might fail, in call inlined at test_loops.adb:74 (e.g. when R'First = 1 and R'Last = 3)
+test_loops.adb:60:12: medium: initialization check might fail, in call inlined at test_loops.adb:74
 test_loops.adb:63:28: info: initialization of "X" proved
 test_loops.adb:67:16: medium: initialization check might fail
 test_loops.adb:68:16: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
@@ -53,7 +53,7 @@ test_loops.adb:101:42: info: index check proved (CVC4: 2 VC)
 test_loops.adb:103:13: info: precondition proved (CVC4: 4 VC)
 test_loops.adb:103:37: info: range check proved (CVC4: 2 VC)
 test_loops.adb:104:36: info: loop invariant initialization proved (CVC4: 1 VC)
-test_loops.adb:104:36: info: loop invariant preservation proved (Z3: 1 VC)
+test_loops.adb:104:36: info: loop invariant preservation proved (CVC4: 1 VC)
 test_loops.adb:104:65: info: index check proved (CVC4: 4 VC)
 test_loops.adb:107:19: info: index check proved (CVC4: 4 VC)
 test_loops.adb:108:36: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -114,7 +114,7 @@ test_loops_2.adb:110:10: info: precondition proved (CVC4: 2 VC)
 test_loops_2.adb:112:10: info: precondition proved (CVC4: 2 VC)
 test_loops_2.adb:114:13: info: precondition proved (CVC4: 4 VC)
 test_loops_2.adb:115:36: info: loop invariant initialization proved (CVC4: 1 VC)
-test_loops_2.adb:115:36: info: loop invariant preservation proved (Z3: 1 VC)
+test_loops_2.adb:115:36: info: loop invariant preservation proved (CVC4: 1 VC)
 test_loops_2.adb:115:65: info: index check proved (CVC4: 4 VC)
 test_loops_2.adb:118:19: info: index check proved (CVC4: 4 VC)
 test_loops_2.adb:119:36: info: loop invariant initialization proved (CVC4: 1 VC)

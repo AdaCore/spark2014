@@ -162,9 +162,9 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.42" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2" timelimit="60" memlimit="2000"><result status="valid" steps="475174"/></proof>
+  <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
+  <proof prover="1" timelimit="60" memlimit="2000"><result status="valid" steps="26421245"/></proof>
+  <proof prover="2" timelimit="60" memlimit="2000"><result status="highfailure"/></proof>
   <proof prover="3"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
@@ -179,7 +179,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.46" proved="true">
-  <proof prover="2"><result status="valid" steps="8239"/></proof>
+  <proof prover="2"><result status="valid" steps="8230"/></proof>
   </goal>
   <goal name="def&#39;vc.47" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -218,13 +218,13 @@
   <goal name="def&#39;vc.55" proved="true">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="valid" steps="20511381"/></proof>
-  <proof prover="2" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
+  <proof prover="2" timelimit="60" memlimit="2000"><result status="highfailure"/></proof>
   <proof prover="3"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.56">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="2" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
+  <proof prover="2" timelimit="60" memlimit="2000"><result status="highfailure"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="highfailure"/></proof>
   </goal>
  </transf>

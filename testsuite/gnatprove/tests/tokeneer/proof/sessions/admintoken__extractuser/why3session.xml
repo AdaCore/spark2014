@@ -8,7 +8,7 @@
 <path name="admintoken__extractuser.gnat-json"/>
 <theory name="Admintoken__extractuser__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="unknown" steps="14"/></proof>
   </goal>
@@ -17,7 +17,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="unknown" steps="39"/></proof>
+  <proof prover="0"><result status="unknown" steps="33"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -32,7 +32,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.6">
-  <proof prover="0"><result status="unknown" steps="39"/></proof>
+  <proof prover="0"><result status="unknown" steps="33"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -47,14 +47,14 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.10">
-  <proof prover="0"><result status="unknown" steps="39"/></proof>
+  <proof prover="0"><result status="unknown" steps="33"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="0"><result status="unknown" steps="22"/></proof>
+  <proof prover="0"><result status="unknown" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <transf name="trivial_true" proved="true" >

@@ -1,5 +1,5 @@
-modular.adb:7:23: medium: postcondition might fail (e.g. when A = 1 and Add_Byte_C'Result = 0 and B = 2)
-modular.adb:7:61: medium: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = Integer'First and B = -256) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+modular.adb:7:23: medium: postcondition might fail
+modular.adb:7:61: high: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = Integer'First and B = -256) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 modular.adb:7:66: info: division check proved (CVC4: 1 VC)
 modular.adb:7:66: info: range check proved (CVC4: 1 VC)
 modular.adb:10:32: info: division check proved (CVC4: 1 VC)

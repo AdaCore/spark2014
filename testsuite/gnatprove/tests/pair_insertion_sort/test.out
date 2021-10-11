@@ -214,7 +214,7 @@ perm.ads:10:28: info: overflow check proved (Z3: 2 VC)
 perm.ads:13:13: info: function contract might not be available on recursive calls
 perm.ads:15:17: info: index check proved (Z3: 2 VC)
 perm.ads:15:42: info: precondition proved (Z3: 1 VC)
-perm.ads:15:62: info: overflow check proved (Z3: 2 VC)
+perm.ads:15:62: info: overflow check proved (Z3: 1 VC)
 perm.ads:16:21: info: precondition proved (Z3: 1 VC)
 perm.ads:17:17: info: postcondition proved (Z3: 1 VC)
 perm.ads:17:36: info: range check proved (Z3: 2 VC)

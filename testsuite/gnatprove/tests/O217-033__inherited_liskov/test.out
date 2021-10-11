@@ -5,5 +5,5 @@ dispatch_in_contract.adb:16:20: info: overflow check proved (CVC4: 2 VC)
 dispatch_in_contract.adb:21:20: info: overflow check proved (CVC4: 2 VC)
 dispatch_in_contract.ads:23:19: info: class-wide precondition is weaker than overridden one (CVC4: 2 VC)
 main.adb:2:11: warning: subprogram "Main" has no effect
-main.adb:7:09: medium: precondition might fail, cannot prove O.F2 < Integer'last (e.g. when C1 = (F1 => 1, F2 => Integer'Last))
-main.adb:9:09: medium: precondition might fail, cannot prove O.F2 < Integer'last (e.g. when C2 = (F1 => 1, F2 => Integer'Last))
+main.adb:7:09: medium: precondition might fail, cannot prove O.F2 < Integer'last
+main.adb:9:09: medium: precondition might fail, cannot prove O.F2 < Integer'last

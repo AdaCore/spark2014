@@ -1,6 +1,6 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:6:24: medium: range check might fail, cannot prove lower bound for X (e.g. when X = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X in M) to subprogram at line 1]
-p.adb:7:24: medium: range check might fail, cannot prove lower bound for Y (e.g. when Y = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Y in M) to subprogram at line 1]
+p.adb:6:24: medium: range check might fail, cannot prove lower bound for X [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X in M) to subprogram at line 1]
+p.adb:7:24: medium: range check might fail, cannot prove lower bound for Y [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Y in M) to subprogram at line 1]
 p.adb:9:25: info: range check proved (CVC4: 2 VC)
 p.adb:10:22: info: range check proved (CVC4: 2 VC)
 p.adb:11:22: info: range check proved (CVC4: 2 VC)

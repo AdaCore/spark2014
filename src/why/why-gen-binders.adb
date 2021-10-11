@@ -829,20 +829,20 @@ package body Why.Gen.Binders is
                Result.Constr :=
                  (Present => True,
                   Id      =>
-                    Attr_Append (Base     => Name,
-                                 A        => Attribute_Constrained,
-                                 Count    => 1,
-                                 Typ      => EW_Bool_Type));
+                    Attr_Append (Base  => Name,
+                                 A     => Attribute_Constrained,
+                                 Count => 1,
+                                 Typ   => EW_Bool_Type));
             end if;
 
             if Is_Tagged_Type (Ty) then
                Result.Tag :=
                  (Present => True,
                   Id      =>
-                    Attr_Append (Base     => Name,
-                                 A        => Attribute_Tag,
-                                 Count    => 1,
-                                 Typ      => EW_Int_Type));
+                    Attr_Append (Base  => Name,
+                                 A     => Attribute_Tag,
+                                 Count => 1,
+                                 Typ   => EW_Int_Type));
             end if;
 
             return Result;
@@ -866,36 +866,32 @@ package body Why.Gen.Binders is
             Des_Ty   : constant Entity_Id := Directly_Designated_Type (Ty);
             Value_Ty : constant W_Type_Id := EW_Abstract
               (Des_Ty, Relaxed_Init => Has_Relaxed_Init (Des_Ty));
-            Result   : Item_Type :=
-              (Kind    => Pointer,
-               Local   => Local,
-               Init    => New_Init_Id (Name),
-               Mutable => not Is_Constant_Object (E),
-               P_Typ   => Ty,
-               others  => <>);
 
          begin
-            Result.Value :=
-              Binder_Type'(Ada_Node => E,
-                           B_Name   =>
-                             Value_Append
-                               (Base => Name,
-                                Typ  => Value_Ty),
-                           B_Ent    => Null_Entity_Name,
-                           Mutable  => True,
-                           Labels   => <>);
-
-            Result.Is_Null :=
-              Is_Null_Append
-                (Base => Name,
-                 Typ  => EW_Bool_Type);
-
-            Result.Is_Moved :=
-              Is_Moved_Append
-                (Base => Name,
-                 Typ  => EW_Bool_Type);
-
-            return Result;
+            return
+              Item_Type'
+                (Kind    => Pointer,
+                 Local   => Local,
+                 Init    => New_Init_Id (Name),
+                 P_Typ   => Ty,
+                 Mutable => not Is_Constant_Object (E),
+                 Value   =>
+                   Binder_Type'(Ada_Node => E,
+                                B_Name   =>
+                                  Value_Append
+                                    (Base => Name,
+                                     Typ  => Value_Ty),
+                                B_Ent    => Null_Entity_Name,
+                                Mutable  => True,
+                                Labels   => <>),
+                 Is_Null  =>
+                   Is_Null_Append
+                     (Base => Name,
+                      Typ  => EW_Bool_Type),
+                 Is_Moved =>
+                   Is_Moved_Append
+                     (Base => Name,
+                      Typ  => EW_Bool_Type));
          end;
 
       else

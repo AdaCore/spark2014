@@ -412,6 +412,9 @@ package VC_Kinds is
    VC_Annotation_Label : constant String := "vc:annotation";
    Model_VC_Post_Label : constant String := "model_vc_post";
    Branch_Id_Label     : constant String := "branch_id=";
+   RAC_Assume_Label    : constant String := "RAC:assume";
+   --  When a logical annotation is a conjunction and is checked during
+   --  RAC, conjuncts marked by this label are assumed to be true.
 
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
@@ -619,6 +622,56 @@ package VC_Kinds is
                                              "<"          => "<",
                                              "="          => "=");
 
+   type Cntexmp_Verdict_Category is
+     (Non_Conformity,
+      --  The counterexample shows how the code contradicts the check
+      Subcontract_Weakness,
+      --  The counterexample shows how some sub-contracts are too weak to
+      --  prove the check
+      Non_Conformity_Or_Subcontract_Weakness,
+      --  Either of the above
+      Bad_Counterexample,
+      --  The counterexample is bad, e.g. it contains values that contradict
+      --  the preconditions, or the RAC based on the counterexample doesn't
+      --  fail or it fails at a different check
+      Incomplete,
+      --  The counterexample could not be checked (e.g., RAC implementation is
+      --  incomplete, check could not be validated, RAC took too much time)
+      Not_Checked
+      --  Counterexample checking was not requested
+     );
+   --  The different categories when checking the counterexample for a check.
+
+   subtype Cntexmp_Confirmed_Verdict_Category is Cntexmp_Verdict_Category
+   range Non_Conformity .. Non_Conformity_Or_Subcontract_Weakness;
+   --  The categories of confirmed counterexamples
+
+   type Cntexmp_Verdict
+     (Verdict_Category : Cntexmp_Verdict_Category := Not_Checked)
+   is
+      record
+         case Verdict_Category is
+         when Bad_Counterexample
+            | Incomplete
+            | Not_Checked
+         =>
+            Verdict_Reason : Unbounded_String :=
+                               To_Unbounded_String ("Unknown");
+         when Cntexmp_Confirmed_Verdict_Category =>
+            null;
+         end case;
+      end record;
+   --  The result when checking the counterexample for a check, based on Why3
+   --  giant-step RAC and SPARK small-step RAC.
+
+   function Reason (Verdict : Cntexmp_Verdict) return String is
+     (case Verdict.Verdict_Category is
+         when Bad_Counterexample | Not_Checked | Incomplete =>
+            To_String (Verdict.Verdict_Reason),
+         when others                                        =>
+            "");
+   --  Return the reason for a verdict (empty for confirmed verdicts)
+
    function To_String (P : Prover_Category) return String;
    --  Return a user-visible string to describe the category of prover
 
@@ -632,5 +685,5 @@ package VC_Kinds is
    function To_JSON (M : Prover_Stat_Maps.Map) return JSON_Value;
    function To_JSON (P : Prover_Category) return JSON_Value;
    function To_JSON (F : Cntexample_File_Maps.Map) return JSON_Value;
-
+   function To_JSON (V : Cntexmp_Value) return JSON_Value;
 end VC_Kinds;

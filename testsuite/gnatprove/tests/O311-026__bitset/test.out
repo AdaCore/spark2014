@@ -1,6 +1,6 @@
 foo.adb:12:21: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (A_First <= Big_Int_Range'Last - Natural (I / 32)) to subprogram at foo.ads:10]
 foo.adb:12:21: medium: overflow check might fail, cannot prove upper bound for A_First + Natural (I / 32) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A_First <= Integer'Last - Natural (I / 32)) to subprogram at foo.ads:10]
+foo.adb:12:34: high: range check might fail, cannot prove upper bound for I / 32 (e.g. when I = Word64'Last) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (I / 32 in Natural) to subprogram at foo.ads:10]
 foo.adb:12:34: info: division check proved (CVC4: 1 VC)
-foo.adb:12:34: medium: range check might fail, cannot prove upper bound for I / 32 (e.g. when I = Word64'Last) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (I / 32 in Natural) to subprogram at foo.ads:10]
 foo.adb:13:27: info: division check proved (CVC4: 1 VC)
 foo.adb:13:27: info: range check proved (CVC4: 2 VC)

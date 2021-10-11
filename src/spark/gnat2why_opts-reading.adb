@@ -66,9 +66,10 @@ package body Gnat2Why_Opts.Reading is
             else Get (V, "Ada"));
 
       begin
-         No_Loop_Unrolling := Get_Opt (R, No_Loop_Unrolling_Name);
-         No_Inlining       := Get_Opt (R, No_Inlining_Name);
-         Info_Messages     := Get_Opt (R, Info_Messages_Name);
+         No_Loop_Unrolling     := Get_Opt (R, No_Loop_Unrolling_Name);
+         No_Inlining           := Get_Opt (R, No_Inlining_Name);
+         Info_Messages         := Get_Opt (R, Info_Messages_Name);
+         Check_Counterexamples := Get_Opt (R, Check_Counterexamples_Name);
 
          if not Global_Gen_Mode then
             Proof_Warnings := Get_Opt (R, Proof_Warnings_Name);
@@ -93,6 +94,7 @@ package body Gnat2Why_Opts.Reading is
       Output_Mode             :=
         Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
 
+      Debug_Exec_RAC          := Get_Opt (V, Debug_Exec_RAC_Name);
       Debug_Mode              := Get_Opt (V, Debug_Mode_Name);
       Flow_Advanced_Debug     := Get_Opt (V, Flow_Advanced_Debug_Name);
       Flow_Generate_Contracts := Get_Opt (V, Flow_Generate_Contracts_Name);

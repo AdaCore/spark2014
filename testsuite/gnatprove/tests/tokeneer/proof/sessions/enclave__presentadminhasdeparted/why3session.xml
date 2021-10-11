@@ -8,7 +8,7 @@
 <path name="enclave__presentadminhasdeparted.gnat-json"/>
 <theory name="Enclave__presentadminhasdeparted__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -18,7 +18,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="unknown" steps="76"/></proof>
+  <proof prover="0"><result status="unknown" steps="69"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -29,7 +29,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="0"><result status="unknown" steps="93"/></proof>
+  <proof prover="0"><result status="unknown" steps="86"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -39,21 +39,21 @@
   <proof prover="0" timelimit="20"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.8">
-  <proof prover="0"><result status="unknown" steps="177"/></proof>
+  <proof prover="0"><result status="unknown" steps="182"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.10">
-  <proof prover="0"><result status="unknown" steps="103"/></proof>
+  <proof prover="0"><result status="unknown" steps="96"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="0"><result status="unknown" steps="118"/></proof>
+  <proof prover="0"><result status="unknown" steps="122"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <transf name="trivial_true" proved="true" >

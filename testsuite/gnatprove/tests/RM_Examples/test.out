@@ -3,9 +3,9 @@ anti_aliasing.adb:15:14: info: local subprogram "One_In_One_Out" only analyzed i
 anti_aliasing.adb:18:14: info: overflow check proved (CVC4: 2 VC), in call inlined at anti_aliasing.adb:40
 anti_aliasing.adb:21:54: info: data dependencies proved
 anti_aliasing.adb:23:07: info: initialization of "Temp" proved
-anti_aliasing.adb:26:14: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition]
+anti_aliasing.adb:26:14: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition]
 anti_aliasing.adb:31:11: info: data dependencies proved
-anti_aliasing.adb:34:14: medium: overflow check might fail, cannot prove lower bound for I + Local_1 (e.g. when I = -1 and Local_1 = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 30 should mention Local_1 and I in a precondition]
+anti_aliasing.adb:34:14: high: overflow check might fail, cannot prove lower bound for I + Local_1 (e.g. when I = -1 and Local_1 = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 30 should mention Local_1 and I in a precondition]
 anti_aliasing.adb:44:21: info: non-aliasing of formal parameters "X" and "Y" proved
 anti_aliasing.adb:48:16: info: non-aliasing of formal parameters "X" and "Y" proved
 anti_aliasing.adb:51:20: high: formal parameter "I" and global "Local_1" are aliased (SPARK RM 6.4.2)
@@ -98,15 +98,15 @@ initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
 input_port.ads:6:04: info: object is suitable for aliasing via address clause (Trivial)
 input_port.ads:9:11: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
-inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail, cannot prove lower bound for 2 * I (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
-intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26]
+inter_unit_elaboration_examples.adb:8:14: high: overflow check might fail, cannot prove lower bound for 2 * I (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
+intra_unit_elaboration_order_examples.adb:3:50: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC4: 2 VC)
-intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail, cannot prove lower bound for A + Y (e.g. when A = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
+intra_unit_elaboration_order_examples.adb:35:14: high: overflow check might fail, cannot prove lower bound for A + Y (e.g. when A = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
 intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
-intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) in Integer) to subprogram at line 27]
+intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) in Integer) to subprogram at line 27]
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC4: 1 VC)
@@ -233,7 +233,7 @@ stacks_2.ads:17:21: info: postcondition proved (CVC4: 1 VC)
 stacks_2.ads:20:11: info: data dependencies proved
 stacks_2.ads:21:16: info: postcondition proved (CVC4: 1 VC)
 stacks_2.ads:24:11: info: data dependencies proved
-times_2.adb:3:13: medium: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X in Integer) to subprogram at line 1]
+times_2.adb:3:13: high: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X in Integer) to subprogram at line 1]
 up_timer.adb:14:36: info: overflow check proved (CVC4: 2 VC)
 update_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:27:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)

@@ -8,7 +8,7 @@
 <path name="commontypes__stringf1l2to1000Predicate.gnat-json"/>
 <theory name="Commontypes__stringf1l2to1000Predicate__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="unknown" steps="111"/></proof>
   </goal>

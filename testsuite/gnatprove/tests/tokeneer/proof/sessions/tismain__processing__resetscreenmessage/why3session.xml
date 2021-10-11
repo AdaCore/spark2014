@@ -8,13 +8,13 @@
 <path name="tismain__processing__resetscreenmessage.gnat-json"/>
 <theory name="Tismain__processing__resetscreenmessage__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+ <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="unknown" steps="23"/></proof>
+  <proof prover="0"><result status="unknown" steps="15"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -25,7 +25,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="unknown" steps="23"/></proof>
+  <proof prover="0"><result status="unknown" steps="15"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
