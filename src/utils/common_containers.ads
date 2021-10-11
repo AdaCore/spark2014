@@ -50,6 +50,9 @@ package Common_Containers is
    --  compared to List_Id in the GNAT frontend, as a Node_Id can be in
    --  any number of these lists, while it can be only in one List_Id.
 
+   package List_Lists is new Ada.Containers.Doubly_Linked_Lists (List_Id);
+   --  Standard list of GNAT lists of nodes
+
    package Entity_Lists is new
      Ada.Containers.Doubly_Linked_Lists (N_Entity_Id);
 

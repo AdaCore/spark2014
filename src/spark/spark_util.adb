@@ -779,6 +779,33 @@ package body SPARK_Util is
       end case;
    end Char_To_String_Representation;
 
+   ---------------------
+   -- Collect_Actions --
+   ---------------------
+
+   function Collect_Actions (Expr : N_Subexpr_Id) return List_Lists.List is
+      Par     : Node_Id := Parent (Expr);
+      Actions : List_Lists.List;
+   begin
+      while Nkind (Par) in
+          N_Aggregate
+        | N_Component_Association
+        | N_Delta_Aggregate
+        | N_Extension_Aggregate
+        | N_Iterated_Component_Association
+      loop
+         if Nkind (Par) = N_Iterated_Component_Association
+           and then Present (Loop_Actions (Par))
+         then
+            Actions.Append (Loop_Actions (Par));
+         end if;
+
+         Par := Parent (Par);
+      end loop;
+
+      return Actions;
+   end Collect_Actions;
+
    -----------------------------
    -- Comes_From_Declare_Expr --
    -----------------------------

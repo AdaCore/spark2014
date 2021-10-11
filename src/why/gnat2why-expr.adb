@@ -9892,7 +9892,8 @@ package body Gnat2Why.Expr is
         (Value  : Node_Id;
          Typ    : Entity_Id;
          Domain : EW_Domain;
-         Params : Transformation_Params) return W_Expr_Id;
+         Params : Transformation_Params)
+         return W_Expr_Id;
       --  Transform a value of the aggregate. Value can be either a component
       --  value or an index value.
 
@@ -10608,6 +10609,35 @@ package body Gnat2Why.Expr is
                   pragma Assert (Positive (Dim) = Nb_Dim or else
                                    (In_Delta_Aggregate and then Dim = 1));
 
+                  --  Collect variables and contextual nodes of the associated
+                  --  actions if any.
+
+                  if Nkind (Expr_Or_Association)
+                    = N_Iterated_Component_Association
+                  then
+                     declare
+                        Actions : constant List_Id :=
+                          Loop_Actions (Expr_Or_Association);
+                        Action  : Node_Id := First (Actions);
+                     begin
+                        while Present (Action) loop
+                           if Nkind (Action) = N_Object_Declaration then
+                              declare
+                                 Const : constant N_Subexpr_Id :=
+                                   Expression (Action);
+                              begin
+                                 Variables.Union
+                                   (Get_Variables_For_Proof (Const, Expr));
+                                 Contextual_Parts.Union
+                                   (Collect_Contextual_Nodes (Const));
+                              end;
+                           end if;
+
+                           Next (Action);
+                        end loop;
+                     end;
+                  end if;
+
                   --  Collecting variables and contextual nodes of the
                   --  component expression for later use as parameter.
 
@@ -10616,9 +10646,6 @@ package body Gnat2Why.Expr is
                        (Get_Variables_For_Proof (Value_Expr, Expr));
                      Contextual_Parts.Union
                        (Collect_Contextual_Nodes (Value_Expr));
-
-                  --  The component expression is directly used as
-                  --  parameter.
 
                   else
                      Values.Append
@@ -11053,10 +11080,18 @@ package body Gnat2Why.Expr is
         (Value  : Node_Id;
          Typ    : Entity_Id;
          Domain : EW_Domain;
-         Params : Transformation_Params) return W_Expr_Id
+         Params : Transformation_Params)
+         return W_Expr_Id
       is
-         Result : W_Expr_Id;
+         Result  : W_Expr_Id;
+         Actions : constant List_Lists.List := Collect_Actions (Value);
+
       begin
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+         for Act of Actions loop
+            Transform_Actions_Preparation (Act);
+         end loop;
+
          Result :=
            Transform_Expr
              (Value,
@@ -11078,6 +11113,14 @@ package body Gnat2Why.Expr is
                Name     => Result,
                Ty       => Typ);
          end if;
+
+         for Act of Actions loop
+            Result := Transform_Actions (Actions => Act,
+                                         Expr    => Result,
+                                         Domain  => Domain,
+                                         Params  => Params);
+         end loop;
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
          return Result;
       end Transform_Aggregate_Value;
@@ -11201,16 +11244,20 @@ package body Gnat2Why.Expr is
                      when UCArray => +Binder.Content.B_Name,
                      when others  => raise Program_Error);
             else
-               Arg_Val :=
-                 +Transform_Aggregate_Value
-                   (Value  => Expr,
-                    Typ    => C_Typ,
-                    Domain => EW_Term,
-                    Params =>
-                      Transformation_Params'(Phase       => Generate_Logic,
-                                             Gen_Marker  => GM_None,
-                                             Ref_Allowed => False,
-                                             Old_Policy  => Use_Map));
+               declare
+                  Params  : constant Transformation_Params :=
+                    Transformation_Params'(Phase       => Generate_Logic,
+                                           Gen_Marker  => GM_None,
+                                           Ref_Allowed => False,
+                                           Old_Policy  => Use_Map);
+               begin
+                  Arg_Val :=
+                    +Transform_Aggregate_Value
+                      (Value  => Expr,
+                       Typ    => C_Typ,
+                       Domain => EW_Term,
+                       Params => Params);
+               end;
             end if;
 
             --  Special case for the expression of the delta aggregate. In

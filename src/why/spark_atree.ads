@@ -698,6 +698,9 @@ package SPARK_Atree is
    function Limited_Present (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_With_Clause;
 
+   function Loop_Actions (N : Node_Id) return List_Id with
+     Pre => Nkind (N) = N_Iterated_Component_Association;
+
    function Loop_Parameter_Specification (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Iteration_Scheme
                        | N_Quantified_Expression;

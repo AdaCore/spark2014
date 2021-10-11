@@ -1197,6 +1197,13 @@ package body SPARK_Atree is
    function Limited_Present (N : Node_Id) return Boolean is
      (Sinfo.Nodes.Limited_Present (N));
 
+   ------------------
+   -- Loop_Actions --
+   ------------------
+
+   function Loop_Actions (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Loop_Actions (N));
+
    ----------------------------------
    -- Loop_Parameter_Specification --
    ----------------------------------
