@@ -10924,7 +10924,6 @@ package body Gnat2Why.Expr is
                        Defining_Identifier (Association);
                      Choices   : constant List_Id := Choice_List (Association);
                      Constr    : W_Pred_Id;
-
                   begin
                      --  Store in Constr the known constraints for the
                      --  quantified variables. If Choices is not others, also
@@ -10954,6 +10953,12 @@ package body Gnat2Why.Expr is
                         Return_Type => Index_Base,
                         Labels      => Symbol_Sets.Empty_Set);
                      Insert_Entity (Quant_Var, Idx);
+
+                     if Present (Loop_Actions (Association)) then
+                        Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+                        Transform_Actions_Preparation
+                          (Loop_Actions (Association));
+                     end if;
                   end;
                end if;
 
@@ -10985,6 +10990,15 @@ package body Gnat2Why.Expr is
                --  In_Iterated_Assoc.
 
                if Nkind (Association) = N_Iterated_Component_Association then
+                  if Present (Loop_Actions (Association)) then
+                     Comp_Checks := +Transform_Actions
+                       (Actions => Loop_Actions (Association),
+                        Expr    => +Comp_Checks,
+                        Domain  => EW_Prog,
+                        Params  => Params);
+                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+                  end if;
+
                   Append
                     (Save_Checks,
                      New_Binding
@@ -11083,15 +11097,8 @@ package body Gnat2Why.Expr is
          Params : Transformation_Params)
          return W_Expr_Id
       is
-         Result  : W_Expr_Id;
-         Actions : constant List_Lists.List := Collect_Actions (Value);
-
+         Result : W_Expr_Id;
       begin
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         for Act of Actions loop
-            Transform_Actions_Preparation (Act);
-         end loop;
-
          Result :=
            Transform_Expr
              (Value,
@@ -11113,14 +11120,6 @@ package body Gnat2Why.Expr is
                Name     => Result,
                Ty       => Typ);
          end if;
-
-         for Act of Actions loop
-            Result := Transform_Actions (Actions => Act,
-                                         Expr    => Result,
-                                         Domain  => Domain,
-                                         Params  => Params);
-         end loop;
-         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
          return Result;
       end Transform_Aggregate_Value;
@@ -11549,10 +11548,16 @@ package body Gnat2Why.Expr is
               (Dim           : Pos;
                Expr_Or_Assoc : Node_Id) return W_Pred_Id
             is
-               Expr : constant Node_Id :=
+               Expr    : constant Node_Id :=
                  (if Nkind (Expr_Or_Assoc) in N_Iterated_Component_Association
                                             | N_Component_Association
                   then Expression (Expr_Or_Assoc) else Expr_Or_Assoc);
+               Actions : constant List_Id :=
+                 (if Nkind (Expr_Or_Assoc) in N_Iterated_Component_Association
+                  then Loop_Actions (Expr_Or_Assoc) else No_List);
+               --  Actions associated with iterated component associations
+               Result  : W_Pred_Id;
+
             begin
                --  For iterated component associations, we need to introduce
                --  quantified variable in the symbol table. We map it to the
@@ -11564,11 +11569,26 @@ package body Gnat2Why.Expr is
                      +Indexes (Positive (Dim)));
                end if;
 
-               if Dim < Num_Dim and then not In_Delta_Aggregate then
-                  return Transform_Rec_Complex_Aggregate (Dim + 1, Expr);
-               else
-                  return Constrain_Value_At_Index (Expr, Indexes);
+               if Present (Actions) then
+                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+                  Transform_Actions_Preparation (Actions);
                end if;
+
+               if Dim < Num_Dim and then not In_Delta_Aggregate then
+                  Result := Transform_Rec_Complex_Aggregate (Dim + 1, Expr);
+               else
+                  Result := Constrain_Value_At_Index (Expr, Indexes);
+               end if;
+
+               if Present (Actions) then
+                  Result := +Transform_Actions (Actions => Actions,
+                                                Expr    => +Result,
+                                                Domain  => EW_Pred,
+                                                Params  => Params);
+                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+               end if;
+
+               return Result;
             end Transform_Complex_Association;
 
             -----------------------------

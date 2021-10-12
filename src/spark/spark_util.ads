@@ -609,10 +609,6 @@ package SPARK_Util is
    --  @param Low_Val the loop bound for loop unrolling
    --  @param High_Val the high bound for loop unrolling
 
-   function Collect_Actions (Expr : N_Subexpr_Id) return List_Lists.List;
-   --  Return a list of all the action-lists associated to iterated component
-   --  associations involved in the choice of value Expr.
-
    function Full_Entry_Name (N : Node_Id) return String
      with Pre => Nkind (N) in N_Expanded_Name
                             | N_Identifier
