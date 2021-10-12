@@ -813,7 +813,7 @@ package body SPARK_RAC is
       Ctx  : in out Context;
       Sc   : in out Scopes.Map)
    is
-      Par : Entity_Id  := First_Formal (E);
+      Par : Entity_Id := First_Formal (E);
       Arg : Node_Id := First (Args);
    begin
       while Present (Par) loop
@@ -1088,6 +1088,10 @@ package body SPARK_RAC is
    procedure Get_Bounds (N : Node_Id; Low, High : out Big_Integer) is
 
       procedure To_Big_Integer (N : Node_Id; I : out Big_Integer);
+
+      --------------------
+      -- To_Big_Integer --
+      --------------------
 
       procedure To_Big_Integer (N : Node_Id; I : out Big_Integer) is
       begin
@@ -1510,7 +1514,7 @@ package body SPARK_RAC is
    is
       Res : Scopes.Map := Scopes.Empty;
       Arg : Node_Id := First (Args);
-      Par : Entity_Id  := First_Formal (E);
+      Par : Entity_Id := First_Formal (E);
       Val : Value_Access;
    begin
       while Present (Arg) loop
@@ -2609,6 +2613,11 @@ package body SPARK_RAC is
             declare
                Break : exception;
                procedure Iteration (Ctx : in out Context);
+
+               ---------------
+               -- Iteration --
+               ---------------
+
                procedure Iteration (Ctx : in out Context) is
                   B : constant Boolean :=
                         Value_Boolean (RAC_Expr (Condition (N), Ctx));
@@ -2617,6 +2626,7 @@ package body SPARK_RAC is
                      raise Break;
                   end if;
                end Iteration;
+
             begin
                if Present (Loop_Parameter_Specification (N)) then
                   begin
