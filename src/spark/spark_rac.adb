@@ -1876,16 +1876,16 @@ package body SPARK_RAC is
       ------------------
 
       function Global_Scope (Ctx : in out Context) return Scopes.Map is
-         Res                  : Scopes.Map := Scopes.Empty;
-         Reads, Writes        : Flow_Id_Sets.Set;
-         Use_Expr, Write_Only : Boolean;
-         B                    : Binding;
-         Scope                : constant Flow_Scope := Get_Flow_Scope (E);
+         Res           : Scopes.Map := Scopes.Empty;
+         Reads, Writes : Flow_Id_Sets.Set;
+         Use_Expr      : Boolean;
+         B             : Binding;
+         Scope         : constant Flow_Scope := Get_Flow_Scope (E);
       begin
          Get_Proof_Globals (E, Reads, Writes, False, Scope);
 
          for Id of Reads loop
-            if Id.Kind in Direct_Mapping | Record_Field then
+            if Id.Kind = Direct_Mapping then
                Use_Expr := Ekind (Id.Node) = E_Constant;
                Init_Global (Res, Id.Node, Use_Expr, False, Ctx, B, "read");
             end if;
@@ -1893,11 +1893,10 @@ package body SPARK_RAC is
 
          for Id of Writes loop
             if
-              Id.Kind in Direct_Mapping | Record_Field
+              Id.Kind = Direct_Mapping
               and then not Reads.Contains (Id)
             then
-               Write_Only := not Reads.Contains (Id);
-               Init_Global (Res, Id.Node, False, Write_Only, Ctx, B, "write");
+               Init_Global (Res, Id.Node, False, True, Ctx, B, "write");
             end if;
          end loop;
 
