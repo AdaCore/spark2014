@@ -94,11 +94,17 @@ package body SPARK_RAC is
      (Ty => Ty_Enum, Enum_Entity => E);
    --  Make an enum value from an enumeration literal E
 
-   function String_Value (S : Unbounded_String) return Value is
-     (Ty => Ty_String, String_Content => S);
+   function String_Value
+     (First : Big_Integer;
+      S     : Unbounded_String)
+      return Value
+   is
+     (Ty             => Ty_String,
+      String_First   => First,
+      String_Content => S);
 
-   function String_Value (S : String) return Value is
-     (String_Value (To_Unbounded_String (S)));
+   function String_Value (First : Big_Integer; S : String) return Value is
+     (String_Value (First, To_Unbounded_String (S)));
 
    function Enum_Value (I : Uint; Ty : Entity_Id) return Value;
    --  Make an enum value from an enum index I
@@ -122,6 +128,9 @@ package body SPARK_RAC is
    function Boolean_Value (B : Boolean) return Value;
    --  Make a boolean value, i.e. an enum value
 
+   function Character_Value (C : Character) return Value;
+   --  Make a character value, i.e. an enum value
+
    function Value_Boolean (V : Value) return Boolean;
    --  Get the value of a boolean enum value, fail for other types
 
@@ -131,6 +140,10 @@ package body SPARK_RAC is
 
    function Value_Integer (V : Value) return Big_Integer;
    --  Get the value of an integer value, fail for other types
+
+   function Value_Character (V : Value) return Character;
+   --  Get the value of a enumeration value as a character, fail for other
+   --  types.
 
    function Value_String (V : Value) return String;
    --  Get the value of a string value, fail for other types;
@@ -651,6 +664,15 @@ package body SPARK_RAC is
         (GNAT.Traceback.Symbolic.Symbolic_Traceback (Trace (1 .. Length)));
    end Call_Stack;
 
+   ---------------------
+   -- Character_Value --
+   ---------------------
+
+   function Character_Value (C : Character) return Value is
+     (Enum_Value
+        (Make_Character_Literal
+             (No_Location, Name_Find, UI_From_Int (Character'Pos (C)))));
+
    --------------------------
    -- Check_Supported_Type --
    --------------------------
@@ -676,12 +698,9 @@ package body SPARK_RAC is
          RAC_Unsupported ("Floating point type", Ty);
       end if;
       if Ty in Array_Kind_Id
-        and then not Is_String_Type (Ty) --  string has no first index
-        and then
-          (No (First_Index (Ty))
-           or else Present (Next_Index (First_Index (Ty))))
+        and then Number_Dimensions (Ty) > 1
       then
-         RAC_Unsupported ("Array type with not one index", Ty);
+         RAC_Unsupported ("Multidimensional array type", Ty);
       end if;
    end Check_Supported_Type;
 
@@ -797,7 +816,7 @@ package body SPARK_RAC is
          when Ty_Integer =>
             Integer_Value (V.Integer_Content),
          when Ty_String  =>
-            String_Value (V.String_Content),
+            String_Value (V.String_First, V.String_Content),
          when Ty_Enum    =>
             Enum_Value (V.Enum_Entity));
 
@@ -884,8 +903,8 @@ package body SPARK_RAC is
             return Record_Value (F, Ty);
          end;
 
-      elsif Is_String_Type (Ty) then
-         return String_Value ("");
+      elsif Is_Standard_String_Type (Ty) then
+         return String_Value (1, "");
 
       elsif Is_Private_Type (Ty) then
          return Default_Value (Full_View (Ty));
@@ -1335,11 +1354,7 @@ package body SPARK_RAC is
             return Record_Value (F, Ty);
          end;
 
-      elsif Is_String_Type (Ty) then
-         RAC_Unsupported ("Import of string values", N);
-
       elsif Is_Array_Type (Ty) then
-
          if V.T /= Cnt_Array then
             Import_Error ("not array value");
          end if;
@@ -1411,7 +1426,35 @@ package body SPARK_RAC is
 
             Other :=
               new Value'(Import (V.Array_Others.all, Comp_Ty, N));
-            return Array_Value (Fst, Lst, Values, Other);
+
+            if Is_Standard_String_Type (Ty) then
+               if Lst - Fst > 10_000 then
+                  RAC_Incomplete ("String too long");
+               --  ??? Next test should not be needed, as counterexample value
+               --  should already be valid in its type due to prior filtering.
+               elsif Fst <= Lst and then Fst <= 0 then
+                  RAC_Stuck
+                    ("Non-empty string starting at non-positive index");
+               else
+                  declare
+                     S       : String (To_Integer (Fst) .. To_Integer (Lst));
+                     Default : constant Character :=
+                       Value_Character (Other.all);
+                  begin
+                     for K in S'Range loop
+                        if Values.Contains (K) then
+                           S (K) := Value_Character (Values (K).all);
+                        else
+                           S (K) := Default;
+                        end if;
+                     end loop;
+
+                     return String_Value (Fst, S);
+                  end;
+               end if;
+            else
+               return Array_Value (Fst, Lst, Values, Other);
+            end if;
          end;
 
       else
@@ -2185,8 +2228,42 @@ package body SPARK_RAC is
             when Snames.Name_First
                | Snames.Name_Last
             =>
+               if Is_Array_Type (Etype (Prefix (N))) then
+                  declare
+                     V : constant Value := RAC_Expr (Prefix (N));
+                  begin
+                     if Is_Standard_String_Type (Etype (Prefix (N))) then
+                        case V.Ty is
+                           when Ty_String =>
+                              if Attribute_Name (N) = Snames.Name_First then
+                                 return Integer_Value (V.String_First);
+                              else
+                                 return Integer_Value
+                                   (V.String_First - 1 +
+                                      To_Big_Integer
+                                        (Length (V.String_Content)));
+                              end if;
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     else
+                        case V.Ty is
+                           when Ty_Array =>
+                              if Attribute_Name (N) = Snames.Name_First then
+                                 return Integer_Value (V.Array_First);
+                              else
+                                 return Integer_Value (V.Array_Last);
+                              end if;
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end if;
+                  end;
+
                --  T'First, T'Last
-               if not Is_Integer_Type (Etype (N)) then
+               --  ??? Do we get such static values which are not folded by the
+               --  frontend, for a constrained integer type?
+               elsif not Is_Integer_Type (Etype (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference first/last not integer", N);
                end if;
@@ -2319,7 +2396,7 @@ package body SPARK_RAC is
                     ("RAC_Attribute_Reference 'Image without argument", N);
                end if;
                return String_Value
-                 (To_String (RAC_Expr (First (Expressions (N)))));
+                 (1, To_String (RAC_Expr (First (Expressions (N)))));
 
             when Snames.Name_Length =>
                if not Is_Empty_List (Expressions (N)) then
@@ -2329,7 +2406,7 @@ package body SPARK_RAC is
                declare
                   V : constant Value := RAC_Expr (Prefix (N));
                begin
-                  if Is_String_Type (Etype (Prefix (N))) then
+                  if Is_Standard_String_Type (Etype (Prefix (N))) then
                      return Integer_Value
                        (To_Big_Integer
                           (Value_String (RAC_Expr (Prefix (N)))'Length));
@@ -2444,7 +2521,8 @@ package body SPARK_RAC is
             when N_Op_Concat =>
                if Left.Ty = Ty_String and then Right.Ty = Ty_String then
                   return
-                    String_Value (Value_String (Left) & Value_String (Right));
+                    String_Value (Left.String_First,
+                                  Value_String (Left) & Value_String (Right));
                else
                   RAC_Unsupported ("RAC_Binary_Op concat non string", N);
                end if;
@@ -2580,7 +2658,7 @@ package body SPARK_RAC is
             Res := Enum_Value (N);
 
          when N_String_Literal =>
-            Res := String_Value (Stringt.To_String (Strval (N)));
+            Res := String_Value (1, Stringt.To_String (Strval (N)));
 
          when N_Identifier | N_Expanded_Name =>
             declare
@@ -2653,24 +2731,43 @@ package body SPARK_RAC is
                A : constant Value := RAC_Expr (Prefix (N));
                E : constant Node_Id := First (Expressions (N));
                V : constant Value := RAC_Expr (E);
-               I : constant Big_Integer :=  Value_Enum_Integer (V);
-               C : constant Values_Map.Cursor :=
-                     A.Array_Values.Find (To_Integer (I));
+               I : constant Big_Integer := Value_Enum_Integer (V);
+
             begin
                if Present (Next (E)) then
                   RAC_Unsupported
-                    ("RAC_Expr indexed component with many indices", N);
+                    ("RAC_Expr multidimensional array access", N);
                end if;
 
-               if I < A.Array_First or else A.Array_Last < I then
-                  --  ??? The index check VC is generated for the first expr
-                  RAC_Failure (E, VC_Index_Check);
-               end if;
+               if A.Ty = Ty_Array then
+                  declare
+                     C : constant Values_Map.Cursor :=
+                       A.Array_Values.Find (To_Integer (I));
+                  begin
+                     if I < A.Array_First or else A.Array_Last < I then
+                        --  ??? The index check VC is generated for the first
+                        --  expr
+                        RAC_Failure (E, VC_Index_Check);
+                     end if;
 
-               if Values_Map.Has_Element (C) then
-                  Res := A.Array_Values (C).all;
+                     if Values_Map.Has_Element (C) then
+                        Res := A.Array_Values (C).all;
+                     else
+                        Res := Copy (A.Array_Others.all);
+                     end if;
+                  end;
                else
-                  Res := Copy (A.Array_Others.all);
+                  if I < A.String_First
+                    or else A.String_First
+                      + To_Big_Integer (Length (A.String_Content)) <= I
+                  then
+                     RAC_Failure (E, VC_Index_Check);
+                  end if;
+
+                  Res := Character_Value
+                    (Element
+                       (A.String_Content,
+                        To_Integer (I - A.String_First + 1)));
                end if;
             end;
 
@@ -2749,10 +2846,15 @@ package body SPARK_RAC is
             begin
                if Present (Next (E)) then
                   RAC_Unsupported
-                    ("RAC_Expr indexed component with many indices", N);
+                    ("RAC_Expr_LHS multidimensional array access", N);
                end if;
 
-               if I < A.all.Array_First or else A.all.Array_Last < I then
+               --  Assigning into a string is not currently supported
+               if A.Ty /= Ty_Array then
+                  RAC_Unsupported ("RAC_Expr_LHS over non-array value", N);
+               end if;
+
+               if I < A.Array_First or else A.Array_Last < I then
                   --  ??? The index check VC is generated for the first expr
                   RAC_Failure (E, VC_Index_Check);
                end if;
@@ -2953,12 +3055,27 @@ package body SPARK_RAC is
                              ("RAC_Expr assignment", "many indices");
                         end if;
 
-                        if I < A.Array_First or else A.Array_Last < I then
-                           --  ??? Index check VC is generated for the 1st expr
-                           RAC_Failure (E, VC_Index_Check);
-                        end if;
+                        if A.Ty = Ty_Array then
+                           if I < A.Array_First or else A.Array_Last < I then
+                              --  ??? Index check VC is generated for the 1st
+                              --  expr
+                              RAC_Failure (E, VC_Index_Check);
+                           end if;
 
-                        A.all.Array_Values.Include (To_Integer (I), RHS);
+                           A.all.Array_Values.Include (To_Integer (I), RHS);
+                        else
+                           if I < A.String_First
+                             or else A.String_First +
+                               To_Big_Integer (Length (A.String_Content)) <= I
+                           then
+                              RAC_Failure (E, VC_Index_Check);
+                           end if;
+
+                           Replace_Element
+                             (A.String_Content,
+                              To_Integer (I - A.String_First + 1),
+                              Value_Character (RHS.all));
+                        end if;
                      end;
 
                   when others =>
@@ -3367,6 +3484,21 @@ package body SPARK_RAC is
          raise Program_Error with "Value_Boolean";
       end if;
    end Value_Boolean;
+
+   ---------------------
+   -- Value_Character --
+   ---------------------
+
+   function Value_Character (V : Value) return Character is
+   begin
+      case V.Ty is
+         when Ty_Enum =>
+            return Character'Val
+              (To_Integer (Char_Literal_Value (V.Enum_Entity)));
+         when Ty_Integer | Ty_Array | Ty_Record | Ty_String =>
+            raise Program_Error with "Value_Character";
+      end case;
+   end Value_Character;
 
    ------------------------
    -- Value_Enum_Integer --

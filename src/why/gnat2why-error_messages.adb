@@ -137,6 +137,17 @@ package body Gnat2Why.Error_Messages is
    --  according to Figure 11 in the technical report "Giant-step Semantics for
    --  the Categorisatio of Counterexamples" (hal-03213438).
 
+   function VC_Kinds_Match (Target_Kind, Found_Kind : VC_Kind) return Boolean
+   is (Target_Kind = Found_Kind
+         or else
+      (Target_Kind in VC_Range_Kind and then Found_Kind in VC_Range_Kind));
+   --  When checking whether the VC kind by RAC matches the target VC kind,
+   --  collapse all scalar checks for now, as RAC cannot distinguish with them
+   --  when a node has has the Do_Range_Check flag set to True. Indeed, RAC
+   --  does not have the machinery to determine what check is emitted in
+   --  gnat2why for a given Do_Range_Check flag, so it uses consistently
+   --  VC_Range_Check.
+
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
 
@@ -342,8 +353,8 @@ package body Gnat2Why.Error_Messages is
    begin
       case Small_Step.Res_Kind is
          when Res_Failure =>
-            if VC_Id (Small_Step.Res_VC_Id) = VC and then
-              Small_Step.Res_VC_Kind       = Info.Kind
+            if VC_Id (Small_Step.Res_VC_Id) = VC
+              and then VC_Kinds_Match (Info.Kind, Small_Step.Res_VC_Kind)
             then
                return (Verdict_Category => Non_Conformity);
             else
@@ -599,7 +610,20 @@ package body Gnat2Why.Error_Messages is
    function Find_VC (N : Node_Id; Kind : VC_Kind) return VC_Id is
    begin
       for C in VC_Table.Iterate loop
-         if VC_Table (C).Node = N and then VC_Table (C).Kind = Kind then
+         if VC_Table (C).Node = N
+           and then VC_Table (C).Kind = Kind
+         then
+            return VC_Id (Id_Tables.To_Index (C));
+         end if;
+      end loop;
+
+      --  If the exact VC kind was not found, in the case of range-related
+      --  checks, look for another range-related VC kind on the same node.
+
+      for C in VC_Table.Iterate loop
+         if VC_Table (C).Node = N
+           and then VC_Kinds_Match (VC_Table (C).Kind, Kind)
+         then
             return VC_Id (Id_Tables.To_Index (C));
          end if;
       end loop;

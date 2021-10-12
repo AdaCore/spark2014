@@ -73,10 +73,10 @@ case_assign.adb:10:19: high: overflow check might fail [CWE 190], cannot prove l
 case_assign.ads:3:21: info: initialization of "X" proved
 concat.adb:2:34: medium: "Z" might not be initialized in "Concat" [CWE 457]
 concat.adb:5:21: info: cannot unroll loop (too many loop iterations)
-concat.adb:6:10: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention K in a loop invariant]
+concat.adb:6:10: high: array index check might fail [CWE 119] (e.g. when K = 0 and Z = (0 => 0) and Z'First = 0 and Z'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention K in a loop invariant]
 concat.adb:7:14: medium: overflow check might fail [CWE 190], cannot prove upper bound for K + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention K in a loop invariant]
 concat.adb:9:21: info: cannot unroll loop (too many loop iterations)
-concat.adb:10:10: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: loop at line 9 should mention K in a loop invariant]
+concat.adb:10:10: high: array index check might fail [CWE 119] (e.g. when K = 0 and Z = (0 => 0) and Z'First = 0 and Z'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 9 should mention K in a loop invariant]
 concat.adb:11:14: medium: overflow check might fail [CWE 190], cannot prove upper bound for K + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 9 should mention K in a loop invariant]
 concat_op.adb:2:37: info: initialization of "Z" proved
 concat_op.adb:4:06: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at line 2 should mention Z'Length or Z'First or Z'Last in a precondition]

@@ -97,6 +97,7 @@ package SPARK_RAC is
             --  Sparse representation of array values following counterexample
             --  array values
          when Ty_String =>
+            String_First    : Big_Integer;
             String_Content  : Unbounded_String;
       end case;
    end record;
