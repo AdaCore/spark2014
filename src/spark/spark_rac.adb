@@ -1414,7 +1414,7 @@ package body SPARK_RAC is
       Res : Big_Integer := I;
    begin
       if Is_Modular_Integer_Type (Ty) then
-         if Modulus (Ty) = 0 then
+         if No (Modulus (Ty)) then
             --  ??? TODO Modulus 0 for System.Address in
             --      O226-018__address/src/worker_pack__worker_init
             RAC_Unsupported ("Modular integer zero", Ty);
