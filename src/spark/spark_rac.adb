@@ -626,9 +626,7 @@ package body SPARK_RAC is
             when Ty_String    =>
                V1.String_Content = V2.String_Content,
             when Ty_Array     =>
-               ((V1.Array_Others = null and then V2.Array_Others = null)
-                or else
-                (V1.Array_Others /= null and then V2.Array_Others /= null))
+               ((V1.Array_Others = null) = (V2.Array_Others = null))
                and then V1.Array_Values = V2.Array_Values));
 
    -------------------
