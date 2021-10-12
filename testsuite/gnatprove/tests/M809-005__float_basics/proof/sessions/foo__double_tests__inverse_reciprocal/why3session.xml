@@ -38,7 +38,7 @@
   <goal name="def&#39;vc.6">
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="5582158"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="2"><result status="unknown" steps="61207"/></proof>
   <proof prover="3"><result status="unknown" steps="140"/></proof>
   </goal>
  </transf>
