@@ -69,7 +69,7 @@ package body SPARK_RAC is
    -- Types --
    -----------
 
-   procedure Check_Supported_Type (Ty : Node_Id);
+   procedure Check_Supported_Type (Ty : Entity_Id);
    --  Call RAC_Unsupported if Ty is not supported yet
 
    function Safe_Retysp (T : Type_Kind_Id) return Entity_Id is
@@ -434,7 +434,7 @@ package body SPARK_RAC is
    --  Returns the index of the last enumeration literal
 
    procedure Get_Array_Info
-     (Ty                :     Node_Id;
+     (Ty                :     Entity_Id;
       Index_Ty, Comp_Ty : out Entity_Id;
       Fst, Lst          : out Big_Integer);
    --  Get the index type and component type, and the bounds of a
@@ -656,7 +656,7 @@ package body SPARK_RAC is
    -- Check_Supported_Type --
    --------------------------
 
-   procedure Check_Supported_Type (Ty : Node_Id) is
+   procedure Check_Supported_Type (Ty : Entity_Id) is
    begin
       if Has_Discriminants (Ty) then
          RAC_Unsupported ("Type has discrimants", Ty);
@@ -1020,7 +1020,7 @@ package body SPARK_RAC is
    --------------------
 
    procedure Get_Array_Info
-     (Ty                :     Node_Id;
+     (Ty                :     Entity_Id;
       Index_Ty, Comp_Ty : out Entity_Id;
       Fst, Lst          : out Big_Integer)
    is
@@ -1442,7 +1442,7 @@ package body SPARK_RAC is
       Low          : constant Value := RAC_Expr (Low_Bnd, Ctx);
       High         : constant Value :=
         RAC_Expr (High_Bound (Actual_Range), Ctx);
-      Id           : constant Node_Id :=
+      Id           : constant Entity_Id :=
         Defining_Identifier (Param_Spec);
       Curr, Stop   : Big_Integer;
       Step         : Big_Integer := To_Big_Integer (1);
@@ -1798,7 +1798,7 @@ package body SPARK_RAC is
             declare
                Obj_Def : Node_Id;
                V       : Value;
-               Ty      : Node_Id;
+               Ty      : Entity_Id;
             begin
                if Present (Expression (Decl)) then
                   V := RAC_Expr (Expression (Decl), Ctx);
