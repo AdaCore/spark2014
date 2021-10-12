@@ -637,7 +637,7 @@ package body SPARK_RAC is
 
    function Boolean_Value (B : Boolean) return Value is
      (Ty          => Ty_Enum,
-      Enum_Entity => (if B then Standard_True else Standard_False));
+      Enum_Entity => Boolean_Literals (B));
 
    ----------------
    -- Call_Stack --
