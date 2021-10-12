@@ -2934,7 +2934,7 @@ package body SPARK_RAC is
             declare
                Scheme : constant Node_Id := Iteration_Scheme (N);
             begin
-               if not Present (Scheme) then
+               if No (Scheme) then
                   begin
                      loop
                         RAC_List (Statements (N), Ctx);
@@ -2984,7 +2984,7 @@ package body SPARK_RAC is
                RAC_Unsupported ("RAC_Statement exit statement with name", N);
             end if;
 
-            if not Present (Condition (N))
+            if No (Condition (N))
               or else Value_Boolean (RAC_Expr (Condition (N), Ctx))
             then
                raise Exn_RAC_Exit;
