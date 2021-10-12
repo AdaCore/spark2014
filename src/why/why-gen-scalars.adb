@@ -544,24 +544,18 @@ package body Why.Gen.Scalars is
          if Is_Static
            and then Has_Modular_Integer_Type (E)
            and then
-             ((Ty = EW_BitVector_8_Type
-               and then Modulus (E) = UI_Expon (Uint_2, Uint_8))
-              or else
-                (Ty = EW_BitVector_16_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_16))
-              or else
-                (Ty = EW_BitVector_32_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_32))
-              or else
-                (Ty = EW_BitVector_64_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_64))
-              or else
-                (Ty = EW_BitVector_128_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_128)))
+             (if Ty = EW_BitVector_8_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_8)
+              elsif Ty = EW_BitVector_16_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_16)
+              elsif Ty = EW_BitVector_32_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_32)
+              elsif Ty = EW_BitVector_64_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_64)
+              elsif Ty = EW_BitVector_128_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_128)
+              else
+                False)
            and then Nkind (Type_Low_Bound (E)) = N_Integer_Literal
            and then Intval (Type_Low_Bound (E)) = Uint_0
            and then Nkind (Type_High_Bound (E)) = N_Integer_Literal
