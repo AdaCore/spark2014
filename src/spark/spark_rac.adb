@@ -430,7 +430,7 @@ package body SPARK_RAC is
      Pre => Is_Integer_Type (Ty);
    --  Write the first and last value of an integer type Ty in Fst and Lst
 
-   function Get_Enum_Type_Last (Ty : Entity_Id) return Integer;
+   function Get_Enum_Type_Last (Ty : Entity_Id) return Positive;
    --  Returns the index of the last enumeration literal
 
    procedure Get_Array_Info
@@ -1110,13 +1110,13 @@ package body SPARK_RAC is
    -- Get_Enum_Type_Last --
    ------------------------
 
-   function Get_Enum_Type_Last (Ty : Entity_Id) return Integer is
+   function Get_Enum_Type_Last (Ty : Entity_Id) return Positive is
    begin
       if Ty = Standard_Character then
          return Character'Pos (Character'Last);
       else
          declare
-            Res : Integer := 0;
+            Res : Natural := 0;
             Lit : Node_Id;
          begin
             case Ekind (Ty) is
