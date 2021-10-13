@@ -2727,7 +2727,7 @@ package body SPARK_RAC is
    begin
       RAC_Trace ("expr lhs " & Node_Kind'Image (Nkind (N)), N);
       case Nkind (N) is
-         when N_Identifier =>
+         when N_Identifier | N_Expanded_Name =>
             return Find_Binding (SPARK_Atree.Entity (N)).Val;
 
          when N_Type_Conversion =>
@@ -2926,7 +2926,7 @@ package body SPARK_RAC is
                  new Value'(Copy (RAC_Expr (Expression (N), Ty)));
             begin
                case Nkind (Name (N)) is
-                  when N_Identifier =>
+                  when N_Identifier | N_Expanded_Name =>
                      Update_Value (Ctx.Env, Entity (Name (N)), RHS);
 
                   when N_Selected_Component =>
