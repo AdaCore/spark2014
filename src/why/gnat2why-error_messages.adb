@@ -1196,6 +1196,9 @@ package body Gnat2Why.Error_Messages is
 
          if Gnat2Why_Args.Check_Counterexamples then
             if Cntexmp.Is_Empty then
+               Small_Step_Res :=
+                 (Res_Kind   => Res_Not_Executed,
+                  Res_Reason => To_Unbounded_String ("No counterexample"));
                Verdict :=
                  (Verdict_Category => Not_Checked,
                   Verdict_Reason   => To_Unbounded_String
