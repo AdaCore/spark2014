@@ -1,1 +1,2 @@
 pack.ads:2:08: info: flow dependencies proved
+pack.ads:4:04: info: justified that initialization of "Var" must be mentioned in the Initializes contract of "Pack" (SPARK RM 7.1.5(9))

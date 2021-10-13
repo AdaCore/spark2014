@@ -3,6 +3,8 @@ p.adb:18:21: info: overflow check proved (CVC4: 2 VC)
 p.adb:31:22: info: assertion proved (CVC4: 1 VC)
 p.adb:32:14: info: precondition proved (CVC4: 2 VC)
 p.adb:37:07: warning: variable "Z" is read but never assigned [-gnatwv]
+p.adb:42:10: info: justified that "X" might not be initialized
+p.adb:43:28: info: justified that "Z" is not initialized
 p.ads:7:20: info: postcondition proved (CVC4: 2 VC)
 p.ads:12:14: warning: subprogram "Annotate_Intentional" has no effect
 Summary of SPARK analysis
@@ -45,9 +47,9 @@ the postcondition of P.Add_Or_Subtract fully established
 effects on parameters and Global variables of P.Add_Or_Subtract fully established
 absence of run-time errors of P.Add_Or_Subtract fully established
   P.Annotate_Intentional at p.ads:12 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
-   Justified messages:
-    p.adb:42:10: 
-    p.adb:43:28: 
+   Justified check messages:
+    p.adb:42:10: justified that "X" might not be initialized (marked as: intentional, reason: "")
+    p.adb:43:28: justified that "Z" is not initialized (marked as: intentional, reason: "")
 absence of run-time errors of P.Annotate_Intentional depends on
   effects on parameters and Global variables of P.Inner.Do_Nothing
   absence of run-time errors of P.Inner.Do_Nothing

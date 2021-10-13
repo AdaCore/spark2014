@@ -40,7 +40,7 @@ package body Report_Database is
    Default_Stat : constant Stat_Rec :=
      Stat_Rec'(SPARK           => Not_In_SPARK,
                Analysis        => No_Analysis,
-               Suppr_Msgs      => Warning_Lists.Empty_List,
+               Suppr_Checks    => Check_Lists.Empty_List,
                Pragma_Assumes  => Pragma_Assume_Lists.Empty_List,
                Flow_Warnings   => 0,
                Flow_Errors     => 0,
@@ -241,17 +241,19 @@ package body Report_Database is
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_SPARK_Status;
 
-   ----------------------------
-   -- Add_Suppressed_Warning --
-   ----------------------------
+   --------------------------
+   -- Add_Suppressed_Check --
+   --------------------------
 
-   procedure Add_Suppressed_Warning
-     (Unit   : Unit_Type;
-      Subp   : Subp_Type;
-      Reason : String;
-      File   : String;
-      Line   : Positive;
-      Column : Positive)
+   procedure Add_Suppressed_Check
+     (Unit       : Unit_Type;
+      Subp       : Subp_Type;
+      Justif_Msg : String;
+      Kind       : String;
+      Reason     : String;
+      File       : String;
+      Line       : Positive;
+      Column     : Positive)
    is
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
@@ -262,18 +264,20 @@ package body Report_Database is
 
       procedure Process (Stat : in out Stat_Rec) is
       begin
-         Stat.Suppr_Msgs.Append
-           (Suppressed_Warning'(Reason => To_Unbounded_String (Reason),
-                                File   => To_Unbounded_String (File),
-                                Line   => Line,
-                                Column => Column));
+         Stat.Suppr_Checks.Append
+           (Suppressed_Check'(Justif_Msg => To_Unbounded_String (Justif_Msg),
+                              Kind       => To_Unbounded_String (Kind),
+                              Reason     => To_Unbounded_String (Reason),
+                              File       => To_Unbounded_String (File),
+                              Line       => Line,
+                              Column     => Column));
       end Process;
 
-   --  Start of processing for Add_Suppressed_Warning
+   --  Start of processing for Add_Suppressed_Check
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
-   end Add_Suppressed_Warning;
+   end Add_Suppressed_Check;
 
    --------------------
    -- Iter_All_Subps --

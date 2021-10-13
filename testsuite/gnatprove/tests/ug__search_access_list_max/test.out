@@ -14,6 +14,7 @@ p.adb:25:52: info: range check proved
 p.adb:26:22: info: pointer dereference check proved
 p.adb:29:23: info: dynamic accessibility check proved
 p.adb:29:23: info: null exclusion check proved
+p.ads:8:17: info: justified that "All_Smaller_Than_Max" is recursive, terminating annotation could be incorrect
 p.ads:9:12: info: pointer dereference check proved
 p.ads:9:58: info: pointer dereference check proved
 p.ads:17:14: info: postcondition proved

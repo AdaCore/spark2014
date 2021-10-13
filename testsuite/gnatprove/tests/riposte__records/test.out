@@ -25,9 +25,17 @@ records.adb:132:22: info: postcondition proved (CVC4: 2 VC)
 records.adb:139:25: info: initialization of "Dst" proved
 records.adb:140:11: info: flow dependencies proved
 records.adb:142:22: high: postcondition might fail, cannot prove Is_Valid (Dst) (e.g. when Dst = (Exists => False, The_Pair => (A => 0, B => 0)))
+records.adb:150:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_A"
+records.adb:150:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_A"
 records.adb:151:11: info: flow dependencies proved
 records.adb:152:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+records.adb:153:49: info: justified that "Dst.The_Pair.A" might not be initialized
+records.adb:153:49: info: justified that "Dst.The_Pair.B" might not be initialized
+records.adb:164:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_B"
+records.adb:164:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_B"
 records.adb:165:11: info: flow dependencies proved
+records.adb:166:22: info: justified that "Dst.The_Pair.A" might not be initialized
+records.adb:166:22: info: justified that "Dst.The_Pair.B" might not be initialized
 records.adb:166:22: medium: postcondition might fail
 records.adb:177:11: info: flow dependencies proved
 records.adb:178:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)

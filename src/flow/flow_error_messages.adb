@@ -24,7 +24,6 @@
 
 with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Ada.Containers.Indefinite_Vectors;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
 with Aspects;                   use Aspects;
 with Assumption_Types;          use Assumption_Types;
@@ -55,7 +54,6 @@ with Sinfo.Utils;               use Sinfo.Utils;
 with Sinput;                    use Sinput;
 with Snames;                    use Snames;
 with SPARK_Atree;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with SPARK_Util.Types;          use SPARK_Util.Types;
@@ -120,6 +118,10 @@ package body Flow_Error_Messages is
       Suffix => " justified");
    --  Return the message string for a justified VC
 
+   function Justified_Message (Flow_Check_Message : String) return String is
+     ("justified that " & Flow_Check_Message);
+   --  Return the message string for a justified flow check message
+
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output
 
@@ -164,7 +166,7 @@ package body Flow_Error_Messages is
    --  @return a valid sloc or No_Location when called with Empty node
 
    procedure Add_Json_Msg
-     (Suppr      : String_Id;
+     (Suppr      : Suppressed_Message;
       Tag        : String;
       Severity   : Msg_Severity;
       Slc        : Source_Ptr;
@@ -428,11 +430,16 @@ package body Flow_Error_Messages is
         Source_Ptr'Image (Slc) &
         Integer'Image (Msg_Severity'Pos (Severity));
 
+      Is_Annot : Boolean := False;
+      Info     : Annotated_Range;
+
       Suppr             : String_Id  := No_String;
       Msg_Id, Ignore_Id : Message_Id;
 
       Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
+
+      Suppression : Suppressed_Message := No_Suppressed_Message;
 
    --  Start of processing for Error_Msg_Flow
 
@@ -463,20 +470,29 @@ package body Flow_Error_Messages is
                   Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
                   Suppressed := Suppr /= No_String;
 
+                  if Suppressed then
+                     Suppression := Suppressed_Warning;
+                  end if;
                when Info_Kind =>
                   Suppressed := Report_Mode = GPR_Fail;
 
                when Check_Kind =>
-                  declare
-                     Is_Annot : Boolean;
-                     Info     : Annotated_Range;
-                  begin
-                     Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
-                     if Is_Annot then
-                        Suppr := Info.Reason;
-                     end if;
-                  end;
+                  Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
+                  if Is_Annot then
+                     Suppr := Info.Reason;
+
+                     Msg_Id := Print_Regular_Msg (Justified_Message (Msg3),
+                                                  Span, Info_Kind);
+                  end if;
                   Suppressed := Suppr /= No_String;
+                  if Suppressed then
+                     Suppression :=
+                       Suppressed_Message'(Check,
+                                           Suppr,
+                                           Info.Kind,
+                                           To_Unbounded_String
+                                             (Justified_Message (Msg3)));
+                  end if;
 
                when Error_Kind =>
                --  Set the error flag if we have an error message. Note that
@@ -583,7 +599,7 @@ package body Flow_Error_Messages is
 
          if not Check_All_Mode or else Severity = Error_Kind then
             Add_Json_Msg
-              (Suppr      => Suppr,
+              (Suppr      => Suppression,
                Tag        => Flow_Tag_Kind'Image (Tag),
                How_Proved => PC_Flow,
                Severity   => Severity,
@@ -1059,7 +1075,17 @@ package body Flow_Error_Messages is
       end if;
 
       Add_Json_Msg
-        (Suppr       => Suppr,
+        (Suppr      => (if Is_Annot
+                        and then Severity in Check_Kind
+                        then
+                           Suppressed_Message'(Suppression_Kind => Check,
+                                               Msg           => Suppr,
+                                               Annot_Kind    => Info.Kind,
+                                               Justification =>
+                                                 To_Unbounded_String
+                                                   (Justified_Message
+                                                      (N, Tag)))
+                        else No_Suppressed_Message),
          Tag         => VC_Kind'Image (Tag),
          Severity    => Severity,
          Slc         => Slc,
@@ -3453,7 +3479,7 @@ package body Flow_Error_Messages is
    ------------------
 
    procedure Add_Json_Msg
-     (Suppr      : String_Id;
+     (Suppr      : Suppressed_Message;
       Tag        : String;
       Severity   : Msg_Severity;
       Slc        : Source_Ptr;
@@ -3480,8 +3506,12 @@ package body Flow_Error_Messages is
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
 
-      if Suppr /= No_String then
-         Set_Field (Value, "suppressed", To_String (Suppr));
+      if Suppr.Suppression_Kind in Warning | Check then
+         Set_Field (Value, "suppressed", To_String (Suppr.Msg));
+         if Suppr.Suppression_Kind = Check then
+            Set_Field (Value, "annot_kind", To_String (Suppr.Annot_Kind));
+            Set_Field (Value, "justif_msg", To_String (Suppr.Justification));
+         end if;
       end if;
 
       Set_Field (Value, "rule", Tag);

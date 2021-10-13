@@ -37,4 +37,6 @@ justifications.adb:13:14: high: overflow check might fail, cannot prove upper bo
     9 |   procedure Do_Something_2 (X, Y : in out Integer) with
       |   ^ here
 justifications.ads:5:06: info: flow dependencies proved
+justifications.ads:5:29: info: justified that incorrect dependency "Y => X"
 justifications.ads:10:06: info: flow dependencies proved
+justifications.ads:10:29: info: justified that incorrect dependency "Y => X"

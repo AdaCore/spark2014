@@ -224,6 +224,12 @@ package SPARK_Definition.Annotate is
    --  Register entity E has having the No_Wrap_Around annotation, either
    --  directly or inherited through a parent type.
 
+   function To_String (Kind : Annotate_Kind) return String is
+     (case Kind is
+         when False_Positive => "false positive",
+         when Intentional    => "intentional");
+   --  Return the string representation of the supplied annotation
+
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Terminating applies to the subprogram E
 

@@ -23,9 +23,11 @@
 
 --  This package provides mechanisms for emitting errors and warnings.
 
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Flow;                      use Flow;
 with Flow_Types;                use Flow_Types;
 with GNATCOLL.JSON;             use GNATCOLL.JSON;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util;                use SPARK_Util;
 with Types;                     use Types;
 with VC_Kinds;                  use VC_Kinds;
@@ -63,6 +65,34 @@ package Flow_Error_Messages is
    --  Indices for session files
 
    No_Session_Dir : constant Session_Dir_Base_ID := 0;
+
+   type Suppression is (Warning, Check, None);
+
+   type Suppressed_Message (Suppression_Kind : Suppression := None) is record
+      case Suppression_Kind is
+         when Warning | Check =>
+            Msg : String_Id;
+            case Suppression_Kind is
+               when Check =>
+                  Annot_Kind    : Annotate_Kind;
+                  Justification : Unbounded_String;
+               when others =>
+                  null;
+            end case;
+         when others =>
+            null;
+      end case;
+   end record;
+   --  When a warning is suppressed, we can store its message; when a check is
+   --  suppressed, we can store its message, annotation kind and justification.
+
+   Suppressed_Warning : constant Suppressed_Message :=
+     Suppressed_Message'(Suppression_Kind => Warning, Msg => First_String_Id);
+   --  This represents a suppressed warning. We don't care about its content,
+   --  because suppressed warnings are not reported.
+
+   No_Suppressed_Message : constant Suppressed_Message :=
+     Suppressed_Message'(Suppression_Kind => None);
 
    function Register_Session_Dir (S : String) return Session_Dir_ID;
    --  Register a string as a session file, create its ID and return it.
