@@ -127,7 +127,7 @@ gnat2why-nightly:
 
 gnat2why:
 	# Produce Ada code that stores the reserved keywords of Why3
-	# This script should be run *ONLY* in developper build not in prod
+	# This script should be run *ONLY* in developer build not in prod
 	# (gnat2why-nightly)
 	python3 scripts/why3keywords.py why3/src/core/keywords.ml src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
