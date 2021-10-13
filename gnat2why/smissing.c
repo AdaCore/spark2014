@@ -42,3 +42,5 @@ void *callgraph_info_file = (void *)0;
 /* Originally defined in misc.c.  */
 unsigned int save_argc = 0;
 const char **save_argv = (const char **)0;
+
+const char gnat_version_string[] = "1.0";
