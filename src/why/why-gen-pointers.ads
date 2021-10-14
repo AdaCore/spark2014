@@ -132,11 +132,10 @@ package Why.Gen.Pointers is
 
    function New_Pointer_Is_Moved_Update
      (E      : Entity_Id;
-      Name   : W_Expr_Id;
-      Value  : W_Expr_Id;
-      Domain : EW_Domain;
+      Name   : W_Prog_Id;
+      Value  : W_Prog_Id;
       Local  : Boolean := False)
-      return W_Expr_Id;
+      return W_Prog_Id;
    --  Return an update of the Is_Moved field of the pointer why record Name
    --  with value Value.
 

@@ -454,8 +454,8 @@ generic_interval_tests.adb:150:14: info: float overflow check proved (CVC4: 1 VC
 generic_interval_tests.adb:150:14: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:154:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:154:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:156:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:156:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:156:19: medium: postcondition might fail, in instantiation at bar.ads:12
+generic_interval_tests.adb:156:19: medium: postcondition might fail, in instantiation at bar.ads:8
 generic_interval_tests.adb:159:15: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:159:15: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:159:22: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12

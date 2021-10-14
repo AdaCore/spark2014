@@ -82,9 +82,9 @@ package body Why.Images is
    -- P --
    -------
 
-   procedure P (O : Output_Id; Name : Symbol; As_String : Boolean := False) is
+   procedure P (O : Output_Id; Name : Symbol) is
    begin
-      P (O, Img (Name), As_String);
+      P (O, Img (Name), As_String => False);
    end P;
 
    procedure P
@@ -382,26 +382,14 @@ package body Why.Images is
       P (O, Img (Value));
    end P;
 
-   procedure P
-     (O      : Output_Id;
-      Value  : EW_Literal;
-      Domain : EW_Domain := EW_Prog)
-   is
+   procedure P (O : Output_Id; Value : EW_Literal) is
    begin
       case Value is
          when EW_True =>
-            if Domain in EW_Prog | EW_Term | EW_Pterm then
-               P (O, "True");
-            else
-               P (O, "true");
-            end if;
+            P (O, "True");
 
          when EW_False =>
-            if Domain in EW_Prog | EW_Term | EW_Pterm then
-               P (O, "False");
-            else
-               P (O, "false");
-            end if;
+            P (O, "False");
       end case;
    end P;
 
@@ -459,17 +447,11 @@ package body Why.Images is
       end case;
    end P;
 
-   procedure P (O : Output_Id;
-                Value : EW_Theory_Type;
-                Empty_For_Theory : Boolean := False) is
+   procedure P (O : Output_Id; Value : EW_Theory_Type) is
    begin
       case Value is
          when EW_Theory =>
-            if Empty_For_Theory then
-               P (O, "      ");  --  for alignment of include declarations
-            else
-               P (O, "theory");
-            end if;
+            P (O, "theory");
 
          when EW_Module =>
             P (O, "module");
@@ -518,36 +500,18 @@ package body Why.Images is
       P (O, Img (Node));
    end P;
 
-   procedure P
-     (O         : Output_Id;
-      Value     : Symbol_Set;
-      As_Labels : Boolean := False) is
+   procedure P (O : Output_Id; Value : Symbol_Set) is
    begin
       for Name of Value loop
-         if As_Labels then
-            P (O, "[@");
-         end if;
          P (O, Name);
-         if As_Labels then
-            P (O, "]");
-         end if;
          P (O, " ");
       end loop;
    end P;
 
-   procedure P
-     (O         : Output_Id;
-      Value     : String_Sets.Set;
-      As_Labels : Boolean := False) is
+   procedure P (O : Output_Id; Value : String_Sets.Set) is
    begin
       for Name of Value loop
-         if As_Labels then
-            P (O, "[@");
-         end if;
          P (O, Name);
-         if As_Labels then
-            P (O, "]");
-         end if;
          P (O, " ");
       end loop;
    end P;

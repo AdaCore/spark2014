@@ -92,16 +92,15 @@ package Why.Inter is
    --  With_Completion is True if the completion theories for E should be
    --  added too.
 
-   procedure Add_With_Clause (T        : Theory_UC;
-                              Module   : W_Module_Id;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module);
+   procedure Add_With_Clause
+     (T        : Theory_UC;
+      Module   : W_Module_Id;
+      Use_Kind : EW_Clone_Type);
    --  Add use clause for Module to the list of declarations from T.
    --  @param T the theory where the use clause will be emitted
    --  @param Module module that we want to use
    --  @param Use_Kind kind of Why3 use clause. It will be overrdidden to
    --     Import for Int_Module and RealInfix modules to allow infix notations.
-   --  @param Th_Type theory type of Module
 
    function Goto_Exception_Name (E : Entity_Id) return W_Name_Id
    with Pre => Ekind (E) = E_Label;

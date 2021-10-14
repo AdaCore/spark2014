@@ -43,7 +43,7 @@ package Why.Images is
    --  Image functions for the basic entities used in Why's AST.
    --  These output the string image into O.
 
-   procedure P (O : Output_Id; Name : Symbol; As_String : Boolean := False);
+   procedure P (O : Output_Id; Name : Symbol);
 
    procedure P (O : Output_Id; Node : Node_Id);
 
@@ -66,20 +66,11 @@ package Why.Images is
       Value  : Source_Ptr;
       Marker : Symbol := No_Symbol);
 
-   procedure P
-     (O         : Output_Id;
-      Value     : Symbol_Set;
-      As_Labels : Boolean := False);
+   procedure P (O : Output_Id; Value : Symbol_Set);
 
-   procedure P
-     (O         : Output_Id;
-      Value     : String_Sets.Set;
-      As_Labels : Boolean := False);
+   procedure P (O : Output_Id; Value : String_Sets.Set);
 
-   procedure P
-     (O      : Output_Id;
-      Value  : EW_Literal;
-      Domain : EW_Domain := EW_Prog);
+   procedure P (O : Output_Id; Value : EW_Literal);
 
    procedure P (O : Output_Id; Value : EW_Connector);
 
@@ -89,11 +80,8 @@ package Why.Images is
 
    procedure P (O : Output_Id; Value : EW_Clone_Type);
 
-   procedure P (O : Output_Id;
-                Value : EW_Theory_Type;
-                Empty_For_Theory : Boolean := False);
-   --  Print either "module" or "theory" depending on theory type, if kind is
-   --  EW_Theory and Empty_For_Theory is true, print nothing.
+   procedure P (O : Output_Id; Value : EW_Theory_Type);
+   --  Print either "module" or "theory" depending on theory type
 
    function Img (Name : Symbol) return String;
    --  Return the String represented by the symbol

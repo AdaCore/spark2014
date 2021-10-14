@@ -176,10 +176,7 @@ package Why.Gen.Expr is
    --  Generate the expression "Left or Right"; choose the right "or" operation
    --  depending on "Base", e.g. for modular or boolean types.
 
-   function New_Or_Expr
-     (Conjuncts : W_Expr_Array;
-      Domain    : EW_Domain)
-      return W_Expr_Id;
+   function New_Or_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id;
 
    function New_Or_Else_Expr
      (Left, Right : W_Expr_Id;
@@ -610,10 +607,8 @@ package Why.Gen.Expr is
    --  expression for later use. If Need_Temp is False, do not actually
    --  introduce a temp variable.
 
-   function New_Temp_For_Expr
-     (E         : W_Term_Id;
-      Need_Temp : Boolean := True) return W_Term_Id
-   is (+W_Expr_Id'(New_Temp_For_Expr (+E, Need_Temp)));
+   function New_Temp_For_Expr (E : W_Term_Id) return W_Term_Id
+   is (+W_Expr_Id'(New_Temp_For_Expr (+E, Need_Temp => True)));
 
    function Binding_For_Temp
      (Ada_Node : Node_Id := Empty;
@@ -628,5 +623,11 @@ package Why.Gen.Expr is
       Tmp      : W_Term_Id;
       Context  : W_Pred_Id) return W_Pred_Id
    is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Pred, +Tmp, +Context)));
+
+   function Binding_For_Temp
+     (Ada_Node : Node_Id := Empty;
+      Tmp      : W_Term_Id;
+      Context  : W_Prog_Id) return W_Prog_Id
+   is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Prog, +Tmp, +Context)));
 
 end Why.Gen.Expr;

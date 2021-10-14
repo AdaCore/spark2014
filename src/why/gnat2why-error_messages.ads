@@ -81,6 +81,14 @@ package Gnat2Why.Error_Messages is
 
    procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token);
 
+   generic
+      Verb : String;
+      Prefix : String := "";
+      Suffix : String := "";
+   function VC_Message (Node : Node_Id; Kind : VC_Kind) return String;
+   --  Return the message string for a VC. This is used for proved checks and
+   --  for justified checks
+
    procedure Emit_Proof_Result
      (Node        : Node_Id;
       Id          : VC_Id;

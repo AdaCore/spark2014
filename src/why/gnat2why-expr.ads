@@ -64,8 +64,7 @@ package Gnat2Why.Expr is
       Ty            : Type_Kind_Id;
       Initialized   : Boolean := True;
       Only_Var      : Boolean := True;
-      Top_Predicate : Boolean := True;
-      Use_Pred      : Boolean := True)
+      Top_Predicate : Boolean := True)
       return W_Prog_Id;
    --  @param Expr Why3 expression on which to assume the dynamic invariant
    --  @param Ty type of expression [Expr]
@@ -74,8 +73,7 @@ package Gnat2Why.Expr is
    --     the variable parts of [Expr].
    --  @param Top_Predicate True iff the dynamic invariant should consider
    --     the toplevel type predicate possibly associated with [Ty].
-   --  @param Use_Pred True iff the named predicate should be used
-   --  @result Why3 program assuming the dynamic invariant of type [Ty]
+      --  @result Why3 program assuming the dynamic invariant of type [Ty]
    --     over [Expr].
 
    function Assume_Dynamic_Invariant_For_Variables
@@ -705,15 +703,15 @@ package Gnat2Why.Expr is
    --  It should be equal to empty when we are not generating code for a
    --  protected subprogram.
 
-   function Bind_From_Mapping_In_Expr
+   function Bind_From_Mapping_In_Prog
      (Params : Transformation_Params;
       Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Expr_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id;
+      Expr   : W_Prog_Id)
+      return W_Prog_Id;
    --  Bind names from Map to their corresponding values, obtained by
-   --  transforming the expression node associated to the name in Map, in
-   --  Expr.
+   --  transforming the expression node associated to the name in Map, in Expr.
+   --  This is used to bind names for 'Old and 'Loop_Entry attribute reference
+   --  to their value.
 
    function Bind_From_Mapping_In_Expr
      (Params : Transformation_Params;

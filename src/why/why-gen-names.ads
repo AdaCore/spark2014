@@ -352,6 +352,8 @@ package Why.Gen.Names is
       WNE_Private_Type,
       --  Name of equality on this type
       WNE_Private_Eq,
+      --  Dummy symbol of this type
+      WNE_Private_Dummy,
 
       --  Division operators for a fixed-point type
       WNE_Fixed_Point_Div,

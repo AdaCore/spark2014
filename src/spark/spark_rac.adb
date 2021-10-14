@@ -69,7 +69,7 @@ package body SPARK_RAC is
    -- Types --
    -----------
 
-   procedure Check_Supported_Type (Ty : Node_Id);
+   procedure Check_Supported_Type (Ty : Entity_Id);
    --  Call RAC_Unsupported if Ty is not supported yet
 
    function Safe_Retysp (T : Type_Kind_Id) return Entity_Id is
@@ -430,11 +430,11 @@ package body SPARK_RAC is
      Pre => Is_Integer_Type (Ty);
    --  Write the first and last value of an integer type Ty in Fst and Lst
 
-   function Get_Enum_Type_Last (Ty : Entity_Id) return Integer;
+   function Get_Enum_Type_Last (Ty : Entity_Id) return Positive;
    --  Returns the index of the last enumeration literal
 
    procedure Get_Array_Info
-     (Ty                :     Node_Id;
+     (Ty                :     Entity_Id;
       Index_Ty, Comp_Ty : out Entity_Id;
       Fst, Lst          : out Big_Integer);
    --  Get the index type and component type, and the bounds of a
@@ -656,7 +656,7 @@ package body SPARK_RAC is
    -- Check_Supported_Type --
    --------------------------
 
-   procedure Check_Supported_Type (Ty : Node_Id) is
+   procedure Check_Supported_Type (Ty : Entity_Id) is
    begin
       if Has_Discriminants (Ty) then
          RAC_Unsupported ("Type has discrimants", Ty);
@@ -813,7 +813,7 @@ package body SPARK_RAC is
       Ctx  : in out Context;
       Sc   : in out Scopes.Map)
    is
-      Par : Entity_Id  := First_Formal (E);
+      Par : Entity_Id := First_Formal (E);
       Arg : Node_Id := First (Args);
    begin
       while Present (Par) loop
@@ -1020,7 +1020,7 @@ package body SPARK_RAC is
    --------------------
 
    procedure Get_Array_Info
-     (Ty                :     Node_Id;
+     (Ty                :     Entity_Id;
       Index_Ty, Comp_Ty : out Entity_Id;
       Fst, Lst          : out Big_Integer)
    is
@@ -1089,6 +1089,10 @@ package body SPARK_RAC is
 
       procedure To_Big_Integer (N : Node_Id; I : out Big_Integer);
 
+      --------------------
+      -- To_Big_Integer --
+      --------------------
+
       procedure To_Big_Integer (N : Node_Id; I : out Big_Integer) is
       begin
          --  ??? TODO Use RAC_Expr instead to evaluate N, convert to function
@@ -1110,13 +1114,13 @@ package body SPARK_RAC is
    -- Get_Enum_Type_Last --
    ------------------------
 
-   function Get_Enum_Type_Last (Ty : Entity_Id) return Integer is
+   function Get_Enum_Type_Last (Ty : Entity_Id) return Positive is
    begin
       if Ty = Standard_Character then
          return Character'Pos (Character'Last);
       else
          declare
-            Res : Integer := 0;
+            Res : Natural := 0;
             Lit : Node_Id;
          begin
             case Ekind (Ty) is
@@ -1414,7 +1418,7 @@ package body SPARK_RAC is
       Res : Big_Integer := I;
    begin
       if Is_Modular_Integer_Type (Ty) then
-         if Modulus (Ty) = 0 then
+         if No (Modulus (Ty)) then
             --  ??? TODO Modulus 0 for System.Address in
             --      O226-018__address/src/worker_pack__worker_init
             RAC_Unsupported ("Modular integer zero", Ty);
@@ -1442,7 +1446,7 @@ package body SPARK_RAC is
       Low          : constant Value := RAC_Expr (Low_Bnd, Ctx);
       High         : constant Value :=
         RAC_Expr (High_Bound (Actual_Range), Ctx);
-      Id           : constant Node_Id :=
+      Id           : constant Entity_Id :=
         Defining_Identifier (Param_Spec);
       Curr, Stop   : Big_Integer;
       Step         : Big_Integer := To_Big_Integer (1);
@@ -1510,7 +1514,7 @@ package body SPARK_RAC is
    is
       Res : Scopes.Map := Scopes.Empty;
       Arg : Node_Id := First (Args);
-      Par : Entity_Id  := First_Formal (E);
+      Par : Entity_Id := First_Formal (E);
       Val : Value_Access;
    begin
       while Present (Arg) loop
@@ -1798,7 +1802,7 @@ package body SPARK_RAC is
             declare
                Obj_Def : Node_Id;
                V       : Value;
-               Ty      : Node_Id;
+               Ty      : Entity_Id;
             begin
                if Present (Expression (Decl)) then
                   V := RAC_Expr (Expression (Decl), Ctx);
@@ -1872,16 +1876,16 @@ package body SPARK_RAC is
       ------------------
 
       function Global_Scope (Ctx : in out Context) return Scopes.Map is
-         Res                  : Scopes.Map := Scopes.Empty;
-         Reads, Writes        : Flow_Id_Sets.Set;
-         Use_Expr, Write_Only : Boolean;
-         B                    : Binding;
-         Scope                : constant Flow_Scope := Get_Flow_Scope (E);
+         Res           : Scopes.Map := Scopes.Empty;
+         Reads, Writes : Flow_Id_Sets.Set;
+         Use_Expr      : Boolean;
+         B             : Binding;
+         Scope         : constant Flow_Scope := Get_Flow_Scope (E);
       begin
          Get_Proof_Globals (E, Reads, Writes, False, Scope);
 
          for Id of Reads loop
-            if Id.Kind in Direct_Mapping | Record_Field then
+            if Id.Kind = Direct_Mapping then
                Use_Expr := Ekind (Id.Node) = E_Constant;
                Init_Global (Res, Id.Node, Use_Expr, False, Ctx, B, "read");
             end if;
@@ -1889,11 +1893,10 @@ package body SPARK_RAC is
 
          for Id of Writes loop
             if
-              Id.Kind in Direct_Mapping | Record_Field
+              Id.Kind = Direct_Mapping
               and then not Reads.Contains (Id)
             then
-               Write_Only := not Reads.Contains (Id);
-               Init_Global (Res, Id.Node, False, Write_Only, Ctx, B, "write");
+               Init_Global (Res, Id.Node, False, True, Ctx, B, "write");
             end if;
          end loop;
 
@@ -2609,6 +2612,11 @@ package body SPARK_RAC is
             declare
                Break : exception;
                procedure Iteration (Ctx : in out Context);
+
+               ---------------
+               -- Iteration --
+               ---------------
+
                procedure Iteration (Ctx : in out Context) is
                   B : constant Boolean :=
                         Value_Boolean (RAC_Expr (Condition (N), Ctx));
@@ -2617,6 +2625,7 @@ package body SPARK_RAC is
                      raise Break;
                   end if;
                end Iteration;
+
             begin
                if Present (Loop_Parameter_Specification (N)) then
                   begin
@@ -2924,7 +2933,7 @@ package body SPARK_RAC is
             declare
                Scheme : constant Node_Id := Iteration_Scheme (N);
             begin
-               if not Present (Scheme) then
+               if No (Scheme) then
                   begin
                      loop
                         RAC_List (Statements (N), Ctx);
@@ -2974,7 +2983,7 @@ package body SPARK_RAC is
                RAC_Unsupported ("RAC_Statement exit statement with name", N);
             end if;
 
-            if not Present (Condition (N))
+            if No (Condition (N))
               or else Value_Boolean (RAC_Expr (Condition (N), Ctx))
             then
                raise Exn_RAC_Exit;

@@ -105,15 +105,15 @@ package body Gnat2Why.Error_Messages is
    procedure Mark_Subprograms_With_No_VC_As_Proved;
    --  For all subprograms that do not contain any VC, issue related claims
 
-   function Proved_Message
-     (Node : Node_Id;
-      Kind : VC_Kind) return String;
-   --  Return the message string for a proved VC
-
    function Not_Proved_Message
      (Node : Node_Id;
       Kind : VC_Kind) return String;
    --  Return the message string for an unproved VC
+
+   function Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String;
+   --  Return the message string for a proved VC
 
    function To_String
      (Kind : VC_Kind; Node : Node_Id) return String
@@ -1509,169 +1509,10 @@ package body Gnat2Why.Error_Messages is
    -- Proved_Message --
    --------------------
 
-   function Proved_Message
-     (Node : Node_Id;
-      Kind : VC_Kind) return String is
+   function Proved_Message (Node : Node_Id; Kind : VC_Kind) return String is
+      function Inst is new VC_Message (Verb => "proved");
    begin
-      case Kind is
-         when VC_Division_Check            => return "division check proved";
-         when VC_Index_Check               => return "index check proved";
-         when VC_Overflow_Check            => return "overflow check proved";
-         when VC_FP_Overflow_Check         =>
-            return "float overflow check proved";
-         when VC_Range_Check               => return "range check proved";
-         when VC_Predicate_Check           => return "predicate check proved";
-         when VC_Predicate_Check_On_Default_Value =>
-            return "predicate check proved on default value";
-         when VC_Null_Pointer_Dereference =>
-            return "pointer dereference check proved";
-         when VC_Null_Exclusion =>
-            return "null exclusion check proved";
-         when VC_Dynamic_Accessibility_Check =>
-            return "dynamic accessibility check proved";
-         when VC_Memory_Leak =>
-            return "absence of memory leak proved";
-         when VC_Memory_Leak_At_End_Of_Scope =>
-            return "absence of memory leak at end of scope proved";
-         when VC_Invariant_Check           => return "invariant check proved";
-         when VC_Invariant_Check_On_Default_Value =>
-            return "invariant check proved on default value";
-         when VC_Length_Check              => return "length check proved";
-         when VC_Discriminant_Check        =>
-            return "discriminant check proved";
-         when VC_Tag_Check                 =>
-            return "tag check proved";
-         when VC_Ceiling_Interrupt         =>
-            return "ceiling priority in Interrupt_Priority proved";
-         when VC_Interrupt_Reserved        =>
-            return "availability of interrupt proved";
-         when VC_Ceiling_Priority_Protocol =>
-            return "ceiling priority protocol is respected";
-         when VC_Task_Termination          =>
-            return "nontermination of task proved";
-
-         when VC_Initial_Condition         =>
-            return "initial condition proved";
-         when VC_Default_Initial_Condition =>
-            return "default initial condition proved";
-         when VC_Precondition              =>
-            if Nkind (Node) in N_Procedure_Call_Statement
-                             | N_Entry_Call_Statement
-              and then Is_Error_Signaling_Statement (Node)
-            then
-               return "call to nonreturning procedure never executed";
-            else
-               return "precondition proved";
-            end if;
-         when VC_Precondition_Main         =>
-            return "precondition of main program proved";
-         when VC_Postcondition             => return "postcondition proved";
-         when VC_Refined_Post              => return "refined post proved";
-         when VC_Contract_Case             => return "contract case proved";
-         when VC_Disjoint_Contract_Cases   =>
-            return "disjoint contract cases proved";
-         when VC_Complete_Contract_Cases   =>
-            return "complete contract cases proved";
-         when VC_Loop_Invariant            =>
-            return "loop invariant proved";
-         when VC_Loop_Invariant_Init       =>
-            return "loop invariant initialization proved";
-         when VC_Loop_Invariant_Preserv    =>
-            return "loop invariant preservation proved";
-         when VC_Loop_Variant              => return "loop variant proved";
-         when VC_Assert                    => return "assertion proved";
-         when VC_Raise                     =>
-            --  Give explanations for exceptions which frontend statically
-            --  determined to always happen, but backend proved to be
-            --  unreachable.
-
-            if Nkind (Node) in N_Raise_xxx_Error then
-               case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
-                  when CE_Range_Check_Failed =>
-                     return Proved_Message (Node, VC_Range_Check);
-                  when CE_Index_Check_Failed =>
-                     return Proved_Message (Node, VC_Index_Check);
-                  when CE_Divide_By_Zero =>
-                     return Proved_Message (Node, VC_Division_Check);
-                  when SE_Infinite_Recursion =>
-                     return "infinite recursion proved unreachable";
-
-                  --  In debug builds developers will get a crash with a
-                  --  missing case, which we will fix whenever it occurs;
-                  --  in production builds users will get a generic message.
-
-                  when others =>
-                     pragma Assert (False);
-               end case;
-            end if;
-            return "raise statement or expression proved unreachable";
-         when VC_Inline_Check              =>
-            return "Inline_For_Proof annotation proved";
-         when VC_Subprogram_Variant        =>
-            return "subprogram variant proved";
-         when VC_UC_Source                 =>
-            return "type is suitable as source for unchecked conversion";
-         when VC_UC_Target                 =>
-            declare
-               Common : constant String := " is suitable for ";
-            begin
-               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
-               then
-                  return "object" & Common &
-                    "aliasing via address clause";
-               else
-                  return "type" & Common & "unchecked conversion";
-               end if;
-            end;
-
-         when VC_UC_Same_Size              =>
-            if Nkind (Node) = N_Attribute_Reference then
-               return "types of aliased objects have the same size";
-            else
-               return "types in unchecked conversion have the same size";
-            end if;
-
-         when VC_UC_Alignment =>
-            return "alignment of overlaid objects is compatible";
-
-         when VC_UC_Volatile =>
-            return "object with non-trivial address clause and prefix of the" &
-              " 'Address attribute have asynchronous writers";
-
-         when VC_Weaker_Pre                =>
-            return "precondition is weaker than class-wide precondition";
-         when VC_Trivial_Weaker_Pre        =>
-            return "precondition is always True";
-         when VC_Stronger_Post             =>
-            return "postcondition is stronger than class-wide postcondition";
-         when VC_Weaker_Classwide_Pre      =>
-            return "class-wide precondition is weaker than overridden one";
-         when VC_Stronger_Classwide_Post   =>
-            return "class-wide postcondition is stronger than overridden one";
-         when VC_Weaker_Pre_Access         =>
-            return "precondition of target is strong enough to imply"
-              & " precondition of source";
-         when VC_Stronger_Post_Access      =>
-            return "postcondition of source is strong enough to imply"
-              & " postcondition of target";
-         when VC_Initialization_Check      =>
-            return "initialization check proved";
-         when VC_Unchecked_Union_Restriction =>
-            return "operation on unchecked union type proved";
-
-         --  VC_Warning_Kind - warnings
-
-         when VC_Inconsistent_Pre          =>
-            return "precondition is always False";
-         when VC_Inconsistent_Post         =>
-            return "postcondition is always False";
-         when VC_Inconsistent_Assume         =>
-            return "pragma Assume is always False";
-         when VC_Unreachable_Branch        =>
-            return "unreachable branch";
-         when VC_Dead_Code                 =>
-            return "unreachable code";
-      end case;
+      return Inst (Node, Kind);
    end Proved_Message;
 
    -----------------
@@ -1713,5 +1554,182 @@ package body Gnat2Why.Error_Messages is
    begin
       VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
    end Register_VC_Entity;
+
+   -----------------
+   -- VC_Messsage --
+   -----------------
+
+   function VC_Message (Node : Node_Id; Kind : VC_Kind) return String is
+   begin
+      case Kind is
+         when VC_Division_Check            =>
+            return "division check " & Verb;
+         when VC_Index_Check               => return "index check " & Verb;
+         when VC_Overflow_Check            =>
+            return "overflow check " & Verb;
+         when VC_FP_Overflow_Check         =>
+            return "float overflow check " & Verb;
+         when VC_Range_Check               => return "range check " & Verb;
+         when VC_Predicate_Check           =>
+            return "predicate check " & Verb;
+         when VC_Predicate_Check_On_Default_Value =>
+            return "predicate check " & Verb & " on default value";
+         when VC_Null_Pointer_Dereference =>
+            return "pointer dereference check " & Verb;
+         when VC_Null_Exclusion =>
+            return "null exclusion check " & Verb;
+         when VC_Dynamic_Accessibility_Check =>
+            return "dynamic accessibility check " & Verb;
+         when VC_Memory_Leak =>
+            return "absence of memory leak " & Verb;
+         when VC_Memory_Leak_At_End_Of_Scope =>
+            return "absence of memory leak at end of scope " & Verb;
+         when VC_Invariant_Check           =>
+            return "invariant check " & Verb;
+         when VC_Invariant_Check_On_Default_Value =>
+            return "invariant check " & Verb & " on default value";
+         when VC_Length_Check              => return "length check " & Verb;
+         when VC_Discriminant_Check        =>
+            return "discriminant check " & Verb;
+         when VC_Tag_Check                 => return "tag check " & Verb;
+         when VC_Ceiling_Interrupt         =>
+            return "ceiling priority in Interrupt_Priority " & Verb;
+         when VC_Interrupt_Reserved        =>
+            return "availability of interrupt " & Verb;
+         when VC_Ceiling_Priority_Protocol =>
+            return Prefix & "ceiling priority protocol is respected";
+         when VC_Task_Termination          =>
+            return "nontermination of task " & Verb;
+
+         when VC_Initial_Condition         =>
+            return "initial condition " & Verb;
+         when VC_Default_Initial_Condition =>
+            return "default initial condition " & Verb;
+         when VC_Precondition              =>
+            if Nkind (Node) in N_Procedure_Call_Statement
+                             | N_Entry_Call_Statement
+              and then Is_Error_Signaling_Statement (Node)
+            then
+               return Prefix & "call to nonreturning procedure never executed";
+            else
+               return "precondition " & Verb;
+            end if;
+         when VC_Precondition_Main         =>
+            return "precondition of main program " & Verb;
+         when VC_Postcondition             => return "postcondition " & Verb;
+         when VC_Refined_Post              => return "refined post " & Verb;
+         when VC_Contract_Case             => return "contract case " & Verb;
+         when VC_Disjoint_Contract_Cases   =>
+            return "disjoint contract cases " & Verb;
+         when VC_Complete_Contract_Cases   =>
+            return "complete contract cases " & Verb;
+         when VC_Loop_Invariant            =>
+            return "loop invariant " & Verb;
+         when VC_Loop_Invariant_Init       =>
+            return "loop invariant initialization " & Verb;
+         when VC_Loop_Invariant_Preserv    =>
+            return "loop invariant preservation " & Verb;
+         when VC_Loop_Variant              => return "loop variant " & Verb;
+         when VC_Assert                    => return "assertion " & Verb;
+         when VC_Raise                     =>
+            --  Give explanations for exceptions which frontend statically
+            --  determined to always happen, but backend proved to be
+            --  unreachable.
+
+            if Nkind (Node) in N_Raise_xxx_Error then
+               case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
+                  when CE_Range_Check_Failed =>
+                     return VC_Message (Node, VC_Range_Check);
+                  when CE_Index_Check_Failed =>
+                     return VC_Message (Node, VC_Index_Check);
+                  when CE_Divide_By_Zero =>
+                     return VC_Message (Node, VC_Division_Check);
+                  when SE_Infinite_Recursion =>
+                     return "infinite recursion " & Verb & " unreachable";
+
+                  --  In debug builds developers will get a crash with a
+                  --  missing case, which we will fix whenever it occurs;
+                  --  in production builds users will get a generic message.
+
+                  when others =>
+                     pragma Assert (False);
+               end case;
+            end if;
+            return "raise statement or expression " & Verb & " unreachable";
+         when VC_Inline_Check              =>
+            return "Inline_For_Proof annotation " & Verb;
+         when VC_Subprogram_Variant        =>
+            return "subprogram variant " & Verb;
+         when VC_UC_Source                 =>
+            return Prefix
+              & "type is suitable as source for unchecked conversion";
+         when VC_UC_Target                 =>
+            declare
+               Common : constant String := " is suitable for ";
+            begin
+               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
+               then
+                  return Prefix & "object" & Common &
+                    "aliasing via address clause";
+               else
+                  return Prefix & "type" & Common & "unchecked conversion";
+               end if;
+            end;
+
+         when VC_UC_Same_Size              =>
+            if Nkind (Node) = N_Attribute_Reference then
+               return Prefix & "types of aliased objects have the same size";
+            else
+               return Prefix
+                 & "types in unchecked conversion have the same size";
+            end if;
+
+         when VC_UC_Alignment =>
+            return Prefix & "alignment of overlaid objects is compatible";
+
+         when VC_UC_Volatile =>
+            return Prefix
+              & "object with non-trivial address clause and prefix of the"
+              & " 'Address attribute have asynchronous writers";
+
+         when VC_Weaker_Pre                =>
+            return Prefix & "precondition is weaker than"
+              & " class-wide precondition";
+         when VC_Trivial_Weaker_Pre        =>
+            return Prefix & "precondition is always True";
+         when VC_Stronger_Post             =>
+            return Prefix & "postcondition is stronger"
+              & " than class-wide postcondition";
+         when VC_Weaker_Classwide_Pre      =>
+            return Prefix
+              & "class-wide precondition is weaker than overridden one";
+         when VC_Stronger_Classwide_Post   =>
+            return Prefix & "class-wide postcondition is stronger"
+              & " than overridden one";
+         when VC_Weaker_Pre_Access         =>
+            return Prefix & "precondition of target is strong enough to imply"
+              & " precondition of source";
+         when VC_Stronger_Post_Access      =>
+            return Prefix & "postcondition of source is strong enough to imply"
+              & " postcondition of target";
+         when VC_Initialization_Check      =>
+            return "initialization check " & Verb;
+         when VC_Unchecked_Union_Restriction =>
+            return "operation on unchecked union type " & Verb;
+
+         --  VC_Warning_Kind - warnings
+
+         when VC_Inconsistent_Pre          =>
+            return Prefix & "precondition is always False";
+         when VC_Inconsistent_Post         =>
+            return Prefix & "postcondition is always False";
+         when VC_Inconsistent_Assume         =>
+            return Prefix & "pragma Assume is always False";
+         when VC_Unreachable_Branch        =>
+            return "unreachable branch" & Suffix;
+         when VC_Dead_Code                 =>
+            return "unreachable code" & Suffix;
+      end case;
+   end VC_Message;
 
 end Gnat2Why.Error_Messages;

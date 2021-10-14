@@ -20,8 +20,12 @@ numerics-algo.ads:7:20: info: initialization of "X2" proved
 numerics-algo.ads:8:20: info: initialization of "X3" proved
 numerics-algo.ads:9:20: info: initialization of "X4" proved
 numerics-algo.ads:10:20: info: initialization of "X5" proved
+numerics.ads:20:99: info: float overflow check justified
 numerics.ads:20:99: info: range check proved (Trivial)
+numerics.ads:23:99: info: float overflow check justified
 numerics.ads:23:99: info: range check proved (Trivial)
+numerics.ads:26:99: info: float overflow check justified
 numerics.ads:26:99: info: range check proved (Trivial)
 numerics.ads:29:99: info: division check proved (CVC4: 1 VC)
+numerics.ads:29:99: info: float overflow check justified
 numerics.ads:29:99: info: range check proved (Trivial)

@@ -354,12 +354,10 @@ package Gnat2Why.Util is
    --  True for the empty list.
 
    function Compute_Spec
-     (Params    : Transformation_Params;
-      E         : Callable_Kind_Id;
-      Kind      : Pragma_Id;
-      Domain    : EW_Domain;
-      Classwide : Boolean := False;
-      Inherited : Boolean := False)
+     (Params : Transformation_Params;
+      E      : Callable_Kind_Id;
+      Kind   : Pragma_Id;
+      Domain : EW_Domain)
       return W_Expr_Id
    with Pre => Kind in Pragma_Precondition
                      | Pragma_Postcondition
@@ -376,16 +374,6 @@ package Gnat2Why.Util is
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Callable_Kind_Id;
-      Kind   : Pragma_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
-   with Pre => Kind in Pragma_Precondition
-                     | Pragma_Postcondition
-                     | Pragma_Refined_Post;
-
-   function Get_LSP_Contract
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id;
       Kind   : Pragma_Id)
       return W_Pred_Id
    with Pre => Kind in Pragma_Precondition
@@ -410,16 +398,6 @@ package Gnat2Why.Util is
    with Pre => Kind in Pragma_Precondition | Pragma_Postcondition;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
-
-   function Get_Static_Call_Contract
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id;
-      Kind   : Pragma_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
-   with Pre => Kind in Pragma_Precondition
-                     | Pragma_Postcondition
-                     | Pragma_Refined_Post;
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;

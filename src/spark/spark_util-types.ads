@@ -252,7 +252,6 @@ package SPARK_Util.Types is
 
    procedure Suitable_For_UC
      (Typ         :     Type_Kind_Id;
-      Use_Esize   :     Boolean;
       Result      : out Boolean;
       Explanation : out Unbounded_String);
    --  This procedure implements the notion of "suitable for unchecked

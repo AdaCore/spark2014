@@ -523,7 +523,7 @@ def check_marks(strlist):
           is_flow_tag: True for flow messages, False for proof messages
         """
         if qualifier == 'info':
-            if 'proved' in text or 'nonreturning' in text:
+            if 'proved' in text or 'nonreturning' in text or 'justified' in text:
                 return 'PASS'
             else:
                 return None

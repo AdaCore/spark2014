@@ -108,10 +108,10 @@ package body Why.Inter is
    --          duplication. It is the case for split forms and static array
    --          types.
 
-   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              Module   : W_Module_Id;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module);
+   procedure Add_With_Clause
+     (T        : W_Theory_Declaration_Id;
+      Module   : W_Module_Id;
+      Use_Kind : EW_Clone_Type);
 
    --------------------------
    -- Compute_Ada_Node_Set --
@@ -337,10 +337,10 @@ package body Why.Inter is
    -- Add_With_Clause --
    ---------------------
 
-   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              Module   : W_Module_Id;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module)
+   procedure Add_With_Clause
+     (T        : W_Theory_Declaration_Id;
+      Module   : W_Module_Id;
+      Use_Kind : EW_Clone_Type)
    is
       Use_Kind2 : constant EW_Clone_Type :=
         (if Module in Int_Module | RealInfix
@@ -354,15 +354,15 @@ package body Why.Inter is
          New_Include_Declaration
            (Module   => Module,
             Use_Kind => Use_Kind2,
-            Kind     => Th_Type));
+            Kind     => EW_Module));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (T        : Theory_UC;
-                              Module   : W_Module_Id;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module) is
+   procedure Add_With_Clause
+     (T        : Theory_UC;
+      Module   : W_Module_Id;
+      Use_Kind : EW_Clone_Type) is
    begin
-      Add_With_Clause (T.Th, Module, Use_Kind, Th_Type);
+      Add_With_Clause (T.Th, Module, Use_Kind);
    end Add_With_Clause;
 
    -------------------

@@ -1628,45 +1628,21 @@ package body SPARK_Util.Types is
 
    procedure Suitable_For_UC
      (Typ         :     Type_Kind_Id;
-      Use_Esize   :     Boolean;
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
-      procedure Suitable_For_UC_Callback
-        (Typ         :     Type_Kind_Id;
-         Result      : out Boolean;
-         Typ_Size    : out Uint;
-         Explanation : out Unbounded_String);
-      --  Same as Suitable_For_UC_Internal, but Top_Level is fixed to False.
-
       procedure Suitable_For_UC_Internal
         (Typ         :     Type_Kind_Id;
-         Use_Esize   :     Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
       --  Check if the type in argument is suitable for unchecked conversion.
-      --  If yes, Result is set to True and Typ_Size contains the declared or
-      --  computed size for the type. If Top_Level is True, this is the
-      --  Object_Size, if not it is the RM Size or a computed value. If the
-      --  type is not suitable for unchecked conversion, Explanation contains
-      --  a string which explains why it is not suitable.
+      --  If yes, Result is set to True and Typ_Size contains the declared
+      --  or computed RM size for the type. If the type is not suitable for
+      --  unchecked conversion, Explanation contains a string which explains
+      --  why it is not suitable.
 
-      ------------------------------
-      -- Suitable_For_UC_Callback --
-      ------------------------------
-
-      procedure Suitable_For_UC_Callback
-        (Typ         :     Type_Kind_Id;
-         Result      : out Boolean;
-         Typ_Size    : out Uint;
-         Explanation : out Unbounded_String) is
-      begin
-         Suitable_For_UC_Internal
-           (Typ, False, Result, Typ_Size, Explanation);
-      end Suitable_For_UC_Callback;
-
-      procedure Recurse is new Minimal_Size (Suitable_For_UC_Callback);
+      procedure Recurse is new Minimal_Size (Suitable_For_UC_Internal);
       --  We use the generic Minimal_Size, which factors common code between
       --  Suitable_For_UC_Target and Suitable_For_UC.
 
@@ -1676,7 +1652,6 @@ package body SPARK_Util.Types is
 
       procedure Suitable_For_UC_Internal
         (Typ         :     Type_Kind_Id;
-         Use_Esize   :     Boolean;
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String)
@@ -1732,7 +1707,7 @@ package body SPARK_Util.Types is
 
             pragma Assert (Known_Esize (Typ) and Known_RM_Size (Typ));
 
-            Typ_Size := (if Use_Esize then Esize (Typ) else RM_Size (Typ));
+            Typ_Size := RM_Size (Typ);
             Result := True;
             return;
          end if;
@@ -1742,41 +1717,33 @@ package body SPARK_Util.Types is
 
       function Typ_Name return String is (Type_Name_For_Explanation (Typ));
 
+      --  Local variables
+
       Typ_Size : Uint;
+
+   --  Start of processing for Suitable_For_UC
+
    begin
-      Suitable_For_UC_Internal (Typ, Use_Esize, Result, Typ_Size, Explanation);
+      Suitable_For_UC_Internal (Typ, Result, Typ_Size, Explanation);
+
       if not Result then
          return;
       end if;
-      if Use_Esize then
-         Check_Known_Esize (Typ, Result, Explanation);
-         if not Result then
-            return;
-         end if;
-         if Esize (Typ) = Typ_Size then
-            Result := True;
-         else
-            Result := False;
-            Explanation :=
-              To_Unbounded_String
-                (Typ_Name & " has minimal size " & UI_Image (Typ_Size)
-                 & ", but Object_Size was declared as "
-                 & UI_Image (Esize (Typ)));
-         end if;
+
+      Check_Known_RM_Size (Typ, Result, Explanation);
+
+      if not Result then
+         return;
+      end if;
+
+      if RM_Size (Typ) = Typ_Size then
+         Result := True;
       else
-         Check_Known_RM_Size (Typ, Result, Explanation);
-         if not Result then
-            return;
-         end if;
-         if RM_Size (Typ) = Typ_Size then
-            Result := True;
-         else
-            Result := False;
-            Explanation :=
-              To_Unbounded_String
-                (Typ_Name & " has minimal size " & UI_Image (Typ_Size)
-                 & ", but Size was declared as " & UI_Image (RM_Size (Typ)));
-         end if;
+         Result := False;
+         Explanation :=
+           To_Unbounded_String
+             (Typ_Name & " has minimal size " & UI_Image (Typ_Size)
+              & ", but Size was declared as " & UI_Image (RM_Size (Typ)));
       end if;
    end Suitable_For_UC;
 

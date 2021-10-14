@@ -1787,10 +1787,10 @@ package body Gnat2Why.Expr.Loops is
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
 
       Try_Body : W_Prog_Id :=
-        +Bind_From_Mapping_In_Expr
+        Bind_From_Mapping_In_Prog
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
-           Expr   => +Sequence
+           Expr   => Sequence
              (New_Comment
                (Comment =>
                   NID ("Unrolling of the loop statements"
@@ -1798,8 +1798,7 @@ package body Gnat2Why.Expr.Loops is
                          " of loop " & Build_Location_String
                         (Sloc (Loop_Id))
                       else ""))),
-               Repeat_Loop),
-           Domain => EW_Prog);
+               Repeat_Loop));
 
    begin
       Try_Body :=
@@ -1923,19 +1922,17 @@ package body Gnat2Why.Expr.Loops is
          Is_Loop_Head => True);
 
       Try_Body : W_Prog_Id :=
-        +Bind_From_Mapping_In_Expr
+        Bind_From_Mapping_In_Prog
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
-           Expr   => +Sequence
-                          ((1 => New_Comment
-                               (Comment =>
-                                    NID ("While loop translating the Ada loop"
-                                  & (if Sloc (Loop_Id) > 0 then
-                                       " from " & Build_Location_String
-                                      (Sloc (Loop_Id))
-                                    else ""))),
-                           2 => Loop_Stmt)),
-           Domain => EW_Prog);
+           Expr   => Sequence
+             ((1 => New_Comment
+               (Comment =>
+                  NID ("While loop translating the Ada loop"
+                    & (if Sloc (Loop_Id) > 0 then
+                         " from " & Build_Location_String (Sloc (Loop_Id))
+                      else ""))),
+               2 => Loop_Stmt)));
 
       Loop_Try : W_Prog_Id;
       Warn_Dead_Code : W_Prog_Id := +Void;

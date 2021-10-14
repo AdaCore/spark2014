@@ -466,7 +466,7 @@ package body Why.Gen.Scalars is
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static
               and then Has_Modular_Integer_Type (E)
-              and then Modulus (E) /= UI_Expon (2, Modular_Size (E))
+              and then Modulus (E) /= UI_Expon (Uint_2, Modular_Size (E))
             then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
@@ -544,24 +544,18 @@ package body Why.Gen.Scalars is
          if Is_Static
            and then Has_Modular_Integer_Type (E)
            and then
-             ((Ty = EW_BitVector_8_Type
-               and then Modulus (E) = UI_Expon (Uint_2, Uint_8))
-              or else
-                (Ty = EW_BitVector_16_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_16))
-              or else
-                (Ty = EW_BitVector_32_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_32))
-              or else
-                (Ty = EW_BitVector_64_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_64))
-              or else
-                (Ty = EW_BitVector_128_Type
-                 and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_128)))
+             (if Ty = EW_BitVector_8_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_8)
+              elsif Ty = EW_BitVector_16_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_16)
+              elsif Ty = EW_BitVector_32_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_32)
+              elsif Ty = EW_BitVector_64_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_64)
+              elsif Ty = EW_BitVector_128_Type then
+                Modulus (E) = UI_Expon (Uint_2, Uint_128)
+              else
+                False)
            and then Nkind (Type_Low_Bound (E)) = N_Integer_Literal
            and then Intval (Type_Low_Bound (E)) = Uint_0
            and then Nkind (Type_High_Bound (E)) = N_Integer_Literal
@@ -900,6 +894,9 @@ package body Why.Gen.Scalars is
               (Value => Enumeration_Rep (Lit)),
             Domain => Domain));
 
+      function X_Is_Lit_Rep (Lit : Entity_Id) return W_Pred_Id is
+        (+X_Is_Lit_Rep (Lit, EW_Pred));
+
       function X_Is_Lit_Pos (Lit : Entity_Id) return W_Expr_Id is
         (New_Comparison
            (Symbol => Why_Eq,
@@ -921,7 +918,7 @@ package body Why.Gen.Scalars is
         (1 .. Integer (Num_Literals (Retysp (E))) - 2);
       To_Pos_Else_Part   : W_Expr_Id;
       To_Pos_Def         : W_Expr_Id;
-      To_Pos_Guard       : W_Expr_Array
+      To_Pos_Guard       : W_Pred_Array
         (1 .. Integer (Num_Literals (Retysp (E))));
 
       Lit                : Entity_Id := First_Literal (Retysp (E));
@@ -933,7 +930,7 @@ package body Why.Gen.Scalars is
         New_Integer_Constant (Value => Enumeration_Rep (Lit));
       To_Pos_Else_Part :=
         New_Integer_Constant (Value => Enumeration_Pos (Lit));
-      To_Pos_Guard (1) := X_Is_Lit_Rep (Lit, EW_Pred);
+      To_Pos_Guard (1) := X_Is_Lit_Rep (Lit);
 
       Next_Literal (Lit);
 
@@ -954,7 +951,7 @@ package body Why.Gen.Scalars is
          To_Pos_Cond := X_Is_Lit_Rep (Lit, EW_Term);
          To_Pos_Then_Part :=
            New_Integer_Constant (Value => Enumeration_Pos (Lit));
-         To_Pos_Guard (2) := X_Is_Lit_Rep (Lit, EW_Pred);
+         To_Pos_Guard (2) := X_Is_Lit_Rep (Lit);
 
          --  Remaining values covered by elsif parts
 
@@ -975,7 +972,7 @@ package body Why.Gen.Scalars is
                  Then_Part =>
                    New_Integer_Constant
                      (Value => Enumeration_Pos (Lit)));
-            To_Pos_Guard (Index + 2) := X_Is_Lit_Rep (Lit, EW_Pred);
+            To_Pos_Guard (Index + 2) := X_Is_Lit_Rep (Lit);
             Index := Index + 1;
          end loop;
 
@@ -1043,18 +1040,14 @@ package body Why.Gen.Scalars is
                Return_Type => EW_Int_Type,
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
-               Pre         => +New_Or_Expr
-                 (Conjuncts => To_Pos_Guard,
-                  Domain    => EW_Pred),
-               Post        => +New_Comparison
+               Pre         => New_Or_Pred (Conjuncts => To_Pos_Guard),
+               Post        => New_Comparison
                  (Symbol => Why_Eq,
                   Left   => +New_Result_Ident (EW_Int_Type),
                   Right  => New_Call
-                    (Domain => EW_Term,
-                     Name   => To_Local (E_Symb (E, WNE_Rep_To_Pos)),
+                    (Name   => To_Local (E_Symb (E, WNE_Rep_To_Pos)),
                      Args   => (1 => +X_Ident),
-                     Typ    => EW_Int_Type),
-                  Domain => EW_Pred)));
+                     Typ    => EW_Int_Type))));
    end Define_Enumeration_Rep_Convertions;
 
    ------------------------------

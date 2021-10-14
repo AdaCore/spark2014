@@ -1014,6 +1014,7 @@ package body Why.Gen.Names is
             | WNE_Of_Real
             | WNE_Of_Rep
             | WNE_Of_Wrapper
+            | WNE_Private_Dummy
             | WNE_Private_Eq
             | WNE_Private_Of_Wrapper
             | WNE_Private_To_Wrapper

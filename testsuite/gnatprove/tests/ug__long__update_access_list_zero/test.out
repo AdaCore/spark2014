@@ -1,3 +1,4 @@
+p.adb:7:07: info: absence of memory leak at end of scope justified
 p.adb:14:33: info: loop invariant preservation proved
 p.adb:14:33: info: loop invariant initialization proved
 p.adb:14:62: info: null exclusion check proved

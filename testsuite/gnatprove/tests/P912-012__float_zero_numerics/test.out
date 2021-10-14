@@ -11,10 +11,14 @@ numerics.ads:19:108: info: postcondition proved (CVC4: 1 VC)
 numerics.ads:19:150: info: division check proved (CVC4: 1 VC)
 numerics.ads:19:150: info: float overflow check proved (CVC4: 1 VC)
 numerics.ads:19:150: info: range check proved (Trivial)
+numerics.ads:23:99: info: float overflow check justified
 numerics.ads:23:99: info: range check proved (Trivial)
+numerics.ads:26:99: info: float overflow check justified
 numerics.ads:26:99: info: range check proved (Trivial)
+numerics.ads:29:99: info: float overflow check justified
 numerics.ads:29:99: info: range check proved (Trivial)
 numerics.ads:32:99: info: division check proved (CVC4: 1 VC)
+numerics.ads:32:99: info: float overflow check justified
 numerics.ads:32:99: info: range check proved (Trivial)
 run.adb:8:15: medium: precondition might fail [possible fix: subprogram at run.ads:9 should mention X1 in a precondition]
 run.adb:14:15: info: precondition proved (Trivial: 1 VC)

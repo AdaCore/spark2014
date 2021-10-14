@@ -1537,7 +1537,7 @@ package body SPARK_Definition is
             Mark_Component_Association (N);
 
          when N_Iterated_Component_Association =>
-            pragma Assert (No (Loop_Actions (N)));
+            Mark_Actions (N, Loop_Actions (N));
             Mark_Entity (Defining_Identifier (N));
             Mark_List (Discrete_Choices (N));
             Mark (Expression (N));
@@ -6009,7 +6009,8 @@ package body SPARK_Definition is
             --  long_long_float should not pose any fundamental problem.
 
             if Is_Modular_Integer_Type (E)
-              and then Modulus (E) > UI_Expon (2, 128)
+              and then Present (Modulus (E))
+              and then Modulus (E) > UI_Expon (Uint_2, Uint_128)
             then
                pragma Annotate
                  (Xcov, Exempt_On,

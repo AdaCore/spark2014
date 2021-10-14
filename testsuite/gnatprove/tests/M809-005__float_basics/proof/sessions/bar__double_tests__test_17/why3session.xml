@@ -6,12 +6,12 @@
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
 <prover id="3" name="colibri" version="2137" timelimit="120" steplimit="11000" memlimit="0"/>
-<file format="gnat-json" proved="true">
+<file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="bar__double_tests__test_17.gnat-json"/>
-<theory name="Bar__double_tests__test_17__subprogram_def" proved="true">
- <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<theory name="Bar__double_tests__test_17__subprogram_def">
+ <goal name="def&#39;vc">
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -26,11 +26,11 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.4" proved="true">
+  <goal name="def&#39;vc.4">
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="199102"/></proof>
   <proof prover="2"><result status="unknown" steps="12041"/></proof>
-  <proof prover="3"><result status="valid" steps="202"/></proof>
+  <proof prover="3"><result status="unknown" steps="235"/></proof>
   </goal>
  </transf>
  </goal>

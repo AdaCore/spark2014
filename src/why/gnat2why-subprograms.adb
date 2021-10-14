@@ -1839,7 +1839,7 @@ package body Gnat2Why.Subprograms is
       --  Initial values for outputs related to the "others" guard if any
 
       Others_Guard_Ident := Why_Empty;
-      Others_Guard_Expr := New_Literal (Value => EW_False);
+      Others_Guard_Expr := False_Term;
 
       --  If no Contract_Cases on this subprogram, nothing to do
 
@@ -2199,7 +2199,7 @@ package body Gnat2Why.Subprograms is
       Case_Guard    : Node_Id;
       Consequence   : Node_Id;
 
-      Result : W_Pred_Id := New_Literal (Value => EW_True);
+      Result : W_Pred_Id := True_Pred;
 
    --  Start of processing for Compute_Contract_Cases_Postcondition
 
@@ -2343,7 +2343,7 @@ package body Gnat2Why.Subprograms is
 
          --  that are suitable for UC.
 
-         Suitable_For_UC (Source_Type, False, Valid_Source, Ignored);
+         Suitable_For_UC (Source_Type, Valid_Source, Ignored);
          Suitable_For_UC_Target (Target_Type, False, Valid_Target, Ignored);
          Have_Same_Known_RM_Size
            (Source_Type, Target_Type, Valid_Size, Ignored);
@@ -4142,11 +4142,10 @@ package body Gnat2Why.Subprograms is
                                        Context => Prog);
          end if;
 
-         Prog := +Bind_From_Mapping_In_Expr
+         Prog := Bind_From_Mapping_In_Prog
            (Params => Contract_Params,
             Map    => Guard_Map,
-            Expr   => +Prog,
-            Domain => EW_Prog);
+            Expr   => Prog);
          return Prog;
       end Wrap_Decls_For_CC_Guards;
 
@@ -4514,7 +4513,7 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Suitable_For_UC (Src_Ty, False, Valid, Explanation);
+               Suitable_For_UC (Src_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));

@@ -161,15 +161,12 @@ package body Why.Gen.Arrays is
    --      avoiding the wraparound semantics on bitvectors.
 
    function Prepare_Indexes_Substitutions
-     (Th          : Theory_UC;
-      Typ         : Entity_Id;
-      Prefix      : String;
-      Declare_One : Boolean := True) return W_Clone_Substitution_Array;
+     (Th     : Theory_UC;
+      Typ    : Entity_Id;
+      Prefix : String)
+      return W_Clone_Substitution_Array;
    --  @param Typ The representation type of the index
    --  @param Prefix The prefix of the current index ("I1" e.g.)
-   --  @param Declare_One specify if the function one of the index should be
-   --         declared or not : to be set to false if this function has
-   --         allready been called for the current module.
    --  @return the substitution array for cloning the indice module of
    --          _gnatprove_standard.mlw
 
@@ -2722,6 +2719,26 @@ package body Why.Gen.Arrays is
            Typ    => Typ);
    end New_Concat_Call;
 
+   --------------------
+   -- New_Const_Call --
+   --------------------
+
+   function New_Const_Call
+     (Domain : EW_Domain;
+      Elt    : W_Expr_Id;
+      Typ    : W_Type_Id) return W_Expr_Id
+   is
+      Init_Wrapper : constant Boolean := Is_Init_Wrapper_Type (Typ);
+      E            : constant Entity_Id := Get_Ada_Node (+Typ);
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   => Get_Array_Theory (E, Init_Wrapper).Const,
+           Args   => (1 => Elt),
+           Typ    => EW_Split (E, Relaxed_Init => Init_Wrapper));
+   end New_Const_Call;
+
    ---------------------------
    --  New_Dynamic_Property --
    ---------------------------
@@ -3050,10 +3067,10 @@ package body Why.Gen.Arrays is
    -----------------------------------
 
    function Prepare_Indexes_Substitutions
-     (Th          : Theory_UC;
-      Typ         : Entity_Id;
-      Prefix      : String;
-      Declare_One : Boolean := True) return W_Clone_Substitution_Array
+     (Th     : Theory_UC;
+      Typ    : Entity_Id;
+      Prefix : String)
+      return W_Clone_Substitution_Array
    is
       WTyp      : constant W_Type_Id :=
         Base_Why_Type_No_Bool (Base_Type (Typ));
@@ -3062,22 +3079,20 @@ package body Why.Gen.Arrays is
       Prefix_Mod : constant W_Module_Id :=
         New_Module (File => No_Symbol, Name => NID (Prefix));
    begin
-      if Declare_One then
-         Emit (Th,
-               Why.Gen.Binders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => One_Id,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Binders     => (1 .. 0 => <>),
-                  Def         =>
-                    (if Is_Modular_Integer_Type (Typ) then
-                       New_Modular_Constant (Value => Uint_1,
-                                             Typ   => WTyp)
-                     else
-                       New_Integer_Constant (Value => Uint_1)),
-                  Return_Type => WTyp));
-      end if;
+      Emit (Th,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => One_Id,
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
+               Binders     => (1 .. 0 => <>),
+               Def         =>
+                 (if Is_Modular_Integer_Type (Typ) then
+                    New_Modular_Constant (Value => Uint_1,
+                                          Typ   => WTyp)
+                  else
+                    New_Integer_Constant (Value => Uint_1)),
+               Return_Type => WTyp));
 
       --  ??? after Johannes refacto of names use this mecanism to print the
       --  new operators instead of NIDs.
@@ -3171,8 +3186,7 @@ package body Why.Gen.Arrays is
           Orig_Name => New_Name (Symb => NID ("get")),
           Image     => Get_Name (Symbols.Get)))
       & Prepare_Indexes_Substitutions
-        (Th, Etype (First_Index (Und_Ent)), "Index",
-         Declare_One => True));
+        (Th, Etype (First_Index (Und_Ent)), "Index"));
 
    -------------------------------------------------
    -- Prepare_Subtype_Array_Logical_Substitutions --

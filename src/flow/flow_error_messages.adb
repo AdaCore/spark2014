@@ -39,6 +39,7 @@ with Erroutc;                   use Erroutc;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
+with Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Gnat2Why_Args;             use Gnat2Why_Args;
@@ -111,6 +112,12 @@ package body Flow_Error_Messages is
    --  @param Tag associated unproved check
    --  @param How_Proved should be PC_Trivial if the check is static
    --  @result message part suggesting a fix to make the unproved check proved
+
+   function Justified_Message is new Gnat2Why.Error_Messages.VC_Message
+     (Verb   => "justified",
+      Prefix => "justified that ",
+      Suffix => " justified");
+   --  Return the message string for a justified VC
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output
@@ -793,6 +800,9 @@ package body Flow_Error_Messages is
          when Check_Kind =>
             if Is_Annot then
                Suppr := Info.Reason;
+               Msg_Id := Print_Regular_Msg (Justified_Message (N, Tag),
+                                            Span, Info_Kind);
+
             else
                declare
                   One_Liner : constant String :=

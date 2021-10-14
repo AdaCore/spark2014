@@ -5,7 +5,7 @@ def my_plan():
     anod_install("opam", query_range=20)
     anod_install("alt-ergo", query_range=20)
     anod_install("colibri", query_range=20)
-    anod_install("spark2014-doc", query_range=20)
+    anod_build("spark2014-doc")
     anod_build("gcc")
     anod_build("gnsa")
     anod_build("spark2014", qualifier="assertions")

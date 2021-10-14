@@ -698,6 +698,9 @@ package SPARK_Atree is
    function Limited_Present (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_With_Clause;
 
+   function Loop_Actions (N : Node_Id) return List_Id with
+     Pre => Nkind (N) = N_Iterated_Component_Association;
+
    function Loop_Parameter_Specification (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Iteration_Scheme
                        | N_Quantified_Expression;
@@ -833,6 +836,8 @@ package SPARK_Atree is
 
    function Expr_Value_R (N : Node_Id) return Ureal with
      Pre => Compile_Time_Known_Value (N);
+
+   function Is_True (U : Opt_Ubool) return Boolean renames Sem_Util.Is_True;
 
    function Is_OK_Static_Expression (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Subexpr;
