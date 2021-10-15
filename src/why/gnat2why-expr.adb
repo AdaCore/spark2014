@@ -8927,6 +8927,72 @@ package body Gnat2Why.Expr is
       --  This is used to simulate the reconstruction of the borrowed object
       --  at the end of the scope of the function result.
 
+      function Equality_Of_Preserved_Parts
+        (Ty           : Type_Kind_Id;
+         Expr1, Expr2 : W_Term_Id) return W_Pred_Id;
+      --  Return a predicate stating that the (immutable) discriminants,
+      --  array bounds, and is_null field of unconstrained types are equal in
+      --  Expr1 and Expr2. If Ty is an anonymous access type, also assume the
+      --  bounds and discriminants of the designated type.
+      --  This is used to assume that these parts are preserved by the borrow
+      --  both in the borrower and in the borrowed expression.
+
+      ---------------------------------
+      -- Equality_Of_Preserved_Parts --
+      ---------------------------------
+
+      function Equality_Of_Preserved_Parts
+        (Ty           : Type_Kind_Id;
+         Expr1, Expr2 : W_Term_Id) return W_Pred_Id
+      is
+         Result : W_Pred_Id;
+      begin
+         if Is_Record_Type_In_Why (Ty)
+           and then Has_Discriminants (Ty)
+           and then not Is_Constrained (Ty)
+           and then not Has_Defaulted_Discriminants (Ty)
+         then
+            Result := New_Comparison
+              (Symbol => Why_Eq,
+               Left   => +New_Discriminants_Access
+                 (Domain => EW_Term,
+                  Name   => +Expr1,
+                  Ty     => Ty),
+               Right  => +New_Discriminants_Access
+                 (Domain => EW_Term,
+                  Name   => +Expr2,
+                  Ty     => Ty));
+         elsif Is_Array_Type (Ty)
+           and then not Is_Constrained (Ty)
+         then
+            Result := New_Bounds_Equality
+              (Left_Arr  => Expr1,
+               Right_Arr => Expr2,
+               Dim       => Positive (Number_Dimensions (Ty)));
+         elsif Is_Access_Type (Ty) then
+            Result := New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Pointer_Is_Null_Access (Ty, Expr1),
+               Right  => New_Pointer_Is_Null_Access (Ty, Expr2));
+
+            if Is_Anonymous_Access_Type (Ty) then
+               Result := New_And_Pred
+                 (Left  => Result,
+                  Right => New_Conditional
+                    (Condition => New_Not
+                         (Right => Pred_Of_Boolean_Term
+                              (New_Pointer_Is_Null_Access (Ty, Expr1))),
+                     Then_Part => Equality_Of_Preserved_Parts
+                       (Retysp (Directly_Designated_Type (Ty)),
+                        +New_Pointer_Value_Access (E => Ty, Name => +Expr1),
+                        +New_Pointer_Value_Access (E => Ty, Name => +Expr2))));
+            end if;
+         else
+            Result := True_Pred;
+         end if;
+         return Result;
+      end Equality_Of_Preserved_Parts;
+
       Borrowed_Entity : constant Entity_Id := Get_Root_Object (Path);
       Reborrow        : constant Boolean := Borrowed_Entity = Brower;
       --  We are in a reborrow if the root of Path is the borrower
@@ -8945,15 +9011,6 @@ package body Gnat2Why.Expr is
 
       Result_Id       : constant W_Identifier_Id :=
         New_Result_Ident (Typ => Get_Typ (Brower_At_End));
-      Is_Null_Field   : constant W_Term_Id :=
-        (if Nkind (Path) = N_Attribute_Reference
-         and then Attribute_Name (Path) = Name_Access
-         then False_Term
-         else New_Pointer_Is_Null_Access
-           (E    => Retysp (Etype (Brower)),
-            Name => Transform_Term
-              (Expr   => Path,
-               Params => Body_Params)));
       New_Brower      : constant W_Prog_Id := New_Any_Expr
         (Return_Type => Get_Typ (Brower_At_End),
          Labels      => Symbol_Sets.Empty_Set,
@@ -8964,12 +9021,10 @@ package body Gnat2Why.Expr is
                           Ty          => Etype (Brower),
                           Params      => Body_Params,
                           Initialized => True_Term)),
-            Right  => New_Comparison
-              (Symbol => Why_Eq,
-               Left   => Is_Null_Field,
-               Right  => New_Pointer_Is_Null_Access
-                 (E    => Retysp (Etype (Brower)),
-                  Name => +Result_Id))));
+            Right  => Equality_Of_Preserved_Parts
+              (Ty    => Retysp (Etype (Brower)),
+               Expr1 => Transform_Term (Path, Body_Params),
+               Expr2 => +Result_Id)));
       --  New value of the borrower. Use an any expr and assume the value of
       --  the is_null field since it cannot be modified.
       --  If we are not inside a reborrow we also assume that the value of
@@ -9011,24 +9066,38 @@ package body Gnat2Why.Expr is
 
       At_End_Assume   : constant W_Prog_Id :=
         New_Assume_Statement
-          (Pred => +New_And_Expr
-             (Left   =>
-                (if Reborrow then +True_Pred
-                 else +Compute_Dynamic_Invariant
-                   (Expr   => +W_Borrowed,
-                    Ty     => Borrowed_Ty,
-                    Params => Body_Params)),
-              Right  => New_Comparison
-                (Symbol => Why_Eq,
-                 Left   => W_Borrowed,
-                 Right  => Insert_Simple_Conversion
-                   (Expr   => At_End_Value,
-                    Domain => EW_Term,
-                    To     => Get_Type (W_Borrowed)),
-                 Domain => EW_Pred),
-              Domain => EW_Pred));
-      --  We assume borrowed_at_end = at_end_value. If we are in a borrow, also
-      --  assume the dynamic invariant of the borrowed object.
+          (Pred => New_And_Pred
+             ((1 =>
+                   (if Reborrow then True_Pred
+                    else Compute_Dynamic_Invariant
+                      (Expr   => +W_Borrowed,
+                       Ty     => Borrowed_Ty,
+                       Params => Body_Params)),
+               2 => +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => W_Borrowed,
+                  Right  => Insert_Simple_Conversion
+                    (Expr   => At_End_Value,
+                     Domain => EW_Term,
+                     To     => Get_Type (W_Borrowed)),
+                  Domain => EW_Pred),
+               3 => Equality_Of_Preserved_Parts
+                 (Ty    => Borrowed_Ty,
+                  Expr1 => +W_Borrowed,
+                  Expr2 => +Transform_Expr_Or_Identifier
+                    (N      => (if Reborrow then Brower
+                                elsif Ekind (Brower) = E_Function
+                                then Borrowed_Entity
+                                else Get_Borrowed_Expr (Brower)),
+                     Domain => EW_Term,
+                     Params => Body_Params)))));
+      --  We assume borrowed_at_end = at_end_value. In addition, we assume
+      --  information about parts of the borrowed_at_end that cannot be
+      --  modified (bounds of unconstrained arrays, immutable discriminants,
+      --  and is_null field of pointer). If we are in a borrow, also assume the
+      --  dynamic invariant of the borrowed object.
+
+   --  Start of processing for New_Update_For_Borrow_At_End
 
    begin
       --  In reborrows, we emit:
