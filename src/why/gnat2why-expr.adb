@@ -7137,35 +7137,16 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
 
-      --  We assign borrowed_at_end to Expr, unless Expr is an Access
-      --  attribute reference, in which case we assign borrowed_at_end.all to
-      --  Prefix (Expr).
+      --  We assign borrowed_at_end to Expr
 
-      if Nkind (Expr) = N_Attribute_Reference
-        and then Attribute_Name (Expr) = Name_Access
-      then
-         Assignment := New_Assignment
-           (Lvalue => Prefix (Expr),
-            Expr   => +Insert_Checked_Conversion
-              (Ada_Node => Brower,
-               Domain   => EW_Prog,
-               Expr     => New_Pointer_Value_Access
-                 (Ada_Node => Brower,
-                  E        => Etype (Brower),
-                  Name     => Borrowed_At_End,
-                  Domain   => EW_Pterm),
-               To       => Type_Of_Node (Prefix (Expr)),
-               Lvalue   => True));
-      else
-         Assignment := New_Assignment
-           (Lvalue => Expr,
-            Expr   => +Insert_Checked_Conversion
-              (Ada_Node => Brower,
-               Domain   => EW_Prog,
-               Expr     => Borrowed_At_End,
-               To       => Type_Of_Node (Expr),
-               Lvalue   => True));
-      end if;
+      Assignment := New_Assignment
+        (Lvalue => Expr,
+         Expr   => +Insert_Checked_Conversion
+           (Ada_Node => Brower,
+            Domain   => EW_Prog,
+            Expr     => Borrowed_At_End,
+            To       => Type_Of_Node (Expr),
+            Lvalue   => True));
 
       --  We produce:
       --
@@ -9040,7 +9021,10 @@ package body Gnat2Why.Expr is
               Right  => New_Comparison
                 (Symbol => Why_Eq,
                  Left   => W_Borrowed,
-                 Right  => At_End_Value,
+                 Right  => Insert_Simple_Conversion
+                   (Expr   => At_End_Value,
+                    Domain => EW_Term,
+                    To     => Get_Type (W_Borrowed)),
                  Domain => EW_Pred),
               Domain => EW_Pred));
       --  We assume borrowed_at_end = at_end_value. If we are in a borrow, also
