@@ -48,8 +48,8 @@ skein.adb:110:07: warning: statement has no effect
 skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
 skein.adb:111:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:111:10: info: in inlined body at line 87
+skein.adb:115:52: high: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx.H.Tweak_Words.Byte_Count_LSB = 9223934986808197125 and Local_Ctx.H.Tweak_Words.Final_Block = True and Local_Ctx.H.Byte_Count = 9223934986808197125 and Local_Ctx.X = (others => 9223934986808197125)) [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
-skein.adb:115:52: medium: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:118:19: warning: unused assignment
 skein.adb:121:44: info: division check proved (CVC4: 1 VC)
 skein.adb:125:10: info: analyzing call to "Set_B_Counter" in context

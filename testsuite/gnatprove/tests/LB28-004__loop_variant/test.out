@@ -2,7 +2,7 @@ p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:4:04: info: initialization of "J" proved
 p.adb:4:07: info: initialization of "K" proved
 p.adb:10:12: medium: array index check might fail [reason for check: value must be a valid index into the array]
-p.adb:11:14: medium: overflow check might fail, cannot prove upper bound for J + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+p.adb:11:14: high: overflow check might fail, cannot prove upper bound for J + 1 (e.g. when J = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 p.adb:12:28: info: loop variant proved (CVC4: 1 VC)
 p.adb:19:12: medium: overflow check might fail, cannot prove lower bound for J + K [reason for check: result of addition must fit in a 32-bits machine integer]
 p.adb:20:14: info: overflow check proved (CVC4: 4 VC)

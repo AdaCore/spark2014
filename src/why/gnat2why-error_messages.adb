@@ -122,7 +122,8 @@ package body Gnat2Why.Error_Messages is
         " at " & File_Name (Sloc (Node)) & ":" &
         Physical_Line_Number'Image
         (Get_Physical_Line_Number (Sloc (Node))) & ":" &
-        Types.Column_Number'Image (Get_Column_Number (Sloc (Node))));
+        Types.Column_Number'Image (Get_Column_Number (Sloc (Node))) &
+        " (" & Kind'Image & " at " & Node'Image & ")");
    --  Pretty print a VC and info for debugging
 
    function Decide_Cntexmp_Verdict
@@ -1141,7 +1142,7 @@ package body Gnat2Why.Error_Messages is
               (E,
                Cntexmp,
                Do_Sideeffects => False,
-               Fuel           => 1_000_000,
+               Fuel           => 250_000,
                Stack_Height   => 450);
             --  During execution SPARK_RAC counts the stacked calls in the
             --  interpreted program and terminates as incomplete when the
@@ -1225,29 +1226,17 @@ package body Gnat2Why.Error_Messages is
                      end;
                   end if;
 
-                  begin
-                     Verdict := Decide_Cntexmp_Verdict
-                       (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
-
-                     if SPARK_RAC.Do_RAC_Info then
-                        Write_Line
-                          ("Normal RAC:     "
-                           & SPARK_RAC.To_String (Small_Step_Res) & ".");
-                        Write_Line
-                          ("Giant-step RAC: "
-                           & SPARK_RAC.To_String (Rec.Giant_Step_Res) & ".");
-                        Write_Line
-                          ("Verdict:        "
-                           & Verdict.Verdict_Category'Image
-                           & " " & Reason (Verdict));
-                     end if;
-                  end;
+                  Verdict := Decide_Cntexmp_Verdict
+                    (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
                exception
                   when E : others =>
                      if Debug_Flag_K
                        and then Exception_Identity (E)
                                 /= RAC_Unexpected_Error'Identity
                      --  We accept RAC_Unexpected_Error for now
+                     --  ??? In Find_VC it can just result in RES_INCOMPLETE,
+                     --  during CE value import this could be RAC_Unsupported
+                     --  for now, and should be fixed
                      then
                         raise;
                      else

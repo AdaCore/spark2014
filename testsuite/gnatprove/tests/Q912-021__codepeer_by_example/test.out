@@ -7,11 +7,11 @@ assign_all_arr.adb:5:22: high: overflow check might fail [CWE 190], cannot prove
 assign_all_arr_incr.adb:4:21: info: unrolling loop
 assign_all_arr_incr.adb:5:22: high: overflow check might fail [CWE 190], cannot prove upper bound for X (J) + J (e.g. when J = 1 and X = (others => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 assign_all_arr_incr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-assign_all_arr_incr_unk.adb:5:22: medium: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 4 should mention X in a loop invariant]
+assign_all_arr_incr_unk.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + J (e.g. when J = Integer'First and X = (Integer'First => Integer'First) and X'First = Integer'First and X'Last = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 4 should mention X in a loop invariant]
 assign_arr.adb:4:18: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_arr.ads:3]
 assign_arr.adb:5:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_arr.ads:3]
 assign_arr.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457]
-assign_arr_unk.adb:4:10: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array]
+assign_arr_unk.adb:4:10: high: array index check might fail [CWE 119] (e.g. when X = (0 => 0) and X'First = 0 and X'Last = 0) [reason for check: value must be a valid index into the array]
 assign_arr_unk.adb:4:18: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_arr_unk.ads:3]
 assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array]
 assign_arr_unk.adb:5:18: medium: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_arr_unk.ads:3]
@@ -30,12 +30,12 @@ bad_assign.adb:3:11: high: overflow check might fail [CWE 190], cannot prove upp
 bad_assign_all_arr.adb:4:21: info: unrolling loop
 bad_assign_all_arr.adb:5:21: high: array index check might fail [CWE 119] (e.g. when J = 10 and X = (others => 0)) [reason for check: result of addition must be a valid index into the array]
 bad_assign_all_arr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-bad_assign_all_arr_unk.adb:5:21: medium: array index check might fail [CWE 119] [reason for check: result of addition must be a valid index into the array]
+bad_assign_all_arr_unk.adb:5:21: high: array index check might fail [CWE 119] [reason for check: result of addition must be a valid index into the array]
 bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190], cannot prove upper bound for J + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 bad_assign_arr.adb:2:27: medium: "X" might not be initialized in "Bad_Assign_Arr" [CWE 457]
-bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: add precondition (Y in 1 .. 10) to subprogram at line 2]
+bad_assign_arr.adb:4:07: high: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: add precondition (Y in 1 .. 10) to subprogram at line 2]
+bad_assign_arr.adb:5:09: high: array index check might fail [CWE 119] (e.g. when Y = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y <= 10 - 10) to subprogram at line 2]
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC4: 2 VC)
-bad_assign_arr.adb:5:09: medium: array index check might fail [CWE 119] (e.g. when Y = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y <= 10 - 10) to subprogram at line 2]
 bad_assign_rec.adb:2:27: high: "X.D.A" is not initialized in "Bad_Assign_Rec" [CWE 457]
 bad_assign_rec.adb:4:13: high: overflow check might fail [CWE 190], cannot prove lower bound for Y * 1000000 (e.g. when Y = -2148) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Y * 1000000 in Integer) to subprogram at line 2]
 bad_assign_rec.adb:5:15: info: division check proved (CVC4: 1 VC)
