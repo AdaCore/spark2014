@@ -680,6 +680,16 @@ package body Why.Gen.Pointers is
       Get_Observed_Or_Borrowed_Info
         (Expression (Enclosing_Declaration (E)), Borrowed_Expr, Borrowed_Ty);
 
+      --  In case of an access attribute, the borrowed expression is the
+      --  prefix.
+
+      if Nkind (Borrowed_Expr) = N_Attribute_Reference
+        and then Attribute_Name (Borrowed_Expr) = Name_Access
+      then
+         Borrowed_Expr := Prefix (Borrowed_Expr);
+         Borrowed_Ty   := Etype (Borrowed_Expr);
+      end if;
+
       --  For constant borrowers, the whole object can be considered to be
       --  borrowed as it really is a part of the borrowed parameter of a
       --  traversal function.
