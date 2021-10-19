@@ -134,7 +134,8 @@ package body Why.Gen.Progs is
              (Ada_Node    => Ada_Node,
               Pre         => Pre,
               Post        => Post,
-              Labels      => New_VC_Labels (Ada_Node, Reason),
+              Labels      => New_VC_Labels
+                (Ada_Node, Reason, Info => (others => <>)),
               Return_Type =>
                 (if Return_Type = Why_Empty then EW_Unit_Type
                  else Return_Type)));
@@ -243,13 +244,15 @@ package body Why.Gen.Progs is
       (Ada_Node : Node_Id;
        Pred     : W_Pred_Id;
        Reason   : VC_Kind;
-       Kind     : EW_Assert_Kind) return W_Prog_Id
+       Kind     : EW_Assert_Kind;
+       Info     : Check_Info := (others => <>)) return W_Prog_Id
    is
       (New_Assert (Ada_Node    => Ada_Node,
                    Pred        => +New_VC_Expr (Ada_Node => Ada_Node,
-                                             Expr     => +Pred,
-                                             Reason   => Reason,
-                                             Domain   => EW_Pred),
+                                                Expr     => +Pred,
+                                                Reason   => Reason,
+                                                Info     => Info,
+                                                Domain   => EW_Pred),
                    Assert_Kind => Kind));
 
    ------------------------

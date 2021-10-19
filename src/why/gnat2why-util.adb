@@ -276,37 +276,6 @@ package body Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
-   ------------------------------------
-   -- Add_Division_Check_Information --
-   ------------------------------------
-
-   procedure Add_Division_Check_Information
-     (Ada_Node : Node_Id;
-      Divisor  : Opt_N_Extended_Subexpr_Id)
-   is
-   begin
-      if Present (Divisor) then
-         Check_Information.Include
-           (Check_Key'(N => Ada_Node, K => VC_Division_Check),
-            Check_Info'(K => VC_Division_Check, Divisor => Divisor));
-      end if;
-   end Add_Division_Check_Information;
-
-   --------------------------------
-   -- Add_Range_Kind_Information --
-   --------------------------------
-
-   procedure Add_Range_Kind_Information
-     (Ada_Node : Node_Id;
-      K        : VC_Range_Kind;
-      Ty       : Type_Kind_Id)
-   is
-   begin
-      Check_Information.Include
-        (Check_Key'(N => Ada_Node, K => K),
-         Check_Info'(K => K, Ty => Ty));
-   end Add_Range_Kind_Information;
-
    ----------------------
    -- Get_Base_Of_Type --
    ----------------------

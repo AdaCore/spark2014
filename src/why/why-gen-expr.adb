@@ -94,9 +94,9 @@ package body Why.Gen.Expr is
    --  pointer.
 
    function New_Check_Label
-     (Sloc : Source_Ptr;
+     (Sloc   : Source_Ptr;
       Reason : VC_Kind;
-      Id : VC_Id)
+      Id     : VC_Id)
       return Symbol;
    --  Returns a label that identifies the check for communication between
    --  gnat2why and gnatwhy3.
@@ -467,6 +467,7 @@ package body Why.Gen.Expr is
            Positive (Number_Dimensions (To_Ent));
          Eqs         : W_Pred_Array (1 .. 2 * Dim);
          Count       : Natural := 0;
+         Info        : Check_Info;
       begin
          for I in 1 .. Dim loop
 
@@ -517,16 +518,14 @@ package body Why.Gen.Expr is
          --  the index check associated with the Ada node.
 
          if Dim = 1 then
-            Add_Range_Kind_Information
-              (Ada_Node,
-               K  => VC_Index_Check,
-               Ty => Nth_Index_Type (To_Ent, 1));
+            Info.Range_Check_Ty := Nth_Index_Type (To_Ent, 1);
          end if;
 
          return New_Located_Assert (Ada_Node,
                                     Check,
                                     VC_Index_Check,
-                                    EW_Assert);
+                                    EW_Assert,
+                                    Info);
       end Insert_Array_Index_Check;
 
       -------------------------
@@ -1430,16 +1429,15 @@ package body Why.Gen.Expr is
                                              Expr   => Arr_Expr,
                                              Attr   => Attribute_Last,
                                              Dim    => Dim));
-      T : W_Prog_Id;
+      Info       : Check_Info;
+      T          : W_Prog_Id;
    begin
       --  For arrays of dimension 1 only, record the index type used for the
       --  index check associated with the Ada node.
 
       if Number_Dimensions (Get_Ada_Node (+Get_Type (Arr_Expr))) = 1 then
-         Add_Range_Kind_Information
-           (Ada_Node,
-            K  => VC_Index_Check,
-            Ty => Nth_Index_Type (Get_Ada_Node (+Get_Type (Arr_Expr)), 1));
+         Info.Range_Check_Ty :=
+           Nth_Index_Type (Get_Ada_Node (+Get_Type (Arr_Expr)), 1);
       end if;
 
       T := New_Located_Assert (Ada_Node => Ada_Node,
@@ -1449,7 +1447,8 @@ package body Why.Gen.Expr is
                                   Low    => First_Expr,
                                   High   => Last_Expr,
                                   Expr   => Tmp),
-                               Kind     => EW_Assert);
+                               Kind     => EW_Assert,
+                               Info     => Info);
 
       return +Binding_For_Temp (Domain => EW_Prog,
                                 Tmp    => Tmp,
@@ -1472,17 +1471,12 @@ package body Why.Gen.Expr is
         (if Get_Type_Kind (Get_Type (W_Expr)) = EW_Split
          then Base_Why_Type (Get_Ada_Node (+Get_Type (W_Expr)))
          else Get_Type (W_Expr));
+      Info   : constant Check_Info := (Range_Check_Ty => Ty, others => <>);
+      --  Record the type used for the range check associated with the Ada node
       Result : W_Prog_Id;
       W_Fun  : W_Identifier_Id;  --  range checking function
 
    begin
-      --  Record the type used for the range check associated with the Ada node
-
-      Add_Range_Kind_Information
-        (Ada_Node,
-         K  => Reason,
-         Ty => Ty);
-
       --  When the range check comes from a modular type, either the expression
       --  is a bitvector and we apply the check on the largest bitvector type
       --  involved, or the expression is an int and we need to apply the check
@@ -1541,6 +1535,7 @@ package body Why.Gen.Expr is
                                               2 => W_Last,
                                               3 => W_Int_Tmp),
                                  Reason   => Reason,
+                                 Info     => Info,
                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
@@ -1563,6 +1558,7 @@ package body Why.Gen.Expr is
                                       Name     => W_Fun,
                                       Progs    => (1 => +W_Expr),
                                       Reason   => Reason,
+                                      Info     => Info,
                                       Typ      => Get_Type (W_Expr));
             end if;
 
@@ -1640,6 +1636,7 @@ package body Why.Gen.Expr is
                                            2 => W_Last,
                                            3 => W_Expr_Rounded),
                               Reason   => Reason,
+                              Info     => Info,
                               Typ      => Get_Type (W_Expr));
             end;
 
@@ -1664,6 +1661,7 @@ package body Why.Gen.Expr is
                                  Name     => W_Fun,
                                  Progs    => W_Args,
                                  Reason   => Reason,
+                                 Info     => Info,
                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
@@ -1701,6 +1699,7 @@ package body Why.Gen.Expr is
                                             Expr   => W_Expr,
                                             To     => Range_Typ)),
                                     Reason   => Reason,
+                                    Info     => Info,
                                     Typ      => Range_Typ),
                      To     => W_Type);
                end;
@@ -1734,12 +1733,13 @@ package body Why.Gen.Expr is
                   W_Fun := Get_Modular_Converter_Range_Check
                              (W_Type, Base_Why_Type (Ty));
                   Result := New_VC_Call (Ada_Node => Ada_Node,
-                                          Name     => W_Fun,
-                                          Progs    => (1 => W_First,
-                                                       2 => W_Last,
-                                                       3 => +W_Expr),
-                                          Reason   => Reason,
-                                          Typ      => W_Type);
+                                         Name     => W_Fun,
+                                         Progs    => (1 => W_First,
+                                                      2 => W_Last,
+                                                      3 => +W_Expr),
+                                         Reason   => Reason,
+                                         Info     => Info,
+                                         Typ      => W_Type);
                end;
             end if;
          end if;
@@ -1764,6 +1764,7 @@ package body Why.Gen.Expr is
                                       Name     => W_Fun,
                                       Progs    => W_Args,
                                       Reason   => Reason,
+                                      Info     => Info,
                                       Typ      => Get_Type (W_Expr));
                Result :=
                  +Binding_For_Temp (Domain  => EW_Prog,
@@ -1778,6 +1779,7 @@ package body Why.Gen.Expr is
                                    Name     => W_Fun,
                                    Progs    => (1 => +W_Expr),
                                    Reason   => Reason,
+                                   Info     => Info,
                                    Typ      => Get_Type (W_Expr));
          end if;
       end if;
@@ -3770,15 +3772,15 @@ package body Why.Gen.Expr is
    -----------------------
 
    function New_Operator_Call
-      (Ada_Node : Node_Id;
-       Name     : W_Identifier_Id;
-       Fix_Name : Boolean := False;
-       Args     : W_Expr_Array;
-       Reason   : VC_Kind;
-       Check    : Boolean;
-       Domain   : EW_Domain;
-       Typ      : W_Type_Id)
-       return W_Expr_Id
+     (Ada_Node : Node_Id;
+      Name     : W_Identifier_Id;
+      Fix_Name : Boolean := False;
+      Args     : W_Expr_Array;
+      Reason   : VC_Kind;
+      Check    : Boolean;
+      Domain   : EW_Domain;
+      Typ      : W_Type_Id;
+      Info     : Check_Info := (others => <>)) return W_Expr_Id
    is
       Name_Spec : constant W_Identifier_Id :=
         (if Check and not Fix_Name then To_Program_Space (Name) else Name);
@@ -3793,6 +3795,7 @@ package body Why.Gen.Expr is
          return +New_VC_Expr (Ada_Node => Ada_Node,
                               Reason   => Reason,
                               Expr     => Call,
+                              Info     => Info,
                               Domain   => Domain);
       else
          return Call;
@@ -3804,12 +3807,12 @@ package body Why.Gen.Expr is
    -----------------
 
    function New_VC_Call
-      (Ada_Node : Node_Id;
-       Name     : W_Identifier_Id;
-       Progs    : W_Expr_Array;
-       Reason   : VC_Kind;
-       Typ      : W_Type_Id)
-       return W_Prog_Id
+     (Ada_Node : Node_Id;
+      Name     : W_Identifier_Id;
+      Progs    : W_Expr_Array;
+      Reason   : VC_Kind;
+      Typ      : W_Type_Id;
+      Info     : Check_Info := (others => <>)) return W_Prog_Id
    is
       Call : constant W_Expr_Id :=
         New_Call (Ada_Node => Ada_Node,
@@ -3820,6 +3823,7 @@ package body Why.Gen.Expr is
    begin
       return +New_VC_Expr (Ada_Node => Ada_Node,
                            Reason   => Reason,
+                           Info     => Info,
                            Expr     => Call,
                            Domain   => EW_Prog);
    end New_VC_Call;
@@ -3832,7 +3836,8 @@ package body Why.Gen.Expr is
       (Ada_Node : Node_Id;
        Expr     : W_Expr_Id;
        Reason   : VC_Kind;
-       Domain   : EW_Domain)
+       Domain   : EW_Domain;
+       Info     : Check_Info := (others => <>))
        return W_Expr_Id
    is
    begin
@@ -3842,7 +3847,7 @@ package body Why.Gen.Expr is
            E        =>
              New_Label
                (Ada_Node => Ada_Node,
-                Labels   => New_VC_Labels (Ada_Node, Reason),
+                Labels   => New_VC_Labels (Ada_Node, Reason, Info),
                 Def      => Expr,
                 Domain   => Domain,
                 Typ      => Get_Type (Expr)));
@@ -3854,8 +3859,8 @@ package body Why.Gen.Expr is
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind)
-      return Symbol_Set
+      Reason : VC_Kind;
+      Info   : Check_Info) return Symbol_Set
    is
       --  A GNATprove label in Why3 has the following form
       --
@@ -3873,7 +3878,7 @@ package body Why.Gen.Expr is
 
       Sloc : constant Source_Ptr := Compute_VC_Sloc
         (N, Left_Most => Locate_On_First_Token (Reason));
-      Id  : constant VC_Id := Register_VC (N, Reason, Current_Subp);
+      Id  : constant VC_Id := Register_VC (N, Reason, Current_Subp, Info);
 
       Labels : Symbol_Set;
 
@@ -3886,6 +3891,7 @@ package body Why.Gen.Expr is
             True,
             Current_Subp,
             No_Session_Dir,
+            Extra_Info => Info,
             How_Proved => PC_Codepeer);
          Labels.Insert (GP_Already_Proved);
       end if;

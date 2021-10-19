@@ -24,12 +24,13 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
-with Debug.Timing;        use Debug.Timing;
-with Flow_Error_Messages; use Flow_Error_Messages;
+with Debug.Timing;              use Debug.Timing;
+with Flow_Error_Messages;       use Flow_Error_Messages;
 with GNATCOLL.JSON;
-with SPARK_Atree;         use SPARK_Atree;
-with Types;               use Types;
-with VC_Kinds;            use VC_Kinds;
+with SPARK_Atree;               use SPARK_Atree;
+with SPARK_Util;                use SPARK_Util;
+with Types;                     use Types;
+with VC_Kinds;                  use VC_Kinds;
 
 package Gnat2Why.Error_Messages is
 
@@ -39,6 +40,7 @@ package Gnat2Why.Error_Messages is
      (N               : Node_Id;
       Reason          : VC_Kind;
       E               : Entity_Id;
+      Info            : Check_Info;
       Present_In_Why3 : Boolean := True)
       return VC_Id
    with Pre => Present (N) and then Present (E);
@@ -46,6 +48,7 @@ package Gnat2Why.Error_Messages is
    --  @param Reason VC kind
    --  @param E entity of the subprogram/package elaboration to which the VC
    --    belongs
+   --  @param Info additional information on the check
    --  @param Present_In_Why3 if the VC actually appears in the Why3. This
    --    Boolean explains the difference between the functions
    --    Num_Registered_VCs and Num_Registered_VCs_In_Why3 below.
@@ -97,6 +100,7 @@ package Gnat2Why.Error_Messages is
       E           : Entity_Id;
       SD_Id       : Session_Dir_Base_ID;
       How_Proved  : Prover_Category;
+      Extra_Info  : Check_Info;
       Extra_Msg   : String := "";
       Explanation : String := "";
       Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;

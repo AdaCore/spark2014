@@ -122,6 +122,13 @@ package SPARK_Util is
       RCK_Overflow_Not_Last);
    --  Kind for checks on scalar types
 
+   type Check_Info is record
+      Range_Check_Ty : Opt_Type_Kind_Id := Empty;
+      Divisor        : Opt_N_Extended_Subexpr_Id := Empty;
+   end record;
+   --  Extra information for checks that is useful for generating better
+   --  messages.
+
    subtype Volatile_Pragma_Id is Pragma_Id with Static_Predicate =>
      Volatile_Pragma_Id in Pragma_Async_Readers
                          | Pragma_Async_Writers

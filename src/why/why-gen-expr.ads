@@ -23,21 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
-with Gnat2Why.Util;        use Gnat2Why.Util;
-with Snames;               use Snames;
-with SPARK_Atree;          use SPARK_Atree;
-with SPARK_Atree.Entities; use SPARK_Atree.Entities;
-with SPARK_Util;           use SPARK_Util;
-with Types;                use Types;
-with Uintp;                use Uintp;
-with VC_Kinds;             use VC_Kinds;
-with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Conversions;      use Why.Conversions;
-with Why.Ids;              use Why.Ids;
-with Why.Inter;            use Why.Inter;
-with Why.Sinfo;            use Why.Sinfo;
-with Why.Types;            use Why.Types;
+with GNATCOLL.Symbols;          use GNATCOLL.Symbols;
+with Gnat2Why.Util;             use Gnat2Why.Util;
+with Snames;                    use Snames;
+with SPARK_Atree;               use SPARK_Atree;
+with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
+with SPARK_Util;                use SPARK_Util;
+with Types;                     use Types;
+with Uintp;                     use Uintp;
+with VC_Kinds;                  use VC_Kinds;
+with Why.Atree.Builders;        use Why.Atree.Builders;
+with Why.Conversions;           use Why.Conversions;
+with Why.Ids;                   use Why.Ids;
+with Why.Inter;                 use Why.Inter;
+with Why.Sinfo;                 use Why.Sinfo;
+with Why.Types;                 use Why.Types;
 
 package Why.Gen.Expr is
 
@@ -242,7 +242,8 @@ package Why.Gen.Expr is
        Reason   : VC_Kind;
        Check    : Boolean;
        Domain   : EW_Domain;
-       Typ      : W_Type_Id) return W_Expr_Id
+       Typ      : W_Type_Id;
+       Info     : Check_Info := (others => <>)) return W_Expr_Id
    with Pre => (if Check then Domain = EW_Prog);
    --  If Check is True, build a call to Name(Progs) using New_VC_Call. When
    --  Fix_Name is True, adjust Name to the program space. Otherwise, build a
@@ -253,20 +254,23 @@ package Why.Gen.Expr is
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
-       Typ      : W_Type_Id) return W_Prog_Id;
+       Typ      : W_Type_Id;
+       Info     : Check_Info := (others => <>)) return W_Prog_Id;
    --  Build a call to Name(Progs) with VC and location labels
 
    function New_VC_Expr
       (Ada_Node : Node_Id;
        Expr     : W_Expr_Id;
        Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
+       Domain   : EW_Domain;
+       Info     : Check_Info := (others => <>)) return W_Expr_Id
    with Pre => Present (Ada_Node) and then Domain /= EW_Term;
    --  Put VC and location labels on the expression
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind) return Symbol_Set;
+      Reason : VC_Kind;
+      Info   : Check_Info) return Symbol_Set;
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
 

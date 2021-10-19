@@ -8567,16 +8567,13 @@ package body Gnat2Why.Expr is
                   Expr     => Right,
                   To       => R_Type);
 
-               Add_Division_Check_Information
-                 (Ada_Node,
-                  Divisor => Get_Ada_Node (+Right));
-
                T := New_Operator_Call
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
                   Name     => Name,
                   Args     => (1 => Left_Rep, 2 => Right_Rep),
                   Reason   => VC_Division_Check,
+                  Info     => (Divisor => Get_Ada_Node (+Right), others => <>),
                   Check    => (Domain = EW_Prog
                                and then Present (Ada_Node)
                                and then Do_Division_Check (Ada_Node)),
@@ -8606,10 +8603,6 @@ package body Gnat2Why.Expr is
                           M_Int_Div.Rem_Id
                         else M_Int_Div.Mod_Id);
 
-               Add_Division_Check_Information
-                 (Ada_Node,
-                  Divisor => Get_Ada_Node (+Right));
-
                T := New_Operator_Call
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
@@ -8627,6 +8620,7 @@ package body Gnat2Why.Expr is
                         To       => Base)),
                   Check    => Domain = EW_Prog,
                   Reason   => VC_Division_Check,
+                  Info     => (Divisor => Get_Ada_Node (+Right), others => <>),
                   Typ      => Base);
             end;
 
@@ -8702,12 +8696,11 @@ package body Gnat2Why.Expr is
                                 Else_Part => +True_Pred
                                ),
                              Reason   => VC_Division_Check,
+                             Info     =>
+                               (Divisor => Get_Ada_Node (+Right),
+                                others  => <>),
                              Kind     => EW_Assert);
                      begin
-                        Add_Division_Check_Information
-                          (Ada_Node,
-                           Divisor => Get_Ada_Node (+Right));
-
                         Prepend (Ass, T);
                      end;
                   end if;
@@ -14068,10 +14061,6 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
             begin
-               Add_Division_Check_Information
-                 (Expr,
-                  Divisor => Next (First (Expressions (Expr))));
-
                --  The front end does not insert a Do_Division_Check flag on
                --  remainder attribute so we systematically do the check.
                T := New_Operator_Call
@@ -14080,6 +14069,8 @@ package body Gnat2Why.Expr is
                   Args     => (1 => Arg_1,
                                2 => Arg_2),
                   Reason   => VC_Division_Check,
+                  Info     => (Divisor => Next (First (Expressions (Expr))),
+                               others => <>),
                   Check    => Domain = EW_Prog,
                   Domain   => Domain,
                   Typ      => Base);
@@ -17335,12 +17326,9 @@ package body Gnat2Why.Expr is
                                 +MF_Floats (Base_Type).Plus_Zero,
                                 EW_Term),
                              Reason   => VC_Division_Check,
+                             Info     => (Divisor => Left, others => <>),
                              Kind     => EW_Assert);
                      begin
-                        Add_Division_Check_Information
-                          (Expr,
-                           Divisor => Left);
-
                         Prepend (Check, E);
                      end;
                   end if;

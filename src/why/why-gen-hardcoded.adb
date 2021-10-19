@@ -260,7 +260,7 @@ package body Why.Gen.Hardcoded is
                --  check.
 
                declare
-                  Check : constant Boolean :=
+                  Check  : constant Boolean :=
                     Domain = EW_Prog
                     and then
                       (Chars (Subp) in Name_Op_Divide
@@ -269,15 +269,16 @@ package body Why.Gen.Hardcoded is
                         or else Name_String = BIN.Gcd);
                   pragma Assert (if Check then Present (Ada_Node));
 
-                  Reason : constant VC_Kind :=
-                    (if Name_String = BIN.Gcd
-                     then VC_Precondition
-                     else VC_Division_Check);
+                  Info   : Check_Info;
+                  Reason : VC_Kind := VC_Precondition;
+
                begin
-                  if Reason = VC_Division_Check then
-                     Add_Division_Check_Information
-                       (Ada_Node,
-                        Divisor => Get_Ada_Node (+Args (2)));
+                  --  For Divide, Mod, and Rem, emit a division check instead
+                  --  of a precondition check.
+
+                  if Name_String /= BIN.Gcd then
+                     Info.Divisor := Get_Ada_Node (+Args (2));
+                     Reason := VC_Division_Check;
                   end if;
 
                   T := New_Operator_Call
@@ -286,6 +287,7 @@ package body Why.Gen.Hardcoded is
                      Name     => Name,
                      Args     => (1 => Left_Rep, 2 => Right_Rep),
                      Reason   => Reason,
+                     Info     => Info,
                      Check    => Check,
                      Typ      => Base);
                end;
@@ -437,10 +439,6 @@ package body Why.Gen.Hardcoded is
 
                   --  Reconstruct the real value by doing the division
 
-                  Add_Division_Check_Information
-                    (Ada_Node,
-                     Divisor => Get_Ada_Node (+Args (2)));
-
                   T := New_Operator_Call
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
@@ -448,6 +446,8 @@ package body Why.Gen.Hardcoded is
                      Fix_Name => True,
                      Args     => (1 => Num, 2 => Den),
                      Reason   => VC_Division_Check,
+                     Info     => (Divisor => Get_Ada_Node (+Args (2)),
+                                  others  => <>),
                      Check    => Domain = EW_Prog,
                      Typ      => EW_Real_Type);
 
@@ -565,10 +565,6 @@ package body Why.Gen.Hardcoded is
                   begin
                      pragma Assert (if Check then Present (Ada_Node));
 
-                     Add_Division_Check_Information
-                       (Ada_Node,
-                        Divisor => Get_Ada_Node (+Args (2)));
-
                      T := New_Operator_Call
                        (Ada_Node => Ada_Node,
                         Domain   => Domain,
@@ -576,6 +572,8 @@ package body Why.Gen.Hardcoded is
                         Fix_Name => True,
                         Args     => (1 => Left_Rep, 2 => Right_Rep),
                         Reason   => VC_Division_Check,
+                        Info     => (Divisor => Get_Ada_Node (+Args (2)),
+                                     others  => <>),
                         Check    => Check,
                         Typ      => Base);
                   end;
@@ -956,11 +954,8 @@ package body Why.Gen.Hardcoded is
                   Name      : constant W_Identifier_Id :=
                     (if Subdomain = EW_Prog then Real_Infix_Div
                      else M_Real.Div);
-               begin
-                  Add_Division_Check_Information
-                    (Call,
-                     Divisor => Den_Literal);
 
+               begin
                   Result := New_Operator_Call
                     (Ada_Node => Call,
                      Domain   => Subdomain,
@@ -968,6 +963,7 @@ package body Why.Gen.Hardcoded is
                      Fix_Name => True,
                      Args     => W_Args,
                      Reason   => VC_Division_Check,
+                     Info     => (Divisor => Den_Literal, others => <>),
                      Check    => Subdomain = EW_Prog,
                      Typ      => EW_Real_Type);
                end;

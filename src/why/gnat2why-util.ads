@@ -205,23 +205,6 @@ package Gnat2Why.Util is
       function Is_Empty (V : Vector) return Boolean is (V.Top = 0);
    end W_Pred_Vectors;
 
-   Check_Information : Check_Info_Map.Map;
-   --  Global table storing for each check extra information that is useful for
-   --  generating better messages.
-
-   procedure Add_Division_Check_Information
-     (Ada_Node : Node_Id;
-      Divisor  : Opt_N_Extended_Subexpr_Id);
-   --  Add information for a division check on Ada_Node, when Divisor is not
-   --  Empty.
-
-   procedure Add_Range_Kind_Information
-     (Ada_Node : Node_Id;
-      K        : VC_Range_Kind;
-      Ty       : Type_Kind_Id);
-   --  Add information for check of kind K on Ada_Node, when Ty is the type
-   --  against which the check is performed.
-
    function Term_Domain (Domain : EW_Domain) return EW_Domain is
       (case Domain is
           when EW_Pred | EW_Term  => EW_Term,

@@ -56,7 +56,6 @@ with Sinput;                    use Sinput;
 with Snames;                    use Snames;
 with SPARK_Atree;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
-with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with SPARK_Util.Types;          use SPARK_Util.Types;
@@ -107,10 +106,12 @@ package body Flow_Error_Messages is
    function Get_Fix
      (N          : Node_Id;
       Tag        : VC_Kind;
-      How_Proved : Prover_Category) return String;
+      How_Proved : Prover_Category;
+      Info       : Check_Info) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
    --  @param How_Proved should be PC_Trivial if the check is static
+   --  @param Info additional informations on the check
    --  @result message part suggesting a fix to make the unproved check proved
 
    function Justified_Message is new Gnat2Why.Error_Messages.VC_Message
@@ -650,7 +651,8 @@ package body Flow_Error_Messages is
       How_Proved  : Prover_Category;
       SD_Id       : Session_Dir_Base_ID;
       Stats       : Prover_Stat_Maps.Map;
-      Place_First : Boolean)
+      Place_First : Boolean;
+      Extra_Info  : Check_Info)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -679,7 +681,7 @@ package body Flow_Error_Messages is
          Verdict    : Cntexmp_Verdict)
          return String
       is
-         Fix : constant String := Get_Fix (N, Tag, How_Proved);
+         Fix : constant String := Get_Fix (N, Tag, How_Proved, Extra_Info);
       begin
          if Fix = "" then
             case Verdict.Verdict_Category is
@@ -1363,7 +1365,8 @@ package body Flow_Error_Messages is
    function Get_Fix
      (N          : Node_Id;
       Tag        : VC_Kind;
-      How_Proved : Prover_Category) return String
+      How_Proved : Prover_Category;
+      Info       : Check_Info) return String
    is
 
       -----------------------
@@ -2579,11 +2582,9 @@ package body Flow_Error_Messages is
                     and then Is_Integer_Type (Etype (N))
                   then
                      declare
-                        Key : constant Check_Key :=
-                          Check_Key'(N => N, K => Tag);
                         Typ : constant Type_Kind_Id :=
-                          (if Check_Information.Contains (Key) then
-                             Check_Information (Key).Ty
+                          (if Present (Info.Range_Check_Ty) then
+                             Info.Range_Check_Ty
                            else
                              Etype (N));
                         Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
@@ -2692,14 +2693,11 @@ package body Flow_Error_Messages is
                         pragma Assert
                           (if Nkind (N) = N_Attribute_Reference
                            then Attribute_Name (N) = Name_Remainder);
-
-                        Key : constant Check_Key :=
-                          Check_Key'(N => N, K => Tag);
+                        Opnd : constant Opt_N_Extended_Subexpr_Id :=
+                          Info.Divisor;
                      begin
-                        if Check_Information.Contains (Key) then
+                        if Present (Opnd) then
                            declare
-                              Opnd : constant N_Extended_Subexpr_Id :=
-                                Check_Information (Key).Divisor;
                               Name : constant String :=
                                 (if Nkind (Opnd) in N_Defining_Identifier then
                                    Source_Name (Opnd)
