@@ -515,15 +515,18 @@ package Flow_Types is
       Proof_Ins : Flow_Id_Sets.Set;
       Inputs    : Flow_Id_Sets.Set;
       Outputs   : Flow_Id_Sets.Set;
-   end record;
-   pragma Predicate
-     (Global_Flow_Ids,
-      (for all Proof_In of Proof_Ins =>
-          not Inputs.Contains (Proof_In)
+   end record
+   with Predicate =>
+      (for all Proof_In in Proof_Ins.Iterate =>
+         not Inputs.Contains
+           (Flow_Id_Sets.Constant_Reference (Proof_Ins, Proof_In))
             and then
-          not Outputs.Contains (Proof_In)));
-   --  ??? This predicate is a pragma, because GNAT crashes if it is given as
-   --  an aspect [SA23-034].
+         not Outputs.Contains
+           (Flow_Id_Sets.Constant_Reference (Proof_Ins, Proof_In)));
+   --  ??? Iteration with cursors and not elements works around some GNAT bug.
+   --  The explicit call to Constant_Reference works around another bug, where
+   --  GNAT can't recognize the predicated record component as an implicit call
+   --  in a prefix notation.
 
    function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
                                     return Ordered_Flow_Id_Sets.Set;
