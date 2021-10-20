@@ -40,7 +40,6 @@ libexec/spark/share dir
 alt-ergo
 codepeer
 doc
-gcc-10.3.1
 gnatcheck
 gpr
 gprconfig
