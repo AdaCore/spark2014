@@ -333,7 +333,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.102" proved="true">
-  <proof prover="0"><result status="valid" steps="1865"/></proof>
+  <proof prover="0"><result status="valid" steps="1866"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.103" proved="true">

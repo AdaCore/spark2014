@@ -501,7 +501,8 @@ package body SPARK_RAC is
    --  Add declarations to the first scope of the context environment
 
    function RAC_Call
-     (E       :        Entity_Id;
+     (N       :        Node_Id;
+      E       :        Entity_Id;
       Args    :        List_Id;
       Ctx     : in out Context;
       Is_Main :        Boolean := False)
@@ -626,9 +627,7 @@ package body SPARK_RAC is
             when Ty_String    =>
                V1.String_Content = V2.String_Content,
             when Ty_Array     =>
-               ((V1.Array_Others = null and then V2.Array_Others = null)
-                or else
-                (V1.Array_Others /= null and then V2.Array_Others /= null))
+               ((V1.Array_Others = null) = (V2.Array_Others = null))
                and then V1.Array_Values = V2.Array_Values));
 
    -------------------
@@ -637,7 +636,7 @@ package body SPARK_RAC is
 
    function Boolean_Value (B : Boolean) return Value is
      (Ty          => Ty_Enum,
-      Enum_Entity => (if B then Standard_True else Standard_False));
+      Enum_Entity => Boolean_Literals (B));
 
    ----------------
    -- Call_Stack --
@@ -1573,7 +1572,8 @@ package body SPARK_RAC is
    --------------
 
    function RAC_Call
-     (E       :        Entity_Id;
+     (N       :        Node_Id;
+      E       :        Entity_Id;
       Args    :        List_Id;
       Ctx     : in out Context;
       Is_Main :        Boolean := False)
@@ -1692,8 +1692,6 @@ package body SPARK_RAC is
       end loop;
       --  ??? Evaluate prefix expressions like F(X, Y, Z)'Old
 
-      RAC_Decls (Declarations (Bodie), Ctx);
-
       --  Check preconditions and get stuck in main functions
       begin
          Check_List (Pres, Ctx, "Precondition", VC_Precondition);
@@ -1709,10 +1707,16 @@ package body SPARK_RAC is
                   RAC_Stuck ("precondition of main function violated (" &
                                VC_Kind'Image (R.Res_VC_Kind) & " )");
                end;
+            elsif Peek_Exn_RAC_Result.Res_VC_Kind = VC_Precondition
+              and then Present (N)
+            then
+               RAC_Failure (N, Flush_Exn_RAC_Result.Res_VC_Kind);
             else
                raise;
             end if;
       end;
+
+      RAC_Decls (Declarations (Bodie), Ctx);
 
       --  Execute subprogram body
       begin
@@ -1924,7 +1928,8 @@ package body SPARK_RAC is
             Ctx.Env.Prepend (Global_Scope (Ctx));
             return
               (Res_Kind  => Res_Normal,
-               Res_Value => RAC_Call (E, No_List, Ctx, Is_Main => True));
+               Res_Value =>
+                  RAC_Call (Empty, E, No_List, Ctx, Is_Main => True));
          when E_Package
             | E_Package_Body
             | E_Task_Type
@@ -2556,7 +2561,7 @@ package body SPARK_RAC is
             end if;
 
             Res :=
-              RAC_Call (Entity (Name (N)), Parameter_Associations (N), Ctx)
+              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N), Ctx)
                 .Content;
 
          when N_In =>
@@ -2797,7 +2802,7 @@ package body SPARK_RAC is
             RAC_List (Statements (N), Ctx);
          when N_Procedure_Call_Statement =>
             Ignore :=
-              RAC_Call (Entity (Name (N)), Parameter_Associations (N), Ctx);
+              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N), Ctx);
          when N_Statement_Other_Than_Procedure_Call =>
             RAC_Statement (N, Ctx);
          when N_Pragma =>

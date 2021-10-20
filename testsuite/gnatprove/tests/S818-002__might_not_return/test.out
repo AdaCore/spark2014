@@ -17,7 +17,7 @@ weird.ads:10:06: error: procedure with aspect Annotate Terminating must not also
 weird.ads:14:06: error: procedure with aspect Annotate Terminating must not also be marked with No_Return
 gnatprove: error during generation of Global contracts
 pack.adb:5:07: medium: exception might be raised
-pack.adb:11:10: medium: precondition might fail
+pack.adb:11:10: high: precondition might fail
 pack.adb:20:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:29:10: medium: precondition might fail
 pack.ads:7:06: info: data dependencies proved
