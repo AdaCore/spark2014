@@ -26,7 +26,6 @@
 with Common_Containers;       use Common_Containers;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
-with Gnat2Why.Util;           use Gnat2Why.Util;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Atree.Tables;        use Why.Atree.Tables;
@@ -135,7 +134,7 @@ package body Why.Gen.Progs is
               Pre         => Pre,
               Post        => Post,
               Labels      => New_VC_Labels
-                (Ada_Node, Reason, Info => (others => <>)),
+                (Ada_Node, Reason, Check_Info => New_Check_Info),
               Return_Type =>
                 (if Return_Type = Why_Empty then EW_Unit_Type
                  else Return_Type)));
@@ -241,18 +240,18 @@ package body Why.Gen.Progs is
    ------------------------
 
    function New_Located_Assert
-      (Ada_Node : Node_Id;
-       Pred     : W_Pred_Id;
-       Reason   : VC_Kind;
-       Kind     : EW_Assert_Kind;
-       Info     : Check_Info := (others => <>)) return W_Prog_Id
+      (Ada_Node   : Node_Id;
+       Pred       : W_Pred_Id;
+       Reason     : VC_Kind;
+       Kind       : EW_Assert_Kind;
+       Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id
    is
       (New_Assert (Ada_Node    => Ada_Node,
-                   Pred        => +New_VC_Expr (Ada_Node => Ada_Node,
-                                                Expr     => +Pred,
-                                                Reason   => Reason,
-                                                Info     => Info,
-                                                Domain   => EW_Pred),
+                   Pred        => +New_VC_Expr (Ada_Node   => Ada_Node,
+                                                Expr       => +Pred,
+                                                Reason     => Reason,
+                                                Check_Info => Check_Info,
+                                                Domain     => EW_Pred),
                    Assert_Kind => Kind));
 
    ------------------------

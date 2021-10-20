@@ -40,7 +40,7 @@ package Gnat2Why.Error_Messages is
      (N               : Node_Id;
       Reason          : VC_Kind;
       E               : Entity_Id;
-      Info            : Check_Info;
+      Check_Info      : Check_Info_Type;
       Present_In_Why3 : Boolean := True)
       return VC_Id
    with Pre => Present (N) and then Present (E);
@@ -100,7 +100,7 @@ package Gnat2Why.Error_Messages is
       E           : Entity_Id;
       SD_Id       : Session_Dir_Base_ID;
       How_Proved  : Prover_Category;
-      Extra_Info  : Check_Info;
+      Check_Info  : Check_Info_Type;
       Extra_Msg   : String := "";
       Explanation : String := "";
       Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;

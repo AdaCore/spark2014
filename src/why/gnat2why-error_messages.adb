@@ -41,6 +41,7 @@ with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
 with Debug;                     use Debug;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
+with Gnat2Why.Util;             use Gnat2Why.Util;
 with Gnat2Why_Args;             use Gnat2Why_Args;
 with Gnat2Why_Opts;             use Gnat2Why_Opts;
 with Osint;                     use Osint;
@@ -53,10 +54,10 @@ with Uintp;                     use Uintp;
 package body Gnat2Why.Error_Messages is
 
    type VC_Info is record
-      Node   : Node_Id;
-      Entity : Entity_Id;
-      Kind   : VC_Kind;
-      Info   : Check_Info;
+      Node       : Node_Id;
+      Entity     : Entity_Id;
+      Kind       : VC_Kind;
+      Check_Info : Check_Info_Type;
    end record;
 
    function Hash (X : VC_Id) return Ada.Containers.Hash_Type is
@@ -448,7 +449,7 @@ package body Gnat2Why.Error_Messages is
       E           : Entity_Id;
       SD_Id       : Session_Dir_Base_ID;
       How_Proved  : Prover_Category;
-      Extra_Info  : Check_Info;
+      Check_Info  : Check_Info_Type;
       Extra_Msg   : String := "";
       Explanation : String := "";
       Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
@@ -576,7 +577,7 @@ package body Gnat2Why.Error_Messages is
             How_Proved  => How_Proved,
             SD_Id       => SD_Id,
             E           => E,
-            Extra_Info  => Extra_Info);
+            Check_Info  => Check_Info);
       end;
    end Emit_Proof_Result;
 
@@ -591,9 +592,9 @@ package body Gnat2Why.Error_Messages is
       E           : Entity_Id;
       Explanation : String := "")
    is
-      Info : constant Check_Info := (others => <>);
-      Id   : constant VC_Id :=
-        Register_VC (Node, Kind, E, Info, Present_In_Why3 => False);
+      Check_Info : constant Check_Info_Type := New_Check_Info;
+      Id         : constant VC_Id :=
+        Register_VC (Node, Kind, E, Check_Info, Present_In_Why3 => False);
    begin
       Emit_Proof_Result
         (Node,
@@ -604,7 +605,7 @@ package body Gnat2Why.Error_Messages is
          No_Session_Dir,
          PC_Trivial,
          Explanation => Explanation,
-         Extra_Info  => Info);
+         Check_Info  => Check_Info);
    end Emit_Static_Proof_Result;
 
    -------------
@@ -1314,7 +1315,7 @@ package body Gnat2Why.Error_Messages is
             Editor_Cmd  => To_String (Rec.Editor_Cmd),
             Stats       => Rec.Stats,
             Extra_Msg   => CP_Msg,
-            Extra_Info  => VC.Info);
+            Check_Info  => VC.Check_Info);
       end Handle_Result;
 
       --------------------
@@ -1544,13 +1545,13 @@ package body Gnat2Why.Error_Messages is
      (N               : Node_Id;
       Reason          : VC_Kind;
       E               : Entity_Id;
-      Info            : Check_Info;
+      Check_Info      : Check_Info_Type;
       Present_In_Why3 : Boolean := True)
       return VC_Id
    is
       Registered_Id : VC_Id;
    begin
-      VC_Table.Append (VC_Info'(N, E, Reason, Info));
+      VC_Table.Append (VC_Info'(N, E, Reason, Check_Info));
       Registered_Id := VC_Table.Last_Index;
 
       --  Do not consider warnings in the set of checks associated to an

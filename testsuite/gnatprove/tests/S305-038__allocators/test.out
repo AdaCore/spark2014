@@ -1,3 +1,6 @@
+alloc_range_check.adb:3:57: info: in default value at alloc_range_check.adb:18
+alloc_range_check.adb:3:57: info: in default value at alloc_range_check.adb:20
+alloc_range_check.adb:3:57: info: range check proved (CVC4: 2 VC)
 alloc_range_check.adb:3:57: info: range check proved (CVC4: 2 VC)
 alloc_range_check.adb:11:31: info: precondition proved (Trivial: 1 VC)
 alloc_range_check.adb:12:12: info: range check proved (CVC4: 2 VC)

@@ -269,27 +269,27 @@ package body Why.Gen.Hardcoded is
                         or else Name_String = BIN.Gcd);
                   pragma Assert (if Check then Present (Ada_Node));
 
-                  Info   : Check_Info;
-                  Reason : VC_Kind := VC_Precondition;
+                  Check_Info : Check_Info_Type := New_Check_Info;
+                  Reason     : VC_Kind := VC_Precondition;
 
                begin
                   --  For Divide, Mod, and Rem, emit a division check instead
                   --  of a precondition check.
 
                   if Name_String /= BIN.Gcd then
-                     Info.Divisor := Get_Ada_Node (+Args (2));
+                     Check_Info.Fix_Info.Divisor := Get_Ada_Node (+Args (2));
                      Reason := VC_Division_Check;
                   end if;
 
                   T := New_Operator_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => Name,
-                     Args     => (1 => Left_Rep, 2 => Right_Rep),
-                     Reason   => Reason,
-                     Info     => Info,
-                     Check    => Check,
-                     Typ      => Base);
+                    (Ada_Node   => Ada_Node,
+                     Domain     => Domain,
+                     Name       => Name,
+                     Args       => (1 => Left_Rep, 2 => Right_Rep),
+                     Reason     => Reason,
+                     Check_Info => Check_Info,
+                     Check      => Check,
+                     Typ        => Base);
                end;
             end;
 
@@ -440,16 +440,16 @@ package body Why.Gen.Hardcoded is
                   --  Reconstruct the real value by doing the division
 
                   T := New_Operator_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => Real_Infix_Div,
-                     Fix_Name => True,
-                     Args     => (1 => Num, 2 => Den),
-                     Reason   => VC_Division_Check,
-                     Info     => (Divisor => Get_Ada_Node (+Args (2)),
-                                  others  => <>),
-                     Check    => Domain = EW_Prog,
-                     Typ      => EW_Real_Type);
+                    (Ada_Node   => Ada_Node,
+                     Domain     => Domain,
+                     Name       => Real_Infix_Div,
+                     Fix_Name   => True,
+                     Args       => (1 => Num, 2 => Den),
+                     Reason     => VC_Division_Check,
+                     Check_Info => New_Check_Info
+                       (Divisor => Get_Ada_Node (+Args (2))),
+                     Check      => Domain = EW_Prog,
+                     Typ        => EW_Real_Type);
 
                   T := New_Label
                     (Ada_Node => Ada_Node,
@@ -566,16 +566,16 @@ package body Why.Gen.Hardcoded is
                      pragma Assert (if Check then Present (Ada_Node));
 
                      T := New_Operator_Call
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Name     => Name,
-                        Fix_Name => True,
-                        Args     => (1 => Left_Rep, 2 => Right_Rep),
-                        Reason   => VC_Division_Check,
-                        Info     => (Divisor => Get_Ada_Node (+Args (2)),
-                                     others  => <>),
-                        Check    => Check,
-                        Typ      => Base);
+                       (Ada_Node   => Ada_Node,
+                        Domain     => Domain,
+                        Name       => Name,
+                        Fix_Name   => True,
+                        Args       => (1 => Left_Rep, 2 => Right_Rep),
+                        Reason     => VC_Division_Check,
+                        Check_Info => New_Check_Info
+                          (Divisor => Get_Ada_Node (+Args (2))),
+                        Check      => Check,
+                        Typ        => Base);
                   end;
                end;
             end if;
@@ -957,15 +957,16 @@ package body Why.Gen.Hardcoded is
 
                begin
                   Result := New_Operator_Call
-                    (Ada_Node => Call,
-                     Domain   => Subdomain,
-                     Name     => Name,
-                     Fix_Name => True,
-                     Args     => W_Args,
-                     Reason   => VC_Division_Check,
-                     Info     => (Divisor => Den_Literal, others => <>),
-                     Check    => Subdomain = EW_Prog,
-                     Typ      => EW_Real_Type);
+                    (Ada_Node   => Call,
+                     Domain     => Subdomain,
+                     Name       => Name,
+                     Fix_Name   => True,
+                     Args       => W_Args,
+                     Reason     => VC_Division_Check,
+                     Check_Info => New_Check_Info
+                       (Divisor => Den_Literal),
+                     Check      => Subdomain = EW_Prog,
+                     Typ        => EW_Real_Type);
                end;
 
                return New_Label

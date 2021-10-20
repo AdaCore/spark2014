@@ -107,7 +107,7 @@ package body Flow_Error_Messages is
      (N          : Node_Id;
       Tag        : VC_Kind;
       How_Proved : Prover_Category;
-      Info       : Check_Info) return String;
+      Info       : Fix_Info_Type) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
    --  @param How_Proved should be PC_Trivial if the check is static
@@ -652,7 +652,7 @@ package body Flow_Error_Messages is
       SD_Id       : Session_Dir_Base_ID;
       Stats       : Prover_Stat_Maps.Map;
       Place_First : Boolean;
-      Extra_Info  : Check_Info)
+      Check_Info  : Check_Info_Type)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -681,7 +681,8 @@ package body Flow_Error_Messages is
          Verdict    : Cntexmp_Verdict)
          return String
       is
-         Fix : constant String := Get_Fix (N, Tag, How_Proved, Extra_Info);
+         Fix : constant String := Get_Fix
+           (N, Tag, How_Proved, Check_Info.Fix_Info);
       begin
          if Fix = "" then
             case Verdict.Verdict_Category is
@@ -771,7 +772,7 @@ package body Flow_Error_Messages is
             Cntexample_File_Maps.Empty);
 
       Severity  : constant Msg_Severity :=
-                    Get_Severity (N, Is_Proved, Tag, Verdict);
+        Get_Severity (N, Is_Proved, Tag, Verdict);
       Suppr     : String_Id := No_String;
       Msg_Id    : Message_Id := No_Message_Id;
       Is_Annot  : Boolean;
@@ -942,6 +943,38 @@ package body Flow_Error_Messages is
             --  cannot happen
             raise Program_Error;
       end case;
+
+      --  If a message was emitted, then go over the continuations and output
+      --  them in the reverse order.
+
+      if Report_Mode /= GPR_Fail
+        or else Severity = Warning_Kind
+        or else (Severity in Check_Kind and then not Is_Annot)
+      then
+         for Cont of reverse Check_Info.Continuation loop
+
+            --  No need to emit the continuation if it is located on the same
+            --  node as the check message.
+
+            if Cont.Ada_Node /= N then
+               declare
+                  Loc  : constant Source_Ptr := Sloc
+                    (First_Node (Cont.Ada_Node));
+                  File : constant String := File_Name (Loc);
+                  Line : constant Physical_Line_Number :=
+                    Get_Physical_Line_Number (Loc);
+                  Msg  : constant String :=
+                    To_String (Cont.Message)
+                    & " at " & File & ":" & Image (Integer (Line), 1);
+
+               begin
+                  Ignore_Id := Print_Regular_Msg
+                    (Compute_Message (Msg, Cont.Ada_Node),
+                     Span, Severity, Continuation => True);
+               end;
+            end if;
+         end loop;
+      end if;
 
       Add_Json_Msg
         (Suppr       => Suppr,
@@ -1366,7 +1399,7 @@ package body Flow_Error_Messages is
      (N          : Node_Id;
       Tag        : VC_Kind;
       How_Proved : Prover_Category;
-      Info       : Check_Info) return String
+      Info       : Fix_Info_Type) return String
    is
 
       -----------------------
@@ -3439,13 +3472,16 @@ package body Flow_Error_Messages is
            and then Gnat2Why_Args.Output_Mode in GPO_Pretty
          then ""
          else
+           --  Errout.Error_Msg will add "info:" (on continuation messages
+           --  only) and "warning:" prefix when needed, so we only have to do
+           --  it in other cases, for prefixes on check messages in particular.
            (case Severity is
-               when Info_Kind         => "info: ",
-               when Low_Check_Kind    => "low: ",
-               when Medium_Check_Kind => "medium: ",
-               when High_Check_Kind   => "high: ",
-               when Warning_Kind      => "?",
-               when Error_Kind        => ""));
+             when Info_Kind         => (if Continuation then "" else "info: "),
+             when Low_Check_Kind    => "low: ",
+             when Medium_Check_Kind => "medium: ",
+             when High_Check_Kind   => "high: ",
+             when Warning_Kind      => "?",
+             when Error_Kind        => ""));
       Actual_Msg : constant String :=
         Prefix & Escape (Msg) & "!!" &
         (if Ide_Mode

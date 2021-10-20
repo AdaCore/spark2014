@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why.Util;             use Gnat2Why.Util;
 with SPARK_Util;                use SPARK_Util;
 with Types;                     use Types;
 with VC_Kinds;                  use VC_Kinds;
@@ -155,11 +156,11 @@ package Why.Gen.Progs is
    --   Build the program "ignore(prog)" of return type "unit".
 
    function New_Located_Assert
-      (Ada_Node : Node_Id;
-       Pred     : W_Pred_Id;
-       Reason   : VC_Kind;
-       Kind     : EW_Assert_Kind;
-       Info     : Check_Info := (others => <>)) return W_Prog_Id;
+      (Ada_Node   : Node_Id;
+       Pred       : W_Pred_Id;
+       Reason     : VC_Kind;
+       Kind       : EW_Assert_Kind;
+       Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id;
 
    function New_Located_Abstract
      (Ada_Node : Node_Id;

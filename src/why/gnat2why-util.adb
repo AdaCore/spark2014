@@ -1405,6 +1405,17 @@ package body Gnat2Why.Util is
      (May_Need_DIC_Checking (Ty)
        and then not Check_DIC_At_Declaration (Ty));
 
+   --------------------
+   -- New_Check_Info --
+   --------------------
+
+   function New_Check_Info
+     (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
+      Divisor        : Node_Or_Entity_Id := Empty) return Check_Info_Type
+   is ((Fix_Info     => (Range_Check_Ty => Range_Check_Ty,
+                         Divisor        => Divisor),
+        Continuation => Continuation_Stack));
+
    --------------------------------
    -- Nth_Index_Rep_Type_No_Bool --
    --------------------------------

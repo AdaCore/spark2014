@@ -172,7 +172,10 @@ package Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
-   Symbol_Table : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+   Symbol_Table       : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+   Continuation_Stack : Continuation_Vectors.Vector;
+   --  Stack of all the continuation messages relevant for the translation of
+   --  the current expression.
 
    package W_Pred_Vectors is
       type Vector is limited private;
@@ -391,6 +394,12 @@ package Gnat2Why.Util is
                      | Pragma_Refined_Post;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
+
+   function New_Check_Info
+     (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
+      Divisor        : Node_Or_Entity_Id := Empty) return Check_Info_Type;
+   --  Construct a check info with the supplied information for the fix
+   --  message and the current continuation stack.
 
    -------------
    -- Queries --

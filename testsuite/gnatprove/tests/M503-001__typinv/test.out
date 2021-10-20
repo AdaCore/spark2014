@@ -5,6 +5,7 @@ aggregates.ads:13:14: info: invariant check proved (CVC4: 2 VC; Trivial: 3 VC)
 aggregates.ads:13:26: info: initialization of "X" proved
 aggregates.ads:15:14: info: invariant check proved (CVC4: 2 VC; Trivial: 3 VC)
 aggregates.ads:21:09: info: invariant check proved on default value (CVC4: 1 VC)
+aggregates.ads:22:23: info: in default value of private type at aggregates.ads:3
 aggregates.ads:22:23: info: range check proved (CVC4: 2 VC)
 aggregates.ads:25:09: info: invariant check proved on default value (CVC4: 1 VC; Trivial: 1 VC)
 aggregates.ads:27:09: info: invariant check proved on default value (CVC4: 2 VC; Trivial: 3 VC)
@@ -26,6 +27,7 @@ globals.ads:19:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:23:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:25:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:31:09: info: invariant check proved on default value (CVC4: 1 VC)
+globals.ads:32:23: info: in default value of private type at globals.ads:6
 globals.ads:32:23: info: range check proved (CVC4: 2 VC)
 globals.ads:37:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:38:11: info: data dependencies proved
@@ -51,6 +53,7 @@ inside_out.ads:5:22: info: initialization of "X" proved
 inside_out.ads:7:14: medium: invariant check might fail (e.g. when X = -1)
 inside_out.ads:7:22: warning: unused initial value of "X"
 inside_out.ads:13:09: info: invariant check proved on default value (CVC4: 1 VC)
+inside_out.ads:14:23: info: in default value of private type at inside_out.ads:3
 inside_out.ads:14:23: info: range check proved (CVC4: 2 VC)
 inside_out.ads:17:27: info: initialization of "X" proved
 reentrancy.adb:21:18: info: invariant check proved (CVC4: 1 VC)
@@ -60,10 +63,12 @@ reentrancy.ads:5:14: info: invariant check proved (CVC4: 1 VC)
 reentrancy.ads:5:22: info: initialization of "X" proved
 reentrancy.ads:7:14: info: invariant check proved (CVC4: 1 VC)
 reentrancy.ads:13:09: info: invariant check proved on default value (CVC4: 1 VC)
+reentrancy.ads:14:23: info: in default value of private type at reentrancy.ads:3
 reentrancy.ads:14:23: info: range check proved (CVC4: 2 VC)
 simple.adb:11:15: info: overflow check proved (CVC4: 2 VC)
 simple.ads:5:14: info: invariant check proved (CVC4: 1 VC)
 simple.ads:5:22: info: initialization of "X" proved
 simple.ads:7:14: info: invariant check proved (CVC4: 1 VC)
 simple.ads:13:09: info: invariant check proved on default value (CVC4: 1 VC)
+simple.ads:14:23: info: in default value of private type at simple.ads:3
 simple.ads:14:23: info: range check proved (CVC4: 2 VC)
