@@ -3385,15 +3385,7 @@ package body Flow_Error_Messages is
       Set_Field (Value, "col", Col);
 
       if Suppr /= No_String then
-         declare
-            Len           : constant Natural :=
-              Natural (String_Length (Suppr));
-            Reason_String : String (1 .. Len);
-         begin
-            String_To_Name_Buffer (Suppr);
-            Reason_String := Name_Buffer (1 .. Len);
-            Set_Field (Value, "suppressed", Reason_String);
-         end;
+         Set_Field (Value, "suppressed", To_String (Suppr));
       end if;
 
       Set_Field (Value, "rule", Tag);
