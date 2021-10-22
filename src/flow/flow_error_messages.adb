@@ -3376,8 +3376,8 @@ package body Flow_Error_Messages is
    is
       Value : constant JSON_Value := Create_Object;
       File  : constant String     := File_Name (Slc);
-      Line  : constant Natural    := Natural (Get_Logical_Line_Number (Slc));
-      Col   : constant Natural    := Natural (Get_Column_Number (Slc));
+      Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
+      Col   : constant Natural    := Positive (Get_Column_Number (Slc));
    begin
 
       Set_Field (Value, "file", File);
@@ -3397,9 +3397,9 @@ package body Flow_Error_Messages is
          declare
             VC_File : constant String  := File_Name (VC_Loc);
             VC_Line : constant Natural :=
-                         Natural (Get_Logical_Line_Number (VC_Loc));
+                         Positive (Get_Logical_Line_Number (VC_Loc));
             VC_Col  : constant Natural :=
-                         Natural (Get_Column_Number (VC_Loc));
+                         Positive (Get_Column_Number (VC_Loc));
          begin
             --  Note that vc_file already exists
             Set_Field (Value, "check_file", VC_File);
@@ -3425,11 +3425,11 @@ package body Flow_Error_Messages is
       end if;
 
       if Msg_Id /= No_Message_Id then
-         Set_Field (Value, "msg_id", Integer (Msg_Id));
+         Set_Field (Value, "msg_id", Natural (Msg_Id));
       end if;
 
       if SD_Id /= No_Session_Dir then
-         Set_Field (Value, "session_dir", Integer (SD_Id));
+         Set_Field (Value, "session_dir", Natural (SD_Id));
       end if;
 
       Set_Field (Value, "how_proved", To_JSON (How_Proved));
