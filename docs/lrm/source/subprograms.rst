@@ -1460,8 +1460,8 @@ or entry calls.
 
 .. index:: immutable parameter
 
-2. A formal parameter is said to be *immutable* if it is of mode **in** and not
-   of an access-to-variable type or of an anonymous access-to-constant
+2. A formal parameter is said to be *immutable* if it is of mode **in** and
+   neither of an access-to-variable type nor of an anonymous access-to-constant
    type. [Note that access parameters are of mode **in** too.]
 
    Otherwise, the formal parameter is said to be *mutable*.
