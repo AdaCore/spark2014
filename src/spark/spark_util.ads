@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories;
 with Assumption_Types;      use Assumption_Types;
@@ -121,6 +122,28 @@ package SPARK_Util is
       RCK_Overflow_Not_First,
       RCK_Overflow_Not_Last);
    --  Kind for checks on scalar types
+
+   type Continuation_Type is record
+      Ada_Node : Node_Id;
+      Message  : Unbounded_String;
+   end record;
+   --  Continuation message located at Ada_Node
+
+   package Continuation_Vectors is new Ada.Containers.Vectors
+     (Positive, Continuation_Type);
+
+   type Fix_Info_Type is record
+      Range_Check_Ty : Opt_Type_Kind_Id;
+      Divisor        : Node_Or_Entity_Id;
+   end record;
+   --  Extra information to get better possible fix messages
+
+   type Check_Info_Type is record
+      Fix_Info     : Fix_Info_Type;
+      Continuation : Continuation_Vectors.Vector;
+   end record;
+   --  Extra information for checks that is useful for generating better
+   --  messages.
 
    subtype Volatile_Pragma_Id is Pragma_Id with Static_Predicate =>
      Volatile_Pragma_Id in Pragma_Async_Readers

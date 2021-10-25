@@ -1435,13 +1435,13 @@ object (although object renaming declarations are not problematic in
 
 A common place for aliasing to be introduced is through the actual
 parameters and between actual parameters and
-global variables in a procedure call. Extra verification rules are
+global variables in a procedure or entry call. Extra verification rules are
 given that avoid the possibility of aliasing through actual
 parameters and global variables.  A function is not allowed to have
 side-effects and cannot update an actual parameter or global
 variable.  Therefore, function calls cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
-calls.
+or entry calls.
 
 .. centered:: **Static Semantics**
 
@@ -1460,28 +1460,29 @@ calls.
 
 .. index:: immutable parameter
 
-2. A formal parameter is said to be *immutable* in the following cases:
-
-   * it is an anonymous access-to-constant parameter; or
-
-   * it is of mode **in** and not of an access-to-object type.
+2. A formal parameter is said to be *immutable* if it is of mode **in** and
+   neither of an access-to-variable type nor of an anonymous access-to-constant
+   type. [Note that access parameters are of mode **in** too.]
 
    Otherwise, the formal parameter is said to be *mutable*.
 
 .. centered:: **Verification Rules**
 
 
-3. A procedure call shall not pass two actual parameters which potentially
+3. A procedure or entry call shall not pass two actual parameters which potentially
    introduce aliasing via parameter passing unless either
 
    * both of the corresponding formal parameters are immutable; or
 
    * at least one of the corresponding formal parameters is immutable and is of
-     a by-copy type that is not an access type.
+     a by-copy type. [Note that this includes parameters of named
+     access-to-constant and (named or anonymous) access-to-subprograms
+     types. Ownership rules prevent other problematic aliasing, see section
+     :ref:`Access Types`.]
 
 
-4. If an actual parameter in a procedure call and a ``global_item`` referenced
-   by the called procedure potentially introduce aliasing via parameter
+4. If an actual parameter in a procedure or entry call and a ``global_item`` referenced
+   by the called procedure or entry potentially introduce aliasing via parameter
    passing, then
 
    * the corresponding formal parameter shall be immutable; and

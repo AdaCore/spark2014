@@ -110,6 +110,7 @@ aco-math-very_longs.adb:259:69: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:261:37: info: overflow check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:261:41: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:271:07: info: initialization of "Result" proved
+aco-math-very_longs.adb:271:42: info: in default value at aco-math-very_longs.adb:271
 aco-math-very_longs.adb:271:42: info: overflow check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:271:42: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:271:42: medium: overflow check might fail, cannot prove upper bound for L.Octet_Length + R.Octet_Length [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (L.Octet_Length <= 2147483647 - R.Octet_Length) to subprogram at aco-math-very_longs.ads:70]
@@ -137,7 +138,9 @@ aco-math-very_longs.adb:313:07: info: initialization of "N" proved
 aco-math-very_longs.adb:314:07: info: initialization of "M" proved
 aco-math-very_longs.adb:315:07: info: initialization of "Shift_Distance" proved
 aco-math-very_longs.adb:316:07: info: initialization of "U" proved
+aco-math-very_longs.adb:316:36: info: in default value at aco-math-very_longs.adb:316
 aco-math-very_longs.adb:316:36: info: overflow check proved (CVC4: 2 VC)
+aco-math-very_longs.adb:316:58: info: in default value at aco-math-very_longs.adb:316
 aco-math-very_longs.adb:316:58: info: overflow check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:316:58: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:317:07: info: initialization of "V" proved

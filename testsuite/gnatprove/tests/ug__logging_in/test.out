@@ -8,7 +8,7 @@ logging_in.adb:6:28: high: overflow check might fail, cannot prove upper bound f
    10 |   procedure Get with
       |   ^ here
 
-logging_in.adb:7:12: medium: array index check might fail
+logging_in.adb:7:12: high: array index check might fail
     7 |      Log (Log_Size) := Log_In;
       |           ^~~~~~~~
   e.g. when Log_In = 0

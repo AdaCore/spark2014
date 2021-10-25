@@ -5,11 +5,12 @@ p.adb:11:07: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:11:17: warning: subprogram "Proc_Loop" has no effect
 p.adb:12:10: info: initialization of "Tmp_S" proved
 p.adb:16:14: medium: range check might fail
-p.adb:16:34: medium: overflow check might fail, cannot prove lower bound for Y - X (e.g. when X = Integer'Last and Y = -2) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then Y >= Integer'First + X else Y <= Integer'Last + X) to subprogram at line 11]
+p.adb:16:34: medium: overflow check might fail, cannot prove lower bound for Y - X [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then Y >= Integer'First + X else Y <= Integer'Last + X) to subprogram at line 11]
 p.adb:16:38: info: cannot unroll loop (too many loop iterations)
 p.adb:17:28: info: overflow check proved (CodePeer)
 p.adb:21:16: info: range check proved (CodePeer)
 p.adb:23:11: medium: range check might fail
+p.adb:23:37: high: overflow check might fail, cannot prove upper bound for Y - X (e.g. when X = -1 and Y = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then Y >= Integer'First + X else Y <= Integer'Last + X) to subprogram at line 4]
 p.adb:23:37: medium: overflow check might fail, cannot prove upper bound for Y - X [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then Y >= Integer'First + X else Y <= Integer'Last + X) to subprogram at line 4]
 p.adb:23:41: info: cannot unroll loop (too many loop iterations)
 p.adb:24:25: info: overflow check proved (CodePeer)

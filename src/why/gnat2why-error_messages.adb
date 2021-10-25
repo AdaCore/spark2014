@@ -41,6 +41,7 @@ with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
 with Debug;                     use Debug;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
+with Gnat2Why.Util;             use Gnat2Why.Util;
 with Gnat2Why_Args;             use Gnat2Why_Args;
 with Gnat2Why_Opts;             use Gnat2Why_Opts;
 with Osint;                     use Osint;
@@ -48,15 +49,15 @@ with Output;                    use Output;
 with SA_Messages;               use SA_Messages;
 with Sinput;                    use Sinput;
 with SPARK_RAC;                 use SPARK_RAC;
-with SPARK_Util;                use SPARK_Util;
 with Uintp;                     use Uintp;
 
 package body Gnat2Why.Error_Messages is
 
    type VC_Info is record
-      Node   : Node_Id;
-      Entity : Entity_Id;
-      Kind   : VC_Kind;
+      Node       : Node_Id;
+      Entity     : Entity_Id;
+      Kind       : VC_Kind;
+      Check_Info : Check_Info_Type;
    end record;
 
    function Hash (X : VC_Id) return Ada.Containers.Hash_Type is
@@ -122,7 +123,8 @@ package body Gnat2Why.Error_Messages is
         " at " & File_Name (Sloc (Node)) & ":" &
         Physical_Line_Number'Image
         (Get_Physical_Line_Number (Sloc (Node))) & ":" &
-        Types.Column_Number'Image (Get_Column_Number (Sloc (Node))));
+        Types.Column_Number'Image (Get_Column_Number (Sloc (Node))) &
+        " (" & Kind'Image & " at " & Node'Image & ")");
    --  Pretty print a VC and info for debugging
 
    function Decide_Cntexmp_Verdict
@@ -135,6 +137,17 @@ package body Gnat2Why.Error_Messages is
    --  giant-step runtime-assertion checking (RAC) with the counterexample
    --  according to Figure 11 in the technical report "Giant-step Semantics for
    --  the Categorisatio of Counterexamples" (hal-03213438).
+
+   function VC_Kinds_Match (Target_Kind, Found_Kind : VC_Kind) return Boolean
+   is (Target_Kind = Found_Kind
+         or else
+      (Target_Kind in VC_Range_Kind and then Found_Kind in VC_Range_Kind));
+   --  When checking whether the VC kind by RAC matches the target VC kind,
+   --  collapse all scalar checks for now, as RAC cannot distinguish with them
+   --  when a node has has the Do_Range_Check flag set to True. Indeed, RAC
+   --  does not have the machinery to determine what check is emitted in
+   --  gnat2why for a given Do_Range_Check flag, so it uses consistently
+   --  VC_Range_Check.
 
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
@@ -341,8 +354,8 @@ package body Gnat2Why.Error_Messages is
    begin
       case Small_Step.Res_Kind is
          when Res_Failure =>
-            if VC_Id (Small_Step.Res_VC_Id) = VC and then
-              Small_Step.Res_VC_Kind       = Info.Kind
+            if VC_Id (Small_Step.Res_VC_Id) = VC
+              and then VC_Kinds_Match (Info.Kind, Small_Step.Res_VC_Kind)
             then
                return (Verdict_Category => Non_Conformity);
             else
@@ -436,6 +449,7 @@ package body Gnat2Why.Error_Messages is
       E           : Entity_Id;
       SD_Id       : Session_Dir_Base_ID;
       How_Proved  : Prover_Category;
+      Check_Info  : Check_Info_Type;
       Extra_Msg   : String := "";
       Explanation : String := "";
       Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
@@ -562,7 +576,8 @@ package body Gnat2Why.Error_Messages is
             Stats       => Stats,
             How_Proved  => How_Proved,
             SD_Id       => SD_Id,
-            E           => E);
+            E           => E,
+            Check_Info  => Check_Info);
       end;
    end Emit_Proof_Result;
 
@@ -577,8 +592,9 @@ package body Gnat2Why.Error_Messages is
       E           : Entity_Id;
       Explanation : String := "")
    is
-      Id : constant VC_Id :=
-        Register_VC (Node, Kind, E, Present_In_Why3 => False);
+      Check_Info : constant Check_Info_Type := New_Check_Info;
+      Id         : constant VC_Id :=
+        Register_VC (Node, Kind, E, Check_Info, Present_In_Why3 => False);
    begin
       Emit_Proof_Result
         (Node,
@@ -588,7 +604,8 @@ package body Gnat2Why.Error_Messages is
          E,
          No_Session_Dir,
          PC_Trivial,
-         Explanation => Explanation);
+         Explanation => Explanation,
+         Check_Info  => Check_Info);
    end Emit_Static_Proof_Result;
 
    -------------
@@ -598,7 +615,20 @@ package body Gnat2Why.Error_Messages is
    function Find_VC (N : Node_Id; Kind : VC_Kind) return VC_Id is
    begin
       for C in VC_Table.Iterate loop
-         if VC_Table (C).Node = N and then VC_Table (C).Kind = Kind then
+         if VC_Table (C).Node = N
+           and then VC_Table (C).Kind = Kind
+         then
+            return VC_Id (Id_Tables.To_Index (C));
+         end if;
+      end loop;
+
+      --  If the exact VC kind was not found, in the case of range-related
+      --  checks, look for another range-related VC kind on the same node.
+
+      for C in VC_Table.Iterate loop
+         if VC_Table (C).Node = N
+           and then VC_Kinds_Match (VC_Table (C).Kind, Kind)
+         then
             return VC_Id (Id_Tables.To_Index (C));
          end if;
       end loop;
@@ -1141,7 +1171,7 @@ package body Gnat2Why.Error_Messages is
               (E,
                Cntexmp,
                Do_Sideeffects => False,
-               Fuel           => 1_000_000,
+               Fuel           => 250_000,
                Stack_Height   => 450);
             --  During execution SPARK_RAC counts the stacked calls in the
             --  interpreted program and terminates as incomplete when the
@@ -1225,29 +1255,17 @@ package body Gnat2Why.Error_Messages is
                      end;
                   end if;
 
-                  begin
-                     Verdict := Decide_Cntexmp_Verdict
-                       (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
-
-                     if SPARK_RAC.Do_RAC_Info then
-                        Write_Line
-                          ("Normal RAC:     "
-                           & SPARK_RAC.To_String (Small_Step_Res) & ".");
-                        Write_Line
-                          ("Giant-step RAC: "
-                           & SPARK_RAC.To_String (Rec.Giant_Step_Res) & ".");
-                        Write_Line
-                          ("Verdict:        "
-                           & Verdict.Verdict_Category'Image
-                           & " " & Reason (Verdict));
-                     end if;
-                  end;
+                  Verdict := Decide_Cntexmp_Verdict
+                    (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
                exception
                   when E : others =>
                      if Debug_Flag_K
                        and then Exception_Identity (E)
                                 /= RAC_Unexpected_Error'Identity
                      --  We accept RAC_Unexpected_Error for now
+                     --  ??? In Find_VC it can just result in RES_INCOMPLETE,
+                     --  during CE value import this could be RAC_Unsupported
+                     --  for now, and should be fixed
                      then
                         raise;
                      else
@@ -1296,7 +1314,8 @@ package body Gnat2Why.Error_Messages is
             VC_Loc      => VC_Sloc,
             Editor_Cmd  => To_String (Rec.Editor_Cmd),
             Stats       => Rec.Stats,
-            Extra_Msg   => CP_Msg);
+            Extra_Msg   => CP_Msg,
+            Check_Info  => VC.Check_Info);
       end Handle_Result;
 
       --------------------
@@ -1526,12 +1545,13 @@ package body Gnat2Why.Error_Messages is
      (N               : Node_Id;
       Reason          : VC_Kind;
       E               : Entity_Id;
+      Check_Info      : Check_Info_Type;
       Present_In_Why3 : Boolean := True)
       return VC_Id
    is
       Registered_Id : VC_Id;
    begin
-      VC_Table.Append (VC_Info'(N, E, Reason));
+      VC_Table.Append (VC_Info'(N, E, Reason, Check_Info));
       Registered_Id := VC_Table.Last_Index;
 
       --  Do not consider warnings in the set of checks associated to an

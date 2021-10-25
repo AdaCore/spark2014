@@ -94,11 +94,17 @@ package body SPARK_RAC is
      (Ty => Ty_Enum, Enum_Entity => E);
    --  Make an enum value from an enumeration literal E
 
-   function String_Value (S : Unbounded_String) return Value is
-     (Ty => Ty_String, String_Content => S);
+   function String_Value
+     (First : Big_Integer;
+      S     : Unbounded_String)
+      return Value
+   is
+     (Ty             => Ty_String,
+      String_First   => First,
+      String_Content => S);
 
-   function String_Value (S : String) return Value is
-     (String_Value (To_Unbounded_String (S)));
+   function String_Value (First : Big_Integer; S : String) return Value is
+     (String_Value (First, To_Unbounded_String (S)));
 
    function Enum_Value (I : Uint; Ty : Entity_Id) return Value;
    --  Make an enum value from an enum index I
@@ -122,6 +128,9 @@ package body SPARK_RAC is
    function Boolean_Value (B : Boolean) return Value;
    --  Make a boolean value, i.e. an enum value
 
+   function Character_Value (C : Character) return Value;
+   --  Make a character value, i.e. an enum value
+
    function Value_Boolean (V : Value) return Boolean;
    --  Get the value of a boolean enum value, fail for other types
 
@@ -131,6 +140,10 @@ package body SPARK_RAC is
 
    function Value_Integer (V : Value) return Big_Integer;
    --  Get the value of an integer value, fail for other types
+
+   function Value_Character (V : Value) return Character;
+   --  Get the value of a enumeration value as a character, fail for other
+   --  types.
 
    function Value_String (V : Value) return String;
    --  Get the value of a string value, fail for other types;
@@ -158,9 +171,10 @@ package body SPARK_RAC is
       (Ty => Ty_Integer, Integer_Content => I);
 
    function Integer_Value
-     (I  : Big_Integer;
-      Ty : Entity_Id;
-      N  : Node_Id)
+     (I     : Big_Integer;
+      Ty    : Entity_Id;
+      N     : Node_Id;
+      Check : Boolean := True)
       return Value;
    --  Construct an integer value after checking against type bounds or
    --  applying modulo for type Ty, signaling errors for node N.
@@ -178,7 +192,7 @@ package body SPARK_RAC is
 
    function Copy (A : Values_Map.Map) return Values_Map.Map;
 
-   function Default_Value (Ty : Node_Id) return Value;
+   function Default_Value (Ty : Node_Id; Check : Boolean := True) return Value;
    --  Return the type default value
 
    function Enum_Entity_To_Integer (E : Entity_Id) return Uint;
@@ -361,10 +375,10 @@ package body SPARK_RAC is
    end record;
    --  The execution context
 
-   function Find_Binding
-     (E   :        N_Entity_Id;
-      Ctx : in out Context)
-      return Binding;
+   Ctx : Context;
+   --  Lo and behold! The global execution context
+
+   function Find_Binding (E : N_Entity_Id) return Binding;
    --  Find the binding of a variable in the context environment. If not found,
    --  it is assumed to be a global constant and initialised as it.
 
@@ -379,14 +393,34 @@ package body SPARK_RAC is
    --  Predicate for nodes, for which the counterexample may have a value
 
    function Import
-     (V  : Cntexmp_Value;
-      Ty : Entity_Id;
-      N  : Node_Id)
+     (V    : Cntexmp_Value;
+      Ty   : Entity_Id;
+      N    : Node_Id;
+      Name : String := "";
+      Elts : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty)
       return Value
    with
-     Pre => Can_Get (N);
+     Pre => (if Present (N) then Can_Get (N));
    --  Import a counterexample value V of type Ty (the context of node is used
    --  only to signal errors).
+   --  For the toplevel call, Elts are the other counterexample values at the
+   --  position of V. For the import of nested values, N and Elts are Empty.
+
+   type Cntexample_Elt_Opt (Cntexample_Elt_Present : Boolean := False)
+   is record
+      case Cntexample_Elt_Present is
+         when True =>
+            Cntexample_Elt_Content : Cntexample_Elt;
+         when False =>
+            null;
+      end case;
+   end record;
+
+   function Find_Cntexmp_Elt
+     (Name : String;
+      Elts : Cntexample_Elt_Lists.List)
+      return Cntexample_Elt_Opt;
+   --  Find a counterexample value by name in a list of counterexample values
 
    function Get_Cntexmp_Value
      (N       : Node_Id;
@@ -400,11 +434,10 @@ package body SPARK_RAC is
    --  The origin of a value in a call to Get
 
    function Get_Value
-     (N           :        Node_Id;
-      Ex          :        Node_Id;
-      Use_Default :        Boolean;
-      Ctx         : in out Context;
-      Origin      :    out Value_Origin)
+     (N           :     Node_Id;
+      Ex          :     Node_Id;
+      Use_Default :     Boolean;
+      Origin      : out Value_Origin)
       return Value
    with
      Pre => Can_Get (N);
@@ -445,67 +478,53 @@ package body SPARK_RAC is
    --  Do nothing for negative values of Fuel.
 
    procedure Check_Node
-     (N    :        N_Subexpr_Id;
-      Ctx  : in out Context;
-      Desc :        String;
-      K    :        VC_Kind);
+     (N    : N_Subexpr_Id;
+      Desc : String;
+      K    : VC_Kind);
 
    procedure Check_List
-     (L   :        Node_Lists.List;
-      Ctx : in out Context;
-      Msg :        String;
-      K   :        VC_Kind);
+     (L   : Node_Lists.List;
+      Msg : String;
+      K   : VC_Kind);
    --  Check the validity of formulas L
 
    type Ulargest is mod 2 ** 128;
    --  The largest modular type to execute modulo operators
 
    procedure Iterate_Loop_Param_Spec
-     (Param_Spec :        Node_Id;
-      Ctx        : in out Context;
-      Iteration  : access procedure (Ctx : in out Context));
+     (Param_Spec : Node_Id; Iteration : access procedure);
    --  Iterate a loop parameter specification by calling Iteration
 
-   function RAC_Expr
-     (N   :        N_Subexpr_Id;
-      Ctx : in out Context;
-      Ty0 :        Entity_Id := Empty)
-      return Value;
+   function RAC_Expr (N : N_Subexpr_Id; Ty0 : Entity_Id := Empty) return Value;
    --  Evaluate node N to a value
 
-   function RAC_Expr_LHS
-     (N   :        N_Subexpr_Id;
-      Ctx : in out Context)
-      return Value_Access;
+   function RAC_Expr_LHS (N : N_Subexpr_Id) return Value_Access;
    --  Evaluate node N to a value pointer for the left-hand side of an
    --  assignment.
 
-   procedure RAC_Statement
-     (N   :        N_Statement_Other_Than_Procedure_Call_Id;
-      Ctx : in out Context);
+   procedure RAC_Statement (N : N_Statement_Other_Than_Procedure_Call_Id);
    --  RAC execution of a statement N
 
-   procedure RAC_Pragma (N : N_Pragma_Id; Ctx : in out Context);
+   procedure RAC_Pragma (N : N_Pragma_Id);
    --  RAC execution of a pragma N
 
-   procedure RAC_Node (N : Node_Id; Ctx : in out Context);
+   procedure RAC_Node (N : Node_Id);
    --  RAC execution of node N
 
-   procedure RAC_List (L : List_Id; Ctx : in out Context);
+   procedure RAC_List (L : List_Id);
    --  RAC execution of list L
 
-   procedure RAC_Decl (Decl : Node_Id; Ctx : in out Context);
+   procedure RAC_Decl (Decl : Node_Id);
    --  Add a declaration to the first scope of the context environment
 
-   procedure RAC_Decls (Decls : List_Id; Ctx : in out Context);
+   procedure RAC_Decls (Decls : List_Id);
    --  Add declarations to the first scope of the context environment
 
    function RAC_Call
-     (N       :        Node_Id;
-      E       :        Entity_Id;
-      Args    :        List_Id;
-      Ctx     : in out Context;
-      Is_Main :        Boolean := False)
+     (N       : Node_Id;
+      E       : Entity_Id;
+      Args    : List_Id;
+      Is_Main : Boolean := False)
       return Opt_Value;
    --  RAC execution of a call to E with parameters in Scope. If Is_Main is
    --  True, the argument values are taken from the counterexample and failing
@@ -526,24 +545,18 @@ package body SPARK_RAC is
       N             :        Node_Id;
       Use_Expr      :        Boolean;
       Default_Value :        Boolean;
-      Ctx           : in out Context;
       B             :    out Binding;
       Descr         :        String);
    --  Initialize a global variable from the counterexample value, from the
    --  expression in the declaration (if Use_Expr is true), or by a default
    --  value (if Default_Value is true).
 
-   function Param_Scope
-     (E    :        Entity_Id;
-      Args :        List_Id;
-      Ctx  : in out Context)
-      return Scopes.Map;
+   function Param_Scope (E : Entity_Id; Args : List_Id) return Scopes.Map;
    --  Create a scope of parameters for a call from the associations Args
 
    procedure Copy_Out_Parameters
-     (E    : Entity_Id;
-      Args : List_Id;
-      Ctx  : in out Context;
+     (E    :        Entity_Id;
+      Args :        List_Id;
       Sc   : in out Scopes.Map);
    --  Copy scalar values of out and in_out parameters from the parameter scope
    --  Sc to the environment.
@@ -651,6 +664,15 @@ package body SPARK_RAC is
         (GNAT.Traceback.Symbolic.Symbolic_Traceback (Trace (1 .. Length)));
    end Call_Stack;
 
+   ---------------------
+   -- Character_Value --
+   ---------------------
+
+   function Character_Value (C : Character) return Value is
+     (Enum_Value
+        (Make_Character_Literal
+             (No_Location, Name_Find, UI_From_Int (Character'Pos (C)))));
+
    --------------------------
    -- Check_Supported_Type --
    --------------------------
@@ -676,12 +698,9 @@ package body SPARK_RAC is
          RAC_Unsupported ("Floating point type", Ty);
       end if;
       if Ty in Array_Kind_Id
-        and then not Is_String_Type (Ty) --  string has no first index
-        and then
-          (No (First_Index (Ty))
-           or else Present (Next_Index (First_Index (Ty))))
+        and then Number_Dimensions (Ty) > 1
       then
-         RAC_Unsupported ("Array type with not one index", Ty);
+         RAC_Unsupported ("Multidimensional array type", Ty);
       end if;
    end Check_Supported_Type;
 
@@ -731,14 +750,13 @@ package body SPARK_RAC is
    ----------------
 
    procedure Check_List
-     (L   :        Node_Lists.List;
-      Ctx : in out Context;
-      Msg :        String;
-      K   :        VC_Kind)
+     (L   : Node_Lists.List;
+      Msg : String;
+      K   : VC_Kind)
    is
    begin
       for N of L loop
-         Check_Node (N, Ctx, Msg, K);
+         Check_Node (N, Msg, K);
       end loop;
    end Check_List;
 
@@ -747,15 +765,14 @@ package body SPARK_RAC is
    ----------------
 
    procedure Check_Node
-     (N    :        N_Subexpr_Id;
-      Ctx  : in out Context;
-      Desc :        String;
-      K    :        VC_Kind)
+     (N    : N_Subexpr_Id;
+      Desc : String;
+      K    : VC_Kind)
    is
       V : Value;
    begin
       RAC_Trace ("check node " & Node_Kind'Image (Nkind (N)));
-      V := RAC_Expr (N, Ctx);
+      V := RAC_Expr (N);
 
       if Value_Boolean (V) then
          RAC_Info (Capitalize (Desc), "is OK", N);
@@ -799,7 +816,7 @@ package body SPARK_RAC is
          when Ty_Integer =>
             Integer_Value (V.Integer_Content),
          when Ty_String  =>
-            String_Value (V.String_Content),
+            String_Value (V.String_First, V.String_Content),
          when Ty_Enum    =>
             Enum_Value (V.Enum_Entity));
 
@@ -807,9 +824,8 @@ package body SPARK_RAC is
    -- Copy_Out_Parameters --
    -------------------------
    procedure Copy_Out_Parameters
-     (E    : Entity_Id;
-      Args : List_Id;
-      Ctx  : in out Context;
+     (E    :        Entity_Id;
+      Args :        List_Id;
       Sc   : in out Scopes.Map)
    is
       Par : Entity_Id := First_Formal (E);
@@ -821,7 +837,7 @@ package body SPARK_RAC is
            Is_Scalar_Type (Etype (Par)) and then
            Ekind (Par) in E_In_Out_Parameter | E_Out_Parameter
          then
-            RAC_Expr_LHS (Arg, Ctx).all := Sc (Par).Val.all;
+            RAC_Expr_LHS (Arg).all := Sc (Par).Val.all;
          end if;
          Next_Formal (Par);
          Next (Arg);
@@ -833,7 +849,8 @@ package body SPARK_RAC is
    -- Default_Value --
    -------------------
 
-   function Default_Value (Ty : Node_Id) return Value is
+   function Default_Value
+     (Ty : Node_Id; Check : Boolean := True) return Value is
    begin
 
       --  ??? Use Default_Value or Default_Component_Value of Ty when this is
@@ -847,7 +864,7 @@ package body SPARK_RAC is
          begin
             Get_Integer_Type_Bounds (Ty, Fst, Lst);
             I := (if In_Range (Zero, Fst, Lst) then Zero else Fst);
-            return Integer_Value (I, Ty, Empty);
+            return Integer_Value (I, Ty, Empty, Check => Check);
          end;
 
       elsif Is_Character_Type (Ty) then
@@ -867,6 +884,9 @@ package body SPARK_RAC is
             Other             : Value_Access;
          begin
             Get_Array_Info (Ty, Index_Ty, Comp_Ty, Fst, Lst);
+            if not Is_Constrained (Ty) then
+               Lst := Fst;
+            end if;
             Other := new Value'(Default_Value (Comp_Ty));
             return Array_Value (Fst, Lst, Values_Map.Empty, Other);
          end;
@@ -883,8 +903,8 @@ package body SPARK_RAC is
             return Record_Value (F, Ty);
          end;
 
-      elsif Is_String_Type (Ty) then
-         return String_Value ("");
+      elsif Is_Standard_String_Type (Ty) then
+         return String_Value (1, "");
 
       elsif Is_Private_Type (Ty) then
          return Default_Value (Full_View (Ty));
@@ -954,10 +974,7 @@ package body SPARK_RAC is
    -- Find_Binding --
    ------------------
 
-   function Find_Binding
-     (E   :        N_Entity_Id;
-      Ctx : in out Context)
-      return Binding
+   function Find_Binding (E : N_Entity_Id) return Binding
    is
       C : Scopes.Cursor;
       B : Binding;
@@ -971,13 +988,14 @@ package body SPARK_RAC is
       end loop;
 
       --  E must be a global constant without variable input (otherwise it
-      --  would have been initialized in Init_Global).
+      --  would have been initialized in Init_Global_Scope).
+      --  ??? Fails for O429-003__aliasing/alias.ads:20
       pragma Assert (if Ekind (E) = E_Constant
                      and then not Is_Access_Variable (Etype (E))
                      then not Has_Variable_Input (E));
 
       --  Lazily initialize globals that were not initialized by Global_Scope
-      Init_Global (Ctx.Env (Ctx.Env.Last), E, True, False, Ctx, B,
+      Init_Global (Ctx.Env (Ctx.Env.Last), E, True, False, B,
                    "constant without variable input");
       return B;
    end Find_Binding;
@@ -1037,6 +1055,26 @@ package body SPARK_RAC is
       end if;
    end Get_Array_Info;
 
+   ----------------------
+   -- Find_Cntexmp_Elt --
+   ----------------------
+
+   function Find_Cntexmp_Elt
+     (Name : String;
+      Elts : Cntexample_Elt_Lists.List)
+      return Cntexample_Elt_Opt
+   is
+   begin
+      for Elt of Elts loop
+         if Name = Elt.Name then
+            return
+              (Cntexample_Elt_Present => True,
+               Cntexample_Elt_Content => Elt);
+         end if;
+      end loop;
+      return (Cntexample_Elt_Present => False);
+   end Find_Cntexmp_Elt;
+
    -----------------------
    -- Get_Cntexmp_Value --
    -----------------------
@@ -1051,6 +1089,8 @@ package body SPARK_RAC is
         Integer (Get_Physical_Line_Number (Sloc (N)));
       Files_C  : constant Cntexample_File_Maps.Cursor :=
         Cntexmp.Find (Filename);
+      Name     : constant String := Trim (Node_Id'Image (N), Ada.Strings.Left);
+      Elt      : Cntexample_Elt_Opt;
    begin
       if not Cntexample_File_Maps.Has_Element (Files_C) then
          return No_Value;
@@ -1064,19 +1104,16 @@ package body SPARK_RAC is
          if not Cntexample_Line_Maps.Has_Element (Lines_C) then
             return No_Value;
          end if;
-
-         declare
-            Elts : Cntexample_Elt_Lists.List renames
-              Lines.Other_Lines (Lines_C);
-         begin
-            for Elt of Elts loop
-               if Trim (Node_Id'Image (N), Ada.Strings.Left) = Elt.Name then
-                  return Some_Value
-                    (Import (Elt.Value.all, Safe_Retysp (Etype (N)), N));
-               end if;
-            end loop;
+         Elt := Find_Cntexmp_Elt (Name, Lines.Other_Lines (Lines_C));
+         if Elt.Cntexample_Elt_Present then
+            return Some_Value
+              (Import
+                 (Elt.Cntexample_Elt_Content.Value.all,
+                  Safe_Retysp (Etype (N)), N,
+                  Name, Lines.Other_Lines (Lines_C)));
+         else
             return No_Value;
-         end;
+         end if;
       end;
    end Get_Cntexmp_Value;
 
@@ -1086,27 +1123,23 @@ package body SPARK_RAC is
 
    procedure Get_Bounds (N : Node_Id; Low, High : out Big_Integer) is
 
-      procedure To_Big_Integer (N : Node_Id; I : out Big_Integer);
+      function To_Big_Integer (N : Node_Id) return Big_Integer;
 
-      --------------------
-      -- To_Big_Integer --
-      --------------------
-
-      procedure To_Big_Integer (N : Node_Id; I : out Big_Integer) is
+      function To_Big_Integer (N : Node_Id) return Big_Integer is
       begin
-         --  ??? TODO Use RAC_Expr instead to evaluate N, convert to function
          if SPARK_Atree.Compile_Time_Known_Value (N) then
-            I := From_Universal_Image (UI_Image (SPARK_Atree.Expr_Value (N)));
+            return
+              From_Universal_Image (UI_Image (SPARK_Atree.Expr_Value (N)));
          else
-            RAC_Incomplete ("Get_Bounds: unknown during compile time");
+            return Value_Integer (RAC_Expr (N));
          end if;
       end To_Big_Integer;
 
    --  Start of processing for Get_Bounds
 
    begin
-      To_Big_Integer (Low_Bound (N), Low);
-      To_Big_Integer (High_Bound (N), High);
+      Low := To_Big_Integer (Low_Bound (N));
+      High := To_Big_Integer (High_Bound (N));
    end Get_Bounds;
 
    ------------------------
@@ -1178,23 +1211,21 @@ package body SPARK_RAC is
    ---------------
 
    function Get_Value
-     (N           :        Node_Id;
-      Ex          :        Node_Id;
-      Use_Default :        Boolean;
-      Ctx         : in out Context;
-      Origin      :    out Value_Origin)
+     (N           :     Node_Id;
+      Ex          :     Node_Id;
+      Use_Default :     Boolean;
+      Origin      : out Value_Origin)
       return Value
    is
       OV  : Opt_Value;
       Res : Value;
    begin
       OV := Get_Cntexmp_Value (N, Ctx.Cntexmp);
-
       if OV.Present then
          Res := OV.Content;
          Origin := From_Counterexample;
       elsif Present (Ex) then
-         Res := RAC_Expr (Ex, Ctx);
+         Res := RAC_Expr (Ex);
          Origin := From_Expr;
       elsif Use_Default then
          Res := Default_Value (Etype (N));
@@ -1217,9 +1248,11 @@ package body SPARK_RAC is
    ------------
 
    function Import
-     (V  : Cntexmp_Value;
-      Ty : Entity_Id;
-      N  : Node_Id)
+     (V    : Cntexmp_Value;
+      Ty   : Entity_Id;
+      N    : Node_Id;
+      Name : String := "";
+      Elts : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty)
       return Value
    is
       function Field_Value
@@ -1321,22 +1354,52 @@ package body SPARK_RAC is
             return Record_Value (F, Ty);
          end;
 
-      elsif Is_String_Type (Ty) then
-         RAC_Unsupported ("Import of string values", N);
-
       elsif Is_Array_Type (Ty) then
-
          if V.T /= Cnt_Array then
             Import_Error ("not array value");
          end if;
 
          declare
-            Index_Ty, Comp_Ty : Entity_Id;
-            Values            : Values_Map.Map := Values_Map.Empty;
-            Other             : Value_Access;
-            Fst, Lst          : Big_Integer;
+            function Find_Bound
+              (Name : String; Index_Ty : Entity_Id) return Big_Integer;
+
+            ----------------
+            -- Find_Bound --
+            ----------------
+
+            function Find_Bound
+              (Name : String; Index_Ty : Entity_Id) return Big_Integer
+            is
+               Elt : constant Cntexample_Elt_Opt :=
+                 Find_Cntexmp_Elt (Name, Elts);
+            begin
+               if Elt.Cntexample_Elt_Present then
+                  return Value_Integer
+                    (Import
+                       (Elt.Cntexample_Elt_Content.Value.all,
+                        Index_Ty, Empty));
+               else
+                  RAC_Stuck
+                    ("Missing bound in unconstrained array counterexample");
+               end if;
+            end Find_Bound;
+
+            Index_Ty, Comp_Ty  : Entity_Id;
+            Values             : Values_Map.Map := Values_Map.Empty;
+            Other              : Value_Access;
+            Type_Fst, Type_Lst : Big_Integer;
+            Fst, Lst           : Big_Integer;
          begin
-            Get_Array_Info (Ty, Index_Ty, Comp_Ty, Fst, Lst);
+            Get_Array_Info (Ty, Index_Ty, Comp_Ty, Type_Fst, Type_Lst);
+            if Is_Constrained (Ty) then
+               Fst := Type_Fst;
+               Lst := Type_Lst;
+            else
+               --  No nested unconstrained arrays
+               pragma Assert (not (Name = "" and then Elts.Is_Empty));
+               Fst := Find_Bound (Name & "'First", Index_Ty);
+               Lst := Find_Bound (Name & "'Last", Index_Ty);
+            end if;
             pragma Assert (Is_Integer_Type (Index_Ty)
                             or else Is_Enumeration_Type (Index_Ty));
 
@@ -1361,8 +1424,37 @@ package body SPARK_RAC is
                end;
             end loop;
 
-            Other := new Value'(Import (V.Array_Others.all, Comp_Ty, N));
-            return Array_Value (Fst, Lst, Values, Other);
+            Other :=
+              new Value'(Import (V.Array_Others.all, Comp_Ty, N));
+
+            if Is_Standard_String_Type (Ty) then
+               if Lst - Fst > 10_000 then
+                  RAC_Incomplete ("String too long");
+               --  ??? Next test should not be needed, as counterexample value
+               --  should already be valid in its type due to prior filtering.
+               elsif Fst <= Lst and then Fst <= 0 then
+                  RAC_Stuck
+                    ("Non-empty string starting at non-positive index");
+               else
+                  declare
+                     S       : String (To_Integer (Fst) .. To_Integer (Lst));
+                     Default : constant Character :=
+                       Value_Character (Other.all);
+                  begin
+                     for K in S'Range loop
+                        if Values.Contains (K) then
+                           S (K) := Value_Character (Values (K).all);
+                        else
+                           S (K) := Default;
+                        end if;
+                     end loop;
+
+                     return String_Value (Fst, S);
+                  end;
+               end if;
+            else
+               return Array_Value (Fst, Lst, Values, Other);
+            end if;
          end;
 
       else
@@ -1387,7 +1479,6 @@ package body SPARK_RAC is
       N             :        Node_Id;
       Use_Expr      :        Boolean;
       Default_Value :        Boolean;
-      Ctx           : in out Context;
       B             :    out Binding;
       Descr         :        String)
    is
@@ -1396,7 +1487,7 @@ package body SPARK_RAC is
         (if Use_Expr then Expression (Parent (N)) else Empty);
    begin
       B :=
-        (Val    => new Value'(Get_Value (N, Expr, Default_Value, Ctx, Origin)),
+        (Val    => new Value'(Get_Value (N, Expr, Default_Value, Origin)),
          others => <>);
       Scope.Insert (N, B);
       RAC_Trace ("Initialize global " & Descr & " "
@@ -1409,9 +1500,10 @@ package body SPARK_RAC is
    -------------------
 
    function Integer_Value
-     (I  : Big_Integer;
-      Ty : Entity_Id;
-      N  : Node_Id)
+     (I     : Big_Integer;
+      Ty    : Entity_Id;
+      N     : Node_Id;
+      Check : Boolean := True)
       return Value
    is
       Res : Big_Integer := I;
@@ -1423,7 +1515,7 @@ package body SPARK_RAC is
             RAC_Unsupported ("Modular integer zero", Ty);
          end if;
          Res := Res mod From_String (UI_Image (Modulus (Ty)));
-      else
+      elsif Check then
          Check_Integer (I, Ty, N);
       end if;
       return (Ty => Ty_Integer, Integer_Content => Res);
@@ -1434,19 +1526,15 @@ package body SPARK_RAC is
    -----------------------------
 
    procedure Iterate_Loop_Param_Spec
-     (Param_Spec :        Node_Id;
-      Ctx        : in out Context;
-      Iteration  : access procedure (Ctx : in out Context))
+     (Param_Spec : Node_Id; Iteration : access procedure)
    is
       Def          : constant Node_Id :=
         Discrete_Subtype_Definition (Param_Spec);
       Actual_Range : constant Node_Id := Get_Range (Def);
       Low_Bnd      : constant Node_Id := Low_Bound (Actual_Range);
-      Low          : constant Value := RAC_Expr (Low_Bnd, Ctx);
-      High         : constant Value :=
-        RAC_Expr (High_Bound (Actual_Range), Ctx);
-      Id           : constant Entity_Id :=
-        Defining_Identifier (Param_Spec);
+      Low          : constant Value := RAC_Expr (Low_Bnd);
+      High         : constant Value := RAC_Expr (High_Bound (Actual_Range));
+      Id           : constant Entity_Id := Defining_Identifier (Param_Spec);
       Curr, Stop   : Big_Integer;
       Step         : Big_Integer := To_Big_Integer (1);
       Test         : -- Test for Curr and Stop during iteration
@@ -1491,7 +1579,7 @@ package body SPARK_RAC is
                  (UI_From_String (To_String (Curr)), Etype (Low_Bnd));
             end if;
             Set_Value (Ctx.Env (Ctx.Env.First), Id, new Value'(Val));
-            Iteration (Ctx);
+            Iteration.all;
             Curr := Curr + Step;
          end loop;
       exception
@@ -1506,10 +1594,7 @@ package body SPARK_RAC is
    -----------------
 
    function Param_Scope
-     (E    :        Entity_Id;
-      Args :        List_Id;
-      Ctx  : in out Context)
-      return Scopes.Map
+     (E : Entity_Id; Args : List_Id) return Scopes.Map
    is
       Res : Scopes.Map := Scopes.Empty;
       Arg : Node_Id := First (Args);
@@ -1536,13 +1621,13 @@ package body SPARK_RAC is
          --      could be removed
 
          if Is_Scalar_Type (Etype (Arg)) then
-            Val := new Value'(Copy (RAC_Expr (Arg, Ctx)));
+            Val := new Value'(Copy (RAC_Expr (Arg)));
          else
             case Formal_Kind (Ekind (Par)) is
             when E_In_Parameter =>
-               Val := new Value'(Copy (RAC_Expr (Arg, Ctx)));
+               Val := new Value'(Copy (RAC_Expr (Arg)));
             when E_In_Out_Parameter | E_Out_Parameter =>
-               Val := RAC_Expr_LHS (Arg, Ctx);
+               Val := RAC_Expr_LHS (Arg);
             end case;
          end if;
 
@@ -1572,19 +1657,18 @@ package body SPARK_RAC is
    --------------
 
    function RAC_Call
-     (N       :        Node_Id;
-      E       :        Entity_Id;
-      Args    :        List_Id;
-      Ctx     : in out Context;
-      Is_Main :        Boolean := False)
+     (N       : Node_Id;
+      E       : Entity_Id;
+      Args    : List_Id;
+      Is_Main : Boolean := False)
       return Opt_Value
    is
       function Cntexmp_Param_Scope return Scopes.Map;
       --  Create a scope of parameters from the counterexample
 
-      procedure Rem_Stack_Height_Push (Ctx : in out Context);
+      procedure Rem_Stack_Height_Push;
 
-      procedure Rem_Stack_Height_Pop (Ctx : in out Context);
+      procedure Rem_Stack_Height_Pop;
 
       -------------------------
       -- Initial_Param_Scope --
@@ -1599,7 +1683,7 @@ package body SPARK_RAC is
       begin
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
-            V := Get_Value (Param, Empty, Is_Out, Ctx, Origin);
+            V := Get_Value (Param, Empty, Is_Out, Origin);
             Res.Insert (Param, (Val => new Value'(V), others => <>));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "
@@ -1613,7 +1697,7 @@ package body SPARK_RAC is
       -- Rem_Stack_Height_Decrease --
       -------------------------------
 
-      procedure Rem_Stack_Height_Push (Ctx : in out Context) is
+      procedure Rem_Stack_Height_Push is
       begin
          if Ctx.Rem_Stack_Height > 0 then
             Ctx.Rem_Stack_Height := Ctx.Rem_Stack_Height - 1;
@@ -1627,7 +1711,7 @@ package body SPARK_RAC is
       -- Rem_Stack_Height_Increase --
       -------------------------------
 
-      procedure Rem_Stack_Height_Pop (Ctx : in out Context) is
+      procedure Rem_Stack_Height_Pop is
       begin
          if Ctx.Rem_Stack_Height > 0 then
             Ctx.Rem_Stack_Height := Ctx.Rem_Stack_Height + 1;
@@ -1649,19 +1733,18 @@ package body SPARK_RAC is
    --  Start of processing for RAC_Call
 
    begin
-      RAC_Trace ("call " & Get_Name_String (Chars (E))
-                 & " - " & Integer'Image (Ctx.Rem_Stack_Height));
-      Rem_Stack_Height_Push (Ctx);
+      RAC_Trace ("call " & Get_Name_String (Chars (E)));
+      Rem_Stack_Height_Push;
 
       if Is_Main then
          Sc := Cntexmp_Param_Scope;
       else
-         Sc := Param_Scope (E, Args, Ctx);
+         Sc := Param_Scope (E, Args);
       end if;
 
       begin
          Res := RAC_Call_Builtin (E, Sc, Ctx.Do_Sideeffects);
-         Rem_Stack_Height_Pop (Ctx);
+         Rem_Stack_Height_Pop;
          return Res;
       exception
          when No_Builtin =>
@@ -1685,7 +1768,7 @@ package body SPARK_RAC is
          if N not in N_Has_Entity_Id or else No (Entity (N)) then
             RAC_Unsupported ("old value not entity", N);
          end if;
-         B := Find_Binding (Entity (N), Ctx);
+         B := Find_Binding (Entity (N));
          if not B.Attrs.Contains (Snames.Name_Old) then
             B.Attrs.Insert (Snames.Name_Old, new Value'(Copy (B.Val.all)));
          end if;
@@ -1694,7 +1777,7 @@ package body SPARK_RAC is
 
       --  Check preconditions and get stuck in main functions
       begin
-         Check_List (Pres, Ctx, "Precondition", VC_Precondition);
+         Check_List (Pres, "Precondition", VC_Precondition);
       exception
          when Exn_RAC_Failure =>
             if
@@ -1716,11 +1799,11 @@ package body SPARK_RAC is
             end if;
       end;
 
-      RAC_Decls (Declarations (Bodie), Ctx);
+      RAC_Decls (Declarations (Bodie));
 
       --  Execute subprogram body
       begin
-         RAC_Node (Handled_Statement_Sequence (Bodie), Ctx);
+         RAC_Node (Handled_Statement_Sequence (Bodie));
          RAC_Trace ("call terminated");
          Res := No_Value;
       exception
@@ -1740,7 +1823,7 @@ package body SPARK_RAC is
             Ctx.Env (Ctx.Env.First).Insert (E, Bind, C, B);
          end if;
 
-         Check_List (Posts, Ctx, "Postcondition", VC_Postcondition);
+         Check_List (Posts, "Postcondition", VC_Postcondition);
 
          --  Cleanup
          if Res.Present then
@@ -1750,19 +1833,19 @@ package body SPARK_RAC is
 
       --  Remove old values from bindings
       for N of Old_Nodes loop
-         B := Find_Binding (Entity (N), Ctx);
+         B := Find_Binding (Entity (N));
          B.Attrs.Exclude (Snames.Name_Old);
       end loop;
 
       Sc := Ctx.Env (Ctx.Env.First);
       Ctx.Env.Delete_First;
       if not Is_Main then
-         Copy_Out_Parameters (E, Args, Ctx, Sc);
+         Copy_Out_Parameters (E, Args, Sc);
       end if;
 
       RAC_Trace ("call result of " & Get_Name_String (Chars (E)) &
                    ": " & To_String (Res));
-      Rem_Stack_Height_Pop (Ctx);
+      Rem_Stack_Height_Pop;
       return Res;
    end RAC_Call;
 
@@ -1799,7 +1882,7 @@ package body SPARK_RAC is
    -- RAC_Decl --
    --------------
 
-   procedure RAC_Decl (Decl : Node_Id; Ctx : in out Context) is
+   procedure RAC_Decl (Decl : Node_Id) is
    begin
       case Nkind (Decl) is
          when N_Object_Declaration =>
@@ -1809,7 +1892,7 @@ package body SPARK_RAC is
                Ty      : Entity_Id;
             begin
                if Present (Expression (Decl)) then
-                  V := RAC_Expr (Expression (Decl), Ctx);
+                  V := RAC_Expr (Expression (Decl));
                else
                   Obj_Def := Object_Definition (Decl);
                   if Nkind (Obj_Def) not in N_Has_Entity then
@@ -1818,7 +1901,8 @@ package body SPARK_RAC is
                   end if;
                   Ty := Safe_Retysp (Etype (Obj_Def));
                   Check_Supported_Type (Ty);
-                  V := Default_Value (Ty);
+                  --  ??? Don't check range of integer values
+                  V := Default_Value (Ty, Check => False);
                end if;
                Set_Value
                  (Ctx.Env (Ctx.Env.First),
@@ -1847,11 +1931,11 @@ package body SPARK_RAC is
    -- RAC_Decls --
    ---------------
 
-   procedure RAC_Decls (Decls : List_Id; Ctx : in out Context) is
+   procedure RAC_Decls (Decls : List_Id) is
       Decl : Node_Id := First (Decls);
    begin
       while Present (Decl) loop
-         RAC_Decl (Decl, Ctx);
+         RAC_Decl (Decl);
          Next (Decl);
       end loop;
    end RAC_Decls;
@@ -1868,19 +1952,30 @@ package body SPARK_RAC is
       Stack_Height   : Integer := -1)
       return Result
    is
-      function Global_Scope (Ctx : in out Context) return Scopes.Map;
-      --  Prepare a scope with global variables with values from the first
-      --  successful strategy:
-      --  1) retrieve value from counterexample
-      --  2) evaluate expression (for constant globals)
-      --  3) use type default value (for write-only globals)
+      function Empty_Global_Env return Environments.Vector;
+      --  Create an initial environment with only an empty global scope
 
-      ------------------
-      -- Global_Scope --
-      ------------------
+      procedure Init_Global_Scope;
+      --  Initializes the global scope (Ctx.Env (Ctx.Env.First)) with global
+      --  variables with values from Get_Value
 
-      function Global_Scope (Ctx : in out Context) return Scopes.Map is
-         Res           : Scopes.Map := Scopes.Empty;
+      ----------------------
+      -- Empty_Global_Env --
+      ----------------------
+
+      function Empty_Global_Env return Environments.Vector
+      is
+         Env : Environments.Vector := Environments.Empty;
+      begin
+         Env.Append (Scopes.Empty);
+         return Env;
+      end Empty_Global_Env;
+
+      -----------------------
+      -- Init_Global_Scope --
+      -----------------------
+
+      procedure Init_Global_Scope is
          Reads, Writes : Flow_Id_Sets.Set;
          Use_Expr      : Boolean;
          B             : Binding;
@@ -1891,7 +1986,9 @@ package body SPARK_RAC is
          for Id of Reads loop
             if Id.Kind = Direct_Mapping then
                Use_Expr := Ekind (Id.Node) = E_Constant;
-               Init_Global (Res, Id.Node, Use_Expr, False, Ctx, B, "read");
+               Init_Global
+                 (Ctx.Env (Ctx.Env.First),
+                  Id.Node, Use_Expr, False, B, "read");
             end if;
          end loop;
 
@@ -1900,36 +1997,32 @@ package body SPARK_RAC is
               Id.Kind = Direct_Mapping
               and then not Reads.Contains (Id)
             then
-               Init_Global (Res, Id.Node, False, True, Ctx, B, "write");
+               Init_Global
+                 (Ctx.Env (Ctx.Env.First),
+                  Id.Node, False, True, B, "write");
             end if;
          end loop;
-
-         return Res;
-      end Global_Scope;
-
-      --  Local variables
-
-      Ctx : Context :=
-        (Env              => Environments.Empty,
-         Cntexmp          => Cntexmp,
-         Fuel             => Fuel,
-         Rem_Stack_Height => Stack_Height,
-         Do_Sideeffects   => Do_Sideeffects);
+      end Init_Global_Scope;
 
    --  Start of processing for RAC_Execute
 
    begin
+      Ctx :=
+        (Env              => Empty_Global_Env,
+         Cntexmp          => Cntexmp,
+         Fuel             => Fuel,
+         Rem_Stack_Height => Stack_Height,
+         Do_Sideeffects   => Do_Sideeffects);
       RAC_Trace ("cntexmp: " & Write (To_JSON (Cntexmp), False));
       RAC_Trace ("entry: " & Full_Name (E));
       case Ekind (E) is
          when E_Function
             | E_Procedure
          =>
-            Ctx.Env.Prepend (Global_Scope (Ctx));
+            Init_Global_Scope;
             return
               (Res_Kind  => Res_Normal,
-               Res_Value =>
-                  RAC_Call (Empty, E, No_List, Ctx, Is_Main => True));
+               Res_Value => RAC_Call (Empty, E, No_List, Is_Main => True));
          when E_Package
             | E_Package_Body
             | E_Task_Type
@@ -1953,10 +2046,7 @@ package body SPARK_RAC is
    --------------
 
    function RAC_Expr
-     (N   :        N_Subexpr_Id;
-      Ctx : in out Context;
-      Ty0 :        Entity_Id := Empty)
-      return Value
+     (N : N_Subexpr_Id; Ty0 : Entity_Id := Empty) return Value
    is
       Ty : constant Entity_Id :=
              (if Present (Ty0) then Ty0 else Safe_Retysp (Etype (N)));
@@ -1991,7 +2081,7 @@ package body SPARK_RAC is
       begin
 
          if Nkind (N) = N_Delta_Aggregate then
-            Res := RAC_Expr (Expression (N), Ctx);
+            Res := RAC_Expr (Expression (N));
          else
             if Is_Record_Type (Ty) then
                Res := Record_Value (Fields.Empty, Ty);
@@ -2009,7 +2099,7 @@ package body SPARK_RAC is
             end if;
 
             while Present (As) loop
-               V := RAC_Expr (Expression (As), Ctx);
+               V := RAC_Expr (Expression (As));
                Ch := First (Choices (As));
                while Present (Ch) loop
                   if Nkind (Ch) = N_Others_Choice then
@@ -2040,15 +2130,15 @@ package body SPARK_RAC is
 
                declare
                   Ix  : Big_Integer := Value_Enum_Integer
-                    (RAC_Expr (Low_Bound (Aggregate_Bounds (N)), Ctx));
+                    (RAC_Expr (Low_Bound (Aggregate_Bounds (N))));
                   Hig : constant Big_Integer := Value_Enum_Integer
-                    (RAC_Expr (High_Bound (Aggregate_Bounds (N)), Ctx));
+                    (RAC_Expr (High_Bound (Aggregate_Bounds (N))));
                   Ex  : Node_Id := First (Expressions (N));
                begin
                   while Present (Ex) loop
                      Res.Array_Values.Include
                        (To_Integer (Ix),
-                        new Value'(Copy (RAC_Expr (Ex, Ctx))));
+                        new Value'(Copy (RAC_Expr (Ex))));
                      Ex := Next (Ex);
                      Ix := Ix + 1;
                   end loop;
@@ -2070,15 +2160,15 @@ package body SPARK_RAC is
                        ("iterated component with box present", N);
                   end if;
 
-                  V := RAC_Expr (Expression (As), Ctx);
+                  V := RAC_Expr (Expression (As));
                   Ch := First (Choices (As));
                   while Present (Ch) loop
                      if Nkind (Ch) = N_Range then
                         declare
                            Cur : Big_Integer := Value_Enum_Integer
-                             (RAC_Expr (Low_Bound (Ch), Ctx));
+                             (RAC_Expr (Low_Bound (Ch)));
                            Hig : constant Big_Integer := Value_Enum_Integer
-                             (RAC_Expr (High_Bound (Ch), Ctx));
+                             (RAC_Expr (High_Bound (Ch)));
                         begin
                            while Cur <= Hig loop
                               Res.Array_Values.Include
@@ -2091,7 +2181,7 @@ package body SPARK_RAC is
                            when N_Subexpr =>
                               Res.Array_Values.Include
                                 (To_Integer (Value_Enum_Integer
-                                 (RAC_Expr (Ch, Ctx))),
+                                 (RAC_Expr (Ch))),
                                  new Value'(Copy (V)));
                            when N_Others_Choice =>
                               Res.Array_Others := new Value'(Copy (V));
@@ -2121,7 +2211,7 @@ package body SPARK_RAC is
                --  E'Old
                declare
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
-                  B : constant Binding := Find_Binding (E, Ctx);
+                  B : constant Binding := Find_Binding (E);
                begin
                   return B.Attrs (Snames.Name_Old).all;
                end;
@@ -2130,7 +2220,7 @@ package body SPARK_RAC is
                --  E'Result
                declare
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
-                  B : constant Binding := Find_Binding (E, Ctx);
+                  B : constant Binding := Find_Binding (E);
                begin
                   return B.Attrs (Snames.Name_Result).all;
                end;
@@ -2138,8 +2228,42 @@ package body SPARK_RAC is
             when Snames.Name_First
                | Snames.Name_Last
             =>
+               if Is_Array_Type (Etype (Prefix (N))) then
+                  declare
+                     V : constant Value := RAC_Expr (Prefix (N));
+                  begin
+                     if Is_Standard_String_Type (Etype (Prefix (N))) then
+                        case V.Ty is
+                           when Ty_String =>
+                              if Attribute_Name (N) = Snames.Name_First then
+                                 return Integer_Value (V.String_First);
+                              else
+                                 return Integer_Value
+                                   (V.String_First - 1 +
+                                      To_Big_Integer
+                                        (Length (V.String_Content)));
+                              end if;
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     else
+                        case V.Ty is
+                           when Ty_Array =>
+                              if Attribute_Name (N) = Snames.Name_First then
+                                 return Integer_Value (V.Array_First);
+                              else
+                                 return Integer_Value (V.Array_Last);
+                              end if;
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end if;
+                  end;
+
                --  T'First, T'Last
-               if not Is_Integer_Type (Etype (N)) then
+               --  ??? Do we get such static values which are not folded by the
+               --  frontend, for a constrained integer type?
+               elsif not Is_Integer_Type (Etype (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference first/last not integer", N);
                end if;
@@ -2171,9 +2295,9 @@ package body SPARK_RAC is
                declare
                   Ex : constant Node_Id := First (Expressions (N));
                   I1 : constant Big_Integer :=
-                         RAC_Expr (Ex, Ctx).Integer_Content;
+                         RAC_Expr (Ex).Integer_Content;
                   I2 : constant Big_Integer :=
-                         RAC_Expr (Next (Ex), Ctx).Integer_Content;
+                         RAC_Expr (Next (Ex)).Integer_Content;
                begin
                   case Attribute_Name (N) is
                   when Snames.Name_Min =>
@@ -2196,7 +2320,7 @@ package body SPARK_RAC is
 
                declare
                   Ex  : constant Node_Id := First (Expressions (N));
-                  E   : constant Entity_Id := RAC_Expr (Ex, Ctx).Enum_Entity;
+                  E   : constant Entity_Id := RAC_Expr (Ex).Enum_Entity;
                   Ty  : constant Entity_Id := Etype (N);
                   Res : Entity_Id := Empty; -- the resulting enum literal
                begin
@@ -2232,7 +2356,7 @@ package body SPARK_RAC is
                   FC               : Fields.Cursor;
                   Record_Not_Array : constant Boolean := Is_Record_Type (Ty);
                   Prefix_Value     : constant Value :=
-                                       RAC_Expr (Prefix (N), Ctx);
+                                       RAC_Expr (Prefix (N));
                begin
                   pragma Assert (Record_Not_Array xor Is_Array_Type (Ty));
                   if Record_Not_Array then
@@ -2241,7 +2365,7 @@ package body SPARK_RAC is
                      while Present (Ex) loop
                         As := First (Component_Associations (Ex));
                         while Present (As) loop
-                           V := RAC_Expr (Expression (As), Ctx);
+                           V := RAC_Expr (Expression (As));
                            Ch := First (Choices (As));
 
                            if Nkind (Ch) /= N_Identifier then
@@ -2272,20 +2396,34 @@ package body SPARK_RAC is
                     ("RAC_Attribute_Reference 'Image without argument", N);
                end if;
                return String_Value
-                 (To_String (RAC_Expr (First (Expressions (N)), Ctx)));
+                 (1, To_String (RAC_Expr (First (Expressions (N)))));
 
             when Snames.Name_Length =>
                if not Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Length with argument", N);
                end if;
-               if not Is_String_Type (Etype (Prefix (N))) then
-                  RAC_Unsupported
-                    ("RAC_Attribute_Reference 'Length prefix not string", N);
-               end if;
-               return Integer_Value
-                 (To_Big_Integer
-                    (Value_String (RAC_Expr (Prefix (N), Ctx))'Length));
+               declare
+                  V : constant Value := RAC_Expr (Prefix (N));
+               begin
+                  if Is_Standard_String_Type (Etype (Prefix (N))) then
+                     return Integer_Value
+                       (To_Big_Integer
+                          (Value_String (RAC_Expr (Prefix (N)))'Length));
+                  elsif Is_Array_Type (Etype (Prefix (N))) then
+                     case V.Ty is
+                        when Ty_Array =>
+                           return Integer_Value
+                             (Max (0, 1 + V.Array_Last - V.Array_First));
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  else
+                     RAC_Unsupported
+                       ("RAC_Attribute_Reference 'Length prefix not string "
+                          & "not array", N);
+                  end if;
+               end;
 
             when others =>
                RAC_Unsupported
@@ -2299,8 +2437,8 @@ package body SPARK_RAC is
       -------------------
 
       function RAC_Binary_Op return Value is
-         Left  : constant Value := RAC_Expr (Left_Opnd (N), Ctx);
-         Right : constant Value := RAC_Expr (Right_Opnd (N), Ctx);
+         Left  : constant Value := RAC_Expr (Left_Opnd (N));
+         Right : constant Value := RAC_Expr (Right_Opnd (N));
       begin
          case N_Binary_Op (Nkind (N)) is
             when N_Op_Add =>
@@ -2383,7 +2521,8 @@ package body SPARK_RAC is
             when N_Op_Concat =>
                if Left.Ty = Ty_String and then Right.Ty = Ty_String then
                   return
-                    String_Value (Value_String (Left) & Value_String (Right));
+                    String_Value (Left.String_First,
+                                  Value_String (Left) & Value_String (Right));
                else
                   RAC_Unsupported ("RAC_Binary_Op concat non string", N);
                end if;
@@ -2402,10 +2541,10 @@ package body SPARK_RAC is
          Then_Expr : constant Node_Id := Next (Cond_Expr);
          Else_Expr : constant Node_Id := Next (Then_Expr);
       begin
-         if Value_Boolean (RAC_Expr (Cond_Expr, Ctx)) then
-            return RAC_Expr (Then_Expr, Ctx);
+         if Value_Boolean (RAC_Expr (Cond_Expr)) then
+            return RAC_Expr (Then_Expr);
          else
-            return RAC_Expr (Else_Expr, Ctx);
+            return RAC_Expr (Else_Expr);
          end if;
       end RAC_If_Expression;
 
@@ -2416,7 +2555,7 @@ package body SPARK_RAC is
       function RAC_In return Value is
          Left_Op  : constant Node_Id := Left_Opnd (N);
          Right_Op : constant Node_Id := Right_Opnd (N);
-         Left     : constant Value := RAC_Expr (Left_Op, Ctx);
+         Left     : constant Value := RAC_Expr (Left_Op);
          Fst, Lst, I : Big_Integer;
       begin
          if not Is_Integer_Type (Etype (Left_Op)) then
@@ -2432,8 +2571,8 @@ package body SPARK_RAC is
             when N_Entity =>
                Get_Integer_Type_Bounds (Entity (Right_Op), Fst, Lst);
             when N_Range =>
-               Fst := Value_Integer (RAC_Expr (Low_Bound (Right_Op), Ctx));
-               Lst := Value_Integer (RAC_Expr (High_Bound (Right_Op), Ctx));
+               Fst := Value_Integer (RAC_Expr (Low_Bound (Right_Op)));
+               Lst := Value_Integer (RAC_Expr (High_Bound (Right_Op)));
             when others =>
                RAC_Unsupported ("RAC_In right", Right_Op);
          end case;
@@ -2474,7 +2613,7 @@ package body SPARK_RAC is
       ------------------
 
       function RAC_Unary_Op return Value is
-         Right : constant Value := RAC_Expr (Right_Opnd (N), Ctx);
+         Right : constant Value := RAC_Expr (Right_Opnd (N));
       begin
          case N_Unary_Op (Nkind (N)) is
             when N_Op_Abs   =>
@@ -2519,7 +2658,7 @@ package body SPARK_RAC is
             Res := Enum_Value (N);
 
          when N_String_Literal =>
-            Res := String_Value (Stringt.To_String (Strval (N)));
+            Res := String_Value (1, Stringt.To_String (Strval (N)));
 
          when N_Identifier | N_Expanded_Name =>
             declare
@@ -2528,7 +2667,7 @@ package body SPARK_RAC is
                if Ekind (E) = E_Enumeration_Literal then
                   Res := Enum_Value (E);
                else
-                  Res := Find_Binding (E, Ctx).Val.all;
+                  Res := Find_Binding (E).Val.all;
                end if;
             end;
 
@@ -2544,16 +2683,16 @@ package body SPARK_RAC is
          when N_And_Then =>
             Res :=
               Boolean_Value
-                (Value_Boolean (RAC_Expr (Left_Opnd (N), Ctx))
+                (Value_Boolean (RAC_Expr (Left_Opnd (N)))
                  and then
-                 Value_Boolean (RAC_Expr (Right_Opnd (N), Ctx)));
+                 Value_Boolean (RAC_Expr (Right_Opnd (N))));
 
          when N_Or_Else =>
             Res :=
               Boolean_Value
-                (Value_Boolean (RAC_Expr (Left_Opnd (N), Ctx))
+                (Value_Boolean (RAC_Expr (Left_Opnd (N)))
                  or else
-                 Value_Boolean (RAC_Expr (Right_Opnd (N), Ctx)));
+                 Value_Boolean (RAC_Expr (Right_Opnd (N))));
 
          when N_Function_Call =>
             if Nkind (Name (N)) not in N_Identifier | N_Expanded_Name then
@@ -2561,7 +2700,7 @@ package body SPARK_RAC is
             end if;
 
             Res :=
-              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N), Ctx)
+              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N))
                 .Content;
 
          when N_In =>
@@ -2571,60 +2710,79 @@ package body SPARK_RAC is
             Res := RAC_If_Expression;
 
          when N_Qualified_Expression =>
-            Res := RAC_Expr (Expression (N), Ctx, Entity (Subtype_Mark (N)));
+            Res := RAC_Expr (Expression (N), Entity (Subtype_Mark (N)));
 
          when N_Type_Conversion =>
             if Is_Record_Type (Entity (Subtype_Mark (N))) then
                RAC_Unsupported ("Type conversion between record types", N);
             end if;
-            Res := RAC_Expr (Expression (N), Ctx, Entity (Subtype_Mark (N)));
+            Res := RAC_Expr (Expression (N), Entity (Subtype_Mark (N)));
 
          when N_Aggregate | N_Delta_Aggregate =>
             Res := RAC_Aggregate;
 
          when N_Selected_Component =>
             Res :=
-              RAC_Expr (Prefix (N), Ctx).Record_Fields
+              RAC_Expr (Prefix (N)).Record_Fields
                 (Entity (Selector_Name (N))).all;
 
          when N_Indexed_Component =>
             declare
-               A : constant Value := RAC_Expr (Prefix (N), Ctx);
+               A : constant Value := RAC_Expr (Prefix (N));
                E : constant Node_Id := First (Expressions (N));
-               V : constant Value := RAC_Expr (E, Ctx);
-               I : constant Big_Integer :=  Value_Enum_Integer (V);
-               C : constant Values_Map.Cursor :=
-                     A.Array_Values.Find (To_Integer (I));
+               V : constant Value := RAC_Expr (E);
+               I : constant Big_Integer := Value_Enum_Integer (V);
+
             begin
                if Present (Next (E)) then
                   RAC_Unsupported
-                    ("RAC_Expr indexed component with many indices", N);
+                    ("RAC_Expr multidimensional array access", N);
                end if;
 
-               if not (A.Array_First <= I and then I <= A.Array_Last) then
-                  --  ??? The index check VC is generated for the first expr
-                  RAC_Failure (E, VC_Index_Check);
-               end if;
+               if A.Ty = Ty_Array then
+                  declare
+                     C : constant Values_Map.Cursor :=
+                       A.Array_Values.Find (To_Integer (I));
+                  begin
+                     if I < A.Array_First or else A.Array_Last < I then
+                        --  ??? The index check VC is generated for the first
+                        --  expr
+                        RAC_Failure (E, VC_Index_Check);
+                     end if;
 
-               if Values_Map.Has_Element (C) then
-                  Res := A.Array_Values (C).all;
+                     if Values_Map.Has_Element (C) then
+                        Res := A.Array_Values (C).all;
+                     else
+                        Res := Copy (A.Array_Others.all);
+                     end if;
+                  end;
                else
-                  Res := Copy (A.Array_Others.all);
+                  if I < A.String_First
+                    or else A.String_First
+                      + To_Big_Integer (Length (A.String_Content)) <= I
+                  then
+                     RAC_Failure (E, VC_Index_Check);
+                  end if;
+
+                  Res := Character_Value
+                    (Element
+                       (A.String_Content,
+                        To_Integer (I - A.String_First + 1)));
                end if;
             end;
 
          when N_Quantified_Expression =>
             declare
                Break : exception;
-               procedure Iteration (Ctx : in out Context);
+               procedure Iteration;
 
                ---------------
                -- Iteration --
                ---------------
 
-               procedure Iteration (Ctx : in out Context) is
+               procedure Iteration is
                   B : constant Boolean :=
-                        Value_Boolean (RAC_Expr (Condition (N), Ctx));
+                        Value_Boolean (RAC_Expr (Condition (N)));
                begin
                   if All_Present (N) xor B then
                      raise Break;
@@ -2635,8 +2793,7 @@ package body SPARK_RAC is
                if Present (Loop_Parameter_Specification (N)) then
                   begin
                      Iterate_Loop_Param_Spec
-                       (Loop_Parameter_Specification (N),
-                        Ctx, Iteration'Access);
+                       (Loop_Parameter_Specification (N), Iteration'Access);
                      Res := Boolean_Value (All_Present (N));
                   exception
                      when Break =>
@@ -2663,42 +2820,41 @@ package body SPARK_RAC is
    -- RAC_Expr_LHS --
    ------------------
 
-   function RAC_Expr_LHS
-     (N   :        N_Subexpr_Id;
-      Ctx : in out Context)
-      return Value_Access
-   is
+   function RAC_Expr_LHS (N : N_Subexpr_Id) return Value_Access is
    begin
       RAC_Trace ("expr lhs " & Node_Kind'Image (Nkind (N)), N);
       case Nkind (N) is
-         when N_Identifier =>
-            return Find_Binding (SPARK_Atree.Entity (N), Ctx).Val;
+         when N_Identifier | N_Expanded_Name =>
+            return Find_Binding (SPARK_Atree.Entity (N)).Val;
 
          when N_Type_Conversion =>
-            return RAC_Expr_LHS (Expression (N), Ctx);
+            return RAC_Expr_LHS (Expression (N));
 
          when N_Selected_Component =>
             return
-              RAC_Expr_LHS (Prefix (N), Ctx).all.Record_Fields
+              RAC_Expr_LHS (Prefix (N)).all.Record_Fields
                 (Entity (Selector_Name (N)));
 
          when N_Indexed_Component =>
             declare
-               A : constant Value_Access := RAC_Expr_LHS (Prefix (N), Ctx);
+               A : constant Value_Access := RAC_Expr_LHS (Prefix (N));
                E : constant Node_Id := First (Expressions (N));
-               V : constant Value := RAC_Expr (E, Ctx);
+               V : constant Value := RAC_Expr (E);
                I : constant Big_Integer := Value_Enum_Integer (V);
                C : Values_Map.Cursor := A.Array_Values.Find (To_Integer (I));
                B : Boolean;
             begin
                if Present (Next (E)) then
                   RAC_Unsupported
-                    ("RAC_Expr indexed component with many indices", N);
+                    ("RAC_Expr_LHS multidimensional array access", N);
                end if;
 
-               if not (A.all.Array_First <= I
-                        and then I <= A.all.Array_Last)
-               then
+               --  Assigning into a string is not currently supported
+               if A.Ty /= Ty_Array then
+                  RAC_Unsupported ("RAC_Expr_LHS over non-array value", N);
+               end if;
+
+               if I < A.Array_First or else A.Array_Last < I then
                   --  ??? The index check VC is generated for the first expr
                   RAC_Failure (E, VC_Index_Check);
                end if;
@@ -2774,11 +2930,11 @@ package body SPARK_RAC is
    -- RAC_List --
    --------------
 
-   procedure RAC_List (L : List_Id; Ctx : in out Context) is
+   procedure RAC_List (L : List_Id) is
       N : Node_Id := First (L);
    begin
       while Present (N) loop
-         RAC_Node (N, Ctx);
+         RAC_Node (N);
          Next (N);
       end loop;
    end RAC_List;
@@ -2787,7 +2943,7 @@ package body SPARK_RAC is
    -- RAC_Node --
    --------------
 
-   procedure RAC_Node (N : Node_Id; Ctx : in out Context) is
+   procedure RAC_Node (N : Node_Id) is
       Ignore : Opt_Value;
    begin
       RAC_Trace ("node " & Node_Kind'Image (Nkind (N)), N);
@@ -2799,14 +2955,14 @@ package body SPARK_RAC is
             if Present (Exception_Handlers (N)) then
                RAC_Unsupported ("RAC_Node exception handler", N);
             end if;
-            RAC_List (Statements (N), Ctx);
+            RAC_List (Statements (N));
          when N_Procedure_Call_Statement =>
             Ignore :=
-              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N), Ctx);
+              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N));
          when N_Statement_Other_Than_Procedure_Call =>
-            RAC_Statement (N, Ctx);
+            RAC_Statement (N);
          when N_Pragma =>
-            RAC_Pragma (N, Ctx);
+            RAC_Pragma (N);
          when others =>
             RAC_Unsupported ("RAC_Node", N);
          end case;
@@ -2817,14 +2973,14 @@ package body SPARK_RAC is
    -- RAC_Pragma --
    ----------------
 
-   procedure RAC_Pragma (N : N_Pragma_Id; Ctx : in out Context) is
+   procedure RAC_Pragma (N : N_Pragma_Id) is
       Arg1 : constant Node_Id := First (Pragma_Argument_Associations (N));
       Desc : constant String :=
         Get_Name_String (Chars (Pragma_Identifier (N)));
    begin
       case Get_Pragma_Id (Pragma_Name (N)) is
          when Pragma_Check =>
-            Check_Node (Expression (Next (Arg1)), Ctx, Desc, VC_Assert);
+            Check_Node (Expression (Next (Arg1)), Desc, VC_Assert);
          when others =>
             RAC_Unsupported ("RAC_Pragma", N);
       end case;
@@ -2844,10 +3000,7 @@ package body SPARK_RAC is
    -- RAC_Statement --
    -------------------
 
-   procedure RAC_Statement
-     (N   :        N_Statement_Other_Than_Procedure_Call_Id;
-      Ctx : in out Context)
-   is
+   procedure RAC_Statement (N : N_Statement_Other_Than_Procedure_Call_Id) is
    begin
       case Nkind (N) is
          when N_Null_Statement =>
@@ -2860,7 +3013,7 @@ package body SPARK_RAC is
                     Safe_Retysp (Etype (Return_Applies_To
                                  (Return_Statement_Entity (N))));
                   Res : constant Value :=
-                    Copy (RAC_Expr (Expression (N), Ctx, Ty));
+                    Copy (RAC_Expr (Expression (N), Ty));
                begin
                   RAC_Return (Some_Value (Res));
                end;
@@ -2872,16 +3025,16 @@ package body SPARK_RAC is
             declare
                Ty  : constant Entity_Id := Safe_Retysp (Etype (Name (N)));
                RHS : constant Value_Access :=
-                 new Value'(Copy (RAC_Expr (Expression (N), Ctx, Ty)));
+                 new Value'(Copy (RAC_Expr (Expression (N), Ty)));
             begin
                case Nkind (Name (N)) is
-                  when N_Identifier =>
+                  when N_Identifier | N_Expanded_Name =>
                      Update_Value (Ctx.Env, Entity (Name (N)), RHS);
 
                   when N_Selected_Component =>
                      declare
                         LHS : constant Value_Access :=
-                          RAC_Expr_LHS (Prefix (Name (N)), Ctx);
+                          RAC_Expr_LHS (Prefix (Name (N)));
                         E   : constant Entity_Id :=
                           Entity (Selector_Name (Name (N)));
                      begin
@@ -2890,19 +3043,39 @@ package body SPARK_RAC is
 
                   when N_Indexed_Component =>
                      declare
-                        LHS  : constant Value_Access :=
-                          RAC_Expr_LHS (Prefix (Name (N)), Ctx);
-                        Expr : constant Node_Id :=
+                        A : constant Value_Access :=
+                          RAC_Expr_LHS (Prefix (Name (N)));
+                        E : constant Node_Id :=
                           First (Expressions (Name (N)));
-                        V    : constant Value := RAC_Expr (Expr, Ctx);
+                        I : constant Big_Integer :=
+                          Value_Enum_Integer (RAC_Expr (E));
                      begin
-                        if Present (Next (Expr)) then
+                        if Present (Next (E)) then
                            RAC_Unsupported
                              ("RAC_Expr assignment", "many indices");
                         end if;
 
-                        LHS.all.Array_Values.Include
-                          (To_Integer (Value_Enum_Integer (V)), RHS);
+                        if A.Ty = Ty_Array then
+                           if I < A.Array_First or else A.Array_Last < I then
+                              --  ??? Index check VC is generated for the 1st
+                              --  expr
+                              RAC_Failure (E, VC_Index_Check);
+                           end if;
+
+                           A.all.Array_Values.Include (To_Integer (I), RHS);
+                        else
+                           if I < A.String_First
+                             or else A.String_First +
+                               To_Big_Integer (Length (A.String_Content)) <= I
+                           then
+                              RAC_Failure (E, VC_Index_Check);
+                           end if;
+
+                           Replace_Element
+                             (A.String_Content,
+                              To_Integer (I - A.String_First + 1),
+                              Value_Character (RHS.all));
+                        end if;
                      end;
 
                   when others =>
@@ -2911,17 +3084,17 @@ package body SPARK_RAC is
             end;
 
          when N_If_Statement =>
-            if Value_Boolean (RAC_Expr (Condition (N), Ctx)) then
-               RAC_List (Then_Statements (N), Ctx);
+            if Value_Boolean (RAC_Expr (Condition (N))) then
+               RAC_List (Then_Statements (N));
             else
                declare
                   Elsif_Part : Node_Id := First (Elsif_Parts (N));
                   In_Elsif   : Boolean := False;
                begin
                   while Present (Elsif_Part) loop
-                     if Value_Boolean (RAC_Expr (Condition (Elsif_Part), Ctx))
+                     if Value_Boolean (RAC_Expr (Condition (Elsif_Part)))
                      then
-                        RAC_List (Then_Statements (Elsif_Part), Ctx);
+                        RAC_List (Then_Statements (Elsif_Part));
                         In_Elsif := True;
                         exit;
                      end if;
@@ -2929,7 +3102,7 @@ package body SPARK_RAC is
                   end loop;
 
                   if not In_Elsif and then Present (Else_Statements (N)) then
-                     RAC_List (Else_Statements (N), Ctx);
+                     RAC_List (Else_Statements (N));
                   end if;
                end;
             end if;
@@ -2941,7 +3114,7 @@ package body SPARK_RAC is
                if No (Scheme) then
                   begin
                      loop
-                        RAC_List (Statements (N), Ctx);
+                        RAC_List (Statements (N));
                         pragma Annotate
                           (CodePeer, Intentional,
                            "loop does not complete normally",
@@ -2956,9 +3129,9 @@ package body SPARK_RAC is
                   --  while Condition loop Statements end loop;
                   begin
                      while
-                       Value_Boolean (RAC_Expr (Condition (Scheme), Ctx))
+                       Value_Boolean (RAC_Expr (Condition (Scheme)))
                      loop
-                        RAC_List (Statements (N), Ctx);
+                        RAC_List (Statements (N));
                      end loop;
                   exception
                      when Exn_RAC_Exit =>
@@ -2967,15 +3140,15 @@ package body SPARK_RAC is
 
                elsif Present (Loop_Parameter_Specification (Scheme)) then
                   declare
-                     procedure Iteration (Ctx : in out Context);
-                     procedure Iteration (Ctx : in out Context) is
+                     procedure Iteration;
+                     procedure Iteration is
                      begin
-                        RAC_List (Statements (N), Ctx);
+                        RAC_List (Statements (N));
                      end Iteration;
                   begin
                      Iterate_Loop_Param_Spec
                        (Loop_Parameter_Specification (Scheme),
-                        Ctx, Iteration'Access);
+                        Iteration'Access);
                   end;
                else
                   pragma Assert (Present (Iterator_Specification (Scheme)));
@@ -2989,20 +3162,20 @@ package body SPARK_RAC is
             end if;
 
             if No (Condition (N))
-              or else Value_Boolean (RAC_Expr (Condition (N), Ctx))
+              or else Value_Boolean (RAC_Expr (Condition (N)))
             then
                raise Exn_RAC_Exit;
             end if;
 
          when N_Block_Statement =>
             Ctx.Env.Prepend (Scopes.Empty);
-            RAC_Decls (Declarations (N), Ctx);
-            RAC_Node (Handled_Statement_Sequence (N), Ctx);
+            RAC_Decls (Declarations (N));
+            RAC_Node (Handled_Statement_Sequence (N));
             Ctx.Env.Delete_First;
 
          when N_Case_Statement =>
             declare
-               V     : constant Value := RAC_Expr (Expression (N), Ctx);
+               V     : constant Value := RAC_Expr (Expression (N));
                A     : Node_Id := First (Alternatives (N));
                Ch    : Node_Id;
                Match : Boolean;
@@ -3021,13 +3194,13 @@ package body SPARK_RAC is
                         then
                            RAC_Unsupported ("case choise type", Ch);
                         end if;
-                        Match := V = RAC_Expr (Ch, Ctx);
+                        Match := V = RAC_Expr (Ch);
                      else
                         RAC_Unsupported ("RAC_Statement choice", Ch);
                      end if;
 
                      if Match then
-                        RAC_List (Statements (A), Ctx);
+                        RAC_List (Statements (A));
                         exit Outer;
                      end if;
 
@@ -3176,13 +3349,14 @@ package body SPARK_RAC is
    is
       Res : Unbounded_String;
    begin
-      Append (Res, To_String (Fst) & " - " & To_String (Lst) & ",");
+      Append (Res, "'First => " & To_String (Fst)
+              & ", 'Last => " & To_String (Lst));
       for C in M.Iterate loop
-         Append (Res, " "
+         Append (Res, ", "
                  & Integer'Image (Values_Map.Key (C)) & " => "
                  & To_String (M (C).all) & ",");
       end loop;
-      Append (Res, " others => " &
+      Append (Res, ", others => " &
               (if O = null then "UNDEFINED" else To_String (O.all)));
       return To_String ("(" & Res & ")");
    end To_String;
@@ -3310,6 +3484,21 @@ package body SPARK_RAC is
          raise Program_Error with "Value_Boolean";
       end if;
    end Value_Boolean;
+
+   ---------------------
+   -- Value_Character --
+   ---------------------
+
+   function Value_Character (V : Value) return Character is
+   begin
+      case V.Ty is
+         when Ty_Enum =>
+            return Character'Val
+              (To_Integer (Char_Literal_Value (V.Enum_Entity)));
+         when Ty_Integer | Ty_Array | Ty_Record | Ty_String =>
+            raise Program_Error with "Value_Character";
+      end case;
+   end Value_Character;
 
    ------------------------
    -- Value_Enum_Integer --

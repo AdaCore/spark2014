@@ -46,6 +46,9 @@ pragmarc-b_strings.ads:45:76: info: range check proved (CVC4: 2 VC)
 pragmarc-b_strings.ads:46:21: medium: postcondition might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
 pragmarc-b_strings.ads:46:26: info: function contract not available for proof ("+" might not return)
 pragmarc-b_strings.ads:57:07: info: range check proved (CVC4: 2 VC)
+pragmarc-b_strings.ads:57:43: info: in default value of private type at pragmarc-b_strings.ads:20
+pragmarc-b_strings.ads:57:43: info: in default value of private type at pragmarc-b_strings.ads:20
 pragmarc-b_strings.ads:57:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.ads:57:43: info: range check proved (CVC4: 2 VC)
+pragmarc-b_strings.ads:57:46: info: in default value of private type at pragmarc-b_strings.ads:20
 pragmarc-b_strings.ads:57:46: info: range check proved (CVC4: 2 VC)

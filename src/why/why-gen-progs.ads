@@ -23,17 +23,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK_Util;         use SPARK_Util;
-with Types;              use Types;
-with VC_Kinds;           use VC_Kinds;
-with SPARK_Atree;        use SPARK_Atree;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Modules;  use Why.Atree.Modules;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Expr;       use Why.Gen.Expr;
-with Why.Ids;            use Why.Ids;
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Types;          use Why.Types;
+with Gnat2Why.Util;             use Gnat2Why.Util;
+with SPARK_Util;                use SPARK_Util;
+with Types;                     use Types;
+with VC_Kinds;                  use VC_Kinds;
+with SPARK_Atree;               use SPARK_Atree;
+with Why.Atree.Builders;        use Why.Atree.Builders;
+with Why.Atree.Modules;         use Why.Atree.Modules;
+with Why.Conversions;           use Why.Conversions;
+with Why.Gen.Expr;              use Why.Gen.Expr;
+with Why.Ids;                   use Why.Ids;
+with Why.Sinfo;                 use Why.Sinfo;
+with Why.Types;                 use Why.Types;
 
 package Why.Gen.Progs is
 
@@ -155,10 +156,11 @@ package Why.Gen.Progs is
    --   Build the program "ignore(prog)" of return type "unit".
 
    function New_Located_Assert
-      (Ada_Node : Node_Id;
-       Pred     : W_Pred_Id;
-       Reason   : VC_Kind;
-       Kind     : EW_Assert_Kind) return W_Prog_Id;
+      (Ada_Node   : Node_Id;
+       Pred       : W_Pred_Id;
+       Reason     : VC_Kind;
+       Kind       : EW_Assert_Kind;
+       Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id;
 
    function New_Located_Abstract
      (Ada_Node : Node_Id;

@@ -1,5 +1,6 @@
 area_math.adb:11:14: info: predicate check proved (CVC4: 2 VC)
 area_math.adb:216:07: info: initialization of "Result" proved
+area_math.adb:216:33: info: in default value at area_math.adb:216
 area_math.adb:216:33: info: overflow check proved (CVC4: 2 VC)
 area_math.adb:216:33: info: range check proved (CVC4: 2 VC)
 area_math.adb:218:07: info: initialization of "Skip" proved

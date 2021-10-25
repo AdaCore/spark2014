@@ -683,9 +683,12 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id);
    --  Check expression Expr originating in Root was not observed
 
-   procedure Check_Not_Moved (Expr : Expr_Or_Ent; Root : Entity_Id) with
-     Pre => not Is_Deep (Etype (Root));
-   --  Check expression Expr originating in Root was not moved
+   procedure Check_Not_Moved (Expr : Expr_Or_Ent) with
+     Pre => not Is_Deep
+       (Etype
+          (if Expr.Is_Ent then Expr.Ent
+           else Get_Root_Object (Expr.Expr)));
+   --  Check expression Expr was not moved
 
    function Check_On_Borrowed (Expr : Expr_Or_Ent) return Node_Id;
    --  Return a previously borrowed expression in conflict with Expr if any
@@ -3072,7 +3075,7 @@ package body Gnat2Why.Borrow_Checker is
    -- Check_Not_Moved --
    ---------------------
 
-   procedure Check_Not_Moved (Expr : Expr_Or_Ent; Root : Entity_Id) is
+   procedure Check_Not_Moved (Expr : Expr_Or_Ent) is
    begin
       --  Try to match the expression with one of the moved expressions.
       --  For every moved object, check that:
@@ -4955,7 +4958,7 @@ package body Gnat2Why.Borrow_Checker is
       --  map for moved shallow types.
 
       if not Is_Deep (Etype (Root)) then
-         Check_Not_Moved (Expr, Root);
+         Check_Not_Moved (Expr);
 
          pragma Assert (Mode /= Free);
          pragma Assert (Mode /= Assign or else not Is_Deep (Expr_Type));

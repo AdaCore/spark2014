@@ -257,19 +257,15 @@ package body Flow_Classwide is
                                       Scope : Flow_Scope;
                                       Valid : in out Boolean)
    is
-      function Get_Or_Make_Depends (E         : Entity_Id;
-                                    Classwide : Boolean)
-                                    return Dependency_Maps.Map
+      function Get_Or_Make_Depends (E : Entity_Id) return Dependency_Maps.Map
       with Pre => Is_Subprogram (E);
-      --  Obtain the dependency relation for E, or synthesize one
+      --  Obtain the class-wide dependency relation for E, or synthesize one
 
       -------------------------
       -- Get_Or_Make_Depends --
       -------------------------
 
-      function Get_Or_Make_Depends (E         : Entity_Id;
-                                    Classwide : Boolean)
-                                    return Dependency_Maps.Map
+      function Get_Or_Make_Depends (E : Entity_Id) return Dependency_Maps.Map
       is
          M       : Dependency_Maps.Map;
 
@@ -280,7 +276,7 @@ package body Flow_Classwide is
          if Has_Depends (E) then
             Get_Depends (Subprogram => E,
                          Scope      => Scope,
-                         Classwide  => Classwide,
+                         Classwide  => True,
                          Depends    => M);
          else
             --  Assemble the final dependency from globals...
@@ -290,7 +286,7 @@ package body Flow_Classwide is
             begin
                Get_Globals (Subprogram => E,
                             Scope      => Scope,
-                            Classwide  => Classwide,
+                            Classwide  => True,
                             Globals    => Globals);
                Void    := Change_Variant (Globals.Proof_Ins, Normal_Use);
                Inputs  := Change_Variant (Globals.Inputs, Normal_Use);
@@ -348,9 +344,9 @@ package body Flow_Classwide is
         Direct_Mapping_Id (Overridden_Operation (E));
 
       Anc_Dep    : constant Dependency_Maps.Map :=
-        Get_Or_Make_Depends (Overridden_Operation (E), Classwide => True);
+        Get_Or_Make_Depends (Overridden_Operation (E));
       My_Dep     : constant Dependency_Maps.Map :=
-        Get_Or_Make_Depends (E, Classwide => True);
+        Get_Or_Make_Depends (E);
 
       Suppressed : Boolean;
 

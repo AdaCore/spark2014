@@ -23,6 +23,7 @@ bounded_stacks.ads:36:06: info: flow dependencies proved, in instantiation at in
 bounded_stacks.ads:40:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:41:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:48:07: info: range check proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:48:44: info: in default value of private type at bounded_stacks.ads:6, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:48:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at integer_stacks.ads:4
 integer_stacks.ads:4:01: info: cannot unroll loop (too many loop iterations)
 integer_stacks.ads:4:01: info: in instantiation at bounded_stacks.adb:70

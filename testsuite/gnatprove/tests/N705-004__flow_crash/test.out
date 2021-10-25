@@ -110,6 +110,7 @@ very_longs.adb:262:65: info: index check proved (CVC4: 2 VC)
 very_longs.adb:264:37: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:264:41: info: index check proved (CVC4: 2 VC)
 very_longs.adb:274:07: info: initialization of "Result" proved
+very_longs.adb:274:42: info: in default value at very_longs.adb:274
 very_longs.adb:274:42: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:274:42: info: range check proved (CVC4: 2 VC)
 very_longs.adb:274:42: medium: overflow check might fail, cannot prove upper bound for L.Octet_Length + R.Octet_Length [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (L.Octet_Length <= 2147483647 - R.Octet_Length) to subprogram at very_longs.ads:59]
@@ -137,7 +138,9 @@ very_longs.adb:316:07: info: initialization of "N" proved
 very_longs.adb:317:07: info: initialization of "M" proved
 very_longs.adb:318:07: info: initialization of "Shift_Distance" proved
 very_longs.adb:319:07: info: initialization of "U" proved
+very_longs.adb:319:36: info: in default value at very_longs.adb:319
 very_longs.adb:319:36: info: overflow check proved (CVC4: 2 VC)
+very_longs.adb:319:58: info: in default value at very_longs.adb:319
 very_longs.adb:319:58: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:319:58: info: range check proved (CVC4: 2 VC)
 very_longs.adb:320:07: info: initialization of "V" proved

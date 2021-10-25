@@ -1700,7 +1700,10 @@ package body Gnat2Why.Expr.Loops is
                  New_Variant
                    (Cmp_Op => Cmp,
                     Labels =>
-                      New_VC_Labels (Variant, Reason => VC_Loop_Variant),
+                      New_VC_Labels
+                        (Variant,
+                         Reason     => VC_Loop_Variant,
+                         Check_Info => New_Check_Info),
                     Expr   =>
                       +Transform_Expr (Expr          => Expr,
                                        Expected_Type => WTyp,

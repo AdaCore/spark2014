@@ -8,7 +8,7 @@ arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:99:11: info: flow dependencies proved
 arrays.adb:104:22: medium: assertion might fail [possible fix: precondition of subprogram at line 97 should mention C]
 arrays.adb:108:11: info: flow dependencies proved
-arrays.adb:112:22: medium: assertion might fail (e.g. when M = ('a' => 'A', others => 'A')) [possible fix: subprogram at line 107 should mention M in a precondition]
+arrays.adb:112:22: high: assertion might fail (e.g. when M = ('a' => 'A', others => 'A')) [possible fix: subprogram at line 107 should mention M in a precondition]
 arrays.adb:116:11: info: flow dependencies proved
 arrays.adb:120:22: high: assertion might fail (e.g. when M = (Elem_0 => Elem_2, others => Elem_2)) [possible fix: subprogram at line 115 should mention M in a precondition]
 arrays.adb:124:11: info: flow dependencies proved

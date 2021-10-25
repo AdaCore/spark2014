@@ -56,7 +56,6 @@ with Sinput;                    use Sinput;
 with Snames;                    use Snames;
 with SPARK_Atree;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
-with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with SPARK_Util.Types;          use SPARK_Util.Types;
@@ -107,10 +106,12 @@ package body Flow_Error_Messages is
    function Get_Fix
      (N          : Node_Id;
       Tag        : VC_Kind;
-      How_Proved : Prover_Category) return String;
+      How_Proved : Prover_Category;
+      Info       : Fix_Info_Type) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
    --  @param How_Proved should be PC_Trivial if the check is static
+   --  @param Info additional informations on the check
    --  @result message part suggesting a fix to make the unproved check proved
 
    function Justified_Message is new Gnat2Why.Error_Messages.VC_Message
@@ -650,7 +651,8 @@ package body Flow_Error_Messages is
       How_Proved  : Prover_Category;
       SD_Id       : Session_Dir_Base_ID;
       Stats       : Prover_Stat_Maps.Map;
-      Place_First : Boolean)
+      Place_First : Boolean;
+      Check_Info  : Check_Info_Type)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -679,7 +681,8 @@ package body Flow_Error_Messages is
          Verdict    : Cntexmp_Verdict)
          return String
       is
-         Fix : constant String := Get_Fix (N, Tag, How_Proved);
+         Fix : constant String := Get_Fix
+           (N, Tag, How_Proved, Check_Info.Fix_Info);
       begin
          if Fix = "" then
             case Verdict.Verdict_Category is
@@ -769,7 +772,7 @@ package body Flow_Error_Messages is
             Cntexample_File_Maps.Empty);
 
       Severity  : constant Msg_Severity :=
-                    Get_Severity (N, Is_Proved, Tag, Verdict);
+        Get_Severity (N, Is_Proved, Tag, Verdict);
       Suppr     : String_Id := No_String;
       Msg_Id    : Message_Id := No_Message_Id;
       Is_Annot  : Boolean;
@@ -940,6 +943,38 @@ package body Flow_Error_Messages is
             --  cannot happen
             raise Program_Error;
       end case;
+
+      --  If a message was emitted, then go over the continuations and output
+      --  them in the reverse order.
+
+      if Report_Mode /= GPR_Fail
+        or else Severity = Warning_Kind
+        or else (Severity in Check_Kind and then not Is_Annot)
+      then
+         for Cont of reverse Check_Info.Continuation loop
+
+            --  No need to emit the continuation if it is located on the same
+            --  node as the check message.
+
+            if Cont.Ada_Node /= N then
+               declare
+                  Loc  : constant Source_Ptr := Sloc
+                    (First_Node (Cont.Ada_Node));
+                  File : constant String := File_Name (Loc);
+                  Line : constant Physical_Line_Number :=
+                    Get_Physical_Line_Number (Loc);
+                  Msg  : constant String :=
+                    To_String (Cont.Message)
+                    & " at " & File & ":" & Image (Integer (Line), 1);
+
+               begin
+                  Ignore_Id := Print_Regular_Msg
+                    (Compute_Message (Msg, Cont.Ada_Node),
+                     Span, Severity, Continuation => True);
+               end;
+            end if;
+         end loop;
+      end if;
 
       Add_Json_Msg
         (Suppr       => Suppr,
@@ -1363,7 +1398,8 @@ package body Flow_Error_Messages is
    function Get_Fix
      (N          : Node_Id;
       Tag        : VC_Kind;
-      How_Proved : Prover_Category) return String
+      How_Proved : Prover_Category;
+      Info       : Fix_Info_Type) return String
    is
 
       -----------------------
@@ -2579,11 +2615,9 @@ package body Flow_Error_Messages is
                     and then Is_Integer_Type (Etype (N))
                   then
                      declare
-                        Key : constant Check_Key :=
-                          Check_Key'(N => N, K => Tag);
                         Typ : constant Type_Kind_Id :=
-                          (if Check_Information.Contains (Key) then
-                             Check_Information (Key).Ty
+                          (if Present (Info.Range_Check_Ty) then
+                             Info.Range_Check_Ty
                            else
                              Etype (N));
                         Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
@@ -2692,14 +2726,11 @@ package body Flow_Error_Messages is
                         pragma Assert
                           (if Nkind (N) = N_Attribute_Reference
                            then Attribute_Name (N) = Name_Remainder);
-
-                        Key : constant Check_Key :=
-                          Check_Key'(N => N, K => Tag);
+                        Opnd : constant Opt_N_Extended_Subexpr_Id :=
+                          Info.Divisor;
                      begin
-                        if Check_Information.Contains (Key) then
+                        if Present (Opnd) then
                            declare
-                              Opnd : constant N_Extended_Subexpr_Id :=
-                                Check_Information (Key).Divisor;
                               Name : constant String :=
                                 (if Nkind (Opnd) in N_Defining_Identifier then
                                    Source_Name (Opnd)
@@ -3345,8 +3376,8 @@ package body Flow_Error_Messages is
    is
       Value : constant JSON_Value := Create_Object;
       File  : constant String     := File_Name (Slc);
-      Line  : constant Natural    := Natural (Get_Logical_Line_Number (Slc));
-      Col   : constant Natural    := Natural (Get_Column_Number (Slc));
+      Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
+      Col   : constant Natural    := Positive (Get_Column_Number (Slc));
    begin
 
       Set_Field (Value, "file", File);
@@ -3354,15 +3385,7 @@ package body Flow_Error_Messages is
       Set_Field (Value, "col", Col);
 
       if Suppr /= No_String then
-         declare
-            Len           : constant Natural :=
-              Natural (String_Length (Suppr));
-            Reason_String : String (1 .. Len);
-         begin
-            String_To_Name_Buffer (Suppr);
-            Reason_String := Name_Buffer (1 .. Len);
-            Set_Field (Value, "suppressed", Reason_String);
-         end;
+         Set_Field (Value, "suppressed", To_String (Suppr));
       end if;
 
       Set_Field (Value, "rule", Tag);
@@ -3374,9 +3397,9 @@ package body Flow_Error_Messages is
          declare
             VC_File : constant String  := File_Name (VC_Loc);
             VC_Line : constant Natural :=
-                         Natural (Get_Logical_Line_Number (VC_Loc));
+                         Positive (Get_Logical_Line_Number (VC_Loc));
             VC_Col  : constant Natural :=
-                         Natural (Get_Column_Number (VC_Loc));
+                         Positive (Get_Column_Number (VC_Loc));
          begin
             --  Note that vc_file already exists
             Set_Field (Value, "check_file", VC_File);
@@ -3402,11 +3425,11 @@ package body Flow_Error_Messages is
       end if;
 
       if Msg_Id /= No_Message_Id then
-         Set_Field (Value, "msg_id", Integer (Msg_Id));
+         Set_Field (Value, "msg_id", Natural (Msg_Id));
       end if;
 
       if SD_Id /= No_Session_Dir then
-         Set_Field (Value, "session_dir", Integer (SD_Id));
+         Set_Field (Value, "session_dir", Natural (SD_Id));
       end if;
 
       Set_Field (Value, "how_proved", To_JSON (How_Proved));
@@ -3441,13 +3464,16 @@ package body Flow_Error_Messages is
            and then Gnat2Why_Args.Output_Mode in GPO_Pretty
          then ""
          else
+           --  Errout.Error_Msg will add "info:" (on continuation messages
+           --  only) and "warning:" prefix when needed, so we only have to do
+           --  it in other cases, for prefixes on check messages in particular.
            (case Severity is
-               when Info_Kind         => "info: ",
-               when Low_Check_Kind    => "low: ",
-               when Medium_Check_Kind => "medium: ",
-               when High_Check_Kind   => "high: ",
-               when Warning_Kind      => "?",
-               when Error_Kind        => ""));
+             when Info_Kind         => (if Continuation then "" else "info: "),
+             when Low_Check_Kind    => "low: ",
+             when Medium_Check_Kind => "medium: ",
+             when High_Check_Kind   => "high: ",
+             when Warning_Kind      => "?",
+             when Error_Kind        => ""));
       Actual_Msg : constant String :=
         Prefix & Escape (Msg) & "!!" &
         (if Ide_Mode

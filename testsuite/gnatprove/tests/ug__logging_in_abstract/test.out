@@ -20,7 +20,7 @@ logging_in_abstract.adb:16:28: high: overflow check might fail, cannot prove upp
     5 |   procedure Get with
       |   ^ here
 
-logging_in_abstract.adb:17:12: medium: array index check might fail
+logging_in_abstract.adb:17:12: high: array index check might fail
    17 |      Log (Log_Size) := Log_In;
       |           ^~~~~~~~
   e.g. when Log_In = 0

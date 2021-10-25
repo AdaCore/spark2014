@@ -172,7 +172,10 @@ package Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
-   Symbol_Table : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+   Symbol_Table       : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+   Continuation_Stack : Continuation_Vectors.Vector;
+   --  Stack of all the continuation messages relevant for the translation of
+   --  the current expression.
 
    package W_Pred_Vectors is
       type Vector is limited private;
@@ -204,23 +207,6 @@ package Gnat2Why.Util is
 
       function Is_Empty (V : Vector) return Boolean is (V.Top = 0);
    end W_Pred_Vectors;
-
-   Check_Information : Check_Info_Map.Map;
-   --  Global table storing for each check extra information that is useful for
-   --  generating better messages.
-
-   procedure Add_Division_Check_Information
-     (Ada_Node : Node_Id;
-      Divisor  : Opt_N_Extended_Subexpr_Id);
-   --  Add information for a division check on Ada_Node, when Divisor is not
-   --  Empty.
-
-   procedure Add_Range_Kind_Information
-     (Ada_Node : Node_Id;
-      K        : VC_Range_Kind;
-      Ty       : Type_Kind_Id);
-   --  Add information for check of kind K on Ada_Node, when Ty is the type
-   --  against which the check is performed.
 
    function Term_Domain (Domain : EW_Domain) return EW_Domain is
       (case Domain is
@@ -408,6 +394,12 @@ package Gnat2Why.Util is
                      | Pragma_Refined_Post;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
+
+   function New_Check_Info
+     (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
+      Divisor        : Node_Or_Entity_Id := Empty) return Check_Info_Type;
+   --  Construct a check info with the supplied information for the fix
+   --  message and the current continuation stack.
 
    -------------
    -- Queries --

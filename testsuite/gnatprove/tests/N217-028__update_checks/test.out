@@ -13,7 +13,7 @@ ar.adb:19:56: info: index check proved (CVC4: 2 VC)
 ar.adb:19:56: info: range check proved (CVC4: 2 VC)
 ar.adb:19:65: info: range check proved (CVC4: 2 VC)
 ar.adb:30:04: warning: analyzing unreferenced procedure "Test3"
-ar.adb:33:12: medium: array index check might fail (e.g. when I = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (I <= IT1'Last - 1) to subprogram at line 30]
+ar.adb:33:12: high: array index check might fail (e.g. when I = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (I <= IT1'Last - 1) to subprogram at line 30]
 ar.adb:33:22: high: range check might fail, cannot prove lower bound for E - 1 (e.g. when E = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: add precondition (E >= ET1'First + 1) to subprogram at line 30]
 ar.adb:39:04: warning: analyzing unreferenced procedure "Test4"
 ar.adb:43:15: info: index check proved (CVC4: 2 VC)

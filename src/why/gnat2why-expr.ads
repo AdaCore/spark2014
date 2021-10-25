@@ -517,9 +517,9 @@ package Gnat2Why.Expr is
      (+Transform_Expr (Expr, Expected_Type, EW_Pred, Params));
 
    function Transform_Expr
-     (Expr    : N_Subexpr_Id;
-      Domain  : EW_Domain;
-      Params  : Transformation_Params)
+     (Expr   : N_Subexpr_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
       return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 

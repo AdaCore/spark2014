@@ -50,17 +50,18 @@ setup_precheck:
 
 setup: setup_precheck
 	$(MAKE) -C ../src/why/xgen
-	mkdir -p obj obj-gnat obj-tools ../install/bin
+	mkdir -p obj obj-gnat obj-gnat2why obj-tools ../install/bin
 	sed -e "s^@ADAINCLUDE@^$(adainclude)^" \
 	    -e "s^@ADALIB@^$(adalib)^" \
 	    -e "s^@PREFIX@^$(prefix)^" \
 	    -e "s^@GNAT1DIR@^$(gnat1dir)^" \
 	    sdefault.adb.in > obj/sdefault.adb
 	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
-	for f in gnat1drv.adb sa_messages.ads sa_messages.adb libgnat/s-rident.ads; \
+	for f in gnat1drv.adb sa_messages.ads sa_messages.adb; \
 	do \
-	  cp -pf gnat_src/$$f obj-gnat; \
+	  cp -pf gnat_src/$$f obj-gnat2why; \
 	done
+	cp -pf gnat_src/libgnat/s-rident.ads obj-gnat
 	for f in `cd gnat_src; ls gen_il*.ad? xutil.ad? *-tmpl xsnamest.adb`; \
 	do \
 	  cp -p gnat_src/$$f obj-tools; \
@@ -101,4 +102,4 @@ force:
 
 clean:
 	$(MAKE) -C ../src/why/xgen clean
-	-$(RM) obj obj-tools
+	-$(RM) obj obj-tools obj-gnat obj-gnat2why
