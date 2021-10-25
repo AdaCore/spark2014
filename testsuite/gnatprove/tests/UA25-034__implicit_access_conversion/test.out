@@ -1,0 +1,27 @@
+a-cfinve.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:7
+a-cfinve.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:7
+a-cfinve.ads:341:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at main.adb:7
+a-cfinve.ads:341:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at main.adb:7
+a-cfinve.ads:364:51: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:406:73: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:439:51: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:474:59: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:520:59: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:544:51: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:585:59: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:650:28: info: overflow check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:650:57: info: range check proved (CVC4: 2 VC), in instantiation at main.adb:7
+a-cfinve.ads:778:23: info: precondition proved (CVC4: 1 VC), in instantiation at main.adb:7
+a-cfinve.ads:814:14: info: precondition proved (CVC4: 1 VC), in instantiation at main.adb:7
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at main.adb:7
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at main.adb:7
+a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at main.adb:7
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at main.adb:7
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at main.adb:7
+a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at main.adb:7
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at main.adb:7
+main.adb:13:04: info: initialization of "VCpuVector" proved
+main.adb:13:45: info: range check proved (CVC4: 2 VC)
+main.adb:19:53: info: precondition proved (CVC4: 2 VC)
+main.adb:19:65: info: null exclusion check proved (CVC4: 1 VC)
+main.adb:21:20: info: pointer dereference check proved (CVC4: 1 VC)
