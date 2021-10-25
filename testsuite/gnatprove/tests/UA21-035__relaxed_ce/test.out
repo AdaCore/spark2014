@@ -1,0 +1,5 @@
+main.adb:8:22: medium: assertion might fail (e.g. when V = (D => 1, X => 1, Y => 1))
+main.adb:21:22: medium: assertion might fail (e.g. when V = (D => 1, X => ?, Y => (X => 1)) and V.X.X'Initialized = False and V.Y.X'Initialized = True)
+main.adb:21:36: medium: initialization check might fail (e.g. when V = (Y => (X => 1), others => ?) and V.X.X'Initialized = False and V.Y.X'Initialized = True)
+main.adb:33:22: medium: assertion might fail (e.g. when V = (D => 1, X => ?, Y => (X => 1)) and V.X.X'Initialized = False and V.Y.X'Initialized = True)
+main.adb:33:36: medium: initialization check might fail (e.g. when V = (Y => (X => 1), others => ?) and V.X.X'Initialized = False and V.Y.X'Initialized = True)

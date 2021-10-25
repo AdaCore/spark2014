@@ -273,7 +273,8 @@ package body Gnat2Why.Decls is
                  (Th,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Fields.Binder.B_Name),
-                     Labels   => Get_Counterexample_Labels (E),
+                     Labels   => Get_Counterexample_Labels
+                          (E, Append_To_Name => "'" & Field_Label),
                      Location => Safe_First_Sloc (E),
                      Ref_Type => Get_Typ (Var.Fields.Binder.B_Name)));
             end if;
@@ -287,7 +288,8 @@ package body Gnat2Why.Decls is
                     (Th,
                      New_Global_Ref_Declaration
                        (Name     => To_Local (Var.Discrs.Binder.B_Name),
-                        Labels   => Get_Counterexample_Labels (E),
+                        Labels   => Get_Counterexample_Labels
+                          (E, Append_To_Name => "'" & Discr_Label),
                         Location => Safe_First_Sloc (E),
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
@@ -298,7 +300,8 @@ package body Gnat2Why.Decls is
                         Name        =>
                           To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Get_Counterexample_Labels (E),
+                        Labels      => Get_Counterexample_Labels
+                          (E, Append_To_Name => "'" & Discr_Label),
                         Location    => Safe_First_Sloc (E),
                         Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                end if;
@@ -426,7 +429,8 @@ package body Gnat2Why.Decls is
                      Name        => To_Local (Var.Is_Null),
                      Binders     => (1 .. 0 => <>),
                      Location    => Safe_First_Sloc (E),
-                     Labels      => Get_Counterexample_Labels (E, "'Is_Null"),
+                     Labels      => Get_Counterexample_Labels
+                       (E, "'" & Is_Null_Label),
                      Return_Type => Get_Typ (Var.Is_Null)));
             end if;
 
@@ -465,7 +469,8 @@ package body Gnat2Why.Decls is
            (Th,
             New_Global_Ref_Declaration
               (Name     => To_Local (Var.Init.Id),
-               Labels   => Symbol_Sets.Empty_Set,
+               Labels   => Get_Counterexample_Labels
+                 (E, "'" & Initialized_Label),
                Location => Safe_First_Sloc (E),
                Ref_Type => EW_Bool_Type));
       end if;

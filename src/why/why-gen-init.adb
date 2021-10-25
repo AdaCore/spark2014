@@ -222,9 +222,11 @@ package body Why.Gen.Init is
          Binders =>
            (1 =>
                 (B_Name => Init_Val,
+                 Labels => Get_Model_Trace_Label ("'" & Init_Val_Label),
                  others => <>),
             2 =>
               (B_Name   => Attr_Init,
+               Labels   => Get_Model_Trace_Label ("'" & Initialized_Label),
                others   => <>)));
 
       --  Declare conversion functions to and from the wrapper type
