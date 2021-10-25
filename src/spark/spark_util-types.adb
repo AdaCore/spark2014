@@ -241,7 +241,9 @@ package body SPARK_Util.Types is
 
       if Entity_In_SPARK (Typ) and then Is_Generic_Actual_Type (Typ) then
          declare
-            Decl    : constant Node_Id := Parent (Typ);
+            P_Typ   : constant Entity_Id :=
+              (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
+            Decl    : constant Node_Id := Parent (P_Typ);
             Sub_Ind : Node_Id;
          begin
             if Present (Decl)
