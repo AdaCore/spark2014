@@ -1,0 +1,5 @@
+SOUNDNESS BUG at unsound_eq.adb:56: mark @ASSERT:FAIL not found
+unsound_eq.adb:47:19: info: assertion proved (CVC4: 1 VC)
+unsound_eq.adb:50:19: info: assertion proved (CVC4: 1 VC)
+unsound_eq.adb:53:19: info: assertion proved (CVC4: 1 VC)
+unsound_eq.adb:56:19: info: assertion proved (CVC4: 1 VC)
