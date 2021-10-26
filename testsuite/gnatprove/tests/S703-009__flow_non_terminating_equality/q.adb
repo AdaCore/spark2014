@@ -5,7 +5,7 @@ procedure Q with SPARK_Mode is
     end record;
 
     function "=" (X, Y : R) return Boolean with
-      Pre => True
+      Post => True
     is
     begin
        loop

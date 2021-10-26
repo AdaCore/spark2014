@@ -312,6 +312,13 @@ package body SPARK_Definition is
    --  used to ensure that there can be no conversions between access types
    --  with different representative types.
 
+   procedure Check_User_Defined_Eq
+     (Ty : Type_Kind_Id;
+      E  : Entity_Id);
+   --  If Ty is a record type, mark the user-defined equality on it and check
+   --  that it does not have a precondition. If a precondition is found, raise
+   --  a violation on E.
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -585,6 +592,28 @@ package body SPARK_Definition is
          end;
       end if;
    end Check_Source_Of_Move;
+
+   ---------------------------
+   -- Check_User_Defined_Eq --
+   ---------------------------
+
+   procedure Check_User_Defined_Eq
+     (Ty : Type_Kind_Id;
+      E  : Entity_Id)
+   is
+      Eq : Entity_Id := Get_User_Defined_Eq (Base_Type (Ty));
+   begin
+      if Is_Record_Type (Unchecked_Full_Type (Ty)) and then Present (Eq) then
+         Eq := Ultimate_Alias (Eq);
+
+         Mark_Entity (Eq);
+         if not Find_Contracts (Eq, Pragma_Precondition).Is_Empty then
+            Mark_Violation
+              ("precondition on primitive equality of record component type",
+               E);
+         end if;
+      end if;
+   end Check_User_Defined_Eq;
 
    -----------------------------
    -- Discard_Underlying_Type --
@@ -5983,14 +6012,7 @@ package body SPARK_Definition is
                --  Mark the equality function for Component_Typ if it is used
                --  for the predefined equality of E.
 
-               if Is_Record_Type (Unchecked_Full_Type (Component_Typ))
-                 and then Present
-                   (Get_User_Defined_Eq (Base_Type (Component_Typ)))
-               then
-                  Mark_Entity
-                    (Ultimate_Alias
-                       (Get_User_Defined_Eq (Base_Type (Component_Typ))));
-               end if;
+               Check_User_Defined_Eq (Component_Typ, E);
             end;
 
          --  Most discrete and floating-point types are in SPARK
@@ -6318,15 +6340,7 @@ package body SPARK_Definition is
                            --  Mark the equality function for Comp_Type if it
                            --  is used for the predefined equality of E.
 
-                           if Is_Record_Type (Unchecked_Full_Type (Comp_Type))
-                             and then Present
-                               (Get_User_Defined_Eq (Base_Type (Comp_Type)))
-                           then
-                              Mark_Entity
-                                (Ultimate_Alias
-                                   (Get_User_Defined_Eq
-                                        (Base_Type (Comp_Type))));
-                           end if;
+                           Check_User_Defined_Eq (Comp_Type, Comp);
 
                            --  Reject components an unconstrained unchecked
                            --  union type in a tagged extension.

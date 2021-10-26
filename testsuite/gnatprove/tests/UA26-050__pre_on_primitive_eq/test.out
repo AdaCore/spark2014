@@ -1,0 +1,9 @@
+main.adb:9:07: error: precondition on primitive equality of record component type is not allowed in SPARK
+main.adb:9:07: error: violation of aspect SPARK_Mode at line 1
+main.adb:11:09: error: "Arr" is not allowed in SPARK (due to precondition on primitive equality of record component type)
+main.adb:11:09: error: violation of aspect SPARK_Mode at line 1
+main.adb:13:04: error: "Holder" is not allowed in SPARK (due to precondition on primitive equality of record component type)
+main.adb:13:04: error: violation of aspect SPARK_Mode at line 1
+main.adb:14:04: error: "Holder" is not allowed in SPARK (due to precondition on primitive equality of record component type)
+main.adb:14:04: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
