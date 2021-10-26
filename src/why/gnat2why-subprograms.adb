@@ -5140,6 +5140,7 @@ package body Gnat2Why.Subprograms is
       Anc_Ty        : constant W_Type_Id :=
         (if Ekind (E) = E_Function then Type_Of_Node (E)
          else EW_Bool_Type);
+      Descendant_E  : Entity_Id;
 
    begin
       --  The arguments of the dispatching call are the binders from
@@ -5153,335 +5154,341 @@ package body Gnat2Why.Subprograms is
       Descendants.Include (Ty);
 
       for Descendant of Descendants loop
-         Dispatch_Args (1) := +E_Symb (Descendant, WNE_Tag);
+         Descendant_E := Corresponding_Primitive (E, Descendant);
 
-         declare
-            Descendant_E : constant Entity_Id :=
-              Corresponding_Primitive (E, Descendant);
-            Desc_Id      : constant W_Identifier_Id :=
-              To_Why_Id (Descendant_E, Domain => EW_Term);
+         if Entity_In_SPARK (Descendant_E) then
+            Dispatch_Args (1) := +E_Symb (Descendant, WNE_Tag);
 
-            Anc_Call     : constant W_Expr_Id :=
-              New_Call (Domain => EW_Term,
-                        Name   => Anc_Id,
-                        Args   => Dispatch_Args,
-                        Typ    => Anc_Ty);
-         begin
-            --  If Descendant_E has not the same globals as E, there should
-            --  be an error in flow analysis. Do not attempt to generate a
-            --  compatibility axiom.
+            declare
+               Desc_Id  : constant W_Identifier_Id :=
+                 To_Why_Id (Descendant_E, Domain => EW_Term);
+               Anc_Call : constant W_Expr_Id :=
+                 New_Call (Domain => EW_Term,
+                           Name   => Anc_Id,
+                           Args   => Dispatch_Args,
+                           Typ    => Anc_Ty);
+            begin
+               --  If Descendant_E has not the same globals as E, there should
+               --  be an error in flow analysis. Do not attempt to generate a
+               --  compatibility axiom.
 
-            if not Same_Globals (E, Descendant_E) then
-               return;
-            end if;
-
-            --  If E is a function, emit:
-            --    for all x1 ... [<E>__dispatch Descendant.tag x1 ...].
-            --       <E>__dispatch Descendant.tag x1 ... = <Descendant.E> x1 ..
-
-            if Ekind (E) = E_Function then
-
-               --  Do not generate compatibility axioms for volatile functions
-               --  as they do not have any assoaciated logic function.
-               --  ??? They could maybe be handled like procedures, using a
-               --  specific_post predicate.
-
-               if Has_Pragma_Volatile_Function (E) then
+               if not Same_Globals (E, Descendant_E) then
                   return;
                end if;
 
-               declare
-                  Desc_Ty      : constant W_Type_Id :=
-                    Type_Of_Node (Descendant_E);
-                  Desc_Binders : constant Binder_Array :=
-                    To_Binder_Array (Compute_Binders (Descendant_E, EW_Term));
-                  Desc_Args    : W_Expr_Array (1 .. Desc_Binders'Length);
-                  Guard        : constant W_Pred_Id :=
-                    (if not Use_Guard_For_Function (E) then True_Pred
-                     else New_Call
-                       (Name   => E_Symb (E, WNE_Dispatch_Func_Guard),
-                        Args   => Anc_Call & Dispatch_Args,
-                        Typ    => EW_Bool_Type));
-                  Call         : W_Term_Id;
-                  --  The axiom is protected by the dispatching post predicate
-                  --  of E.
+               --  If E is a function, emit:
+               --    for all x1 ... [<E>__dispatch Descendant.tag x1 ...].
+               --       <E>__dispatch Descendant.tag x1 ... =
+               --            <Descendant.E> X1 ..
 
-               begin
-                  pragma Assert (Anc_Binders'First = Desc_Binders'First
-                                 and Anc_Binders'Last = Desc_Binders'Last);
+               if Ekind (E) = E_Function then
 
-                  --  Conversions are needed for controlling parameters
+                  --  Do not generate compatibility axioms for volatile
+                  --  functions as they do not have any assoaciated logic
+                  --  function.
+                  --  ??? They could maybe be handled like procedures, using a
+                  --  specific_post predicate.
 
-                  for I in Desc_Binders'Range loop
-                     Desc_Args (I) :=
-                       Insert_Simple_Conversion
-                         (Domain => EW_Term,
-                          Expr   => +Anc_Binders (I).B_Name,
-                          To     => Get_Typ (Desc_Binders (I).B_Name));
-                  end loop;
-
-                  Call := +New_Function_Call
-                    (Domain => EW_Term,
-                     Subp   => Descendant_E,
-                     Name   => Desc_Id,
-                     Args   => Desc_Args,
-                     Check  => False,
-                     Typ    => Desc_Ty);
-
-                  --  If Descendant is a derived type with a null extension,
-                  --  Descendant_E can be inherited even if it has a
-                  --  controlling result. In this case, we need to update the
-                  --  tag after the call manually.
-
-                  if Has_Controlling_Result (Descendant_E)
-                    and then Base_Retysp (Descendant) /=
-                    Base_Retysp (Etype (Descendant_E))
-                  then
-                     pragma Assert
-                       (Is_Derived_Type_With_Null_Ext
-                          (Base_Type (Descendant)));
-                     Call := +New_Tag_Update
-                       (Domain => EW_Term,
-                        Name   => +Call,
-                        Ty     => Descendant);
+                  if Has_Pragma_Volatile_Function (E) then
+                     return;
                   end if;
 
-                  Emit
-                    (Th,
-                     New_Guarded_Axiom
-                       (Ada_Node => Empty,
-                        Name     =>
-                          NID (Full_Name (Descendant) & "__" & Compat_Axiom),
-                        Binders  => Anc_Binders,
-                        Triggers =>
-                          New_Triggers
-                            (Triggers =>
-                                 (1 => New_Trigger
-                                    (Terms => (1 => Anc_Call)))),
-                        Pre      => Guard,
-                        Def      =>
-                          +New_Comparison
-                          (Symbol => Why_Eq,
+                  declare
+                     Desc_Ty      : constant W_Type_Id :=
+                       Type_Of_Node (Descendant_E);
+                     Desc_Binders : constant Binder_Array := To_Binder_Array
+                       (Compute_Binders (Descendant_E, EW_Term));
+                     Desc_Args    : W_Expr_Array (1 .. Desc_Binders'Length);
+                     Guard        : constant W_Pred_Id :=
+                       (if not Use_Guard_For_Function (E) then True_Pred
+                        else New_Call
+                          (Name   => E_Symb (E, WNE_Dispatch_Func_Guard),
+                           Args   => Anc_Call & Dispatch_Args,
+                           Typ    => EW_Bool_Type));
+                     Call         : W_Term_Id;
+                     --  The axiom is protected by the dispatching post
+                     --  predicate of E.
 
-                           --  Conversion is needed for controlling result
+                  begin
+                     pragma Assert (Anc_Binders'First = Desc_Binders'First
+                                    and Anc_Binders'Last = Desc_Binders'Last);
 
-                           Left   => Insert_Simple_Conversion
-                             (Domain => EW_Term,
-                              Expr   => +Call,
-                              To     => Anc_Ty),
-                           Right  => Anc_Call,
-                           Domain => EW_Term)));
-               end;
+                     --  Conversions are needed for controlling parameters
 
-            --  If E is a procedure, emit:
-            --    for all x1 ... [<E>__spec_post Descendant.tag x1 ...].
-            --       <E>__spec_post Descendant.tag x1 ... ->
-            --           <specific post of Descendant>
+                     for I in Desc_Binders'Range loop
+                        Desc_Args (I) :=
+                          Insert_Simple_Conversion
+                            (Domain => EW_Term,
+                             Expr   => +Anc_Binders (I).B_Name,
+                             To     => Get_Typ (Desc_Binders (I).B_Name));
+                     end loop;
 
-            else
-               pragma Assert (Ekind (E) = E_Procedure);
+                     Call := +New_Function_Call
+                       (Domain => EW_Term,
+                        Subp   => Descendant_E,
+                        Name   => Desc_Id,
+                        Args   => Desc_Args,
+                        Check  => False,
+                        Typ    => Desc_Ty);
 
-               declare
-                  New_Binders : Item_Array :=
-                    Compute_Raw_Binders (E) &
-                    Compute_Binders_For_Effects (E);
-                  Old_Binders : Item_Array := New_Binders;
-                  Desc_Params : Item_Array :=
-                    Compute_Raw_Binders (Descendant_E);
-                  Desc_Post   : W_Pred_Id;
-                  Old_Parts   : Node_Sets.Set;
-                  Params      : Transformation_Params;
+                     --  If Descendant is a derived type with a null extension,
+                     --  Descendant_E can be inherited even if it has a
+                     --  controlling result. In this case, we need to update
+                     --  the tag after the call manually.
 
-               begin
-                  Localize_Binders (New_Binders);
-                  Localize_Binders (Old_Binders, "old");
-
-                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-                  --  Controlling parameters may need a conversion. We need a
-                  --  binder in non-split form for them. For others, we can use
-                  --  the ancestor names directly.
-
-                  for I in Desc_Params'Range loop
-                     declare
-                        Ada_Node : constant Node_Id :=
-                          Get_Ada_Node_From_Item (Desc_Params (I));
-                        Typ      : constant W_Type_Id :=
-                          Get_Why_Type_From_Item (Desc_Params (I));
-
-                     begin
-                        pragma Assert (Present (Ada_Node));
-
-                        if Get_Ada_Node (+Typ) = Descendant then
-                           Desc_Params (I) :=
-                             (Regular,
-                              Local => True,
-                              Init  => <>,
-                              Main  =>
-                                (B_Name   =>
-                                     New_Temp_Identifier
-                                   (Base_Name => Short_Name (Ada_Node),
-                                    Typ       => Typ),
-                                 B_Ent    => Null_Entity_Name,
-                                 Mutable  => False,
-                                 Ada_Node => Ada_Node,
-                                 Labels   => <>));
-
-                           Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Ada_Node,
-                                                  Desc_Params (I));
-                        else
-                           Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Ada_Node,
-                                                  New_Binders (I));
-                        end if;
-                     end;
-                  end loop;
-
-                  --  Store new binders in the Symbol_Table, so that in the
-                  --  Post of Descendant, we use local names of parameters and
-                  --  effects, instead of the global names.
-
-                  Push_Binders_To_Symbol_Table (New_Binders);
-
-                  Params :=
-                    (Phase       => Generate_Logic,
-                     Gen_Marker  => GM_None,
-                     Ref_Allowed => False,
-                     Old_Policy  => Use_Map);
-
-                  --  Translate the specific postcondition of Descendant_E
-
-                  if No_Return (Descendant_E) then
-                     Desc_Post := False_Pred;
-                  else
-                     Desc_Post :=
-                       +New_And_Expr
-                       (Left   =>
-                          +Compute_Spec
-                            (Params, Descendant_E, Pragma_Postcondition,
-                             EW_Pred),
-                        Right  =>
-                          +Compute_Contract_Cases_Postcondition
-                            (Params, Descendant_E),
-                        Domain => EW_Pred);
-
-                     if Find_Contracts
-                         (Descendant_E, Pragma_Postcondition).Is_Empty
-                       and then
-                         No (Get_Pragma (Descendant_E, Pragma_Contract_Cases))
+                     if Has_Controlling_Result (Descendant_E)
+                       and then Base_Retysp (Descendant) /=
+                       Base_Retysp (Etype (Descendant_E))
                      then
-                        Desc_Post :=
-                          Get_LSP_Contract
-                            (Params, Descendant_E, Pragma_Postcondition);
+                        pragma Assert
+                          (Is_Derived_Type_With_Null_Ext
+                             (Base_Type (Descendant)));
+                        Call := +New_Tag_Update
+                          (Domain => EW_Term,
+                           Name   => +Call,
+                           Ty     => Descendant);
                      end if;
 
-                     --  Collect references to Old in Old_Parts
+                     Emit
+                       (Th,
+                        New_Guarded_Axiom
+                          (Ada_Node => Empty,
+                           Name     => NID
+                             (Full_Name (Descendant) & "__" & Compat_Axiom),
+                           Binders  => Anc_Binders,
+                           Triggers =>
+                             New_Triggers
+                               (Triggers =>
+                                    (1 => New_Trigger
+                                       (Terms => (1 => Anc_Call)))),
+                           Pre      => Guard,
+                           Def      =>
+                             +New_Comparison
+                             (Symbol => Why_Eq,
 
-                     Collect_Old_For_Subprogram
-                       (Descendant_E, Old_Parts, Exclude_Classwide => False);
-                  end if;
+                              --  Conversion is needed for controlling result
 
-                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+                              Left   => Insert_Simple_Conversion
+                                (Domain => EW_Term,
+                                 Expr   => +Call,
+                                 To     => Anc_Ty),
+                              Right  => Anc_Call,
+                              Domain => EW_Term)));
+                  end;
 
-                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+               --  If E is a procedure, emit:
+               --    for all x1 ... [<E>__spec_post Descendant.tag x1 ...].
+               --       <E>__spec_post Descendant.tag x1 ... ->
+               --           <specific post of Descendant>
 
-                  --  Insert bindings for contolling parameters of Descendant_E
-                  --  and update entities which should be used for other
-                  --  parameters.
+               else
+                  pragma Assert (Ekind (E) = E_Procedure);
 
-                  for I in Desc_Params'Range loop
-                     declare
-                        Ada_Node : constant Node_Id :=
-                          Get_Ada_Node_From_Item (Desc_Params (I));
-                        Typ      : constant W_Type_Id :=
-                          Get_Why_Type_From_Item (Desc_Params (I));
+                  declare
+                     New_Binders : Item_Array :=
+                       Compute_Raw_Binders (E) &
+                       Compute_Binders_For_Effects (E);
+                     Old_Binders : Item_Array := New_Binders;
+                     Desc_Params : Item_Array :=
+                       Compute_Raw_Binders (Descendant_E);
+                     Desc_Post   : W_Pred_Id;
+                     Old_Parts   : Node_Sets.Set;
+                     Params      : Transformation_Params;
 
-                     begin
-                        if Get_Ada_Node (+Typ) = Descendant then
-                           Desc_Post := New_Typed_Binding
-                             (Name     => Desc_Params (I).Main.B_Name,
-                              Def      => Insert_Simple_Conversion
-                                (Expr   =>
-                                   Reconstruct_Item
-                                     (New_Binders (I), Ref_Allowed => False),
-                                 To     =>
-                                   Get_Typ (Desc_Params (I).Main.B_Name)),
-                              Context  => Desc_Post);
-                           Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Ada_Node,
-                                                  Desc_Params (I));
-                        else
-                           Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Ada_Node,
-                                                  Old_Binders (I));
+                  begin
+                     Localize_Binders (New_Binders);
+                     Localize_Binders (Old_Binders, "old");
+
+                     Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+                     --  Controlling parameters may need a conversion. We need
+                     --  a binder in non-split form for them. For others, we
+                     --  can use the ancestor names directly.
+
+                     for I in Desc_Params'Range loop
+                        declare
+                           Ada_Node : constant Node_Id :=
+                             Get_Ada_Node_From_Item (Desc_Params (I));
+                           Typ      : constant W_Type_Id :=
+                             Get_Why_Type_From_Item (Desc_Params (I));
+
+                        begin
+                           pragma Assert (Present (Ada_Node));
+
+                           if Get_Ada_Node (+Typ) = Descendant then
+                              Desc_Params (I) :=
+                                (Regular,
+                                 Local => True,
+                                 Init  => <>,
+                                 Main  =>
+                                   (B_Name   =>
+                                        New_Temp_Identifier
+                                      (Base_Name => Short_Name (Ada_Node),
+                                       Typ       => Typ),
+                                    B_Ent    => Null_Entity_Name,
+                                    Mutable  => False,
+                                    Ada_Node => Ada_Node,
+                                    Labels   => <>));
+
+                              Ada_Ent_To_Why.Insert (Symbol_Table,
+                                                     Ada_Node,
+                                                     Desc_Params (I));
+                           else
+                              Ada_Ent_To_Why.Insert (Symbol_Table,
+                                                     Ada_Node,
+                                                     New_Binders (I));
+                           end if;
+                        end;
+                     end loop;
+
+                     --  Store new binders in the Symbol_Table, so that in the
+                     --  Post of Descendant, we use local names of parameters
+                     --  and effects, instead of the global names.
+
+                     Push_Binders_To_Symbol_Table (New_Binders);
+
+                     Params :=
+                       (Phase       => Generate_Logic,
+                        Gen_Marker  => GM_None,
+                        Ref_Allowed => False,
+                        Old_Policy  => Use_Map);
+
+                     --  Translate the specific postcondition of Descendant_E
+
+                     if No_Return (Descendant_E) then
+                        Desc_Post := False_Pred;
+                     else
+                        Desc_Post :=
+                          +New_And_Expr
+                          (Left   =>
+                             +Compute_Spec
+                             (Params, Descendant_E, Pragma_Postcondition,
+                              EW_Pred),
+                           Right  =>
+                             +Compute_Contract_Cases_Postcondition
+                             (Params, Descendant_E),
+                           Domain => EW_Pred);
+
+                        if Find_Contracts
+                          (Descendant_E, Pragma_Postcondition).Is_Empty
+                          and then No
+                            (Get_Pragma (Descendant_E, Pragma_Contract_Cases))
+                        then
+                           Desc_Post :=
+                             Get_LSP_Contract
+                               (Params, Descendant_E, Pragma_Postcondition);
                         end if;
-                     end;
-                  end loop;
 
-                  --  To translate expressions used in old attributes, we need
-                  --  to store values in the pre state in the symbol table.
+                        --  Collect references to Old in Old_Parts
 
-                  Push_Binders_To_Symbol_Table (Old_Binders);
+                        Collect_Old_For_Subprogram
+                          (Descendant_E, Old_Parts,
+                           Exclude_Classwide => False);
+                     end if;
 
-                  --  Inner references to Old should be ignored
+                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
-                  Params :=
-                    (Phase       => Generate_Logic,
-                     Gen_Marker  => GM_None,
-                     Ref_Allowed => False,
-                     Old_Policy  => Ignore);
+                     Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-                  --  Insert let bindings for old expressions
+                     --  Insert bindings for contolling parameters of
+                     --  Descendant_E and update entities which should be used
+                     --  for other parameters.
 
-                  Desc_Post := +Bind_From_Mapping_In_Expr
-                    (Params => Params,
-                     Map    => Map_For_Old,
-                     Expr   => +Desc_Post,
-                     Domain => EW_Term,
-                     Subset => Old_Parts);
+                     for I in Desc_Params'Range loop
+                        declare
+                           Ada_Node : constant Node_Id :=
+                             Get_Ada_Node_From_Item (Desc_Params (I));
+                           Typ      : constant W_Type_Id :=
+                             Get_Why_Type_From_Item (Desc_Params (I));
 
-                  --  Insert bindings for contolling parameters of Descendant_E
+                        begin
+                           if Get_Ada_Node (+Typ) = Descendant then
+                              Desc_Post := New_Typed_Binding
+                                (Name     => Desc_Params (I).Main.B_Name,
+                                 Def      => Insert_Simple_Conversion
+                                   (Expr   =>
+                                        Reconstruct_Item
+                                      (New_Binders (I), Ref_Allowed => False),
+                                    To     =>
+                                      Get_Typ (Desc_Params (I).Main.B_Name)),
+                                 Context  => Desc_Post);
+                              Ada_Ent_To_Why.Insert (Symbol_Table,
+                                                     Ada_Node,
+                                                     Desc_Params (I));
+                           else
+                              Ada_Ent_To_Why.Insert (Symbol_Table,
+                                                     Ada_Node,
+                                                     Old_Binders (I));
+                           end if;
+                        end;
+                     end loop;
 
-                  for I in Desc_Params'Range loop
-                     declare
-                        Typ      : constant W_Type_Id :=
-                          Get_Why_Type_From_Item (Desc_Params (I));
+                     --  To translate expressions used in old attributes, we
+                     --  need to store values in the pre state in the symbol
+                     --  table.
 
-                     begin
-                        if Get_Ada_Node (+Typ) = Descendant then
-                           Desc_Post := New_Typed_Binding
-                             (Name     => Desc_Params (I).Main.B_Name,
-                              Def      => Insert_Simple_Conversion
-                                (Expr   =>
-                                   Reconstruct_Item
-                                     (Old_Binders (I), Ref_Allowed => False),
-                                 To     =>
-                                   Get_Typ (Desc_Params (I).Main.B_Name)),
-                              Context  => +Desc_Post);
-                        end if;
-                     end;
-                  end loop;
+                     Push_Binders_To_Symbol_Table (Old_Binders);
 
-                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+                     --  Inner references to Old should be ignored
 
-                  Emit
-                    (Th,
-                     New_Guarded_Axiom
-                       (Ada_Node => Empty,
-                        Name     =>
-                          NID (Full_Name (Descendant) & "__" & Compat_Axiom),
-                        Binders  => Anc_Binders,
-                        Triggers =>
-                          New_Triggers
-                            (Triggers =>
-                                 (1 => New_Trigger
-                                    (Terms => (1 => Anc_Call)))),
-                        Pre      => +Anc_Call,
-                        Def      => Desc_Post));
-               end;
-            end if;
-         end;
+                     Params :=
+                       (Phase       => Generate_Logic,
+                        Gen_Marker  => GM_None,
+                        Ref_Allowed => False,
+                        Old_Policy  => Ignore);
+
+                     --  Insert let bindings for old expressions
+
+                     Desc_Post := +Bind_From_Mapping_In_Expr
+                       (Params => Params,
+                        Map    => Map_For_Old,
+                        Expr   => +Desc_Post,
+                        Domain => EW_Term,
+                        Subset => Old_Parts);
+
+                     --  Insert bindings for contolling parameters of
+                     --  Descendant_E
+
+                     for I in Desc_Params'Range loop
+                        declare
+                           Typ      : constant W_Type_Id :=
+                             Get_Why_Type_From_Item (Desc_Params (I));
+
+                        begin
+                           if Get_Ada_Node (+Typ) = Descendant then
+                              Desc_Post := New_Typed_Binding
+                                (Name     => Desc_Params (I).Main.B_Name,
+                                 Def      => Insert_Simple_Conversion
+                                   (Expr   =>
+                                        Reconstruct_Item
+                                      (Old_Binders (I), Ref_Allowed => False),
+                                    To     =>
+                                      Get_Typ (Desc_Params (I).Main.B_Name)),
+                                 Context  => +Desc_Post);
+                           end if;
+                        end;
+                     end loop;
+
+                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+                     Emit
+                       (Th,
+                        New_Guarded_Axiom
+                          (Ada_Node => Empty,
+                           Name     => NID
+                             (Full_Name (Descendant) & "__" & Compat_Axiom),
+                           Binders  => Anc_Binders,
+                           Triggers =>
+                             New_Triggers
+                               (Triggers =>
+                                    (1 => New_Trigger
+                                       (Terms => (1 => Anc_Call)))),
+                           Pre      => +Anc_Call,
+                           Def      => Desc_Post));
+                  end;
+               end if;
+            end;
+         end if;
       end loop;
    end Generate_Dispatch_Compatibility_Axioms;
 
