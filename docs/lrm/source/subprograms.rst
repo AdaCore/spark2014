@@ -1444,9 +1444,9 @@ object (although object renaming declarations are not problematic in
 |SPARK|).
 
 A common place for aliasing to be introduced is through the actual
-parameters and between actual parameters and
-global variables in a procedure or entry call. Extra verification rules are
-given that avoid the possibility of aliasing through actual
+parameters and between actual parameters and global variables in a
+procedure or entry call. Extra verification rules are given that
+avoid the possibility of problematic aliasing through actual
 parameters and global variables.  A function is not allowed to have
 side-effects and cannot update an actual parameter or global
 variable.  Therefore, function calls cannot introduce aliasing and
@@ -1479,10 +1479,12 @@ or entry calls.
 .. centered:: **Verification Rules**
 
 
-3. A procedure or entry call shall not pass two actual parameters which potentially
-   introduce aliasing via parameter passing unless either
+3. A procedure or entry call shall only pass two actual parameters which potentially
+   introduce aliasing via parameter passing when either
 
-   * both of the corresponding formal parameters are immutable; or
+   * both of the corresponding formal parameters are either
+      * immutable; or
+      * of mode **in** and of an anonymous access-to-constant type; or
 
    * at least one of the corresponding formal parameters is immutable and is of
      a by-copy type. [Note that this includes parameters of named
@@ -1495,11 +1497,13 @@ or entry calls.
    by the called procedure or entry potentially introduce aliasing via parameter
    passing, then
 
-   * the corresponding formal parameter shall be immutable; and
+   * the corresponding formal parameter shall be either
+      * immutable; or
+      * of mode **in** and of an anonymous access-to-constant type; and
 
    * if the ``global_item``'s mode is Output or In_Out, then the
-     corresponding formal parameter shall be of a by-copy type that is not an
-     access type.
+     corresponding formal parameter shall be immutable and of
+     a by-copy type.
 
 
 5. Where one of these rules prohibits the occurrence of an object V or any of
