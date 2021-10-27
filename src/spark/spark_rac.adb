@@ -1137,8 +1137,7 @@ package body SPARK_RAC is
       function To_Big_Integer (N : Node_Id) return Big_Integer is
       begin
          if SPARK_Atree.Compile_Time_Known_Value (N) then
-            return
-              From_Universal_Image (UI_Image (SPARK_Atree.Expr_Value (N)));
+            return From_String (UI_Image (SPARK_Atree.Expr_Value (N)));
          else
             return Value_Integer (RAC_Expr (N));
          end if;
@@ -2665,8 +2664,7 @@ package body SPARK_RAC is
 
       case Nkind (N) is
          when N_Integer_Literal =>
-            Res :=
-              Integer_Value (From_Universal_Image (UI_Image (Intval (N))), N);
+            Res := Integer_Value (From_String (UI_Image (Intval (N))), N);
 
          when N_Character_Literal =>
             Res := Enum_Value (N);
