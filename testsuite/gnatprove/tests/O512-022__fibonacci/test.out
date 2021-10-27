@@ -123,8 +123,8 @@ fib.ads:25:14: info: postcondition proved (CVC4: 1 VC)
 fib.ads:29:65: info: initialization of "p1" proved
 fib.ads:29:69: info: initialization of "p2" proved
 fib.ads:33:14: medium: postcondition might fail
-fib.ads:36:41: medium: "A1" might not be initialized in "ArrayPartitionedTransferSC"
-fib.ads:36:45: medium: "A2" might not be initialized in "ArrayPartitionedTransferSC"
+fib.ads:36:41: medium: "A1" might not be initialized in "ArrayPartitionedTransferSC" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A1" on all paths, make "A1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+fib.ads:36:45: medium: "A2" might not be initialized in "ArrayPartitionedTransferSC" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A2" on all paths, make "A2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 fib.ads:41:50: info: index check proved (CVC4: 2 VC)
 fib.ads:41:58: info: index check proved (CVC4: 2 VC)
 fib.ads:42:55: info: index check proved (CVC4: 2 VC)
@@ -132,8 +132,8 @@ fib.ads:42:68: info: index check proved (CVC4: 2 VC)
 fib.ads:43:49: medium: "A1" might not be initialized
 fib.ads:43:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) [possible fix: loop at fib.adb:139 should mention A2 in a loop invariant]
 fib.ads:43:57: medium: "A2" might not be initialized
-fib.ads:47:43: medium: "A1" might not be initialized in "ArrayPartitionedTransferSIFL"
-fib.ads:47:47: medium: "A2" might not be initialized in "ArrayPartitionedTransferSIFL"
+fib.ads:47:43: medium: "A1" might not be initialized in "ArrayPartitionedTransferSIFL" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A1" on all paths, make "A1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+fib.ads:47:47: medium: "A2" might not be initialized in "ArrayPartitionedTransferSIFL" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A2" on all paths, make "A2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 fib.ads:51:49: info: index check proved (CVC4: 2 VC)
 fib.ads:51:57: info: index check proved (CVC4: 2 VC)
 fib.ads:52:54: info: index check proved (CVC4: 2 VC)

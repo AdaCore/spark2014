@@ -1,4 +1,4 @@
-report.adb:5:06: medium: "Test_Name" might not be initialized in "Report"
+report.adb:5:06: medium: "Test_Name" might not be initialized in "Report" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Test_Name" at declaration or in the package body statements]
 report.adb:14:06: info: range check proved (CVC4: 4 VC)
 report.adb:14:35: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 report.adb:14:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

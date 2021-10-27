@@ -9,6 +9,6 @@ test.adb:11:13: info: add a contract to analyze it separately from calling conte
 test.adb:11:13: info: local subprogram "Test_Smthng" only analyzed in the context of calls
 test.adb:16:14: info: add a contract to analyze it separately from calling contexts
 test.adb:16:14: info: local subprogram "Test2" only analyzed in the context of calls
-test.adb:18:07: medium: "Done" might not be initialized in "Test2"
+test.adb:18:07: medium: "Done" might not be initialized in "Test2" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Done" on all paths or make "Done" an IN OUT parameter]
 test.adb:19:07: info: initialization of "Success" proved
 test.ads:6:34: info: initialization of "Success" proved

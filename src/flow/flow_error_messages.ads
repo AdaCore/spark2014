@@ -86,19 +86,25 @@ package Flow_Error_Messages is
    procedure Error_Msg_Flow
      (E            : Entity_Id;
       Msg          : String;
+      Details      : String        := "";
+      Fix          : String        := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
       Suppressed   : out Boolean;
       F1           : Flow_Id       := Null_Flow_Id;
       F2           : Flow_Id       := Null_Flow_Id;
       F3           : Flow_Id       := Null_Flow_Id;
+      FF1          : Flow_Id       := Null_Flow_Id;
+      FF2          : Flow_Id       := Null_Flow_Id;
       Tag          : Flow_Tag_Kind := Empty_Tag;
       SRM_Ref      : String        := "";
       Tracefile    : String        := "";
       Continuation : Boolean       := False)
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
-     and then (if Continuation then Tracefile = "")
+     and then (if Present (FF2) then Present (FF1))
+     and then (if Continuation
+               then Tracefile = "" and then Details = "" and then Fix = "")
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
                  when Empty_Tag =>
@@ -110,8 +116,10 @@ package Flow_Error_Messages is
                  when Flow_Warning_Kind =>
                    Severity = Warning_Kind);
    --  Output a message attached to the given node with a substitution
-   --  using F1, F2 and F3. It also adds a JSON entry in the "unit.flow" file
-   --  for the given entity E.
+   --  using F1, F2 and F3. If not empty, the details and possible fix for the
+   --  check are appended to the message with a substitution for Fix using FF1
+   --  and FF2. It also adds a JSON entry in the "unit.flow" file for the given
+   --  entity E.
    --
    --  The substitution characters used are slightly different from the
    --  standard GNAT ones defined in Errout.
@@ -127,11 +135,15 @@ package Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA           : in out Flow_Analysis_Graphs;
       Msg          : String;
+      Details      : String                := "";
+      Fix          : String                := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
       F1           : Flow_Id               := Null_Flow_Id;
       F2           : Flow_Id               := Null_Flow_Id;
       F3           : Flow_Id               := Null_Flow_Id;
+      FF1          : Flow_Id               := Null_Flow_Id;
+      FF2          : Flow_Id               := Null_Flow_Id;
       Tag          : Flow_Tag_Kind         := Empty_Tag;
       SRM_Ref      : String                := "";
       Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
@@ -139,7 +151,9 @@ package Flow_Error_Messages is
       Continuation : Boolean               := False)
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
-     and then (if Continuation then Path.Is_Empty)
+     and then (if Present (FF2) then Present (FF1))
+     and then (if Continuation
+               then Path.Is_Empty and then Details = "" and then Fix = "")
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
                  when Empty_Tag =>

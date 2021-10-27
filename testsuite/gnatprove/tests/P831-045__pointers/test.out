@@ -16,7 +16,7 @@ n04.adb:36:03: info: initialization of "X" proved
 n04.adb:37:03: info: initialization of "Y" proved
 n04.adb:40:08: high: "var0" is not initialized
 n04.adb:42:12: warning: "Y" is set by "Z_In" but not used after the call
-n05.adb:15:20: medium: "A" is not set in "Out_A"
+n05.adb:15:20: medium: "A" is not set in "Out_A" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "A" on all paths or make "A" an IN OUT parameter]
 n05.adb:15:20: warning: formal parameter "A" is not referenced [-gnatwf]
 n05.adb:15:20: warning: unused variable "A"
 n05.adb:22:19: warning: "A" is not modified, parameter type could be rewritten as 'access constant Integer'

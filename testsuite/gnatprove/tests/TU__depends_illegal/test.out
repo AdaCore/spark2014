@@ -46,7 +46,7 @@ depends_illegal_3.adb:15:38: medium: incorrect dependency "Par1 => Par2"
 depends_illegal_3.adb:18:20: high: overflow check might fail, cannot prove lower bound for Par2 + Y (e.g. when Par2 = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention Par2 and Y in a precondition]
 depends_illegal_3.adb:19:20: high: overflow check might fail, cannot prove lower bound for Par1 - Y (e.g. when Par1 = Integer'First and Y = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention Par1 and Y in a precondition]
 depends_illegal_3.adb:23:18: info: initialization of "Par1" proved
-depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2"
+depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Par2" on all paths or make "Par2" an IN OUT parameter]
 depends_illegal_3.adb:29:11: info: data dependencies proved
 depends_illegal_3.adb:29:33: info: initialization of "X" proved
 depends_illegal_3.adb:30:11: info: flow dependencies proved

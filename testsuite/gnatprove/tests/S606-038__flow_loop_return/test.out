@@ -1,4 +1,4 @@
-p.adb:1:14: high: "Y" is not initialized in "P"
+p.adb:1:14: high: "Y" is not initialized in "P" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Y" on all paths or make "Y" an IN OUT parameter]
 p.adb:1:14: warning: unused variable "Y"
 p.adb:9:07: info: data dependencies proved
 p.adb:9:28: info: initialization of "Y" proved

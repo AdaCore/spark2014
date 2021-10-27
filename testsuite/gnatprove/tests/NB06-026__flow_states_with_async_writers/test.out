@@ -1,5 +1,5 @@
-initializing_state_abstractions.adb:5:04: high: "A_1" constituent of "State_A" is not initialized in "Initializing_State_Abstractions"
+initializing_state_abstractions.adb:5:04: high: "A_1" constituent of "State_A" is not initialized in "Initializing_State_Abstractions" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "A_1" constituent of "State_A" at declaration or in the package body statements]
 initializing_state_abstractions.adb:5:04: high: initialization of "Initializing_State_Abstractions.State_A" is specified at initializing_state_abstractions.ads:4
-initializing_state_abstractions.adb:7:04: high: "B_1" constituent of "State_B" is not initialized in "Initializing_State_Abstractions"
+initializing_state_abstractions.adb:7:04: high: "B_1" constituent of "State_B" is not initialized in "Initializing_State_Abstractions" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "B_1" constituent of "State_B" at declaration or in the package body statements]
 initializing_state_abstractions.adb:7:04: high: initialization of "Initializing_State_Abstractions.State_B" is specified at initializing_state_abstractions.ads:4
 initializing_state_abstractions.ads:4:03: info: flow dependencies proved

@@ -1,4 +1,4 @@
-device.adb:17:04: high: "Register" constituent of "State" is not written in "Device"
+device.adb:17:04: high: "Register" constituent of "State" is not written in "Device" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Register" constituent of "State" at declaration or in the package body statements]
 device.adb:17:04: high: initialization of "Device.State" is specified at device.ads:5
 device.adb:23:11: info: data dependencies proved
 device.adb:23:33: info: initialization of "Register" constituent of "State" proved

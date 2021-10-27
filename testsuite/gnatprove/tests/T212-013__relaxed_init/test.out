@@ -91,8 +91,8 @@ test_init_by_proof_mem.adb:41:22: info: assertion proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:41:22: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_init_by_proof_mem.adb:41:39: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_init_by_proof_out_params.adb:25:07: info: range check proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:34:17: high: "X.X" is not initialized in "P"
-test_init_by_proof_out_params.adb:34:17: high: "X.Z" is not initialized in "P"
+test_init_by_proof_out_params.adb:34:17: high: "X.X" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test_init_by_proof_out_params.adb:34:17: high: "X.Z" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Z" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_init_by_proof_out_params.adb:41:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:55:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:63:39: info: index check proved (CVC4: 2 VC)
@@ -103,18 +103,18 @@ test_init_by_proof_out_params.adb:83:17: warning: "X" is not modified, could be 
 test_init_by_proof_out_params.adb:84:39: info: index check proved (CVC4: 2 VC)
 test_init_by_proof_out_params.adb:97:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:111:17: warning: "X" is not modified, could be IN
-test_init_by_proof_out_params.adb:118:17: high: "X" is not initialized in "P"
+test_init_by_proof_out_params.adb:118:17: high: "X" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_init_by_proof_out_params.adb:119:13: high: "X" is not initialized
 test_init_by_proof_out_params.adb:119:39: info: index check proved (CVC4: 2 VC)
 test_init_by_proof_out_params.adb:125:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:126:39: info: index check proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:132:17: high: "X.C" is not initialized in "P"
+test_init_by_proof_out_params.adb:132:17: high: "X.C" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_init_by_proof_out_params.adb:133:30: high: "X.C" is not initialized
 test_init_by_proof_out_params.adb:133:35: info: index check proved (CVC4: 2 VC)
 test_init_by_proof_out_params.adb:139:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:140:35: info: index check proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:146:17: high: "X.C.X" is not initialized in "P"
-test_init_by_proof_out_params.adb:146:17: high: "X.C.Z" is not initialized in "P"
+test_init_by_proof_out_params.adb:146:17: high: "X.C.X" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C.X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test_init_by_proof_out_params.adb:146:17: high: "X.C.Z" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C.Z" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_init_by_proof_out_params.adb:153:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:167:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:187:07: medium: precondition might fail

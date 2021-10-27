@@ -1,5 +1,5 @@
 formal_parameters_illegal.adb:10:04: warning: analyzing unreferenced procedure "Formal_Not_Fully_Initialized"
-formal_parameters_illegal.adb:10:44: high: "Rec.B" is not initialized in "Formal_Not_Fully_Initialized"
+formal_parameters_illegal.adb:10:44: high: "Rec.B" is not initialized in "Formal_Not_Fully_Initialized" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Rec.B" on all paths, make "Rec" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 formal_parameters_illegal.adb:27:19: info: postcondition proved (CVC4: 1 VC)
 formal_parameters_illegal.adb:27:29: high: "Arr" is not initialized at subprogram entry
 formal_parameters_illegal.adb:30:14: high: "Arr" is not initialized

@@ -1,5 +1,5 @@
 foo.adb:3:16: warning: unused initial value of "Y"
-foo.adb:4:16: high: "Z" is not initialized in "Foo"
+foo.adb:4:16: high: "Z" is not initialized in "Foo" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Z" on all paths or make "Z" an IN OUT parameter]
 foo.adb:9:04: warning: statement has no effect
 foo.adb:10:09: warning: unused assignment
 foo.adb:12:09: warning: unused assignment

@@ -3,7 +3,7 @@ test.adb:32:17: info: postcondition proved (CVC4: 1 VC)
 test.adb:38:04: warning: analyzing unreferenced procedure "Detect_Uninitialised_In_Out"
 test.adb:43:07: medium: precondition might fail
 test.adb:43:23: high: "V" is not initialized
-test.adb:46:27: high: "X" is not initialized in "T_Out_Param"
+test.adb:46:27: high: "X" is not initialized in "T_Out_Param" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
 test.adb:47:16: high: "X" is not initialized
 test.adb:48:17: high: "X" is not initialized
 test.adb:48:17: info: postcondition proved (CVC4: 1 VC)

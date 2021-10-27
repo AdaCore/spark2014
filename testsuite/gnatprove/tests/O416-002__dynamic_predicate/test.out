@@ -162,6 +162,6 @@ dynamic_preds_rte.ads:5:71: medium: overflow check might fail, cannot prove uppe
 dynamic_preds_rte.ads:16:29: medium: divide by zero might fail
 dynamic_preds_rte.ads:19:31: medium: divide by zero might fail
 dynamic_preds_rte.ads:21:33: info: initialization of "X" proved
-dynamic_preds_rte.ads:24:34: medium: "X" might not be initialized in "Create_Small_Array"
+dynamic_preds_rte.ads:24:34: medium: "X" might not be initialized in "Create_Small_Array" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dynamic_preds_rte.ads:27:41: info: initialization of "X" proved
 dynamic_preds_rte.ads:28:42: info: initialization of "X" proved

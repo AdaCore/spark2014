@@ -54,7 +54,7 @@ test.adb:96:30: info: initialization of "X" proved
 test.adb:99:39: info: cannot unroll loop (too many loop iterations)
 test.adb:100:41: info: unrolling loop
 test.adb:109:04: warning: analyzing unreferenced procedure "For_Test_01"
-test.adb:109:27: high: "X" is not initialized in "For_Test_01"
+test.adb:109:27: high: "X" is not initialized in "For_Test_01" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
 test.adb:109:27: warning: unused variable "X"
 test.adb:112:33: info: cannot unroll loop (value of loop bounds)
 test.adb:112:33: warning: statement has no effect

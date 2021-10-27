@@ -93,7 +93,7 @@ textio.adb:52:06: info: disjoint contract cases proved (CVC4: 1 VC)
 textio.adb:76:20: info: range check proved (CVC4: 2 VC)
 textio.adb:106:20: info: range check proved (CVC4: 2 VC)
 textio.adb:138:07: info: precondition proved (CVC4: 1 VC)
-textio.adb:145:39: medium: "Result" might not be initialized in "Get_Rest"
+textio.adb:145:39: medium: "Result" might not be initialized in "Get_Rest" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Result" on all paths, make "Result" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 textio.adb:145:60: info: initialization of "Num" proved
 textio.adb:146:09: info: data dependencies proved
 textio.adb:152:23: info: index check proved (CVC4: 2 VC)

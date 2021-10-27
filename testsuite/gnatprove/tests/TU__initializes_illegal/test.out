@@ -27,7 +27,7 @@ initializes_illegal_4.ads:63:11: info: flow dependencies proved
 initializes_illegal_4.ads:65:22: high: "G_Var" must be mentioned as an input of the Initializes aspect of "Pac4" (SPARK RM 7.1.5(11))
 initializes_illegal_5.ads:1:14: error: current unit must also be private descendant of "Initializes_Illegal_5"
 initializes_illegal_5.ads:14:66: error: input item "Pr_Var" cannot denote a visible object or state of package "Initializes_Illegal_5"
-initializes_illegal_6.adb:8:04: high: "Var" constituent of "State" is not initialized in "Initializes_Illegal_6"
+initializes_illegal_6.adb:8:04: high: "Var" constituent of "State" is not initialized in "Initializes_Illegal_6" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Var" constituent of "State" at declaration or in the package body statements]
 initializes_illegal_6.adb:8:04: high: initialization of "Initializes_Illegal_6.State" is specified at initializes_illegal_6.ads:14
 initializes_illegal_6.ads:14:08: info: flow dependencies proved
 initializes_illegal_6.ads:17:11: info: data dependencies proved

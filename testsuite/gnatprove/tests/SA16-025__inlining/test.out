@@ -16,9 +16,9 @@ time.adb:35:07: warning: loop condition is stable
 time.adb:35:07: warning: statement has no effect
 time.ads:71:40: warning: unused initial value of "time_in"
 time.ads:72:40: warning: unused initial value of "seconds"
-time.ads:73:40: high: "time_out.day" is not initialized in "add_DDS_duration_seconds"
-time.ads:73:40: high: "time_out.fraction" is not initialized in "add_DDS_duration_seconds"
-time.ads:73:40: high: "time_out.second" is not initialized in "add_DDS_duration_seconds"
-time.ads:73:40: high: "time_out.valid" is not initialized in "add_DDS_duration_seconds"
-time.ads:73:40: high: "time_out.year" is not initialized in "add_DDS_duration_seconds"
+time.ads:73:40: high: "time_out.day" is not initialized in "add_DDS_duration_seconds" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "time_out.day" on all paths, make "time_out" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+time.ads:73:40: high: "time_out.fraction" is not initialized in "add_DDS_duration_seconds" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "time_out.fraction" on all paths, make "time_out" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+time.ads:73:40: high: "time_out.second" is not initialized in "add_DDS_duration_seconds" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "time_out.second" on all paths, make "time_out" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+time.ads:73:40: high: "time_out.valid" is not initialized in "add_DDS_duration_seconds" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "time_out.valid" on all paths, make "time_out" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+time.ads:73:40: high: "time_out.year" is not initialized in "add_DDS_duration_seconds" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "time_out.year" on all paths, make "time_out" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 time.ads:73:40: warning: unused variable "time_out"

@@ -1,6 +1,6 @@
 angles-hall.adb:14:15: warning: "Position" is set by "Update" but not used after the call
 angles-hall.ads:3:14: warning: "X" constituent of "State" is not modified, could be INPUT
-angles-hall.ads:3:22: high: "Position" is not initialized in "Update"
+angles-hall.ads:3:22: high: "Position" is not initialized in "Update" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Position" on all paths or make "Position" an IN OUT parameter]
 angles-hall.ads:3:22: warning: unused variable "Position"
 angles-hall.ads:4:06: info: data dependencies proved
 angles-hall.ads:4:35: low: unused global "Angles.State"

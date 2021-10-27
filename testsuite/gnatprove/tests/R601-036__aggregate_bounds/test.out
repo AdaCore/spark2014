@@ -1,4 +1,4 @@
-test.ads:10:33: high: "D" is not initialized in "Set"
+test.ads:10:33: high: "D" is not initialized in "Set" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "D" on all paths, make "D" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test.ads:12:15: high: "D" is not initialized
 test.ads:12:15: medium: postcondition might fail
 test.ads:12:19: medium: range check might fail

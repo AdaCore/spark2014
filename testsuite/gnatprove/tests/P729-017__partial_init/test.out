@@ -3,6 +3,6 @@ partial_init.adb:5:22: medium: "V.X" is not set
 partial_init.adb:9:07: info: initialization of "V" proved
 partial_init.adb:12:22: info: assertion proved (CVC4: 1 VC)
 partial_init.ads:2:08: info: flow dependencies proved
-partial_init.ads:12:04: high: "G.Y" is not initialized in "Partial_Init"
-partial_init.ads:14:22: high: "V.Y" is not initialized in "Create"
-partial_init.ads:14:22: medium: "V.X" is not set in "Create"
+partial_init.ads:12:04: high: "G.Y" is not initialized in "Partial_Init" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "G.Y" at declaration or in the package body statements]
+partial_init.ads:14:22: high: "V.Y" is not initialized in "Create" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "V.Y" on all paths, make "V" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+partial_init.ads:14:22: medium: "V.X" is not set in "Create" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "V.X" on all paths, make "V" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

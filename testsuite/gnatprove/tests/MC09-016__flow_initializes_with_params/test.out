@@ -13,7 +13,7 @@ p1.ads:20:11: info: flow dependencies proved
 p1.ads:23:17: info: initialization of "X" proved
 p1.ads:24:17: info: initialization of "Y" proved
 p1.ads:25:11: info: flow dependencies proved
-p1.ads:28:17: high: "X" is not initialized in "D"
+p1.ads:28:17: high: "X" is not initialized in "D" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
 p1.ads:29:17: info: initialization of "Y" proved
 p1.ads:30:11: info: flow dependencies proved
 p2.adb:9:14: info: flow dependencies proved

@@ -2092,8 +2092,9 @@ package body Flow.Analysis is
 
          V_Initial_Atr : V_Attributes renames FA.Atr (V_Initial);
 
-         N            : Node_Or_Entity_Id;
-         Msg          : Unbounded_String;
+         N                 : Node_Or_Entity_Id;
+         Msg, Details, Fix : Unbounded_String;
+         Fix_F1, Fix_F2    : Flow_Id;
 
          V_Goal       : Flow_Graphs.Vertex_Id;
 
@@ -2211,6 +2212,87 @@ package body Flow.Analysis is
             end if;
             if Is_Final_Use and not Is_Global then
                Append (Msg, " in &");
+
+               --  Here we build the Details and Fix messages. In the first
+               --  branch of the if statement, we deal with a variable that
+               --  isn't initialized after elaboration of a package, but is
+               --  mentioned in the (generated or not) Initializes aspect of
+               --  said package, either directly or through an abstract state.
+
+               if FA.Kind = Kind_Package then
+                  if FA.Is_Generative then
+                     Append (Details, "variable is mentioned in the generated "
+                                        & "Initializes contract");
+                  else
+                     pragma Assert (Var.Kind in Direct_Mapping | Record_Field);
+                     declare
+                        E          : constant Entity_Id :=
+                          Get_Direct_Mapping_Id (Var);
+                        Is_Visible : constant Boolean   :=
+                          (if Ekind (E) = E_Abstract_State
+                           then Scope (E) = FA.Spec_Entity
+                           else List_Containing
+                                  (Enclosing_Declaration (E)) =
+                                Visible_Declarations
+                                  (Package_Specification (FA.Spec_Entity)));
+
+                     begin
+                        if Is_Visible then
+                           Append (Details, "variable ");
+                        else
+                           Append (Details, "encapsulating state ");
+                        end if;
+
+                        Append (Details, "is mentioned in the Initializes "
+                                           & "contract of the package "
+                                           & "declaration");
+                     end;
+                  end if;
+
+                  Append (Fix, "initialize & at declaration");
+                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                     Append (Fix, " or in the package body statements");
+                  end if;
+                  Fix_F1 := Var;
+
+               --  We are dealing with an OUT parameter that is not initialized
+               --  on return. We suggest two fixes by default and add a third
+               --  one if the variable is a record component or an array.
+
+               else
+                  declare
+                     Is_Record_Component_Or_Array : constant Boolean :=
+                       Var.Kind = Record_Field or else Is_Array (Var);
+
+                  begin
+                     --  Construction of the Details message
+                     Append (Details, "OUT parameter should be ");
+                     if Is_Record_Component_Or_Array then
+                        Append (Details, "fully ");
+                     end if;
+                     Append (Details, "initialized on return");
+
+                     --  First possible fix
+                     Append (Fix, "initialize & on all paths");
+                     Fix_F1 := Var;
+
+                     --  Second possible fix
+                     if Is_Record_Component_Or_Array then
+                        Append (Fix, ", ");
+                     else
+                        Append (Fix, " or ");
+                     end if;
+                     Append (Fix, "make & an IN OUT parameter");
+                     Fix_F2 := Entire_Variable
+                                 (Change_Variant (Var, Normal_Use));
+
+                     --  Third possible fix
+                     if Is_Record_Component_Or_Array then
+                        Append (Fix, " or annotate it with aspect "
+                                & "Relaxed_Initialization");
+                     end if;
+                  end;
+               end if;
             end if;
             if Is_Main_Global_Input (V_Initial_Atr) then
                Append (Msg,
@@ -2253,9 +2335,13 @@ package body Flow.Analysis is
               (FA       => FA,
                Path     => Path,
                Msg      => To_String (Msg),
+               Details  => To_String (Details),
+               Fix      => To_String (Fix),
                N        => N,
                F1       => Var,
                F2       => Direct_Mapping_Id (FA.Spec_Entity),
+               FF1      => Fix_F1,
+               FF2      => Fix_F2,
                Tag      => Uninitialized,
                Severity => (case Kind is
                             when Unknown => (if Default_Init

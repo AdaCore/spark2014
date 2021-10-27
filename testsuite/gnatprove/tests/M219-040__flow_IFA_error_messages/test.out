@@ -4,18 +4,18 @@ test.adb:16:14: medium: "Y" might not be initialized
 test.adb:16:16: medium: overflow check might fail, cannot prove lower bound for Y - X [reason for check: result of subtraction must fit in a 32-bits machine integer]
 test.adb:31:07: medium: exception might be raised
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
-test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
+test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "C" on all paths or make "C" an IN OUT parameter]
 test.adb:40:23: info: cannot unroll loop (too many loop iterations)
 test.adb:41:20: medium: overflow check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if B >= 0 then A <= Integer'Last - B else A >= Integer'First - B) to subprogram at line 38]
 test.adb:41:25: info: division check proved (CVC4: 1 VC)
 test.adb:45:27: info: overflow check proved (CVC4: 2 VC)
 test.adb:45:32: info: division check proved (CVC4: 1 VC)
 test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"
-test.adb:56:31: medium: "Export" might not be initialized in "Uninitialized_4"
+test.adb:56:31: medium: "Export" might not be initialized in "Uninitialized_4" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Export" on all paths or make "Export" an IN OUT parameter]
 test.adb:62:20: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 61 should mention A in a loop invariant]
 test.adb:66:26: info: overflow check proved (CVC4: 2 VC)
 test.adb:76:04: warning: analyzing unreferenced procedure "Uninitialized_5"
-test.adb:76:31: medium: "A" might not be initialized in "Uninitialized_5"
+test.adb:76:31: medium: "A" might not be initialized in "Uninitialized_5" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "A" on all paths or make "A" an IN OUT parameter]
 test.adb:79:21: high: "C" is not initialized
 test.adb:79:23: info: cannot unroll loop (too many loop iterations)
 test.adb:80:15: high: "A" is not initialized

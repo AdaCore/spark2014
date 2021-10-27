@@ -34,6 +34,8 @@ data_initialization.ads:12:07: warning: unused variable "P1"
 data_initialization.ads:13:07: high: "P2.Num" is not initialized in "Proc"
    13 |      P2 :    out Data;
       |      ^~
+  reason for check: OUT parameter should be fully initialized on return
+  possible fix: initialize "P2.Num" on all paths, make "P2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization
 
 data_initialization.ads:14:07: warning: "P3" is not modified, could be IN
    14 |      P3 : in out Data)

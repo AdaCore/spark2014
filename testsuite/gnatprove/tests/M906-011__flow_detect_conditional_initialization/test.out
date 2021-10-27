@@ -39,7 +39,7 @@ uninitialized.adb:107:04: warning: analyzing unreferenced procedure "Init_Array_
 uninitialized.adb:107:44: info: initialization of "An_Arr" proved
 uninitialized.adb:109:24: info: unrolling loop
 uninitialized.adb:115:04: warning: analyzing unreferenced procedure "Init_Array_Through_Call_Error"
-uninitialized.adb:115:45: medium: "An_Arr" might not be initialized in "Init_Array_Through_Call_Error"
+uninitialized.adb:115:45: medium: "An_Arr" might not be initialized in "Init_Array_Through_Call_Error" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "An_Arr" on all paths, make "An_Arr" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 uninitialized.adb:117:24: info: unrolling loop
 uninitialized.adb:118:15: medium: "An_Arr" might not be initialized
 uninitialized.adb:118:25: info: division check proved (CVC4: 10 VC)

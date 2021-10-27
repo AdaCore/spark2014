@@ -4,8 +4,8 @@ initialization_warnings.adb:17:12: medium: "An_Arr" might not be initialized
 initialization_warnings.adb:22:23: info: unrolling loop
 initialization_warnings.adb:29:23: info: unrolling loop
 initialization_warnings.adb:33:12: medium: "A" might not be initialized
-initialization_warnings.ads:9:29: medium: "An_Arr" might not be initialized in "Init_Arr_Warn"
-initialization_warnings.ads:11:31: medium: "An_Arr" might not be initialized in "Init_Arr_Warn_2"
+initialization_warnings.ads:9:29: medium: "An_Arr" might not be initialized in "Init_Arr_Warn" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "An_Arr" on all paths, make "An_Arr" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+initialization_warnings.ads:11:31: medium: "An_Arr" might not be initialized in "Init_Arr_Warn_2" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "An_Arr" on all paths, make "An_Arr" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 initialization_warnings.ads:11:53: info: initialization of "X" proved
 initialization_warnings.ads:14:11: info: data dependencies proved
 initialization_warnings.ads:14:32: medium: "A" might not be initialized
