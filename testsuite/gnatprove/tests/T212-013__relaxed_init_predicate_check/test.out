@@ -1,6 +1,7 @@
 test_pred.adb:9:21: warning: unused variable "X"
 test_pred.adb:16:26: info: data dependencies proved
 test_pred.adb:21:22: info: assertion proved (CVC4: 1 VC)
+test_pred.adb:21:29: medium: in inlined predicate at test_pred.adb:14
 test_pred.adb:21:29: medium: initialization check might fail
 test_pred.adb:21:29: medium: predicate check might fail, cannot prove C.X > 0
 test_pred.adb:21:48: info: initialization check proved (CVC4: 1 VC)
@@ -17,6 +18,7 @@ test_pred.adb:49:50: info: initialization check proved (CVC4: 1 VC)
 test_pred.adb:53:26: info: data dependencies proved
 test_pred.adb:58:22: info: assertion proved (CVC4: 1 VC)
 test_pred.adb:58:31: info: initialization check proved (CVC4: 1 VC; Trivial: 4 VC)
+test_pred.adb:58:31: medium: in inlined predicate at test_pred.adb:49
 test_pred.adb:58:31: medium: predicate check might fail, cannot prove C.X > 0
 test_pred.adb:58:52: info: initialization check proved (CVC4: 1 VC)
 test_pred.adb:65:40: info: data dependencies proved
@@ -32,6 +34,7 @@ test_pred.adb:87:68: info: initialization check proved (CVC4: 1 VC)
 test_pred.adb:89:26: info: data dependencies proved
 test_pred.adb:94:22: info: assertion proved (CVC4: 1 VC)
 test_pred.adb:94:34: info: initialization check proved (CVC4: 1 VC; Trivial: 2 VC)
+test_pred.adb:94:34: medium: in inlined predicate at test_pred.adb:87
 test_pred.adb:94:34: medium: predicate check might fail, cannot prove My_Rec_D_3.X > 0
 test_pred.adb:94:36: info: initialization check proved (CVC4: 1 VC)
 test_pred.adb:101:40: info: data dependencies proved

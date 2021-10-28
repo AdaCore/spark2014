@@ -48,6 +48,7 @@ with Osint;                     use Osint;
 with Output;                    use Output;
 with SA_Messages;               use SA_Messages;
 with Sinput;                    use Sinput;
+with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
 with SPARK_RAC;                 use SPARK_RAC;
 with Uintp;                     use Uintp;
 
@@ -1219,6 +1220,7 @@ package body Gnat2Why.Error_Messages is
          Verdict        : Cntexmp_Verdict;
          Cntexmp        : constant Cntexample_File_Maps.Map :=
                             From_JSON (Rec.Cntexmp);
+         Check_Info     : Check_Info_Type := VC.Check_Info;
 
       --  Start of processing for Handle_Result
 
@@ -1299,6 +1301,40 @@ package body Gnat2Why.Error_Messages is
             Write_Eol;
          end if;
 
+         --  If the VC comes from an inlined predicate or expression function
+         --  body, then add a continuation referencing the unproved node in
+         --  the inlined expression.
+
+         if Rec.EI.Inline.Inline
+           and then Present (Rec.EI.Node)
+         then
+            declare
+               function Is_Subprogram_Body (X : Node_Id) return Boolean is
+                 (Nkind (X) = N_Subprogram_Body);
+               function Enclosing_Subprogram is new First_Parent_With_Property
+                 (Is_Subprogram_Body);
+
+               Subp_Body    : constant Node_Id :=
+                 Enclosing_Subprogram (Rec.EI.Node);
+               In_Predicate : constant Boolean :=
+                 Present (Subp_Body)
+                 and then Is_Predicate_Function
+                   (Unique_Defining_Entity (Subp_Body));
+               --  To know whether we are inlining an expression function or
+               --  a predicate, look for the encolsing subprogram body, and
+               --  check if it is a predicate function.
+
+            begin
+               Check_Info.Continuation.Append
+                 (Continuation_Type'
+                    (Rec.EI.Node,
+                     To_Unbounded_String
+                       ("in inlined " &
+                        (if In_Predicate then "predicate"
+                         else "expression function body"))));
+            end;
+         end if;
+
          Emit_Proof_Result
            (Node        => Node,
             Id          => Rec.Id,
@@ -1315,7 +1351,7 @@ package body Gnat2Why.Error_Messages is
             Editor_Cmd  => To_String (Rec.Editor_Cmd),
             Stats       => Rec.Stats,
             Extra_Msg   => CP_Msg,
-            Check_Info  => VC.Check_Info);
+            Check_Info  => Check_Info);
       end Handle_Result;
 
       --------------------

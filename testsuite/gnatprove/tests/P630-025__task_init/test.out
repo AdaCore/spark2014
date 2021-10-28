@@ -20,6 +20,7 @@ decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: predicate check proved (CVC4: 2 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
+decadriver.adb:133:38: medium: in inlined predicate at decadriver.ads:67
 decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0
 decadriver.adb:133:50: info: range check proved (CVC4: 2 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC4: 2 VC)
@@ -27,6 +28,7 @@ decadriver.adb:135:38: info: predicate check proved (CVC4: 2 VC)
 decadriver.adb:145:10: info: initialization of "Next_Idx" proved
 decadriver.adb:152:60: info: range check proved (CVC4: 2 VC)
 decadriver.adb:154:34: info: overflow check proved (CVC4: 2 VC)
+decadriver.adb:156:35: medium: in inlined predicate at decadriver.ads:66
 decadriver.adb:156:35: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0
 decadriver.adb:157:35: info: predicate check proved (CVC4: 2 VC)
 decadriver.adb:158:35: info: predicate check proved (CVC4: 2 VC)
@@ -100,6 +102,7 @@ decadriver.ads:128:14: info: data dependencies proved
 decadriver.ads:129:09: info: flow dependencies proved
 decadriver.ads:131:07: warning: no check message justified by this pragma
 decadriver.ads:144:14: info: flow dependencies proved
+decadriver.ads:150:34: medium: in inlined predicate at decadriver.ads:66
 decadriver.ads:150:34: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0
 decadriver.ads:180:14: info: data dependencies proved
 decadriver.ads:181:09: info: flow dependencies proved
@@ -132,5 +135,3 @@ decadriver.ads:332:49: medium: this interrupt might be reserved
 decadriver.ads:333:09: info: data dependencies proved
 decadriver.ads:342:49: medium: incorrect dependency "Transmitter => Driver_Type"
 decadriver.ads:346:07: warning: no check message justified by this pragma
-
-

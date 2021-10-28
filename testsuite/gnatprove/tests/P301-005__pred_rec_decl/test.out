@@ -14,10 +14,12 @@ preds.adb:34:07: medium: predicate check might fail on default value
 preds.adb:40:07: info: initialization of "Tmp" proved
 preds.adb:40:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.adb:46:07: info: initialization of "Tmp" proved
+preds.adb:46:07: medium: in inlined predicate at preds.ads:47
 preds.adb:46:07: medium: predicate check might fail on default value, cannot prove Arr_Bad (K) /= 0
 preds.adb:52:07: info: initialization of "Tmp" proved
 preds.adb:52:07: info: predicate check proved on default value (CVC4: 3 VC)
 preds.adb:58:07: info: initialization of "Tmp" proved
+preds.adb:58:07: medium: in inlined predicate at preds.ads:64
 preds.adb:58:07: medium: predicate check might fail on default value, cannot prove Rec_Bad.I /= 0
 preds.adb:63:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_OK"
 preds.adb:63:34: info: initialization of "X" proved
@@ -58,6 +60,7 @@ preds.ads:55:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.ads:61:07: medium: in default value at preds.adb:58
 preds.ads:61:07: medium: predicate check might fail on default value
 preds.ads:62:07: medium: in default value at preds.adb:58
+preds.ads:62:07: medium: in inlined predicate at preds.ads:47
 preds.ads:62:07: medium: predicate check might fail on default value, cannot prove Arr_Bad (K) /= 0
 preds.ads:66:29: info: initialization of "X" proved
 preds.ads:67:30: info: initialization of "X" proved

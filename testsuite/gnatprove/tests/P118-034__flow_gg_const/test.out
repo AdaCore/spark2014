@@ -14,6 +14,7 @@ Generated contracts for Main
          p__var
 main.adb:20:19: info: precondition proved (Trivial: 1 VC)
 main.adb:20:19: medium: assertion might fail, cannot prove Variable_Constant
+main.adb:20:19: medium: in inlined expression function body at main.adb:15
 Generated contracts for P.Read_Variable
    Global =>
       Input =>
