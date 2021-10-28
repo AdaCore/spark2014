@@ -4,11 +4,10 @@ main.adb:14:22: info: assertion proved (CVC4: 1 VC)
 main.adb:14:29: info: default initial condition proved (Trivial: 1 VC)
 main.adb:14:48: info: default initial condition proved (Trivial: 1 VC)
 main.adb:17:38: info: data dependencies proved
-main.adb:18:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type]
+main.adb:18:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: value must fit in component type]
 main.adb:20:15: info: range check proved (CVC4: 2 VC)
 main.adb:27:22: info: assertion proved (CVC4: 1 VC)
 main.adb:30:38: info: data dependencies proved
-main.adb:31:51: info: range check proved (CVC4: 2 VC)
 main.adb:37:22: info: assertion proved (CVC4: 1 VC)
 main.adb:40:14: high: all paths in "Test4" raise exceptions or do not terminate normally
 main.adb:40:38: info: data dependencies proved
@@ -29,7 +28,6 @@ main.adb:123:25: medium: assertion might fail
 main.adb:123:42: info: default initial condition on type "T" not available for proof in an assertion context
 main.adb:128:28: info: assertion proved (CVC4: 1 VC)
 main.adb:133:52: info: data dependencies proved
-main.adb:145:60: info: range check proved (CVC4: 2 VC)
 main.adb:153:25: medium: assertion might fail
 main.adb:153:42: info: default initial condition on type "T" not available for proof in an assertion context
 main.adb:154:25: info: assertion proved (CVC4: 1 VC)
