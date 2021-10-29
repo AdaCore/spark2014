@@ -7,11 +7,11 @@ main.adb:13:12: info: predicate check proved (CVC4: 1 VC)
 main.adb:19:14: warning: "TV" is set by "Divide_T" but not used after the call
 p.adb:8:14: info: add a contract to analyze it separately from calling contexts
 p.adb:8:14: info: local subprogram "Bad" only analyzed in the context of calls
-p.adb:10:08: info: predicate check proved (CVC4: 1 VC), in call inlined at p.adb:17
+p.adb:10:08: info: predicate check proved (CVC4: 2 VC), in call inlined at p.adb:17
 p.adb:10:40: info: overflow check proved (CVC4: 2 VC), in call inlined at p.adb:17
 p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17
 p.adb:14:04: info: initialization of "Var" proved
-p.adb:14:04: info: predicate check proved on default value (CVC4: 1 VC)
+p.adb:14:04: info: predicate check proved on default value (CVC4: 2 VC)
 p.adb:17:04: info: analyzing call to "Bad" in context
 sub.ads:12:49: error: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

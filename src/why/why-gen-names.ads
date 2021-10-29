@@ -301,8 +301,6 @@ package Why.Gen.Names is
       WNE_Dynamic_Property,
       WNE_Dynamic_Property_BV_Int, --  for bitvector when index of an array
 
-      WNE_Dynamic_Predicate,       --  toplevel predicate checking function
-
       WNE_Dynamic_Invariant,       --  dynamic invariant of a type
 
       WNE_Type_Invariant,          --  toplevel invariant checking function
