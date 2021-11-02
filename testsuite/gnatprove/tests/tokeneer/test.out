@@ -332,8 +332,10 @@ auditlog.ads:156:11: info: data dependencies proved
 auditlog.ads:168:11: info: data dependencies proved
 auditlog.ads:277:46: info: range check proved (CVC4: 2 VC)
 auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
+audittypes.ads:78:16: info: medium: in inlined predicate at commontypes.ads:60
 audittypes.ads:78:16: info: predicate check justified
 audittypes.ads:78:16: info: range check proved (CVC4: 1 VC)
+bio.adb:84:15: info: medium: in inlined predicate at commontypes.ads:60
 bio.adb:84:15: info: predicate check justified
 bio.adb:84:15: info: range check proved (CVC4: 1 VC)
 bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
@@ -523,6 +525,7 @@ certprocessing.ads:225:11: info: flow dependencies proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
 certprocessing.ads:241:11: info: data dependencies proved
 certprocessing.ads:242:11: info: flow dependencies proved
+certtypes.ads:63:21: info: medium: in inlined predicate at commontypes.ads:60
 certtypes.ads:63:21: info: predicate check justified
 certtypes.ads:63:21: info: range check proved (CVC4: 1 VC)
 clock.adb:49:11: info: flow dependencies proved
@@ -821,8 +824,10 @@ configdata.adb:1571:07: info: initialization of "DayStart" proved
 configdata.adb:1685:13: info: division check proved (CVC4: 1 VC)
 configdata.adb:1685:13: info: range check proved (CVC4: 2 VC)
 configdata.ads:30:08: info: flow dependencies proved
+configdata.ads:40:17: info: medium: in inlined predicate at commontypes.ads:60
 configdata.ads:40:17: info: predicate check justified
 configdata.ads:40:17: info: range check proved (CVC4: 1 VC)
+configdata.ads:49:21: info: medium: in inlined predicate at commontypes.ads:60
 configdata.ads:49:21: info: predicate check justified
 configdata.ads:49:21: info: range check proved (CVC4: 1 VC)
 configdata.ads:66:11: info: data dependencies proved
@@ -1297,6 +1302,7 @@ enrolment.ads:57:11: info: data dependencies proved
 enrolment.ads:63:11: info: flow dependencies proved
 enrolment.ads:78:22: info: postcondition proved (CVC4: 2 VC)
 floppy.ads:26:08: info: flow dependencies proved
+iandatypes.ads:36:12: info: medium: in inlined predicate at commontypes.ads:60
 iandatypes.ads:36:12: info: predicate check justified
 iandatypes.ads:36:12: info: range check proved (CVC4: 1 VC)
 keyboard.adb:67:07: info: initialization of "LocalData" proved
@@ -1312,6 +1318,7 @@ keyboard.ads:79:11: info: flow dependencies proved
 keyboard.ads:91:11: info: data dependencies proved
 keyboard.ads:92:11: info: flow dependencies proved
 keystore-interfac.ads:24:08: info: flow dependencies proved
+keystore-interfac.ads:96:20: info: medium: in inlined predicate at commontypes.ads:60
 keystore-interfac.ads:96:20: info: predicate check justified
 keystore-interfac.ads:96:20: info: range check proved (CVC4: 1 VC)
 keystore.adb:97:35: info: range check proved (CVC4: 2 VC)
@@ -1479,6 +1486,7 @@ poll.ads:50:11: info: data dependencies proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
 poll.ads:67:11: info: flow dependencies proved
 poll.ads:113:13: info: postcondition proved (CVC4: 13 VC)
+privtypes.ads:44:14: info: medium: in inlined predicate at commontypes.ads:60
 privtypes.ads:44:14: info: predicate check justified
 privtypes.ads:44:14: info: range check proved (CVC4: 1 VC)
 screen.adb:156:28: info: initialization of "OK" proved
@@ -1619,6 +1627,7 @@ stats.adb:49:57: info: overflow check proved (CVC4: 2 VC)
 stats.adb:64:51: info: overflow check proved (CVC4: 2 VC)
 stats.adb:79:53: info: overflow check proved (CVC4: 2 VC)
 stats.adb:94:47: info: overflow check proved (CVC4: 2 VC)
+stats.ads:30:18: info: medium: in inlined predicate at commontypes.ads:60
 stats.ads:30:18: info: predicate check justified
 stats.ads:30:18: info: range check proved (CVC4: 1 VC)
 stats.ads:44:20: info: initialization of "TheStats" proved
@@ -1730,6 +1739,7 @@ tismain.adb:1546:10: info: assertion proved (CVC4: 21 VC; Trivial: 11 VC)
 tismain.adb:1585:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1591:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1598:22: info: precondition proved (CVC4: 1 VC)
+tokenreader-interfac.ads:84:21: info: medium: in inlined predicate at commontypes.ads:60
 tokenreader-interfac.ads:84:21: info: predicate check justified
 tokenreader-interfac.ads:84:21: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:97:40: info: range check proved (CVC4: 2 VC)

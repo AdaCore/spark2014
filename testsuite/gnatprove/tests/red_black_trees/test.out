@@ -244,6 +244,7 @@ binary_trees.adb:498:26: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:498:26: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:498:36: info: range check proved (CVC4: 2 VC)
 binary_trees.adb:499:25: info: precondition proved (CVC4: 1 VC)
+binary_trees.adb:499:25: medium: in inlined expression function body at tree_model.ads:42
 binary_trees.adb:499:25: medium: postcondition might fail, cannot prove Get (P, I) = Get (Q, I)
 binary_trees.adb:499:41: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:499:41: info: precondition proved (CVC4: 1 VC)
@@ -395,6 +396,7 @@ binary_trees.adb:607:26: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:607:36: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:607:40: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:608:25: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:608:25: medium: in inlined expression function body at tree_model.ads:42
 binary_trees.adb:608:25: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get (P, I) = Get (Q, I)
 binary_trees.adb:608:41: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:608:41: info: precondition proved (CVC4: 2 VC)
@@ -412,6 +414,8 @@ binary_trees.adb:617:16: info: precondition proved (CVC4: 66 VC; Trivial: 22 VC)
 binary_trees.adb:621:56: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:622:24: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:622:24: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:622:24: medium: in inlined expression function body at tree_model.ads:54
+binary_trees.adb:622:24: medium: in inlined expression function body at tree_model.ads:54
 binary_trees.adb:622:24: medium: loop invariant might fail in first iteration, cannot prove M1 (I).K = M2 (I).K
 binary_trees.adb:622:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:622:38: info: range check proved (CVC4: 4 VC)
@@ -628,6 +632,7 @@ binary_trees.adb:841:26: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:841:40: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:841:44: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:842:25: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:842:25: medium: in inlined expression function body at tree_model.ads:42
 binary_trees.adb:842:25: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get (P, I) = Get (Q, I)
 binary_trees.adb:842:41: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:842:41: info: precondition proved (CVC4: 2 VC)
@@ -644,10 +649,13 @@ binary_trees.adb:857:16: info: precondition proved (CVC4: 6 VC)
 binary_trees.adb:858:16: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:858:16: info: precondition proved (CVC4: 6 VC)
 binary_trees.adb:858:45: info: range check proved (CVC4: 4 VC)
+binary_trees.adb:859:16: medium: in inlined expression function body at binary_trees.adb:45
 binary_trees.adb:859:16: medium: precondition might fail, cannot prove F.C (I).Parent in Empty .. F.S
 binary_trees.adb:866:55: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:867:20: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:867:20: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:867:20: medium: in inlined expression function body at tree_model.ads:54
+binary_trees.adb:867:20: medium: in inlined expression function body at tree_model.ads:54
 binary_trees.adb:867:20: medium: loop invariant might fail in first iteration, cannot prove M1 (I).K = M2 (I).K
 binary_trees.adb:867:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:867:30: info: range check proved (CVC4: 4 VC)
@@ -754,6 +762,8 @@ binary_trees.adb:1029:16: medium: precondition might fail, cannot prove F1.C (I)
 binary_trees.adb:1036:44: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:1037:20: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1037:20: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:1037:20: medium: in inlined expression function body at tree_model.ads:54
+binary_trees.adb:1037:20: medium: in inlined expression function body at tree_model.ads:54
 binary_trees.adb:1037:20: medium: loop invariant might fail in first iteration, cannot prove M1 (I).K = M2 (I).K
 binary_trees.adb:1037:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:1037:34: info: range check proved (CVC4: 4 VC)
@@ -786,6 +796,7 @@ binary_trees.adb:1119:16: info: loop invariant initialization proved (CVC4: 3 VC
 binary_trees.adb:1120:30: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:1120:53: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1120:53: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:1120:53: medium: in inlined expression function body at tree_model.ads:54
 binary_trees.adb:1120:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A
 binary_trees.adb:1120:67: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:1120:72: info: invariant check proved (CVC4: 2 VC)
@@ -1598,6 +1609,7 @@ search_trees.adb:211:15: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:212:19: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:212:42: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:213:21: info: precondition proved (CVC4: 1 VC)
+search_trees.adb:214:14: medium: in inlined expression function body at search_trees.adb:90
 search_trees.adb:214:14: medium: postcondition might fail, cannot prove All_Less_Than (F, V, Values, Values (I))
 search_trees.adb:234:06: info: data dependencies proved
 search_trees.adb:240:17: info: precondition proved (CVC4: 1 VC)
@@ -1983,6 +1995,7 @@ search_trees.adb:763:33: info: precondition proved (CVC4: 1 VC), in call inlined
 search_trees.adb:764:28: medium: assertion might fail, in call inlined at search_trees.adb:955
 search_trees.adb:765:28: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:955
 search_trees.adb:765:28: medium: assertion might fail, in call inlined at search_trees.adb:955
+search_trees.adb:771:16: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:771:16: medium: precondition might fail, cannot prove M1 (I).K = M2 (I).K, in call inlined at search_trees.adb:955
 search_trees.adb:771:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:955
 search_trees.adb:775:16: info: assertion proved (CVC4: 8 VC; Trivial: 1 VC), in call inlined at search_trees.adb:955
@@ -2007,7 +2020,9 @@ search_trees.adb:796:31: medium: assertion might fail, in call inlined at search
 search_trees.adb:796:36: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:960
 search_trees.adb:796:56: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:960
 search_trees.adb:803:16: info: precondition proved (CVC4: 6 VC), in call inlined at search_trees.adb:960
+search_trees.adb:809:13: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:809:13: medium: precondition might fail, cannot prove M1 (I).K = M2 (I).K, in call inlined at search_trees.adb:960
+search_trees.adb:811:16: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:811:16: medium: precondition might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:960
 search_trees.adb:811:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:960
 search_trees.adb:815:16: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:960
@@ -2040,9 +2055,12 @@ search_trees.adb:846:16: info: precondition proved (CVC4: 7 VC), in call inlined
 search_trees.adb:846:56: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:965
 search_trees.adb:846:77: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:965
 search_trees.adb:846:87: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:965
+search_trees.adb:847:16: medium: in inlined expression function body at tree_model.ads:42
 search_trees.adb:847:16: medium: precondition might fail, cannot prove Get (P, I) = Get (Q, I), in call inlined at search_trees.adb:965
 search_trees.adb:847:56: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:965
+search_trees.adb:854:16: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:854:16: medium: precondition might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:965
+search_trees.adb:860:13: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:860:13: medium: precondition might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:965
 search_trees.adb:862:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:965
 search_trees.adb:862:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:965
@@ -2064,6 +2082,7 @@ search_trees.adb:879:17: info: local subprogram "Prove_Plug_X" only analyzed in 
 search_trees.adb:885:13: info: precondition proved (CVC4: 3 VC), in call inlined at search_trees.adb:970
 search_trees.adb:887:13: medium: precondition might fail, cannot prove Peek (F, Root, Get (A, 1)) = Empty, in call inlined at search_trees.adb:970
 search_trees.adb:887:53: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:970
+search_trees.adb:888:13: medium: in inlined expression function body at tree_model.ads:42
 search_trees.adb:888:13: medium: precondition might fail, cannot prove Get (P, I) = Get (Q, I), in call inlined at search_trees.adb:970
 search_trees.adb:894:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:970
 search_trees.adb:894:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:970
@@ -2071,6 +2090,7 @@ search_trees.adb:898:37: medium: precondition might fail, in call inlined at sea
 search_trees.adb:898:63: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:970
 search_trees.adb:899:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:970
 search_trees.adb:900:46: medium: assertion might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:970
+search_trees.adb:900:46: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:900:46: medium: precondition might fail, in call inlined at search_trees.adb:970
 search_trees.adb:900:64: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:970
 search_trees.adb:900:73: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:970
@@ -2080,6 +2100,7 @@ search_trees.adb:902:57: info: precondition proved (CVC4: 1 VC), in call inlined
 search_trees.adb:907:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:907:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls
 search_trees.adb:913:28: medium: assertion might fail, cannot prove M1 (I).K = M2 (I).K, in call inlined at search_trees.adb:978
+search_trees.adb:913:28: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:913:28: medium: precondition might fail, in call inlined at search_trees.adb:978
 search_trees.adb:913:45: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
 search_trees.adb:913:54: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:978
@@ -2093,12 +2114,14 @@ search_trees.adb:916:35: medium: precondition might fail, in call inlined at sea
 search_trees.adb:916:53: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
 search_trees.adb:917:35: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:978
 search_trees.adb:917:50: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
+search_trees.adb:922:13: medium: in inlined expression function body at tree_model.ads:42
 search_trees.adb:922:13: medium: precondition might fail, cannot prove Get (P, I) = Get (Q, I), in call inlined at search_trees.adb:978
 search_trees.adb:922:51: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
 search_trees.adb:923:13: medium: precondition might fail, cannot prove Valid_Root (F2, Root), in call inlined at search_trees.adb:978
 search_trees.adb:924:35: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:978
 search_trees.adb:924:50: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
 search_trees.adb:924:65: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
+search_trees.adb:929:13: medium: in inlined expression function body at search_trees.adb:90
 search_trees.adb:929:13: medium: precondition might fail, cannot prove All_Less_Than (F, V, Values, Values (I)), in call inlined at search_trees.adb:978
 search_trees.adb:929:51: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
 search_trees.adb:931:39: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:978
@@ -2174,6 +2197,7 @@ search_trees.adb:1044:33: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1045:28: medium: assertion might fail, in call inlined at search_trees.adb:1236
 search_trees.adb:1046:28: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1236
 search_trees.adb:1046:28: medium: assertion might fail, in call inlined at search_trees.adb:1236
+search_trees.adb:1052:16: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:1052:16: medium: precondition might fail, cannot prove M1 (I).K = M2 (I).K, in call inlined at search_trees.adb:1236
 search_trees.adb:1052:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1236
 search_trees.adb:1056:16: info: assertion proved (CVC4: 8 VC; Trivial: 1 VC), in call inlined at search_trees.adb:1236
@@ -2198,7 +2222,9 @@ search_trees.adb:1077:31: medium: assertion might fail, in call inlined at searc
 search_trees.adb:1077:36: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1241
 search_trees.adb:1077:56: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1241
 search_trees.adb:1084:16: info: precondition proved (CVC4: 6 VC), in call inlined at search_trees.adb:1241
+search_trees.adb:1090:13: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:1090:13: medium: precondition might fail, cannot prove M1 (I).K = M2 (I).K, in call inlined at search_trees.adb:1241
+search_trees.adb:1092:16: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:1092:16: medium: precondition might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:1241
 search_trees.adb:1092:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1241
 search_trees.adb:1096:16: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1241
@@ -2231,9 +2257,12 @@ search_trees.adb:1127:16: info: precondition proved (CVC4: 7 VC), in call inline
 search_trees.adb:1127:56: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1246
 search_trees.adb:1127:77: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1246
 search_trees.adb:1127:87: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1246
+search_trees.adb:1128:16: medium: in inlined expression function body at tree_model.ads:42
 search_trees.adb:1128:16: medium: precondition might fail, cannot prove Get (P, I) = Get (Q, I), in call inlined at search_trees.adb:1246
 search_trees.adb:1128:56: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1246
+search_trees.adb:1135:16: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:1135:16: medium: precondition might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:1246
+search_trees.adb:1141:13: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:1141:13: medium: precondition might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:1246
 search_trees.adb:1143:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1246
 search_trees.adb:1143:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1246
@@ -2255,6 +2284,7 @@ search_trees.adb:1160:17: info: local subprogram "Prove_Plug_Y" only analyzed in
 search_trees.adb:1166:13: info: precondition proved (CVC4: 3 VC), in call inlined at search_trees.adb:1251
 search_trees.adb:1168:13: medium: precondition might fail, cannot prove Peek (F, Root, Get (A, 1)) = Empty, in call inlined at search_trees.adb:1251
 search_trees.adb:1168:53: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1251
+search_trees.adb:1169:13: medium: in inlined expression function body at tree_model.ads:42
 search_trees.adb:1169:13: medium: precondition might fail, cannot prove Get (P, I) = Get (Q, I), in call inlined at search_trees.adb:1251
 search_trees.adb:1175:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1251
 search_trees.adb:1175:59: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1251
@@ -2262,6 +2292,7 @@ search_trees.adb:1179:37: medium: precondition might fail, in call inlined at se
 search_trees.adb:1179:63: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1251
 search_trees.adb:1180:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1251
 search_trees.adb:1181:46: medium: assertion might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:1251
+search_trees.adb:1181:46: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:1181:46: medium: precondition might fail, in call inlined at search_trees.adb:1251
 search_trees.adb:1181:64: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1251
 search_trees.adb:1181:73: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1251
@@ -2271,6 +2302,7 @@ search_trees.adb:1183:57: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1188:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:1188:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls
 search_trees.adb:1194:28: medium: assertion might fail, cannot prove M1 (I).K = M2 (I).K, in call inlined at search_trees.adb:1259
+search_trees.adb:1194:28: medium: in inlined expression function body at tree_model.ads:54
 search_trees.adb:1194:28: medium: precondition might fail, in call inlined at search_trees.adb:1259
 search_trees.adb:1194:45: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
 search_trees.adb:1194:54: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1259
@@ -2284,12 +2316,14 @@ search_trees.adb:1197:35: medium: precondition might fail, in call inlined at se
 search_trees.adb:1197:53: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
 search_trees.adb:1198:35: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1259
 search_trees.adb:1198:50: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
+search_trees.adb:1203:13: medium: in inlined expression function body at tree_model.ads:42
 search_trees.adb:1203:13: medium: precondition might fail, cannot prove Get (P, I) = Get (Q, I), in call inlined at search_trees.adb:1259
 search_trees.adb:1203:51: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
 search_trees.adb:1204:13: medium: precondition might fail, cannot prove Valid_Root (F2, Root), in call inlined at search_trees.adb:1259
 search_trees.adb:1205:35: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1259
 search_trees.adb:1205:50: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
 search_trees.adb:1205:65: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
+search_trees.adb:1210:13: medium: in inlined expression function body at search_trees.adb:90
 search_trees.adb:1210:13: medium: precondition might fail, cannot prove All_Less_Than (F, V, Values, Values (I)), in call inlined at search_trees.adb:1259
 search_trees.adb:1210:51: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
 search_trees.adb:1212:39: info: range check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1259
