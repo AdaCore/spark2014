@@ -332,9 +332,11 @@ auditlog.ads:156:11: info: data dependencies proved
 auditlog.ads:168:11: info: data dependencies proved
 auditlog.ads:277:46: info: range check proved (CVC4: 2 VC)
 auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
+audittypes.ads:78:16: info: medium: for inherited predicate at commontypes.ads:60
 audittypes.ads:78:16: info: medium: in inlined predicate at commontypes.ads:60
 audittypes.ads:78:16: info: predicate check justified
 audittypes.ads:78:16: info: range check proved (CVC4: 1 VC)
+bio.adb:84:15: info: medium: for inherited predicate at commontypes.ads:60
 bio.adb:84:15: info: medium: in inlined predicate at commontypes.ads:60
 bio.adb:84:15: info: predicate check justified
 bio.adb:84:15: info: range check proved (CVC4: 1 VC)
@@ -357,7 +359,9 @@ bio.adb:187:23: info: range check proved (CVC4: 4 VC)
 bio.adb:193:22: info: analyzing call to "GetReturnCode" in context
 bio.adb:244:07: info: initialization of "NumericReturn" proved
 bio.adb:269:18: info: precondition proved (CVC4: 1 VC)
-bio.adb:274:35: info: predicate check proved (CVC4: 3 VC)
+bio.adb:274:35: info: for inherited predicate at commontypes.ads:60
+bio.adb:274:35: info: predicate check proved (CVC4: 1 VC)
+bio.adb:274:35: info: predicate check proved (CVC4: 2 VC)
 bio.adb:274:35: info: range check proved (CVC4: 1 VC)
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:41:11: info: data dependencies proved
@@ -525,8 +529,11 @@ certprocessing.ads:225:11: info: flow dependencies proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
 certprocessing.ads:241:11: info: data dependencies proved
 certprocessing.ads:242:11: info: flow dependencies proved
+certtypes.ads:63:21: info: for inherited predicate at commontypes.ads:65
+certtypes.ads:63:21: info: medium: for inherited predicate at commontypes.ads:60
 certtypes.ads:63:21: info: medium: in inlined predicate at commontypes.ads:60
 certtypes.ads:63:21: info: predicate check justified
+certtypes.ads:63:21: info: predicate check proved (CVC4: 1 VC)
 certtypes.ads:63:21: info: range check proved (CVC4: 1 VC)
 clock.adb:49:11: info: flow dependencies proved
 clock.adb:54:07: info: initialization of "V" proved
@@ -824,9 +831,13 @@ configdata.adb:1571:07: info: initialization of "DayStart" proved
 configdata.adb:1685:13: info: division check proved (CVC4: 1 VC)
 configdata.adb:1685:13: info: range check proved (CVC4: 2 VC)
 configdata.ads:30:08: info: flow dependencies proved
+configdata.ads:40:17: info: for inherited predicate at commontypes.ads:65
+configdata.ads:40:17: info: medium: for inherited predicate at commontypes.ads:60
 configdata.ads:40:17: info: medium: in inlined predicate at commontypes.ads:60
 configdata.ads:40:17: info: predicate check justified
+configdata.ads:40:17: info: predicate check proved (CVC4: 1 VC)
 configdata.ads:40:17: info: range check proved (CVC4: 1 VC)
+configdata.ads:49:21: info: medium: for inherited predicate at commontypes.ads:60
 configdata.ads:49:21: info: medium: in inlined predicate at commontypes.ads:60
 configdata.ads:49:21: info: predicate check justified
 configdata.ads:49:21: info: range check proved (CVC4: 1 VC)
@@ -1280,13 +1291,21 @@ enrolment.adb:133:10: info: initialization of "TheSubject" proved
 enrolment.adb:134:10: info: initialization of "TheIssuer" proved
 enrolment.adb:135:10: info: initialization of "ThePublicKey" proved
 enrolment.adb:137:10: info: initialization of "Extracted" proved
-enrolment.adb:201:31: info: predicate check proved (CVC4: 3 VC)
+enrolment.adb:201:31: info: for inherited predicate at commontypes.ads:60
+enrolment.adb:201:31: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:201:31: info: predicate check proved (CVC4: 2 VC)
 enrolment.adb:201:31: info: range check proved (CVC4: 1 VC)
-enrolment.adb:204:31: info: predicate check proved (CVC4: 3 VC)
+enrolment.adb:204:31: info: for inherited predicate at commontypes.ads:60
+enrolment.adb:204:31: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:204:31: info: predicate check proved (CVC4: 2 VC)
 enrolment.adb:204:31: info: range check proved (CVC4: 1 VC)
-enrolment.adb:206:44: info: predicate check proved (CVC4: 3 VC)
+enrolment.adb:206:44: info: for inherited predicate at commontypes.ads:60
+enrolment.adb:206:44: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:206:44: info: predicate check proved (CVC4: 2 VC)
 enrolment.adb:206:44: info: range check proved (CVC4: 1 VC)
-enrolment.adb:224:41: info: predicate check proved (CVC4: 3 VC)
+enrolment.adb:224:41: info: for inherited predicate at commontypes.ads:60
+enrolment.adb:224:41: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:224:41: info: predicate check proved (CVC4: 2 VC)
 enrolment.adb:224:41: info: range check proved (CVC4: 1 VC)
 enrolment.adb:229:27: info: overflow check proved (CVC4: 2 VC)
 enrolment.adb:238:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -1294,7 +1313,9 @@ enrolment.adb:238:33: info: loop invariant preservation proved (CVC4: 1 VC)
 enrolment.adb:239:33: info: loop invariant initialization proved (CVC4: 1 VC)
 enrolment.adb:239:33: info: loop invariant preservation proved (CVC4: 1 VC)
 enrolment.adb:242:30: info: overflow check justified
-enrolment.adb:258:41: info: predicate check proved (CVC4: 3 VC)
+enrolment.adb:258:41: info: for inherited predicate at commontypes.ads:60
+enrolment.adb:258:41: info: predicate check proved (CVC4: 1 VC)
+enrolment.adb:258:41: info: predicate check proved (CVC4: 2 VC)
 enrolment.adb:258:41: info: range check proved (CVC4: 1 VC)
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
@@ -1302,8 +1323,10 @@ enrolment.ads:57:11: info: data dependencies proved
 enrolment.ads:63:11: info: flow dependencies proved
 enrolment.ads:78:22: info: postcondition proved (CVC4: 2 VC)
 floppy.ads:26:08: info: flow dependencies proved
+iandatypes.ads:36:12: info: medium: for inherited predicate at commontypes.ads:60
 iandatypes.ads:36:12: info: medium: in inlined predicate at commontypes.ads:60
 iandatypes.ads:36:12: info: predicate check justified
+iandatypes.ads:36:12: info: predicate check proved (CVC4: 1 VC)
 iandatypes.ads:36:12: info: range check proved (CVC4: 1 VC)
 keyboard.adb:67:07: info: initialization of "LocalData" proved
 keyboard.adb:68:07: info: initialization of "LocalLength" proved
@@ -1318,6 +1341,7 @@ keyboard.ads:79:11: info: flow dependencies proved
 keyboard.ads:91:11: info: data dependencies proved
 keyboard.ads:92:11: info: flow dependencies proved
 keystore-interfac.ads:24:08: info: flow dependencies proved
+keystore-interfac.ads:96:20: info: medium: for inherited predicate at commontypes.ads:60
 keystore-interfac.ads:96:20: info: medium: in inlined predicate at commontypes.ads:60
 keystore-interfac.ads:96:20: info: predicate check justified
 keystore-interfac.ads:96:20: info: range check proved (CVC4: 1 VC)
@@ -1354,26 +1378,38 @@ keystore.adb:211:67: info: overflow check proved (CVC4: 4 VC)
 keystore.adb:220:22: info: precondition proved (CVC4: 5 VC)
 keystore.adb:232:36: info: range check proved (CVC4: 2 VC)
 keystore.adb:248:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:252:60: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:252:60: info: for inherited predicate at commontypes.ads:60
+keystore.adb:252:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:252:60: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:252:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:256:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:260:60: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:260:60: info: for inherited predicate at commontypes.ads:60
+keystore.adb:260:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:260:60: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:260:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:264:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:268:59: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:268:59: info: for inherited predicate at commontypes.ads:60
+keystore.adb:268:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:268:59: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:268:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:287:07: info: initialization of "Handles" proved
 keystore.adb:288:11: info: data dependencies proved
 keystore.adb:293:11: info: flow dependencies proved
 keystore.adb:306:07: info: initialization of "RetValIni" proved
 keystore.adb:327:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:331:60: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:331:60: info: for inherited predicate at commontypes.ads:60
+keystore.adb:331:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:331:60: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:331:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:335:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:339:58: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:339:58: info: for inherited predicate at commontypes.ads:60
+keystore.adb:339:58: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:339:58: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:339:58: info: range check proved (CVC4: 1 VC)
 keystore.adb:343:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:347:59: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:347:59: info: for inherited predicate at commontypes.ads:60
+keystore.adb:347:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:347:59: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:347:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:365:33: info: initialization of "IssuerKey" proved
 keystore.adb:366:11: info: data dependencies proved
@@ -1391,7 +1427,9 @@ keystore.adb:497:41: info: initialization of "ThisTISInfo" constituent of "State
 keystore.adb:508:07: info: initialization of "RetVal" proved
 keystore.adb:509:07: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:522:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:526:60: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:526:60: info: for inherited predicate at commontypes.ads:60
+keystore.adb:526:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:526:60: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:526:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:573:07: info: initialization of "TheIssuerKey" proved
 keystore.adb:615:07: info: initialization of "TheDigest" proved
@@ -1399,19 +1437,25 @@ keystore.adb:616:07: info: initialization of "Digested" proved
 keystore.adb:617:07: info: initialization of "TheIssuerKey" proved
 keystore.adb:618:07: info: initialization of "RetVal" proved
 keystore.adb:638:21: info: precondition proved (CVC4: 1 VC)
-keystore.adb:642:64: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:642:64: info: for inherited predicate at commontypes.ads:60
+keystore.adb:642:64: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:642:64: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:642:64: info: range check proved (CVC4: 1 VC)
 keystore.adb:683:07: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:684:07: info: initialization of "TheDigest" proved
 keystore.adb:686:07: info: initialization of "Digested" proved
 keystore.adb:687:07: info: initialization of "RetVal" proved
 keystore.adb:718:21: info: precondition proved (CVC4: 1 VC)
-keystore.adb:722:63: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:722:63: info: for inherited predicate at commontypes.ads:60
+keystore.adb:722:63: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:722:63: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:722:63: info: range check proved (CVC4: 1 VC)
 keystore.adb:775:07: info: initialization of "TheKeyTemplate" proved
 keystore.adb:776:07: info: initialization of "RetVal" proved
 keystore.adb:803:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:807:61: info: predicate check proved (CVC4: 3 VC)
+keystore.adb:807:61: info: for inherited predicate at commontypes.ads:60
+keystore.adb:807:61: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:807:61: info: predicate check proved (CVC4: 2 VC)
 keystore.adb:807:61: info: range check proved (CVC4: 1 VC)
 keystore.adb:823:41: info: initialization of "ThisTISInfo" constituent of "State" proved
 keystore.ads:31:08: info: flow dependencies proved
@@ -1486,6 +1530,7 @@ poll.ads:50:11: info: data dependencies proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
 poll.ads:67:11: info: flow dependencies proved
 poll.ads:113:13: info: postcondition proved (CVC4: 13 VC)
+privtypes.ads:44:14: info: medium: for inherited predicate at commontypes.ads:60
 privtypes.ads:44:14: info: medium: in inlined predicate at commontypes.ads:60
 privtypes.ads:44:14: info: predicate check justified
 privtypes.ads:44:14: info: range check proved (CVC4: 1 VC)
@@ -1627,8 +1672,10 @@ stats.adb:49:57: info: overflow check proved (CVC4: 2 VC)
 stats.adb:64:51: info: overflow check proved (CVC4: 2 VC)
 stats.adb:79:53: info: overflow check proved (CVC4: 2 VC)
 stats.adb:94:47: info: overflow check proved (CVC4: 2 VC)
+stats.ads:30:18: info: medium: for inherited predicate at commontypes.ads:60
 stats.ads:30:18: info: medium: in inlined predicate at commontypes.ads:60
 stats.ads:30:18: info: predicate check justified
+stats.ads:30:18: info: predicate check proved (CVC4: 1 VC)
 stats.ads:30:18: info: range check proved (CVC4: 1 VC)
 stats.ads:44:20: info: initialization of "TheStats" proved
 stats.ads:45:11: info: flow dependencies proved
@@ -1739,6 +1786,7 @@ tismain.adb:1546:10: info: assertion proved (CVC4: 21 VC; Trivial: 11 VC)
 tismain.adb:1585:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1591:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1598:22: info: precondition proved (CVC4: 1 VC)
+tokenreader-interfac.ads:84:21: info: medium: for inherited predicate at commontypes.ads:60
 tokenreader-interfac.ads:84:21: info: medium: in inlined predicate at commontypes.ads:60
 tokenreader-interfac.ads:84:21: info: predicate check justified
 tokenreader-interfac.ads:84:21: info: range check proved (CVC4: 1 VC)
@@ -1779,7 +1827,9 @@ tokenreader.adb:311:24: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:322:21: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:333:18: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:338:15: info: precondition proved (Trivial: 1 VC)
-tokenreader.adb:338:31: info: predicate check proved (CVC4: 3 VC)
+tokenreader.adb:338:31: info: for inherited predicate at commontypes.ads:60
+tokenreader.adb:338:31: info: predicate check proved (CVC4: 1 VC)
+tokenreader.adb:338:31: info: predicate check proved (CVC4: 2 VC)
 tokenreader.adb:338:31: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:372:07: info: initialization of "ResponseCode" proved
 tokenreader.adb:373:07: info: initialization of "RawNewState" proved
@@ -1811,7 +1861,9 @@ tokenreader.adb:645:13: info: flow dependencies proved
 tokenreader.adb:669:43: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:689:21: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:694:18: info: precondition proved (Trivial: 1 VC)
-tokenreader.adb:694:34: info: predicate check proved (CVC4: 3 VC)
+tokenreader.adb:694:34: info: for inherited predicate at commontypes.ads:60
+tokenreader.adb:694:34: info: predicate check proved (CVC4: 1 VC)
+tokenreader.adb:694:34: info: predicate check proved (CVC4: 2 VC)
 tokenreader.adb:694:34: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:766:07: info: initialization of "StatusOK" proved
 tokenreader.adb:768:07: info: initialization of "ResponseCode" proved
