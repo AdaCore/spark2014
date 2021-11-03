@@ -32,6 +32,7 @@ with Sem_Aux;                     use Sem_Aux;
 with Sem_Type;                    use Sem_Type;
 with Sem_Warn;                    use Sem_Warn;
 with Sinfo.Utils;                 use Sinfo.Utils;
+with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 with Stand;                       use Stand;
 
@@ -1961,6 +1962,11 @@ package body Flow.Analysis is
          begin
             if Atr.Is_Original_Program_Node
               and then not Live_Code.Contains (V)
+
+              --  Suppress the warning on nodes in instances or inlined code
+
+              and then Instantiation_Location (Sloc (Atr.Error_Location))
+                       = No_Location
             then
                Error_Msg_Flow (FA       => FA,
                                Msg      => "this statement is never reached",
