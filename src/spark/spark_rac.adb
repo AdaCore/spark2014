@@ -2112,9 +2112,13 @@ package body SPARK_RAC is
             end if;
 
             while Present (As) loop
+               Check_Fuel_Decrease (Ctx.Fuel);
+
                V := RAC_Expr (Expression (As));
                Ch := First (Choices (As));
                while Present (Ch) loop
+                  Check_Fuel_Decrease (Ctx.Fuel);
+
                   if Nkind (Ch) = N_Others_Choice then
                      RAC_Unsupported
                        ("RAC_Expr aggregate", "record others");
@@ -2149,6 +2153,8 @@ package body SPARK_RAC is
                   Ex  : Node_Id := First (Expressions (N));
                begin
                   while Present (Ex) loop
+                     Check_Fuel_Decrease (Ctx.Fuel);
+
                      Res.Array_Values.Include
                        (To_Integer (Ix),
                         new Value'(Copy (RAC_Expr (Ex))));
@@ -2162,6 +2168,8 @@ package body SPARK_RAC is
 
             elsif Present (Component_Associations (N)) then
                while Present (As) loop
+                  Check_Fuel_Decrease (Ctx.Fuel);
+
                   if Nkind (As) = N_Iterated_Component_Association
                     and then Present (Defining_Identifier (As))
                   then
@@ -2176,6 +2184,8 @@ package body SPARK_RAC is
                   V := RAC_Expr (Expression (As));
                   Ch := First (Choices (As));
                   while Present (Ch) loop
+                     Check_Fuel_Decrease (Ctx.Fuel);
+
                      if Nkind (Ch) = N_Range then
                         declare
                            Cur : Big_Integer := Value_Enum_Integer
@@ -2184,6 +2194,8 @@ package body SPARK_RAC is
                              (RAC_Expr (High_Bound (Ch)));
                         begin
                            while Cur <= Hig loop
+                              Check_Fuel_Decrease (Ctx.Fuel);
+
                               Res.Array_Values.Include
                                 (To_Integer (Cur), new Value'(Copy (V)));
                               Cur := Cur + 1;
