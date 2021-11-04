@@ -7199,15 +7199,50 @@ package body Gnat2Why.Expr is
             Aggr    : constant Node_Id :=
               Expression (First (Pragma_Argument_Associations (Variants)));
             Variant : Node_Id := First (Component_Associations (Aggr));
+            Expr    : Node_Id;
             Count   : Positive := 1;
          begin
             while Present (Variant) loop
+               Expr := Expression (Variant);
                Exprs (Count) := Transform_Expr
-                 (Expr          => Expression (Variant),
+                 (Expr          => Expr,
                   Domain        => Domain,
                   Params        => Params,
-                  Expected_Type =>
-                    Base_Why_Type (Etype (Expression (Variant))));
+                  Expected_Type => Base_Why_Type (Etype (Expr)));
+
+               --  If Expr is a big integer, insert a check to make sure that
+               --  the value stays non-negative.
+
+               if not Has_Discrete_Type (Etype (Expr))
+                 and then Domain = EW_Prog
+               then
+                  pragma Assert
+                    (Is_From_Hardcoded_Unit
+                       (Base_Type (Etype (Expr)), Big_Integers));
+
+                  declare
+                     Tmp : constant W_Expr_Id :=
+                       New_Temp_For_Expr (Exprs (Count));
+                  begin
+                     Exprs (Count) := +Sequence
+                       (New_Located_Assert
+                          (Ada_Node => Expr,
+                           Pred     => New_Comparison
+                             (Symbol => Int_Infix_Ge,
+                              Left   => +Tmp,
+                              Right  => New_Integer_Constant
+                                (Value => Uint_0)),
+                           Reason   => VC_Range_Check,
+                           Kind     => EW_Assert),
+                        +Tmp);
+
+                     Exprs (Count) := Binding_For_Temp
+                       (Ada_Node => Expr,
+                        Domain   => EW_Prog,
+                        Tmp      => Tmp,
+                        Context  => Exprs (Count));
+                  end;
+               end if;
                Count := Count + 1;
                Next (Variant);
             end loop;

@@ -33,6 +33,7 @@ with Nlists;                  use Nlists;
 with Opt;                     use type Opt.Warning_Mode_Type;
 with Sinput;                  use Sinput;
 with Snames;                  use Snames;
+with SPARK_Util.Hardcoded;    use SPARK_Util.Hardcoded;
 with Uintp;                   use Uintp;
 with VC_Kinds;                use VC_Kinds;
 with Why;                     use Why;
@@ -163,16 +164,45 @@ package body Gnat2Why.Expr.Loops is
       Variant := First (Pragma_Argument_Associations (Stmt));
       while Present (Variant) loop
          declare
-            Expr : constant N_Subexpr_Id := Expression (Variant);
+            Expr   : constant N_Subexpr_Id := Expression (Variant);
+            W_Expr : W_Prog_Id := Transform_Prog
+              (Expr          => Expr,
+               Expected_Type =>
+                 Base_Why_Type_No_Bool (Expr),
+               Params        => Body_Params);
+
          begin
-            Append
-              (Prog,
-               New_Ignore
-                 (Prog =>
-                      Transform_Prog (Expr          => Expr,
-                                      Expected_Type =>
-                                        Base_Why_Type_No_Bool (Expr),
-                                      Params        => Body_Params)));
+            --  If Expr is a big integer, insert a check to make sure that the
+            --  value stays non-negative.
+
+            if not Has_Discrete_Type (Etype (Expr)) then
+               pragma Assert
+                 (Is_From_Hardcoded_Unit
+                    (Base_Type (Etype (Expr)), Big_Integers));
+
+               declare
+                  Tmp : constant W_Expr_Id := New_Temp_For_Expr (+W_Expr);
+               begin
+                  W_Expr := Sequence
+                    (New_Located_Assert
+                       (Ada_Node => Expr,
+                        Pred     => New_Comparison
+                          (Symbol => Int_Infix_Ge,
+                           Left   => +Tmp,
+                           Right  => New_Integer_Constant (Value => Uint_0)),
+                        Reason   => VC_Range_Check,
+                        Kind     => EW_Assert),
+                     +Tmp);
+
+                  W_Expr := +Binding_For_Temp
+                    (Ada_Node => Expr,
+                     Domain   => EW_Prog,
+                     Tmp      => Tmp,
+                     Context  => +W_Expr);
+               end;
+            end if;
+
+            Append (Prog, New_Ignore (Prog => W_Expr));
             Next (Variant);
          end;
       end loop;
