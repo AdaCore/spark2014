@@ -41,7 +41,7 @@ package SPARK_Util.Hardcoded is
       Generic_From_Big_Integer : constant String := "from_big_integer";
    end Big_Integers_Names;
    --  Names of entities that will be considered as hardcoded in the
-   --  Big_Integers unit.
+   --  Big_Integers and Big_Integers_Ghost unit.
    --  Currently, the function to write a big integer to a string
    --  is left uninterpreted. The In_Range expression function is
    --  translated using the normal mechanism.

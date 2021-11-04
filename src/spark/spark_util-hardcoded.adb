@@ -116,10 +116,16 @@ package body SPARK_Util.Hardcoded is
       case Unit is
          when Big_Integers | Big_Reals =>
 
-            --  First check for the name of the big number unit
+            --  First check for the name of the big number unit, which
+            --  might be either Big_Integers for the Ada standard unit, or
+            --  Big_Integers_Ghost as a replacement of the standard unit for
+            --  use in the runtime (as it is ghost, cannot be executed, and
+            --  does not depend on System and Ada.Finalization).
 
             if Unit = Big_Integers then
-               if Get_Name_String (Chars (S_Ptr)) /= "big_integers" then
+               if Get_Name_String (Chars (S_Ptr)) not in "big_integers"
+                                                       | "big_integers_ghost"
+               then
                   return False;
                end if;
             else
