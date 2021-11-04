@@ -1214,19 +1214,17 @@ similar to how pragma Loop_Variant can be used to ensure termination of loops.
 ::
 
   subprogram_variant_list ::= subprogram_variant_item {, subprogram_variant_item}
-  subprogram_variant_item ::= change_direction => discrete_expression
+  subprogram_variant_item ::= change_direction => expression
   change_direction        ::= Increases | Decreases
-
-where ``discrete_expression`` is an ``expression`` of a discrete type.
 
 The aspect_definition for a Subprogram_Variant aspect_specification
 shall be a subprogram_variant_list. The Subprogram_Variant aspect
 of an inherited subprogram for a derived type is always unspecified.
 
 Two Subprogram_Variant aspects are said to be `compatible` if the lengths of
-the two subprogram_variant_item_list are equal and corresponding pairs
-of the elements of the two lists agree with respect to both change_direction
-and the type of their respective discrete_expressions. An unspecified
+the two ``subprogram_variant_item_list`` are equal and corresponding pairs
+of the elements of the two lists agree with respect to both ``change_direction``
+and the type of their respective ``expressions``. An unspecified
 Subprogram_Variant aspect is compatible with, and only with, another
 unspecified Subprogram_Variant aspect (including itself).
 
@@ -1248,7 +1246,7 @@ calling subprogram and the called subprogram have compatible (specified)
 Subprogram_Variable aspects, a runtime check (or a verification condition
 corresponding to such a runtime check) may be be introduced to ensure that
 the "variant of the call progresses". This means that
-the values of the caller's discrete_expressions (which were saved upon
+the values of the caller's ``expressions`` (which were saved upon
 entry to the caller, as will be described below) are compared in textual
 order with those of the callee (which are evaluated only as needed as part of
 the check) until either a pair of unequal values is encountered or until
@@ -1281,8 +1279,10 @@ Decreases) then the expression value obtained for the call is greater
    that the Subprogram_Variant aspect cannot be specified for an abstract
    subprogram.]
 
-4. The expression of a ``subprogram_variant_item`` shall be of any
-   discrete type.
+4. The expression of a ``loop_variant_item`` shall be either of a
+   discrete type or of a subtype of
+   ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``. In the second case,
+   the associated ``change_direction`` shall be Decreases.
 
 5. The Subprogram_Variant assertion policy in effect at the
    point of a direct recursive call (i.e., a call where the calling
@@ -1301,14 +1301,20 @@ Decreases) then the expression value obtained for the call is greater
 .. centered:: **Dynamic Semantics**
 
 7. At the beginning of a subprogram with a specified Subprogram_Variant aspect,
-   the ``discrete_expressions`` are evaluated in textual order and their
+   the ``expressions`` are evaluated in textual order and their
    values are each saved in a constant that is implicitly declared at
    the beginning of the subprogram body[, in the same way as for
    an unconditionally evaluated Old attribute reference (see Ada RM 6.1.1)].
+   For every expression whose type is a subtype of
+   ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``, a check is
+   performed that it is non-negative.
 
 8. For a direct recursive call (i.e., the calling subprogram is the same
-   as the callee), a check is made that the variant of the call progresses
-   (as described above). If the check fails, Assertion_Error is raised.
+   as the callee), for every expression in the variant of the call whose type
+   is a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``, a
+   check is performed that it is non-negative. Then, a check is made that
+   the variant of the call progresses (as described above).
+   If the check fails, Assertion_Error is raised.
    [No runtime check is performed in the case of a direct call from one
    subprogram to a different subprogram, even if the two subprograms are
    statically mutually recursive. No runtime check is performed for a
@@ -1334,10 +1340,14 @@ Decreases) then the expression value obtained for the call is greater
 11. For a statically mutually recursive call to a subprogram whose
     Subprogram_Variant aspect is specified, a verification condition
     is introduced to ensure that the evaluation of the
-    ``discrete_expressions`` of the subprogram_variant_list of the
+    ``expressions`` of the ``subprogram_variant_list`` of the
     callee does not a raise any exception.
-    Additionally, a verification condition is generated to ensure that the
-    variant of the call progresses. This verification condition is already
+    Then, for every expression in the variant of the called subprogram whose
+    type is a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``,
+    a check is performed that it is non-negative.
+    Finally, a verification condition is generated to ensure that the
+    variant of the call progresses.
+    This verification condition is already
     implicitly generated in the case where the caller and the callee are the
     same (a direct recursive call) as a consequence of the runtime check taking
     place in that case. It is also generated in the case of other mutually
