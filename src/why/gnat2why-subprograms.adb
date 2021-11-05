@@ -396,14 +396,14 @@ package body Gnat2Why.Subprograms is
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id is
 
-      function Self_Priority return W_Expr_Id;
+      function Self_Priority return W_Term_Id;
       --  @return expression for the priority of entity E
 
       -------------------
       -- Self_Priority --
       -------------------
 
-      function Self_Priority return W_Expr_Id is
+      function Self_Priority return W_Term_Id is
          --  If the priority is not explicitly specified then assume:
          --    * for main-like subprograms -> System.Default_Priority,
          --    * for tasks                 -> System.Priority'Last
@@ -436,7 +436,7 @@ package body Gnat2Why.Subprograms is
       begin
 
          if Present (Prio_Expr) then
-            return Transform_Expr (Prio_Expr, EW_Int_Type, EW_Pterm, Params);
+            return Transform_Term (Prio_Expr, EW_Int_Type, Params);
          end if;
 
          --  No explicit priority was given
@@ -446,7 +446,7 @@ package body Gnat2Why.Subprograms is
             --  for System.Interrupt_Priority'Last; otherwise for
             --  System.Priority'Last.
             return
-              New_Attribute_Expr
+              +New_Attribute_Expr
                 (Domain => EW_Term,
                  Ty     =>
                    RTE (if Present
@@ -459,11 +459,10 @@ package body Gnat2Why.Subprograms is
          elsif Ekind (E) in Subprogram_Kind and then Might_Be_Main (E) then
             --  Return expression used that defined System.Default_Priority
             return
-              Transform_Expr
+              Transform_Term
                 (Expr   =>
                    Expression
                      (Enclosing_Declaration (RTE (RE_Default_Priority))),
-                 Domain => EW_Term,
                  Params => Params);
 
          else
@@ -498,7 +497,7 @@ package body Gnat2Why.Subprograms is
                end if;
 
                return
-                 New_Attribute_Expr
+                 +New_Attribute_Expr
                    (Domain => EW_Term,
                     Ty     => RTE (Type_Id),
                     Attr   => Attr_Id,
@@ -521,8 +520,7 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
-         Prio : constant W_Expr_Id := Self_Priority;
-
+         Prio : constant W_Term_Id := Self_Priority;
          S    : W_Prog_Id := +Void;
       begin
          --  Placeholder for a Why3 sequence that will represent the check
@@ -535,49 +533,49 @@ package body Gnat2Why.Subprograms is
             for Obj_Prio of Component_Priorities (Obj_Name) loop
 
                declare
-                  Obj_Prio_Expr : constant W_Expr_Id :=
+                  Obj_Prio_Expr : constant W_Term_Id :=
                     (case Obj_Prio.Kind is
                      --  ??? if type of the component is visible we should try
                      --  to transform the expression.
                         when Nonstatic =>
-                           New_Attribute_Expr (Domain => EW_Term,
-                                               Ty     => RTE (RE_Any_Priority),
-                                               Attr   => Attribute_First,
-                                               Params => Params),
+                           +New_Attribute_Expr
+                            (Domain => EW_Term,
+                             Ty     => RTE (RE_Any_Priority),
+                             Attr   => Attribute_First,
+                             Params => Params),
 
                         when Static =>
                            New_Integer_Constant
                              (Value => UI_From_Int (Obj_Prio.Value)),
 
                         when Default_Prio =>
-                           New_Attribute_Expr
+                           +New_Attribute_Expr
                              (Domain => EW_Term,
                               Ty     => RTE (RE_Priority),
                               Attr   => Attribute_Last,
                               Params => Params),
 
                         when Default_Interrupt_Prio =>
-                           New_Attribute_Expr
+                           +New_Attribute_Expr
                              (Domain => EW_Term,
                               Ty     => RTE (RE_Interrupt_Priority),
                               Attr   => Attribute_First,
                               Params => Params),
 
                         when Last_Interrupt_Prio =>
-                           New_Attribute_Expr
+                           +New_Attribute_Expr
                              (Domain => EW_Term,
                               Ty     => RTE (RE_Interrupt_Priority),
                               Attr   => Attribute_Last,
                               Params => Params));
 
                   Pred         : constant W_Pred_Id :=
-                    +New_Comparison
+                    New_Comparison
                       (Symbol => (case Obj_Prio.Kind is
                                      when Nonstatic => Why_Eq,
                                      when others    => Int_Infix_Le),
                      Left   => Prio,
-                     Right  => Obj_Prio_Expr,
-                     Domain => EW_Pred);
+                     Right  => Obj_Prio_Expr);
 
                   Check        : constant W_Prog_Id :=
                     New_Located_Assert (Ada_Node => E,
