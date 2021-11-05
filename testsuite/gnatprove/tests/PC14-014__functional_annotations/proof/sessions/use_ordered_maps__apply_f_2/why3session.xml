@@ -297,7 +297,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.81" proved="true">
-  <proof prover="0"><result status="valid" steps="64645"/></proof>
+  <proof prover="0"><result status="valid" steps="51217"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.82" proved="true">
@@ -307,7 +307,7 @@
   <proof prover="1"><result status="valid" steps="7824"/></proof>
   </goal>
   <goal name="def&#39;vc.84" proved="true">
-  <proof prover="0"><result status="valid" steps="149097"/></proof>
+  <proof prover="0"><result status="valid" steps="70086"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.85" proved="true">
@@ -385,11 +385,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.105" proved="true">
-  <proof prover="0"><result status="valid" steps="15703"/></proof>
+  <proof prover="0"><result status="valid" steps="15164"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.106" proved="true">
-  <proof prover="0"><result status="valid" steps="24965"/></proof>
+  <proof prover="0"><result status="valid" steps="24346"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
