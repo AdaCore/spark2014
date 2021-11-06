@@ -3,7 +3,7 @@ Miscellaneous
 #############
 
 This part reference documentation for specific part that are not directly
-gnatprove but that are useful to developpers.
+gnatprove but that are useful to developers.
 
 .. _Integration:
 
