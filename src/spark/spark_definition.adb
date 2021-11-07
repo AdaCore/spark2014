@@ -8692,6 +8692,10 @@ package body SPARK_Definition is
       --  Return the SPARK_Pragma associated with a declaration or a pragma. It
       --  is the pragma of the first enclosing scope with a SPARK pragma.
 
+      --------------------------
+      -- SPARK_Pragma_Of_Decl --
+      --------------------------
+
       function SPARK_Pragma_Of_Decl (Decl : Node_Id) return Node_Id is
          Scop : Node_Id := Decl;
 
