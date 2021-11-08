@@ -306,6 +306,11 @@ package SPARK_Atree.Entities is
    function Is_Enumeration_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Enumeration_Type;
 
+   function Is_Extended_Precision_Floating_Point_Type
+     (E : Type_Kind_Id)
+      return Boolean
+   renames Sem_Util.Is_Extended_Precision_Floating_Point_Type;
+
    function Is_Fixed_Point_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Fixed_Point_Type;
 

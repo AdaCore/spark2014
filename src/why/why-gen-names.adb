@@ -190,10 +190,33 @@ package body Why.Gen.Names is
                                 MF_Floats (From).To_BV32
                              elsif To = EW_BitVector_64_Type then
                                 MF_Floats (From).To_BV64
-                             elsif To = EW_Float_32_Type then
-                                M_Floating_Conv.To_Float32
-                             elsif To = EW_Float_64_Type then
-                                M_Floating_Conv.To_Float64
+                             --  Conversions between 32-bits and 64-bits floats
+                             elsif From = EW_Float_64_Type
+                               and then To = EW_Float_32_Type
+                             then
+                                M_Float32_64_Conv.To_Small
+                             elsif From = EW_Float_32_Type
+                               and then To = EW_Float_64_Type
+                             then
+                                M_Float32_64_Conv.To_Large
+                             --  Conversions between 32-bits and 80-bits floats
+                             elsif From = EW_Float_80_Type
+                               and then To = EW_Float_32_Type
+                             then
+                                M_Float32_80_Conv.To_Small
+                             elsif From = EW_Float_32_Type
+                               and then To = EW_Float_80_Type
+                             then
+                                M_Float32_80_Conv.To_Large
+                             --  Conversions between 64-bits and 80-bits floats
+                             elsif From = EW_Float_80_Type
+                               and then To = EW_Float_64_Type
+                             then
+                                M_Float64_80_Conv.To_Small
+                             elsif From = EW_Float_64_Type
+                               and then To = EW_Float_80_Type
+                             then
+                                M_Float64_80_Conv.To_Large
                              else
                                 raise Program_Error);
                   elsif From = EW_Bool_Type and then To = EW_Int_Type then
@@ -1130,11 +1153,13 @@ package body Why.Gen.Names is
          case R is
             when RCK_Range_Not_First
                | RCK_Overflow_Not_First
+               | RCK_FP_Overflow_Not_First
             =>
                return M_Boolean.Check_Not_First;
 
             when RCK_Range_Not_Last
                | RCK_Overflow_Not_Last
+               | RCK_FP_Overflow_Not_Last
             =>
                return M_Boolean.Check_Not_Last;
 
@@ -1147,10 +1172,12 @@ package body Why.Gen.Names is
               (case R is
                   when RCK_Range_Not_First
                      | RCK_Overflow_Not_First
+                     | RCK_FP_Overflow_Not_First
                   =>
                      WNE_Check_Not_First,
                   when RCK_Range_Not_Last
                      | RCK_Overflow_Not_Last
+                     | RCK_FP_Overflow_Not_Last
                   =>
                      WNE_Check_Not_Last,
                   when others =>

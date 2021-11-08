@@ -825,6 +825,8 @@ package body SPARK_Atree is
       then
          if Einfo.Utils.Is_Enumeration_Type (Check_Type) then
             Check_Kind := SPARK_Util.RCK_Range_Not_First;
+         elsif Einfo.Utils.Is_Floating_Point_Type (Check_Type) then
+            Check_Kind := SPARK_Util.RCK_FP_Overflow_Not_First;
          else
             Check_Kind := SPARK_Util.RCK_Overflow_Not_First;
          end if;
@@ -834,6 +836,8 @@ package body SPARK_Atree is
       then
          if Einfo.Utils.Is_Enumeration_Type (Check_Type) then
             Check_Kind := SPARK_Util.RCK_Range_Not_Last;
+         elsif Einfo.Utils.Is_Floating_Point_Type (Check_Type) then
+            Check_Kind := SPARK_Util.RCK_FP_Overflow_Not_Last;
          else
             Check_Kind := SPARK_Util.RCK_Overflow_Not_Last;
          end if;

@@ -1,0 +1,35 @@
+extended.adb:21:19: medium: assertion might fail
+extended.adb:22:19: medium: assertion might fail
+extended.adb:22:41: medium: float overflow check might fail [reason for check: value must be bounded]
+extended.adb:23:19: medium: assertion might fail
+extended.adb:23:41: medium: float overflow check might fail [reason for check: value must be bounded]
+extended.adb:25:19: medium: assertion might fail
+extended.adb:25:41: info: range check proved (Trivial)
+extended.adb:26:19: medium: assertion might fail
+extended.adb:26:40: info: range check proved (Trivial)
+extended.adb:26:43: info: float overflow check proved (Trivial)
+extended.adb:28:19: info: assertion proved (Z3: 1 VC)
+extended.adb:29:19: medium: assertion might fail
+extended.adb:30:19: medium: assertion might fail
+extended.adb:32:19: info: assertion proved (Z3: 1 VC)
+extended.adb:32:26: info: range check proved (Z3: 1 VC)
+extended.adb:33:19: medium: assertion might fail
+extended.adb:33:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+extended.adb:34:19: medium: assertion might fail
+extended.adb:34:31: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+extended.adb:36:19: medium: assertion might fail
+extended.adb:36:40: info: range check proved (Trivial)
+extended.adb:37:19: medium: assertion might fail
+extended.adb:37:40: info: range check proved (Trivial)
+extended.adb:38:19: medium: assertion might fail
+extended.adb:38:40: info: range check proved (Trivial)
+extended.adb:39:19: medium: assertion might fail
+extended.adb:39:40: info: range check proved (Trivial)
+extended.adb:41:19: medium: assertion might fail
+extended.adb:41:23: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+extended.adb:42:19: medium: assertion might fail
+extended.adb:42:24: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+extended.adb:43:19: medium: assertion might fail
+extended.adb:43:24: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+extended.adb:44:19: medium: assertion might fail
+extended.adb:44:24: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]

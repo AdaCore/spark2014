@@ -518,6 +518,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Static_Float64");
+      Static_Float80 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Static_Float80");
       Dynamic_Float :=
         New_Module
           (File => Ada_Model_File,
@@ -530,6 +534,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Rep_Proj_Float64");
+      Rep_Proj_Float80 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_Float80");
       Rep_Proj_Fixed :=
         New_Module
           (File => Ada_Model_File,
@@ -1625,29 +1633,73 @@ package body Why.Atree.Modules is
    -------------------------------
 
    procedure Init_Floating_Conv_Module is
-      M : W_Module_Id;
+      Float32_64_Conv : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Float32_64_Converter");
+      Float32_80_Conv : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Float32_80_Converter");
+      Float64_80_Conv : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Float64_80_Converter");
    begin
-      M := New_Module (File => Gnatprove_Standard_File,
-                       Name => "FloatConv");
-      M_Floating_Conv :=
-        M_Floating_Conv_Type'(Module      => M,
-                              To_Float64  =>
-                                New_Identifier (Module => M,
+      M_Float32_64_Conv :=
+        M_Floating_Conv_Type'(Module      => Float32_64_Conv,
+                              To_Large    =>
+                                New_Identifier (Module => Float32_64_Conv,
                                                 Domain => EW_Term,
                                                 Symb   =>
                                                   NID ("to_float64_rne"),
                                                 Typ    => EW_Float_64_Type),
-                              To_Float32  =>
-                                New_Identifier (Module => M,
+                              To_Small    =>
+                                New_Identifier (Module => Float32_64_Conv,
                                                 Domain => EW_Term,
                                                 Symb   =>
                                                   NID ("to_float32_rne"),
                                                 Typ    => EW_Float_32_Type),
                               Range_Check =>
-                                New_Identifier (Module => M,
+                                New_Identifier (Module => Float32_64_Conv,
                                                 Domain => EW_Term,
                                                 Symb   => NID ("range_check_"),
                                                 Typ    => EW_Float_64_Type));
+      M_Float32_80_Conv :=
+        M_Floating_Conv_Type'(Module      => Float32_80_Conv,
+                              To_Large    =>
+                                New_Identifier (Module => Float32_80_Conv,
+                                                Domain => EW_Term,
+                                                Symb   =>
+                                                  NID ("to_float80_rne"),
+                                                Typ    => EW_Float_80_Type),
+                              To_Small    =>
+                                New_Identifier (Module => Float32_80_Conv,
+                                                Domain => EW_Term,
+                                                Symb   =>
+                                                  NID ("to_float32_rne"),
+                                                Typ    => EW_Float_32_Type),
+                              Range_Check =>
+                                New_Identifier (Module => Float32_80_Conv,
+                                                Domain => EW_Term,
+                                                Symb   => NID ("range_check_"),
+                                                Typ    => EW_Float_80_Type));
+      M_Float64_80_Conv :=
+        M_Floating_Conv_Type'(Module      => Float64_80_Conv,
+                              To_Large    =>
+                                New_Identifier (Module => Float64_80_Conv,
+                                                Domain => EW_Term,
+                                                Symb   =>
+                                                  NID ("to_float80_rne"),
+                                                Typ    => EW_Float_80_Type),
+                              To_Small    =>
+                                New_Identifier (Module => Float64_80_Conv,
+                                                Domain => EW_Term,
+                                                Symb   =>
+                                                  NID ("to_float64_rne"),
+                                                Typ    => EW_Float_64_Type),
+                              Range_Check =>
+                                New_Identifier (Module => Float64_80_Conv,
+                                                Domain => EW_Term,
+                                                Symb   => NID ("range_check_"),
+                                                Typ    => EW_Float_80_Type));
    end Init_Floating_Conv_Module;
 
    --------------------------
@@ -1661,6 +1713,9 @@ package body Why.Atree.Modules is
       Float64_BV_Converter : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => "Float64_BV_Converter");
+      Float80_BV_Converter : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Float80_BV_Converter");
    begin
       M_Floats (Float32).Module :=
         New_Module (File => Gnatprove_Standard_File,
@@ -1668,18 +1723,27 @@ package body Why.Atree.Modules is
       M_Floats (Float64).Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => "Float64");
+      M_Floats (Float80).Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Float80");
       M_Floats (Float32).Power_Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => "Float32_power");
       M_Floats (Float64).Power_Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => "Float64_power");
+      M_Floats (Float80).Power_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Float80_power");
       M_Floats (Float32).Next_Prev_Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => "Float32_next_prev");
       M_Floats (Float64).Next_Prev_Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => "Float64_next_prev");
+      M_Floats (Float80).Next_Prev_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Float80_next_prev");
 
       for Fl in Floating_Kind loop
          M_Floats (Fl).T :=
@@ -1857,139 +1921,114 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symb   => NID ("sqrt_rne"),
                            Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV8 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv8_rne"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV16 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv16_rne"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV32 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv32_rne"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV64 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv64_rne"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV8_RTN :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv8_rtn"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV16_RTN :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv16_rtn"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV32_RTN :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv32_rtn"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV64_RTN :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv64_rtn"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV8_RTP :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv8_rtp"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV16_RTP :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv16_rtp"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV32_RTP :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv32_rtp"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).Of_BV64_RTP :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("of_ubv64_rtp"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).To_BV8 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("to_ubv8_rna"),
-                           Typ    => EW_BitVector_8_Type);
-         M_Floats (Fl).To_BV16 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("to_ubv16_rna"),
-                           Typ    => EW_BitVector_16_Type);
-         M_Floats (Fl).To_BV32 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("to_ubv32_rna"),
-                           Typ    => EW_BitVector_32_Type);
-         M_Floats (Fl).To_BV64 :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("to_ubv64_rna"),
-                           Typ    => EW_BitVector_64_Type);
-         M_Floats (Fl).Range_Check :=
-           New_Identifier (Module => (if Fl = Float32
-                                      then Float32_BV_Converter
-                                      else Float64_BV_Converter),
-                           Domain => EW_Term,
-                           Symb   => NID ("range_check_"),
-                           Typ    => M_Floats (Fl).T);
-         M_Floats (Fl).To_Real :=
-           New_Identifier (Module => M_Floats (Fl).Module,
-                           Domain => EW_Term,
-                           Symb   => NID ("to_real"),
-                           Typ    => EW_Int_Type);
-         M_Floats (Fl).Copy_Sign :=
-           New_Identifier (Module => M_Floats (Fl).Module,
-                           Domain => EW_Term,
-                           Symb   => NID ("copy_sign"),
-                           Typ    => M_Floats (Fl).T);
+         declare
+            Float_Converter : constant W_Module_Id :=
+              (case Fl is
+                 when Float32 => Float32_BV_Converter,
+                 when Float64 => Float64_BV_Converter,
+                 when Float80 => Float80_BV_Converter);
+         begin
+            M_Floats (Fl).Of_BV8 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv8_rne"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV16 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv16_rne"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV32 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv32_rne"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV64 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv64_rne"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV8_RTN :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv8_rtn"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV16_RTN :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv16_rtn"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV32_RTN :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv32_rtn"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV64_RTN :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv64_rtn"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV8_RTP :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv8_rtp"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV16_RTP :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv16_rtp"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV32_RTP :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv32_rtp"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).Of_BV64_RTP :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("of_ubv64_rtp"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).To_BV8 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("to_ubv8_rna"),
+                              Typ    => EW_BitVector_8_Type);
+            M_Floats (Fl).To_BV16 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("to_ubv16_rna"),
+                              Typ    => EW_BitVector_16_Type);
+            M_Floats (Fl).To_BV32 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("to_ubv32_rna"),
+                              Typ    => EW_BitVector_32_Type);
+            M_Floats (Fl).To_BV64 :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("to_ubv64_rna"),
+                              Typ    => EW_BitVector_64_Type);
+            M_Floats (Fl).Range_Check :=
+              New_Identifier (Module => Float_Converter,
+                              Domain => EW_Term,
+                              Symb   => NID ("range_check_"),
+                              Typ    => M_Floats (Fl).T);
+            M_Floats (Fl).To_Real :=
+              New_Identifier (Module => M_Floats (Fl).Module,
+                              Domain => EW_Term,
+                              Symb   => NID ("to_real"),
+                              Typ    => EW_Int_Type);
+            M_Floats (Fl).Copy_Sign :=
+              New_Identifier (Module => M_Floats (Fl).Module,
+                              Domain => EW_Term,
+                              Symb   => NID ("copy_sign"),
+                              Typ    => M_Floats (Fl).T);
+         end;
       end loop;
 
       EW_Float_32_Type := M_Floats (Float32).T;
       EW_Float_64_Type := M_Floats (Float64).T;
+      EW_Float_80_Type := M_Floats (Float80).T;
    end Init_Floating_Module;
 
    -------------------------
@@ -3523,6 +3562,8 @@ package body Why.Atree.Modules is
          return M_Floats (Float32);
       elsif T = EW_Float_64_Type then
          return M_Floats (Float64);
+      elsif T = EW_Float_80_Type then
+         return M_Floats (Float80);
       else
          raise Program_Error;
       end if;

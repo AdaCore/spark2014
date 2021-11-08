@@ -575,6 +575,63 @@ module Float64RNE
     ensures { result = t'real x }
 end
 
+module Float80RNE
+  use export ieee_float.Float80
+
+  function mul_rne (x y : t) : t = mul RNE x y
+  function div_rne (x y : t) : t = div RNE x y
+  function add_rne (x y : t) : t = add RNE x y
+  function sub_rne (x y : t) : t = sub RNE x y
+
+  function sqrt_rne (x : t) : t = sqrt RNE x
+
+  function of_int_rne (x:int) : t = of_int RNE x
+  function to_int_rna (x:t) : int = to_int RNA x
+
+  function ceil     (x:t) : t = roundToIntegral RTP x
+  function floor    (x:t) : t = roundToIntegral RTN x
+  function rounding (x:t) : t = roundToIntegral RNA x
+  function truncate (x:t) : t = roundToIntegral RTZ x
+
+  val mul_rne (x y : t) : t
+    ensures { result = mul RNE x y }
+  val div_rne (x y : t) : t
+    ensures { result = div RNE x y }
+  val add_rne (x y : t) : t
+    ensures { result = add RNE x y }
+  val sub_rne (x y : t) : t
+    ensures { result = sub RNE x y }
+
+  val sqrt_rne (x : t) : t
+    ensures { result = sqrt RNE x }
+
+  val of_int_rne (x:int) : t
+    ensures { result = of_int RNE x }
+  val to_int_rna (x:t) : int
+    ensures { result = to_int RNA x }
+
+  val ceil     (x:t) : t
+    ensures { result = roundToIntegral RTP x }
+  val floor    (x:t) : t
+    ensures { result = roundToIntegral RTN x }
+  val rounding (x:t) : t
+    ensures { result = roundToIntegral RNA x }
+  val truncate (x:t) : t
+    ensures { result = roundToIntegral RTZ x }
+
+  val min (x:t) (y:t) : t
+     ensures { result = min x y }
+  val max (x:t) (y:t) : t
+     ensures { result = max x y }
+
+  val constant _zeroF : t
+    ensures { result = zeroF }
+
+  function to_real (x : t) : real = t'real x
+  val to_real (x:t) : real
+    ensures { result = t'real x }
+end
+
 module Float32_power
   use export Float32RNE
 
@@ -590,6 +647,19 @@ end
 
 module Float64_power
   use export Float64RNE
+
+  clone export Floating_power with
+    type t = t,
+    function ( * ) = mul_rne,
+    function div = div_rne,
+    function of_int = of_int_rne,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate is_zero = is_zero
+end
+
+module Float80_power
+  use export Float80RNE
 
   clone export Floating_power with
     type t = t,
@@ -621,6 +691,24 @@ end
 
 module Float64_next_prev
   use export Float64RNE
+
+  constant max_value : t
+  axiom max_value : max_real = t'real max_value
+
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
+
+module Float80_next_prev
+  use export Float80RNE
 
   constant max_value : t
   axiom max_value : max_real = t'real max_value
@@ -687,19 +775,76 @@ module Float64
      writes { x }
 end
 
-module FloatConv
-  use export ieee_float.FloatConverter
+module Float80
+  use export Float80RNE
 
-  function to_float64_rne (x:Float32.t) : Float64.t = to_float64 RNE x
-  function to_float32_rne (x:Float64.t) : Float32.t = to_float32 RNE x
+  clone export Floating with
+    type t = t,
+    predicate is_zero = is_zero,
+    predicate is_positive = is_positive,
+    function sqrt_rne = sqrt_rne,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div_rne = div_rne
+
+  val constant one : t
+  ensures { result = (1.0:t) }
+  axiom one_is_int: is_int one
+  axiom one_of_int: one = of_int RNA 1
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+end
+
+module Float32_64_Converter
+  use export ieee_float.Float32_64_Converter
+
+  function to_float64_rne (x:Float32.t) : Float64.t = to_large RNE x
+  function to_float32_rne (x:Float64.t) : Float32.t = to_small RNE x
 
   val to_float64_rne (x:Float32.t) : Float64.t
-  ensures { result = to_float64 RNE x }
+  ensures { result = to_large RNE x }
   val to_float32_rne (x:Float64.t) : Float32.t
-  ensures { result = to_float32 RNE x }
+  ensures { result = to_small RNE x }
 
   val range_check_ (f l x : Float64.t) : Float64.t
     requires { (Float64.(.<=) f x) /\ (Float64.(.<=) x l) }
+    ensures { result = x }
+end
+
+module Float32_80_Converter
+  use export ieee_float.Float32_80_Converter
+
+  function to_float80_rne (x:Float32.t) : Float80.t = to_large RNE x
+  function to_float32_rne (x:Float80.t) : Float32.t = to_small RNE x
+
+  val to_float80_rne (x:Float32.t) : Float80.t
+  ensures { result = to_large RNE x }
+  val to_float32_rne (x:Float80.t) : Float32.t
+  ensures { result = to_small RNE x }
+
+  val range_check_ (f l x : Float80.t) : Float80.t
+    requires { (Float80.(.<=) f x) /\ (Float80.(.<=) x l) }
+    ensures { result = x }
+end
+
+module Float64_80_Converter
+  use export ieee_float.Float64_80_Converter
+
+  function to_float80_rne (x:Float64.t) : Float80.t = to_large RNE x
+  function to_float64_rne (x:Float80.t) : Float64.t = to_small RNE x
+
+  val to_float80_rne (x:Float64.t) : Float80.t
+  ensures { result = to_large RNE x }
+  val to_float64_rne (x:Float80.t) : Float64.t
+  ensures { result = to_small RNE x }
+
+  val range_check_ (f l x : Float80.t) : Float80.t
+    requires { (Float80.(.<=) f x) /\ (Float80.(.<=) x l) }
     ensures { result = x }
 end
 
@@ -767,6 +912,67 @@ end
 module Float64_BV_Converter
   use export ieee_float.Float64_BV_Converter
   use        ieee_float.Float64
+
+  function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
+  function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
+  function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
+  function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
+  val of_ubv8_rne  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RNE x }
+  val of_ubv16_rne (x:BV16.t) : t
+  ensures { result = of_ubv16 RNE x }
+  val of_ubv32_rne (x:BV32.t) : t
+  ensures { result = of_ubv32 RNE x }
+  val of_ubv64_rne (x:BV64.t) : t
+  ensures { result = of_ubv64 RNE x }
+
+  function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
+  function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
+  function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
+  function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+  val of_ubv8_rtp  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTP x }
+  val of_ubv16_rtp (x:BV16.t) : t
+  ensures { result = of_ubv16 RTP x }
+  val of_ubv32_rtp (x:BV32.t) : t
+  ensures { result = of_ubv32 RTP x }
+  val of_ubv64_rtp (x:BV64.t) : t
+  ensures { result = of_ubv64 RTP x }
+
+  function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
+  function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
+  function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
+  function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+  val of_ubv8_rtn  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTN x }
+  val of_ubv16_rtn (x:BV16.t) : t
+  ensures { result = of_ubv16 RTN x }
+  val of_ubv32_rtn (x:BV32.t) : t
+  ensures { result = of_ubv32 RTN x }
+  val of_ubv64_rtn (x:BV64.t) : t
+  ensures { result = of_ubv64 RTN x }
+
+  function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
+  function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
+  function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
+  function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+  val to_ubv8_rna  (x:t) : BV8.t
+  ensures { result = to_ubv8  RNA x }
+  val to_ubv16_rna (x:t) : BV16.t
+  ensures { result = to_ubv16 RNA x }
+  val to_ubv32_rna (x:t) : BV32.t
+  ensures { result = to_ubv32 RNA x }
+  val to_ubv64_rna (x:t) : BV64.t
+  ensures { result = to_ubv64 RNA x }
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
+end
+
+module Float80_BV_Converter
+  use export ieee_float.Float80_BV_Converter
+  use        ieee_float.Float80
 
   function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
   function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x

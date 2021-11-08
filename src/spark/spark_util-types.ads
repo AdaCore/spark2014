@@ -101,13 +101,20 @@ package SPARK_Util.Types is
    function Has_Floating_Point_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Float_Kind);
 
-   function Has_Single_Precision_Floating_Point_Type (T : Type_Kind_Id)
-                                                      return Boolean is
-     (Is_Single_Precision_Floating_Point_Type (Retysp (T)));
+   function Has_Single_Precision_Floating_Point_Type
+     (T : Type_Kind_Id)
+      return Boolean
+   is (Is_Single_Precision_Floating_Point_Type (Retysp (T)));
 
-   function Has_Double_Precision_Floating_Point_Type (T : Type_Kind_Id)
-                                                      return Boolean is
-     (Is_Double_Precision_Floating_Point_Type (Retysp (T)));
+   function Has_Double_Precision_Floating_Point_Type
+     (T : Type_Kind_Id)
+      return Boolean
+   is (Is_Double_Precision_Floating_Point_Type (Retysp (T)));
+
+   function Has_Extended_Precision_Floating_Point_Type
+     (T : Type_Kind_Id)
+      return Boolean
+   is (Is_Extended_Precision_Floating_Point_Type (Retysp (T)));
 
    function Has_Static_Predicate (T : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Has_Static_Predicate (Retysp (T)));

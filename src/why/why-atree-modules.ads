@@ -66,6 +66,7 @@ package Why.Atree.Modules is
    EW_Real_Type          : W_Type_Id;         --  used for Universal Fixed
    EW_Float_32_Type      : W_Type_Id;
    EW_Float_64_Type      : W_Type_Id;
+   EW_Float_80_Type      : W_Type_Id;
    EW_BitVector_8_Type   : W_Type_Id;
    EW_BitVector_16_Type  : W_Type_Id;
    EW_BitVector_32_Type  : W_Type_Id;
@@ -96,10 +97,12 @@ package Why.Atree.Modules is
    Fixed_Point_Float_Conv : W_Module_Id;
    Static_Float32         : W_Module_Id;
    Static_Float64         : W_Module_Id;
+   Static_Float80         : W_Module_Id;
    Dynamic_Float          : W_Module_Id;
    Rep_Proj_Fixed         : W_Module_Id;
    Rep_Proj_Float32       : W_Module_Id;
    Rep_Proj_Float64       : W_Module_Id;
+   Rep_Proj_Float80       : W_Module_Id;
    Rep_Proj_Int           : W_Module_Id;
    Rep_Proj_Lt8           : W_Module_Id;
    Rep_Proj_Lt16          : W_Module_Id;
@@ -294,8 +297,8 @@ package Why.Atree.Modules is
 
    type M_Floating_Conv_Type is record
       Module      : W_Module_Id;
-      To_Float64  : W_Identifier_Id;
-      To_Float32  : W_Identifier_Id;
+      To_Large    : W_Identifier_Id;
+      To_Small    : W_Identifier_Id;
       Range_Check : W_Identifier_Id;
    end record;
 
@@ -464,7 +467,9 @@ package Why.Atree.Modules is
    M_Real_From_Int      : M_Real_From_Int_Type;
    M_Real_Minmax        : M_Real_Minmax_Type;
    M_Boolean            : M_Boolean_Type;
-   M_Floating_Conv      : M_Floating_Conv_Type;
+   M_Float32_64_Conv    : M_Floating_Conv_Type;
+   M_Float32_80_Conv    : M_Floating_Conv_Type;
+   M_Float64_80_Conv    : M_Floating_Conv_Type;
    M_Subprogram_Access  : M_Subprogram_Access_Type;
 
    --  M_Arrays(_..), are hashed maps of M_Array(_..)_Type indexed by Name_Ids.
@@ -576,7 +581,7 @@ package Why.Atree.Modules is
    --  @param T a bitvector type as Why tree node
    --  @return the corresponding Why module record
 
-   type Floating_Kind is (Float32, Float64);
+   type Floating_Kind is (Float32, Float64, Float80);
 
    M_Floats : array (Floating_Kind) of M_Floating_Type;
 

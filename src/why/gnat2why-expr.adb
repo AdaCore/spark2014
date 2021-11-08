@@ -17033,6 +17033,9 @@ package body Gnat2Why.Expr is
                         elsif Has_Double_Precision_Floating_Point_Type (Rty)
                         then
                            EW_Float_64_Type
+                        elsif Has_Extended_Precision_Floating_Point_Type (Rty)
+                        then
+                           EW_Float_80_Type
                         else raise Program_Error));
                end if;
             end;

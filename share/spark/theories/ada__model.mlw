@@ -927,7 +927,7 @@ module Floating_Point_Base
 
   use "_gnatprove_standard".Main
 
-  type rep_type                 (* either float32 or float64 *)
+  type rep_type                 (* float32, float64 or float80 *)
 
   predicate eq rep_type rep_type
   predicate is_finite rep_type
@@ -1019,6 +1019,27 @@ module Rep_Proj_Float64
 
   axiom coerce_axiom :
     forall x : Float64.t [to_rep (of_rep x)].
+      in_range x -> to_rep (of_rep x) = x
+end
+
+module Static_Float80
+  use ieee_float.Float80
+
+  clone export Static_Floating_Point with
+    type rep_type = t,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite
+end
+
+module Rep_Proj_Float80
+  (* Specification of to_rep when rep_type = float80; add coercion axiom *)
+  use ieee_float.Float80
+
+  clone export Rep_Proj_Base with
+    type rep_type = t
+
+  axiom coerce_axiom :
+    forall x : Float80.t [to_rep (of_rep x)].
       in_range x -> to_rep (of_rep x) = x
 end
 

@@ -1741,7 +1741,7 @@ package body Gnat2Why.Util is
 
    function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean is
    begin
-      return Typ in EW_Float_32_Type .. EW_Float_64_Type;
+      return Typ in EW_Float_32_Type | EW_Float_64_Type | EW_Float_80_Type;
    end Why_Type_Is_Float;
 
    --------------------
