@@ -1,0 +1,7 @@
+main.adb:15:45: info: data dependencies proved
+main.adb:17:16: info: pointer dereference check proved (CVC4: 1 VC)
+main.adb:20:33: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
+main.adb:22:18: info: predicate check proved (Trivial: 1 VC)
+main.adb:22:20: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
+main.adb:22:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:23:13: info: precondition proved (CVC4: 1 VC)
