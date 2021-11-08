@@ -341,6 +341,9 @@ package Gnat2Why.Expr is
    --  @result Why3 predicate expressing the type invariant of type [Ty] and
    --          of all its parts and ancestors over [Expr].
 
+   function Count_Numerical_Variants (E : Callable_Kind_Id) return Natural;
+   --  Compute the number of numerical variants of a subprogram or entry if any
+
    function Get_Pure_Logic_Term_If_Possible
      (Expr          : N_Subexpr_Id;
       Expected_Type : W_Type_Id)
@@ -353,11 +356,13 @@ package Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Transformation_Params)
       return W_Expr_Array
-   with Post => Get_Variants_Exprs'Result'Length = Number_Of_Variants (E);
+   with Post =>
+       Get_Variants_Exprs'Result'Length = Count_Numerical_Variants (E);
    --  Translate the expressions of variants of a subprogram
 
    function Get_Variants_Ids (E : Callable_Kind_Id) return W_Expr_Array
-     with Post => Get_Variants_Ids'Result'Length = Number_Of_Variants (E);
+     with Post =>
+       Get_Variants_Ids'Result'Length = Count_Numerical_Variants (E);
    --  Compute the names to be used for initial values of variants of a
    --  subprogram or entry. The returned array only contains identifiers, we
    --  use the type W_Expr_Array to be able to share the handling whether we
@@ -418,9 +423,6 @@ package Gnat2Why.Expr is
    --  @param On_Default_Value True iff this predicate check applies to the
    --    default value for a type
    --  @return Why3 program that performs the check
-
-   function Number_Of_Variants (E : Callable_Kind_Id) return Natural;
-   --  Compute the number of variants of a subprogram or entry if any
 
    function Range_Expr
      (N           : Node_Id;

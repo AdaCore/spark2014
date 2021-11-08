@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;        use Ada.Characters.Latin_1;
+with Ada.Text_IO;
 with Common_Iterators;              use Common_Iterators;
 with Errout;                        use Errout;
 with Flow_Dependency_Maps;          use Flow_Dependency_Maps;
@@ -49,6 +50,36 @@ with Stand;                         use Stand;
 with Stringt;                       use Stringt;
 
 package body SPARK_Util is
+
+   -----------------------
+   -- Local Subprograms --
+   -----------------------
+
+   function No_Deep_Updates
+     (Stmts       : List_Id;
+      Variable    : Entity_Id;
+      Explanation : out Unbounded_String;
+      Decls       : List_Id := No_List;
+      End_Stmt    : Node_Id := Empty) return Boolean;
+   --  Return True if Decls & Stmts contains no updates to a deep part of
+   --  Variable. Stop before the statement End_Stmt if any. If a deep update is
+   --  found, Explanation is set.
+
+   Goto_Found : exception;
+
+   function Is_Reborrowed_On_All_Paths
+     (Stmts       : List_Id;
+      Brower      : Entity_Id;
+      Explanation : out Unbounded_String;
+      Decls       : List_Id := No_List;
+      End_Stmt    : Node_Id := Empty) return Boolean;
+   --  Traverse recursively the list of statements Decls & Stmts and check that
+   --  there is at least an update of Brower with a strict subpath of itself
+   --  on all program paths which do not exit the loop.
+   --  Raise Goto_Found if a goto statement is encountered before any
+   --  reborrows on a particular path. They are not handled precisely.
+   --  Stop before the statement End_Stmt if any. If Brower is not reborrowed
+   --  on all paths, Explanation is set.
 
    ------------------------------
    -- Extra tables on entities --
@@ -2739,6 +2770,186 @@ package body SPARK_Util is
         and then Ekind (Scope (E)) = E_Protected_Type;
    end Is_Protected_Component_Or_Discr;
 
+   --------------------------------
+   -- Is_Reborrowed_On_All_Paths --
+   --------------------------------
+
+   function Is_Reborrowed_On_All_Paths
+     (Stmts       : List_Id;
+      Brower      : Entity_Id;
+      Explanation : out Unbounded_String;
+      Decls       : List_Id := No_List;
+      End_Stmt    : Node_Id := Empty) return Boolean
+   is
+      N             : Node_Id := First (Decls);
+      In_Decls      : Boolean := True;
+      End_Reached   : Boolean := False with Ghost;
+      --  Flag to check that if provided, the End_Stmt has been encountered
+
+   begin
+      loop
+         if No (N) and then In_Decls then
+            N := First (Stmts);
+            In_Decls := False;
+         end if;
+
+         exit when No (N);
+
+         if N = End_Stmt then
+            End_Reached := True;
+            exit;
+         end if;
+
+         case Nkind (N) is
+
+            --  If the borrower is assigned, check that the path contains
+            --  a dereference.
+
+            when N_Assignment_Statement =>
+               declare
+                  Lvalue : constant Node_Id := Name (N);
+               begin
+                  if Nkind (Lvalue) in N_Identifier | N_Expanded_Name
+                    and then Entity (Lvalue) = Brower
+                    and then Is_Strict_Subpath (Expression (N))
+                  then
+                     return True;
+                  end if;
+               end;
+
+            --  Early exits, we do not consider the path
+
+            when N_Extended_Return_Statement
+               | N_Simple_Return_Statement
+               | N_Exit_Statement
+               | N_Raise_xxx_Error
+               | N_Raise_Statement
+            =>
+               return True;
+
+            --  A Goto statement could make us skip later updates on
+            --  this path, return False.
+
+            when N_Goto_Statement =>
+               raise Goto_Found;
+
+            when N_Case_Statement =>
+               declare
+                  OK_On_All   : Boolean := True;
+                  Alternative : Opt_N_Case_Statement_Alternative_Id :=
+                    First (Alternatives (N));
+               begin
+                  loop
+                     if not Is_Reborrowed_On_All_Paths
+                       (Statements (Alternative), Brower, Explanation)
+                     then
+                        OK_On_All := False;
+                        exit;
+                     end if;
+                     Next (Alternative);
+                     exit when No (Alternative);
+                  end loop;
+
+                  if OK_On_All then
+                     return True;
+                  end if;
+               end;
+
+            when N_If_Statement =>
+               declare
+                  OK_On_All  : Boolean :=
+                    Is_Reborrowed_On_All_Paths
+                      (Then_Statements (N), Brower, Explanation)
+                      and then Is_Reborrowed_On_All_Paths
+                        (Else_Statements (N), Brower, Explanation);
+                  Elsif_Part : Opt_N_Elsif_Part_Id :=
+                    First (Elsif_Parts (N));
+               begin
+                  if OK_On_All then
+                     while Present (Elsif_Part) loop
+                        if not Is_Reborrowed_On_All_Paths
+                          (Then_Statements (Elsif_Part), Brower, Explanation)
+                        then
+                           OK_On_All := False;
+                           exit;
+                        end if;
+                        Next (Elsif_Part);
+                     end loop;
+
+                     if OK_On_All then
+                        return True;
+                     end if;
+                  end if;
+               end;
+
+            when N_Handled_Sequence_Of_Statements =>
+               if Is_Reborrowed_On_All_Paths
+                 (Statements (N), Brower, Explanation)
+               then
+                  return True;
+               end if;
+
+            --  Do not consider nested loop as we do not know if their
+            --  body will be executed at least once. Still check them
+            --  for absence of Gotos.
+
+            when N_Loop_Statement =>
+               declare
+                  Unused : constant Boolean :=
+                    Is_Reborrowed_On_All_Paths
+                      (Statements (N), Brower, Explanation);
+               begin
+                  null;
+               end;
+
+            when N_Block_Statement =>
+               if Is_Reborrowed_On_All_Paths
+                 (Statements (Handled_Statement_Sequence (N)),
+                  Brower, Explanation,
+                  Decls => Declarations (N))
+               then
+                  return True;
+               end if;
+
+            --  Calls could update the borrower, but we cannot be sure.
+            --  Ignore them.
+
+            when N_Entry_Call_Statement
+               | N_Procedure_Call_Statement
+            =>
+               null;
+
+            when N_Ignored_In_SPARK
+               | N_Itype_Reference
+               | N_Object_Renaming_Declaration
+               | N_Subtype_Declaration
+               | N_Full_Type_Declaration
+               | N_Object_Declaration
+               | N_Package_Body
+               | N_Package_Declaration
+               | N_Pragma
+               | N_Subprogram_Body
+               | N_Subprogram_Declaration
+               | N_Delay_Statement
+            =>
+               null;
+
+            when others =>
+               Ada.Text_IO.Put_Line
+                 ("[SPARK_Util.Is_Reborrowed_On_All_Paths] kind ="
+                  & Node_Kind'Image (Nkind (N)));
+               raise Program_Error;
+         end case;
+         Next (N);
+      end loop;
+
+      pragma Assert (No (End_Stmt) or else End_Reached);
+      Explanation := To_Unbounded_String
+        ('"' & Source_Name (Brower))
+        & """ might not be updated on all paths";
+      return False;
+   end Is_Reborrowed_On_All_Paths;
+
    ---------------------------
    -- Is_Rooted_In_Constant --
    ---------------------------
@@ -2812,6 +3023,65 @@ package body SPARK_Util is
           (Nkind (Choice) in N_Identifier | N_Expanded_Name
            and then Is_Type (Entity (Choice)));
    end Is_Singleton_Choice;
+
+   -----------------------
+   -- Is_Strict_Subpath --
+   -----------------------
+
+   function Is_Strict_Subpath (Expr : N_Subexpr_Id) return Boolean is
+      Path : N_Subexpr_Id := Expr;
+
+   begin
+      --  Is_Strict_Subpath is only called on deep types currently
+
+      pragma Assert (Is_Deep (Etype (Expr)));
+
+      loop
+         case Nkind (Path) is
+
+            --  We have reached the root of the path, return False
+
+            when N_Expanded_Name
+               | N_Identifier
+            =>
+               return False;
+
+            --  The traversal function call might create a strict subpath, but
+            --  we cannot be sure. Search the first parameter.
+
+            when N_Function_Call =>
+               pragma Assert (Is_Traversal_Function_Call (Path));
+               Path := First_Actual (Path);
+
+            --  Access attribute references and explicit derefences are
+            --  ignored. Only actual component accesses are considered to be
+            --  strict subpathes.
+
+            when N_Attribute_Reference =>
+               pragma Assert (Attribute_Name (Path) = Name_Access);
+               Path := Prefix (Path);
+
+            when N_Explicit_Dereference
+               | N_Slice
+            =>
+               Path := Prefix (Path);
+
+            when N_Indexed_Component
+               | N_Selected_Component
+            =>
+               return True;
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               Path := Expression (Path);
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end loop;
+   end Is_Strict_Subpath;
 
    ---------------------
    -- Is_Synchronized --
@@ -2955,6 +3225,313 @@ package body SPARK_Util is
          Context := Parent (Context);
       end loop;
    end Value_Is_Never_Leaked;
+
+   ---------------------
+   -- No_Deep_Updates --
+   ---------------------
+
+   function No_Deep_Updates
+     (Stmts       : List_Id;
+      Variable    : Entity_Id;
+      Explanation : out Unbounded_String;
+      Decls       : List_Id := No_List;
+      End_Stmt    : Node_Id := Empty) return Boolean
+   is
+      function Call_Update_Variables
+        (Call      : N_Subprogram_Call_Id;
+         Variables : Entity_Sets.Set) return Boolean;
+      --  Return True if Call might modify a deep part of an element of
+      --  Variables.
+
+      function No_Deep_Updates
+        (Stmts     : List_Id;
+         Variables : Entity_Sets.Set;
+         Decls     : List_Id := No_List;
+         End_Stmt  : Node_Id := Empty) return Boolean;
+      --  Return True if Decls & Stmts contains no updates to a deep part of an
+      --  element of Variables. Stop before the statement End_Stmt is any.
+
+      ---------------------------
+      -- Call_Update_Variables --
+      ---------------------------
+
+      function Call_Update_Variables
+        (Call      : N_Subprogram_Call_Id;
+         Variables : Entity_Sets.Set) return Boolean
+      is
+         Update_Found : exception;
+
+         procedure Check_Param
+           (Formal : Formal_Kind_Id; Actual : N_Subexpr_Id);
+         --  Raise Update_Found if a mutable parameter has as an actual a
+         --  deep part of an element of Variables.
+
+         -----------------
+         -- Check_Param --
+         -----------------
+
+         procedure Check_Param
+           (Formal : Formal_Kind_Id; Actual : N_Subexpr_Id)
+         is
+         begin
+            if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
+              or else (Has_Access_Type (Etype (Formal))
+                       and then not Is_Access_Constant
+                         (Retysp (Etype (Formal))))
+            then
+               if Is_Deep (Etype (Actual))
+                 and then Variables.Contains (Get_Root_Object (Actual))
+               then
+                  raise Update_Found;
+               end if;
+            end if;
+         end Check_Param;
+
+         procedure Check_Parameters is new
+           Iterate_Call_Parameters (Check_Param);
+
+         Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
+
+      --  Start of processing for Call_Update_Variables
+
+      begin
+         --  Search parameters for updates to a deep part of an element of
+         --  Browers.
+
+         Check_Parameters (Call);
+
+         --  Check the global OUT and IN OUT of Subp
+
+         declare
+            Unused_Ids : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids  : Flow_Types.Flow_Id_Sets.Set;
+
+         begin
+            Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
+                                            Reads           => Unused_Ids,
+                                            Writes          => Write_Ids,
+                                            Erase_Constants => True,
+                                            Scop            =>
+                                              Get_Flow_Scope (Call));
+
+            for F of Write_Ids loop
+               if F.Kind = Direct_Mapping
+                 and then Variables.Contains (Get_Direct_Mapping_Id (F))
+               then
+                  return True;
+               end if;
+            end loop;
+         end;
+
+         return False;
+
+      exception
+         when Update_Found =>
+            return True;
+      end Call_Update_Variables;
+
+      ---------------------
+      -- No_Deep_Updates --
+      ---------------------
+
+      function No_Deep_Updates
+        (Stmts     : List_Id;
+         Variables : Entity_Sets.Set;
+         Decls     : List_Id := No_List;
+         End_Stmt  : Node_Id := Empty) return Boolean
+      is
+         N             : Node_Id := First (Decls);
+         In_Decls      : Boolean := True;
+         Cur_Variables : Entity_Sets.Set := Variables;
+         End_Reached   : Boolean := False with Ghost;
+         --  Flag to check that if provided, the End_Stmt has been encountered
+
+      begin
+         loop
+            if No (N) and then In_Decls then
+               N := First (Stmts);
+               In_Decls := False;
+            end if;
+
+            exit when No (N);
+
+            if N = End_Stmt then
+               End_Reached := True;
+               exit;
+            end if;
+
+            case Nkind (N) is
+
+               --  Check that the value referenced by an element of
+               --  Variables is never assigned a value of a deep type
+               --  outside of reborrows.
+
+               when N_Assignment_Statement =>
+                  declare
+                     Lvalue : constant Node_Id := Name (N);
+                     Root   : constant Entity_Id :=
+                       Get_Root_Object (Lvalue);
+                  begin
+                     if (Nkind (Lvalue) not in N_Identifier
+                                             | N_Expanded_Name
+                         or else
+                           not Is_Anonymous_Access_Type (Etype (Lvalue)))
+                       and then Cur_Variables.Contains (Root)
+                       and then Is_Deep (Etype (Lvalue))
+                     then
+                        declare
+                           Through_Borrow : constant String :=
+                             (if Get_Root_Object (Lvalue) = Variable
+                              then ""
+                              else " through local borrower """
+                              & Source_Name (Root) & '"');
+                        begin
+                           Explanation := To_Unbounded_String
+                             ("the value designated by """)
+                             & Source_Name (Variable)
+                             & """ might be updated" & Through_Borrow;
+                           return False;
+                        end;
+                     end if;
+                  end;
+
+               --  If an element of Variables is borrowed, the borrower
+               --  should not be updated. Add it to Cur_Variables.
+
+               when N_Object_Declaration =>
+                  declare
+                     Def_Id : constant Entity_Id := Defining_Identifier (N);
+                  begin
+                     if Is_Local_Borrower (Def_Id)
+                       and then Is_Deep
+                         (Directly_Designated_Type (Etype (Def_Id)))
+                       and then Cur_Variables.Contains
+                         (Get_Root_Object (Expression (N)))
+                     then
+                        Cur_Variables.Insert (Def_Id);
+                     end if;
+                  end;
+
+               when N_Case_Statement =>
+                  declare
+                     Alternative : Opt_N_Case_Statement_Alternative_Id :=
+                       First (Alternatives (N));
+                  begin
+                     loop
+                        if not No_Deep_Updates
+                          (Statements (Alternative), Cur_Variables)
+                        then
+                           return False;
+                        end if;
+                        Next (Alternative);
+                        exit when No (Alternative);
+                     end loop;
+                  end;
+
+               when N_If_Statement =>
+                  if No_Deep_Updates (Then_Statements (N), Cur_Variables)
+                    and then
+                      No_Deep_Updates (Else_Statements (N), Cur_Variables)
+                  then
+                     declare
+                        Elsif_Part : Opt_N_Elsif_Part_Id :=
+                          First (Elsif_Parts (N));
+                     begin
+                        while Present (Elsif_Part) loop
+                           if not No_Deep_Updates
+                             (Then_Statements (Elsif_Part), Cur_Variables)
+                           then
+                              return False;
+                           end if;
+                           Next (Elsif_Part);
+                        end loop;
+                     end;
+                  else
+                     return False;
+                  end if;
+
+               when N_Handled_Sequence_Of_Statements
+                  | N_Loop_Statement
+               =>
+                  if not No_Deep_Updates (Statements (N), Cur_Variables)
+                  then
+                     return False;
+                  end if;
+
+               when N_Block_Statement =>
+                  if not No_Deep_Updates
+                    (Statements (Handled_Statement_Sequence (N)),
+                     Cur_Variables, Decls => Declarations (N))
+                  then
+                     return False;
+                  end if;
+
+               --  Check that procedure/entry calls do not update elements
+               --  of Cur_Variables.
+
+               when N_Entry_Call_Statement
+                  | N_Procedure_Call_Statement
+               =>
+                  if Call_Update_Variables (N, Cur_Variables) then
+                     Explanation := To_Unbounded_String
+                       ("the call to """)
+                       & Source_Name (Get_Called_Entity (N))
+                       & """ might update the value designated by """
+                       & Source_Name (Variable) & '"';
+                     return False;
+                  end if;
+
+               when N_Ignored_In_SPARK
+                  | N_Itype_Reference
+                  | N_Object_Renaming_Declaration
+                  | N_Subtype_Declaration
+                  | N_Full_Type_Declaration
+                  | N_Package_Body
+                  | N_Package_Declaration
+                  | N_Pragma
+                  | N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Delay_Statement
+                  | N_Simple_Return_Statement
+                  | N_Extended_Return_Statement
+               =>
+                  null;
+
+               when others =>
+                  Ada.Text_IO.Put_Line
+                    ("[SPARK_Util.No_Deep_Updates] kind ="
+                     & Node_Kind'Image (Nkind (N)));
+                  raise Program_Error;
+            end case;
+            Next (N);
+         end loop;
+
+         pragma Assert (No (End_Stmt) or End_Reached);
+         return True;
+      end No_Deep_Updates;
+
+   --  Start of processing for No_Deep_Updates
+
+   begin
+      if Is_Constant_In_SPARK (Variable)
+        or else not Is_Deep (Etype (Variable))
+        or else
+          (Is_Anonymous_Access_Type (Etype (Variable))
+           and then
+             (Is_Access_Constant (Etype (Variable))
+              or else not
+                Is_Deep (Directly_Designated_Type (Etype (Variable)))))
+      then
+         return True;
+      else
+         declare
+            Variables : Entity_Sets.Set;
+         begin
+            Variables.Insert (Variable);
+            return No_Deep_Updates (Stmts, Variables, Decls, End_Stmt);
+         end;
+      end if;
+   end No_Deep_Updates;
 
    ------------------------------------
    -- Number_Of_Assocs_In_Expression --
@@ -3618,6 +4195,18 @@ package body SPARK_Util is
       end if;
    end Source_Name;
 
+   -------------------------------
+   -- Statement_Enclosing_Label --
+   -------------------------------
+
+   function Statement_Enclosing_Label (E : E_Label_Id) return Node_Id is
+      Label : constant Node_Id := Label_Construct (Parent (E));
+      pragma Assert (Nkind (Label) = N_Label);
+
+   begin
+      return Parent (Label);
+   end Statement_Enclosing_Label;
+
    --------------------
    -- String_Of_Node --
    --------------------
@@ -3759,17 +4348,419 @@ package body SPARK_Util is
       return Name_Buffer (1 .. Name_Len);
    end String_Value;
 
-   -------------------------------
-   -- Statement_Enclosing_Label --
-   -------------------------------
+   ------------------------------------
+   -- Structurally_Decreases_In_Call --
+   ------------------------------------
 
-   function Statement_Enclosing_Label (E : E_Label_Id) return Node_Id is
-      Label : constant Node_Id := Label_Construct (Parent (E));
-      pragma Assert (Nkind (Label) = N_Label);
+   procedure Structurally_Decreases_In_Call
+     (Param       : Formal_Kind_Id;
+      Call        : N_Call_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      Subp        : constant Subprogram_Kind_Id := Get_Called_Entity (Call);
+      Variants    : constant Node_Id :=
+        Get_Pragma (Subp, Pragma_Subprogram_Variant);
+      Aggr        : constant Node_Id :=
+        Expression (First (Pragma_Argument_Associations (Variants)));
+      Variant     : constant Node_Id :=
+        First (Component_Associations (Aggr));
+      Call_Formal : constant Formal_Kind_Id := Entity (Expression (Variant));
+      Call_Actual : Node_Id := Empty;
+      Decreases   : Boolean := False;
+
+      procedure Go_To_Enclosing_Statement
+        (Variable  : in out Entity_Id;
+         Statement : in out Node_Id;
+         Stmt_List : out List_Id;
+         Decl_List : out List_Id);
+      --  Variable shall be either Param or a local observer/borrower
+      --  ultimately borrowing Param which is defined in a scope enclosing
+      --  Statement.
+      --  Set Statement to the control statement or block enclosing the
+      --  initial value of Statement, Stmt_List to the corresponding list of
+      --  statements and Decl_List to the list of declarations if any. Set
+      --  Variable to the last local observer/borrower ultimately borrowing
+      --  Param defined in a scope enclosing Statement if any, and Param
+      --  otherwise.
+
+      function Is_Reborrowed_On_All_Path_To_Stmt
+        (Variable  : Entity_Id;
+         Statement : Node_Id) return Boolean
+        with Pre => Is_List_Member (Statement);
+      --  Go up the path leading to Statement and check if one of the
+      --  borrowers/observers involved in the path to Variable is reborrowed
+      --  on all paths leading to Statement.
+
+      function No_Deep_Updates_Up_To_Stmt
+        (Variable  : Entity_Id;
+         Statement : Node_Id) return Boolean
+        with Pre => Is_List_Member (Statement);
+      --  Go up the path leading to Statement and check if none of the
+      --  borrowers/observers involved in the path to Variable is updated
+      --  on any path leading to Statement.
+
+      procedure Search_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  If Formal is Call_Formal set Call_Actual to Actual
+
+      -------------------------------
+      -- Go_To_Enclosing_Statement --
+      -------------------------------
+
+      procedure Go_To_Enclosing_Statement
+        (Variable  : in out Entity_Id;
+         Statement : in out Node_Id;
+         Stmt_List : out List_Id;
+         Decl_List : out List_Id)
+      is
+      begin
+         Stmt_List := List_Containing (Statement);
+         Decl_List := No_List;
+
+         Statement := Parent (Stmt_List);
+         if Nkind (Statement) in N_Handled_Sequence_Of_Statements
+                               | N_Case_Statement_Alternative
+                               | N_Elsif_Part
+         then
+            Statement := Parent (Statement);
+         end if;
+         pragma Assert
+           (Is_List_Member (Statement)
+            or else Nkind (Statement) in N_Subprogram_Body
+                                       | N_Entry_Body);
+
+         --  If Statement is a body or a block, set Decl_List appropriately.
+         --  Because of inlining, it can also occur that the input value
+         --  of Statement was in fact in the declarations. Also reset
+         --  Stmt_List.
+
+         if Nkind (Statement) in N_Block_Statement
+                               | N_Subprogram_Body
+                               | N_Entry_Body
+         then
+            Stmt_List := Statements (Handled_Statement_Sequence (Statement));
+            Decl_List := Declarations (Statement);
+         end if;
+
+         --  If we are in the block statement where Variable is defined, go up
+         --  the chain of borrowers to find one which is not defined in the
+         --  current block.
+
+         if Nkind (Statement) = N_Block_Statement
+           and then Defining_Entity (Statement) = Scope (Variable)
+         then
+            loop
+               Variable := Get_Root_Object
+                 (Expression (Parent (Variable)));
+               exit when Variable = Param
+                 or else Defining_Entity (Statement) /= Scope (Variable);
+            end loop;
+
+         --  If we have reached the enclosing body, Variable is set to Param
+
+         elsif Nkind (Statement) in N_Subprogram_Body | N_Entry_Body then
+            Variable := Param;
+         end if;
+      end Go_To_Enclosing_Statement;
+
+      ---------------------------------------
+      -- Is_Reborrowed_On_All_Path_To_Stmt --
+      ---------------------------------------
+
+      function Is_Reborrowed_On_All_Path_To_Stmt
+        (Variable  : Entity_Id;
+         Statement : Node_Id) return Boolean
+      is
+         Var  : Entity_Id := Variable;
+         Stmt : Node_Id := Statement;
+      begin
+         loop
+
+            --  If we have reached Param without decreasing, stop the
+            --  search. We do not search for assignments to substructures
+            --  for Param. It is unlikely to occur in practice as it
+            --  would result in a memory leak.
+
+            if Var = Param then
+               Explanation := To_Unbounded_String
+                 ("structural variant of """ & Source_Name (Subp)
+                  & """ might not be a strict subcomponent of """
+                  & Source_Name (Param) & '"');
+               return False;
+            end if;
+
+            pragma Assert (Is_Anonymous_Access_Type (Etype (Var)));
+
+            --  Go to the enclosing control statement if any
+
+            declare
+               Brower    : constant Entity_Id := Var;
+               End_Stmt  : constant Node_Id := Stmt;
+               Stmt_List : List_Id;
+               Decl_List : List_Id;
+               Dummy     : Unbounded_String;
+            begin
+               Go_To_Enclosing_Statement
+                 (Variable  => Var,
+                  Statement => Stmt,
+                  Stmt_List => Stmt_List,
+                  Decl_List => Decl_List);
+
+               --  If the borrower or observer Brower is reborrowed on all
+               --  paths in this statement, the search is over.
+
+               exit when Is_Reborrowed_On_All_Paths
+                 (Stmts       => Stmt_List,
+                  Decls       => Decl_List,
+                  Brower      => Brower,
+                  Explanation => Dummy,
+                  End_Stmt    => End_Stmt);
+            end;
+         end loop;
+
+         return True;
+      end Is_Reborrowed_On_All_Path_To_Stmt;
+
+      --------------------------------
+      -- No_Deep_Updates_Up_To_Stmt --
+      --------------------------------
+
+      function No_Deep_Updates_Up_To_Stmt
+        (Variable  : Entity_Id;
+         Statement : Node_Id) return Boolean
+      is
+         Search_Is_Over : exception;
+         Search_Result  : Boolean;
+
+         procedure No_Deep_Updates_Up_To_Stmt_Rec
+           (Variable  : Entity_Id;
+            Statement : Node_Id);
+         --  Set Search_Result to true if no deep updates of Variable and what
+         --  it ultimately borrows/observes were found on the path up to
+         --  Statement, otherwise set it to False.
+         --  Raise Search_Is_Over if either a deep update was found or
+         --  Statement occurs inside a loop so every nested statement in
+         --  Statement has already been checked for updates.
+
+         ------------------------------------
+         -- No_Deep_Updates_Up_To_Stmt_Rec --
+         ------------------------------------
+
+         procedure No_Deep_Updates_Up_To_Stmt_Rec
+           (Variable  : Entity_Id;
+            Statement : Node_Id)
+         is
+            Next_Stmt : Node_Id := Statement;
+            Next_Var  : Entity_Id := Variable;
+            Stmt_List : List_Id;
+            Decl_List : List_Id;
+
+         begin
+            --  Search for the enclosing control statement or body
+
+            Go_To_Enclosing_Statement
+              (Variable  => Next_Var,
+               Statement => Next_Stmt,
+               Stmt_List => Stmt_List,
+               Decl_List => Decl_List);
+
+            --  Check first the enclosing statements up to the enclosing
+            --  control statement if any, so that the current statements will
+            --  be skipped if they are part of a loop.
+
+            if Nkind (Next_Stmt) not in N_Subprogram_Body | N_Entry_Body then
+               No_Deep_Updates_Up_To_Stmt_Rec (Next_Var, Next_Stmt);
+            end if;
+
+            --  Search for updates to Next_Var in Stmt_List. If Next_Stmt is a
+            --  loop, the recursive call could be encountered several times. As
+            --  Param is not constant, it is a deep update.
+
+            if Nkind (Next_Stmt) = N_Loop_Statement then
+               pragma Assert (not Is_Constant_In_SPARK (Param));
+
+               Explanation := To_Unbounded_String
+                 ('"' & Source_Name (Param) & """ might be updated in previous"
+                  & " iterations of the loop");
+
+               Search_Result := False;
+               raise Search_Is_Over;
+
+            --  Otherwise, stop the search before Statement
+
+            else
+               Search_Result := No_Deep_Updates
+                 (Stmts       => Stmt_List,
+                  Decls       => Decl_List,
+                  Variable    => Next_Var,
+                  Explanation => Explanation,
+                  End_Stmt    => Statement);
+
+               if not Search_Result then
+                  raise Search_Is_Over;
+               end if;
+            end if;
+         end No_Deep_Updates_Up_To_Stmt_Rec;
+      begin
+         No_Deep_Updates_Up_To_Stmt_Rec (Variable, Statement);
+         raise Search_Is_Over;
+      exception
+         when Search_Is_Over =>
+            return Search_Result;
+      end No_Deep_Updates_Up_To_Stmt;
+
+      ------------------
+      -- Search_Param --
+      ------------------
+
+      procedure Search_Param (Formal : Entity_Id; Actual : Node_Id) is
+      begin
+         if Formal = Call_Formal then
+            Call_Actual := Actual;
+         end if;
+      end Search_Param;
+
+      procedure Search_Call_Actual is new
+        Iterate_Call_Parameters (Search_Param);
+
+   --  Start of processing for Structurally_Decreases_In_Call
 
    begin
-      return Parent (Label);
-   end Statement_Enclosing_Label;
+      --  Search for the actual of Call corresponding to the variant of Subp
+
+      Search_Call_Actual (Call);
+      pragma Assert (Present (Call_Actual));
+
+      --  Check that Call_Actual is rooted at Param. Set Decreases to True
+      --  if the fact that Call_Actual is a strict subpath of Param can be
+      --  deduced from the encountered declarations only.
+
+      declare
+         Root : Entity_Id;
+         Expr : Node_Id := Call_Actual;
+      begin
+         loop
+            --  If Expr is not a Path or does not have a root object, it is
+            --  not a part of Param.
+
+            if not Is_Path_Expression (Expr) then
+               Result := False;
+               exit;
+            end if;
+
+            Root := Get_Root_Object (Expr);
+
+            if No (Root) then
+               Result := False;
+               exit;
+            end if;
+
+            --  If Expr is a strict subpath, we know that the variant
+            --  decreases.
+
+            if not Decreases then
+               Decreases := Is_Strict_Subpath (Expr);
+            end if;
+
+            --  We have reached Param, stop the search
+
+            if Root = Param then
+               Result := True;
+               exit;
+
+            --  The root is a local observer or borrower, continue the searched
+            --  in the borrowed expression.
+
+            elsif Ekind (Root) in E_Variable | E_Constant
+              and then Is_Anonymous_Access_Object_Type (Etype (Root))
+            then
+               Expr := Expression (Parent (Root));
+
+            --  Otherwise, Expr is not a part of Param
+
+            else
+               Result := False;
+               exit;
+            end if;
+         end loop;
+      end;
+
+      if not Result then
+         Explanation := To_Unbounded_String
+           ("structural variant of """ & Source_Name (Subp)
+            & """ might not be a part of """ & Source_Name (Param) & '"');
+         return;
+      end if;
+
+      declare
+         function Is_In_Statement_List (N : Node_Id) return Boolean;
+         --  Return True if N occurs in a list of statements
+
+         --------------------------
+         -- Is_In_Statement_List --
+         --------------------------
+
+         function Is_In_Statement_List (N : Node_Id) return Boolean is
+            P : Node_Id;
+         begin
+            if not Is_List_Member (N) then
+               return False;
+            else
+               P := Parent (N);
+               return Nkind (P) in N_Case_Statement_Alternative
+                                 | N_Elsif_Part
+                                 | N_If_Statement
+                                 | N_Handled_Sequence_Of_Statements
+                                 | N_Block_Statement
+                                 | N_Subprogram_Body
+                                 | N_Entry_Body
+                                 | N_Loop_Statement
+                                 | N_Extended_Return_Statement;
+            end if;
+         end Is_In_Statement_List;
+
+         function First_Parent_In_Statement_List is new
+           First_Parent_With_Property (Is_In_Statement_List);
+
+         Variable  : constant Entity_Id := Get_Root_Object (Call_Actual);
+         Statement : constant Node_Id :=
+           (if Nkind (Call) = N_Function_Call
+            then First_Parent_In_Statement_List (Call)
+            else Call);
+      begin
+         Result :=
+           (Decreases
+            or else Is_Reborrowed_On_All_Path_To_Stmt (Variable, Statement))
+           and then
+             (Is_Constant_In_SPARK (Param)
+              or else not Is_Deep (Etype (Param))
+              or else No_Deep_Updates_Up_To_Stmt (Variable, Statement));
+      end;
+   end Structurally_Decreases_In_Call;
+
+   ------------------------------------
+   -- Structurally_Decreases_In_Loop --
+   ------------------------------------
+
+   procedure Structurally_Decreases_In_Loop
+     (Brower      : Entity_Id;
+      Loop_Stmt   : N_Loop_Statement_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+
+   --  Start of processing for Structurally_Decreases
+
+   begin
+      Result := Is_Reborrowed_On_All_Paths
+        (Statements (Loop_Stmt), Brower, Explanation)
+        and then No_Deep_Updates (Statements (Loop_Stmt), Brower, Explanation);
+   exception
+      when Goto_Found =>
+         Explanation := To_Unbounded_String
+           ("a goto statement was found in the loop");
+         Result := False;
+   end Structurally_Decreases_In_Loop;
 
    ---------------------------------
    -- Traverse_Access_To_Constant --

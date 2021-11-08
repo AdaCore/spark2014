@@ -23,10 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Debug;
 with Gnat2Why_Args;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Namet;                   use Namet;
 with Nlists;                  use Nlists;
@@ -162,6 +165,7 @@ package body Gnat2Why.Expr.Loops is
       Variant : Opt_N_Pragma_Argument_Association_Id;
    begin
       Variant := First (Pragma_Argument_Associations (Stmt));
+
       while Present (Variant) loop
          declare
             Expr   : constant N_Subexpr_Id := Expression (Variant);
@@ -175,7 +179,9 @@ package body Gnat2Why.Expr.Loops is
             --  If Expr is a big integer, insert a check to make sure that the
             --  value stays non-negative.
 
-            if not Has_Discrete_Type (Etype (Expr)) then
+            if Chars (Variant) /= Name_Structural
+              and then not Has_Discrete_Type (Etype (Expr))
+            then
                pragma Assert
                  (Is_From_Hardcoded_Unit
                     (Base_Type (Etype (Expr)), Big_Integers));
@@ -472,16 +478,18 @@ package body Gnat2Why.Expr.Loops is
         (List : Node_Lists.List)
          return W_Prog_Id
       is
-         Stmts : W_Prog_Array (1 .. Natural (List.Length));
+         Stmts   : W_Prog_Array (1 .. Natural (List.Length));
          Counter : Positive := 1;
       begin
          if List.Is_Empty then
             return +Void;
          end if;
+
          for Variant of List loop
             Stmts (Counter) := Check_Loop_Variant (Variant);
             Counter := Counter + 1;
          end loop;
+
          return Sequence (Stmts);
       end Check_Loop_Variants;
 
@@ -494,13 +502,48 @@ package body Gnat2Why.Expr.Loops is
          return W_Variants_Array
       is
          Variants_Ar : W_Variants_Array (1 .. Natural (List.Length));
-         Count       : Integer := 1;
+         Count       : Natural := 0;
       begin
          for Loop_Variant of List loop
-            Variants_Ar (Count) := Transform_Loop_Variant (Loop_Variant);
-            Count := Count + 1;
+
+            --  Structural variants are checked statically
+
+            if Chars (First (Pragma_Argument_Associations (Loop_Variant))) =
+              Name_Structural
+            then
+               declare
+                  Variant : constant Node_Id :=
+                    First (Pragma_Argument_Associations (Loop_Variant));
+
+               begin
+                  pragma Assert (No (Next (Variant)));
+                  pragma Assert
+                    (Nkind (Expression (Variant)) in N_Identifier
+                                                   | N_Expanded_Name);
+
+                  declare
+                     Result      : Boolean;
+                     Explanation : Unbounded_String;
+                  begin
+                     Structurally_Decreases_In_Loop
+                       (Brower      => Entity (Expression (Variant)),
+                        Loop_Stmt   => Stmt,
+                        Result      => Result,
+                        Explanation => Explanation);
+                     Emit_Static_Proof_Result
+                       (Node        => Loop_Variant,
+                        Kind        => VC_Loop_Variant,
+                        Proved      => Result,
+                        E           => Current_Subp,
+                        Explanation => To_String (Explanation));
+                  end;
+               end;
+            else
+               Count := Count + 1;
+               Variants_Ar (Count) := Transform_Loop_Variant (Loop_Variant);
+            end if;
          end loop;
-         return Variants_Ar;
+         return Variants_Ar (1 .. Count);
       end Transform_Loop_Variants;
 
       --  Local variables

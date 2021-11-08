@@ -5068,7 +5068,28 @@ package body SPARK_Definition is
                begin
                   while Present (Variant) loop
                      pragma Assert (Nkind (Variant) = N_Component_Association);
-                     Mark (Expression (Variant));
+
+                     declare
+                        Expr : constant Node_Id := Expression (Variant);
+                     begin
+                        Mark (Expr);
+
+                        --  For structural variants, check that the expression
+                        --  is a formal parameter of the subprogram.
+
+                        if Chars (First (Choices (Variant))) = Name_Structural
+                          and then
+                            not (Nkind (Expr) in N_Identifier | N_Expanded_Name
+                                 and then Ekind (Entity (Expr)) in Formal_Kind
+                                 and then Scope (Entity (Expr)) = E)
+                        then
+                           Mark_Violation
+                             ("structural subprogram variant which is not a"
+                              & " parameter of the subprogram",
+                              Expr);
+                        end if;
+                     end;
+
                      Next (Variant);
                   end loop;
                end;
@@ -7598,9 +7619,30 @@ package body SPARK_Definition is
                Variant : Node_Id := First (Pragma_Argument_Associations (N));
 
             begin
-               --  Process all increasing / decreasing expressions
+               --  Process all expressions
                while Present (Variant) loop
-                  Mark (Expression (Variant));
+                  declare
+                     Expr : constant N_Subexpr_Id := Expression (Variant);
+
+                  begin
+                     --  For structural variants, check that the expression is
+                     --  a variable of an anonymous access-to-object type.
+
+                     if Chars (Variant) = Name_Structural
+                       and then
+                         not (Nkind (Expr) in N_Identifier | N_Expanded_Name
+                              and then Ekind (Entity (Expr)) = E_Variable
+                              and then Is_Anonymous_Access_Object_Type
+                                (Etype (Expr)))
+                     then
+                        Mark_Violation
+                          ("structural loop variant which is not a variable of"
+                           & " an anonymous access-to-object type", Expr);
+                     else
+                        Mark (Expr);
+                     end if;
+                  end;
+
                   Next (Variant);
                end loop;
             end;

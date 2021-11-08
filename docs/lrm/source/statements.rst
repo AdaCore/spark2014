@@ -189,9 +189,11 @@ the value an expression had upon entry to the subprogram.
 
 ::
 
-  loop_variant_parameters ::= loop_variant_item {, loop_variant_item}
-  loop_variant_item       ::= change_direction => expression
-  change_direction        ::= Increases | Decreases
+  loop_variant_parameters      ::= structural_loop_variant_item | numeric_loop_variant_items
+  numeric_loop_variant_items   ::= numeric_loop_variant_item {, numeric_loop_variant_item}
+  numeric_loop_variant_item    ::= change_direction => expression
+  structural_loop_variant_item ::= Structural => expression
+  change_direction             ::= Increases | Decreases
 
 .. container:: heading
 
@@ -253,13 +255,16 @@ the value an expression had upon entry to the subprogram.
    block statements are ignored for purposes of this rule.]
 
 
-7. The expression of a ``loop_variant_item`` shall be either of a
+7. The expression of a ``numeric_loop_variant_item`` shall be either of a
    discrete type or of a subtype of
    ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``. In the second case,
    the associated ``change_direction`` shall be Decreases.
 
+8. The expression of a ``structural_loop_variant_item`` shall denote a
+   variable of an anonymous access-to-object type.
 
-8. Two Loop_Invariant or Loop_Variant pragmas which apply to
+
+9. Two Loop_Invariant or Loop_Variant pragmas which apply to
    the same loop shall occur in the same ``sequence_of_statements``,
    separated only by [zero or more] other Loop_Invariant or
    Loop_Variant pragmas.
@@ -270,13 +275,14 @@ the value an expression had upon entry to the subprogram.
    Dynamic Semantics
 
 
-9. Other than the above legality rules, pragma Loop_Invariant is equivalent to
-   pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in Ada
-   RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant assertion aspect
-   [and may be used in an Assertion_Policy pragma].
+10. Other than the above legality rules, pragma Loop_Invariant is equivalent to
+    pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in Ada
+    RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant assertion aspect
+    [and may be used in an Assertion_Policy pragma].
 
 
-10. The elaboration of a Checked Loop_Variant pragma begins by evaluating the
+11. The elaboration of a Checked Loop_Variant pragma containing
+    ``numeric_loop_variant_items`` begins by evaluating the
     ``expressions`` in textual order. For every expression whose type is a
     subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``,
     a check is performed that it is non-negative.
@@ -297,6 +303,16 @@ the value an expression had upon entry to the subprogram.
     is governed by the Loop_Variant assertion aspect [and may be used in an
     Assertion_Policy pragma].
 
+.. centered:: **Verification Rules**
+
+12. The variable denoted by the expression of a ``structural_loop_variant_item``
+    shall be updated on all paths reentering the loop to a
+    strict subcomponent of the structure it used to denote.
+
+13. No deep parts of the value designated by the variable denoted by the
+    expression of a ``structural_loop_variant_item`` shall be written by the
+    loop. [This ensures that the previous rule is sufficient to prove loop
+    termination on acyclic data structures.]
 
 .. container:: heading
 

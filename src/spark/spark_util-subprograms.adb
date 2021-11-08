@@ -34,7 +34,6 @@ with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Prag;                           use Sem_Prag;
-with Sinfo.Utils;                        use Sinfo.Utils;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
@@ -176,8 +175,12 @@ package body SPARK_Util.Subprograms is
                  or else Chars (First (Choices (Variant1))) /=
                    Chars (First (Choices (Variant2)))
                  or else
-                   Unique_Entity (Base_Type (Etype (Expression (Variant1)))) /=
-                   Unique_Entity (Base_Type (Etype (Expression (Variant2))))
+                   (Chars (First (Choices (Variant1))) /= Name_Structural
+                    and then
+                      Unique_Entity
+                        (Base_Type (Etype (Expression (Variant1)))) /=
+                      Unique_Entity
+                        (Base_Type (Etype (Expression (Variant2)))))
                then
                   return False;
                end if;
@@ -1326,6 +1329,20 @@ package body SPARK_Util.Subprograms is
 
       return N_Unused_At_Start;
    end Is_Simple_Shift_Or_Rotate;
+
+   --------------------------------------
+   -- Is_Structural_Subprogram_Variant --
+   --------------------------------------
+
+   function Is_Structural_Subprogram_Variant (P : N_Pragma_Id) return Boolean
+   is
+      Variants      : constant N_Aggregate_Id :=
+        Expression (First (Pragma_Argument_Associations (P)));
+      First_Variant : constant N_Component_Association_Id :=
+        First (Component_Associations (Variants));
+   begin
+      return Chars (First (Choices (First_Variant))) = Name_Structural;
+   end Is_Structural_Subprogram_Variant;
 
    -----------------------------
    -- Is_Tagged_Predefined_Eq --

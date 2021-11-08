@@ -2843,12 +2843,38 @@ package body Gnat2Why.Expr is
       Args   : W_Expr_Array;
       Params : Transformation_Params) return W_Prog_Id
    is
-      Result      : Boolean;
-      Explanation : Unbounded_String;
+      Call_Variant : constant Node_Id :=
+        Get_Pragma (Get_Called_Entity (Call), Pragma_Subprogram_Variant);
+      Result       : Boolean;
+      Explanation  : Unbounded_String;
    begin
       Is_Valid_Recursive_Call (Call, Current_Subp, Result, Explanation);
 
-      if Result then
+      if not Result then
+         Emit_Static_Proof_Result
+           (Call, VC_Subprogram_Variant, False, Current_Subp,
+            Explanation => To_String (Explanation));
+         return +Void;
+      elsif Is_Structural_Subprogram_Variant (Call_Variant) then
+         declare
+            Variants : constant Node_Id :=
+              Get_Pragma (Current_Subp, Pragma_Subprogram_Variant);
+            Aggr     : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Variants)));
+            Variant  : constant Node_Id :=
+              First (Component_Associations (Aggr));
+         begin
+            Structurally_Decreases_In_Call
+              (Param       => Entity (Expression (Variant)),
+               Call        => Call,
+               Result      => Result,
+               Explanation => Explanation);
+            Emit_Static_Proof_Result
+              (Call, VC_Subprogram_Variant, Result, Current_Subp,
+               Explanation => To_String (Explanation));
+            return +Void;
+         end;
+      else
          declare
             Enclosing_Variants : constant W_Expr_Array :=
               (if Is_Subprogram_Or_Entry (Current_Subp)
@@ -2873,11 +2899,6 @@ package body Gnat2Why.Expr is
                Reason   => VC_Subprogram_Variant,
                Typ      => EW_Unit_Type);
          end;
-      else
-         Emit_Static_Proof_Result
-           (Call, VC_Subprogram_Variant, False, Current_Subp,
-            Explanation => To_String (Explanation));
-         return +Void;
       end if;
    end Check_Subprogram_Variants;
 
@@ -6327,6 +6348,24 @@ package body Gnat2Why.Expr is
    end Compute_Type_Invariant;
 
    ------------------------------
+   -- Count_Numerical_Variants --
+   ------------------------------
+
+   function Count_Numerical_Variants (E : Callable_Kind_Id) return Natural is
+      Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
+   begin
+      if Present (Variants)
+        and then not Is_Structural_Subprogram_Variant (Variants)
+      then
+         return Natural
+           (List_Length (Component_Associations
+            (Expression (First (Pragma_Argument_Associations (Variants))))));
+      else
+         return 0;
+      end if;
+   end Count_Numerical_Variants;
+
+   ------------------------------
    -- Discrete_Choice_Is_Range --
    ------------------------------
 
@@ -7192,9 +7231,9 @@ package body Gnat2Why.Expr is
       return W_Expr_Array
    is
       Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
-      Exprs    : W_Expr_Array (1 .. Number_Of_Variants (E));
+      Exprs    : W_Expr_Array (1 .. Count_Numerical_Variants (E));
    begin
-      if Present (Variants) then
+      if Exprs'Last > 0 then
          declare
             Aggr    : constant Node_Id :=
               Expression (First (Pragma_Argument_Associations (Variants)));
@@ -7256,10 +7295,11 @@ package body Gnat2Why.Expr is
    ----------------------
 
    function Get_Variants_Ids (E : Callable_Kind_Id) return W_Expr_Array is
-      Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
-      Exprs    : W_Expr_Array (1 .. Number_Of_Variants (E));
+      Variants : constant Opt_N_Pragma_Id :=
+        Get_Pragma (E, Pragma_Subprogram_Variant);
+      Exprs    : W_Expr_Array (1 .. Count_Numerical_Variants (E));
    begin
-      if Present (Variants) then
+      if Exprs'Last > 0 then
          declare
             Aggr    : constant Node_Id :=
               Expression (First (Pragma_Argument_Associations (Variants)));
@@ -9386,22 +9426,6 @@ package body Gnat2Why.Expr is
             At_End_Assume);
       end if;
    end New_Update_For_Borrow_At_End;
-
-   ------------------------
-   -- Number_Of_Variants --
-   ------------------------
-
-   function Number_Of_Variants (E : Callable_Kind_Id) return Natural is
-      Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
-   begin
-      if Present (Variants) then
-         return Natural
-           (List_Length (Component_Associations
-            (Expression (First (Pragma_Argument_Associations (Variants))))));
-      else
-         return 0;
-      end if;
-   end Number_Of_Variants;
 
    ----------------------
    -- One_Level_Access --
