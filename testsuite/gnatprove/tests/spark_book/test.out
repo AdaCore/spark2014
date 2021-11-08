@@ -504,7 +504,7 @@ double_list.ads:26:08: info: flow dependencies proved, in instantiation at list_
 double_list.ads:31:08: info: data dependencies proved, in instantiation at list_handler.adb:8
 double_list.ads:35:08: info: data dependencies proved, in instantiation at list_handler.adb:8
 elaboration_demo.adb:2:29: warning: unused initial value of "Size"
-elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
+elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Count" on all paths or make "Count" an IN OUT parameter]
 elaboration_demo.adb:3:29: warning: unused variable "Count"
 elaboration_demo.adb:4:04: info: range check proved (CVC4: 2 VC)
 elaboration_demo.adb:4:04: warning: initialization of "Line" has no effect
@@ -975,7 +975,7 @@ stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound fo
 stacks.adb:15:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
 stacks.adb:21:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:10 should mention Stack in a precondition]
 stacks.adb:22:30: info: range check proved (CVC4: 2 VC)
-stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear"
+stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Stack.Items" on all paths, make "Stack" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 stacks.ads:10:19: info: initialization of "Item" proved
 stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
 stacks.ads:17:10: info: range check proved (CVC4: 2 VC)

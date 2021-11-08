@@ -155,7 +155,7 @@ dns_table_pkg.ads:135:12: info: flow dependencies proved
 dns_table_pkg.ads:141:10: info: initialization of "Success" proved
 dns_table_pkg.ads:142:12: info: data dependencies proved
 dns_table_pkg.ads:143:12: info: flow dependencies proved
-dns_table_pkg.ads:148:10: medium: "ReturnedRecords" might not be initialized in "QueryARecords"
+dns_table_pkg.ads:148:10: medium: "ReturnedRecords" might not be initialized in "QueryARecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:149:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:150:12: info: data dependencies proved
 dns_table_pkg.ads:151:12: info: flow dependencies proved
@@ -165,43 +165,43 @@ dns_table_pkg.ads:161:12: info: flow dependencies proved
 dns_table_pkg.ads:166:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:167:12: info: data dependencies proved
 dns_table_pkg.ads:168:12: info: flow dependencies proved
-dns_table_pkg.ads:173:10: medium: "ReturnedRecords" might not be initialized in "QueryAAAARecords"
+dns_table_pkg.ads:173:10: medium: "ReturnedRecords" might not be initialized in "QueryAAAARecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:174:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:175:12: info: data dependencies proved
 dns_table_pkg.ads:176:12: info: flow dependencies proved
-dns_table_pkg.ads:183:10: medium: "ReturnedRecords" might not be initialized in "QueryCNameRecords"
+dns_table_pkg.ads:183:10: medium: "ReturnedRecords" might not be initialized in "QueryCNameRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:184:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:185:12: info: data dependencies proved
 dns_table_pkg.ads:186:12: info: flow dependencies proved
-dns_table_pkg.ads:193:10: medium: "ReturnedRecords" might not be initialized in "QueryDNSKeyRecords"
+dns_table_pkg.ads:193:10: medium: "ReturnedRecords" might not be initialized in "QueryDNSKeyRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:194:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:195:12: info: data dependencies proved
 dns_table_pkg.ads:196:12: info: flow dependencies proved
-dns_table_pkg.ads:203:10: medium: "ReturnedRecords" might not be initialized in "QueryMXRecords"
+dns_table_pkg.ads:203:10: medium: "ReturnedRecords" might not be initialized in "QueryMXRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:204:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:205:12: info: data dependencies proved
 dns_table_pkg.ads:206:12: info: flow dependencies proved
-dns_table_pkg.ads:213:10: medium: "ReturnedRecords" might not be initialized in "QuerySRVRecords"
+dns_table_pkg.ads:213:10: medium: "ReturnedRecords" might not be initialized in "QuerySRVRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:214:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:215:12: info: data dependencies proved
 dns_table_pkg.ads:216:12: info: flow dependencies proved
-dns_table_pkg.ads:223:10: medium: "ReturnedRecords" might not be initialized in "QueryNSRecords"
+dns_table_pkg.ads:223:10: medium: "ReturnedRecords" might not be initialized in "QueryNSRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:224:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:225:12: info: data dependencies proved
 dns_table_pkg.ads:226:12: info: flow dependencies proved
-dns_table_pkg.ads:233:10: medium: "ReturnedRecords" might not be initialized in "QueryNSecRecords"
+dns_table_pkg.ads:233:10: medium: "ReturnedRecords" might not be initialized in "QueryNSecRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:234:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:235:12: info: data dependencies proved
 dns_table_pkg.ads:236:12: info: flow dependencies proved
-dns_table_pkg.ads:243:10: medium: "ReturnedRecords" might not be initialized in "QueryPTRRecords"
+dns_table_pkg.ads:243:10: medium: "ReturnedRecords" might not be initialized in "QueryPTRRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:244:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:245:12: info: data dependencies proved
 dns_table_pkg.ads:246:12: info: flow dependencies proved
-dns_table_pkg.ads:253:10: medium: "ReturnedRecords" might not be initialized in "QueryRRSIGRecords"
+dns_table_pkg.ads:253:10: medium: "ReturnedRecords" might not be initialized in "QueryRRSIGRecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:254:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:255:12: info: data dependencies proved
 dns_table_pkg.ads:256:12: info: flow dependencies proved
-dns_table_pkg.ads:263:10: medium: "ReturnedRecords" might not be initialized in "QuerySOARecords"
+dns_table_pkg.ads:263:10: medium: "ReturnedRecords" might not be initialized in "QuerySOARecords" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "ReturnedRecords" on all paths, make "ReturnedRecords" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 dns_table_pkg.ads:264:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:265:12: info: data dependencies proved
 dns_table_pkg.ads:266:12: info: flow dependencies proved
@@ -620,9 +620,9 @@ spark-text_io.ads:28:08: info: flow dependencies proved
 spark-text_io.ads:29:42: high: "Standard_Input" is not initialized
 spark-text_io.ads:30:42: high: "Standard_Output" is not initialized
 spark-text_io.ads:31:42: high: "Standard_Error" is not initialized
-spark-text_io.ads:80:04: high: "Standard_Input" is not initialized in "Text_IO"
-spark-text_io.ads:81:04: high: "Standard_Output" is not initialized in "Text_IO"
-spark-text_io.ads:82:04: high: "Standard_Error" is not initialized in "Text_IO"
+spark-text_io.ads:80:04: high: "Standard_Input" is not initialized in "Text_IO" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Standard_Input" at declaration]
+spark-text_io.ads:81:04: high: "Standard_Output" is not initialized in "Text_IO" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Standard_Output" at declaration]
+spark-text_io.ads:82:04: high: "Standard_Error" is not initialized in "Text_IO" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Standard_Error" at declaration]
 spark-text_io.ads:106:11: info: data dependencies proved
 spark-text_io.ads:112:11: info: data dependencies proved
 spark-text_io.ads:134:31: info: implicit function contract not available for proof ("Mode" might not return)
