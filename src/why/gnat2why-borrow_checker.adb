@@ -3354,11 +3354,26 @@ package body Gnat2Why.Borrow_Checker is
             end if;
 
          when E_Out_Parameter =>
+            pragma Assert (not Is_Anonymous_Access_Object_Type (Typ));
             Mode := Assign;
 
          when E_In_Out_Parameter =>
             if Is_Unchecked_Deallocation_Instance (Subp) then
                Mode := Free;
+
+            --  Anonymous access to constant is an observe
+
+            elsif Is_Anonymous_Access_Object_Type (Typ)
+              and then Is_Access_Constant (Typ)
+            then
+               pragma Assert (Global_Var);
+               Mode := Observe;
+
+            --  Other anonymous access-to-object types are a borrow
+
+            elsif Is_Anonymous_Access_Object_Type (Typ) then
+               pragma Assert (Global_Var);
+               Mode := Borrow;
             else
                Mode := Move;
             end if;
