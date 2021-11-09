@@ -3908,7 +3908,7 @@ package body Gnat2Why.Expr is
                                    (Ada_Node => Field,
                                     Message  => To_Unbounded_String
                                       ("in default initialization of "
-                                       & "component """ & Short_Name (Field)
+                                       & "component """ & Source_Name (Field)
                                        & """")));
                               T_Comp :=
                                 Compute_Default_Check_Rec

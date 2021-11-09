@@ -31,34 +31,34 @@ with_default.adb:66:07: info: initialization of "All_2" proved
 with_default.adb:69:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:70:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:71:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:75:69: info: in default initialization of component "f1" at with_default.adb:79
+with_default.adb:75:69: info: in default initialization of component "F1" at with_default.adb:79
 with_default.adb:75:69: info: in default value at with_default.adb:83
 with_default.adb:75:69: info: range check proved (CVC4: 2 VC)
 with_default.adb:76:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:80:36: medium: in default value at with_default.adb:83
 with_default.adb:80:36: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the type]
-with_default.adb:89:69: medium: in default initialization of component "f2" at with_default.adb:98
+with_default.adb:89:69: medium: in default initialization of component "F2" at with_default.adb:98
 with_default.adb:89:69: medium: in default value at with_default.adb:102
 with_default.adb:89:69: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 with_default.adb:90:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:102:29: info: range check proved (CVC4: 1 VC)
-with_default.adb:108:69: info: in default initialization of component "f1" at with_default.adb:115
+with_default.adb:108:69: info: in default initialization of component "F1" at with_default.adb:115
 with_default.adb:108:69: info: in default value at with_default.adb:121
 with_default.adb:108:69: info: range check proved (CVC4: 2 VC)
-with_default.adb:108:69: medium: in default initialization of component "f2" at with_default.adb:117
+with_default.adb:108:69: medium: in default initialization of component "F2" at with_default.adb:117
 with_default.adb:108:69: medium: in default value at with_default.adb:121
 with_default.adb:108:69: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 with_default.adb:109:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:127:69: info: in default initialization of component "content" at with_default.adb:180
-with_default.adb:127:69: info: in default initialization of component "content" at with_default.adb:184
-with_default.adb:127:69: info: in default initialization of component "content" at with_default.adb:184
-with_default.adb:127:69: info: in default initialization of component "f1" at with_default.adb:133
-with_default.adb:127:69: info: in default initialization of component "f1" at with_default.adb:140
-with_default.adb:127:69: info: in default initialization of component "f1" at with_default.adb:149
-with_default.adb:127:69: info: in default initialization of component "f1" at with_default.adb:158
-with_default.adb:127:69: info: in default initialization of component "f1" at with_default.adb:167
-with_default.adb:127:69: info: in default initialization of component "f2" at with_default.adb:151
-with_default.adb:127:69: info: in default initialization of component "f2" at with_default.adb:160
+with_default.adb:127:69: info: in default initialization of component "Content" at with_default.adb:180
+with_default.adb:127:69: info: in default initialization of component "Content" at with_default.adb:184
+with_default.adb:127:69: info: in default initialization of component "Content" at with_default.adb:184
+with_default.adb:127:69: info: in default initialization of component "F1" at with_default.adb:133
+with_default.adb:127:69: info: in default initialization of component "F1" at with_default.adb:140
+with_default.adb:127:69: info: in default initialization of component "F1" at with_default.adb:149
+with_default.adb:127:69: info: in default initialization of component "F1" at with_default.adb:158
+with_default.adb:127:69: info: in default initialization of component "F1" at with_default.adb:167
+with_default.adb:127:69: info: in default initialization of component "F2" at with_default.adb:151
+with_default.adb:127:69: info: in default initialization of component "F2" at with_default.adb:160
 with_default.adb:127:69: info: in default value at with_default.adb:188
 with_default.adb:127:69: info: in default value at with_default.adb:189
 with_default.adb:127:69: info: in default value at with_default.adb:190
@@ -103,13 +103,13 @@ with_default.adb:201:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:26: info: range check proved (CVC4: 1 VC)
 with_default.adb:202:34: info: discriminant check proved (CVC4: 1 VC)
-with_default.adb:206:39: medium: in default initialization of component "e" at with_default.adb:208
+with_default.adb:206:39: medium: in default initialization of component "E" at with_default.adb:208
 with_default.adb:206:39: medium: in default value at with_default.adb:212
 with_default.adb:206:39: medium: range check might fail, cannot prove lower bound for C [reason for check: default component value must fit in the type] [possible fix: add precondition (C in Positive) to subprogram at with_default.ads:22]
-with_default.adb:219:39: medium: in default initialization of component "e" at with_default.adb:222
+with_default.adb:219:39: medium: in default initialization of component "E" at with_default.adb:222
 with_default.adb:219:39: medium: in default value at with_default.adb:226
 with_default.adb:219:39: medium: range check might fail, cannot prove lower bound for C [reason for check: default component value must fit in the type] [possible fix: add precondition (C in Positive) to subprogram at with_default.ads:24]
-with_default.adb:233:40: info: in default initialization of component "e" at with_default.adb:236
+with_default.adb:233:40: info: in default initialization of component "E" at with_default.adb:236
 with_default.adb:233:40: info: in default value at with_default.adb:247
 with_default.adb:233:40: info: range check proved (CVC4: 2 VC)
 with_default.ads:3:14: warning: subprogram "Bad_Scalar" has no effect

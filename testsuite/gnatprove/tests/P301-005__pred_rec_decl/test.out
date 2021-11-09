@@ -30,12 +30,12 @@ preds.adb:64:07: info: initialization of "Tmp" proved
 preds.adb:69:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_Bad"
 preds.adb:69:35: info: initialization of "X" proved
 preds.adb:70:07: info: initialization of "Tmp" proved
-preds.ads:4:23: info: in default initialization of component "x" at preds.ads:54
+preds.ads:4:23: info: in default initialization of component "X" at preds.ads:54
 preds.ads:4:23: info: in default value at preds.adb:4
 preds.ads:4:23: info: in default value at preds.adb:52
 preds.ads:4:23: info: range check proved (CVC4: 2 VC)
 preds.ads:4:23: info: range check proved (CVC4: 2 VC)
-preds.ads:8:23: info: in default initialization of component "x" at preds.ads:61
+preds.ads:8:23: info: in default initialization of component "X" at preds.ads:61
 preds.ads:8:23: info: in default value at preds.adb:10
 preds.ads:8:23: info: in default value at preds.adb:58
 preds.ads:8:23: info: range check proved (CVC4: 2 VC)
@@ -67,10 +67,10 @@ preds.ads:62:07: medium: in inlined predicate at preds.ads:47
 preds.ads:62:07: medium: predicate check might fail on default value, cannot prove Arr_Bad (K) /= 0
 preds.ads:66:29: info: initialization of "X" proved
 preds.ads:67:30: info: initialization of "X" proved
-preds.ads:70:23: info: in default initialization of component "x" at preds.ads:78
+preds.ads:70:23: info: in default initialization of component "X" at preds.ads:78
 preds.ads:70:23: info: in default value at preds.adb:64
 preds.ads:70:23: info: range check proved (CVC4: 2 VC)
-preds.ads:74:23: info: in default initialization of component "x" at preds.ads:82
+preds.ads:74:23: info: in default initialization of component "X" at preds.ads:82
 preds.ads:74:23: info: in default value at preds.adb:70
 preds.ads:74:23: info: range check proved (CVC4: 2 VC)
 preds.ads:78:07: info: in default value at preds.adb:64
