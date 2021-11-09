@@ -10,7 +10,7 @@ initializes_illegal_3.ads:36:45: error: duplicate input item
 initializes_illegal_3.ads:36:49: error: duplicate input item
 initializes_illegal_3.ads:52:04: error: "PrivVar" is declared in the private part of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:52:04: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
-initializes_illegal_3_helper.ads:5:35: error: "SH" is declared in the visible part of package "Initializes_Illegal_3_Helper"
+initializes_illegal_3_helper.ads:5:35: error: "SH" is declared in the visible part of package "Standard"
 initializes_illegal_3_helper.ads:5:35: error: indicator Part_Of cannot appear in this context (SPARK RM 7.2.6(5))
 initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
