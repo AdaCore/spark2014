@@ -7,7 +7,7 @@ import json
     plugin for GPS to create the menu of interactive proofs. The way those
     transformations are generated is through a call to
     "why3ide --list-transform" -> stdin: this generation is only done on
-    developper's machines during compilation"""
+    developer's machines during compilation"""
 
 out_file = open(sys.argv[1], 'w')
 
