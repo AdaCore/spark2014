@@ -21,7 +21,7 @@ public compiler releases or the head of the FSF repository, see the section on
 
 # 2. Commercial support
 
-SPARK is commercially supported by AdaCore and Altran, you can visit the
+SPARK is commercially supported by AdaCore and Capgemini, you can visit the
 [AdaCore website](http://www.adacore.com/sparkpro/) for more information.
 
 # 3. Community version
@@ -32,7 +32,7 @@ research and hobbyist use. You can download it from
 
 # 4. Governance
 
-SPARK is led by AdaCore and co-developed by AdaCore, Altran and Inria. The
+SPARK is led by AdaCore and co-developed by AdaCore, Capgemini and Inria. The
 SPARK team at AdaCore is responsible for the technology roadmap, taking into
 account the needs of all stakeholders: sales and marketing, customers, other
 development teams, community.
@@ -59,7 +59,7 @@ Johannes Kanig (Team Technical Authority).
 
 News about SPARK project are shared primarily on [AdaCore's
 blog](https://blog.adacore.com/). Discussions about SPARK occur on [a public
-mailing-list](https://lists.adacore.com/mailman/listinfo/spark2014-discuss).
+mailing-list](https://groups.google.com/a/lists.adacore.com/g/spark2014-discuss/about).
 
 # 6. Documentation
 
