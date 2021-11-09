@@ -2659,6 +2659,7 @@ package body SPARK_Util is
 
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean is
      (Nkind (N) = N_Function_Call
+        and then Nkind (Name (N)) in N_Has_Entity
         and then Is_Predicate_Function (Entity (Name (N))));
 
    --------------------------------------

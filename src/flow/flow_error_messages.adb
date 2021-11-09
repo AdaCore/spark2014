@@ -803,8 +803,11 @@ package body Flow_Error_Messages is
          when Check_Kind =>
             if Is_Annot then
                Suppr := Info.Reason;
-               Msg_Id := Print_Regular_Msg (Justified_Message (N, Tag),
-                                            Span, Info_Kind);
+
+               if Report_Mode /= GPR_Fail then
+                  Msg_Id := Print_Regular_Msg (Justified_Message (N, Tag),
+                                               Span, Info_Kind);
+               end if;
 
             else
                declare

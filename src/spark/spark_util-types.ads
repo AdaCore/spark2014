@@ -323,10 +323,17 @@ package SPARK_Util.Types is
 
    generic
       with procedure Process_DIC_Expression
-        (Type_Instance  : Type_Kind_Id;
+        (Type_Instance  : Formal_Kind_Id;
          DIC_Expression : Node_Id);
    procedure Iterate_Applicable_DIC (Ty : Type_Kind_Id);
    --  Traverse all default initial conditions associated to the type Ty
+
+   generic
+      with procedure Process_Pred_Expression
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id);
+   procedure Iterate_Applicable_Predicates (Ty : Type_Kind_Id);
+   --  Traverse all predicates associated to the type Ty
 
    function Predefined_Eq_Uses_Pointer_Eq (Ty : Type_Kind_Id) return Boolean
      with Pre => not Is_Concurrent_Type (Retysp (Ty));

@@ -1089,7 +1089,14 @@ package body SPARK_RAC is
         Integer (Get_Physical_Line_Number (Sloc (N)));
       Files_C  : constant Cntexample_File_Maps.Cursor :=
         Cntexmp.Find (Filename);
-      Name     : constant String := Trim (Node_Id'Image (N), Ada.Strings.Left);
+      Name     : constant String := Trim (Node_Id'Image (N), Ada.Strings.Left)
+         & (if Is_Mutable_In_Why (N)
+            and then Is_Record_Type_In_Why (Retysp (Etype (N)))
+            and then Count_Why_Top_Level_Fields (Retysp (Etype (N))) > 0
+            then "'Fields" else "");
+      --  Mutable records are split in a part for fields and a part for
+      --  discriminants. Here we only query the fields, as discriminants are
+      --  not supported currently.
       Elt      : Cntexample_Elt_Opt;
    begin
       if not Cntexample_File_Maps.Has_Element (Files_C) then
@@ -1104,7 +1111,9 @@ package body SPARK_RAC is
          if not Cntexample_Line_Maps.Has_Element (Lines_C) then
             return No_Value;
          end if;
+
          Elt := Find_Cntexmp_Elt (Name, Lines.Other_Lines (Lines_C));
+
          if Elt.Cntexample_Elt_Present then
             return Some_Value
               (Import
@@ -1128,8 +1137,7 @@ package body SPARK_RAC is
       function To_Big_Integer (N : Node_Id) return Big_Integer is
       begin
          if SPARK_Atree.Compile_Time_Known_Value (N) then
-            return
-              From_Universal_Image (UI_Image (SPARK_Atree.Expr_Value (N)));
+            return From_String (UI_Image (SPARK_Atree.Expr_Value (N)));
          else
             return Value_Integer (RAC_Expr (N));
          end if;
@@ -1306,7 +1314,12 @@ package body SPARK_RAC is
       Check_Supported_Type (Ty);
 
       if Is_Integer_Type (Ty) then
-         if V.T /= Cnt_Integer then
+         if V.T = Cnt_Record
+           and then SPARK_Definition.In_Relaxed_Init (Base_Retysp (Ty))
+         then
+            RAC_Unsupported
+              ("Import integer value with relaxed initialization", N);
+         elsif V.T /= Cnt_Integer then
             Import_Error ("not integer value but " & Cntexmp_Type'Image (V.T));
          end if;
          return Integer_Value (From_String (To_String (V.I)), Ty, N);
@@ -2651,8 +2664,7 @@ package body SPARK_RAC is
 
       case Nkind (N) is
          when N_Integer_Literal =>
-            Res :=
-              Integer_Value (From_Universal_Image (UI_Image (Intval (N))), N);
+            Res := Integer_Value (From_String (UI_Image (Intval (N))), N);
 
          when N_Character_Literal =>
             Res := Enum_Value (N);

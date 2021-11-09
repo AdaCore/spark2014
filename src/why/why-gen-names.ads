@@ -207,10 +207,14 @@ package Why.Gen.Names is
 
    --  Labels for counterexamples:
    Constrained_Label : constant String := "Constrained";
+   Discr_Label       : constant String := "Discriminants";
+   Field_Label       : constant String := "Fields";
    First_Label       : constant String := "First";
    Last_Label        : constant String := "Last";
    Is_Null_Label     : constant String := "Is_Null";
    All_Label         : constant String := "All";
+   Init_Val_Label    : constant String := "Init_Val";
+   Initialized_Label : constant String := "Initialized";
    Index_Label       : constant String := "Index";
    Loop_Entry_Label  : constant String := "Loop_Entry";
    Old_Label         : constant String := "Old";
@@ -296,8 +300,6 @@ package Why.Gen.Names is
       WNE_Dummy,
       WNE_Dynamic_Property,
       WNE_Dynamic_Property_BV_Int, --  for bitvector when index of an array
-
-      WNE_Dynamic_Predicate,       --  toplevel predicate checking function
 
       WNE_Dynamic_Invariant,       --  dynamic invariant of a type
 

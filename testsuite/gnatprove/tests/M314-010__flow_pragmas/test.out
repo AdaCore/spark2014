@@ -9,5 +9,6 @@ vehicle.adb:39:33: info: loop invariant initialization proved (CVC4: 3 VC)
 vehicle.adb:39:33: info: loop invariant preservation proved (CVC4: 3 VC)
 vehicle.adb:41:13: info: precondition proved (CVC4: 3 VC)
 vehicle.adb:43:13: info: precondition proved (CVC4: 3 VC)
+vehicle.ads:24:20: medium: in inlined expression function body at vehicle.ads:18
 vehicle.ads:24:20: medium: postcondition might fail, cannot prove Speed = 0
 vehicle.ads:25:12: info: data dependencies proved

@@ -688,9 +688,11 @@ spark-text_io.ads:233:46: info: implicit function contract not available for pro
 spark-text_io.ads:233:46: medium: precondition might fail
 spark-text_io.ads:234:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:235:24: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:235:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:235:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:236:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:237:24: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:237:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:237:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:245:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:246:25: info: implicit function contract not available for proof ("Line_Length" might not return)
@@ -717,6 +719,7 @@ spark-text_io.ads:261:46: info: implicit function contract not available for pro
 spark-text_io.ads:261:46: medium: precondition might fail
 spark-text_io.ads:262:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:263:21: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:263:21: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:263:21: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:270:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:270:52: info: implicit function contract not available for proof ("Page_Length" might not return)
@@ -743,6 +746,7 @@ spark-text_io.ads:284:46: info: implicit function contract not available for pro
 spark-text_io.ads:284:46: medium: precondition might fail
 spark-text_io.ads:285:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:286:24: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:286:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:286:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:309:40: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:309:54: info: implicit function contract not available for proof ("Mode" might not return)
@@ -768,9 +772,11 @@ spark-text_io.ads:321:46: info: implicit function contract not available for pro
 spark-text_io.ads:321:46: medium: precondition might fail
 spark-text_io.ads:322:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:323:24: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:323:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:323:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:324:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:325:24: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:325:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:325:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:331:53: info: precondition proved (CVC4: 2 VC)
 spark-text_io.ads:333:21: info: implicit function contract not available for proof ("Name" might not return)
@@ -810,9 +816,11 @@ spark-text_io.ads:370:24: info: implicit function contract not available for pro
 spark-text_io.ads:370:24: medium: precondition might fail
 spark-text_io.ads:371:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:372:24: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:372:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:372:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:373:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:374:24: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:374:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:374:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:379:53: info: precondition proved (CVC4: 2 VC)
 spark-text_io.ads:381:21: info: implicit function contract not available for proof ("Name" might not return)
@@ -845,9 +853,11 @@ spark-text_io.ads:419:35: info: implicit function contract not available for pro
 spark-text_io.ads:419:35: medium: precondition might fail
 spark-text_io.ads:420:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:420:42: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:420:42: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:420:42: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:421:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:421:42: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:421:42: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:421:42: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:427:25: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:427:25: info: precondition proved (CVC4: 2 VC)
@@ -947,9 +957,11 @@ spark-text_io.ads:538:23: info: implicit function contract not available for pro
 spark-text_io.ads:538:23: medium: precondition might fail
 spark-text_io.ads:539:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:540:24: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:540:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:540:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:541:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:542:24: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:542:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:542:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:551:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:551:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -1032,9 +1044,11 @@ spark-text_io.ads:642:46: info: implicit function contract not available for pro
 spark-text_io.ads:642:46: medium: precondition might fail
 spark-text_io.ads:643:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:644:23: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:644:23: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:644:23: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:645:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:646:23: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:646:23: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:646:23: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:660:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:660:35: info: implicit function contract not available for proof ("Name" might not return)
@@ -1076,9 +1090,11 @@ spark-text_io.ads:697:46: info: implicit function contract not available for pro
 spark-text_io.ads:697:46: medium: precondition might fail
 spark-text_io.ads:698:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:699:24: info: implicit function contract not available for proof ("Line_Length" might not return)
+spark-text_io.ads:699:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:699:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:700:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:701:24: info: implicit function contract not available for proof ("Page_Length" might not return)
+spark-text_io.ads:701:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:701:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark_ada_command_line.ads:63:08: info: flow dependencies proved
 spark_dns_main.adb:27:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
@@ -1112,6 +1128,7 @@ zone_file_io.adb:70:07: info: initialization of "BegIdx" proved
 zone_file_io.adb:71:07: info: initialization of "EndIdx" proved
 zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec" proved
 zone_file_io.adb:87:07: info: initialization of "RRSig_Rec" proved
+zone_file_io.adb:107:20: medium: in inlined expression function body at spark-text_io.ads:134
 zone_file_io.adb:107:20: medium: precondition might fail, cannot prove Is_Open (File) [possible fix: subprogram at zone_file_io.ads:24 should mention ZoneFile in a precondition]
 zone_file_io.adb:125:16: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:147:22: info: range check proved (CVC4: 2 VC)
@@ -1134,6 +1151,7 @@ zone_file_io.adb:330:38: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:348:53: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:361:55: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:366:31: info: range check proved (CVC4: 2 VC)
+zone_file_io.adb:404:26: medium: in inlined expression function body at spark-text_io.ads:134
 zone_file_io.adb:404:26: medium: precondition might fail, cannot prove Is_Open (File) [possible fix: loop at line 113 should mention ZoneFile in a loop invariant]
 zone_file_io.adb:410:20: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:410:47: info: overflow check proved (CVC4: 2 VC)

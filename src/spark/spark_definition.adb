@@ -312,6 +312,14 @@ package body SPARK_Definition is
    --  used to ensure that there can be no conversions between access types
    --  with different representative types.
 
+   procedure Check_User_Defined_Eq
+     (Ty  : Type_Kind_Id;
+      E   : Entity_Id;
+      Msg : String);
+   --  If Ty is a record type, mark the user-defined equality on it and check
+   --  that it does not have a precondition. If a precondition is found, raise
+   --  a violation on E using the string Msg to refer to E.
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -585,6 +593,33 @@ package body SPARK_Definition is
          end;
       end if;
    end Check_Source_Of_Move;
+
+   ---------------------------
+   -- Check_User_Defined_Eq --
+   ---------------------------
+
+   procedure Check_User_Defined_Eq
+     (Ty  : Type_Kind_Id;
+      E   : Entity_Id;
+      Msg : String)
+   is
+      Eq : Entity_Id := Get_User_Defined_Eq (Base_Type (Ty));
+   begin
+      if Is_Record_Type (Unchecked_Full_Type (Ty)) and then Present (Eq) then
+         Eq := Ultimate_Alias (Eq);
+
+         Mark_Entity (Eq);
+         if not Entity_In_SPARK (Eq) then
+            Mark_Violation
+              (Msg & " whose primitive equality is not in SPARK",
+               E);
+            Mark_Violation (E, From => Eq);
+         elsif not Find_Contracts (Eq, Pragma_Precondition).Is_Empty then
+            Mark_Violation
+              ("precondition on primitive equality of " & Msg, E);
+         end if;
+      end if;
+   end Check_User_Defined_Eq;
 
    -----------------------------
    -- Discard_Underlying_Type --
@@ -5914,6 +5949,13 @@ package body SPARK_Definition is
                E, SRM_Reference => "SPARK RM 3.2.4(3)");
          end if;
 
+         --  Check the user defined equality of record types if any, as they
+         --  can be used silently as part of the classwide equality.
+
+         if Is_Tagged_Type (E) then
+            Check_User_Defined_Eq (E, E, "tagged type");
+         end if;
+
          --  We currently do not support invariants on components of tagged
          --  types, if the invariant is visible. It is still allowed to include
          --  types with invariants in tagged types as long as the tagged type
@@ -5983,14 +6025,8 @@ package body SPARK_Definition is
                --  Mark the equality function for Component_Typ if it is used
                --  for the predefined equality of E.
 
-               if Is_Record_Type (Unchecked_Full_Type (Component_Typ))
-                 and then Present
-                   (Get_User_Defined_Eq (Base_Type (Component_Typ)))
-               then
-                  Mark_Entity
-                    (Ultimate_Alias
-                       (Get_User_Defined_Eq (Base_Type (Component_Typ))));
-               end if;
+               Check_User_Defined_Eq
+                 (Component_Typ, E, "record component type");
             end;
 
          --  Most discrete and floating-point types are in SPARK
@@ -6318,15 +6354,8 @@ package body SPARK_Definition is
                            --  Mark the equality function for Comp_Type if it
                            --  is used for the predefined equality of E.
 
-                           if Is_Record_Type (Unchecked_Full_Type (Comp_Type))
-                             and then Present
-                               (Get_User_Defined_Eq (Base_Type (Comp_Type)))
-                           then
-                              Mark_Entity
-                                (Ultimate_Alias
-                                   (Get_User_Defined_Eq
-                                        (Base_Type (Comp_Type))));
-                           end if;
+                           Check_User_Defined_Eq
+                             (Comp_Type, Comp, "record component type");
 
                            --  Reject components an unconstrained unchecked
                            --  union type in a tagged extension.

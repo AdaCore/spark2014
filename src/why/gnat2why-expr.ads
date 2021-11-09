@@ -216,16 +216,14 @@ package Gnat2Why.Expr is
    --  @result The default initial assumption of type Ty over Expr
 
    function Compute_Dynamic_Predicate
-     (Expr     : W_Term_Id;
-      Ty       : Type_Kind_Id;
-      Params   : Transformation_Params := Body_Params;
-      Use_Pred : Boolean := True)
+     (Expr   : W_Term_Id;
+      Ty     : Type_Kind_Id;
+      Params : Transformation_Params := Body_Params)
       return W_Pred_Id;
    --  @param Expr Why3 term expression on which to express the dynamic
    --     predicate.
    --  @param Ty type with the dynamic invariant
    --  @param Params transformation parameters
-   --  @param Use_Pred True iff the named predicate should be used
    --  @result Why3 predicate expressing the dynamic predicate of type [Ty]
    --     over [Expr].
 
@@ -388,14 +386,11 @@ package Gnat2Why.Expr is
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
       Check_Ty : Type_Kind_Id;
-      W_Expr   : W_Prog_Id;
-      Var_Ent  : Opt_Object_Kind_Id := Empty)
+      W_Expr   : W_Prog_Id)
       return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Check_Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
-   --  @param Var_Ent entity of the corresponding variable if W_Expr is an
-   --         array in split form.
    --  @result Why3 program that performs the check and returns [W_Expr]
 
    function Insert_Invariant_Check

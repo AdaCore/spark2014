@@ -296,6 +296,25 @@ package body Gnat2Why.Counter_Examples is
                return Dont_Display;
             end if;
 
+            --  If we have value for the Initialized attribute and this value
+            --  is false, don't print the associated counterexample value.
+
+            declare
+               Pos : constant Cntexmp_Value_Array.Cursor :=
+                 CNT_Element.Attrs.Find (Initialized_Label);
+               Elt : Cntexmp_Value_Ptr;
+            begin
+               if Cntexmp_Value_Array.Has_Element (Pos) then
+                  Elt := Cntexmp_Value_Array.Element (Pos);
+                  if Elt /= null
+                    and then Elt.T = Cnt_Boolean
+                    and then not Elt.Bo
+                  then
+                     return Dont_Display;
+                  end if;
+               end if;
+            end;
+
             declare
                Refined_Value : constant CNT_Unbounded_String :=
                  Refine_Value (CNT_Element.Value,
@@ -1196,10 +1215,39 @@ package body Gnat2Why.Counter_Examples is
          case Ptr.K is
             when Simple_Value =>
 
-               --  Counterexample should not be an array or a record
+               --  Counterexample should not be an array
 
-               if Val.T in Cnt_Record | Cnt_Array then
+               if Val.T = Cnt_Array then
                   return;
+               end if;
+
+               --  Counterexample can be a record if the object has relaxed
+               --  initialization. In this case, search for the values of the
+               --  'Initialized attribute and the Init_Val component.
+
+               if Val.T = Cnt_Record then
+                  declare
+                     C : Cntexmp_Value_Array.Cursor := Val.Fi.First;
+                  begin
+                     while Has_Element (C) loop
+                        declare
+                           Comp_Name : String renames Key (C);
+
+                        begin
+                           if Comp_Name = "'" & Initialized_Label then
+                              Ptr.Attrs.Include
+                                (Initialized_Label, Element (C));
+                           elsif Comp_Name = "'" & Init_Val_Label then
+                              if Element (C).T not in Cnt_Array | Cnt_Record
+                              then
+                                 Ptr.Value := Element (C);
+                              end if;
+                           end if;
+                        end;
+                        Next (C);
+                     end loop;
+                     return;
+                  end;
                end if;
 
                Ptr.Value := Val;
@@ -1462,10 +1510,20 @@ package body Gnat2Why.Counter_Examples is
             --  Record_Field ::= ENTITY_ID
             --  Attribute ::= | Attr_type
             --                | Attr_type " (" num ")"
-            --  Attr_type ::= | "First"
+            --  Attr_type ::=
+            --                --  Regular attributes
+            --                | "First"
             --                | "Last"
-            --                | "attr__constrained"
-            --                | "attr__tag"
+            --                | "Constrained"
+            --                | "Initialized"
+            --                --  Fantom attributes used to represent parts of
+            --                --  Ada objects.
+            --                --  For records:
+            --                | "Discriminants"
+            --                | "Fields"
+            --                --  For pointers:
+            --                | "All"
+            --                | "Is_Null"
             --
             --  num := [0-9]+
             --
@@ -1625,6 +1683,16 @@ package body Gnat2Why.Counter_Examples is
                         Is_Attribute := False;
                         Ent_Ty := Current_Cnt_Value.Ent_Ty;
 
+                     --  Fields and discriminants are collapsed in a single
+                     --  object.
+
+                     elsif Part in Field_Label | Discr_Label then
+                        if Current_Cnt_Value.K /= Record_Value then
+                           goto Next_Model_Element;
+                        else
+                           Is_Attribute := False;
+                        end if;
+
                      --  Fields of access types do not have node ids, they are
                      --  hanlded as special strings.
 
@@ -1667,8 +1735,11 @@ package body Gnat2Why.Counter_Examples is
                      --  Regular attributes
 
                      else
-                        Current_Cnt_Value.Attrs.Include
-                          (Part, Elt.Value);
+                        pragma Assert (Part in First_Label
+                                             | Last_Label
+                                             | Constrained_Label
+                                             | Initialized_Label);
+                        Current_Cnt_Value.Attrs.Include (Part, Elt.Value);
                      end if;
                   else
                      if Current_Cnt_Value.K /= Record_Value then

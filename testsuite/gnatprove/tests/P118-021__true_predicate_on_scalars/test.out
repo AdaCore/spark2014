@@ -1,1 +1,1 @@
-p.adb:12:04: info: predicate check proved on default value (CVC4: 1 VC)
+p.adb:12:04: info: predicate check proved on default value (Trivial: 1 VC)

@@ -2646,23 +2646,6 @@ package body Why.Atree.Modules is
                Domain => EW_Term,
                Typ    => Ty));
 
-         --  Add symbol for the function checking that the predicate of a type
-         --  holds. This symbol is registered in the axiom module, so that
-         --  the function can be directly defined there instead of being first
-         --  declared in the entity module and then axiomatized in the axiom
-         --  module (to have visibility over constants/functions in the
-         --  definition).
-
-         if Has_Predicates (E) then
-            Insert_Symbol
-              (E, WNE_Dynamic_Predicate,
-               New_Identifier
-                 (Symb   => NID ("dynamic_predicate"),
-                  Module => AM,
-                  Domain => EW_Term,
-                  Typ    => EW_Bool_Type));
-         end if;
-
          --  Add symbol for the predicate used to assume the dynamic invariant
          --  of a type. This symbol is registered in the axiom module, so that
          --  the function can be directly defined there instead of being first

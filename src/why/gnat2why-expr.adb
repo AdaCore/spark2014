@@ -352,13 +352,15 @@ package body Gnat2Why.Expr is
    --  ???
 
    function Dynamic_Predicate_Expression
-     (Expr      : W_Term_Id;
-      Pred_Subp : E_Function_Id;
-      Params    : Transformation_Params)
+     (Expr       : W_Term_Id;
+      Pred_Param : Formal_Kind_Id;
+      Pred_Expr  : Node_Id;
+      Params     : Transformation_Params)
       return W_Pred_Id;
    --  Transform the expression of a dynamic_predicate
    --  @param Expr term on which the predicate is called
-   --  @param Pred_Subp entity of the predicate function
+   --  @param Pred_Expr expression of the predicate
+   --  @param Pred_Param formal for the type instance
    --  @param Params transformation parameters
    --  @return the translation of the expression contained in the predicate
    --  applied on Expr.
@@ -524,16 +526,6 @@ package body Gnat2Why.Expr is
    --  @param Prefix prefix of the 'constrained attribute
    --  @param Domain domain of the expression
    --  @return a Why3 expression Prefix'Constrained
-
-   function New_Predicate_Call
-     (Ty     : Type_Kind_Id;
-      W_Expr : W_Term_Id;
-      Params : Transformation_Params)
-      return W_Pred_Id;
-   --  @param Ty type whose predicate needs to be checked
-   --  @param W_Expr Why3 expression on which to check the predicate
-   --  @param Params transformation parameters
-   --  @return Why3 predicate that expressed the check
 
    function New_Type_Invariant_Call
      (Ty     : Type_Kind_Id;
@@ -3522,7 +3514,7 @@ package body Gnat2Why.Expr is
          --  Temporary variable for the type instance of Ty_Ext
 
          procedure Check_Or_Assume_DIC_At_Use
-           (Default_Init_Param : Entity_Id;
+           (Default_Init_Param : Formal_Kind_Id;
             Default_Init_Expr  : Node_Id)
            with Pre => Ekind (Default_Init_Param) = E_In_Parameter
            and then Nkind (Default_Init_Expr) in N_Subexpr
@@ -3539,7 +3531,7 @@ package body Gnat2Why.Expr is
          --------------------------------
 
          procedure Check_Or_Assume_DIC_At_Use
-           (Default_Init_Param : Entity_Id;
+           (Default_Init_Param : Formal_Kind_Id;
             Default_Init_Expr  : Node_Id)
          is
          begin
@@ -4443,7 +4435,7 @@ package body Gnat2Why.Expr is
       if Has_DIC (Ty) then
          declare
             procedure Assume_DIC
-              (Default_Init_Param : Entity_Id;
+              (Default_Init_Param : Formal_Kind_Id;
                Default_Init_Expr  : Node_Id)
             with Pre => Ekind (Default_Init_Param) = E_In_Parameter
               and then Nkind (Default_Init_Expr) in N_Subexpr;
@@ -4453,7 +4445,7 @@ package body Gnat2Why.Expr is
             ----------------
 
             procedure Assume_DIC
-              (Default_Init_Param : Entity_Id;
+              (Default_Init_Param : Formal_Kind_Id;
                Default_Init_Expr  : Node_Id)
             is
                Init_Id : constant W_Identifier_Id :=
@@ -4551,7 +4543,7 @@ package body Gnat2Why.Expr is
             DIC_Found : exception;
 
             procedure Check_DIC_Is_Non_Empty
-              (Default_Init_Param : Entity_Id;
+              (Default_Init_Param : Formal_Kind_Id;
                Default_Init_Expr  : Node_Id);
             --  If Default_Init_Expr is not the True predicate, raise DIC_Found
 
@@ -4560,7 +4552,7 @@ package body Gnat2Why.Expr is
             ----------------------------
 
             procedure Check_DIC_Is_Non_Empty
-              (Default_Init_Param : Entity_Id;
+              (Default_Init_Param : Formal_Kind_Id;
                Default_Init_Expr  : Node_Id)
             is
                pragma Unreferenced (Default_Init_Param);
@@ -5288,13 +5280,12 @@ package body Gnat2Why.Expr is
 
       declare
          Typ_Pred              : constant W_Pred_Id :=
-           Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Use_Pred => False);
+           Compute_Dynamic_Predicate (Expr, Ty_Ext, Params);
          Anc_Ty                : constant Entity_Id :=
            Retysp (Etype (Ty_Ext));
          Anc_Typ_Pred          : constant W_Pred_Id :=
            (if Anc_Ty = Ty_Ext then True_Pred
-            else Compute_Dynamic_Predicate
-              (Expr, Anc_Ty, Params, Use_Pred => False));
+            else Compute_Dynamic_Predicate (Expr, Anc_Ty, Params));
          Pred_Check_At_Default : constant Boolean :=
            Default_Initialization (Ty_Ext) /= No_Default_Initialization;
          Init_Flag             : constant W_Pred_Id :=
@@ -5510,81 +5501,56 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Compute_Dynamic_Predicate
-     (Expr     : W_Term_Id;
-      Ty       : Type_Kind_Id;
-      Params   : Transformation_Params := Body_Params;
-      Use_Pred : Boolean := True)
+     (Expr   : W_Term_Id;
+      Ty     : Type_Kind_Id;
+      Params : Transformation_Params := Body_Params)
       return W_Pred_Id
    is
-      Rep_Ty : Entity_Id := Retysp (Ty);
-      Res    : W_Pred_Id := True_Pred;
+      Res : W_Pred_Id := True_Pred;
 
-      Save_Current_Error_Node : constant Node_Id := Current_Error_Node;
-      --  Predicate handling in GNAT is complicated, so if we crash, then at
-      --  least try to precisely show where the problematic type is located.
+      procedure Add_One_Dynamic_Predicate
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id);
+      --  Add the current dynamic predicate as a conjuct in Res
 
+      -------------------------------
+      -- Add_One_Dynamic_Predicate --
+      -------------------------------
+
+      procedure Add_One_Dynamic_Predicate
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id)
+      is
+         My_Params : Transformation_Params := Params;
+      begin
+         --  We set the Gen_Marker param to GM_Toplevel to instruct
+         --  the translation to generate pretty-printing labels for
+         --  the parts of the predicate. We also indicate that the
+         --  predicate is effectively inlined here by using the
+         --  GP_Inlined_Marker (this last part avoids using the
+         --  location of the predicate to place the error message,
+         --  which is not desired here).
+
+         My_Params.Gen_Marker := GM_Toplevel;
+         Res :=
+           New_Label
+             (Labels => Symbol_Sets.To_Set (NID (GP_Inlined_Marker)),
+              Def    =>
+                New_And_Pred
+                  (Left   => Dynamic_Predicate_Expression
+                     (Expr       => Expr,
+                      Pred_Param => Type_Instance,
+                      Pred_Expr  => Pred_Expression,
+                      Params     => My_Params),
+                   Right  => Res));
+      end Add_One_Dynamic_Predicate;
+
+      procedure Add_All_Dynamic_Predicates is new
+        Iterate_Applicable_Predicates (Add_One_Dynamic_Predicate);
+
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
    begin
-      --  Go through the ancestors of Ty to collect all applicable predicates
-
-      while Has_Predicates (Rep_Ty) loop
-         Current_Error_Node := Rep_Ty;
-
-         declare
-            Pred_Fun : constant Entity_Id := Predicate_Function (Rep_Ty);
-
-         begin
-            --  If Use_Pred is true, then we already have generated a predicate
-            --  for the dynamic predicate of elements of type Rep_Ty. We also
-            --  avoid using the predicate for objects in split form as it would
-            --  introduce an unnecessary conversion harmful to provers.
-
-            if Use_Pred
-              and then Eq_Base (Type_Of_Node (Rep_Ty), Get_Type (+Expr))
-            then
-               return +New_And_Then_Expr
-                 (Left   => +New_Predicate_Call (Rep_Ty, Expr, Params),
-                  Right  => +Res,
-                  Domain => EW_Pred);
-            elsif Entity_In_SPARK (Pred_Fun) then
-               declare
-                  My_Params : Transformation_Params := Params;
-               begin
-                  --  We set the Gen_Marker param to GM_Toplevel to instruct
-                  --  the translation to generate pretty-printing labels for
-                  --  the parts of the predicate. We also indicate that the
-                  --  predicate is effectively inlined here by using the
-                  --  GP_Inlined_Marker (this last part avoids using the
-                  --  location of the predicate to place the error message,
-                  --  which is not desired here).
-
-                  My_Params.Gen_Marker := GM_Toplevel;
-                  Res :=
-                    New_Label
-                      (Labels => Symbol_Sets.To_Set (NID (GP_Inlined_Marker)),
-                       Def =>
-                         New_And_Pred
-                           (Left   => Dynamic_Predicate_Expression
-                              (Expr      => Expr,
-                               Pred_Subp => Pred_Fun,
-                               Params    => My_Params),
-                            Right  => Res));
-               end;
-            end if;
-
-            --  Go directly to the first type on which the predicate applies
-            --  using the type of the first formal of the predicate function.
-
-            Rep_Ty := Retysp (Etype (First_Formal (Pred_Fun)));
-         end;
-
-         --  Go to the next type in the derivation tree of Rep_Ty to continue
-         --  the search.
-
-         Rep_Ty := Parent_Retysp (Rep_Ty);
-         exit when No (Rep_Ty);
-      end loop;
-
-      Current_Error_Node := Save_Current_Error_Node;
+      Add_All_Dynamic_Predicates (Rep_Ty);
 
       return Res;
    end Compute_Dynamic_Predicate;
@@ -6278,16 +6244,14 @@ package body Gnat2Why.Expr is
    ----------------------------------
 
    function Dynamic_Predicate_Expression
-     (Expr      : W_Term_Id;
-      Pred_Subp : E_Function_Id;
-      Params    : Transformation_Params)
+     (Expr       : W_Term_Id;
+      Pred_Param : Formal_Kind_Id;
+      Pred_Expr  : Node_Id;
+      Params     : Transformation_Params)
       return W_Pred_Id
    is
-      Result     : W_Pred_Id;
-      Pred_Expr  : constant Node_Id :=
-        Get_Expr_From_Return_Only_Func (Pred_Subp);
-      Pred_Param : constant Entity_Id := First_Formal (Pred_Subp);
-      Pred_Id    : constant W_Identifier_Id :=
+      Result  : W_Pred_Id;
+      Pred_Id : constant W_Identifier_Id :=
         New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
 
    begin
@@ -7723,8 +7687,7 @@ package body Gnat2Why.Expr is
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
       Check_Ty : Type_Kind_Id;
-      W_Expr   : W_Prog_Id;
-      Var_Ent  : Opt_Object_Kind_Id := Empty)
+      W_Expr   : W_Prog_Id)
       return W_Prog_Id
    is
       Init_Expr : constant W_Expr_Id :=
@@ -7740,11 +7703,8 @@ package body Gnat2Why.Expr is
       --  If Check_Ty does not itself have relaxed init, then its predicate
       --  expects an initialized expression.
 
-      W_Tmp     : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ      => Get_Type (Init_Expr),
-                             Ada_Node => Var_Ent);
-      --  If W_Expr is an array in split form, we need to link W_Tmp to Var_Ent
-      --  so that the proper bounds can be retrieved.
+      W_Tmp : constant W_Identifier_Id :=
+        New_Temp_Identifier (Typ => Get_Type (Init_Expr));
 
       W_Seq : constant W_Prog_Id :=
         Sequence (New_Predicate_Check (Ada_Node, Check_Ty, +W_Tmp), +W_Tmp);
@@ -7909,11 +7869,17 @@ package body Gnat2Why.Expr is
 
    function Is_Terminal_Node (N : Node_Id) return Boolean is
    begin
-      return Nkind (N) not in N_Quantified_Expression |
-                              N_And_Then              |
-                              N_Op_And                |
-                              N_If_Expression         |
-                              N_Case_Expression;
+      if Nkind (N) = N_And_Then then
+         return (Is_Predicate_Function_Call (Left_Opnd (N))
+                 and then Is_Terminal_Node (Right_Opnd (N)))
+           or (Is_Predicate_Function_Call (Right_Opnd (N))
+               and then Is_Terminal_Node (Left_Opnd (N)));
+      else
+         return Nkind (N) not in N_Quantified_Expression |
+                                 N_Op_And                |
+                                 N_If_Expression         |
+                                 N_Case_Expression;
+      end if;
    end Is_Terminal_Node;
 
    ---------------------
@@ -8830,37 +8796,6 @@ package body Gnat2Why.Expr is
       end if;
    end New_Constrained_Attribute_Expr;
 
-   ------------------------
-   -- New_Predicate_Call --
-   ------------------------
-
-   function New_Predicate_Call
-     (Ty     : Type_Kind_Id;
-      W_Expr : W_Term_Id;
-      Params : Transformation_Params)
-      return W_Pred_Id
-   is
-      Variables : Flow_Id_Sets.Set;
-
-   begin
-      Variables_In_Dynamic_Predicate (Ty, Variables);
-
-      declare
-         Vars  : constant W_Expr_Array :=
-           Get_Args_From_Variables (Variables, Params.Ref_Allowed);
-         Num_B : constant Positive := 1 + Vars'Length;
-         Args  : W_Expr_Array (1 .. Num_B);
-
-      begin
-         Args (1)          := +W_Expr;
-         Args (2 .. Num_B) := Vars;
-
-         return +New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
-                           Args => Args,
-                           Typ  => EW_Bool_Type);
-      end;
-   end New_Predicate_Call;
-
    -------------------------
    -- New_Predicate_Check --
    -------------------------
@@ -8872,20 +8807,91 @@ package body Gnat2Why.Expr is
       On_Default_Value : Boolean := False)
       return W_Prog_Id
    is
-      Check : constant W_Pred_Id :=
-        Compute_Dynamic_Predicate (Expr    => +W_Expr,
-                                   Ty      => Ty,
-                                   Params  => Body_Params);
-      Kind : constant VC_Kind :=
+      --  Here we recompute the predicate instead of calling
+      --  Compute_Dynamic_Predicate to be able to add continuations on
+      --  inherited predicates.
+
+      Kind       : constant VC_Kind :=
         (if On_Default_Value then
-           VC_Predicate_Check_On_Default_Value
+            VC_Predicate_Check_On_Default_Value
          else
-           VC_Predicate_Check);
+            VC_Predicate_Check);
+      Checks     : W_Prog_Id := +Void;
+      First_Pred : Boolean := True;
+
+      procedure Check_One_Dynamic_Predicate
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id);
+      --  Append to Checks a check of the current predicate
+
+      ---------------------------------
+      -- Check_One_Dynamic_Predicate --
+      ---------------------------------
+
+      procedure Check_One_Dynamic_Predicate
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id)
+      is
+         My_Params  : Transformation_Params := Body_Params;
+         Check_Info : Check_Info_Type := New_Check_Info;
+         Check      : W_Pred_Id;
+
+      begin
+         --  We set the Gen_Marker param to GM_Toplevel to instruct
+         --  the translation to generate pretty-printing labels for
+         --  the parts of the predicate. We also indicate that the
+         --  predicate is effectively inlined here by using the
+         --  GP_Inlined_Marker (this last part avoids using the
+         --  location of the predicate to place the error message,
+         --  which is not desired.
+
+         My_Params.Gen_Marker := GM_Toplevel;
+
+         Check := Dynamic_Predicate_Expression
+           (Expr       => +W_Expr,
+            Pred_Param => Type_Instance,
+            Pred_Expr  => Pred_Expression,
+            Params     => My_Params);
+
+         --  Append the checks in reverse order so that the inherited are
+         --  checked first. It is important for static predicates which are
+         --  aggregated by the frontend during the derivation.
+
+         if not Is_Predicate_Function_Call (Pred_Expression) then
+
+            --  If the predicate was inherited, add a continuation
+
+            if not First_Pred then
+               Check_Info.Continuation.Append
+                 (Continuation_Type'
+                    (Pred_Expression,
+                     To_Unbounded_String ("for inherited predicate")));
+            else
+               First_Pred := False;
+            end if;
+
+            Checks := Sequence
+              (New_Assert
+                 (Pred        => +New_VC_Expr
+                      (Ada_Node,
+                       +New_Label
+                         (Labels =>
+                                Symbol_Sets.To_Set (NID (GP_Inlined_Marker)),
+                          Def    => Check),
+                       Kind,
+                       EW_Pred,
+                       Check_Info),
+                  Assert_Kind => EW_Assert),
+               Checks);
+         end if;
+      end Check_One_Dynamic_Predicate;
+
+      procedure Check_All_Predicates is new Iterate_Applicable_Predicates
+        (Check_One_Dynamic_Predicate);
+
    begin
-      return New_Assert
-           (Pred        =>
-                +New_VC_Expr (Ada_Node, +Check, Kind, EW_Pred),
-            Assert_Kind => EW_Assert);
+      Check_All_Predicates (Ty);
+      return Checks;
    end New_Predicate_Check;
 
    -----------------------------
@@ -9615,8 +9621,7 @@ package body Gnat2Why.Expr is
             Result := +Insert_Predicate_Check
               (Ada_Node => N,
                Check_Ty => Ty,
-               W_Expr   => +Result,
-               Var_Ent  => Get_Ada_Node (+Pref));
+               W_Expr   => +Result);
          end if;
       end;
 
@@ -22991,7 +22996,7 @@ package body Gnat2Why.Expr is
       if Has_DIC (Ty) then
          declare
             procedure Get_Variables_From_DIC
-              (Default_Init_Param : Entity_Id;
+              (Default_Init_Param : Formal_Kind_Id;
                Default_Init_Expr  : Node_Id)
             with Pre => Ekind (Default_Init_Param) = E_In_Parameter
               and then Nkind (Default_Init_Expr) in N_Subexpr;
@@ -23001,7 +23006,7 @@ package body Gnat2Why.Expr is
             ----------------------------
 
             procedure Get_Variables_From_DIC
-              (Default_Init_Param : Entity_Id;
+              (Default_Init_Param : Formal_Kind_Id;
                Default_Init_Expr  : Node_Id)
             is
             begin
@@ -23032,31 +23037,28 @@ package body Gnat2Why.Expr is
      (Ty        :        Type_Kind_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
-      Rep_Type : Entity_Id := Retysp (Ty);
+      procedure Get_Variables_From_Predicate
+        (Pred_Param : Formal_Kind_Id;
+         Pred_Expr  : Node_Id);
+
+      ----------------------------------
+      -- Get_Variables_From_Predicate --
+      ----------------------------------
+
+      procedure Get_Variables_From_Predicate
+        (Pred_Param : Formal_Kind_Id;
+         Pred_Expr  : Node_Id)
+      is
+      begin
+         Variables.Union
+           (Get_Variables_For_Proof (Pred_Expr, Etype (Pred_Param)));
+         Variables.Exclude (Direct_Mapping_Id (Pred_Param));
+      end Get_Variables_From_Predicate;
+
+      procedure Get_Variables_From_All_Preds is new
+        Iterate_Applicable_Predicates (Get_Variables_From_Predicate);
    begin
-      while Has_Predicates (Rep_Type) loop
-         declare
-            Pred_Fun : constant Entity_Id := Predicate_Function (Rep_Type);
-         begin
-            if Entity_In_SPARK (Pred_Fun) then
-               Variables.Union
-                 (Get_Variables_For_Proof
-                    (Get_Expr_From_Return_Only_Func (Pred_Fun), Rep_Type));
-               Variables.Exclude
-                 (Direct_Mapping_Id (Unique_Entity (First_Formal (Pred_Fun))));
-            end if;
-
-            Rep_Type := Retysp
-              (Etype (First_Formal (Predicate_Function (Rep_Type))));
-         end;
-
-         declare
-            Next_Ty : constant Entity_Id := Retysp (Etype (Rep_Type));
-         begin
-            exit when Next_Ty = Rep_Type;
-            Rep_Type := Next_Ty;
-         end;
-      end loop;
+      Get_Variables_From_All_Preds (Ty);
    end Variables_In_Dynamic_Predicate;
 
    ------------------------------------

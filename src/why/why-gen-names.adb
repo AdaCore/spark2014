@@ -988,7 +988,6 @@ package body Why.Gen.Names is
             | WNE_Dispatch_Func_Guard
             | WNE_Dummy
             | WNE_Dynamic_Invariant
-            | WNE_Dynamic_Predicate
             | WNE_Dynamic_Property
             | WNE_Dynamic_Property_BV_Int
             | WNE_Extension_Type

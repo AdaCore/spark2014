@@ -1,11 +1,13 @@
 big_integers_test.adb:18:04: warning: analyzing unreferenced procedure "Nat_Predicate_Check_Fail"
 big_integers_test.adb:18:40: info: initialization of "Nat" proved
 big_integers_test.adb:20:11: warning: unused assignment
+big_integers_test.adb:20:16: medium: in inlined predicate at a-nbnbin.ads:59
 big_integers_test.adb:20:16: medium: predicate check might fail, cannot prove Big_Natural >= To_Big_Integer (0)
 big_integers_test.adb:21:16: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 big_integers_test.adb:24:04: warning: analyzing unreferenced procedure "Pos_Predicate_Check_Fail"
 big_integers_test.adb:24:40: info: initialization of "Pos" proved
 big_integers_test.adb:26:11: warning: unused assignment
+big_integers_test.adb:26:16: medium: in inlined predicate at a-nbnbin.ads:53
 big_integers_test.adb:26:16: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 big_integers_test.adb:27:16: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
 big_integers_test.adb:30:04: warning: analyzing unreferenced procedure "BI_Range_Check_Fail"

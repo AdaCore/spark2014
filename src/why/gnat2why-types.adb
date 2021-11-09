@@ -43,7 +43,6 @@ with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
 with Types;                         use Types;
-with VC_Kinds;                      use VC_Kinds;
 with Why;                           use Why;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
 with Why.Atree.Builders;            use Why.Atree.Builders;
@@ -189,12 +188,6 @@ package body Gnat2Why.Types is
       --  Create a function to express type E's dynamic invariant. Module is
       --  the module in which dynamic invariants for access to incomplete
       --  types will be created if any.
-
-      procedure Create_Dynamic_Predicate
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-        with Pre => Has_Predicates (E);
-      --  Create a function to express type E's predicate
 
       procedure Create_Move_Function
         (Th : Theory_UC;
@@ -637,61 +630,6 @@ package body Gnat2Why.Types is
          end loop;
       end Create_Dynamic_Invariant;
 
-      ------------------------------
-      -- Create_Dynamic_Predicate --
-      ------------------------------
-
-      procedure Create_Dynamic_Predicate
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      is
-         Variables : Flow_Id_Sets.Set;
-
-      begin
-         --  Get the set of variables used in E's predicate
-
-         Variables_In_Dynamic_Predicate (E, Variables);
-
-         declare
-            Items    : Item_Array := Get_Binders_From_Variables (Variables);
-            Main_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => Type_Of_Node (E));
-            --  Expression on which we want to assume the property
-            Def      : W_Pred_Id;
-
-         begin
-            --  Use local names for variables
-
-            Localize_Binders (Items, Only_Variables => False);
-
-            --  Push the names to Symbol_Table
-
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-            Push_Binders_To_Symbol_Table (Items);
-
-            Def := Compute_Dynamic_Predicate
-                     (Expr     => +Main_Arg,
-                      Ty       => E,
-                      Params   => Logic_Params,
-                      Use_Pred => False);
-
-            Emit
-              (Th,
-               Why.Gen.Binders.New_Function_Decl
-                 (Domain   => EW_Pred,
-                  Name     => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
-                  Def      => +Def,
-                  Location => No_Location,
-                  Labels   => Symbol_Sets.To_Set (NID (GP_Inline_Marker)),
-                  Binders  =>
-                    Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
-                                                    others => <>))
-                    & To_Binder_Array (Items)));
-
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end;
-      end Create_Dynamic_Predicate;
-
       --------------------------
       -- Create_Move_Function --
       --------------------------
@@ -1079,10 +1017,6 @@ package body Gnat2Why.Types is
          if Can_Be_Default_Initialized (E) then
             Create_Default_Init_Assumption (Th, E);
          end if;
-      end if;
-
-      if Has_Predicates (E) then
-         Create_Dynamic_Predicate (Th, E);
       end if;
 
       if Has_Invariants_In_SPARK (E) then

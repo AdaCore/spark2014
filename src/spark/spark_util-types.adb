@@ -241,7 +241,9 @@ package body SPARK_Util.Types is
 
       if Entity_In_SPARK (Typ) and then Is_Generic_Actual_Type (Typ) then
          declare
-            Decl    : constant Node_Id := Parent (Typ);
+            P_Typ   : constant Entity_Id :=
+              (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
+            Decl    : constant Node_Id := Parent (P_Typ);
             Sub_Ind : Node_Id;
          begin
             if Present (Decl)
@@ -1216,6 +1218,50 @@ package body SPARK_Util.Types is
          Rep_Ty := Parent_Retysp (Rep_Ty);
       end loop;
    end Iterate_Applicable_DIC;
+
+   -----------------------------------
+   -- Iterate_Applicable_Predicates --
+   -----------------------------------
+
+   procedure Iterate_Applicable_Predicates (Ty : Type_Kind_Id) is
+      Rep_Ty : Entity_Id := Retysp (Ty);
+
+      Save_Current_Error_Node : constant Node_Id := Current_Error_Node;
+      --  Predicate handling in GNAT is complicated, so if we crash, then at
+      --  least try to precisely show where the problematic type is located.
+
+   begin
+      --  Go through the ancestors of Ty to collect all applicable predicates
+
+      while Has_Predicates (Rep_Ty) loop
+         Current_Error_Node := Rep_Ty;
+
+         declare
+            Pred_Fun : constant Entity_Id := Predicate_Function (Rep_Ty);
+
+         begin
+            if Entity_In_SPARK (Pred_Fun) then
+               Process_Pred_Expression
+                 (Type_Instance   => First_Formal (Pred_Fun),
+                  Pred_Expression => Get_Expr_From_Return_Only_Func
+                    (Pred_Fun));
+            end if;
+
+            --  Go directly to the first type on which the predicate applies
+            --  using the type of the first formal of the predicate function.
+
+            Rep_Ty := Retysp (Etype (First_Formal (Pred_Fun)));
+         end;
+
+         --  Go to the next type in the derivation tree of Rep_Ty to continue
+         --  the search.
+
+         Rep_Ty := Parent_Retysp (Rep_Ty);
+         exit when No (Rep_Ty);
+      end loop;
+
+      Current_Error_Node := Save_Current_Error_Node;
+   end Iterate_Applicable_Predicates;
 
    ---------------------------
    -- May_Need_DIC_Checking --

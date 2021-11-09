@@ -26,12 +26,14 @@ patris.adb:107:50: info: index check proved (CVC4: 2 VC)
 patris.adb:108:36: info: index check proved (CVC4: 2 VC)
 patris.adb:108:54: info: index check proved (CVC4: 2 VC)
 patris.adb:116:24: medium: assertion might fail, cannot prove X in X_Coord
+patris.adb:116:24: medium: in inlined expression function body at patris.ads:158
 patris.adb:118:30: info: unrolling loop
 patris.adb:119:33: info: unrolling loop
 patris.adb:121:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 patris.adb:121:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 patris.adb:131:57: info: index check proved (CVC4: 2 VC)
 patris.adb:132:24: medium: assertion might fail, cannot prove X in X_Coord
+patris.adb:132:24: medium: in inlined expression function body at patris.ads:158
 patris.adb:134:34: info: unrolling loop
 patris.adb:135:37: info: unrolling loop
 patris.adb:136:54: info: index check proved (CVC4: 18 VC)

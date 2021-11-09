@@ -54,6 +54,7 @@ deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global i
 deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:109:12: medium: in inlined expression function body at units.ads:42
 deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
@@ -99,6 +100,7 @@ sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 2 VC)
 sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention d and V in a precondition]
+sec_3_13_6_deceleration.ads:47:30: medium: in inlined expression function body at units.ads:42
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
@@ -109,6 +111,7 @@ section_3_5_3.ads:49:04: info: initialization of "Connections" proved
 section_3_5_3.ads:49:49: info: range check proved (CVC4: 2 VC)
 section_3_5_3.ads:51:53: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
+section_3_5_3.ads:75:14: medium: in inlined expression function body at com_map.ads:38
 section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Com_To_RBC_Map.Contains (Map, Id)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
@@ -229,6 +232,7 @@ step_function.ads:74:50: info: index check proved (CVC4: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC4: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC4: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC4: 6 VC)
+step_function.ads:101:04: medium: in inlined expression function body at step_function.ads:43
 step_function.ads:101:04: medium: postcondition might fail, cannot prove SFun.Step(0).Delimiter = Function_Range'first
 step_function.ads:106:30: info: index check proved (CVC4: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC4: 2 VC)

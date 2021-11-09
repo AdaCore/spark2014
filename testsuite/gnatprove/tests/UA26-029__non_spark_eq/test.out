@@ -1,0 +1,17 @@
+main.adb:9:12: error: tagged type whose primitive equality is not in SPARK is not allowed in SPARK
+main.adb:9:12: error: violation of aspect SPARK_Mode at line 1
+main.adb:22:07: error: record component type whose primitive equality is not in SPARK is not allowed in SPARK
+main.adb:22:07: error: violation of aspect SPARK_Mode at line 1
+main.adb:27:04: error: "Holder" is not allowed in SPARK (due to record component type whose primitive equality is not in SPARK)
+main.adb:27:04: error: violation of aspect SPARK_Mode at line 1
+main.adb:28:04: error: "Holder" is not allowed in SPARK (due to record component type whose primitive equality is not in SPARK)
+main.adb:28:04: error: violation of aspect SPARK_Mode at line 1
+main.adb:37:22: error: "CC1" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)
+main.adb:37:22: error: violation of aspect SPARK_Mode at line 1
+main.adb:37:28: error: "CC2" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)
+main.adb:37:28: error: violation of aspect SPARK_Mode at line 1
+main.adb:39:22: error: "CC1" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)
+main.adb:39:22: error: violation of aspect SPARK_Mode at line 1
+main.adb:39:29: error: "CC2" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)
+main.adb:39:29: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

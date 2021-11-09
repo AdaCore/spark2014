@@ -1,0 +1,16 @@
+main.adb:20:16: medium: in default value at main.adb:47
+main.adb:20:16: medium: in inlined predicate at main.adb:12
+main.adb:20:16: medium: predicate check might fail, cannot prove T.G >= 0
+main.adb:27:04: info: predicate check proved on default value (CVC4: 2 VC)
+main.adb:30:08: medium: in inlined predicate at main.adb:11
+main.adb:30:08: medium: predicate check might fail, cannot prove T.F >= 0
+main.adb:32:08: medium: in inlined predicate at main.adb:12
+main.adb:32:08: medium: predicate check might fail, cannot prove T.G >= 0
+main.adb:34:22: medium: assertion might fail, cannot prove X <= 100
+main.adb:34:22: medium: in inlined expression function body at main.adb:24
+main.adb:36:22: medium: assertion might fail, cannot prove X >= -100
+main.adb:36:22: medium: in inlined expression function body at main.adb:25
+main.adb:38:22: medium: assertion might fail, cannot prove T.G >= 0
+main.adb:38:22: medium: in inlined predicate at main.adb:12
+main.adb:41:10: medium: in inlined predicate at main.adb:16
+main.adb:41:10: medium: predicate check might fail on default value, cannot prove T2.F > 0
