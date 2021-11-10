@@ -1,2 +1,2 @@
 default_init.ads:2:06: info: flow dependencies proved
-default_init.ads:14:04: high: "R.Content" is not initialized in "Default_Init"
+default_init.ads:14:04: high: "R.Content" is not initialized in "Default_Init" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "R.Content" at declaration]

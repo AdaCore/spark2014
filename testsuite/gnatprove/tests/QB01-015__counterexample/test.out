@@ -1,4 +1,4 @@
 bytes.adb:5:20: medium: array index check might fail [reason for check: value must be a valid index into the array]
-bytes.ads:14:57: medium: "output" might not be initialized in "To_Byte_Array"
-bytes.ads:14:81: high: "length" is not initialized in "To_Byte_Array"
+bytes.ads:14:57: medium: "output" might not be initialized in "To_Byte_Array" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "output" on all paths, make "output" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+bytes.ads:14:81: high: "length" is not initialized in "To_Byte_Array" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "length" on all paths or make "length" an IN OUT parameter]
 bytes.ads:14:81: warning: unused variable "length"

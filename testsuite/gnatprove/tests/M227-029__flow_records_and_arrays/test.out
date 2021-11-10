@@ -9,9 +9,9 @@ message_tests.adb:40:04: warning: analyzing unreferenced procedure "Not_All_Used
 message_tests.adb:40:33: warning: unused variable "C"
 message_tests.adb:41:33: info: initialization of "W" proved
 message_tests.adb:48:04: warning: analyzing unreferenced procedure "Not_All_Used_Out"
-message_tests.adb:48:32: high: "C.Flags.A" is not initialized in "Not_All_Used_Out"
-message_tests.adb:48:32: high: "C.Flags.B" is not initialized in "Not_All_Used_Out"
-message_tests.adb:48:32: high: "C.W" is not initialized in "Not_All_Used_Out"
+message_tests.adb:48:32: high: "C.Flags.A" is not initialized in "Not_All_Used_Out" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "C.Flags.A" on all paths, make "C" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+message_tests.adb:48:32: high: "C.Flags.B" is not initialized in "Not_All_Used_Out" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "C.Flags.B" on all paths, make "C" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+message_tests.adb:48:32: high: "C.W" is not initialized in "Not_All_Used_Out" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "C.W" on all paths, make "C" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1"
 message_tests.adb:56:32: info: initialization of "C" proved
 message_tests.adb:66:18: high: "F.B" is not initialized

@@ -112,13 +112,13 @@ tests_external_state.ads:66:11: info: flow dependencies proved
 types.adb:34:04: warning: analyzing unreferenced procedure "Test_01"
 types.adb:34:14: warning: subprogram "Test_01" has no effect
 types.adb:40:04: warning: analyzing unreferenced procedure "Test_02"
-types.adb:40:23: high: "R.X" is not written in "Test_02"
+types.adb:40:23: high: "R.X" is not written in "Test_02" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.X" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 types.adb:40:23: warning: unused variable "R"
 types.adb:46:04: warning: analyzing unreferenced procedure "Test_03"
 types.adb:46:23: warning: "R" is not modified, could be IN
 types.adb:46:23: warning: unused variable "R"
 types.adb:52:04: warning: analyzing unreferenced procedure "Test_04"
-types.adb:52:23: high: "R.X" is not written in "Test_04"
+types.adb:52:23: high: "R.X" is not written in "Test_04" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.X" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 types.adb:53:23: info: initialization of "X" proved
 types.adb:56:12: high: "R.X" is not written
 types.adb:59:04: warning: analyzing unreferenced procedure "Test_05"

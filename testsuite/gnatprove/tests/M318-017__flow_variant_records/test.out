@@ -88,11 +88,11 @@ test.adb:80:04: warning: analyzing unreferenced procedure "Test_Definite_01"
 test.adb:80:32: info: initialization of "X" proved
 test.adb:84:09: medium: discriminant check might fail [possible fix: subprogram at line 80 should mention X'Constrained or X.Found in a precondition]
 test.adb:88:04: warning: analyzing unreferenced procedure "Test_Definite_02"
-test.adb:88:32: high: "X.Reason" is not initialized in "Test_Definite_02"
+test.adb:88:32: high: "X.Reason" is not initialized in "Test_Definite_02" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Reason" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test.adb:93:08: medium: discriminant check might fail [possible fix: subprogram at line 88 should mention X'Constrained or X.Found in a precondition]
 test.adb:96:04: warning: analyzing unreferenced procedure "Test_Definite_03"
-test.adb:96:32: medium: "X.Index" might not be initialized in "Test_Definite_03"
-test.adb:96:32: medium: "X.Reason" might not be initialized in "Test_Definite_03"
+test.adb:96:32: medium: "X.Index" might not be initialized in "Test_Definite_03" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Index" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test.adb:96:32: medium: "X.Reason" might not be initialized in "Test_Definite_03" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Reason" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test.adb:102:14: info: discriminant check proved (CVC4: 1 VC)
 test.adb:104:14: info: discriminant check proved (CVC4: 1 VC)
 test.adb:108:04: warning: analyzing unreferenced procedure "Test_Definite_04"

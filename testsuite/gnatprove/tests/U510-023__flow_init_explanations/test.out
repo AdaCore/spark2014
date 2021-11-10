@@ -1,0 +1,21 @@
+init.adb:9:04: warning: analyzing unreferenced procedure "P"
+init.adb:9:17: medium: "X" might not be initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+init.adb:9:29: info: initialization of "Status" proved
+init.adb:15:04: warning: analyzing unreferenced procedure "Q"
+init.adb:15:17: medium: "X" might not be initialized in "Q" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
+init.adb:24:04: warning: analyzing unreferenced procedure "R"
+init.adb:24:17: high: "X.B" is not initialized in "R" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.B" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+init.adb:24:17: high: "X.C" is not initialized in "R" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+init.adb:29:04: warning: analyzing unreferenced procedure "S"
+init.adb:29:17: high: "X.B" is not initialized in "S" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.B" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+init.adb:29:17: high: "X.C" is not initialized in "S" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+init.adb:29:17: medium: "X.A" might not be initialized in "S" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.A" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+parent-child.ads:2:03: info: flow dependencies proved
+parent-child.ads:4:04: high: "Child.X" constituent of "Parent.State" is not initialized in "Child" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Child.X" constituent of "Parent.State" at declaration]
+parent-child.ads:4:04: high: initialization of "Parent.State" is specified at line 2
+pkg.adb:4:04: high: "A" constituent of "State_A" is not initialized in "Pkg" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "A" constituent of "State_A" at declaration or in the package body statements]
+pkg.adb:4:04: high: initialization of "Pkg.State_A" is specified at pkg.ads:3
+pkg.ads:3:03: info: flow dependencies proved
+pkg.ads:6:04: high: "B" is not initialized in "Pkg" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "B" at declaration or in the package body statements]
+pkg_body_off.ads:2:03: info: flow dependencies proved
+pkg_body_off.ads:5:04: high: "A" is not initialized in "Pkg_Body_Off" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "A" at declaration]

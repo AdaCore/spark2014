@@ -16,7 +16,7 @@ initializes_legal.adb:11:55: medium: overflow check might fail, cannot prove low
 initializes_legal.ads:7:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))
 initializes_legal.ads:7:27: medium: initialization of V must not depend on Init.State (SPARK RM 7.1.5(11))
 initializes_legal.ads:17:04: info: initialization of "X" proved
-initializes_illegal.adb:5:04: high: "Y" constituent of "SA" is not initialized in "Initializes_Illegal"
+initializes_illegal.adb:5:04: high: "Y" constituent of "SA" is not initialized in "Initializes_Illegal" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Y" constituent of "SA" at declaration or in the package body statements]
 initializes_illegal.adb:5:04: high: initialization of "Initializes_Illegal.SA" is specified at initializes_illegal.ads:7
 initializes_illegal.adb:5:07: info: initialization of "Z" constituent of "SA" proved
 initializes_illegal.ads:7:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))

@@ -33,7 +33,7 @@ reason_for_check.adb:64:32: info: division check proved (CVC4: 1 VC; Trivial: 1 
 reason_for_check.adb:64:32: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 55 should mention E and X in a precondition]
 reason_for_check.adb:68:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 reason_for_check.adb:68:51: warning: unused variable "E"
-reason_for_check.adb:68:64: medium: "U" might not be initialized in "Oper_Fixed"
+reason_for_check.adb:68:64: medium: "U" might not be initialized in "Oper_Fixed" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "U" on all paths or make "U" an IN OUT parameter]
 reason_for_check.adb:71:30: medium: overflow check might fail, cannot prove upper bound for -X (e.g. when X = -1) [reason for check: result of fixed-point negation must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X in a precondition]
 reason_for_check.adb:72:30: medium: overflow check might fail, cannot prove upper bound for abs X (e.g. when X = -1) [reason for check: result of fixed-point absolute value must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X in a precondition]
 reason_for_check.adb:73:32: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = -1 and Y = -1/128) [reason for check: result of fixed-point addition must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]

@@ -3,7 +3,7 @@ pkg.adb:10:07: warning: consider annotating "Descriptors" with Async_Writers
 pkg.adb:10:07: warning: indirect writes to "Descriptors" through a potential alias are ignored
 pkg.adb:10:07: warning: writing to "Descriptors" is assumed to have no effects on other non-volatile objects
 pkg.ads:5:04: info: flow dependencies proved
-pkg2.adb:8:04: high: "Descriptors" constituent of "State" is not initialized in "Pkg2"
+pkg2.adb:8:04: high: "Descriptors" constituent of "State" is not initialized in "Pkg2" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Descriptors" constituent of "State" at declaration or in the package body statements]
 pkg2.adb:8:04: info: object is suitable for aliasing via address clause (Trivial)
 pkg2.adb:10:07: warning: consider annotating "Descriptors" with Async_Writers
 pkg2.adb:10:07: warning: indirect writes to "Descriptors" through a potential alias are ignored

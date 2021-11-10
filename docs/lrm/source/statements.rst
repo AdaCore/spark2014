@@ -178,10 +178,8 @@ the value an expression had upon entry to the subprogram.
 ::
 
   loop_variant_parameters ::= loop_variant_item {, loop_variant_item}
-  loop_variant_item       ::= change_direction => discrete_expression
+  loop_variant_item       ::= change_direction => expression
   change_direction        ::= Increases | Decreases
-
-where ``discrete_expression`` is an ``expression`` of a discrete type.
 
 .. centered:: **Static Semantics**
 
@@ -239,8 +237,10 @@ where ``discrete_expression`` is an ``expression`` of a discrete type.
    block statements are ignored for purposes of this rule.]
 
 
-7. The expression of a ``loop_variant_item`` shall be of any
-   discrete type.
+7. The expression of a ``loop_variant_item`` shall be either of a
+   discrete type or of a subtype of
+   ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``. In the second case,
+   the associated ``change_direction`` shall be Decreases.
 
 
 8. Two Loop_Invariant or Loop_Variant pragmas which apply to
@@ -259,7 +259,10 @@ where ``discrete_expression`` is an ``expression`` of a discrete type.
 
 
 10. The elaboration of a Checked Loop_Variant pragma begins by evaluating the
-    ``discrete_expressions`` in textual order. For the first elaboration of the
+    ``expressions`` in textual order. For every expression whose type is a
+    subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``,
+    a check is performed that it is non-negative.
+    For the first elaboration of the
     pragma within a given execution of the enclosing loop statement, no further
     action is taken. For subsequent elaborations of the pragma, one or more of
     these expression results are each compared to their corresponding result from

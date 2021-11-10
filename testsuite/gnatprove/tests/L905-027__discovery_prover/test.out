@@ -4,5 +4,6 @@ segway.adb:38:33: info: loop invariant initialization proved (altergo: 3 VC)
 segway.adb:38:33: info: loop invariant preservation proved (altergo: 3 VC)
 segway.adb:40:13: info: precondition proved (altergo: 3 VC)
 segway.adb:42:13: info: precondition proved (altergo: 3 VC)
+segway.ads:24:17: medium: in inlined expression function body at segway.ads:18
 segway.ads:24:17: medium: postcondition might fail, cannot prove Speed = 0
 segway.ads:28:17: info: postcondition proved (altergo: 4 VC)

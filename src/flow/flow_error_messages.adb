@@ -383,12 +383,16 @@ package body Flow_Error_Messages is
    procedure Error_Msg_Flow
      (E            : Entity_Id;
       Msg          : String;
+      Details      : String        := "";
+      Fix          : String        := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
       Suppressed   : out Boolean;
       F1           : Flow_Id       := Null_Flow_Id;
       F2           : Flow_Id       := Null_Flow_Id;
       F3           : Flow_Id       := Null_Flow_Id;
+      FF1          : Flow_Id       := Null_Flow_Id;
+      FF2          : Flow_Id       := Null_Flow_Id;
       Tag          : Flow_Tag_Kind := Empty_Tag;
       SRM_Ref      : String        := "";
       Tracefile    : String        := "";
@@ -424,8 +428,8 @@ package body Flow_Error_Messages is
         Source_Ptr'Image (Slc) &
         Integer'Image (Msg_Severity'Pos (Severity));
 
-      Suppr  : String_Id  := No_String;
-      Msg_Id : Message_Id;
+      Suppr             : String_Id  := No_String;
+      Msg_Id, Ignore_Id : Message_Id;
 
       Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
@@ -496,13 +500,80 @@ package body Flow_Error_Messages is
             Suppr := (if Suppr = No_String then Last_Suppr_Str else Suppr);
          end if;
 
-         --  Print the message except when it's suppressed. Additionally, if
-         --  command line argument "--limit-line" was given, only issue the
-         --  warning if it is to be emitted on the specified line (errors are
-         --  emitted anyway).
+         --  Print the message except when it's suppressed. If command line
+         --  argument "--limit-line" was given, only issue the warning if it is
+         --  to be emitted on the specified line (errors are emitted anyway).
+         --  Additionally, if Details and/or Fix are not empty, print them,
+         --  either on the same line or as continuation messages.
 
          if not Suppressed and then Is_Specified_Line (Slc) then
-            Msg_Id := Print_Regular_Msg (Msg3, Span, Severity, Continuation);
+
+            --  Only display message details when outputting on one line,
+            --  either as part of automatic testing or inside an IDE, to
+            --  avoid long unreadable messages for command-line use.
+
+            case Gnat2Why_Args.Output_Mode is
+
+               --  In brief mode, just print the check message
+
+               when GPO_Brief =>
+                  Msg_Id :=
+                    Print_Regular_Msg (Msg3, Span, Severity, Continuation);
+
+               --  In oneline mode, append all the extra information to the
+               --  main message and print it.
+
+               when GPO_Oneline =>
+
+                  declare
+                     Details_Msg : constant String :=
+                       (if Details /= ""
+                        then " [reason for check: " & Details & "]"
+                        else "");
+                     Fix_Msg     : constant String :=
+                       (if Fix /= ""
+                        then " [possible fix: "
+                               & Compute_Message (Fix, Attach_Node, FF1, FF2)
+                               & "]"
+                        else "");
+                     Msg4        : constant String :=
+                       Msg3 & Details_Msg & Fix_Msg;
+                  begin
+                     Msg_Id :=
+                       Print_Regular_Msg (Msg4, Span, Severity, Continuation);
+                  end;
+
+               --  In pretty mode, print the message, then print all the extra
+               --  information as continuation messages. The mechanism to
+               --  display messages in Errout is adapted in that case to
+               --  display continuation messages on newlines, with a suitable
+               --  indentation and no repetion of the  file:line:column: prefix
+               --  and info/warning/error information.
+
+               when GPO_Pretty =>
+                  Msg_Id :=
+                    Print_Regular_Msg (Msg3, Span, Severity, Continuation);
+
+                  if Details /= "" then
+                     Ignore_Id := Print_Regular_Msg
+                       (SGR_Note & "reason for check: " & SGR_Reset
+                        & Details,
+                        Span, Severity, Continuation => True);
+                  end if;
+
+                  declare
+                     Fix_Str : constant String :=
+                       Compute_Message (Fix, Attach_Node, FF1, FF2);
+                  begin
+                     if Fix /= "" then
+                        Ignore_Id := Print_Regular_Msg
+                          (SGR_Note & "possible fix: " & SGR_Reset
+                              & Fix_Str,
+                           Span, Severity, Continuation => True);
+                     end if;
+                  end;
+            end case;
+
          else
             Msg_Id := No_Message_Id;
          end if;
@@ -540,11 +611,15 @@ package body Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA           : in out Flow_Analysis_Graphs;
       Msg          : String;
+      Details      : String                := "";
+      Fix          : String                := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
       F1           : Flow_Id               := Null_Flow_Id;
       F2           : Flow_Id               := Null_Flow_Id;
       F3           : Flow_Id               := Null_Flow_Id;
+      FF1          : Flow_Id               := Null_Flow_Id;
+      FF2          : Flow_Id               := Null_Flow_Id;
       Tag          : Flow_Tag_Kind         := Empty_Tag;
       SRM_Ref      : String                := "";
       Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
@@ -604,12 +679,16 @@ package body Flow_Error_Messages is
    begin
       Error_Msg_Flow (E            => FA.Spec_Entity,
                       Msg          => Debug_Msg,
+                      Details      => Details,
+                      Fix          => Fix,
                       Severity     => Severity,
                       N            => N,
                       Suppressed   => Suppressed,
                       F1           => F1,
                       F2           => F2,
                       F3           => F3,
+                      FF1          => FF1,
+                      FF2          => FF2,
                       Tag          => Tag,
                       SRM_Ref      => SRM_Ref,
                       Tracefile    => Tracefile,

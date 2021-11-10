@@ -138,14 +138,14 @@ infoflow.ads:16:24: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 infoflow.ads:29:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 infoflow.ads:37:06: medium: contract cases might not be complete
 infoflow.ads:38:24: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
-infoflow.ads:47:26: medium: "Cache_V1" might not be initialized in "ScrubCache"
-infoflow.ads:47:36: medium: "Cache_V2" might not be initialized in "ScrubCache"
+infoflow.ads:47:26: medium: "Cache_V1" might not be initialized in "ScrubCache" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Cache_V1" on all paths, make "Cache_V1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+infoflow.ads:47:36: medium: "Cache_V2" might not be initialized in "ScrubCache" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Cache_V2" on all paths, make "Cache_V2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 infoflow.ads:48:06: info: complete contract cases proved (CVC4: 1 VC)
 infoflow.ads:48:30: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 infoflow.ads:49:39: medium: "Cache_V1" might not be initialized
 infoflow.ads:49:54: medium: "Cache_V2" might not be initialized
-infoflow.ads:60:07: medium: "OutKeys_V1" might not be initialized in "CopyKeys"
-infoflow.ads:60:19: medium: "OutKeys_V2" might not be initialized in "CopyKeys"
+infoflow.ads:60:07: medium: "OutKeys_V1" might not be initialized in "CopyKeys" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "OutKeys_V1" on all paths, make "OutKeys_V1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+infoflow.ads:60:19: medium: "OutKeys_V2" might not be initialized in "CopyKeys" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "OutKeys_V2" on all paths, make "OutKeys_V2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 infoflow.ads:63:06: medium: contract cases might not be complete
 infoflow.ads:64:27: info: contract case proved (Trivial: 1 VC; Z3: 1 VC)
 infoflow.ads:64:30: medium: "OutKeys_V1" might not be initialized
@@ -186,8 +186,8 @@ infoflow.ads:102:70: info: division check proved (CVC4: 1 VC)
 infoflow.ads:103:24: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 infoflow.ads:103:33: info: index check proved (CVC4: 2 VC)
 infoflow.ads:103:44: info: index check proved (CVC4: 2 VC)
-infoflow.ads:112:07: medium: "A_V1" might not be initialized in "ArrayPartitionedTransfer"
-infoflow.ads:112:13: medium: "A_V2" might not be initialized in "ArrayPartitionedTransfer"
+infoflow.ads:112:07: medium: "A_V1" might not be initialized in "ArrayPartitionedTransfer" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A_V1" on all paths, make "A_V1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+infoflow.ads:112:13: medium: "A_V2" might not be initialized in "ArrayPartitionedTransfer" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A_V2" on all paths, make "A_V2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 infoflow.ads:129:06: info: disjoint contract cases proved (CVC4: 1 VC)
 infoflow.ads:129:06: medium: contract cases might not be complete
 infoflow.ads:131:33: info: index check proved (CVC4: 2 VC)

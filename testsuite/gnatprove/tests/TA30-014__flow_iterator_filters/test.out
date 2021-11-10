@@ -19,7 +19,7 @@ test.adb:44:06: info: flow dependencies proved
 test.adb:47:35: info: cannot unroll loop (too many loop iterations)
 test.adb:48:17: medium: overflow check might fail, cannot prove upper bound for Z + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 47 should mention Z in a loop invariant]
 test.adb:52:04: warning: analyzing unreferenced procedure "LPS_Init"
-test.adb:52:36: medium: "B" might not be initialized in "LPS_Init"
+test.adb:52:36: medium: "B" might not be initialized in "LPS_Init" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "B" on all paths or make "B" an IN OUT parameter]
 test.adb:54:35: info: cannot unroll loop (too many loop iterations)
 test.adb:65:22: info: assertion proved (Trivial: 2 VC)
 test.adb:65:48: high: "Y" must be listed in the Global aspect of "QE_LPS_Bad_Global" (SPARK RM 6.1.4(14))

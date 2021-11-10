@@ -173,16 +173,16 @@ formals_arr_split_pred.adb:46:18: medium: predicate check might fail [possible f
 formals_rec_split.adb:1:11: warning: subprogram "Formals_Rec_Split" has no effect
 formals_rec_split.adb:11:31: info: range check proved (CVC4: 1 VC)
 formals_rec_split.adb:13:33: info: range check proved (CVC4: 1 VC)
-formals_rec_split.adb:15:17: low: "A.F" might not be set in "P"
+formals_rec_split.adb:15:17: low: "A.F" might not be set in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A.F" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 formals_rec_split.adb:20:11: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split.adb:24:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split.adb:24:14: info: local subprogram "P2" only analyzed in the context of calls
-formals_rec_split.adb:24:18: low: "A.F" might not be set in "P2"
+formals_rec_split.adb:24:18: low: "A.F" might not be set in "P2" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A.F" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 formals_rec_split.adb:28:11: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split.adb:44
 formals_rec_split.adb:28:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:49 [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:32:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split.adb:32:14: info: local subprogram "P3" only analyzed in the context of calls
-formals_rec_split.adb:32:18: low: "A.F" might not be set in "P3"
+formals_rec_split.adb:32:18: low: "A.F" might not be set in "P3" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A.F" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 formals_rec_split.adb:36:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:55 [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:47:10: info: precondition proved (Trivial: 1 VC)

@@ -4,14 +4,14 @@ array_arith.adb:63:19: high: overflow check might fail, cannot prove upper bound
 array_arith.adb:63:19: high: range check might fail, cannot prove lower bound for Y + One (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:66:07: high: "X" is not initialized
 array_arith.adb:70:29: info: initialization of "Y" proved
-array_arith.ads:8:20: medium: "X" might not be initialized in "Init"
+array_arith.ads:8:20: medium: "X" might not be initialized in "Init" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:9:35: medium: "X" might not be initialized
 array_arith.ads:9:35: medium: postcondition might fail, cannot prove X(J) = Natural(J)
-array_arith.ads:11:21: medium: "X" might not be initialized in "Init2"
+array_arith.ads:11:21: medium: "X" might not be initialized in "Init2" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:12:35: medium: "X" might not be initialized
 array_arith.ads:12:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1
 array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 [possible fix: call at array_arith.adb:66 should mention X in a postcondition]
-array_arith.ads:17:20: medium: "X" might not be initialized in "Zero"
+array_arith.ads:17:20: medium: "X" might not be initialized in "Zero" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:18:35: medium: "X" might not be initialized
 array_arith.ads:18:35: medium: postcondition might fail, cannot prove X(J) = 0 [possible fix: call at array_arith.adb:85 should mention Y (for argument X) in a postcondition]
 ident.adb:6:42: info: initialization of "Y" proved

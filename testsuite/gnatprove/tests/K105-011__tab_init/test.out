@@ -6,4 +6,4 @@ tab_init.adb:6:72: info: overflow check proved (CodePeer)
 tab_init.adb:7:25: info: assertion proved (CodePeer)
 tab_init.adb:7:25: medium: "T" might not be initialized
 tab_init.adb:7:33: info: overflow check proved (CodePeer)
-tab_init.ads:5:21: medium: "T" might not be initialized in "Init"
+tab_init.ads:5:21: medium: "T" might not be initialized in "Init" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "T" on all paths, make "T" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

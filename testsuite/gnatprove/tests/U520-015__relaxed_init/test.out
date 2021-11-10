@@ -1,7 +1,7 @@
 expl.adb:2:08: info: data dependencies proved
-expl.adb:6:21: medium: "Y" might not be initialized in "Inner"
+expl.adb:6:21: medium: "Y" might not be initialized in "Inner" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Y" on all paths or make "Y" an IN OUT parameter]
 expl.adb:9:15: medium: initialization check might fail (e.g. when X'Initialized = False) [possible fix: precondition of subprogram at line 6 should mention X'Initialized]
-expl.adb:18:22: medium: "Y" might not be initialized in "Inner2"
+expl.adb:18:22: medium: "Y" might not be initialized in "Inner2" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Y" on all paths or make "Y" an IN OUT parameter]
 expl.adb:23:16: medium: initialization check might fail (e.g. when R.X'Initialized = False) [possible fix: precondition of subprogram at line 18 should mention R'Initialized]
 expl.adb:31:04: info: precondition proved (Trivial: 1 VC)
 expl.adb:32:09: medium: initialization check might fail [possible fix: call at line 31 should mention X'Initialized in a postcondition]

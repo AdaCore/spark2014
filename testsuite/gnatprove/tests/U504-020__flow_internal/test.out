@@ -1,6 +1,6 @@
 gf.adb:3:14: info: add a contract to analyze it separately from calling contexts
 gf.adb:3:14: info: local subprogram "Read_Fi" only analyzed in the context of calls
-gf.adb:3:23: high: "Buff_All" is not initialized in "Read_Fi"
+gf.adb:3:23: high: "Buff_All" is not initialized in "Read_Fi" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Buff_All" on all paths, make "Buff_All" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 gf.adb:3:23: warning: unused variable "Buff_All"
 gf.adb:25:07: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object, in instantiation at main.ads:3 [possible explanation: Data_As_Array doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
 gf.adb:25:07: info: object is suitable for aliasing via address clause (Trivial), in instantiation at main.ads:3

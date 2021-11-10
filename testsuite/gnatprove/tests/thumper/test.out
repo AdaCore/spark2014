@@ -380,11 +380,11 @@ server_timestamp_maker.adb:34:14: info: add a contract to analyze it separately 
 server_timestamp_maker.adb:34:14: info: local subprogram "Get_Message_Imprint" only analyzed in the context of calls
 server_timestamp_maker.adb:35:07: warning: unused variable "Request_Message"
 server_timestamp_maker.adb:36:07: warning: unused variable "Index"
-server_timestamp_maker.adb:37:07: high: "Stop" is not initialized in "Get_Message_Imprint"
+server_timestamp_maker.adb:37:07: high: "Stop" is not initialized in "Get_Message_Imprint" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Stop" on all paths or make "Stop" an IN OUT parameter]
 server_timestamp_maker.adb:37:07: warning: unused variable "Stop"
-server_timestamp_maker.adb:38:07: high: "Message_Imprint.X" is not initialized in "Get_Message_Imprint"
+server_timestamp_maker.adb:38:07: high: "Message_Imprint.X" is not initialized in "Get_Message_Imprint" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Message_Imprint.X" on all paths, make "Message_Imprint" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 server_timestamp_maker.adb:38:07: warning: unused variable "Message_Imprint"
-server_timestamp_maker.adb:39:07: high: "Imprint_Status" is not initialized in "Get_Message_Imprint"
+server_timestamp_maker.adb:39:07: high: "Imprint_Status" is not initialized in "Get_Message_Imprint" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Imprint_Status" on all paths or make "Imprint_Status" an IN OUT parameter]
 server_timestamp_maker.adb:39:07: warning: unused variable "Imprint_Status"
 server_timestamp_maker.adb:45:13: info: add a contract to analyze it separately from calling contexts
 server_timestamp_maker.adb:45:13: info: local subprogram "Valid_Request" only analyzed in the context of calls

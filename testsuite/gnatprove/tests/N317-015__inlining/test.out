@@ -29,16 +29,16 @@ array_arith.adb:63:19: high: range check might fail, cannot prove lower bound fo
 array_arith.adb:70:17: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:70:17: info: local subprogram "Put_A_Zero" only analyzed in the context of calls
 array_arith.adb:70:29: info: initialization of "Y" proved
-array_arith.ads:8:20: medium: "X" might not be initialized in "Init"
+array_arith.ads:8:20: medium: "X" might not be initialized in "Init" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:9:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:9:35: medium: "X" might not be initialized
-array_arith.ads:11:21: medium: "X" might not be initialized in "Init2"
+array_arith.ads:11:21: medium: "X" might not be initialized in "Init2" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:12:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:12:35: medium: "X" might not be initialized
-array_arith.ads:14:21: medium: "X" might not be initialized in "Init3"
+array_arith.ads:14:21: medium: "X" might not be initialized in "Init3" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:15:35: medium: "X" might not be initialized
 array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1
-array_arith.ads:17:20: medium: "X" might not be initialized in "Zero"
+array_arith.ads:17:20: medium: "X" might not be initialized in "Zero" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:18:35: medium: "X" might not be initialized
 ident.adb:8:13: info: add a contract to analyze it separately from calling contexts
