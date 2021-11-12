@@ -1,4 +1,4 @@
-compute.adb:4:20: info: overflow check proved (CVC4: 1 VC)
+compute.adb:4:20: info: float overflow check proved (CVC4: 1 VC)
 warning: (SPARK analysis requires support for float subnormals)
 warning: (SPARK analysis requires support for float subnormals)
 warning: run-time library may be configured incorrectly

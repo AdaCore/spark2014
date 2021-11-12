@@ -6064,8 +6064,16 @@ package body SPARK_Definition is
                elsif Is_Double_Precision_Floating_Point_Type (E) then
                   pragma Assert (Esize (Standard_Long_Float) = 64);
 
+               --  Long_Long_Float is always 80-bits extended precision in
+               --  GNAT, but with padding to 96 bits on x86 (32-bits machines)
+               --  and to 128 bits on x86_64 (64-bits machines). Look at the
+               --  mantissa instead which should be 64 for 80-bits extended
+               --  precision.
+
                elsif Is_Extended_Precision_Floating_Point_Type (E) then
-                  pragma Assert (Esize (Standard_Long_Long_Float) = 80);
+                  pragma Assert
+                    (Machine_Mantissa_Value (Standard_Long_Long_Float)
+                     = Uint_64);
 
                else
                   raise Program_Error;

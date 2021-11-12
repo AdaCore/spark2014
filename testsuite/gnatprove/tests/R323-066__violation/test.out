@@ -1,35 +1,54 @@
-known_satellites.adb:10:04: error: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
-known_satellites.adb:10:04: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:23:07: error: "Satellite" is not allowed in SPARK
-known_satellites.adb:23:07: error: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
-known_satellites.adb:23:07: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:23:07: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:23:45: error: "Satellite" is not allowed in SPARK
-known_satellites.adb:23:45: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:35:07: error: "Satellite" is not allowed in SPARK
-known_satellites.adb:35:07: error: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
-known_satellites.adb:35:07: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:35:07: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:35:53: error: "Satellite" is not allowed in SPARK
-known_satellites.adb:35:53: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:46:07: error: "Satellite" is not allowed in SPARK
-known_satellites.adb:46:07: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:46:16: error: "Satellite" is not allowed in SPARK
-known_satellites.adb:46:16: error: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
-known_satellites.adb:46:16: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:46:16: error: violation of aspect SPARK_Mode at line 5
-known_satellites.adb:53:08: error: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
-known_satellites.adb:53:08: error: violation of aspect SPARK_Mode at line 5
-spacecraft-ctors.adb:19:06: error: "Satellite" is not allowed in SPARK
-spacecraft-ctors.adb:19:06: error: violation of aspect SPARK_Mode at line 3
-spacecraft.adb:11:34: error: "Satellite" is not allowed in SPARK
-spacecraft.adb:11:34: error: violation of aspect SPARK_Mode at line 4
-spacecraft.adb:11:72: error: "Satellite" is not allowed in SPARK
-spacecraft.adb:11:72: error: violation of aspect SPARK_Mode at line 4
-spacecraft.adb:12:35: error: "Satellite" is not allowed in SPARK
-spacecraft.adb:12:35: error: violation of aspect SPARK_Mode at line 4
-spacecraft.ads:6:04: error: extended precision floating point type is not yet supported
-spacecraft.ads:6:04: error: extended precision floating point type is not yet supported
-spacecraft.ads:6:04: error: extended precision floating point type is not yet supported
-spacecraft.ads:6:04: error: extended precision floating point type is not yet supported
-gnatprove: error during flow analysis and proof
+display_velocities.adb:32:14: info: add a contract to analyze it separately from calling contexts
+display_velocities.adb:32:14: info: local subprogram "Display_Velocities_SPARK" only analyzed in the context of calls
+display_velocities.adb:38:07: info: initialization of "SatelliteTmp" proved
+display_velocities.adb:38:07: info: initialization of "SatelliteTmp" proved, in call inlined at display_velocities.adb:59
+display_velocities.adb:39:07: info: initialization of "SatRefArray" proved
+display_velocities.adb:39:07: info: initialization of "SatRefArray" proved, in call inlined at display_velocities.adb:59
+display_velocities.adb:42:23: info: precondition proved (Z3: 2 VC), in call inlined at display_velocities.adb:59
+display_velocities.adb:44:07: medium: precondition might fail, in call inlined at display_velocities.adb:59 [possible fix: subprogram at line 9 should mention currSatelliteCount in a precondition]
+display_velocities.adb:48:55: low: range check might fail, cannot prove lower bound for "[SPK] Satellite Velocity for USA is " & DKFloat'image, in call inlined at display_velocities.adb:59 [possible fix: you should consider adding a postcondition to function Velocity or turning it into an expression function in its unit spec]
+display_velocities.adb:48:95: low: range check might fail, cannot prove lower bound for "[SPK] Satellite Velocity for USA is " & DKFloat'Image(Velocity(SatelliteTmp)) & " mph ", in call inlined at display_velocities.adb:59 [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Velocity or turning it into an expression function in its unit spec]
+display_velocities.adb:50:23: info: precondition proved (Z3: 2 VC), in call inlined at display_velocities.adb:59
+display_velocities.adb:51:07: medium: precondition might fail, in call inlined at display_velocities.adb:59
+display_velocities.adb:52:55: low: range check might fail, cannot prove lower bound for "[SPK] Satellite Velocity for RSA is " & DKFloat'image, in call inlined at display_velocities.adb:59 [possible fix: postcondition of call at line 51 should mention Known_Satellites.Satellitearray]
+display_velocities.adb:52:80: info: precondition proved (Z3: 1 VC), in call inlined at display_velocities.adb:59
+display_velocities.adb:52:113: low: range check might fail, cannot prove lower bound for "[SPK] Satellite Velocity for RSA is " & DKFloat'Image(Velocity(Dereferenced(SatRefArray(RSA)))) & " mph ", in call inlined at display_velocities.adb:59 [reason for check: input value must fit in parameter type] [possible fix: postcondition of call at line 51 should mention Known_Satellites.Satellitearray]
+known_satellites.adb:10:79: info: precondition proved (Z3: 2 VC)
+known_satellites.adb:22:48: info: range check proved (Z3: 2 VC)
+known_satellites.adb:23:22: info: index check proved (Z3: 2 VC)
+known_satellites.adb:35:22: info: index check proved (Z3: 2 VC)
+known_satellites.adb:46:31: info: index check proved (Z3: 2 VC)
+known_satellites.adb:53:23: info: index check proved (Z3: 2 VC)
+known_satellites.ads:9:03: info: flow dependencies proved
+known_satellites.ads:10:03: info: initial condition proved (Z3: 1 VC)
+known_satellites.ads:30:07: info: initialization of "Reference" proved
+known_satellites.ads:32:08: info: data dependencies proved
+known_satellites.ads:33:08: info: flow dependencies proved
+known_satellites.ads:38:19: info: postcondition proved (Z3: 2 VC)
+known_satellites.ads:49:08: info: data dependencies proved
+known_satellites.ads:50:08: info: flow dependencies proved
+known_satellites.ads:57:07: info: initialization of "Value" proved
+known_satellites.ads:59:08: info: data dependencies proved
+known_satellites.ads:60:08: info: flow dependencies proved
+known_satellites.ads:67:08: info: data dependencies proved
+known_satellites.ads:68:08: info: flow dependencies proved
+known_satellites.ads:74:23: info: in default value of private type at known_satellites.ads:16
+known_satellites.ads:74:23: info: range check proved (CVC4: 2 VC)
+spacecraft-ctors.adb:19:06: medium: predicate check might fail
+spacecraft-ctors.ads:10:20: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Revolutions in a precondition]
+spacecraft-ctors.ads:10:26: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Revolutions in a precondition]
+spacecraft-ctors.ads:10:31: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Altitude and Revolutions in a precondition]
+spacecraft-ctors.ads:10:79: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Revolutions in a precondition]
+spacecraft-ctors.ads:10:85: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Revolutions in a precondition]
+spacecraft-ctors.ads:10:90: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Altitude and Revolutions in a precondition]
+spacecraft-ctors.ads:10:102: medium: divide by zero might fail [possible fix: add precondition (Time /= 0) to subprogram at line 4]
+spacecraft-ctors.ads:10:102: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 4 should mention Altitude and Revolutions and Time in a precondition]
+spacecraft.adb:9:07: info: initialization of "Distance_Travelled" proved
+spacecraft.adb:11:59: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at spacecraft.ads:14 should mention SatelliteRec in a precondition]
+spacecraft.adb:11:65: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at spacecraft.ads:14 should mention SatelliteRec in a precondition]
+spacecraft.adb:11:70: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at spacecraft.ads:14 should mention SatelliteRec in a precondition]
+spacecraft.adb:12:33: medium: divide by zero might fail [possible fix: subprogram at spacecraft.ads:14 should mention SatelliteRec in a precondition]
+spacecraft.adb:12:33: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at spacecraft.ads:14 should mention SatelliteRec in a precondition]
+spacecraft.ads:24:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+spacecraft.ads:24:59: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+spacecraft.ads:24:64: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
