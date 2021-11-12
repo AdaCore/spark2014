@@ -1598,6 +1598,12 @@ package body SPARK_RAC is
       exception
          when Exn_RAC_Exit =>
             null;
+
+         --  The call to Iteration will raise local exception Break to return
+         --  early from the iteration. Pop the environment in that case too.
+         when others =>
+            Ctx.Env.Delete_First;
+            raise;
       end;
       Ctx.Env.Delete_First;
    end Iterate_Loop_Param_Spec;
