@@ -519,10 +519,34 @@ package body SPARK_Util.Types is
    begin
       if not Known_RM_Size (Typ) then
          Result := False;
-         Explanation :=
-           To_Unbounded_String (Type_Name_For_Explanation (Typ) & " doesn't "
-                                & "have a Size representation clause "
-                                & "or aspect");
+
+         --  A Size representation clause cannot be added on the constrained
+         --  array subtype of an unconstrained array type (unless both are
+         --  introduced by the same declaration, in which case Typ is a first
+         --  subtype). Instead, the array type can be specified as packed so
+         --  that the size of its subtype is computed automatically.
+
+         if Ekind (Typ) = E_Array_Subtype
+           and then not Is_Constrained (Etype (Typ))
+           and then not Is_First_Subtype (Typ)
+         then
+            if not Has_Pragma_Pack (Etype (Typ)) then
+               Explanation :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Etype (Typ))
+                    & " doesn't have a Pack pragma or aspect");
+            else
+               Explanation :=
+                 To_Unbounded_String
+                   ("size of " & Type_Name_For_Explanation (Typ)
+                    & " cannot be computed statically");
+            end if;
+         else
+            Explanation :=
+              To_Unbounded_String
+                (Type_Name_For_Explanation (Typ)
+                 & " doesn't have a Size representation clause or aspect");
+         end if;
       else
          Result := True;
       end if;
