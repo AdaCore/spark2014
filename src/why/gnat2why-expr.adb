@@ -15430,7 +15430,21 @@ package body Gnat2Why.Expr is
                    (1 =>
                        Get_Array_Attr (Domain, Left_Expr, Attribute_Length, 1),
                     2 => New_Integer_Constant (Value => Uint_0)));
+
          begin
+            --  If we are expecting a partially initialized type, convert Right
+
+            if Init_Wrapper
+              and then not Is_Init_Wrapper_Type (Get_Type (Right_Op))
+            then
+               Right_Op := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Get_Array_To_Wrapper_Name (Right_Type),
+                  Args     => (1 => Right_Op),
+                  Typ      => EW_Split (Right_Type, Relaxed_Init => True));
+            end if;
+
             if not Is_Static_Array_Type (Return_Type) then
                Right_Op := Array_Convert_From_Base (Domain => Domain,
                                                     Ty     => Return_Type,
