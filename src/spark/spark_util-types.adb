@@ -270,21 +270,6 @@ package body SPARK_Util.Types is
    function Retysp_Kind (T : Type_Kind_Id) return Type_Kind is
      (Ekind (Retysp (T)));
 
-   ---------------------------------
-   -- Has_Visible_Type_Invariants --
-   ---------------------------------
-
-   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean is
-      Real_Node : constant Node_Id :=
-        (if Is_Itype (Ty)
-         then Associated_Node_For_Itype (Ty)
-         else Ty);
-
-   begin
-      return Has_Invariants_In_SPARK (Ty)
-        and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
-   end Has_Visible_Type_Invariants;
-
    ------------------------------------
    -- Has_Unconstrained_UU_Component --
    ------------------------------------
@@ -301,10 +286,13 @@ package body SPARK_Util.Types is
             Comp : Node_Id := First_Component (Rep_Ty);
          begin
             while Present (Comp) loop
-               if Component_Is_Visible_In_SPARK (Comp) then
-                  return (Is_Unchecked_Union (Retysp (Etype (Comp)))
-                          and then not Is_Constrained (Retysp (Etype (Comp))))
-                    or else Has_Unconstrained_UU_Component (Etype (Comp));
+               if Component_Is_Visible_In_SPARK (Comp)
+                 and then
+                   ((Is_Unchecked_Union (Retysp (Etype (Comp)))
+                     and then not Is_Constrained (Retysp (Etype (Comp))))
+                    or else Has_Unconstrained_UU_Component (Etype (Comp)))
+               then
+                  return True;
                end if;
                Next_Component (Comp);
             end loop;
@@ -319,6 +307,21 @@ package body SPARK_Util.Types is
          return False;
       end if;
    end Has_Unconstrained_UU_Component;
+
+   ---------------------------------
+   -- Has_Visible_Type_Invariants --
+   ---------------------------------
+
+   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean is
+      Real_Node : constant Node_Id :=
+        (if Is_Itype (Ty)
+         then Associated_Node_For_Itype (Ty)
+         else Ty);
+
+   begin
+      return Has_Invariants_In_SPARK (Ty)
+        and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
+   end Has_Visible_Type_Invariants;
 
    ------------------
    -- Minimal_Size --
@@ -1507,9 +1510,21 @@ package body SPARK_Util.Types is
       --  if the predefined equality is used for components of this type and
       --  this equality uses predefined equality on pointers.
 
-      Rep_Ty : constant Type_Kind_Id := Retysp (Ty);
+      Spec_Ty : constant Entity_Id :=
+        (if Is_Class_Wide_Type (Retysp (Ty))
+         then Get_Specific_Type_From_Classwide (Retysp (Ty))
+         else Ty);
+      Rep_Ty  : constant Type_Kind_Id := Retysp (Spec_Ty);
+
    begin
-      if Is_Access_Type (Rep_Ty) then
+      --  The predefined equality on a class-wide type uses the primitive
+      --  equality on its specific view.
+
+      if Is_Class_Wide_Type (Retysp (Ty))
+        and then Present (Get_User_Defined_Eq (Spec_Ty))
+      then
+         return False;
+      elsif Is_Access_Type (Rep_Ty) then
          return True;
       elsif Is_Array_Type (Rep_Ty) then
          return Uses_Pointer_Eq_Comp (Component_Type (Rep_Ty));

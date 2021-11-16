@@ -179,7 +179,11 @@ package SPARK_Util.Types is
 
    function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean;
    --  Returns True iff Typ has a component visible in SPARK whose type is an
-   --  unchecked union type which is unconstrained.
+   --  unchecked union type which is unconstrained. Predefined equality on
+   --  these types is defined to raise Program_Error in Ada for now, even if
+   --  the primitive equality of the components is redefined. To be changed
+   --  when the wording and the compiler are fixed (code might be shared with
+   --  Predefined_Eq_Uses_Pointer_Eq).
    --  Should be called on marked types.
 
    function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean;
