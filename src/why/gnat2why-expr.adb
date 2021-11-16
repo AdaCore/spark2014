@@ -15027,65 +15027,11 @@ package body Gnat2Why.Expr is
 
                if Is_Class_Wide_Type (Left_Type) then
 
-                  --  Dispatching equality. Translate to:
-                  --  let a = to_root left in
-                  --  let b = to_root right in
-                  --    a.attr_tag = b.attr_tag /\
-                  --    __dispatch_eq a b
-
-                  declare
-                     Root : constant Entity_Id :=
-                       Root_Retysp (Left_Type);
-                     Args : constant W_Expr_Array :=
-                       (1 => New_Temp_For_Expr
-                          (Insert_Simple_Conversion
-                               (Ada_Node => Expr,
-                                Domain   => Subdomain,
-                                Expr     => Left_Expr,
-                                To       => Type_Of_Node (Root))),
-                        2 => New_Temp_For_Expr
-                          (Insert_Simple_Conversion
-                               (Ada_Node => Expr,
-                                Domain   => Subdomain,
-                                Expr     => Right_Expr,
-                                To       => Type_Of_Node (Root))));
-                  begin
-                     T := New_And_Then_Expr
-                       (Left   => New_Call
-                          (Ada_Node => Expr,
-                           Domain   => Subdomain,
-                           Name     => Why_Eq,
-                           Args     =>
-                             (1 => New_Tag_Access
-                                  (Domain => Subdomain,
-                                   Name   => Args (1),
-                                   Ty     => Root),
-                              2 => New_Tag_Access
-                                (Domain => Subdomain,
-                                 Name   => Args (2),
-                                 Ty     => Root)),
-                           Typ      => EW_Bool_Type),
-                        Right  =>
-                          New_Call
-                            (Ada_Node => Expr,
-                             Domain   => Subdomain,
-                             Name     =>
-                               E_Symb (Root, WNE_Dispatch_Eq),
-                             Args     => New_Tag_Access
-                               (Domain => Subdomain,
-                                Name   => Args (1),
-                                Ty     => Root)
-                             & Args,
-                             Typ      => EW_Bool_Type),
-                        Domain => Subdomain);
-
-                     T := Binding_For_Temp (Domain  => Subdomain,
-                                            Tmp     => Args (1),
-                                            Context => T);
-                     T := Binding_For_Temp (Domain  => Subdomain,
-                                            Tmp     => Args (2),
-                                            Context => T);
-                  end;
+                  T := New_Ada_Equality
+                    (Typ    => Left_Type,
+                     Domain => Domain,
+                     Left   => Left_Expr,
+                     Right  => Right_Expr);
                else
                   T :=
                     New_Call
