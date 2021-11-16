@@ -2915,7 +2915,7 @@ package body Gnat2Why.Expr is
       Left                               : constant Node_Id :=
         Left_Opnd (Expr);
       Left_Type                          : constant Entity_Id :=
-        Etype (Left);
+        Retysp (Etype (Left));
       Ty_Has_Unconstrained_UU_Component  : constant Boolean :=
         Has_Unconstrained_UU_Component (Left_Type);
       Ty_Has_UU_Type                     : constant Boolean :=
@@ -2923,11 +2923,16 @@ package body Gnat2Why.Expr is
       Left_Lacks_Inferable_Discriminants : constant Boolean :=
         Ty_Has_UU_Type and then not Has_Inferable_Discriminants (Left);
       Use_Predef_Equality                : constant Boolean :=
-        not Is_Membership_Test
-        or else Use_Predefined_Equality_For_Type (Left_Type);
+        (not Is_Membership_Test
+         or else Use_Predefined_Equality_For_Type (Left_Type))
+        and then (not Is_Class_Wide_Type (Left_Type)
+                  or else Use_Predefined_Equality_For_Type
+                    (Get_Specific_Type_From_Classwide (Left_Type)));
       --  Nothing needs to be done for equalities if we are not using the
       --  predefined one. This should not occur while translating equalities
-      --  as ones using primitives will have be rewritten as function calls.
+      --  as ones using primitives will have been rewritten as function calls.
+      --  If the equality or membership test is on class-wide types, the
+      --  primitive equality of the specific type will be used if any.
 
       procedure Do_One_Alternative
         (Right           : Node_Id;
@@ -14514,14 +14519,6 @@ package body Gnat2Why.Expr is
 
            and then Nkind (Var) = N_Identifier
 
-           --  Equality should not have been redefined for Var
-
-           and then
-             (not Is_Record_Type (Unchecked_Full_Type (Etype (Var)))
-              or else Is_Limited_View (Etype (Var))
-              or else No
-                (Get_User_Defined_Eq (Base_Type (Etype (Var)))))
-
            --  Upd should be a 'Update attribute or a delta aggregate
 
            and then Present (Pref)
@@ -15012,7 +15009,9 @@ package body Gnat2Why.Expr is
                --  Check the specific rules for builtin equality on
                --  unchecked union types.
 
-               Check_UU_Restrictions (Expr);
+               if Domain = EW_Prog then
+                  Check_UU_Restrictions (Expr);
+               end if;
 
                --  Check that operands are initialized. Even if initialization
                --  checks are introduced for the conversion to BT, we still
@@ -19492,7 +19491,7 @@ package body Gnat2Why.Expr is
       --  Check the specific rules for membership tests on unchecked union
       --  types.
 
-      if Is_Record_Type_In_Why (Etype (Var)) then
+      if Is_Record_Type_In_Why (Etype (Var)) and then Domain = EW_Prog then
          Check_UU_Restrictions (Expr);
       end if;
 

@@ -1,0 +1,3 @@
+uu.ads:30:12: info: operation on unchecked union type proved (Trivial)
+uu.ads:50:12: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
+uu.ads:52:26: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
