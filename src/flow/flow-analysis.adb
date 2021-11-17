@@ -388,7 +388,48 @@ package body Flow.Analysis is
 
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind (N) in N_Subprogram_Call
+         --  Identifier appearing as a choice in a component association is not
+         --  really an expression (except when used as an index of an array
+         --  component association). We process such identifiers while
+         --  recursively traversing record aggregates.
+
+         if Nkind (N) = N_Identifier
+           and then Nkind (Parent (N)) = N_Component_Association
+           and then Is_List_Member (N)
+           and then List_Containing (N) = Choices (Parent (N))
+           and then not Is_Array_Type (Etype (Parent (Parent (N))))
+         then
+            pragma Assert (Ekind (Entity (N)) in E_Component | E_Discriminant);
+
+            --  Identifier as a choice in component_association occurs within
+            --  an aggregate.
+
+            pragma Assert
+              (Nkind (Parent (Parent (N))) in N_Aggregate | N_Delta_Aggregate);
+
+            return OK;
+
+         --  Likewise for the selector_name of a selected_component
+
+         elsif Nkind (N) = N_Identifier
+           and then Nkind (Parent (N)) = N_Selected_Component
+           and then N = Selector_Name (Parent (N))
+         then
+            --  Identifier denotes either a component/discriminant or a
+            --  protected function/procedure/entry.
+
+            pragma Assert
+              (declare
+                 E : constant Entity_Id := Entity (N);
+               begin
+                 Ekind (E) in E_Component | E_Discriminant
+                   or else
+                 (Is_Subprogram_Or_Entry (E)
+                    and then
+                  Ekind (Sinfo.Nodes.Scope (E)) = E_Protected_Type));
+            return OK;
+
+         elsif Nkind (N) in N_Subprogram_Call
                        | N_Entry_Call_Statement
                        | N_Expanded_Name
                        | N_Identifier

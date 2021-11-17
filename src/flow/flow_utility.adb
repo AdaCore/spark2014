@@ -2642,10 +2642,10 @@ package body Flow_Utility is
                   return Flow_Id_Sets.Empty_Set;
                end if;
 
-               --  Ignore discriminants and components unless they come from
-               --  task or protected types.
+               --  Ignore discriminants unless they come from task or protected
+               --  types.
 
-               if Ekind (E) in E_Discriminant | E_Component
+               if Ekind (E) = E_Discriminant
                  and then Ekind (Scope (E)) not in E_Protected_Type
                                                  | E_Task_Type
                then
