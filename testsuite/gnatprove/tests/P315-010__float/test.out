@@ -33,7 +33,7 @@ original_sample.ads:35:06: info: flow dependencies proved
 original_sample.ads:37:29: info: float overflow check proved (Trivial)
 original_sample.ads:37:47: info: range check proved (Trivial)
 original_sample.ads:37:59: info: float overflow check proved (Trivial)
-original_sample.ads:38:35: info: float overflow check proved (CVC4: 1 VC)
+original_sample.ads:38:35: info: float overflow check proved (CodePeer)
 original_sample.ads:38:53: info: range check proved (Trivial)
 original_sample.ads:38:65: info: float overflow check proved (Trivial)
 original_sample.ads:39:39: medium: postcondition might fail, cannot prove Time >= Time'old
