@@ -242,52 +242,52 @@ package Configuration is
    --  Maximum number of consecutive non blank lines on standard output
 
    package SPARK_Install is
-         use GNAT.Strings;
+      use GNAT.Strings;
 
-         --  Here we set the various paths that are needed during a run of
-         --  gnatprove. The hierarchy looks as follows:
-         --  prefix
-         --  prefix/lib
-         --  prefix/libexec/spark
-         --  prefix/libexec/spark/bin      - all auxiliary binaries,
-         --                                  e.g. gprbuild
-         --  prefix/share
-         --  prefix/share/why3             - files that come with Why3
-         --  prefix/share/spark/config     - various config files
-         --  prefix/share/spark/stdlib     - Why3 files of the stdlib
-         --  prefix/share/spark/theories   - Why3 files for Ada theories
+      --  Here we set the various paths that are needed during a run of
+      --  gnatprove. The hierarchy looks as follows:
+      --  prefix
+      --  prefix/lib
+      --  prefix/libexec/spark
+      --  prefix/libexec/spark/bin      - all auxiliary binaries,
+      --                                  e.g. gprbuild
+      --  prefix/share
+      --  prefix/share/why3             - files that come with Why3
+      --  prefix/share/spark/config     - various config files
+      --  prefix/share/spark/stdlib     - Why3 files of the stdlib
+      --  prefix/share/spark/theories   - Why3 files for Ada theories
 
-         Prefix                   : constant String := Executable_Location;
-         Lib                      : constant String := Compose (Prefix, "lib");
-         Libexec_Spark            : constant String :=
-           Compose (Compose (Prefix, "libexec"), "spark");
-         Libexec_Spark_Bin        : constant String :=
-           Compose (Libexec_Spark, "bin");
-         Share                    : constant String :=
-           Compose (Prefix, "share");
-         Libexec_Share_Why3       : constant String :=
-           Compose (Compose (Libexec_Spark, "share"), "why3");
-         Share_Spark              : constant String :=
-           Compose (Share, "spark");
-         Share_Spark_Theories     : constant String :=
-           Compose (Share_Spark, "theories");
-         Share_Spark_Config       : constant String :=
-           Compose (Share_Spark, "config");
-         Share_Spark_Runtimes     : constant String :=
-           Compose (Share_Spark, "runtimes");
-         Help_Msg_File            : constant String :=
-           Compose (Share_Spark, "help.txt");
-         Gpr_Frames_DB            : constant String :=
-           Compose (Share_Spark_Config, "frames");
-         Gpr_Translation_DB : constant String :=
-           Compose (Share_Spark_Config, "gnat2why");
-         Gnatprove_Conf           : constant String :=
-           Compose (Share_Spark_Config, "gnatprove.conf");
-         Z3_Present               : Boolean;
-         CVC4_Present             : Boolean;
-         Colibri_Present          : Boolean;
-         Help_Message             : constant String :=
-           Read_File_Into_String (Help_Msg_File);
+      Prefix                   : constant String := Executable_Location;
+      Lib                      : constant String := Compose (Prefix, "lib");
+      Libexec_Spark            : constant String :=
+        Compose (Compose (Prefix, "libexec"), "spark");
+      Libexec_Spark_Bin        : constant String :=
+        Compose (Libexec_Spark, "bin");
+      Share                    : constant String :=
+        Compose (Prefix, "share");
+      Libexec_Share_Why3       : constant String :=
+        Compose (Compose (Libexec_Spark, "share"), "why3");
+      Share_Spark              : constant String :=
+        Compose (Share, "spark");
+      Share_Spark_Theories     : constant String :=
+        Compose (Share_Spark, "theories");
+      Share_Spark_Config       : constant String :=
+        Compose (Share_Spark, "config");
+      Share_Spark_Runtimes     : constant String :=
+        Compose (Share_Spark, "runtimes");
+      Help_Msg_File            : constant String :=
+        Compose (Share_Spark, "help.txt");
+      Gpr_Frames_DB            : constant String :=
+        Compose (Share_Spark_Config, "frames");
+      Gpr_Translation_DB : constant String :=
+        Compose (Share_Spark_Config, "gnat2why");
+      Gnatprove_Conf           : constant String :=
+        Compose (Share_Spark_Config, "gnatprove.conf");
+      Z3_Present               : Boolean;
+      CVC4_Present             : Boolean;
+      Colibri_Present          : Boolean;
+      Help_Message             : constant String :=
+        Read_File_Into_String (Help_Msg_File);
    end SPARK_Install;
 
    Label_Length : constant := 26;
