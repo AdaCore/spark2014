@@ -231,23 +231,6 @@ package body SPARK_Atree.Entities is
       return Sem_Aux.Get_Rep_Item (E, Nam, True);
    end Get_Rep_Item;
 
-   -------------------------
-   -- Get_User_Defined_Eq --
-   -------------------------
-
-   function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id
-   is
-      Eq : constant Entity_Id := Sem_Util.Get_User_Defined_Eq (Typ);
-   begin
-      if Present (Eq)
-        and then Present (Einfo.Utils.Renamed_Entity (Eq))
-      then
-         return Einfo.Utils.Renamed_Entity (Eq);
-      end if;
-
-      return Eq;
-   end Get_User_Defined_Eq;
-
    ------------------------
    -- Has_Attach_Handler --
    ------------------------

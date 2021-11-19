@@ -316,6 +316,7 @@ package body SPARK_Util.Subprograms is
                                          | N_Block_Statement
                                          | N_Compilation_Unit
                                          | N_Entry_Body
+                                         | N_Freeze_Entity
                                          | N_Protected_Body
                                          | N_Package_Body
                                          | N_Package_Specification
@@ -1331,6 +1332,27 @@ package body SPARK_Util.Subprograms is
       return N_Unused_At_Start;
    end Is_Simple_Shift_Or_Rotate;
 
+   -----------------------------
+   -- Is_Tagged_Predefined_Eq --
+   -----------------------------
+
+   function Is_Tagged_Predefined_Eq (E : Entity_Id) return Boolean is
+   begin
+      if Is_Internal (E)
+        and then Ekind (E) = E_Function
+        and then Chars (E) = Name_Op_Eq
+        and then Number_Formals (E) = 2
+        and then Etype (First_Formal (E))
+                   = Etype (Next_Formal (First_Formal (E)))
+        and then Etype (E) = Standard_Boolean
+      then
+         pragma Assert (Is_Dispatching_Operation (E));
+         return True;
+      else
+         return False;
+      end if;
+   end Is_Tagged_Predefined_Eq;
+
    ---------------------------
    -- Is_Traversal_Function --
    ---------------------------
@@ -1731,13 +1753,16 @@ package body SPARK_Util.Subprograms is
    --  Default_Initial_Condition should be ignored. This does not include
    --  the functions generated for Predicate aspects, as these functions are
    --  translated to check absence of RTE in the predicate in the most general
-   --  context.
+   --  context. Functions generated for the predefined equality of tagged types
+   --  are also ignored and translated as an occurrence of the corresponding
+   --  operator.
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_Procedure and then
-        (Is_Invariant_Procedure (E)
-           or else
-         Is_DIC_Procedure (E)));
+     (case Ekind (E) is
+         when E_Procedure =>
+            Is_Invariant_Procedure (E) or else Is_DIC_Procedure (E),
+         when E_Function  => Is_Tagged_Predefined_Eq (E),
+         when others      => False);
 
    -----------------------------------
    -- Suspends_On_Suspension_Object --

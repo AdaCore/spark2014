@@ -2705,6 +2705,23 @@ package body Why.Gen.Records is
          B_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => Abstr_Ty);
 
+         function First_Parent_With_User_Defined_Eq
+           (Ty : Type_Kind_Id) return Opt_Type_Kind_Id
+           with Post =>
+             (if Present (First_Parent_With_User_Defined_Eq'Result)
+              then Present
+                (Get_User_Defined_Eq
+                   (First_Parent_With_User_Defined_Eq'Result)));
+         --  Traverse the parents of Ty to find a type with a user-defined
+         --  equality.
+
+         function New_Field_Access
+           (Is_Discr   : Boolean;
+            Name       : W_Term_Id;
+            Field_Id   : W_Identifier_Id;
+            Field_Type : Entity_Id) return W_Term_Id;
+         --  Generate Name.Field_Id with no Init wrappers
+
          function New_Field_Equality
            (Is_Discr               : Boolean;
             Field_Id, Enclosing_Id : W_Identifier_Id;
@@ -2720,6 +2737,57 @@ package body Why.Gen.Records is
          --  @param Field_Type ada type of the component, it is the enclosing
          --         type if Is_Private is True
          --  @return Equality of field_id from A and B.
+
+         ---------------------------------------
+         -- First_Parent_With_User_Defined_Eq --
+         ---------------------------------------
+
+         function First_Parent_With_User_Defined_Eq
+           (Ty : Type_Kind_Id) return Opt_Type_Kind_Id
+         is
+            Parent : Entity_Id := Ty;
+         begin
+            loop
+               --  Go to the base type of the parent
+
+               Parent := Parent_Retysp (Parent);
+               if Present (Parent) then
+                  Parent := Base_Retysp (Parent);
+               end if;
+
+               if No (Parent)
+                 or else Present (Get_User_Defined_Eq (Parent))
+               then
+                  return Parent;
+               end if;
+            end loop;
+         end First_Parent_With_User_Defined_Eq;
+
+         ----------------------
+         -- New_Field_Access --
+         ----------------------
+
+         function New_Field_Access
+           (Is_Discr   : Boolean;
+            Name       : W_Term_Id;
+            Field_Id   : W_Identifier_Id;
+            Field_Type : Entity_Id) return W_Term_Id
+         is
+           (if Is_Discr
+            or else not SPARK_Definition.Has_Relaxed_Init (Field_Type)
+            then New_Record_Access
+              (Name  => Name,
+               Field => Field_Id,
+               Typ   => EW_Abstract (Field_Type))
+            else Insert_Simple_Conversion
+              (Ada_Node       => Empty,
+               Expr           => New_Record_Access
+                 (Name  => Name,
+                  Field => Field_Id,
+                  Typ   => EW_Abstract
+                    (Field_Type, Relaxed_Init => True)),
+               To             => EW_Abstract (Field_Type),
+               Force_No_Slide => True));
 
          ------------------------
          -- New_Field_Equality --
@@ -2764,47 +2832,17 @@ package body Why.Gen.Records is
                end;
             else
                declare
-                  A_F_Access : constant W_Expr_Id :=
-                    (if Is_Discr
-                     or else not SPARK_Definition.Has_Relaxed_Init (Field_Type)
-                     then New_Record_Access
-                          (Name  => A_Access,
-                           Field => Field_Id,
-                           Typ   => EW_Abstract (Field_Type))
-                     else Insert_Simple_Conversion
-                       (Ada_Node       => Empty,
-                        Domain         => EW_Term,
-                        Expr           => New_Record_Access
-                          (Name  => A_Access,
-                           Field => Field_Id,
-                           Typ   => EW_Abstract
-                             (Field_Type, Relaxed_Init => True)),
-                        To             => EW_Abstract (Field_Type),
-                        Force_No_Slide => True));
-                  B_F_Access : constant W_Expr_Id :=
-                    (if Is_Discr
-                     or else not SPARK_Definition.Has_Relaxed_Init (Field_Type)
-                     then New_Record_Access
-                          (Name  => B_Access,
-                           Field => Field_Id,
-                           Typ   => EW_Abstract (Field_Type))
-                     else Insert_Simple_Conversion
-                       (Ada_Node       => Empty,
-                        Domain         => EW_Term,
-                        Expr           => New_Record_Access
-                          (Name  => B_Access,
-                           Field => Field_Id,
-                           Typ   => EW_Abstract
-                             (Field_Type, Relaxed_Init => True)),
-                        To             => EW_Abstract (Field_Type),
-                        Force_No_Slide => True));
+                  A_F_Access : constant W_Term_Id := New_Field_Access
+                    (Is_Discr, +A_Access, Field_Id, Field_Type);
+                  B_F_Access : constant W_Term_Id := New_Field_Access
+                    (Is_Discr, +B_Access, Field_Id, Field_Type);
 
                begin
                   return +New_Ada_Equality
                     (Typ    => Field_Type,
                      Domain => EW_Pred,
-                     Left   => A_F_Access,
-                     Right  => B_F_Access);
+                     Left   => +A_F_Access,
+                     Right  => +B_F_Access);
                end;
             end if;
          end New_Field_Equality;
@@ -2812,44 +2850,98 @@ package body Why.Gen.Records is
       --  Start of processing for Declare_Equality_Function
 
       begin
+         --  For a record type:
+         --
+         --    type R (D1 : T_D1; ...) is record
+         --      F1 : T_F1;
+         --      ...
+         --    end record;
+         --
+         --  We generate:
+         --
+         --    function bool_eq (a: __rep) (b: __rep) : bool =
+         --      T_D1.<ada_eq> a.__split_discrs.d1 b.__split_discrs.d1
+         --   /\ ...
+         --   /\ T_F1.<ada_eq> a.__split_fields.f1 b.__split_fields.f1
+         --   /\ ...
+         --
+         --  Where <ada_eq> is the primitive equality on record types and the
+         --  predefined one on other types.
+         --
+         --  On tagged record extensions, if there is a parent type on which
+         --  the primitive equality is redefined, we should use it. We
+         --  generate:
+         --
+         --   function bool_eq (a: __rep) (b: __rep) : bool =
+         --     Parent.user_eq
+         --       { __split_fields =
+         --         { parent_f1 = a.__split_fields.parent_f1;
+         --           ... } ;
+         --        attr__tag = parent.__tag }
+         --       { __split_fields =
+         --         { parent_f1 = b.__split_fields.parent_f1;
+         --           ... } ;
+         --        attr__tag = parent.__tag }
+         --     /\ <ada_eq> a.__split_fields.new_f1 b.__split_fields.new_f1
+         --     /\ ...
+
          if not Is_Limited_View (E) then
             declare
-               Condition : W_Pred_Id := True_Pred;
-               Discr     : Entity_Id;
+               Condition      : W_Pred_Id := True_Pred;
+               Parent_With_Eq : constant Opt_Type_Kind_Id :=
+                 (if Is_Tagged_Type (E)
+                  then First_Parent_With_User_Defined_Eq (E)
+                  else Empty);
+               Nb_Anc_Fields  : constant Natural :=
+                 (if Present (Parent_With_Eq)
+                  then Natural (Get_Component_Set (Parent_With_Eq).Length)
+                  else 0);
+               A_Anc_Fields   : W_Field_Association_Array (1 .. Nb_Anc_Fields);
+               B_Anc_Fields   : W_Field_Association_Array (1 .. Nb_Anc_Fields);
+               --  Field associations for the equality on the part of E
+               --  corresponding to elements of Parent_With_Eq if any.
 
             begin
-               --  Compare discriminants
+               --  Compare discriminants. We only do it if Parent_With_Eq is
+               --  Empty, as otherwise, discriminants will be checked as part
+               --  of the ancestor part of E (in SPARK discriminants cannot be
+               --  added in record extensions).
 
-               if Has_Discriminants (E) then
-                  Discr := First_Discriminant (E);
-                  loop
-                     declare
-                        Discrs_Id  : constant W_Identifier_Id :=
-                          To_Ident (WNE_Rec_Split_Discrs);
-                        Discr_Id   : constant W_Identifier_Id :=
-                          (if Is_Root then
-                              To_Why_Id (Discr, Local => True, Rec => E)
-                           else To_Why_Id (Discr, Rec => Root));
-                        Comparison : constant W_Pred_Id :=
-                          New_Field_Equality
-                            (Is_Discr     => True,
-                             Field_Id     => Discr_Id,
-                             Enclosing_Id => Discrs_Id,
-                             Is_Private   => False,
-                             Field_Type   => Retysp (Etype (Discr)));
-                     begin
-                        Condition :=
-                          +New_And_Then_Expr
-                          (Domain => EW_Pred,
-                           Left   => +Condition,
-                           Right  => +Comparison);
-                     end;
-                     Next_Discriminant (Discr);
-                     exit when No (Discr);
-                  end loop;
+               if Has_Discriminants (E) and then No (Parent_With_Eq) then
+                  declare
+                     Discrs_Id : constant W_Identifier_Id :=
+                       To_Ident (WNE_Rec_Split_Discrs);
+                     Discr     : Entity_Id := First_Discriminant (E);
+                  begin
+                     loop
+                        declare
+                           Discr_Id   : constant W_Identifier_Id :=
+                             (if Is_Root then
+                                 To_Why_Id (Discr, Local => True, Rec => E)
+                              else To_Why_Id (Discr, Rec => Root));
+                           Comparison : constant W_Pred_Id :=
+                             New_Field_Equality
+                               (Is_Discr     => True,
+                                Field_Id     => Discr_Id,
+                                Enclosing_Id => Discrs_Id,
+                                Is_Private   => False,
+                                Field_Type   => Retysp (Etype (Discr)));
+                        begin
+                           Condition :=
+                             +New_And_Then_Expr
+                             (Domain => EW_Pred,
+                              Left   => +Condition,
+                              Right  => +Comparison);
+                        end;
+                        Next_Discriminant (Discr);
+                        exit when No (Discr);
+                     end loop;
+                  end;
                end if;
 
-               --  Compare Fields
+               --  Compare Fields. We aggregate the equalities for the new
+               --  fields of E in Conjuncts, and we store the associations for
+               --  the ancestor part of E in A_Anc_Fields and B_Anc_Fields.
 
                if not Is_Simple_Private_Type (E) then
                   declare
@@ -2858,46 +2950,152 @@ package body Why.Gen.Records is
                   begin
                      if not Comp_Set.Is_Empty then
                         declare
-                           Conjuncts : W_Pred_Array
-                             (1 .. Positive (Comp_Set.Length));
-                           I         : Positive := 1;
+                           Conjuncts    : W_Pred_Array
+                             (1 .. Positive (Comp_Set.Length) - Nb_Anc_Fields);
+                           Conj_I       : Natural := 0;
+                           Fields_Id    : constant W_Identifier_Id :=
+                             To_Ident (WNE_Rec_Split_Fields);
+                           Anc_Fields_I : Natural := 0;
+
                         begin
                            for Comp of Comp_Set loop
                               declare
-                                 Fields_Id      : constant W_Identifier_Id :=
-                                   To_Ident (WNE_Rec_Split_Fields);
-                                 Field_Id       : constant W_Identifier_Id :=
+                                 Field_Id    : constant W_Identifier_Id :=
                                    To_Why_Id (Comp, Local => True, Rec => E);
-                                 Comparison     : constant W_Pred_Id :=
-                                   New_Field_Equality
-                                     (Is_Discr     => False,
-                                      Field_Id     => Field_Id,
-                                      Enclosing_Id => Fields_Id,
-                                      Is_Private   => Is_Type (Comp),
-                                      Field_Type   =>
-                                        (if Is_Type (Comp) then
-                                              Comp
-                                         else Retysp (Etype (Comp))));
-                                 Always_Present : constant Boolean :=
-                                   not Has_Discriminants (E)
-                                   or else Ekind (Comp) /= E_Component;
+                                 Parent_Comp : constant Entity_Id :=
+                                   (if Present (Parent_With_Eq)
+                                    then Search_Component_In_Type
+                                      (Parent_With_Eq, Comp)
+                                    else Empty);
+
                               begin
-                                 Conjuncts (I) :=
-                                   (if Always_Present then Comparison
-                                    else
-                                       New_Connection
-                                      (Op     => EW_Imply,
-                                       Left   =>
-                                         Discriminant_Check_Pred_Call
-                                         (E, Comp, A_Ident),
-                                       Right  => Comparison));
-                                 I := I + 1;
+                                 --  If there is no component corresponding to
+                                 --  Comp in Parent_With_Eq, it is a new
+                                 --  component. Add the corresponding equality
+                                 --  to Conjuncts.
+
+                                 if No (Parent_Comp) then
+                                    declare
+                                       Comparison     : constant W_Pred_Id :=
+                                         New_Field_Equality
+                                           (Is_Discr     => False,
+                                            Field_Id     => Field_Id,
+                                            Enclosing_Id => Fields_Id,
+                                            Is_Private   => Is_Type (Comp),
+                                            Field_Type   =>
+                                              (if Is_Type (Comp) then
+                                                    Comp
+                                               else Retysp (Etype (Comp))));
+                                       Always_Present : constant Boolean :=
+                                         not Has_Discriminants (E)
+                                         or else Ekind (Comp) /= E_Component;
+                                    begin
+                                       Conj_I := Conj_I + 1;
+                                       Conjuncts (Conj_I) :=
+                                         (if Always_Present then Comparison
+                                          else
+                                             New_Connection
+                                            (Op     => EW_Imply,
+                                             Left   =>
+                                               Discriminant_Check_Pred_Call
+                                                 (E, Comp, A_Ident),
+                                             Right  => Comparison));
+                                    end;
+
+                                 --  Otherwise, Comp comes from Parent_With_Eq.
+                                 --  Store an association for it in
+                                 --  A_Anc_Fields and B_Anc_Fields.
+
+                                 else
+                                    Anc_Fields_I := Anc_Fields_I + 1;
+                                    A_Anc_Fields (Anc_Fields_I) :=
+                                      New_Field_Association
+                                        (Domain => EW_Term,
+                                         Field  => To_Why_Id
+                                           (Parent_Comp,
+                                            Rec => Parent_With_Eq),
+                                         Value  => +Insert_Simple_Conversion
+                                           (Expr           => New_Field_Access
+                                              (Is_Discr   => False,
+                                               Name       => New_Record_Access
+                                                 (Name  => +A_Ident,
+                                                  Field => Fields_Id),
+                                               Field_Id   => Field_Id,
+                                               Field_Type =>
+                                                 Retysp (Etype (Comp))),
+                                            To             => EW_Abstract
+                                              (Etype (Parent_Comp)),
+                                            Force_No_Slide => True));
+                                    B_Anc_Fields (Anc_Fields_I) :=
+                                      New_Field_Association
+                                        (Domain => EW_Term,
+                                         Field  => To_Why_Id
+                                           (Parent_Comp,
+                                            Rec => Parent_With_Eq),
+                                         Value  => +Insert_Simple_Conversion
+                                           (Expr           => New_Field_Access
+                                              (Is_Discr   => False,
+                                               Name       => New_Record_Access
+                                                 (Name  => +B_Ident,
+                                                  Field => Fields_Id),
+                                               Field_Id   => Field_Id,
+                                               Field_Type =>
+                                                 Retysp (Etype (Comp))),
+                                            To             => EW_Abstract
+                                              (Etype (Parent_Comp)),
+                                            Force_No_Slide => True));
+                                 end if;
                               end;
                            end loop;
+                           pragma Assert (Conj_I = Conjuncts'Last);
+                           pragma Assert (Anc_Fields_I = Nb_Anc_Fields);
 
                            Condition := New_And_Pred (Condition & Conjuncts);
                         end;
                      end if;
+                  end;
+               end if;
+
+               --  Add the parent user-defined equality if any
+
+               if Present (Parent_With_Eq) then
+                  declare
+                     Eq_Id : constant W_Identifier_Id :=
+                       New_Identifier (Module   => E_Module (Parent_With_Eq),
+                                       Name     => "user_eq",
+                                       Typ      => EW_Bool_Type,
+                                       Ada_Node => Parent_With_Eq);
+                     --  We use the user-defined equality on Parent_With_Eq
+
+                  begin
+                     Condition := New_And_Pred
+                       (Left  => New_Call
+                          (Name => Eq_Id,
+                           Args =>
+                             (1 => New_Ada_Record_Aggregate
+                                (Domain       => EW_Term,
+                                 Discr_Expr   =>
+                                   (if Count_Discriminants (E) > 0
+                                    then New_Record_Access
+                                      (Name  => +A_Ident,
+                                       Field => To_Ident
+                                         (WNE_Rec_Split_Discrs))
+                                    else Why_Empty),
+                                 Field_Assocs => A_Anc_Fields,
+                                 Ty           => Parent_With_Eq),
+                              2 => New_Ada_Record_Aggregate
+                                (Domain       => EW_Term,
+                                 Discr_Expr   =>
+                                   (if Count_Discriminants (E) > 0
+                                    then New_Record_Access
+                                      (Name  => +B_Ident,
+                                       Field => To_Ident
+                                         (WNE_Rec_Split_Discrs))
+                                    else Why_Empty),
+                                 Field_Assocs => B_Anc_Fields,
+                                 Ty           => Parent_With_Eq)),
+                           Typ  => EW_Bool_Type),
+                        Right => Condition);
                   end;
                end if;
 

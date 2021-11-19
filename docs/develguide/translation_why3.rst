@@ -1451,6 +1451,44 @@ equalities on components are only considered if the components are
 indeed present (i.e. when the predicate discriminant check for the
 corresponding component returns True).
 
+On tagged record extensions, the predefined equality is defined in
+term of the primitive equality of the parent. As a consequence, if
+the primitive equality is overridden by the user on a tagged type,
+this user-defined equality function will be used in the predefined
+equality of all of its descendants. For example, consider the types
+``Root`` and ``Child`` below:
+
+.. code-block:: ada
+
+      type Root is tagged record
+         F, G : Integer;
+      end record;
+      function "=" (X, Y : Root) return Boolean is (X.F = Y.F);
+
+      type Child is new Root with record
+         H : Integer;
+      end record;
+
+The user-defined primitive equality of ``Root`` will be used for the
+fields ``F`` and ``G`` in the predefined equality of ``Child``:
+
+.. code-block:: whyml
+  
+  function bool_eq (a: __rep) (b: __rep) : bool =
+      P__root.user_eq
+          { P__root.__split_fields =
+              { P__root.rec__root__f = a.__split_fields.rec__root__f;
+                P__root.rec__root__g = a.__split_fields.rec__root__g;
+                P__root.rec__ext__ = null__ext__ };
+            P__root.attr__tag = P__root.__tag }
+          { P__root.__split_fields =
+              { P__root.rec__root__f = b.__split_fields.rec__root__f;
+                P__root.rec__root__g = b.__split_fields.rec__root__g;
+                P__root.rec__ext__ = null__ext__ };
+            P__root.attr__tag = P__root.__tag }
+     /\ to_rep a.__split_fields.rec__child__h
+          = to_rep b.__split_fields.rec__child__h
+
 For types with a private part, an uninterpreted logic function is
 introduced to stand for (primitive or predefined) equality on the
 private components of the type. It ensures that nothing can be deduced

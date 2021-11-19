@@ -972,6 +972,28 @@ package body SPARK_Util.Types is
       return Node (Elmt);
    end Get_Constraint_For_Discr;
 
+   -------------------------
+   -- Get_User_Defined_Eq --
+   -------------------------
+
+   function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id
+   is
+      Eq : constant Entity_Id := Sem_Util.Get_User_Defined_Eq (Typ);
+
+   begin
+      --  Ignore predefined equality of tagged types
+
+      if Present (Eq) and then Is_Tagged_Predefined_Eq (Eq) then
+         return Empty;
+      elsif Present (Eq)
+        and then Present (Einfo.Utils.Renamed_Entity (Eq))
+      then
+         return Einfo.Utils.Renamed_Entity (Eq);
+      end if;
+
+      return Eq;
+   end Get_User_Defined_Eq;
+
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -1529,35 +1551,55 @@ package body SPARK_Util.Types is
       elsif Is_Array_Type (Rep_Ty) then
          return Uses_Pointer_Eq_Comp (Component_Type (Rep_Ty));
       elsif Is_Record_Type (Rep_Ty) then
-
-         --  Check if pointer equality is used for one of the visible
-         --  components of Ty.
-
          declare
-            Comp : Node_Id := First_Component (Rep_Ty);
+            Is_Tagged : constant Boolean := Is_Tagged_Type (Rep_Ty);
+            Base      : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
+            Parent    : constant Type_Kind_Id := Retysp (Etype (Base));
+
          begin
-            while Present (Comp) loop
-               if Uses_Pointer_Eq_Comp (Etype (Comp)) then
-                  return True;
-               end if;
-               Next_Component (Comp);
-            end loop;
-         end;
+            --  Check if a pointer equality is used for one of the visible
+            --  components of Ty. For tagged types, only consider components
+            --  which are not in the parent type as the primitive equality of
+            --  the parent type will be used for its components.
 
-         --  If the type is tagged, there might be hidden components inherited
-         --  from some ancestor.
+            if not Is_Private_Type (Base) then
+               declare
+                  Comp : Entity_Id := First_Component (Rep_Ty);
+               begin
+                  while Present (Comp) loop
+                     if Component_Is_Visible_In_SPARK (Comp)
+                       and then
+                         (not Is_Tagged
+                          or else Retysp
+                            (Scope (Original_Record_Component (Comp))) = Base)
+                       and then Uses_Pointer_Eq_Comp (Etype (Comp))
+                     then
+                        return True;
+                     end if;
 
-         if Is_Tagged_Type (Rep_Ty) then
-            declare
-               Base   : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
-               Parent : constant Type_Kind_Id := Retysp (Etype (Base));
-            begin
+                     pragma Assert
+                       (if Component_Is_Visible_In_SPARK (Comp)
+                          and then Is_Tagged
+                          and then Retysp
+                            (Scope (Original_Record_Component (Comp))) /= Base
+                        then Present
+                          (Search_Component_By_Name (Parent, Comp)));
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
+
+            --  If the type is tagged, we need to check components inherited
+            --  from the ancestor.
+
+            if Is_Tagged then
                return Parent /= Base
+                 and then No (Get_User_Defined_Eq (Parent))
                  and then Predefined_Eq_Uses_Pointer_Eq (Parent);
-            end;
-         else
-            return False;
-         end if;
+            else
+               return False;
+            end if;
+         end;
       else
          pragma Assert (Ekind (Rep_Ty) in Private_Kind | Scalar_Kind);
          return False;

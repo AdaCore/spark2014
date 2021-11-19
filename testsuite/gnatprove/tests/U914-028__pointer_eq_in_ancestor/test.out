@@ -1,0 +1,11 @@
+repr.adb:8:10: info: range check proved (CVC4: 2 VC)
+repr.adb:12:28: info: pointer dereference check proved (CVC4: 1 VC)
+repr.adb:12:38: info: pointer dereference check proved (CVC4: 1 VC)
+repr.adb:18:35: info: range check proved (CVC4: 2 VC)
+repr.adb:24:19: medium: postcondition might fail
+repr.adb:24:52: info: pointer dereference check proved (CVC4: 1 VC)
+repr.adb:24:62: info: pointer dereference check proved (CVC4: 1 VC)
+repr_bad.adb:9:10: info: range check proved (CVC4: 2 VC)
+repr_bad.adb:13:28: info: pointer dereference check proved (CVC4: 1 VC)
+repr_bad.adb:13:38: info: pointer dereference check proved (CVC4: 1 VC)
+repr_bad.adb:21:35: info: range check proved (CVC4: 2 VC)

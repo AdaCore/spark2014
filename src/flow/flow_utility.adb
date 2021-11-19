@@ -233,6 +233,11 @@ package body Flow_Utility is
 
                      return OK;
 
+                  --  Likewise for the generated dispatching equality
+
+                  elsif Is_Tagged_Predefined_Eq (Called_Func) then
+                     return OK;
+
                   elsif Is_Unchecked_Conversion_Instance (Called_Func) then
                      return OK;
                   end if;
@@ -1868,6 +1873,9 @@ package body Flow_Utility is
          end;
 
          Writes := Flow_Id_Sets.Empty_Set;
+
+      elsif Is_Tagged_Predefined_Eq (E) then
+         null;
 
       --  Otherwise, we rely on the flow analysis
 

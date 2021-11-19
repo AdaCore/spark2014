@@ -1695,11 +1695,13 @@ package body Flow_Error_Messages is
                   null;
 
                --  Hardcoded entities, including instances of
-               --  Ada.Unchecked_Conversion, are handled specially and
-               --  should not be taken into account here.
+               --  Ada.Unchecked_Conversion and predefined equality on tagged
+               --  types, are handled specially and should not be taken into
+               --  account here.
 
                elsif Is_Hardcoded_Entity (Subp)
                  or else Is_Unchecked_Conversion_Instance (Subp)
+                 or else Is_Tagged_Predefined_Eq (Subp)
                then
                   null;
 

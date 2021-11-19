@@ -237,7 +237,8 @@ package body Flow_Sanity is
                and then not In_Predefined_Unit (E)))
            and then
              (if Ekind (E) = E_Function
-              then not Is_Predicate_Function (E))
+              then not Is_Predicate_Function (E)
+                and then not Is_Tagged_Predefined_Eq (E))
          then
             Check_Incomplete_Global (E);
          end if;
