@@ -25,7 +25,7 @@ procedure Repr_Bad with SPARK_Mode is
 
    function Test (X, Y : GrandChild) return Boolean is (X = Y);
    --  Test should be rejected because "=" uses pointer equality once the
-   --  resolution of tagged predefined equality is fixed in the frontend..
+   --  resolution of tagged predefined equality is fixed in the frontend.
 begin
    null;
 end Repr_Bad;

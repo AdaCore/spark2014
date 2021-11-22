@@ -52,7 +52,7 @@ begin
    pragma Assert (G1_111 = G1_211); --@ASSERT:PASS
 
    --  Those two differ by H; the predefined equality on GrandChild1 and
-   --  Holder2 see it.
+   --  Holder2 sees it.
 
    pragma Assert (H2_111 /= H2_211); --@ASSERT:PASS
    pragma Assert (G1_111 = G1_112); --@ASSERT:FAIL
