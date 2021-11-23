@@ -8431,7 +8431,7 @@ package body Gnat2Why.Expr is
                   end if;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
-                  L_Type :=  Base_Why_Type (Left_Type);
+                  L_Type := Base_Why_Type (Left_Type);
                   R_Type := EW_Int_Type;
                   Base := Base_Why_Type (Return_Type);
                   Oper := WNE_Fixed_Point_Mult_Int;
@@ -15654,7 +15654,7 @@ package body Gnat2Why.Expr is
                   elsif Count_Discriminants (Typ) > 0
                     and then not Is_Constrained (Base)
                   then
-                     Check :=  Check_Discr_Of_Subtype (Base, Typ);
+                     Check := Check_Discr_Of_Subtype (Base, Typ);
                   end if;
 
                   --  Only perform checks on a component if the component is

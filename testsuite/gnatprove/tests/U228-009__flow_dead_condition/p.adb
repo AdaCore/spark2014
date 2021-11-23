@@ -9,7 +9,7 @@ procedure P with SPARK_Mode is
    is
    begin
       X.all := 0;
-      MyOut :=  X.all = Y.all;
+      MyOut := X.all = Y.all;
    end Ptr_Compare;
 
    procedure Ptr_Compare2 (X     : access constant Integer;
@@ -18,7 +18,7 @@ procedure P with SPARK_Mode is
      with Pre => (X /= null and Y /= null)
    is
    begin
-      MyOut :=  X.all = Y.all;
+      MyOut := X.all = Y.all;
    end Ptr_Compare2;
 
    A : Int_Ptr := new Integer'(1);

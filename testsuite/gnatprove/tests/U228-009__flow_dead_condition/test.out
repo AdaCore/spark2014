@@ -1,10 +1,10 @@
 p.adb:7:27: info: initialization of "MyOut" proved
 p.adb:11:09: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:12:19: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:12:27: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:12:18: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:12:26: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:17:28: info: initialization of "MyOut" proved
-p.adb:21:19: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:21:27: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:21:18: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:21:26: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:24:04: medium: memory leak might occur at end of scope
 p.adb:28:28: info: initialization of "MyOut" proved
 p.adb:29:11: info: data dependencies proved
