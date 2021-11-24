@@ -18033,11 +18033,7 @@ package body Gnat2Why.Expr is
                then
                   --  Construct the value for the uninitialized data. We
                   --  generate:
-                  --  Constr_ty.default_checks; (prog domain only)
-                  --  to_des_ty
-                  --    (any constr_ty ensures
-                  --     { Constr_ty.default_initial_condition result /\
-                  --       Constr_ty.dynamic_invariant result })
+                  --  to_des_ty (<default_value_for_constr_ty>)
 
                   declare
                      Constr_Ty : constant Entity_Id :=
@@ -18058,32 +18054,13 @@ package body Gnat2Why.Expr is
                           Typ       => EW_Abstract
                             (Des_Ty,
                              Relaxed_Init => Has_Relaxed_Init (Des_Ty)));
-                     Res_Id           : constant W_Identifier_Id :=
-                       +New_Result_Ident
-                       (Typ => EW_Abstract
-                          (Constr_Ty, Has_Relaxed_Init (Constr_Ty)));
-                     Pred             : constant W_Pred_Id :=
-                       +New_And_Expr
-                       (Left   => +Compute_Default_Init
-                          (Expr   => +Res_Id,
-                           Ty     => Constr_Ty,
-                           Params => Body_Params),
-                        Right  => +Compute_Dynamic_Invariant
-                          (Expr             => +Res_Id,
-                           Ty               => Constr_Ty,
-                           Params           => Body_Params,
-                           --  Uninitialized allocators are only allowed if
-                           --  the type defines full default init.
-                           Initialized      => True_Term,
-                           --  Also assume bounds / discriminants
-                           Only_Var         => False_Term),
-                        Domain => EW_Pred);
                      Tmp_Value        : constant W_Expr_Id :=
                        New_Temp_For_Expr
-                         (E         => New_Any_Expr
-                            (Post        => Pred,
-                             Labels      => Symbol_Sets.Empty_Set,
-                             Return_Type => Get_Typ (Res_Id)),
+                         (E         => Compute_Default_Value
+                            (Ada_Node     => Expr,
+                             E            => Constr_Ty,
+                             Relaxed_Init => Has_Relaxed_Init (Constr_Ty),
+                             Domain       => Domain),
                           Need_Temp => Need_Bound_Check);
                      Value_Expr       : W_Expr_Id := Insert_Checked_Conversion
                        (Ada_Node => Expr,
@@ -18127,19 +18104,6 @@ package body Gnat2Why.Expr is
                         Domain  => Domain,
                         Def     => Value_Expr,
                         Context => Call);
-
-                     if Domain = EW_Prog then
-                        Call := New_Binding
-                          (Name    => New_Identifier (Name => "_"),
-                           Domain  => EW_Prog,
-                           Def     =>
-                             +Compute_Default_Check
-                             (Ada_Node => Expr,
-                              Ty       => Constr_Ty,
-                              Params   => Body_Params),
-                           Context => Call,
-                           Typ => EW_Abstract (Etype (Expr)));
-                     end if;
                   end;
 
                --  Initialized allocator

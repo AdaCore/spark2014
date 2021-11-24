@@ -1,0 +1,4 @@
+repr.adb:3:48: info: in default value at repr.adb:5
+repr.adb:3:48: info: range check proved (CVC4: 2 VC)
+repr.adb:5:19: medium: assertion might fail
+repr.adb:5:22: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
