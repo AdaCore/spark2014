@@ -1,1 +1,1 @@
-test.adb:22:04: info: initialization of "G" proved
+test.adb:26:12: high: private part of "G" is not initialized
