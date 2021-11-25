@@ -14,7 +14,9 @@ project GNAT2Why_GNAT is
 
    Build : Build_Type := External ("Build", "Devel");
 
-   Common_Switches := ("-g");
+   Common_Switches := ("-g", "-gnat2022");
+   --  These are appended after other switches, in particular, after -gnatg,
+   --  which sets the Ada version to 2012.
 
    package Compiler is
       for Local_Configuration_Pragmas use "gnat.adc";
@@ -22,13 +24,13 @@ project GNAT2Why_GNAT is
       case Build is
          when "Debug" | "Devel" =>
             for Switches ("Ada") use
-               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnat2022");
+               ("-O0", "-gnatg", "-gnata", "-gnatVa") & Common_Switches;
          when "Coverage" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O0", "-gnat2022");
+               ("-O0") & Common_Switches;
          when "Production" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn", "-gnat2022");
+               ("-O2", "-gnatg", "-gnatpn", "-gnatwn") & Common_Switches;
       end case;
    end Compiler;
 
