@@ -2132,8 +2132,8 @@ package body Configuration is
          function Concat3 (A, B : String_List_Access; C : String_List)
                            return String_List is
          begin
-            return (if A = null then [1 .. 0 => <>] else A.all) &
-                   (if B = null then [1 .. 0 => <>] else B.all) &
+            return (if A = null then [] else A.all) &
+                   (if B = null then [] else B.all) &
                    C;
          end Concat3;
 
@@ -2144,9 +2144,9 @@ package body Configuration is
          function Concat4 (A, B, C : String_List_Access; D : String_List)
                            return String_List is
          begin
-            return (if A = null then [1 .. 0 => <>] else A.all) &
-                   (if B = null then [1 .. 0 => <>] else B.all) &
-                   (if C = null then [1 .. 0 => <>] else C.all) &
+            return (if A = null then [] else A.all) &
+                   (if B = null then [] else B.all) &
+                   (if C = null then [] else C.all) &
                    D;
          end Concat4;
 
