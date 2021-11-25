@@ -92,6 +92,14 @@ package body Flow_Utility is
    --  Local
    ----------------------------------------------------------------------
 
+   function Ancestor (Typ : Entity_Id) return Entity_Id
+   with Pre  => Is_Type (Typ),
+        Post => (if Present (Ancestor'Result)
+                 then Is_Type (Ancestor'Result));
+   --  Helper function to iterate over a type ancestors. If Typ is a
+   --  subtype, then skip the immediate ancestor. If no more ancestors
+   --  are present, then return Empty.
+
    function Unique_Components (E : Entity_Id) return Node_Lists.List
    with Pre  => Is_Type (E),
         Post => (for all C of Unique_Components'Result =>
@@ -168,6 +176,25 @@ package body Flow_Utility is
       pragma Assert (not Loop_Info_Frozen);
       Loop_Info.Insert (Loop_E, Writes);
    end Add_Loop_Writes;
+
+   --------------
+   -- Ancestor --
+   --------------
+
+   function Ancestor (Typ : Entity_Id) return Entity_Id is
+      Parent_Typ : constant Entity_Id := Etype (Typ);
+   begin
+      if Ekind (Typ) = E_Record_Subtype then
+         return Ancestor (Parent_Typ);
+      else
+         if Parent_Typ = Typ then
+            return Empty;
+         else
+            pragma Assert (Present (Parent_Typ));
+            return Parent_Typ;
+         end if;
+      end if;
+   end Ancestor;
 
    -------------------------------------------
    -- Collect_Functions_And_Read_Locked_POs --
@@ -314,33 +341,6 @@ package body Flow_Utility is
         or else Has_Discriminants (E)
       then
          declare
-            function Ancestor (Typ : Entity_Id) return Entity_Id
-            with Pre  => Is_Type (Typ),
-                 Post => (if Present (Ancestor'Result)
-                          then Is_Type (Ancestor'Result));
-            --  Helper function to iterate over a type ancestors. If Typ is a
-            --  subtype, then skip the immediate ancestor. If no more ancestors
-            --  are present, then return Empty.
-
-            --------------
-            -- Ancestor --
-            --------------
-
-            function Ancestor (Typ : Entity_Id) return Entity_Id is
-               Parent_Typ : constant Entity_Id := Etype (Typ);
-            begin
-               if Ekind (Typ) = E_Record_Subtype then
-                  return Ancestor (Parent_Typ);
-               else
-                  if Parent_Typ = Typ then
-                     return Empty;
-                  else
-                     pragma Assert (Present (Parent_Typ));
-                     return Parent_Typ;
-                  end if;
-               end if;
-            end Ancestor;
-
             --  Local variables
 
             Ptr : Entity_Id;
@@ -634,9 +634,32 @@ package body Flow_Utility is
                         end loop;
                      end if;
 
-                     if Is_Private_Type (T) then
-                        Contains_Non_Visible := True;
-                     end if;
+                     --  We iterate over the ancestors of type T to check
+                     --  whether it derives from a private type (whose full
+                     --  view is potentially not in SPARK, e.g. with private
+                     --  extensions for tagged types).
+                     declare
+                        Typ : Entity_Id := T;
+                     begin
+                        loop
+                           --  We set Contains_Non_Visible to True when the
+                           --  ancestor is private and its full view is not
+                           --  visible from Scope. This can happen if we derive
+                           --  from a private type in the private part where it
+                           --  is fully declared.
+                           if Is_Private_Type (Typ) then
+                              pragma Assert (Present (Full_View (Typ)));
+
+                              if not Is_Visible (Full_View (Typ), Scope) then
+                                 Contains_Non_Visible := True;
+                                 exit;
+                              end if;
+                           end if;
+
+                           Typ := Ancestor (Typ);
+                           exit when No (Typ);
+                        end loop;
+                     end;
 
                      if Contains_Non_Visible then
                         --  We must have some discriminant, so return
