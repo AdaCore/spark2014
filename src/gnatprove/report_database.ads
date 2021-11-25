@@ -119,7 +119,7 @@ package Report_Database is
    Null_Summary_Line : constant Summary_Line :=
      (Provers => Empty_Prover_Stats, others => 0);
 
-   Summary : Summary_Type := (others => Null_Summary_Line);
+   Summary : Summary_Type := [others => Null_Summary_Line];
 
    type Flow_Message_Kind is (FMK_Error, FMK_Check, FMK_Warning);
 
