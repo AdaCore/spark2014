@@ -8,13 +8,13 @@ project Control is
 
    case Roadrunner_Flags.Mode is
       when "Analyze" =>
-         for Source_Dirs use ("control", "control/config", 
+         for Source_Dirs use ("control", "control/config",
                               Roadrunner_Flags.Map_Src,
                               "robotcontrol", "robotcontrol/autogen");
          for Excluded_Source_Files use
            ("sigint_handler.ads", "sigint_handler.adb");
       when "Compile" =>
-         for Source_Dirs use ("control", 
+         for Source_Dirs use ("control",
                               Roadrunner_Flags.Map_Src,
                               "control/democonfig");
          for Excluded_Source_Files use

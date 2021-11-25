@@ -3,5 +3,5 @@ project Test is
    package Prove is
       for Proof_Dir use "proofs/";
    end Prove;
-   
+
 end Test;

@@ -1,5 +1,5 @@
 project Test is
-   
+
    package Prove is
       for Proof_Dir use "proof";
    end Prove;
