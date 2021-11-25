@@ -5705,7 +5705,7 @@ package body SPARK_Definition is
          --  A derived type cannot have explicit discriminants
 
          if Nkind (Parent (E)) in N_Private_Extension_Declaration
-           | N_Full_Type_Declaration
+                                | N_Full_Type_Declaration
            and then not Is_Class_Wide_Type (E)
            and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
            and then Present (Discriminant_Specifications (Parent (E)))
@@ -8259,9 +8259,7 @@ package body SPARK_Definition is
         --  We still mark predicate functions declared in the specification
         --  of internal units.
 
-        and then not
-          (Ekind (E) = E_Function
-           and then Is_Predicate_Function (E))
+        and then not In_Pred_Function_Body
       then
          return;
 
