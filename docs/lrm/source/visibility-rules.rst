@@ -24,7 +24,9 @@ No extensions or restrictions.
 Use Clauses
 -----------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. Use clauses are always in |SPARK|, even if the unit mentioned is
@@ -38,7 +40,9 @@ Renaming Declarations
 Object Renaming Declarations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. [An expression or range occurring as part of an
@@ -68,7 +72,9 @@ From the point of view of both static and dynamic verification, a
 *renaming-as-body* is treated as a one-line subprogram that "calls
 through" to the renamed unit.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The ``aspect_specification`` on a ``subprogram_renaming_declaration`` shall not

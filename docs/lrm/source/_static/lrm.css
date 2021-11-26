@@ -1,0 +1,9 @@
+/* Style to make the SPARK Language Reference Manual (LRM) look like Ada RM */
+
+/* Headings like Syntax, Name Resolution Rules, Legality Rules, etc.; see
+   Ada RM 1.1.2 (24/4) */
+
+div.heading {
+  text-align: center;
+  font-weight: bold;
+}

@@ -21,7 +21,9 @@ execution of the program.
 Separate Compilation
 --------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A program unit cannot be a task unit, a protected unit or a protected entry.
@@ -35,7 +37,9 @@ No restrictions or extensions.
 Context Clauses - With Clauses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. With clauses are always in |SPARK|, even if the unit mentioned is
@@ -52,7 +56,9 @@ declared in the visible part of that package. The only allowed uses of an
 abstract view of an object are where the use of a state abstraction would be
 allowed (for example, in a Global ``aspect_specification``).
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 2. A name denoting the abstract view of an object shall occur only:
@@ -66,7 +72,9 @@ allowed (for example, in a Global ``aspect_specification``).
    c. in an ``input_list`` of an Initializes aspect.
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 3. Any state abstractions declared within a given package are present in

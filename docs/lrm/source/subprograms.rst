@@ -39,7 +39,9 @@ An object O1 is said to be a *reachable element* of an object O2 if
 - O1 is a reachable element of the object designated by
   (the value of) an access-valued part of O2.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 1. The *exit* value of a global item or parameter of a subprogram is its
    value immediately following the successful call of the subprogram.
@@ -93,7 +95,9 @@ An object O1 is said to be a *reachable element* of an object O2 if
    [A state abstraction cannot be fully initialized by initializing
    individual constituents unless its refinement is visible.]
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 6. A function declaration shall not have a ``parameter_specification``
@@ -107,7 +111,9 @@ An object O1 is said to be a *reachable element* of an object O2 if
    the subprogram is not a function.
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 8. At the point of a call, all inputs of the callee except for those that have
    relaxed initialization (see :ref:`Relaxed Initialization`) shall be
@@ -120,7 +126,9 @@ An object O1 is said to be a *reachable element* of an object O2 if
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The corresponding expression for an inherited Pre'Class or Post'Class of an
@@ -176,7 +184,9 @@ does not itself declare a dispatching operation. Note also that this rule
 would never apply to a renaming-as-body.]
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 For a call on a nondispatching operation,
 a verification condition is introduced (as
@@ -222,7 +232,9 @@ In order to extend Ada's support for specification of subprogram contracts
 (e.g., the Pre and Post) by providing more precise and/or concise contracts, the
 |SPARK| aspects, Global, Depends, and Contract_Cases are defined.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The Global, Depends and Contract_Cases aspects may be
@@ -302,7 +314,9 @@ the ``aspect_mark`` is Contract_Cases and the ``aspect_definition`` must follow
 the grammar of ``contract_case_list`` given below.
 
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 ::
 
@@ -315,7 +329,9 @@ where
    ``consequence ::=`` *Boolean_*\ ``expression``
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A Contract_Cases aspect may have at most one **others**
@@ -328,7 +344,9 @@ where
    Result ``attribute_references``.
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 3. A Contract_Cases aspect is an assertion (as defined in RM
@@ -337,7 +355,9 @@ where
    ``assertion_aspect_mark`` in an Assertion_Policy pragma.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 
 4. Upon a call of a subprogram which is subject to an enabled
@@ -374,7 +394,9 @@ where
    Old ``attribute_reference`` is not evaluated].
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 The verification conditions associated with the Contract_Cases runtime checks
 performed at the beginning of a call are assigned in the same way
@@ -382,7 +404,9 @@ as those associated with a specific precondition check. More specifically,
 the verification condition is imposed on the caller or on the callee depending
 on whether the subprogram in question is a dispatching operation.
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
 
@@ -467,7 +491,9 @@ to allow an optional ``aspect_specification`` immediately before the
 ``entry_barrier``. This is relevant for aspects such as Refined_Global
 and Refined_Depends.]
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 
 ::
@@ -483,7 +509,9 @@ and Refined_Depends.]
    null_global_specification   ::= null
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. A ``global_specification`` that is a ``global_list`` is shorthand for a
@@ -517,7 +545,9 @@ and Refined_Depends.]
    then a Global aspect of *null* is implicitly specified for the subprogram.
 
 
-.. centered:: **Name Resolution Rules**
+.. container:: heading
+
+   Name Resolution Rules
 
 
 5. A ``global_item`` shall denote an entire object or a state abstraction.
@@ -526,7 +556,9 @@ and Refined_Depends.]
    name is also present].
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 6. The Global aspect may only be specified for the initial declaration of a
@@ -573,12 +605,16 @@ and Refined_Depends.]
     ``mode_selector`` of In_Out or Output.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 There are no dynamic semantics associated with a Global aspect as it
 is used purely for static analysis purposes and is not executed.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 14. For a subprogram that has a ``global_specification``, an object (except a
@@ -683,7 +719,9 @@ is used purely for static analysis purposes and is not executed.
     value of the object is referenced].
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
 
@@ -767,7 +805,9 @@ the ``aspect_mark`` is Depends and the ``aspect_definition`` must follow
 the grammar of ``dependency_relation`` given below.
 
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 
 ::
@@ -790,7 +830,9 @@ where
    ``function_result`` is a function Result ``attribute_reference``.
 
 
-.. centered:: **Name Resolution Rules**
+.. container:: heading
+
+   Name Resolution Rules
 
 
 1. An ``input`` or ``output`` of a ``dependency_relation`` shall denote only
@@ -800,7 +842,9 @@ where
    present.]
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 2. The Depends aspect shall only be specified for the initial declaration of a
@@ -884,7 +928,9 @@ where
 15. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 16. A ``dependency_clause`` with a "+" symbol in the syntax
@@ -932,12 +978,16 @@ where
     subprogram if it is present.]
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 There are no dynamic semantics associated with a Depends aspect
 as it is used purely for static analysis purposes and is not executed.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 23. Each entity denoted by an ``output`` given in the Depends aspect
@@ -965,7 +1015,9 @@ as it is used purely for static analysis purposes and is not executed.
 
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
 
@@ -1022,7 +1074,9 @@ except that the Depends'Class aspect of a subprogram is
 checked for consistency with the Global'Class aspect of the
 subprogram rather than with the Global aspect.]
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 When analyzing a dispatching call, the Global and Depends aspects
 of the statically denoted callee play no role; the corresponding
@@ -1037,7 +1091,9 @@ checking (as described in this section) the consistency of the
 Global/Depends aspects with the Global'Class/Depends'Class
 aspects.]
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 A Global or Global'Class aspect specification G2 is said to be
 a *valid overriding* of another such specification, G1, if the following
@@ -1067,7 +1123,9 @@ visible at the point of D2, if D2 is derivable from such a subset
 as described in :ref:`Refined_Depends Aspects`.
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 The Global aspect of a subprogram shall be a valid overriding of the
 Global'Class aspect of the subprogram. The Global'Class aspect of an
@@ -1094,7 +1152,9 @@ forbidden via an Extensions_Visible aspect specification as described
 below. The aspect also plays a corresponding role in the analysis of callers of
 the subprogram.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 1. Extensions_Visible is a Boolean-valued aspect which may be specified for a
    noninstance subprogram or a generic subprogram.
@@ -1106,7 +1166,9 @@ the subprogram.
    aspect value is that of the primitive [(possibly user-defined)] equality
    operator for the parent type.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 2. If the Extensions_Visible aspect is False for a subprogram, then
    certain restrictions are imposed on the use of any parameter of the
@@ -1153,7 +1215,9 @@ the subprogram.
    which are not components of the type of the formal parameter, then these
    components are unreferenced by the execution of the call.]
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 7. [|SPARK| typically requires that an actual parameter corresponding
    to an in mode or in out mode formal parameter in a call shall be fully
@@ -1209,7 +1273,9 @@ The aspect Subprogram_Variant may be specified for subprograms; it can be
 used to ensure termination of recursive subprograms in a way that is
 similar to how pragma Loop_Variant can be used to ensure termination of loops.
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 ::
 
@@ -1257,7 +1323,9 @@ the associated ``subprogram_variant_item`` is Increases (respectively,
 Decreases) then the expression value obtained for the call is greater
 (respectively, less) than the value that was saved upon entry to the caller.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 1. [Aspect Subprogram_Variant can be used to demonstrate that execution of
    any of a set of statically mutually recursive subprogram(s)
@@ -1272,7 +1340,9 @@ Decreases) then the expression value obtained for the call is greater
    the Subprogram_Variant assertion policy that is in effect at the
    point of the call.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 3. A Subprogram_Variant aspect may be specified for the same subprograms
    that a Pre aspect may be specified for. [This implies, for example,
@@ -1298,7 +1368,9 @@ Decreases) then the expression value obtained for the call is greater
    is applied repeatedly in the case of multiple levels of subprogram
    inheritance.
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 7. At the beginning of a subprogram with a specified Subprogram_Variant aspect,
    the ``expressions`` are evaluated in textual order and their
@@ -1322,7 +1394,9 @@ Decreases) then the expression value obtained for the call is greater
    No runtime check is performed if the Subprogram_Variant assertion policy
    in effect at the point of the call is not Check.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 9.  Statically mutually recursive subprograms shall have compatible variants.
 
@@ -1382,7 +1456,9 @@ of the formal parameter). Hence, a subprogram cannot read a value of
 a formal parameter of mode **out** until the subprogram has updated
 it.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 1. A subprogram formal parameter of a composite type which is updated
@@ -1453,7 +1529,9 @@ variable.  Therefore, function calls cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
 or entry calls.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 .. index:: interfering object
 
@@ -1476,7 +1554,9 @@ or entry calls.
 
    Otherwise, the formal parameter is said to be *mutable*.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 3. A procedure or entry call shall only pass two actual parameters which potentially
@@ -1521,7 +1601,9 @@ or entry calls.
    * A prohibited construct enclosed in parentheses.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/anti_aliasing.adb
    :language: ada
@@ -1538,7 +1620,9 @@ No extensions or restrictions.
 Nonreturning Procedures
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 1. A call to a nonreturning procedure introduces an obligation to prove that
@@ -1556,7 +1640,9 @@ Nonreturning Procedures
 Overloading of Operators
 ------------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. [A user-defined equality operation on a record type shall have a Global
@@ -1564,7 +1650,9 @@ Overloading of Operators
    rule.]
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 2.  A user-defined equality operation on a record type shall always
     terminate.
@@ -1581,7 +1669,9 @@ No extensions or restrictions.
 Expression Functions
 --------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. Contract_Cases, Global and Depends aspects may be applied to an
@@ -1615,7 +1705,9 @@ to make a small additional change after the removals
 (e.g., adding an Elaborate_Body pragma) in order to avoid producing a
 library package that no longer needs a body (see Ada RM 7.2(4))].
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. |SPARK| defines the Boolean-valued representation aspect Ghost.
@@ -1664,7 +1756,9 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    are defined analogously.
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 5. The Ghost aspect may only be specified [explicitly] for
@@ -1814,7 +1908,9 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     (see :ref:`Abstract_State Aspects`).
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 20. A ghost procedure shall not have a non-ghost [global] output.
@@ -1844,7 +1940,9 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     be Check.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
 
@@ -1892,7 +1990,9 @@ a standalone object, for a state abstraction, or (at least in effect - see
 below for details) for a parameter or function result of a subprogram or entry.
 The prefix of an Initialized attribute reference shall denote an object.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 1. An object is said to *have relaxed initialization* if and only if
 
@@ -1972,7 +2072,9 @@ The prefix of an Initialized attribute reference shall denote an object.
    record declared with "Dynamic_Predicate => False".] An Initialized attribute
    reference is never a static expression.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 5. The following rules apply to the profile_aspect_spec of a
    Relaxed_Initialization aspect specification for a subprogram, a
@@ -2030,7 +2132,9 @@ The prefix of an Initialized attribute reference shall denote an object.
     initialization; the result of a dispatching function shall not have
     relaxed initialization.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 12. At the point of a read of a scalar object X that has relaxed initialization,
     a verification condition is introduced to ensure that X is initialized.

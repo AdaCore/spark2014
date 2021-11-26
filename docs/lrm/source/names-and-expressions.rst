@@ -29,7 +29,9 @@ Some constructs which would unconditionally raise an exception at
 run time in Ada are rejected as illegal in |SPARK| if this property
 can be determined prior to formal program verification.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. If the prefix of a record component selection is known statically
@@ -49,7 +51,9 @@ A |SPARK| implementation is permitted to support other attributes
 which are not Ada or |SPARK| language defined attributes and these
 should be documented in the User Guide for the tool.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 .. index:: Access
 
@@ -84,7 +88,9 @@ should be documented in the User Guide for the tool.
    nor an anonymous access-to-object type, or shall
    include a dereference whose prefix has a named access-to-constant type.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 6. A subprogram used as the prefix of an Access attribute reference shall have
    no global inputs and outputs (see section 6.1 for inputs and outputs of
@@ -103,7 +109,9 @@ should be documented in the User Guide for the tool.
 User-Defined References
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. User-defined references are not allowed.
@@ -115,7 +123,9 @@ User-Defined References
 User-Defined Indexing
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. User-defined indexing is not allowed.
@@ -134,7 +144,9 @@ No extensions or restrictions.
 Aggregates
 ----------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The box symbol, <>, shall not be used in an aggregate unless the type(s)
@@ -159,7 +171,9 @@ An expression is said to be *side-effect free* if the evaluation of the
 expression does not update any object.  The evaluation of an expression
 free from side-effects only retrieves or computes a value.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. An expression shall be side-effect free.
@@ -268,7 +282,9 @@ an owning type in SPARK are allocating functions and borrowing traversal
 functions defined in section :ref:`Access Types`; a function cannot be both an
 allocating function and a traversal function.]
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 .. index:: full default initialization; in allocators
 

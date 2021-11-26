@@ -10,7 +10,9 @@ this principle is applied recursively.
 Generic Instantiation
 ---------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. An instantiation of a generic is or is not in |SPARK| depending on

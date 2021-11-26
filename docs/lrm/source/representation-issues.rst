@@ -89,12 +89,16 @@ restrictions on overlaid objects in |SPARK|. Other address clauses and aspects
 are not restricted; the onus is on the user to ensure that this is correct with
 respect to the program semantics of |SPARK|.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 1. The use of the operators defined for type Address are not permitted
    in |SPARK| except for use within representation clauses.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 2. If an object ``X`` is overlaid on an object ``Y``, then the sizes of ``X``
    and ``Y`` shall be known at compile-time and shall be equal.
@@ -117,7 +121,9 @@ respect to the program semantics of |SPARK|.
 Machine Code Insertions
 -----------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 1. Machine code insertions are not in |SPARK|.
 
@@ -155,7 +161,9 @@ below. Although it is not mandated by Ada standard, the compiler should ensure
 that it does not return the result of unchecked conversion by reference if it
 could be misaligned (as GNAT ensures).
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 1. The source and target subtypes of an instance of ``Unchecked_Conversion``
    shall have the same Size.
@@ -185,7 +193,9 @@ attribute) may invalidate any proofs performed on the program.
 Unchecked Access Value Creation
 -------------------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The Unchecked_Access attribute is not in |SPARK|.
@@ -194,7 +204,9 @@ Unchecked Access Value Creation
 Storage Management
 ------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. Aspect specifications for the Storage_Pool and Storage_Size aspects
@@ -213,7 +225,9 @@ suitable for different application environments.
 Streams
 -------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. Stream types and operations are not in |SPARK|.

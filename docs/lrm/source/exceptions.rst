@@ -9,7 +9,9 @@ No additions or restrictions
 Exception Handlers
 ------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. Exception handlers are not permitted in |SPARK|.
@@ -21,7 +23,9 @@ Raise Statements
 Raise statements are in |SPARK|, but must (as described below) be
 provably never executed.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 1. A ``raise_statement`` introduces an obligation to prove that the statement
@@ -50,7 +54,9 @@ The Package Exceptions
 Pragmas Assert and Assertion_Policy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The pragmas ``Assertion_Policy``, ``Suppress``, and ``Unsuppress`` are

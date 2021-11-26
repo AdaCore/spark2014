@@ -518,7 +518,9 @@ Shared Variable Control (C.6)
 The following restrictions are applied to the declaration of volatile types
 and objects in |SPARK|:
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A volatile representation aspect may only be applied to an
