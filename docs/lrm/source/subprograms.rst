@@ -1483,8 +1483,9 @@ or entry calls.
    introduce aliasing via parameter passing when either
 
    * both of the corresponding formal parameters are either
-      * immutable; or
-      * of mode **in** and of an anonymous access-to-constant type; or
+
+     * immutable; or
+     * of mode **in** and of an anonymous access-to-constant type; or
 
    * at least one of the corresponding formal parameters is immutable and is of
      a by-copy type. [Note that this includes parameters of named
@@ -1498,8 +1499,9 @@ or entry calls.
    passing, then
 
    * the corresponding formal parameter shall be either
-      * immutable; or
-      * of mode **in** and of an anonymous access-to-constant type; and
+
+     * immutable; or
+     * of mode **in** and of an anonymous access-to-constant type; and
 
    * if the ``global_item``'s mode is Output or In_Out, then the
      corresponding formal parameter shall be immutable and of
