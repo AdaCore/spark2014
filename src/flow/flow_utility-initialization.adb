@@ -25,6 +25,7 @@ with Aspects;     use Aspects;
 with Nlists;      use Nlists;
 with Sem_Type;    use Sem_Type;
 with Sinfo.Utils; use Sinfo.Utils;
+with Sinput;      use Sinput;
 
 package body Flow_Utility.Initialization is
 
@@ -63,7 +64,9 @@ package body Flow_Utility.Initialization is
       begin
          --  Don't expect internally generated components
 
-         pragma Assert (Comes_From_Source (ORC));
+         pragma Assert
+           (Comes_From_Source (ORC)
+              or else Comes_From_Inlined_Body (Sloc (ORC)));
 
          --  When the component has a default expression, then it is default
          --  initialized no matter of its type.
