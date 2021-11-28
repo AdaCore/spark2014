@@ -4018,7 +4018,7 @@ package body Gnat2Why.Expr is
            then " of box association"
            else "");
       --  If Decl_Node is present, we are checking the default initialization
-      --  of a private type. If the ada node is a component association, then
+      --  of a private type. If the Ada node is a component association, then
       --  we are checking a box association.
       Checks : W_Prog_Id;
 

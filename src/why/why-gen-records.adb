@@ -2734,7 +2734,7 @@ package body Why.Gen.Records is
          --         record field
          --  @param Is_Private True if the component should be translated as
          --         private in Why
-         --  @param Field_Type ada type of the component, it is the enclosing
+         --  @param Field_Type Ada type of the component, it is the enclosing
          --         type if Is_Private is True
          --  @return Equality of field_id from A and B.
 

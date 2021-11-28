@@ -346,7 +346,7 @@ package Why.Gen.Binders is
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id;
    --  Get the Ada Node of an item.
    --  @param B item whose Ada node we query.
-   --  @return the ada node that produced the binder. If the node is empty,
+   --  @return the Ada node that produced the binder. If the node is empty,
    --    then either B is the unit binder or it is a binder for effects only.
 
    function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id;
@@ -355,9 +355,9 @@ package Why.Gen.Binders is
    --  @return the type of the expression that can be reconstructed from B.
 
    function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id;
-   --  Get the ada type of an item.
+   --  Get the Ada type of an item.
    --  @param B item whose type we query.
-   --  @return the type of the ada node associated to B.
+   --  @return the type of the Ada node associated to B.
 
    function Item_Is_Mutable (B : Item_Type) return Boolean;
    --  Check if an Item is Mutable.

@@ -58,7 +58,7 @@ package Why.Gen.Init is
    function EW_Init_Wrapper (Ty : W_Type_Id) return W_Type_Id with
      Pre => Get_Type_Kind (Ty) in EW_Abstract | EW_Split
      and then Might_Contain_Relaxed_Init (Get_Ada_Node (+Ty));
-   --  Return the init wrapper type with the same ada node and kind as Ty
+   --  Return the init wrapper type with the same Ada node and kind as Ty
 
    function Compute_Is_Initialized
      (E                      : Entity_Id;
