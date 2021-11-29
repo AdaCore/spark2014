@@ -16888,7 +16888,8 @@ package body Gnat2Why.Expr is
 
             begin
                Generate_Associations_From_Ancestor
-                 (Domain       => Domain,
+                 (Ada_Node     => Expr,
+                  Domain       => Domain,
                   Expr         => Tmp,
                   Anc_Ty       => Anc_Ty,
                   Ty           => Expr_Type,
@@ -16896,7 +16897,8 @@ package body Gnat2Why.Expr is
                   Field_Assocs => Anc_Field_Assocs);
                T :=
                  New_Ada_Record_Aggregate
-                   (Domain       => Domain,
+                   (Ada_Node     => Expr,
+                    Domain       => Domain,
                     Discr_Expr   => Anc_Discr_Expr,
                     Field_Assocs => Anc_Field_Assocs & Assocs,
                     Ty           => Expr_Type,
