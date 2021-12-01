@@ -43,7 +43,6 @@ with Snames;                use Snames;
 with Types;                 use Types;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
-with Why.Atree.Tables;      use Why.Atree.Tables;
 
 package SPARK_Util is
 
@@ -842,11 +841,6 @@ package SPARK_Util is
    procedure Append
      (To    : in out Node_Lists.List;
       Elmts : Node_Lists.List);
-   --  Append all elements from list Elmts to the list To
-
-   procedure Append
-     (To    : in out Why_Node_Lists.List;
-      Elmts : Why_Node_Lists.List);
    --  Append all elements from list Elmts to the list To
 
    function Char_To_String_Representation (C : Character) return String;
