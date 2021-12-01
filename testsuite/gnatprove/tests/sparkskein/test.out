@@ -41,6 +41,7 @@ skein.adb:301:07: info: initialization of "X" proved
 skein.adb:302:07: info: initialization of "W" proved
 skein.adb:304:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:304:17: info: local subprogram "Initialize_Key_Schedule" only analyzed in the context of calls
+skein.adb:315:30: info: justified that "KS" might not be initialized, in call inlined at skein.adb:564
 skein.adb:322:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:322:17: info: local subprogram "Initialize_TS" only analyzed in the context of calls
 skein.adb:323:10: info: initialization of "W0" proved

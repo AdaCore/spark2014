@@ -19,6 +19,7 @@ prime_and_coprime_numbers.adb:71:25: info: assertion proved (CVC4: 1 VC), in ins
 prime_and_coprime_numbers.adb:79:28: info: precondition proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:81:13: info: loop invariant initialization proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:81:13: info: loop invariant preservation proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:82:15: info: justified that "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:82:23: info: index check proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:87:14: medium: "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:100:07: info: initialization of "Right_Is_Out" proved, in instantiation at test_prime_and_coprime_numbers.adb:6

@@ -3,6 +3,7 @@ lsc-bignum.adb:50:13: info: loop invariant initialization proved (Z3: 1 VC)
 lsc-bignum.adb:50:13: info: loop invariant preservation proved (Z3: 1 VC)
 lsc-bignum.adb:50:21: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:50:53: info: overflow check proved (Z3: 4 VC)
+lsc-bignum.adb:50:61: info: justified that "A" might not be initialized
 lsc-bignum.adb:50:64: info: index check proved (Z3: 4 VC)
 lsc-bignum.adb:52:10: warning: no check message justified by this pragma
 lsc-bignum.adb:57:13: info: index check proved (Z3: 2 VC)
@@ -568,9 +569,11 @@ lsc-bignum.adb:712:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:715:39: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:715:39: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:722:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
+lsc-bignum.ads:63:07: info: justified that "A" might not be initialized in "Initialize"
 lsc-bignum.ads:67:08: info: flow dependencies proved
 lsc-bignum.ads:74:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.ads:74:19: info: range check proved (Z3: 2 VC)
+lsc-bignum.ads:74:60: info: justified that "A" might not be initialized
 lsc-bignum.ads:74:63: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:83:08: info: flow dependencies proved
 lsc-bignum.ads:90:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]

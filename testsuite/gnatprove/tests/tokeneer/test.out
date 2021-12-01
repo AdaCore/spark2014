@@ -468,6 +468,7 @@ certificatestore.adb:197:07: info: initialization of "RawNext" proved
 certificatestore.adb:198:07: info: initialization of "Stop" proved
 certificatestore.adb:199:07: info: initialization of "Opened" proved
 certificatestore.adb:200:07: info: initialization of "Closed" proved
+certificatestore.adb:213:32: info: justified that "Text" might not be initialized in "ConvertFrom32"
 certificatestore.adb:214:32: info: initialization of "Length" proved
 certificatestore.adb:215:14: info: flow dependencies proved
 certificatestore.adb:222:23: info: range check proved (CVC4: 2 VC)
