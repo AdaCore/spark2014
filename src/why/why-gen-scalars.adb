@@ -597,20 +597,27 @@ package body Why.Gen.Scalars is
          elsif Has_Floating_Point_Type (E)
          then
             --  Optimisation for static floating point, check if we are dealing
-            --  with a Float32 or Float64, in which case reduce the range
-            --  predicate to "is_finite".
+            --  with a Float32, Float64 or Float80, in which case reduce the
+            --  range predicate to "is_finite".
 
             if Is_Static
-              and then UR_Eq (Expr_Value_R (Type_Low_Bound (E)),
-                              Expr_Value_R (Type_Low_Bound
-                                (if Ty = EW_Float_32_Type
-                                     then Standard_Float
-                                     else Standard_Long_Float)))
-              and then UR_Eq (Expr_Value_R (Type_High_Bound (E)),
-                              Expr_Value_R (Type_High_Bound
-                                (if Ty = EW_Float_32_Type
-                                     then Standard_Float
-                                     else Standard_Long_Float)))
+              and then
+                (declare
+                   Float_Typ : constant Entity_Id :=
+                     (if Ty = EW_Float_32_Type
+                        then Standard_Float
+                      elsif Ty = EW_Float_64_Type
+                        then Standard_Long_Float
+                      elsif Ty = EW_Float_80_Type
+                        then Standard_Long_Long_Float
+                      else
+                         raise Program_Error);
+                 begin
+                   UR_Eq (Expr_Value_R (Type_Low_Bound (E)),
+                          Expr_Value_R (Type_Low_Bound (Float_Typ)))
+                     and then
+                   UR_Eq (Expr_Value_R (Type_High_Bound (E)),
+                          Expr_Value_R (Type_High_Bound (Float_Typ))))
             then
 
                --  In which case we know that all values are necessary in range
@@ -738,9 +745,10 @@ package body Why.Gen.Scalars is
                return Static_Fixed_Point;
             else
                pragma Assert (Has_Floating_Point_Type (E));
-               return (if Typ = EW_Float_32_Type then
-                          Static_Float32
-                       else Static_Float64);
+               return (if Typ = EW_Float_32_Type then Static_Float32
+                       elsif Typ = EW_Float_64_Type then Static_Float64
+                       elsif Typ = EW_Float_80_Type then Static_Float80
+                       else raise Program_Error);
             end if;
          else
             if Has_Modular_Integer_Type (E) then
@@ -1236,6 +1244,8 @@ package body Why.Gen.Scalars is
             return Rep_Proj_Float32;
          elsif Rep_Type = EW_Float_64_Type then
             return Rep_Proj_Float64;
+         elsif Rep_Type = EW_Float_80_Type then
+            return Rep_Proj_Float80;
          elsif Rep_Type = EW_Int_Type then
             return Rep_Proj_Int;
          elsif Why_Type_Is_Fixed (Rep_Type) then

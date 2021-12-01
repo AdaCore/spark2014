@@ -6832,8 +6832,6 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Check_Name
             | Pragma_Comment
             | Pragma_Common_Object
-            | Pragma_Compiler_Unit
-            | Pragma_Compiler_Unit_Warning
             | Pragma_Complete_Representation
             | Pragma_Complex_Representation
             | Pragma_Component_Alignment

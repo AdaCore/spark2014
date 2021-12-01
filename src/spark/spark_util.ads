@@ -120,7 +120,9 @@ package SPARK_Util is
       RCK_Range_Not_First,
       RCK_Range_Not_Last,
       RCK_Overflow_Not_First,
-      RCK_Overflow_Not_Last);
+      RCK_FP_Overflow_Not_First,
+      RCK_Overflow_Not_Last,
+      RCK_FP_Overflow_Not_Last);
    --  Kind for checks on scalar types
 
    type Continuation_Type is record

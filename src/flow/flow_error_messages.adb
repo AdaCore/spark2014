@@ -2200,6 +2200,18 @@ package body Flow_Error_Messages is
          elsif Nkind (N) = N_Procedure_Call_Statement then
             pragma Assert (Tag /= VC_Precondition);
 
+         --  Identifier appearing as a choice in a component association is
+         --  not really an expression (except when used as an index of an
+         --  array component association).
+
+         elsif Nkind (N) = N_Identifier
+           and then Nkind (Parent (N)) = N_Component_Association
+           and then Is_List_Member (N)
+           and then List_Containing (N) = Choices (Parent (N))
+           and then not Is_Array_Type (Etype (Parent (Parent (N))))
+         then
+            pragma Assert (Ekind (Entity (N)) in E_Component | E_Discriminant);
+
          else
             pragma Assert (Nkind (N) in N_Subexpr
                            and then Nkind (N) /= N_Procedure_Call_Statement);

@@ -71,7 +71,7 @@ procedure Diff is
       Y : constant U63 := Pow2_J / 2;
    begin
       pragma Assert (Y <= 2**J);
-      pragma Assert (U_Conversions.To_Big_Integer (Y) <= To_Big_Integer (2)**J);  --  failing assertion
+      pragma Assert (U_Conversions.To_Big_Integer (Y) <= To_Big_Integer (2)**J);
       return True;
    end U_Exp_BI_Trans;
 begin

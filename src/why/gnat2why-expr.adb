@@ -2892,7 +2892,7 @@ package body Gnat2Why.Expr is
       Left                               : constant Node_Id :=
         Left_Opnd (Expr);
       Left_Type                          : constant Entity_Id :=
-        Etype (Left);
+        Retysp (Etype (Left));
       Ty_Has_Unconstrained_UU_Component  : constant Boolean :=
         Has_Unconstrained_UU_Component (Left_Type);
       Ty_Has_UU_Type                     : constant Boolean :=
@@ -2900,11 +2900,16 @@ package body Gnat2Why.Expr is
       Left_Lacks_Inferable_Discriminants : constant Boolean :=
         Ty_Has_UU_Type and then not Has_Inferable_Discriminants (Left);
       Use_Predef_Equality                : constant Boolean :=
-        not Is_Membership_Test
-        or else Use_Predefined_Equality_For_Type (Left_Type);
+        (not Is_Membership_Test
+         or else Use_Predefined_Equality_For_Type (Left_Type))
+        and then (not Is_Class_Wide_Type (Left_Type)
+                  or else Use_Predefined_Equality_For_Type
+                    (Get_Specific_Type_From_Classwide (Left_Type)));
       --  Nothing needs to be done for equalities if we are not using the
       --  predefined one. This should not occur while translating equalities
-      --  as ones using primitives will have be rewritten as function calls.
+      --  as ones using primitives will have been rewritten as function calls.
+      --  If the equality or membership test is on class-wide types, the
+      --  primitive equality of the specific type will be used if any.
 
       procedure Do_One_Alternative
         (Right           : Node_Id;
@@ -3908,7 +3913,7 @@ package body Gnat2Why.Expr is
                                    (Ada_Node => Field,
                                     Message  => To_Unbounded_String
                                       ("in default initialization of "
-                                       & "component """ & Short_Name (Field)
+                                       & "component """ & Source_Name (Field)
                                        & """")));
                               T_Comp :=
                                 Compute_Default_Check_Rec
@@ -14611,14 +14616,6 @@ package body Gnat2Why.Expr is
 
            and then Nkind (Var) = N_Identifier
 
-           --  Equality should not have been redefined for Var
-
-           and then
-             (not Is_Record_Type (Unchecked_Full_Type (Etype (Var)))
-              or else Is_Limited_View (Etype (Var))
-              or else No
-                (Get_User_Defined_Eq (Base_Type (Etype (Var)))))
-
            --  Upd should be a 'Update attribute or a delta aggregate
 
            and then Present (Pref)
@@ -15109,7 +15106,9 @@ package body Gnat2Why.Expr is
                --  Check the specific rules for builtin equality on
                --  unchecked union types.
 
-               Check_UU_Restrictions (Expr);
+               if Domain = EW_Prog then
+                  Check_UU_Restrictions (Expr);
+               end if;
 
                --  Check that operands are initialized. Even if initialization
                --  checks are introduced for the conversion to BT, we still
@@ -15124,66 +15123,11 @@ package body Gnat2Why.Expr is
                    (Right, Get_Ada_Node (+BT), Right_Expr, Domain);
 
                if Is_Class_Wide_Type (Left_Type) then
-
-                  --  Dispatching equality. Translate to:
-                  --  let a = to_root left in
-                  --  let b = to_root right in
-                  --    a.attr_tag = b.attr_tag /\
-                  --    __dispatch_eq a b
-
-                  declare
-                     Root : constant Entity_Id :=
-                       Root_Retysp (Left_Type);
-                     Args : constant W_Expr_Array :=
-                       (1 => New_Temp_For_Expr
-                          (Insert_Simple_Conversion
-                               (Ada_Node => Expr,
-                                Domain   => Subdomain,
-                                Expr     => Left_Expr,
-                                To       => Type_Of_Node (Root))),
-                        2 => New_Temp_For_Expr
-                          (Insert_Simple_Conversion
-                               (Ada_Node => Expr,
-                                Domain   => Subdomain,
-                                Expr     => Right_Expr,
-                                To       => Type_Of_Node (Root))));
-                  begin
-                     T := New_And_Then_Expr
-                       (Left   => New_Call
-                          (Ada_Node => Expr,
-                           Domain   => Subdomain,
-                           Name     => Why_Eq,
-                           Args     =>
-                             (1 => New_Tag_Access
-                                  (Domain => Subdomain,
-                                   Name   => Args (1),
-                                   Ty     => Root),
-                              2 => New_Tag_Access
-                                (Domain => Subdomain,
-                                 Name   => Args (2),
-                                 Ty     => Root)),
-                           Typ      => EW_Bool_Type),
-                        Right  =>
-                          New_Call
-                            (Ada_Node => Expr,
-                             Domain   => Subdomain,
-                             Name     =>
-                               E_Symb (Root, WNE_Dispatch_Eq),
-                             Args     => New_Tag_Access
-                               (Domain => Subdomain,
-                                Name   => Args (1),
-                                Ty     => Root)
-                             & Args,
-                             Typ      => EW_Bool_Type),
-                        Domain => Subdomain);
-
-                     T := Binding_For_Temp (Domain  => Subdomain,
-                                            Tmp     => Args (1),
-                                            Context => T);
-                     T := Binding_For_Temp (Domain  => Subdomain,
-                                            Tmp     => Args (2),
-                                            Context => T);
-                  end;
+                  T := New_Ada_Equality
+                    (Typ    => Left_Type,
+                     Domain => Domain,
+                     Left   => Left_Expr,
+                     Right  => Right_Expr);
                else
                   T :=
                     New_Call
@@ -15527,7 +15471,21 @@ package body Gnat2Why.Expr is
                    (1 =>
                        Get_Array_Attr (Domain, Left_Expr, Attribute_Length, 1),
                     2 => New_Integer_Constant (Value => Uint_0)));
+
          begin
+            --  If we are expecting a partially initialized type, convert Right
+
+            if Init_Wrapper
+              and then not Is_Init_Wrapper_Type (Get_Type (Right_Op))
+            then
+               Right_Op := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Get_Array_To_Wrapper_Name (Right_Type),
+                  Args     => (1 => Right_Op),
+                  Typ      => EW_Split (Right_Type, Relaxed_Init => True));
+            end if;
+
             if not Is_Static_Array_Type (Return_Type) then
                Right_Op := Array_Convert_From_Base (Domain => Domain,
                                                     Ty     => Return_Type,
@@ -17033,6 +16991,9 @@ package body Gnat2Why.Expr is
                         elsif Has_Double_Precision_Floating_Point_Type (Rty)
                         then
                            EW_Float_64_Type
+                        elsif Has_Extended_Precision_Floating_Point_Type (Rty)
+                        then
+                           EW_Float_80_Type
                         else raise Program_Error));
                end if;
             end;
@@ -19566,7 +19527,7 @@ package body Gnat2Why.Expr is
       --  Check the specific rules for membership tests on unchecked union
       --  types.
 
-      if Is_Record_Type_In_Why (Etype (Var)) then
+      if Is_Record_Type_In_Why (Etype (Var)) and then Domain = EW_Prog then
          Check_UU_Restrictions (Expr);
       end if;
 
@@ -20151,8 +20112,6 @@ package body Gnat2Why.Expr is
             | Pragma_Check_Name
             | Pragma_Comment
             | Pragma_Common_Object
-            | Pragma_Compiler_Unit
-            | Pragma_Compiler_Unit_Warning
             | Pragma_Complete_Representation
             | Pragma_Complex_Representation
             | Pragma_Component_Alignment

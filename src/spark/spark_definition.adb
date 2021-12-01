@@ -5615,15 +5615,11 @@ package body SPARK_Definition is
 
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
-         --  of a full view points to the partial view. We don't issue a
-         --  violation as a result of a base type in Standard not being in
-         --  SPARK, as this concerns only extended precision floating-point
-         --  types, for which a better violation message is issued later.
+         --  of a full view points to the partial view.
 
          if not Is_Nouveau_Type (E)
            and then Underlying_Type (Etype (E)) /= E
            and then not Retysp_In_SPARK (Etype (E))
-           and then Scope (Etype (E)) /= Standard_Standard
          then
             Mark_Violation (E, From => Retysp (Etype (E)));
 
@@ -6056,30 +6052,48 @@ package body SPARK_Definition is
                pragma Annotate (Xcov, Exempt_Off);
 
             elsif Is_Floating_Point_Type (E) then
-               if not Is_Double_Precision_Floating_Point_Type (E)
-                 and then not Is_Single_Precision_Floating_Point_Type (E)
-               then
-                  Mark_Unsupported
-                    ("extended precision floating point type", E);
-                  return;
+
+               --  GNAT only supports 32-bits, 64-bits and 80-bits
+               --  floating-point types, which correspond respectively to the
+               --  Float, Long_Float and Long_Long_Float standard types on the
+               --  platforms on which they are supported.
+
+               if Is_Single_Precision_Floating_Point_Type (E) then
+                  pragma Assert (Esize (Standard_Float) = 32);
+
+               elsif Is_Double_Precision_Floating_Point_Type (E) then
+                  pragma Assert (Esize (Standard_Long_Float) = 64);
+
+               --  Long_Long_Float is always 80-bits extended precision in
+               --  GNAT, but with padding to 96 bits on x86 (32-bits machines)
+               --  and to 128 bits on x86_64 (64-bits machines). Look at the
+               --  mantissa instead which should be 64 for 80-bits extended
+               --  precision.
+
+               elsif Is_Extended_Precision_Floating_Point_Type (E) then
+                  pragma Assert
+                    (Machine_Mantissa_Value (Standard_Long_Long_Float)
+                     = Uint_64);
+
+               else
+                  raise Program_Error;
+               end if;
 
                --  Fixed-point values can be used as bounds in a floating-point
                --  type constraint, but not in type derivation. In those cases,
                --  the values for the bounds are static and are inlined by the
                --  frontend.
 
-               else
-                  declare
-                     Low  : constant Node_Id := Type_Low_Bound (E) with Ghost;
-                     High : constant Node_Id := Type_High_Bound (E) with Ghost;
-                  begin
-                     pragma Assert
-                       (In_SPARK (Etype (Low))
-                        and then In_SPARK (Etype (High))
-                        and then not Has_Fixed_Point_Type (Etype (Low))
-                        and then not Has_Fixed_Point_Type (Etype (High)));
-                  end;
-               end if;
+               declare
+                  Low  : constant Node_Id := Type_Low_Bound (E) with Ghost;
+                  High : constant Node_Id := Type_High_Bound (E) with Ghost;
+               begin
+                  pragma Assert
+                    (In_SPARK (Etype (Low))
+                     and then In_SPARK (Etype (High))
+                     and then not Has_Fixed_Point_Type (Etype (Low))
+                     and then not Has_Fixed_Point_Type (Etype (High)));
+               end;
             end if;
 
             --  Check that the range of the type is in SPARK
@@ -7778,8 +7792,6 @@ package body SPARK_Definition is
             | Pragma_Check_Name
             | Pragma_Comment
             | Pragma_Common_Object
-            | Pragma_Compiler_Unit
-            | Pragma_Compiler_Unit_Warning
             | Pragma_Complete_Representation
             | Pragma_Complex_Representation
             | Pragma_Component_Alignment
@@ -8084,6 +8096,9 @@ package body SPARK_Definition is
          S_Long_Float             => True,
          S_Long_Long_Float        =>
            Is_Double_Precision_Floating_Point_Type
+             (Standard_Entity (S_Long_Long_Float))
+             or else
+           Is_Extended_Precision_Floating_Point_Type
              (Standard_Entity (S_Long_Long_Float)),
 
          S_Character              => True,
@@ -8691,6 +8706,10 @@ package body SPARK_Definition is
       function SPARK_Pragma_Of_Decl (Decl : Node_Id) return Node_Id;
       --  Return the SPARK_Pragma associated with a declaration or a pragma. It
       --  is the pragma of the first enclosing scope with a SPARK pragma.
+
+      --------------------------
+      -- SPARK_Pragma_Of_Decl --
+      --------------------------
 
       function SPARK_Pragma_Of_Decl (Decl : Node_Id) return Node_Id is
          Scop : Node_Id := Decl;

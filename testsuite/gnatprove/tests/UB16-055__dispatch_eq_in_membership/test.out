@@ -1,0 +1,3 @@
+repr.adb:30:22: medium: assertion might fail
+repr.adb:32:22: medium: assertion might fail
+repr.adb:34:22: medium: assertion might fail

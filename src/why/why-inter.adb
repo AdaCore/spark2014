@@ -850,6 +850,8 @@ package body Why.Inter is
                return EW_Float_32_Type;
             elsif Is_Double_Precision_Floating_Point_Type (Etype (Ty)) then
                return EW_Float_64_Type;
+            elsif Is_Extended_Precision_Floating_Point_Type (Etype (Ty)) then
+               return EW_Float_80_Type;
             else
                raise Program_Error;
             end if;

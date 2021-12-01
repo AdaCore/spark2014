@@ -30,7 +30,7 @@ convert.adb:49:42: info: float overflow check proved (colibri: 1 VC)
 convert.adb:50:18: info: float overflow check proved (colibri: 1 VC)
 convert.ads:42:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 convert.ads:45:45: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
-convert.ads:47:29: info: overflow check proved (Z3: 1 VC)
+convert.ads:47:29: info: float overflow check proved (Z3: 1 VC)
 convert.ads:49:18: info: predicate check proved (Trivial: 1 VC)
 convert.ads:49:24: info: predicate check proved (Trivial: 1 VC)
 convert.ads:50:18: info: predicate check proved (Trivial: 1 VC)
@@ -48,9 +48,9 @@ convert.ads:65:30: info: range check proved (colibri: 2 VC)
 convert.ads:67:17: info: precondition proved (Z3: 2 VC)
 convert.ads:72:64: info: range check proved (colibri: 2 VC)
 convert.ads:75:23: medium: precondition might fail, cannot prove Low <= Last_Float_As_Uns64
-convert.ads:76:63: info: overflow check proved (Z3: 1 VC)
+convert.ads:76:63: info: float overflow check proved (Z3: 1 VC)
 convert.ads:79:23: medium: precondition might fail, cannot prove Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64
-convert.ads:81:63: info: overflow check proved (Z3: 1 VC)
+convert.ads:81:63: info: float overflow check proved (Z3: 1 VC)
 test_convert.adb:9:08: info: range check proved (Z3: 2 VC)
 test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations)
 test_convert.adb:9:44: warning: statement has no effect

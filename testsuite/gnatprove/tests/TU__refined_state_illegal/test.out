@@ -8,20 +8,26 @@ refined_state_illegal.adb:24:30: error: non-visible declaration at refined_state
 refined_state_illegal.adb:24:30: error: non-visible declaration at refined_state_illegal.ads:58
 refined_state_illegal.adb:31:35: error: constituent "F1" must denote object or state
 refined_state_illegal.adb:40:44: error: malformed constituent
-refined_state_illegal.adb:58:36: error: cannot use "Pr_Var1" in refinement, constituent is not a hidden state of package "Pac8"
-refined_state_illegal.adb:59:37: error: cannot use "Pr_Var1" in refinement, constituent is not a hidden state of package "Pac8"
-refined_state_illegal.adb:59:46: error: cannot use "Pr_Var2" in refinement, constituent is not a hidden state of package "Pac8"
+refined_state_illegal.adb:58:36: error: "Pr_Var1" cannot act as constituent of state "S1"
+refined_state_illegal.adb:58:36: error: missing Part_Of indicator at refined_state_illegal.ads:98 should specify encapsulator "S1"
+refined_state_illegal.adb:59:37: error: "Pr_Var1" cannot act as constituent of state "S2"
+refined_state_illegal.adb:59:37: error: missing Part_Of indicator at refined_state_illegal.ads:98 should specify encapsulator "S2"
+refined_state_illegal.adb:59:46: error: "Pr_Var2" cannot act as constituent of state "S2"
+refined_state_illegal.adb:59:46: error: missing Part_Of indicator at refined_state_illegal.ads:99 should specify encapsulator "S2"
 refined_state_illegal.adb:65:17: error: body of package "Pac9" has unused hidden states
 refined_state_illegal.adb:65:17: error: variable "Var1" defined at line 68
 refined_state_illegal.adb:71:33: error: extra global item "Var1" does not refine or repeat any global item at refined_state_illegal.ads:114
 refined_state_illegal.ads:24:11: error: aspect "Refined_State" must apply to a package body
+refined_state_illegal.ads:33:29: error: package body should have Refined_State for state "S" with constituents
 refined_state_illegal.ads:33:29: error: state "S" requires refinement
 refined_state_illegal.ads:74:34: error: abstract state "S2" must be refined
+refined_state_illegal.ads:74:34: error: package body should have Refined_State for state "S2" with constituents
 refined_state_illegal.ads:74:34: error: state "S2" requires refinement
 refined_state_illegal.ads:98:07: error: "Pr_Var1" is declared in the private part of package "Pac8"
 refined_state_illegal.ads:98:07: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
 refined_state_illegal.ads:99:07: error: "Pr_Var2" is declared in the private part of package "Pac8"
 refined_state_illegal.ads:99:07: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
 refined_state_illegal.ads:125:34: error: abstract state "S2" must be refined
+refined_state_illegal.ads:125:34: error: package body should have Refined_State for state "S2" with constituents
 refined_state_illegal.ads:125:34: error: state "S2" requires refinement
 gnatprove: error during generation of Global contracts
