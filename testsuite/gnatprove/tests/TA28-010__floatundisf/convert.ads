@@ -1,4 +1,4 @@
-pragma Ada_2020;
+pragma Ada_2022;
 
 with Interfaces;
 with Ada.Numerics.Big_Numbers.Big_Integers;
