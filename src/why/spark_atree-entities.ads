@@ -760,6 +760,12 @@ package SPARK_Atree.Entities is
       return Boolean;
    --  Same as Sem_Util.Is_Unchecked_Conversion_Instance
 
+   function Overridden_Operation
+     (E : Subprogram_Kind_Id)
+      return Opt_Subprogram_Kind_Id;
+   --  Same as Einfo.Entities.Overridden_Operation except that it goes to the
+   --  ultimate alias.
+
    -------------------
    --  For Packages --
    -------------------

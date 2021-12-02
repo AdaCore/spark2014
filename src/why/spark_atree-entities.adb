@@ -680,6 +680,22 @@ package body SPARK_Atree.Entities is
    function Object_Size (Typ : Type_Kind_Id) return Uint is
      (Einfo.Entities.Esize (Typ));
 
+   --------------------------
+   -- Overridden_Operation --
+   --------------------------
+
+   function Overridden_Operation
+     (E : Subprogram_Kind_Id) return Opt_Subprogram_Kind_Id
+   is
+      Parent_E : constant Opt_Subprogram_Kind_Id :=
+        Einfo.Entities.Overridden_Operation (E);
+   begin
+      if Present (Parent_E) then
+         return Sem_Aux.Ultimate_Alias (Parent_E);
+      end if;
+      return Empty;
+   end Overridden_Operation;
+
    -------------------------
    -- Package_Body_Entity --
    -------------------------

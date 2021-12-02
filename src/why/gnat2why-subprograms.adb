@@ -4221,9 +4221,32 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      --  Only warn on statically False precondition that is not written as
-      --  "False" in the source code, so as to warn about cases where the
-      --  configuration leads to a precondition being False.
+      --  If E is a wrapper introduced for an implicit overriding of an
+      --  inherited primitive with a dispatching result on a null extension,
+      --  add a continuation to better locate the check messages.
+
+      if Is_Wrapper_For_Dispatching_Result (E) then
+
+         --  Go over the ancestors of E to find the first one which is not
+         --  an implicit wrapper. There must be one.
+
+         declare
+            Parent_E : Entity_Id := E;
+         begin
+            loop
+               Parent_E := Overridden_Operation (Parent_E);
+               pragma Assert (Present (Parent_E));
+               exit when not Is_Wrapper_For_Dispatching_Result (Parent_E);
+            end loop;
+
+            Continuation_Stack.Append
+              (Continuation_Type'
+                 (Ada_Node => Parent_E,
+                  Message  => To_Unbounded_String
+                    ("in implicit overriding of primitive function with"
+                     & " dispatching result """ & Source_Name (E) & '"')));
+         end;
+      end if;
 
       for Expr of Get_Precondition_Expressions (E) loop
          if Nkind (Expr) in N_Expanded_Name | N_Identifier
@@ -4477,6 +4500,10 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Function then
          Result_Name := Why_Empty;
          Result_Is_Mutable := False;
+      end if;
+
+      if Is_Wrapper_For_Dispatching_Result (E) then
+         Continuation_Stack.Delete_Last;
       end if;
 
       --  We should *not* filter our own entity, it is needed for recursive

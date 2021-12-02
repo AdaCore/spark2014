@@ -30,7 +30,7 @@ procedure Inherited with SPARK_Mode is
 
    package Q2 is
       use P2;
-      type T2 is new R with null record with Predicate => X > 0;
+      type T2 is new R with null record with Predicate => X > 0; --@PREDICATE_CHECK:FAIL
       W : constant T2 := (X => 1);
    end Q2;
 
@@ -41,7 +41,7 @@ procedure Inherited with SPARK_Mode is
 
    procedure Bad2 with Pre => True is
    begin
-      pragma Assert (P2.R'Class (Q2.F).X = 0); --@PREDICATE_CHECK:FAIL
+      pragma Assert (P2.R'Class (Q2.F).X = 0);
    end Bad2;
 begin
    Bad1;
