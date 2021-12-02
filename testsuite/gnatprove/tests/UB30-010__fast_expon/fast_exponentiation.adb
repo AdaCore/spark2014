@@ -1,4 +1,4 @@
-package body Fast_Exponentiation is
+package body Fast_Exponentiation with SPARK_Mode is
 
    function Fast_Exp (X : Int; N : Natural) return Int is
    begin
@@ -37,8 +37,10 @@ package body Fast_Exponentiation is
             E := E / 2;
 
             pragma Assert (P ** E = (P_At_L) ** E * (P_At_L) ** E);
+            pragma Assert (R * P ** E = X ** N);
          end;
       end loop;
+      pragma Assert (E = 0);
 
       return R;
    end Fast_Exp_Imperative;

@@ -1,7 +1,7 @@
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 
-package Fast_Exponentiation is
+package Fast_Exponentiation with SPARK_Mode is
 
    subtype Int is Big_Integer;
 
