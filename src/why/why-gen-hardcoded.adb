@@ -74,6 +74,18 @@ package body Why.Gen.Hardcoded is
 
    end Emit_Hardcoded_Type_Declaration;
 
+   -----------------------------
+   -- Is_Hardcoded_Comparison --
+   -----------------------------
+
+   function Is_Hardcoded_Comparison (Subp : Entity_Id) return Boolean is
+     (Is_Subprogram (Subp) and then Is_Hardcoded_Entity (Subp)
+      and then Chars (Subp) in Name_Op_Eq
+                             | Name_Op_Lt
+                             | Name_Op_Le
+                             | Name_Op_Gt
+                             | Name_Op_Ge);
+
    ---------------------------------------
    -- Transform_Hardcoded_Function_Call --
    ---------------------------------------

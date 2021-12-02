@@ -16743,6 +16743,13 @@ package body Gnat2Why.Expr is
           not (Nkind (Expr) = N_Function_Call
              and then Ekind (Get_Called_Entity (Expr)) = E_Function
              and then Is_Predicate_Function (Get_Called_Entity (Expr)))
+
+        --  Calls to hardcoded operators
+
+        and then
+          not (Nkind (Expr) = N_Function_Call
+             and then Ekind (Get_Called_Entity (Expr)) = E_Function
+             and then Is_Hardcoded_Comparison (Get_Called_Entity (Expr)))
       then
          T := +Pred_Of_Boolean_Term
                  (Transform_Term (Expr, EW_Bool_Type, Local_Params));
@@ -18549,9 +18556,11 @@ package body Gnat2Why.Expr is
       --  want to introduce let bindings for parameters so that we do not
       --  duplicate checks.
 
-      Args     : constant W_Expr_Array :=
+      Subdomain : constant EW_Domain :=
+        (if Domain = EW_Pred then EW_Term else Domain);
+      Args      : constant W_Expr_Array :=
         Tag_Arg &
-        Compute_Call_Args (Expr, Domain, Context, Store, Params, Use_Tmps);
+        Compute_Call_Args (Expr, Subdomain, Context, Store, Params, Use_Tmps);
 
       Why_Name : W_Identifier_Id;
 
