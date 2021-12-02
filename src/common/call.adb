@@ -54,7 +54,7 @@ package body Call is
       return Argument_List
    is
       use String_Lists;
-      Arguments : Argument_List := (1 .. Integer (S.Length) => <>);
+      Arguments : Argument_List := [1 .. Integer (S.Length) => <>];
       Cnt       : Positive      := 1;
    begin
       for Elem of S loop

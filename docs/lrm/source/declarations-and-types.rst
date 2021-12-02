@@ -78,7 +78,9 @@ referenced in analysis and proof.
 An *expression with a variable input* reads a variable or calls a
 function which (directly or indirectly) reads a variable.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 1. [A ``constraint``, excluding the ``range`` of a
    ``loop_parameter_specification``, shall not be defined using an
@@ -100,7 +102,9 @@ Subtype Predicates
 Static predicates and dynamic predicates are both in
 |SPARK|, but subject to some restrictions.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 1. [A Dynamic_Predicate expression shall not have a variable input;
    see :ref:`Expressions` for the statement of this rule.]
@@ -135,7 +139,9 @@ Static predicates and dynamic predicates are both in
 3. A Static_Predicate or Dynamic_Predicate shall not apply to a subtype of a
    type that is effectively volatile for reading.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 .. index:: termination; of Dynamic_Predicate
 
@@ -174,7 +180,9 @@ initialization expression depends on:
 
 Otherwise, a stand-alone constant is a *constant without variable inputs*.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. [The borrowed name of the expression of an object declaration defining a
@@ -182,7 +190,9 @@ Otherwise, a stand-alone constant is a *constant without variable inputs*.
    occurrence of the root object of the expression;
    see :ref:`Expressions` for the statement of this rule.]
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 2. Constants without variable inputs shall not be denoted in Global,
@@ -191,7 +201,9 @@ Otherwise, a stand-alone constant is a *constant without variable inputs*.
    yield equal initialization expression values.]
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
 
@@ -217,7 +229,9 @@ Derived Types and Classes
 
 The following rules apply to derived types in |SPARK|.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A private type that is not visibly tagged but whose full view is tagged
@@ -267,7 +281,9 @@ Discriminants
 
 The following rules apply to discriminants in |SPARK|.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The type of a ``discriminant_specification`` shall be discrete.
@@ -287,7 +303,9 @@ Record Types
 
 Default initialization expressions must not have variable inputs in |SPARK|.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. [The ``default_expression`` of a ``component_declaration`` shall not
@@ -304,7 +322,9 @@ components of a protected type.]
 Tagged Types and Type Extensions
 --------------------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. No construct shall introduce a semantic dependence on the Ada language
@@ -321,7 +341,9 @@ Tagged Types and Type Extensions
 Type Extensions
 ~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A type extension shall not be declared within a subprogram body, block
@@ -407,7 +429,9 @@ provide the same safeguards for allocated objects.
 
 The rules which accomplish all of this are described below.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 Only the following (named or anonymous) access types are in |SPARK|:
 
@@ -759,7 +783,9 @@ For example, given::
 
 X.Link is poisoned by the assignment to Y.]
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 [Redundant: For clarity of presentation, some legality rules are stated in the
 preceding "Static Semantics" section (e.g., the rule that an owning type shall
@@ -929,7 +955,9 @@ be an owning type).]
 18. Instances of Unchecked_Deallocation shall not have a general access type
     as a parameter.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 .. index:: memory leak; for objects
            deallocation, Unchecked_Deallocation

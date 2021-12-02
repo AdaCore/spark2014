@@ -391,7 +391,7 @@ procedure Gnatprove with SPARK_Mode is
             Search
               (Source_Dir.Display_Full_Name,
                Pattern => "*.ali",
-               Filter => (Ordinary_File => True, others => False),
+               Filter  => [Ordinary_File => True, others => False],
                Process => Copy_File'Access);
          end if;
       end Copy_Dir;
@@ -1241,8 +1241,8 @@ begin
 
    declare
       Plan : constant Plan_Type :=
-        (if CodePeer then (GS_ALI, GS_CodePeer, GS_Gnat2Why)
-         else (GS_ALI, GS_Gnat2Why));
+        (if CodePeer then [GS_ALI, GS_CodePeer, GS_Gnat2Why]
+         else [GS_ALI, GS_Gnat2Why]);
    begin
       for Step in Plan'Range loop
          Execute_Step (Plan, Step, CL_Switches.P.all, Tree);

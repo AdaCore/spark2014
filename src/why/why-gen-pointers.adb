@@ -843,7 +843,7 @@ package body Why.Gen.Pointers is
       --  Equal pointers have equal values
 
       procedure Declare_Pointer_Type;
-      --  Emit the why record declaration related to the ada pointer type
+      --  Emit the why record declaration related to the Ada pointer type
 
       ---------------------
       -- Local Variables --

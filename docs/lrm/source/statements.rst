@@ -9,7 +9,9 @@ Simple and Compound Statements - Sequences of Statements
 
 |SPARK| excludes certain kinds of statements that complicate verification.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A ``simple_statement`` shall not be
@@ -45,7 +47,9 @@ Loop Statements
 User-Defined Iterator Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. The generic package Ada.Iterator_Interfaces shall not be referenced.
@@ -61,7 +65,9 @@ User-Defined Iterator Types
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. Ada's generalized loop iteration is supported in |SPARK|,
@@ -103,7 +109,9 @@ Generalized Loop Iteration
    Ada RM 5.5.1 are necessarily not in |SPARK|, this effectively replaces,
    rather than extends, those definitions].
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 5. Each of the four (or three, if the optional argument is omitted)
    names shall denote an explicitly declared primitive function of the
@@ -142,7 +150,9 @@ Generalized Loop Iteration
 
 .. todo: positional notation in an Iterable aspect spec ok?
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 12. Iteration associated with a generalized iterator or a container element
     iterator procedes as follows. An object of the iteration cursor subtype
@@ -173,7 +183,9 @@ the value that an expression had upon entry to a given loop in much the same way
 that the ``Old`` attribute in a subprogram postcondition can be used to refer to
 the value an expression had upon entry to the subprogram.
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 ::
 
@@ -181,7 +193,9 @@ the value an expression had upon entry to the subprogram.
   loop_variant_item       ::= change_direction => expression
   change_direction        ::= Increases | Decreases
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. Pragma Loop_Invariant is like a pragma Assert except it also acts
@@ -196,7 +210,9 @@ the value an expression had upon entry to the subprogram.
    executed.
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 3. Loop_Invariant is an assertion just like pragma Assert with respect
@@ -249,7 +265,9 @@ the value an expression had upon entry to the subprogram.
    Loop_Variant pragmas.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 
 9. Other than the above legality rules, pragma Loop_Invariant is equivalent to
@@ -280,7 +298,9 @@ the value an expression had upon entry to the subprogram.
     Assertion_Policy pragma].
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 The following example illustrates some pragmas of this section
 
@@ -297,7 +317,9 @@ simple loop.
 Attribute Loop_Entry
 ^^^^^^^^^^^^^^^^^^^^
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. For a prefix *X* that denotes an object of a nonlimited type, the
@@ -314,7 +336,9 @@ Attribute Loop_Entry
    on entry to the closest enclosing loop.]
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 3. A Loop_Entry ``attribute_reference`` *applies to* a ``loop_statement`` in the
@@ -412,7 +436,9 @@ Attribute Loop_Entry
 
    this would introduce an exception in the case where Idx is not in X'Range.]
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 
 8. For each X'Loop_Entry other than one occurring within an Ignored
@@ -488,7 +514,9 @@ No extensions or restrictions.
 Goto Statements
 ---------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A ``goto_statement`` shall be located before the target statement in the
@@ -522,7 +550,9 @@ will be raised.  However, in proof, no verification of the expression
 is performed and in general it cannot. It has to be used with caution
 and is used to state axioms.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. Pragma Assert_And_Cut is an assertion the same as a pragma Assert
@@ -539,7 +569,9 @@ and is used to state axioms.
    to proof tools that the expression can be assumed to be True.]
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 3. Pragmas Assert_And_Cut and Assume have the same syntax for their Boolean
@@ -549,7 +581,9 @@ and is used to state axioms.
 
 .. _assertcutinv_proof_semantics:
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 4. The verification rules for pragma Assume are significantly different to those
@@ -562,7 +596,9 @@ and is used to state axioms.
    responsibility for ensuring correctness rests entirely upon the user.]
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/up_timer.ads
    :language: ada

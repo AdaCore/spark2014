@@ -914,10 +914,10 @@ package body Configuration is
                   Coqc_Bin : String_Access :=
                     GNAT.OS_Lib.Locate_Exec_On_Path ("coqc");
                   Args : GNAT.OS_Lib.Argument_List :=
-                    (1 => new String'("-R"),
+                    [1 => new String'("-R"),
                      2 => new String'(Prover_Obj_Dir),
                      3 => new String'("Why3"),
-                     4 => new String'(Source_Dest));
+                     4 => new String'(Source_Dest)];
 
                   Success : Boolean;
 
@@ -2047,7 +2047,7 @@ package body Configuration is
       --  Local variables
 
       Com_Lin : String_List :=
-        (1 .. Ada.Command_Line.Argument_Count => <>);
+        [1 .. Ada.Command_Line.Argument_Count => <>];
 
       --  Help message read from a static file
 
@@ -2132,8 +2132,8 @@ package body Configuration is
          function Concat3 (A, B : String_List_Access; C : String_List)
                            return String_List is
          begin
-            return (if A = null then (1 .. 0 => <>) else A.all) &
-                   (if B = null then (1 .. 0 => <>) else B.all) &
+            return (if A = null then [] else A.all) &
+                   (if B = null then [] else B.all) &
                    C;
          end Concat3;
 
@@ -2144,9 +2144,9 @@ package body Configuration is
          function Concat4 (A, B, C : String_List_Access; D : String_List)
                            return String_List is
          begin
-            return (if A = null then (1 .. 0 => <>) else A.all) &
-                   (if B = null then (1 .. 0 => <>) else B.all) &
-                   (if C = null then (1 .. 0 => <>) else C.all) &
+            return (if A = null then [] else A.all) &
+                   (if B = null then [] else B.all) &
+                   (if C = null then [] else C.all) &
                    D;
          end Concat4;
 
@@ -2406,19 +2406,19 @@ package body Configuration is
       procedure Prepare_Why3_Manual is
          Args : GNAT.OS_Lib.Argument_List :=
            (if Gnatwhy3_Conf /= "" then
-              (1 => new String'("--prepare-shared"),
+              [1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
                3 => new String'(Prover_List ("Ada")),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all),
                6 => new String'("--why3-conf"),
-               7 => new String'(Gnatwhy3_Conf))
+               7 => new String'(Gnatwhy3_Conf)]
             else
-              (1 => new String'("--prepare-shared"),
+              [1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
                3 => new String'(Prover_List ("Ada")),
                4 => new String'("--proof-dir"),
-               5 => new String'(Proof_Dir.all)));
+               5 => new String'(Proof_Dir.all)]);
          Res : Boolean;
          Old_Dir  : constant String := Current_Directory;
          Gnatwhy3 : constant String :=

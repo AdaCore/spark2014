@@ -4,6 +4,10 @@ syntax.adb:13:35: error: invalid name "Bla" in pragma Annotate (GNATprove, name)
 syntax.adb:14:07: error: third argument "pattern" for GNATprove Annotate pragma must be a string literal
 syntax.adb:15:07: error: fourth argument "reason" for GNATprove Annotate pragma must be a string literal
 gnatprove: error during generation of Global contracts
+suppr.adb:10:10: info: justified that "X" might not be initialized
+suppr.adb:11:15: info: justified that "Z" is not initialized
 suppr.adb:17:04: warning: analyzing unreferenced procedure "Q"
 suppr.adb:17:14: warning: subprogram "Q" has no effect
+suppr.adb:24:10: info: justified that "X" might not be initialized
+suppr.adb:26:15: info: justified that "Z" is not initialized
 syntax.ads:3:14: warning: subprogram "P" has no effect

@@ -22,13 +22,13 @@ project GNAT2Why_GNAT is
       case Build is
          when "Debug" | "Devel" =>
             for Switches ("Ada") use
-               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnat2020");
+               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnat2022");
          when "Coverage" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O0", "-gnat2020");
+               Common_Switches & ("-O0", "-gnat2022");
          when "Production" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn", "-gnat2020");
+               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn", "-gnat2022");
       end case;
    end Compiler;
 

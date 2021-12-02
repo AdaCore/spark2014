@@ -671,7 +671,7 @@ package body Why.Inter is
       elsif Get_Relaxed_Init (Left) /= Get_Relaxed_Init (Right) then
          return False;
 
-      --  For EW_Abstract and EW_Split types, compare the ada node
+      --  For EW_Abstract and EW_Split types, compare the Ada node
 
       elsif Get_Type_Kind (Left) in EW_Abstract | EW_Split then
 

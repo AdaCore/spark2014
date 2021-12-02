@@ -22,10 +22,10 @@
 ------------------------------------------------------------------------------
 
 with Aspects;     use Aspects;
-with Namet;       use Namet;
 with Nlists;      use Nlists;
 with Sem_Type;    use Sem_Type;
 with Sinfo.Utils; use Sinfo.Utils;
+with Sinput;      use Sinput;
 
 package body Flow_Utility.Initialization is
 
@@ -62,56 +62,55 @@ package body Flow_Utility.Initialization is
          Init : Default_Initialization_Kind;
 
       begin
-         --  Do not process internally generated components except for _parent
-         --  which represents the ancestor portion of a derived type.
+         --  Don't expect internally generated components
 
-         if Comes_From_Source (ORC)
-           or else Chars (ORC) = Name_uParent
-         then
-            --  When the component has a default expression, then it is default
-            --  initialized no matter of its type.
+         pragma Assert
+           (Comes_From_Source (ORC)
+              or else Comes_From_Inlined_Body (Sloc (ORC)));
 
-            if Present (Expression (Parent (ORC))) then
-               FDI := True;
-               return;
-            end if;
+         --  When the component has a default expression, then it is default
+         --  initialized no matter of its type.
 
-            --  If a component is not visible in SPARK, we assume it to be not
-            --  initialized.
-
-            Init :=
-              (if Component_Is_Visible_In_SPARK (ORC)
-               then Default_Initialization (Base_Type (Etype (ORC)),
-                                            Ignore_DIC)
-               else No_Default_Initialization);
-
-            --  Default initialization of the record depends then on the
-            --  default initialization of the component type.
-
-            case Init is
-               --  Mixed initialization renders the entire record mixed
-
-               when Mixed_Initialization =>
-                  FDI := True;
-                  NDI := True;
-
-               --  The component is fully default initialized when its type is
-               --  fully default initialized.
-
-               when Full_Default_Initialization =>
-                  FDI := True;
-
-               --  Components with no possible initialization are ignored
-
-               when No_Possible_Initialization =>
-                  null;
-
-               --  The component has no full default initialization
-
-               when No_Default_Initialization =>
-                  NDI := True;
-            end case;
+         if Present (Expression (Parent (ORC))) then
+            FDI := True;
+            return;
          end if;
+
+         --  If a component is not visible in SPARK, we assume it to be not
+         --  initialized.
+
+         Init :=
+           (if Component_Is_Visible_In_SPARK (ORC)
+            then Default_Initialization (Base_Type (Etype (ORC)),
+                                         Ignore_DIC)
+            else No_Default_Initialization);
+
+         --  Default initialization of the record depends then on the default
+         --  initialization of the component type.
+
+         case Init is
+            --  Mixed initialization renders the entire record mixed
+
+            when Mixed_Initialization =>
+               FDI := True;
+               NDI := True;
+
+            --  The component is fully default initialized when its type is
+            --  fully default initialized.
+
+            when Full_Default_Initialization =>
+               FDI := True;
+
+            --  Components with no possible initialization are ignored
+
+            when No_Possible_Initialization =>
+               null;
+
+            --  The component has no full default initialization
+
+            when No_Default_Initialization =>
+               NDI := True;
+         end case;
       end Process_Component;
 
       --  Local variables

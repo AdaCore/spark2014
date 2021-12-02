@@ -32,8 +32,6 @@ with Sinfo.Utils;                    use Sinfo.Utils;
 with Sprint;                         use Sprint;
 
 with Common_Iterators;               use Common_Iterators;
-with SPARK_Util;                     use SPARK_Util;
-with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 
 with Flow_Debug;                     use Flow_Debug;
 with Flow_Utility;                   use Flow_Utility;
@@ -206,6 +204,14 @@ package body Flow_Refinement is
                         --  ??? redirect to where the type is declared
                         Context :=
                           Declaration_Node (Etype (First_Formal (E)));
+
+                     --  Likewise for expression of the generated dispatching
+                     --  equality.
+
+                     elsif Is_Tagged_Predefined_Eq (E) then
+                        Context :=
+                          Declaration_Node (Etype (First_Formal (E)));
+
                      else
                         return (Ent  => E,
                                 Part => Body_Part);
@@ -318,8 +324,15 @@ package body Flow_Refinement is
                | N_Abstract_Subprogram_Declaration
             =>
                if Present (Prev_Context) then
-                  return (Ent  => Defining_Entity (Context),
-                          Part => Visible_Part);
+                  if Is_Tagged_Predefined_Eq (Defining_Entity (Context)) then
+                     Prev_Context := Context;
+                     Context      :=
+                       Declaration_Node
+                         (Etype (First_Formal (Defining_Entity (Context))));
+                  else
+                     return (Ent  => Defining_Entity (Context),
+                             Part => Visible_Part);
+                  end if;
                else
                   Prev_Context := Context;
                   Context      := Parent (Context);

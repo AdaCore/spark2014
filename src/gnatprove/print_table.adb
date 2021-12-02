@@ -34,8 +34,8 @@ package body Print_Table with SPARK_Mode is
                      "Null_Unbounded_String represents the null String.");
 
       T : constant Table_Content (1 .. Lines, 1 .. Cols) :=
-        (others => (others => Cell'(Content => Null_Unbounded_String,
-                                    Align   => Right_Align)));
+        [others => [others => Cell'(Content => Null_Unbounded_String,
+                                    Align   => Right_Align)]];
    begin
       return (Lines, Cols, T, 1, 1);
    end Create_Table;

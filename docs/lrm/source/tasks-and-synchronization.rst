@@ -24,7 +24,9 @@ of Ravenscar or Jorvik, delay statements and protected procedure handlers are
 in |SPARK|. The attributes Callable, Caller, Identity and Terminated
 are in |SPARK|.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 .. index:: yield synchronized objects
 
@@ -62,7 +64,9 @@ are in |SPARK|.
   erroneous execution. The declaration of a synchronized stand-alone
   variable shall be a library-level declaration.]
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 2. Task and protected units are in |SPARK|, but their use requires
@@ -151,7 +155,9 @@ are in |SPARK|.
    synchronized object or a synchronized state abstraction.
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 7. A ``global_item`` occurring in a Global aspect specification of a

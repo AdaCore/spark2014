@@ -40,7 +40,12 @@ my_package.adb:207:20: high: formal parameters "X" and "Y" are aliased (SPARK RM
 my_package.adb:207:23: warning: "Z" is set by "Move_X_To_Y" but not used after the call
 my_package.adb:210:21: high: formal parameter "Y" and global "XX" are aliased (SPARK RM 6.4.2)
 my_package.adb:211:21: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
+my_package.adb:213:21: info: justified that formal parameter "X" and global "YY" are aliased (SPARK RM 6.4.2)
+my_package.adb:220:28: info: justified that formal parameter "Y" and global "XX" are aliased (SPARK RM 6.4.2)
 my_package.adb:228:07: warning: statement has no effect
+my_package.adb:228:13: info: justified that formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 my_package.adb:228:13: warning: "A" is set by "Swap" but not used after the call
 my_package.adb:228:20: warning: "A" is set by "Swap" but not used after the call
 my_package.ads:8:22: info: initialization of "Found" proved
+my_package.ads:9:22: info: justified that "Result" might not be initialized in "Search"
+my_package.ads:25:04: info: justified that type "Stack" is not fully initialized

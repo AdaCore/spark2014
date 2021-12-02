@@ -3,7 +3,7 @@ project Test is
    package Builder is
       for Global_Configuration_Pragmas use "test.adc";
    end Builder;
-   
+
    package Compiler is
       for Switches ("Ada") use ("-gnat2020", "-gnato13");
    end Compiler;

@@ -496,6 +496,9 @@ package SPARK_Util.Subprograms is
    --     (precondition, postcondition or contract cases). Otherwise, return
    --     N_Unused_At_Start.
 
+   function Is_Tagged_Predefined_Eq (E : Entity_Id) return Boolean;
+   --  Returns True iff E is an internally generated equality function
+
    function Is_Traversal_Function (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is a traversal function

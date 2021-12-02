@@ -603,9 +603,11 @@ package body SPARK_Definition is
       E   : Entity_Id;
       Msg : String)
    is
-      Eq : Entity_Id := Get_User_Defined_Eq (Base_Type (Ty));
+      Eq : Entity_Id := SPARK_Util.Types.Get_User_Defined_Eq (Base_Type (Ty));
    begin
-      if Is_Record_Type (Unchecked_Full_Type (Ty)) and then Present (Eq) then
+      if Is_Record_Type (Unchecked_Full_Type (Ty))
+        and then Present (Eq)
+      then
          Eq := Ultimate_Alias (Eq);
 
          Mark_Entity (Eq);
@@ -3561,6 +3563,7 @@ package body SPARK_Definition is
       --  syntactically null).
 
       if Nkind (N) in N_Op_Eq | N_Op_Ne
+        and then Retysp_In_SPARK (Etype (Left_Opnd (N)))
         and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
         and then Nkind (Left_Opnd (N)) /= N_Null
         and then Nkind (Right_Opnd (N)) /= N_Null
@@ -3888,6 +3891,26 @@ package body SPARK_Definition is
          Mark_Violation
            ("call to allocating function not stored in object as "
             & "part of assignment, declaration or return", N);
+      end if;
+
+      --  If N is a call to the predefined equality of a tagged type, mark
+      --  the actual and check that the equality does not apply to access
+      --  types.
+
+      if Is_Tagged_Predefined_Eq (E) then
+         Mark_Actuals (N);
+
+         declare
+            Left  : constant Node_Id := First_Actual (N);
+            Right : constant Node_Id := Next_Actual (Left);
+            pragma Assert (No (Next_Actual (Right)));
+         begin
+            if Predefined_Eq_Uses_Pointer_Eq (Etype (Left)) then
+               Mark_Violation ("equality on access types", N);
+            end if;
+         end;
+
+         return;
       end if;
 
       if Nkind (Name (N)) = N_Explicit_Dereference then
@@ -5682,7 +5705,7 @@ package body SPARK_Definition is
          --  A derived type cannot have explicit discriminants
 
          if Nkind (Parent (E)) in N_Private_Extension_Declaration
-           | N_Full_Type_Declaration
+                                | N_Full_Type_Declaration
            and then not Is_Class_Wide_Type (E)
            and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
            and then Present (Discriminant_Specifications (Parent (E)))
@@ -5943,13 +5966,6 @@ package body SPARK_Definition is
             Mark_Violation
               ("subtype predicate on effectively volatile type for reading",
                E, SRM_Reference => "SPARK RM 3.2.4(3)");
-         end if;
-
-         --  Check the user defined equality of record types if any, as they
-         --  can be used silently as part of the classwide equality.
-
-         if Is_Tagged_Type (E) then
-            Check_User_Defined_Eq (E, E, "tagged type");
          end if;
 
          --  We currently do not support invariants on components of tagged
@@ -6758,6 +6774,16 @@ package body SPARK_Definition is
 
          else
             raise Program_Error;
+         end if;
+
+         --  Check the user defined equality of record types if any, as they
+         --  can be used silently as part of the classwide equality.
+
+         if not Violation_Detected
+           and then E = Base_Retysp (E)
+           and then Is_Tagged_Type (E)
+         then
+            Check_User_Defined_Eq (E, E, "tagged type");
          end if;
 
          --  If no violations were found and the type is annotated with
@@ -8233,9 +8259,7 @@ package body SPARK_Definition is
         --  We still mark predicate functions declared in the specification
         --  of internal units.
 
-        and then not
-          (Ekind (E) = E_Function
-           and then Is_Predicate_Function (E))
+        and then not In_Pred_Function_Body
       then
          return;
 

@@ -2,6 +2,8 @@ q.adb:7:20: info: unrolling loop
 q.adb:15:20: info: unrolling loop
 q.adb:21:11: info: data dependencies proved
 q.adb:22:11: info: flow dependencies proved
+q.adb:22:11: info: justified that missing dependency "null => Glob"
+q.adb:22:31: info: justified that incorrect dependency "Glob => Glob"
 q.ads:3:08: info: flow dependencies proved
 q.ads:10:21: info: initialization of "KS" proved
 q.ads:11:11: info: flow dependencies proved

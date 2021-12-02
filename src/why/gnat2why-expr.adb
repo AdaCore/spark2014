@@ -275,7 +275,11 @@ package body Gnat2Why.Expr is
    --          invariant and that the invariant holds for default values
    --          of type N.
 
-   procedure Check_UU_Restrictions (Expr : Node_Id);
+   procedure Check_UU_Restrictions (Expr : Node_Id) with
+     Pre => Nkind (Expr) in
+         N_Op_Eq | N_Op_Ne | N_Function_Call | N_Membership_Test
+       and then (if Nkind (Expr) = N_Function_Call
+                 then Is_Tagged_Predefined_Eq (Get_Called_Entity (Expr)));
    --  Check special restrictions for unchecked union types on membership tests
    --  and builtin equality. Emit statically failed proof results for these
    --  checks.
@@ -937,6 +941,17 @@ package body Gnat2Why.Expr is
                     Ada_Node => Stat,
                     Expr     => +New_Identifier (Name => "absurd"),
                     Reason   => VC_Raise));
+
+   function Transform_Record_Equality
+     (Expr   : Node_Id;
+      Left   : Node_Id;
+      Right  : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id
+   with
+     Pre => Nkind (Expr) in N_Op_Eq | N_Op_Ne | N_Function_Call
+       and then (if Nkind (Expr) = N_Function_Call
+                 then Is_Tagged_Predefined_Eq (Get_Called_Entity (Expr)));
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : N_Function_Call_Id;
@@ -2890,7 +2905,8 @@ package body Gnat2Why.Expr is
       Is_Membership_Test                 : constant Boolean :=
         Nkind (Expr) in N_Membership_Test;
       Left                               : constant Node_Id :=
-        Left_Opnd (Expr);
+        (if Nkind (Expr) = N_Function_Call then First_Actual (Expr)
+         else Left_Opnd (Expr));
       Left_Type                          : constant Entity_Id :=
         Retysp (Etype (Left));
       Ty_Has_Unconstrained_UU_Component  : constant Boolean :=
@@ -3029,7 +3045,8 @@ package body Gnat2Why.Expr is
             end;
          else
             Do_One_Alternative
-              (Right_Opnd (Expr),
+              ((if Nkind (Expr) = N_Function_Call then Next_Actual (Left)
+                else Right_Opnd (Expr)),
                Violation_Found,
                Ada_Node,
                Explanation);
@@ -4001,7 +4018,7 @@ package body Gnat2Why.Expr is
            then " of box association"
            else "");
       --  If Decl_Node is present, we are checking the default initialization
-      --  of a private type. If the ada node is a component association, then
+      --  of a private type. If the Ada node is a component association, then
       --  we are checking a box association.
       Checks : W_Prog_Id;
 
@@ -8414,7 +8431,7 @@ package body Gnat2Why.Expr is
                   end if;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
-                  L_Type :=  Base_Why_Type (Left_Type);
+                  L_Type := Base_Why_Type (Left_Type);
                   R_Type := EW_Int_Type;
                   Base := Base_Why_Type (Return_Type);
                   Oper := WNE_Fixed_Point_Mult_Int;
@@ -15081,7 +15098,12 @@ package body Gnat2Why.Expr is
                            Typ    => EW_Bool_Type);
             end if;
          end;
+
+      elsif Is_Record_Type_In_Why (Left_Type) then
+         T := Transform_Record_Equality (Expr, Left, Right, Domain, Params);
+
       else
+         pragma Assert (Has_Scalar_Type (Left_Type));
          declare
             Op         : constant Node_Kind := Nkind (Expr);
             Right_Type : constant Entity_Id := Etype (Right);
@@ -15090,84 +15112,16 @@ package body Gnat2Why.Expr is
 
             BT         : constant W_Type_Id :=
               Base_Why_Type (Left_Type, Right_Type);
-            Left_Expr  : W_Expr_Id :=
+            Left_Expr  : constant W_Expr_Id :=
               Transform_Expr (Left, BT, Subdomain, Params);
-            Right_Expr : W_Expr_Id :=
+            Right_Expr : constant W_Expr_Id :=
               Transform_Expr (Right, BT, Subdomain, Params);
          begin
-
-            if Is_Record_Type_In_Why (Left_Type) then
-               pragma Assert (Op in N_Op_Eq | N_Op_Ne);
-               pragma Assert (Root_Retysp (Left_Type) =
-                                Root_Retysp (Right_Type));
-               pragma Assert (Root_Retysp (Left_Type) =
-                                Root_Retysp (Get_Ada_Node (+BT)));
-
-               --  Check the specific rules for builtin equality on
-               --  unchecked union types.
-
-               if Domain = EW_Prog then
-                  Check_UU_Restrictions (Expr);
-               end if;
-
-               --  Check that operands are initialized. Even if initialization
-               --  checks are introduced for the conversion to BT, we still
-               --  need to insert these checks here to ensure initialization of
-               --  nested components with relaxed initialization if any.
-
-               Left_Expr :=
-                 Insert_Initialization_Check
-                   (Left, Get_Ada_Node (+BT), Left_Expr, Domain);
-               Right_Expr :=
-                 Insert_Initialization_Check
-                   (Right, Get_Ada_Node (+BT), Right_Expr, Domain);
-
-               if Is_Class_Wide_Type (Left_Type) then
-                  T := New_Ada_Equality
-                    (Typ    => Left_Type,
-                     Domain => Domain,
-                     Left   => Left_Expr,
-                     Right  => Right_Expr);
-               else
-                  T :=
-                    New_Call
-                      (Ada_Node => Expr,
-                       Domain   => Subdomain,
-                       Name     =>
-                         E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
-                       Args     => (1 => Left_Expr,
-                                    2 => Right_Expr),
-                       Typ      => EW_Bool_Type);
-               end if;
-
-               if Domain = EW_Pred then
-                  T := New_Comparison
-                    (Symbol =>
-                       Transform_Compare_Op (Op, EW_Bool_Type, Domain),
-                     Left   => T,
-                     Right  => New_Literal (Domain => Subdomain,
-                                            Value  => EW_True),
-                     Domain => Domain);
-
-               elsif Op = N_Op_Ne then
-                  pragma Annotate
-                    (Xcov, Exempt_On, "A /= B is expanded into not (A = B)");
-                  T :=
-                    New_Call (Domain => Domain,
-                              Name   => M_Boolean.Notb,
-                              Args   => (1 => T),
-                              Typ    => EW_Bool_Type);
-                  pragma Annotate (Xcov, Exempt_Off);
-               end if;
-
-            else
-               pragma Assert (Has_Scalar_Type (Left_Type));
-               T := New_Comparison
-                 (Symbol  => Transform_Compare_Op (Op, BT, Domain),
-                  Left    => Left_Expr,
-                  Right   => Right_Expr,
-                  Domain  => Domain);
-            end if;
+            T := New_Comparison
+              (Symbol  => Transform_Compare_Op (Op, BT, Domain),
+               Left    => Left_Expr,
+               Right   => Right_Expr,
+               Domain  => Domain);
          end;
       end if;
 
@@ -15700,7 +15654,7 @@ package body Gnat2Why.Expr is
                   elsif Count_Discriminants (Typ) > 0
                     and then not Is_Constrained (Base)
                   then
-                     Check :=  Check_Discr_Of_Subtype (Base, Typ);
+                     Check := Check_Discr_Of_Subtype (Base, Typ);
                   end if;
 
                   --  Only perform checks on a component if the component is
@@ -17974,6 +17928,18 @@ package body Gnat2Why.Expr is
                     (Expr,
                      Domain,
                      Local_Params);
+
+               elsif Is_Tagged_Predefined_Eq (Subp) then
+                  declare
+                     Left  : constant Node_Id := First_Actual (Expr);
+                     Right : constant Node_Id := Next_Actual (Left);
+
+                  begin
+                     pragma Assert (No (Next_Actual (Right)));
+                     T := Transform_Record_Equality
+                       (Expr, Left, Right, Domain, Local_Params);
+                  end;
+
                else
                   T := Transform_Function_Call (Expr, Domain, Local_Params);
                end if;
@@ -18067,11 +18033,7 @@ package body Gnat2Why.Expr is
                then
                   --  Construct the value for the uninitialized data. We
                   --  generate:
-                  --  Constr_ty.default_checks; (prog domain only)
-                  --  to_des_ty
-                  --    (any constr_ty ensures
-                  --     { Constr_ty.default_initial_condition result /\
-                  --       Constr_ty.dynamic_invariant result })
+                  --  to_des_ty (<default_value_for_constr_ty>)
 
                   declare
                      Constr_Ty : constant Entity_Id :=
@@ -18092,32 +18054,13 @@ package body Gnat2Why.Expr is
                           Typ       => EW_Abstract
                             (Des_Ty,
                              Relaxed_Init => Has_Relaxed_Init (Des_Ty)));
-                     Res_Id           : constant W_Identifier_Id :=
-                       +New_Result_Ident
-                       (Typ => EW_Abstract
-                          (Constr_Ty, Has_Relaxed_Init (Constr_Ty)));
-                     Pred             : constant W_Pred_Id :=
-                       +New_And_Expr
-                       (Left   => +Compute_Default_Init
-                          (Expr   => +Res_Id,
-                           Ty     => Constr_Ty,
-                           Params => Body_Params),
-                        Right  => +Compute_Dynamic_Invariant
-                          (Expr             => +Res_Id,
-                           Ty               => Constr_Ty,
-                           Params           => Body_Params,
-                           --  Uninitialized allocators are only allowed if
-                           --  the type defines full default init.
-                           Initialized      => True_Term,
-                           --  Also assume bounds / discriminants
-                           Only_Var         => False_Term),
-                        Domain => EW_Pred);
                      Tmp_Value        : constant W_Expr_Id :=
                        New_Temp_For_Expr
-                         (E         => New_Any_Expr
-                            (Post        => Pred,
-                             Labels      => Symbol_Sets.Empty_Set,
-                             Return_Type => Get_Typ (Res_Id)),
+                         (E         => Compute_Default_Value
+                            (Ada_Node     => Expr,
+                             E            => Constr_Ty,
+                             Relaxed_Init => Has_Relaxed_Init (Constr_Ty),
+                             Domain       => Domain),
                           Need_Temp => Need_Bound_Check);
                      Value_Expr       : W_Expr_Id := Insert_Checked_Conversion
                        (Ada_Node => Expr,
@@ -18161,19 +18104,6 @@ package body Gnat2Why.Expr is
                         Domain  => Domain,
                         Def     => Value_Expr,
                         Context => Call);
-
-                     if Domain = EW_Prog then
-                        Call := New_Binding
-                          (Name    => New_Identifier (Name => "_"),
-                           Domain  => EW_Prog,
-                           Def     =>
-                             +Compute_Default_Check
-                             (Ada_Node => Expr,
-                              Ty       => Constr_Ty,
-                              Params   => Body_Params),
-                           Context => Call,
-                           Typ => EW_Abstract (Etype (Expr)));
-                     end if;
                   end;
 
                --  Initialized allocator
@@ -21420,6 +21350,99 @@ package body Gnat2Why.Expr is
         Field_Assoc (1 .. Field_Index - 1);
       return Result;
    end Transform_Record_Component_Associations;
+
+   -------------------------------
+   -- Transform_Record_Equality --
+   -------------------------------
+
+   function Transform_Record_Equality
+     (Expr   : Node_Id;
+      Left   : Node_Id;
+      Right  : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id
+   is
+      Op        : constant Node_Kind :=
+        (if Nkind (Expr) = N_Function_Call then N_Op_Eq
+         else Nkind (Expr));
+      Subdomain : constant EW_Domain :=
+        (if Domain = EW_Pred then EW_Term else Domain);
+
+      Left_Type  : constant Type_Kind_Id := Etype (Left);
+      BT         : constant W_Type_Id :=
+        Base_Why_Type (Left_Type, Etype (Right));
+      Left_Expr  : W_Expr_Id :=
+        Transform_Expr (Left, BT, Subdomain, Params);
+      Right_Expr : W_Expr_Id :=
+        Transform_Expr (Right, BT, Subdomain, Params);
+
+      T : W_Expr_Id;
+
+   begin
+      pragma Assert (Root_Retysp (Left_Type) =
+                       Root_Retysp (Etype (Right)));
+      pragma Assert (Root_Retysp (Left_Type) =
+                       Root_Retysp (Get_Ada_Node (+BT)));
+
+      --  Check the specific rules for builtin equality on
+      --  unchecked union types.
+
+      if Domain = EW_Prog then
+         Check_UU_Restrictions (Expr);
+      end if;
+
+      --  Check that operands are initialized. Even if initialization
+      --  checks are introduced for the conversion to BT, we still
+      --  need to insert these checks here to ensure initialization of
+      --  nested components with relaxed initialization if any.
+
+      Left_Expr :=
+        Insert_Initialization_Check
+          (Left, Get_Ada_Node (+BT), Left_Expr, Domain);
+      Right_Expr :=
+        Insert_Initialization_Check
+          (Right, Get_Ada_Node (+BT), Right_Expr, Domain);
+
+      if Is_Class_Wide_Type (Left_Type) then
+         T := New_Ada_Equality
+           (Typ    => Left_Type,
+            Domain => Domain,
+            Left   => Left_Expr,
+            Right  => Right_Expr);
+      else
+         T :=
+           New_Call
+             (Ada_Node => Expr,
+              Domain   => Subdomain,
+              Name     =>
+                E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
+              Args     => (1 => Left_Expr,
+                           2 => Right_Expr),
+              Typ      => EW_Bool_Type);
+      end if;
+
+      if Domain = EW_Pred then
+         T := New_Comparison
+           (Symbol =>
+              Transform_Compare_Op (Op, EW_Bool_Type, Domain),
+            Left   => T,
+            Right  => New_Literal (Domain => Subdomain,
+                                   Value  => EW_True),
+            Domain => Domain);
+
+      elsif Op = N_Op_Ne then
+         pragma Annotate
+           (Xcov, Exempt_On, "A /= B is expanded into not (A = B)");
+         T :=
+           New_Call (Domain => Domain,
+                     Name   => M_Boolean.Notb,
+                     Args   => (1 => T),
+                     Typ    => EW_Bool_Type);
+         pragma Annotate (Xcov, Exempt_Off);
+      end if;
+
+      return T;
+   end Transform_Record_Equality;
 
    ------------------------------------
    -- Transform_Shift_Or_Rotate_Call --

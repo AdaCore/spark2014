@@ -1,7 +1,9 @@
 Packages
 ========
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 1. The elaboration of a package shall not update, directly or
@@ -48,7 +50,9 @@ persistent state of other packages given certain restrictions described in
 refinement similar to the refinement available to types whereby a record may
 contain fields which are themselves records.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. The visible state of a package P consists of:
@@ -217,7 +221,9 @@ A protected function whose corresponding protected type is
 nonvolatile during a protected action and whose Volatile_Function aspect is
 False is said to be *nonvolatile for internal calls*.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. If an external state is declared without any of the external
@@ -261,7 +267,9 @@ False is said to be *nonvolatile for internal calls*.
    be True if Async_Readers is True.]
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 7. Every update of an external state is considered to be read by
@@ -419,7 +427,9 @@ be *compatible with respect to volatility* with E2 if
      volatility refinement aspects is either False for E1 or
      True for E2.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. Any specified value for a volatility refinement aspect shall be static.
@@ -528,17 +538,23 @@ be *compatible with respect to volatility* with E2 if
    function's Volatile_Function aspect is False.]
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 11. There are no dynamic semantics associated with these aspects.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 12. An effectively volatile for reading formal parameter of mode **out** whose
     Async_Writers aspect is True shall not be read, even after it has been
     updated.
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/input_port.ads
    :language: ada
@@ -589,7 +605,9 @@ The Abstract_State aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is Abstract_State and the ``aspect_definition``
 shall follow the grammar of ``abstract_state_list`` given below.
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 
 ::
@@ -616,7 +634,9 @@ shall follow the grammar of ``abstract_state_list`` given below.
   abstract_state           ::= name
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. An ``option`` shall not be repeated within a single ``option_list``.
@@ -653,7 +673,9 @@ shall follow the grammar of ``abstract_state_list`` given below.
    (or ignored) to remain a legal Ada program.]
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 5. Each ``state_name`` occurring in an Abstract_State aspect
@@ -702,15 +724,21 @@ shall follow the grammar of ``abstract_state_list`` given below.
    Effective_Writes and Effective_Reads aspects specified to be False.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 There are no dynamic semantics associated with the Abstract_State aspect.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 There are no verification rules associated with the Abstract_State aspect.
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/simple_abstract_state.ads
    :language: ada
@@ -738,7 +766,9 @@ The Initializes aspect is introduced by an ``aspect_specification`` where the
 ``aspect_mark`` is Initializes and the ``aspect_definition`` shall follow the
 grammar of ``initialization_spec`` given below.
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 
 ::
@@ -752,7 +782,9 @@ grammar of ``initialization_spec`` given below.
   initialization_item ::= name [ => input_list]
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. An Initializes aspect shall only appear in the ``aspect_specification`` of a
@@ -780,7 +812,9 @@ grammar of ``initialization_spec`` given below.
    [That is Initializes => (A => **null**) is equivalent to Initializes => A.]
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 6. The Initializes aspect of a package has visibility of the declarations
@@ -806,11 +840,15 @@ grammar of ``initialization_spec`` given below.
    constituents of the state abstraction.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 There are no dynamic semantics associated with the Initializes aspect.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 .. index:: initialization; of package state
 
@@ -849,7 +887,9 @@ variable or state abstraction as uninitialized when analyzing clients
 of the package.]
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
    :linenos:
@@ -916,14 +956,18 @@ The Initial_Condition aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Initial_Condition and the ``aspect_definition`` shall
 be a *Boolean_*\ ``expression``.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. An Initial_Condition aspect shall only be placed in an ``aspect_specification``
    of a ``package_specification``.
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 2. An Initial_Condition aspect is an assertion and behaves as a
@@ -938,7 +982,9 @@ be a *Boolean_*\ ``expression``.
    abstractions of the package must be used.]
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 
 3. With respect to dynamic semantics, specifying a given expression as
@@ -953,7 +999,9 @@ be a *Boolean_*\ ``expression``.
    might freeze has already been frozen].
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 .. index:: verification condition; for Initial_Condition
 
@@ -969,7 +1017,9 @@ be a *Boolean_*\ ``expression``.
    ``initialization_item`` of the Initializes aspect of Q.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
    :linenos:
@@ -1044,7 +1094,9 @@ The Refined_State aspect is introduced by an ``aspect_specification`` where the
 ``aspect_mark`` is Refined_State and the ``aspect_definition`` shall follow
 the grammar of ``refinement_list`` given below.
 
-.. centered:: **Syntax**
+.. container:: heading
+
+   Syntax
 
 
 ::
@@ -1060,14 +1112,18 @@ where
   ``constituent ::=`` *object_*\ ``name | state_name``
 
 
-.. centered:: **Name Resolution Rules**
+.. container:: heading
+
+   Name Resolution Rules
 
 
 1. A Refined_State aspect of a ``package_body`` has visibility extended to the
    ``declarative_part`` of the body.
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 2. A Refined_State aspect shall only appear in the ``aspect_specification`` of a
@@ -1134,7 +1190,9 @@ where
     a synchronized state abstraction, or an external state abstraction.
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 14. A Refined_State aspect of a ``package_body`` completes the
@@ -1153,11 +1211,15 @@ where
     extra state in the future, or if hidden state is removed.]
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 There are no dynamic semantics associated with Refined_State aspect.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 16. Each ``constituent`` that is a constant shall be a constant *with
@@ -1171,7 +1233,9 @@ There are no dynamic semantics associated with Refined_State aspect.
     shall be initialized.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
    :linenos:
@@ -1214,7 +1278,9 @@ may be achieved by initialization within the package, by assumed
 pre-initialization (in the case of external state) or, for constituents
 which reside in another package, initialization by their declaring package.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 1. For each state abstraction denoted by the ``name`` of an
@@ -1259,14 +1325,18 @@ The Refined_Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
 shall follow the grammar of ``global_specification`` in :ref:`Global Aspects`.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 1. The static semantics are as for those of the Global aspect given in
    :ref:`Global Aspects`. [Differences between these two aspects for one
    subprogram stem from differences in state abstraction visibility
    between the points where the two aspects are specified.]
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 2. A Refined_Global aspect is permitted on a body_stub (if one is
@@ -1360,11 +1430,15 @@ shall follow the grammar of ``global_specification`` in :ref:`Global Aspects`.
    :ref:`Refined External States` also apply.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 There are no dynamic semantics associated with a Refined_Global aspect.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 7. If a subprogram has a Refined_Global aspect it is used in the analysis of the
@@ -1374,7 +1448,9 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 8. The verification rules given for :ref:`Global Aspects` also apply.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/refined_global_examples.ads
    :language: ada
@@ -1404,14 +1480,18 @@ The Refined_Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Depends and the ``aspect_definition``
 shall follow the grammar of ``dependency_relation`` in :ref:`Depends Aspects`.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 1. The static semantics are as for those of the Depends aspect given in
    :ref:`Depends Aspects`. [Differences between these two aspects for one
    subprogram stem from differences in state abstraction visibility
    between the points where the two aspects are specified.]
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 2. A Refined_Depends aspect is permitted on a body_stub (if one is
@@ -1529,12 +1609,16 @@ shall follow the grammar of ``dependency_relation`` in :ref:`Depends Aspects`.
 7. The rules for :ref:`Depends Aspects` also apply.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 There are no dynamic semantics associated with a Refined_Depends aspect
 as it is used purely for static analysis purposes and is not executed.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 8. If a subprogram has a Refined_Depends aspect it is used in the analysis of
@@ -1544,7 +1628,9 @@ as it is used purely for static analysis purposes and is not executed.
 9. The verification rules given for :ref:`Depends Aspects` also apply.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/refined_depends_examples.ads
    :language: ada
@@ -1593,7 +1679,9 @@ that an object or state abstraction is to be treated as though it
 were declared within a protected unit or task unit (see section
 :ref:`Tasks and Synchronization`).
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. A *Part_Of indicator* is a Part_Of ``option`` of a state
@@ -1605,7 +1693,9 @@ were declared within a protected unit or task unit (see section
    task or protected unit (see section :ref:`Tasks and Synchronization`).
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 2. A variable declared immediately within the private part of a given
@@ -1652,7 +1742,9 @@ were declared within a protected unit or task unit (see section
    subprogram.
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 8. For flow analysis, where a state abstraction is visible as well as
@@ -1673,7 +1765,9 @@ were declared within a protected unit or task unit (see section
      abstraction encapsulates.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. code-block:: ada
    :linenos:
@@ -1728,7 +1822,9 @@ The Refined_Post aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is "Refined_Post" and the ``aspect_definition`` shall
 be a Boolean ``expression``.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A Refined_Post aspect may only appear on a body_stub (if one is
@@ -1744,7 +1840,9 @@ be a Boolean ``expression``.
    aspect).
 
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 3. [A Refined Postcondition of a subprogram defines a *refinement*
@@ -1765,7 +1863,9 @@ be a Boolean ``expression``.
 5. The static semantics are otherwise as for a postcondition.
 
 
-.. centered:: **Dynamic Semantics**
+.. container:: heading
+
+   Dynamic Semantics
 
 
 6. When a subprogram or entry with a Refined Postcondition is called,
@@ -1778,7 +1878,9 @@ be a Boolean ``expression``.
    as described in the Ada RM.
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 .. index:: verification condition; for Refined_Post
 
@@ -1833,7 +1935,9 @@ External state which is a state abstraction requires a refinement as does any
 state abstraction. There are rules which govern refinement of a state
 abstraction on to external states which are given in this section.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. A state abstraction that is not specified as External shall not have
@@ -1853,7 +1957,9 @@ abstraction on to external states which are given in this section.
    also apply.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/externals.ads
    :language: ada
@@ -1922,7 +2028,9 @@ RM, but there is a lot of such expository text in this section and we
 don't want anyone to be confused about what is strictly part of the
 language definition and what is not.]
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 1. For a given type-invariant bearing type T, a *boundary* subprogram is a
    subprogram which is declared inside the immediate scope of type T, and
@@ -1932,7 +2040,9 @@ language definition and what is not.]
    whether a subprogram declared as or within an instantiation of that generic
    is a boundary subprogram.
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 2. The aspect Type_Invariant may be specified in SPARK, but only for
    the completion of a private type. [In other words, the Type_Invariant
@@ -1945,7 +2055,9 @@ language definition and what is not.]
 
 4. A Type_Invariant shall not apply to an effectively volatile type for reading.
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 .. index:: verification condition; for Type_Invariant
 
@@ -2104,7 +2216,9 @@ No extensions or restrictions.
 Assignment and Finalization
 ---------------------------
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 1. Controlled types are not permitted in |SPARK|.
@@ -2143,7 +2257,9 @@ expression evaluation in Ada's freezing rules.
 This same principle applies to the rules about reading
 global variables discussed later in this section.
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 
 1. A call which occurs within the same compilation_unit as the subprogram_body
@@ -2180,7 +2296,9 @@ global variables discussed later in this section.
       [See Ada RM 10.1.1 for definition of semantic dependence.]
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 3. |SPARK| requires that an intra-compilation_unit call which is
@@ -2360,7 +2478,9 @@ global variables discussed later in this section.
       Flag : Boolean := F; -- would fail elaboration checks
    end; --]
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/times_2.adb
    :language: ada
@@ -2404,7 +2524,9 @@ global variables discussed later in this section.
 Use of Initial_Condition and Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Static Semantics**
+.. container:: heading
+
+   Static Semantics
 
 To ensure the correct semantics of the Initializes and Initial_Condition
 aspects, when applied to library units, language restrictions (described below)
@@ -2460,7 +2582,9 @@ are imposed in |SPARK| which have the following consequences:
    contribute to the abstraction.
 
 
-.. centered:: **Verification Rules**
+.. container:: heading
+
+   Verification Rules
 
 
 4. If a read of a variable (or state abstraction, in the case of a
@@ -2504,7 +2628,9 @@ are imposed in |SPARK| which have the following consequences:
    aspect of the package.
 
 
-.. centered:: **Legality Rules**
+.. container:: heading
+
+   Legality Rules
 
 
 7. The elaboration of a package body shall be known to follow the
@@ -2514,7 +2640,9 @@ are imposed in |SPARK| which have the following consequences:
    aspect of the given package.
 
 
-.. centered:: **Examples**
+.. container:: heading
+
+   Examples
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/p.ads
    :language: ada

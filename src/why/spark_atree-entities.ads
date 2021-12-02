@@ -414,10 +414,6 @@ package SPARK_Atree.Entities is
         Post => Get_Iterable_Type_Primitive'Result =
                 Sem_Aux.Ultimate_Alias (Get_Iterable_Type_Primitive'Result);
 
-   function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id;
-   --  Same as Sem_Util.Get_User_Defined_Eq except that it goes through
-   --  renamings.
-
    function Has_Default_Aspect (Typ : Type_Kind_Id) return Boolean;
    --  Same as EE.Has_Default_Aspect except that it goes to the
    --  Base_Retysp.

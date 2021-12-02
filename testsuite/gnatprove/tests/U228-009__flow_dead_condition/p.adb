@@ -9,7 +9,7 @@ procedure P with SPARK_Mode is
    is
    begin
       X.all := 0;
-      MyOut :=  X.all = Y.all;
+      MyOut := X.all = Y.all;
    end Ptr_Compare;
 
    procedure Ptr_Compare2 (X     : access constant Integer;
@@ -18,7 +18,7 @@ procedure P with SPARK_Mode is
      with Pre => (X /= null and Y /= null)
    is
    begin
-      MyOut :=  X.all = Y.all;
+      MyOut := X.all = Y.all;
    end Ptr_Compare2;
 
    A : Int_Ptr := new Integer'(1);
@@ -46,7 +46,8 @@ begin
    Ptr_Compare (A, A, Tmp);  -- Aliasing hazard
    Glob_Compare (A, Tmp);  -- Aliasing hazard
 
-   --  These calls are *not* at risk of aliasing
+   --  These calls are not actually at risk of aliasing, however
+   --  flow analysis cannot guarantee this.
    Ptr_Compare2 (A, A, Tmp);
    Glob_Compare2 (A, Tmp);
 end P;

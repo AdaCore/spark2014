@@ -45,8 +45,6 @@ absence of run-time errors of Depends_Exercise.Is_Full fully established
   Depends_Exercise.Push at depends_exercise.ads:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 1 checks out of 2 proved
 effects on parameters and Global variables of Depends_Exercise.Push fully established
   Depends_Exercise.Wait_X_Return_True at depends_exercise.ads:22 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
-   Justified messages:
-    depends_exercise.adb:23:37: 
 effects on parameters and Global variables of Depends_Exercise.Wait_X_Return_True fully established
 absence of run-time errors of Depends_Exercise.Wait_X_Return_True fully established
 

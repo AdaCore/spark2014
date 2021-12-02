@@ -147,7 +147,7 @@ package Why.Gen.Records is
       Ty           : Entity_Id;
       Init_Wrapper : Boolean := False)
       return W_Expr_Id;
-   --  Generate a record aggregate of ada type Ty from the association in
+   --  Generate a record aggregate of Ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
 
    function New_Ada_Record_Aggregate
@@ -177,7 +177,7 @@ package Why.Gen.Records is
       Ty           : Entity_Id;
       Discr_Expr   : out W_Expr_Id;
       Field_Assocs : out W_Field_Association_Array);
-   --  Generate a record aggregate of ada type Ty from the association in
+   --  Generate a record aggregate of Ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
 
    function New_Discriminants_Access
@@ -226,7 +226,7 @@ package Why.Gen.Records is
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an update to the
    --  additional field introduced in records for the 'Tag attribute.
-   --  @param Ada_Node ada node associated to the object
+   --  @param Ada_Node Ada node associated to the object
    --  @param Domain domain of the expression
    --  @param Name name of the record object to update
    --  @param From_Expr expression from which the attribute should be taken

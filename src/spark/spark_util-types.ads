@@ -393,6 +393,10 @@ package SPARK_Util.Types is
    --  @param Discr a discriminant of Ty
    --  @return the constraint for Discr in Ty
 
+   function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id;
+   --  Same as Sem_Util.Get_User_Defined_Eq except that it goes through
+   --  renamings and ignores predefined equality of tagged types.
+
    function Has_Private_Fields (E : Type_Kind_Id) return Boolean
      with Pre => Has_Private_Type (E) or else Has_Record_Type (E);
    --  @param E a private or record type

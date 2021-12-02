@@ -504,15 +504,19 @@ procedure SPARK_Report is
               Flow_Kind_To_Summary (Kind);
          begin
             if Has_Field (Result, "suppressed") then
-               Add_Suppressed_Warning
-                 (Unit   => Unit,
-                  Subp   => Subp,
-                  Reason => Get (Get (Result, "suppressed")),
-                  File   => Get (Get (Result, "file")),
-                  Line   => Get (Get (Result, "line")),
-                  Column => Get (Get (Result, "col")));
-               if Category /= No_Entry then
-                  Increment (Summary (Category).Justified);
+               if Severe /= "warning" then
+                  Add_Suppressed_Check
+                    (Unit       => Unit,
+                     Subp       => Subp,
+                     Justif_Msg => Get (Get (Result, "justif_msg")),
+                     Kind       => Get (Get (Result, "annot_kind")),
+                     Reason     => Get (Get (Result, "suppressed")),
+                     File       => Get (Get (Result, "file")),
+                     Line       => Get (Get (Result, "line")),
+                     Column     => Get (Get (Result, "col")));
+                  if Category /= No_Entry then
+                     Increment (Summary (Category).Justified);
+                  end if;
                end if;
             elsif Severe = "info" then
                if Category /= No_Entry then
@@ -575,17 +579,17 @@ procedure SPARK_Report is
          begin
             if Category = Warnings then
                null;
-
             elsif Has_Field (Result, "suppressed") then
                Increment (Summary (Category).Justified);
-               Add_Suppressed_Warning
-                 (Unit   => Unit,
-                  Subp   => Subp,
-                  Reason => Get (Get (Result, "suppressed")),
-                  File   => Get (Get (Result, "file")),
-                  Line   => Get (Get (Result, "line")),
-                  Column => Get (Get (Result, "col")));
-
+               Add_Suppressed_Check
+                 (Unit       => Unit,
+                  Subp       => Subp,
+                  Justif_Msg => Get (Get (Result, "justif_msg")),
+                  Kind       => Get (Get (Result, "annot_kind")),
+                  Reason     => Get (Get (Result, "suppressed")),
+                  File       => Get (Get (Result, "file")),
+                  Line       => Get (Get (Result, "line")),
+                  Column     => Get (Get (Result, "col")));
             else
                Add_Proof_Result
                  (Unit   => Unit,
@@ -868,16 +872,38 @@ procedure SPARK_Report is
 
                   Put_Line (Handle, "");
 
-                  if not Stat.Suppr_Msgs.Is_Empty then
-                     Put_Line (Handle, "   Justified messages:");
-                     for Msg of Stat.Suppr_Msgs loop
-                        Put_Line (Handle,
-                                  "    " &
-                                  Ada.Strings.Unbounded.To_String (Msg.File) &
-                                    ":" & Image (Msg.Line, 1) & ":" &
-                                    Image (Msg.Column, 1) & ": " &
-                                    Ada.Strings.Unbounded.To_String
-                                    (Msg.Reason));
+                  if not Stat.Suppr_Checks.Is_Empty then
+                     Put_Line (Handle, "   Justified check messages:");
+                     for Msg of Stat.Suppr_Checks loop
+                        declare
+                           use Ada.Strings.Unbounded;
+
+                           Marked_As : constant Unbounded_String :=
+                             " (marked as: " & Msg.Kind;
+
+                           Reason : constant Unbounded_String :=
+                             "reason: """ & Msg.Reason & """)";
+
+                           Explanation : constant Unbounded_String :=
+                             Marked_As & ", " & Reason;
+                           --  justification kind and reason, e.g.
+                           --  "(marked as: intentional, with reason: not
+                           --  possible)".
+
+                        begin
+                           Put_Line (Handle, "    "
+                                     --  file, line, column, e.g. "p.adb:42:6:"
+                                     & To_String (Msg.File)
+                                     & ":" & Image (Msg.Line, 1) & ":"
+                                     & Image (Msg.Column, 1) & ":"
+
+                                     --  justification message, e.g. "overflow
+                                     --  check failed"
+                                     & (if Msg.Justif_Msg /= ""
+                                        then " " & To_String (Msg.Justif_Msg)
+                                        else "")
+                                     & To_String (Explanation));
+                        end;
                      end loop;
                   end if;
 
@@ -885,10 +911,10 @@ procedure SPARK_Report is
                      Put_Line (Handle, "   pragma Assume statements:");
                      for Assm of Stat.Pragma_Assumes loop
                         Put_Line (Handle,
-                                  "    " &
-                                    Ada.Strings.Unbounded.To_String
-                                    (Assm.File) & ":" & Image (Assm.Line, 1) &
-                                    ":" & Image (Assm.Column, 1));
+                                  "    "
+                                  & Ada.Strings.Unbounded.To_String (Assm.File)
+                                  & ":" & Image (Assm.Line, 1)
+                                  & ":" & Image (Assm.Column, 1));
                      end loop;
                   end if;
 

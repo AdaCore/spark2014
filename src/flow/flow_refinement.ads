@@ -25,20 +25,22 @@
 --  when to use the abstract or refined views of a subprogram, and if the
 --  refined view then which one.
 
-with Atree;                use Atree;
-with Einfo.Entities;       use Einfo.Entities;
-with Einfo.Utils;          use Einfo.Utils;
-with Sem_Util;             use Sem_Util;
-with Snames;               use Snames;
-with Sinfo.Nodes;          use Sinfo.Nodes;
-with Types;                use Types;
+with Atree;                  use Atree;
+with Einfo.Entities;         use Einfo.Entities;
+with Einfo.Utils;            use Einfo.Utils;
+with Sem_Util;               use Sem_Util;
+with Snames;                 use Snames;
+with Sinfo.Nodes;            use Sinfo.Nodes;
+with Types;                  use Types;
 
-with Checked_Types;        use Checked_Types;
-with Common_Containers;    use Common_Containers;
-with Flow_Dependency_Maps; use Flow_Dependency_Maps;
-with Flow_Types;           use Flow_Types;
-with SPARK_Definition;     use SPARK_Definition;
-with SPARK_Util.Types;     use SPARK_Util.Types;
+with Checked_Types;          use Checked_Types;
+with Common_Containers;      use Common_Containers;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Types;             use Flow_Types;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
 
 package Flow_Refinement is
 
@@ -96,7 +98,9 @@ package Flow_Refinement is
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    with Pre  => Nkind (N) /= N_Subunit,
         Post => (if Present (Get_Flow_Scope'Result)
-                 then not Is_Generic_Unit (Get_Flow_Scope'Result.Ent));
+                 then not Is_Generic_Unit (Get_Flow_Scope'Result.Ent)
+                   and then not Is_Tagged_Predefined_Eq
+                   (Get_Flow_Scope'Result.Ent));
    --  Given (almost) any node in the AST, work out which flow scope we are in.
    --
    --  When called on the boundary node, e.g. N_Subprogram_Declaration,

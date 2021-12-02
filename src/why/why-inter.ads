@@ -210,7 +210,7 @@ package Why.Inter is
    function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;
 
    function Type_Of_Node (N : Node_Id) return W_Type_Id;
-   --  Given an ada node, try hard to make a type of it. If the node is a type
+   --  Given an Ada node, try hard to make a type of it. If the node is a type
    --  entity, return the corresponding Why type; if it's an object, return the
    --  Why type of the corresponding Why object.
 

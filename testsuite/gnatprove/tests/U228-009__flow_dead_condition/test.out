@@ -1,10 +1,10 @@
 p.adb:7:27: info: initialization of "MyOut" proved
 p.adb:11:09: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:12:19: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:12:27: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:12:18: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:12:26: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:17:28: info: initialization of "MyOut" proved
-p.adb:21:19: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:21:27: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:21:18: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:21:26: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:24:04: medium: memory leak might occur at end of scope
 p.adb:28:28: info: initialization of "MyOut" proved
 p.adb:29:11: info: data dependencies proved
@@ -18,4 +18,4 @@ p.adb:42:26: medium: pointer dereference check might fail [possible fix: subprog
 p.adb:46:04: info: precondition proved (CVC4: 2 VC)
 p.adb:46:17: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 p.adb:47:18: high: formal parameter "X" and global "A" are aliased (SPARK RM 6.4.2)
-p.adb:50:04: info: precondition proved (CVC4: 2 VC)
+p.adb:51:04: info: precondition proved (CVC4: 2 VC)
