@@ -45,11 +45,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="137613"/></proof>
-  <proof prover="1"><result status="unknown" steps="9646276"/></proof>
+  <proof prover="0"><result status="valid" steps="33293"/></proof>
+  <proof prover="1"><result status="unknown" steps="2164983"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
-  <proof prover="4"><result status="unknown" steps="667"/></proof>
+  <proof prover="3"><result status="unknown" steps="14180"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
