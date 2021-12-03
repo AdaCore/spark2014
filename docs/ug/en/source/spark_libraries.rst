@@ -183,7 +183,7 @@ elements can easily be quantified over.
 
 These containers can easily be used to model user defined data structures. They
 were used to this end to annotate and verify a package of allocators (see
-`allocators` example in the :ref:`Examples in the Toolset Distribution`). In
+the `allocators` example provided with a SPARK installation). In
 this example, an allocator featuring a free list implemented in an array is
 modeled by a record containing a set of allocated resources and a sequence of
 available resources:

@@ -20,10 +20,12 @@
 -- be opened in GPS or GNATbench when selecting the example.
 --
 adacore_u
+allocators
 autopilot
 binary_search_unconstrained
 database
 heatingsystem
+linear_search
 longest_common_prefix
 pointer_based_maps
 search_linked_list

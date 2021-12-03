@@ -39,4 +39,3 @@ the code.
       source/how_to_write_loop_invariants
       source/how_to_investigate_unproved_checks
       source/gnatprove_by_example
-      source/examples_in_the_toolset_distribution

@@ -23,7 +23,8 @@ the desired value, and if so, at which index. The collection is implemented
 here as an array. We deliberately start with an incorrect program for package
 ``Search``, in order to explain how the |SPARK| toolset can help correct these
 errors. The final version of the ``linear_search`` example is part of the
-:ref:`Examples in the Toolset Distribution`.
+examples in the distribution via the :menuselection:`Help --> SPARK -->
+Examples` menu item.
 
 We start with creating a GNAT project file in ``search.gpr``:
 
@@ -564,6 +565,4 @@ version of ``Linear_Search``, with the complete annotations:
    :language: ada
    :linenos:
 
-The final version of the ``linear_search`` example is part of the
-:ref:`Examples in the Toolset Distribution`. This concludes our tutorial on the
-|SPARK| toolset.
+This concludes our tutorial on the |SPARK| toolset.
