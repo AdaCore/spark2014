@@ -142,13 +142,18 @@ package body Gnat2Why.Error_Messages is
    function VC_Kinds_Match (Target_Kind, Found_Kind : VC_Kind) return Boolean
    is (Target_Kind = Found_Kind
          or else
-      (Target_Kind in VC_Range_Kind and then Found_Kind in VC_Range_Kind));
+      (Target_Kind in VC_Range_Kind and then Found_Kind in VC_Range_Kind)
+         or else
+      (Target_Kind in VC_Assert_Kind and then Found_Kind in VC_Assert_Kind));
    --  When checking whether the VC kind by RAC matches the target VC kind,
    --  collapse all scalar checks for now, as RAC cannot distinguish with them
    --  when a node has has the Do_Range_Check flag set to True. Indeed, RAC
    --  does not have the machinery to determine what check is emitted in
    --  gnat2why for a given Do_Range_Check flag, so it uses consistently
    --  VC_Range_Check.
+   --
+   --  Similarly, RAC will use the generic VC_Assert for various kinds of
+   --  assertions, so collapse all assertions for now.
 
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
