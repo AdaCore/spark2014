@@ -145,7 +145,7 @@ procedure SPARK_Report is
    begin
       for I in Positive range 1 .. Length (A) loop
          if not First then
-            Append (Buffer, " ");
+            Append (Buffer, ' ');
          else
             First := False;
          end if;
@@ -1173,7 +1173,7 @@ procedure SPARK_Report is
             First := False;
          end if;
          Append (UB, Base_Sloc_File (S));
-         Append (UB, ":");
+         Append (UB, ':');
          Append (UB, Image (S.Line, 1));
       end loop;
       return To_String (UB);

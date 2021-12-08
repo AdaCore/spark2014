@@ -1129,7 +1129,7 @@ package body Flow_Error_Messages is
                   | ']'
               or else Is_Upper (C)
             then
-               Append (R, "'");
+               Append (R, ''');
             end if;
 
             J := J + 1;
@@ -3645,7 +3645,7 @@ package body Flow_Error_Messages is
       procedure Append_Quote is
       begin
          if Quote then
-            Append (R, """");
+            Append (R, '"');
          end if;
       end Append_Quote;
 
@@ -3796,7 +3796,7 @@ package body Flow_Error_Messages is
                                  if Index < F_Name_String'Last
                                    and then F_Name_String (Index + 1) = '_'
                                  then
-                                    Append (R, ".");
+                                    Append (R, '.');
                                     Index := Index + 2;
                                  else
                                     Append (R, '_');
@@ -3824,7 +3824,7 @@ package body Flow_Error_Messages is
                      begin
                         Msglen := 0;
                         Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
-                        Append (R, " ");
+                        Append (R, ' ');
                         Append (R, Msg_Buffer (1 .. Msglen));
                      end;
                   when others =>

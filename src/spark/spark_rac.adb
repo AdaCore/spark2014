@@ -3300,7 +3300,7 @@ package body SPARK_RAC is
       if Present (N) then
          Append (Str1, " at ");
          Append (Str1, File_Name (Sloc (N)));
-         Append (Str1, ":");
+         Append (Str1, ':');
          Append (Str1, Physical_Line_Number'Image
                  (Get_Physical_Line_Number (Sloc (N))));
       end if;

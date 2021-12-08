@@ -1626,7 +1626,7 @@ package body Graphs is
             begin
                case C is
                   when '"' =>
-                     Append (R, "\");
+                     Append (R, '\');
                      Append (R, C);
                   when others =>
                      Append (R, C);

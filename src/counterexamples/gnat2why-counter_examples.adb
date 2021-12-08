@@ -949,7 +949,7 @@ package body Gnat2Why.Counter_Examples is
                       "others => ?");
             Count := Count + 1;
          end if;
-         Append (Value, ")");
+         Append (Value, ')');
 
          return Make_Trivial (Nul => Nul, Str => Value,
                               Cnt => Count, Els => Elems);
