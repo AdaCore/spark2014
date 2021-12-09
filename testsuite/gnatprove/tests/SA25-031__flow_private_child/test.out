@@ -5,6 +5,9 @@ spin-tunnel.ads:10:08: info: initialization of "Result" proved
 spin-tunnel.ads:13:15: medium: postcondition might fail
 spin-tunnel.ads:16:08: info: initialization of "Result" proved
 spin-tunnel.ads:19:15: medium: postcondition might fail
+spin.adb:3:14: info: Initial_Condition of package "Tunnel" is ignored
+spin.adb:3:14: info: the elaboration of "Tunnel" is not known to precede the elaboration of the current unit
+spin.adb:3:14: info: use pragma Elaborate_Body in "Tunnel" or pragma Elaborate in the current unit
 spin.ads:4:04: info: flow dependencies proved
 spin.ads:16:08: info: initialization of "State" proved
 spin_main.adb:7:04: info: initialization of "State" proved

@@ -90,6 +90,9 @@ lexer.adb:564:13: info: precondition proved (CVC4: 1 VC)
 lexer.adb:566:13: info: precondition proved (CVC4: 1 VC)
 lexer.adb:568:13: info: precondition proved (CVC4: 1 VC)
 lexer.adb:584:12: info: precondition proved (CVC4: 1 VC)
+lexer.ads:28:09: info: Initial_Condition of package "Names" is ignored
+lexer.ads:28:09: info: the elaboration of "Names" is not known to precede the elaboration of the current unit
+lexer.ads:28:09: info: use pragma Elaborate_Body in "Names" or pragma Elaborate in the current unit
 lexer.ads:62:09: info: data dependencies proved
 lexer.ads:68:09: info: data dependencies proved
 lexer.ads:73:09: info: data dependencies proved

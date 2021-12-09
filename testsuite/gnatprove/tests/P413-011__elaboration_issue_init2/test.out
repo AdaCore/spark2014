@@ -1,7 +1,13 @@
+p1.adb:2:14: info: Initial_Condition of package "P2" is ignored
+p1.adb:2:14: info: the elaboration of "P2" is not known to precede the elaboration of the current unit
+p1.adb:2:14: info: use pragma Elaborate_Body in "P2" or pragma Elaborate in the current unit
 p1.adb:5:18: medium: assertion might fail
 p1.ads:1:17: info: initial condition proved (CVC4: 1 VC)
 p1.ads:2:03: info: initialization of "Body1_Elaborated" proved
 p1.ads:3:13: warning: subprogram "P" has no effect
+p2.adb:2:14: info: Initial_Condition of package "P1" is ignored
+p2.adb:2:14: info: the elaboration of "P1" is not known to precede the elaboration of the current unit
+p2.adb:2:14: info: use pragma Elaborate_Body in "P1" or pragma Elaborate in the current unit
 p2.adb:5:18: medium: assertion might fail
 p2.ads:1:17: info: initial condition proved (CVC4: 1 VC)
 p2.ads:2:03: info: initialization of "Body2_Elaborated" proved
