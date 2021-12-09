@@ -19,8 +19,8 @@
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="1248524"/></proof>
-  <proof prover="2"><result status="valid" steps="4265"/></proof>
+  <proof prover="1"><result status="unknown" steps="46504515"/></proof>
+  <proof prover="2"><result status="valid" steps="3509"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="14800"/></proof>
