@@ -8,3 +8,39 @@ a.adb:12:32: warning: no Global contract available for "Unit_Vector"
 foo.adb:5:09: medium: precondition might fail [possible fix: subprogram at line 3 should mention N in a precondition]
 foo.adb:5:09: warning: assuming "Log" has no effect on global items
 foo.adb:5:09: warning: no Global contract available for "Log"
+s-gearop.ads:85:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:66, in instantiation at a.adb:5
+s-gearop.ads:87:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:66, in instantiation at a.adb:5
+s-gearop.ads:125:42: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:102, in instantiation at a.adb:5
+s-gearop.ads:127:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:102, in instantiation at a.adb:5
+s-gearop.ads:175:41: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:166, in instantiation at a.adb:5
+s-gearop.ads:175:41: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:202, in instantiation at a.adb:5
+s-gearop.ads:177:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:166, in instantiation at a.adb:5
+s-gearop.ads:177:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:202, in instantiation at a.adb:5
+s-gearop.ads:227:45: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:176, in instantiation at a.adb:5
+s-gearop.ads:227:45: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:212, in instantiation at a.adb:5
+s-gearop.ads:229:50: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:176, in instantiation at a.adb:5
+s-gearop.ads:229:50: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:212, in instantiation at a.adb:5
+s-gearop.ads:232:49: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:176, in instantiation at a.adb:5
+s-gearop.ads:232:49: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:212, in instantiation at a.adb:5
+s-gearop.ads:234:50: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:176, in instantiation at a.adb:5
+s-gearop.ads:234:50: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:212, in instantiation at a.adb:5
+s-gearop.ads:364:41: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:267, in instantiation at a.adb:5
+s-gearop.ads:366:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:267, in instantiation at a.adb:5
+s-gearop.ads:424:45: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:276, in instantiation at a.adb:5
+s-gearop.ads:426:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:276, in instantiation at a.adb:5
+s-gearop.ads:453:41: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:286, in instantiation at a.adb:5
+s-gearop.ads:455:50: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:286, in instantiation at a.adb:5
+s-gearop.ads:484:45: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:296, in instantiation at a.adb:5
+s-gearop.ads:486:50: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:296, in instantiation at a.adb:5
+s-gearop.ads:506:42: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:351, in instantiation at a.adb:5
+s-gearop.ads:508:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:351, in instantiation at a.adb:5
+s-gearop.ads:511:42: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:351, in instantiation at a.adb:5
+s-gearop.ads:530:42: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:354, in instantiation at a.adb:5
+s-gearop.ads:532:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:354, in instantiation at a.adb:5
+s-gearop.ads:535:46: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:354, in instantiation at a.adb:5
+s-gearop.ads:573:47: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:82, in instantiation at a.adb:5
+s-gearop.ads:575:47: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:82, in instantiation at a.adb:5
+s-gearop.ads:633:45: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:357, in instantiation at a.adb:5
+s-gearop.ads:634:49: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:357, in instantiation at a.adb:5
+s-gearop.ads:651:47: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:364, in instantiation at a.adb:5
+s-gearop.ads:652:32: info: overflow check proved (CVC4: 2 VC), in instantiation at a-ngrear.adb:364, in instantiation at a.adb:5
