@@ -902,6 +902,36 @@ package body SPARK_Util is
       return Check_Allocator (N) = Abandon;
    end Contains_Allocator;
 
+   ----------------------------
+   -- Contains_Function_Call --
+   ----------------------------
+
+   function Contains_Function_Call (N : Node_Id) return Boolean is
+
+      function Is_Function_Call (N : Node_Id) return Traverse_Result;
+      --  Will return Abandon if we encounter an Function_Call
+
+      ----------------------
+      -- Is_Function_Call --
+      ----------------------
+
+      function Is_Function_Call (N : Node_Id) return Traverse_Result
+      is
+      begin
+         if Nkind (N) = N_Function_Call then
+            return Abandon;
+         else
+            return OK;
+         end if;
+      end Is_Function_Call;
+
+      function Check_Function_Call is new
+        Traverse_More_Func (Is_Function_Call);
+
+   begin
+      return Check_Function_Call (N) = Abandon;
+   end Contains_Function_Call;
+
    -------------------------------------
    -- Contains_Volatile_Function_Call --
    -------------------------------------

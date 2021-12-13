@@ -236,4 +236,7 @@ package SPARK_Definition.Annotate is
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow
 
+   procedure Infer_Inline_Annotation (E : E_Function_Id);
+   --  Decide whether pragma Inline_For_Proof can be inferred for E
+
 end SPARK_Definition.Annotate;

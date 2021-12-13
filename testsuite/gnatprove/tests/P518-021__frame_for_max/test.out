@@ -81,9 +81,9 @@ frame_condition.adb:97:46: info: precondition proved (CVC4: 4 VC), in instantiat
 frame_condition.adb:97:55: info: range check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:97:55: info: range check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:98:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at frame_condition.adb:122
-frame_condition.adb:98:39: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:98:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:98:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at frame_condition.adb:122
-frame_condition.adb:98:39: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:98:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:98:39: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:98:39: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:104:20: info: add a contract to analyze it separately from calling contexts
@@ -177,7 +177,7 @@ frame_condition.ads:14:27: info: index check proved (CVC4: 2 VC)
 frame_condition.ads:14:42: info: index check proved (CVC4: 2 VC)
 frame_condition.ads:15:27: info: index check proved (CVC4: 2 VC)
 frame_condition.ads:15:42: info: index check proved (CVC4: 2 VC)
-frame_condition.ads:18:14: info: postcondition proved (CVC4: 1 VC; Z3: 2 VC)
+frame_condition.ads:18:14: info: postcondition proved (CVC4: 3 VC)
 frame_condition.ads:19:20: info: index check proved (CVC4: 2 VC)
 frame_condition.ads:19:38: info: index check proved (CVC4: 2 VC)
 frame_condition.ads:21:27: info: index check proved (CVC4: 2 VC)

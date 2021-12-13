@@ -5,7 +5,7 @@ contains_manual_proof = False
 
 def replay():
     prove_all(
-        level=2,
+        level=3,
         prover=["z3", "cvc4", "alt-ergo"],
         procs=10,
         steps=0,

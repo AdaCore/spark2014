@@ -2095,6 +2095,13 @@ package body SPARK_Definition is
                      Mark_Subprogram_Body (N);
                   end if;
                end if;
+
+               --  Try inferring the Inline_For_Proof annotation for expression
+               --  functions which could benefit from it.
+
+               if Ekind (E) = E_Function then
+                  Infer_Inline_Annotation (E);
+               end if;
             end;
 
          when N_Subprogram_Body_Stub =>

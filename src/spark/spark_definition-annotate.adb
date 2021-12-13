@@ -339,7 +339,7 @@ package body SPARK_Definition.Annotate is
 
       Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
 
-      --  If it does not have one, it must be an expresson function
+      --  If it does not have one, it must be an expression function
 
       if Nodes.Is_Empty then
          if not Is_Expression_Function_Or_Completion (E) then
@@ -912,6 +912,48 @@ package body SPARK_Definition.Annotate is
                  and then Ekind (Unit) = E_Package
                  and then Has_Terminate_Annotation (Unit));
    end Has_Terminate_Annotation;
+
+   -----------------------------
+   -- Infer_Inline_Annotation --
+   -----------------------------
+
+   procedure Infer_Inline_Annotation (E : E_Function_Id) is
+      Nodes : Common_Containers.Node_Lists.List;
+      Value : Node_Id;
+
+   begin
+      --  Check that E does not have a postcondition
+
+      Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
+
+      if not Nodes.Is_Empty then
+         return;
+
+      --  Check that E is an expression function
+
+      elsif not Is_Expression_Function_Or_Completion (E) then
+         return;
+
+      --  ...whose body is in SPARK
+
+      elsif not SPARK_Definition.Entity_Body_Compatible_With_SPARK (E) then
+         return;
+
+      --  ...and not a traversal function.
+
+      elsif Is_Traversal_Function (E) then
+         return;
+
+      else
+         Value := Expression (Get_Expression_Function (E));
+
+         if Contains_Function_Call (Value) then
+            return;
+         else
+            Inline_Annotations.Include (E, Value);
+         end if;
+      end if;
+   end Infer_Inline_Annotation;
 
    ---------------------------
    -- Insert_Annotate_Range --

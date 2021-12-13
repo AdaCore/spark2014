@@ -1,4 +1,3 @@
-exprfun.ads:8:29: medium: in inlined expression function body at exprfun.ads:6
-exprfun.ads:8:29: medium: postcondition might fail, cannot prove B (e.g. when B = False)
+exprfun.ads:8:29: medium: postcondition might fail (e.g. when A = True and B = False)
 typred.adb:5:08: medium: in inlined predicate at typred.ads:8
 typred.adb:5:08: medium: predicate check might fail, cannot prove S.A (e.g. when X = (A => True, B => True)) [possible fix: subprogram at typred.ads:10 should mention X in a precondition]

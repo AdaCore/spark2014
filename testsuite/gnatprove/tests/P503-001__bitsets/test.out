@@ -17,4 +17,4 @@ test_main.adb:17:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:18:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:19:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:20:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:22:19: medium: assertion might fail
+test_main.adb:22:19: medium: assertion might fail (e.g. when S = (1 => False, 2 => False, 4 => False, 5 => False, 6 => False, 7 => False, 9 => False, 10 => False, others => True))

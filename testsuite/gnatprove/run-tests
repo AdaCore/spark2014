@@ -318,7 +318,7 @@ class UGTestDriver(DiffTestDriver):
         if self.test_env["test_name"].startswith("ug__long__"):
             cmd += ["--steps=7000"]
         else:
-            cmd += ["--steps=100"]
+            cmd += ["--steps=200"]
 
         start_time = time.time()
         self.shell(cmd, catch_error=False)

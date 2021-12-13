@@ -897,6 +897,9 @@ package SPARK_Util is
    --  @return True iff the tree starting with N contains an N_Allocator
    --    node.
 
+   function Contains_Function_Call (N : Node_Id) return Boolean;
+   --  Return True iff N contains an N_Function_Call node
+
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr
    with Post => (N = Empty) = (Safe_First_Sloc'Result = No_Location);
    --  Wrapper for First_Sloc that is safe to use for nodes coming from

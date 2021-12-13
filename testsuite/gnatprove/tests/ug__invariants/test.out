@@ -29,7 +29,7 @@ invariants.ads:21:14: medium: invariant check might fail
    21 |   procedure Push (E : Element) with
       |             ^~~~
   e.g. when E = 1
-        and The_Stack = (Content => (others => 0), Size => 0, Max => 0)
+        and The_Stack = (Content => (others => 1), Size => 0, Max => 1)
 invariants.ads:22:13: info: invariant check proved
 invariants.ads:24:14: info: invariant check proved
 invariants.ads:25:13: info: invariant check proved

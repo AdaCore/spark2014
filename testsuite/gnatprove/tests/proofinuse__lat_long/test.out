@@ -15,7 +15,7 @@ lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >=
 lat_long.ads:18:26: medium: precondition might fail [possible fix: subprogram at line 17 should mention X in a precondition]
 lat_long.ads:29:14: info: postcondition proved (Z3: 1 VC)
 lat_long.ads:30:57: info: float overflow check proved (CVC4: 1 VC)
-lat_long.ads:30:101: info: float overflow check proved (altergo: 1 VC)
+lat_long.ads:30:101: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:31:58: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:34:25: info: float overflow check proved (Trivial)
 lat_long.ads:34:39: info: float overflow check proved (Trivial)
