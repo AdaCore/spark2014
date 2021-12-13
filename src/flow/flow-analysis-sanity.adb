@@ -686,6 +686,13 @@ package body Flow.Analysis.Sanity is
                N        => N,
                Severity => Error_Kind,
                F1       => Entire_Variable (F));
+            Error_Msg_Flow
+              (FA           => FA,
+               Msg          => "use instead a constant initialized to the "
+                 & "expression with variable input",
+               N            => N,
+               Severity     => Error_Kind,
+               Continuation => True);
             Sane := False;
          end Emit_Error;
 

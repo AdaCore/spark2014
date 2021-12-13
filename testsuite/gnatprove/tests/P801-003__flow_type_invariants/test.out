@@ -6,10 +6,12 @@ test_02.ads:9:09: info: invariant check proved on default value (CVC4: 1 VC)
 
 === test_03.ads ===
 test_03.ads:13:39: error: invariant cannot depend on variable input "C" (SPARK RM 4.4(2))
+test_03.ads:13:39: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
 
 === test_04.ads ===
 test_04.ads:13:39: error: invariant cannot depend on variable input "C" (SPARK RM 4.4(2))
+test_04.ads:13:39: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
 
 === test_05.adb ===

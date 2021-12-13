@@ -1,7 +1,11 @@
 p.adb:1:18: info: data dependencies proved
 p.adb:13:26: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.adb:13:26: error: use instead a constant initialized to the expression with variable input
 p.adb:23:26: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.adb:23:26: error: use instead a constant initialized to the expression with variable input
 q.adb:1:18: info: data dependencies proved
 q.adb:13:27: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+q.adb:13:27: error: use instead a constant initialized to the expression with variable input
 q.adb:23:37: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+q.adb:23:37: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

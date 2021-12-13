@@ -1,2 +1,3 @@
 tasks.ads:8:37: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+tasks.ads:8:37: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

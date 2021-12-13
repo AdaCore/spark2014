@@ -11,6 +11,7 @@ crtp_pack.adb:62:07: info: initialization of "Handler" proved
 crtp_pack.ads:138:07: info: initialization of "Packet" proved
 crtp_pack.ads:144:07: info: initialization of "Has_Succeed" proved
 crtp_pack.ads:167:63: error: actual for formal object with mode in cannot depend on variable input "Bla" (SPARK RM 4.4(2))
+crtp_pack.ads:167:63: error: use instead a constant initialized to the expression with variable input
 generic_queue_pack.ads:23:07: medium: "Item.Channel" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Channel" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]
 generic_queue_pack.ads:23:07: medium: "Item.Data_1" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Data_1" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]
 generic_queue_pack.ads:23:07: medium: "Item.Data_2" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Data_2" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]

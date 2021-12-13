@@ -1,3 +1,4 @@
 c83012d.adb:18:32: error: actual for formal object with mode in cannot depend on variable input "R" (SPARK RM 4.4(2))
+c83012d.adb:18:32: error: use instead a constant initialized to the expression with variable input
 report.ads:3:64: info: data dependencies proved
 gnatprove: error during flow analysis and proof

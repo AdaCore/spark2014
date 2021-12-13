@@ -1,5 +1,8 @@
 example.adb:6:44: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 example.adb:6:44: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2)), in call inlined at example.adb:14
+example.adb:6:44: error: use instead a constant initialized to the expression with variable input
+example.adb:6:44: error: use instead a constant initialized to the expression with variable input, in call inlined at example.adb:14
 example2.adb:3:04: info: initialization of "X" proved
 example2.adb:10:44: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+example2.adb:10:44: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
