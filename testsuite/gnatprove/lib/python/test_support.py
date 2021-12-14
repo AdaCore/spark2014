@@ -206,7 +206,7 @@ def check_counterexamples():
                     for ff, file_value in msg["cntexmp"].items():
                         if "current" in file_value:
                             for line, values in file_value["current"].items():
-                                ctx = f"  trace at {ff}:{line} --> " " and ".join(
+                                ctx = f"  trace at {ff}:{line} --> " + " and ".join(
                                     map(str_elem, values)
                                 )
                                 msg_list.append(((ff, int(line)), ctx))
@@ -214,7 +214,7 @@ def check_counterexamples():
                             for line, values in file_value["previous"].items():
                                 ctx = (
                                     f"[PREVIOUS]  trace at {ff}:{line} --> "
-                                    " and ".join(map(str_elem, values))
+                                    + " and ".join(map(str_elem, values))
                                 )
                                 msg_list.append(((ff, int(line)), ctx))
 
