@@ -1,6 +1,6 @@
-ext.ads:4:35: warning: "Constraint_Error" will be raised at run time [enabled by default]
+ext.ads:4:35: warning: Constraint_Error will be raised at run time [enabled by default]
 ext.ads:4:35: warning: value not in range of type "My_Char" defined at line 2 [enabled by default]
-ext.ads:9:38: warning: "Constraint_Error" will be raised at run time [enabled by default]
+ext.ads:9:38: warning: Constraint_Error will be raised at run time [enabled by default]
 ext.ads:9:38: warning: value not in range of type "Small_Enum" defined at line 7 [enabled by default]
 test_access_conv.adb:11:04: medium: memory leak might occur at end of scope
 test_access_conv.adb:13:10: info: discriminant check proved (CVC4: 1 VC)
