@@ -19,12 +19,12 @@ default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc4", "altergo", "z3", "colibri"]
-provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo|colibri).*\)")
+provers_output_regex = re.compile(r"\((Trivial|Interval|CVC4|Z3|altergo|colibri).*\)")
 default_ada = 2022
 
 #  Change directory
 
-TEST = sys.modules['__main__']
+TEST = sys.modules["__main__"]
 TESTDIR = os.path.dirname(TEST.__file__)
 TEST_NAME = os.path.basename(TESTDIR)
 os.chdir(TESTDIR)
@@ -45,14 +45,14 @@ os.chdir(TESTDIR)
 #  message can lead to bad identification of the message category when a
 #  variable name coincides with some substrings that are searched in text.
 
-is_msg = re.compile(r"([\w-]*\.ad.?):(\d*):\d*:" +
-                    r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$")
+is_msg = re.compile(
+    r"([\w-]*\.ad.?):(\d*):\d*:" r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
+)
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 
 def inverse_prover():
-    return "inverse_prover" in os.environ and\
-        os.environ["inverse_prover"] == "true"
+    return "inverse_prover" in os.environ and os.environ["inverse_prover"] == "true"
 
 
 def benchmark_mode():
@@ -65,11 +65,13 @@ def benchmark_mode():
 def cache_mode():
     return "cache" in os.environ and os.environ["cache"] == "true"
 
+
 def why3server_mode():
     if "why3server" in os.environ:
         return os.environ["why3server"]
     else:
         return None
+
 
 def get_default_timeout():
     if "vc_timeout" in os.environ:
@@ -86,11 +88,11 @@ def print_sorted(strlist):
 
 def build_prover_switch(proverlist):
     """from a list of prover names, produce the option to be passed to
-       gnatprove"""
+    gnatprove"""
     if len(proverlist) == 0:
         return []
     else:
-        return ["--prover=" + ','.join(proverlist)]
+        return ["--prover=" + ",".join(proverlist)]
 
 
 def cat(filename, sort=False, start=1, end=0):
@@ -102,7 +104,7 @@ def cat(filename, sort=False, start=1, end=0):
       end: last line to output if not 0
     """
     if os.path.exists(filename):
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             # Dump all the file
             if end == 0:
                 if sort:
@@ -113,13 +115,13 @@ def cat(filename, sort=False, start=1, end=0):
             else:
                 lines = []
                 for i, line in enumerate(f):
-                    if i+1 >= start and i+1 <= end:
+                    if i + 1 >= start and i + 1 <= end:
                         lines.append(line)
                 if sort:
                     print_sorted(lines)
                 else:
                     for line in lines:
-                        print(line, end='')
+                        print(line, end="")
 
 
 def ls(directory=None, filter_output=None):
@@ -176,7 +178,7 @@ def check_counterexamples():
     results = {}
 
     for result_file in result_files:
-        with open(result_file, 'r') as f:
+        with open(result_file, "r") as f:
             result = json.load(f)
             proof_result = result["proof"]
             for msg in proof_result:
@@ -204,15 +206,16 @@ def check_counterexamples():
                     for ff, file_value in msg["cntexmp"].items():
                         if "current" in file_value:
                             for line, values in file_value["current"].items():
-                                ctx = "  trace at " + ff + ":" + line + \
-                                      " --> " + \
-                                      " and ".join(map(str_elem, values))
+                                ctx = f"  trace at {ff}:{line} --> " " and ".join(
+                                    map(str_elem, values)
+                                )
                                 msg_list.append(((ff, int(line)), ctx))
                         if "previous" in file_value:
                             for line, values in file_value["previous"].items():
-                                ctx = "[PREVIOUS]  trace at " + ff + ":" + \
-                                      line + " --> " + \
-                                      " and ".join(map(str_elem, values))
+                                ctx = (
+                                    f"[PREVIOUS]  trace at {ff}:{line} --> "
+                                    " and ".join(map(str_elem, values))
+                                )
                                 msg_list.append(((ff, int(line)), ctx))
 
                     # sort the trace elements based on location
@@ -227,13 +230,12 @@ def check_counterexamples():
     # check that marks in source code have a matching counterexample, and
     # dislay the counterexample when found.
     for f in files:
-        with open(f, 'r') as ff:
+        with open(f, "r") as ff:
             for line, linestr in enumerate(ff):
                 line = line + 1  # first line in file is 1, not 0
                 for mark in re.finditer(is_mark, linestr):
                     if (f, line) in results:
-                        print("counterexample expected for check at " +
-                              f + ":" + str(line))
+                        print(f"counterexample expected for check at {f}:{line}")
                         for ctx in results[(f, line)]:
                             print(ctx)
                     else:
@@ -241,7 +243,7 @@ def check_counterexamples():
 
 
 def check_fail(strlist, no_failures_allowed):
-    """ Makes sure that we did not have any failed proof attempts. """
+    """Makes sure that we did not have any failed proof attempts."""
 
     failures = frozenset(["low", "medium", "high"])
 
@@ -250,22 +252,19 @@ def check_fail(strlist, no_failures_allowed):
             if m is not None:
                 kind = m.group(3)
                 if kind in failures:
-                    print("FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1),
-                                                                m.group(2)))
+                    print("FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1), m.group(2)))
 
 
 def is_dependency_tag(tag):
     """Returns True if the given tag corresponds to a dependency flow
     message"""
-    return tag in ("DEPENDS",
-                   "GLOBAL")
+    return tag in ("DEPENDS", "GLOBAL")
 
 
 def is_flow_initialization_tag(tag):
     """Returns True if the given tag corresponds to an initialization flow
     message"""
-    return tag in ("INITIALIZED",
-                   "INITIALIZES")
+    return tag in ("INITIALIZED", "INITIALIZES")
 
 
 def is_aliasing_tag(tag):
@@ -275,18 +274,20 @@ def is_aliasing_tag(tag):
 
 def is_rte_tag(tag):
     """Returns True if the given tag corresponds to a RTE proof message"""
-    return tag in ("DIVISION_CHECK",
-                   "INDEX_CHECK",
-                   "OVERFLOW_CHECK",
-                   "RANGE_CHECK",
-                   "LENGTH_CHECK",
-                   "DISCRIMINANT_CHECK",
-                   "TAG_CHECK",
-                   "NULL_EXCLUSION",
-                   "ACCESSIBILITY_CHECK",
-                   "MEMORY_LEAK",
-                   "DEREFERENCE_CHECK",
-                   "UU_RESTRICTION")
+    return tag in (
+        "DIVISION_CHECK",
+        "INDEX_CHECK",
+        "OVERFLOW_CHECK",
+        "RANGE_CHECK",
+        "LENGTH_CHECK",
+        "DISCRIMINANT_CHECK",
+        "TAG_CHECK",
+        "NULL_EXCLUSION",
+        "ACCESSIBILITY_CHECK",
+        "MEMORY_LEAK",
+        "DEREFERENCE_CHECK",
+        "UU_RESTRICTION",
+    )
 
 
 def is_proof_initialization_tag(tag):
@@ -298,59 +299,68 @@ def is_proof_initialization_tag(tag):
 def is_ada_assertion_tag(tag):
     """Returns True if the given tag corresponds to an Ada assertion proof
     message"""
-    return tag in ("PREDICATE_CHECK",
-                   "INVARIANT_CHECK",
-                   "PRECONDITION",
-                   "PRECONDITION_MAIN",
-                   "POSTCONDITION",
-                   "ASSERT")
+    return tag in (
+        "PREDICATE_CHECK",
+        "INVARIANT_CHECK",
+        "PRECONDITION",
+        "PRECONDITION_MAIN",
+        "POSTCONDITION",
+        "ASSERT",
+    )
 
 
 def is_spark_assertion_tag(tag):
     """Returns True if the given tag corresponds to an Ada assertion proof
     message"""
-    return tag in ("DEFAULT_INITIAL_CONDITION",
-                   "CONTRACT_CASE",
-                   "DISJOINT_CONTRACT_CASE",
-                   "COMPLETE_CONTRACT_CASE",
-                   "LOOP_INVARIANT_INIT",
-                   "LOOP_INVARIANT_PRESERV",
-                   "LOOP_INVARIANT",
-                   "LOOP_VARIANT",
-                   "REFINED_POST",
-                   "SUBPROGRAM_VARIANT")
+    return tag in (
+        "DEFAULT_INITIAL_CONDITION",
+        "CONTRACT_CASE",
+        "DISJOINT_CONTRACT_CASE",
+        "COMPLETE_CONTRACT_CASE",
+        "LOOP_INVARIANT_INIT",
+        "LOOP_INVARIANT_PRESERV",
+        "LOOP_INVARIANT",
+        "LOOP_VARIANT",
+        "REFINED_POST",
+        "SUBPROGRAM_VARIANT",
+    )
 
 
 def is_other_proof_tag(tag):
     """Returns True if the given tag corresponds to another proof message"""
-    return tag in ("INITIAL_CONDITION",
-                   "RAISE",
-                   "TRIVIAL_PRE",
-                   "WEAKER_PRE",
-                   "STRONGER_POST",
-                   "WEAKER_CLASSWIDE_PRE",
-                   "STRONGER_CLASSWIDE_POST",
-                   "WEAKER_PRE_ACCESS",
-                   "STRONGER_POST_ACCESS",
-                   "UNCHECKED_CONVERSION",
-                   "UNCHECKED_CONVERSION_SIZE",
-                   )
+    return tag in (
+        "INITIAL_CONDITION",
+        "RAISE",
+        "TRIVIAL_PRE",
+        "WEAKER_PRE",
+        "STRONGER_POST",
+        "WEAKER_CLASSWIDE_PRE",
+        "STRONGER_CLASSWIDE_POST",
+        "WEAKER_PRE_ACCESS",
+        "STRONGER_POST_ACCESS",
+        "UNCHECKED_CONVERSION",
+        "UNCHECKED_CONVERSION_SIZE",
+    )
 
 
 def is_flow_tag(tag):
     """Returns True if the given tag corresponds to a flow message"""
-    return (is_dependency_tag(tag) or
-            is_flow_initialization_tag(tag) or
-            is_aliasing_tag(tag))
+    return (
+        is_dependency_tag(tag)
+        or is_flow_initialization_tag(tag)
+        or is_aliasing_tag(tag)
+    )
 
 
 def is_proof_tag(tag):
     """Returns True if the given tag corresponds to a proof message"""
-    return (is_rte_tag(tag) or
-            is_proof_initialization_tag(tag) or
-            is_ada_assertion_tag(tag) or
-            is_spark_assertion_tag(tag) or
-            is_other_proof_tag(tag))
+    return (
+        is_rte_tag(tag)
+        or is_proof_initialization_tag(tag)
+        or is_ada_assertion_tag(tag)
+        or is_spark_assertion_tag(tag)
+        or is_other_proof_tag(tag)
+    )
 
 
 def check_marks(strlist):
@@ -397,106 +407,106 @@ def check_marks(strlist):
 
         # When adding a tag in this section, you need also to update the
         # function is_flow_tag below.
-        if 'aliased' in text:
-            return 'ALIASING'
-        elif 'dependency' in text:
-            return 'DEPENDS'
-        elif 'global' in text:
-            return 'GLOBAL'
-        elif 'initialized' in text:
-            return 'INITIALIZED'
-        elif 'initializes' in text:
-            return 'INITIALIZES'
+        if "aliased" in text:
+            return "ALIASING"
+        elif "dependency" in text:
+            return "DEPENDS"
+        elif "global" in text:
+            return "GLOBAL"
+        elif "initialized" in text:
+            return "INITIALIZED"
+        elif "initializes" in text:
+            return "INITIALIZES"
 
         # proof tags
 
         # When adding a tag in this section, you need also to update the
         # function is_proof_tag below.
-        if 'division check' in text or 'divide by zero' in text:
-            return 'DIVISION_CHECK'
-        elif 'index check' in text:
-            return 'INDEX_CHECK'
-        elif 'overflow check' in text:
-            return 'OVERFLOW_CHECK'
-        elif 'predicate check' in text:
-            return 'PREDICATE_CHECK'
-        elif 'invariant check' in text:
-            return 'INVARIANT_CHECK'
-        elif 'range check' in text:
-            return 'RANGE_CHECK'
-        elif 'length check' in text:
-            return 'LENGTH_CHECK'
-        elif 'discriminant check' in text:
-            return 'DISCRIMINANT_CHECK'
-        elif 'tag check' in text:
-            return 'TAG_CHECK'
-        elif 'initialization check' in text:
-            return 'INIT_BY_PROOF'
-        elif 'null exclusion check' in text:
-            return 'NULL_EXCLUSION'
-        elif 'accessibility check' in text:
-            return 'ACCESSIBILITY_CHECK'
-        elif 'memory leak' in text:
-            return 'MEMORY_LEAK'
-        elif 'dereference check' in text:
-            return 'DEREFERENCE_CHECK'
-        elif 'operation on unchecked union type' in text:
-            return 'UU_RESTRICTION'
-        elif 'default initial condition' in text:
-            return 'DEFAULT_INITIAL_CONDITION'
-        elif 'initial condition' in text:
-            return 'INITIAL_CONDITION'
-        elif 'precondition' in text or 'nonreturning' in text:
-            if 'of main program' in text:
-                return 'PRECONDITION_MAIN'
-            elif 'True' in text:
-                return 'TRIVIAL_PRE'
-            elif 'class-wide' in text and 'overridden' in text:
-                return 'WEAKER_CLASSWIDE_PRE'
-            elif 'class-wide' in text:
-                return 'WEAKER_PRE'
-            elif 'target' in text:
-                return 'WEAKER_PRE_ACCESS'
+        if "division check" in text or "divide by zero" in text:
+            return "DIVISION_CHECK"
+        elif "index check" in text:
+            return "INDEX_CHECK"
+        elif "overflow check" in text:
+            return "OVERFLOW_CHECK"
+        elif "predicate check" in text:
+            return "PREDICATE_CHECK"
+        elif "invariant check" in text:
+            return "INVARIANT_CHECK"
+        elif "range check" in text:
+            return "RANGE_CHECK"
+        elif "length check" in text:
+            return "LENGTH_CHECK"
+        elif "discriminant check" in text:
+            return "DISCRIMINANT_CHECK"
+        elif "tag check" in text:
+            return "TAG_CHECK"
+        elif "initialization check" in text:
+            return "INIT_BY_PROOF"
+        elif "null exclusion check" in text:
+            return "NULL_EXCLUSION"
+        elif "accessibility check" in text:
+            return "ACCESSIBILITY_CHECK"
+        elif "memory leak" in text:
+            return "MEMORY_LEAK"
+        elif "dereference check" in text:
+            return "DEREFERENCE_CHECK"
+        elif "operation on unchecked union type" in text:
+            return "UU_RESTRICTION"
+        elif "default initial condition" in text:
+            return "DEFAULT_INITIAL_CONDITION"
+        elif "initial condition" in text:
+            return "INITIAL_CONDITION"
+        elif "precondition" in text or "nonreturning" in text:
+            if "of main program" in text:
+                return "PRECONDITION_MAIN"
+            elif "True" in text:
+                return "TRIVIAL_PRE"
+            elif "class-wide" in text and "overridden" in text:
+                return "WEAKER_CLASSWIDE_PRE"
+            elif "class-wide" in text:
+                return "WEAKER_PRE"
+            elif "target" in text:
+                return "WEAKER_PRE_ACCESS"
             else:
-                return 'PRECONDITION'
-        elif 'postcondition' in text:
-            if 'class-wide' in text and 'overridden' in text:
-                return 'STRONGER_CLASSWIDE_POST'
-            elif 'class-wide' in text:
-                return 'STRONGER_POST'
-            elif 'target' in text:
-                return 'STRONGER_POST_ACCESS'
+                return "PRECONDITION"
+        elif "postcondition" in text:
+            if "class-wide" in text and "overridden" in text:
+                return "STRONGER_CLASSWIDE_POST"
+            elif "class-wide" in text:
+                return "STRONGER_POST"
+            elif "target" in text:
+                return "STRONGER_POST_ACCESS"
             else:
-                return 'POSTCONDITION'
-        elif 'refined post' in text:
-            return 'REFINED_POST'
-        elif 'contract case' in text:
-            if 'disjoint' in text and 'contract cases' in text:
-                return 'DISJOINT_CONTRACT_CASES'
-            elif 'complete' in text and 'contract cases' in text:
-                return 'COMPLETE_CONTRACT_CASES'
+                return "POSTCONDITION"
+        elif "refined post" in text:
+            return "REFINED_POST"
+        elif "contract case" in text:
+            if "disjoint" in text and "contract cases" in text:
+                return "DISJOINT_CONTRACT_CASES"
+            elif "complete" in text and "contract cases" in text:
+                return "COMPLETE_CONTRACT_CASES"
             else:
-                return 'CONTRACT_CASE'
-        elif 'loop invariant' in text:
-            if 'initialization' in text or 'in first iteration' in text:
-                return 'LOOP_INVARIANT_INIT'
-            elif 'preservation' in text or 'by an arbitrary iteration' in text:
-                return 'LOOP_INVARIANT_PRESERV'
+                return "CONTRACT_CASE"
+        elif "loop invariant" in text:
+            if "initialization" in text or "in first iteration" in text:
+                return "LOOP_INVARIANT_INIT"
+            elif "preservation" in text or "by an arbitrary iteration" in text:
+                return "LOOP_INVARIANT_PRESERV"
             else:
-                return 'LOOP_INVARIANT'
-        elif 'loop variant' in text:
-            return 'LOOP_VARIANT'
-        elif 'subprogram variant' in text:
-            return 'SUBPROGRAM_VARIANT'
-        elif 'assertion' in text:
-            return 'ASSERT'
-        elif 'raise statement' in text or 'exception' in text:
-            return 'RAISE'
-        elif 'aliasing via address clause' in text or 'unchecked conversion' in text:
-            if 'size' in text:
-                return 'UNCHECKED_CONVERSION_SIZE'
+                return "LOOP_INVARIANT"
+        elif "loop variant" in text:
+            return "LOOP_VARIANT"
+        elif "subprogram variant" in text:
+            return "SUBPROGRAM_VARIANT"
+        elif "assertion" in text:
+            return "ASSERT"
+        elif "raise statement" in text or "exception" in text:
+            return "RAISE"
+        elif "aliasing via address clause" in text or "unchecked conversion" in text:
+            if "size" in text:
+                return "UNCHECKED_CONVERSION_SIZE"
             else:
-                return 'UNCHECKED_CONVERSION'
+                return "UNCHECKED_CONVERSION"
 
         # no tag recognized
         return None
@@ -507,12 +517,7 @@ def check_marks(strlist):
 
     def is_valid_result(result):
         """Returns True if the given result corresponds to a valid one"""
-        return result in ("PASS",
-                          "FAIL",
-                          "CHECK",
-                          "WARN",
-                          "ERROR",
-                          "NONE")
+        return result in ("PASS", "FAIL", "CHECK", "WARN", "ERROR", "NONE")
 
     def get_result(qualifier, text, is_flow_tag):
         """Returns the result for a given message qualifier and text.
@@ -522,41 +527,37 @@ def check_marks(strlist):
           text:        text of the message, stripped of the initial qualifier
           is_flow_tag: True for flow messages, False for proof messages
         """
-        if qualifier == 'info':
-            if 'proved' in text or 'nonreturning' in text or 'justified' in text:
-                return 'PASS'
+        if qualifier == "info":
+            if "proved" in text or "nonreturning" in text or "justified" in text:
+                return "PASS"
             else:
                 return None
-        elif qualifier == 'warning':
+        elif qualifier == "warning":
             if is_flow_tag:
-                return 'WARN'
+                return "WARN"
             else:
-                return 'FAIL'
-        elif qualifier == 'low' or\
-                qualifier == 'medium' or\
-                qualifier == 'high':
+                return "FAIL"
+        elif qualifier == "low" or qualifier == "medium" or qualifier == "high":
             if is_flow_tag:
-                return 'CHECK'
+                return "CHECK"
             else:
-                return 'FAIL'
+                return "FAIL"
         else:
-            return 'ERROR'
+            return "ERROR"
 
     def not_found(f, line, tag, result):
         """Print an error that the requested mark has not been found"""
         if is_negative_result(result):
-            print("SOUNDNESS BUG ", end='')
+            print("SOUNDNESS BUG ", end="")
         else:
             assert is_proof_tag(tag)
-            print("PROOF REGRESSION ", end='')
-        print("at " + f + ":" + str(line) +
-              ": mark @" + tag + ":" + result + " not found")
+            print("PROOF REGRESSION ", end="")
+        print(f"at {f}:{line}: mark @{tag}:{result} not found")
 
     def bad_found(f, line, tag, result):
         """Print an error that the mark has been unexpectedly found"""
-        print("SPURIOUS MESSAGE ", end='')
-        print("at " + f + ":" + str(line) +
-              ": message @" + tag + ":" + result + " found")
+        print("SPURIOUS MESSAGE ", end="")
+        print(f"at {f}:{line}: message @{tag}:{result} found")
 
     # store actual results in a map from (file,line) to (TAG,RESULT)
     results = {}
@@ -575,21 +576,19 @@ def check_marks(strlist):
 
     # check that marks in source code have a matching actual result
     for f in files:
-        with open(f, 'r', encoding='iso-8859-1') as ff:
+        with open(f, "r", encoding="iso-8859-1") as ff:
             for line, linestr in enumerate(ff):
                 line = line + 1  # first line in file is 1, not 0
                 for mark in re.finditer(is_mark, linestr):
                     tag = mark.group(1).upper()
 
                     if not (is_flow_tag(tag) or is_proof_tag(tag)):
-                        print("unrecognized tag",
-                              tag, "at", f + ":" + str(line))
+                        print(f"unrecognized tag {tag} at {f}:{line}")
                         sys.exit(1)
                     res = mark.group(2).upper()
 
                     if not is_valid_result(res):
-                        print("unrecognized result",
-                              res, "at", f + ":" + str(line))
+                        print("unrecognized result {res} at {f}:{line}")
                         sys.exit(1)
 
                     if res == "NONE":
@@ -598,8 +597,9 @@ def check_marks(strlist):
                                 if tag == tag2:
                                     bad_found(f, line, tag2, res2)
                     else:
-                        if (f, line) not in results or \
-                           (tag, res) not in results[f, line]:
+                        if (f, line) not in results or (tag, res) not in results[
+                            f, line
+                        ]:
                             not_found(f, line, tag, res)
 
 
@@ -633,7 +633,7 @@ def altergo(src, timeout=10, opt=None):
     """
     # add libexec/spark/bin to the PATH
     installdir = spark_install_path()
-    bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
+    bindir = os.path.join(installdir, "libexec", "spark", "bin")
     Env().add_path(bindir)
     # run alt-ergo
     cmd = ["alt-ergo", "-steps-bound", "20000"]
@@ -644,25 +644,32 @@ def altergo(src, timeout=10, opt=None):
 
 
 def strip_provers_output(s):
-    """ Strip the extra output generated by --report=provers output from the
-        argument string"""
+    """Strip the extra output generated by --report=provers output from the
+    argument string"""
     return provers_output_regex.sub("", s)
 
 
 def strip_provers_output_from_testout():
     """Strip the extra output generated by --report=provers output from the
-       test.out file"""
-    if os.path.isfile('test.out'):
-        with open("test.out", 'r') as f:
+    test.out file"""
+    if os.path.isfile("test.out"):
+        with open("test.out", "r") as f:
             content = f.read()
         content = strip_provers_output(content)
-        with open("test.out", 'w') as f:
+        with open("test.out", "w") as f:
             f.write(content)
 
 
-def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
-              filter_output=None, cache_allowed=True, sort_output=True,
-              exit_status=None, ada=default_ada):
+def gnatprove(
+    opt=["-P", default_project],
+    no_fail=False,
+    no_output=False,
+    filter_output=None,
+    cache_allowed=True,
+    sort_output=True,
+    exit_status=None,
+    ada=default_ada,
+):
     """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
@@ -675,23 +682,28 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     """
     # generate an empty project file if not present already
     if not os.path.isfile(default_project):
-        with open(default_project, 'w') as f_prj:
-            f_prj.write('project Test is\n')
-            f_prj.write('  package Compiler is\n')
-            f_prj.write('    for Default_Switches ("Ada")' +
-                        # discard warning messages by default
-                        ' use ("-gnatws",' +
-                        # force generation of BUGBOX even when error is issued
-                        ' "-gnatdk", ' +
-                        '"-gnat' + str(ada) + '");\n')
-            f_prj.write('    for Local_Configuration_Pragmas' +
-                        ' use "test.adc";\n')
-            f_prj.write('  end Compiler;\n')
-            f_prj.write('end Test;\n')
-        with open("test.adc", 'w') as f_adc:
-            f_adc.write('pragma SPARK_Mode (On);\n')
-            f_adc.write('pragma Profile (Ravenscar);\n')
-            f_adc.write('pragma Partition_Elaboration_Policy (Sequential);\n')
+        with open(default_project, "w") as f_prj:
+            f_prj.write("project Test is\n")
+            f_prj.write("  package Compiler is\n")
+            f_prj.write(
+                '    for Default_Switches ("Ada")'
+                +
+                # discard warning messages by default
+                ' use ("-gnatws",'
+                +
+                # force generation of BUGBOX even when error is issued
+                ' "-gnatdk", '
+                + '"-gnat'
+                + str(ada)
+                + '");\n'
+            )
+            f_prj.write('    for Local_Configuration_Pragmas use "test.adc";\n')
+            f_prj.write("  end Compiler;\n")
+            f_prj.write("end Test;\n")
+        with open("test.adc", "w") as f_adc:
+            f_adc.write("pragma SPARK_Mode (On);\n")
+            f_adc.write("pragma Profile (Ravenscar);\n")
+            f_adc.write("pragma Partition_Elaboration_Policy (Sequential);\n")
 
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
@@ -741,32 +753,37 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
                 print(line)
 
 
-def prove_all(opt=None, steps=None, procs=parallel_procs,
-              vc_timeout=None, memlimit=None,
-              mode="all",
-              counterexample=True,
-              check_counterexamples=True,
-              prover=default_provers,
-              cache_allowed=True,
-              report="provers",
-              project=default_project,
-              level=None,
-              no_fail=False,
-              no_output=False,
-              sort_output=True,
-              filter_output=None,
-              codepeer=False,
-              ada=default_ada,
-              replay=False):
+def prove_all(
+    opt=None,
+    steps=None,
+    procs=parallel_procs,
+    vc_timeout=None,
+    memlimit=None,
+    mode="all",
+    counterexample=True,
+    check_counterexamples=True,
+    prover=default_provers,
+    cache_allowed=True,
+    report="provers",
+    project=default_project,
+    level=None,
+    no_fail=False,
+    no_output=False,
+    sort_output=True,
+    filter_output=None,
+    codepeer=False,
+    ada=default_ada,
+    replay=False,
+):
     """Call gnatprove with standard options.
 
-       For option steps the default is max_steps set above, setting this
-       option to zero disables steps option.
+    For option steps the default is max_steps set above, setting this
+    option to zero disables steps option.
 
-       no_fail and filter_output are passed directly to
-       gnatprove().
+    no_fail and filter_output are passed directly to
+    gnatprove().
     """
-    fullopt  = ["--warnings=continue", "--output=oneline"]
+    fullopt = ["--warnings=continue", "--output=oneline"]
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
@@ -802,7 +819,7 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
         else:
             prover_arg = build_prover_switch(prover)
     else:
-        prover_arg=[]
+        prover_arg = []
     if benchmark_mode():
         fullopt += ["--benchmark"]
         prover_arg = build_prover_switch([benchmark_mode()])
@@ -818,21 +835,30 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
         else:
             fullopt += ["--check-counterexamples=off"]
     if why3server_mode():
-        fullopt += ["--why3-server="+why3server_mode()]
+        fullopt += ["--why3-server=" + why3server_mode()]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
-    gnatprove(fullopt,
-              no_fail=no_fail,
-              no_output=no_output,
-              sort_output=sort_output,
-              cache_allowed=cache_allowed,
-              ada=ada,
-              filter_output=filter_output)
+    gnatprove(
+        fullopt,
+        no_fail=no_fail,
+        no_output=no_output,
+        sort_output=sort_output,
+        cache_allowed=cache_allowed,
+        ada=ada,
+        filter_output=filter_output,
+    )
 
 
-def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all",
-            gg=True, sort_output=True, ada=default_ada):
+def do_flow(
+    opt=None,
+    procs=parallel_procs,
+    no_fail=False,
+    mode="all",
+    gg=True,
+    sort_output=True,
+    ada=default_ada,
+):
     """
     Call gnatprove with standard options for flow. We do generate
     verification conditions, but we don't actually try very hard to
@@ -844,13 +870,20 @@ def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all",
             opt = []
         opt.append("--no-global-generation")
 
-    prove_all(opt, procs=procs, steps=1, counterexample=False,
-              prover=["cvc4"], no_fail=no_fail, mode=mode,
-              sort_output=sort_output, ada=ada)
+    prove_all(
+        opt,
+        procs=procs,
+        steps=1,
+        counterexample=False,
+        prover=["cvc4"],
+        no_fail=no_fail,
+        mode=mode,
+        sort_output=sort_output,
+        ada=ada,
+    )
 
 
-def do_flow_only(opt=None, procs=parallel_procs, no_fail=False,
-                 ada=default_ada):
+def do_flow_only(opt=None, procs=parallel_procs, no_fail=False, ada=default_ada):
     """
     Similar to do_flow, but we disable VCG. Should only be used for flow
     tests that take an undue amount of time.
@@ -909,7 +942,7 @@ def touch(fname, times=None):
     fname: a string corresponding to a filename
     times: optional paramter so set the access time
     """
-    with open(fname, 'a'):
+    with open(fname, "a"):
         os.utime(fname, times)
 
 
@@ -920,7 +953,7 @@ def sleep_on_windows(secs=3):
     secs: number of seconds to sleep if in Windows
     """
     platform = sys.platform
-    if platform.startswith('win') or platform.startswith('cygwin'):
+    if platform.startswith("win") or platform.startswith("cygwin"):
         sleep(secs)
 
 
@@ -936,7 +969,7 @@ def check_all_spark(result_file, expected_len):
         none
 
     """
-    with open(result_file, 'r') as f:
+    with open(result_file, "r") as f:
         result = json.load(f)
         spark_result = result["spark"]
         assert len(spark_result) == expected_len
@@ -954,7 +987,7 @@ def check_spec_spark(result_file, expected_len):
     RESULT
         none
     """
-    with open(result_file, 'r') as f:
+    with open(result_file, "r") as f:
         result = json.load(f)
         spark_result = result["spark"]
         assert len(spark_result) == expected_len
@@ -970,14 +1003,14 @@ def check_trace_files(only_flow=False):
     # Create a list that contains all trace files lying under directory
     # gnatprove.
     if only_flow:
-        trace_files = glob.glob('gnatprove/*__flow__*.trace')
+        trace_files = glob.glob("gnatprove/*__flow__*.trace")
         # ??? The above pattern might also match non-flow traces created for a
         # unit with "flow" in its name, but the glob routine accepts only
         # simple patterns and not arbitrary regular expressions, so we can't do
         # better; however, this pacricular name is unlikely to happen in our
         # testsuite.
     else:
-        trace_files = glob.glob('gnatprove/*.trace')
+        trace_files = glob.glob("gnatprove/*.trace")
 
     print("Trace files' contents:")
     # Dump the contents of all trace files on stdout
@@ -986,7 +1019,7 @@ def check_trace_files(only_flow=False):
 
 
 def check_output_file(sort=False):
-    """ Print content of output file gnatprove.out.
+    """Print content of output file gnatprove.out.
 
     The goal is to make this output independent from the order of provers
     used. In particular, the summary table may contain different percentages
@@ -1002,21 +1035,21 @@ def check_output_file(sort=False):
     This ensures a common output whatever the order of provers used.
     """
 
-    filename = os.path.join('gnatprove', 'gnatprove.out')
+    filename = os.path.join("gnatprove", "gnatprove.out")
     prover_tag = re.compile(r"(^.*)(\((CVC4|altergo|Z3|colibri)[^\)]*\))(.*$\n)")
     output = ""
 
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         for line in f:
             m = re.match(prover_tag, line)
             if m:
-                newline = m.group(1) + ' ' + m.group(4)
+                newline = m.group(1) + " " + m.group(4)
             else:
                 newline = line
             # Replace multiple white spaces by a single one, and multiple
             # '-' characters (used for the frame of the summary tablen, whose
             # size varies depending on prover order) by a single one.
-            output += re.sub(' +', ' ', re.sub('-+', '-', newline))
+            output += re.sub(" +", " ", re.sub("-+", "-", newline))
     if sort:
         print_sorted(str.splitlines(output))
     else:
