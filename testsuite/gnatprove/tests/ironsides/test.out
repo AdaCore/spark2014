@@ -551,6 +551,9 @@ process_first_line_of_record.adb:73:07: info: initialization of "RecordTypes" pr
 process_first_line_of_record.adb:74:07: info: initialization of "BlockNumbers" proved
 process_first_line_of_record.adb:75:07: info: initialization of "BlockLengths" proved
 process_first_line_of_record.adb:76:07: info: initialization of "BitMaps" proved
+process_first_line_of_record.ads:32:09: info: Initial_Condition of package "Text_IO" is ignored
+process_first_line_of_record.ads:32:09: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
+process_first_line_of_record.ads:32:09: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 process_first_line_of_record.ads:45:07: info: initialization of "InMultilineRecord" proved
 process_first_line_of_record.ads:46:07: info: initialization of "LineInRecordCtr" proved
 process_first_line_of_record.ads:48:07: info: initialization of "CurrentNameServer" proved
@@ -1096,6 +1099,9 @@ spark-text_io.ads:700:21: info: implicit function contract not available for pro
 spark-text_io.ads:701:24: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:701:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:701:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark_ada_command_line.ads:61:09: info: Initial_Condition of package "Text_IO" is ignored
+spark_ada_command_line.ads:61:09: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
+spark_ada_command_line.ads:61:09: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 spark_ada_command_line.ads:63:08: info: flow dependencies proved
 spark_dns_main.adb:27:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 spark_dns_main.adb:28:08: info: data dependencies proved
@@ -1118,6 +1124,9 @@ task_limit.ads:36:14: info: data dependencies proved
 task_limit.ads:37:14: info: flow dependencies proved
 tcp_dns_package.ads:45:23: info: range check proved (CVC4: 2 VC)
 udp_dns_package.ads:47:23: info: range check proved (CVC4: 2 VC)
+zone_file_io.adb:44:14: info: Initial_Condition of package "Text_IO" is ignored
+zone_file_io.adb:44:14: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
+zone_file_io.adb:44:14: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 zone_file_io.adb:50:07: warning: initialization of "CurrentLine" has no effect
 zone_file_io.adb:52:07: warning: initialization of "LastPos" has no effect
 zone_file_io.adb:53:07: info: initialization of "LineTooLong" proved
@@ -1155,6 +1164,9 @@ zone_file_io.adb:404:26: medium: in inlined expression function body at spark-te
 zone_file_io.adb:404:26: medium: precondition might fail, cannot prove Is_Open (File) [possible fix: loop at line 113 should mention ZoneFile in a loop invariant]
 zone_file_io.adb:410:20: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:410:47: info: overflow check proved (CVC4: 2 VC)
+zone_file_io.ads:23:09: info: Initial_Condition of package "Text_IO" is ignored
+zone_file_io.ads:23:09: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
+zone_file_io.ads:23:09: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 zone_file_io.ads:26:07: info: initialization of "Success" proved
 zone_file_io.ads:27:09: info: data dependencies proved
 zone_file_io.ads:28:09: info: flow dependencies proved
