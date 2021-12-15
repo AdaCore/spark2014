@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import clean, do_flow
 from glob import glob
 
 for i, fn in enumerate(sorted(glob("*.adb"))):

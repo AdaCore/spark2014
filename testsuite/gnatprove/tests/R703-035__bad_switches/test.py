@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import gnatprove
 
 print("===== expecting message for unrecognized switch =====")
 gnatprove(opt=["-P", "bad_global.gpr"])

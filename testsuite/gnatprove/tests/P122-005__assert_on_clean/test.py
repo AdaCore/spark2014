@@ -1,3 +1,3 @@
-from test_support import *
+from test_support import clean
 
 clean()

@@ -1,4 +1,5 @@
-from test_support import *
+from test_support import prove_all
+from e3.os.process import Run
 
 # Prove RTE
 prove_all(no_fail=True, steps=6000)

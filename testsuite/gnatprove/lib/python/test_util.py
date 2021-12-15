@@ -24,7 +24,7 @@ def sort_key_for_errors(line):
     strings, completed to a dummy tuple
 
     """
-    sl = line.split(':', 3)
+    sl = line.split(":", 3)
     if len(sl) == 4:
         try:
             return (sl[0], int(sl[1]), int(sl[2]), sl[3])
@@ -36,7 +36,7 @@ def sort_key_for_errors(line):
         except ValueError:
             return ("zzzzz", 0, 0, line)
     else:
-        sl = line.lstrip(' ').split(' ', 3)
+        sl = line.lstrip(" ").split(" ", 3)
         if len(sl) == 4 and sl[0] == "compilation" and sl[1] == "of":
             return ("zzz" + sl[2], 0, 0, line)
         else:

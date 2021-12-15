@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import do_flow
 
 # Analysis of both units is expected to fail in phase 1, so we need to
 # explicitly analyze them.

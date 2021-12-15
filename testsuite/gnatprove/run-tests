@@ -101,15 +101,21 @@ class RACTestDriver(DiffTestDriver):
 
     def set_up(self):
         super().set_up()
-        with open(self.gprfile, 'w') as f:
-            f.write("""
+        with open(self.gprfile, "w") as f:
+            f.write(
+                """
 project Test is
   for Main use ("main.adb");
 end Test;
-""")
+"""
+            )
         compile_cmd = [
-            "gnatmake", "-P", self.gprfile,
-            "-gnata", "-gnatw.A", "-gnat2022"
+            "gnatmake",
+            "-P",
+            self.gprfile,
+            "-gnata",
+            "-gnatw.A",
+            "-gnat2022",
         ]
         self.shell(compile_cmd, analyze_output=False)
         main_cmd = [os.path.join(self.cwd, "main")]
@@ -131,9 +137,13 @@ end Test;
 
     def run(self):
         cmd = [
-            "gnatprove", "-P", self.gprfile,
-            "--quiet", "--debug-exec-rac",
-            "-cargs", "-gnat2022"
+            "gnatprove",
+            "-P",
+            self.gprfile,
+            "--quiet",
+            "--debug-exec-rac",
+            "-cargs",
+            "-gnat2022",
         ]
         self.shell(cmd, analyze_output=True, catch_error=False)
 
@@ -323,11 +333,11 @@ class SPARKTestFinder(TestFinder):
     some settings, such as the "call_entry" and "args_entry" fields of the test
     environment."""
 
-    def __init__(self, root_dir, testlist=[], pattern="", only_large=False):
+    def __init__(self, root_dir, testlist=None, pattern="", only_large=False):
         """
         Initialize a SPARKTestFinder instance.
         """
-        self.testlist = testlist
+        self.testlist = [] if testlist is None else testlist
         self.root_dir = root_dir
         self.only_large = only_large
         if pattern:
@@ -391,8 +401,10 @@ class SPARKTestFinder(TestFinder):
             yaml_file = os.path.join(dirpath, "test.yaml")
             if "test.yaml" in filenames:
                 test_env = e3.yaml.load_with_config(yaml_file, Env().to_dict())
-        except e3.yaml.YamlError:
-            raise ProbingError("invalid syntax for test.yaml in '{}'".format(testname))
+        except e3.yaml.YamlError as exc:
+            raise ProbingError(
+                "invalid syntax for test.yaml in '{}'".format(testname)
+            ) from exc
         if test_env is None:
             test_env = {}
 

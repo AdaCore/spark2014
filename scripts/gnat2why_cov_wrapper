@@ -21,7 +21,7 @@ import sys
 
 
 def exit_with_msg(msg):
-    print "gnat2why_cov_wrapper: " + msg + ", exiting"
+    print("gnat2why_cov_wrapper: " + msg + ", exiting")
     # random non-zero constant as exit code
     exit(2)
 
@@ -30,8 +30,7 @@ def find_extra_args_file():
     for arg in sys.argv:
         if arg.startswith("-gnates="):
             return arg[8:]
-    exit_with_msg(
-            "no extra args file provided with -gnates found on commandline")
+    exit_with_msg("no extra args file provided with -gnates found on commandline")
 
 
 def find_source_file():

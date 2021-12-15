@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import clean, prove_all
 
 print("all provers")
 print("----------------")

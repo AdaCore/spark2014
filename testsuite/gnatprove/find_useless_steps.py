@@ -12,17 +12,16 @@ import subprocess
 
 
 def process(dn):
-    p = subprocess.Popen(["git", "diff", dn],
-                         stdout=subprocess.PIPE)
+    p = subprocess.Popen(["git", "diff", dn], stdout=subprocess.PIPE)
     stdout, _ = p.communicate()
 
     has_diff = len(stdout.strip()) > 0
 
     if not has_diff:
-        print os.path.join(dn, "test.py")
+        print(os.path.join(dn, "test.py"))
 
 
-for path, dirs, files in os.walk("tests"):
+for path, _, files in os.walk("tests"):
     for f in files:
         if f == "test.py":
             has_steps = False

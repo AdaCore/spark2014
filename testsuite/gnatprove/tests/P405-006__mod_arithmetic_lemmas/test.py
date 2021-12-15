@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all, TESTDIR
 from subprocess import call
 import os
 

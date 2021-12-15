@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import gnatprove
 
 gnatprove(opt=["-P", "test1.gpr"])
 gnatprove(opt=["-P", "test1.gpr", "-aP=--codepeer=on"])

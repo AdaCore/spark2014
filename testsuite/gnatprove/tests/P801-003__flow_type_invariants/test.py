@@ -1,5 +1,5 @@
-from test_support import *
-from glob import *
+from test_support import do_flow
+from glob import glob
 
 body_files = set(glob("*.adb"))
 

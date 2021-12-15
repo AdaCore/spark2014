@@ -1,5 +1,5 @@
-from test_support import *
-from e3.env import Env
+from test_support import prove_all
+import os
 
 # Set MODE environment variable so that thumper.gpr project file is set for
 # analysis instead of compilation.

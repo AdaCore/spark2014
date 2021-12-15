@@ -1,6 +1,5 @@
-from test_support import *
+from test_support import prove_all, sleep
 import shutil
-import time
 
 prove_all(opt=["-u", "b.adb"])
 sleep(4)

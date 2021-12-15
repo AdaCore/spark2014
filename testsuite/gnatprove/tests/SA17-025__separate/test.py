@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 
 # prove file should work when specifying the separate
 # right now it proves the entire unit "pack"

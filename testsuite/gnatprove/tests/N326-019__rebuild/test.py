@@ -1,6 +1,5 @@
-from test_support import *
+from test_support import gnatprove, sleep
 from shutil import copyfile
-import time
 
 copyfile("empty_restrictions.adc", "restrictions.adc")
 gnatprove()

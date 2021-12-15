@@ -21,3 +21,13 @@ repos:
         entry: python scripts/check-empty-file.py
         language: python
         files: \.(opt|out)$
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.9.1
+    hooks:
+    - id: flake8
+      additional_dependencies:
+        - flake8-bugbear
+  - repo: https://github.com/ambv/black
+    rev: 21.5b1
+    hooks:
+    - id: black

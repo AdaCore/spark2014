@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 
 # -U should be passed in addition to --limit-subp or --limit-line for
 # locations inside generics, so that all instances are analyzed.

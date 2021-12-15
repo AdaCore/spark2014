@@ -9,7 +9,7 @@ import json
     "why3ide --list-transform" -> stdin: this generation is only done on
     developer's machines during compilation"""
 
-out_file = open(sys.argv[1], 'w')
+out_file = open(sys.argv[1], "w")
 
 list_transforms = []
 
@@ -18,88 +18,142 @@ list_transforms = []
 # This is an idealized transformation list. Comments explain why groups are
 # made.
 ideal_transf_list = [
-    ["Provers",  # Semantic -> provers
-     "altergo", "z3", "cvc4"],
-    ["abstract",  # Prefix -> abstract
-     "abstract__quantifiers", "abstract__unknown__lsymbols"],
+    ["Provers", "altergo", "z3", "cvc4"],  # Semantic -> provers
+    [
+        "abstract",  # Prefix -> abstract
+        "abstract__quantifiers",
+        "abstract__unknown__lsymbols",
+    ],
     ["apply"],
-    ["assert",  # Semantic -> assert
-     "assert", "cut"],
+    ["assert", "assert", "cut"],  # Semantic -> assert
     ["case"],
-    ["remove",  # Semantic -> remove
-     "clear__but", "remove", "remove__rec", "remove__triggers"],
-    ["compute",  # Semantic -> computations
-     "compute__hyp", "compute__hyp__specified", "compute__in__goal",
-     "compute__specified", "step", "steps"],
+    [
+        "remove",  # Semantic -> remove
+        "clear__but",
+        "remove",
+        "remove__rec",
+        "remove__triggers",
+    ],
+    [
+        "compute",  # Semantic -> computations
+        "compute__hyp",
+        "compute__hyp__specified",
+        "compute__in__goal",
+        "compute__specified",
+        "step",
+        "steps",
+    ],
     ["congruence"],
-    ["destruct",  # Semantic -> destruct
-     "destruct", "destruct__rec", "destruct__term",
-     "destruct__term__subst"],
-    ["eliminate",  # Prefix -> eliminate
-     "eliminate__algebraic", "eliminate__builtin",
-     "eliminate__definition", "eliminate__definition__func",
-     "eliminate__definition__pred", "eliminate__epsilon",
-     "eliminate__if", "eliminate__if__fmla", "eliminate__if__term",
-     "eliminate__inductive", "eliminate__let", "eliminate__let__fmla",
-     "eliminate__let__term", "eliminate__literal", "eliminate__match",
-     "eliminate__mutual__recursion", "eliminate__negative__constants",
-     "eliminate__non__lambda__epsilon",
-     "eliminate__non__lambda__set__epsilon",
-     "eliminate__non__struct__recursion",
-     "eliminate__projections", "eliminate__quantifiers",
-     "eliminate__recursion", "eliminate__symbol",
-     "eliminate__unused__hypo", "lift__epsilon"],
+    [
+        "destruct",  # Semantic -> destruct
+        "destruct",
+        "destruct__rec",
+        "destruct__term",
+        "destruct__term__subst",
+    ],
+    [
+        "eliminate",  # Prefix -> eliminate
+        "eliminate__algebraic",
+        "eliminate__builtin",
+        "eliminate__definition",
+        "eliminate__definition__func",
+        "eliminate__definition__pred",
+        "eliminate__epsilon",
+        "eliminate__if",
+        "eliminate__if__fmla",
+        "eliminate__if__term",
+        "eliminate__inductive",
+        "eliminate__let",
+        "eliminate__let__fmla",
+        "eliminate__let__term",
+        "eliminate__literal",
+        "eliminate__match",
+        "eliminate__mutual__recursion",
+        "eliminate__negative__constants",
+        "eliminate__non__lambda__epsilon",
+        "eliminate__non__lambda__set__epsilon",
+        "eliminate__non__struct__recursion",
+        "eliminate__projections",
+        "eliminate__quantifiers",
+        "eliminate__recursion",
+        "eliminate__symbol",
+        "eliminate__unused__hypo",
+        "lift__epsilon",
+    ],
     ["exists"],
     ["explode__record__param"],
-    ["filter__trigger",  # Prefix -> filter
-     "filter__trigger", "filter__trigger__builtin",
-     "filter__trigger__no__predicate"],
+    [
+        "filter__trigger",  # Prefix -> filter
+        "filter__trigger",
+        "filter__trigger__builtin",
+        "filter__trigger__no__predicate",
+    ],
     ["fold__defs"],
-    ["revert",  # Semantic -> revert
-     "generalize__introduced", "revert"],
-    ["hide",  # Semantic -> hide
-     "hide", "hide__and__clear"],
-    ["induction",  # Semantic -> induction
-     "induction", "induction__arg__pr", "induction__arg__ty__lex",
-     "induction__pr", "induction__ty__lex"],
-    ["inline",  # Semantic -> inline
-     "inline__all", "inline__goal", "inline__tagged",
-     "inline__trivial"],
-    ["instantiate",  # Semantic -> instantiate
-     "instantiate", "inst__rem"],
-    ["intros",  # Semantic -> intros
-     "introduce__exists", "introduce__premises", "intros",
-     "intros__n"],
-    ["inversion",  # Semantic -> inversion
-     "inversion__arg__pr", "inversion__pr"],
-    ["left right",  # Semantic -> left/right
-     "left", "right"],
+    ["revert", "generalize__introduced", "revert"],  # Semantic -> revert
+    ["hide", "hide", "hide__and__clear"],  # Semantic -> hide
+    [
+        "induction",  # Semantic -> induction
+        "induction",
+        "induction__arg__pr",
+        "induction__arg__ty__lex",
+        "induction__pr",
+        "induction__ty__lex",
+    ],
+    [
+        "inline",  # Semantic -> inline
+        "inline__all",
+        "inline__goal",
+        "inline__tagged",
+        "inline__trivial",
+    ],
+    ["instantiate", "instantiate", "inst__rem"],  # Semantic -> instantiate
+    [
+        "intros",  # Semantic -> intros
+        "introduce__exists",
+        "introduce__premises",
+        "intros",
+        "intros__n",
+    ],
+    ["inversion", "inversion__arg__pr", "inversion__pr"],  # Semantic -> inversion
+    ["left right", "left", "right"],  # Semantic -> left/right
     ["pose"],
     ["prop__curry"],
-    ["rewrite",  # Semantic -> rewrite
-     "replace", "rewrite", "rewrite__list"],
-    ["simplify",  # Prefix -> simplify
-     "simplify__array", "simplify__computations", "simplify__formula",
-     "simplify__formula__and__task",
-     "simplify__trivial__quantification",
-     "simplify__trivial__quantification__in__goal"],
+    ["rewrite", "replace", "rewrite", "rewrite__list"],  # Semantic -> rewrite
+    [
+        "simplify",  # Prefix -> simplify
+        "simplify__array",
+        "simplify__computations",
+        "simplify__formula",
+        "simplify__formula__and__task",
+        "simplify__trivial__quantification",
+        "simplify__trivial__quantification__in__goal",
+    ],
     ["spark__simpl"],
-    ["split",  # Prefix -> split
-     "split__all__full", "split__all__right", "split__conj",
-     "split__conj__axioms", "split__disj", "split__goal__full",
-     "split__goal__right", "split__goal__wp__conj", "split__premise__full",
-     "split__premise__right", "split__vc"],
-    ["subst",  # Prefix -> subst
-     "subst", "subst__all"],
-    ["unfold"]]
+    [
+        "split",  # Prefix -> split
+        "split__all__full",
+        "split__all__right",
+        "split__conj",
+        "split__conj__axioms",
+        "split__disj",
+        "split__goal__full",
+        "split__goal__right",
+        "split__goal__wp__conj",
+        "split__premise__full",
+        "split__premise__right",
+        "split__vc",
+    ],
+    ["subst", "subst", "subst__all"],  # Prefix -> subst
+    ["unfold"],
+]
 
 for line in sys.stdin:
-    match = re.search(r'^\s*\w+\s*$', line)
+    match = re.search(r"^\s*\w+\s*$", line)
     if match:
-        line = line.replace(' ', '')
-        line = line.replace('\n', '')
+        line = line.replace(" ", "")
+        line = line.replace("\n", "")
         # For GPS reasons, underscore need to be doubled
-        line = line.replace('_', '__')
+        line = line.replace("_", "__")
         list_transforms.append(line)
 # also add fully supported provers
 list_transforms.append("altergo")

@@ -17,21 +17,23 @@ curdir = os.getcwd()
 def parse_options():
     args = None
     parser = argparse.ArgumentParser(description=descr)
-    parser.add_argument('testname', metavar='T', nargs='+',
-                        help='session of this test will be updated')
-    parser.add_argument('--rewrite', dest='rewrite', action='store_true',
-                        help='Use rewrite option ')
+    parser.add_argument(
+        "testname", metavar="T", nargs="+", help="session of this test will be updated"
+    )
+    parser.add_argument(
+        "--rewrite", dest="rewrite", action="store_true", help="Use rewrite option "
+    )
     args = parser.parse_args()
     return args
 
 
-test_name = sys.argv[1] if sys.argv[1] != '--rewrite' else sys.argv[2]
+test_name = sys.argv[1] if sys.argv[1] != "--rewrite" else sys.argv[2]
 test_dir = os.path.join("tests", test_name)
 if not os.path.exists(test_dir):
     test_dir = os.path.join("internal", test_name)
 
 sys.path.insert(0, os.path.join(curdir, test_dir))
-sys.path.append(os.path.join(curdir, 'lib', 'python'))
+sys.path.append(os.path.join(curdir, "lib", "python"))
 import test  # noqa This import is required to be here because of change of python path above
 
 
@@ -40,17 +42,18 @@ def main():
     print("switching to", test_dir)
     os.chdir(test_dir)
 
-    if not hasattr(test, 'contains_manual_proof'):
-        print("""test should define variable 'contains_manual_proof'"""
-              """ in order to be replayed""")
+    if not hasattr(test, "contains_manual_proof"):
+        print(
+            """test should define variable 'contains_manual_proof'"""
+            """ in order to be replayed"""
+        )
         exit(1)
     if test.contains_manual_proof is False:
         print("""deleting subdir "proof/sessions" """)
         shutil.rmtree(os.path.join("proof", "sessions"), ignore_errors=True)
 
-    if not hasattr(test, 'replay'):
-        print("""test should define function 'replay'"""
-              """ in order to be replayed""")
+    if not hasattr(test, "replay"):
+        print("""test should define function 'replay'""" """ in order to be replayed""")
         exit(1)
     print("running gnatprove to rebuild sessions")
     test.replay()

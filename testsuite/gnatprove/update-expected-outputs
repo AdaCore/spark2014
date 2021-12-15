@@ -12,8 +12,12 @@ testsuite."""
 def parse_options():
     args = None
     parser = argparse.ArgumentParser(description=descr)
-    parser.add_argument('-o', '--output-dir', dest="outputdir",
-                        help="Specify the output dir to read outputs from")
+    parser.add_argument(
+        "-o",
+        "--output-dir",
+        dest="outputdir",
+        help="Specify the output dir to read outputs from",
+    )
     args = parser.parse_args()
     return args
 
@@ -41,7 +45,7 @@ def main():
     for entry in index.entries.values():
         if entry.status == TestStatus.FAIL:
             result = entry.load()
-            update_baseline(result.env['test_name'], result.out)
+            update_baseline(result.env["test_name"], result.out)
 
 
 main()

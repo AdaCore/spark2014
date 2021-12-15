@@ -233,7 +233,7 @@ def check_counterexamples():
         with open(f, "r") as ff:
             for line, linestr in enumerate(ff):
                 line = line + 1  # first line in file is 1, not 0
-                for mark in re.finditer(is_mark, linestr):
+                for _mark in re.finditer(is_mark, linestr):
                     if (f, line) in results:
                         print(f"counterexample expected for check at {f}:{line}")
                         for ctx in results[(f, line)]:
@@ -603,13 +603,15 @@ def check_marks(strlist):
                             not_found(f, line, tag, res)
 
 
-def gcc(src, opt=["-c"]):
+def gcc(src, opt=None):
     """gcc wrapper for the testsuite
 
     PARAMETERS
        src: source file to process
        opt: additional options to pass to gcc
     """
+    if opt is None:
+        opt = ["-c"]
     cmd = ["gcc"]
     cmd += to_list(opt)
     cmd += [src]
@@ -661,7 +663,7 @@ def strip_provers_output_from_testout():
 
 
 def gnatprove(
-    opt=["-P", default_project],
+    opt=None,
     no_fail=False,
     no_output=False,
     filter_output=None,
@@ -680,6 +682,8 @@ def gnatprove(
     no_fail: if set, then we make sure no unproved checks are in the output
     exit_status: if set, expected value of the exit status from gnatprove
     """
+    if opt is None:
+        opt = ["-P", default_project]
     # generate an empty project file if not present already
     if not os.path.isfile(default_project):
         with open(default_project, "w") as f_prj:
@@ -687,12 +691,10 @@ def gnatprove(
             f_prj.write("  package Compiler is\n")
             f_prj.write(
                 '    for Default_Switches ("Ada")'
-                +
                 # discard warning messages by default
-                ' use ("-gnatws",'
-                +
+                + ' use ("-gnatws",'
                 # force generation of BUGBOX even when error is issued
-                ' "-gnatdk", '
+                + ' "-gnatdk", '
                 + '"-gnat'
                 + str(ada)
                 + '");\n'

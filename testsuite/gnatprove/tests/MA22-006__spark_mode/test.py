@@ -1,5 +1,4 @@
-from test_support import *
-from os.path import join
+from test_support import check_output_file, clean, do_flow, prove_all
 
 do_flow()
 check_output_file()

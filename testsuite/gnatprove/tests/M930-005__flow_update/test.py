@@ -1,5 +1,5 @@
 from subprocess import call
-from test_support import *
+from test_support import do_flow
 
 do_flow(opt=["-u", "update_legal.adb"])
 do_flow(opt=["-u", "update_uninitialized.adb"])

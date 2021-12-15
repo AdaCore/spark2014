@@ -1,5 +1,5 @@
 from subprocess import call
-from test_support import *
+from test_support import gnatprove, ls, prove_all
 
 call(["mkdir", "-p", "obj"])
 prove_all()
