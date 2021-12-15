@@ -18,6 +18,6 @@ repos:
         pass_filenames: false
     -   id: check-empty-testoutopt
         name: Check for empty test.out and test.opt files
-        entry: python scripts/check-empty-testoutopt.py
+        entry: python scripts/check-empty-file.py
         language: python
         files: \.(opt|out)$
