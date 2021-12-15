@@ -14,4 +14,3 @@ begin
         Decreases => Y.A.all - Y'Loop_Entry.A.all);
   end loop;
 end Lib_Level;
-

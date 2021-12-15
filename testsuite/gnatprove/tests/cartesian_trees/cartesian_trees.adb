@@ -555,4 +555,3 @@ package body Cartesian_Trees with SPARK_Mode is
    end Right_Neighbors;
 
 end Cartesian_Trees;
-

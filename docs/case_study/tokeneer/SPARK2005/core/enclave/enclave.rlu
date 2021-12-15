@@ -42,7 +42,7 @@
 --  Justification:
 --    The code of Admin.IsPresent is:
 --      return TheAdmin.RolePresent /= PrivTypes.UserOnly;
---    
+--
 --    The proof function Admin.prf_rolePresent models the value of
 --    TheAdmin.RolePresent
 ----------------------------------------------------------------------*/
@@ -223,6 +223,3 @@ enclave_user(19):  not admin__ispresent(A)
 enclave_user(20): waitingremoveadmintokenfail <= St
                     may_be_deduced_from
                   [ currentadminactivitypossible(S, St) ] .
-
-
-

@@ -35,5 +35,3 @@ begin
    Test(AI'(if True then Y else Y).all);
    Put_Line ("X = " & Integer'Image(X) );
 end Spark02;
-
-

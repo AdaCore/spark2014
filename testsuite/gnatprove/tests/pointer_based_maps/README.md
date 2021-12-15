@@ -9,4 +9,3 @@ In addition to the subprograms presented in the blog post, the example also
 provides an extended version of `Replace_Element`. It is completely specified,
 using the `Iterable` aspect to allow quantification over keys included in a
 map.
-

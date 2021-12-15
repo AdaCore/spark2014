@@ -31,4 +31,3 @@ absence of run-time errors of Warn_Suppr fully established
   Warn_Suppr.P at warn_suppr.ads:3 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 2 proved
    Justified check messages:
     warn_suppr.adb:6:14: overflow check justified (marked as: intentional, reason: "deliberately ignored")
-

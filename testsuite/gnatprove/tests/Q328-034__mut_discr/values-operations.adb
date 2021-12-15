@@ -80,5 +80,3 @@ is
    end Process;
 
 end Values.Operations;
-
-

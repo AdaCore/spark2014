@@ -94,5 +94,3 @@ begin
   varPtr := x1'access;
   K := Ptr;
 end test;
-
-

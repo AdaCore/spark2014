@@ -62,4 +62,3 @@ requires the user to write it, to debug it, and finally to prove it.
   theorem prover, and 23 formulas required manual proof in a proof assistant. With
   GNATprove and provers CVC4, Z3 and Alt-Ergo, all checks are proved
   automatically.
-

@@ -25,7 +25,3 @@ procedure observingcomposite with SPARK_Mode is
 	Y := Sum_Rec (R1);
 	--  (...);
   end observingcomposite;
-
-
-
-

@@ -135,7 +135,7 @@ be achieved in our formalism.
 %   axiomatic theories, carefully chosen triggers can make an SMT solver
 %   behave as a decision procedure. Thus, it is particularly important
 %   to have full control over instantiation.
-% 
+%
 %   In this paper, we promote triggers from a heuristic to a construct with
 %   formal semantics, by introducing a first-order logic which includes
 %   triggers. Our formalism gives a precise meaning to the notion of
@@ -257,10 +257,10 @@ triggers. For example, they usually do not attempt to match triggers modulo
 underlying theories. On the other hand, in our framework, triggers are used
 to define theories, and they need therefore to be handled in a complete way.
 
-Triggers can also be used in complete first-order theorem provers to guide 
+Triggers can also be used in complete first-order theorem provers to guide
 the proof search and improve the solver's efficiency. This is done on a
 complete solver for a subset of first-order logic with linear arithmetics
-based on a sequent calculus in~\cite{rummer2012matching}. 
+based on a sequent calculus in~\cite{rummer2012matching}.
 
 As for using an SMT solver as a decision procedure, the related idea that a
 set of first-order formulas can be saturated with
@@ -271,7 +271,7 @@ using local model reasoning.
 % review 3: a comparison to the "complete instantiation" method by
 % Ge and de Moura should be given
 In the same way, Ge and de Moura describe
-fragments of first-order logic that can be decided modulo theory 
+fragments of first-order logic that can be decided modulo theory
 by saturation \cite{MBQI}. Both of these works define a restricted class of
 universally quantified formulas that can be finitely instantiated. We do not
 impose such restrictions a priori but rather require a dedicated proof of
@@ -283,16 +283,16 @@ completeness.
 % \beforesec
 % \section{\label{section-ex}Motivating Examples}
 % \aftersec
-% 
+%
 % In this section, we give examples to emphasize the need for a
 % formal framework for reasoning about triggers. We show that the
 % current (under-specified) practice of determining known terms in SMT
 % solvers makes them behave non-intuitively.
-% 
+%
 % \beforesub
 % \subsection{Known Terms}
 % \aftersub
-% 
+%
 % Let us repeat: a term is known by a solver when it \emph{appears} in a ground
 % fact \emph{assumed} by the solver. In this subsection, we show what makes
 % these concepts non-trivial, using a hypothetical solver whose handling of
@@ -305,7 +305,7 @@ completeness.
 % quantifier instantiation has to be disabled with \texttt{(set-option :mbqi
 % false)}.}.
 % %
-% 
+%
 % Firstly, the asymmetric treatment of disjunctions in DPLL-based solvers
 % makes it difficult to predict the evolution of the set of known
 % terms. Our hypothetical solver interprets $A\vee B$ as the propositionally
@@ -322,14 +322,14 @@ completeness.
 % instantiation of the universally quantified formula with \texttt{c} in
 % both branches. The solver deduces that this set of formulas is
 % unsatisfiable.
-% 
+%
 % Let us now consider the case where the formulas of the disjunction are
 % exchanged: \texttt{(or (= (f c) b) (= (g c) b))}. Neither \texttt{(= (g
 %   c) b)}, nor its negation is assumed in the first branch.
 % Thus, the term \texttt{(g c)} is not known and the quantified
 % formula cannot be instantiated. As a consequence, the solver
 % terminates and returns a candidate model for the set of formulas.
-% 
+%
 % Secondly, equalities are taken into account to determine which terms
 % \emph{appear} in a given set of facts. The following set of formulas,
 % for example, is detected as unsatisfiable, because the term \texttt{(f (g 0))}
@@ -340,7 +340,7 @@ completeness.
 %   (not (= (f c) 0))
 %   (= (g 0) c)
 % \end{verbatim}
-% 
+%
 % Not every deducible equality is taken into account though. For example,
 % equalities implied by the theory of arithmetics are not used. On the following
 % set of formulas, the solver cannot deduce the unsatisfiability:
@@ -353,7 +353,7 @@ completeness.
 % The term \texttt{(f (+ 0 1))} is not known here, even though the term
 % \texttt{(f 1)} is known and the equality
 % between \texttt{1} and \texttt{(+ 0 1)} can be deduced by the solver.
-% 
+%
 % Finally, given a formula $F$, a solver may not be able to deduce that
 % $\{F,\neg F\}$ is unsatisfiable. Indeed, in the formulas
 % \begin{verbatim}
@@ -364,11 +364,11 @@ completeness.
 % quantifier introduced by the negation in the second formula and no term
 % \texttt{(g a)} becomes known when this formula is assumed. As a consequence,
 % the first formula cannot be instantiated.
-% 
+%
 % \beforesub
 % \subsection{Over-restrictive and Over-permissive Triggers}
 % \aftersub
-% 
+%
 % Given a universally quantified formula, its triggers should be one or
 % several terms that contain all the quantified variables. Usually,
 % triggers are chosen among the sub-terms of the formula. Consider for
@@ -379,7 +379,7 @@ completeness.
 % The set of its potential triggers contains the terms \texttt{(g (f
 % x) y)} and \texttt{(g x y)}. Even for this tiny formula, it is difficult to
 % find a suitable trigger.
-% 
+%
 % We can show that \texttt{(g (f x) y)} is too restrictive by exhibiting
 % a ground formula whose unsatisfiability cannot be proved if we take
 % this trigger. Let $R$ be the following conjunction of ground
@@ -393,13 +393,13 @@ completeness.
 % Unfortunately, the trigger \texttt{(g (f x) y)} prevents these
 % instantiations since neither \texttt{(g (f 1) 0)} nor \texttt{(g (f 0)
 %   0)} are known from $R$.
-% 
+%
 % We can show that \texttt{(g x y)} is too permissive by exhibiting a
 % \emph{matching loop}, \ie an infinite chain of instantiations. As
 % soon as a term \texttt{(g t1 t2)} is known, the trigger \texttt{(g x
 %   y)} allows $F$ to be instantiated and to produce the term \texttt{(g
 %   (f t1) t2)}, then \texttt{(g (f (f t1)) t2)} etc.
-% 
+%
 % A good trigger for $F$ could be the two terms \texttt{(g x y)} and
 % \texttt{(f x)} together. Demonstrating that such a trigger is neither too
 % permissive nor too restrictive requires a proper framework.

@@ -10,4 +10,3 @@ is
   end Clear;
 
 end T2Q2;
-

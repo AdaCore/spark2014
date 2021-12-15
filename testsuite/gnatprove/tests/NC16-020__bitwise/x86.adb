@@ -43,4 +43,3 @@ is
    end Write_EAX;
 
 end X86;
-

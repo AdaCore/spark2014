@@ -210,4 +210,3 @@ admin_user(12): element(
                   Op <= opt__last,
                   R  >= privtypes__adminprivileget__first,
                   R  <= privtypes__adminprivileget__last ] .
-

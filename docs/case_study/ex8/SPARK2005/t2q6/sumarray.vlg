@@ -1,8 +1,8 @@
 Date: 27-Mar-2013, 10:47:02
 Host: sparkdev05
-Non-option args: 
+Non-option args:
     sumarray
-Option args: 
+Option args:
     -prover-command=/usr/local/gnat/bin/alt-ergo -steps  5000   \
     -fuse-concls   \
     -siv   \
@@ -65,7 +65,7 @@ Option args:
 Total ERROR   messages: 0
 Total WARNING messages: 0
 
-Summary Stats: 
+Summary Stats:
 
    trivial:     0  ( 0.0%)
       true:     2  (100.0%)
@@ -73,9 +73,8 @@ Summary Stats:
      error:     0  ( 0.0%)
      total:     2
 
-Times: 
+Times:
       total true:   0.08s  (average true: 0.042s  max true: 0.044s)
   total unproven:   0.00s
     vct overhead:   0.02s  (19% of total true)
            total:   0.10s  (u: 0.02s, s: 0.00s, cu: 0.08s, cs: 0.00s,  84.0% ch, 0.0% sys)
-

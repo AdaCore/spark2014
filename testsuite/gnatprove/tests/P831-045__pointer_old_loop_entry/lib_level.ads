@@ -11,4 +11,3 @@ procedure Lib_Level (X : in out T; Y : in out P) with
         X /= null => Y.A.all = Y.A'Old.all
                        and then Y.A.all = Accessor(Y)'Old.all,
         others    => Y.A.all = Y'Old.A.all);
-

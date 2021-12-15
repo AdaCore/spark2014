@@ -4,7 +4,7 @@ package Bvext
 with SPARK_Mode, Ghost
 is
 
-   function Nth (X : Unsigned_64; Pos : Natural) return Boolean 
+   function Nth (X : Unsigned_64; Pos : Natural) return Boolean
    is ((Shift_Right (X, Pos) and 1) = 1);
    pragma Annotate (GNATprove, Inline_For_Proof, Nth);
 

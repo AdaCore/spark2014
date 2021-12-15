@@ -1,6 +1,6 @@
            *******************************************************
                             Listing of SPARK Text
-   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
              Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
@@ -10,7 +10,7 @@
 Line
    1  package body T2Q6
    2  is
-   3  
+   3
    4    procedure SumArray (A: in ArrayType; Sum: out SumType)
    5    is
    6    begin
@@ -23,10 +23,10 @@ Line
   13      end loop;
   14    end SumArray;
 
-+++        Flow analysis of subprogram SumArray performed 
++++        Flow analysis of subprogram SumArray performed
            (information-flow mode): no errors found.
 
-  15  
+  15
   16    procedure SumArray_Shift (A: in ArrayType; Shift : in ElementType; Sum: out SumType)
   17    is
   18    begin
@@ -48,10 +48,10 @@ Line
   34      end loop;
   35    end SumArray_Shift;
 
-+++        Flow analysis of subprogram Sumarray_Shift 
++++        Flow analysis of subprogram Sumarray_Shift
            performed (information-flow mode): no errors found.
 
-  36  
+  36
   37  end T2Q6;
 No summarized warnings
 

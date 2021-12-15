@@ -381,4 +381,3 @@ Theorem def'vc :
    Init.Datatypes.true).
 Proof.
 #include "lemma_exp_monotonic.prf"
-

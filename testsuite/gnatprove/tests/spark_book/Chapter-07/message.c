@@ -55,4 +55,3 @@ void install_header_helper(
     enum error_code result = install_header(buffer, size, header);
     *status = result;
 }
-

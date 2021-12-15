@@ -2,7 +2,7 @@
 -- Proof Review file for the TIS main program
 ----------------------------------------------
 
--- In order to show that (the admin part of) security 
+-- In order to show that (the admin part of) security
 -- property 1 holds, the changes to Latch.State and
 -- Latch.Output need to be recorded.
 -- Two proof functions prf_preLatchState and

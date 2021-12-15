@@ -162,7 +162,7 @@ subprograms in Ada (which can be functions or procedures).
 \subsection{Function Contracts}
 
 A function contract is a pair of a precondition and a postcondition, which
-default to true if not present. 
+default to true if not present.
 
 \begin{example}
   The contract for the square-root function described in
@@ -170,7 +170,7 @@ default to true if not present.
 \begin{verbatim}
   function Sqrt (X: Integer) return Integer with
      Pre  => X >= 0,
-     Post => Sqrt'Result >= 0 and 
+     Post => Sqrt'Result >= 0 and
              Sqrt'Result ** 2 <= X and
              (Sqrt'Result + 1) ** 2 > X;
 \end{verbatim}
@@ -203,11 +203,11 @@ make it possible to specify part of a function's behavior.
 function Sqrt (X: Integer) return Integer with Pre => ..., Post => ...,
   Test_Case => (Name     => "test case 1",
                 Mode     => Robustness,
-                Requires => X = -1, 
+                Requires => X = -1,
                 Ensures  => Sqrt'Result = 0),
   Test_Case => (Name     => "test case 2",
                 Mode     => Nominal,
-                Requires => X < 100, 
+                Requires => X < 100,
                 Ensures  => Sqrt'Result >= 0 and Sqrt'Result < 10);
 \end{verbatim}
 \end{example}
@@ -228,11 +228,11 @@ The test-cases of Example~\ref{ex:square-root-test-case} could be rewritten:
 function Sqrt (X: Integer) return Integer with Pre => ..., Post => ...,
   Test_Case => (Name     => "test case 1",
                 Mode     => Robustness,
-                Requires => X = -1, 
+                Requires => X = -1,
                 Ensures  => Sqrt'Result = 0),
   Test_Case => (Name     => "test case 2",
                 Mode     => Nominal,
-                Requires => X < 100, 
+                Requires => X < 100,
                 Ensures  => Sqrt'Result < 10);
 \end{verbatim}
 \end{example}

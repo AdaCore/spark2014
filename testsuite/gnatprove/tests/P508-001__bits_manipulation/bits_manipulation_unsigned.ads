@@ -45,4 +45,3 @@ with SPARK_Mode is
    package Unsigned_64 is new Unsigned_Generic (Interfaces.Unsigned_64);
 
 end Bits_Manipulation_Unsigned;
-

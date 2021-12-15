@@ -23,4 +23,3 @@ package body Stack with SPARK_Mode => On is
    end Construct;
 
 end Stack;
-

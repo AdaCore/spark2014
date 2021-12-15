@@ -69,5 +69,5 @@ Several of my students have assisted in the development of Thumper. Specifically
 + Nancy Mai: Client side GUI.
 + Ian Schulze: Providing AWS support for remote access to Thumper statistics.
 
-Peter C. Chapin  
+Peter C. Chapin
 PChapin@vtc.vsc.edu

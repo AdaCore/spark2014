@@ -542,4 +542,3 @@ is
       end if;
    end setnbe_CL;
 end X86;
-

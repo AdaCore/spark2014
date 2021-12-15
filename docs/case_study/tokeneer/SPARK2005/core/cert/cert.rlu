@@ -43,4 +43,3 @@
 --    This is the defining rule for the proof function prf_idIssuer.
 ----------------------------------------------------------------------*/
 cert_user(1): prf_idissuer(C) may_be_replaced_by fld_issuer(fld_id(C)) .
-

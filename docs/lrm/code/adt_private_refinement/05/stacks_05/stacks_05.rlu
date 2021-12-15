@@ -1,22 +1,22 @@
-/* Rule(1) discharges the single unproved VC of procedure "clear". This rule states 
-that a stack 'S' that has its pointer set to '0' and the contents of its vector in the 
-range [X..Y] set to Z is empty. This is true since the definition of an empty stack 
+/* Rule(1) discharges the single unproved VC of procedure "clear". This rule states
+that a stack 'S' that has its pointer set to '0' and the contents of its vector in the
+range [X..Y] set to Z is empty. This is true since the definition of an empty stack
 is one that has "pointer = 0". */
-rule(1): is_empty(upf_stack_vector(upf_stack_pointer(S, 0), mk__vector([X .. Y] 
+rule(1): is_empty(upf_stack_vector(upf_stack_pointer(S, 0), mk__vector([X .. Y]
          := Z))) may_be_deduced.
 
 
-/* Rule(2) discharges the single unproved VC of procedure "pop". This rule explains 
-that a stack 'S' that has its pointer reduced by '1' is not full. Keeping in mind that 
-a stack's pointer never exceeds the upper bound of its index range, that can be proven 
+/* Rule(2) discharges the single unproved VC of procedure "pop". This rule explains
+that a stack 'S' that has its pointer reduced by '1' is not full. Keeping in mind that
+a stack's pointer never exceeds the upper bound of its index range, that can be proven
 to be true. */
-rule(2): not is_full(upf_stack_pointer(S, fld_stack_pointer(S) - 1)) 
+rule(2): not is_full(upf_stack_pointer(S, fld_stack_pointer(S) - 1))
          may_be_deduced.
 
-/* Rule(3) discharges the single unproved VC of procedure "push". This rule shows that 
-a stack 'S' that has an element 'X' inserted at  position "pointer + 1" and then has its 
-pointer increased by '1' is not empty. This is true since after the insertion of 'X', 
+/* Rule(3) discharges the single unproved VC of procedure "push". This rule shows that
+a stack 'S' that has an element 'X' inserted at  position "pointer + 1" and then has its
+pointer increased by '1' is not empty. This is true since after the insertion of 'X',
 'S' has at least one element. */
-rule(3): not is_empty(upf_stack_vector(upf_stack_pointer(S, fld_stack_pointer(S) 
-         + 1), update(fld_stack_vector(S), [fld_stack_pointer(S) + 1], X))) 
+rule(3): not is_empty(upf_stack_vector(upf_stack_pointer(S, fld_stack_pointer(S)
+         + 1), update(fld_stack_vector(S), [fld_stack_pointer(S) + 1], X)))
          may_be_deduced.

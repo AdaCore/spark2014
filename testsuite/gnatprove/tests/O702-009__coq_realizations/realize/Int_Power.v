@@ -12,4 +12,3 @@ Definition unit := unit.
 Definition qtmark : Type.
 exact unit.
 Defined.
-

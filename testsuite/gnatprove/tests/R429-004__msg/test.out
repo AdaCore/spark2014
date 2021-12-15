@@ -38,4 +38,3 @@ in unit u5, 3 subprograms and packages out of 3 analyzed
 effects on parameters and Global variables of u5.s5_1 fully established
  u5.s5_2 at u5.ads:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
 effects on parameters and Global variables of u5.s5_2 fully established
-

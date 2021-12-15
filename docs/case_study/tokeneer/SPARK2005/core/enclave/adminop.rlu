@@ -126,5 +126,3 @@ adminop_user(6): not latch__islocked(S2) and latch__islocked(S) -> B1 and B2
                    St_1 <> St_2,
                    St = St_1 -> B3 and (latch__islocked(S2) and B4),
                    St = St_2 -> B5 and (B6 and S2 = S and B7) ] .
-
-

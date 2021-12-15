@@ -55,10 +55,9 @@ adminlogout_user(1):
      goal(checktype(S, statetype)) ] .
 
 
-adminlogout_user(2): not (prf_statusiswaitingstartadminop(S) or 
+adminlogout_user(2): not (prf_statusiswaitingstartadminop(S) or
                           prf_statusiswaitingfinishadminop(S))
                      may_be_deduced_from
                      [ fld_status(S) <> waitingstartadminop,
                        fld_status(S) <> waitingfinishadminop,
                        goal(checktype(S, statetype)) ] .
-

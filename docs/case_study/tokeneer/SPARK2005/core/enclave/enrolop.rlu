@@ -93,4 +93,3 @@ enrolop_user(4): B1 or B2
                  [ S = St_2 or S = St_1,              /* (1) */
                    St_1 < St_2,                       /* (2) */
                    B1 <-> St_1 <= S and S <= St_2 ] . /* (3) */
-

@@ -1,6 +1,6 @@
            *******************************************************
                        Semantic Analysis of SPARK Text
-   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
              Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
@@ -22,7 +22,7 @@ H1:    for_all(i___1: integer, ((i___1 >= indextype__first) and (
         ->
 C1:    0 >= sumtype__first .
 C2:    0 <= sumtype__last .
- 
+
 
 For path(s) from start to run-time check associated with statement of line 9:
 
@@ -40,7 +40,7 @@ C1:    0 + element(a, [indextype__first]) >= sumtype__first .
 C2:    0 + element(a, [indextype__first]) <= sumtype__last .
 C3:    indextype__first >= indextype__first .
 C4:    indextype__first <= indextype__last .
- 
+
 
 For path(s) from assertion of line 10 to run-time check associated with statement of line 9:
 
@@ -52,25 +52,25 @@ H4:    for_all(i___1: integer, ((i___1 >= indextype__first) and (
            i___1 <= indextype__last)) -> ((element(a, [
            i___1]) >= elementtype__first) and (element(a, [
            i___1]) <= elementtype__last))) .
-H5:    ((((loop__1__i >= counttype__first) and (loop__1__i <= 
-           counttype__last)) and ((indextype__first >= 
-           indextype__first) and (indextype__first <= 
+H5:    ((((loop__1__i >= counttype__first) and (loop__1__i <=
+           counttype__last)) and ((indextype__first >=
+           indextype__first) and (indextype__first <=
            indextype__last))) and (for_all(i___1: integer, ((
-           i___1 >= indextype__first) and (i___1 <= 
-           indextype__last)) -> ((element(a, [i___1]) >= 
-           elementtype__first) and (element(a, [i___1]) <= 
-           elementtype__last))))) -> (((indextype__first = 
-           loop__1__i) -> (sum_between(a, indextype__first, 
+           i___1 >= indextype__first) and (i___1 <=
+           indextype__last)) -> ((element(a, [i___1]) >=
+           elementtype__first) and (element(a, [i___1]) <=
+           elementtype__last))))) -> (((indextype__first =
+           loop__1__i) -> (sum_between(a, indextype__first,
            loop__1__i) = element(a, [loop__1__i]))) and (((
-           indextype__first < loop__1__i) -> (sum_between(a, 
-           indextype__first, loop__1__i) = sum_between(a, 
+           indextype__first < loop__1__i) -> (sum_between(a,
+           indextype__first, loop__1__i) = sum_between(a,
            indextype__first, loop__1__i - 1) + element(a, [
            loop__1__i]))) and ((indextype__first > loop__1__i) -> (
-           sum_between(a, indextype__first, loop__1__i) >= 
+           sum_between(a, indextype__first, loop__1__i) >=
            elementtype__last * (indextype__first - loop__1__i))))) .
-H6:    sum_between(a, indextype__first, loop__1__i) >= 
+H6:    sum_between(a, indextype__first, loop__1__i) >=
            sumtype__first .
-H7:    sum_between(a, indextype__first, loop__1__i) <= 
+H7:    sum_between(a, indextype__first, loop__1__i) <=
            sumtype__last .
 H8:    loop__1__i >= indextype__first .
 H9:    loop__1__i <= indextype__last .
@@ -84,7 +84,7 @@ C1:    sum + element(a, [loop__1__i + 1]) >= sumtype__first .
 C2:    sum + element(a, [loop__1__i + 1]) <= sumtype__last .
 C3:    loop__1__i + 1 >= indextype__first .
 C4:    loop__1__i + 1 <= indextype__last .
- 
+
 
 For path(s) from start to assertion of line 10:
 
@@ -111,20 +111,20 @@ H10:   ((((indextype__first >= counttype__first) and (
            i___1]) <= elementtype__last))))) -> (((
            indextype__first = indextype__first) -> (
            sum_between(a, indextype__first, indextype__first) = element(
-           a, [indextype__first]))) and (((indextype__first < 
-           indextype__first) -> (sum_between(a, indextype__first, 
-           indextype__first) = sum_between(a, indextype__first, 
+           a, [indextype__first]))) and (((indextype__first <
+           indextype__first) -> (sum_between(a, indextype__first,
+           indextype__first) = sum_between(a, indextype__first,
            indextype__first - 1) + element(a, [indextype__first]))) and ((
            indextype__first > indextype__first) -> (
-           sum_between(a, indextype__first, indextype__first) >= 
-           elementtype__last * (indextype__first - 
+           sum_between(a, indextype__first, indextype__first) >=
+           elementtype__last * (indextype__first -
            indextype__first))))) .
-H11:   sum_between(a, indextype__first, indextype__first) >= 
+H11:   sum_between(a, indextype__first, indextype__first) >=
            sumtype__first .
-H12:   sum_between(a, indextype__first, indextype__first) <= 
+H12:   sum_between(a, indextype__first, indextype__first) <=
            sumtype__last .
         ->
-C1:    0 + element(a, [indextype__first]) = sum_between(a, 
+C1:    0 + element(a, [indextype__first]) = sum_between(a,
            indextype__first, indextype__first) .
 C2:    0 <= 0 + element(a, [indextype__first]) .
 C3:    0 + element(a, [indextype__first]) <= elementtype__last * (
@@ -143,23 +143,23 @@ C5:    ((((indextype__first >= counttype__first) and (
            i___1]) <= elementtype__last))))) -> (((
            indextype__first = indextype__first) -> (
            sum_between(a, indextype__first, indextype__first) = element(
-           a, [indextype__first]))) and (((indextype__first < 
-           indextype__first) -> (sum_between(a, indextype__first, 
-           indextype__first) = sum_between(a, indextype__first, 
+           a, [indextype__first]))) and (((indextype__first <
+           indextype__first) -> (sum_between(a, indextype__first,
+           indextype__first) = sum_between(a, indextype__first,
            indextype__first - 1) + element(a, [indextype__first]))) and ((
            indextype__first > indextype__first) -> (
-           sum_between(a, indextype__first, indextype__first) >= 
-           elementtype__last * (indextype__first - 
+           sum_between(a, indextype__first, indextype__first) >=
+           elementtype__last * (indextype__first -
            indextype__first))))) .
-C6:    sum_between(a, indextype__first, indextype__first) >= 
+C6:    sum_between(a, indextype__first, indextype__first) >=
            sumtype__first .
-C7:    sum_between(a, indextype__first, indextype__first) <= 
+C7:    sum_between(a, indextype__first, indextype__first) <=
            sumtype__last .
 C8:    indextype__first >= indextype__first .
 C9:    indextype__first <= indextype__last .
 C10:   indextype__first >= indextype__first .
 C11:   indextype__first <= indextype__last .
- 
+
 
 For path(s) from assertion of line 10 to assertion of line 10:
 
@@ -171,25 +171,25 @@ H4:    for_all(i___1: integer, ((i___1 >= indextype__first) and (
            i___1 <= indextype__last)) -> ((element(a, [
            i___1]) >= elementtype__first) and (element(a, [
            i___1]) <= elementtype__last))) .
-H5:    ((((loop__1__i >= counttype__first) and (loop__1__i <= 
-           counttype__last)) and ((indextype__first >= 
-           indextype__first) and (indextype__first <= 
+H5:    ((((loop__1__i >= counttype__first) and (loop__1__i <=
+           counttype__last)) and ((indextype__first >=
+           indextype__first) and (indextype__first <=
            indextype__last))) and (for_all(i___1: integer, ((
-           i___1 >= indextype__first) and (i___1 <= 
-           indextype__last)) -> ((element(a, [i___1]) >= 
-           elementtype__first) and (element(a, [i___1]) <= 
-           elementtype__last))))) -> (((indextype__first = 
-           loop__1__i) -> (sum_between(a, indextype__first, 
+           i___1 >= indextype__first) and (i___1 <=
+           indextype__last)) -> ((element(a, [i___1]) >=
+           elementtype__first) and (element(a, [i___1]) <=
+           elementtype__last))))) -> (((indextype__first =
+           loop__1__i) -> (sum_between(a, indextype__first,
            loop__1__i) = element(a, [loop__1__i]))) and (((
-           indextype__first < loop__1__i) -> (sum_between(a, 
-           indextype__first, loop__1__i) = sum_between(a, 
+           indextype__first < loop__1__i) -> (sum_between(a,
+           indextype__first, loop__1__i) = sum_between(a,
            indextype__first, loop__1__i - 1) + element(a, [
            loop__1__i]))) and ((indextype__first > loop__1__i) -> (
-           sum_between(a, indextype__first, loop__1__i) >= 
+           sum_between(a, indextype__first, loop__1__i) >=
            elementtype__last * (indextype__first - loop__1__i))))) .
-H6:    sum_between(a, indextype__first, loop__1__i) >= 
+H6:    sum_between(a, indextype__first, loop__1__i) >=
            sumtype__first .
-H7:    sum_between(a, indextype__first, loop__1__i) <= 
+H7:    sum_between(a, indextype__first, loop__1__i) <=
            sumtype__last .
 H8:    loop__1__i >= indextype__first .
 H9:    loop__1__i <= indextype__last .
@@ -212,20 +212,20 @@ H19:   ((((loop__1__i + 1 >= counttype__first) and (
            i___1]) <= elementtype__last))))) -> (((
            indextype__first = loop__1__i + 1) -> (
            sum_between(a, indextype__first, loop__1__i + 1) = element(
-           a, [loop__1__i + 1]))) and (((indextype__first < 
-           loop__1__i + 1) -> (sum_between(a, indextype__first, 
-           loop__1__i + 1) = sum_between(a, indextype__first, 
+           a, [loop__1__i + 1]))) and (((indextype__first <
+           loop__1__i + 1) -> (sum_between(a, indextype__first,
+           loop__1__i + 1) = sum_between(a, indextype__first,
            loop__1__i + 1 - 1) + element(a, [loop__1__i + 1]))) and ((
            indextype__first > loop__1__i + 1) -> (
-           sum_between(a, indextype__first, loop__1__i + 1) >= 
+           sum_between(a, indextype__first, loop__1__i + 1) >=
            elementtype__last * (indextype__first - (
            loop__1__i + 1)))))) .
-H20:   sum_between(a, indextype__first, loop__1__i + 1) >= 
+H20:   sum_between(a, indextype__first, loop__1__i + 1) >=
            sumtype__first .
-H21:   sum_between(a, indextype__first, loop__1__i + 1) <= 
+H21:   sum_between(a, indextype__first, loop__1__i + 1) <=
            sumtype__last .
         ->
-C1:    sum + element(a, [loop__1__i + 1]) = sum_between(a, 
+C1:    sum + element(a, [loop__1__i + 1]) = sum_between(a,
            indextype__first, loop__1__i + 1) .
 C2:    0 <= sum + element(a, [loop__1__i + 1]) .
 C3:    sum + element(a, [loop__1__i + 1]) <= elementtype__last * (
@@ -244,23 +244,23 @@ C5:    ((((loop__1__i + 1 >= counttype__first) and (
            i___1]) <= elementtype__last))))) -> (((
            indextype__first = loop__1__i + 1) -> (
            sum_between(a, indextype__first, loop__1__i + 1) = element(
-           a, [loop__1__i + 1]))) and (((indextype__first < 
-           loop__1__i + 1) -> (sum_between(a, indextype__first, 
-           loop__1__i + 1) = sum_between(a, indextype__first, 
+           a, [loop__1__i + 1]))) and (((indextype__first <
+           loop__1__i + 1) -> (sum_between(a, indextype__first,
+           loop__1__i + 1) = sum_between(a, indextype__first,
            loop__1__i + 1 - 1) + element(a, [loop__1__i + 1]))) and ((
            indextype__first > loop__1__i + 1) -> (
-           sum_between(a, indextype__first, loop__1__i + 1) >= 
+           sum_between(a, indextype__first, loop__1__i + 1) >=
            elementtype__last * (indextype__first - (
            loop__1__i + 1)))))) .
-C6:    sum_between(a, indextype__first, loop__1__i + 1) >= 
+C6:    sum_between(a, indextype__first, loop__1__i + 1) >=
            sumtype__first .
-C7:    sum_between(a, indextype__first, loop__1__i + 1) <= 
+C7:    sum_between(a, indextype__first, loop__1__i + 1) <=
            sumtype__last .
 C8:    loop__1__i + 1 >= indextype__first .
 C9:    loop__1__i + 1 <= indextype__last .
 C10:   loop__1__i + 1 >= indextype__first .
 C11:   loop__1__i + 1 <= indextype__last .
- 
+
 
 For path(s) from assertion of line 10 to finish:
 
@@ -272,25 +272,25 @@ H4:    for_all(i___1: integer, ((i___1 >= indextype__first) and (
            i___1 <= indextype__last)) -> ((element(a, [
            i___1]) >= elementtype__first) and (element(a, [
            i___1]) <= elementtype__last))) .
-H5:    ((((loop__1__i >= counttype__first) and (loop__1__i <= 
-           counttype__last)) and ((indextype__first >= 
-           indextype__first) and (indextype__first <= 
+H5:    ((((loop__1__i >= counttype__first) and (loop__1__i <=
+           counttype__last)) and ((indextype__first >=
+           indextype__first) and (indextype__first <=
            indextype__last))) and (for_all(i___1: integer, ((
-           i___1 >= indextype__first) and (i___1 <= 
-           indextype__last)) -> ((element(a, [i___1]) >= 
-           elementtype__first) and (element(a, [i___1]) <= 
-           elementtype__last))))) -> (((indextype__first = 
-           loop__1__i) -> (sum_between(a, indextype__first, 
+           i___1 >= indextype__first) and (i___1 <=
+           indextype__last)) -> ((element(a, [i___1]) >=
+           elementtype__first) and (element(a, [i___1]) <=
+           elementtype__last))))) -> (((indextype__first =
+           loop__1__i) -> (sum_between(a, indextype__first,
            loop__1__i) = element(a, [loop__1__i]))) and (((
-           indextype__first < loop__1__i) -> (sum_between(a, 
-           indextype__first, loop__1__i) = sum_between(a, 
+           indextype__first < loop__1__i) -> (sum_between(a,
+           indextype__first, loop__1__i) = sum_between(a,
            indextype__first, loop__1__i - 1) + element(a, [
            loop__1__i]))) and ((indextype__first > loop__1__i) -> (
-           sum_between(a, indextype__first, loop__1__i) >= 
+           sum_between(a, indextype__first, loop__1__i) >=
            elementtype__last * (indextype__first - loop__1__i))))) .
-H6:    sum_between(a, indextype__first, loop__1__i) >= 
+H6:    sum_between(a, indextype__first, loop__1__i) >=
            sumtype__first .
-H7:    sum_between(a, indextype__first, loop__1__i) <= 
+H7:    sum_between(a, indextype__first, loop__1__i) <=
            sumtype__last .
 H8:    loop__1__i >= indextype__first .
 H9:    loop__1__i <= indextype__last .
@@ -307,19 +307,17 @@ H13:   ((((indextype__last >= counttype__first) and (
            i___1]) <= elementtype__last))))) -> (((
            indextype__first = indextype__last) -> (
            sum_between(a, indextype__first, indextype__last) = element(
-           a, [indextype__last]))) and (((indextype__first < 
-           indextype__last) -> (sum_between(a, indextype__first, 
-           indextype__last) = sum_between(a, indextype__first, 
+           a, [indextype__last]))) and (((indextype__first <
+           indextype__last) -> (sum_between(a, indextype__first,
+           indextype__last) = sum_between(a, indextype__first,
            indextype__last - 1) + element(a, [indextype__last]))) and ((
            indextype__first > indextype__last) -> (
-           sum_between(a, indextype__first, indextype__last) >= 
-           elementtype__last * (indextype__first - 
+           sum_between(a, indextype__first, indextype__last) >=
+           elementtype__last * (indextype__first -
            indextype__last))))) .
-H14:   sum_between(a, indextype__first, indextype__last) >= 
+H14:   sum_between(a, indextype__first, indextype__last) >=
            sumtype__first .
-H15:   sum_between(a, indextype__first, indextype__last) <= 
+H15:   sum_between(a, indextype__first, indextype__last) <=
            sumtype__last .
         ->
 C1:    sum = sum_between(a, indextype__first, indextype__last) .
- 
-

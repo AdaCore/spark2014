@@ -108,4 +108,3 @@ admintoken_user(7):
     (PT_1 <= theauthcertrole(S) and
     theauthcertrole(S) <= PT_2))
    are_interchangeable .
-

@@ -6,4 +6,3 @@ package body P_Init with SPARK_Mode is
          X2 => 0));
 
 end P_Init;
-

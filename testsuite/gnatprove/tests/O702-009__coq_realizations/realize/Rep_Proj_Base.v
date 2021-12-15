@@ -69,4 +69,3 @@ Qed.
 Lemma range_axiom : forall (x:t), (in_range (to_rep x)).
 intros [r P]; unfold to_rep; auto.
 Qed.
-

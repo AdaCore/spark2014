@@ -8,7 +8,7 @@
 --------------------------------------------------------------------------------
 --                                                                            --
 --Descriptor : Private child packages - mixed hierarchies
---Origin     :         
+--Origin     :
 --Aim        : To show that visibility rules for mixed hierarchies of public
 --             and private child packages are correctly implemented
 --                                                                            --
@@ -103,7 +103,7 @@ is
 end P.A.C;
 
 --#inherit P,     -- OK
---#        P.X,   -- error, private sibling of public parent 
+--#        P.X,   -- error, private sibling of public parent
 --#        P.B,   -- error, not inherited by P.A
 --#        P.A.C; -- error, public sibling
 private package P.A.Z

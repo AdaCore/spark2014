@@ -1,6 +1,6 @@
            *******************************************************
                        Semantic Analysis of SPARK Text
-   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
              Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
@@ -16,5 +16,3 @@ For path(s) from start to finish:
 
 package_spec_t2q6_1.
 *** true .          /* trivially true VC removed by Examiner */
-
-

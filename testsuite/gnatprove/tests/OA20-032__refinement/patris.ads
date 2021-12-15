@@ -304,4 +304,3 @@ is
    function Get_Step_Interval return Natural
      with Global => (Input => (Game_State, Score_State));
 end Patris;
-

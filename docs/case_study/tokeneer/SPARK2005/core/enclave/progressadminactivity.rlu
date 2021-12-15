@@ -127,4 +127,3 @@ progressadminactivity_user(6): not B1 -> not B2 may_be_deduced_from
                                  St = St_1 or St = St_2 -> B2 and (B1 and B3),/*  (2)   */
                                  St = St_3 -> not B2 and (B1 and B3),         /*  (3)   */
                                  St = St_4 -> not B2 and B4 ] .               /*  (4)   */
-

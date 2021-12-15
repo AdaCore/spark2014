@@ -22,5 +22,3 @@ private
    type Operation is (Add, Div, Mul, Sub);
 
 end Values.Operations;
-
-

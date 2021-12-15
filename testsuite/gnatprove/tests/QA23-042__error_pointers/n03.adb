@@ -41,4 +41,3 @@ begin
    -- alternative rule: allowed; (X) does not have the number of .all
 
 end N03;
-

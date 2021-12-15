@@ -101,4 +101,3 @@ is
    end RangesIntersect;
 
 end X86;
-

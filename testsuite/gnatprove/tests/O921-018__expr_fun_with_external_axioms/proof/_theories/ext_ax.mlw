@@ -9,7 +9,7 @@ module Ext_ax__my_eq
   requires { true }
   ensures { (result = (my_eq__logic x1 x2)) }
 
- 
+
  axiom my_eq__def_axiom :
   (forall x1 x2  : int [(my_eq__logic x1 x2)].
    ( ((my_eq__logic x1 x2) = True) <-> (x1 = x2) ))

@@ -21,4 +21,3 @@ is
 
 
 end Pointers2;
-

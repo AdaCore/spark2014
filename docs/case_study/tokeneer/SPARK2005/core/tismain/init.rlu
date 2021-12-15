@@ -45,4 +45,3 @@
 init_user(1): A <> B may_be_deduced_from
               [ A < B or C < A,          /* (1) */
                 B < C ] .
-

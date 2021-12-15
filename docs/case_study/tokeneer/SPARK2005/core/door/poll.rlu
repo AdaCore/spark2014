@@ -68,4 +68,3 @@ poll_user(1): B1 and                                                /* C1 */
                 <->
                 fld_dooralarm(S2) = alarmtypes__alarming,           /* (1)4 */
                 fld_alarmtimeout(S) = fld_alarmtimeout(S2)  ] .     /* (2)  */
-

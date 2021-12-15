@@ -48,8 +48,7 @@
 --      --#                                prf_rolePresent(TheAdmin) = PrivTypes.Guard));
 ----------------------------------------------------------------------*/
 startadminactivity_user(1): admin__opisavailable(A, K) <> admin__nullop ->
-                              (admin__opisavailable(A, K) = admin__overridelock <-> 
+                              (admin__opisavailable(A, K) = admin__overridelock <->
                                  admin__prf_rolepresent(A) = privtypes__guard)
                             may_be_deduced_from
                             [ admin__ispresent(A) ] .
-

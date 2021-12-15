@@ -56,5 +56,3 @@ begin
  -- In_In (AA0, B, C);
  -- Out_In (AA0, B, C); -- ERROR: The analyzer expects A to have RW permission (not Write only) at this call site eventhough the formal parameter has only out mode.
 end N05;
-
-

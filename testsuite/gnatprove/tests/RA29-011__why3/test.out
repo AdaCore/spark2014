@@ -8,4 +8,3 @@ enable_isabelle_libs: no
 enable_hypothesis_selection: no
 enable_local: no
 enable_relocation: yes
-

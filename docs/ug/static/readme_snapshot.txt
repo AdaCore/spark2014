@@ -64,7 +64,3 @@ b) The image still has Window decorations.
 
 
 - Rod Chapman, 28th Feb 2014
-
-
-
-

@@ -50,4 +50,3 @@ package body Bounded_Queue_V2 is
    end Dequeue;
 
 end Bounded_Queue_V2;
-

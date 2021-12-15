@@ -135,5 +135,3 @@ package Cartesian_Trees with SPARK_Mode is
      and Left_Smaller (Mk_Tree'Result.Cells) and Right_Bigger (Mk_Tree'Result.Cells);
 
 end Cartesian_Trees;
-
-

@@ -54,7 +54,7 @@ Tracker system.
 
 A number of observations and recommendations are made throughout the report, and
 these are summarised at the end.
- 
+
 ==================
 Exchange Procedure
 ==================
@@ -64,7 +64,7 @@ Exchange Procedure
 The first example is taken from the Software Engineering with SPARK
 training course. The aim is to evaluate the tools on some straightforward examples
 (including correct implementations and versions with deliberate errors).
-Some of the examples have postconditions specified, so the tools can be used to 
+Some of the examples have postconditions specified, so the tools can be used to
 verify the implementations against those postconditions. In other cases there are
 no postconditions but the tools can still be used to verify freedom from runtime
 exceptions.
@@ -79,7 +79,7 @@ errors. Some of these errors are detectable by flow analysis and some require pr
 Correct implementation of Exchange
 ----------------------------------
 The first version of Exchange is the correct implementation. Note that it is
-preceded by a separate declaration which is required in order to attach the 
+preceded by a separate declaration which is required in order to attach the
 postcondition aspect. (Postcondition aspects can only be attached to declarations,
 not bodies.)
 
@@ -174,11 +174,11 @@ All VCs are discharged by GNATprove.
 
 Exchange with unused variable and postcondition
 -----------------------------------------------
-This is the version seen earlier where the programmer has made a mistake in the 
+This is the version seen earlier where the programmer has made a mistake in the
 final statement and typed "Y := X" instead of "Y := T". This time a postcondition
 has been added so the tools are able to detect that the implementation is not
 correct. A separate declaration has been provided so that the postcondition can
-be specified. 
+be specified.
 
 .. code-block:: ada
 
@@ -227,8 +227,8 @@ but with the addition of a postcondition.
       Y := T;
    end Exchange_With_Post_Uninitialized;
 
-GNATprove is able to detect the discrepancy between the postcondition and the 
-implementation and reports "postcondition not proved, requires Y = X'old". 
+GNATprove is able to detect the discrepancy between the postcondition and the
+implementation and reports "postcondition not proved, requires Y = X'old".
 Again, GPS highlights the line where the postcondition appears, and the error
 message explains what the problem is, in the context of the source code.
 
@@ -303,7 +303,7 @@ Stacks, Queues and QueueOperations
 Stacks and Queues package specifications
 ----------------------------------------
 Here we are provided with the specification for a package which
-provides a (private) Stack type and some operations on it. A 
+provides a (private) Stack type and some operations on it. A
 second package provides a (private) Queue type and operations.
 The bodies of the packages are not provided. The aim of this example
 is to investigate how GNATprove deals with the analysis of calls to
@@ -396,8 +396,8 @@ QueueOperations.
 
 This example demonstrates that GNATprove is able to analyse partial programs,
 for cases where package specifications are provided but there are no bodies.
-If the body was provided but only some of the subprograms were implemented 
-then stubs or null bodies would need to be provided for the remainder. 
+If the body was provided but only some of the subprograms were implemented
+then stubs or null bodies would need to be provided for the remainder.
 
 .. note:: Observation 05: Using stubs for which no completion is provided is not currently possible
           with GNATprove as it results in an internal error. This issue [M320-027]
@@ -416,7 +416,7 @@ the bodies of Stacks and Queues have been completed and proof contracts have
 been added to their specifications. For example in the procedure Push shown
 below the stack pointer is incremented with the possibility of going out
 of the range of its type, Count_T. This is guarded against by placing a
-precondition on the specification to ensure that we don't try to push 
+precondition on the specification to ensure that we don't try to push
 when the stack is full.
 
 .. code-block:: ada
@@ -479,7 +479,7 @@ the proof. The modified code for the Stacks package is shown below.
       type Stack is private; -- had to remove 'limited' to allow use of 'Old
       Max_Count : constant Integer := 100;
       subtype Stack_Size is Natural range 0 .. Max_Count;
-      
+
       -- Proof function that should not be called in code.
       function Size (S : in Stack) return Stack_Size;
 
@@ -489,7 +489,7 @@ the proof. The modified code for the Stacks package is shown below.
          with pre => (Size(S) in 0 .. Max_Count -1),
               post => (Size(S) = Size(S'Old) + 1);
 
-.. Note that the expression function Size could have its full definition in the 
+.. Note that the expression function Size could have its full definition in the
    private part of the spec rather than the package body. That would enable its
    definition to be used in VCs of callers. But all VCs are proved anyway so no
    need to do this.
@@ -540,7 +540,7 @@ the details of type Stack are visible.
 .. note:: Observation 06: Note that modelling SPARK 2005 proof functions as executable functions in
           SPARK 2014 is not ideal as there is nothing to prevent them from being called in general code.
           The solution to this is to label them as ghost functions via "convention => ghost" which means
-          they may only be called from within proof expressions or from other ghost functions. This 
+          they may only be called from within proof expressions or from other ghost functions. This
           approach would have been taken for this example but it was not yet implemented when the
           example was originally developed.
 
@@ -611,7 +611,7 @@ Proof of Absence of Runtime Errors
 Description
 ===========
 This example is based on a larger tutorial exercise from the Software Engineering with SPARK
-course. The code implements a Central Heating Controller which reads from various physical 
+course. The code implements a Central Heating Controller which reads from various physical
 input devices and writes to various output devices. The input and output devices themselves are
 managed via packages which are provided as specifications with no bodies. The main program
 implements the functionality of the controller itself, and is derived from a formal Z specification.
@@ -861,11 +861,11 @@ with the derivation from the Z specification shown in the form of comments.
     --#      ;
 
 All VCs are discharged by GNATprove and by the SPARK 2005 tools for the SPARK 2014 and 2005 versions
-of the code respectively. Although large (up to around 50 lines) the postconditions consist of 
+of the code respectively. Although large (up to around 50 lines) the postconditions consist of
 fairly straightforward Boolean expressions using mainly "and" and "or" operators.
 
 .. note:: Observation 08: The partial correctness proof of the Central Heating Controller demonstrates
-          that GNATprove is able to discharge quite large postconditions in a reasonable time. (The 
+          that GNATprove is able to discharge quite large postconditions in a reasonable time. (The
           default timeout of 1s was sufficient. Full statistics are in the appendix.)
 
 .. note:: Observation 09: It is interesting to note that GNATprove generates and proves 37 VCs, compared to 97 VCs for the
@@ -974,7 +974,7 @@ The postcondition on NandGate illustrates the equivalence between
 the use of implication "A -> B" in SPARK 2005 and "if A then B" in SPARK
 2014 aspects.
 
-For the NextDay example the intention is to see whether the 
+For the NextDay example the intention is to see whether the
 implementation using the 'Succ attribute or the implementation
 with a case statement is easier to prove.
 
@@ -1092,7 +1092,7 @@ all VCs except one (for NextDay_A). The remaining VC is discharged by SPARKbridg
 
 An alternative way of specifying the postconditions is used in the package T1Q3_Alt.
 Instead of implication (SPARK 2005) or "if then" (SPARK 2014 aspects) the postconditions are
-expressed in an equivalent form using only "and" and "or". For example, here is the 
+expressed in an equivalent form using only "and" and "or". For example, here is the
 specification of NextDay_B.
 
 .. code-block:: ada
@@ -1172,7 +1172,7 @@ SPARK 2005.
       end ISQRT;
    end T1Q4;
 
-All the VCs are discharged automatically by the SPARK Simplifier, so long as a 
+All the VCs are discharged automatically by the SPARK Simplifier, so long as a
 configuration file is provided to inform the Examiner of the size of
 Long_Long_Integer when generating VCs.
 
@@ -1199,7 +1199,7 @@ Bounded_Addition
 ----------------
 This subprogram adds two Integers and truncates the result if it goes out of range.
 The postconditions in SPARK 2005 and SPARK 2014 are very similar. As in earlier examples,
-SPARK 2005 uses implication "->" where the SPARK 2014 aspect uses "if then". 
+SPARK 2005 uses implication "->" where the SPARK 2014 aspect uses "if then".
 
 .. code-block:: ada
 
@@ -1312,7 +1312,7 @@ The SPARK 2005 tools are similarly unable to discharge the SPARK VCs for the
 loop invariant and for the same two assignments, even when SPARKbridge
 is employed.
 
-.. note:: Observation 11: The Raise_To_Power example illustrates that VCs 
+.. note:: Observation 11: The Raise_To_Power example illustrates that VCs
           involving non-linear arithmetic are typically hard to prove, both
           for the SPARK 2005 and the SPARK 2014 toolsets. The Riposte counter-example
           finding tool was applied to the SPARK 2005 VCs in an attempt to
@@ -1326,7 +1326,7 @@ is employed.
           VCs in order to see exactly what cannot be proved. This is one level of
           indirection away from the code so in that sense it is less user-friendly.
           However, the VCs also show precisely what hypotheses are available to the
-          prover which can be very useful when debugging proof attempts, especially 
+          prover which can be very useful when debugging proof attempts, especially
           for advanced users. It is recommended that some way is found to make the
           the SPARK 2014 VCs more accessible to users.
 
@@ -1390,7 +1390,7 @@ supported by GNATprove.
 Clear Array
 -----------
 This subprogram loops over the elements of an array, setting each one
-to zero. There is no postcondition - the aim is simply to prove 
+to zero. There is no postcondition - the aim is simply to prove
 freedom from runtime exceptions.
 
 .. code-block:: ada
@@ -1488,7 +1488,7 @@ In the SPARK 2005 version of the code a proof function The_Max is declared thus:
    --#   and  (for some N in IndexType range L..U => (A(N) = Max));
 
 This can be used in proof annotations to represent "a function that returns the largest
-element in the array" which is a useful shorthand as an alternative to writing the 
+element in the array" which is a useful shorthand as an alternative to writing the
 definition in terms of quantifiers whenever it is needed.
 
 There is no SPARK 2014 equivalent of the proof function, so an executable function
@@ -1504,8 +1504,8 @@ SPARKbridge).
 
 The procedure named MaxElement_P2B1 makes use of the function The_Max in its postcondition.
 The postcondition is clearly much more concise, because the detail is factored out into
-The_Max. Similarly, The_Max is used in the Loop_Invariant. GNATprove is currently 
-unable to prove this loop invariant. 
+The_Max. Similarly, The_Max is used in the Loop_Invariant. GNATprove is currently
+unable to prove this loop invariant.
 
 .. note:: Observation 12: GNATprove is unable to prove the loop invariant because The_Max
           is not an expression function and so its postcondition is not propagated to VCs
@@ -1514,7 +1514,7 @@ unable to prove this loop invariant.
 
 MaxElement_P3B1 has no loop invariant specified and there is no postcondition on its
 specification, so there is nothing to prove other than absence of runtime exceptions.
-GNATprove and the SPARK 2005 tools prove all VCs for their respective versions of this 
+GNATprove and the SPARK 2005 tools prove all VCs for their respective versions of this
 subprogram.
 
 MaxElement_P1B2 is similar to MaxElement_P1B1 but the loop invariant has been relocated
@@ -1522,10 +1522,10 @@ to the beginning of the loop and modified accordingly. All VCs are discharged au
 by GNATprove and by the SPARK 2005 tools.
 
 MaxElement_P2B2 has the loop invariant in the same place as P1B2 but it uses the call to
-The_Max instead of the explicit expression using quantifiers. GNATprove is unable to 
+The_Max instead of the explicit expression using quantifiers. GNATprove is unable to
 prove this invariant as noted above.
 
-MexElement_P3B2 uses a slightly more efficient implementation of the algorithm which 
+MexElement_P3B2 uses a slightly more efficient implementation of the algorithm which
 reduces the number of loop iterations by one. There is no loop invariant or postcondition
 and all VCs are discharged by GNATprove and the SPARK 2005 tools for their respective implementations.
 
@@ -1605,8 +1605,8 @@ specifies the desired behaviour.
 
    end T2Q7;
 
-All VCs are proved by GNATprove and the SPARK 2005 tools for their respective 
-implementations. 
+All VCs are proved by GNATprove and the SPARK 2005 tools for their respective
+implementations.
 
 Array of Fibonacci numbers
 --------------------------
@@ -1621,7 +1621,7 @@ stating the required properties of the array. The second, CreateFibArray_RTConly
 no postcondition so only needs to be proved free from runtime exceptions.
 
 In the SPARK 2005 solution the proof function fib has been defined recursively and is used to
-specify the postcondition and the loop invariant for CreateFibArray. In the SPARK 2014 
+specify the postcondition and the loop invariant for CreateFibArray. In the SPARK 2014
 solution fib is an expression function.
 
 .. code-block:: ada
@@ -1697,7 +1697,7 @@ solution fib is an expression function.
 GNATprove is unable to prove the range and overflow checks for the expression
 function fib. It might be possible to address this with a suitable postcondition
 aspect but that would currently prevent the expression from appearing in the VCs
-for uses of fib (see L525-024 and M326-033). 
+for uses of fib (see L525-024 and M326-033).
 
 GNATprove is also unable to prove the loop invariants (for both versions of
 the subprogram) and the range checks for the assignment statements in the loops.
@@ -1717,8 +1717,8 @@ this is not a problem specific to SPARK but applies to provers in general!).
 As with Raise_To_Power, the SPARK 2014 interface is more user-friendly with
 respect to relating the proofs back to the source code, although the SPARK 2005
 VCs have advantages when it comes to inspecting them to determine precisely
-what could not be proved and what hypotheses were given. This is beneficial 
-when manual justifications have to be provided for provable VCs which defy 
+what could not be proved and what hypotheses were given. This is beneficial
+when manual justifications have to be provided for provable VCs which defy
 the current prover technologies.
 
 ======================================
@@ -1849,7 +1849,7 @@ DoNothing
 This is a more complex example where the proof of the postcondition of the top level
 procedure, DoNothing, relies on the postconditions of its called subprograms. As its
 name suggests, DoNothing preserves the values of its parameters, but it does so via
-a series of intermediate transformations. The challenge for the proof system is to 
+a series of intermediate transformations. The challenge for the proof system is to
 determine that the combination of these operations results in the parameters being
 set back to their original values.
 
@@ -1957,7 +1957,7 @@ expression function Summed_Between.
      function Summed_Between(A: in ArrayType;
                              L,U: in IndexType) return SumType
       with Pre  => (L <= U),
-           Post => (Summed_Between'Result <= (U - L+1) * 1000); 
+           Post => (Summed_Between'Result <= (U - L+1) * 1000);
 
      function Summed_Between(A: in ArrayType;
                              L,U: in IndexType) return SumType is
@@ -2009,7 +2009,7 @@ This example appears in *SPARK - the proven approach to high integrity software*
 It consists of a procedure Sort declared together with a few related types in a package Array_Utilities.
 Two proof functions are used in the SPARK 2005 version - the function Ordered is true if the part of the
 array from L to U is in ascending order, and the function Perm is true if the set of values of the two
-array parameters are the same set with identical duplications if any. The example is discussed and 
+array parameters are the same set with identical duplications if any. The example is discussed and
 refined within the book - the version shown here is based on the version shown in section 15.6 of the
 book.
 
@@ -2033,7 +2033,7 @@ book.
       function Perm(A, B : Array_Type) return Boolean is
          ((for some I in Index_Type => (for some J in Index_Type => (B(I) = A(J) and B(J) = A(I) and
           (for all N in Index_Type => (if (N /= I and N /= J) then A(N) = B(N)))))));
-                                                                                     
+
       --# function Perm(A, B : Array_Type) return Boolean;
       --  return ((for some I in Index_Type => (for some J in Index_Type => (B = A[I => A(J); J => A(I)]))) or
       --            (for some C in Array_Type => (Perm (A, C) and Perm (B, C))));
@@ -2177,7 +2177,7 @@ attempted to do in this case.
           --            (for some C in Array_Type => (Perm (A, C) and Perm (B, C))));
 
 If this definition is converted from a comment to an annotation it is rejected by the Examiner
-because the existential quantifier "for some C in Array_Type" requires Array_Type to be scalar. 
+because the existential quantifier "for some C in Array_Type" requires Array_Type to be scalar.
 It should also be noted that two instances of the --# assume annotation were used in the SPARK 2005
 version of the proof. The expression given by the assume annotation is given to be true and does
 not need to be proved. Therefore it must be used with care and causes the Examiner to generate
@@ -2214,7 +2214,7 @@ Tokeneer
 The final example in this case study is Tokeneer, a highly secure biometric software system that was originally
 developed by Altran in SPARK 2005. The Tokeneer project was commissioned by the US National Security Agency
 (NSA) to demonstrate the feasibility of developing systems to the level of rigour required by the higher assurance
-levels of the Common Criteria. The development artefacts, including all source code, are now publicly available. 
+levels of the Common Criteria. The development artefacts, including all source code, are now publicly available.
 For more details see www.adacore.com/sparkpro/tokeneer.
 
 Tokeneer is significantly larger than the programs seen so far in this report, and provides a representative
@@ -2252,7 +2252,7 @@ approach:
    were:
 
    - A more complete manual translation of one package (*auditlog*) for
-     evaluation of completeness (number of proved VCs), timings, and 
+     evaluation of completeness (number of proved VCs), timings, and
      usability of GPS/GNATprove.
 
    - Evaluation of *executable assertions* semantics and the following
@@ -2284,12 +2284,12 @@ observations that were raised during the translation are discussed below.
 
  - Tagged record types are used in Tokeneer but are not currently supported by SPARK 2014. To maximise
    the amount of Tokeneer code that could be analysed by GNATprove, a manual conversion from tagged
-   record types to ordinary records was performed. This was fairly straightforward - wherever a 
+   record types to ordinary records was performed. This was fairly straightforward - wherever a
    record extended a tagged record it was replaced with an ordinary record containing all the fields
    from the parent type, plus the extra fields from the extension. Where inherited functions for parent
    types were used these were replaced by normal functions with equivalent behaviour. This translation
    was performed solely to get as much of the Tokeneer code as possible into the current SPARK 2014
-   subset - in future it is expected that tagged types will be supported in SPARK 2014 so this 
+   subset - in future it is expected that tagged types will be supported in SPARK 2014 so this
    translation would not be required.
 
  - When the original translation was done the pragmas "Assert_And_Cut" and "Loop_Invariant" did not
@@ -2343,13 +2343,13 @@ these files called non-Ada code that interfaced with external devices. After the
 these files had to be placed in a separate directory so as for GNATprove to proceed with the analysis.
 When the bodies were present, the tools tried to analyse them and after failing (due to missing
 dependencies), the analysis stopped. After these files were removed, the tools used the specification
-files, which were in SPARK, in order to proceed with the analysis. It is worth mentioning that 3 of the 16 
+files, which were in SPARK, in order to proceed with the analysis. It is worth mentioning that 3 of the 16
 non-SPARK files did not have to be removed in order for the analysis to proceed. These 3 packages had no
 missing file dependencies.
 
 .. note:: Observation 19: When GNATprove encounters a package body containing compilation errors it prevents
           the analysis of other units that depend on the corresponding package specification. On the other
-          hand, if the package body is missing altogether then dependent units can be analysed. 
+          hand, if the package body is missing altogether then dependent units can be analysed.
 
 Another idea we considered was to attempt the GNATprove analysis of the 'support' packages which are not in
 SPARK and which were excluded from the SPARK 2005 analysis. However this analysis was not possible due to
@@ -2447,7 +2447,7 @@ within GPS using the option "Prove > Prove All" which generated the following co
 The output from this command appears in the locations pane in GPS. We copied this to a file and used
 'grep' to count the total number of VCs (count the occurrences of "proved"), unproved VCs (count the
 occurrences of "not proved") and used similar text filters to count subcategories of VCs as shown in
-the table below. 
+the table below.
 
 .. note:: Recommendation 08: The SPARK 2014 tools currently lack automated support for providing an
           overall proof status summary. This is important when analysing larger projects and it is
@@ -2525,7 +2525,7 @@ The following steps were performed:
      (UsedLogFiles.Length >= 1 and then
       NumberLogEntries =
         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
-        LogFileEntries(CurrentLogFile)); 
+        LogFileEntries(CurrentLogFile));
 
 Having made these modifications GNATprove gave the following analysis results.
 (Note that this table was generated manually from the GNATprove output.)
@@ -2625,7 +2625,7 @@ with full details of the VC. With SPARK 2005 the user must look at the
 VCs in order to see exactly what cannot be proved. This is one level of
 indirection away from the code so in that sense it is less user-friendly.
 However, the VCs also show precisely what hypotheses are available to the
-prover which can be very useful when debugging proof attempts, especially 
+prover which can be very useful when debugging proof attempts, especially
 for advanced users. It is recommended that some way is found to make the
 the SPARK 2014 VCs more accessible to users.
 
@@ -2693,7 +2693,7 @@ The rules for this language feature are currently under development.
 Observation 06: Note that modelling SPARK 2005 proof functions as executable functions in
 SPARK 2014 is not ideal as there is nothing to prevent them from being called in general code.
 The solution to this is to label them as ghost functions via "convention => ghost" which means
-they may only be called from within proof expressions or from other ghost functions. This 
+they may only be called from within proof expressions or from other ghost functions. This
 approach would have been taken for this example but it was not yet implemented when the
 example was originally developed.
 
@@ -2701,7 +2701,7 @@ Observation 07: Flow analysis of the Central Heating Controller example with GNA
 currently possible due to use of features for which flow analysis has not yet been implemented.
 
 Observation 08: The partial correctness proof of the Central Heating Controller demonstrates
-that GNATprove is able to discharge quite large postconditions in a reasonable time. (The 
+that GNATprove is able to discharge quite large postconditions in a reasonable time. (The
 default timeout of 1s was sufficient. Full statistics are in the appendix.)
 
 Observation 09: It is interesting to note that GNATprove generates and proves 37 VCs, compared to 97 VCs for the
@@ -2715,7 +2715,7 @@ that the configuration of the target is the same as the host, but this can be
 overridden and a specific target configuration can be provided with the switch
 -gnateT.
 
-Observation 11: The Raise_To_Power example illustrates that VCs 
+Observation 11: The Raise_To_Power example illustrates that VCs
 involving non-linear arithmetic are typically hard to prove, both
 for the SPARK 2005 and the SPARK 2014 toolsets. The Riposte counter-example
 finding tool was applied to the SPARK 2005 VCs in an attempt to
@@ -2766,7 +2766,7 @@ dependent units.
 
 Observation 19: When GNATprove encounters a package body containing compilation errors it prevents
 the analysis of other units that depend on the corresponding package specification. On the other
-hand, if the package body is missing altogether then dependent units can be analysed. 
+hand, if the package body is missing altogether then dependent units can be analysed.
 
 Observation 20: The failure to analyse a package body (which does exist) appears to render the
 corresponding package specification unavailable for analysis. But if the package body is removed
@@ -2800,7 +2800,7 @@ The conclusions stated here are drawn mainly from the examples
 presented in this report but also draw on our experiences working on
 the VerifyThis [HMW13]_ problems.
 
-.. [HMW13] "SPARK 2014 and GNATprove - A Competition Report from Builders of an Industrial-Strength Verifying Compiler", by Duc Hoang, Yannick Moy and Angela Wallenburg, submitted for publication in the journal of Software Tools for Technology Transfer 
+.. [HMW13] "SPARK 2014 and GNATprove - A Competition Report from Builders of an Industrial-Strength Verifying Compiler", by Duc Hoang, Yannick Moy and Angela Wallenburg, submitted for publication in the journal of Software Tools for Technology Transfer
 
 Goals of Hi-Lite
 ----------------
@@ -2890,7 +2890,7 @@ by providing an overflow checking mode where proof obligations for
 intermediate overflow in annotations are eliminated (by using a bignum
 library), as these would lead to false alarms (unless run-time
 assertion execution is on, in this case you would use a strict
-overflow checking mode). 
+overflow checking mode).
 
 In this study, we did indeed get extra verification conditions (VCs)
 for run-time exception freedom in annotations (18 out of 65 VCs for a
@@ -2943,7 +2943,7 @@ Abstraction is critical for formal verification to scale to industrial size
 projects. There is currently very little in the way of support for abstraction
 in SPARK 2014 proof expressions. The good news is that there are plans to implement
 abstract state and refined user-defined pre- and post-contracts. The Tokeneer case
-study would provide a useful example on which to evaluate these new language 
+study would provide a useful example on which to evaluate these new language
 features once they are implemented.
 
 Recommendations 01 and 02 relate to issues with abstraction.
@@ -2972,22 +2972,22 @@ findings relating to this method of user interaction.
    having to apply those timeouts to the rest of the proofs.
 
 #. In relation to the previous two points, in the future it might be worth considering a
-   mode where 'Prove Line' was automatically invoked on the line being edited (or 
+   mode where 'Prove Line' was automatically invoked on the line being edited (or
    'Prove Subprogram' on the subprogram being edited) so that lines could be highlighted
-   red or green to show their proof status as the user edited them. 
+   red or green to show their proof status as the user edited them.
 
 #. The tools currently lack facilities for providing feedback to the user on the proof
    status of larger projects (such as the Tokeneer example), hence we used command-line
    tools to extract proof statistics (e.g. number of checks proved and not proved) from
    the textual output. A proof status summary, something like that given by the POGS tool
-   for SPARK 2005, would be very useful. (See Recommendation 08.) 
+   for SPARK 2005, would be very useful. (See Recommendation 08.)
 
 #. The first point in this list highlights the benefits of GPS and GNATprove in terms
    of user-friendliness, displaying lines in green and red to indicate whether checks
    have been proved or not. When a check cannot be proved it may be obvious to the user
    what needs to be done to correct the problem, or it may be possible to provide more
    information, for example by displaying the path to the check. However, there will
-   remain cases when the user does not understand why a proof attempt is failing and 
+   remain cases when the user does not understand why a proof attempt is failing and
    they would like more information from the VC to help explain precisely what cannot
    be proved. A means of presenting the information from the VCs in a more user-friendly
    form would be useful. (See Recommendation 07.)
@@ -2999,7 +2999,7 @@ findings relating to this method of user interaction.
    Then these changes are remembered by GPS and are applied to the command line the next
    time the 'Prove ...' command is invoked. Some thought needs to be given to what the most
    sensible default options are and how best to deal with the user interaction for managing
-   these options. (This is Recommendation 09.) 
+   these options. (This is Recommendation 09.)
 
 Comparison to SPARK 2005
 ------------------------
@@ -3033,7 +3033,7 @@ summary of the main points that emerged from this comparison.
    equivalents. However they are still under very active development and are continuously
    improving both in terms of speed and in terms of completeness (and the latter
    has a positive impact on the former). The fact that GNATprove successfully proves
-   all checks and postconditions for the SPARK 2014 version of the Central Heating 
+   all checks and postconditions for the SPARK 2014 version of the Central Heating
    Controller example is very encouraging.
 
 #. One of the expected benefits of GNATprove was that it would be easier to take an
@@ -3052,8 +3052,8 @@ summary of the main points that emerged from this comparison.
    by removing them from the project directory. Another option would be for GNATprove
    to have a setting where errors in bodies did not affect the analysis of specifications.
    In other ways GNATprove does provide more flexibility than SPARK 2005 in terms of
-   its ability to analyse code which is a mixture of SPARK and non-SPARK. 
-    
+   its ability to analyse code which is a mixture of SPARK and non-SPARK.
+
 
 Summary of Main Overall Benefits
 --------------------------------
@@ -3068,8 +3068,8 @@ At a very high-level, the main benefits of SPARK 2014 can be summarised as follo
 not investigated as part of this study. It is identified as an area for further
 work.)
 
-Issues 
------- 
+Issues
+------
 
 Most of the issues listed below are related to language features or other
 functionality that has not yet been implemented in the SPARK 2014 tools.
@@ -3077,7 +3077,7 @@ In general there are either concrete plans to address them or ongoing
 discussions to determine appropriate solutions.
 
 Major issues:
- 
+
  - Abstraction and refinement of contracts necessary for industrial
    applications, and the design of these features in SPARK 2014 have to
    be evaluated once they have been implemented. (See Recommendations 01 and 02.)
@@ -3121,7 +3121,7 @@ from this case study.
   verification benefits from being able to test contracts that are not
   amenable to formal verification.
 
-- Evaluation of generative mode (where the annotations have not been 
+- Evaluation of generative mode (where the annotations have not been
   specified by the programmer and are determined automatically by the
   SPARK 2014 tools based on the code). Which annotations could have been
   generated on Tokeneer?
@@ -3132,4 +3132,3 @@ from this case study.
 
 - Completing the conversion of Tokeneer to SPARK 2014. One of the main
   tasks would be to convert all uses of SPARK_IO to Ada.Text_IO.
-  

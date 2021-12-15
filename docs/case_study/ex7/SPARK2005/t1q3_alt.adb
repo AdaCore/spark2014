@@ -47,4 +47,3 @@ is
   end NextDay_B;
 
 end T1Q3_Alt;
-

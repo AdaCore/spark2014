@@ -23,7 +23,7 @@ module Perm__index
 
  predicate dynamic_invariant (expr : int) bool bool bool bool =
   dynamic_property first last expr
- 
+
  predicate default_initial_assumption int bool = true
 end
 
@@ -49,7 +49,7 @@ module Perm__nat_array
  use Perm__index as Perm__index
  use "_gnatprove_standard".Integer as Integer
  use "int".Int
- use  Array__Int__Standard__natural as Array__Int__Standard__natural 
+ use  Array__Int__Standard__natural as Array__Int__Standard__natural
 
  type component_type =
   Standard__natural.natural

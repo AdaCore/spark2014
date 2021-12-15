@@ -14,4 +14,3 @@ rule_family t2q6_rules:
      X      requires [X:any] &
      X <= Y requires [X:ire, Y:ire] &
      X >= Y requires [X:ire, Y:ire].
-

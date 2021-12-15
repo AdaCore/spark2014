@@ -74,4 +74,3 @@ startadminactivity_user(3): St = St_1 or St = St_2 -> B1
                               St_1 <> St_4,
                               St_2 <> St_3,
                               St_2 <> St_4 ] .
-

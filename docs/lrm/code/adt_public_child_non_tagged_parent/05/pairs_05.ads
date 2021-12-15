@@ -16,4 +16,3 @@ private
     Inc_Value : constant Integer := 1;
 
 end Pairs_05;
-

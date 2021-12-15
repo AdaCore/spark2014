@@ -25,4 +25,3 @@ is
   end Raise_To_Power;
 
 end T1Q6;
-

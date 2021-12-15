@@ -18,4 +18,3 @@ contracts to guard against run-time errors in `tetris_integrity.adb`. The
 complete program, including the BSP to run it on the ATMEL SAM4S board, is
 available on the [AdaCore
 blog](http://blog.adacore.com/tetris-in-spark-on-arm-cortex-m4).
-

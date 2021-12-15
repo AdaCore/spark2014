@@ -55,4 +55,3 @@ begin
    end loop;
    Put (Item => Count, Width => 1);
 end Enum_Example;
-

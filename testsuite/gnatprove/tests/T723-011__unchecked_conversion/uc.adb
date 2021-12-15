@@ -8,5 +8,5 @@ procedure UC is
    Y : Integer := Conv(X);
 begin
    Ada.Text_IO.Put_Line (X'Image);
-   Ada.Text_IO.Put_Line (Y'Image);   
+   Ada.Text_IO.Put_Line (Y'Image);
 end UC;

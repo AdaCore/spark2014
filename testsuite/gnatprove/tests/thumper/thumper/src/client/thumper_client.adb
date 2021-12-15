@@ -70,4 +70,3 @@ begin
 
    Gtk.Main.Main;
 end Thumper_Client;
-

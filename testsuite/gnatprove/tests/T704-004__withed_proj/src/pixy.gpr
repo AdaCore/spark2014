@@ -67,4 +67,3 @@ project Pixy is
    end Linker;
 
 end Pixy;
-

@@ -1772,4 +1772,3 @@ is
    end TheAlarmThresholdEntries;
 
 end ConfigData;
-

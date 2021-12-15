@@ -37,4 +37,3 @@ and [X.690](http://www.itu.int/rec/T-REC-X.690/en).
 
 + X.690-2002-07.pdf. Information technology - ASN.1 encoding rules: Specification of Basic
   Encoding Rules (BER), Canonical Encoding Rules (CER), and Distinguished Encoding Rules (DER).
-

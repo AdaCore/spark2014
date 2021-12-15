@@ -49,6 +49,3 @@ is
      Post   => (RAX = ((RAX'Old and 16#FFFFFFFF00000000#) or Unsigned64(Val)));
 
 end X86;
-
-
-

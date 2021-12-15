@@ -229,5 +229,3 @@ curve25519.ads:19:26: info: predicate check proved (Trivial: 1 VC)
 curve25519.ads:20:29: info: predicate check proved (Trivial: 1 VC)
 curve25519.ads:20:50: info: predicate check proved (Trivial: 1 VC)
 types.ads:19:08: info: predicate check proved (Trivial: 1 VC)
-
-

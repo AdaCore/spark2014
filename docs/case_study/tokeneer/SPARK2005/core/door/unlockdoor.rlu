@@ -67,5 +67,4 @@ unlockdoor_user(1): B1 and                                                 /* C1
                        clock__greaterthanorequal(T, fld_alarmtimeout(S2))) /* (1)3 */
                       <->
                       fld_dooralarm(S2) = alarmtypes__alarming,            /* (1)4 */
-                      fld_currentdoor(S)  = fld_currentdoor(S2)  ] .       /* (2)  */  
-
+                      fld_currentdoor(S)  = fld_currentdoor(S2)  ] .       /* (2)  */

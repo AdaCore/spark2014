@@ -15,5 +15,3 @@ is
    --  Processes an Instruction.
 
 end Instructions;
-
-

@@ -145,14 +145,14 @@ Version filling the role of the Document, thus licensing distribution and modifi
 Version to whoever possesses a copy of it. In addition, you must do these things in the Modified
 Version:
 
-* Use in the Title Page (and on the covers, if any) a title distinct from that of the Document, and from  
-  those of previous versions (which should, if there were any, be listed in the History section of the 
-  Document). You may use the same title as a previous version if the original publisher of that version 
+* Use in the Title Page (and on the covers, if any) a title distinct from that of the Document, and from
+  those of previous versions (which should, if there were any, be listed in the History section of the
+  Document). You may use the same title as a previous version if the original publisher of that version
   gives permission.
 
-* List on the Title Page, as authors, one or more persons or entities responsible for authorship of the 
-  modifications in the Modified Version, together with at least five of the principal authors of the 
-  Document (all of its principal authors, if it has fewer than five), unless they release you from this 
+* List on the Title Page, as authors, one or more persons or entities responsible for authorship of the
+  modifications in the Modified Version, together with at least five of the principal authors of the
+  Document (all of its principal authors, if it has fewer than five), unless they release you from this
   requirement.
 
 * State on the Title page the name of the publisher of the Modified Version, as the publisher.
@@ -161,36 +161,36 @@ Version:
 
 * Add an appropriate copyright notice for your modifications adjacent to the other copyright notices.
 
-* Include, immediately after the copyright notices, a license notice giving the public permission to use 
+* Include, immediately after the copyright notices, a license notice giving the public permission to use
   the Modified Version under the terms of this License, in the form shown in the Addendum below.
 
-* Preserve in that license notice the full lists of Invariant Sections and required Cover Texts given in  
+* Preserve in that license notice the full lists of Invariant Sections and required Cover Texts given in
   the Document's license notice.
 
 * Include an unaltered copy of this License.
 
-* Preserve the section Entitled 'History', Preserve its Title, and add to it an item stating at least the 
-  title, year, new authors, and publisher of the Modified Version as given on the Title Page. If there is 
-  no section Entitled 'History' in the Document, create one stating the title, year, authors, and  
-  publisher of the Document as given on its Title Page, then add an item describing the Modified Version 
+* Preserve the section Entitled 'History', Preserve its Title, and add to it an item stating at least the
+  title, year, new authors, and publisher of the Modified Version as given on the Title Page. If there is
+  no section Entitled 'History' in the Document, create one stating the title, year, authors, and
+  publisher of the Document as given on its Title Page, then add an item describing the Modified Version
   as stated in the previous sentence.
 
-* Preserve the network location, if any, given in the Document for public access to a Transparent copy of 
-  the Document, and likewise the network locations given in the Document for previous versions it was 
-  based on. These may be placed in the 'History' section. You may omit a network location for a work that 
-  was published at least four years before the Document itself, or if the original publisher of the  
+* Preserve the network location, if any, given in the Document for public access to a Transparent copy of
+  the Document, and likewise the network locations given in the Document for previous versions it was
+  based on. These may be placed in the 'History' section. You may omit a network location for a work that
+  was published at least four years before the Document itself, or if the original publisher of the
   version it refers to gives permission.
 
-* For any section Entitled 'Acknowledgements' or 'Dedications', Preserve the Title of the section, and 
-  preserve in the section all the substance and tone of each of the contributor acknowledgements and/or 
+* For any section Entitled 'Acknowledgements' or 'Dedications', Preserve the Title of the section, and
+  preserve in the section all the substance and tone of each of the contributor acknowledgements and/or
   dedications given therein.
 
-* Preserve all the Invariant Sections of the Document, unaltered in their text and in their titles. 
+* Preserve all the Invariant Sections of the Document, unaltered in their text and in their titles.
   Section numbers or the equivalent are not considered part of the section titles.
 
 * Delete any section Entitled 'Endorsements'. Such a section may not be included in the Modified Version.
 
-* Do not retitle any existing section to be Entitled 'Endorsements' or to conflict in title with any 
+* Do not retitle any existing section to be Entitled 'Endorsements' or to conflict in title with any
   Invariant Section.
 
 * Preserve any Warranty Disclaimers.
@@ -363,7 +363,3 @@ two alternatives to suit the situation.
 If your document contains nontrivial examples of program code, we recommend releasing these examples in
 parallel under your choice of free software license, such as the GNU General Public License, to permit
 their use in free software.
-
-
-
-

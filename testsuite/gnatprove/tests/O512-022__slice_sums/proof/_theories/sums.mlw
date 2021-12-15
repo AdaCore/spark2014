@@ -20,7 +20,7 @@ module Sums__extended_index
    function first = first,
    function last = last,
    predicate in_range = in_range
- 
+
  (* Type for mutable variables of type extended_index *)
  type extended_index__ref = { mutable extended_index__content : extended_index }
  val extended_index__havoc (x : extended_index__ref) : unit
@@ -29,7 +29,7 @@ module Sums__extended_index
  (* All values of type extended_index are in range *)
  predicate dynamic_invariant (expr : int) bool bool bool bool =
    dynamic_property first last expr
- 
+
  (* We know nothing for default initialization of variables of type
     extended_index *)
  predicate default_initial_assumption int bool = true
@@ -80,7 +80,7 @@ module Sums__index
  (* All values of type index are in range *)
  predicate dynamic_invariant (expr : int) bool bool bool bool =
    dynamic_property first last expr
- 
+
  (* We know nothing for default initialization of variables of type index *)
  predicate default_initial_assumption int bool = true
 
@@ -106,7 +106,7 @@ module Sums__vector_element
  use "int".Int
 
  type vector_element = < range -32768 32767 >
- 
+
  val constant first : int
  ensures { result = - 32768 }
 
@@ -180,7 +180,7 @@ module Array__Int__Sums__vector_element
 
  val bool_eq (a:map) (af:int) (al:int) (b:map) (bf:int) (bl:int) : bool
  ensures { result = bool_eq a af al b bf bl }
- 
+
  (* Clone of the model module for comparison of arrays *)
  clone export "ada__model".Array_Int_Rep_Comparison_Axiom with
    axiom .,
@@ -313,7 +313,7 @@ module Sums__slice_bounds
 
  (* No particular property applies to all values of types slice_bounds *)
  predicate dynamic_invariant slice_bounds bool bool bool bool = true
- 
+
  (* We know nothing for default initialization of variables of slice_bounds *)
  predicate default_initial_assumption slice_bounds bool = true
 end

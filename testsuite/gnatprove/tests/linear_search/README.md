@@ -4,4 +4,3 @@ is successful then the index returned is one at which the array contains the
 value searched. GNATprove proves all checks on this program. This program is
 the same as the one presented in the SPARK Tutorial section of the User's
 Guide.
-

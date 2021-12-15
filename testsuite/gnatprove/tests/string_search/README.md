@@ -10,4 +10,3 @@ substring. GNATprove proves all checks on these programs. A detailed account
 of the development and verification of this example is given in the
 [corresponding post on the AdaCore
 blog](https://blog.adacore.com/applied-formal-logic-searching-in-strings).
-

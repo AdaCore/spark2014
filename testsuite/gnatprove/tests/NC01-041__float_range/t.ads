@@ -11,4 +11,3 @@ is
    type Output_T is digits 6 range -32.0 .. 32.0;
 
 end T;
-

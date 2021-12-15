@@ -41,4 +41,3 @@ is
 begin
    null;
 end t;
-

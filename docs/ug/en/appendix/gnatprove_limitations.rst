@@ -172,4 +172,3 @@ Proof Limitations
 
 9. Preconditions on arithmetic and conversion operators (including Time_Of) in
    Ada.Calendar package are not yet implemented.
-

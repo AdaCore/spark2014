@@ -14,7 +14,7 @@ fagin0.dfcs.usafa.edu.	3600	IN	A	128.236.9.2
 fagin1.dfcs.usafa.edu.	A	128.236.9.2
 doc.dfcs.usafa.edu. CNAME    carlisle.dfcs.usafa.edu.
  ;
-        
+
 dfcs.usafa.edu.	NS	ns.dfcs.usafa.edu.
 dfcs.usafa.edu.	NS	carlisle.dfcs.usafa.edu.
 ns.dfcs.usafa.edu.	A	128.236.9.7

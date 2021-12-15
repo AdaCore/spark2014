@@ -40,4 +40,3 @@ package Hermes.DER.Encode is
    function Put_OID_Value(Value : Hermes.OID.Object_Identifier) return Hermes.Octet_Array;
 
 end Hermes.DER.Encode;
-

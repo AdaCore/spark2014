@@ -49,4 +49,3 @@ processing_user(1): not B1 may_be_deduced_from
 
 processing_user(2): not B1 <-> B2 may_be_deduced_from
                     [ B2 <-> not B1 ] .
-
