@@ -9,3 +9,15 @@ repos:
     -   id: end-of-file-fixer
     -   id: mixed-line-ending
     -   id: trailing-whitespace
+  - repo: local
+    hooks:
+    -   id: check-submodules
+        name: Check for submodules in commits
+        entry: python scripts/check-submodules.py
+        language: python
+        pass_filenames: false
+    -   id: check-empty-testoutopt
+        name: Check for empty test.out and test.opt files
+        entry: python scripts/check-empty-testoutopt.py
+        language: python
+        files: \.(opt|out)$
