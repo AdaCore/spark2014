@@ -1,6 +1,0 @@
-
-   Ident: CD1
-   Section: 5.9.2
-   Page/para: 30
-   Comment: In the section Verification Rules, it is not clear what is described here. Maybe there should be a sentence per pragma? As for Assume, the manual states that it is not required to prove that the Boolean expression is true. For a reader, it sounds like this proof may be attempted though and raise a warning if it is not proved. As I understand pragma Assume, it is not the case. The proof should not be attempted but the result should be assumed to be true (the manual says that it can be assumed only).
-An other small point, if Loop_Invariant is described 5.5.3 Language Definition, shouldn't the information about it being a cut point appear rather in this section? 
