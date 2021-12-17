@@ -25,20 +25,18 @@ patris.adb:107:33: info: index check proved (CVC4: 2 VC)
 patris.adb:107:50: info: index check proved (CVC4: 2 VC)
 patris.adb:108:36: info: index check proved (CVC4: 2 VC)
 patris.adb:108:54: info: index check proved (CVC4: 2 VC)
-patris.adb:116:24: medium: assertion might fail, cannot prove X in X_Coord
-patris.adb:116:24: medium: in inlined expression function body at patris.ads:158
+patris.adb:113:16: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 patris.adb:118:30: info: unrolling loop
 patris.adb:119:33: info: unrolling loop
-patris.adb:121:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
-patris.adb:121:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+patris.adb:121:45: info: index check proved (CVC4: 24 VC; Z3: 5 VC; altergo: 3 VC)
+patris.adb:121:63: info: index check proved (CVC4: 24 VC; Z3: 3 VC; altergo: 5 VC)
+patris.adb:129:16: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 patris.adb:131:57: info: index check proved (CVC4: 2 VC)
-patris.adb:132:24: medium: assertion might fail, cannot prove X in X_Coord
-patris.adb:132:24: medium: in inlined expression function body at patris.ads:158
 patris.adb:134:34: info: unrolling loop
 patris.adb:135:37: info: unrolling loop
 patris.adb:136:54: info: index check proved (CVC4: 18 VC)
 patris.adb:137:45: info: index check proved (CVC4: 10 VC; altergo: 8 VC)
-patris.adb:137:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+patris.adb:137:63: info: index check proved (CVC4: 10 VC; Z3: 1 VC; altergo: 7 VC)
 patris.adb:166:28: info: assertion proved (CVC4: 2 VC)
 patris.adb:169:13: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:169:13: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -51,7 +49,7 @@ patris.adb:179:36: info: loop invariant preservation proved (CVC4: 1 VC)
 patris.adb:183:35: info: range check proved (CVC4: 2 VC)
 patris.adb:184:31: info: assertion proved (CVC4: 1 VC)
 patris.adb:214:07: info: initialization of "Candidate" proved
-patris.adb:217:23: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
+patris.adb:217:23: info: precondition proved (CVC4: 1 VC)
 patris.adb:234:41: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:234:52: info: initialization of "Cur_State" constituent of "Game_State" proved
 patris.adb:234:63: info: initialization of "Cur_Piece" constituent of "Game_State" proved
@@ -86,37 +84,47 @@ patris.ads:83:11: info: data dependencies proved
 patris.ads:97:11: info: data dependencies proved
 patris.ads:158:54: info: index check proved (CVC4: 2 VC)
 patris.ads:158:57: info: index check proved (CVC4: 2 VC)
-patris.ads:184:46: info: index check proved (CVC4: 2 VC)
-patris.ads:216:77: info: range check proved (CVC4: 1 VC)
+patris.ads:159:09: warning: postcondition does not mention function result [-gnatw.t]
+patris.ads:159:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:163:09: warning: postcondition does not mention function result [-gnatw.t]
+patris.ads:163:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:167:09: warning: postcondition does not mention function result [-gnatw.t]
+patris.ads:167:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:187:46: info: index check proved (CVC4: 2 VC)
 patris.ads:218:77: info: range check proved (CVC4: 1 VC)
-patris.ads:229:49: info: range check proved (CVC4: 2 VC)
-patris.ads:230:49: info: range check proved (CVC4: 2 VC)
-patris.ads:231:49: info: range check proved (CVC4: 2 VC)
-patris.ads:232:66: info: range check proved (CVC4: 2 VC)
-patris.ads:236:37: info: initialization of "Success" proved
-patris.ads:239:14: info: postcondition proved (CVC4: 1 VC)
-patris.ads:242:06: info: data dependencies proved
-patris.ads:245:16: info: postcondition proved (CVC4: 2 VC)
-patris.ads:251:06: info: data dependencies proved
-patris.ads:254:16: info: postcondition proved (CVC4: 2 VC)
-patris.ads:259:06: info: data dependencies proved
-patris.ads:260:14: info: postcondition proved (CVC4: 3 VC)
-patris.ads:267:06: info: data dependencies proved
-patris.ads:269:14: info: postcondition proved (CVC4: 1 VC)
-patris.ads:272:07: info: initialization of "Redraw_Board" proved
-patris.ads:272:21: info: initialization of "Redraw_Score" proved
-patris.ads:272:35: info: initialization of "Redraw_Current_Piece" proved
-patris.ads:274:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:220:77: info: range check proved (CVC4: 1 VC)
+patris.ads:221:09: warning: postcondition does not mention function result [-gnatw.t]
+patris.ads:221:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:229:09: warning: postcondition does not mention function result [-gnatw.t]
+patris.ads:229:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:233:49: info: range check proved (CVC4: 2 VC)
+patris.ads:234:49: info: range check proved (CVC4: 2 VC)
+patris.ads:235:49: info: range check proved (CVC4: 2 VC)
+patris.ads:236:66: info: range check proved (CVC4: 2 VC)
+patris.ads:240:37: info: initialization of "Success" proved
+patris.ads:243:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:246:06: info: data dependencies proved
+patris.ads:249:16: info: postcondition proved (CVC4: 2 VC)
+patris.ads:255:06: info: data dependencies proved
+patris.ads:258:16: info: postcondition proved (CVC4: 2 VC)
+patris.ads:263:06: info: data dependencies proved
+patris.ads:266:14: medium: postcondition might fail, cannot prove (Valid_Configuration)
+patris.ads:271:06: info: data dependencies proved
+patris.ads:273:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:276:07: info: initialization of "Redraw_Board" proved
+patris.ads:276:21: info: initialization of "Redraw_Score" proved
+patris.ads:276:35: info: initialization of "Redraw_Current_Piece" proved
 patris.ads:278:14: info: postcondition proved (CVC4: 1 VC)
-patris.ads:281:11: info: data dependencies proved
-patris.ads:284:06: info: data dependencies proved
-patris.ads:287:11: info: data dependencies proved
-patris.ads:289:14: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
-patris.ads:290:06: info: data dependencies proved
-patris.ads:293:11: info: data dependencies proved
-patris.ads:296:06: info: data dependencies proved
-patris.ads:299:11: info: data dependencies proved
-patris.ads:302:06: info: data dependencies proved
-patris.ads:305:11: info: data dependencies proved
+patris.ads:282:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:285:11: info: data dependencies proved
+patris.ads:288:06: info: data dependencies proved
+patris.ads:291:11: info: data dependencies proved
+patris.ads:293:14: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
+patris.ads:294:06: info: data dependencies proved
+patris.ads:297:11: info: data dependencies proved
+patris.ads:300:06: info: data dependencies proved
+patris.ads:303:11: info: data dependencies proved
+patris.ads:306:06: info: data dependencies proved
+patris.ads:309:11: info: data dependencies proved
 pebble.ads:108:48: warning: return type of "Equal" is an 8-bit Ada Boolean [-gnatwx]
 pebble.ads:108:48: warning: use appropriate corresponding type in C (e.g. char) [-gnatwx]
