@@ -239,10 +239,10 @@
   <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.75" proved="true">
-  <proof prover="0"><result status="valid" steps="1292"/></proof>
+  <proof prover="0"><result status="valid" steps="1415"/></proof>
   </goal>
   <goal name="def&#39;vc.76" proved="true">
-  <proof prover="0"><result status="valid" steps="1197"/></proof>
+  <proof prover="0"><result status="valid" steps="1309"/></proof>
   </goal>
   <goal name="def&#39;vc.77" proved="true">
   <proof prover="0"><result status="valid" steps="35"/></proof>
@@ -270,7 +270,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.85" proved="true">
-  <proof prover="0"><result status="valid" steps="2156"/></proof>
+  <proof prover="0"><result status="valid" steps="2147"/></proof>
   </goal>
   <goal name="def&#39;vc.86" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
@@ -310,16 +310,16 @@
   <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.98" proved="true">
-  <proof prover="0"><result status="valid" steps="1318"/></proof>
+  <proof prover="0"><result status="valid" steps="1416"/></proof>
   </goal>
   <goal name="def&#39;vc.99" proved="true">
-  <proof prover="0"><result status="valid" steps="1391"/></proof>
+  <proof prover="0"><result status="valid" steps="1489"/></proof>
   </goal>
   <goal name="def&#39;vc.100" proved="true">
   <proof prover="0"><result status="valid" steps="59"/></proof>
   </goal>
   <goal name="def&#39;vc.101" proved="true">
-  <proof prover="0"><result status="valid" steps="59"/></proof>
+  <proof prover="0"><result status="valid" steps="74"/></proof>
   </goal>
   <goal name="def&#39;vc.102" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -341,7 +341,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.108" proved="true">
-  <proof prover="0"><result status="valid" steps="2068"/></proof>
+  <proof prover="0"><result status="valid" steps="2057"/></proof>
   </goal>
   <goal name="def&#39;vc.109" proved="true">
   <proof prover="0"><result status="valid" steps="41"/></proof>
@@ -371,7 +371,7 @@
   <proof prover="0"><result status="valid" steps="50"/></proof>
   </goal>
   <goal name="def&#39;vc.118" proved="true">
-  <proof prover="0"><result status="valid" steps="308"/></proof>
+  <proof prover="0"><result status="valid" steps="304"/></proof>
   </goal>
   <goal name="def&#39;vc.119" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
@@ -430,10 +430,10 @@
   <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.137" proved="true">
-  <proof prover="0"><result status="valid" steps="394"/></proof>
+  <proof prover="0"><result status="valid" steps="408"/></proof>
   </goal>
   <goal name="def&#39;vc.138" proved="true">
-  <proof prover="0"><result status="valid" steps="394"/></proof>
+  <proof prover="0"><result status="valid" steps="408"/></proof>
   </goal>
   <goal name="def&#39;vc.139" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -458,7 +458,7 @@
   <proof prover="0"><result status="valid" steps="44"/></proof>
   </goal>
   <goal name="def&#39;vc.146" proved="true">
-  <proof prover="0"><result status="valid" steps="338"/></proof>
+  <proof prover="0"><result status="valid" steps="350"/></proof>
   </goal>
   <goal name="def&#39;vc.147" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
@@ -473,10 +473,10 @@
   <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.151" proved="true">
-  <proof prover="0"><result status="valid" steps="397"/></proof>
+  <proof prover="0"><result status="valid" steps="387"/></proof>
   </goal>
   <goal name="def&#39;vc.152" proved="true">
-  <proof prover="0"><result status="valid" steps="397"/></proof>
+  <proof prover="0"><result status="valid" steps="387"/></proof>
   </goal>
   <goal name="def&#39;vc.153" proved="true">
   <transf name="trivial_true" proved="true" >
