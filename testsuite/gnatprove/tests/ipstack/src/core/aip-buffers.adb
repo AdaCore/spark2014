@@ -471,7 +471,7 @@ is
                                    No_Data.Free_List))
    is
       N_Deallocs : AIP.U8_T;
-      pragma Unreferenced (N_Deallocs);
+
    begin
       pragma Warnings (Off, "unused assignment to ""N_Deallocs""");
       Buffer_Free (Buf, N_Deallocs);
