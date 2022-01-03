@@ -90,7 +90,7 @@ package body LatchAPI is
    ------------------------------------------------------------------
 
    procedure Unlock(Failed : out Boolean) is
-      InMsg  : TcpIp.MessageT with Unreferenced;
+      InMsg  : TcpIp.MessageT with Warnings => Off;
       OutMsg : constant TcpIp.MessageT :=
         (Data   => Ada.Strings.Fixed.Overwrite
            (Source   => TcpIp.NullMsg.Data,
@@ -127,7 +127,7 @@ package body LatchAPI is
    ------------------------------------------------------------------
 
    procedure Lock (Failed : out Boolean) is
-      InMsg  : TcpIp.MessageT with Unreferenced;
+      InMsg  : TcpIp.MessageT with Warnings => Off;
       OutMsg : constant TcpIp.MessageT :=
         (Data   => Ada.Strings.Fixed.Overwrite
            (Source   => TcpIp.NullMsg.Data,
