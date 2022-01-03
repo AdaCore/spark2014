@@ -43,7 +43,7 @@ source_suffix = ".rst"
 
 
 def get_copyright():
-    return u"2011-%s, AdaCore and Altran UK Ltd" % time.strftime("%Y")
+    return u"2011-%s, AdaCore and Capgemini Engineering" % time.strftime("%Y")
 
 
 # General information about the project.
@@ -135,7 +135,7 @@ latex_documents = [
         master_doc,
         "spark2014_ug.tex",
         u"SPARK User's Guide",
-        u"AdaCore and Altran UK Ltd",
+        u"AdaCore and Capgemini Engineering",
         "manual",
     ),
 ]
@@ -149,7 +149,7 @@ man_pages = [
         master_doc,
         "spark2014usersguide",
         u"SPARK User's Guide",
-        [u"AdaCore and Altran UK Ltd"],
+        [u"AdaCore and Capgemini Engineering"],
         1,
     )
 ]

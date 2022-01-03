@@ -74,7 +74,7 @@ Why3
 
 Why3 is a platform for deductive program verification developped by researchers
 from LRI and others (http://why3.lri.fr/). The tool used by GNATprove, GNATWhy3
-is developped by Adacore/Altran and uses the Why3 API.
+is developed by Adacore/Capgemini Engineering and uses the Why3 API.
 
 This first part will describe the source code of Why3: files/libraries that are
 used. The objective is to provide a precise view of which part of the code does

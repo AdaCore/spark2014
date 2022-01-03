@@ -131,8 +131,8 @@ while verifiers require some upfront work, but generate fewer false alarms
 thanks to the use of more powerful techniques. AdaCore develops and
 distributes both a bug finder (CodePeer) and a verifier (SPARK).
 
-SPARK is a verifier co-developed by AdaCore and Altran and distributed by
-AdaCore. The main web page for the SPARK Pro product is
+SPARK is a verifier co-developed by AdaCore and Capgemini Engineering and
+distributed by AdaCore. The main web page for the SPARK Pro product is
 http://www.adacore.com/sparkpro/. SPARK analysis can give strong guarantees
 that a program:
 
@@ -5152,7 +5152,7 @@ https://www.adacore.com/books/do-178c-tech
 
 The article "Climbing the Software Assurance Ladder - Practical Formal
 Verification for Reliable Software" presents both the well-established
-processes surrounding the use of SPARK at Altran UK, as well as the deployment
-experiments performed at Thales to fine-tune the gradual insertion of formal
-verification techniques in existing processes. See:
+processes surrounding the use of SPARK at Capgemini Engineering, as well as the
+deployment experiments performed at Thales to fine-tune the gradual insertion
+of formal verification techniques in existing processes. See:
 https://www.adacore.com/papers/climbing-the-software-assurance-ladder

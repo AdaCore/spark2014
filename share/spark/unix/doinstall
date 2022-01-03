@@ -42,7 +42,7 @@ EOF
 fi
 
 clear
-printf "    This is the installation script for the AdaCore and Altran
+printf "    This is the installation script for the AdaCore and Capgemini Engineering
     SPARK verification toolset.
     For information on commercial support please contact sales@adacore.com.
 

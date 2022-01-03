@@ -678,9 +678,10 @@ to all subprograms, or because the verification context allows it), exercising
 contracts during integration testing can complement proof results, by giving
 the assurance that the actual compiled program behaves as expected.
 
-This strategy has been applied at Altran on UK military projects submitted to
-Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
-were exercised during integration testing, which allowed to scrap unit testing.
+This strategy has been applied at Capgemini Engineering on UK military projects
+submitted to Def Stan 00-56 certification: AoRTE was proved on all the code,
+and contracts were exercised during integration testing, which allowed to scrap
+unit testing.
 
 Between Proof and Unit Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

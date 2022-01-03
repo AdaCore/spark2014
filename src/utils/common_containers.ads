@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                Copyright (C) 2014-2022, Altran UK Limited                --
+--              Copyright (C) 2014-2022, Capgemini Engineering              --
 --                     Copyright (C) 2014-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
