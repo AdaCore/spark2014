@@ -2,7 +2,7 @@ import glob
 import os.path
 import shutil
 from e3.os.process import Run
-from testsuite_support import grep, spark_install_path
+from test_support import grep, spark_install_path
 
 # This test recreates the Coq realizations of the SPARK Why3 definitions and
 # checks them using Coq
