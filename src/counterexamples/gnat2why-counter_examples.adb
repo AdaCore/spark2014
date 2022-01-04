@@ -1354,7 +1354,7 @@ package body Gnat2Why.Counter_Examples is
                      begin
                         if Comp_Name = "'" & All_Label then
                            declare
-                              Comp_Ty  : constant Entity_Id :=
+                              Comp_Ty : constant Entity_Id :=
                                 Retysp (Directly_Designated_Type (Ent_Ty));
                            begin
                               Ptr.Ptr_Val := New_Item (Comp_Ty);

@@ -5504,7 +5504,7 @@ package body Gnat2Why.Subprograms is
 
                      for I in Desc_Params'Range loop
                         declare
-                           Typ      : constant W_Type_Id :=
+                           Typ : constant W_Type_Id :=
                              Get_Why_Type_From_Item (Desc_Params (I));
 
                         begin

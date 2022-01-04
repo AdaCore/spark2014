@@ -150,7 +150,7 @@ package body Gnat2Why.Tables is
 
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    is
-      Ty  : constant Entity_Id :=
+      Ty : constant Entity_Id :=
         Retysp (if Is_Class_Wide_Type (Rec)
                 then Get_Specific_Type_From_Classwide (Rec) else Rec);
    begin

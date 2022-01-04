@@ -2359,7 +2359,7 @@ package body SPARK_Definition is
             | N_Subtype_Declaration
          =>
             declare
-               E  : constant Type_Kind_Id := Defining_Entity (N);
+               E : constant Type_Kind_Id := Defining_Entity (N);
             begin
                --  Store correspondence from completions of private types, so
                --  that Is_Full_View can be used for dealing correctly with

@@ -2632,7 +2632,7 @@ package body Why.Atree.Modules is
            and then (Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E))
          then
             declare
-               WM  : constant W_Module_Id := E_Init_Module (E);
+               WM : constant W_Module_Id := E_Init_Module (E);
             begin
                if Has_Scalar_Type (E)
                  or else Is_Simple_Private_Type (E)

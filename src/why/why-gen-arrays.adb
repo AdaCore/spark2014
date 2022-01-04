@@ -1385,7 +1385,7 @@ package body Why.Gen.Arrays is
       end if;
 
       declare
-         Sbst          : constant W_Clone_Substitution_Array :=
+         Sbst : constant W_Clone_Substitution_Array :=
            (1 =>
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,

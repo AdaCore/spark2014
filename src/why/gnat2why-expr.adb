@@ -7618,7 +7618,7 @@ package body Gnat2Why.Expr is
       -----------------
 
       function Tmp_Of_Expr (Expr : W_Expr_Id) return W_Identifier_Id is
-         Typ  : constant W_Type_Id := Get_Type (+Expr);
+         Typ : constant W_Type_Id := Get_Type (+Expr);
       begin
          return New_Temp_Identifier
            (Typ       => Typ,
@@ -10229,7 +10229,7 @@ package body Gnat2Why.Expr is
    procedure Transform_Actions_Preparation
      (Actions : List_Id)
    is
-      N  : Node_Id;
+      N : Node_Id;
 
    begin
       N := First (Actions);
@@ -11806,7 +11806,7 @@ package body Gnat2Why.Expr is
                      when others  => raise Program_Error);
             else
                declare
-                  Params  : constant Transformation_Params :=
+                  Params : constant Transformation_Params :=
                     Transformation_Params'(Phase       => Generate_Logic,
                                            Gen_Marker  => GM_None,
                                            Ref_Allowed => False,
@@ -16473,7 +16473,7 @@ package body Gnat2Why.Expr is
 
          function Has_Deep_Association (Assocs : List_Id) return Boolean
          is
-            Assoc  : Node_Id := Nlists.First (Assocs);
+            Assoc : Node_Id := Nlists.First (Assocs);
          begin
             while Present (Assoc) loop
                if not Box_Present (Assoc)
