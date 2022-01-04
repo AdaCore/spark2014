@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2125,6 +2125,10 @@ package body Configuration is
          function Concat4 (A, B, C : String_List_Access; D : String_List)
            return String_List;
 
+         procedure Reset_File_Specific_Switches;
+         --  Reset file-specific switches between parsing of the full
+         --  command-line for each file.
+
          -------------
          -- Concat3 --
          -------------
@@ -2149,6 +2153,23 @@ package body Configuration is
                    (if C = null then (1 .. 0 => <>) else C.all) &
                    D;
          end Concat4;
+
+         ----------------------------------
+         -- Reset_File_Specific_Switches --
+         ----------------------------------
+
+         procedure Reset_File_Specific_Switches is
+         begin
+            CL_Switches.Steps := Invalid_Steps;
+            CL_Switches.Timeout := null;
+            CL_Switches.Memlimit := 0;
+            CL_Switches.Proof := null;
+            CL_Switches.Prover := null;
+            CL_Switches.Level := Invalid_Level;
+            CL_Switches.Counterexamples := null;
+            CL_Switches.No_Inlining := False;
+            CL_Switches.No_Loop_Unrolling := False;
+         end Reset_File_Specific_Switches;
 
          Proj_Type : constant Project_Type := Root_Project (Tree);
 
@@ -2195,6 +2216,7 @@ package body Configuration is
                   --  are more important than the other switches in the project
                   --  file, but less so than the command line switches.
 
+                  Reset_File_Specific_Switches;
                   Parse_Switches (All_Switches, Parsed_Cmdline);
                   File_Specific_Postprocess (FS);
                   File_Specific_Map.Insert (FS_Entry.all, FS);
