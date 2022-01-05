@@ -828,9 +828,6 @@ package SPARK_Atree is
    function Compile_Time_Known_Value (N : Node_Id) return Boolean renames
      Sem_Eval.Compile_Time_Known_Value;
 
-   function Compile_Time_Known_Value_Or_Aggr (N : Node_Id) return Boolean
-     renames Sem_Eval.Compile_Time_Known_Value_Or_Aggr;
-
    function Expr_Value (N : Node_Id) return Uint with
      Pre => Compile_Time_Known_Value (N);
 
