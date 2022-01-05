@@ -62,6 +62,7 @@ project GNAT2Why is
                               "why.atree.accessors",
                               "why.atree.builders",
                               "why.atree.mutators",
+                              "why.atree.to_json",
                               "why.atree.traversal",
                               "why.atree.traversal_stub",
                               "why.conversions",

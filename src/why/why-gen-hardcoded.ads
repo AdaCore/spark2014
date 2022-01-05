@@ -42,6 +42,10 @@ package Why.Gen.Hardcoded is
    --  @param Theory the theory where the declaration will be emitted.
    --  @param Entity corresponding to the type declaration.
 
+   function Is_Hardcoded_Comparison (Subp : Entity_Id) return Boolean;
+   --  Return True if Subp is a comparison operator and gains to be translated
+   --  in the predicate domain.
+
    function Transform_Hardcoded_Function_Call
      (Subp     : Entity_Id;
       Args     : W_Expr_Array;

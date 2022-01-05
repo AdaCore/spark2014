@@ -1472,6 +1472,16 @@ package body SPARK_Util.Subprograms is
         and then Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function));
    end Is_Volatile_For_Internal_Calls;
 
+   ---------------------------------------
+   -- Is_Wrapper_For_Dispatching_Result --
+   ---------------------------------------
+
+   function Is_Wrapper_For_Dispatching_Result (E : Entity_Id) return Boolean is
+     (Ekind (E) = E_Function
+      and then Is_Wrapper (E)
+      and then not Is_Dispatch_Table_Wrapper (E)
+      and then Present (Subprogram_Body (E)));
+
    -------------------
    -- Might_Be_Main --
    -------------------

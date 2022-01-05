@@ -344,15 +344,6 @@ package body SPARK_Util is
       end loop;
    end Append;
 
-   procedure Append
-     (To    : in out Why_Node_Lists.List;
-      Elmts : Why_Node_Lists.List) is
-   begin
-      for E of Elmts loop
-         To.Append (E);
-      end loop;
-   end Append;
-
    ---------------------------------------
    -- Attr_Constrained_Statically_Known --
    ---------------------------------------
@@ -592,6 +583,9 @@ package body SPARK_Util is
 
    function Char_To_String_Representation (C : Character) return String is
    begin
+      pragma Annotate
+        (Xcov, Exempt_On,
+         "trivial code that would be difficult to fully cover");
       case C is
 
       --  Graphic characters are printed directly
@@ -777,6 +771,7 @@ package body SPARK_Util is
       when LC_Icelandic_Thorn          => return "LC_Icelandic_Thorn";
       when LC_Y_Diaeresis              => return "LC_Y_Diaeresis";
       end case;
+      pragma Annotate (Xcov, Exempt_Off);
    end Char_To_String_Representation;
 
    -----------------------------

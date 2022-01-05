@@ -243,11 +243,13 @@ spark-higher_order-fold.ads:693:28: info: index check proved (CVC4: 2 VC), in in
 spark-higher_order-fold.ads:693:31: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:693:51: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:693:54: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:108
+spark-higher_order.adb:40:07: info: justified that "R" might not be initialized, in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:40:14: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:42:22: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:42:22: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:43:36: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:43:36: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:13
+spark-higher_order.adb:44:38: info: justified that "R" might not be initialized, in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:44:41: info: index check proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:44:46: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:44:52: info: index check proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:13

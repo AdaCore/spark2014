@@ -1,4 +1,4 @@
-pragma Ada_2020;
+pragma Ada_2022;
 
 with Ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;

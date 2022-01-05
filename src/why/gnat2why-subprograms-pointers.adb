@@ -65,8 +65,8 @@ package body Gnat2Why.Subprograms.Pointers is
       From, To : Entity_Id;
       Params   : Transformation_Params)
       return W_Prog_Id
-   with Pre =>
-       Ekind (From) in Subprogram_Kind | E_Subprogram_Type
+   with Pre => Present (Ada_Node)
+       and then Ekind (From) in Subprogram_Kind | E_Subprogram_Type
        and then Ekind (To) in Subprogram_Kind | E_Subprogram_Type;
    --  Introduce LSP checks to ensure that the contracts of From (if any) are
    --  compatible with those of To. This function expects Result_Name to be

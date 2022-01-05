@@ -1,9 +1,9 @@
+SOUNDNESS BUG at inherited.adb:33: mark @PREDICATE_CHECK:FAIL not found
+inherited.adb:33:12: info: in implicit overriding of primitive function with dispatching result "F" at inherited.adb:23
+inherited.adb:33:12: info: predicate check proved (Z3: 1 VC)
 inherited.adb:34:26: info: predicate check proved (CVC4: 1 VC)
 inherited.adb:37:14: warning: subprogram "Bad1" has no effect
 inherited.adb:39:22: medium: assertion might fail
-inherited.adb:39:36: info: tag check proved (CVC4: 1 VC)
 inherited.adb:42:14: warning: subprogram "Bad2" has no effect
 inherited.adb:44:22: info: assertion proved (CVC4: 1 VC)
-inherited.adb:44:36: info: tag check proved (CVC4: 1 VC)
-inherited.adb:44:36: medium: predicate check might fail
 inherited.adb:47:04: info: precondition proved (Trivial: 1 VC)
