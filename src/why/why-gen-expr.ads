@@ -555,6 +555,15 @@ package Why.Gen.Expr is
    is (+W_Expr_Id'
          (New_Typed_Binding (Ada_Node, EW_Pred, Name, +Def, +Context)));
 
+   function New_Typed_Binding
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Def      : W_Term_Id;
+      Context  : W_Term_Id)
+      return W_Term_Id
+   is (+W_Expr_Id'
+         (New_Typed_Binding (Ada_Node, EW_Term, Name, +Def, +Context)));
+
    subtype Supported_Attribute_Id is Attribute_Id with
      Static_Predicate => Supported_Attribute_Id in Attribute_Alignment
                                                  | Attribute_Constrained
