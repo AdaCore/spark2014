@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Assumptions; use Assumptions;
-
 package Assumptions.Search is
 
    procedure Import (L : Rule_Lists.List);

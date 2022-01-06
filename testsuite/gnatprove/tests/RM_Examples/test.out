@@ -89,6 +89,9 @@ hal.ads:64:11: info: flow dependencies proved
 hal.ads:69:30: info: initialization of "Result" proved
 hal.ads:70:11: info: data dependencies proved
 hal.ads:71:11: info: flow dependencies proved
+initialization_and_elaboration-private_child.ads:1:48: info: Initial_Condition of package "Initialization_And_Elaboration" is ignored
+initialization_and_elaboration-private_child.ads:1:48: info: the elaboration of "Initialization_And_Elaboration" is not known to precede the elaboration of the current unit
+initialization_and_elaboration-private_child.ads:1:48: info: use pragma Elaborate_Body in "Initialization_And_Elaboration" or pragma Elaborate in the current unit
 initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved
 initialization_and_elaboration-private_child.ads:5:08: medium: initial condition might fail
 initialization_and_elaboration-private_child.ads:5:29: high: "Private_Child.State" constituent of "Initialization_And_Elaboration.State" must be mentioned as an input of the Initializes aspect of "Private_Child" (SPARK RM 7.1.5(11))

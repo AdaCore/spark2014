@@ -379,6 +379,35 @@ package body Gnat2Why.Subprograms is
                      end;
                   end if;
                end;
+
+            --  Otherwise raise a warning if --info is given and there is an
+            --  Initial_Condition.
+
+            elsif Debug.Debug_Flag_Underscore_F
+              and then Nkind (Withed_Unit) = N_Package_Declaration
+            then
+               declare
+                  Init_Cond : constant Node_Id :=
+                    Get_Pragma (Withed, Pragma_Initial_Condition);
+               begin
+                  if Present (Init_Cond)
+                    and then (Ekind (Main) /= E_Package_Body
+                              or else Withed /= Unique_Entity (Main))
+                  then
+                     Error_Msg_NE
+                       ("info: ?"
+                        & "Initial_Condition of package & is ignored",
+                        Main, Withed);
+                     Error_Msg_NE
+                       ("\the elaboration of & is not known to precede the"
+                        & " elaboration of the current unit",
+                        Main, Withed);
+                     Error_Msg_NE
+                       ("\use pragma Elaborate_Body in & or pragma Elaborate"
+                        & " in the current unit",
+                        Main, Withed);
+                  end if;
+               end;
             end if;
          end if;
 

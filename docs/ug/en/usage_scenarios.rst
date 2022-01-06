@@ -464,9 +464,7 @@ Platinum Level - Full Functional Correctness
 
 Platinum level is achieved when contracts fully cover the functional
 requirements. Achieving the Platinum level is rare in itself, and usually done
-for small parts of an application. The :ref:`Examples in the Toolset
-Distribution` contain many such examples of proof at Platinum level, both as
-:ref:`Individual Subprograms` and as :ref:`Single Units`.
+for small parts of an application.
 
 .. rubric:: Benefits
 
@@ -1670,9 +1668,7 @@ process. Various options can be considered for the conversion process:
    the conversion process (which implies that a bottom-up approach may work
    best) and any errors corrected as they are found. This may also be an
    occasion to dramatically simplify annotations, as |GNATprove| requires far
-   fewer of them. See the description of the conversion of SPARKSkein program
-   in the section about :ref:`Examples in the Toolset Distribution`, for which
-   a majority of the annotations are not needed anymore.
+   fewer of them. See the README of the SPARKSkein program distributed with SPARK.
 
    Once the conversion is complete, development and maintenance can continue in
    |SPARK|.

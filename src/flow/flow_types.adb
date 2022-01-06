@@ -889,7 +889,7 @@ package body Flow_Types is
                    Scope (F.Node) /= Scope (Encapsulating_State (F.Node))))
       then
          Append (R, Get_Unmangled_Name (Scope (F.Node)));
-         Append (R, ".");
+         Append (R, '.');
       end if;
 
       case F.Kind is
@@ -920,7 +920,7 @@ package body Flow_Types is
             else
                Append (R, Get_Unmangled_Name (F.Node));
                for Comp of F.Component loop
-                  Append (R, ".");
+                  Append (R, '.');
                   Append (R, Get_Unmangled_Name (Comp));
                end loop;
             end if;

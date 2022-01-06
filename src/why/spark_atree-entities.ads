@@ -29,7 +29,6 @@ with Einfo.Entities;
 with Einfo.Utils;
 with Sinfo.Nodes;
 with Sem_Aux;
-with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Util;
 with SPARK_Util.Subprograms;
 

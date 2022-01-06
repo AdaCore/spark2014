@@ -36,7 +36,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
-  <proof prover="3"><result status="valid"/></proof>
+  <proof prover="3"><result status="valid" steps="220"/></proof>
   </goal>
  </transf>
  </goal>
