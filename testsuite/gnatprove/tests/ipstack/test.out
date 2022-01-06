@@ -4,11 +4,8 @@ aip-arp.adb:325:10: warning: writing to "Result" is assumed to have no effects o
 aip-arp.adb:396:25: warning: statement has no effect
 aip-arp.adb:61:13: warning: statement has no effect
 aip-arp.ads:69:07: warning: unused variable "Netif_MAC_Addr_Ptr"
-aip-buffers-data.adb:513:46: info: justified that "Data_Array" constituent of "State" is not initialized
-aip-buffers-data.adb:513:46: info: justified that unused global "Data_Array" constituent of "State"
 aip-ip.adb:187:10: warning: statement has no effect
 aip-ip.adb:188:19: warning: this statement is never reached
 aip-tcp.adb:2740:10: warning: consider annotating "Result" with Async_Writers
 aip-tcp.adb:2740:10: warning: indirect writes to "Result" through a potential alias are ignored
 aip-tcp.adb:2740:10: warning: writing to "Result" is assumed to have no effects on other non-volatile objects
-aip-tcp.adb:2744:15: info: justified that "Result" is not initialized
