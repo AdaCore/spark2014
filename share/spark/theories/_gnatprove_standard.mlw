@@ -1159,6 +1159,17 @@ module Array__1
     forall i : I1.t
       [get (slide a old_first new_first) i].
       get (slide a old_first new_first) i = get a (I1.sub i (I1.sub new_first old_first))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t  [get (const v) i].
+      get (const v) i = v
 end
 
 module Array__1__Concat
@@ -1249,17 +1260,6 @@ module Array__1__Concat
     forall v : component_type.
     forall i : Index.t  [get (singleton v i) i].
       get (singleton v i) i = v
-
-  (* An array containing the value v at all indexes. It is used for the value
-     of aggregate associations with a box. *)
-
-   val function const component_type : map
-   meta "encoding:lskept" function const
-
-   axiom const_def :
-    forall v : component_type.
-    forall i : Index.t  [get (const v) i].
-      get (const v) i = v
 end
 
 module Array__2

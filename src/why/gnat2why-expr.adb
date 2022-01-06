@@ -4649,10 +4649,27 @@ package body Gnat2Why.Expr is
                --  For unconstrained arrays, reconstruct the array
 
                if not Is_Static_Array_Type (Ty) then
-                  Def := +Insert_Simple_Conversion
-                    (Domain => EW_Term,
-                     Expr   => +Def,
-                     To     => W_Ty);
+                  declare
+                     Dim    : constant Positive :=
+                       Positive (Number_Dimensions (Ty));
+                     Bounds : W_Expr_Array (1 .. 2 * Dim);
+                     Count  : Positive := 1;
+                  begin
+                     for D in 1 .. Dim loop
+                        Add_Attr_Arg
+                          (EW_Term, Bounds, Ty, Attribute_First, D, Count,
+                           Params);
+                        Add_Attr_Arg
+                          (EW_Term, Bounds, Ty, Attribute_Last, D, Count,
+                           Params);
+                     end loop;
+
+                     Def := +Array_Convert_From_Base
+                       (Domain => EW_Term,
+                        Ty     => Ty,
+                        Ar     => +Def,
+                        Bounds => Bounds);
+                  end;
                end if;
             end;
 
