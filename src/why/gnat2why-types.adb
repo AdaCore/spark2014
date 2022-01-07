@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -602,9 +602,10 @@ package body Gnat2Why.Types is
 
                      Axioms.Append
                        (New_Defining_Bool_Axiom
-                          (Name    => Name,
-                           Binders => Binders,
-                           Def     => +Def));
+                          (Fun_Name => Full_Name (E),
+                           Name     => Name,
+                           Binders  => Binders,
+                           Def      => +Def));
 
                   --  Otherwise, define the symbol at declaration
 
