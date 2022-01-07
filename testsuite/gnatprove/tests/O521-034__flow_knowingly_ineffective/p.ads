@@ -7,4 +7,3 @@ package P is
   procedure OK_2 with No_Return, Global => (Proof_In => Dummy);
 
 end P;
-

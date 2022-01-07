@@ -103,4 +103,3 @@ Lemma range_int_axiom : forall (x:t), (in_range_int (to_int x)).
 intros [r P ]; unfold in_range_int, to_int, rep_to_int, to_rep.
 rewrite of_int_to_uint; auto.
 Qed.
-

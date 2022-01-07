@@ -93,8 +93,8 @@ procedure Safe is
                     E214, E224, E234, E244, E254,
                     E215, E225, E235, E245, E255,
                     E216, E226, E236, E246, E256,
-                    E217, E227, E237, E247, 
-                    E218, E228, E238, E248, 
+                    E217, E227, E237, E247,
+                    E218, E228, E238, E248,
                     E219, E229, E239, E249)
    with Object_Size => 8;
 
@@ -122,7 +122,7 @@ procedure Safe is
 
    function Size_NO is new Ada.Unchecked_Conversion (Integer, U8); --@UNCHECKED_CONVERSION_SIZE:FAIL
 
-   
+
    type R is record
       A : U7;
       B : Boolean;

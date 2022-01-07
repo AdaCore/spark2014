@@ -14,22 +14,25 @@ bad_files = []
 def parse_options():
     args = None
     parser = argparse.ArgumentParser(description=descr)
-    parser.add_argument('--rewrite', dest='rewrite', action='store_true',
-                        help='Use rewrite option ')
+    parser.add_argument(
+        "--rewrite", dest="rewrite", action="store_true", help="Use rewrite option "
+    )
     args = parser.parse_args()
     return args
 
 
 def process(fn, rewrite):
-    test_name = fn.replace("tests/", "").replace("internal/", "").replace(
-        "/test.py", "")
+    test_name = (
+        fn.replace("tests/", "").replace("internal/", "").replace("/test.py", "")
+    )
     with open(fn, "rU") as fd:
         tmp = fd.read()
     if "replay=True" not in tmp:
         return
     if "def replay" not in tmp:
-        bad_files.append("%s: warning uses --replay but has no replay "
-                         "instructions" % test_name)
+        bad_files.append(
+            "%s: warning uses --replay but has no replay " "instructions" % test_name
+        )
         return
 
     cmd = "./update-session-test"
@@ -41,7 +44,7 @@ def process(fn, rewrite):
 def main():
     args = parse_options()
     for testsuite in ("tests", "internal"):
-        for path, dirs, files in os.walk(testsuite):
+        for path, _dirs, files in os.walk(testsuite):
             if "test.py" in files:
                 process(os.path.join(path, "test.py"), args.rewrite)
 

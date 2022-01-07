@@ -45,13 +45,13 @@ postlude = """
 end Why.Keywords;
 """
 
-regexp = re.compile(".*\"([a-z]*)\", [A-Z]*;.*")
+regexp = re.compile('.*"([a-z]*)", [A-Z]*;.*')
 
 
 def find_keywords(input_file):
     result = ""
     update = '      Keywords.Insert ("'
-    input_file = open(input_file, 'r')
+    input_file = open(input_file, "r")
     for line in input_file:
         x = re.search(regexp, line)
         if x is not None and x.group(1) is not None:
@@ -59,7 +59,7 @@ def find_keywords(input_file):
     return result
 
 
-f = open(sys.argv[2], 'w', newline='\n')
+f = open(sys.argv[2], "w", newline="\n")
 
 try:
     update = find_keywords(sys.argv[1])

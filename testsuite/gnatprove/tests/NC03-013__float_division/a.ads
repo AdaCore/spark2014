@@ -10,4 +10,3 @@ is
       Y :    out T.Output_T);
 
 end A;
-

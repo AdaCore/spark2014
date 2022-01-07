@@ -57,4 +57,3 @@ updateinternallatch_user(1):
    [ islocked(fld_currentlatch(S2)) <->                   /* (1)1 */
        clock__greaterthanorequal(T, fld_latchtimeout(S)), /* (1)2 */
      fld_latchtimeout(S) = fld_latchtimeout(S2) ] .       /* (2)  */
-

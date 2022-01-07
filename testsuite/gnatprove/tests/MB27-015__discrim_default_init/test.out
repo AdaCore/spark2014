@@ -1,7 +1,12 @@
 discrims.adb:16:33: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+discrims.adb:16:33: error: use instead a constant initialized to the expression with variable input
 discrims.adb:18:33: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.adb:18:33: error: use instead a constant initialized to the expression with variable input
 discrims.ads:21:29: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.ads:21:29: error: use instead a constant initialized to the expression with variable input
 discrims.ads:29:30: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.ads:29:30: error: use instead a constant initialized to the expression with variable input
 discrims.ads:36:11: info: flow dependencies proved
 discrims.ads:43:30: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.ads:43:30: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

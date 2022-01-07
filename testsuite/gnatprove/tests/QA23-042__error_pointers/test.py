@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 
-prove_all (project="illegal_spark.gpr")
-prove_all (project="illegal_ada.gpr")
+prove_all(project="illegal_spark.gpr")
+prove_all(project="illegal_ada.gpr")

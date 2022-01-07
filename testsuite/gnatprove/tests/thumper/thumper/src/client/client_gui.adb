@@ -53,4 +53,3 @@ package body Client_GUI is
    end Destroy;
 
 end Client_GUI;
-

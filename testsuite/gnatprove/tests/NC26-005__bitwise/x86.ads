@@ -41,6 +41,3 @@ is
                 Shift_Left(Unsigned16(ReadMem8(addr+1)),8)) = Val);
 
 end X86;
-
-
-

@@ -1,4 +1,5 @@
-from test_support import *
+from test_support import ls, spark_install_path
+import os.path
 
 installpath = spark_install_path()
 

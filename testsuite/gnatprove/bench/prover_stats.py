@@ -41,8 +41,8 @@ class Prover:
 
 class Z3(Prover):
 
-    limit_reg = re.compile("rlimit-count *(\d*)") # noqa
-    time_reg = re.compile(":time *(\d*.\d*)") # noqa
+    limit_reg = re.compile("rlimit-count *(\d*)")  # noqa
+    time_reg = re.compile(":time *(\d*.\d*)")  # noqa
     name = "z3"
 
     def __init__(self, executable_name="z3"):
@@ -80,10 +80,10 @@ class Z3(Prover):
 class Altergo(Prover):
 
     name = "altergo"
-    limit_reg = re.compile("\((\d*) steps\)") # noqa
-    time_reg = re.compile("\((\d*.\d*)\)") # noqa
+    limit_reg = re.compile("\((\d*) steps\)")  # noqa
+    time_reg = re.compile("\((\d*.\d*)\)")  # noqa
     status_reg = re.compile("Valid|Timeout|I don't know")
-    steps_reg = re.compile("Steps limit reached: (\d*)") # noqa
+    steps_reg = re.compile("Steps limit reached: (\d*)")  # noqa
     pattern = "*.ae"
 
     def __init__(self, executable_name="alt-ergo"):
@@ -137,7 +137,7 @@ class Altergo(Prover):
                 # special case of steps limit reached
                 steps_raw = Prover.regex_get(self.steps_reg, output, 1)
                 if steps_raw is None:
-                    raise ValueError
+                    raise ValueError from None
                 steps = int(steps_raw)
                 return {
                     "filename": fn,
@@ -151,8 +151,8 @@ class Altergo(Prover):
 
 class CVC4(Prover):
     name = "cvc4"
-    limit_reg = re.compile("smt::SmtEngine::resourceUnitsUsed, (\d+.?\d*)") # noqa
-    time_reg = re.compile("driver::totalTime, *(\d*.\d*)") # noqa
+    limit_reg = re.compile("smt::SmtEngine::resourceUnitsUsed, (\d+.?\d*)")  # noqa
+    time_reg = re.compile("driver::totalTime, *(\d*.\d*)")  # noqa
 
     def __init__(self, executable_name="cvc4"):
         Prover.__init__(self)
@@ -185,8 +185,8 @@ class CVC4(Prover):
 
 class CVC5(CVC4):
     name = "cvc5"
-    limit_reg = re.compile("resource::resourceUnitsUsed = (\d+.?\d*)") # noqa
-    time_reg = re.compile("driver::totalTime = *(\d*.\d*)") # noqa
+    limit_reg = re.compile("resource::resourceUnitsUsed = (\d+.?\d*)")  # noqa
+    time_reg = re.compile("driver::totalTime = *(\d*.\d*)")  # noqa
 
     def __init__(self, executable_name="cvc5"):
         Prover.__init__(self)

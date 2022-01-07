@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 
 prove_all(opt=["--level=4", "--no-axiom-guard", "--counterexamples=off"])
 print("--------------------------------------")

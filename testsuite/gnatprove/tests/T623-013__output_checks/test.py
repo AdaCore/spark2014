@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import gnatprove, prove_all
 
 print("default command-line output")
 print("---------------------------")

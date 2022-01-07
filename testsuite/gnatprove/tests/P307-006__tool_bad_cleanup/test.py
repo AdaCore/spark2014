@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 import os
 
 # First we generate an up-to-date ali file for foo
@@ -12,10 +12,10 @@ statinfo = os.stat(ali)
 with open(ali, "r") as src:
     lines = src.read().splitlines()
 with open(ali, "w") as dst:
-    for l in lines:
-        if l.startswith("QQ SPARKVERSION"):
+    for line in lines:
+        if line.startswith("QQ SPARKVERSION"):
             break
-        dst.write(l + "\n")
+        dst.write(line + "\n")
     dst.write("GG S foo__p\n")
     dst.write("GG VP\n")
     dst.write("GG VI\n")

@@ -1,6 +1,6 @@
            *******************************************************
                          Report of SPARK Examination
-   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
              Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
@@ -34,7 +34,7 @@ Selected files:
    t2q8.adb
 
 
-Index Filename(s) used were: 
+Index Filename(s) used were:
    /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/tut2.idx
 
 
@@ -56,11 +56,11 @@ Target configuration file:
 Line
    1  -- Auto-generated SPARK target configuration file
    2  -- Target claims to be 'SYSTEM_NAME_GNAT'
-   3  
+   3
    4  -- This package Standard is used for Examiner self-analysis,
    5  -- following CFR 1018.  It is valid for both GNAT 3.14a1 and later
    6  -- on SPARC/Solaris and IA32/Win32
-   7  
+   7
    8  package Standard is
    9     type Integer is range -2147483648 ..  2147483647;
   10     type Float is digits  6 range -3.40282E+38 ..  3.40282E+38;
@@ -92,13 +92,13 @@ No Listing File
 Line
    7    --# function fib (I: IndexType) return Positive;
                      ^1
---- (  1)  Warning           :320: The proof function fib has a non-boolean return 
-           and a return annotation. Please make sure that the return is always 
+--- (  1)  Warning           :320: The proof function fib has a non-boolean return
+           and a return annotation. Please make sure that the return is always
            in-type.
 
    8    --# return Result => ((I <= 2 -> Result = 1) and
                    ^2
---- (  2)  Warning           :321: The proof function fib has an implicit return 
+--- (  2)  Warning           :321: The proof function fib has an implicit return
            annotation. Please be careful not to introduce unsoundness.
 
 No summarized warnings

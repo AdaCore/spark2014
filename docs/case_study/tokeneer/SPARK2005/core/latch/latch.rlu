@@ -56,4 +56,3 @@ latch_user(1): prf_latchtimeout(S) may_be_replaced_by
 --    where CurrentLatch is accessed as global data.
 ----------------------------------------------------------------------*/
 latch_user(2): islocked(L) may_be_replaced_by L = locked .
-

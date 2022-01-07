@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import sleep_on_windows, prove_all
 import shutil
 
 prove_all()

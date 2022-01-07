@@ -773,7 +773,3 @@ is
      Post => (ReadMem8Ghost'Result = (mem(addr)));
 
 end X86;
-
-
-
-

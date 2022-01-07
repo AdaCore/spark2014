@@ -31,5 +31,3 @@ is
    end F2;
 
 end Proof;
-
-

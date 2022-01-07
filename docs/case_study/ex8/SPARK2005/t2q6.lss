@@ -1,6 +1,6 @@
            *******************************************************
                             Listing of SPARK Text
-   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
              Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
@@ -10,37 +10,37 @@
 Line
    1  package T2Q6
    2  is
-   3  
+   3
    4    subtype ElementType is Natural range 0..1000;
    5    subtype CountType is Natural range 0..100;
    6    subtype IndexType is CountType range CountType'First+1..CountType'Last;
    7    type ArrayType is array (IndexType) of ElementType;
    8    subtype SumType is Natural range 0..100000;
-   9  
+   9
   10    --# function Sum_Between(A: ArrayType;
                      ^1
---- (  1)  Warning           :320: The proof function Sum_Between has a non-boolean 
-           return and a return annotation. Please make sure that the return is 
+--- (  1)  Warning           :320: The proof function Sum_Between has a non-boolean
+           return and a return annotation. Please make sure that the return is
            always in-type.
 
   11    --#                      L: IndexType;
   12    --#                      U: CountType) return SumType;
   13    --# return Sum => ((L = U -> Sum = A(U)) and
                    ^2
---- (  2)  Warning           :321: The proof function Sum_Between has an implicit 
+--- (  2)  Warning           :321: The proof function Sum_Between has an implicit
            return annotation. Please be careful not to introduce unsoundness.
 
   14    --#                  (L < U -> Sum = Sum_Between (A, L, U - 1) + A (U)) and
   15    --#                  (L > U -> Sum >= ElementType'Last * (L - U)));
-  16  
+  16
   17    procedure SumArray (A: in ArrayType; Sum: out SumType);
   18    --# derives Sum from A;
   19    --# post Sum = Sum_Between(A, IndexType'First, IndexType'Last);
-  20  
+  20
   21    procedure Sumarray_Shift (A: in ArrayType; Shift : in ElementType; Sum: out SumType);
   22    --# derives Sum from A, Shift;
   23    --# post Sum = Sum_Between(A, IndexType'First, IndexType'Last);
-  24  
+  24
   25  end T2Q6;
 No summarized warnings
 

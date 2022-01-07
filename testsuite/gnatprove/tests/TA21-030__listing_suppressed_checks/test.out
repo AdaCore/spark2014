@@ -67,4 +67,3 @@ in unit q2, 0 subprograms and packages out of 1 analyzed
   Q2 at q2.adb:1 skipped; SPARK_Mode => Off
 in unit q3, 0 subprograms and packages out of 1 analyzed
   Q3 at q3.adb:1 skipped; SPARK_Mode => Off
-

@@ -30,7 +30,7 @@ for raw_line in sys.stdin:
     elif " might " in raw_line or "precondition is stronger" in raw_line:
         failed += val
     else:
-        print raw_line.rstrip()
+        print(raw_line.rstrip())
 
-print "Proved: %i" % proved
-print "Failed: %i" % failed
+print("Proved: %i" % proved)
+print("Failed: %i" % failed)

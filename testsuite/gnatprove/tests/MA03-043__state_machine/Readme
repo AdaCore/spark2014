@@ -20,7 +20,7 @@ a state machine in SPARK 2014:
    - sm_using_case_expression.ads * adb
        - this example combines elements from the two previous ones
        - the example demonstrates how a concrete implementation can be proven
-         to be compliant with an abstract specification written using a case 
+         to be compliant with an abstract specification written using a case
          expression.
        - it also shows how this method of specification is amenable to the following
          checks:

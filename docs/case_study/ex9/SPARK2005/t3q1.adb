@@ -22,4 +22,3 @@ is
   end Rotate3;
 
 end T3Q1;
-

@@ -1761,7 +1761,7 @@ package body Flow_Error_Messages is
                --  library. There is no value in suggesting to the user
                --  adding a contract here.
 
-               elsif Lib.In_Predefined_Unit (Subp) then
+               elsif Is_Ignored_Internal (Subp) then
                   null;
 
                --  We want to suggest a fix in the remaining cases

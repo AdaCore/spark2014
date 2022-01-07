@@ -44,4 +44,3 @@
 --      return Contents.Role;
 ----------------------------------------------------------------------*/
 auth_user(1): therole(C) may_be_replaced_by fld_role(C) .
-

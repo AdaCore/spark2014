@@ -1,0 +1,12 @@
+[flake8]
+exclude = .git,__pycache__,build,dist,.tox
+filename = *.py,*.plan,*.anod
+ignore = C901, E203, E266, E501, E231, W503,D100,D101,D102,D102,D103,D104,D105,D106,D107,D203,D403,D213
+# Ignore "undefined name" for plans, e.g. aws_server, defaults, ...
+# and for prolog.py which contains some magic
+per-file-ignores =
+    *.plan:F821
+    prolog.py:F821
+# line length is intentionally set to 80 here because black uses Bugbear
+max-line-length = 80
+select = ANN,B,B9,BLK,C,E,F,T4,W

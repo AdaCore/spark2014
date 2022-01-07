@@ -1,5 +1,4 @@
-from test_support import *
-from os.path import join
+from test_support import gnatprove, clean
 
 gnatprove(opt=["-P", "test.gpr", "--mode=flow"])
 clean()

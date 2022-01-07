@@ -1,3 +1,6 @@
+copy.adb:32:11: info: Initial_Condition of package "Text_IO" is ignored
+copy.adb:32:11: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
+copy.adb:32:11: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 copy.adb:33:08: info: data dependencies proved
 copy.adb:36:03: info: flow dependencies proved
 copy.adb:42:14: info: implicit function contract not available for proof ("Status" might not return)
@@ -307,6 +310,9 @@ my_number_io.ads:28:01: info: in instantiation at spark-text_io-integer_io.ads:8
 my_number_io.ads:28:01: info: in instantiation at spark-text_io-integer_io.ads:86
 my_number_io.ads:28:01: info: in instantiation at spark-text_io-integer_io.ads:87
 my_number_io.ads:28:01: info: in instantiation at spark-text_io-integer_io.ads:88
+spark-text_io-unbounded_io.ads:29:23: info: Initial_Condition of package "Text_IO" is ignored
+spark-text_io-unbounded_io.ads:29:23: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
+spark-text_io-unbounded_io.ads:29:23: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 spark-text_io-unbounded_io.ads:44:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io-unbounded_io.ads:46:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:46:33: info: implicit function contract not available for proof ("Name" might not return)

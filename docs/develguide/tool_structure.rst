@@ -180,7 +180,7 @@ converts it to the tree of a Why3 program, uses the Why3 library to
 generate verification conditions (VCs) from them, and to run provers on
 the verification conditions. A separate chapter describes how gnatwhy3
 works. Here we mainly focus on the interface with other programs.
- 
+
 - gnat2why: Gnat AST → Json-serialized Gnat AST
 - gnatwhy3: Json-serialized Gnat AST → Gnat AST → Why3 AST
 - why3: Why3 AST → Typed Why3 AST → …

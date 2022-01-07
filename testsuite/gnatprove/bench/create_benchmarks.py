@@ -11,7 +11,7 @@ Create VC files for selected tests from the testsuite. Store the VCs in the
 target folder, using subfolders for tests and provers.
 """
 
-testname_regex = re.compile("tmp[^/]*\/([^/]*)\/src") # noqa
+testname_regex = re.compile("tmp[^/]*\/([^/]*)\/src")  # noqa
 
 
 def extract_testname(path):
@@ -27,7 +27,7 @@ def create_if_needed(p):
 
 def copy_vcs(tmpdir, resultdir, prover):
     create_if_needed(resultdir)
-    for path, dirs, files in os.walk(tmpdir):
+    for path, _dirs, files in os.walk(tmpdir):
         for f in files:
             if f.endswith(".smt2") or f.endswith(".ae"):
                 testname = extract_testname(path)

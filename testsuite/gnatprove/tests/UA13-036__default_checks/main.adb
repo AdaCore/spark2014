@@ -56,7 +56,7 @@ procedure Main with SPARK_Mode is
       package I3 is new Gen2 (I1.T, I1.Bad, I2.T, I2.Bad);
       package I4 is new Gen3 (I3.R);
    end Use_Generics;
-   
+
    package Box is
       type T1 is new Integer with Default_Value => 0; --@RANGE_CHECK:FAIL
       function Id (X : T1) return T1 is (X);

@@ -40,5 +40,3 @@ begin
    C := B.all.all;  -- OK: reading from B is ok after re-assignment.
 
 end simple;
-
-

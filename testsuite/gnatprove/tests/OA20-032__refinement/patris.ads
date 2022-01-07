@@ -155,13 +155,16 @@ is
    --  the board limits.
 
    function Is_Empty (B : Board; Y : Integer; X : Integer) return Boolean is
-      (X in X_Coord and then Y in Y_Coord and then B(Y)(X) = Empty);
+      (X in X_Coord and then Y in Y_Coord and then B(Y)(X) = Empty)
+   with Post => True;
 
    function Is_Complete_Line (L : Line) return Boolean is
-     (for all X in X_Coord => L(X) /= Empty);
+     (for all X in X_Coord => L(X) /= Empty)
+   with Post => True;
 
    function Is_Empty_Line (L : Line) return Boolean is
-     (for all X in X_Coord => L(X) = Empty);
+     (for all X in X_Coord => L(X) = Empty)
+   with Post => True;
 
    function No_Complete_Lines (B : Board) return Boolean is
      (for all Y in Y_Coord => not Is_Complete_Line (B(Y)));
@@ -182,7 +185,6 @@ is
            (for all Y in Three_Delta =>
               (for all X in Three_Delta =>
                  (if Possible_Three_Shapes (P.S, P.D) (Y, X) then Is_Empty (B, P.Y + Y, P.X + X)))));
-
 
    function Valid_Configuration (Cur_Board : Board;
                                  Cur_State : State;
@@ -215,14 +217,16 @@ is
          when Turn_Counter_Clockwise =>
            (if D = Direction'First then Direction'Last else Direction'Pred (D)),
          when Turn_Clockwise         =>
-           (if D = Direction'Last then Direction'First else Direction'Succ (D)));
+           (if D = Direction'Last then Direction'First else Direction'Succ (D)))
+   with Post => True;
 
    function Move_Is_Possible (P : Piece; A : Action) return Boolean is
       (case A is
          when Move_Left   => P.X - 1 in PX_Coord,
          when Move_Right  => P.X + 1 in PX_Coord,
          when Move_Down   => P.Y + 1 in PY_Coord,
-         when Turn_Action => True);
+         when Turn_Action => True)
+   with Post => True;
 
    function Move (P : Piece; A : Action) return Piece is
       (case A is
@@ -304,4 +308,3 @@ is
    function Get_Step_Interval return Natural
      with Global => (Input => (Game_State, Score_State));
 end Patris;
-

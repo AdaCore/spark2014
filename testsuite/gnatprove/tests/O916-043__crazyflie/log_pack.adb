@@ -118,7 +118,7 @@ package body Log_Pack is
       Command        : Log_TOC_Command;
       Packet_Handler : CRTP_Packet_Handler;
       Has_Succeed    : Boolean;
-      pragma Unreferenced (Has_Succeed);
+
    begin
       Command := T_Uint8_To_Log_TOC_Command (Packet.Data_1 (1));
       Packet_Handler := CRTP_Create_Packet
@@ -188,7 +188,7 @@ package body Log_Pack is
       Command     : Log_Control_Command;
       Answer      : T_Uint8;
       Has_Succeed : Boolean;
-      pragma Unreferenced (Has_Succeed);
+
    begin
       Command := T_Uint8_To_Log_Control_Command (Packet.Data_1 (1));
 
@@ -243,7 +243,7 @@ package body Log_Pack is
    function Log_Delete_Block (Block_ID : T_Uint8) return T_Uint8 is
       Block     : access Log_Block;
       Cancelled : Boolean;
-      pragma Unreferenced (Cancelled);
+
    begin
       --  Block ID doesn't match anything
       if Block_ID not in Log_Blocks'Range then
@@ -332,7 +332,7 @@ package body Log_Pack is
       Period   : Natural) return T_Uint8 is
       Block     : access Log_Block;
       Cancelled : Boolean;
-      pragma Unreferenced (Cancelled);
+
    begin
       --  Block ID doesn't match anything
       if Block_ID not in Log_Blocks'Range then
@@ -359,7 +359,7 @@ package body Log_Pack is
    function Log_Stop_Block (Block_ID : T_Uint8) return T_Uint8 is
       Block     : access Log_Block;
       Cancelled : Boolean;
-      pragma Unreferenced (Cancelled);
+
    begin
       --  Block ID doesn't match anything
       if Block_ID not in Log_Blocks'Range then
@@ -480,7 +480,7 @@ package body Log_Pack is
          Time_Stamp     : Log_Time_Stamp;
          Packet_Handler : CRTP_Packet_Handler;
          Has_Succeed    : Boolean;
-         pragma Unreferenced (Has_Succeed);
+
 
          --  Procedures used to append log data with different types
          procedure CRTP_Append_Log_Time_Stamp_Data is new CRTP_Append_Data

@@ -1,3 +1,4 @@
-from test_support import *
+from test_support import do_flow
+
 do_flow(opt=["-P", "test.gpr", "-u", "legal"])
 do_flow(opt=["-P", "test.gpr", "-u", "illegal"])

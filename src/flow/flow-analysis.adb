@@ -22,7 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;                       use Atree;
-with Lib;                         use Lib;
+with Lib;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
@@ -4818,7 +4818,7 @@ package body Flow.Analysis is
                   --  Predefined potentially blocking routines are identified
                   --  individually, because they are not analyzed in phase 1.
 
-                  elsif In_Predefined_Unit (E) then
+                  elsif Lib.In_Predefined_Unit (E) then
                      if Is_Predefined_Potentially_Blocking (E) then
                         Error_Msg_Flow
                           (FA       => FA,

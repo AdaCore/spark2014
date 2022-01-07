@@ -1,5 +1,5 @@
-p.adb:15:28: error: "Constraint_Error" would have been raised at run time
+p.adb:15:28: error: Constraint_Error would have been raised at run time
 p.adb:15:28: error: static value out of range of type "S1" defined at line 3, instance at line 15
-p.adb:15:37: error: "Constraint_Error" would have been raised at run time
+p.adb:15:37: error: Constraint_Error would have been raised at run time
 p.adb:15:37: error: static value out of range of type "S1" defined at line 3, instance at line 15
 gnatprove: error during generation of Global contracts

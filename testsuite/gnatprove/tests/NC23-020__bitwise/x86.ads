@@ -84,6 +84,3 @@ is
 			  (Memory(i) = Memory'Old(i)))));
 
 end X86;
-
-
-

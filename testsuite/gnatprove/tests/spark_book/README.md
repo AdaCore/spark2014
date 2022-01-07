@@ -21,4 +21,3 @@ subdirectories and can be opened manually.
 
 The original source code is available from the [publisher's
 website](http://www.cambridge.org/us/academic/subjects/computer-science/programming-languages-and-applied-logic/building-high-integrity-applications-spark)
-

@@ -48,4 +48,3 @@ in unit pkg2, 2 subprograms and packages out of 2 analyzed
 absence of run-time errors of Pkg2 fully established
   Pkg2.Foo at pkg2.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Pkg2.Foo fully established
-

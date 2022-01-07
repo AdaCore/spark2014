@@ -1,5 +1,5 @@
-from test_support import *
 from e3.os.process import Run
+import os
 
 # test the version output of gnatprove.
 # Typical output is like this:
@@ -17,16 +17,16 @@ from e3.os.process import Run
 # In this way we can test if the provers work without this env var.
 # ??? os.unsetenv didn't work, so setting to empty string instead
 
-os.environ['LD_LIBRARY_PATH'] = ''
+os.environ["LD_LIBRARY_PATH"] = ""
 
 p = Run(["gnatprove", "--version"])
-l = p.out.splitlines()
+lines = p.out.splitlines()
 # drop first line of output
-l = l[1:]
-for line in l:
+lines = lines[1:]
+for line in lines:
     # remove everything before the colon, to remove path info
     # there might be no colon, but the code still works
-    elts = line.split(':')
+    elts = line.split(":")
     text = elts[-1]
 
     # remove everything after " - ", to remove mention of platform in z3

@@ -25,7 +25,6 @@ with Ada.Containers.Hashed_Maps;
 
 with Exp_Util;                        use Exp_Util;
 with Errout;                          use Errout;
-with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
@@ -4475,7 +4474,7 @@ package body Flow_Utility is
               (for some F of Get_Functions (Expr, Include_Predicates => False)
                  => not Has_User_Supplied_Globals (F)
                      and then
-                    not In_Predefined_Unit (F));
+                    not Is_Ignored_Internal (F));
          end if;
 
       --  If any variable was found then return True

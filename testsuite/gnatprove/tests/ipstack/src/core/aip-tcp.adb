@@ -1779,9 +1779,9 @@ is
       Thdr   : System.Address;
       Len    : AIP.M32_T;
       Err    : AIP.Err_T;
-      pragma Unreferenced (Err);
 
       CWND_Increment : AIP.M32_T;
+
    begin
       if Seq_Lt (Seg.Ack, TPCBs (PCB).SND_UNA) then
          --  Duplicated ack
@@ -2138,7 +2138,7 @@ is
                                    TPCBs))
    is
       Err : AIP.Err_T;
-      pragma Unreferenced (Err);
+
    begin
       --  Send RST
 
@@ -2235,7 +2235,7 @@ is
                    In_Out => (All_PCBs, Buffers.State, IPCBs, TPCBs))
       is
          Err : AIP.Err_T;
-         pragma Unreferenced (Err);
+
       begin
          if Callback then
             TCP_Event

@@ -7900,7 +7900,8 @@ package body Gnat2Why.Expr is
          return Nkind (N) not in N_Quantified_Expression |
                                  N_Op_And                |
                                  N_If_Expression         |
-                                 N_Case_Expression;
+                                 N_Case_Expression       |
+                                 N_Expression_With_Actions;
       end if;
    end Is_Terminal_Node;
 
@@ -16711,7 +16712,7 @@ package body Gnat2Why.Expr is
 
       if Domain = EW_Pred
 
-        --  Boolean connectors and predicate expressions
+        --  Boolean connectors, predicate expressions and declare expressions
 
         and then
           not (Nkind (Expr) in N_And_Then
@@ -16719,6 +16720,7 @@ package body Gnat2Why.Expr is
                              | N_In
                              | N_If_Expression
                              | N_Quantified_Expression
+                             | N_Expression_With_Actions
                              | N_Case_Expression)
 
         --  Boolean operators which are not private intrinsinc

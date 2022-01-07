@@ -43,7 +43,7 @@ convert.ads:52:35: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:40: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:48: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:54: info: predicate check proved (Trivial: 1 VC)
-convert.ads:61:11: medium: postcondition might fail
+convert.ads:65:17: medium: postcondition might fail, cannot prove Unsigned_64 (Res) = V
 convert.ads:65:30: info: range check proved (colibri: 2 VC)
 convert.ads:67:17: info: precondition proved (Z3: 2 VC)
 convert.ads:72:64: info: range check proved (colibri: 2 VC)

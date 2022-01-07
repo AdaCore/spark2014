@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 from subprocess import call
 
 prove_all(opt=["--report=fail"])

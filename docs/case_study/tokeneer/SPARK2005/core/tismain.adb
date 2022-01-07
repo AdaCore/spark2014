@@ -1583,4 +1583,3 @@ begin
    Keyboard.Finalise;
 
 end TISMain;
-

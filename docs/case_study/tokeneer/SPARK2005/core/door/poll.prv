@@ -71,4 +71,3 @@
 -- H8 gives that LatchTimeout is unchanged, so from H7, we have that the Latch is
 -- still locked. Both elements of Latch.State are unchanged, so C1 follows.
 12
-

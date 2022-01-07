@@ -90,7 +90,7 @@ attempt_3.adb:69:36: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:57: info: range check proved (CodePeer)
 attempt_3.adb:70:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:70:47: info: range check proved (CodePeer)
-attempt_3.adb:74:22: medium: assertion might fail
+attempt_3.adb:74:22: info: assertion proved (colibri: 1 VC)
 attempt_3.adb:74:45: info: float overflow check proved (CodePeer)
 attempt_3.adb:75:22: info: assertion proved (CodePeer)
 attempt_3.adb:76:22: info: assertion proved (colibri: 1 VC)
@@ -130,8 +130,7 @@ attempt_4.adb:30:50: info: float overflow check proved (Trivial)
 attempt_4.adb:30:71: info: float overflow check proved (Trivial)
 attempt_4.adb:36:34: info: initialization of "Average" proved
 attempt_4.adb:37:09: info: data dependencies proved
-attempt_4.adb:40:19: medium: in inlined expression function body at attempt_4.adb:26
-attempt_4.adb:40:19: medium: postcondition might fail, cannot prove Speed in Float64 (N) * (- Max_Speed_Variance) .. Float64 (N) * Max_Speed_Variance
+attempt_4.adb:40:19: medium: postcondition might fail
 attempt_4.adb:40:32: info: range check proved (CVC4: 2 VC)
 attempt_4.adb:44:25: info: float overflow check proved (CodePeer)
 attempt_4.adb:44:35: info: float overflow check proved (Trivial)

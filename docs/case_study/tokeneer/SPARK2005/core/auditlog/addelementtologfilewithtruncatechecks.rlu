@@ -64,4 +64,3 @@ addelementtologfilewithtruncatechecks_user(2):
      B <= Y,
      X >= 0,
      X * Y = Z ] .
-

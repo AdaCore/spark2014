@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 
 # Do not display counterexamples, as they differ between platforms, due to
 # spurious counterexamples being issued on Linux for non-linear VCs.

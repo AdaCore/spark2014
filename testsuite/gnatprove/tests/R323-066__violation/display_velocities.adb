@@ -58,5 +58,3 @@ begin
    --Display_Velocities_Record;
    Display_Velocities_SPARK;
 end Display_Velocities;
-
-

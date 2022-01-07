@@ -509,6 +509,3 @@ is
                 (if (CarryFlag or ZeroFlag) then (CL = 0)));
 
 end X86;
-
-
-

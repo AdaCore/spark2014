@@ -73,4 +73,3 @@ is
    end WriteMem64;
 
 end X86;
-

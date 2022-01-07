@@ -124,4 +124,3 @@ absence of run-time errors of P fully established
  P.Op at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
 effects on parameters and Global variables of P.Op fully established
 absence of run-time errors of P.Op fully established
-

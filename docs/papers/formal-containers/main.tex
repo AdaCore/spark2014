@@ -94,7 +94,7 @@
 % unless you accept that it will be published
 \institute{AdaCore, 46 rue d'Amsterdam, F-75009 Paris (France)\\
 \texttt{\{dross,moy\}@adacore.com}
-\and 
+\and
 CNRS, INRIA Saclay Île-de-France, Université Paris-Sud 11\\
 \texttt{filliatr@lri.fr}}
 
@@ -104,7 +104,7 @@ CNRS, INRIA Saclay Île-de-France, Université Paris-Sud 11\\
 
   For critical software development, containers such as lists, vectors, sets or
   maps are an attractive alternative to ad-hoc data structures based on
-  pointers. 
+  pointers.
   As standards like DO-178C put formal verification and testing on an equal
   footing, it is important to give users the ability to apply both to the
   verification of code using containers.
@@ -114,7 +114,7 @@ CNRS, INRIA Saclay Île-de-France, Université Paris-Sud 11\\
   specification languages. Correct usage of containers and user-provided
   correctness properties can be checked either by execution during testing
   or by formal proof with an automatic prover.
-  We present a formal semantics for containers and an axiomatization of this 
+  We present a formal semantics for containers and an axiomatization of this
   semantics targeted at automatic provers. We have proved in Coq that the
   formal semantics is consistent and that the axiomatization thereof is correct.
 
@@ -139,10 +139,10 @@ in C++ STL, Ada Standard Libraries or Java JCL, and sometimes even as language
 elements, like sets in SETL~\cite{schwartz:1986} or maps in Perl.
 In critical software where
 verification objectives severely restrict the use of pointers, containers offer
-an attractive alternative to pointer-intensive data structures. 
-Containers offer both a better defense against errors than low-level code 
-manipulating pointers, and a rich high-level API to express properties over 
-data. 
+an attractive alternative to pointer-intensive data structures.
+Containers offer both a better defense against errors than low-level code
+manipulating pointers, and a rich high-level API to express properties over
+data.
 This is
 particularly evident when the implementation of containers themselves obeys the
 coding standards of critical software, with no dynamic allocation and few
@@ -257,7 +257,7 @@ the various points at which the check is performed during execution. The most
 prominent of these new checks are the \emph{Pre} and \emph{Post} aspects which
 define respectively the precondition and postcondition of a subprogram. These
 are defined as Boolean expressions over program variables and
-functions. 
+functions.
 \ifdefined\longversion
 Additionally, the expression in a postcondition can refer to the
 value returned by a function \verb|F| as \verb|F'Result|, and to the value in
@@ -272,21 +272,21 @@ For example, a simple contract on function \verb|Map_F| could specify that its
 parameter list should not be empty, and that the call does not modify its
 length:
 \begin{lstlisting}
-procedure Map_F (L : in out List) with 
+procedure Map_F (L : in out List) with
   Pre  => Length (L) /= 0,
   Post => Length (L) = Length (L'Old);
 \end{lstlisting}
 
 Notice that, in the precondition, \verb|L| refers to the list in the pre-state
 while, in the postcondition, \verb|L| refers to the list in the post-state, hence
-the need to refer to the special attribute \verb|L'Old| in the postcondition, 
+the need to refer to the special attribute \verb|L'Old| in the postcondition,
 which designates the
 value of \verb|L| before the call.
 \footnote{More
   precisely, attribute \texttt{'Old} can be applied to all \emph{names}
 (as defined in Ada standard), so
   that we could use \texttt{Length (L)'Old} instead of \texttt{Length
-    (L'Old)}.}  
+    (L'Old)}.}
 \ifdefined\longversion
 When compiled with checks on, any
 failure from the caller to respect the precondition of \verb|Map_F| or from
@@ -298,10 +298,10 @@ appropriate locations, which raise exceptions when violated. For each variable
 \verb|V| whose pre-state value may be read in the postcondition (\verb|V'Old|),
 the compiler inserts a shallow copy of the variable's value at the beginning of the
 subprogram body. It is this copy which is read to give the value of
-\verb|V'Old|. 
+\verb|V'Old|.
 
 Expressing properties in contracts is greatly facilitated by the use of
-if-expressions, case-expressions, quantified-expressions and expression-functions, 
+if-expressions, case-expressions, quantified-expressions and expression-functions,
 all defined in Ada 2012. The main objective of these \emph{logic} features is
 verification by testing, based on their executable semantics.
 In particular, quantified-expressions are always
@@ -352,7 +352,7 @@ element in a list. Thus, for every cursor \verb|Cu| that designates an element
 \verb|L| after the call. It seems like we could express it with a
 quantified-expression:
 \begin{lstlisting}
-procedure Map_F (L : in out List) with 
+procedure Map_F (L : in out List) with
   Post => (for all Cu in L => Element (Cu) = ???);
 \end{lstlisting}
 
@@ -379,8 +379,8 @@ we break the implicit link between cursors and containers, so that the same curs
 the pre-state and in the post-state. Then, the previous postcondition can be
 expressed easily:
 \begin{lstlisting}
-procedure Map_F (L : in out List) with 
-  Post => 
+procedure Map_F (L : in out List) with
+  Post =>
    (for all Cu in L =>
       Element (L, Cu) = F (Element (L'Old, Cu)));
 \end{lstlisting}
@@ -388,7 +388,7 @@ procedure Map_F (L : in out List) with
 Notice that we passed an additional argument to function \verb|Element|, to
 indicate the container from which the element at cursor \verb|Cu| should be
 retrieved. This is true for every function in the API of containers which
-previously accessed implicitly the container through a cursor, such as 
+previously accessed implicitly the container through a cursor, such as
 \verb|Next| in the example of Section~\ref{sec:formal-containers}.
 
 % so that
@@ -456,8 +456,8 @@ return the containers holding respectively the elements preceding (exclusively) 
 following (inclusively) a given cursor in the container. With these functions, the effect of
 the loop on the elements already scanned resembles the postcondition:
 \begin{lstlisting}
-pragma Assert 
-  (for all Cu in Left (L, Current) => 
+pragma Assert
+  (for all Cu in Left (L, Current) =>
     Element (L, Cu) = F (Element (L'Old, Cu)));
 \end{lstlisting}
 The effect of the loop on the elements not yet scanned is not simply the
@@ -479,7 +479,7 @@ which is not implied by equality.
 This is expressed with a new
 function, called \verb|Strict_Equal|:
 \begin{lstlisting}
-pragma Assert 
+pragma Assert
   (Strict_Equal (Right (L, Current), Right (L'Old, Current)));
 \end{lstlisting}
 
@@ -489,7 +489,7 @@ pragma Assert
 % The implementation of \verb|Left| and \verb|Right| simply copies the argument
 % container (which preserves cursors, thanks to the modification presented in
 % Section~\ref{sec:independent-cursor}), and removes those elements that should
-% not be present in the part considered. 
+% not be present in the part considered.
 
 % Yannick: I commented out the following, to save space.
 
@@ -604,7 +604,7 @@ cursor $c$ in \texttt{CExpr}, an expression $e$ in \texttt{EExpr}, a Boolean
 expression $b$ in \texttt{BExpr} and an integer expression $i$ in
 \texttt{IExpr}, judgments take the following form:
 \begin{eqnarray*}
-&\eval I \Rightarrow \envL',\envC' 
+&\eval I \Rightarrow \envL',\envC'
 \qquad \eval l \Rightarrow \TypL
 \qquad \eval c \Rightarrow \TypD^\bot\\
 &\eval e \Rightarrow \TypE
@@ -614,7 +614,7 @@ expression $b$ in \texttt{BExpr} and an integer expression $i$ in
 %REVIEW 1
 If $\mathit{expr}$ is an expression, $\eval \mathit{expr} \Rightarrow \mathit{val}$
 means that $\mathit{expr}$ evaluates in environments $\envL$ and $\envC$ to a
-value represented by $\mathit{val}$ in the semantics. 
+value represented by $\mathit{val}$ in the semantics.
 If $\mathit{instr}$ is an instruction, $\eval \mathit{instr} \Rightarrow \envL',\envC'$
 means that $instr$ change the environments $\envL$ and $\envC$ into $\envL'$ and $\envC'$.
 
@@ -750,7 +750,7 @@ d\in \ImFc\cup \{\bot\} \\
 n=\FcInv_+(d)-1
 }{
 \eval \Left(l,c) \Rightarrow \{n,\Fc',\Fe'\} \\
-\where \Fc'=\Fc|_{[1..n]} \\ 
+\where \Fc'=\Fc|_{[1..n]} \\
        \Fe'=\Fe|_{\ImFcPrime}
 } \\
 &
@@ -761,7 +761,7 @@ d\in \ImFc\cup \{\bot\} \\
 n=\FcInv_+(d)-1
 }{
 \eval \Right(l,c) \Rightarrow \{\Len-n,\Fc',\Fe'\} \\
-\where \Fc'=\lambda i : [1.. \Len-n]. \Fc(n+i) \\ 
+\where \Fc'=\lambda i : [1.. \Len-n]. \Fc(n+i) \\
        \Fe'=\Fe|_{\ImFcPrime}
 }
 \end{eqnarray*}
@@ -793,7 +793,7 @@ d_2 \notin \ImFc\cup \{\bot\} \\
 }{
 \eval \Insert(l,c,e) \Rightarrow \envL[l\mapsto \{\Len+1,\Fc',\Fe'\}], \envC \\
 \where \Fc' = \lambda i : [1 .. \Len+1]. \\
-\{ i\in [1..n-1] \rightarrow \Fc(i), i=n \rightarrow d_2, i \in [n+1..\Len+1] 
+\{ i\in [1..n-1] \rightarrow \Fc(i), i=n \rightarrow d_2, i \in [n+1..\Len+1]
 \rightarrow \Fc(i-1)\}\\
 \Fe' = \lambda d : \ImFcPrime. \{ d\in \ImFc \rightarrow \Fe(d), d = d_2
 \rightarrow \Elt\}
@@ -876,7 +876,7 @@ n = (max (\{i\in [1..\Len] | \Fe(\Fc(i))<\Elt\}\cup\{0\})) + 1
 }{
 \eval \Insert(l,e) \Rightarrow \envL[l\mapsto \{\Len+1,\Fc',\Fe'\}], \envC \\
 \where \Fc' = \lambda i : [1 .. \Len+1]. \\
-\{ i\in [1..n-1] \rightarrow \Fc(i), i=n \rightarrow d_1, i \in [n+1..\Len+1] 
+\{ i\in [1..n-1] \rightarrow \Fc(i), i=n \rightarrow d_1, i \in [n+1..\Len+1]
 \rightarrow \Fc(i-1)\}\\
 \Fe' = \lambda d : \ImFcPrime. \{ d\in \ImFc \rightarrow \Fe(d), d = d_1
 \rightarrow \Elt\}
@@ -884,7 +884,7 @@ n = (max (\{i\in [1..\Len] | \Fe(\Fc(i))<\Elt\}\cup\{0\})) + 1
 \end{eqnarray*}
 }
 \else
-The longer version of this article presents the modified inference rule for 
+The longer version of this article presents the modified inference rule for
 $\Insert$ for each container.
 \fi
 \subsubsection{Maps.}
@@ -915,7 +915,7 @@ n\in [0..\Len] \\
 }{
 \eval \Insert(l,i,e) \Rightarrow \envL[l\mapsto \{\Len+1,\Fc',\Fe'\}], \envC \\
 \where \Fc' = \lambda j : [1 .. \Len+1]. \\
-\{ j\in [1..n] \rightarrow \Fc(j), j \in [n+1..\Len+1] 
+\{ j\in [1..n] \rightarrow \Fc(j), j \in [n+1..\Len+1]
 \rightarrow \Fc_{S}(j)\}\\
 \Fe' = \lambda j : [1 .. \Len+1]. \\
 \{ j\in [1..n] \rightarrow \Fe(j), j = n+1
@@ -950,7 +950,7 @@ formal semantics in Coq in Section~\ref{sec:validation}.
 
 The Why platform~\cite{why} is a set of tools for deductive program
 verification. The first feature of Why is to provide a common
-frontend to a wide set of automated and interactive theorem provers. 
+frontend to a wide set of automated and interactive theorem provers.
 Why implements a total, polymorphic, first-order logic, in which the user can
 declare types, symbols, axioms and goals. These goals are then
 translated to the native input languages of the various supported
@@ -964,9 +964,9 @@ modulo operation over integers, together with some possible axiomatization:
  basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
 \begin{lstlisting}
 logic mod_ : int, int -> int
-axiom mod__ : forall a, b : int. 0 < b -> 
+axiom mod__ : forall a, b : int. 0 < b ->
   exists q : int. a = b * q + mod_(a, b)
-    and 0 <= mod_(a, b) < b 
+    and 0 <= mod_(a, b) < b
 goal test : mod_(7, 2) = 1
 \end{lstlisting}
 The second feature of Why we use here is to provide a
@@ -1001,7 +1001,7 @@ with automatic provers.
 \subsubsection{Types.}
 
 The type of elements is irrelevant, and so it is defined as an abstract
-type \verb|element_t|. Cursors and lists are described respectively with abstract types 
+type \verb|element_t|. Cursors and lists are described respectively with abstract types
 \verb|cursor| and \verb|list|, further axiomatized in the following.
 
 \subsubsection{Properties.}
@@ -1102,7 +1102,7 @@ The three other axioms may be translated in the same way. Here are the results:
 \And \eval \verb|c1| \Rightarrow d_1 \And \eval \verb|c2| \Rightarrow d_2 \And
 d_1 \in \ImFc \And d_2 \in \ImFc \And \FcInv(d_1)=\FcInv(d_2) \rightarrow d_1 = d_2$
 \end{enumerate}
-} 
+}
 \else
 These proofs can be found in the longer version of
 this article.
@@ -1125,7 +1125,7 @@ $\Pre_A = \Pre_S$. We illustrate the general pattern that we applied with functi
 parameter next :
   l:list -> c:cursor ->
   { c = no_element or position_(l, c) > 0 }
-  cursor 
+  cursor
   { result = next_(l, c) }
 \end{lstlisting}
 
@@ -1215,7 +1215,7 @@ they are also automatically proved.
 % In Section 4.3 (and Section 4.4) I would like to suggest to add a
 %   brief description of the properties that you used as test cases for
 %   your axiomatization and, if possible, a brief motivation why you
-%   have choosen them. 
+%   have choosen them.
 Most of the tests correspond to unit-tests for specific properties of list
 expressions (especially for complex ones, such as $\Left$) and instructions.
 For example, there is a test to check that after replacing the value of an
@@ -1298,7 +1298,7 @@ Definition cursor : Set := nat.
 Definition Rlist : Set := List.list (cursor*element_t).
 \end{lstlisting}
 To keep only tuples where $\Fc$ is injective and has value in $\TypD$, we constrain the functional lists with a predicate.
-This predicate states that every cursor that appears in a list is different from $\bot$ (positive) and does not appear again in the same list. 
+This predicate states that every cursor that appears in a list is different from $\bot$ (positive) and does not appear again in the same list.
 \begin{lstlisting}
 Fixpoint well_formed (l : Rlist) : Prop :=
    match l with
@@ -1434,8 +1434,8 @@ user to express other properties.
 Dillig \etal~\cite{dillig:2011:popl} present a static analysis for reasoning
 precisely over the content of containers. While they assume that we can analyze
 the code that fills the containers to provide constraints over the
-containers' content, we rely instead on user annotations. This gives 
-us the possibility to verify user properties expressed in the same 
+containers' content, we rely instead on user annotations. This gives
+us the possibility to verify user properties expressed in the same
 annotation language.
 
 % A bit farther from what we have done,

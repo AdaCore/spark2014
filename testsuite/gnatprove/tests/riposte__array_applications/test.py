@@ -1,9 +1,11 @@
-from test_support import *
+from test_support import prove_all
 
 contains_manual_proof = False
 
+
 def replay():
-    prove_all(procs=0,opt=["--no-axiom-guard"])
+    prove_all(procs=0, opt=["--no-axiom-guard"])
+
 
 if __name__ == "__main__":
-    prove_all(opt=["--no-axiom-guard"],replay=True)
+    prove_all(opt=["--no-axiom-guard"], replay=True)

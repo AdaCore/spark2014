@@ -102,4 +102,3 @@ digest_user(4): X - (Y - 1) * 100 <> 100
                 [ Y < (X - 1) div 100 + 1,          /* (1) */
                   goal(checktype(Y, integer)),
                   Y >= 1 ] .
-

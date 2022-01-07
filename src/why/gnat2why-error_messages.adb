@@ -1613,10 +1613,9 @@ package body Gnat2Why.Error_Messages is
 
    procedure Register_VC_Entity (E : Entity_Id) is
       Position : Ent_Id_Set_Maps.Cursor;
-      Dummy : Boolean;
-      pragma Unreferenced (Position, Dummy);
+      Unused   : Boolean;
    begin
-      VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
+      VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Unused);
    end Register_VC_Entity;
 
    -----------------

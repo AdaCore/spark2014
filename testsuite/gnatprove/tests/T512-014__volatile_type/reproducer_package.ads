@@ -7,7 +7,7 @@ is
 	with
 		Volatile,
 		Async_Readers;
-		
+
 	type Test_Type is limited record
 		Async_Reader_Component : Async_Reader_Type;
 	end record
@@ -15,5 +15,5 @@ is
 		Volatile,
 		Async_Readers,
 		Predicate => Async_Reader_Component.Component < 5;
-	
+
 end Reproducer_Package;

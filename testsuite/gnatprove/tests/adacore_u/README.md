@@ -7,4 +7,3 @@ GNATprove detects failing checks.
 
 Opening the example in GNAT Studio or GNATbench opens an aggregate project, with
 separate sub-projects for each lecture.
-

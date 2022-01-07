@@ -34,7 +34,6 @@ with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
-with Lib;
 with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Definition.Annotate;
@@ -1671,7 +1670,7 @@ package body Gnat2Why.Util is
 
         --  Functions from predefined units should be safe
 
-        and then not Lib.In_Predefined_Unit (E)
+        and then not Is_Ignored_Internal (E)
 
         and then (Type_Needs_Dynamic_Invariant (Etype (E))
                   or else Has_Contracts (E, Pragma_Postcondition)

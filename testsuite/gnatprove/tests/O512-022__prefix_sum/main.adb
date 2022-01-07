@@ -27,5 +27,3 @@ begin
    Downsweep (Copy, A, Space);
    Print_Array (A);
 end Main;
-
-

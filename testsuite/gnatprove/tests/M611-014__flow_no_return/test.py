@@ -1,4 +1,5 @@
-from test_support import *
+from test_support import do_flow
+
 # run GNATprove separately on failing input foo.adb ...
 do_flow(opt=["-u", "foo.adb"])
 # ... and correct code in other units.

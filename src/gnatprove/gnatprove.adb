@@ -377,12 +377,13 @@ procedure Gnatprove with SPARK_Mode is
          procedure Copy_File (Directory_Entry : Directory_Entry_Type) is
             use GNAT.OS_Lib;
             Success : Boolean;
-            pragma Unreferenced (Success);
+            pragma Warnings (Off, Success);  --  modified and then unused
+
          begin
             Copy_File (Full_Name (Directory_Entry),
                        Target_Dir.Display_Full_Name,
                        Success,
-                       Mode => Overwrite,
+                       Mode     => Overwrite,
                        Preserve => Full);
          end Copy_File;
 

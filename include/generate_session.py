@@ -21,15 +21,26 @@ def run_manual(check_to_prove, option=""):
 
 
 def run_automatic(prover, level=4):
-    cmd = "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0" + \
-          " --prover=" + prover + " --level=" + str(level)
+    cmd = (
+        "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0"
+        + " --prover="
+        + prover
+        + " --level="
+        + str(level)
+    )
     run(cmd)
 
 
 def run_automatic_timeout(prover, level=4, timeout=100):
-    cmd = "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0" + \
-          " --prover=" + prover + " --level=" + str(level) + \
-          " --timeout=" + str(timeout)
+    cmd = (
+        "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0"
+        + " --prover="
+        + prover
+        + " --level="
+        + str(level)
+        + " --timeout="
+        + str(timeout)
+    )
     run(cmd)
 
 
@@ -44,7 +55,7 @@ def copy_file(f_ctx, f_v):
     # or '#' character, we append only f_ctx.
     temp = f_ctx + "___tmp.tmp"
     b = False
-    with open(temp, 'w') as new_temp:
+    with open(temp, "w") as new_temp:
         with open(f_v) as file_v:
             for line in file_v:
                 if line[:6] == "intros":
@@ -57,7 +68,7 @@ def copy_file(f_ctx, f_v):
                     b = True
                 if b:
                     new_temp.write(line)
-#   Replace context file with the temp file
+    #   Replace context file with the temp file
     os.remove(f_ctx)
     shutil.move(temp, f_ctx)
 
@@ -70,30 +81,30 @@ def diff_file(f_ctx, g_v):
     # We assume f ends with .ctx and g ends with .v. Basically, don't use this
     # function anywhere else.
     diff_seen = False
-    with open(f_ctx, 'r') as file1:
-        with open(g_v, 'r') as file2:
+    with open(f_ctx, "r") as file1:
+        with open(g_v, "r") as file2:
             # Removing spaces because cpp introduce extra spaces as diff.
-            lines1 = list(map(lambda y:
-                              str(filter(lambda x:
-                                         x not in ' \t', y)),
-                              file1.readlines()))
-            lines2 = list(map(lambda y:
-                              str(filter(lambda x:
-                                         x not in ' \t', y)),
-                              file2.readlines()))
-            diff = difflib.unified_diff(
-                lines1,
-                lines2,
-                fromfile=f_ctx,
-                tofile=g_v, n=1)
+            lines1 = list(
+                map(
+                    lambda y: str(filter(lambda x: x not in " \t", y)),
+                    file1.readlines(),
+                )
+            )
+            lines2 = list(
+                map(
+                    lambda y: str(filter(lambda x: x not in " \t", y)),
+                    file2.readlines(),
+                )
+            )
+            diff = difflib.unified_diff(lines1, lines2, fromfile=f_ctx, tofile=g_v, n=1)
             for line in diff:
-                if not line[0] == '-':
+                if not line[0] == "-":
                     diff_seen = True
                     break
     if diff_seen:
         temp_file = os.path.basename(f_ctx)[:-4] + ".diff"
         temp_path = os.path.join("./temp", temp_file)
-        with open(temp_path, 'a') as new:
+        with open(temp_path, "a") as new:
             for line in diff:
                 new.write(line)
 
@@ -105,7 +116,7 @@ def diff_all(gen_ctx):
     # Do not use this function in an other context. It is used only once
     # with gen_ctx to False meaning files are not erased and replaced with
     # new ones. To replace them, pass True.
-    for root, dirs, files in os.walk('./proof'):
+    for root, _dirs, files in os.walk("./proof"):
         for name in files:
             if name.endswith(".v"):
                 ctx_file = os.path.join(root, name[:-2] + ".ctx")
@@ -141,27 +152,27 @@ def kill_and_regenerate(check):
     print("----------------------------")
     print("Generate the Coq proof files")
     print("----------------------------")
-#   Force regeneration of coq files where necessary.
-#   This step is used to generate the fake coq files and put the names of
-#   coq files inside the session. This cannot be done in one step because
-#   if coq files are already present, it will create new ones (not
-#   check the present coq files).
+    #   Force regeneration of coq files where necessary.
+    #   This step is used to generate the fake coq files and put the names of
+    #   coq files inside the session. This cannot be done in one step because
+    #   if coq files are already present, it will create new ones (not
+    #   check the present coq files).
     for i in list_of_check:
         run_manual(i)
-#   Make the diff between generated .v and .ctx files. If there are differences
-#   between them not in the proof, you are sure to fail
+    #   Make the diff between generated .v and .ctx files. If there are differences
+    #   between them not in the proof, you are sure to fail
     diff_all(False)
     print("")
     print("-----------------------------")
     print("Check and register Coq proofs")
     print("-----------------------------")
-#   cleaning and regeneration of *.v
+    #   cleaning and regeneration of *.v
     os.system("make clean")
     os.system("make generate")
     run_automatic("cvc4", level=1)
-#   Do *not* remove this call as it is used to check that coq proofs are
-#   correct after regeneration. And ability to generate session is *necessary*
-#   as there is no way to extend a session in gnatprove.
+    #   Do *not* remove this call as it is used to check that coq proofs are
+    #   correct after regeneration. And ability to generate session is *necessary*
+    #   as there is no way to extend a session in gnatprove.
     for i in list_of_check:
         run_manual(i)
     print("")

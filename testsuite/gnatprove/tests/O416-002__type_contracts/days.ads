@@ -11,4 +11,3 @@ is
    procedure Next_T (D : in out T_Day);
 
 end Days;
-

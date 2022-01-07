@@ -1777,7 +1777,6 @@ package body Graphs is
          Args : GNAT.Strings.String_List_Access :=
            Argument_String_To_List ("-Tpdf " & Filename & ".dot");
 
-         pragma Unreferenced (Success, Return_Code);
       begin
          --  If "dot" not found on PATH, then do nothing
          if Exec /= null then

@@ -161,7 +161,7 @@ is
 
       entry Wait_Event (P : out Port_Type) when Not_Empty is
          Valid : Boolean;
-         pragma Unreferenced (Valid);
+
       begin
          UQ.Read_Event (P, Valid, Not_Empty);
 
@@ -187,7 +187,7 @@ is
 
       procedure Dequeue (T : Port_Type) is
          P : Port_Stream_Entry;
-         pragma Unreferenced (P);
+
       begin
          UQ.Dequeue (T, P, Not_Empty);
       end Dequeue;

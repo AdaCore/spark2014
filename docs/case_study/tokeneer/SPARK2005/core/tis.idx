@@ -74,6 +74,3 @@ UserToken.Interface   spec is in    usertoken-interface.ads
 UserEntry             spec is in    userentry.ads
 SPARK_IO              spec is in    ../support/spark95_io.ads
 SPARK_IO              body is in    ../support/spark95_io.adb
-
-
-

@@ -125,4 +125,3 @@ tismain_user(9): not enclave__prf_statusisshutdown(S)
 tismain_user(10): not admin__ispresent(A)
                     may_be_replaced_by
                   admin__prf_rolepresent(A) = privtypes__useronly .
-

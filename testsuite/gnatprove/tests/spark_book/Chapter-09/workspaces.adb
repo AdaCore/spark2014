@@ -12,4 +12,3 @@ package body Workspaces is
    end Generate_Workspace;
 
 end Workspaces;
-

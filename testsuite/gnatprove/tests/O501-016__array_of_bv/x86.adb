@@ -612,4 +612,3 @@ is
                               return Unsigned8 is (mem(addr));
 
 end X86;
-

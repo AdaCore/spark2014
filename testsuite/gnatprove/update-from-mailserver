@@ -35,21 +35,19 @@ for result_file in glob("out/*.result"):
         new_out_file = result_file.replace(".result", ".out.filtered")
         if not os.path.exists(new_out_file):
             new_out_file = result_file.replace(".result", ".out")
-        old_out_file = result_file\
-            .replace("out/", "tests/")\
-            .replace(".result", "/test.out")
-        old_out_dir = result_file\
-            .replace("out/", "tests/")\
-            .replace(".result", "")
+        old_out_file = result_file.replace("out/", "tests/").replace(
+            ".result", "/test.out"
+        )
+        old_out_dir = result_file.replace("out/", "tests/").replace(".result", "")
 
         # If not a test in the public testsuite, it must be from internal one
         if not os.path.exists(old_out_dir):
-            old_out_file = result_file\
-                .replace("out/", "internal/")\
-                .replace(".result", "/test.out")
-            old_out_dir = result_file\
-                .replace("out/", "internal/")\
-                .replace(".result", "")
+            old_out_file = result_file.replace("out/", "internal/").replace(
+                ".result", "/test.out"
+            )
+            old_out_dir = result_file.replace("out/", "internal/").replace(
+                ".result", ""
+            )
 
         if not os.path.exists(old_out_dir):
             print("IGNORE OUTPUT %s" % old_out_file)
@@ -65,13 +63,15 @@ for result_file in glob("out/*.result"):
                 # diff file instead
                 if output_too_long(new_out_file):
                     diff_file = new_out_file.replace(".out", ".diff")
-                    subprocess.run(['patch', '-p', '0', old_out_file, diff_file])
+                    subprocess.run(["patch", "-p", "0", old_out_file, diff_file])
                 else:
                     shutil.copyfile(new_out_file, old_out_file)
                 print("Update output %s" % old_out_file)
                 if os.stat(new_out_file).st_size == 0:
-                    print("THIS EMPTY OUTPUT SHOULD BE REMOVED\
-                           FROM VERSION CONTROL")
+                    print(
+                        "THIS EMPTY OUTPUT SHOULD BE REMOVED\
+                           FROM VERSION CONTROL"
+                    )
         else:
             if os.path.exists(old_out_file):
                 os.remove(old_out_file)

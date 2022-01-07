@@ -1,4 +1,4 @@
-; CURRENTLY SUPPORTED RECORDS:  
+; CURRENTLY SUPPORTED RECORDS:
 ;	{A, AAAA, CNAME, MX, NS, PTR, SOA}
 ;	{DNSKEY, NSEC, RRSIG}
 ; TO DO:
@@ -24,7 +24,7 @@ fagin0		IN	A	128.236.9.2
 fagin1	A	128.236.9.2
 doc.dfcs.usafa.edu. CNAME    carlisle
  ;
-        
+
 
 e.dfcs.usafa.edu. cname    carlisle.dfcs.usafa.edu. ; oh so clever
 boleng.dfcs.usafa.edu.   2D		IN	A 128.236.9.15; comment

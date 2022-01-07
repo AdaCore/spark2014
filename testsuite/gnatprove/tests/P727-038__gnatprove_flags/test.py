@@ -1,12 +1,19 @@
-from test_support import *
+from test_support import gnatprove
 
 # This test is intended to clarify how -u and -U work.
 #
 # foo is a main unit and depends on bar.
 # baz depends on nothing.
 
-basic_options = ["-P", "test.gpr", "-f", "-q",
-                 "--report=all", "--prover=altergo", "--output=brief"]
+basic_options = [
+    "-P",
+    "test.gpr",
+    "-f",
+    "-q",
+    "--report=all",
+    "--prover=altergo",
+    "--output=brief",
+]
 
 print("--- Messages on foo and bar should appear")
 gnatprove(opt=basic_options)

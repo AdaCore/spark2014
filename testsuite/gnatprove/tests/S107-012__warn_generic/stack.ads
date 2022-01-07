@@ -39,4 +39,3 @@ package Stack with SPARK_Mode => On is
      Post => Size (Construct'Result) = 0; -- req 1
 
 end Stack;
-

@@ -5,4 +5,3 @@ is
    type Output_T is digits 6 range 0.0 .. 13750.0;
 
 end T;
-

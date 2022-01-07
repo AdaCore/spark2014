@@ -1,6 +1,6 @@
 actuator specification is in actuator.ads
 advancebutton specification is in advancebutton.ads
-advancebutton components are 
+advancebutton components are
    advancebutton.raw
 advancebutton body is in advancebutton.adb
 advancebutton.raw specification is in advancebutton-raw.ads

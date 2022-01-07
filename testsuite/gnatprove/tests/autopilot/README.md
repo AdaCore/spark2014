@@ -21,4 +21,3 @@ readers (the actuators) in package `Surfaces`.
 Data and flow dependency contracts are given for all subprograms. GNATprove
 proves all checks on this program, except for 4 runtime checks related to
 scaling quantities using a division (a known limitation of automatic provers).
-

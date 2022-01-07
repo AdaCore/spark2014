@@ -8,7 +8,7 @@ import os.path
 
 tests = os.listdir("tests")
 
-print "Total number of tests: " + str(len(tests))
+print("Total number of tests: " + str(len(tests)))
 
 test_opt = 0
 large = 0
@@ -22,7 +22,7 @@ class Platform:
         self.dead = 0
 
     def match(self, s):
-        tags = s.split(',')
+        tags = s.split(",")
         for q in tags:
             if q not in self.qualifiers:
                 return False
@@ -74,12 +74,12 @@ platforms = [AllPlatforms(), X86Windows(), X8664Darwin(), X8664Linux()]
 
 for test in tests:
     try:
-        with open(os.path.join("tests", test, "test.opt"), 'r') as fn:
+        with open(os.path.join("tests", test, "test.opt"), "r") as fn:
             test_opt += 1
             for line in fn.readlines():
                 if line.startswith("!large SKIP"):
                     large += 1
-                elts = line.split(' ')
+                elts = line.split(" ")
                 if len(elts) < 2:
                     continue
                 if elts[1] == "RLIMIT":
@@ -101,10 +101,10 @@ for test in tests:
     except IOError:
         pass
 
-print "Large tests: " + str(large)
-print "Tests with a test.opt: " + str(test_opt)
+print("Large tests: " + str(large))
+print("Tests with a test.opt: " + str(test_opt))
 
 for p in platforms:
-    print "Tests XFAILed on " + p.name + ": " + str(p.xfail)
-    print "Tests SKIPped on " + p.name + ": " + str(p.skip)
-    print "Tests DEAD on " + p.name + ": " + str(p.dead)
+    print("Tests XFAILed on " + p.name + ": " + str(p.xfail))
+    print("Tests SKIPped on " + p.name + ": " + str(p.skip))
+    print("Tests DEAD on " + p.name + ": " + str(p.dead))

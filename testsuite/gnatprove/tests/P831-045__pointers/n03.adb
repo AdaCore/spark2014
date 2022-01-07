@@ -49,4 +49,3 @@ begin
              & ", X.all.B =" & Integer'Image(X.all.B)
              & ", Y.all =" & Integer'Image(Y.all)); --DEBUG
 end N03;
-

@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+    -   id: check-json
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: mixed-line-ending
+    -   id: trailing-whitespace
+  - repo: local
+    hooks:
+    -   id: check-submodules
+        name: Check for submodules in commits
+        entry: python scripts/check-submodules.py
+        language: python
+        pass_filenames: false
+    -   id: check-empty-testoutopt
+        name: Check for empty test.out and test.opt files
+        entry: python scripts/check-empty-file.py
+        language: python
+        files: \.(opt|out)$
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.9.1
+    hooks:
+    - id: flake8
+      additional_dependencies:
+        - flake8-bugbear
+  - repo: https://github.com/ambv/black
+    rev: 21.5b1
+    hooks:
+    - id: black

@@ -62,4 +62,3 @@ updatedevice_user(1): (latch__islocked(S2) <->                          /* C1 */
                             fld_latch__interface__output(Op)))          /* (1)2 */
                         or B,                                           /* (1)3 */
                         fld_currentlatch(S) = fld_currentlatch(S2) ] .  /* (2)  */
-

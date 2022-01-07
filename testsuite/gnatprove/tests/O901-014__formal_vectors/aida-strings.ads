@@ -118,4 +118,3 @@ private
       end record;
 
 end Aida.Strings;
-

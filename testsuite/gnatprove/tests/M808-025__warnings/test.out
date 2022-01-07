@@ -203,4 +203,3 @@ Analyzed 1 unit
 in unit p, 1 subprograms and packages out of 1 analyzed
  P at p.adb:1 flow analyzed (0 errors, 0 checks, 2 warnings and 0 pragma Assume statements) and proved (1 checks)
 absence of run-time errors of P fully established
-

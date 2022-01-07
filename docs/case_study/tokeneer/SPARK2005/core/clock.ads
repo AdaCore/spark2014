@@ -276,10 +276,3 @@ private
 
 
 end Clock;
-
-
-
-
-
-
-

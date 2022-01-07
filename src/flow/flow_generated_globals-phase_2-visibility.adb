@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Gnat2Why_Args;
 with Graphs;
+with Lib;                        use Lib;
 with Sem_Util;
 
 package body Flow_Generated_Globals.Phase_2.Visibility is

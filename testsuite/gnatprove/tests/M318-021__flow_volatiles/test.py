@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import do_flow
 
 do_flow(opt=["-u", "caller.adb"])
 do_flow(opt=["-u", "devtest.adb"])

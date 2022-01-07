@@ -12,4 +12,3 @@ procedure Top_Down (Y : out Integer) is
 begin
    Y := A (Ident (3));
 end Top_Down;
-

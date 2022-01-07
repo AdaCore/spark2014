@@ -8,4 +8,3 @@ is
    end Sum;
 
 end Pairs_05;
-

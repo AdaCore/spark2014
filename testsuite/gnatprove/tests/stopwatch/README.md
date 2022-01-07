@@ -5,4 +5,3 @@ uses protected objects and tasks.
 
 GNATprove proves all checks on this program, including the safe usage of
 concurrency.
-

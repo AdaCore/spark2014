@@ -216,6 +216,3 @@ package body Cert is
    end IsOK;
 
 end Cert;
-
-
-

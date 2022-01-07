@@ -1250,7 +1250,7 @@ Axiom alignment_axiom : (0%Z <= alignment)%Z.
 
 (* Why3 assumption *)
 Definition bool_eq5 (x:us_t) (y:us_t) : Init.Datatypes.bool :=
-  bool_eq4 (elts x) (to_rep1 (first (rt x))) (to_rep1 (last (rt x))) 
+  bool_eq4 (elts x) (to_rep1 (first (rt x))) (to_rep1 (last (rt x)))
   (elts y) (to_rep1 (first (rt y))) (to_rep1 (last (rt y))).
 
 Parameter user_eq2: us_t -> us_t -> Init.Datatypes.bool.

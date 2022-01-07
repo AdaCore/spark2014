@@ -56,5 +56,3 @@ begin
    pragma Assert (S = Insert (T, 92, "21"));
    pragma Assert (T = Delete (S, 92, 93));
 end Main;
-
-

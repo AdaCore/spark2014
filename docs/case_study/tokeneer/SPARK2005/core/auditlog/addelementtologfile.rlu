@@ -49,4 +49,3 @@ addelementtologfile_user(1): (L - 1) * 1024 + E + 1 = (L2 - 1) * 1024 + E2
                              [ E = 1024,
                                L2 = L + 1,
                                E2 = 1 ] .
-

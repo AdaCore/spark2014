@@ -290,5 +290,3 @@ is
    end "not";
 
 end Area_Math;
-
-

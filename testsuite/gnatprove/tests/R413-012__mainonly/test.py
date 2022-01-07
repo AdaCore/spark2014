@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import prove_all
 import os
 
 os.mkdir("a_lib")

@@ -24,5 +24,3 @@ is
                                            (var1 + i) = (var2 + j)));
 
 end X86;
-
-

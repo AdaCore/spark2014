@@ -41,7 +41,7 @@ LCFI1:
 	leaq	_constants__c00GP613__valX(%rip), %rax
 	movq	%rax, -8(%rbp)
 # 9 "/Users/moy/spark2014/testsuite/gnatprove/tests/ipstack/src/bldtools/constants.adb" 1
-	
+
 ->CND:$0:Address_Size:$64:Address_Size
 # 0 "" 2
 	popq	%rbp
@@ -59,7 +59,7 @@ LCFI4:
 	leaq	_constants__c01GP687__valX(%rip), %rax
 	movq	%rax, -8(%rbp)
 # 9 "/Users/moy/spark2014/testsuite/gnatprove/tests/ipstack/src/bldtools/constants.adb" 1
-	
+
 ->CND:$0:Default_Bit_Order:$1:Default_Bit_Order
 # 0 "" 2
 	popq	%rbp
@@ -77,7 +77,7 @@ LCFI7:
 	leaq	_constants__c02GP792__valX(%rip), %rax
 	movq	%rax, -8(%rbp)
 # 9 "/Users/moy/spark2014/testsuite/gnatprove/tests/ipstack/src/bldtools/constants.adb" 1
-	
+
 ->CND:$0:Network_Bit_Order:$0:Network_Bit_Order
 # 0 "" 2
 	popq	%rbp

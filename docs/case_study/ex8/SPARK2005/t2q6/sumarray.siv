@@ -1,13 +1,13 @@
 *****************************************************************************
                        Semantic Analysis of SPARK Text
-   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
              Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 *****************************************************************************
 
 
 CREATED 27-MAR-2013, 10:45:47  SIMPLIFIED 27-MAR-2013, 10:45:53
 
-SPARK Simplifier Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+SPARK Simplifier Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 
 procedure T2Q6.SumArray
@@ -27,7 +27,7 @@ procedure_sumarray_2.
 *** true .          /* all conclusions proved */
 
 
-For path(s) from assertion of line 10 to run-time check associated with 
+For path(s) from assertion of line 10 to run-time check associated with
           statement of line 9:
 
 procedure_sumarray_3.
@@ -40,9 +40,9 @@ H5:    loop__1__i >= 1 .
 H6:    loop__1__i < 100 .
 H7:    1 = loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [loop__1__i]
           ) .
-H8:    1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(a, 1, 
+H8:    1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(a, 1,
           loop__1__i - 1) + element(a, [loop__1__i]) .
-H9:    1 > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - 
+H9:    1 > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 -
           loop__1__i) .
 H10:   integer__size >= 0 .
 H11:   elementtype__size >= 0 .
@@ -77,11 +77,11 @@ H11:   1 = loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [loop__1__i]
           ) .
 H12:   loop__1__i = 0 -> sum_between(a, 1, loop__1__i + 1) = element(a, [
           loop__1__i + 1]) .
-H13:   1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(a, 1, 
+H13:   1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(a, 1,
           loop__1__i - 1) + element(a, [loop__1__i]) .
-H14:   1 > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - 
+H14:   1 > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 -
           loop__1__i) .
-H15:   loop__1__i > 0 -> sum_between(a, 1, loop__1__i + 1) = sum_between(a, 1, 
+H15:   loop__1__i > 0 -> sum_between(a, 1, loop__1__i + 1) = sum_between(a, 1,
           loop__1__i) + element(a, [loop__1__i + 1]) .
 H16:   loop__1__i < 0 -> sum_between(a, 1, loop__1__i + 1) >= 1000 * (1 - (
           loop__1__i + 1)) .
@@ -91,7 +91,7 @@ H19:   counttype__size >= 0 .
 H20:   indextype__size >= 0 .
 H21:   sumtype__size >= 0 .
        ->
-C1:    sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) = 
+C1:    sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) =
           sum_between(a, 1, loop__1__i + 1) .
 
 
@@ -99,5 +99,3 @@ For path(s) from assertion of line 10 to finish:
 
 procedure_sumarray_6.
 *** true .          /* all conclusions proved */
-
-

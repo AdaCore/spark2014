@@ -227,7 +227,7 @@ package body Gnat2Why.Driver is
    is
       Pid     : Process_Id;
       Success : Boolean;
-      pragma Unreferenced (Success);
+      pragma Warnings (Off, Success); --  modified but then not referenced
    begin
       Wait_Process (Pid, Success);
       pragma Assert (Pid /= Invalid_Pid);

@@ -76,4 +76,3 @@ currentactivitypossible_user(3): (B1 or B2) and St = St_1 -> B3
                                    may_be_deduced_from
                                  [ B1 <-> B4 and St < St_1,      /* (1) */
                                    B2 <-> B4 and B3 ] .          /* (2) */
-

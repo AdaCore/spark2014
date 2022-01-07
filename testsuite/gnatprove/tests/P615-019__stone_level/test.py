@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import gnatprove
 
 gnatprove(opt=["-q", "-k", "-P", "check_fast.gpr", "--mode=check", "--output=oneline"])
 gnatprove(opt=["-q", "-k", "-P", "check_all.gpr", "--mode=flow", "--output=oneline"])

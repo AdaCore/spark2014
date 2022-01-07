@@ -17,4 +17,3 @@ package P_Init with SPARK_Mode is
    function Init return T;
 
 end P_Init;
-

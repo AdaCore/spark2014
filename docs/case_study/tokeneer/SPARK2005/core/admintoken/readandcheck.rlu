@@ -46,4 +46,3 @@
 ----------------------------------------------------------------------*/
 readandcheck_user(1): not (B1 and (B2 and B3)) may_be_deduced_from
                       [ not B1 or not B2 ] .
-

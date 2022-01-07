@@ -1,4 +1,4 @@
-from test_support import *
+from test_support import do_flow
 
 # Proof checks are intentionally disabled, because they distract from the
 # inconsistent flow messages, which are the main point of this test.

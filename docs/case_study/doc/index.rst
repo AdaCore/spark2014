@@ -19,4 +19,3 @@ Welcome to case_study's documentation!
    :maxdepth: 2
 
    A. Appendix <appendix>
-

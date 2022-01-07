@@ -27,4 +27,3 @@ begin
       Value);
    pragma Assert (Value >= 31.999);  -- and <= 32.0, or 32.001, say?
 end Test;
-

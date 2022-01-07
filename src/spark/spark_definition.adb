@@ -39,7 +39,6 @@ with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Flow_Types;                      use Flow_Types;
 with Gnat2Why_Args;
-with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Nmake;
@@ -2096,6 +2095,13 @@ package body SPARK_Definition is
                      Mark_Subprogram_Body (N);
                   end if;
                end if;
+
+               --  Try inferring the Inline_For_Proof annotation for expression
+               --  functions which could benefit from it.
+
+               if Ekind (E) = E_Function then
+                  Infer_Inline_Annotation (E);
+               end if;
             end;
 
          when N_Subprogram_Body_Stub =>
@@ -3660,9 +3666,7 @@ package body SPARK_Definition is
         --  when he uses another compiler than GNAT, with a different
         --  implementation of the standard library.
 
-        and then
-          (not In_Internal_Unit (N)
-            or else Is_Internal_Unit (Main_Unit))
+        and then not Is_Ignored_Internal (N)
         and then SPARK_Pragma_Is (Opt.On)
 
       then
@@ -4046,9 +4050,9 @@ package body SPARK_Definition is
         and then ((Is_Imported (E) and then
                      Convention (E) not in Convention_Ada
                                          | Convention_Intrinsic)
-                   or else (In_Internal_Unit (E)
+                   or else (Is_Ignored_Internal (E)
                               and then
-                            not In_Internal_Unit (N)))
+                            not Is_Ignored_Internal (N)))
       then
          Error_Msg_NE
            ("?no Global contract available for &", N, E);
@@ -8241,8 +8245,7 @@ package body SPARK_Definition is
       --  are analyzing the standard library itself). As a result, no VC is
       --  generated in this case for standard library code.
 
-      if In_Internal_Unit (N)
-        and then not Is_Internal_Unit (Main_Unit)
+      if Is_Ignored_Internal (N)
 
         --  We still mark expression functions declared in the specification
         --  of internal units, so that GNATprove can use their definition.

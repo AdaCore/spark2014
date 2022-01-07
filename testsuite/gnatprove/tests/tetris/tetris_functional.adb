@@ -35,7 +35,10 @@ is
    ----------------------------
 
    procedure Include_Piece_In_Board is
+      Old_Board : constant Board := Cur_Board with Ghost;
    begin
+      pragma Assert (No_Overlap (Cur_Board, Cur_Piece));
+
       case Cur_Piece.S is
          when O =>
             Cur_Board (Cur_Piece.Y) (Cur_Piece.X)         := Cur_Piece.S;
@@ -47,6 +50,7 @@ is
             for Y in I_Delta loop
                for X in I_Delta loop
                   if Possible_I_Shapes (Cur_Piece.D) (Y, X) then
+                     pragma Assert (Is_Empty (Old_Board, Cur_Piece.Y + Y, Cur_Piece.X + X));
                      Cur_Board (Cur_Piece.Y + Y) (Cur_Piece.X + X) := Cur_Piece.S;
                   end if;
                end loop;
@@ -56,6 +60,7 @@ is
             for Y in Three_Delta loop
                for X in Three_Delta loop
                   if Possible_Three_Shapes (Cur_Piece.S, Cur_Piece.D) (Y, X) then
+                     pragma Assert (Is_Empty (Old_Board, Cur_Piece.Y + Y, Cur_Piece.X + X));
                      Cur_Board (Cur_Piece.Y + Y) (Cur_Piece.X + X) := Cur_Piece.S;
                   end if;
                end loop;
@@ -106,6 +111,7 @@ is
                To_Line := To_Line - 1;
                Num_Deleted := Num_Deleted + 1;
                pragma Assert (Cur_Board (From_Line)(X_Coord'First) = Empty);
+               pragma Assert (not Is_Complete_Line (Cur_Board (From_Line)));
             end if;
          end loop;
       end if;

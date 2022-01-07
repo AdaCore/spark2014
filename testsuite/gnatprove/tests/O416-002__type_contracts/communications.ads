@@ -21,4 +21,3 @@ private
           Communication.Msgs(Idx).Received <= Communication.Msgs(Idx+1).Received);
 
 end Communications;
-

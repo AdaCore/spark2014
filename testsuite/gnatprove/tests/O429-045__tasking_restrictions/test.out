@@ -28,4 +28,3 @@ p.ads:3:09: error: tasking in SPARK requires sequential elaboration (SPARK RM 9(
     1 |pragma SPARK_Mode (On);
       |^ here
 gnatprove: error during fast partial checking of SPARK legality rules
-

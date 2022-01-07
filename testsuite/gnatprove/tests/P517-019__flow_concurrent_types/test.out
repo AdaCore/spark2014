@@ -1,3 +1,5 @@
 p.ads:4:32: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.ads:4:32: error: use instead a constant initialized to the expression with variable input
 p.ads:6:38: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.ads:6:38: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

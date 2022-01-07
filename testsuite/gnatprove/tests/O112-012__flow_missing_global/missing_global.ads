@@ -9,4 +9,3 @@ package Missing_Global is
    procedure P3 (X : out Integer)
      with Global => G1;
 end Missing_Global;
-

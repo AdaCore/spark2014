@@ -24,6 +24,3 @@ begin
       Put_Line ("not OK: Found non-existing value");
    end if;
 end Test_Search;
-
-
-

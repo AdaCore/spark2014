@@ -19,4 +19,3 @@ is
    end Quadruple;
 
 end T3Q2;
-

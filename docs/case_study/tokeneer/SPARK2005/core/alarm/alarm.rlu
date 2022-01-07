@@ -47,4 +47,3 @@
 ----------------------------------------------------------------------*/
 alarm_user(1): prf_isalarming(Op) may_be_replaced_by
                  alarm__interface__prf_isalarming(fld_alarm__interface__output(Op)) .
-

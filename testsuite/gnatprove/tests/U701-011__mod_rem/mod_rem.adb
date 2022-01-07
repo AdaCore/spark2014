@@ -7,8 +7,8 @@ is
    BigB : constant Big_Integer := To_Big_Integer (B);
 
    function Same_Sign (X, Y : Integer) return Boolean is
-      ((X >= 0 and Y >= 0) or (X <= 0 and Y <= 0))
-   with Annotate => (GNATprove, Inline_For_Proof);
+      ((X >= 0 and Y >= 0) or (X <= 0 and Y <= 0));
+
 begin
    --  Defining relation for integer division and remainder (Ada RM 4.5.5(5))
    pragma Assert (BigA = (BigA / BigB) * BigB + To_Big_Integer (A rem B));

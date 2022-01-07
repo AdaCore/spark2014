@@ -45,5 +45,3 @@ begin
   Put_Line ("X = " & integer'image(X.all));  -- ERROR: We are not allowed to access X image since it alias Y. This error is not reported since we are performing an intra-procedural analysis.
 					     -- X.all has permission NO effectively but seen as WR at this context (same permissions for X and Y before and after Z_In call).
 end N04;
-
-

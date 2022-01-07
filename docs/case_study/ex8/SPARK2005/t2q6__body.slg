@@ -1,13 +1,13 @@
 *****************************************************************************
                        Semantic Analysis of SPARK Text
-   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
              Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 *****************************************************************************
 
 
 CREATED 27-MAR-2013, 10:45:47  SIMPLIFIED 27-MAR-2013, 10:45:53
 
-SPARK Simplifier Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+SPARK Simplifier Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 
 package_body T2Q6
@@ -20,4 +20,3 @@ package_body T2Q6
 @@@@@@@@@@  VC: package_body_t2q6_1.  @@@@@@@@@@
 ***  Proved C1:  true
 ***  PROVED VC.
-

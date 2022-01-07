@@ -53,4 +53,3 @@ addkey_user(1): B -> (keystore__privatekeypresent(S2) <->
                 [ B -> (privatekeypresent(fld_thistisinfo(S2)) <->
                           privatekeypresent(X)),
                   X = fld_thistisinfo(S) ] .
-

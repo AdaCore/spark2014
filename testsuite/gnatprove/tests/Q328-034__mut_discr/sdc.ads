@@ -23,4 +23,3 @@
 
 procedure Sdc
 with SPARK_Mode => On;
-

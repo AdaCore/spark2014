@@ -2,7 +2,7 @@ procedure Unsound with SPARK_Mode is
 
    type T is range 1 .. 100;
 
-   subtype S is T 
+   subtype S is T
       with Dynamic_Predicate => S rem 2 = 0;
 
    type D is new S;

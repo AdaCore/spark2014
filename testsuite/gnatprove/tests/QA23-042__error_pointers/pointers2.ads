@@ -20,4 +20,3 @@ is
    procedure Bad_Move (X, Y : in out Int_Ptr);
 
 end Pointers2;
-

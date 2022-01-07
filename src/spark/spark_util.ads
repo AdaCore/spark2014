@@ -324,6 +324,12 @@ package SPARK_Util is
    --  @param E any entity
    --  @return True iff E is declared in the private part of a package
 
+   function Is_Ignored_Internal (N : Node_Or_Entity_Id) return Boolean is
+     (In_Internal_Unit (N)
+       and then not Is_Internal_Unit (Main_Unit));
+   --  @return True iff N can be ignored because it is an internal node and the
+   --  current unit analyzed is not internal.
+
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
    --  Use this routine to ensure that the entity will be processed only by one
    --  invocation of gnat2why within a single pass of gnatprove. Technically,
@@ -890,6 +896,9 @@ package SPARK_Util is
    --  @param N any node
    --  @return True iff the tree starting with N contains an N_Allocator
    --    node.
+
+   function Contains_Function_Call (N : Node_Id) return Boolean;
+   --  Return True iff N contains an N_Function_Call node
 
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr
    with Post => (N = Empty) = (Safe_First_Sloc'Result = No_Location);

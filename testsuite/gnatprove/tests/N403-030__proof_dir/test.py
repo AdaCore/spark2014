@@ -1,5 +1,4 @@
-from subprocess import call
-from test_support import *
+from test_support import gnatprove, ls, prove_all
 
 prove_all(cache_allowed=False)
 gnatprove(opt=["-P", "test.gpr", "--clean"])

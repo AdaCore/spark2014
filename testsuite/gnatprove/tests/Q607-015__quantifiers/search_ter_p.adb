@@ -13,6 +13,7 @@ package body Search_Ter_P with
 
       for I in A'First .. A'Last + 1 - B'Length loop
          if Equal_Subrange (A, I, B) then
+            pragma Assert (Has_Sub_Range(A, B));
             Result.Exists := True;
             Result.Value  := I;
 

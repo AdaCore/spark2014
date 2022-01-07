@@ -8,4 +8,3 @@ package Test with SPARK_Mode is
       Depends => (Oha => I);
 
 end Test;
-

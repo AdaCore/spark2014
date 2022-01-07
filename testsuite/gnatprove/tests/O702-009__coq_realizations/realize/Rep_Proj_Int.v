@@ -70,4 +70,3 @@ unfold to_rep, of_rep.
 destruct (range_pred_dec r) as [Q | Q]; auto.
 contradict Q; auto.
 Qed.
-

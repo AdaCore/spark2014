@@ -1,5 +1,5 @@
 procedure Test_First_Bound_Rejected with SPARK_Mode is
- 
+
    procedure Test_9 with Global => null is
       type Int_Array is array (Positive range <>) of Integer;
       function Id (X : Integer) return Integer is (X);

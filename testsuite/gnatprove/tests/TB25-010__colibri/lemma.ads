@@ -16,6 +16,6 @@ package Lemma with SPARK_Mode is
           (Val2 in Fl'First .. -1.0 / Fl_Last_Sqrt and then
            Val3 in Fl'First .. -1.0 / Fl_Last_Sqrt)) and then
          Val2 <= Val3,
-       Post => Val1 / Val3 <= Val1 / Val2; 
+       Post => Val1 / Val3 <= Val1 / Val2;
 
 end Lemma;

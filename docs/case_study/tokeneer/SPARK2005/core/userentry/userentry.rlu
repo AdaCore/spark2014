@@ -91,6 +91,3 @@ userentry_user(4): userhasdeparted(St, US)
                      if
                    [ St >= statust__first,
                      St <= statust__last ] .
-
-
-
