@@ -65,7 +65,7 @@ def main():
 
     os.chdir(curdir)
     print("running test again")
-    run_tests_cmd = ["./run-tests", "--disc", "large", "--diffs", test_name]
+    run_tests_cmd = ["./run-tests", "--disc", "large", "--diffs", test_dir]
     if args.rewrite:
         run_tests_cmd.append("--rewrite")
     out = subprocess.check_output(run_tests_cmd)
