@@ -5465,13 +5465,13 @@ package body Gnat2Why.Expr is
          --  recursive. If Expand_Incompl is false, we use specific dynamic
          --  predicates stored in Incompl_Access_Dyn_Inv_Map. If there is no
          --  such predicate and New_Preds_Module is not empty, generate a new
-         --  temp for them and store them inside New_Incompl_Acc. Otherwise,
-         --  emit an info message to state that we may be missing some
-         --  information. Usually, the first time a dynamic predicate will
-         --  be computed for a type, it will be declared, so
-         --  New_Preds_Module should not be empty and predicates will be
-         --  created which can be reused later. The fall back case might happen
-         --  for Itypes for which we do not generate a predicate.
+         --  temp for them and store them inside New_Incompl_Acc. Usually, the
+         --  first time a dynamic predicate will be computed for a type, it
+         --  will be declared, so New_Preds_Module should not be empty and
+         --  predicates will be created which can be reused later.
+         --  Theoretically, it could happen that we are not able to generate
+         --  these predicates for Itypes which do not have a preliminary
+         --  declaration. We have never seen a case where this happens though.
 
          if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
            and then not Expand_Incompl
@@ -5482,25 +5482,61 @@ package body Gnat2Why.Expr is
 
             declare
                use Ada_To_Why_Ident;
+               Rep_Ty_Ext  : Type_Kind_Id :=
+                 Repr_Pointer_Type (Ty_Ext);
+               Des_Ty      : Type_Kind_Id :=
+                 Retysp (Directly_Designated_Type (Ty_Ext));
                Dyn_Inv_Pos : Ada_To_Why_Ident.Cursor :=
-                 Loc_Incompl_Acc.Find (Repr_Pointer_Type (Ty_Ext));
+                 Loc_Incompl_Acc.Find (Rep_Ty_Ext);
                Inserted    : Boolean;
 
             begin
+               --  If Rep_Ty_Ext is an Itype, it might depend on discriminants
+               --  of an enclosing record type. In this case, we will not be
+               --  able to express the discriminant contraints of its
+               --  designated type in a separate predicate. We do this
+               --  generation here and generate the separate predicate for the
+               --  Etype.
+
+               if Is_Itype (Rep_Ty_Ext)
+                 and then Count_Discriminants (Des_Ty) > 0
+                 and then Is_Constrained (Des_Ty)
+                 and then not Is_Constrained
+                   (Directly_Designated_Type (Etype (Rep_Ty_Ext)))
+               then
+                  T := New_And_Pred
+                    (Left  => T,
+                     Right => New_Conditional
+                       (Condition =>
+                            New_Not (Right => Pred_Of_Boolean_Term
+                                     (New_Pointer_Is_Null_Access
+                                          (E    => Rep_Ty_Ext,
+                                           Name => +Expr))),
+                        Then_Part => +New_Dynamic_Property
+                          (Domain => EW_Pred,
+                           Ty     => Des_Ty,
+                           Expr   => +New_Pointer_Value_Access
+                             (Ada_Node => Types.Empty,
+                              E        => Rep_Ty_Ext,
+                              Name     => +Expr,
+                              Domain   => EW_Term),
+                           Params => Params)));
+                  Rep_Ty_Ext := Etype (Rep_Ty_Ext);
+                  Des_Ty := Retysp (Directly_Designated_Type (Rep_Ty_Ext));
+               end if;
+
                pragma Assert
                  (not (Has_Element (Dyn_Inv_Pos)
-                  and then New_Incompl_Acc.Contains
-                    (Repr_Pointer_Type (Ty_Ext))));
+                  and then New_Incompl_Acc.Contains (Rep_Ty_Ext)));
 
                if not Has_Element (Dyn_Inv_Pos) then
-                  Dyn_Inv_Pos := New_Incompl_Acc.Find
-                    (Repr_Pointer_Type (Ty_Ext));
+                  Dyn_Inv_Pos := New_Incompl_Acc.Find (Rep_Ty_Ext);
 
                   --  Search in the global map
 
                   if not Has_Element (Dyn_Inv_Pos) then
                      Dyn_Inv_Pos := Incompl_Access_Dyn_Inv_Map.Find
-                       (Repr_Pointer_Type (Ty_Ext));
+                       (Rep_Ty_Ext);
 
                      --  If it was not found and we are allowed to introduce
                      --  new declarations (New_Preds_Module is set), introduce
@@ -5519,9 +5555,9 @@ package body Gnat2Why.Expr is
                                 Typ       => EW_Bool_Type);
                         begin
                            Incompl_Access_Dyn_Inv_Map.Insert
-                             (Repr_Pointer_Type (Ty_Ext), Pred_Name);
+                             (Rep_Ty_Ext, Pred_Name);
                            New_Incompl_Acc.Insert
-                             (Repr_Pointer_Type (Ty_Ext), To_Local (Pred_Name),
+                             (Rep_Ty_Ext, To_Local (Pred_Name),
                               Dyn_Inv_Pos, Inserted);
                         end;
                      end if;
@@ -5531,8 +5567,7 @@ package body Gnat2Why.Expr is
                --  If we have a predicate, call it
 
                if Has_Element (Dyn_Inv_Pos) then
-                  Variables_In_Dynamic_Invariant
-                    (Directly_Designated_Type (Ty_Ext), Variables);
+                  Variables_In_Dynamic_Invariant (Des_Ty, Variables);
 
                   declare
                      Vars  : constant W_Expr_Array :=
@@ -5541,7 +5576,10 @@ package body Gnat2Why.Expr is
                      Args  : W_Expr_Array (1 .. Num_B);
 
                   begin
-                     Args (1) := +Expr;
+                     Args (1) := Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Expr,
+                        To     => Type_Of_Node (Rep_Ty_Ext));
                      Args (2) := +Initialized;
                      Args (3) := +Only_Var;
                      Args (4) := +Top_Predicate;
@@ -5557,13 +5595,14 @@ package body Gnat2Why.Expr is
                         Domain      => EW_Pred);
                   end;
 
-               --  If we have no predicate for Ty_Ext, we drop the predicate of
-               --  the designated type. Warn the user if --info is set.
+               --  Theoretically, it could happen that we are in a context
+               --  where we were not able to generate the separate predicate,
+               --  typically for Itypes. We have never seen a case where this
+               --  happens in practice though, so for now we assert that this
+               --  never happens.
 
-               elsif Debug.Debug_Flag_Underscore_F then
-                  Error_Msg_N
-                    ("info: ?subtype constraints on designated type not" &
-                       " available for proof", Ty_Ext);
+               else
+                  pragma Assert (False);
                end if;
             end;
          else

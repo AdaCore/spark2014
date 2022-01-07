@@ -1005,10 +1005,10 @@ package body Why.Gen.Binders is
       return W_Declaration_Id
    is
       Left     : constant W_Term_Id :=
-                   +New_Call
-                     (Domain  => EW_Term,
-                      Name    => Name,
-                      Binders => Binders);
+        +New_Call
+        (Domain  => EW_Term,
+         Name    => Name,
+         Binders => Binders);
       Equality : constant W_Pred_Id :=
         New_Call
           (Name => Why_Eq,

@@ -595,9 +595,10 @@ package body Gnat2Why.Types is
 
                      Axioms.Append
                        (New_Defining_Bool_Axiom
-                          (Name    => Name,
-                           Binders => Binders,
-                           Def     => +Def));
+                          (Fun_Name => Full_Name (E),
+                           Name     => Name,
+                           Binders  => Binders,
+                           Def      => +Def));
 
                   --  Otherwise, define the symbol at declaration
 
