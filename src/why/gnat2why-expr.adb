@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -866,6 +866,7 @@ package body Gnat2Why.Expr is
       Assocs             : List_Id;
       Params             : Transformation_Params;
       In_Delta_Aggregate : Boolean := False;
+      In_Extension       : Boolean := False;
       Init_Wrapper       : Boolean)
       return W_Field_Association_Array;
    --  Returns a list of updates to be applied to a record value, to
@@ -16789,18 +16790,8 @@ package body Gnat2Why.Expr is
                     Expr_Type,
                     Component_Associations (Expr),
                     Local_Params,
+                    In_Extension => True,
                     Init_Wrapper => Init_Wrapper);
-
-               --  Check that the derived type does not introduce any
-               --  discriminant, which is currently not allowed in SPARK,
-               --  and not supported by the current scheme which defined
-               --  all discriminant types in the root record type.
-
-               Num_Discrs : constant Natural :=
-                 Count_Non_Inherited_Discriminants
-                   (Component_Associations (Expr));
-
-               pragma Assert (Num_Discrs = 0);
 
                --  Use the base type of the ancestor part as intermediate type
                --  to which the ancestor is converted if needed before copying
@@ -21127,6 +21118,7 @@ package body Gnat2Why.Expr is
       Assocs             : List_Id;
       Params             : Transformation_Params;
       In_Delta_Aggregate : Boolean := False;
+      In_Extension       : Boolean := False;
       Init_Wrapper       : Boolean)
       return W_Field_Association_Array
    is
@@ -21160,8 +21152,6 @@ package body Gnat2Why.Expr is
       Num_Discr   : constant Integer := Count_Discriminants (Typ);
       Discr_Assoc :
         W_Field_Association_Array (1 .. Num_Discr);
-      Result      :
-        W_Field_Association_Array (1 .. Components_Count (Assocs));
       Field_Index : Positive := 1;
       Discr_Index : Positive := 1;
       CL          : List_Id;
@@ -21255,12 +21245,18 @@ package body Gnat2Why.Expr is
                end if;
 
                if Ekind (Component) = E_Discriminant then
-                  Discr_Assoc (Discr_Index) := New_Field_Association
-                    (Domain => Domain,
-                     Field  => To_Why_Id
-                       (Component, Rec => Root_Retysp (Typ)),
-                     Value  => Expr);
-                  Discr_Index := Discr_Index + 1;
+
+                  --  In record extensions, the discriminants are in the
+                  --  ancestor part.
+
+                  if not In_Extension then
+                     Discr_Assoc (Discr_Index) := New_Field_Association
+                       (Domain => Domain,
+                        Field  => To_Why_Id
+                          (Component, Rec => Root_Retysp (Typ)),
+                        Value  => Expr);
+                     Discr_Index := Discr_Index + 1;
+                  end if;
                else
                   Field_Assoc (Field_Index) := New_Field_Association
                     (Domain => Domain,
@@ -21290,12 +21286,11 @@ package body Gnat2Why.Expr is
 
       pragma Assert (No (Association));
       pragma Assert
-        ((In_Delta_Aggregate and then Field_Index = Result'Last + 1)
-         or else Is_Tagged_Type (Typ)
-         or else Discr_Index = Discr_Assoc'Last + 1);
-      Result := Discr_Assoc (1 .. Discr_Index - 1) &
+        (if In_Delta_Aggregate or In_Extension
+         then Field_Index <= Components_Count (Assocs) + 1
+         else Discr_Index = Discr_Assoc'Last + 1);
+      return Discr_Assoc (1 .. Discr_Index - 1) &
         Field_Assoc (1 .. Field_Index - 1);
-      return Result;
    end Transform_Record_Component_Associations;
 
    ------------------------------------
