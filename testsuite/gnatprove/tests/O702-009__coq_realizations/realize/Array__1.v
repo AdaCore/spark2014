@@ -230,3 +230,20 @@ destruct (Z.eq_dec old_first new_first) as [Ha | _].
  - rewrite Z.sub_sub_distr.
    auto.
 Qed.
+
+Require map.Const.
+
+(* Why3 goal *)
+Definition const : component_type -> map.Map.map.
+Proof.
+intros e.
+exact (map.Const.const e).
+Defined.
+
+(* Why3 goal *)
+Lemma const_def :
+  forall (v:component_type), forall (i:t), ((get (const v) i) = v).
+Proof.
+intros v i.
+reflexivity.
+Qed.

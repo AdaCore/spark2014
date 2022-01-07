@@ -83,7 +83,7 @@
   <proof prover="0" timelimit="20" memlimit="2000"><result status="valid" steps="67532"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="41934"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   <proof prover="4"><result status="unknown" steps="1589"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">

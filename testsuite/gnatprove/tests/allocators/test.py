@@ -4,7 +4,7 @@ contains_manual_proof = False
 
 
 def replay():
-    prove_all(procs=0, level=4)
+    prove_all(procs=0, level=4, vc_timeout=120)
 
 
 if __name__ == "__main__":

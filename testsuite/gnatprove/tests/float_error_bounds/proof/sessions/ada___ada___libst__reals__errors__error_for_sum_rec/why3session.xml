@@ -77,7 +77,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="valid" steps="127902"/></proof>
-  <proof prover="3"><result status="unknown" steps="57834"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   <proof prover="4"><result status="unknown" steps="2558"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">

@@ -10,7 +10,7 @@
  <goal name="def&#39;vc">
  <transf name="split_vc_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="unknown" steps="33"/></proof>
+  <proof prover="0"><result status="unknown" steps="45"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
