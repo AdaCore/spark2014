@@ -81,9 +81,9 @@
   </goal>
   <goal name="def&#39;vc.17">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="unknown" steps="9415352"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="3"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   <proof prover="4"><result status="unknown" steps="678"/></proof>
   </goal>
  </transf>

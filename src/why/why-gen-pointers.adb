@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2021, AdaCore                     --
+--                     Copyright (C) 2018-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -285,8 +285,8 @@ package body Why.Gen.Pointers is
            New_Identifier (Name => "r", Typ => Root_Abstr);
          R_Val      : constant W_Term_Id :=
            New_Pointer_Value_Access
-             (E        => Root,
-              Name     => +R_Ident);
+             (E    => Root,
+              Name => +R_Ident);
          Post       : constant W_Pred_Id :=
            New_Call
              (Name => Why_Eq,
@@ -373,7 +373,7 @@ package body Why.Gen.Pointers is
                  Args => Args (1 .. Num) & New_Discriminants_Access
                  (Domain => EW_Term,
                   Name   => +R_Val,
-                  Ty     => Des_Ty),
+                  Ty     => Retysp (Directly_Designated_Type (Root))),
                  Typ  => EW_Bool_Type);
          end if;
 

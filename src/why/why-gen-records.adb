@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -3971,7 +3971,7 @@ package body Why.Gen.Records is
 
       if Ekind (Field) = E_Component then
          declare
-            Pred_Name    : constant W_Identifier_Id :=
+            Pred_Name : constant W_Identifier_Id :=
               Discriminant_Check_Pred_Name
                 (Ty, Field, Local => False, Relaxed_Init => Init_Wrapper);
          begin
@@ -4179,7 +4179,7 @@ package body Why.Gen.Records is
       Ty        : Entity_Id)
       return W_Expr_Id
    is
-      Has_Tag         : constant Boolean :=
+      Has_Tag : constant Boolean :=
         (Is_Tagged_Type (Ty)
          and then (From_Expr /= Why_Empty
            or else not Is_Class_Wide_Type (Ty)));

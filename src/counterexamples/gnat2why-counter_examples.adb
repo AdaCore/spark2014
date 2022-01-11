@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2016-2021, AdaCore                     --
+--                     Copyright (C) 2016-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1354,7 +1354,7 @@ package body Gnat2Why.Counter_Examples is
                      begin
                         if Comp_Name = "'" & All_Label then
                            declare
-                              Comp_Ty  : constant Entity_Id :=
+                              Comp_Ty : constant Entity_Id :=
                                 Retysp (Directly_Designated_Type (Ent_Ty));
                            begin
                               Ptr.Ptr_Val := New_Item (Comp_Ty);

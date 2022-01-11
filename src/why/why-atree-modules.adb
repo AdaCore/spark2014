@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d Y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2632,7 +2632,7 @@ package body Why.Atree.Modules is
            and then (Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E))
          then
             declare
-               WM  : constant W_Module_Id := E_Init_Module (E);
+               WM : constant W_Module_Id := E_Init_Module (E);
             begin
                if Has_Scalar_Type (E)
                  or else Is_Simple_Private_Type (E)

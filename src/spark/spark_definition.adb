@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2021, AdaCore                     --
---                Copyright (C) 2016-2021, Altran UK Limited                --
+--                     Copyright (C) 2011-2022, AdaCore                     --
+--              Copyright (C) 2016-2022, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2359,7 +2359,7 @@ package body SPARK_Definition is
             | N_Subtype_Declaration
          =>
             declare
-               E  : constant Type_Kind_Id := Defining_Entity (N);
+               E : constant Type_Kind_Id := Defining_Entity (N);
             begin
                --  Store correspondence from completions of private types, so
                --  that Is_Full_View can be used for dealing correctly with

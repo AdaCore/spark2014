@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2017-2021, AdaCore                     --
+--                     Copyright (C) 2017-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -150,7 +150,7 @@ package body Gnat2Why.Tables is
 
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    is
-      Ty  : constant Entity_Id :=
+      Ty : constant Entity_Id :=
         Retysp (if Is_Class_Wide_Type (Rec)
                 then Get_Specific_Type_From_Classwide (Rec) else Rec);
    begin

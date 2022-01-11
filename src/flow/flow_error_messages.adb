@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                Copyright (C) 2013-2021, Altran UK Limited                --
---                     Copyright (C) 2013-2021, AdaCore                     --
+--              Copyright (C) 2013-2022, Capgemini Engineering              --
+--                     Copyright (C) 2013-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -478,13 +478,18 @@ package body Flow_Error_Messages is
 
                when Check_Kind =>
                   Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
+
                   if Is_Annot then
                      Suppr := Info.Reason;
 
-                     Msg_Id := Print_Regular_Msg (Justified_Message (Msg3),
-                                                  Span, Info_Kind);
+                     if Report_Mode /= GPR_Fail then
+                        Msg_Id := Print_Regular_Msg (Justified_Message (Msg3),
+                                                     Span, Info_Kind);
+                     end if;
                   end if;
+
                   Suppressed := Suppr /= No_String;
+
                   if Suppressed then
                      Suppression :=
                        Suppressed_Message'(Check,

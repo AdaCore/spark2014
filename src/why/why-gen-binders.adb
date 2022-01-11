@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1005,10 +1005,10 @@ package body Why.Gen.Binders is
       return W_Declaration_Id
    is
       Left     : constant W_Term_Id :=
-                   +New_Call
-                     (Domain  => EW_Term,
-                      Name    => Name,
-                      Binders => Binders);
+        +New_Call
+        (Domain  => EW_Term,
+         Name    => Name,
+         Binders => Binders);
       Equality : constant W_Pred_Id :=
         New_Call
           (Name => Why_Eq,
@@ -1170,14 +1170,14 @@ package body Why.Gen.Binders is
       Def      : W_Pred_Id)
       return W_Declaration_Id
    is
-      Ax_Body  : constant W_Pred_Id :=
-                   (if Pre = Why_Empty or else Is_True_Boolean (+Pre) then
-                      Def
-                    else
-                      New_Connection
-                        (Op    => EW_Imply,
-                         Left  => +Pre,
-                         Right => +Def));
+      Ax_Body : constant W_Pred_Id :=
+                  (if Pre = Why_Empty or else Is_True_Boolean (+Pre) then
+                     Def
+                   else
+                     New_Connection
+                       (Op    => EW_Imply,
+                        Left  => +Pre,
+                        Right => +Def));
    begin
       return New_Axiom
         (Ada_Node => Ada_Node,

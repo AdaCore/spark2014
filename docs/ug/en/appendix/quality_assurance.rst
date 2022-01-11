@@ -40,11 +40,11 @@ SPARK:
 The development of the GNAT front-end and GNAT2Why components entirely follows
 the  procedures outlined in AdaCore Quality Procedures and the previous
 section. The other components, however, are mostly developed by third parties.
-Their development process and the relationship to AdaCore and Altran will be
+Their development process and the relationship to AdaCore and Capgemini Engineering will be
 outlined below.
 
 For the nightly testing of SPARK, the GNAT and GNAT2Why components are updated
-every night according to the changes made during the day by AdaCore and Altran
+every night according to the changes made during the day by AdaCore and Capgemini Engineering
 developers. The other tools, however, contain also check-ins by other persons.
 We update these tools in a controlled way, and after careful testing of the
 consequences. In other words, a check-in made e.g. to Z3 at some specific
@@ -66,7 +66,7 @@ GNAT2Why
 This part of SPARK serves two purposes:
 
 * Implement Flow Analysis, the part of the SPARK analysis which detects uninitialized variables, and computes and checks the use of global variables and parameters.
-* Translate the Ada source code to the Why language, for further processing by the Why3 tools.  GNAT2Why is developed by AdaCore and Altran and follows the AdaCore quality procedures.
+* Translate the Ada source code to the Why language, for further processing by the Why3 tools.  GNAT2Why is developed by AdaCore and Capgemini Engineering and follows the AdaCore quality procedures.
 
 Why3
 ^^^^
@@ -77,7 +77,7 @@ History: Started around the year 2000 by Jean-Christophe Filliâtre as “Why”
 
 Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_, `Atelier B <http://www.atelierb.eu/en/>`_, and other program verification tools.
 
-Relationship with AdaCore/Altran: The Inria team around Why3 has strong ties with AdaCore and Altran. A number of research projects have been and are being carried out in collaboration with this team. This includes the `Hi-Lite project <http://www.open-do.org/projects/hi-lite/>`_, which led to the current version of SPARK based on Why3, and the still ongoing project `SOPRANO <http://soprano-project.fr/>`_ and joint laboratory `ProofInUse <http://www.spark-2014.org/proofinuse>`_. In addition, while Why3 is mainly developed at Inria, AdaCore and Altran have made important contributions to the technology, such as the so-called fast-WP, a more efficient implementation of the main algorithm of Why3, and the why3server, a more scalable method of running external tools such as SMT solvers.
+Relationship with AdaCore/Capgemini Engineering: The Inria team around Why3 has strong ties with AdaCore and Capgemini Engineering. A number of research projects have been and are being carried out in collaboration with this team. This includes the `Hi-Lite project <http://www.open-do.org/projects/hi-lite/>`_, which led to the current version of SPARK based on Why3, and the still ongoing project `SOPRANO <http://soprano-project.fr/>`_ and joint laboratory `ProofInUse <http://www.spark-2014.org/proofinuse>`_. In addition, while Why3 is mainly developed at Inria, AdaCore and Capgemini Engineering have made important contributions to the technology, such as the so-called fast-WP, a more efficient implementation of the main algorithm of Why3, and the why3server, a more scalable method of running external tools such as SMT solvers.
 
 * Main developers: `Inria research institute <http://toccata.lri.fr/>`_
 * Main website: http://why3.lri.fr
@@ -99,7 +99,7 @@ behind the private release).  SPARK uses the public release of Alt-Ergo.
 
 Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_ and `Atelier B <http://www.atelierb.eu/en/>`_. In particular, used by Airbus for the qualification DO-178C of an aircraft [10].
 
-Relationship with AdaCore/Altran: AdaCore and OCamlPro have collaborated in the
+Relationship with AdaCore/Capgemini Engineering: AdaCore and OCamlPro have collaborated in the
 `SOPRANO <http://soprano-project.fr/>`_ project. AdaCore has contributed some minor
 changes to Alt-Ergo, including a deterministic resource limiting switch.
 
@@ -128,7 +128,7 @@ and `PEX
 projects inside Microsoft. Has won the `SMT competition
 <http://smtcomp.sourceforge.net>`_ several times in several categories.
 
-Relationship with AdaCore/Altran: AdaCore and Altran have provided bug
+Relationship with AdaCore/Capgemini Engineering: AdaCore and Capgemini Engineering have provided bug
 reports, feature requests and small fixes to the Z3 team, in particular
 related to a deterministic resource limiting switch.
 
@@ -146,7 +146,7 @@ History: CVC4 is the fourth in the Cooperating Validity Checker family of tools,
 
 Track record: Very good results in various `SMT competitions <http://smtcomp.sourceforge.net>`_. Used in `TNO tool <http://torxakis.esi.nl/>`_.
 
-Relationship with AdaCore/Altran: AdaCore and Altran have provided bug reports, feature requests and small fixes to the CVC4 team, in particular related to a deterministic resource limiting switch.
+Relationship with AdaCore/Capgemini Engineering: AdaCore and Capgemini Engineering have provided bug reports, feature requests and small fixes to the CVC4 team, in particular related to a deterministic resource limiting switch.
 
 * Main developers: New York University
 * Main website: http://cvc4.cs.nyu.edu/web/
@@ -163,7 +163,7 @@ History: COLIBRI is a library (COnstraint LIBrary for veRIfication) developed at
 
 Track record: Winner (2018) and Runner-up (2019) in the quantifier-free floating-point division of the `SMT competition <http://smtcomp.sourceforge.net>`_.
 
-Relationship with AdaCore/Altran: AdaCore and CEA collaborate together to improve COLIBRI.
+Relationship with AdaCore/Capgemini Engineering: AdaCore and CEA collaborate together to improve COLIBRI.
 
 * Main developers: CEA
 * Version Management: Git

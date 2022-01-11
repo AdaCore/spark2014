@@ -65,7 +65,7 @@ master_doc = "index"
 
 
 def get_copyright():
-    return u"2013-%s, AdaCore and Altran UK Ltd" % time.strftime("%Y")
+    return u"2013-%s, AdaCore and Capgemini Engineering" % time.strftime("%Y")
 
 
 # General information about the project.
@@ -225,7 +225,7 @@ latex_documents = [
         "index",
         "spark2014_rm.tex",
         u"SPARK Reference Manual",
-        u"AdaCore and Altran UK Ltd",
+        u"AdaCore and Capgemini Engineering",
         "manual",
     ),
 ]
@@ -260,7 +260,7 @@ man_pages = [
         "index",
         "spark2014refman",
         u"SPARK Reference Manual",
-        [u"AdaCore and Altran UK Ltd"],
+        [u"AdaCore and Capgemini Engineering"],
         1,
     )
 ]

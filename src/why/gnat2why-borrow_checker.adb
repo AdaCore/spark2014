@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2017-2021, AdaCore                     --
+--                     Copyright (C) 2017-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -3314,7 +3314,7 @@ package body Gnat2Why.Borrow_Checker is
       Subp       : Entity_Id;
       Global_Var : Boolean)
    is
-      Mode   : Checking_Mode;
+      Mode : Checking_Mode;
 
    begin
       case Kind is

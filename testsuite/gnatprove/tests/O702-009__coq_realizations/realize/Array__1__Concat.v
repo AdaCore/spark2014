@@ -164,18 +164,3 @@ Lemma singleton_def :
 intros v i.
 reflexivity.
 Qed.
-
-(* Why3 goal *)
-Definition const : component_type -> map.
-Proof.
-intros e.
-exact (map.Const.const e).
-Defined.
-
-(* Why3 goal *)
-Lemma const_def :
-  forall (v:component_type), forall (i:t), ((get (const v) i) = v).
-Proof.
-intros v i.
-reflexivity.
-Qed.

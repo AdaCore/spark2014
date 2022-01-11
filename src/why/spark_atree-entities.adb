@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2021, AdaCore                     --
+--                     Copyright (C) 2018-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -554,6 +554,8 @@ package body SPARK_Atree.Entities is
    --------------------------
 
    function Max_Size_Of_Img_Attr (Typ : Scalar_Kind_Id) return Uint is
+      use type Interfaces.Unsigned_64;
+
       function Max_Size_Of_Integer (Size : Int) return Int is
         (Interfaces.Unsigned_64'Image (2 ** Natural (Size))'Length + 1);
       --  Maximal size of integer values (positive values are prefixed by a

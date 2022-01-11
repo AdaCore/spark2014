@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1385,7 +1385,7 @@ package body Why.Gen.Arrays is
       end if;
 
       declare
-         Sbst          : constant W_Clone_Substitution_Array :=
+         Sbst : constant W_Clone_Substitution_Array :=
            (1 =>
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,

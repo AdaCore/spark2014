@@ -65,8 +65,8 @@ master_doc = "index"
 
 # General information about the project.
 project = u"GNATprove Developer Guide"
-copyright = u"2017, AdaCore and Altran"
-author = u"AdaCore and Altran"
+copyright = u"2022, AdaCore and Capgemini Engineering"
+author = u"AdaCore and Capgemini Engineering"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -276,7 +276,7 @@ latex_documents = [
         master_doc,
         "GNATproveDeveloperGuide.tex",
         u"GNATprove Developer Guide Documentation",
-        u"AdaCore and Altran",
+        u"AdaCore and Capgemini Engineering",
         "manual",
     ),
 ]

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -5286,21 +5286,13 @@ package body Gnat2Why.Subprograms is
 
                      --  If Descendant is a derived type with a null extension,
                      --  Descendant_E can be inherited even if it has a
-                     --  controlling result. In this case, we need to update
-                     --  the tag after the call manually.
+                     --  controlling result. An overriding is generated in the
+                     --  frontend so this case should never occur.
 
-                     if Has_Controlling_Result (Descendant_E)
-                       and then Base_Retysp (Descendant) /=
-                       Base_Retysp (Etype (Descendant_E))
-                     then
-                        pragma Assert
-                          (Is_Derived_Type_With_Null_Ext
-                             (Base_Type (Descendant)));
-                        Call := +New_Tag_Update
-                          (Domain => EW_Term,
-                           Name   => +Call,
-                           Ty     => Descendant);
-                     end if;
+                     pragma Assert
+                       (if Has_Controlling_Result (Descendant_E)
+                        then Base_Retysp (Descendant) =
+                            Base_Retysp (Etype (Descendant_E)));
 
                      Emit
                        (Th,
@@ -5504,7 +5496,7 @@ package body Gnat2Why.Subprograms is
 
                      for I in Desc_Params'Range loop
                         declare
-                           Typ      : constant W_Type_Id :=
+                           Typ : constant W_Type_Id :=
                              Get_Why_Type_From_Item (Desc_Params (I));
 
                         begin

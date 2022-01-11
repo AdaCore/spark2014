@@ -12,7 +12,7 @@ SPARK User's Guide
 
 .. only:: html
 
-   Copyright (C) 2011-2021, AdaCore and Altran UK Ltd
+   Copyright (C) 2011-2022, AdaCore and Capgemini Engineering
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1
