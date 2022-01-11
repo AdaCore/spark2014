@@ -412,8 +412,14 @@ class SPARKTestFinder(TestFinder):
             return ParsedTest(testname, RACTestDriver, {}, dirpath)
 
         # If this is not a large test, but only large was requested, skip
-        # test
-        if self.only_large and "large" not in test_env:
+        # test. The "always_fail" test is exempted from this check to include
+        # it in both large and non-large testsuites.
+        if (
+            self.only_large
+            and "large" not in test_env
+            and "always_fail" not in testname
+        ):
+
             return None
 
         # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
