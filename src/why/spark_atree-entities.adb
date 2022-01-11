@@ -367,6 +367,17 @@ package body SPARK_Atree.Entities is
    function Is_Constrained (Typ : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Is_Constrained (Typ));
 
+   ------------------------------
+   -- Is_Dispatching_Operation --
+   ------------------------------
+
+   function Is_Dispatching_Operation
+     (Subp : Callable_Kind_Id)
+      return Boolean
+   is
+     (Einfo.Entities.Is_Dispatching_Operation (Subp)
+       and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (Subp)));
+
    --------------------
    -- Is_Entity_Name --
    --------------------
@@ -419,17 +430,6 @@ package body SPARK_Atree.Entities is
 
    function Is_Unchecked_Union (E : Type_Kind_Id) return Boolean is
      (Einfo.Entities.Is_Unchecked_Union (SPARK_Util.Types.Base_Retysp (E)));
-
-   --------------------------------------
-   -- Is_Visible_Dispatching_Operation --
-   --------------------------------------
-
-   function Is_Visible_Dispatching_Operation
-     (Subp : Callable_Kind_Id)
-      return Boolean
-   is
-     (Einfo.Entities.Is_Dispatching_Operation (Subp)
-       and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (Subp)));
 
    ------------------------
    -- Is_Wrapper_Package --

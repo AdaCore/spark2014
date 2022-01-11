@@ -415,7 +415,7 @@ package body Gnat2Why.Driver is
                declare
                   LSP_Applies : constant Boolean :=
                     Is_Dispatching_Operation (E) and then
-                    not Is_Invisible_Dispatching_Operation (E);
+                    Present (Find_Dispatching_Type (E));
                begin
                   if LSP_Applies then
                      Ada_Ent_To_Why.Push_Scope (Symbol_Table);

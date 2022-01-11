@@ -607,7 +607,7 @@ package SPARK_Util.Subprograms is
       Ty   : Type_Kind_Id) return Subprogram_Kind_Id
    with
        Pre  => Is_Dispatching_Operation (Subp)
-               and then Present (Find_Dispatching_Type (Subp)),
+         and then Present (Find_Dispatching_Type (Subp)),
        Post => Is_Dispatching_Operation (Corresponding_Primitive'Result);
    --  @params Subp a dispatching operation
    --  @params Ty a descendant of the dispatching type of Subp
@@ -629,9 +629,10 @@ package SPARK_Util.Subprograms is
        Pre => Is_Dispatching_Operation (E);
    --  @param E a dispatching operation
    --  @return type on which E dispatches. It can return empty if E is not
-   --     considered to be dispatching in SPARK, either because the Retysp of
-   --     its dispatching type is not tagged or because it is an invisible
-   --     dispatching operation.
+   --     considered to be dispatching in SPARK, because the Retysp of its
+   --     dispatching type is not tagged.
+   --     All parameter types and return type of F shall have been marked
+   --     before the call.
 
    subtype Subprogram_List is Sem_Disp.Subprogram_List;
 
@@ -649,7 +650,7 @@ package SPARK_Util.Subprograms is
       One_Only        : Boolean := False) return Subprogram_List renames
      Inheritance_Utilities_Inst.Inherited_Subprograms;
 
-   function Is_Invisible_Dispatching_Operation
+   function Is_Hidden_Dispatching_Operation
      (E : Callable_Kind_Id)
       return Boolean
    with Pre => Is_Dispatching_Operation (E);
