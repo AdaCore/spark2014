@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d Y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2539,7 +2539,9 @@ package body Why.Atree.Modules is
                      Typ       => EW_Unit_Type));
             end if;
 
-            if Is_Visible_Dispatching_Operation (E) then
+            if Is_Dispatching_Operation (E)
+              and then not Is_Hidden_Dispatching_Operation (E)
+            then
                Insert_Symbol
                  (E, WNE_Dispatch_Func_Guard,
                   New_Identifier
@@ -2549,7 +2551,9 @@ package body Why.Atree.Modules is
                      Domain    => EW_Pred,
                      Typ       => EW_Unit_Type));
             end if;
-         elsif Is_Visible_Dispatching_Operation (E) then
+         elsif Is_Dispatching_Operation (E)
+           and then not Is_Hidden_Dispatching_Operation (E)
+         then
             Insert_Symbol
               (E, WNE_Specific_Post,
                New_Identifier

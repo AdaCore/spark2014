@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -262,7 +262,8 @@ package body Gnat2Why.Subprograms is
    procedure Generate_Dispatch_Compatibility_Axioms
      (Th : Theory_UC;
       E  : Entity_Id)
-   with Pre => Is_Visible_Dispatching_Operation (E);
+   with Pre => Is_Dispatching_Operation (E)
+     and then not Is_Hidden_Dispatching_Operation (E);
    --  @param E a dispatching subprogram
    --  Emit compatibility axioms between the dispatching version of E and each
    --  visible overriding / inherited versions of E.
@@ -2459,7 +2460,9 @@ package body Gnat2Why.Subprograms is
       --  Generate logic functions and guards for dispatching and
       --  refined versions of the function.
 
-      if Is_Visible_Dispatching_Operation (E) then
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+      then
          Emit
            (Th,
             New_Namespace_Declaration
@@ -2666,29 +2669,42 @@ package body Gnat2Why.Subprograms is
       --  dispatching one.
 
       if not Pre_List.Is_Empty then
-         Classwide_Pre_Assume :=
-           New_Assume_Statement (Pred =>
-             Get_LSP_Contract (Params, E, Pragma_Precondition));
 
-         Pre_Check := New_Located_Assert
-           (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition),
-            Pred     => Pre_Spec,
-            Reason   => (if Classwide_Pre_List.Is_Empty and then
-                            Inherited_Pre_List.Is_Empty
-                         then
-                           VC_Trivial_Weaker_Pre
-                         else
-                           VC_Weaker_Pre),
-            Kind     => EW_Assert);
+         --  Normal preconditions are not allowed on dispatching operations
+         --  unless the dispatching type is a private type whose partial view
+         --  is untagged.
 
-         Weaker_Pre := Sequence
-           ((1 => New_Comment (Comment =>
-                               NID ("Checking that precondition is"
-                                  & " implied by class-wide precondition")),
-             2 => Classwide_Pre_Assume,
-             3 => Pre_Check));
+         pragma Assert (Is_Hidden_Dispatching_Operation (E));
+         pragma Assert (Classwide_Pre_List.Is_Empty);
 
-         Weaker_Pre := New_Ignore (Prog => Weaker_Pre);
+         --  Only do the check for overriding subprograms. New primitives of
+         --  privately tagged types cannot have classwide contracts.
+
+         if Is_Overriding_Subprogram (E) then
+            Classwide_Pre_Assume :=
+              New_Assume_Statement
+                (Pred => Get_LSP_Contract (Params, E, Pragma_Precondition));
+
+            Pre_Check := New_Located_Assert
+              (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition),
+               Pred     => Pre_Spec,
+               Reason   => (if Inherited_Pre_List.Is_Empty
+                            then
+                               VC_Trivial_Weaker_Pre
+                            else
+                               VC_Weaker_Pre),
+               Kind     => EW_Assert);
+
+            Weaker_Pre := Sequence
+              ((1 => New_Comment
+                (Comment =>
+                   NID ("Checking that precondition is"
+                     & " implied by class-wide precondition")),
+                2 => Classwide_Pre_Assume,
+                3 => Pre_Check));
+
+            Weaker_Pre := New_Ignore (Prog => Weaker_Pre);
+         end if;
       end if;
 
       --  If E has a specific postcondition, check that it is stronger than the
@@ -4874,7 +4890,9 @@ package body Gnat2Why.Subprograms is
          Right  => +Compute_Contract_Cases_Postcondition (Params, E),
          Domain => EW_Pred);
 
-      if Is_Visible_Dispatching_Operation (E) then
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+      then
          Dispatch_Pre :=
            Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
          Dispatch_Post :=
@@ -5082,7 +5100,9 @@ package body Gnat2Why.Subprograms is
             Emit_Post_Axiom (Post_Axiom, Why.Inter.Standard, Pre, Post);
          end if;
 
-         if Is_Visible_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then not Is_Hidden_Dispatching_Operation (E)
+         then
             pragma Assert (Present (Dispatch_Pre)
                             and then Present (Dispatch_Post));
             Emit_Post_Axiom (Post_Dispatch_Axiom,
@@ -5531,7 +5551,8 @@ package body Gnat2Why.Subprograms is
 
          Generate_Axiom_For_Post (Th, E);
 
-         if Is_Visible_Dispatching_Operation (E)
+         if Is_Dispatching_Operation (E)
+           and then not Is_Hidden_Dispatching_Operation (E)
            and then not Is_Predicate_Function (E)
          then
             Generate_Dispatch_Compatibility_Axioms (Th, E);
@@ -5606,7 +5627,9 @@ package body Gnat2Why.Subprograms is
 
       Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);
 
-      if Is_Visible_Dispatching_Operation (E) then
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+      then
          Dispatch_Pre :=
            Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
       end if;
@@ -5618,7 +5641,9 @@ package body Gnat2Why.Subprograms is
       if No_Return (E) then
          Post := False_Pred;
 
-         if Is_Visible_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then not Is_Hidden_Dispatching_Operation (E)
+         then
             Dispatch_Post := False_Pred;
          end if;
 
@@ -5639,7 +5664,9 @@ package body Gnat2Why.Subprograms is
             Right  => +Compute_Contract_Cases_Postcondition (Params, E),
             Domain => EW_Pred);
 
-         if Is_Visible_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then not Is_Hidden_Dispatching_Operation (E)
+         then
             Dispatch_Post :=
               Get_Dispatching_Call_Contract (Params, E, Pragma_Postcondition);
 
@@ -5862,7 +5889,9 @@ package body Gnat2Why.Subprograms is
                                      Post     => Post,
                                      Effects  => Effects));
 
-            if Is_Visible_Dispatching_Operation (E) then
+            if Is_Dispatching_Operation (E)
+              and then not Is_Hidden_Dispatching_Operation (E)
+            then
                Emit
                  (Th,
                   New_Namespace_Declaration
@@ -5942,7 +5971,9 @@ package body Gnat2Why.Subprograms is
                   Pre         => Pre,
                   Post        => Post));
 
-            if Is_Visible_Dispatching_Operation (E) then
+            if Is_Dispatching_Operation (E)
+              and then not Is_Hidden_Dispatching_Operation (E)
+            then
 
                --  For dispatching procedure, declare a new predicate symbol
                --  standing for the specific postcondition which applies to the
@@ -6408,7 +6439,9 @@ package body Gnat2Why.Subprograms is
 
       Generate_Axiom_For_Post (Th, E);
 
-      if Is_Visible_Dispatching_Operation (E) then
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+      then
          Generate_Dispatch_Compatibility_Axioms (Th, E);
       end if;
 

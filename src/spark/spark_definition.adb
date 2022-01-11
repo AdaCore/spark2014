@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2021, AdaCore                     --
+--                     Copyright (C) 2011-2022, AdaCore                     --
 --                Copyright (C) 2016-2021, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
@@ -4008,7 +4008,7 @@ package body SPARK_Definition is
 
       elsif Nkind (N) in N_Subprogram_Call
         and then Present (Controlling_Argument (N))
-        and then Is_Invisible_Dispatching_Operation (E)
+        and then Is_Hidden_Dispatching_Operation (E)
       then
          Mark_Violation
            ("dispatching call on primitive of untagged private", N);
@@ -5359,7 +5359,9 @@ package body SPARK_Definition is
                if not Pre_List.Is_Empty then
                   Pre := Pre_List.First_Element;
 
-                  if Present (Typ) then
+                  if Present (Typ)
+                    and then not Is_Hidden_Dispatching_Operation (E)
+                  then
                      Mark_Violation
                        ("plain precondition on dispatching subprogram",
                         Pre,

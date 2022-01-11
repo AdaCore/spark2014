@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2021, AdaCore                     --
+--                     Copyright (C) 2016-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -524,13 +524,6 @@ package body SPARK_Util.Subprograms is
       D_Type : Entity_Id := Empty;
 
    begin
-      --  Dispatching calls to invisible dispatching opearations are not
-      --  allowed in SPARK.
-
-      if Is_Invisible_Dispatching_Operation (E) then
-         return Empty;
-      end if;
-
       --  If E has a controlling result, the dispatching type is the result
       --  type.
 
@@ -564,9 +557,11 @@ package body SPARK_Util.Subprograms is
          end if;
       end if;
 
-      --  It can happen that D_Type is not tagged even if E is not a public
-      --  subprogram (Is_Invisible_Dispatching_Operation returns False). In
-      --  that case, E should not be considered dispatching in SPARK.
+      --  Go to the representative type of the dispatching type. If the
+      --  representative type is not visibly tagged, the subprogram is not
+      --  dispatching in SPARK.
+
+      D_Type := Retysp (D_Type);
 
       if Is_Tagged_Type (D_Type) then
          return D_Type;
@@ -1173,10 +1168,10 @@ package body SPARK_Util.Subprograms is
       (Is_Traversal_Function (E) and then not Is_Access_Constant (Etype (E)));
 
    ----------------------------------------
-   -- Is_Invisible_Dispatching_Operation --
+   -- Is_Hidden_Dispatching_Operation --
    ----------------------------------------
 
-   function Is_Invisible_Dispatching_Operation
+   function Is_Hidden_Dispatching_Operation
      (E : Callable_Kind_Id)
       return Boolean
    is
@@ -1207,7 +1202,7 @@ package body SPARK_Util.Subprograms is
         and then not Is_Tagged_Type (Etyp)
         and then Present (Subprogram_Spec (E))
         and then In_Visible_Declarations (Subprogram_Spec (E));
-   end Is_Invisible_Dispatching_Operation;
+   end Is_Hidden_Dispatching_Operation;
 
    ----------------------------------------
    -- Is_Local_Subprogram_Always_Inlined --
