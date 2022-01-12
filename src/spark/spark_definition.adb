@@ -8810,13 +8810,7 @@ package body SPARK_Definition is
       --  Similar code is not needed for Invariants and DIC because we do not
       --  mark the corresponding procedure, just the expression.
 
-      if Ekind (E) = E_In_Parameter
-        and then Ekind (Scope (E)) = E_Function
-        and then Is_Predicate_Function (Scope (E))
-      then
-         return SPARK_Pragma_Of_Entity (Scope (E));
-
-      elsif Ekind (E) = E_Function and then Is_Predicate_Function (E) then
+      if Ekind (E) = E_Function and then Is_Predicate_Function (E) then
 
          --  The predicate function has the SPARK_Mode of the associated type.
          --  If this type has a full view, search the rep item list to know the
@@ -8856,6 +8850,21 @@ package body SPARK_Definition is
                      return SPARK_Pragma_Of_Entity (Full_View (Ty));
                   end if;
                end if;
+            end if;
+         end;
+
+      --  For the wrapper for a function with dispatching result type pick the
+      --  SPARK_Pragma of its type, because the wrapper could be inserted at
+      --  the freeze node.
+
+      elsif Is_Wrapper_For_Dispatching_Result (E) then
+         declare
+            Typ : constant Entity_Id := Etype (E);
+         begin
+            if Is_Private_Type (Typ) then
+               return SPARK_Pragma_Of_Entity (Full_View (Typ));
+            else
+               return SPARK_Pragma_Of_Entity (Typ);
             end if;
          end;
       end if;
@@ -8920,7 +8929,7 @@ package body SPARK_Definition is
       if Is_Formal (E)
         or else Ekind (E) in E_Discriminant | E_Component
       then
-         return SPARK_Pragma (Scope (E));
+         return SPARK_Pragma_Of_Entity (Scope (E));
       end if;
 
       --  After having dealt with the special cases, we now do the "regular"
