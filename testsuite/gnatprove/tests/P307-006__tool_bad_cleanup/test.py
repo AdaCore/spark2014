@@ -11,6 +11,7 @@ statinfo = os.stat(ali)
 
 with open(ali, "r") as src:
     lines = src.read().splitlines()
+    last_line = lines[-1]
 with open(ali, "w") as dst:
     for l in lines:
         if l.startswith("QQ SPARKVERSION"):
@@ -34,3 +35,9 @@ os.utime(ali, (statinfo.st_atime, statinfo.st_mtime))
 # Then we attempt to prove everything (i.e. bar) but using the broken
 # foo.ali
 prove_all()
+
+with open(ali, "r") as f:
+    content = f.read().splitlines()
+    if last_line != content[-1]:
+        print("Wrong last line")
+        print(content[-1])
