@@ -27,7 +27,7 @@ with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
 with Casing;                   use Casing;
-with Gnat2Why.CE_Utils;        use Gnat2Why.CE_Utils;
+with CE_Utils;        use CE_Utils;
 with Gnat2Why_Args;
 with Interfaces;               use Interfaces;
 with Namet;                    use Namet;
@@ -37,7 +37,7 @@ with SPARK_Util.Types;         use SPARK_Util.Types;
 with String_Utils;             use String_Utils;
 with Uintp;                    use Uintp;
 
-package body Ce_Pretty_Printing is
+package body CE_Pretty_Printing is
 
    ------------------
    -- Make_Trivial --
@@ -436,7 +436,7 @@ package body Ce_Pretty_Printing is
             begin
                return
                  To_Unbounded_String
-                   (Ce_Pretty_Printing.StringBits_To_Approx
+                   (CE_Pretty_Printing.StringBits_To_Approx
                       (F_S, F_Si, F_Exp));
             end;
       end case;
@@ -622,4 +622,4 @@ package body Ce_Pretty_Printing is
       end case;
    end Print_Cntexmp_Value;
 
-end Ce_Pretty_Printing;
+end CE_Pretty_Printing;

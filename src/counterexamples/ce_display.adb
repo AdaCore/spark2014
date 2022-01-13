@@ -29,18 +29,18 @@ with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Strings;                 use Ada.Strings;
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
-with Ce_Interval_Sets;
-with Ce_Pretty_Printing;          use Ce_Pretty_Printing;
+with CE_Interval_Sets;
+with CE_Pretty_Printing;          use CE_Pretty_Printing;
 with Erroutc;                     use Erroutc;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
 with GNAT.String_Split;           use GNAT.String_Split;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;               use Gnat2Why_Opts;
-with Gnat2Why.CE_Utils;           use Gnat2Why.CE_Utils;
+with CE_Utils;                    use CE_Utils;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
-with Name_Ordered_Entities;
+with CE_Name_Ordered_Entities;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -53,7 +53,7 @@ with String_Utils;                use String_Utils;
 with Uintp;                       use Uintp;
 with Why.Gen.Names;               use Why.Gen.Names;
 
-package body Gnat2Why.Counter_Examples is
+package body CE_Display is
 
    function Remap_VC_Info
      (Cntexmp : Cntexample_File_Maps.Map;
@@ -93,7 +93,7 @@ package body Gnat2Why.Counter_Examples is
         Element_Type => CNT_Element_Ptr);
 
    package Name_Ordered_Entities_Info is
-     new Name_Ordered_Entities
+     new CE_Name_Ordered_Entities
        (Info => String_CNT_Elements.Map,
         "="  => String_CNT_Elements."=");
 
@@ -2518,4 +2518,4 @@ package body Gnat2Why.Counter_Examples is
       return (Remapped_Cntexmp);
    end Remap_VC_Info;
 
-end Gnat2Why.Counter_Examples;
+end CE_Display;

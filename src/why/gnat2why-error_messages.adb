@@ -37,6 +37,7 @@ with Ada.Float_Text_IO;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Call;                      use Call;
+with CE_RAC;                    use CE_RAC;
 with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
 with Debug;                     use Debug;
@@ -49,7 +50,6 @@ with Output;                    use Output;
 with SA_Messages;               use SA_Messages;
 with Sinput;                    use Sinput;
 with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
-with SPARK_RAC;                 use SPARK_RAC;
 with Uintp;                     use Uintp;
 
 package body Gnat2Why.Error_Messages is
@@ -129,8 +129,8 @@ package body Gnat2Why.Error_Messages is
    --  Pretty print a VC and info for debugging
 
    function Decide_Cntexmp_Verdict
-     (Small_Step : SPARK_RAC.Result;
-      Giant_Step : SPARK_RAC.Result;
+     (Small_Step : CE_RAC.Result;
+      Giant_Step : CE_RAC.Result;
       VC         : VC_Id;
       Info       : VC_Info)
       return Cntexmp_Verdict;
@@ -351,8 +351,8 @@ package body Gnat2Why.Error_Messages is
    ----------------------------
 
    function Decide_Cntexmp_Verdict
-     (Small_Step : SPARK_RAC.Result;
-      Giant_Step : SPARK_RAC.Result;
+     (Small_Step : CE_RAC.Result;
+      Giant_Step : CE_RAC.Result;
       VC         : VC_Id;
       Info       : VC_Info)
       return Cntexmp_Verdict
@@ -639,7 +639,7 @@ package body Gnat2Why.Error_Messages is
          end if;
       end loop;
 
-      if SPARK_RAC.Do_RAC_Info then
+      if CE_RAC.Do_RAC_Info then
          Ada.Text_IO.Put_Line ("Cannot find " & To_String (Kind, N));
          for C in VC_Table.Iterate loop
             pragma Annotate
@@ -1066,7 +1066,7 @@ package body Gnat2Why.Error_Messages is
          Editor_Cmd     : Unbounded_String;
          Stats          : Prover_Stat_Maps.Map;
          Cntexmp        : JSON_Value;
-         Giant_Step_Res : SPARK_RAC.Result;
+         Giant_Step_Res : CE_RAC.Result;
          Check_Tree     : JSON_Value;
       end record;
 
@@ -1083,7 +1083,7 @@ package body Gnat2Why.Error_Messages is
       --  Parse the JSON produced for Why3 for a single Why3 result record.
 
       function Parse_Giant_Step_RAC_Result
-        (V : JSON_Value) return SPARK_RAC.Result;
+        (V : JSON_Value) return CE_RAC.Result;
       --  Parse the JSON produced by Why3 for the results of the giant-step RAC
 
       procedure Handle_Result (V : JSON_Value; SD_Id : Session_Dir_Base_ID);
@@ -1156,8 +1156,8 @@ package body Gnat2Why.Error_Messages is
 
          function Small_Step_Rac
            (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map; VC : Node_Id)
-            return SPARK_RAC.Result;
-         --  Run SPARK_RAC.Execute and print some debugging info if requested
+            return CE_RAC.Result;
+         --  Run CE_RAC.Execute and print some debugging info if requested
 
          --------------------
          -- Small_Step_Rac --
@@ -1165,21 +1165,21 @@ package body Gnat2Why.Error_Messages is
 
          function Small_Step_Rac
            (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map; VC : Node_Id)
-            return SPARK_RAC.Result
+            return CE_RAC.Result
          is
          begin
-            if SPARK_RAC.Do_RAC_Info then
+            if CE_RAC.Do_RAC_Info then
                Write_Str ("VC at ");
                Write_Location (Sloc (VC));
                Write_Eol;
             end if;
-            return SPARK_RAC.RAC_Execute
+            return CE_RAC.RAC_Execute
               (E,
                Cntexmp,
                Do_Sideeffects => False,
                Fuel           => 250_000,
                Stack_Height   => 450);
-            --  During execution SPARK_RAC counts the stacked calls in the
+            --  During execution CE_RAC counts the stacked calls in the
             --  interpreted program and terminates as incomplete when the
             --  stack height is exceeded. But we cannot really know how many
             --  calls are in the interpreter between each call in the
@@ -1221,7 +1221,7 @@ package body Gnat2Why.Error_Messages is
          --  the pre (the node will be in the callee context instead of the
          --  caller context) and LSP VCs as well as predicate checks.
          VC_Sloc        : constant Node_Id := VC.Node;
-         Small_Step_Res : SPARK_RAC.Result;
+         Small_Step_Res : CE_RAC.Result;
          Verdict        : Cntexmp_Verdict;
          Cntexmp        : constant Cntexample_File_Maps.Map :=
                             From_JSON (Rec.Cntexmp);
@@ -1245,7 +1245,7 @@ package body Gnat2Why.Error_Messages is
                   Small_Step_Res :=
                     Small_Step_Rac (VC.Entity, Cntexmp, VC.Node);
 
-                  if Small_Step_Res.Res_Kind = SPARK_RAC.Res_Failure then
+                  if Small_Step_Res.Res_Kind = CE_RAC.Res_Failure then
                      begin
                         Small_Step_Res.Res_VC_Id :=
                           Natural
@@ -1292,7 +1292,7 @@ package body Gnat2Why.Error_Messages is
                  ("Counterexample checking not requested"));
          end if;
 
-         if SPARK_RAC.Do_RAC_Info then
+         if CE_RAC.Do_RAC_Info then
             Write_Str
               ("VERDICT"
                & HT & Verdict.Verdict_Category'Image
@@ -1387,7 +1387,7 @@ package body Gnat2Why.Error_Messages is
       ---------------------------------
 
       function Parse_Giant_Step_RAC_Result
-        (V : JSON_Value) return SPARK_RAC.Result is
+        (V : JSON_Value) return CE_RAC.Result is
          Check : JSON_Value;
       begin
          if V = JSON_Null then

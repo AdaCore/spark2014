@@ -30,7 +30,7 @@ with Types;                use Types;
 with Uintp;                use Uintp;
 with VC_Kinds;             use VC_Kinds;
 
-package Gnat2Why.CE_Utils is
+package CE_Utils is
 
    function Compile_Time_Known_And_Constant
      (E : Entity_Id) return Boolean;
@@ -94,4 +94,4 @@ package Gnat2Why.CE_Utils is
 
    end Remove_Vars;
 
-end Gnat2Why.CE_Utils;
+end CE_Utils;

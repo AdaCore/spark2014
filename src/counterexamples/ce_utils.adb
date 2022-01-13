@@ -30,7 +30,7 @@ with Nlists;
 with Sinput;            use Sinput;
 with SPARK_Util;        use SPARK_Util;
 
-package body Gnat2Why.CE_Utils is
+package body CE_Utils is
 
    function Compile_Time_Known_Value_Or_Aggr (Op : Node_Id) return Boolean;
    --  Similar to Compile_Time_Known_Value, but also returns True if the value
@@ -500,4 +500,4 @@ package body Gnat2Why.CE_Utils is
 
    end Remove_Vars;
 
-end Gnat2Why.CE_Utils;
+end CE_Utils;

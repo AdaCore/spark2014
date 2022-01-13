@@ -29,7 +29,7 @@ with Types;                 use Types;
 with Urealp;                use Urealp;
 with VC_Kinds;              use VC_Kinds;
 
-package Ce_Pretty_Printing is
+package CE_Pretty_Printing is
 
    Dont_Display : constant CNT_Unbounded_String :=
      (Nul => True, Str => To_Unbounded_String ("@not_display"),
@@ -83,4 +83,4 @@ package Ce_Pretty_Printing is
    --  type Byte is range -128..127;
    --  V = - 127 is printed V = Byte'First + 1
 
-end Ce_Pretty_Printing;
+end CE_Pretty_Printing;

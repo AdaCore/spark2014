@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body Ce_Interval_Sets is
+package body CE_Interval_Sets is
 
    ------------
    -- Insert --
@@ -93,4 +93,4 @@ package body Ce_Interval_Sets is
       return (Intervals.Empty_Set with null record);
    end Create;
 
-end Ce_Interval_Sets;
+end CE_Interval_Sets;
