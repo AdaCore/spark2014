@@ -2880,11 +2880,9 @@ package body SPARK_Definition is
 
       Mark_List (L);
       if not Acceptable_Actions (L) then
-         --  We should never reach here, but in case we do, we issue an
-         --  understandable error message pointing to the source of the
-         --  too complex actions.
+         --  We should never reach here
 
-         Mark_Unsupported ("too complex actions inserted in expression", N);
+         raise Program_Error;
       end if;
 
       Inside_Actions := Save_Inside_Actions;

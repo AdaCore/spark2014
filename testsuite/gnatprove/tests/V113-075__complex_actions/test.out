@@ -1,2 +1,1 @@
-complex_elsif.adb:10:04: error: too complex actions inserted in expression is not yet supported
-gnatprove: error during flow analysis and proof
+complex_elsif.adb:1:11: warning: subprogram "Complex_Elsif" has no effect
