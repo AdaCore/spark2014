@@ -151,7 +151,7 @@ private
       --  Vector of variable entities in the order in that variables should be
       --  displayed.
 
-      Variables_Map : Entity_Infos.Map;
+      Variables_Map   : Entity_Infos.Map;
       --  Map from variable entities to information about these variables.
       --  This includes values of variables, informations about possible
       --  record fields and informations about possible attributes.

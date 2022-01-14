@@ -253,8 +253,8 @@ package body CE_Display is
 
    function Refine_Value
      (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id;
-      Is_Index  : Boolean := False) return CNT_Unbounded_String;
+      AST_Type  : Entity_Id) return CNT_Unbounded_String
+   with Pre => Is_Scalar_Type (AST_Type);
    --  This function takes a value from Why3 CNT_Element and converts it into a
    --  suitable string for an entity of type AST_Type.
    --  Example: (97, Character_entity) -> "'a'"
@@ -320,7 +320,7 @@ package body CE_Display is
                  Refine_Value (CNT_Element.Value,
                                CNT_Element.Ent_Ty);
             begin
-               if Refined_Value.Str = "" then
+               if Refined_Value = Dont_Display then
                   return Dont_Display;
                else
                   CNT_Element.Val_Str := Refined_Value;
@@ -349,7 +349,8 @@ package body CE_Display is
    begin
       if Value.Is_Null then
          Value.Val_Str :=
-           Make_Trivial (Nul => False, Str => To_Unbounded_String ("null"));
+           Make_CNT_Unbounded_String
+             (Nul => False, Str => To_Unbounded_String ("null"));
 
       elsif Value.Ptr_Val = null then
          Value.Val_Str := Dont_Display;
@@ -371,8 +372,9 @@ package body CE_Display is
             else
                Elems := Prefix_Elements (V.Elems, ".all");
                Value.Val_Str :=
-                 Make_Trivial (Nul => V.Nul, Str => "(all => " & V.Str & ")",
-                               Cnt => V.Count, Els => Elems);
+                 Make_CNT_Unbounded_String
+                   (Nul => V.Nul, Str => "(all => " & V.Str & ")",
+                    Cnt => V.Count, Els => Elems);
 
             end if;
          end;
@@ -473,7 +475,7 @@ package body CE_Display is
                  new Cntexmp_Value'(T => Cnt_Integer,
                                     I => To_Unbounded_String (Indice));
                Ind_Printed  : constant CNT_Unbounded_String :=
-                 Refine_Value (Ind_Val, Index_Type, True);
+                 Refine_Value (Ind_Val, Index_Type);
                Elem_Printed : constant CNT_Unbounded_String :=
                  Refine (Elem);
                Ind_Value    : constant Uint := UI_From_String (Indice);
@@ -483,7 +485,7 @@ package body CE_Display is
                --  and the value for this index given by cvc4 is outside of the
                --  range of the enumeration type.
 
-               if Ind_Printed.Str /= Null_Unbounded_String
+               if Ind_Printed /= Dont_Display
                  and then UI_Le (Fst, Ind_Value)
                  and then UI_Le (Ind_Value, Lst)
                  and then Elem_Printed /= Dont_Display
@@ -520,11 +522,13 @@ package body CE_Display is
                    (T => Cnt_Integer,
                     I => To_Unbounded_String (UI_Image (Missing_Ind)));
                Ind_Printed  : constant CNT_Unbounded_String :=
-                 Refine_Value (Ind_Val, Index_Type, True);
+                 Refine_Value (Ind_Val, Index_Type);
                Elem_Printed : constant CNT_Unbounded_String :=
                  Refine (Value.Other);
             begin
-               if Elem_Printed /= Dont_Display then
+               if Ind_Printed /= Dont_Display
+                 and then Elem_Printed /= Dont_Display
+               then
                   S_Array.Include (Missing_Ind,
                                    Array_Elem'(Ind_Printedt  => Ind_Printed,
                                                Elem_Printedt => Elem_Printed));
@@ -592,7 +596,7 @@ package body CE_Display is
       if S = "" then
          return Dont_Display;
       else
-         return Make_Trivial (Nul => Nul, Str => "(" & S & ")",
+         return Make_CNT_Unbounded_String (Nul => Nul, Str => "(" & S & ")",
                               Cnt => Count, Els => Elems);
       end if;
    end Refine_Array_Components;
@@ -608,24 +612,24 @@ package body CE_Display is
    begin
       case Why3_Type is
          when Cnt_Integer =>
-            return Make_Trivial
+            return Make_CNT_Unbounded_String
               (Nul => CNT_Element.I = "0", Str => CNT_Element.I);
 
          when Cnt_Bitvector =>
-            return Make_Trivial
+            return Make_CNT_Unbounded_String
               (Nul => CNT_Element.B = "0", Str => CNT_Element.B);
 
          when Cnt_Boolean =>
-            return Make_Trivial (Nul => CNT_Element.Bo = False,
+            return Make_CNT_Unbounded_String (Nul => CNT_Element.Bo = False,
                                  Str => To_Unbounded_String
                                    (CNT_Element.Bo));
 
          when Cnt_Unparsed =>
-            return Make_Trivial (Nul => CNT_Element.U = "0",
+            return Make_CNT_Unbounded_String (Nul => CNT_Element.U = "0",
                                  Str => CNT_Element.U);
 
          when others =>
-            return Make_Trivial (Nul => True,
+            return Make_CNT_Unbounded_String (Nul => True,
                                  Str => Null_Unbounded_String);
       end case;
 
@@ -721,14 +725,14 @@ package body CE_Display is
       --  E = A (<value>)
 
       if Is_Array_Type (Value.Cnt_Typ) then
-         return Make_Trivial (Nul => Refined_Value.Nul,
+         return Make_CNT_Unbounded_String (Nul => Refined_Value.Nul,
                               Str => Value.Cnt_Nam & " (" &
                                 Refined_Value.Str  & ")");
 
       --  E = Element (C, <value>)
 
       else
-         return Make_Trivial (Nul => Refined_Value.Nul,
+         return Make_CNT_Unbounded_String (Nul => Refined_Value.Nul,
                               Str => Refine_Container_Iterator_Value
                                 (Refined_Value.Str,
                                  Value.Cnt_Typ, Value.Cnt_Nam));
@@ -798,7 +802,7 @@ package body CE_Display is
       begin
          Ordered_Values.Insert
            (Get_Loc_Info (Comp),
-            Make_Trivial (Nul => Val.Nul,
+            Make_CNT_Unbounded_String (Nul => Val.Nul,
                           Str => Comp_Name & " => " & Val.Str & Expl,
                           Cnt => Val.Count,
                           Els => Prefix_Elements
@@ -922,7 +926,8 @@ package body CE_Display is
          if not Need_Others and then Present (First_Unseen) then
             Get_Value_Of_Component
               (First_Unseen,
-               Make_Trivial (Nul => True, Str => To_Unbounded_String ("?")),
+               Make_CNT_Unbounded_String
+                 (Nul => True, Str => To_Unbounded_String ("?")),
                Visibility_Map.Element (First_Unseen));
          end if;
 
@@ -951,7 +956,7 @@ package body CE_Display is
          end if;
          Append (Value, ')');
 
-         return Make_Trivial (Nul => Nul, Str => Value,
+         return Make_CNT_Unbounded_String (Nul => Nul, Str => Value,
                               Cnt => Count, Els => Elems);
       end;
    end Refine_Record_Components;
@@ -962,14 +967,12 @@ package body CE_Display is
 
    function Refine_Value
      (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id;
-      Is_Index  : Boolean := False) return CNT_Unbounded_String
+      AST_Type  : Entity_Id) return CNT_Unbounded_String
    is
       Res : constant CNT_Unbounded_String :=
-        Print_Cntexmp_Value (Cnt_Value, AST_Type, Is_Index);
-      Str : constant Unbounded_String := Trim (Res.Str, Both);
+        Print_Scalar_Value (Cnt_Value, AST_Type);
    begin
-      return Make_Trivial (Nul => Res.Nul, Str => Str);
+      return Res;
    end Refine_Value;
 
    -----------------------
