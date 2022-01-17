@@ -1158,12 +1158,9 @@ package body CE_Display is
 
                      if Value /= Dont_Display and Value.Str /= "" then
                         Pretty_Line_Cntexmp_Arr.Append
-                          (Cntexample_Elt'(Kind    => CEE_Variable,
+                          (Cntexample_Elt'(K       => Pretty_Printed,
+                                           Kind    => CEE_Variable,
                                            Name    => Name,
-                                           --  Labels and Value not necessary
-                                           --  at this point
-                                           Labels  => S_String_List.Empty_List,
-                                           Value   => null,
                                            Val_Str => Value));
                      end if;
                   end Add_CNT;

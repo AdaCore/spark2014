@@ -668,15 +668,12 @@ package body VC_Kinds is
         new Cntexmp_Value'(Get_Typed_Cntexmp_Value (Get (V, "value")));
    begin
       return
-        Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
+        Cntexample_Elt'(K           => Raw,
+                        Kind        => From_JSON (Get (V, "kind")),
                         Name        => Get (Get (V, "name")),
                         Labels      =>
                           From_JSON_Labels (Get (Get (V, "attrs"))),
-                        Value       => Cnt_Value,
-                        Val_Str     => (Nul   => True,
-                                        Str   => Null_Unbounded_String,
-                                        Count => 1,
-                                        Elems => S_String_List.Empty));
+                        Value       => Cnt_Value);
    end From_JSON;
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
@@ -1228,12 +1225,14 @@ package body VC_Kinds is
       Obj : constant JSON_Value := Create_Object;
    begin
       Set_Field (Obj, "name",  C.Name);
-      Set_Field (Obj, "value", C.Val_Str.Str);
       Set_Field (Obj, "kind",  To_JSON (C.Kind));
-      if C.Value /= null then
-         Set_Field (Obj, "type", Cntexmp_Type'Image (C.Value.T));
-         Set_Field (Obj, "full_value", To_JSON (C.Value.all));
-      end if;
+      case C.K is
+         when Raw =>
+            Set_Field (Obj, "type", Cntexmp_Type'Image (C.Value.T));
+            Set_Field (Obj, "full_value", To_JSON (C.Value.all));
+         when Pretty_Printed =>
+            Set_Field (Obj, "value", C.Val_Str.Str);
+      end case;
       return Obj;
    end To_JSON;
 
