@@ -361,6 +361,10 @@ package body Xtree_Builders is
                Param_Type : constant String :=
                  Builder_Param_Type (FI, IK, In_Builder_Spec);
             begin
+               --  Specialize the type of parameters when creating a
+               --  program/term/predicate node, as its fields should in
+               --  general be of the same subtype.
+
                if Return_Type = "W_Prog_Id" then
                   if Param_Type = "W_Expr_Id" then
                      P (O, "W_Prog_Id");
@@ -381,7 +385,17 @@ package body Xtree_Builders is
 
                elsif Return_Type = "W_Pred_Id" then
                   if Param_Type = "W_Expr_Id" then
-                     P (O, "W_Pred_Id");
+
+                     --  Special case for the Def field in a Binding predicate,
+                     --  which must of term subtype.
+
+                     if PN = "Def"
+                       and then Kind = W_Binding
+                     then
+                        P (O, "W_Term_Id");
+                     else
+                        P (O, "W_Pred_Id");
+                     end if;
                   elsif Param_Type = "W_Expr_OId" then
                      P (O, "W_Pred_OId");
                   else
