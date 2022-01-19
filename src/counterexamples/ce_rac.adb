@@ -602,12 +602,20 @@ package body CE_RAC is
    -- Character_Value --
    ---------------------
 
-   function Character_Value (C : Character; Ty : Entity_Id) return Value_Type
+   function Character_Value
+     (C : Character; Ty : Entity_Id)
+      return Value_Type
    is
-     (Enum_Value
-        (Make_Character_Literal
-             (No_Location, Name_Find, UI_From_Int (Character'Pos (C))),
-         Ty));
+      CC : constant Char_Code := Get_Char_Code (C);
+   begin
+      Set_Character_Literal_Name (CC);
+
+      return
+        Enum_Value
+          (Make_Character_Literal
+             (No_Location, Name_Find, UI_From_CC ((CC))),
+           Ty);
+   end Character_Value;
 
    --------------------------
    -- Check_Supported_Type --
@@ -1011,12 +1019,7 @@ package body CE_RAC is
          end;
 
       elsif Is_Character_Type (Rep_Ty) then
-         --  ??? Is this the right way to make a character literal node? Why
-         --  does it print as 'h'? C.f. gnat/sem_eval.adb:2823.
-         return Enum_Value
-           (Make_Character_Literal
-              (No_Location, Name_Find, UI_From_Int (Character'Pos ('a'))),
-            Rep_Ty);
+         return Character_Value ('a', Rep_Ty);
 
       elsif Is_Enumeration_Type (Rep_Ty) then
          return Enum_Value (First_Literal (Rep_Ty), Rep_Ty);
