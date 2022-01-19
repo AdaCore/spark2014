@@ -23,9 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
+with Ada.Containers;           use Ada.Containers;
+with Ada.Strings.Unbounded;
 with Ada.Unchecked_Conversion;
 with CE_Utils;                 use CE_Utils;
+with GNAT.String_Split;           use GNAT.String_Split;
+with Gnat2Why.Util;            use Gnat2Why.Util;
 with Interfaces;               use Interfaces;
 with SPARK_Atree;              use SPARK_Atree;
 with SPARK_Util;               use SPARK_Util;
@@ -33,6 +36,7 @@ with SPARK_Util.Types;         use SPARK_Util.Types;
 with Stand;                    use Stand;
 with Uintp;                    use Uintp;
 with Urealp;                   use Urealp;
+with Why.Gen.Names;            use Why.Gen.Names;
 
 package body CE_Parsing is
 
@@ -40,20 +44,21 @@ package body CE_Parsing is
    -- Local Subprograms --
    -----------------------
 
-   function Boolean_Value (B : Boolean) return Scalar_Value is
+   function Boolean_Value (B : Boolean) return Scalar_Value_Type is
      (K           => Enum_K,
       Enum_Entity => Boolean_Literals (B));
 
    function Parse_Float
      (Cnt_Value : Cntexmp_Value;
-      Ty        : Entity_Id) return Scalar_Value;
+      Ty        : Entity_Id) return Scalar_Value_Type
+   with Pre => Cnt_Value.T = Cnt_Float;
 
-   function Size (S : String) return Integer is
-     (if S (S'First + 1) = 'x'
-      then 4 * (S'Length - 2)
-      else (S'Length - 2));
-   --  Size returns the associate binary size of a #b or #x number (to help
-   --  when building an unsigned integer).
+   function Parse_Cnt_Value
+     (Cnt_Value : Cntexmp_Value_Ptr; AST_Ty : Entity_Id) return Value_Type;
+   --  Parse the Why3 counterexample value Cnt_Value
+
+   function New_Item (AST_Ty : Entity_Id) return Value_Type;
+   --  New element of appropriate kind depending on Ent_Ty
 
    --  This package is generic so that part of the work done can be shared
    --  between 32bit, 64 bits, and extended precision float numbers.
@@ -80,6 +85,245 @@ package body CE_Parsing is
            (StringBits_To_Floatrepr (Sign, Significand, Exp)));
 
    end Parse_Conversion;
+
+   procedure Set_Boolean_Flag
+     (Cnt_Value : Cntexmp_Value_Ptr; Flag : in out Opt_Boolean);
+
+   procedure Set_Integer_Flag
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      Flag      : in out Opt_Big_Integer);
+
+   function Size (S : String) return Integer is
+     (if S (S'First + 1) = 'x'
+      then 4 * (S'Length - 2)
+      else (S'Length - 2));
+   --  Size returns the associate binary size of a #b or #x number (to help
+   --  when building an unsigned integer).
+
+   --------------
+   -- New_Item --
+   --------------
+
+   function New_Item (AST_Ty : Entity_Id) return Value_Type is
+      Ty : constant Entity_Id :=
+        (if Is_Class_Wide_Type (AST_Ty)
+         then Retysp (Get_Specific_Type_From_Classwide (AST_Ty))
+         else Retysp (AST_Ty));
+   begin
+      if Is_Array_Type (Ty) then
+         return Value_Type'(K      => Array_K,
+                            AST_Ty => Ty,
+                            others => <>);
+      elsif Is_Record_Type_In_Why (Ty) then
+         return Value_Type'(K      => Record_K,
+                            AST_Ty => Ty,
+                            others => <>);
+      elsif Is_Access_Type (Ty) then
+         return Value_Type'(K      => Access_K,
+                            AST_Ty => Ty,
+                            others => <>);
+      else
+         pragma Assert (Is_Scalar_Type (Ty));
+         return Value_Type'(K      => Scalar_K,
+                            AST_Ty => Ty,
+                            others => <>);
+      end if;
+   end New_Item;
+
+   ---------------------
+   -- Parse_Cnt_Value --
+   ---------------------
+
+   function Parse_Cnt_Value
+     (Cnt_Value : Cntexmp_Value_Ptr; AST_Ty : Entity_Id) return Value_Type
+   is
+      use Cntexmp_Value_Array;
+      Ty  : constant Entity_Id := Retysp (AST_Ty);
+      Val : Value_Type := New_Item (AST_Ty);
+   begin
+      case Val.K is
+         when Scalar_K =>
+
+            --  Counterexample can be a record if the object has relaxed
+            --  initialization. In this case, search for the values of the
+            --  'Initialized attribute and the Init_Val component.
+
+            if Cnt_Value.T = Cnt_Record then
+               declare
+                  C : Cntexmp_Value_Array.Cursor := Cnt_Value.Fi.First;
+               begin
+                  while Has_Element (C) loop
+                     declare
+                        Comp_Name : String renames Key (C);
+
+                     begin
+                        if Comp_Name = "'" & Initialized_Label then
+                           Set_Boolean_Flag
+                             (Element (C), Val.Initialized_Attr);
+                        elsif Comp_Name = "'" & Init_Val_Label then
+                           Val.Scalar_Content := new Scalar_Value_Type'
+                             (Parse_Scalar_Value (Element (C).all, Ty));
+                        else
+                           raise Parse_Error;
+                        end if;
+                     end;
+                     Next (C);
+                  end loop;
+               end;
+
+            else
+               Val.Scalar_Content := new Scalar_Value_Type'
+                 (Parse_Scalar_Value (Cnt_Value.all, Ty));
+            end if;
+
+         when Array_K =>
+
+            --  Counterexample should be an array
+
+            if Cnt_Value.T /= Cnt_Array then
+               raise Parse_Error;
+            end if;
+
+            --  Go over the association in the Why3 counterexample. If we fail
+            --  to parse an element, continue with the next.
+
+            declare
+               Comp_Ty : constant Entity_Id := Retysp (Component_Type (Ty));
+               Comp    : Value_Type;
+            begin
+               if Cnt_Value.Array_Others /= null then
+                  begin
+                     Comp := Parse_Cnt_Value
+                       (Cnt_Value.Array_Others, Comp_Ty);
+                     Val.Array_Others := new Value_Type'(Comp);
+                  exception
+                     when Parse_Error =>
+                        null;
+                  end;
+               end if;
+
+               declare
+                  C : Cntexmp_Value_Array.Cursor :=
+                    Cnt_Value.Array_Indices.First;
+               begin
+                  while Has_Element (C) loop
+                     begin
+                        Comp := Parse_Cnt_Value (Element (C), Comp_Ty);
+                        Val.Array_Values.Insert
+                          (From_String (Key (C)), new Value_Type'(Comp));
+                     exception
+                        when Parse_Error =>
+                           null;
+                     end;
+                     Next (C);
+                  end loop;
+               end;
+
+               --  If the parsed value is empty, raise Parse_Error
+
+               if Val.Array_Others = null
+                 and then Val.Array_Values.Is_Empty
+               then
+                  raise Parse_Error;
+               end if;
+            end;
+
+         when Record_K =>
+
+            --  Counterexample should be a record
+
+            if Cnt_Value.T /= Cnt_Record then
+               raise Parse_Error;
+            end if;
+
+            --  Go over the association in the Why3 counterexample to store the
+            --  fields inside Val.Record_Fields. If we fail to parse an
+            --  element, continue with the next.
+
+            declare
+               C : Cntexmp_Value_Array.Cursor := Cnt_Value.Fi.First;
+            begin
+               while Has_Element (C) loop
+                  declare
+                     Comp_Name : String renames Key (C);
+                     Comp_E    : constant Entity_Id :=
+                       Get_Entity_Id (True, Comp_Name);
+
+                  begin
+                     if Comp_E /= Types.Empty then
+                        declare
+                           Comp_Ty : constant Entity_Id :=
+                             Retysp (Etype (Comp_E));
+                           Comp    : Value_Type;
+                        begin
+                           Comp := Parse_Cnt_Value (Element (C), Comp_Ty);
+                           Val.Record_Fields.Insert
+                             (Comp_E, new Value_Type'(Comp));
+                        exception
+                           when Parse_Error =>
+                              null;
+                        end;
+                     elsif Comp_Name = "'" & Constrained_Label then
+                        Set_Boolean_Flag
+                          (Element (C), Val.Constrained_Attr);
+                     end if;
+                  end;
+                  Next (C);
+               end loop;
+            end;
+
+            --  If the parsed value is empty, raise Parse_Error
+
+            if Val.Record_Fields.Length = 0
+              and then not Val.Constrained_Attr.Present
+            then
+               raise Parse_Error;
+            end if;
+
+         when Access_K =>
+
+            --  Counterexample should be a record
+
+            if Cnt_Value.T /= Cnt_Record then
+               raise Parse_Error;
+            end if;
+
+            --  Go over the association in the Why3 counterexample to store the
+            --  fields inside Val.Record_Fields. If we fail to parse an
+            --  element, continue with the next.
+
+            declare
+               C : Cntexmp_Value_Array.Cursor := Cnt_Value.Fi.First;
+            begin
+               while Has_Element (C) loop
+                  declare
+                     Comp_Name : String renames Key (C);
+                     Cnt_Elt   : Cntexmp_Value_Ptr renames Element (C);
+
+                  begin
+                     if Comp_Name = "'" & All_Label then
+                        declare
+                           Des_Ty : constant Entity_Id :=
+                             Retysp (Directly_Designated_Type (Ty));
+                        begin
+                           Val.Designated_Value :=
+                             new Value_Type'
+                               (Parse_Cnt_Value (Cnt_Elt, Des_Ty));
+                        exception
+                           when Parse_Error =>
+                              null;
+                        end;
+                     elsif Comp_Name = "'" & Is_Null_Label then
+                        Set_Boolean_Flag (Cnt_Elt, Val.Is_Null);
+                     end if;
+                  end;
+                  Next (C);
+               end loop;
+            end;
+      end case;
+
+      return Val;
+   end Parse_Cnt_Value;
 
    ----------------------
    -- Parse_Conversion --
@@ -153,14 +397,324 @@ package body CE_Parsing is
 
    end Parse_Conversion;
 
+   -------------------------------
+   -- Parse_Counterexample_Line --
+   -------------------------------
+
+   procedure Parse_Counterexample_Line
+     (Cnt_List  : Cntexample_Elt_Lists.List;
+      Value_Map : in out Entity_To_Extended_Value_Maps.Map)
+   is
+   begin
+      for Elt of Cnt_List loop
+         declare
+            Elt_Name   : constant String :=
+              Ada.Strings.Unbounded.To_String (Elt.Name);
+            Name_Parts : Slice_Set;
+
+         begin
+            --  Ignore error messages
+
+            if Elt.Kind = CEE_Error_Msg then
+               raise Parse_Error;
+            end if;
+
+            --  Split Name into sequence of parts
+
+            Create (S          => Name_Parts,
+                    From       => Elt_Name,
+                    Separators => ".'",
+                    Mode       => Single);
+
+            declare
+               Nb_Slices : constant Slice_Number := Slice_Count (Name_Parts);
+               Var       : constant Entity_Id :=
+                 Get_Entity_Id (False, Slice (Name_Parts, 1));
+               --  The first part is the entity to which the counterexample
+               --  applies.
+
+               Var_Modifier  : Modifier :=
+                 (case Elt.Kind is
+                     when CEE_Old    => Old,
+                     when CEE_Result => Result,
+                     when others     => None);
+               Is_Attribute  : Boolean := False;
+               Current_Slice : Slice_Number := 2;
+               Current_Ty    : Entity_Id;
+               Current_Val   : Value_Access;
+
+            begin
+               --  The first part shall be an entity
+
+               if Var = Empty then
+                  raise Parse_Error;
+               end if;
+
+               Current_Ty := Retysp (Etype (Var));
+
+               --  Attributes 'Old, 'Loop_Entry, 'Index, 'Discriminants, and
+               --  'Fields can only occur at top-level. We handle them here.
+
+               if Nb_Slices > 1 then
+                  declare
+                     Top_Level_Attr : constant String :=
+                       Slice (Name_Parts, 2);
+
+                  begin
+                     if Top_Level_Attr = Old_Label then
+                        Var_Modifier := Old;
+                        Current_Slice := 3;
+                     elsif Top_Level_Attr = Loop_Entry_Label then
+                        Var_Modifier := Loop_Entry;
+                        Current_Slice := 3;
+
+                     --  Go to the enclosing quantified expression to find
+                     --  the Why3 type on which the quantification is done.
+                     --  It is the first index type for an array and the
+                     --  ultimate cursor type for a container.
+                     --  ??? What about multidim arrays?
+
+                     elsif Top_Level_Attr = Index_Label then
+                        Var_Modifier := Index;
+
+                        declare
+                           function Is_Quantified_Expr
+                             (N : Node_Id) return Boolean
+                           is
+                             (Nkind (N) = N_Quantified_Expression);
+                           function Enclosing_Quantified_Expr is new
+                             First_Parent_With_Property (Is_Quantified_Expr);
+
+                           Container : constant Entity_Id :=
+                             Get_Container_In_Iterator_Specification
+                               (Iterator_Specification
+                                  (Enclosing_Quantified_Expr (Var)));
+                           pragma Assert (Present (Container));
+
+                           Container_Typ : constant Entity_Id :=
+                             Retysp (Etype (Container));
+                        begin
+                           if Is_Array_Type (Container_Typ) then
+                              Current_Ty := Retysp
+                                (Etype (First_Index (Container_Typ)));
+                           else
+                              Current_Ty :=
+                                Ultimate_Cursor_Type (Container_Typ);
+                           end if;
+                        end;
+                        Current_Slice := 3;
+
+                     --  Fields and discriminants are collapsed in a single
+                     --  object.
+
+                     elsif Top_Level_Attr in Discr_Label | Field_Label then
+                        Current_Slice := 3;
+                     end if;
+                  end;
+               end if;
+
+               --  Search for the variable Ent in Value_Map. If we already have
+               --  an association for the Var_Modifier modifier for it,
+               --  retrieve it. Otherwise, create a new one.
+
+               declare
+                  use Entity_To_Extended_Value_Maps;
+                  Position : Cursor := Value_Map.Find (Var);
+                  Inserted : Boolean;
+                  Arr      : Extended_Value_Access;
+
+               begin
+                  if Position = No_Element then
+                     Arr (Var_Modifier) :=
+                       new Value_Type'(New_Item (Current_Ty));
+                     Value_Map.Insert
+                       (Key      => Var,
+                        New_Item => Arr,
+                        Position => Position,
+                        Inserted => Inserted);
+                     pragma Assert (Inserted);
+
+                  elsif Value_Map (Position) (Var_Modifier) = null then
+                     Value_Map (Position) (Var_Modifier) :=
+                       new Value_Type'(New_Item (Current_Ty));
+                  end if;
+
+                  Current_Val := Value_Map (Position) (Var_Modifier);
+               end;
+
+               --  Now handle record fields and normal attributes
+
+               while Current_Slice <= Nb_Slices loop
+                  declare
+                     Label  : constant String :=
+                       Slice (Name_Parts, Current_Slice);
+                     Comp_E : constant Entity_Id :=
+                       Get_Entity_Id (False, Label);
+                  begin
+                     --  If Label does not cast into an entity_id it is treated
+                     --  as an attribute.
+
+                     Is_Attribute := No (Comp_E);
+
+                     --  Fields of access types do not have node ids, they are
+                     --  hanlded as special strings.
+
+                     if Label = All_Label then
+                        if Current_Val.K /= Access_K then
+                           raise Parse_Error;
+                        else
+                           Current_Ty := Retysp
+                             (Directly_Designated_Type (Current_Ty));
+
+                           if Current_Val.Designated_Value = null then
+                              Current_Val.Designated_Value :=
+                                new Value_Type'(New_Item (Current_Ty));
+                           end if;
+                           Current_Val := Current_Val.Designated_Value;
+                           Is_Attribute := False;
+                        end if;
+                     elsif Label = Is_Null_Label then
+                        if Current_Val.K /= Access_K then
+                           raise Parse_Error;
+                        else
+                           Set_Boolean_Flag
+                             (Elt.Value, Current_Val.Is_Null);
+                        end if;
+
+                     --  Regular attributes
+
+                     elsif Label = First_Label then
+                        if Current_Val.K /= Array_K then
+                           raise Parse_Error;
+                        else
+                           Set_Integer_Flag
+                             (Elt.Value, Current_Val.First_Attr);
+                        end if;
+
+                     elsif Label = Last_Label then
+                        if Current_Val.K /= Array_K then
+                           raise Parse_Error;
+                        else
+                           Set_Integer_Flag
+                             (Elt.Value, Current_Val.Last_Attr);
+                        end if;
+
+                     elsif Label = Constrained_Label then
+                        if Current_Val.K /= Record_K then
+                           raise Parse_Error;
+                        else
+                           Set_Boolean_Flag
+                             (Elt.Value, Current_Val.Constrained_Attr);
+                        end if;
+
+                     elsif Label = Initialized_Label then
+                        if Current_Val.K /= Scalar_K then
+                           raise Parse_Error;
+                        else
+                           Set_Boolean_Flag
+                             (Elt.Value, Current_Val.Initialized_Attr);
+                        end if;
+
+                     --  Regular record attribute
+
+                     else
+                        pragma Assert (not Is_Attribute);
+
+                        if Current_Val.K /= Record_K then
+                           raise Parse_Error;
+                        elsif not Current_Val.Record_Fields.Contains (Comp_E)
+                        then
+                           Current_Val.Record_Fields.Insert
+                             (Comp_E,
+                              new Value_Type'(New_Item (Etype (Comp_E))));
+                        end if;
+
+                        Current_Val := Current_Val.Record_Fields.Element
+                          (Comp_E);
+                        Current_Ty := Current_Val.AST_Ty;
+                     end if;
+                  end;
+
+                  --  If we have reached an attribute, iteration should be over
+
+                  pragma Assert
+                    (if Is_Attribute then Current_Slice = Nb_Slices);
+                  Current_Slice := Current_Slice + 1;
+               end loop;
+
+               --  If we do not have an attribute, we can now parse the Why3
+               --  counterexample value to merge it inside Val.
+               --  The later values in counterexample are considered to be
+               --  better values (in loop they correspond to the preservation
+               --  part which is often the complex one). So we override
+               --  existing values if there are some. A notable exception to
+               --  this rule are attributes which are only overriden when
+               --  present and record fields which are merged.
+
+               if not Is_Attribute then
+                  declare
+                     use Entity_To_Value_Maps;
+                     New_Val : constant Value_Type :=
+                       Parse_Cnt_Value (Elt.Value, Current_Ty);
+                  begin
+                     pragma Assert (Current_Val.K = New_Val.K);
+                     pragma Assert (Current_Val.AST_Ty = New_Val.AST_Ty);
+
+                     case Current_Val.K is
+                        when Scalar_K =>
+                           Current_Val.Scalar_Content :=
+                             New_Val.Scalar_Content;
+
+                           if New_Val.Initialized_Attr.Present then
+                              Current_Val.Initialized_Attr :=
+                                New_Val.Initialized_Attr;
+                           end if;
+                        when Array_K  =>
+                           Current_Val.Array_Values := New_Val.Array_Values;
+                           Current_Val.Array_Others := New_Val.Array_Others;
+
+                           if New_Val.First_Attr.Present then
+                              Current_Val.First_Attr := New_Val.First_Attr;
+                           end if;
+                           if New_Val.Last_Attr.Present then
+                              Current_Val.Last_Attr := New_Val.Last_Attr;
+                           end if;
+                        when Record_K =>
+                           for Pos in New_Val.Record_Fields.Iterate loop
+                              Current_Val.Record_Fields.Include
+                                (Key (Pos), Element (Pos));
+                           end loop;
+
+                           if New_Val.Constrained_Attr.Present then
+                              Current_Val.Constrained_Attr :=
+                                New_Val.Constrained_Attr;
+                           end if;
+                        when Access_K =>
+                           Current_Val.Designated_Value :=
+                             New_Val.Designated_Value;
+
+                           if New_Val.Is_Null.Present then
+                              Current_Val.Is_Null := New_Val.Is_Null;
+                           end if;
+                     end case;
+                  end;
+               end if;
+            end;
+         exception
+            when Parse_Error => null;
+         end;
+      end loop;
+   end Parse_Counterexample_Line;
+
    -----------------
    -- Parse_Float --
    -----------------
 
    function Parse_Float
      (Cnt_Value : Cntexmp_Value;
-      Ty        : Entity_Id) return Scalar_Value
+      Ty        : Entity_Id) return Scalar_Value_Type
    is
+      use Ada.Strings.Unbounded;
       F : VC_Kinds.Float_Value renames Cnt_Value.F.all;
    begin
       case F.F_Type is
@@ -231,10 +785,11 @@ package body CE_Parsing is
    ------------------------
 
    function Parse_Scalar_Value
-     (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id) return Scalar_Value
+     (Cnt_Value : Cntexmp_Value;
+      AST_Type  : Entity_Id) return Scalar_Value_Type
    is
-      Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
+      use Ada.Strings.Unbounded;
+      Why3_Type : constant Cntexmp_Type := Cnt_Value.T;
    begin
       case Why3_Type is
          when Cnt_Integer =>
@@ -243,7 +798,8 @@ package body CE_Parsing is
             --  integers like: "subype only_true := True .. True".
 
             if Is_Boolean_Type (AST_Type) then
-               return Boolean_Value (Cnt_Value.I /= "0");
+               return Boolean_Value
+                 (From_String (To_String (Cnt_Value.I)) /= Big_Integer'(0));
 
             elsif Is_Enumeration_Type (AST_Type) then
                declare
@@ -371,7 +927,7 @@ package body CE_Parsing is
          when Cnt_Float =>
             pragma Assert (Is_Floating_Point_Type (AST_Type));
 
-            return Parse_Float (Cnt_Value.all, AST_Type);
+            return Parse_Float (Cnt_Value, AST_Type);
 
          when Cnt_Unparsed
             | Cnt_Invalid
@@ -382,5 +938,47 @@ package body CE_Parsing is
             raise Parse_Error;
       end case;
    end Parse_Scalar_Value;
+
+   ----------------------
+   -- Set_Boolean_Flag --
+   ----------------------
+
+   procedure Set_Boolean_Flag
+     (Cnt_Value : Cntexmp_Value_Ptr; Flag : in out Opt_Boolean)
+   is
+      Comp : Scalar_Value_Type;
+   begin
+      Comp := Parse_Scalar_Value (Cnt_Value.all, Standard_Boolean);
+      Flag := (True, Comp.Enum_Entity = Standard_True);
+   exception
+      when Parse_Error =>
+         null;
+   end Set_Boolean_Flag;
+
+   ----------------------
+   -- Set_Integer_Flag --
+   ----------------------
+
+   procedure Set_Integer_Flag
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      Flag      : in out Opt_Big_Integer)
+   is
+      Comp : Big_Integer;
+   begin
+      case Cnt_Value.T is
+         when Cnt_Integer =>
+            Comp := From_String
+              (Ada.Strings.Unbounded.To_String (Cnt_Value.I));
+         when Cnt_Bitvector =>
+            Comp := From_String
+              (Ada.Strings.Unbounded.To_String (Cnt_Value.B));
+         when others =>
+            raise Parse_Error;
+      end case;
+      Flag := (True, Comp);
+   exception
+      when Parse_Error =>
+         null;
+   end Set_Integer_Flag;
 
 end CE_Parsing;

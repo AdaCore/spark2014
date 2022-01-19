@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Ordered_Maps;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
@@ -30,23 +32,91 @@ use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings;              use Ada.Strings;
 with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
 with Ada.Text_IO;
-with Ada.Unchecked_Conversion;
 with Casing;                   use Casing;
-with CE_Parsing;               use CE_Parsing;
+with CE_Utils;                 use CE_Utils;
 with Gnat2Why_Args;
+with Gnat2Why.Tables;          use Gnat2Why.Tables;
 with Namet;                    use Namet;
 with SPARK_Atree;              use SPARK_Atree;
 with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
 with SPARK_Util;               use SPARK_Util;
 with SPARK_Util.Types;         use SPARK_Util.Types;
 with Stand;                    use Stand;
+with Types;                    use Types;
 with Uintp;                    use Uintp;
 
 package body CE_Pretty_Printing is
 
+   ---------------------------------
+   -- Types and Generic Instances --
+   ---------------------------------
+
+   type Component_Loc_Info is record
+      Type_Ent : Entity_Id;
+      Sloc     : Source_Ptr;
+   end record;
+   --  A location information for a component contains the type in which the
+   --  component is declared first and the location of this first declaration.
+
+   function Get_Loc_Info (Comp : Entity_Id) return Component_Loc_Info is
+     ((Type_Ent => Original_Declaration (Comp),
+       Sloc     =>
+          Sloc
+            (Search_Component_In_Type (Original_Declaration (Comp), Comp))));
+   --  Construct the location information of a record component or
+   --  discriminant.
+
+   function "<" (X, Y : Component_Loc_Info) return Boolean is
+     ((X.Type_Ent /= Y.Type_Ent and then Is_Ancestor (X.Type_Ent, Y.Type_Ent))
+      or else (X.Type_Ent = Y.Type_Ent and then X.Sloc <= Y.Sloc));
+   --  Order on location information. A component F1 is declared first than
+   --  another F2 if F1 is declared in an ancestor of the type in which F2 is
+   --  declared, or if they are declared in the same type and F1 occurs before
+   --  in the source code.
+
+   package Ordered_Sloc_Map is new Ada.Containers.Ordered_Maps
+     (Key_Type     => Component_Loc_Info,
+      Element_Type => CNT_Unbounded_String,
+      "<"          => "<");
+   --  Map from sloc to strings, used to output component of record values in
+   --  correct order.
+
+   type Pair_Name_Value is record
+      Name  : Unbounded_String;
+      Value : CNT_Unbounded_String;
+   end record;
+   --  Attributes are printed as a list of a name and a value
+
+   package Name_Value_Lists is new
+     Ada.Containers.Doubly_Linked_Lists
+       (Element_Type => Pair_Name_Value,
+        "="          => "=");
+
+   type Value_And_Attributes is record
+      Value      : CNT_Unbounded_String;
+      Attributes : Name_Value_Lists.List;
+   end record;
+   --  Return type of the internal printing functions. It contains a string for
+   --  the value parsed and a list of associations for its attributes.
+
    -----------------------
    -- Local_Subprograms --
    -----------------------
+
+   function Prefix_Names
+     (Elems : Name_Value_Lists.List;
+      Pref  : String) return Name_Value_Lists.List;
+   --  Prefix all the names in Elems by Pref
+
+   function Print_Access_Value (Value : Value_Type) return Value_And_Attributes
+     with Pre => Value.K = Access_K;
+   --  Print value of an access type. Designated values are printed as
+   --  allocators, new Ty'(V).
+
+   function Print_Array_Value (Value : Value_Type) return Value_And_Attributes
+     with Pre => Value.K = Array_K;
+   --  Print value of an array type in an aggregate-like syntax. When
+   --  possible, string values are printed as string literals.
 
    generic
       Bound_Type  : Big_Natural;
@@ -71,6 +141,20 @@ package body CE_Pretty_Printing is
       K : CE_Parsing.Float_Kind;
    function Print_Float (Nb : T_Float) return String;
    --  Print a counterexample value as a float
+
+   function Print_Record_Value (Value : Value_Type) return Value_And_Attributes
+     with Pre => Value.K = Record_K;
+   --  Print value of a record type in an aggregate like syntax. Hidden
+   --  components are prefixed by the name of their enclosing type Ty.F => V.
+
+   function Print_Scalar
+     (Value    : Scalar_Value_Type;
+      AST_Type : Entity_Id) return CNT_Unbounded_String;
+   --  Print a scalar counterexample value. The type is used to correctly print
+   --  an Integer as a Character type for example.
+
+   function Print_Value (Value : Value_Type) return Value_And_Attributes;
+   --  Print a counterexample value
 
    -------------------------------
    -- Make_CNT_Unbounded_String --
@@ -108,6 +192,461 @@ package body CE_Pretty_Printing is
               Count => Cnt,
               Elems => Elems);
    end Make_CNT_Unbounded_String;
+
+   ------------------
+   -- Prefix_Names --
+   ------------------
+
+   function Prefix_Names
+     (Elems : Name_Value_Lists.List;
+      Pref  : String) return Name_Value_Lists.List
+   is
+      Res : Name_Value_Lists.List := Elems;
+   begin
+      for E of Res loop
+         E.Name := Pref & E.Name;
+      end loop;
+      return Res;
+   end Prefix_Names;
+
+   -------------------------
+   -- Print_Access_Value --
+   -------------------------
+
+   function Print_Access_Value
+     (Value : Value_Type) return Value_And_Attributes
+   is
+      Res : Value_And_Attributes;
+
+   begin
+      if Value.Is_Null.Present and then Value.Is_Null.Content then
+         Res.Value :=
+           Make_CNT_Unbounded_String
+             (Nul => False, Str => To_Unbounded_String ("null"));
+
+      elsif Value.Designated_Value = null then
+         Res.Value := Dont_Display;
+
+      --  Reconstruct the value
+
+      else
+         declare
+            V      : constant Value_And_Attributes :=
+              Print_Value (Value.Designated_Value.all);
+            Elems  : S_String_List.List;
+            Des_Ty : Entity_Id;
+         begin
+            if V.Value = Dont_Display then
+               Res.Value := Dont_Display;
+            else
+               Elems := Prefix_Elements (V.Value.Elems, ".all");
+
+               --  Get the designated type which will printed in the allocator.
+               --  Avoid Itypes which might have internal names.
+
+               Des_Ty := Value.Designated_Value.AST_Ty;
+               if Is_Itype (Des_Ty) then
+                  Des_Ty := Etype (Des_Ty);
+               end if;
+
+               Res.Value :=
+                 Make_CNT_Unbounded_String
+                   (Nul => V.Value.Nul,
+                    Str => "new " & Source_Name (Des_Ty)
+                      & "'(" & V.Value.Str & ")",
+                    Cnt => V.Value.Count,
+                    Els => Elems);
+
+            end if;
+            Res.Attributes := Prefix_Names (V.Attributes, ".all");
+         end;
+      end if;
+      return Res;
+   end Print_Access_Value;
+
+   -----------------------
+   -- Print_Array_Value --
+   -----------------------
+
+   function Print_Array_Value (Value : Value_Type) return Value_And_Attributes
+   is
+      type Array_Elem is record
+         Ind_Printed  : CNT_Unbounded_String; -- Index value as printed
+         Elem_Printed : CNT_Unbounded_String; -- Element value as printed
+      end record;
+
+      package Sorted_Array is new Ada.Containers.Ordered_Maps
+        (Key_Type     => Big_Integer,
+         Element_Type => Array_Elem,
+         "<"          => "<");
+
+      procedure Add_Index
+        (S_Array    : in out Sorted_Array.Map;
+         Nul        : in out Boolean;
+         Attributes : in out Name_Value_Lists.List;
+         String_Lit : in out Boolean;
+         Index      : Big_Integer;
+         Index_Type : Entity_Id;
+         Element    : Value_And_Attributes);
+      --  Add a mapping for Index => Element in S_Array if Index corresponds
+      --  to a valid value of type Index_Type and both Index and Element
+      --  can be printed.
+
+      function Is_Normal_Char (S : Unbounded_String) return Boolean is
+        (Length (S) = 3)
+      with Pre => Length (S) >= 3
+          and then Element (S, 1) = '''
+          and then Element (S, Length (S)) = ''';
+      --  Return True if S is the representation of a normal character
+
+      function Max_Exp_Others (String_Lit : Boolean) return Big_Natural is
+        (if String_Lit then Big_Natural'(15) else Big_Natural'(1));
+      --  Maximal number of elements for which the others value can be
+      --  expanded.
+      --  Decision: Only explicitly expand the others choice if it is less
+      --  than 15 values for strings and 1 values for other arrays.
+
+      function Parse_And_Print_Index
+        (Index      : Big_Integer;
+         Index_Type : Entity_Id) return CNT_Unbounded_String;
+      --  Use the parsing and pretty printing of scalars to transform an index
+      --  value as a big integer into an appropriate string representation.
+
+      procedure Print_Elements
+        (Value      : Value_Type;
+         S_Array    : out Sorted_Array.Map;
+         Nul        : in out Boolean;
+         Complete   : out Boolean;
+         String_Lit : out Boolean;
+         Others_Val : out CNT_Unbounded_String;
+         Attributes : out Name_Value_Lists.List);
+      --  Check and export all parts of Value in an appropriate format.
+      --  Individual elements are stored in S_Array, Complete is set
+      --  to True iff all the elements of the array have a mapping in S_Array,
+      --  and the default value for the array is stored in Others_Val if
+      --  Complete is False. Nul is set to True iff all the elements of
+      --  S_Array are known to be nul. String_Lit is set to False iff all the
+      --  elements of S_Array are normal characters. Attributes contains the
+      --  set of attributes of Value.
+
+      ---------------
+      -- Add_Index --
+      ---------------
+
+      procedure Add_Index
+        (S_Array    : in out Sorted_Array.Map;
+         Nul        : in out Boolean;
+         Attributes : in out Name_Value_Lists.List;
+         String_Lit : in out Boolean;
+         Index      : Big_Integer;
+         Index_Type : Entity_Id;
+         Element    : Value_And_Attributes)
+      is
+         Ind_Printed : constant CNT_Unbounded_String :=
+           Parse_And_Print_Index (Index, Index_Type);
+
+      begin
+         if Ind_Printed /= Dont_Display then
+            if Element.Value /= Dont_Display then
+               Nul := Nul and then Element.Value.Nul;
+               S_Array.Include (Key       => Index,
+                                New_Item  =>
+                                  (Ind_Printed  => Ind_Printed,
+                                   Elem_Printed => Element.Value));
+               String_Lit := String_Lit
+                 and then Is_Normal_Char (Element.Value.Str);
+            end if;
+
+            --  Store the attributes with their values
+
+            declare
+               Elmt_Attr : Name_Value_Lists.List :=
+                 Prefix_Names
+                   (Element.Attributes,
+                    " (" & To_String (Ind_Printed.Str) & ")");
+            begin
+               Attributes.Splice (Name_Value_Lists.No_Element, Elmt_Attr);
+            end;
+         end if;
+      end Add_Index;
+
+      ---------------------------
+      -- Parse_And_Print_Index --
+      ---------------------------
+
+      function Parse_And_Print_Index
+        (Index      : Big_Integer;
+         Index_Type : Entity_Id) return CNT_Unbounded_String
+      is
+         Value : Scalar_Value_Type;
+      begin
+         Value := Parse_Scalar_Value
+           (Cntexmp_Value'
+              (T => Cnt_Integer,
+               I => To_Unbounded_String (To_String (Index))),
+            Index_Type);
+         return Print_Scalar (Value, Index_Type);
+      exception
+         when Parse_Error =>
+            return Dont_Display;
+      end Parse_And_Print_Index;
+
+      --------------------
+      -- Print_Elements --
+      --------------------
+
+      procedure Print_Elements
+        (Value      : Value_Type;
+         S_Array    : out Sorted_Array.Map;
+         Nul        : in out Boolean;
+         Complete   : out Boolean;
+         String_Lit : out Boolean;
+         Others_Val : out CNT_Unbounded_String;
+         Attributes : out Name_Value_Lists.List)
+      is
+         Fst_Index   : constant Node_Id := First_Index (Value.AST_Ty);
+         Index_Type  : constant Entity_Id := Retysp (Etype (Fst_Index));
+
+         Others_Elem : Value_And_Attributes;
+
+         Attr_First  : Opt_Big_Integer := Value.First_Attr;
+         Attr_Last   : Opt_Big_Integer := Value.Last_Attr;
+         U_Fst       : Uint;
+         U_Lst       : Uint;
+         First       : Big_Integer;
+         Last        : Big_Integer;
+
+      begin
+         --  Use static array type bounds or index type bounds as default
+
+         Find_First_Static_Range (Fst_Index, U_Fst, U_Lst);
+         First := From_String (UI_Image (U_Fst, Decimal));
+         Last := From_String (UI_Image (U_Lst, Decimal));
+
+         --  Update bounds from the attribute values if any. We ignore out of
+         --  bound values.
+
+         if Attr_First.Present and then Attr_First.Content >= First then
+            First := Attr_First.Content;
+         else
+            Attr_First := (Present => False);
+         end if;
+
+         if Attr_Last.Present and then Attr_Last.Content <= Last then
+            Last := Attr_Last.Content;
+         else
+            Attr_Last := (Present => False);
+         end if;
+
+         --  Add the first and last attributes if any
+
+         Attributes.Clear;
+
+         if Attr_First.Present then
+            declare
+               First_Str : constant CNT_Unbounded_String :=
+                 Parse_And_Print_Index
+                   (Attr_First.Content, Base_Type (Index_Type));
+            begin
+               if First_Str = Dont_Display then
+                  Attr_First := (Present => False);
+               else
+                  Attributes.Append
+                    ((To_Unbounded_String ("'First"), First_Str));
+               end if;
+            end;
+         end if;
+         if Attr_Last.Present then
+            declare
+               Last_Str : constant CNT_Unbounded_String :=
+                 Parse_And_Print_Index
+                   (Attr_Last.Content, Base_Type (Index_Type));
+            begin
+               if Last_Str = Dont_Display then
+                  Attr_Last := (Present => False);
+               else
+                  Attributes.Append
+                    ((To_Unbounded_String ("'Last"), Last_Str));
+               end if;
+            end;
+         end if;
+
+         --  Format the others choice if any
+
+         Complete := False;
+
+         if Value.Array_Others /= null then
+            Others_Elem := Print_Value (Value.Array_Others.all);
+         else
+            Others_Elem.Value := Dont_Display;
+         end if;
+
+         String_Lit := Is_String_Type (Value.AST_Ty);
+
+         for C in Value.Array_Values.Iterate loop
+
+            --  Reorder the elements inside S_Array
+
+            declare
+               Index        : Big_Integer renames
+                 Big_Integer_To_Value_Maps.Key (C);
+               Elem         : Value_Access renames Value.Array_Values (C);
+
+               Elem_Printed : constant Value_And_Attributes :=
+                 Print_Value (Elem.all);
+            begin
+               if First <= Index and then Index <= Last then
+                  Add_Index
+                    (S_Array, Nul, Attributes, String_Lit,
+                     Index, Index_Type, Elem_Printed);
+               end if;
+            end;
+         end loop;
+
+         --  No need for "others" if the array is empty or indexes already
+         --  cover the full range.
+
+         if To_Big_Integer (Integer (S_Array.Length)) >= Last - First + 1 then
+            Complete := True;
+
+         --  Replace "others" by the actual indexes if we are missing less
+         --  than Max_Exp_Others values, the bounds are known, and Others_Val
+         --  is supplied.
+
+         elsif Others_Elem.Value /= Dont_Display
+           and then  To_Big_Integer (Integer (S_Array.Length)) >=
+             Last - First + 1 -
+             Max_Exp_Others (String_Lit => String_Lit
+                               and then Is_Normal_Char (Others_Elem.Value.Str))
+           and then ((Attr_First.Present and then Attr_Last.Present)
+                     or else Is_Static_Array_Type (Value.AST_Ty))
+         then
+            declare
+               Index : Big_Integer := First;
+            begin
+               while Index <= Last loop
+                  if not S_Array.Contains (Index) then
+                     Add_Index
+                       (S_Array, Nul, Attributes, String_Lit,
+                        Index, Index_Type, Others_Elem);
+                  end if;
+                  Index := Index + 1;
+               end loop;
+            end;
+            pragma Assert
+              (To_Big_Integer (Integer (S_Array.Length)) = Last - First + 1);
+            Complete := True;
+
+         else
+            --  DECISION: We discard the attributes on the others choice
+
+            Others_Val := Others_Elem.Value;
+         end if;
+      end Print_Elements;
+
+      --  Local variables
+
+      S          : Unbounded_String;
+      Nul        : Boolean := True;
+      S_Array    : Sorted_Array.Map;
+      Others_Val : CNT_Unbounded_String;
+      Complete   : Boolean;
+      String_Lit : Boolean;
+      Count      : Natural := 0;
+      Elems      : S_String_List.List;
+      Res        : Value_And_Attributes;
+
+      use S_String_List;
+
+   --  Start of processing for Print_Array_Value
+
+   begin
+      Print_Elements
+        (Value, S_Array, Nul, Complete,
+         String_Lit, Others_Val, Res.Attributes);
+
+      --  Print complete strings containing only normal characters as string
+      --  literals.
+
+      if String_Lit and then Complete then
+         for C of S_Array loop
+            S := S & Element (C.Elem_Printed.Str, 2);
+         end loop;
+
+         if S = "" then
+            Res.Value := Dont_Display;
+         else
+            Res.Value := Make_CNT_Unbounded_String
+              (Nul => Nul,
+               Str => '"' & S & '"');
+         end if;
+
+      --  Otherwise, use an aggregate notation
+
+      else
+         --  Add an association per specific element in S_Array
+
+         for C in S_Array.Iterate loop
+            declare
+               Ind_Printed  : constant CNT_Unbounded_String :=
+                 S_Array (C).Ind_Printed;
+               Elem_Printed : constant CNT_Unbounded_String :=
+                 S_Array (C).Elem_Printed;
+               C_Elems      : S_String_List.List :=
+                 Prefix_Elements (Elem_Printed.Elems,
+                                  To_String ('(' & Ind_Printed.Str & ')'));
+            begin
+               if S /= "" then
+                  Append (S, ", ");
+               end if;
+
+               pragma Assert (Elem_Printed /= Dont_Display);
+
+               Count := Count + Elem_Printed.Count;
+               Append (S, Ind_Printed.Str & " => " & Elem_Printed.Str);
+
+               Elems.Splice (Before => No_Element,
+                             Source => C_Elems);
+            end;
+         end loop;
+
+         --  Is the aggregate is not complete, add an association for its
+         --  others case. Don't add it if the others case is unknown and there
+         --  are no specific cases.
+
+         if not Complete
+           and then (S /= "" or else Others_Val /= Dont_Display)
+         then
+            Nul := Nul and then Others_Val.Nul;
+
+            if S /= "" then
+               Append (S, ", ");
+            end if;
+
+            --  When Others_Val is Dont_Display, still add an association to ?
+
+            if Others_Val = Dont_Display then
+               Count := Count + 1;
+               Append (S, "others => ?");
+            else
+               Append (S, "others => " & Others_Val.Str);
+               Count := Count + Others_Val.Count;
+               --  Do not insert a value for "others" in Elems
+            end if;
+         end if;
+
+         if S = "" then
+            Res.Value := Dont_Display;
+         else
+            Res.Value := Make_CNT_Unbounded_String
+              (Nul => Nul,
+               Str => "(" & S & ")",
+               Cnt => Count,
+               Els => Elems);
+         end if;
+      end if;
+      return Res;
+   end Print_Array_Value;
 
    --------------------
    -- Print_Discrete --
@@ -305,15 +844,270 @@ package body CE_Pretty_Printing is
    end Print_Float;
 
    ------------------------
-   -- Print_Scalar_Value --
+   -- Print_Record_Value --
    ------------------------
 
-   function Print_Scalar_Value
-     (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id) return CNT_Unbounded_String
+   function Print_Record_Value (Value : Value_Type) return Value_And_Attributes
+   is
+      Ada_Type                 : constant Entity_Id := Value.AST_Ty;
+      Visibility_Map           : Component_Visibility_Maps.Map :=
+        Get_Component_Visibility_Map (Ada_Type);
+      Fields_Discrs_With_Value : Natural := 0;
+      Attributes               : Name_Value_Lists.List;
+      Ordered_Values           : Ordered_Sloc_Map.Map;
+      --  Ordered map containing the values for the components of
+      --  the record. They are ordered in as in the source file,
+      --  inherited components coming first.
+
+      procedure Get_Value_Of_Component
+        (Comp       : Node_Id;
+         Val        : Value_And_Attributes;
+         Visibility : Component_Visibility);
+      --  Insert value of record component or dicriminant in
+      --  Ordered_Values and its attributes in Attributes.
+
+      procedure Process_Component
+        (Comp     : Entity_Id;
+         Comp_Val : Value_And_Attributes);
+      --  Go over counterexample values for record fields to fill
+      --  the Ordered_Values map. Along the way, remove seen
+      --  components from the Visibility_Map so that we can later
+      --  check for unseen components.
+
+      ----------------------------
+      -- Get_Value_Of_Component --
+      ----------------------------
+
+      procedure Get_Value_Of_Component
+        (Comp       : Node_Id;
+         Val        : Value_And_Attributes;
+         Visibility : Component_Visibility)
+      is
+         Comp_Name : constant String := Source_Name (Comp);
+         Orig_Decl : constant Entity_Id := Original_Declaration (Comp);
+         Prefix    : constant String :=
+           (if Ekind (Comp) /= E_Discriminant
+              and then Visibility = Duplicated
+            then Source_Name (Orig_Decl) & "."
+            else "");
+         --  Explanation. It is empty except for duplicated
+         --  components where it points to the declaration of the
+         --  component.
+
+      begin
+         --  Add the value of the component to Ordered_Values
+
+         if Val.Value /= Dont_Display then
+            Ordered_Values.Insert
+              (Get_Loc_Info (Comp),
+               Make_CNT_Unbounded_String
+                 (Nul => Val.Value.Nul,
+                  Str => Prefix & Comp_Name & " => " & Val.Value.Str,
+                  Cnt => Val.Value.Count,
+                  Els =>
+                    Prefix_Elements
+                      (Val.Value.Elems, '.' & Prefix & Comp_Name)));
+            Fields_Discrs_With_Value := Fields_Discrs_With_Value + 1;
+         end if;
+
+         --  Add the attributes of the component to Attributes
+
+         declare
+            Comp_Attrs : Name_Value_Lists.List :=
+              Prefix_Names (Val.Attributes, '.' & Prefix & Comp_Name);
+         begin
+            Attributes.Splice (Name_Value_Lists.No_Element, Comp_Attrs);
+         end;
+      end Get_Value_Of_Component;
+
+      -----------------------
+      -- Process_Component --
+      -----------------------
+
+      procedure Process_Component
+        (Comp     : Entity_Id;
+         Comp_Val : Value_And_Attributes)
+      is
+         Visibility : Component_Visibility;
+      begin
+         if not Is_Type (Comp) then
+            declare
+               Orig_Comp : constant Entity_Id :=
+                 Search_Component_In_Type
+                   (Ada_Type, Comp);
+            begin
+               Visibility := Visibility_Map (Orig_Comp);
+
+               --  If Comp_Val is not Dont_Display, Comp has been displayed.
+               --  Remove it from the visibility map.
+
+               if Comp_Val.Value /= Dont_Display then
+                  Visibility_Map.Exclude (Orig_Comp);
+               end if;
+            end;
+
+         --  Type component are not displayed as they stand
+         --  for invisible components.
+
+         else
+            Visibility := Removed;
+         end if;
+
+         if Visibility /= Removed then
+            pragma Assert (Comp_Val.Value.Str /= "?");
+            Get_Value_Of_Component (Comp, Comp_Val, Visibility);
+         end if;
+      end Process_Component;
+
+   --  Start of processing for Print_Record_Value
+
+   begin
+      --  Add the 'Constrained to attributes if present
+
+      if Value.Constrained_Attr.Present then
+         declare
+            Constr_Val : constant CNT_Unbounded_String :=
+              Make_CNT_Unbounded_String
+                (Nul => False,
+                 Str => To_Unbounded_String
+                   (if Value.Constrained_Attr.Content then "True"
+                    else "False"));
+         begin
+            Attributes.Append
+              ((Name  => To_Unbounded_String ("'Constrained"),
+                Value => Constr_Val));
+         end;
+      end if;
+
+      --  Add discriminants to Visibility_Map. Discriminants are
+      --  considered to be always visible.
+
+      if Has_Discriminants (Ada_Type) then
+         declare
+            Discr : Entity_Id :=
+              First_Discriminant (Ada_Type);
+         begin
+            while Present (Discr) loop
+               Visibility_Map.Insert
+                 (Root_Discriminant (Discr), Regular);
+               Next_Discriminant (Discr);
+            end loop;
+         end;
+      end if;
+
+      for C in Value.Record_Fields.Iterate loop
+         declare
+            use Entity_To_Value_Maps;
+            Comp : Entity_Id renames Key (C);
+         begin
+            Process_Component (Comp, Print_Value (Element (C).all));
+         end;
+      end loop;
+
+      --  If there are no fields and discriminants of the processed
+      --  value with values that can be displayed, do not display
+      --  the value (this can happen if there were collected
+      --  fields or discriminants, but their values should not
+      --  be displayed).
+
+      if Fields_Discrs_With_Value = 0 then
+         return (Value => Dont_Display, Attributes => Attributes);
+      end if;
+
+      --  Go over the visibility map to see if there are missing
+      --  components.
+
+      declare
+         Is_Before    : Boolean := False;
+         Need_Others  : Boolean := False;
+         --  True if there are more than one missing value or if
+         --  the record contains invisible fields (component of type
+         --  kind).
+
+         First_Unseen : Entity_Id := Empty;
+         --  First component for which we are missing a value
+
+         Nul          : Boolean := True;
+         Value        : Unbounded_String := To_Unbounded_String ("(");
+         Count        : Natural := 0;
+         Elems        : S_String_List.List;
+      begin
+         for C in Visibility_Map.Iterate loop
+            declare
+               Visibility : Component_Visibility renames
+                 Component_Visibility_Maps.Element (C);
+               Comp       : Entity_Id renames
+                 Component_Visibility_Maps.Key (C);
+            begin
+               if Visibility /= Removed then
+                  if Is_Type (Comp) or else Present (First_Unseen)
+                  then
+                     Need_Others := True;
+                     exit;
+                  else
+                     First_Unseen := Comp;
+                  end if;
+               end if;
+            end;
+         end loop;
+
+         --  If there is only one component which does not have a
+         --  value, we output directly a ? for its value instead
+         --  of introducing a others case.
+
+         if not Need_Others and then Present (First_Unseen) then
+            Get_Value_Of_Component
+              (First_Unseen,
+               (Value      => Make_CNT_Unbounded_String
+                    (Nul => True, Str => To_Unbounded_String ("?")),
+                Attributes => Name_Value_Lists.Empty_List),
+               Visibility_Map.Element (First_Unseen));
+         end if;
+
+         --  Construct the counterexample value by appending the
+         --  components in the right order.
+
+         for V of Ordered_Values loop
+            Nul := Nul and then V.Nul;
+            Append (Value,
+                    (if Is_Before then ", " else "") & V.Str);
+            Is_Before := True;
+            Count := Count + V.Count;
+            Elems.Splice (Before => S_String_List.No_Element,
+                          Source => V.Elems);
+         end loop;
+
+         --  If there are more than one fields that are not
+         --  mentioned in the counterexample, summarize them using
+         --  the field others.
+
+         if Need_Others then
+            Append (Value,
+                    (if Is_Before then ", " else "") &
+                      "others => ?");
+            Count := Count + 1;
+         end if;
+         Append (Value, ')');
+
+         return (Value      => Make_CNT_Unbounded_String
+                 (Nul => Nul,
+                  Str => Value,
+                  Cnt => Count,
+                  Els => Elems),
+                 Attributes => Attributes);
+      end;
+   end Print_Record_Value;
+
+   ------------------
+   -- Print_Scalar --
+   ------------------
+
+   function Print_Scalar
+     (Value    : Scalar_Value_Type;
+      AST_Type : Entity_Id) return CNT_Unbounded_String
    is
       function To_String
-        (Value : Scalar_Value; Nul : out Boolean) return String;
+        (Value : Scalar_Value_Type; Nul : out Boolean) return String;
       --  Turn Value into a string. Set Nul to True if Value might be
       --  represented as 0.
 
@@ -322,7 +1116,7 @@ package body CE_Pretty_Printing is
       ---------------
 
       function To_String
-        (Value : Scalar_Value; Nul : out Boolean) return String
+        (Value : Scalar_Value_Type; Nul : out Boolean) return String
       is
       begin
          case Value.K is
@@ -437,8 +1231,6 @@ package body CE_Pretty_Printing is
 
    begin
       declare
-         Value  : constant Scalar_Value :=
-           Parse_Scalar_Value (Cnt_Value, AST_Type);
          Nul    : Boolean;
          Result : constant String := To_String (Value, Nul);
       begin
@@ -449,6 +1241,108 @@ package body CE_Pretty_Printing is
    exception
       when Parse_Error =>
          return Dont_Display;
-   end Print_Scalar_Value;
+   end Print_Scalar;
+
+   -----------------
+   -- Print_Value --
+   -----------------
+
+   function Print_Value (Value : Value_Type) return Value_And_Attributes is
+   begin
+      case Value.K is
+         when Scalar_K =>
+
+            --  Don't display uninitialized values
+
+            declare
+               Attributes : Name_Value_Lists.List;
+            begin
+               if Value.Initialized_Attr.Present then
+                  declare
+                     Init_Val : constant CNT_Unbounded_String :=
+                       Make_CNT_Unbounded_String
+                         (Nul => False,
+                          Str => To_Unbounded_String
+                            (if Value.Initialized_Attr.Content then "True"
+                             else "False"));
+                  begin
+                     Attributes.Append
+                       ((Name  => To_Unbounded_String ("'Initialized"),
+                         Value => Init_Val));
+                  end;
+               end if;
+
+               --  Don't display scalar values if 'Initialized is False
+
+               if Value.Scalar_Content = null
+                 or else (Value.Initialized_Attr.Present
+                          and then not Value.Initialized_Attr.Content)
+               then
+                  return (Value => Dont_Display, Attributes => Attributes);
+               else
+                  return
+                    (Value      =>
+                       Print_Scalar (Value.Scalar_Content.all, Value.AST_Ty),
+                     Attributes => Attributes);
+               end if;
+            end;
+
+         when Record_K =>
+            return Print_Record_Value (Value);
+
+         when Array_K =>
+            return Print_Array_Value (Value);
+
+         when Access_K =>
+            return Print_Access_Value (Value);
+      end case;
+   end Print_Value;
+
+   function Print_Value (Value : Value_Type) return CNT_Unbounded_String is
+      Val_And_Attrs : constant Value_And_Attributes :=
+        Print_Value (Value);
+
+   begin
+      return Val_And_Attrs.Value;
+   end Print_Value;
+
+   ----------------------
+   -- Print_Attributes --
+   ----------------------
+
+   procedure Print_Value_And_Attributes
+     (Name        : Unbounded_String;
+      Value       : Value_Type;
+      Pretty_Line : in out Cntexample_Elt_Lists.List)
+   is
+      Val_And_Attrs : constant Value_And_Attributes :=
+        Print_Value (Value);
+
+   begin
+      --  Append the pretty printed value of Value
+
+      if Val_And_Attrs.Value /= Dont_Display then
+         Pretty_Line.Append
+           (Cntexample_Elt'(K       => Pretty_Printed,
+                            Kind    => CEE_Variable,
+                            Name    => Name,
+                            Val_Str => Val_And_Attrs.Value));
+      end if;
+
+      --  Add the attributes
+
+      declare
+         Val_Attr : constant Name_Value_Lists.List :=
+           Prefix_Names (Val_And_Attrs.Attributes, To_String (Name));
+      begin
+         for Name_And_Value of Val_Attr loop
+            Pretty_Line.Append
+              (Cntexample_Elt'(K       => Pretty_Printed,
+                               Kind    => CEE_Variable,
+                               Name    => Name_And_Value.Name,
+                               Val_Str => Name_And_Value.Value));
+         end loop;
+      end;
+   end Print_Value_And_Attributes;
 
 end CE_Pretty_Printing;

@@ -468,7 +468,7 @@ resources.ads:10:32: info: index check proved (CVC4: 2 VC)
 resources.ads:10:36: medium: overflow check might fail, cannot prove upper bound for D(To) + Sum(D,To-1) (e.g. when To = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (D(To) <= Integer'Last - Sum(D,To-1)) to subprogram at line 9]
 resources.ads:10:46: info: range check proved (CVC4: 2 VC)
 resources.ads:14:22: info: initialization of "D" proved
-resources.ads:15:14: medium: postcondition might fail (e.g. when D(1) = 4 and D(2) = 4 and D(4) = 4 and D(5) = 4 and D(6) = 4)
+resources.ads:15:14: medium: postcondition might fail (e.g. when D(1) = 4 and D(2) = 4 and D(3) = 4 and D(4) = 4 and D(5) = 4)
 resources.ads:19:14: medium: postcondition might fail
 use_vectors.adb:5:07: info: initialization of "S" proved
 use_vectors.adb:8:15: info: precondition proved (CVC4: 4 VC)

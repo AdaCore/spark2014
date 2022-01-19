@@ -23,10 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
+with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Ordered_Maps;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
+with Common_Containers;        use Common_Containers;
 with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
 with Types;                    use Types;
 with VC_Kinds;                 use VC_Kinds;
@@ -49,7 +53,7 @@ package CE_Parsing is
    type Scalar_Kind is (Integer_K, Enum_K, Float_K, Fixed_K);
    --  Kind for a counterexample value for a scalar type
 
-   type Scalar_Value (K : Scalar_Kind := Integer_K) is record
+   type Scalar_Value_Type (K : Scalar_Kind := Integer_K) is record
       case K is
          when Integer_K =>
             Integer_Content : Big_Integer;
@@ -68,11 +72,118 @@ package CE_Parsing is
    --  appropriate size (32, 64, or extended), and fixed-point values as a big
    --  integer along with the small of their type as a big real.
 
+   type Scalar_Value_Access is access Scalar_Value_Type;
+
+   type Value_Kind is (Scalar_K, Record_K, Array_K, Access_K);
+   --  The kind of counterexample values
+
+   type Value_Type;
+
+   type Value_Access is access Value_Type;
+
+   package Entity_To_Value_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Value_Access,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+   --  Map entities to counterexample values. It is used for fields of a record
+   --  value.
+
+   package Big_Integer_To_Value_Maps is new Ada.Containers.Ordered_Maps
+       (Key_Type     => Big_Integer,
+        Element_Type => Value_Access);
+   --  Values for a one-dimensional array. Keys may be integers or positions
+   --  for enum values.
+
+   type Opt_Boolean (Present : Boolean := False) is record
+      case Present is
+         when True =>
+            Content : Boolean;
+         when False =>
+            null;
+      end case;
+   end record;
+
+   type Opt_Big_Integer (Present : Boolean := False) is record
+      case Present is
+         when True =>
+            Content : Big_Integer;
+         when False =>
+            null;
+      end case;
+   end record;
+
+   type Value_Type (K : Value_Kind := Scalar_K) is record
+      AST_Ty : Entity_Id;
+
+      case K is
+         when Scalar_K =>
+            Scalar_Content   : Scalar_Value_Access;
+            Initialized_Attr : Opt_Boolean;
+         when Record_K =>
+            Record_Fields    : Entity_To_Value_Maps.Map;
+            Constrained_Attr : Opt_Boolean;
+         when Array_K =>
+            First_Attr   : Opt_Big_Integer;
+            Last_Attr    : Opt_Big_Integer;
+            Array_Values : Big_Integer_To_Value_Maps.Map;
+            Array_Others : Value_Access;
+         when Access_K =>
+            Designated_Value : Value_Access;
+            Is_Null          : Opt_Boolean;
+      end case;
+   end record;
+   --  Representation of a counterexample value.
+   --  It can be of 4 different kinds:
+   --  * Scalar values contains a scalar representation and optionally an
+   --    initialization flag.
+   --  * Array values are 1-dim array aggregates. They contain optional
+   --    bounds, a map of associations of specific indexes to values, and
+   --    an optional others value. Note that, if the index type is an
+   --    enumeration, the indexes here are literals positions.
+   --  * Record values are record aggregates. They contain mappings from
+   --    components/discriminants to values and an optional boolean value
+   --    for the constrained attribute if any.
+   --  * Access values contain an Is_Null boolean flag and a designated value.
+
+   type Opt_Value_Type (Present : Boolean := False) is record
+      case Present is
+         when True =>
+            Content : Value_Type;
+         when False =>
+            null;
+      end case;
+   end record;
+
+   type Modifier is (None, Old, Loop_Entry, Result, Index);
+   --  Used when the value given does not correspond to the value of the
+   --  entity at this line but to the value of something else. This is only
+   --  used for pretty printing and not RAC currently.
+   --  Old and Loop_Entry correspond to values of the corresponding attributes.
+   --  Index corresponds to the value of the underlying index for the
+   --  quantified variable in a FOR OF array quantification.
+
+   type Extended_Value_Access is array (Modifier) of Value_Access;
+
+   package Entity_To_Extended_Value_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Extended_Value_Access,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+   --  Map entities to counterexample values extended with a modifier. This is
+   --  used when parsing all counterexample values supplied for a line.
+
+   procedure Parse_Counterexample_Line
+     (Cnt_List  : Cntexample_Elt_Lists.List;
+      Value_Map : in out Entity_To_Extended_Value_Maps.Map);
+   --  Go over a list of raw Why3 counterexample values and transform them into
+   --  a map of counterexample values.
+
    Parse_Error : exception;
 
    function Parse_Scalar_Value
-     (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id) return Scalar_Value
+     (Cnt_Value : Cntexmp_Value;
+      AST_Type  : Entity_Id) return Scalar_Value_Type
    with Pre => Is_Scalar_Type (AST_Type);
    --  Parse a counterexample value as a value of AST_Type. If it cannot be
    --  parsed that way, Parse_Error is raised.

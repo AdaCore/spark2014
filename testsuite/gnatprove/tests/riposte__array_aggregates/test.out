@@ -63,7 +63,7 @@ array_aggregates.adb:255:11: info: flow dependencies proved
 array_aggregates.adb:259:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:262:32: info: initialization of "X" proved
 array_aggregates.adb:263:12: info: flow dependencies proved
-array_aggregates.adb:273:22: high: assertion might fail (e.g. when X(3).Len = 5 and X(3).Elem(1) = 'o' and X(3).Elem(2) = 'o' and X(3).Elem(5) = 'o')
+array_aggregates.adb:273:22: high: assertion might fail (e.g. when X = (3 => (Len => 5, Elem => "ooooo"), others => (Len => 5, Elem => "ooooo")))
 array_aggregates.adb:276:32: info: initialization of "X" proved
 array_aggregates.adb:277:12: info: flow dependencies proved
 array_aggregates.adb:287:22: info: assertion proved (CVC4: 1 VC)

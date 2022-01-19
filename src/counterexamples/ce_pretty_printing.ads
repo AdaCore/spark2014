@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Types;                 use Types;
+with CE_Parsing;            use CE_Parsing;
 with VC_Kinds;              use VC_Kinds;
 
 package CE_Pretty_Printing is
@@ -45,10 +45,13 @@ package CE_Pretty_Printing is
    with Pre => Cnt >= Natural (Els.Length);
    --  Create a CNT_Unbounded_String. Removes "trivial" counterexamples.
 
-   function Print_Scalar_Value
-     (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id) return CNT_Unbounded_String;
-   --  Print a scalar counterexample value. The type is used to correctly print
-   --  an Integer as a Character type for example.
+   procedure Print_Value_And_Attributes
+     (Name        : Unbounded_String;
+      Value       : Value_Type;
+      Pretty_Line : in out Cntexample_Elt_Lists.List);
+   --  Add the value and its attributes to Attributes
+
+   function Print_Value (Value : Value_Type) return CNT_Unbounded_String;
+   --  Return a string for a counterexample value. Attributes are ignored.
 
 end CE_Pretty_Printing;

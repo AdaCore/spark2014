@@ -23,12 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Fixed;           use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Atree;
-with Gnat2Why.Tables;   use Gnat2Why.Tables;
+with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Nlists;
-with Sinput;            use Sinput;
-with SPARK_Util;        use SPARK_Util;
+with Sinput;                      use Sinput;
+with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
+with SPARK_Util;                  use SPARK_Util;
 
 package body CE_Utils is
 
@@ -311,40 +314,26 @@ package body CE_Utils is
                and then Component_Is_Present_In_Type
                  (Rec, Search_Component_In_Type (Rec, Comp))));
 
-   --------------------
-   -- UI_From_String --
-   --------------------
+   ---------------------
+   -- Prefix_Elements --
+   ---------------------
 
-   function UI_From_String (Val : String) return Uint
+   function Prefix_Elements
+     (Elems : S_String_List.List;
+      Pref  : String) return S_String_List.List
    is
+      use Ada.Strings.Unbounded;
+      L : S_String_List.List;
    begin
+      for E of Elems loop
+         L.Append (Pref & E);
+      end loop;
+      return L;
+   end Prefix_Elements;
 
-      --  Try to cast Val to Int if it fits
-
-      return UI_From_Int (Int'Value (Val));
-   exception
-
-      --  If it doesn't fit, cut Val in two substrings and retry
-
-      when Constraint_Error =>
-
-         --  Avoid looping in case of an illformed string
-
-         if Val'Length < 2 then
-            raise;
-         end if;
-
-         declare
-            Cut   : constant Positive := Val'First + Val'Length / 2;
-            Left  : String renames Val (Val'First .. Cut);
-            Right : String renames Val (Cut + 1 .. Val'Last);
-         begin
-            return
-              UI_From_String (Left) * Uint_10 ** Int (Right'Length)
-                +
-              UI_From_String (Right);
-         end;
-   end UI_From_String;
+   -----------------
+   -- Remove_Vars --
+   -----------------
 
    package body Remove_Vars is
 
@@ -499,5 +488,75 @@ package body CE_Utils is
       end Remove_Extra_Vars;
 
    end Remove_Vars;
+
+   --------------------
+   -- UI_From_String --
+   --------------------
+
+   function UI_From_String (Val : String) return Uint is
+   begin
+      --  Try to cast Val to Int if it fits
+
+      return UI_From_Int (Int'Value (Val));
+   exception
+
+      --  If it doesn't fit, cut Val in two substrings and retry
+
+      when Constraint_Error =>
+
+         --  Avoid looping in case of an illformed string
+
+         if Val'Length < 2 then
+            raise;
+         end if;
+
+         declare
+            Cut   : constant Positive := Val'First + Val'Length / 2;
+            Left  : String renames Val (Val'First .. Cut);
+            Right : String renames Val (Cut + 1 .. Val'Last);
+         begin
+            return
+              UI_From_String (Left) * Uint_10 ** Int (Right'Length)
+                +
+              UI_From_String (Right);
+         end;
+   end UI_From_String;
+
+   --------------------------
+   -- Ultimate_Cursor_Type --
+   --------------------------
+
+   function Ultimate_Cursor_Type (Typ : Entity_Id) return Entity_Id is
+      Found         : Boolean;
+      Iterable_Info : Iterable_Annotation;
+
+   begin
+      --  Iteration is done on the cursor type of the ultimate model for
+      --  proof. Go through Iterable_For_Proof annotations to find this
+      --  type.
+
+      Retrieve_Iterable_Annotation (Typ, Found, Iterable_Info);
+
+      if Found then
+
+         --  Iterable annotation should be a Model annotation. Indeed, if
+         --  a Contains iterable annotation is provided, no temporary
+         --  should be introduced for "for of" quantification.
+
+         pragma Assert
+           (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
+
+         --  Prepend the name of the Model function to the container name
+         --  and refine value on model type.
+
+         return Ultimate_Cursor_Type (Etype (Iterable_Info.Entity));
+      else
+
+         --  We have found the ultimate model type. Quantification is
+         --  done on its cursor type.
+
+         return Get_Cursor_Type (Typ);
+      end if;
+   end Ultimate_Cursor_Type;
 
 end CE_Utils;
