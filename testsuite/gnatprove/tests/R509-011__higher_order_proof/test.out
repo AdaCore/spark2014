@@ -2744,11 +2744,11 @@ spark-higher_order-fold.ads:355:64: info: index check proved (CVC4: 2 VC), in in
 
 spark-higher_order-fold.ads:356:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order2.ads:25
 
-spark-higher_order-fold.ads:356:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order2.ads:25
+spark-higher_order-fold.ads:356:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order2.ads:25
 
 spark-higher_order-fold.ads:356:39: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order2.ads:25
 
-spark-higher_order-fold.ads:356:54: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order2.ads:25
+spark-higher_order-fold.ads:356:54: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order2.ads:25
 
 spark-higher_order-fold.ads:356:67: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order2.ads:25
 
@@ -2800,7 +2800,7 @@ spark-higher_order-fold.ads:412:48: info: index check proved (CVC4: 2 VC), in in
 
 spark-higher_order-fold.ads:413:12: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order3.ads:14
 
-spark-higher_order-fold.ads:414:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:14
+spark-higher_order-fold.ads:414:38: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:14
 
 spark-higher_order-fold.ads:415:28: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:14
 
@@ -2808,7 +2808,7 @@ spark-higher_order-fold.ads:415:48: info: index check proved (CVC4: 2 VC), in in
 
 spark-higher_order-fold.ads:416:12: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order3.ads:14
 
-spark-higher_order-fold.ads:417:25: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:14
+spark-higher_order-fold.ads:417:25: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:14
 
 spark-higher_order-fold.ads:420:17: info: subprogram "Count_Zero" will terminate, terminating annotation has been proved, in instantiation at test_higher_order3.ads:14
 
@@ -3346,13 +3346,13 @@ spark-higher_order-fold.ads:622:65: info: index check proved (CVC4: 2 VC), in in
 
 spark-higher_order-fold.ads:623:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:20
 
-spark-higher_order-fold.ads:623:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:20
+spark-higher_order-fold.ads:623:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:20
 
 spark-higher_order-fold.ads:623:39: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:20
 
 spark-higher_order-fold.ads:623:42: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:20
 
-spark-higher_order-fold.ads:623:57: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:20
+spark-higher_order-fold.ads:623:57: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:20
 
 spark-higher_order-fold.ads:623:70: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:20
 
@@ -3440,7 +3440,7 @@ spark-higher_order-fold.ads:690:54: info: index check proved (CVC4: 2 VC), in in
 
 spark-higher_order-fold.ads:691:12: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order3.ads:28
 
-spark-higher_order-fold.ads:692:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:28
+spark-higher_order-fold.ads:692:38: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:28
 
 spark-higher_order-fold.ads:693:28: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:28
 
@@ -3452,7 +3452,7 @@ spark-higher_order-fold.ads:693:54: info: index check proved (CVC4: 2 VC), in in
 
 spark-higher_order-fold.ads:694:12: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order3.ads:28
 
-spark-higher_order-fold.ads:695:25: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:28
+spark-higher_order-fold.ads:695:25: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:28
 
 spark-higher_order-fold.ads:698:17: info: subprogram "Count_Zero" will terminate, terminating annotation has been proved, in instantiation at test_higher_order3.ads:28
 

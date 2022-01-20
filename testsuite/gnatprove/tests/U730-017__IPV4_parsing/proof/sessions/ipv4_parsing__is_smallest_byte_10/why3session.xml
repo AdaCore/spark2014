@@ -8,54 +8,54 @@
 <path name="ipv4_parsing__is_smallest_byte_10.gnat-json"/>
 <theory name="Ipv4_parsing__is_smallest_byte_10__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+ <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="1590"/></proof>
+  <proof prover="0"><result status="valid" steps="1647"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="2330"/></proof>
+  <proof prover="0"><result status="valid" steps="2441"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="1864"/></proof>
+  <proof prover="0"><result status="valid" steps="1957"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="1944"/></proof>
+  <proof prover="0"><result status="valid" steps="1939"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="1944"/></proof>
+  <proof prover="0"><result status="valid" steps="1939"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="14387"/></proof>
+  <proof prover="0"><result status="valid" steps="14014"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="14384"/></proof>
+  <proof prover="0"><result status="valid" steps="14011"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="15942"/></proof>
+  <proof prover="0"><result status="valid" steps="15575"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="2241"/></proof>
+  <proof prover="0"><result status="valid" steps="2278"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="2345"/></proof>
+  <proof prover="0"><result status="valid" steps="2340"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="2603"/></proof>
+  <proof prover="0"><result status="valid" steps="2634"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="3806"/></proof>
+  <proof prover="0"><result status="valid" steps="3392"/></proof>
   </goal>
  </transf>
  </goal>

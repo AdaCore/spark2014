@@ -77,7 +77,7 @@ math_simple_abstract.adb:47:86: info: range check proved (Z3: 4 VC)
 math_simple_abstract.adb:48:17: info: range check proved (Z3: 2 VC)
 math_simple_abstract.adb:51:07: info: precondition proved (Z3: 1 VC)
 math_simple_abstract.adb:52:07: info: precondition proved (Z3: 1 VC)
-math_simple_abstract.ads:11:20: medium: postcondition might fail, cannot prove not (Divides (X, A) and Divides (X, B))
+math_simple_abstract.ads:8:14: info: postcondition proved (Z3: 2 VC; altergo: 1 VC)
 math_simple_abstract.ads:11:34: info: range check proved (Z3: 2 VC)
 math_simple_abstract.ads:11:53: info: range check proved (Z3: 2 VC)
 math_simple_half.adb:5:06: info: data dependencies proved

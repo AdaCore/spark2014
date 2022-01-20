@@ -948,7 +948,7 @@ sorters.adb:74:29: info: range check proved (CVC4: 4 VC)
 sorters.adb:80:33: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:80:33: info: loop invariant preservation proved (CVC4: 1 VC)
 sorters.adb:82:13: info: loop invariant initialization proved (CVC4: 1 VC)
-sorters.adb:83:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (Current) <= Values (J)
+sorters.adb:82:13: info: loop invariant preservation proved (CVC4: 1 VC)
 sorters.adb:83:26: info: index check proved (CVC4: 4 VC)
 sorters.adb:83:46: info: index check proved (CVC4: 4 VC)
 sorters.adb:85:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -965,10 +965,10 @@ sorters.ads:19:49: info: overflow check proved (CVC4: 2 VC)
 sqrt.adb:2:04: info: initialization of "Approx" proved
 sqrt.adb:4:16: info: division check proved (CVC4: 1 VC)
 sqrt.adb:4:16: info: float overflow check proved (Trivial)
-sqrt.adb:5:17: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 1 should mention X in a precondition]
+sqrt.adb:5:17: info: float overflow check proved (CVC4: 2 VC)
 sqrt.adb:5:26: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]
 sqrt.adb:6:21: info: float overflow check proved (Trivial)
-sqrt.adb:6:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+sqrt.adb:6:31: info: float overflow check proved (CVC4: 1 VC)
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 stacks-more.adb:4:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Stack.Top in 1 .. Max_Size) to subprogram at stacks-more.ads:2]

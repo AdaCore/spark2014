@@ -6,26 +6,31 @@ test.adb:11:16: medium: postcondition might fail
 {"ide_request": "Get_task", "node_ID":15, "loc": false, "full_context": false}
 
 Message
+Message
 Task
 --------------------------- Local Context ---------------------------
+
+Assume1 : dynamic_invariant A True False True True
+
+Assume : A > 0
+
+constant Parity1 : int
+
+constant Parity : int__ref = int__ref'mk Parity1
+
+H : Parity1 = A
+
+constant result'unused'unused : int = Parity1
 
 ------------------------------- Goal --------------------------------
 
 goal def'vc :
-  dynamic_invariant A True False True True ->
-  A > 0 ->
-  (forall test__parity__result:int.
-    let test__parity__result'unused = int__ref'mk test__parity__result in
-    test__parity__result = A ->
-    (let result'unused'unused = test__parity__result in
-     exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))))
+  exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))
 
 
 Process Ended
 Children CST_NODE OK
-Children CST_SPLIT OK
-Children OK
 Unparsed JSON = 0
 Next_unproven = 0
-Node_change = 10
+Node_change = 8
 DONE

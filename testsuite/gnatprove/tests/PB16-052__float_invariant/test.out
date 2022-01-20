@@ -130,7 +130,7 @@ attempt_4.adb:30:50: info: float overflow check proved (Trivial)
 attempt_4.adb:30:71: info: float overflow check proved (Trivial)
 attempt_4.adb:36:34: info: initialization of "Average" proved
 attempt_4.adb:37:09: info: data dependencies proved
-attempt_4.adb:40:19: medium: postcondition might fail
+attempt_4.adb:40:19: info: postcondition proved (colibri: 1 VC)
 attempt_4.adb:40:32: info: range check proved (CVC4: 2 VC)
 attempt_4.adb:44:25: info: float overflow check proved (CodePeer)
 attempt_4.adb:44:35: info: float overflow check proved (Trivial)

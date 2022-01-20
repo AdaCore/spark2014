@@ -9,7 +9,7 @@
 <path name="use_maps__from_cursors_to_model.gnat-json"/>
 <theory name="Use_maps__from_cursors_to_model__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+ <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -48,7 +48,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="1"><result status="valid" steps="1317"/></proof>
+  <proof prover="1"><result status="valid" steps="1310"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -63,8 +63,8 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="1493"/></proof>
-  <proof prover="1"><result status="unknown" steps="4828"/></proof>
+  <proof prover="0"><result status="valid" steps="1424"/></proof>
+  <proof prover="1"><result status="unknown" steps="4821"/></proof>
   </goal>
  </transf>
  </goal>
