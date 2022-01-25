@@ -470,6 +470,15 @@ package Gnat2Why.Expr is
    --  Return the guard that corresponds to a branch. In programs, also
    --  generate a check that dynamic choices are in the subtype Choice_Type.
 
+   function Transform_Discrete_Choices
+     (Choices      : List_Id;
+      Choice_Type  : Opt_Type_Kind_Id;
+      Matched_Expr : W_Term_Id;
+      Params       : Transformation_Params)
+      return W_Pred_Id
+   is (+Transform_Discrete_Choices
+          (Choices, Choice_Type, +Matched_Expr, EW_Pred, Params));
+
    function Transform_Expr
      (Expr          : N_Subexpr_Id;
       Expected_Type : W_Type_Id;

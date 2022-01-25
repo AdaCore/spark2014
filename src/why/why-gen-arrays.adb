@@ -2014,9 +2014,8 @@ package body Why.Gen.Arrays is
                   Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => Typ,
-                  Def         => New_Discrete_Constant
-                    (Value => Value,
-                     Typ   => Typ)));
+                  Def         => New_Discrete_Constant (Value => Value,
+                                                        Typ   => Typ)));
          Subst (Cursor) :=
            New_Clone_Substitution
              (Kind      => EW_Function,
@@ -2289,7 +2288,8 @@ package body Why.Gen.Arrays is
       Expr   : W_Expr_Id;
       Attr   : Attribute_Id;
       Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
+      Typ    : W_Type_Id := EW_Int_Type)
+      return W_Expr_Id
    is
       W_Ty         : constant W_Type_Id := Get_Type (Expr);
       Ty           : constant Entity_Id := Get_Ada_Node (+W_Ty);
@@ -2678,7 +2678,8 @@ package body Why.Gen.Arrays is
    function New_Bounds_Equality
      (Left_Arr : W_Term_Id;
       Right_Ty : Entity_Id;
-      Params   : Transformation_Params := Body_Params) return W_Pred_Id
+      Params   : Transformation_Params := Body_Params)
+      return W_Pred_Id
    is
       Dim          : constant Positive :=
         Positive (Number_Dimensions (Right_Ty));
@@ -2747,7 +2748,8 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Args   : W_Expr_Array;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id
+      Params : Transformation_Params := Body_Params)
+      return W_Expr_Id
    is
       Rep_Ty : constant Entity_Id := Retysp (Ty);
       Dim       : constant Positive := Positive (Number_Dimensions (Rep_Ty));

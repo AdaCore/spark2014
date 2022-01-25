@@ -200,7 +200,8 @@ package body Gnat2Why.Subprograms is
      (Function_Entity    : Entity_Id;
       Logic_Func_Binders : Item_Array;
       W_Return_Type      : W_Type_Id;
-      Params             : Transformation_Params) return W_Expr_Id;
+      Params             : Transformation_Params)
+      return W_Term_Id;
    --  @param Function_Entity entity of a function
    --  @param Logic_Func_Binders binders for Function_Entity's declaration if
    --     local names should be used for these binders
@@ -2033,16 +2034,14 @@ package body Gnat2Why.Subprograms is
            (Result,
             New_Assert
               (Pred     =>
-                   +New_VC_Expr
-                 (Prag,
-                  New_Call
-                    (Name => Int_Infix_Le,
-                     Typ  => EW_Bool_Type,
-                     Domain => EW_Pred,
-                     Args =>
-                       (+Count, New_Integer_Constant (Value => Uint_1))),
-                  VC_Disjoint_Contract_Cases,
-                  EW_Pred),
+                 New_VC_Pred
+                   (Prag,
+                    New_Call
+                      (Name => Int_Infix_Le,
+                       Typ  => EW_Bool_Type,
+                       Args =>
+                         (+Count, New_Integer_Constant (Value => Uint_1))),
+                    VC_Disjoint_Contract_Cases),
             Assert_Kind => EW_Check));
       end if;
 
@@ -2054,16 +2053,14 @@ package body Gnat2Why.Subprograms is
            (Result,
             New_Assert
               (Pred       =>
-                   +New_VC_Expr
-                 (Prag,
-                  New_Call
-                    (Domain => EW_Pred,
-                     Typ    => EW_Bool_Type,
-                     Name   => Int_Infix_Ge,
-                     Args => (+Count,
-                              New_Integer_Constant (Value => Uint_1))),
-                  VC_Complete_Contract_Cases,
-                  EW_Pred),
+                 New_VC_Pred
+                   (Prag,
+                    New_Call
+                      (Typ    => EW_Bool_Type,
+                       Name   => Int_Infix_Ge,
+                       Args => (+Count,
+                                New_Integer_Constant (Value => Uint_1))),
+                    VC_Complete_Contract_Cases),
                Assert_Kind => EW_Check));
       end if;
 
@@ -2146,14 +2143,13 @@ package body Gnat2Why.Subprograms is
                         (Expr => True_Prog,
                          To   => Type_Of_Node (Consequence)))),
             New_Assert
-              (Pred => +New_VC_Expr
+              (Pred => New_VC_Pred
                  (Contract_Case,
-                  +New_Conditional
+                  New_Conditional
                     (Ada_Node    => Contract_Case,
                      Condition   => Enabled_Pred,
                      Then_Part   => Transform_Pred (Consequence, Params)),
-                  VC_Contract_Case,
-                  EW_Pred),
+                  VC_Contract_Case),
                Assert_Kind => EW_Assert));
       end Do_One_Contract_Case;
 
@@ -2282,11 +2278,12 @@ package body Gnat2Why.Subprograms is
      (Function_Entity    : Entity_Id;
       Logic_Func_Binders : Item_Array;
       W_Return_Type      : W_Type_Id;
-      Params             : Transformation_Params) return W_Expr_Id
+      Params             : Transformation_Params)
+      return W_Term_Id
    is
       Value : constant Node_Id :=
         Retrieve_Inline_Annotation (Function_Entity);
-      W_Def : W_Expr_Id;
+      W_Def : W_Term_Id;
    begin
       if No (Value) then
          W_Def := Why_Empty;
@@ -2310,10 +2307,9 @@ package body Gnat2Why.Subprograms is
 
          --  Translate the Value expression in Why.
 
-         W_Def := Transform_Expr
+         W_Def := Transform_Term
            (Expr          => Value,
             Expected_Type => W_Return_Type,
-            Domain        => EW_Term,
             Params        => Params);
 
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -2410,7 +2406,7 @@ package body Gnat2Why.Subprograms is
          then Symbol_Sets.To_Set (NID (GP_Inline_Marker))
          else Symbol_Sets.Empty_Set);
 
-      Def : W_Expr_Id;
+      Def : W_Term_Id;
 
    --  Start of processing for Declare_Logic_Functions
 
@@ -2440,23 +2436,21 @@ package body Gnat2Why.Subprograms is
 
             elsif Is_Modular_Integer_Type (Source_Type) then
                Def := New_Call
-                 (Domain  => EW_Term,
-                  Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
+                 (Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
                   Binders => Logic_Why_Binders,
                   Typ     => Why_Type);
 
             else
                pragma Assert (Is_Modular_Integer_Type (Target_Type));
                Def := New_Call
-                 (Domain  => EW_Term,
-                  Name    => MF_BVs (Base_Why_Type (Target_Type)).UC_Of_Int,
+                 (Name    => MF_BVs (Base_Why_Type (Target_Type)).UC_Of_Int,
                   Binders => Logic_Why_Binders,
                   Typ     => Why_Type);
             end if;
          end;
+
       else
-         Def :=
-           Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, Params);
+         Def := Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, Params);
       end if;
 
       --  Generate a logic function
@@ -2469,7 +2463,7 @@ package body Gnat2Why.Subprograms is
             Binders     => Logic_Why_Binders,
             Location    => No_Location,
             Labels      => Labels,
-            Def         => Def,
+            Def         => +Def,
             Return_Type => Why_Type));
 
       --  Generate the guard for the postcondition of the function
@@ -3018,8 +3012,7 @@ package body Gnat2Why.Subprograms is
 
             Params.Phase := Generate_Contract_For_Body;
             Post := Transform_Pred (Expr, EW_Bool_Type, Params);
-            Post :=
-              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred);
+            Post := New_VC_Pred (Init_Cond, Post, VC_Initial_Condition);
 
             --  Generate program to check the absence of run-time errors in the
             --  initial condition.
@@ -3074,8 +3067,7 @@ package body Gnat2Why.Subprograms is
             Append
               (Why_Body,
                New_Assert
-                 (Pred        =>
-                      +New_VC_Expr (E, +Check, VC_Invariant_Check, EW_Pred),
+                 (Pred        => New_VC_Pred (E, Check, VC_Invariant_Check),
                   Assert_Kind => EW_Assert));
          end if;
       end;
@@ -3715,22 +3707,20 @@ package body Gnat2Why.Subprograms is
          then
             return New_Assert
               (Pred        =>
-                 +New_VC_Expr
-                 (Ada_Node => Find_Inline_Pragma (E),
-                  Expr     =>
-                    New_Comparison
-                      (Symbol => Why_Eq,
-                       Left   => New_Deref
-                         (Right => Result_Name,
-                          Typ   => Get_Typ (Result_Name)),
-                       Right  => Compute_Inlined_Expr
-                         (Function_Entity    => E,
-                          Logic_Func_Binders => (1 .. 0 => <>),
-                          W_Return_Type      => Get_Typ (Result_Name),
-                          Params             => Params),
-                       Domain => EW_Pred),
-                    Reason   => VC_Inline_Check,
-                    Domain   => EW_Pred),
+                 New_VC_Pred
+                   (Ada_Node => Find_Inline_Pragma (E),
+                    Expr     =>
+                      New_Comparison
+                        (Symbol => Why_Eq,
+                         Left   => New_Deref
+                           (Right => Result_Name,
+                            Typ   => Get_Typ (Result_Name)),
+                         Right  => Compute_Inlined_Expr
+                           (Function_Entity    => E,
+                            Logic_Func_Binders => (1 .. 0 => <>),
+                            W_Return_Type      => Get_Typ (Result_Name),
+                            Params             => Params)),
+                    Reason   => VC_Inline_Check),
                Assert_Kind => EW_Assert);
          else
             return +Void;
@@ -3751,11 +3741,10 @@ package body Gnat2Why.Subprograms is
          else
             return New_Assert
               (Pred        =>
-                 +New_VC_Expr
+                 New_VC_Pred
                    (Ada_Node => E,
-                    Expr     => +Check,
-                    Reason   => VC_Invariant_Check,
-                    Domain   => EW_Pred),
+                    Expr     => Check,
+                    Reason   => VC_Invariant_Check),
                Assert_Kind => EW_Assert);
          end if;
       end Check_Invariants_Of_Outputs;
@@ -4009,11 +3998,10 @@ package body Gnat2Why.Subprograms is
                return Why_Empty;
             else
                return
-                 +New_VC_Expr (Post_N,
-                               +Get_Static_Call_Contract
-                                 (Mark_Params, E, Pragma_Postcondition),
-                               VC_Postcondition,
-                               EW_Pred);
+                 New_VC_Pred (Post_N,
+                              Get_Static_Call_Contract
+                                (Mark_Params, E, Pragma_Postcondition),
+                              VC_Postcondition);
             end if;
          else
             return Why_Empty;
@@ -4701,10 +4689,9 @@ package body Gnat2Why.Subprograms is
       begin
          if Entity_Body_In_SPARK (E) then
             Post :=
-              +New_VC_Expr (Ada_Node   => E,
-                            Expr       => +False_Pred,
-                            Reason     => VC_Task_Termination,
-                            Domain     => EW_Pred);
+              New_VC_Pred (Ada_Node   => E,
+                           Expr       => False_Pred,
+                           Reason     => VC_Task_Termination);
          else
             Post := Why_Empty;
          end if;

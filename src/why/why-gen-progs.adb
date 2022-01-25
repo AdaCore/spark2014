@@ -227,11 +227,10 @@ package body Why.Gen.Progs is
           (Ada_Node => Ada_Node,
            Expr     => Expr,
            Post     =>
-           +New_VC_Expr
-             (Ada_Node => Ada_Node,
-              Expr     => +Post,
-              Reason   => Reason,
-              Domain   => EW_Pred),
+             New_VC_Pred
+               (Ada_Node => Ada_Node,
+                Expr     => Post,
+                Reason   => Reason),
            Typ      => Get_Type (+Expr));
    end New_Located_Abstract;
 
@@ -240,18 +239,18 @@ package body Why.Gen.Progs is
    ------------------------
 
    function New_Located_Assert
-      (Ada_Node   : Node_Id;
-       Pred       : W_Pred_Id;
-       Reason     : VC_Kind;
-       Kind       : EW_Assert_Kind;
-       Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id
+     (Ada_Node   : Node_Id;
+      Pred       : W_Pred_Id;
+      Reason     : VC_Kind;
+      Kind       : EW_Assert_Kind;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Prog_Id
    is
       (New_Assert (Ada_Node    => Ada_Node,
-                   Pred        => +New_VC_Expr (Ada_Node   => Ada_Node,
-                                                Expr       => +Pred,
-                                                Reason     => Reason,
-                                                Check_Info => Check_Info,
-                                                Domain     => EW_Pred),
+                   Pred        => New_VC_Pred (Ada_Node   => Ada_Node,
+                                               Expr       => Pred,
+                                               Reason     => Reason,
+                                               Check_Info => Check_Info),
                    Assert_Kind => Kind));
 
    ------------------------
@@ -260,7 +259,8 @@ package body Why.Gen.Progs is
 
    function New_Simpl_Any_Prog
      (T    : W_Type_Id;
-      Pred : W_Pred_OId := Why_Empty) return W_Prog_Id
+      Pred : W_Pred_OId := Why_Empty)
+      return W_Prog_Id
    is
    begin
       return

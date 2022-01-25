@@ -688,17 +688,15 @@ package body Gnat2Why.Expr.Loops is
 
                      Inv_Check :=
                        New_Binding (Name    => One_Inv_Var,
-                                    Def     => +One_Inv_Check,
-                                    Context =>
-                                      +New_Ignore (Prog => Inv_Check));
+                                    Def     => One_Inv_Check,
+                                    Context => New_Ignore (Prog => Inv_Check));
 
                      --  Add the predicate for the Nth loop invariant
 
                      Why_Invariants (Count) :=
-                       +New_VC_Expr (Ada_Node => Expr,
-                                     Expr     => +One_Invariant,
-                                     Reason   => VC_Loop_Invariant,
-                                     Domain   => EW_Pred);
+                       New_VC_Pred (Ada_Node => Expr,
+                                    Expr     => One_Invariant,
+                                    Reason   => VC_Loop_Invariant);
                      Count := Count - 1;
                   end;
                end loop;
