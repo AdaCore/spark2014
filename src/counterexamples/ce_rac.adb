@@ -94,23 +94,14 @@ package body CE_RAC is
      (Ty => Ty_Enum, Enum_Entity => E);
    --  Make an enum value from an enumeration literal E
 
-   function String_Value
-     (First : Big_Integer;
-      S     : Unbounded_String)
-      return Value
-   is
-     (Ty             => Ty_String,
-      String_First   => First,
-      String_Content => S);
-
-   function String_Value (First : Big_Integer; S : String) return Value is
-     (String_Value (First, To_Unbounded_String (S)));
-
    function Enum_Value (I : Uint; Ty : Entity_Id) return Value;
    --  Make an enum value from an enum index I
 
    function Record_Value (F : Fields.Map; Ty : Entity_Id) return Value;
    --  Make a record value with fields F
+
+   function String_Value (Str : String) return Value;
+   --  Make an array value for string Str
 
    function Array_Value
      (First, Last : Big_Integer;
@@ -144,9 +135,6 @@ package body CE_RAC is
    function Value_Character (V : Value) return Character;
    --  Get the value of a enumeration value as a character, fail for other
    --  types.
-
-   function Value_String (V : Value) return String;
-   --  Get the value of a string value, fail for other types;
 
    function To_Integer (I : Uint) return Integer is
      (Integer (UI_To_Int (I)));
@@ -613,6 +601,7 @@ package body CE_RAC is
    begin
       --  ??? Cannot use Values_Map."=" because cannot define "=" for Value
       --  before definition of Values_Map
+      --  This is not a valid implementation of Ada equality over arrays.
       if M1.Length /= M2.Length then
          return False;
       end if;
@@ -632,13 +621,17 @@ package body CE_RAC is
       and then
         (case V1.Ty is
             when Ty_Enum      =>
-               V1.Enum_Entity = V2.Enum_Entity,
+               (Nkind (V1.Enum_Entity) = N_Character_Literal)
+               = (Nkind (V2.Enum_Entity) = N_Character_Literal)
+               and then
+                 (if Nkind (V1.Enum_Entity) = N_Character_Literal
+                  then Char_Literal_Value (V1.Enum_Entity) =
+                    Char_Literal_Value (V2.Enum_Entity)
+                  else V1.Enum_Entity = V2.Enum_Entity),
             when Ty_Integer   =>
                V1.Integer_Content = V2.Integer_Content,
             when Ty_Record    =>
                V1.Record_Fields = V2.Record_Fields,
-            when Ty_String    =>
-               V1.String_Content = V2.String_Content,
             when Ty_Array     =>
                ((V1.Array_Others = null) = (V2.Array_Others = null))
                and then V1.Array_Values = V2.Array_Values));
@@ -815,8 +808,6 @@ package body CE_RAC is
                           else new Value'(Copy (V.Array_Others.all)))),
          when Ty_Integer =>
             Integer_Value (V.Integer_Content),
-         when Ty_String  =>
-            String_Value (V.String_First, V.String_Content),
          when Ty_Enum    =>
             Enum_Value (V.Enum_Entity));
 
@@ -902,9 +893,6 @@ package body CE_RAC is
             end loop;
             return Record_Value (F, Ty);
          end;
-
-      elsif Is_Standard_String_Type (Ty) then
-         return String_Value (1, "");
 
       elsif Is_Private_Type (Ty) then
          return Default_Value (Full_View (Ty));
@@ -1440,34 +1428,7 @@ package body CE_RAC is
             Other :=
               new Value'(Import (V.Array_Others.all, Comp_Ty, N));
 
-            if Is_Standard_String_Type (Ty) then
-               if Lst - Fst > 10_000 then
-                  RAC_Incomplete ("String too long");
-               --  ??? Next test should not be needed, as counterexample value
-               --  should already be valid in its type due to prior filtering.
-               elsif Fst <= Lst and then Fst <= 0 then
-                  RAC_Stuck
-                    ("Non-empty string starting at non-positive index");
-               else
-                  declare
-                     S       : String (To_Integer (Fst) .. To_Integer (Lst));
-                     Default : constant Character :=
-                       Value_Character (Other.all);
-                  begin
-                     for K in S'Range loop
-                        if Values.Contains (K) then
-                           S (K) := Value_Character (Values (K).all);
-                        else
-                           S (K) := Default;
-                        end if;
-                     end loop;
-
-                     return String_Value (Fst, S);
-                  end;
-               end if;
-            else
-               return Array_Value (Fst, Lst, Values, Other);
-            end if;
+            return Array_Value (Fst, Lst, Values, Other);
          end;
 
       else
@@ -1889,7 +1850,34 @@ package body CE_RAC is
           Get_Name_String (Chars (Scope (Sinfo.Nodes.Scope (E)))) = "ada"
       then
          if Do_Sideeffects then
-            Put_Line (To_String (Sc (Sc.First).Val.String_Content));
+            declare
+               Val     : Value_Access renames Sc (Sc.First).Val;
+               Fst     : Big_Integer renames Val.Array_First;
+               Lst     : Big_Integer renames Val.Array_Last;
+               S       : String (To_Integer (Fst) .. To_Integer (Lst));
+               Default : constant Character :=
+                 Value_Character (Val.Array_Others.all);
+            begin
+               if Lst - Fst > 10_000
+               then
+                  RAC_Incomplete ("String too long");
+               --  ??? Next test should not be needed, as counterexample value
+               --  should already be valid in its type due to prior filtering.
+               elsif Fst <= Lst and then Fst <= 0 then
+                  RAC_Stuck
+                    ("Non-empty string starting at non-positive index");
+               else
+                  for K in S'Range loop
+                     if Val.Array_Values.Contains (K) then
+                        S (K) := Value_Character (Val.Array_Values (K).all);
+                     else
+                        S (K) := Default;
+                     end if;
+                  end loop;
+
+                  Put_Line (S);
+               end if;
+            end;
          end if;
          return No_Value;
       else
@@ -2263,32 +2251,16 @@ package body CE_RAC is
                   declare
                      V : constant Value := RAC_Expr (Prefix (N));
                   begin
-                     if Is_Standard_String_Type (Etype (Prefix (N))) then
-                        case V.Ty is
-                           when Ty_String =>
-                              if Attribute_Name (N) = Snames.Name_First then
-                                 return Integer_Value (V.String_First);
-                              else
-                                 return Integer_Value
-                                   (V.String_First - 1 +
-                                      To_Big_Integer
-                                        (Length (V.String_Content)));
-                              end if;
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     else
-                        case V.Ty is
-                           when Ty_Array =>
-                              if Attribute_Name (N) = Snames.Name_First then
-                                 return Integer_Value (V.Array_First);
-                              else
-                                 return Integer_Value (V.Array_Last);
-                              end if;
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end if;
+                     case V.Ty is
+                        when Ty_Array =>
+                           if Attribute_Name (N) = Snames.Name_First then
+                              return Integer_Value (V.Array_First);
+                           else
+                              return Integer_Value (V.Array_Last);
+                           end if;
+                        when others =>
+                           raise Program_Error;
+                     end case;
                   end;
 
                --  T'First, T'Last
@@ -2427,7 +2399,7 @@ package body CE_RAC is
                     ("RAC_Attribute_Reference 'Image without argument", N);
                end if;
                return String_Value
-                 (1, To_String (RAC_Expr (First (Expressions (N)))));
+                 (To_String (RAC_Expr (First (Expressions (N)))));
 
             when Snames.Name_Length =>
                if not Is_Empty_List (Expressions (N)) then
@@ -2437,11 +2409,7 @@ package body CE_RAC is
                declare
                   V : constant Value := RAC_Expr (Prefix (N));
                begin
-                  if Is_Standard_String_Type (Etype (Prefix (N))) then
-                     return Integer_Value
-                       (To_Big_Integer
-                          (Value_String (RAC_Expr (Prefix (N)))'Length));
-                  elsif Is_Array_Type (Etype (Prefix (N))) then
+                  if Is_Array_Type (Etype (Prefix (N))) then
                      case V.Ty is
                         when Ty_Array =>
                            return Integer_Value
@@ -2550,12 +2518,67 @@ package body CE_RAC is
                end if;
 
             when N_Op_Concat =>
-               if Left.Ty = Ty_String and then Right.Ty = Ty_String then
-                  return
-                    String_Value (Left.String_First,
-                                  Value_String (Left) & Value_String (Right));
+               if Is_Constrained (Etype (N)) then
+                  RAC_Unsupported
+                    ("RAC_Binary_Op concat on constrained type", N);
+               elsif Is_Component_Left_Opnd (N)
+                 or else Is_Component_Right_Opnd (N)
+               then
+                  RAC_Unsupported
+                    ("RAC_Binary_Op concat with a component operand", N);
+
+               --  Concatenation of 2 arrays without sliding
+
                else
-                  RAC_Unsupported ("RAC_Binary_Op concat non string", N);
+                  declare
+                     R_Length : constant Big_Integer :=
+                       Right.Array_Last - Right.Array_First + 1;
+                     L_Length : constant Big_Integer :=
+                       Left.Array_Last - Left.Array_First + 1;
+
+                  begin
+                     --  If Left or Right is empty, return the other
+
+                     if L_Length = 0 then
+                        return Copy (Right);
+                     elsif R_Length = 0 then
+                        return Copy (Left);
+
+                     --  Otherwise, add the elements of Right into Left
+
+                     elsif R_Length > 1000 then
+                        RAC_Unsupported
+                          ("RAC_Binary_Op concat with big right operand", N);
+                     else
+                        declare
+                           Res     : Value := Copy (Left);
+                           R_First : constant Integer :=
+                             To_Integer (Right.Array_First);
+                           L_Last  : constant Integer :=
+                             To_Integer (Left.Array_Last);
+                           Val     : Value_Access;
+
+                        begin
+                           for K in 1 .. To_Integer (R_Length) loop
+                              if Right.Array_Values.Contains (R_First - 1 + K)
+                              then
+                                 Val := Right.Array_Values (R_First - 1 + K);
+                              else
+                                 Val := Right.Array_Others;
+                              end if;
+
+                              if Val /= null then
+                                 Res.Array_Values.Insert
+                                   (L_Last + K,
+                                    new Value'(Copy (Val.all)));
+                              end if;
+                           end loop;
+
+                           Res.Array_Last := Left.Array_Last + R_Length;
+                           return Res;
+                        end;
+                     end if;
+                  end;
                end if;
 
             when N_Op_Shift =>
@@ -2688,7 +2711,7 @@ package body CE_RAC is
             Res := Enum_Value (N);
 
          when N_String_Literal =>
-            Res := String_Value (1, Stringt.To_String (Strval (N)));
+            Res := String_Value (Stringt.To_String (Strval (N)));
 
          when N_Identifier | N_Expanded_Name =>
             declare
@@ -2769,36 +2792,22 @@ package body CE_RAC is
                     ("RAC_Expr multidimensional array access", N);
                end if;
 
-               if A.Ty = Ty_Array then
-                  declare
-                     C : constant Values_Map.Cursor :=
-                       A.Array_Values.Find (To_Integer (I));
-                  begin
-                     if I < A.Array_First or else A.Array_Last < I then
-                        --  ??? The index check VC is generated for the first
-                        --  expr
-                        RAC_Failure (E, VC_Index_Check);
-                     end if;
-
-                     if Values_Map.Has_Element (C) then
-                        Res := A.Array_Values (C).all;
-                     else
-                        Res := Copy (A.Array_Others.all);
-                     end if;
-                  end;
-               else
-                  if I < A.String_First
-                    or else A.String_First
-                      + To_Big_Integer (Length (A.String_Content)) <= I
-                  then
+               declare
+                  C : constant Values_Map.Cursor :=
+                    A.Array_Values.Find (To_Integer (I));
+               begin
+                  if I < A.Array_First or else A.Array_Last < I then
+                     --  ??? The index check VC is generated for the first
+                     --  expr
                      RAC_Failure (E, VC_Index_Check);
                   end if;
 
-                  Res := Character_Value
-                    (Element
-                       (A.String_Content,
-                        To_Integer (I - A.String_First + 1)));
-               end if;
+                  if Values_Map.Has_Element (C) then
+                     Res := A.Array_Values (C).all;
+                  else
+                     Res := Copy (A.Array_Others.all);
+                  end if;
+               end;
             end;
 
          when N_Quantified_Expression =>
@@ -3085,27 +3094,13 @@ package body CE_RAC is
                              ("RAC_Expr assignment", "many indices");
                         end if;
 
-                        if A.Ty = Ty_Array then
-                           if I < A.Array_First or else A.Array_Last < I then
-                              --  ??? Index check VC is generated for the 1st
-                              --  expr
-                              RAC_Failure (E, VC_Index_Check);
-                           end if;
-
-                           A.all.Array_Values.Include (To_Integer (I), RHS);
-                        else
-                           if I < A.String_First
-                             or else A.String_First +
-                               To_Big_Integer (Length (A.String_Content)) <= I
-                           then
-                              RAC_Failure (E, VC_Index_Check);
-                           end if;
-
-                           Replace_Element
-                             (A.String_Content,
-                              To_Integer (I - A.String_First + 1),
-                              Value_Character (RHS.all));
+                        if I < A.Array_First or else A.Array_Last < I then
+                           --  ??? Index check VC is generated for the 1st
+                           --  expr
+                           RAC_Failure (E, VC_Index_Check);
                         end if;
+
+                        A.all.Array_Values.Include (To_Integer (I), RHS);
                      end;
 
                   when others =>
@@ -3340,6 +3335,26 @@ package body CE_RAC is
       end if;
    end Set_Value;
 
+   ------------------
+   -- String_Value --
+   ------------------
+
+   function String_Value (Str : String) return Value is
+      Other  : constant Value_Access :=
+        new Value'(Default_Value (Standard_Character));
+      Values : Values_Map.Map;
+      First  : constant Big_Integer := To_Big_Integer (Str'First);
+      Last   : constant Big_Integer := To_Big_Integer (Str'Last);
+   begin
+      for I in Str'Range loop
+         Values.Insert
+           (I,
+            new Value'(Enum_Value
+              (UI_From_Int (Character'Pos (Str (I))), Standard_Character)));
+      end loop;
+      return Array_Value (First, Last, Values, Other);
+   end String_Value;
+
    ----------------
    -- To_Integer --
    ----------------
@@ -3397,8 +3412,7 @@ package body CE_RAC is
          when Ty_Integer => To_String (V.Integer_Content),
          when Ty_Record  => To_String (V.Record_Fields),
          when Ty_Array   => To_String
-           (V.Array_First, V.Array_Last, V.Array_Values, V.Array_Others),
-         when Ty_String  => To_String (V.String_Content));
+           (V.Array_First, V.Array_Last, V.Array_Values, V.Array_Others));
 
    function To_String (V : Opt_Value) return String is
      (if V.Present then To_String (V.Content) else "NONE");
@@ -3525,7 +3539,7 @@ package body CE_RAC is
          when Ty_Enum =>
             return Character'Val
               (To_Integer (Char_Literal_Value (V.Enum_Entity)));
-         when Ty_Integer | Ty_Array | Ty_Record | Ty_String =>
+         when Ty_Integer | Ty_Array | Ty_Record =>
             raise Program_Error with "Value_Character";
       end case;
    end Value_Character;
@@ -3541,7 +3555,7 @@ package body CE_RAC is
             return V.Integer_Content;
          when Ty_Enum =>
             return To_Big_Integer (Enum_Entity_To_Integer (V.Enum_Entity));
-         when Ty_Array | Ty_Record | Ty_String =>
+         when Ty_Array | Ty_Record =>
             raise Program_Error with "Value_Enum_Integer";
       end case;
    end Value_Enum_Integer;
@@ -3558,18 +3572,5 @@ package body CE_RAC is
 
       return V.Integer_Content;
    end Value_Integer;
-
-   ------------------
-   -- Value_String --
-   ------------------
-
-   function Value_String (V : Value) return String is
-   begin
-      if V.Ty /= Ty_String then
-         raise Program_Error with "Value_String";
-      end if;
-
-      return To_String (V.String_Content);
-   end Value_String;
 
 end CE_RAC;

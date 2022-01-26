@@ -58,7 +58,7 @@ package CE_RAC is
    --  functions grows higher than this number. Raises RAC_Unexpected_Error
    --  when something unforeseen happens.
 
-   type Value_Type is (Ty_Integer, Ty_Enum, Ty_Record, Ty_Array, Ty_String);
+   type Value_Type is (Ty_Integer, Ty_Enum, Ty_Record, Ty_Array);
    --  The type of a value in the RAC engine
 
    type Value;
@@ -96,9 +96,6 @@ package CE_RAC is
             Array_Others    : Value_Access;
             --  Sparse representation of array values following counterexample
             --  array values
-         when Ty_String =>
-            String_First    : Big_Integer;
-            String_Content  : Unbounded_String;
       end case;
    end record;
    --  A value in the RAC engine
