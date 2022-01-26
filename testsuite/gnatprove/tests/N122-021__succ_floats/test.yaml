@@ -1,3 +1,2 @@
 prove_all:
-  steps: 250000
-  prover: ["cvc4", "z3"]
+  steps: 3000

@@ -11,28 +11,28 @@
  <goal name="def&#39;vc" proved="true">
  <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="2830"/></proof>
+  <proof prover="0"><result status="valid" steps="2832"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="2830"/></proof>
+  <proof prover="0"><result status="valid" steps="2832"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="2830"/></proof>
+  <proof prover="0"><result status="valid" steps="2832"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="2830"/></proof>
+  <proof prover="0"><result status="valid" steps="2832"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="3445"/></proof>
+  <proof prover="0"><result status="valid" steps="3338"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="3445"/></proof>
+  <proof prover="0"><result status="valid" steps="3338"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="3445"/></proof>
+  <proof prover="0"><result status="valid" steps="3338"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="3445"/></proof>
+  <proof prover="0"><result status="valid" steps="3338"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -43,7 +43,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="unknown" steps="31859"/></proof>
+  <proof prover="0"><result status="unknown" steps="31945"/></proof>
   <proof prover="1"><result status="valid" steps="23559"/></proof>
   </goal>
  </transf>
