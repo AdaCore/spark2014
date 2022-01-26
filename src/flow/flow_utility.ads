@@ -662,6 +662,14 @@ package Flow_Utility is
                 then Nkind (F.Node) in N_Entity);
    --  Returns True if a Flow_Id needs separate representation for its bounds
 
+   function Ignore_Record_Type_Discriminants (Vars_Used : Flow_Id_Sets.Set)
+                                              return Flow_Id_Sets.Set
+     with Post =>
+       Ignore_Record_Type_Discriminants'Result.Is_Subset (Of_Set => Vars_Used);
+   --  Filters out all <Record Type>.Discriminant constructs returned from
+   --  Get_Variables when recursing into the default expression of a record
+   --  component.
+
    function Is_Constituent (N : Node_Id) return Boolean;
    --  Returns True iff N is a constituent of an abstract state
 

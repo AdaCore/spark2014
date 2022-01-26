@@ -3836,6 +3836,69 @@ package body Flow.Control_Flow_Graph is
       --  for a use of Unique_Component, which is needed because D is taken
       --  from a Flow_Id, where it was processed with Unique_Component.
 
+      function Component_Less (Left, Right : Flow_Id) return Boolean
+        with Pre =>
+          Left.Kind in Direct_Mapping | Record_Field
+          and then Right.Kind in Direct_Mapping | Record_Field
+          and then Left.Variant = Normal_Use
+          and then Right.Variant = Normal_Use
+          and then Left.Node = Right.Node;
+      --  Ordering function for sorting. See Sort_Discriminants_First.
+
+      --------------------
+      -- Component_Less --
+      --------------------
+
+      function Component_Less (Left, Right : Flow_Id) return Boolean is
+         Discr_Left  : constant Boolean := Is_Discriminant (Left);
+         Discr_Right : constant Boolean := Is_Discriminant (Right);
+      begin
+         if Discr_Left and Discr_Right then
+            if Left.Component.Length = Right.Component.Length then
+               return Left < Right;
+            else
+               return Left.Component.Length < Right.Component.Length;
+            end if;
+         elsif Discr_Left xor Discr_Right then
+            return Discr_Left;
+         else
+            return Left < Right;
+         end if;
+      end Component_Less;
+
+      package Component_Lists is new Ada.Containers.Doubly_Linked_Lists
+        (Element_Type => Flow_Id);
+
+      package Component_Sorting is new Component_Lists.Generic_Sorting
+        ("<" => Component_Less);
+
+      function Sort_Discriminants_First (Components : Flow_Id_Sets.Set)
+                                         return Component_Lists.List
+        with Post => Component_Sorting.Is_Sorted
+                       (Sort_Discriminants_First'Result);
+      --  Sorting function. Sorts a Flow Id set into a list such that outer
+      --  record discriminants come before inner discriminants, then the other
+      --  variables come last.
+
+      ------------------------------
+      -- Sort_Discriminants_First --
+      ------------------------------
+
+      function Sort_Discriminants_First
+        (Components : Flow_Id_Sets.Set)
+         return Component_Lists.List
+      is
+         Sorted : Component_Lists.List;
+      begin
+         for Component of Components loop
+            Sorted.Append (Component);
+         end loop;
+
+         Component_Sorting.Sort (Sorted);
+
+         return Sorted;
+      end Sort_Discriminants_First;
+
       ----------------
       -- Find_Tasks --
       ----------------
@@ -4369,23 +4432,11 @@ package body Flow.Control_Flow_Graph is
       --  initialization (if any).
 
       else
-         for F of
-           Flatten_Variable
-             ((if Present (Alias) then Alias else E),
-              FA.B_Scope)
+         for F of Sort_Discriminants_First
+           (Flatten_Variable
+              ((if Present (Alias) then Alias else E), FA.B_Scope))
          loop
-            if Is_Default_Initialized (F) then
-               Add_Vertex
-                 (FA,
-                  Make_Default_Initialization_Attributes
-                    (FA            => FA,
-                     Scope         => FA.B_Scope,
-                     F             => F,
-                     Loops         => Ctx.Current_Loops,
-                     In_Nested_Pkg => Ctx.In_Nested_Package),
-                  V);
-               Inits.Append (V);
-            elsif Is_Discriminant (F) then
+            if Is_Discriminant (F) then
                declare
                   Composite : constant Entity_Id :=
                     Etype (if F.Component.Length = 1
@@ -4406,6 +4457,14 @@ package body Flow.Control_Flow_Graph is
                                 D => F.Component.Last_Element);
                   --  Constraint expression that initializes discriminant F
 
+                  Constraint_Vars : constant Flow_Id_Sets.Set :=
+                    Get_Variables
+                      (Constraint_Expr,
+                       Scope                => FA.B_Scope,
+                       Target_Name          => Null_Flow_Id,
+                       Fold_Functions       => Inputs,
+                       Use_Computed_Globals => not FA.Generating_Globals);
+
                   Funcs : Node_Sets.Set;
 
                begin
@@ -4420,12 +4479,10 @@ package body Flow.Control_Flow_Graph is
                     (FA,
                      Make_Basic_Attributes
                        (Var_Def       => Flow_Id_Sets.To_Set (F),
-                        Var_Ex_Use    => Get_Variables
-                          (Constraint_Expr,
-                           Scope                => FA.B_Scope,
-                           Target_Name          => Null_Flow_Id,
-                           Fold_Functions       => Inputs,
-                           Use_Computed_Globals => not FA.Generating_Globals),
+                        Var_Ex_Use    =>
+                          Process_Discriminants
+                            (Intermediate_Vars_Used => Constraint_Vars,
+                             Var_Defined            => F),
                         Sub_Called    => Funcs,
                         Loops         => Ctx.Current_Loops,
                         In_Nested_Pkg => Ctx.In_Nested_Package,
@@ -4434,6 +4491,17 @@ package body Flow.Control_Flow_Graph is
                      V);
                   Inits.Append (V);
                end;
+            elsif Is_Default_Initialized (F) then
+               Add_Vertex
+                 (FA,
+                  Make_Default_Initialization_Attributes
+                    (FA            => FA,
+                     Scope         => FA.B_Scope,
+                     F             => F,
+                     Loops         => Ctx.Current_Loops,
+                     In_Nested_Pkg => Ctx.In_Nested_Package),
+                  V);
+               Inits.Append (V);
             end if;
          end loop;
 

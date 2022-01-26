@@ -297,14 +297,13 @@ package body Why.Gen.Binders is
             --  For protected types, include a reference to self
 
             if Use_Ent and then Is_Type (Entity) then
-               pragma Assert (Is_Protected_Type (Entity));
 
                --  Do nothing if the entity is a reference to a concurrent type
                --  and they are ignored.
 
                if Ignore_Self then
                   null;
-               else
+               elsif Is_Protected_Type (Entity) then
                   declare
                      Prot_Ty : constant Entity_Id :=
                        (if Is_Type (Entity) then Entity
