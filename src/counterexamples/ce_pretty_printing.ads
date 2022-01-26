@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with CE_Parsing;            use CE_Parsing;
+with CE_Values;             use CE_Values;
 with VC_Kinds;              use VC_Kinds;
 
 package CE_Pretty_Printing is

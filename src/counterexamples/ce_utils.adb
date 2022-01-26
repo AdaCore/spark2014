@@ -23,11 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Strings.Fixed;           use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Atree;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
-with Nlists;
+with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
@@ -53,7 +55,6 @@ package body CE_Utils is
    --------------------------------------
 
    function Compile_Time_Known_Value_Or_Aggr (Op : Node_Id) return Boolean is
-      use Nlists;
    begin
       --  If we have an entity name, then see if it is the name of a constant
       --  and if so, test the corresponding constant value, or the name of
@@ -153,6 +154,218 @@ package body CE_Utils is
 
       return False;
    end Compile_Time_Known_And_Constant;
+
+   ----------------------------------
+   -- Component_Is_Removed_In_Type --
+   ----------------------------------
+
+   function Component_Is_Removed_In_Type
+     (Ty   : Entity_Id;
+      Comp : Entity_Id;
+      Vals : Entity_To_Value_Maps.Map) return Boolean
+   is
+
+      function Eval_Discrete_Choices
+        (Choices : List_Id;
+         Discr   : Big_Integer) return Boolean;
+      --  Evaluate Discr in Choices assuming Choices contains only static
+      --  values.
+
+      function Eval_Others_Choice
+        (Info   : Component_Info;
+         Discr  : Big_Integer) return Boolean;
+      --  Return True is Discr in Choices returns True for all Choices in
+      --  Info.Parent_Var_Part, assuming all the choices contains only static
+      --  values.
+
+      ---------------------------
+      -- Eval_Discrete_Choices --
+      ---------------------------
+
+      function Eval_Discrete_Choices
+        (Choices : List_Id;
+         Discr   : Big_Integer) return Boolean
+      is
+         Choice : Node_Id := First (Choices);
+      begin
+         while Present (Choice) loop
+            pragma Assert (Nkind (Choice) /= N_Others_Choice);
+
+            --  When the choice denotes a subtype with a predicate, check the
+            --  expression against the predicate values.
+
+            if (Nkind (Choice) = N_Subtype_Indication
+                or else (Is_Entity_Name (Choice)
+                         and then Is_Type (Entity (Choice))))
+              and then Has_Predicates (Etype (Choice))
+            then
+               pragma Assert (Has_Static_Predicate (Etype (Choice)));
+               if Eval_Discrete_Choices
+                 (Static_Discrete_Predicate (Etype (Choice)), Discr)
+               then
+                  return True;
+               end if;
+
+            --  The bounds of the range should be compile time known as only
+            --  static choices are allowed in variant parts.
+
+            elsif Nkind (Choice) in N_Subtype_Indication | N_Range
+              or else (Is_Entity_Name (Choice)
+                       and then Is_Type (Entity (Choice)))
+            then
+               declare
+                  Range_Node : constant Node_Id := Get_Range (Choice);
+                  Low        : constant Node_Id := Low_Bound (Range_Node);
+                  High       : constant Node_Id := High_Bound (Range_Node);
+                  Fst, Lst   : Big_Integer;
+               begin
+                  pragma Assert (Compile_Time_Known_Value (Low)
+                                 and then Compile_Time_Known_Value (High));
+                  Fst := From_String (UI_Image (Expr_Value (Low)));
+                  Lst := From_String (UI_Image (Expr_Value (High)));
+
+                  if Discr >= Fst and then Lst >= Discr then
+                     return True;
+                  end if;
+               end;
+
+            --  Single value choices should be compile time known as only
+            --  static choices are allowed in variant parts.
+
+            else
+               declare
+                  Val : Big_Integer;
+               begin
+                  pragma Assert (Compile_Time_Known_Value (Choice));
+                  Val := From_String (UI_Image (Expr_Value (Choice)));
+                  if Discr = Val then
+                     return True;
+                  end if;
+               end;
+            end if;
+
+            Next (Choice);
+         end loop;
+
+         return False;
+      end Eval_Discrete_Choices;
+
+      ------------------------
+      -- Eval_Others_Choice --
+      ------------------------
+
+      function Eval_Others_Choice
+        (Info   : Component_Info;
+         Discr  : Big_Integer) return Boolean
+      is
+         Var_Part : constant Node_Id := Info.Parent_Var_Part;
+         Var      : Node_Id := First (Variants (Var_Part));
+
+      begin
+         while Present (Var) loop
+            if not Is_Others_Choice (Discrete_Choices (Var))
+              and then Eval_Discrete_Choices (Discrete_Choices (Var), Discr)
+            then
+               return False;
+            end if;
+            Next (Var);
+         end loop;
+
+         return True;
+      end Eval_Others_Choice;
+
+      use Entity_To_Value_Maps;
+      Comp_Info : constant Component_Info_Map := Get_Variant_Info (Ty);
+      Info      : Component_Info;
+
+   --  Start of processing for Component_Is_Removed_In_Type
+
+   begin
+      --  If Comp is not a component, it cannot be discriminant dependant
+
+      if Ekind (Comp) /= E_Component then
+         return False;
+      end if;
+
+      --  Go through the enclosing variant parts if any to check the value of
+      --  the corresponding discriminants.
+
+      Info := Get_Component_Info (Comp_Info, Comp);
+
+      while Present (Info.Parent_Variant) loop
+         declare
+            Discr   : constant Node_Id :=
+              Entity (Name (Info.Parent_Var_Part));
+            Cur     : constant Entity_To_Value_Maps.Cursor :=
+              Vals.Find (Discr);
+            Val     : Value_Type;
+            Int_Val : Big_Integer;
+
+         begin
+            --  If we do not have a counterexample value for Discr, the
+            --  component cannot be removed. Go to the next variant part in
+            --  case it uses another discriminant.
+
+            if Cur = No_Element then
+               goto Next_Variant;
+            end if;
+
+            Val := Element (Cur).all;
+            pragma Assert (Val.K = Scalar_K);
+
+            if Val.Scalar_Content = null then
+               goto Next_Variant;
+            end if;
+
+            --  Transform the counterexample value of Discr into a big integer
+
+            case Val.Scalar_Content.K is
+               when Integer_K =>
+                  Int_Val := Val.Scalar_Content.Integer_Content;
+
+               when Enum_K =>
+                  declare
+                     Ent : constant Entity_Id :=
+                       Val.Scalar_Content.Enum_Entity;
+                  begin
+                     if Nkind (Ent) = N_Character_Literal then
+                        Int_Val := From_String
+                          (UI_Image (Char_Literal_Value (Ent)));
+                     else
+                        pragma Assert (Ekind (Ent) = E_Enumeration_Literal);
+                        Int_Val := From_String
+                          (UI_Image (Enumeration_Pos (Ent)));
+                     end if;
+                  end;
+               when others =>
+                  raise Program_Error;
+            end case;
+
+            --  Check the necessary contraint on Discr for Comp to be defined.
+            --  If it is False, the component can be removed.
+
+            declare
+               Cond : constant Boolean :=
+                 (if Is_Others_Choice (Discrete_Choices (Info.Parent_Variant))
+                  then Eval_Others_Choice (Info, Int_Val)
+                  else Eval_Discrete_Choices
+                    (Discrete_Choices (Info.Parent_Variant), Int_Val));
+            begin
+               if not Cond then
+                  return True;
+               end if;
+            end;
+
+            --  The component could not be excluded looking at the value of the
+            --  first enclosing variant part. Go to the enclosing one if any.
+
+            <<Next_Variant>>
+            Info := Get_Component_Info (Comp_Info, Info.Parent_Var_Part);
+         end;
+      end loop;
+
+      return False;
+   end Component_Is_Removed_In_Type;
 
    -------------------------------
    -- Compute_Filename_Previous --

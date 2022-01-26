@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with CE_Values;            use CE_Values;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
@@ -46,6 +47,13 @@ package CE_Utils is
    --  be of the form "'@Loop 4200@'filename.adb" in which case it should
    --  set Is_Previous to true and Ada_Node to the value corresponding to
    --  the integer in location. The function returns the filename itself.
+
+   function Component_Is_Removed_In_Type
+     (Ty   : Entity_Id;
+      Comp : Entity_Id;
+      Vals : Entity_To_Value_Maps.Map) return Boolean;
+   --  Return True if we can infer from the discriminant associations in Vals
+   --  that the component Comp does not occur in the counterexample value.
 
    function Convert_Node (N : Integer) return Node_Id;
    --  Convert an integer to Node_Id. Return empty on exception.

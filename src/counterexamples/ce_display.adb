@@ -30,6 +30,7 @@ with CE_Interval_Sets;
 with CE_Parsing;                  use CE_Parsing;
 with CE_Pretty_Printing;          use CE_Pretty_Printing;
 with CE_Utils;                    use CE_Utils;
+with CE_Values;                   use CE_Values;
 with Erroutc;                     use Erroutc;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why_Args;

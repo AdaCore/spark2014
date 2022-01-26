@@ -26,13 +26,8 @@
 --  This package implements small-step (normal) runtime-assertion checking
 --  (RAC) for SPARK to check counterexamples.
 
-with Ada.Containers;        use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Ordered_Maps;
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Common_Containers;     use Common_Containers;
+with CE_Values;             use CE_Values;
 with Types;                 use Types;
 with VC_Kinds;              use VC_Kinds;
 
@@ -58,58 +53,6 @@ package CE_RAC is
    --  functions grows higher than this number. Raises RAC_Unexpected_Error
    --  when something unforeseen happens.
 
-   type Value_Type is (Ty_Integer, Ty_Enum, Ty_Record, Ty_Array);
-   --  The type of a value in the RAC engine
-
-   type Value;
-   --  A value in the RAC engine
-
-   type Value_Access is access Value;
-   --  A pointer to a value
-
-   package Fields is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Value_Access, -- Access since value type is incomplete
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
-   --  Fields of a record value
-
-   package Values_Map is
-      new Ada.Containers.Ordered_Maps
-       (Key_Type     => Integer,
-        Element_Type => Value_Access);
-   --  Values for a one-dimensional array. Keys may be integers or positions
-   --  for enum values.
-
-   type Value (Ty : Value_Type := Ty_Integer) is record
-      case Ty is
-         when Ty_Integer =>
-            Integer_Content : Big_Integer;
-         when Ty_Enum =>
-            Enum_Entity     : Entity_Id;
-         when Ty_Record =>
-            Record_Fields   : Fields.Map;
-         when Ty_Array =>
-            Array_First     : Big_Integer;
-            Array_Last      : Big_Integer;
-            Array_Values    : Values_Map.Map;
-            Array_Others    : Value_Access;
-            --  Sparse representation of array values following counterexample
-            --  array values
-      end case;
-   end record;
-   --  A value in the RAC engine
-
-   type Opt_Value (Present : Boolean := False) is record
-      case Present is
-         when True =>
-            Content : Value;
-         when False =>
-            null;
-      end case;
-   end record;
-   --  An optional value in the RAC engine
-
    type Result_Kind is
      (Res_Normal,
       --  RAC execution terminated normally, without encountering an invalid
@@ -128,7 +71,7 @@ package CE_RAC is
    type Result (Res_Kind : Result_Kind := Res_Not_Executed) is record
       case Res_Kind is
          when Res_Normal =>
-            Res_Value   : Opt_Value;
+            Res_Value   : Opt_Value_Type;
             --  The result value of toplevel RAC call
          when Res_Failure =>
             Res_Node    : Node_Id;
@@ -148,13 +91,6 @@ package CE_RAC is
    RAC_Unexpected_Error : exception;
    --  Raised when something unforeseen happens, but not program or constraint
    --  error
-
-   function "=" (V1, V2 : Value) return Boolean;
-   --  Test equality of two values
-
-   function To_String (V : Value) return String;
-
-   function To_String (V : Opt_Value) return String;
 
    function To_String (Res : Result) return String;
 

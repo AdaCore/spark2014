@@ -24,6 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;           use Ada.Containers;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Reals;
+use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings.Unbounded;
 with Ada.Unchecked_Conversion;
 with CE_Utils;                 use CE_Utils;
