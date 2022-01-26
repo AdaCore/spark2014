@@ -1,5 +1,6 @@
 procedure P (X1, X2 : Integer; Y1, Y2 : out Integer) with
    Depends => (Y1 => X1, Y2 => X2),
+  --  Dependency contract is correct.
    Post => Y1 = X1 and Y2 = X2       --@POSTCONDITION:PASS
 is
    type T (D1, D2 : Integer) is record
@@ -9,4 +10,7 @@ is
 begin
    Y1 := T'(D1 => X1, D2 => X2, others => <>).C1;
    Y2 := T'(D1 => X1, D2 => X2, others => <>).C2;
+   --  GNATProve takes a conservative approach to flow dependency
+   --  therefore it determines that each output depends on both
+   --  inputs.
 end P;

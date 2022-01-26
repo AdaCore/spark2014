@@ -1,15 +1,15 @@
-procedure Assert_Flow (X : Positive) with SPARK_Mode is
+procedure Assert_Flow (X, Y : Positive) with SPARK_Mode is
 
-   procedure Test with Global => (Proof_In => X) is
+   procedure Test with Global => (Proof_In => (X,Y)) is
       --  Global contract is correct
-      --  X is used in the default initialisations of both
-      --  T_Arr and U_Arr in the assertions below.
+      --  X and Y are used in the default initialisations of
+      --  T_Arr and U_Arr respectively in the assertions below.
       type T (D : Positive) is record
          C : Integer := D - 1;
       end record;
 
       type U is record
-         C : Integer := X - 1;
+         C : Integer := Y - 1;
       end record;
 
       type T_Arr is array (Positive range <>) of T (X);
