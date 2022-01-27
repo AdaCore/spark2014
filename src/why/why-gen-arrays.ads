@@ -229,8 +229,8 @@ package Why.Gen.Arrays is
    --  bounds.
 
    function New_Array_Range_Expr
-     (Index_Expr : W_Expr_Id;
-      Array_Expr : W_Expr_Id;
+     (Index_Expr : W_Term_Id;
+      Array_Expr : W_Term_Id;
       Domain     : EW_Domain;
       Dim        : Positive)
       return W_Expr_Id;
@@ -278,9 +278,10 @@ package Why.Gen.Arrays is
    --  same as above but with the bounds stored in an array
 
    function New_Length_Equality
-     (Left_Arr  : W_Expr_Id;
-      Right_Arr : W_Expr_Id;
-      Dim       : Positive) return W_Pred_Id;
+     (Left_Arr  : W_Term_Id;
+      Right_Arr : W_Term_Id;
+      Dim       : Positive)
+      return W_Pred_Id;
    --  @param Left_Arr array expression whose length should be compared to
    --  @param Right_Arr
    --  @param Dim number of dimensions in the arrays
@@ -293,9 +294,10 @@ package Why.Gen.Arrays is
    --     else <right_arr>.last1 < <right_arr>.first1) /\ ...
 
    function New_Length_Equality
-     (Left_Arr : W_Expr_Id;
+     (Left_Arr : W_Term_Id;
       Right    : Entity_Id;
-      Dim      : Positive) return W_Pred_Id
+      Dim      : Positive)
+      return W_Pred_Id
    with Pre => Is_Constrained (Right);
    --  Same as above but with a constrained array type
 
@@ -375,19 +377,17 @@ package Why.Gen.Arrays is
    --  the last argument filled in by this procedure.
 
    function Get_Array_Attr
-     (Domain : EW_Domain;
-      Expr   : W_Expr_Id;
-      Attr   : Attribute_Id;
-      Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type)
-      return W_Expr_Id
-     with Pre =>
-       Attr in Attribute_First | Attribute_Last | Attribute_Length
+     (Expr : W_Term_Id;
+      Attr : Attribute_Id;
+      Dim  : Positive;
+      Typ  : W_Type_Id := EW_Int_Type)
+      return W_Term_Id
+   with
+     Pre => Attr in Attribute_First | Attribute_Last | Attribute_Length
        and then (Typ = EW_Int_Type or else Why_Type_Is_BitVector (Typ));
    --  Get the expression for the attribute (first/last/length) of the array.
    --  For constrained arrays, this refers to the introduced constant,
    --  for unconstrained arrays this is translated to a field access.
-   --  @param Domain the domain of the returned expression
    --  @param Expr the Why3 expression for the array object
    --  @param Attr the querried array attribute
    --  @param Dim dimension of the attribute
@@ -396,18 +396,19 @@ package Why.Gen.Arrays is
    --  @return the translated array attribute into Why3
 
    function Get_Array_Attr
-     (Domain : EW_Domain;
+     (Domain : EW_Terms;
       Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive;
       Params : Transformation_Params := Body_Params;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
-     with Pre =>
-       Attr in Attribute_First | Attribute_Last | Attribute_Length
+      Typ    : W_Type_Id := EW_Int_Type)
+      return W_Term_Id
+   with
+     Pre => Attr in Attribute_First | Attribute_Last | Attribute_Length
        and then (Typ = EW_Int_Type or else Why_Type_Is_BitVector (Typ));
    --  Same as Get_Array_Attr, can be used when the type is already known.
    --  On unconstrained array types, return bounds used to constrain the index.
-   --  @param Domain The domain of the returned expression.
+   --  @param Domain the term domain to use for bounds
    --  @param Ty the entity for the Ada array type
    --  @param Attr the querried array type attribute
    --  @param Dim dimension of the attribute
@@ -417,14 +418,13 @@ package Why.Gen.Arrays is
    --  @return the translated array type attribute into Why3
 
    function Get_Array_Attr
-     (Domain : EW_Domain;
-      Item   : Item_Type;
-      Attr   : Attribute_Id;
-      Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id;
+     (Item : Item_Type;
+      Attr : Attribute_Id;
+      Dim  : Positive;
+      Typ  : W_Type_Id := EW_Int_Type)
+      return W_Term_Id;
    --  Get the expression for the attribute (first/last/length) of an array
    --  item.
-   --  @param Domain the domain of the returned expression
    --  @param Item the item for the array object
    --  @param Attr the querried array attribute
    --  @param Dim dimension of the attribute

@@ -1403,15 +1403,15 @@ package body Why.Gen.Pointers is
             Args (Dim * 2 + 1) := +Expr;
             for Count in 1 .. Dim loop
                Args (2 * Count - 1) :=
-                 Get_Array_Attr (Domain => EW_Term,
-                                 Ty     => Des_Ty,
-                                 Attr   => Attribute_First,
-                                 Dim    => Count);
+                 +Get_Array_Attr (Domain => EW_Term,
+                                  Ty     => Des_Ty,
+                                  Attr   => Attribute_First,
+                                  Dim    => Count);
                Args (2 * Count) :=
-                 Get_Array_Attr (Domain => EW_Term,
-                                 Ty     => Des_Ty,
-                                 Attr   => Attribute_Last,
-                                 Dim    => Count);
+                 +Get_Array_Attr (Domain => EW_Term,
+                                  Ty     => Des_Ty,
+                                  Attr   => Attribute_Last,
+                                  Dim    => Count);
             end loop;
             return Args;
          end;
