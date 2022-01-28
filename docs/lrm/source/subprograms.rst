@@ -1356,7 +1356,7 @@ Decreases) then the expression value obtained for the call is greater
    discrete type or of a subtype of
    ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``. In the second case,
    the associated ``change_direction`` shall be Decreases.
- 
+
 5. The expression of a ``structural_subprogram_variant_item`` shall denote a
    formal parameter of the subprogram.
 
@@ -1436,7 +1436,7 @@ Decreases) then the expression value obtained for the call is greater
     recursive calls, although no checks are introduced at runtime due to
     compiler implementation constraints.
 
-13. For a statically mutually recursive call to a subprogram whose numeric
+13. For a statically mutually recursive call to a subprogram whose structural
     Subprogram_Variant aspect is specified, a verification condition is
     generated to ensure that the actual parameter corresponding to the
     formal parameter denoted by the ``expression`` is a path rooted either

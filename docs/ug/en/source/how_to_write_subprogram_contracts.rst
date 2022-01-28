@@ -825,11 +825,13 @@ been hidden from analysis using ``SPARK_Mode => Off``, |GNATprove| cannot
 deduce that it terminates. As a result, it stays in the safe side, and assumes
 that ``Not_SPARK`` could loop, which causes the verification of ``F_Call`` to
 fail. Finally, |GNATprove| is able to verify that ``F_Term`` terminates, though
-it contains a while loop.  Indeed, the number of possible iterations of the
-loop has been bounded using a ``Loop_Variant``. Also note that, though it was
+it contains both a while loop and  a recursive call.  Indeed, we have bounded
+both the number of possible iterations of the loop and the number of
+recursive calls using a ``Loop_Variant`` (for the loop iterations) and a
+``Subprogram_Variant`` (for the recursive calls). Also note that, though it was
 not able to prove termination of ``F_Rec``, ``F_While``, and ``F_Call``,
-GNATprove will still trust the annotation and consider them as terminating when
-verifying ``F_Term``.
+|GNATprove| will still trust the annotation and consider them as terminating
+when verifying ``F_Term``.
 
 .. note::
 

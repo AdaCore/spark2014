@@ -1,0 +1,6 @@
+recursive_subprograms.ads:13:37: info: predicate check proved
+recursive_subprograms.ads:13:45: info: subprogram variant proved
+recursive_subprograms.ads:13:45: info: predicate check proved
+recursive_subprograms.ads:13:54: info: pointer dereference check proved
+recursive_subprograms.ads:13:61: info: predicate check proved
+recursive_subprograms.ads:13:63: info: predicate check proved

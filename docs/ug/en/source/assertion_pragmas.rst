@@ -239,10 +239,20 @@ Loop Variants
 [|SPARK|]
 
 Pragma ``Loop_Variant`` is a special kind of assertion used in
-loops. |GNATprove| checks that the given scalar value decreases (or increases)
-at each iteration of the loop. Because a scalar value is always bounded by its
-type in Ada, it cannot decrease (or increase) at each iteration an infinite
-number of times, thus one of two outcomes is possible:
+loops. |GNATprove| checks that the given value *progresses* in some sense at
+each iteration of
+the loop. The value is associated to a direction, which can be either
+``Increases`` or ``Decreases`` for *numeric* variants, or ``Structural`` for
+*structural* variants.
+
+Numeric variants can take a discrete value or, in the
+case of the direction ``Decreases``, a big natural (see
+``Ada.Numerics.Big_Integers``). At each iteration, a check is generated
+to ensure that the value progresses (decreases or increases) with respect to its
+value at the beginning of the loop. Because a discrete value is always bounded
+by its type in Ada, and a big natural is never negative, it cannot decrease (or
+increase) at each iteration an infinite number of times, thus one of two
+outcomes is possible:
 
 1. the loop exits, or
 2. a run-time error occurs.
@@ -264,13 +274,42 @@ errors in the subprogram, hence that loops terminate:
 .. literalinclude:: /examples/ug__terminating_loops/test.out
    :language: none
 
-Pragma ``Loop_Variant`` may appear anywhere a loop invariant appears. It is
-also possible to use multiple loop variants, which should be grouped together
-with loop invariants. A loop variant may be more complex than a single
+A numeric loop variant may be more complex than a single
 decreasing (or increasing) value, and be given instead by a list of either
 decreasing or increasing values (possibly a mix of both). In that case, the
 order of the list defines the lexicographic order of progress. See |SPARK| RM
 5.5.3 for details.
+
+The expression of a structural loop variant can be either a local borrower or a
+local observers (see :ref:`Observing` and :ref:`Borrowing`). A check is generated to ensure that, during each iteration of the loop, the object denoted by the
+variant is updated to designate a strict subcomponent of the structure it used
+to designate. Since, due to the :ref:`Memory Ownership Policy` of |SPARK|, the
+structure cannot contain cycles, it is enough to ensure that the loop cannot
+be executed an infinite number of times. A structural variant cannot be combined
+with other variants.
+
+In the following example, we can verify that the ``while`` loop in the
+``Set_All_To_Zero`` procedure terminates by stating that the local borrower
+``X`` used to traverse the linked list structurally decreases at each iteration:
+
+.. literalinclude:: /examples/ug__terminating_loops-structural/terminating_loops.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__terminating_loops-structural/terminating_loops.adb
+   :language: ada
+   :linenos:
+
+The fact that, at each iteration, the variable ``X`` is updated to designate a
+strict subcomponent of the structure it used to designate can
+be verified by |GNATprove|:
+
+.. literalinclude:: /examples/ug__terminating_loops-structural/test.out
+   :language: none
+
+Pragma ``Loop_Variant`` may appear anywhere a loop invariant appears. It is
+also possible to use multiple loop variants, which should be grouped together
+with loop invariants.
 
 .. index:: Assume
 
