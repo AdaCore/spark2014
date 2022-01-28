@@ -1299,6 +1299,56 @@ package body CE_Pretty_Printing is
          when Record_K =>
             return Print_Record_Value (Value);
 
+         when Multidim_K =>
+
+            --  Add the bounds to Attributes
+
+            declare
+               Attributes : Name_Value_Lists.List;
+            begin
+               for I in Value.Bounds.Content'Range loop
+                  if Value.Bounds.Content (I).First.Present then
+                     declare
+                        Bound_Val : constant CNT_Unbounded_String :=
+                          Make_CNT_Unbounded_String
+                            (Nul => False,
+                             Str => To_Unbounded_String
+                               (Trim
+                                  (To_String
+                                      (Value.Bounds.Content (I).First.Content),
+                                   Left)));
+                     begin
+                        Attributes.Append
+                          ((Name  => To_Unbounded_String
+                               ("'First (" & Trim (I'Image, Left) & ")"),
+                            Value => Bound_Val));
+                     end;
+                  end if;
+                  if Value.Bounds.Content (I).Last.Present then
+                     declare
+                        Bound_Val : constant CNT_Unbounded_String :=
+                          Make_CNT_Unbounded_String
+                            (Nul => False,
+                             Str => To_Unbounded_String
+                               (Trim
+                                  (To_String
+                                      (Value.Bounds.Content (I).Last.Content),
+                                   Left)));
+                     begin
+                        Attributes.Append
+                          ((Name  => To_Unbounded_String
+                               ("'Last (" & Trim (I'Image, Left) & ")"),
+                            Value => Bound_Val));
+                     end;
+                  end if;
+               end loop;
+
+               --  Return Dont_Display
+
+               return (Value      => Dont_Display,
+                       Attributes => Attributes);
+            end;
+
          when Array_K =>
             return Print_Array_Value (Value);
 

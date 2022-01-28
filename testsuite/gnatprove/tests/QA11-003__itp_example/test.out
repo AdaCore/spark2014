@@ -1,6 +1,6 @@
 test.adb:9:16: info: postcondition proved (CVC4: 1 VC)
 test.adb:17:17: high: postcondition might fail (e.g. when Test_2'Result = 'NUL')
-test.adb:20:17: medium: array index check might fail [reason for check: value must be a valid index into the array]
+test.adb:20:17: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0) [reason for check: value must be a valid index into the array]
 test.adb:29:17: high: postcondition might fail
 test.adb:36:17: high: postcondition might fail (e.g. when Test_4'Result = 0)
 test.adb:40:14: high: overflow check might fail, cannot prove upper bound for B + 1 (e.g. when B = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]

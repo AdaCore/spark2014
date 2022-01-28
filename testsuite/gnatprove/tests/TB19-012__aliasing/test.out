@@ -8,5 +8,5 @@ three.adb:5:04: info: object is suitable for aliasing via address clause (Trivia
 three.adb:5:40: info: object is suitable for aliasing via address clause (Trivial)
 three.adb:5:40: info: types of aliased objects have the same size (Trivial)
 three.adb:8:19: info: assertion proved (CVC4: 1 VC)
-three.adb:11:19: medium: assertion might fail (e.g. when Y = -1)
+three.adb:11:19: medium: assertion might fail (e.g. when Y = -1) [possible fix: add or complete related loop invariants or postconditions]
 three.adb:12:19: info: assertion proved (CVC4: 1 VC)

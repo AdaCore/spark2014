@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-procedure Main is
+procedure Main with SPARK_Mode is
 
    type R1 is range 1 .. 10;
 
@@ -13,6 +13,17 @@ procedure Main is
       F2 : Integer;
    end record;
 
+   type RD (B : Boolean) is record
+      case B is
+         when True =>
+            F1 : Integer := 0;
+         when False =>
+            F2 : Integer;
+      end case;
+   end record;
+
+   subtype RD_True is RD (B => True);
+
    type M1 is mod 10;
 
    type Arr_Ix is range 1 .. 5;
@@ -23,11 +34,15 @@ procedure Main is
    function R3_Image (R : R3) return String is
      ("F1 =>" & Integer'Image (R.F1) & ", F2 =>" & Integer'Image (R.F2));
 
+   function RD_Image (R : RD) return String is
+     ("B => " & (if R.B then "True" else "False")
+      & (if R.B then ", F1 =>" & Integer'Image (R.F1)
+         else ", F2 =>" & Integer'Image (R.F2)));
+
    procedure Scopes is
 
       function F1 return Integer is
       begin
-         Put_Line ("F");
          return 42;
       end F1;
 
@@ -36,10 +51,10 @@ procedure Main is
          X := X + 1;
       end F2;
 
-      function F3 (X : in out Integer) return Integer is
+      procedure F3 (X : in out Integer; Y : out Integer) is
       begin
          X := X + 1;
-         return 1;
+         Y := 1;
       end F3;
 
       I : Integer := 42;
@@ -49,6 +64,7 @@ procedure Main is
    --  Start of processing for Scopes
 
    begin
+      Put_Line ("F");
       Put_Line ("I: " & Integer'Image (I));
       Put_Line ("J: " & Integer'Image (J));
       declare
@@ -63,7 +79,7 @@ procedure Main is
       Put_Line ("I: " & Integer'Image (I));
       F2 (I);
       Put_Line ("I: " & Integer'Image (I));
-      Ignore := F3 (I);
+      F3 (I, Ignore);
       Put_Line ("I: " & Integer'Image (I));
    end Scopes;
 
@@ -210,6 +226,20 @@ procedure Main is
          Put_Line ("T8: " & R3_Image (X3 (2)) & " - " & R3_Image (X3 (3)));
          X3 (2).F1 := 1111;
          Put_Line ("T9: " & R3_Image (X3 (2)) & " - " & R3_Image (X3 (3)));
+      end;
+
+      declare
+         X1 : RD := (B => True, F1 => 0);
+         X2 : RD := (B => False, F2 => 1);
+         X3 : RD := (B => False, F2 => 13);
+         X4 : RD_True;
+      begin
+         X1.F1 := 11;
+         Put_Line ("T10: " &  RD_Image (X1) & " - " & RD_Image (X2));
+         X2 := X3;
+         Put_Line ("T11: " &  RD_Image (X1) & " - " & RD_Image (X2));
+         X1 := X4;
+         Put_Line ("T12: " &  RD_Image (X1) & " - " & RD_Image (X2));
       end;
    end Assignments;
 

@@ -209,6 +209,8 @@ package SPARK_Atree.Entities is
      EE.E_Package_Body;
    E_Private_Subtype             : Entity_Kind renames
      EE.E_Private_Subtype;
+   E_Private_Type                : Entity_Kind renames
+     EE.E_Private_Type;
    E_Procedure                   : Entity_Kind renames
      EE.E_Procedure;
    E_Protected_Type              : Entity_Kind renames
@@ -328,6 +330,9 @@ package SPARK_Atree.Entities is
 
    function Is_Generic_Unit (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Generic_Unit;
+
+   function Is_Integer_Type (E : Entity_Id) return Boolean renames
+     Einfo.Utils.Is_Integer_Type;
 
    function Is_Imported (E : Entity_Id) return Boolean renames
      EE.Is_Imported;
@@ -593,6 +598,10 @@ package SPARK_Atree.Entities is
      with Pre => Ekind (Typ) in Record_Kind
                               | Concurrent_Kind
                               | Private_Kind;
+
+   function Has_Discriminant_Dependent_Constraint
+     (Comp : E_Component_Id) return Boolean
+   renames Sem_Util.Has_Discriminant_Dependent_Constraint;
 
    --------------------------
    --  For Protected Types --

@@ -512,6 +512,9 @@ package SPARK_Util.Subprograms is
    --  @param E any entity
    --  @return True iff E is a traversal function
 
+   function Is_Unary_Text_IO_Put_Line (E : Entity_Id) return Boolean;
+   --  Return True iff E is the unary version of Ada.Text_IO.Put_Line
+
    function Is_Unchecked_Deallocation_Instance (E : Entity_Id) return Boolean
    with Pre => Is_Subprogram_Or_Entry (E)
      or else Ekind (E) in E_Task_Type | E_Subprogram_Type;

@@ -62,6 +62,7 @@ package SPARK_Atree is
    subtype N_Short_Circuit   is SN.N_Short_Circuit;
    subtype N_Subexpr         is SN.N_Subexpr;
    subtype N_Subprogram_Call is SN.N_Subprogram_Call;
+   subtype N_Unary_Op        is SN.N_Unary_Op;
 
    subtype N_Assignment_Statement_Id  is SN.N_Assignment_Statement_Id;
    subtype N_Attribute_Reference_Id   is SN.N_Attribute_Reference_Id;
@@ -720,6 +721,9 @@ package SPARK_Atree is
      Pre => Nkind (N) = N_Iterator_Specification;
 
    function Pragma_Argument_Associations (N : Node_Id) return List_Id with
+     Pre => Nkind (N) = N_Pragma;
+
+   function Pragma_Identifier (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Pragma;
 
    function Prefix (N : Node_Id) return Node_Id with

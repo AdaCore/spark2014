@@ -1,1 +1,1 @@
-bug_align.adb:11:20: medium: assertion might fail
+bug_align.adb:11:20: high: assertion might fail

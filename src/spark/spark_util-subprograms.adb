@@ -1383,6 +1383,45 @@ package body SPARK_Util.Subprograms is
         and then Present (First_Formal (E));
    end Is_Traversal_Function;
 
+   -------------------------------
+   -- Is_Unary_Text_IO_Put_Line --
+   -------------------------------
+
+   function Is_Unary_Text_IO_Put_Line (E : Entity_Id) return Boolean is
+      S_Ptr : Entity_Id := Scope (E);
+      --  Scope pointer
+
+   begin
+      --  Check that E is a unary procedure
+
+      if Ekind (E) /= E_Procedure
+        or else No (First_Formal (E))
+        or else Number_Formals (E) /= 1
+      then
+         return False;
+      end if;
+
+      --  Check that E is called Put_Line
+
+      if Get_Name_String (Chars (E)) /= "put_line" then
+         return False;
+      end if;
+
+      --  Then check that we are in the Text_IO unit of the standard library
+
+      if Get_Name_String (Chars (S_Ptr)) /= "text_io" then
+         return False;
+      end if;
+
+      S_Ptr := Scope (S_Ptr);
+
+      if No (S_Ptr) or else Chars (S_Ptr) /= Name_Ada then
+         return False;
+      end if;
+
+      return Scope (S_Ptr) = Standard_Standard;
+   end Is_Unary_Text_IO_Put_Line;
+
    ----------------------------------------
    -- Is_Unchecked_Deallocation_Instance --
    ----------------------------------------

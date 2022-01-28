@@ -30,6 +30,12 @@ with VC_Kinds;                 use VC_Kinds;
 
 package CE_Parsing is
 
+   function Get_Counterexample_Value
+     (Obj      : Entity_Id;
+      Cnt_List : Cntexample_Elt_Lists.List) return Opt_Value_Type;
+   --  Go over a list of raw Why3 counterexample values and construct the value
+   --  of Obj if any.
+
    procedure Parse_Counterexample_Line
      (Cnt_List  : Cntexample_Elt_Lists.List;
       Value_Map : in out Entity_To_Extended_Value_Maps.Map);
