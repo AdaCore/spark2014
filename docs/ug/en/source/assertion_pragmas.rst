@@ -281,7 +281,7 @@ order of the list defines the lexicographic order of progress. See |SPARK| RM
 5.5.3 for details.
 
 The expression of a structural loop variant can be either a local borrower or a
-local observers (see :ref:`Observing` and :ref:`Borrowing`). A check is generated to ensure that, during each iteration of the loop, the object denoted by the
+local observer (see :ref:`Observing` and :ref:`Borrowing`). A check is generated to ensure that, during each iteration of the loop, the object denoted by the
 variant is updated to designate a strict subcomponent of the structure it used
 to designate. Since, due to the :ref:`Memory Ownership Policy` of |SPARK|, the
 structure cannot contain cycles, it is enough to ensure that the loop cannot
