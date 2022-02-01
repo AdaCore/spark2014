@@ -1769,6 +1769,10 @@ can happen by allocating too much data using ``new``).
 
 To protect against stack exhaustion, we recommend using GNATstack.
 
+As GNATstack doesn't analyze the secondary stack, if protection against
+exhaustion of the secondary stack is desired, we recommend using ``pragma
+Restrictions (No_Secondary_Stack);``.
+
 To protect against heap exhaustion, a possible way is to encapsulate
 allocations in a wrapper that handles the possible ``Storage_Error`` exception
 and signals the failure of the allocation to the calling environment via a
