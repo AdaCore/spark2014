@@ -4,7 +4,7 @@
 --                                                                          --
 --                    G N A T 2 W H Y - E X P R - L O O P                   --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --

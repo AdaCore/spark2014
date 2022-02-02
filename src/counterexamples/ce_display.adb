@@ -4,7 +4,7 @@
 --                                                                          --
 --              G N A T 2 W H Y _ C O U N T E R _ E X A M P L E S           --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                     Copyright (C) 2016-2022, AdaCore                     --
 --                                                                          --

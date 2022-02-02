@@ -4,7 +4,7 @@
 --                                                                          --
 --                        C E _ I N T E R V A L _ S E T S                   --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
