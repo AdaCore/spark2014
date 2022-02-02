@@ -295,8 +295,9 @@ package body SPARK_Definition is
      Post => (if not Violation_Detected
               then Is_Path_Expression (Expr)
                 and then Present (Get_Root_Object (Expr)));
-   --  Check that a borrow has a valid source (stand-alone object or call to a
-   --  traversal function).
+   --  Check that a borrow or observe has a valid source (stand-alone object
+   --  or call to a traversal function, that does not go through a slice in
+   --  the case of a borrow).
 
    procedure Check_Source_Of_Move
      (Expr        : N_Subexpr_Id;
@@ -532,9 +533,44 @@ package body SPARK_Definition is
      (Expr       : N_Subexpr_Id;
       In_Observe : Boolean)
    is
+      function Path_Goes_Through_Slice (Expr : Node_Id) return Boolean;
+      --  Determine if borrowed path Expr goes through a slice
+
+      -----------------------------
+      -- Path_Goes_Through_Slice --
+      -----------------------------
+
+      function Path_Goes_Through_Slice (Expr : Node_Id) return Boolean is
+      begin
+         case Nkind (Expr) is
+            when N_Slice =>
+               return True;
+
+            when N_Attribute_Reference
+               | N_Explicit_Dereference
+               | N_Indexed_Component
+               | N_Selected_Component
+            =>
+               return Path_Goes_Through_Slice (Prefix (Expr));
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               return Path_Goes_Through_Slice (Expression (Expr));
+
+            when others =>
+               return False;
+         end case;
+      end Path_Goes_Through_Slice;
+
+      --  Local variables
+
       Root : constant Opt_Object_Kind_Id :=
         (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
          else Empty);
+
+   --  Start of processing for Check_Source_Of_Borrow_Or_Observe
 
    begin
       --  SPARK RM 3.10(3): If the target of an assignment operation is an
@@ -564,6 +600,15 @@ package body SPARK_Definition is
       elsif not In_Observe and then Traverse_Access_To_Constant (Expr) then
          Mark_Violation
            ("borrow of an access-to-constant part of an object", Expr);
+
+      --  Borrows going through a slice are not supported, and are not
+      --  necessary either since the slice is necessary followed by an
+      --  indexed_component.
+
+      elsif not In_Observe
+        and then Path_Goes_Through_Slice (Expr)
+      then
+         Mark_Violation ("borrow through a slice", Expr);
       end if;
    end Check_Source_Of_Borrow_Or_Observe;
 

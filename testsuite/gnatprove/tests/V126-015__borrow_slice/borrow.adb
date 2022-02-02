@@ -20,4 +20,12 @@ begin
 
    pragma Assert (X(1..5)(4).C.all = 42);
 
+   declare
+      Y : access Integer := X(1..5)(4).C;
+   begin
+      Y.all := 42;
+   end;
+
+   pragma Assert (X(1..5)(4).C.all = 42);
+
 end Borrow;
