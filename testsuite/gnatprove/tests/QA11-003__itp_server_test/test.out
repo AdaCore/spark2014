@@ -6,6 +6,7 @@ test.adb:11:16: medium: postcondition might fail
 {"ide_request": "Get_task", "node_ID":15, "loc": false, "full_context": false}
 
 Message
+Message
 Task
 --------------------------- Local Context ---------------------------
 
@@ -26,7 +27,7 @@ constant result'unused'unused : int = Parity1
 goal def'vc :
   exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))
 
-Message
+
 Process Ended
 Children CST_NODE OK
 Unparsed JSON = 0
