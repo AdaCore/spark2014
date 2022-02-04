@@ -35,7 +35,7 @@ by |SPARK| are listed with a brief explanation to their meaning.
   mathematics.  In |SPARK| this entails proving the implementation of
   a subprogram against its specification given its precondition using
   an automatic theorem prover (which may be part of the |SPARK|
-  toolset.  The specification may be given by a postcondition or
+  toolset).  The specification may be given by a postcondition or
   assertions or may be implicit from the definition of the program when
   proving absence of run-time exceptions (robustness property).
 

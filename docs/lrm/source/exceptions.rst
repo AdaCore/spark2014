@@ -38,7 +38,7 @@ provably never executed.
    which fails unconditionally.]
 
 .. commented out since raise expression are not part of the language yet
-   A raise expression (see Ada AI12-0022
+   [A raise expression (see Ada AI12-0022
    for details) introduces a similar obligation to prove that the
    expression will not be evaluated.]
 
