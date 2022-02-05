@@ -156,7 +156,7 @@ to cursors that are actually valid in the container, the provided function
 
 .. code-block:: ada
 
-   (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C)))
+   (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C))))
 
 Like for the standard Ada iteration mechanism, it is possible to allow
 quantification directly over the elements of the container by providing in
@@ -192,7 +192,7 @@ over cursors :
 
 .. code-block:: ada
 
-   (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C)))
+   (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C))))
 
 Depending on the application, this translation may be too low-level and
 introduce an unnecessary burden on the automatic provers. As an example, let
@@ -248,14 +248,14 @@ Using the postcondition of ``Mem``, this can be refined further into:
              (for some C1 : Cursor =>
                  Has_Element (S1, C1) and Element (Intersection'Result, C) = Element (S1, C1))
          and (for some C2 : Cursor =>
-                   Has_Element (S2, C2) and Element (Intersection'Result, C) = Element (S2, C2)))))
+                 Has_Element (S2, C2) and Element (Intersection'Result, C) = Element (S2, C2))))
   and
   (for all C1 : Cursor =>
       (if Has_Element (S1, C1) then
              (if (for some C2 : Cursor =>
                  Has_Element (S2, C2) and Element (S1, C1) = Element (S2, C2)))
-      then (for some C : Cursor =>  Has_Element (Intersection'Result, C)
-               and Element (Intersection'Result, C) = Element (S1, C1))))))
+      then (for some C : Cursor => Has_Element (Intersection'Result, C)
+               and Element (Intersection'Result, C) = Element (S1, C1))))
 
 .. index:: Annotate; Iterable_For_Proof
 
