@@ -1,0 +1,7 @@
+assert_in_declare.ads:8:25: info: assertion proved (Trivial)
+assert_in_declare.ads:14:25: medium: assertion might fail
+assert_in_declare.ads:15:25: info: assertion proved (CVC4: 1 VC)
+assert_in_declare.ads:21:25: info: assertion justified
+assume_in_declare.ads:8:10: error: pragma Assume in declare expression is not allowed in SPARK
+assume_in_declare.ads:8:10: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

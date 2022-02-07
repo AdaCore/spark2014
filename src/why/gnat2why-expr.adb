@@ -10296,11 +10296,15 @@ package body Gnat2Why.Expr is
                   Prepend (Transform_Declaration (N), T);
                end if;
 
+            --  Introduce a check for assertions in the program domain
+
             when N_Pragma =>
-               if Is_Ignored_Pragma_Check (N) then
-                  null;
-               else
-                  raise Program_Error;
+               pragma Assert (Is_Pragma (N, Pragma_Check));
+
+               if not Is_Ignored_Pragma_Check (N)
+                 and then Domain = EW_Prog
+               then
+                  Prepend (Transform_Pragma (N, Force => False), T);
                end if;
 
             when others =>
@@ -10359,11 +10363,7 @@ package body Gnat2Why.Expr is
                null;
 
             when N_Pragma =>
-               if Is_Ignored_Pragma_Check (N) then
-                  null;
-               else
-                  raise Program_Error;
-               end if;
+               pragma Assert (Is_Pragma (N, Pragma_Check));
 
             when others =>
                raise Program_Error;

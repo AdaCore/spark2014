@@ -2902,6 +2902,22 @@ package body SPARK_Definition is
                when N_Pragma =>
                   if Is_Ignored_Pragma_Check (N) then
                      null;
+
+                  --  Pragma Check might occur inside declare expressions.
+                  --  We currently reject pragma Assume in this context on the
+                  --  ground that assumptions nested inside expressions are
+                  --  bad practice, but we could easily support them.
+
+                  elsif Is_Pragma_Check (N, Name_Assume) then
+                     Mark_Violation
+                       ("pragma Assume in declare expression", N);
+                     return In_Declare_Expr;
+
+                  elsif Is_Pragma (N, Pragma_Check) then
+                     return In_Declare_Expr;
+
+                  --  Other pragmas are unexpected
+
                   else
                      return False;
                   end if;
