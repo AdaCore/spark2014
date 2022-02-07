@@ -289,7 +289,7 @@ package SPARK_Util is
    --  to refer to the entity (for example to retrieve completion theories).
    --  A few cases require special handling because their name is predefined
    --  in Why3. This concerns currently only Standard_Boolean and its full
-   --  subtypes and Universal_Fixed.
+   --  subtypes.
    --  @param E any entity
    --  @return True iff the name to use in Why3 (returned by Full_Name) does
    --     not correspond to unique name in GNAT AST.
@@ -399,9 +399,6 @@ package SPARK_Util is
    --     component
    --  @return True iff E has the specified property P of volatility, either
    --     directly or through its (base) type.
-
-   function Int_Image (Val : Int) return String;
-   --  Return the image of Val without leading whitespace
 
    function Is_Constant_After_Elaboration (E : E_Variable_Id) return Boolean;
    --  @param E entity of a variable
@@ -875,7 +872,8 @@ package SPARK_Util is
    function Real_Image (U : Ureal; Max_Length : Integer) return String;
    --  Return a string, of maximum length Max_length, representing U.
 
-   function String_Value (Str_Id : String_Id) return String;
+   function String_Value (Str_Id : String_Id) return String
+     with Pre => Str_Id /= No_String;
 
    function Append_Multiple_Index (S : String) return String;
    --  If the current file contains multiple units, add a suffix to S that

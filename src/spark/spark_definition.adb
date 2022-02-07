@@ -5356,6 +5356,21 @@ package body SPARK_Definition is
               and then Gnat2Why_Args.Limit_Line = Null_Unbounded_String
             then
                declare
+                  function Line_Image (Val : Pos) return String;
+                  --  Return the image of Val without leading whitespace
+
+                  ----------------
+                  -- Line_Image --
+                  ----------------
+
+                  function Line_Image (Val : Pos) return String is
+                     S : constant String := Int'Image (Val);
+                  begin
+                     return S (S'First + 1 .. S'Last);
+                  end Line_Image;
+
+                  --  Local variables
+
                   Body_E     : constant Entity_Id := Get_Body_Entity (E);
                   This_E     : constant Entity_Id :=
                     (if Present (Body_E) then Body_E else E);
@@ -5370,8 +5385,8 @@ package body SPARK_Definition is
                     Get_Physical_Line_Number (Sloc (Last_Node (This_Decl)));
                   Limit_Str  : constant String :=
                     File
-                    & ':' & Int_Image (Int (First_Line))
-                    & ':' & Int_Image (Int (Last_Line));
+                    & ':' & Line_Image (Pos (First_Line))
+                    & ':' & Line_Image (Pos (Last_Line));
                begin
                   Gnat2Why_Args.Limit_Region :=
                     To_Unbounded_String (Limit_Str);
