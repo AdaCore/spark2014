@@ -11,13 +11,13 @@ package body Norm.Reals.Errors with SPARK_Mode is
      Post => abs (To_Big_Real (X + Y) - (To_Big_Real (X) + To_Big_Real (Y))) <=
        (if abs (To_Big_Real (X) + To_Big_Real (Y)) >= Big_Real'(First_Norm)
         then Big_Real'(Epsilon) * abs (To_Big_Real (X) + To_Big_Real (Y))
-        else Error_Denorm);
+        else Big_Real'(Error_Denorm));
    procedure Bound_Error_Add (X, Y : Floats_For_Add) is null;
    procedure Bound_Error_Mul (X, Y : Floats_For_Mul) with
      Post => abs (To_Big_Real (X * Y) - To_Big_Real (X) * To_Big_Real (Y)) <=
        (if abs (To_Big_Real (X) * To_Big_Real (Y)) >= Big_Real'(First_Norm)
         then Big_Real'(Epsilon) * abs (To_Big_Real (X) * To_Big_Real (Y))
-        else Error_Denorm);
+        else Big_Real'(Error_Denorm));
    procedure Bound_Error_Mul (X, Y : Floats_For_Mul) is null;
 
    --  Proofs of error bound lemmas on our specification
