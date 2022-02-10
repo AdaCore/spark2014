@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2021, AdaCore                     --
+--                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -18595,6 +18595,7 @@ package body Gnat2Why.Expr is
          declare
             Tags   : W_Expr_Array (1 .. 2);
             Tag_Id : Positive := 1;
+
             procedure One_Param (Formal : Entity_Id; Actual : Node_Id);
             --  Compute the tag expression for each parameter and store it
             --  inside Tags.
@@ -18607,12 +18608,12 @@ package body Gnat2Why.Expr is
                pragma Unreferenced (Formal);
                pragma Assert (Is_Controlling_Actual (Actual));
                Tmp : constant W_Expr_Id :=
-                 Transform_Expr (Actual, EW_Term, Params);
+                 Transform_Expr (Actual, Term_Domain (Domain), Params);
             begin
                Tags (Tag_Id) :=
                  New_Tag_Access
                    (Ada_Node => Actual,
-                    Domain   => EW_Term,
+                    Domain   => Term_Domain (Domain),
                     Name     => Tmp,
                     Ty       => Get_Ada_Node (+Get_Type (Tmp)));
                Tag_Id := Tag_Id + 1;
