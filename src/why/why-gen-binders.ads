@@ -29,11 +29,12 @@ with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Snames;               use Snames;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
-with Why.Conversions;     use Why.Conversions;
 with SPARK_Definition;     use SPARK_Definition;
 with SPARK_Util;           use SPARK_Util;
 with Types;                use Types;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Conversions;      use Why.Conversions;
 with Why.Gen.Terms;        use Why.Gen.Terms;
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
@@ -315,12 +316,14 @@ package Why.Gen.Binders is
       Id      : W_Identifier_Id;
       Mutable : Boolean) return Item_Type
    is
-     ((Regular, Local => True, Init => <>,
-       Main => (Ada_Node => E,
-                B_Name   => Id,
-                B_Ent    => Null_Entity_Name,
-                Mutable  => Mutable,
-                Labels   => <>)));
+     ((Regular,
+       Local => Get_Module (Get_Name (Id)) = Why_Empty,
+       Init  => <>,
+       Main  => (Ada_Node => E,
+                 B_Name   => Id,
+                 B_Ent    => Null_Entity_Name,
+                 Mutable  => Mutable,
+                 Labels   => <>)));
    --  @param E entity
    --  @param Id identifier
    --  @param Mutable True iff the item is mutable

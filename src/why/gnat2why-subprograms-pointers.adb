@@ -653,7 +653,7 @@ package body Gnat2Why.Subprograms.Pointers is
                                Mutable  => False,
                                Labels   => <>)));
          else
-            Insert_Entity
+            Insert_Tmp_Item_For_Entity
               (Profile,
                E_Symb (E, WNE_Pointer_Call),
                Mutable => False);

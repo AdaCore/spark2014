@@ -951,20 +951,6 @@ package body Gnat2Why.Util is
       end loop;
    end Init_Why_Sections;
 
-   -------------------
-   -- Insert_Entity --
-   -------------------
-
-   procedure Insert_Entity
-     (E       : Entity_Id;
-      Name    : W_Identifier_Id;
-      Mutable : Boolean := False)
-   is
-   begin
-      Ada_Ent_To_Why.Insert (Symbol_Table, E,
-                             Mk_Tmp_Item_Of_Entity (E, Name, Mutable));
-   end Insert_Entity;
-
    -----------------
    -- Insert_Item --
    -----------------
@@ -973,6 +959,20 @@ package body Gnat2Why.Util is
    begin
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
+
+   --------------------------------
+   -- Insert_Tmp_Item_For_Entity --
+   --------------------------------
+
+   procedure Insert_Tmp_Item_For_Entity
+     (E       : Entity_Id;
+      Name    : W_Identifier_Id;
+      Mutable : Boolean := False)
+   is
+   begin
+      Ada_Ent_To_Why.Insert (Symbol_Table, E,
+                             Mk_Tmp_Item_Of_Entity (E, Name, Mutable));
+   end Insert_Tmp_Item_For_Entity;
 
    ----------------------------
    -- Is_Initialized_At_Decl --
