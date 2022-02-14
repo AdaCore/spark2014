@@ -29,7 +29,7 @@ package body Pointers_With_Aliasing with SPARK_Mode => Off is
       P := new Object'(O);
    end Create;
 
-   function Constant_Access (Memory : Memory_Type; P : Pointer) return not null access constant Object is
+   function Constant_Reference (Memory : Memory_Type; P : Pointer) return not null access constant Object is
      (P);
 
    function Reference (Memory : not null access Memory_Type; P : Pointer) return not null access Object is

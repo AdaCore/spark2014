@@ -51,10 +51,9 @@ procedure Example_Tagged_Obj with SPARK_Mode is
    procedure Swap_Val (X, Y : Pointer) with
      Pre  => Valid (Memory, Address (X)) and then Valid (Memory, Address (Y)),
      Post => Deref (X) = Deref (Y)'Old and Deref (Y) = Deref (X)'Old
-        and (for all Q of Memory'Old => Valid (Memory, Q))
-        and (for all Q of Memory => Valid (Memory'Old, Q))
-        and (for all Q of Memory =>
-               (if Q not in Address (X) | Address (Y) then Get (Memory, Q) = Get (Memory'Old, Q)))
+     and Allocates (Memory'Old, Memory, None)
+     and Deallocates (Memory'Old, Memory, None)
+     and Writes (Memory'Old, Memory, [for A in Address_Type => A in Address (X) | Address (Y)])
    is
       Tmp : constant Object'Class := Deref (X);
    begin
@@ -69,10 +68,9 @@ procedure Example_Tagged_Obj with SPARK_Mode is
      Post =>
         --  Deref (X) = Object'Class ((Child (Deref (X)'Old) with delta F => New_F))
         Deref (X) in Child and Child (Deref (X)) = (New_F, Child (Deref (X)).G'Old)
-        and (for all Q of Memory'Old => Valid (Memory, Q))
-        and (for all Q of Memory => Valid (Memory'Old, Q))
-        and (for all Q of Memory =>
-               (if Q /= Address (X) then Get (Memory, Q) = Get (Memory'Old, Q)))
+     and Allocates (Memory'Old, Memory, None)
+     and Deallocates (Memory'Old, Memory, None)
+     and Writes (Memory'Old, Memory, Only (Address (X)))
    is
       Mem_Access : access Memory_Type := Memory'Access;
       X_Content  : access Object'Class := Reference (Mem_Access, X);

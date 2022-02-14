@@ -1,4 +1,5 @@
 with Interfaces; use Interfaces;
+with Abstract_Maps;
 
 generic
    type Object (<>) is private;
@@ -14,44 +15,64 @@ is
    function Check_No_Deep_Objects (O : Object) return Object is (O) with Ghost;
 
    --  Model for the memory, this is not executable
-   package Memory_Model is
-      type Address_Type is new Long_Long_Integer;
 
-      type Memory_Type is private with
-        Default_Initial_Condition,
-        Iterable => (First       => Iter_First,
-                     Next        => Iter_Next,
-                     Has_Element => Iter_Has_Element,
-                     Element     => Iter_Element);
+   package Memory_Model is
+      type Address_Type is new Unsigned_64;
+      --  Address type on 64 bits machines
+
+      package Address_To_Object_Maps is new Abstract_Maps
+        (Address_Type, 0, Object);
+      --  Use an abstract map rather than a functional map to avoid taking up
+      --  memory space as the memory model cannot be ghost.
+
+      type Memory_Type is new Address_To_Object_Maps.Map;
 
       --  Whether an address designates some valid data in the memory
-      function Valid (M : Memory_Type; A : Address_Type) return Boolean with
-        Ghost,
-        Import,
-        Post => (if Valid'Result then A /= 0);
-      --  Access the data at a given address in the memory
-      function Get (M : Memory_Type; A : Address_Type) return Object with
-        Ghost,
-        Import,
-        Pre => Valid (M, A);
+      function Valid (M : Memory_Type; A : Address_Type) return Boolean renames
+        Has_Key;
 
-      --  Provide for .. of quantification on valid pointers.
-      --  These subprograms should not be used directly.
-      type Private_Key is private with Ghost;
-      function Iter_First (M : Memory_Type) return Private_Key with Ghost, Import;
-      function Iter_Has_Element (M : Memory_Type; K : Private_Key) return Boolean with Ghost, Import;
-      function Iter_Next (M : Memory_Type; K : Private_Key) return Private_Key with Ghost, Import;
-      function Iter_Element (M : Memory_Type; K : Private_Key) return Address_Type with Ghost, Import;
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Valid);
+      type Addresses is array (Address_Type) of Boolean with Ghost;
 
-   private
-      pragma SPARK_Mode (Off);
-      type Memory_Type is null record;
-      type Private_Key is new Integer;
+      function None return Addresses is
+        ([others => False])
+      with Ghost;
+      function Only (A : Address_Type) return Addresses is
+        ([for Q in Address_Type => (Q = A)])
+      with Ghost;
+
+      function Writes
+        (M1, M2 : Memory_Type; Target : Addresses) return Boolean
+      is
+        (for all A in Address_Type =>
+           (if not Target (A) and Valid (M1, A) and Valid (M2, A)
+            then Get (M1, A) = Get (M2, A)))
+       with Ghost;
+
+      function Allocates
+        (M1, M2 : Memory_Type; Target : Addresses) return Boolean
+      is
+        ((for all A in Address_Type =>
+            (if Valid (M2, A) then Target (A) or Valid (M1, A)))
+         and (for all A in Address_Type =>
+                  (if Target (A) then not Valid (M1, A) and Valid (M2, A))))
+       with Ghost;
+
+      function Deallocates
+        (M1, M2 : Memory_Type; Target : Addresses) return Boolean
+      is
+        ((for all A in Address_Type =>
+            (if Valid (M1, A) then Target (A) or Valid (M2, A)))
+         and (for all A in Address_Type =>
+                  (if Target (A) then not Valid (M2, A) and Valid (M1, A))))
+       with Ghost;
+
    end Memory_Model;
 
    use Memory_Model;
    Memory : aliased Memory_Type;
+   --  The memory cannot be ghost, as it occurs as a parameter of calls to
+   --  Constant_Reference and Reference functions so they can be traversal
+   --  functions.
 
    type Pointer is private with
      Default_Initial_Condition => Address (Pointer) = 0;
@@ -69,9 +90,9 @@ is
    procedure Create (O : Object; P : out Pointer) with
      Global => (In_Out => Memory),
      Post => Valid (Memory, Address (P))
-     and then (for all Q of Memory => Address (P) = Q or else Valid (Memory'Old, Q))
-     and then (for all Q of Memory'Old => Address (P) /= Q and then Valid (Memory, Q))
-     and then (for all Q of Memory'Old => Get (Memory, Q) = Get (Memory'Old, Q))
+     and then Allocates (Memory'Old, Memory, Only (Address (P)))
+     and then Deallocates (Memory'Old, Memory, None)
+     and then Writes (Memory'Old, Memory, None)
      and then Deref (P) = O;
 
    --  Primitives for classical pointer functionalities. Deref will copy the
@@ -79,37 +100,34 @@ is
 
    function Deref (P : Pointer) return Object with
      Global => Memory,
-     Pre => Valid (Memory, Address (P)),
+     Pre  => Valid (Memory, Address (P)),
      Post => Deref'Result = Get (Memory, Address (P)),
      Annotate => (GNATprove, Inline_For_Proof);
 
    procedure Assign (P : Pointer; O : Object) with
      Global => (In_Out => Memory),
-     Pre => Valid (Memory, Address (P)),
-     Post => Valid (Memory, Address (P))
-     and then Get (Memory, Address (P)) = O
-     and then (for all Q of Memory => Valid (Memory'Old, Q))
-     and then (for all Q of Memory'Old => Valid (Memory, Q))
-     and then (for all Q of Memory =>
-                 (if Q /= Address (P) then Get (Memory, Q) = Get (Memory'Old, Q)));
+     Pre  => Valid (Memory, Address (P)),
+     Post => Get (Memory, Address (P)) = O
+     and then Allocates (Memory'Old, Memory, None)
+     and then Deallocates (Memory'Old, Memory, None)
+     and then Writes (Memory'Old, Memory, Only (Address (P)));
 
    procedure Dealloc (P : in out Pointer) with
      Global => (In_Out => Memory),
-     Pre => Valid (Memory, Address (P)) or P = Null_Pointer,
-     Post => not Valid (Memory, Address (P)'Old)
-     and then P = Null_Pointer
-     and then (for all Q of Memory'Old => Address (P)'Old = Q or else Valid (Memory, Q))
-     and then (for all Q of Memory => Address (P)'Old /= Q and then Valid (Memory'Old, Q))
-     and then (for all Q of Memory => Get (Memory, Q) = Get (Memory'Old, Q));
+     Pre  => Valid (Memory, Address (P)) or P = Null_Pointer,
+     Post => P = Null_Pointer
+     and then Allocates (Memory'Old, Memory, None)
+     and then Deallocates (Memory'Old, Memory, Only (Address (P)))
+     and then Writes (Memory'Old, Memory, None);
 
    --  Primitives to access the content of a memory cell directly. Ownership is
    --  used to preserve the link between the dereferenced value and the
    --  memory model.
 
-   function Constant_Access (Memory : Memory_Type; P : Pointer) return not null access constant Object with
+   function Constant_Reference (Memory : Memory_Type; P : Pointer) return not null access constant Object with
      Global => null,
      Pre => Valid (Memory, Address (P)),
-     Post => Constant_Access'Result.all = Get (Memory, Address (P));
+     Post => Constant_Reference'Result.all = Get (Memory, Address (P));
 
    function At_End (X : access constant Object) return access constant Object is
      (X)
@@ -123,13 +141,12 @@ is
 
    function Reference (Memory : not null access Memory_Type; P : Pointer) return not null access Object with
      Global => null,
-     Pre => Valid (Memory.all, Address (P)),
-     Post => Reference'Result.all = Get (Memory.all, Address (P))
-       and then At_End (Reference'Result).all = Get (At_End (Memory).all, Address (P))
-       and then (for all Q of At_End (Memory).all => Valid (Memory.all, Q))
-       and then (for all Q of Memory.all => Valid (At_End (Memory).all, Q))
-       and then (for all Q of At_End (Memory).all =>
-                   (if Q /= Address (P) then Get (At_End (Memory).all, Q) = Get (Memory.all, Q)));
+     Pre  => Valid (Memory.all, Address (P)),
+     Post => At_End (Reference'Result).all = Get (At_End (Memory).all, Address (P))
+     and then Allocates (Memory.all, At_End (Memory).all, None)
+     and then Deallocates (Memory.all, At_End (Memory).all, None)
+     and then Writes (Memory.all, At_End (Memory).all, Only (Address (P)));
+
 private
    pragma SPARK_Mode (Off);
    type Pointer_B is access Object;
