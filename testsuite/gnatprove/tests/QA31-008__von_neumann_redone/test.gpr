@@ -2,7 +2,7 @@ project Test is
 
    for Languages use ("Ada");
 
-   for Main use ("test_sqrt");
+   for Main use ("test_sqrt.adb");
 
    package Compiler is
       for Default_Switches ("Ada") use ("-gnata", "-gnato");

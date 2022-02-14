@@ -5,7 +5,7 @@ project Test is
 
    for Object_Dir use "obj";
 
-   for Main use ("main");
+   for Main use ("main.adb");
 
    package Builder is
       for Global_Configuration_Pragmas use "restrictions.adc";
