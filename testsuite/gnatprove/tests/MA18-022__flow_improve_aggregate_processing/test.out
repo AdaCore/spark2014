@@ -23,7 +23,6 @@ aggregates.adb:88:11: info: flow dependencies proved
 aggregates.adb:95:23: info: initialization of "Output" proved
 aggregates.adb:96:11: info: data dependencies proved
 aggregates.adb:97:11: info: flow dependencies proved
-aggregates.adb:99:07: warning: initialization of "Tmp" has no effect
 aggregates.adb:107:23: info: initialization of "Output" proved
 aggregates.adb:108:11: info: data dependencies proved
 aggregates.adb:109:11: info: flow dependencies proved

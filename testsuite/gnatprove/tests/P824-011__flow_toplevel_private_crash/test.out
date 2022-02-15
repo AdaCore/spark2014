@@ -1,3 +1,2 @@
 bar.adb:3:04: warning: analyzing unreferenced function "F"
-bar.adb:4:07: warning: unused variable "Tmp_1"
 bar.adb:7:14: high: "Tmp_2.C" is not initialized

@@ -20,39 +20,23 @@ type_invariant_legal_2.adb:22:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_2.adb:30:14: medium: invariant check might fail [possible fix: precondition of subprogram at line 3 should mention X]
 type_invariant_legal_2.adb:31:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:32:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:41:11: warning: unused assignment
 type_invariant_legal_2.adb:41:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:42:11: warning: unused assignment
 type_invariant_legal_2.adb:42:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_2.adb:43:11: warning: unused assignment
 type_invariant_legal_2.adb:43:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:44:11: warning: unused assignment
-type_invariant_legal_2.adb:52:11: warning: unused assignment
 type_invariant_legal_2.adb:52:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:53:11: warning: unused assignment
 type_invariant_legal_2.adb:53:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_2.adb:54:11: warning: unused assignment
 type_invariant_legal_2.adb:54:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:55:11: warning: unused assignment
 type_invariant_legal_2.adb:62:09: warning: unused assignment
 type_invariant_legal_2.adb:62:14: info: range check proved (CVC4: 2 VC)
-type_invariant_legal_2.adb:63:11: warning: unused assignment
 type_invariant_legal_2.adb:63:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_2.ads:17 should mention X in a precondition]
-type_invariant_legal_2.adb:64:11: warning: unused assignment
 type_invariant_legal_2.adb:64:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:65:07: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_2.adb:66:11: warning: unused assignment
 type_invariant_legal_2.adb:66:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: call at line 65 should mention X (for argument X) in a postcondition]
-type_invariant_legal_2.adb:67:11: warning: unused assignment
 type_invariant_legal_2.adb:74:09: warning: unused assignment
 type_invariant_legal_2.adb:74:14: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
-type_invariant_legal_2.adb:75:11: warning: unused assignment
 type_invariant_legal_2.adb:75:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
-type_invariant_legal_2.adb:76:11: warning: unused assignment
 type_invariant_legal_2.adb:76:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_2.adb:78:11: warning: unused assignment
 type_invariant_legal_2.adb:78:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:79:11: warning: unused assignment
 type_invariant_legal_2.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test"
 type_invariant_legal_2.adb:85:07: medium: invariant check might fail
 type_invariant_legal_2.adb:86:07: info: precondition proved (Trivial: 1 VC)
@@ -89,46 +73,30 @@ type_invariant_legal_4.adb:33:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_4.adb:34:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:35:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:39:56: info: initialization of "X" constituent of "State" proved
-type_invariant_legal_4.adb:43:11: warning: unused assignment
 type_invariant_legal_4.adb:43:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_4.adb:44:11: warning: unused assignment
 type_invariant_legal_4.adb:44:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:44:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_4.adb:45:11: warning: unused assignment
 type_invariant_legal_4.adb:45:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_4.adb:46:11: warning: unused assignment
 type_invariant_legal_4.adb:46:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_4.adb:54:11: warning: unused assignment
 type_invariant_legal_4.adb:54:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_4.adb:55:11: warning: unused assignment
 type_invariant_legal_4.adb:55:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:55:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_4.adb:56:11: warning: unused assignment
 type_invariant_legal_4.adb:56:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_4.adb:57:11: warning: unused assignment
 type_invariant_legal_4.adb:57:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:64:09: warning: unused assignment
 type_invariant_legal_4.adb:64:14: info: range check proved (CVC4: 2 VC)
-type_invariant_legal_4.adb:65:11: warning: unused assignment
 type_invariant_legal_4.adb:65:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_4.ads:16 should mention X in a precondition]
-type_invariant_legal_4.adb:66:11: warning: unused assignment
 type_invariant_legal_4.adb:66:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:66:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_4.adb:67:07: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_4.adb:68:11: warning: unused assignment
 type_invariant_legal_4.adb:68:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_4.adb:69:11: warning: unused assignment
 type_invariant_legal_4.adb:69:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:76:09: warning: unused assignment
 type_invariant_legal_4.adb:76:14: info: range check proved (CVC4: 2 VC)
-type_invariant_legal_4.adb:77:11: warning: unused assignment
 type_invariant_legal_4.adb:77:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 7 should mention X]
-type_invariant_legal_4.adb:78:11: warning: unused assignment
 type_invariant_legal_4.adb:78:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:78:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_4.adb:80:11: warning: unused assignment
 type_invariant_legal_4.adb:80:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_4.adb:81:11: warning: unused assignment
 type_invariant_legal_4.adb:81:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:85:04: warning: analyzing unreferenced procedure "Extra_Test"
 type_invariant_legal_4.adb:85:14: info: invariant check proved (CVC4: 1 VC)
@@ -159,46 +127,30 @@ type_invariant_legal_5.adb:34:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_5.adb:35:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:36:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:40:56: info: initialization of "X" constituent of "State" proved
-type_invariant_legal_5.adb:45:11: warning: unused assignment
 type_invariant_legal_5.adb:45:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.adb:46:11: warning: unused assignment
 type_invariant_legal_5.adb:46:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:46:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_5.adb:47:11: warning: unused assignment
 type_invariant_legal_5.adb:47:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.adb:48:11: warning: unused assignment
 type_invariant_legal_5.adb:48:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.adb:56:11: warning: unused assignment
 type_invariant_legal_5.adb:56:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.adb:57:11: warning: unused assignment
 type_invariant_legal_5.adb:57:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:57:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_5.adb:58:11: warning: unused assignment
 type_invariant_legal_5.adb:58:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.adb:59:11: warning: unused assignment
 type_invariant_legal_5.adb:59:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:66:09: warning: unused assignment
 type_invariant_legal_5.adb:66:14: info: range check proved (CVC4: 2 VC)
-type_invariant_legal_5.adb:67:11: warning: unused assignment
 type_invariant_legal_5.adb:67:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_5.ads:19 should mention X in a precondition]
-type_invariant_legal_5.adb:68:11: warning: unused assignment
 type_invariant_legal_5.adb:68:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:68:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_5.adb:69:07: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_5.adb:70:11: warning: unused assignment
 type_invariant_legal_5.adb:70:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.adb:71:11: warning: unused assignment
 type_invariant_legal_5.adb:71:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:78:09: warning: unused assignment
 type_invariant_legal_5.adb:78:14: info: range check proved (CVC4: 2 VC)
-type_invariant_legal_5.adb:79:11: warning: unused assignment
 type_invariant_legal_5.adb:79:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 8 should mention X]
-type_invariant_legal_5.adb:80:11: warning: unused assignment
 type_invariant_legal_5.adb:80:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:80:14: info: precondition proved (Trivial: 1 VC)
-type_invariant_legal_5.adb:82:11: warning: unused assignment
 type_invariant_legal_5.adb:82:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.adb:83:11: warning: unused assignment
 type_invariant_legal_5.adb:83:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:87:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:88:06: info: data dependencies proved
