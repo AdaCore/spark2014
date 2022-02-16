@@ -86,14 +86,14 @@
   <proof prover="0"><result status="valid" steps="264"/></proof>
   </goal>
   <goal name="def&#39;vc.21">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="768"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="768"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.23">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="531"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="531"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <transf name="trivial_true" proved="true" >

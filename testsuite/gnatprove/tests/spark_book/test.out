@@ -995,6 +995,8 @@ string_examples.adb:21:17: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:21:17: info: range check proved (CVC4: 2 VC)
 string_examples.adb:22:19: warning: unused assignment
 string_examples.adb:25:01: info: range check proved (CVC4: 4 VC)
+string_examples.adb:25:07: info: index check proved (CVC4: 2 VC)
+string_examples.adb:25:12: info: index check proved (CVC4: 2 VC)
 string_examples.adb:25:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:25:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:26:06: info: range check proved (CVC4: 4 VC)

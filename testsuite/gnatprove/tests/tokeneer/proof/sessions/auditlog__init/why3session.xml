@@ -341,14 +341,14 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.94">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="1537"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.95" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.96">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="1624"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.97" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -391,7 +391,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.107">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="1688"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.108" proved="true">
   <transf name="trivial_true" proved="true" >

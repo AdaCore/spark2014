@@ -9660,8 +9660,9 @@ package body Gnat2Why.Expr is
                --  Slices are only for one-dimentional arrays (Ada RM 4.1.2)
                Result_Id   : constant W_Identifier_Id :=
                  New_Result_Ident (Get_Type (+Pref));
+               D_Rng       : constant Node_Id := Discrete_Range (N);
                Binders_Type : constant W_Type_Id :=
-                 Base_Why_Type_No_Bool (Discrete_Range (N));
+                 Base_Why_Type_No_Bool (D_Rng);
                Binders     : constant W_Identifier_Array :=
                  New_Temp_Identifiers (Positive (Dim), Typ => Binders_Type);
                Indexes     : constant W_Expr_Array := To_Exprs (Binders);
@@ -9716,6 +9717,85 @@ package body Gnat2Why.Expr is
                                         New_And_Pred
                                           (Left   => Bounds,
                                            Right  => Quantif));
+
+               --  Insert checks for bounds in the program domain
+
+               if Domain = EW_Prog then
+                  declare
+                     Rng          : constant Node_Id := Get_Range (D_Rng);
+                     Low_Expr     : constant W_Prog_Id :=
+                       New_Temp_For_Expr
+                         (Transform_Prog (Low_Bound (Rng),
+                          Binders_Type,
+                          Params));
+                     High_Expr    : constant W_Prog_Id :=
+                       New_Temp_For_Expr
+                         (Transform_Prog (High_Bound (Rng),
+                          Binders_Type,
+                          Params));
+                     Cond         : constant W_Prog_Id :=
+                       New_Comparison
+                         (Symbol =>
+                            (if Binders_Type = EW_Int_Type then Int_Infix_Le
+                             else MF_BVs (Binders_Type).Ule),
+                          Left   => Low_Expr,
+                          Right  => High_Expr);
+                     Index_Checks : W_Prog_Id;
+
+                  begin
+                     --  If either the prefix type or the slice bounds are not
+                     --  statically known, introduce a check to make sure that
+                     --  the bounds of the slice are in the array bounds.
+
+                     if Is_Static_Array_Type (Pref_Ty)
+                       and then Is_Static_Expression (Low_Bound (Rng))
+                       and then Is_Static_Expression (High_Bound (Rng))
+                     then
+                        Index_Checks := +Void;
+                     else
+                        Index_Checks :=
+                          New_Conditional
+                            (Condition => Cond,
+                             Then_Part => Sequence
+                               (Left  => New_Ignore
+                                  (Prog => Do_Index_Check
+                                       (Ada_Node => Low_Bound (Rng),
+                                        Arr_Expr => Prefix_Name,
+                                        W_Expr   => +Low_Expr,
+                                        Dim      => 1)),
+                                Right => New_Ignore
+                                  (Prog => Do_Index_Check
+                                       (Ada_Node => High_Bound (Rng),
+                                        Arr_Expr => Prefix_Name,
+                                        W_Expr   => +High_Expr,
+                                        Dim      => 1))));
+                     end if;
+
+                     --  Add binding for the high and low bounds even if no
+                     --  index checks were introduced to check for RTE in the
+                     --  bound expressions.
+
+                     Index_Checks :=
+                       Binding_For_Temp
+                         (Tmp => +High_Expr, Context => Index_Checks);
+                     Index_Checks :=
+                       Binding_For_Temp
+                         (Tmp => +Low_Expr, Context => Index_Checks);
+                     Prepend (Index_Checks, Result);
+
+                     --  Check the subtype indication if any
+
+                     if Nkind (D_Rng) = N_Subtype_Indication then
+                        Prepend
+                          (Check_Scalar_Range
+                             (Params => Params,
+                              N      => Rng,
+                              Base   => Entity (Subtype_Mark (D_Rng))),
+                           Result);
+                     end if;
+                  end;
+               end if;
+
                Result := Binding_For_Temp (Domain  => EW_Prog,
                                            Tmp     => Value_Name,
                                            Context => Result);

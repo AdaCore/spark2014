@@ -24,6 +24,8 @@ access_to_relaxed.adb:54:13: info: absence of memory leak at end of scope proved
 access_to_relaxed.adb:54:13: info: range check proved (CVC4: 2 VC)
 access_to_relaxed.adb:55:44: info: pointer dereference check proved (CVC4: 1 VC)
 access_to_relaxed.adb:57:13: info: range check proved (CVC4: 4 VC)
+access_to_relaxed.adb:57:22: info: index check proved (CVC4: 2 VC)
+access_to_relaxed.adb:57:28: info: index check proved (CVC4: 2 VC)
 access_to_relaxed.adb:57:28: info: pointer dereference check proved (CVC4: 1 VC)
 access_to_relaxed.adb:57:34: info: absence of memory leak proved (CVC4: 1 VC)
 access_to_relaxed.adb:57:34: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
