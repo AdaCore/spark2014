@@ -53,19 +53,12 @@ sensfusion6_pack.adb:65:07: warning: unused variable "Norm_Ay", in call inlined 
 sensfusion6_pack.adb:66:07: info: initialization of "Norm_Az" proved
 sensfusion6_pack.adb:66:07: warning: unused variable "Norm_Az", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:67:07: info: initialization of "Q0_Tmp" proved
-sensfusion6_pack.adb:67:07: warning: unused variable "Q0_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:68:07: info: initialization of "Q1_Tmp" proved
-sensfusion6_pack.adb:68:07: warning: unused variable "Q1_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:69:07: info: initialization of "Q2_Tmp" proved
-sensfusion6_pack.adb:69:07: warning: unused variable "Q2_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:70:07: info: initialization of "Q3_Tmp" proved
-sensfusion6_pack.adb:70:07: warning: unused variable "Q3_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:71:07: info: initialization of "Ax_Tmp" proved
-sensfusion6_pack.adb:71:07: warning: unused variable "Ax_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:72:07: info: initialization of "Ay_Tmp" proved
-sensfusion6_pack.adb:72:07: warning: unused variable "Ay_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:73:07: info: initialization of "Az_Tmp" proved
-sensfusion6_pack.adb:73:07: warning: unused variable "Az_Tmp", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:74:07: info: initialization of "Square_Sum" proved
 sensfusion6_pack.adb:74:07: warning: unused variable "Square_Sum", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:77:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:263
