@@ -13874,29 +13874,26 @@ package body Gnat2Why.Expr is
                            declare
                               Why_Expr : constant W_Expr_Id :=
                                 Transform_Expr (Var, Domain, Params);
+                              Tmp      : constant W_Term_Id :=
+                                New_Temp_For_Expr (Why_Expr);
+                              Simpl_Var : constant Boolean :=
+                                Nkind (Var) in N_Identifier | N_Expanded_Name;
+
                            begin
-                              if Nkind (Var) in N_Identifier | N_Expanded_Name
-                              then
+                              if Simpl_Var then
                                  T := +Get_Array_Attr
                                    (Ada_Ent_To_Why.Element
                                       (Symbol_Table, Entity (Var)),
                                     Attr_Id, Dim, Typ => Typ);
                               else
-                                 declare
-                                    Tmp : constant W_Term_Id :=
-                                      New_Temp_For_Expr (Why_Expr);
-                                 begin
-                                    T := +Get_Array_Attr
-                                      (Tmp, Attr_Id, Dim, Typ => Typ);
-                                    T := Binding_For_Temp (Domain  => Domain,
-                                                           Tmp     => +Tmp,
-                                                           Context => T);
-                                 end;
+                                 T := +Get_Array_Attr
+                                   (Tmp, Attr_Id, Dim, Typ => Typ);
                               end if;
 
-                              if Domain = EW_Prog then
-                                 Prepend
-                                   (New_Ignore (Prog => +Why_Expr), T);
+                              if not Simpl_Var or else Domain = EW_Prog then
+                                 T := Binding_For_Temp (Domain  => Domain,
+                                                        Tmp     => +Tmp,
+                                                        Context => T);
                               end if;
                            end;
                         end if;

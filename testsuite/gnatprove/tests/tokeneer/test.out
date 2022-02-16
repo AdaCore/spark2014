@@ -1231,7 +1231,7 @@ enclave.adb:2196:21: info: precondition proved (CVC4: 2 VC)
 enclave.adb:2197:42: info: range check proved (CVC4: 2 VC)
 enclave.adb:2199:24: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2209:24: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2226:10: info: precondition proved (CVC4: 9 VC; Trivial: 3 VC)
+enclave.adb:2226:10: info: precondition proved (CVC4: 11 VC; Trivial: 3 VC)
 enclave.ads:62:11: info: data dependencies proved
 enclave.ads:66:11: info: data dependencies proved
 enclave.ads:70:11: info: data dependencies proved

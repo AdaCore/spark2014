@@ -8,7 +8,6 @@ main.adb:19:15: info: index check proved (CVC4: 2 VC), in call inlined at main.a
 main.adb:19:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:44
 main.adb:28:11: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:45
 main.adb:28:11: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
-main.adb:28:11: info: range check proved (CVC4: 8 VC), in call inlined at main.adb:45
 main.adb:29:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:45
 main.adb:29:15: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
 main.adb:39:04: info: initialization of "NP" proved
