@@ -78,7 +78,7 @@ tokens.adb:14:07: info: initialization of "Word_Buffer" proved
 tokens.adb:15:07: info: initialization of "Word_Size" proved
 tokens.adb:21:15: info: precondition proved (CVC4: 1 VC)
 tokens.adb:24:30: info: range check proved (CVC4: 4 VC)
-tokens.adb:32:31: info: index check proved (CVC4: 22 VC)
+tokens.adb:32:31: info: index check proved (CVC4: 2 VC)
 tokens.adb:35:21: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]
 tokens.adb:39:21: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]
 tokens.adb:44:24: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]

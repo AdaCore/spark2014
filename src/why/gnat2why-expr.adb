@@ -2100,11 +2100,12 @@ package body Gnat2Why.Expr is
       Expr         : constant Node_Id := Expression (N);
       Cur_Case     : Node_Id;
       Matched_Expr : constant W_Expr_Id :=
-                       Transform_Expr (Expr,
-                                       Base_Why_Type_No_Bool
-                                         (Entity_Id'(Type_Of_Node (Expr))),
-                                       Match_Domain,
-                                       Params);
+        New_Temp_For_Expr
+          (Transform_Expr (Expr,
+           Base_Why_Type_No_Bool
+             (Entity_Id'(Type_Of_Node (Expr))),
+           Match_Domain,
+           Params));
       Then_Expr    : constant W_Expr_Id := Branch_Expr (First_Case);
       Elsif_Parts  : W_Expr_Array (1 .. Integer (List_Length (Cases)) - 2);
 
@@ -2150,20 +2151,24 @@ package body Gnat2Why.Expr is
                  Cond_Domain  => Cond_Domain,
                  Params       => Params);
          begin
-            return New_Conditional
-              (Domain      => Domain,
-               Condition   =>
-                 (if Nkind (N) in N_Case_Statement then
-                    +New_Counterexample_Assign
-                       (If_Node   => First_Case,
-                        Condition => +Disc_Choices)
-                  else
-                     Disc_Choices),
-
-               Then_Part   => Then_Expr,
-               Elsif_Parts => Elsif_Parts,
-               Else_Part   => Branch_Expr (Last_Case),
-               Typ         => Get_Type (Then_Expr));
+            return
+              Binding_For_Temp
+                (Domain  => Domain,
+                 Tmp     => Matched_Expr,
+                 Context =>
+                   New_Conditional
+                     (Domain      => Domain,
+                      Condition   =>
+                        (if Nkind (N) in N_Case_Statement then
+                              +New_Counterexample_Assign
+                           (If_Node   => First_Case,
+                            Condition => +Disc_Choices)
+                         else
+                            Disc_Choices),
+                      Then_Part   => Then_Expr,
+                      Elsif_Parts => Elsif_Parts,
+                      Else_Part   => Branch_Expr (Last_Case),
+                      Typ         => Get_Type (Then_Expr)));
          end;
       end if;
    end Case_Expr_Of_Ada_Node;
