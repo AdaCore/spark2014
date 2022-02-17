@@ -2,8 +2,6 @@ inc.adb:2:11: info: postcondition proved (CVC4: 1 VC)
 inc.adb:2:21: info: overflow check proved (CVC4: 2 VC)
 inc.adb:5:11: medium: overflow check might fail, cannot prove upper bound for @ + 1 (e.g. when x = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention x in a precondition]
 test_array.adb:9:07: info: range check proved (CVC4: 4 VC)
-test_array.adb:9:10: info: index check proved (CVC4: 2 VC)
-test_array.adb:9:15: info: index check proved (CVC4: 2 VC)
 test_array.adb:10:10: info: index check proved (CVC4: 2 VC)
 test_array.adb:10:18: info: overflow check proved (CVC4: 2 VC)
 test_array.adb:10:18: info: range check proved (CVC4: 2 VC)

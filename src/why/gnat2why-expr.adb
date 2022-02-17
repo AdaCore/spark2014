@@ -482,11 +482,13 @@ package body Gnat2Why.Expr is
    --  @return program performing the move, moving all pointers in Expr and
    --          preserving the value of other components
 
+   type Do_Check_Kind is (All_Checks, Only_Vars, No_Checks);
+
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
       Lvalue   : N_Subexpr_Id;
       Expr     : W_Prog_Id;
-      No_Check : Boolean := False)
+      Do_Check : Do_Check_Kind := All_Checks)
       return W_Prog_Id
    with
 
@@ -496,11 +498,14 @@ package body Gnat2Why.Expr is
      Pre => Eq_Base (Type_Of_Node (Lvalue), Get_Type (+Expr));
 
    --  Translate an assignment of the form "Lvalue := Expr" (using Ada_Node
-   --  for its source location). If No_Check is True, then no check should be
-   --  introduced. This is used for generating code moving an owning object,
-   --  that does not correspond to a source code assignment and only updates
-   --  the internal is_moved fields, and as such should not lead to the
-   --  generation of checks.
+   --  for its source location). If Do_Check is set to No_Checks, then no check
+   --  should be introduced. This is used for generating code moving an owning
+   --  object, that does not correspond to a source code assignment and only
+   --  updates the internal is_moved fields, and as such should not lead to the
+   --  generation of checks. If Do_Checks is set to Only_Vars, it is not
+   --  necessary to check the well-formedness of the prefix (discriminant,
+   --  bounds...). This occurs when the new value already contains an
+   --  evaluation of the prefix.
 
    function New_Binary_Op_Expr
      (Op          : N_Binary_Op;
@@ -565,11 +570,12 @@ package body Gnat2Why.Expr is
    --  and [Expr] the Why expression of the prefix.
 
    function One_Level_Update
-     (N       : Node_Id;
-      Pref    : W_Term_Id;
-      Value   : W_Expr_Id;
-      Domain  : EW_Domain;
-      Params  : Transformation_Params)
+     (N            : Node_Id;
+      Pref         : W_Term_Id;
+      Value        : W_Expr_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Check_Prefix : Boolean := True)
       return W_Expr_Id
    with
      --  Handling of slices is only valid in programs, as it introduces an
@@ -583,8 +589,11 @@ package body Gnat2Why.Expr is
    --  @param Value   the new value of the updated component
    --  @param Domain  the domain
    --  @param Params  the translation params
+   --  @param Check_Prefix False if it is not necessary to check the
+   --      well-formedness of the prefix (discriminant, bounds...). This occurs
+   --      when the new value already contains an evaluation of the prefix.
    --  @return the Why expression which corresponds to the Pref object, but
-   --            updated at the point specified by N, with value Value
+   --            updated at the point specified by N, with value Value;
 
    function Reconstruct_Expr_From_Item
      (Pattern   : Item_Type;
@@ -598,10 +607,11 @@ package body Gnat2Why.Expr is
    --  for being used in New_Assignment.
 
    procedure Shift_Rvalue
-     (N           : in out N_Subexpr_Id;
-      Expr        : in out W_Expr_Id;
-      Last_Access : in out Opt_N_Subexpr_Id;
-      Domain      :        EW_Domain := EW_Prog);
+     (N            : in out N_Subexpr_Id;
+      Expr         : in out W_Expr_Id;
+      Last_Access  : in out Opt_N_Subexpr_Id;
+      Domain       :        EW_Domain := EW_Prog;
+      Check_Prefix : Boolean := True);
    --  the input pair (N, Expr) describes an assignment
    --      N := Expr
    --  where N is the Ada node for some Lvalue of the form
@@ -613,6 +623,9 @@ package body Gnat2Why.Expr is
    --         Upd (Prefix.Acc1.(...).Acc[n-1], Accn, Expr)
    --  Last_Access is used as an accumulator to store the last subexpression
    --  which is not a conversion in the parents of N.
+   --  If Check_Prefix is False then it is not necessary to check the
+   --  well-formedness of the prefix (discriminant, bounds...). This occurs
+   --  when the new value already contains an evaluation of the prefix.
 
    function Transform_Aggregate
      (Params        : Transformation_Params;
@@ -5674,7 +5687,8 @@ package body Gnat2Why.Expr is
               (Store, New_Assignment
                  (Ada_Node => Actual,
                   Lvalue   => Actual,
-                  Expr     => Reconstructed_Arg));
+                  Expr     => Reconstructed_Arg,
+                  Do_Check => Only_Vars));
          end;
       end if;
 
@@ -8077,7 +8091,7 @@ package body Gnat2Why.Expr is
                     (Expr => +Tmp,
                      To   => Type_Of_Node (Expr)),
                   Value  => True_Prog),
-               No_Check => True);
+               Do_Check => No_Checks);
          end if;
 
       --  We need to call the __move function on Tmp
@@ -8150,7 +8164,7 @@ package body Gnat2Why.Expr is
                      Gnat2Why.Expr.New_Assignment
                        (Lvalue   => Expr,
                         Expr     => Reconstructed_Tmp,
-                        No_Check => True));
+                        Do_Check => No_Checks));
                end;
             end if;
 
@@ -8179,7 +8193,7 @@ package body Gnat2Why.Expr is
      (Ada_Node : Node_Id := Empty;
       Lvalue   : N_Subexpr_Id;
       Expr     : W_Prog_Id;
-      No_Check : Boolean := False)
+      Do_Check : Do_Check_Kind := All_Checks)
       return W_Prog_Id
    is
       --  Here, we deal with assignment statements. In SPARK, the general form
@@ -8207,7 +8221,7 @@ package body Gnat2Why.Expr is
       Last_Access : Node_Id   := Empty;
       Result      : W_Prog_Id := +Void;
       Domain      : constant EW_Domain :=
-        (if No_Check then EW_Pterm else EW_Prog);
+        (if Do_Check = No_Checks then EW_Pterm else EW_Prog);
 
    --  Start of processing for New_Assignment
 
@@ -8230,7 +8244,8 @@ package body Gnat2Why.Expr is
       end if;
 
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
-         Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain);
+         Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain,
+                       Check_Prefix => Do_Check = All_Checks);
       end loop;
 
       --  In those cases where the left-hand side is type converted, the type
@@ -9476,11 +9491,12 @@ package body Gnat2Why.Expr is
    ----------------------
 
    function One_Level_Update
-     (N       : Node_Id;
-      Pref    : W_Term_Id;
-      Value   : W_Expr_Id;
-      Domain  : EW_Domain;
-      Params  : Transformation_Params)
+     (N            : Node_Id;
+      Pref         : W_Term_Id;
+      Value        : W_Expr_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Check_Prefix : Boolean := True)
       return W_Expr_Id
    is
       --  In some cases, the frontend introduces an Itype for the type of a
@@ -9488,11 +9504,11 @@ package body Gnat2Why.Expr is
       --  mismatch in Why, we go to the root of the assignment to retrieve
       --  the correct type.
 
-      Pref_Ty : constant Entity_Id :=
+      Pref_Ty       : constant Entity_Id :=
         (if Nkind (N) in N_Selected_Component | N_Indexed_Component | N_Slice
          then Expected_Type_Of_Prefix (Prefix (N))
          else Empty);
-      Init_Val : constant W_Expr_Id :=
+      Init_Val      : constant W_Expr_Id :=
         (if Domain = EW_Prog
          and then Is_Init_Wrapper_Type (Get_Type (Value))
          and then not Expr_Has_Relaxed_Init (N)
@@ -9504,7 +9520,12 @@ package body Gnat2Why.Expr is
             Domain                 => EW_Prog,
             Exclude_Always_Relaxed => True)
          else Value);
-      Result : W_Expr_Id;
+      Prefix_Domain : constant EW_Domain :=
+        (if not Check_Prefix and then Domain = EW_Prog then EW_Pterm
+         else Domain);
+      --  Domain for the checks on the prefix which are preserved from the
+      --  previous value (index check, discriminant check...
+      Result        : W_Expr_Id;
    begin
       case Nkind (N) is
          when N_Selected_Component
@@ -9565,7 +9586,7 @@ package body Gnat2Why.Expr is
 
                   Result := New_Ada_Record_Update
                     (Ada_Node => N,
-                     Domain   => Domain,
+                     Domain   => Prefix_Domain,
                      Name     => +View_Pref,
                      Field    => Selector,
                      Value    => New_Value);
@@ -9595,7 +9616,7 @@ package body Gnat2Why.Expr is
             begin
                Result := New_Ada_Pointer_Update
                  (Ada_Node => N,
-                  Domain   => Domain,
+                  Domain   => Prefix_Domain,
                   Name     => +Pref,
                   Value    => New_Value);
             end;
@@ -9617,12 +9638,13 @@ package body Gnat2Why.Expr is
                       (Cursor,
                        Base_Why_Type_No_Bool
                          (Entity_Id'(Type_Of_Node (Cursor))),
-                       EW_Prog,
+                       Domain,
                        Params);
 
                   --  Insert Index Check if needed
 
-                  if Domain = EW_Prog and then Do_Range_Check (Cursor) then
+                  if Prefix_Domain = EW_Prog and then Do_Range_Check (Cursor)
+                  then
                      Indices (Count) := +Do_Index_Check
                        (Ada_Node => Cursor,
                         Arr_Expr => Ar_Tmp,
@@ -9720,7 +9742,7 @@ package body Gnat2Why.Expr is
 
                --  Insert checks for bounds in the program domain
 
-               if Domain = EW_Prog then
+               if Prefix_Domain = EW_Prog then
                   declare
                      Rng          : constant Node_Id := Get_Range (D_Rng);
                      Low_Expr     : constant W_Prog_Id :=
@@ -10186,10 +10208,11 @@ package body Gnat2Why.Expr is
    ------------------
 
    procedure Shift_Rvalue
-     (N           : in out N_Subexpr_Id;
-      Expr        : in out W_Expr_Id;
-      Last_Access : in out Opt_N_Subexpr_Id;
-      Domain      :        EW_Domain := EW_Prog)
+     (N            : in out N_Subexpr_Id;
+      Expr         : in out W_Expr_Id;
+      Last_Access  : in out Opt_N_Subexpr_Id;
+      Domain       :        EW_Domain := EW_Prog;
+      Check_Prefix : Boolean := True)
    is
       Typ : Type_Kind_Id;
    begin
@@ -10287,7 +10310,8 @@ package body Gnat2Why.Expr is
                   +Prefix_Var,
                   Expr,
                   Domain,
-                  Params => Body_Params);
+                  Params       => Body_Params,
+                  Check_Prefix => Check_Prefix);
                Expr := Binding_For_Temp (Domain   => Domain,
                                          Tmp      => Prefix_Var,
                                          Context  => Expr);
@@ -13416,7 +13440,10 @@ package body Gnat2Why.Expr is
                   Gnat2Why.Expr.New_Assignment
                     (Ada_Node => Stmt,
                      Lvalue   => Lvalue,
-                     Expr     => +Tmp)));
+                     Expr     => +Tmp,
+                     Do_Check =>
+                       (if Has_Target_Names (Stmt) then Only_Vars
+                        else All_Checks))));
          end;
 
       --  Normal assignment that does not involve any move
@@ -13425,7 +13452,10 @@ package body Gnat2Why.Expr is
          T := Gnat2Why.Expr.New_Assignment
            (Ada_Node => Stmt,
             Lvalue   => Lvalue,
-            Expr     => T);
+            Expr     => T,
+            Do_Check =>
+              (if Has_Target_Names (Stmt) then Only_Vars
+               else All_Checks));
       end if;
 
       --  Update the value at end of local borrowers. This needs to be done
