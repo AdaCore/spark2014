@@ -38,24 +38,28 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.8">
+  <proof prover="0"><result status="unknown" steps="177"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.10">
+  <proof prover="0"><result status="unknown" steps="211"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.12">
+  <proof prover="0"><result status="unknown" steps="245"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.14">
+  <proof prover="0"><result status="unknown" steps="279"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <transf name="trivial_true" proved="true" >
