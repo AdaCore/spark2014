@@ -31,7 +31,6 @@ with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
 with VC_Kinds;                    use VC_Kinds;
 with Why.Atree.Builders;          use Why.Atree.Builders;
-with Why.Atree.Modules;           use Why.Atree.Modules;
 with Why.Gen.Arrays;              use Why.Gen.Arrays;
 with Why.Gen.Binders;             use Why.Gen.Binders;
 with Why.Gen.Decl;                use Why.Gen.Decl;
@@ -132,7 +131,9 @@ package body Why.Gen.Init is
 
          --  Initialization of top level type
 
-         if Has_Scalar_Type (E) then
+         if Get_Type (+Name) = M_Boolean_Init_Wrapper.Wrapper_Ty
+           or else Has_Scalar_Type (E)
+         then
             P := +New_Init_Attribute_Access (E, +Name);
             if Domain = EW_Pred then
                P := +Pred_Of_Boolean_Term (+P);
@@ -298,7 +299,8 @@ package body Why.Gen.Init is
          when EW_Split =>
             return EW_Split (Get_Ada_Node (+Ty), Relaxed_Init => True);
          when EW_Builtin =>
-            raise Program_Error;
+            pragma Assert (Ty = EW_Bool_Type);
+            return M_Boolean_Init_Wrapper.Wrapper_Ty;
       end case;
    end EW_Init_Wrapper;
 
@@ -401,9 +403,19 @@ package body Why.Gen.Init is
       pragma Assert (Get_Relaxed_Init (Get_Type (Name)));
 
       --  Name is necessarily in abstract form. Query the record component.
+      --  In general, the name of the attribute is declared in the type's
+      --  module.
 
-      pragma Assert (Get_Type_Kind (Get_Type (Name)) = EW_Abstract);
-      Field := E_Symb (E, WNE_Attr_Init);
+      if Get_Type_Kind (Get_Type (Name)) = EW_Abstract then
+         Field := E_Symb (E, WNE_Attr_Init);
+
+      --  For standard boolean, it is in the boolean init wrapper module
+
+      else
+         pragma Assert (Get_Type (Name) = M_Boolean_Init_Wrapper.Wrapper_Ty);
+         Field := M_Boolean_Init_Wrapper.Attr_Init;
+      end if;
+
       return New_Record_Access (Name   => +Name,
                                 Field  => Field,
                                 Typ    => EW_Bool_Type);

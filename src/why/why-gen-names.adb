@@ -263,6 +263,14 @@ package body Why.Gen.Names is
                   elsif From = EW_Int_Type and then Why_Type_Is_Fixed (To) then
                      return
                        Get_Fixed_Point_Theory (Get_Ada_Node (+To)).Of_Int;
+                  elsif From = EW_Bool_Type
+                    and then To = M_Boolean_Init_Wrapper.Wrapper_Ty
+                  then
+                     return M_Boolean_Init_Wrapper.To_Wrapper;
+                  elsif From = M_Boolean_Init_Wrapper.Wrapper_Ty
+                    and then To = EW_Bool_Type
+                  then
+                     return M_Boolean_Init_Wrapper.Of_Wrapper;
                   else
                      raise Program_Error;
                   end if;

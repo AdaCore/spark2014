@@ -20425,7 +20425,7 @@ package body Gnat2Why.Expr is
       end if;
 
       if Present (Expr) then
-         Runtime := Transform_Prog (Expr, Params);
+         Runtime := Transform_Prog (Expr, EW_Bool_Type, Params);
          Params.Gen_Marker := GM_Toplevel;
          Pred := Transform_Pred (Expr, Params);
          return;

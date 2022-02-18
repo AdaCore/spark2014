@@ -50,6 +50,8 @@ with Why.Inter;                  use Why.Inter;
 package body Why.Atree.Modules is
 
    --  procedures to initialize the various modules
+
+   procedure Init_Boolean_Init_Wrapper_Module;
    procedure Init_Boolean_Module;
    procedure Init_Builtin_From_Image_Module;
    procedure Init_BV_Conv_Modules;
@@ -419,6 +421,7 @@ package body Why.Atree.Modules is
       --  built-in void ident
 
       Init_Main_Module;
+      Init_Boolean_Init_Wrapper_Module;
       Init_Compat_Tags_Module;
       Init_Integer_Module;
       Init_Int_Power_Module;
@@ -1610,6 +1613,40 @@ package body Why.Atree.Modules is
       EW_BitVector_128_Type := M_BVs (BV128).T;
       EW_BitVector_256_Type := M_BVs (BV256).T;
    end Init_BV_Modules;
+
+   --------------------------------------
+   -- Init_Boolean_Init_Wrapper_Module --
+   --------------------------------------
+
+   procedure Init_Boolean_Init_Wrapper_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Boolean__init_wrapper");
+   begin
+      M_Boolean_Init_Wrapper.Module := M;
+      M_Boolean_Init_Wrapper.Wrapper_Ty :=
+        New_Type (Type_Kind    => EW_Builtin,
+                  Name         =>
+                    New_Name
+                      (Symb => NID ("boolean__init_wrapper"), Module => M),
+                  Relaxed_Init => True,
+                  Is_Mutable   => False);
+      M_Boolean_Init_Wrapper.Of_Wrapper :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symb   => NID ("of_wrapper"),
+                        Typ    => EW_Bool_Type);
+      M_Boolean_Init_Wrapper.To_Wrapper :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symb   => NID ("to_wrapper"),
+                        Typ    => M_Boolean_Init_Wrapper.Wrapper_Ty);
+      M_Boolean_Init_Wrapper.Attr_Init :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symb   => NID ("__attr__init"),
+                        Typ    => EW_Bool_Type);
+   end Init_Boolean_Init_Wrapper_Module;
 
    -----------------------------
    -- Init_Compat_Tags_Module --
