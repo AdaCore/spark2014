@@ -176,7 +176,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.54" proved="true">
-  <proof prover="0"><result status="valid" steps="6728"/></proof>
+  <proof prover="0"><result status="valid" steps="6725"/></proof>
   </goal>
   <goal name="def&#39;vc.55" proved="true">
   <proof prover="0"><result status="valid" steps="6961"/></proof>
