@@ -653,6 +653,10 @@ package body Configuration is
             Long_Switch => "--debug-prover-errors");
          Define_Switch
            (Config,
+            CL_Switches.Exclude_Line'Access,
+            Long_Switch => "--exclude-line=");
+         Define_Switch
+           (Config,
             CL_Switches.Flow_Debug'Access,
             Long_Switch => "--flow-debug");
          Define_Switch

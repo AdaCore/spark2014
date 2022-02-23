@@ -93,6 +93,7 @@ package body Gnat2Why_Opts.Reading is
       Check_Mode              := Get_Opt (V, Check_Mode_Name);
       Output_Mode             :=
         Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
+      Exclude_Line            := Get_Opt (V, Exclude_Line_Name);
 
       Debug_Exec_RAC          := Get_Opt (V, Debug_Exec_RAC_Name);
       Debug_Mode              := Get_Opt (V, Debug_Mode_Name);

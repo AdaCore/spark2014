@@ -23,11 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Aspects;                use Aspects;
 with Atree;                  use Atree;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
+with Flow_Error_Messages;
+with Gnat2Why_Args;
 with Namet;                  use Namet;
+with Nmake;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
@@ -257,6 +261,21 @@ package body SPARK_Rewrite is
          --  ??? this is copy-pasted from SPARK_Register; refactor
 
       begin
+         --  Delete lines of code passed through the --exclude-line switch, by
+         --  rewriting the declaration, statement or pragma into a call marker
+         --  node which is ignored by gnat2why.
+
+         if Gnat2Why_Args.Exclude_Line /= Null_Unbounded_String
+           and then Nkind (N) in N_Declaration
+                               | N_Later_Decl_Item
+                               | N_Statement_Other_Than_Procedure_Call
+                               | N_Procedure_Call_Statement
+                               | N_Pragma
+           and then Flow_Error_Messages.Is_Excluded_Line (Sloc (N))
+         then
+            Rewrite (N, Nmake.Make_Call_Marker (Sloc (N)));
+         end if;
+
          --  Explicitly traverse rewritten subprogram calls and pragmas (e.g.
          --  pragma Debug).
          if Nkind (N) in Rewriten_Call

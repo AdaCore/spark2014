@@ -123,6 +123,7 @@ package body Gnat2Why_Opts.Writing is
       Set_Field (Obj, Check_Mode_Name, Configuration.Mode = GPM_Check);
       Set_Field (Obj, Output_Mode_Name,
                  Gnat2Why_Opts.Output_Mode_Type'Image (Output));
+      Set_Field (Obj, Exclude_Line_Name, CL_Switches.Exclude_Line.all);
 
       --  Always store debug options
 

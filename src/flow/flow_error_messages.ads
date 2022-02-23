@@ -265,4 +265,8 @@ package Flow_Error_Messages is
    --         expression should be used (instead of the middle)
    --  @param Check_Info extra information for the check
 
+   function Is_Excluded_Line (Slc : Source_Ptr) return Boolean;
+   --  Returns True if command line arguments "--excluded-line" was given and
+   --  the specified line corresponds to the sloc in argument.
+
 end Flow_Error_Messages;
