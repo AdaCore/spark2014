@@ -1,0 +1,8 @@
+bad_loop.adb:10:09: error: "X" is not readable
+bad_loop.adb:10:09: error: object was moved at line 7
+bad_return.adb:2:11: error: object was moved at line 6
+bad_return.adb:2:11: error: return from "Bad_Return" with moved value for "X"
+bad_return.adb:2:23: warning: "X" is not modified, could be IN
+bad_return.adb:5:04: warning: statement has no effect
+bad_return.adb:6:09: warning: unused assignment
+gnatprove: error during flow analysis and proof
