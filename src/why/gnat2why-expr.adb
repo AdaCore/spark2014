@@ -6512,7 +6512,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Slice =>
-            return Etype (N);
+            return Retysp (Etype (N));
 
          when N_Indexed_Component =>
             return Retysp
@@ -6529,7 +6529,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Explicit_Dereference =>
-            return Etype (N);
+            return Retysp (Etype (N));
 
          when others =>
             Ada.Text_IO.Put_Line ("[Expected_Type] kind ="
