@@ -8,7 +8,7 @@
 <path name="my_lists__m__insert__2.gnat-json"/>
 <theory name="My_lists__m__insert__2__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_vc_conj" proved="true" >
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="107"/></proof>
   </goal>

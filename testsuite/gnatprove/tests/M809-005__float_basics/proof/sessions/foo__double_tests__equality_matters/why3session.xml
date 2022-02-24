@@ -2,16 +2,16 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
-<prover id="3" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
+<prover id="3" name="colibri" version="2137" timelimit="120" steplimit="12000" memlimit="0"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__double_tests__equality_matters.gnat-json"/>
 <theory name="Foo__double_tests__equality_matters__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -29,8 +29,8 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="4011"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="3698"/></proof>
   <proof prover="2"><result status="unknown" steps="4076"/></proof>
   <proof prover="3"><result status="unknown" steps="161"/></proof>
   </goal>

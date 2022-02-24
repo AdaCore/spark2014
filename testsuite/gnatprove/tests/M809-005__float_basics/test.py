@@ -4,7 +4,7 @@ contains_manual_proof = False
 
 
 def replay():
-    prove_all(procs=0, counterexample=False, level=4, check_counterexamples=False)
+    prove_all(procs=10, counterexample=False, steps=10000, check_counterexamples=False)
 
 
 if __name__ == "__main__":
