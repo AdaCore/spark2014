@@ -12,10 +12,10 @@ segway.ads:20:11: info: data dependencies proved
 segway.ads:30:11: info: data dependencies proved
 segway.ads:33:11: info: data dependencies proved
 segway.ads:34:11: info: flow dependencies proved
-segway.ads:35:22: info: postcondition proved (CVC4: 4 VC)
+segway.ads:35:22: info: postcondition proved (CVC4: 2 VC)
 segway.ads:39:11: info: data dependencies proved
 segway.ads:40:11: info: flow dependencies proved
 segway.ads:42:22: info: postcondition proved (CVC4: 3 VC)
 segway.ads:45:11: info: data dependencies proved
 segway.ads:46:11: info: flow dependencies proved
-segway.ads:48:22: info: postcondition proved (CVC4: 4 VC)
+segway.ads:48:22: info: postcondition proved (CVC4: 2 VC)

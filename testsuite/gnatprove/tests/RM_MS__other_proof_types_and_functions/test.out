@@ -17,7 +17,7 @@ stack.ads:36:11: info: data dependencies proved
 stack.ads:40:11: info: data dependencies proved
 stack.ads:51:11: info: data dependencies proved
 stack.ads:53:21: info: postcondition proved (CVC4: 3 VC)
-stack.ads:53:39: info: overflow check proved (CVC4: 2 VC)
+stack.ads:53:39: info: overflow check proved (CVC4: 1 VC)
 stack.ads:55:21: info: precondition proved (CVC4: 2 VC)
 stack.ads:60:19: info: initialization of "X" proved
 stack.ads:61:11: info: data dependencies proved
@@ -26,9 +26,9 @@ stack.ads:67:11: info: data dependencies proved
 stack.ads:69:21: info: postcondition proved (CVC4: 3 VC)
 stack.ads:70:21: info: precondition proved (CVC4: 2 VC)
 stack.ads:70:43: info: precondition proved (CVC4: 2 VC)
-stack.ads:70:62: info: range check proved (CVC4: 2 VC)
+stack.ads:70:62: info: range check proved (CVC4: 1 VC)
 stack.ads:71:21: info: precondition proved (CVC4: 2 VC)
-stack.ads:71:40: info: range check proved (CVC4: 2 VC)
+stack.ads:71:40: info: range check proved (CVC4: 1 VC)
 stack.ads:71:47: info: precondition proved (CVC4: 2 VC)
 stack_external_prover.adb:18:04: info: initialization of "My_Stack" constituent of "State" proved
 stack_external_prover.adb:24:44: medium: range check might fail, cannot prove upper bound for My_Stack.Pointer + 1 [reason for check: result of addition must fit in the target type of the assignment]
@@ -70,7 +70,7 @@ stack_functional_spec.ads:40:11: info: data dependencies proved
 stack_functional_spec.ads:44:11: info: data dependencies proved
 stack_functional_spec.ads:56:11: info: data dependencies proved
 stack_functional_spec.ads:58:21: info: postcondition proved (CVC4: 4 VC)
-stack_functional_spec.ads:58:55: info: overflow check proved (CVC4: 2 VC)
+stack_functional_spec.ads:58:55: info: overflow check proved (CVC4: 1 VC)
 stack_functional_spec.ads:60:21: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:62:25: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:62:50: info: precondition proved (CVC4: 2 VC)
@@ -84,9 +84,9 @@ stack_functional_spec.ads:82:11: info: data dependencies proved
 stack_functional_spec.ads:84:21: info: postcondition proved (CVC4: 4 VC)
 stack_functional_spec.ads:85:21: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:86:24: info: precondition proved (CVC4: 2 VC)
-stack_functional_spec.ads:86:62: info: range check proved (CVC4: 2 VC)
+stack_functional_spec.ads:86:62: info: range check proved (CVC4: 1 VC)
 stack_functional_spec.ads:87:21: info: precondition proved (CVC4: 2 VC)
-stack_functional_spec.ads:87:55: info: range check proved (CVC4: 2 VC)
+stack_functional_spec.ads:87:55: info: range check proved (CVC4: 1 VC)
 stack_functional_spec.ads:88:24: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:90:25: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:90:50: info: precondition proved (CVC4: 2 VC)

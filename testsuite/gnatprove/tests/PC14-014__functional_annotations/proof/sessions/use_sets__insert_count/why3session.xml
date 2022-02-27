@@ -115,7 +115,7 @@
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.29" proved="true">
-  <proof prover="1"><result status="valid" steps="482071"/></proof>
+  <proof prover="1"><result status="valid" steps="482055"/></proof>
   </goal>
  </transf>
  </goal>
