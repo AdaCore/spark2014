@@ -978,7 +978,7 @@ package body SPARK_Util.Types is
 
    function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id
    is
-      Eq : constant Entity_Id := Sem_Util.Get_User_Defined_Eq (Typ);
+      Eq : constant Entity_Id := Sem_Util.Get_User_Defined_Equality (Typ);
 
    begin
       --  Ignore predefined equality of tagged types
