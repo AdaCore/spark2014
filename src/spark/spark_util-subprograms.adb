@@ -1282,7 +1282,6 @@ package body SPARK_Util.Subprograms is
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
       Limit_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
-
    begin
       return
         Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
@@ -1641,7 +1640,10 @@ package body SPARK_Util.Subprograms is
    --  users inside a generic/inlined subprogram.
 
    function Subp_Location (E : Entity_Id) return String is
-      Slc : constant Source_Ptr := Sloc (E);
+      Slc : constant Source_Ptr :=
+        (if Is_Generic_Instance (Unique_Entity (E)) then
+           Sloc (Subprogram_Specification (E))
+         else Sloc (E));
       File : constant String := File_Name (Slc);
       Line : constant Physical_Line_Number := Get_Physical_Line_Number (Slc);
    begin
