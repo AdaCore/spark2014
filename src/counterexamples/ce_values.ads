@@ -188,6 +188,16 @@ package CE_Values is
    --  Map entities to counterexample values extended with a modifier. This is
    --  used when parsing all counterexample values supplied for a line.
 
+   function Get_Array_Elt
+      (V : Value_Type;
+       J : Positive) return Value_Access;
+   --  Retrieve value of V at index J - 1
+
+   function Get_Array_Length (V : Value_Type) return Opt_Big_Integer
+   with
+       Pre => V.K = Array_K;
+   --  Return the length of the array if its first and last indices exist
+
    function To_String (V : Value_Type) return String;
    --  Debug printing for counterexample values
 
