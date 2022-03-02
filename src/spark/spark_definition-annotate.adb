@@ -812,7 +812,7 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a subprogram or a package
 
       if Ekind (E) not in
-        Subprogram_Kind | E_Package | Generic_Subprogram_Kind
+        Subprogram_Kind | E_Package | Generic_Unit_Kind
       then
          Error_Msg_N
            ("Entity parameter of a pragma Terminating must be a subprogram or "
@@ -904,13 +904,29 @@ package body SPARK_Definition.Annotate is
    ------------------------------
 
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean is
-      Unit : constant Opt_Unit_Kind_Id :=
-        (if Present (Scope (E)) then Enclosing_Unit (E) else Empty);
+      Unit     : constant Opt_Unit_Kind_Id :=
+        (if not Is_Child_Unit (E) and then Present (Scope (E))
+         then Enclosing_Unit (E) else Empty);
+      --  Do not look at the enclosing package for child units
+
+      Spec     : constant Node_Id :=
+        (if not Is_Generic_Instance (E) then Empty
+         elsif Is_Package_Or_Generic_Package (E) then Package_Specification (E)
+         else Subprogram_Specification (E));
+      Gen_Unit : constant Opt_Generic_Unit_Kind_Id :=
+        (if Present (Spec) and then Present (Generic_Parent (Spec))
+         then Generic_Parent (Spec)
+         else Empty);
+      --  If E is a generic instance, also look for Terminating annotation on
+      --  the enclosing scopes of the generic unit.
+
    begin
       return Terminate_Annotations.Contains (E)
         or else (Present (Unit)
                  and then Ekind (Unit) = E_Package
-                 and then Has_Terminate_Annotation (Unit));
+                 and then Has_Terminate_Annotation (Unit))
+        or else (Present (Gen_Unit)
+                 and then Has_Terminate_Annotation (Gen_Unit));
    end Has_Terminate_Annotation;
 
    -----------------------------
