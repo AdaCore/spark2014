@@ -1,0 +1,38 @@
+main.adb:81:06: info: data dependencies proved
+main.adb:86:22: info: assertion proved (CVC4: 2 VC)
+main.adb:90:06: info: data dependencies proved
+main.adb:95:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:100:06: info: data dependencies proved
+main.adb:105:22: info: assertion proved (CVC4: 2 VC)
+main.adb:109:06: info: data dependencies proved
+main.adb:114:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:119:06: info: data dependencies proved
+main.adb:124:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:129:06: info: data dependencies proved
+main.adb:134:22: info: assertion proved (CVC4: 2 VC)
+main.adb:138:06: info: data dependencies proved
+main.adb:143:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:148:06: info: data dependencies proved
+main.adb:153:22: info: assertion proved (CVC4: 2 VC)
+main.adb:157:06: info: data dependencies proved
+main.adb:162:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:167:06: info: data dependencies proved
+main.adb:172:22: info: assertion proved (CVC4: 2 VC)
+main.adb:177:06: info: data dependencies proved
+main.adb:182:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:187:06: info: data dependencies proved
+main.adb:192:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:197:06: info: data dependencies proved
+main.adb:202:22: info: assertion proved (CVC4: 2 VC)
+main.adb:206:06: info: data dependencies proved
+main.adb:211:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:216:06: info: data dependencies proved
+main.adb:221:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:226:06: info: data dependencies proved
+main.adb:231:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:236:06: info: data dependencies proved
+main.adb:241:22: info: assertion proved (CVC4: 2 VC)
+main.adb:245:06: info: data dependencies proved
+main.adb:250:22: info: assertion proved (CVC4: 2 VC)
+main.adb:254:06: info: data dependencies proved
+main.adb:259:22: info: assertion proved (CVC4: 2 VC)

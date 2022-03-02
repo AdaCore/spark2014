@@ -2257,6 +2257,89 @@ package body SPARK_Util.Types is
       or else Is_Limited_View (Typ))
       or else No (Get_User_Defined_Eq (Base_Type (Typ))));
 
+   ----------------------------------
+   -- Use_Real_Eq_For_Private_Type --
+   ----------------------------------
+
+   function Use_Real_Eq_For_Private_Type (E : Type_Kind_Id) return Boolean is
+
+      function Use_Real_Eq_For_Type (E : Type_Kind_Id) return Boolean;
+      --  Recursively traverse the type subcomponents and return False if
+      --  a type is found which might make the equality on objects of type E
+      --  imprecise.
+
+      --------------------------
+      -- Use_Real_Eq_For_Type --
+      --------------------------
+
+      function Use_Real_Eq_For_Type (E : Type_Kind_Id) return Boolean is
+      begin
+         case Ekind (E) is
+            when Private_Kind =>
+               declare
+                  Full_Type : constant Entity_Id := Unchecked_Full_Type (E);
+               begin
+                  return not Is_Private_Type (Full_Type)
+                    and then Use_Real_Eq_For_Type (Full_Type);
+               end;
+
+            when E_Record_Subtype
+               | E_Record_Type
+            =>
+               --  The user defined equality of components of a record type
+               --  will be used in the predefined equality of the enclosing
+               --  composite type.
+
+               if Present (Get_User_Defined_Eq (Base_Type (E))) then
+                  return False;
+               end if;
+
+               --  Equality on tagged types ignores potential extensions
+
+               if Is_Tagged_Type (E) then
+                  return False;
+               end if;
+
+               declare
+                  Comp : Entity_Id := First_Component_Or_Discriminant (E);
+               begin
+                  while Present (Comp) loop
+                     if not Use_Real_Eq_For_Type (Etype (Comp)) then
+                        return False;
+                     end if;
+                     Next_Component_Or_Discriminant (Comp);
+                  end loop;
+               end;
+               return True;
+
+            when Array_Kind =>
+
+               --  Equality on unconstrained array types does not compare the
+               --  bounds.
+
+               return Is_Constrained (E)
+                 and then Use_Real_Eq_For_Type (Component_Type (E));
+
+            --  Equality on access types only returns True if the accesses
+            --  are the same.
+
+            when Access_Kind | Discrete_Kind | Fixed_Point_Kind =>
+               return True;
+
+            --  Equality on floating point type will return True on -0 and +0
+
+            when Float_Kind =>
+               return False;
+
+            when others =>
+               return False;
+         end case;
+      end Use_Real_Eq_For_Type;
+
+   begin
+      return Use_Real_Eq_For_Type (E);
+   end Use_Real_Eq_For_Private_Type;
+
    ---------------------------------------
    -- Visible_Declarations_Of_Prot_Type --
    ---------------------------------------

@@ -1,2 +1,2 @@
 gen.ads:11:22: warning: unused variable "E", in instantiation at test.ads:10
-gen.ads:14:14: medium: postcondition might fail, in instantiation at test.ads:10
+gen.ads:14:14: info: postcondition proved (CVC4: 1 VC), in instantiation at test.ads:10

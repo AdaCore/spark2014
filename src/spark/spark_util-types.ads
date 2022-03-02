@@ -165,6 +165,11 @@ package SPARK_Util.Types is
    --  primitive one (ie. Type is not an unlimited record type or it does
    --  not have a redefined equality).
 
+   function Use_Real_Eq_For_Private_Type (E : Type_Kind_Id) return Boolean
+   with Pre => Is_Private_Type (E) or else Is_Concurrent_Type (E);
+   --  Return True if the predefined equality on a private type opaque for
+   --  SPARK can be represented using Why3 equality.
+
    function Get_Parent_Type_If_Check_Needed
      (N : N_Declaration_Id)
       return Opt_Type_Kind_Id
