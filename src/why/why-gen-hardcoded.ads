@@ -42,6 +42,14 @@ package Why.Gen.Hardcoded is
    --  @param Theory the theory where the declaration will be emitted.
    --  @param Entity corresponding to the type declaration.
 
+   function Hardcoded_Equality_Symbol
+     (Typ    : Entity_Id;
+      Domain : EW_Domain)
+      return W_Identifier_Id
+   with
+     Pre => Is_Type (Typ) and then Is_Hardcoded_Entity (Typ);
+   --  Return the equality symbol for type Typ
+
    function Is_Hardcoded_Comparison (Subp : Entity_Id) return Boolean;
    --  Return True if Subp is a comparison operator and gains to be translated
    --  in the predicate domain.

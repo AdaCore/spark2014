@@ -3117,6 +3117,17 @@ package body Why.Gen.Records is
                            Then_Part => +True_Term,
                            Else_Part => +False_Term)
 
+                        --  Give the defintion of the predefined equality on
+                        --  hardcoded types. For Big_Reals and Big_Integers it
+                        --  should not be necessary as their full view is a
+                        --  record type and therefore their primitive equality
+                        --  should be used everywhere.
+
+                        elsif Is_Hardcoded_Entity (E)
+                        then New_Comparison
+                          (Hardcoded_Equality_Symbol (E, EW_Term),
+                           +A_Ident, +B_Ident, EW_Term)
+
                         --  For simple private types, use Why3 "=" if the type
                         --  allows it.
 
