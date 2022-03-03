@@ -1,11 +1,16 @@
-with Context;
-
 package Init is
-   type Raw_Shared_Context_Type is limited private;
-   subtype Shared_Context_Type is Raw_Shared_Context_Type;
+   type Parent is limited record
+      null;
+   end record
+   with
+      Async_Readers,
+      Volatile;
 
-   procedure Initialize (Shared_Context : out Shared_Context_Type);
+   type Child is limited private;
+   subtype Subchild is Child;
+
+   procedure Initialize (Shared_Context : out Subchild);
 
 private
-   type Raw_Shared_Context_Type is limited new Context.Raw_Context_Type;
+   type Child is limited new Parent;
 end Init;
