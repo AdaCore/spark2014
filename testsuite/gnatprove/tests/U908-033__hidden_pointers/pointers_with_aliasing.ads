@@ -5,7 +5,10 @@ generic
    type Object (<>) is private;
 package Pointers_With_Aliasing with
   SPARK_Mode,
-  Annotate => (GNATprove, Terminating)
+  Annotate => (GNATprove, Terminating),
+  Initial_Condition =>
+    (for all A in Address_Type => not Valid (Memory, A))
+    --  The memory is initially empty
 is
    pragma Unevaluated_Use_Of_Old (Allow);
 
