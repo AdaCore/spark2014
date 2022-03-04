@@ -1617,7 +1617,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                --  the borrowed expression to be updated.
 
                if Is_Local_Borrower (E) then
-                  Update_Status (Expression (N), Loop_Writes, Inv_Seen);
+                  Update_Status (Get_Borrowed_Expr (E), Loop_Writes, Inv_Seen);
                end if;
 
                if Is_Mutable_In_Why (E) then
