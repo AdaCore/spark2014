@@ -47,7 +47,7 @@ convert.ads:65:17: medium: postcondition might fail, cannot prove Unsigned_64 (R
 convert.ads:65:30: info: range check proved (colibri: 2 VC)
 convert.ads:67:17: info: precondition proved (Z3: 2 VC)
 convert.ads:72:64: info: range check proved (colibri: 2 VC)
-convert.ads:75:23: info: precondition proved (Z3: 2 VC)
+convert.ads:75:23: info: precondition proved (Z3: 1 VC; colibri: 1 VC)
 convert.ads:76:63: info: float overflow check proved (Z3: 1 VC)
 convert.ads:79:23: medium: precondition might fail, cannot prove Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64
 convert.ads:81:63: info: float overflow check proved (Z3: 1 VC)
