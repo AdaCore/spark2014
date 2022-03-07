@@ -34,10 +34,10 @@ gen_access.adb:24:04: info: absence of memory leak at end of scope proved (CVC4:
 gen_access.adb:25:04: medium: memory leak might occur at end of scope
 gen_access.adb:26:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 gen_access.adb:37:19: info: assertion proved (CVC4: 1 VC)
-gen_access.adb:37:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory] [possible fix: you should consider adding a postcondition to function Mk_Arr_1 or turning it into an expression function in its unit spec]
+gen_access.adb:37:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
 gen_access.adb:49:19: info: assertion proved (CVC4: 1 VC)
 gen_access.adb:59:19: info: assertion proved (CVC4: 1 VC)
-gen_access.adb:59:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory] [possible fix: you should consider adding a postcondition to function Mk_List or turning it into an expression function in its unit spec]
+gen_access.adb:59:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
 gen_access.adb:60:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 gen_access.adb:61:04: medium: memory leak might occur at end of scope
 gen_access.adb:62:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
@@ -63,11 +63,11 @@ gen_access.adb:96:22: info: pointer dereference check proved (CVC4: 1 VC)
 gen_access.adb:96:22: warning: "L.N" is set by "Delete" but not used after the call
 gen_access.adb:97:14: info: absence of memory leak proved (CVC4: 1 VC)
 gen_access.adb:111:19: info: assertion proved (CVC4: 1 VC)
-gen_access.adb:111:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory] [possible fix: you should consider adding a postcondition to function Mk_List2 or turning it into an expression function in its unit spec]
+gen_access.adb:111:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
 gen_access.adb:112:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 gen_access.adb:113:04: medium: memory leak might occur at end of scope
 gen_access.adb:124:19: info: assertion proved (CVC4: 1 VC)
-gen_access.adb:124:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory] [possible fix: you should consider adding a postcondition to function Mk_My_Acc or turning it into an expression function in its unit spec]
+gen_access.adb:124:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
 gen_access.adb:125:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 gen_access.adb:126:04: medium: memory leak might occur at end of scope
 gen_access.adb:129:07: info: pointer dereference check proved (CVC4: 1 VC)
