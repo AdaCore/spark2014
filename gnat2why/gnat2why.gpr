@@ -24,6 +24,7 @@ project GNAT2Why is
    package CodePeer is
       for Switches use ("-j0",
                         "-level", "1",
+                        "--be-messages=-suspicious_constant_operation",
                         "-gnatws");
 
       for Excluded_Source_Dirs use ("gnat_src");
