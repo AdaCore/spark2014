@@ -19,13 +19,16 @@
         +-- transformation split_vc_conj
           +-- goal def'vc.2: CVC4 1.6-gnatprove
           +-- goal def'vc.3: CVC4 1.6-gnatprove
+          +-- goal def'vc.4: Trivial 1.0 (trivial)
           +-- goal def'vc.5: CVC4 1.6-gnatprove
           +-- goal def'vc.6: CVC4 1.6-gnatprove
           +-- goal def'vc.7: CVC4 1.6-gnatprove
           +-- goal def'vc.8: CVC4 1.6-gnatprove
+          +-- goal def'vc.9: Trivial 1.0 (trivial)
           +-- goal def'vc.10: CVC4 1.6-gnatprove
 
 == Statistics per prover: number of proofs, time (minimum/maximum/average) in seconds ==
+  Trivial 1.0 (trivial):   2   0.00   0.00   0.00
   CVC4 1.6-gnatprove  :   7   0.00   0.00   0.00
 
 add.adb:5:16: info: overflow check proved (CVC4: 2 VC)
