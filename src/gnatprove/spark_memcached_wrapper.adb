@@ -45,7 +45,10 @@ is
    --  tool. If a match is found, the output of the previous run is output.
 
    --  Invocation:
-   --  spark_memcached_wrapper hostname:port commandname <args> filename
+   --  spark_memcached_wrapper salt hostname:port commandname <args> filename
+
+   --  The salt is an arbitrary string that is hashed as well, but is not part
+   --  of the command name or command line of the tool.
 
    procedure Hash_Commandline (C : in out GNAT.SHA1.Context);
    --  @param C the hash context to be updated
@@ -79,7 +82,7 @@ is
    ----------------------
 
    procedure Hash_Commandline (C : in out GNAT.SHA1.Context) is
-      I : Positive := 2;
+      I : Positive := 3;
    begin
       while I < Ada.Command_Line.Argument_Count loop
          declare
@@ -136,7 +139,7 @@ is
    -----------------
 
    function Init_Client return Memcache_Client.Cache_Connection is
-      Info  : String renames Argument (1);
+      Info  : String renames Argument (2);
       Colon : constant Natural :=
         Ada.Strings.Fixed.Index (Info, ":");
 
@@ -191,10 +194,18 @@ is
    function Compute_Key return GNAT.SHA1.Message_Digest is
       C : GNAT.SHA1.Context := GNAT.SHA1.Initial_Context;
    begin
+
+      --  We first hash the salt (first argument of the command line)
+
+      GNAT.SHA1.Update (C, Argument (1));
+
       --  The file is hashed separately here, it always comes last on the
       --  command line.
 
       Hash_File (C, Argument (Argument_Count));
+
+      --  Hash the rest of the command line
+
       Hash_Commandline (C);
       return GNAT.SHA1.Digest (C);
    end Compute_Key;
@@ -215,13 +226,13 @@ begin
          Ada.Text_IO.Put_Line (Msg);
       else
          declare
-            Arguments : Argument_List (1 .. Argument_Count - 2);
+            Arguments : Argument_List (1 .. Argument_Count - 3);
          begin
             for I in Arguments'Range loop
-               Arguments (I) := new String'(Argument (I + 2));
+               Arguments (I) := new String'(Argument (I + 3));
             end loop;
             declare
-               Cmd : String renames Argument (2);
+               Cmd : String renames Argument (3);
 
                Msg : constant String :=
                  Get_Command_Output (Cmd,
