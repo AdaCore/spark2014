@@ -1,5 +1,3 @@
-repr3.ads:9:40: info: discriminant check proved (CVC4: 1 VC)
 repr3.ads:9:40: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-repr3.ads:9:40: info: predicate check proved (CVC4: 2 VC; Trivial: 1 VC)
 repr3.ads:9:40: warning: assuming "To_Bounded_String" has no effect on global items
 repr3.ads:9:40: warning: no Global contract available for "To_Bounded_String"

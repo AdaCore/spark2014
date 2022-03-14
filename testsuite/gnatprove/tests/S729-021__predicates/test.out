@@ -5,5 +5,3 @@ generic_bar.ads:9:34: info: initialization of "Context" proved, in instantiation
 generic_bar.ads:10:14: info: postcondition proved (CVC4: 2 VC), in instantiation at bar.ads:6
 test.adb:9:07: info: initialization of "Context" proved
 test.adb:16:07: info: initialization of "Context" proved
-test.adb:18:31: info: predicate check proved (CVC4: 1 VC)
-test.adb:19:33: info: predicate check proved (CVC4: 1 VC)
