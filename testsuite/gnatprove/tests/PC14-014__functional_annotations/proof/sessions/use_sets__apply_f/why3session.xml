@@ -6,13 +6,12 @@
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
 <prover id="2" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
 <prover id="3" name="CVC4" version="1.6-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
-<prover id="4" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000"/>
-<file format="gnat-json">
+<file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="use_sets__apply_f.gnat-json"/>
-<theory name="Use_sets__apply_f__subprogram_def">
- <goal name="def&#39;vc">
- <transf name="split_goal_wp_conj" >
+<theory name="Use_sets__apply_f__subprogram_def" proved="true">
+ <goal name="def&#39;vc" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
@@ -209,14 +208,13 @@
   <proof prover="3"><result status="valid" steps="10035"/></proof>
   </goal>
   <goal name="def&#39;vc.65" proved="true">
-  <proof prover="0"><result status="valid" steps="4690"/></proof>
+  <proof prover="0"><result status="valid" steps="4689"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
-  <goal name="def&#39;vc.66">
+  <goal name="def&#39;vc.66" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="28106635"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.67" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>
@@ -276,12 +274,12 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.86" proved="true">
-  <proof prover="0"><result status="valid" steps="5877"/></proof>
+  <proof prover="0"><result status="valid" steps="5875"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.87" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="118122"/></proof>
+  <proof prover="1"><result status="valid" steps="118082"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>

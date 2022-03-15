@@ -6,7 +6,7 @@
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
 <prover id="3" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="4" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="1000"/>
+<prover id="4" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="my_maps__test_map_rec_2.gnat-json"/>
@@ -60,7 +60,7 @@
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="80268"/></proof>
+  <proof prover="1"><result status="valid" steps="81059"/></proof>
   <proof prover="3"><result status="unknown" steps="6686"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
@@ -80,7 +80,7 @@
   </goal>
   <goal name="def&#39;vc.21" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="332178"/></proof>
+  <proof prover="1"><result status="valid" steps="332138"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
@@ -133,7 +133,7 @@
   </goal>
   <goal name="def&#39;vc.38" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="4411852"/></proof>
+  <proof prover="1"><result status="valid" steps="4098650"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.39" proved="true">
@@ -147,7 +147,7 @@
   </goal>
   <goal name="def&#39;vc.42" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="4693652"/></proof>
+  <proof prover="1"><result status="valid" steps="4680865"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
@@ -157,7 +157,7 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.45" proved="true">
-  <proof prover="0"><result status="valid" steps="22918"/></proof>
+  <proof prover="0"><result status="valid" steps="22917"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.46" proved="true">
@@ -173,10 +173,9 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.50" proved="true">
-  <proof prover="0" timelimit="60" memlimit="2000"><result status="valid" steps="264424"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4" timelimit="5"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="6965125"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.51" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>
@@ -189,14 +188,14 @@
   </goal>
   <goal name="def&#39;vc.54" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="4524743"/></proof>
+  <proof prover="1"><result status="valid" steps="6259342"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.55">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4" memlimit="2000"><result status="highfailure"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
