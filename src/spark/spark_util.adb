@@ -3008,10 +3008,6 @@ package body SPARK_Util is
       Path : N_Subexpr_Id := Expr;
 
    begin
-      --  Is_Strict_Subpath is only called on deep types currently
-
-      pragma Assert (Is_Deep (Etype (Expr)));
-
       loop
          case Nkind (Path) is
 

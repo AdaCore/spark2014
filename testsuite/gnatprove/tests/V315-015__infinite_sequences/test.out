@@ -1,0 +1,423 @@
+sequences.adb:2:13: info: subprogram "Length" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.adb:6:32: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:6:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:6:41: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:6:43: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:6:43: info: subprogram variant proved (Trivial), in instantiation at use_list.adb:3
+sequences.adb:6:60: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:11:13: info: subprogram "Get" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.adb:14:10: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:14:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:14:37: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:14:44: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:15:12: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:15:12: info: subprogram variant proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:15:26: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:15:33: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:15:42: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:15:44: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:16:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:16:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:17:44: info: range check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:22:08: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:32:07: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:32:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:33:17: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:33:38: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:33:54: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:36:07: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:36:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:37:17: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:38:22: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:38:38: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:41:07: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:41:24: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:42:17: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:43:22: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:43:38: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:51:07: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:52:10: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:52:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:52:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:52:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:52:36: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:60:07: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:61:13: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:61:20: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:61:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:61:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:61:40: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:68:07: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:68:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:69:17: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:70:25: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:70:30: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:70:44: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:70:60: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:78:07: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:78:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:79:17: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:80:25: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:80:30: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:80:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:80:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:81:25: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:81:41: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:89:07: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:90:13: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:90:20: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:90:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:90:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:90:40: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:90:56: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:99:08: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:100:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:100:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:100:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:100:34: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:101:16: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:101:32: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:101:44: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:101:46: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:101:48: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:103:10: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:104:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:104:24: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:104:34: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:104:40: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:104:45: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:104:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:105:20: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:105:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:105:33: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:105:35: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:105:45: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:107:13: info: subprogram "Set" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.adb:111:45: info: range check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:112:13: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:112:25: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:114:08: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:114:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:114:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:115:17: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:117:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:118:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:118:22: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:118:36: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:118:58: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:126:10: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:126:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:127:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:127:32: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:127:32: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:127:70: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:129:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:130:22: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:130:30: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:130:30: info: subprogram variant proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:130:44: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:130:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:130:60: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:130:62: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:138:18: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:140:13: info: subprogram "Add" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.adb:143:08: info: postcondition proved (CVC4: 3 VC), in instantiation at use_list.adb:3
+sequences.adb:143:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:143:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:143:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:144:17: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:144:34: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:146:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:147:13: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:147:35: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:153:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:153:32: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:153:32: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:155:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:156:22: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:156:30: info: subprogram variant proved (Trivial), in instantiation at use_list.adb:3
+sequences.adb:156:44: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:163:13: info: subprogram "Add" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.adb:167:45: info: range check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:168:14: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:168:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:168:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:170:08: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC), in instantiation at use_list.adb:3
+sequences.adb:170:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:170:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:170:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:171:17: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:173:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:174:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:174:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:174:35: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:174:57: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:176:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:177:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:177:22: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:177:36: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:177:53: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:177:55: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:177:57: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:177:62: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:185:10: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:185:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:186:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:186:32: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:186:32: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:188:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:189:22: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:189:30: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:189:30: info: subprogram variant proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:189:44: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:189:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:189:60: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:189:62: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:197:18: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:199:13: info: subprogram "Remove" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.adb:202:45: info: range check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:203:14: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:203:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:205:08: info: postcondition proved (CVC4: 3 VC; Trivial: 2 VC), in instantiation at use_list.adb:3
+sequences.adb:205:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:205:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:205:54: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:207:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:208:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:208:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:208:35: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:208:60: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:210:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:211:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:211:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:211:35: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:211:55: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:211:57: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:211:59: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:211:64: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:218:09: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:218:20: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:219:26: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:221:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:222:22: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:222:30: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:222:30: info: subprogram variant proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:222:47: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:222:54: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:222:63: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:222:65: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:229:18: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:235:71: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:240:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:240:20: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:245:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:245:17: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:245:19: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:11:09: info: default initial condition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:12:40: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:12:60: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:26:13: info: subprogram "Length" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:29:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:31:13: info: subprogram "Get" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:37:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:38:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:38:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:40:13: info: subprogram "Last" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:43:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:44:14: info: postcondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:44:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:44:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:47:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:47:43: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:48:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:55:13: info: subprogram overriding operator "=" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:58:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:60:08: info: postcondition proved (CVC4: 3 VC), in instantiation at use_list.adb:3
+sequences.ads:61:11: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:61:27: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:62:22: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:62:43: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:62:59: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:64:13: info: subprogram overriding operator "<" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:67:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:69:08: info: postcondition proved (CVC4: 3 VC), in instantiation at use_list.adb:3
+sequences.ads:70:11: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:70:27: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:71:22: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:72:23: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:72:39: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:74:13: info: subprogram overriding operator "<=" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:77:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:79:08: info: postcondition proved (CVC4: 3 VC), in instantiation at use_list.adb:3
+sequences.ads:80:11: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:80:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:81:22: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:82:23: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:82:39: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:84:13: info: subprogram "Contains" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:92:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:93:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:93:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:95:08: info: postcondition proved (CVC4: 2 VC), in instantiation at use_list.adb:3
+sequences.ads:96:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:97:13: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:97:20: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:97:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:97:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:97:39: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:99:13: info: subprogram "Constant_Range" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:108:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:109:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:109:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:111:08: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:112:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:113:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:113:24: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:113:30: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:113:35: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:113:44: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:115:13: info: subprogram "Equal_Except" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:122:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:123:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:123:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:125:08: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:126:11: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:126:27: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:127:22: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:128:27: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:128:32: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:128:46: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:128:62: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:130:13: info: subprogram "Equal_Except" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:138:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:139:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:139:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:139:37: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:139:42: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:141:08: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:142:11: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:142:27: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:143:22: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:144:27: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:144:32: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:144:38: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:144:43: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:145:27: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:145:43: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:147:13: info: subprogram "Range_Equal" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:156:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:157:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:157:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:157:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:157:46: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:159:08: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:160:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:161:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:161:24: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:161:30: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:161:35: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:161:44: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:161:60: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:163:13: info: subprogram "Range_Shifted" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:173:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:175:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:175:15: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:177:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:177:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:178:15: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:178:19: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:178:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:178:37: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:178:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:178:64: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:180:08: info: postcondition proved (CVC4: 3 VC; Trivial: 2 VC), in instantiation at use_list.adb:3
+sequences.ads:181:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:182:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:182:25: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:182:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:182:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:183:17: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:183:33: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:183:45: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:183:47: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:183:49: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:185:14: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:186:20: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:186:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:186:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:186:42: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:186:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:186:53: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:187:21: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:187:32: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:187:34: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:187:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:187:46: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:196:13: info: subprogram "Set" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:204:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:205:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:205:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:207:08: info: postcondition proved (CVC4: 2 VC), in instantiation at use_list.adb:3
+sequences.ads:207:08: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:208:19: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:210:13: info: subprogram "Add" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:215:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:217:08: info: postcondition proved (CVC4: 3 VC), in instantiation at use_list.adb:3
+sequences.ads:217:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:217:30: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:217:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:218:19: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:218:36: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:221:13: info: subprogram "Add" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:229:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:230:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:230:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:230:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:232:08: info: postcondition proved (CVC4: 4 VC), in instantiation at use_list.adb:3
+sequences.ads:232:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:232:30: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:232:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:233:19: info: precondition proved (CVC4: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:234:19: info: precondition proved (CVC4: 2 VC), in instantiation at use_list.adb:3
+sequences.ads:237:31: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:238:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:238:40: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:238:42: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:239:19: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:246:13: info: subprogram "Remove" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:253:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:254:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:254:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:256:08: info: postcondition proved (CVC4: 3 VC), in instantiation at use_list.adb:3
+sequences.ads:256:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:256:33: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:256:54: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:257:19: info: precondition proved (CVC4: 2 VC), in instantiation at use_list.adb:3
+sequences.ads:260:31: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:261:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:261:40: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:261:42: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:262:19: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:269:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:280:13: info: subprogram "Iter_First" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:280:25: warning: unused variable "Container", in instantiation at use_list.adb:3
+sequences.ads:281:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:283:13: info: subprogram "Iter_Has_Element" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:287:06: info: data dependencies proved, in instantiation at use_list.adb:3
+sequences.ads:289:08: info: postcondition proved (CVC4: 2 VC), in instantiation at use_list.adb:3
+sequences.ads:289:35: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:289:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:292:13: info: subprogram "Iter_Next" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
+sequences.ads:296:06: info: data dependencies proved, in instantiation at use_list.adb:3
+use_list.adb:3:04: info: function contract might not be available on recursive calls
+use_list.adb:3:04: info: function contract might not be available on recursive calls
+use_list.adb:3:04: info: function contract might not be available on recursive calls
+use_list.adb:3:04: info: function contract might not be available on recursive calls
+use_list.adb:3:04: info: implicit function contract might not be available on recursive calls
+use_list.adb:3:04: info: implicit function contract might not be available on recursive calls
+use_list.adb:3:04: info: in instantiation at sequences.adb:107
+use_list.adb:3:04: info: in instantiation at sequences.adb:11
+use_list.adb:3:04: info: in instantiation at sequences.adb:140
+use_list.adb:3:04: info: in instantiation at sequences.adb:163
+use_list.adb:3:04: info: in instantiation at sequences.adb:199
+use_list.adb:3:04: info: in instantiation at sequences.adb:2
