@@ -10,6 +10,11 @@ package Exprold is
 
    type Record_Array is array (Int) of Int_Record;
 
+   type Rec is record
+     A : Int_Array;
+     L : Int;
+   end record;
+
    function Same (I : in Natural) return Natural;
 
    procedure Old_On_Call (I : in out Natural)
@@ -37,5 +42,10 @@ package Exprold is
        Pre => I <= Integer'Last - 3,
        Post =>
           Integer'(I + 1) = Integer'(I + 1)'Old + 2;  -- @POSTCONDITION:FAIL
+
+   procedure Old_In_Loop_Spec (R : in out Rec)
+     with
+       Post => (for all I in Int range 1 .. R'Old.L =>
+                  not (R.A(I) = R.A(I)));             -- @POSTCONDITION:FAIL
 
 end Exprold;
