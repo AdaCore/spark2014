@@ -1,0 +1,31 @@
+loopentry.adb:14:23: info: unrolling loop
+loopentry.adb:15:17: info: range check proved (CVC4: 6 VC)
+loopentry.adb:16:25: medium: assertion might fail (e.g. when I = 2)
+loopentry.adb:23:17: info: range check proved (CVC4: 4 VC)
+loopentry.adb:24:33: medium: loop invariant might fail in first iteration (e.g. when I = 2)
+loopentry.adb:24:33: medium: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = 2)
+loopentry.adb:34:24: info: unrolling loop
+loopentry.adb:35:23: info: range check proved (CVC4: 20 VC)
+loopentry.adb:37:25: medium: assertion might fail
+loopentry.adb:44:23: info: range check proved (CVC4: 4 VC)
+loopentry.adb:47:34: medium: loop invariant might fail in first iteration, cannot prove A(K) = A'Loop_Entry(K) + 2
+loopentry.adb:47:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A(K) = A'Loop_Entry(K) + 2
+loopentry.adb:47:36: info: index check proved (CVC4: 4 VC)
+loopentry.adb:47:54: info: index check proved (CVC4: 4 VC)
+loopentry.adb:59:24: info: unrolling loop
+loopentry.adb:60:23: info: range check proved (CVC4: 20 VC)
+loopentry.adb:62:25: medium: assertion might fail
+loopentry.adb:71:23: info: range check proved (CVC4: 4 VC)
+loopentry.adb:74:34: medium: loop invariant might fail in first iteration, cannot prove A(K) = Same (A)'Loop_Entry(K)
+loopentry.adb:74:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A(K) = Same (A)'Loop_Entry(K)
+loopentry.adb:74:36: info: index check proved (CVC4: 4 VC)
+loopentry.adb:74:61: info: index check proved (CVC4: 4 VC)
+loopentry.adb:84:26: info: unrolling loop
+loopentry.adb:85:27: info: range check proved (CVC4: 20 VC)
+loopentry.adb:87:25: medium: assertion might fail
+loopentry.adb:94:27: info: range check proved (CVC4: 4 VC)
+loopentry.adb:97:34: medium: loop invariant might fail in first iteration, cannot prove R.A(K) = R.A'Loop_Entry(K)
+loopentry.adb:97:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove R.A(K) = R.A'Loop_Entry(K)
+loopentry.adb:97:38: info: index check proved (CVC4: 4 VC)
+loopentry.adb:97:58: info: index check proved (CVC4: 4 VC)
+loopentry.ads:12:20: info: postcondition proved (CVC4: 1 VC)
