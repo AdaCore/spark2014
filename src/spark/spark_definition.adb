@@ -3564,6 +3564,7 @@ package body SPARK_Definition is
                   end;
                end if;
             end;
+
          when others =>
             Mark_Violation
               ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))

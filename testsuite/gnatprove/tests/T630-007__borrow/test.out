@@ -1,0 +1,17 @@
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at borrow.adb:123
+borrow.adb:43:36: error: object was moved at line 42
+borrow.adb:43:36: error: part of "U" is not readable
+borrow.adb:44:20: error: object was moved at line 42
+borrow.adb:44:20: error: part of "U" is not readable
+borrow.adb:52:35: error: object was moved at line 51
+borrow.adb:52:35: error: part of dereference from "A" is not readable
+borrow.adb:58:07: info: initialization of "Var" proved
+borrow.adb:59:07: info: initialization of "War" proved
+borrow.adb:60:07: info: initialization of "Bar" proved
+borrow.adb:70:39: warning: unused initial value of "Y"
+borrow.adb:74:10: warning: initialization of "Cst1" has no effect
+borrow.adb:76:10: warning: initialization of "Cst2" has no effect
+borrow.adb:84:10: warning: initialization of "Loc" has no effect
+borrow.adb:89:07: info: initialization of "YY" proved
+borrow.adb:125:07: info: initialization of "L" proved
+gnatprove: error during flow analysis and proof
