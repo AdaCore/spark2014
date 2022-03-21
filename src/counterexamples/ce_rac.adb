@@ -1566,16 +1566,16 @@ package body CE_RAC is
             Iteration.all;
             Curr := Curr + Step;
          end loop;
-         Ctx.Env (Ctx.Env.First).Bindings.Delete (Id);
+         Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
       exception
          when Exn_RAC_Exit =>
-            Ctx.Env (Ctx.Env.First).Bindings.Delete (Id);
+            Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
             null;
 
          --  The call to Iteration will raise local exception Break to return
          --  early from the iteration.
          when others =>
-            Ctx.Env (Ctx.Env.First).Bindings.Delete (Id);
+            Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
             raise;
 
       end;
