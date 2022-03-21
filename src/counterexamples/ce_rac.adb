@@ -401,6 +401,13 @@ package body CE_RAC is
    Ctx : Context;
    --  Lo and behold! The global execution context
 
+   procedure Evaluate_Attribute_Prefix_Values
+     (Attr_Name : Name_Id;
+      Prefixes  : Node_Sets.Set)
+     with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
+   --  For each node in Prefixes, evaluate it and add its value to the
+   --  "other attributes" map for the Attr_Name attribute.
+
    function Find_Binding (E : Entity_Id) return Binding;
    --  Find the binding of a variable in the context environment. If not found,
    --  it is assumed to be a global constant and initialised as it.
@@ -1266,6 +1273,27 @@ package body CE_RAC is
          RAC_Stuck ("Enum_Value: value outside of range");
    end Enum_Value;
 
+   --------------------------------------
+   -- Evaluate_Attribute_Prefix_Values --
+   --------------------------------------
+
+   procedure Evaluate_Attribute_Prefix_Values
+     (Attr_Name : Name_Id;
+      Prefixes  : Node_Sets.Set)
+   is
+      Other_Att : Attributes_Access;
+      Position  : Attributes.Cursor;
+      Inserted  : Boolean;
+   begin
+      for P of Prefixes loop
+         Other_Att := Find_Other_Attributes (P);
+         Other_Att.Insert (Attr_Name,
+                           new Value_Type'(RAC_Expr (P)),
+                           Position,
+                           Inserted);
+      end loop;
+   end Evaluate_Attribute_Prefix_Values;
+
    ------------------
    -- Find_Binding --
    ------------------
@@ -1721,7 +1749,6 @@ package body CE_RAC is
         Find_Contracts (E, Pragma_Postcondition);
       Bodie     : constant Node_Id := Get_Body (E);
       Old_Nodes : Node_Sets.Set;
-      Other_Att : Attributes_Access;
       Res       : Opt_Value_Type;
       Sc        : Scopes;
 
@@ -1746,7 +1773,6 @@ package body CE_RAC is
             null;
       end;
 
-      Collect_Old_Parts (Posts, Old_Nodes);
       if Present (Get_Pragma (E, Pragma_Contract_Cases)) then
          RAC_Unsupported ("RAC_Call pragma contract cases",
                           Get_Pragma (E, Pragma_Contract_Cases));
@@ -1755,13 +1781,8 @@ package body CE_RAC is
       Ctx.Env.Prepend (Sc);
 
       --  Add old values to "other attributes" map
-      for N of Old_Nodes loop
-         Other_Att := Find_Other_Attributes (N);
-
-         if not Other_Att.Contains (Snames.Name_Old) then
-            Other_Att.Insert (Snames.Name_Old, new Value_Type'(RAC_Expr (N)));
-         end if;
-      end loop;
+      Collect_Attr_Parts (Posts, Snames.Name_Old, Old_Nodes);
+      Evaluate_Attribute_Prefix_Values (Snames.Name_Old, Old_Nodes);
 
       --  Check preconditions and get stuck in main functions
       begin
@@ -2241,6 +2262,15 @@ package body CE_RAC is
                   P : constant Node_Id := Prefix (N);
                begin
                   return Find_Other_Attributes (P) (Snames.Name_Old).all;
+               end;
+
+            when Snames.Name_Loop_Entry =>
+               --  E'Loop_Entry
+               declare
+                  P : constant Node_Id := Prefix (N);
+               begin
+                  return
+                    Find_Other_Attributes (P) (Snames.Name_Loop_Entry).all;
                end;
 
             when Snames.Name_Result =>
@@ -3234,8 +3264,19 @@ package body CE_RAC is
 
          when N_Loop_Statement =>
             declare
-               Scheme : constant Node_Id := Iteration_Scheme (N);
+               Scheme           : constant Node_Id := Iteration_Scheme (N);
+               Loop_Entry_Nodes : Node_Sets.Set;
+               Other_Att        : Attributes_Access;
             begin
+               --  Collect prefixes of all 'Loop_Entry attribute uses and store
+               --  the result of their evaluation in the "other attributes"
+               --  map.
+               Collect_Attr_Parts (N,
+                                   Snames.Name_Loop_Entry,
+                                   Loop_Entry_Nodes);
+               Evaluate_Attribute_Prefix_Values (Snames.Name_Loop_Entry,
+                                                 Loop_Entry_Nodes);
+
                if No (Scheme) then
                   begin
                      loop
@@ -3279,6 +3320,12 @@ package body CE_RAC is
                   pragma Assert (Present (Iterator_Specification (Scheme)));
                   RAC_Unsupported ("RAC_Statement loop iterator", N);
                end if;
+
+               --  Clean the nearest scope by removing 'Loop_Entry values
+               for N of Loop_Entry_Nodes loop
+                  Other_Att := Find_Other_Attributes (N);
+                  Other_Att.Exclude (Snames.Name_Loop_Entry);
+               end loop;
             end;
 
          when N_Exit_Statement =>

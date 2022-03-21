@@ -1,5 +1,10 @@
 package body LoopEntry is
 
+   function Same (I : in Int) return Int is
+   begin
+      return I;
+   end Same;
+
    function Same (A : in Int_Array) return Int_Array is
    begin
       return A;
@@ -97,5 +102,16 @@ package body LoopEntry is
                                  R.A(K) = R.A'Loop_Entry(K));      --  @LOOP_INVARIANT_INIT:FAIL @LOOP_INVARIANT_PRESERV:FAIL
       end loop;
    end Loop_Entry_On_Arr_In_Record_Invariant;
+
+   ------------------------------
+   -- Loop_Entry_In_Call_Param --
+   ------------------------------
+
+   procedure Loop_Entry_In_Call_Param (I : in Int) is
+   begin
+      for J in 1 .. 3 loop
+         pragma Assert (Same(I'Loop_Entry) /= I);                  --  @ASSERT:FAIL
+      end loop;
+   end Loop_Entry_In_Call_Param;
 
 end LoopEntry;

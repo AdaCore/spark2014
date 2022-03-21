@@ -549,14 +549,29 @@ package Gnat2Why.Util is
    --  @return the set of contextual nodes in N (objects from declare
    --  expressions, old and loop_entry attributes and target name).
 
-   procedure Collect_Old_Parts (N : Node_Id; Old_Parts : in out Node_Sets.Set);
-   --  Add to Old_Parts the set of prefixes of references to the 'Old attribute
-   --  in N.
+   procedure Collect_Attr_Parts
+     (N         :        Node_Id;
+      Attr_Name :        Name_Id;
+      Parts     : in out Node_Sets.Set)
+   with Pre => Attr_Name in Snames.Name_Old
+                          | Snames.Name_Loop_Entry;
+   --  Add to Parts the prefixes of each reference to the Attr_Name
+   --  attribute in N. This is only used for the 'Old and 'Loop_Entry
+   --  attributes.
+
+   procedure Collect_Attr_Parts
+     (L         :        Node_Lists.List;
+      Attr_Name :        Name_Id;
+      Parts     : in out Node_Sets.Set);
+   --  Call Collect_Attr_Parts on all elements of L for attribute Attr_Name
+
+   procedure Collect_Old_Parts (N : Node_Id; Parts : in out Node_Sets.Set);
+   --  Call Collect_Attr_Parts for 'Old attribute
 
    procedure Collect_Old_Parts
-     (L         :        Node_Lists.List;
-      Old_Parts : in out Node_Sets.Set);
-   --  Call Collect_Old_Parts on all elements of L
+     (L     :        Node_Lists.List;
+      Parts : in out Node_Sets.Set);
+   --  Call Collect_Attr_Parts on all elements of L for attribute 'Old
 
    ------------------------------
    -- Symbol table subprograms --
@@ -664,6 +679,13 @@ package Gnat2Why.Util is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
+
+   function Name_For_Loop_Entry
+     (Attr : N_Attribute_Reference_Id)
+      return E_Loop_Id
+     with Pre => Attribute_Name (Attr) = Name_Loop_Entry;
+   --  Returns the loop identifier of the loop to which the Loop_Entry
+   --  attribute refers.
 
    function Name_For_Loop_Entry
      (Attr : N_Attribute_Reference_Id)
