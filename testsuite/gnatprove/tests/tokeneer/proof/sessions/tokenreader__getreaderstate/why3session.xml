@@ -9,7 +9,7 @@
 <path name="tokenreader__getreaderstate.gnat-json"/>
 <theory name="Tokenreader__getreaderstate__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="1" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>

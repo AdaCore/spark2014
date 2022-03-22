@@ -9,7 +9,7 @@
 <path name="bitspec__nth8_stream.gnat-json"/>
 <theory name="Bitspec__nth8_stream__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_vc_conj" proved="true" >
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>

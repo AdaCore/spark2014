@@ -12,7 +12,7 @@ ordering_buffers.adb:37:22: info: assertion proved (CVC4: 1 VC)
 ordering_buffers.adb:37:26: info: precondition proved (CVC4: 2 VC)
 ordering_buffers.adb:38:07: info: precondition proved (CVC4: 2 VC)
 ordering_buffers.adb:39:22: info: assertion proved (CVC4: 1 VC)
-ordering_buffers.adb:40:22: info: assertion proved (CVC4: 1 VC)
+ordering_buffers.adb:40:22: info: assertion proved (Z3: 1 VC)
 ordering_buffers.adb:41:22: medium: assertion might fail
 ordering_buffers.adb:42:22: info: assertion proved (Trivial)
 ordering_buffers.adb:43:22: info: assertion proved (CVC4: 1 VC)

@@ -12,26 +12,34 @@
 <path name="certtypes__serialnumbert_image.gnat-json"/>
 <theory name="Certtypes__serialnumbert_image__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="2"><result status="valid" steps="49"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="17828"/></proof>
+  <proof prover="1"><result status="unknown" steps="17823"/></proof>
   <proof prover="2"><result status="unknown" steps="103"/></proof>
-  <proof prover="3"><result status="unknown" steps="112"/></proof>
-  <proof prover="4"><result status="unknown" steps="197"/></proof>
+  <proof prover="4"><result status="unknown" steps="177"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="def&#39;vc.1.0">
+   <proof prover="3"><result status="unknown" steps="112"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="2"><result status="valid" steps="66"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="18545"/></proof>
+  <proof prover="1"><result status="unknown" steps="18505"/></proof>
   <proof prover="2"><result status="unknown" steps="132"/></proof>
-  <proof prover="3"><result status="unknown" steps="158"/></proof>
-  <proof prover="4"><result status="unknown" steps="623"/></proof>
+  <proof prover="4"><result status="unknown" steps="455"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="def&#39;vc.3.0">
+   <proof prover="3"><result status="unknown" steps="158"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="2"><result status="valid" steps="106"/></proof>

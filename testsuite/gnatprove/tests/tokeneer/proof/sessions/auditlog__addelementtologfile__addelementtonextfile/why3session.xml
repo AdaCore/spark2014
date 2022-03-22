@@ -9,12 +9,12 @@
 <path name="auditlog__addelementtologfile__addelementtonextfile.gnat-json"/>
 <theory name="Auditlog__addelementtologfile__addelementtonextfile__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="96"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="102"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -80,10 +80,10 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="1"><result status="valid" steps="3365"/></proof>
+  <proof prover="1"><result status="valid" steps="1152"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
-  <proof prover="1"><result status="valid" steps="2558"/></proof>
+  <proof prover="1"><result status="valid" steps="687"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -110,13 +110,13 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
-  <proof prover="1"><result status="valid" steps="2802"/></proof>
+  <proof prover="1"><result status="valid" steps="675"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.35" proved="true">
-  <proof prover="1"><result status="valid" steps="1616"/></proof>
+  <proof prover="1"><result status="valid" steps="494"/></proof>
   </goal>
  </transf>
  </goal>

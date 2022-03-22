@@ -12,23 +12,31 @@
 <path name="privtypes__classt_image.gnat-json"/>
 <theory name="Privtypes__classt_image__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="2"><result status="valid" steps="49"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="17359"/></proof>
+  <proof prover="1"><result status="unknown" steps="17362"/></proof>
   <proof prover="2"><result status="unknown" steps="103"/></proof>
-  <proof prover="3"><result status="unknown" steps="112"/></proof>
-  <proof prover="4"><result status="unknown" steps="197"/></proof>
+  <proof prover="4"><result status="unknown" steps="177"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="def&#39;vc.1.0">
+   <proof prover="3"><result status="unknown" steps="112"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="17516"/></proof>
+  <proof prover="1"><result status="unknown" steps="17635"/></proof>
   <proof prover="2"><result status="unknown" steps="93"/></proof>
-  <proof prover="3"><result status="unknown" steps="114"/></proof>
-  <proof prover="4"><result status="unknown" steps="307"/></proof>
+  <proof prover="4"><result status="unknown" steps="251"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="def&#39;vc.2.0">
+   <proof prover="3"><result status="unknown" steps="114"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="2"><result status="valid" steps="106"/></proof>

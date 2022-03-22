@@ -9,7 +9,7 @@
 <path name="test_higher_order3__my_sum_2__sum_cst__sum_cst.gnat-json"/>
 <theory name="Test_higher_order3__my_sum_2__sum_cst__sum_cst__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_vc_conj" proved="true" >
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
@@ -32,28 +32,28 @@
   <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="1"><result status="valid" steps="768"/></proof>
+  <proof prover="1"><result status="valid" steps="753"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="1"><result status="valid" steps="669"/></proof>
+  <proof prover="1"><result status="valid" steps="668"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="1"><result status="valid" steps="492"/></proof>
+  <proof prover="1"><result status="valid" steps="488"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="1"><result status="valid" steps="5561"/></proof>
+  <proof prover="1"><result status="valid" steps="6291"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="1"><result status="valid" steps="4826"/></proof>
+  <proof prover="1"><result status="valid" steps="3711"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="1"><result status="valid" steps="3857"/></proof>
+  <proof prover="1"><result status="valid" steps="2859"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="1"><result status="valid" steps="3386"/></proof>
+  <proof prover="1"><result status="valid" steps="4230"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="1"><result status="valid" steps="28"/></proof>
@@ -62,7 +62,7 @@
   <proof prover="1"><result status="valid" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="1"><result status="valid" steps="105"/></proof>
+  <proof prover="1"><result status="valid" steps="110"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
   <proof prover="1"><result status="valid" steps="14"/></proof>
