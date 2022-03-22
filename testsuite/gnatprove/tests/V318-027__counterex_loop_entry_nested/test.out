@@ -1,0 +1,32 @@
+loopentry.adb:9:32: info: unrolling loop
+loopentry.adb:10:23: info: range check proved (CVC4: 20 VC)
+loopentry.adb:11:43: info: unrolling loop
+loopentry.adb:12:26: info: range check proved (CVC4: 20 VC)
+loopentry.adb:13:28: info: assertion proved (CVC4: 10 VC)
+loopentry.adb:17:28: medium: assertion might fail
+loopentry.adb:30:32: info: unrolling loop
+loopentry.adb:31:23: info: range check proved (CVC4: 20 VC)
+loopentry.adb:32:43: info: unrolling loop
+loopentry.adb:33:26: info: range check proved (CVC4: 20 VC)
+loopentry.adb:34:28: info: assertion proved (CVC4: 10 VC)
+loopentry.adb:35:28: medium: assertion might fail
+loopentry.adb:48:32: info: unrolling loop
+loopentry.adb:49:23: info: range check proved (CVC4: 20 VC)
+loopentry.adb:50:43: info: unrolling loop
+loopentry.adb:51:26: info: range check proved (CVC4: 20 VC)
+loopentry.adb:52:28: info: assertion proved (CVC4: 10 VC)
+loopentry.adb:53:28: medium: assertion might fail
+loopentry.adb:65:29: info: unrolling loop
+loopentry.adb:66:23: info: range check proved (CVC4: 20 VC)
+loopentry.adb:67:41: info: unrolling loop
+loopentry.adb:68:26: info: range check proved (CVC4: 20 VC)
+loopentry.adb:69:46: info: unrolling loop
+loopentry.adb:69:46: warning: statement has no effect
+loopentry.adb:70:29: info: range check proved (CVC4: 20 VC)
+loopentry.adb:71:31: info: assertion proved (CVC4: 10 VC)
+loopentry.adb:72:31: info: assertion proved (CVC4: 10 VC)
+loopentry.adb:73:31: medium: assertion might fail
+loopentry.adb:82:33: info: unrolling loop
+loopentry.adb:82:33: warning: statement has no effect
+loopentry.adb:83:17: info: range check proved (CVC4: 2 VC)
+loopentry.adb:84:59: medium: assertion might fail, cannot prove K /= K (e.g. when K = 1)
