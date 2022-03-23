@@ -1,2 +1,1 @@
 assertions SKIP too slow for build with assertions
-NT XFAIL colibri crashes (U112-048)
