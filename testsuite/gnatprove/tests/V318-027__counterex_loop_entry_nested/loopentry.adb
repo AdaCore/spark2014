@@ -77,6 +77,10 @@ package body LoopEntry is
       end loop One;
    end Very_Nested;
 
+   -----------------------------
+   -- Loop_Entry_In_Loop_Spec --
+   -----------------------------
+
    procedure Loop_Entry_In_Loop_Spec (I : in out Int) is
    begin
       for J in Int(1) .. Int(1) loop   --  Only loop once
