@@ -4758,7 +4758,9 @@ package body SPARK_Util is
          --  object.
 
          when N_Function_Call =>
-            if Is_Traversal_Function_Call (Expr) then
+            if Is_Traversal_Function_Call (Expr)
+              and then Is_Path_Expression (First_Actual (Expr))
+            then
                return Traverse_Access_To_Constant (First_Actual (Expr));
             else
                return False;
