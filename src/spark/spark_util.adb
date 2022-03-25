@@ -3716,6 +3716,56 @@ package body SPARK_Util is
       Explanation := Null_Unbounded_String;
    end Objects_Have_Compatible_Alignments;
 
+   -----------------------------------
+   -- Path_Contains_Traversal_Calls --
+   -----------------------------------
+
+   function Path_Contains_Traversal_Calls (Expr : N_Subexpr_Id) return Boolean
+   is
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+            | N_Aggregate
+            | N_Allocator
+            | N_Delta_Aggregate
+            | N_Extension_Aggregate
+            | N_Null
+         =>
+            return False;
+
+         when N_Explicit_Dereference
+            | N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return Path_Contains_Traversal_Calls (Prefix (Expr));
+
+         when N_Function_Call =>
+            return Is_Traversal_Function_Call (Expr);
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Path_Contains_Traversal_Calls (Expression (Expr));
+
+         when N_Attribute_Reference =>
+            if Attribute_Name (Expr) in Name_Old
+                                      | Name_Loop_Entry
+                                      | Name_Update
+            then
+               return False;
+            else
+               pragma Assert (Attribute_Name (Expr) = Name_Access);
+               return Path_Contains_Traversal_Calls (Prefix (Expr));
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Path_Contains_Traversal_Calls;
+
    ----------------
    -- Real_Image --
    ----------------

@@ -625,6 +625,9 @@ package body SPARK_Definition is
       elsif not To_Constant and then Traverse_Access_To_Constant (Expr) then
          Mark_Violation
            ("access-to-constant part of an object as source of move", Expr);
+      elsif Path_Contains_Traversal_Calls (Expr) then
+         Mark_Violation
+           ("call to a traversal function as source of move", Expr);
       else
          declare
             Root : constant Opt_Object_Kind_Id := Get_Root_Object (Expr);
