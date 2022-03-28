@@ -1348,16 +1348,18 @@ package body SPARK_Util.Subprograms is
    -----------------------------
 
    function Is_Tagged_Predefined_Eq (E : Entity_Id) return Boolean is
+      Alias : constant Entity_Id :=
+        (if Ekind (E) = E_Function then Ultimate_Alias (E) else Empty);
    begin
-      if Is_Internal (E)
-        and then Ekind (E) = E_Function
-        and then Chars (E) = Name_Op_Eq
-        and then Number_Formals (E) = 2
-        and then Etype (First_Formal (E))
-                   = Etype (Next_Formal (First_Formal (E)))
-        and then Etype (E) = Standard_Boolean
+      if Present (Alias)
+        and then Is_Internal (Alias)
+        and then Chars (Alias) = Name_Op_Eq
+        and then Number_Formals (Alias) = 2
+        and then Etype (First_Formal (Alias))
+                   = Etype (Next_Formal (First_Formal (Alias)))
+        and then Etype (Alias) = Standard_Boolean
       then
-         pragma Assert (Is_Dispatching_Operation (E));
+         pragma Assert (Is_Dispatching_Operation (Alias));
          return True;
       else
          return False;
