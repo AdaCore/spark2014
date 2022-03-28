@@ -24,7 +24,6 @@ test.adb:145:04: warning: analyzing unreferenced procedure "Test_06"
 test.adb:148:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:151:04: warning: analyzing unreferenced procedure "Test_07"
 test.adb:155:17: warning: "Y" is set by "Op_R3" but not used after the call
-test.adb:158:04: warning: analyzing unreferenced procedure "Test_08"
 test.adb:162:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:165:04: warning: analyzing unreferenced procedure "Test_09"
 test.adb:168:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)

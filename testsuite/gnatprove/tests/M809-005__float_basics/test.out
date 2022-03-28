@@ -2,6 +2,50 @@ foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
 foo.adb:4:14: warning: subprogram "Floats_And_Double" has no effect
 foo.adb:7:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention X and Y in a precondition]
 foo.adb:7:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 4 should mention Y in a precondition]
+foo.ads:10:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Distributed_Fun"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Equality"
+foo.ads:10:04: warning: analyzing unreferenced procedure "I_Like_To_Commute_To_Work"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Interesting_Inverse_1"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Interesting_Inverse_2"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Inverse_Addition"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Not_So_Associative"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Test_Floor_5"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Test_Floor_6"
+foo.ads:10:04: warning: analyzing unreferenced procedure "Unary_Ops"
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:128
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:162
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:168
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:174
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:187
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:25
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:267
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:277
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:293
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:345
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:351
+foo.ads:15:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Distributed_Fun"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Equality"
+foo.ads:15:04: warning: analyzing unreferenced procedure "I_Like_To_Commute_To_Work"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Interesting_Inverse_1"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Interesting_Inverse_2"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Inverse_Addition"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Not_So_Associative"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Test_Floor_5"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Test_Floor_6"
+foo.ads:15:04: warning: analyzing unreferenced procedure "Unary_Ops"
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:128
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:162
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:168
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:174
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:187
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:25
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:267
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:277
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:293
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:345
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:351
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:22:22: medium: assertion might fail, in instantiation at foo.ads:10 [possible fix: you should consider adding a postcondition to function Magic or turning it into an expression function in its unit spec]

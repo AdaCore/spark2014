@@ -459,6 +459,10 @@ libst-reals-errors.ads:78:25: info: precondition proved (CVC4: 1 VC)
 libst-reals-errors.ads:78:25: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.ads:86:16: info: postcondition proved (altergo: 2 VC)
 libst-reals-errors.ads:86:23: info: precondition proved (CVC4: 1 VC)
+libst-reals.ads:7:04: info: analyzing call to "Log2_Estimate" in context
+libst-reals.ads:7:04: info: analyzing call to "Minus_Log2_Estimate" in context
+libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:256
+libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:264
 libst-reals.ads:15:13: info: function contract might not be available on recursive calls
 libst-reals.ads:20:12: info: predicate check proved (Trivial: 1 VC)
 libst-reals.ads:20:12: info: subprogram variant proved (CVC4: 1 VC)
