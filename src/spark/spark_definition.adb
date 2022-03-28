@@ -4592,12 +4592,42 @@ package body SPARK_Definition is
    --------------------------------
 
    procedure Mark_Component_Association (N : N_Component_Association_Id) is
-   begin
-      --  We enforce SPARK RM 4.3(1) for which the box symbol, <>, shall not be
-      --  used in an aggregate unless the type(s) of the corresponding
-      --  component(s) define full default initialization.
 
-      if Box_Present (N) then
+      function Component_Inherits_Relaxed_Initialization
+        (N : N_Component_Association_Id)
+         return Boolean;
+      --  Return True if the component inherits relaxed initialization
+      --  from an enclosing composite type in the aggregate.
+
+      function Component_Inherits_Relaxed_Initialization
+        (N : N_Component_Association_Id)
+         return Boolean
+      is
+         Par : constant N_Subexpr_Id := Parent (N);
+         Typ : constant Type_Kind_Id := Retysp (Etype (Par));
+      begin
+         pragma Assert (Nkind (Par) in N_Aggregate | N_Extension_Aggregate);
+
+         if Has_Relaxed_Init (Typ) then
+            return True;
+         elsif Nkind (Parent (Par)) = N_Component_Association then
+            return Component_Inherits_Relaxed_Initialization (Parent (Par));
+         else
+            return False;
+         end if;
+      end Component_Inherits_Relaxed_Initialization;
+
+   --  Start of processing for Mark_Component_Association
+
+   begin
+      --  We enforce SPARK RM 4.3(1) for which the box symbol, <>, shall not
+      --  be used in an aggregate unless the type(s) of the corresponding
+      --  component(s) define full default initialization, or have relaxed
+      --  initialization.
+
+      if Box_Present (N)
+        and then not Component_Inherits_Relaxed_Initialization (N)
+      then
          pragma Assert (Nkind (Parent (N)) in N_Aggregate
                                             | N_Extension_Aggregate);
 
@@ -4612,30 +4642,25 @@ package body SPARK_Definition is
             case Ekind (Typ) is
                when Record_Kind =>
                   declare
-                     Choice : Node_Id := First (Choices (N));
-                     --  Iterator for the non-empty list of choices
+                     Choice     : constant Node_Id := First (Choices (N));
+                     Choice_Typ : constant Type_Kind_Id := Etype (Choice);
 
                   begin
-                     loop
-                        pragma Assert (Nkind (Choice) = N_Identifier);
-                        --  In the source code Choice can be either an
-                        --  N_Identifier or N_Others_Choice, but the latter
-                        --  is expanded by the frontend.
+                     pragma Assert (Nkind (Choice) = N_Identifier);
+                     --  In the source code Choice can be either an
+                     --  N_Identifier or N_Others_Choice, but the latter
+                     --  is expanded by the frontend.
 
-                        if Default_Initialization (Etype (Choice)) =
-                          Full_Default_Initialization
-                        then
-                           Mark (Choice);
-                        else
-                           Mark_Violation
-                             ("box notation without default initialization",
-                              Choice,
-                              SRM_Reference => "SPARK RM 4.3(1)");
-                        end if;
-
-                        Next (Choice);
-                        exit when No (Choice);
-                     end loop;
+                     if Default_Initialization (Choice_Typ) /=
+                         Full_Default_Initialization
+                       and then not Has_Relaxed_Init (Choice_Typ)
+                     then
+                        Mark_Violation
+                          ("box notation without default or relaxed "
+                           & "initialization",
+                           Choice,
+                           SRM_Reference => "SPARK RM 4.3(1)");
+                     end if;
                   end;
 
                --  Arrays can be default-initialized either because each
@@ -4647,10 +4672,12 @@ package body SPARK_Definition is
 
                when Array_Kind =>
                   if Default_Initialization (Typ) /=
-                       Full_Default_Initialization
+                      Full_Default_Initialization
+                    and then not Has_Relaxed_Init (Typ)
                   then
                      Mark_Violation
-                       ("box notation without default initialization",
+                       ("box notation without default or relaxed "
+                        & "initialization",
                         N,
                         SRM_Reference => "SPARK RM 4.3(1)");
                   end if;
@@ -4659,8 +4686,11 @@ package body SPARK_Definition is
                   raise Program_Error;
             end case;
          end;
-      else
-         Mark_List (Choices (N));
+      end if;
+
+      Mark_List (Choices (N));
+
+      if not Box_Present (N) then
          Mark (Expression (N));
       end if;
    end Mark_Component_Association;

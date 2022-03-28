@@ -149,9 +149,15 @@ Aggregates
    Legality Rules
 
 
-1. The box symbol, <>, shall not be used in an aggregate unless the type(s)
-   of the corresponding component(s) define full default initialization.
+1. The box symbol, <>, shall not be used in an aggregate unless each of the
+   corresponding components satisfies one the following conditions:
 
+   - the type of the component defines full default initialization, or
+
+   - the type of the component has relaxed initialization (see :ref:`Relaxed
+     Initialization`), or
+
+   - the type of one of the enclosing aggregates has relaxed initialization.
 
 2. If the ``ancestor_part`` of an ``extension_aggregate``
    is a ``subtype_mark``, then the type of the denoted subtype
