@@ -601,15 +601,6 @@ package Why.Sinfo is
    --
    --  Declaration of an exception, with a possible argument.
    --
-   --  ---------------------------
-   --  -- W_Include_Declaration --
-   --  ---------------------------
-   --  Module     W_Module_Id
-   --  Kind       EW_Theory_Type
-   --  Use_Kind   EW_Clone_Type
-   --
-   --  An include directive. It is of the form "use [import] file.Module".
-   --
    --  ------------------------
    --  -- W_Meta_Declaration --
    --  ------------------------
@@ -643,6 +634,15 @@ package Why.Sinfo is
    --       type t = my_t
    --       function f = my_f
    --       ...
+   --
+   --  ---------------------------
+   --  -- W_Include_Declaration --
+   --  ---------------------------
+   --  Module     W_Module_Id
+   --  Kind       EW_Theory_Type
+   --  Use_Kind   EW_Clone_Type
+   --
+   --  An include directive. It is of the form "use [import] file.Module".
    --
    --  --------------------------
    --  -- W_Theory_Declaration --
@@ -766,10 +766,10 @@ package Why.Sinfo is
       W_Global_Ref_Declaration,
       W_Namespace_Declaration,
       W_Exception_Declaration,
-      W_Include_Declaration,
       W_Meta_Declaration,
       W_Clone_Declaration,
       W_Clone_Substitution,
+      W_Include_Declaration,
       W_Theory_Declaration,
 
       -----------------

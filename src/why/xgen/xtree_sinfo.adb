@@ -650,18 +650,6 @@ package body Xtree_Sinfo is
                  "Name", "Symbol");
       Set_Domain (W_Namespace_Declaration, EW_Prog);
 
-      ---------------------------
-      -- W_Include_Declaration --
-      ---------------------------
-
-      New_Field (W_Include_Declaration,
-                 "Module", "W_Module", Id_One);
-      New_Field (W_Include_Declaration,
-                 "Kind", "EW_Theory_Type");
-      New_Field (W_Include_Declaration,
-                 "Use_Kind", "EW_Clone_Type");
-      Set_Domain (W_Include_Declaration, EW_Term);
-
       ------------------------
       -- W_Meta_Declaration --
       ------------------------
@@ -698,6 +686,18 @@ package body Xtree_Sinfo is
       New_Field (W_Clone_Substitution,
                  "Image", "W_Name", Id_One);
       Set_Domain (W_Clone_Substitution, EW_Term);
+
+      ---------------------------
+      -- W_Include_Declaration --
+      ---------------------------
+
+      New_Field (W_Include_Declaration,
+                 "Module", "W_Module", Id_One);
+      New_Field (W_Include_Declaration,
+                 "Kind", "EW_Theory_Type");
+      New_Field (W_Include_Declaration,
+                 "Use_Kind", "EW_Clone_Type");
+      Set_Domain (W_Include_Declaration, EW_Term);
 
       --------------------------
       -- W_Theory_Declaration --
