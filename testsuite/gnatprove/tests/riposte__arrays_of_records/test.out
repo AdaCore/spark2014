@@ -7,30 +7,30 @@ arrays_of_records.adb:35:22: high: postcondition might fail (e.g. when A = (othe
 arrays_of_records.adb:43:11: info: flow dependencies proved
 arrays_of_records.adb:44:22: high: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 42, Second_Value => 42)) and I = 0)
 arrays_of_records.adb:54:11: info: flow dependencies proved
-arrays_of_records.adb:55:22: high: postcondition might fail (e.g. when A(17).Flag = True and A(17).First_Value = 42 and A(17).Second_Value = 42 and A(101).First_Value = 42 and A(101).Second_Value = 42)
+arrays_of_records.adb:55:22: high: postcondition might fail (e.g. when A(17).Flag = True and A(17).First_Value = 42 and A(17).Second_Value = 42 and A(101).First_Value = 42 and A(101).Second_Value = 23)
 arrays_of_records.adb:61:22: info: assertion proved (CVC4: 1 VC)
 arrays_of_records.adb:67:11: info: flow dependencies proved
-arrays_of_records.adb:68:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 42 and A(0).Second_Value = 42 and I = 0)
+arrays_of_records.adb:68:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 42 and A(0).Second_Value = 23 and I = 0)
 arrays_of_records.adb:74:22: info: assertion proved (CVC4: 1 VC)
 arrays_of_records.adb:80:11: info: flow dependencies proved
-arrays_of_records.adb:81:22: high: postcondition might fail (e.g. when A(17).First_Value = 42 and A(17).Second_Value = 42)
+arrays_of_records.adb:81:22: high: postcondition might fail (e.g. when A(17).First_Value = 23 and A(17).Second_Value = 42)
 arrays_of_records.adb:89:11: info: flow dependencies proved
-arrays_of_records.adb:90:22: high: postcondition might fail (e.g. when A(0).First_Value = 42 and A(0).Second_Value = 42 and I = 0)
+arrays_of_records.adb:90:22: high: postcondition might fail (e.g. when A(0).First_Value = 23 and A(0).Second_Value = 42 and I = 0)
 arrays_of_records.adb:101:11: info: flow dependencies proved
-arrays_of_records.adb:102:22: high: postcondition might fail (e.g. when A(17).First_Value = 42 and A(17).Second_Value = 42)
+arrays_of_records.adb:102:22: high: postcondition might fail (e.g. when A(17).First_Value = 23 and A(17).Second_Value = Value'Last)
 arrays_of_records.adb:109:22: info: assertion proved (CVC4: 1 VC)
 arrays_of_records.adb:115:11: info: flow dependencies proved
-arrays_of_records.adb:116:22: high: postcondition might fail (e.g. when A(0).First_Value = 42 and A(0).Second_Value = 42 and I = 0)
+arrays_of_records.adb:116:22: high: postcondition might fail (e.g. when A(0).First_Value = 23 and A(0).Second_Value = Value'Last and I = 0)
 arrays_of_records.adb:123:22: info: assertion proved (CVC4: 1 VC)
 arrays_of_records.adb:129:11: info: flow dependencies proved
-arrays_of_records.adb:130:22: high: postcondition might fail (e.g. when A(5).First_Value = 23 and A(5).Second_Value = 23)
+arrays_of_records.adb:130:22: high: postcondition might fail (e.g. when A(5).First_Value = 42 and A(5).Second_Value = 23)
 arrays_of_records.adb:139:11: info: flow dependencies proved
-arrays_of_records.adb:141:22: high: postcondition might fail (e.g. when A(0).First_Value = 23 and A(0).Second_Value = 23 and A(1).First_Value = 23 and A(1).Second_Value = 23 and I = 1)
+arrays_of_records.adb:141:22: high: postcondition might fail (e.g. when A(0).First_Value = 42 and A(0).Second_Value = 42 and A(1).First_Value = 23 and A(1).Second_Value = 42 and I = 1)
 arrays_of_records.adb:152:11: info: flow dependencies proved
-arrays_of_records.adb:153:22: high: postcondition might fail (e.g. when A(5).First_Value = 23 and A(5).Second_Value = 23 and A(17).First_Value = 23 and A(17).Second_Value = 23 and A(23).Flag = True)
+arrays_of_records.adb:153:22: high: postcondition might fail (e.g. when A(5).First_Value = 42 and A(5).Second_Value = Value'Last and A(17).First_Value = 23 and A(17).Second_Value = Value'Last and A(23).Flag = True)
 arrays_of_records.adb:160:22: info: assertion proved (CVC4: 1 VC)
 arrays_of_records.adb:166:11: info: flow dependencies proved
-arrays_of_records.adb:168:22: high: postcondition might fail (e.g. when A(0).First_Value = 23 and A(0).Second_Value = 23 and A(1).Flag = True and A(1).First_Value = 23 and A(1).Second_Value = 23 and I = 1)
+arrays_of_records.adb:168:22: high: postcondition might fail (e.g. when A(0).First_Value = 42 and A(0).Second_Value = 42 and A(1).Flag = True and A(1).First_Value = 23 and A(1).Second_Value = Value'Last and I = 1)
 arrays_of_records.adb:175:22: info: assertion proved (CVC4: 1 VC)
 arrays_of_records.adb:181:11: info: flow dependencies proved
 arrays_of_records.adb:182:22: high: postcondition might fail

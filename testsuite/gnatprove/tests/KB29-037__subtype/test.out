@@ -9,7 +9,7 @@ p.adb:8:14: info: add a contract to analyze it separately from calling contexts
 p.adb:8:14: info: local subprogram "Bad" only analyzed in the context of calls
 p.adb:10:08: info: predicate check proved (CVC4: 2 VC), in call inlined at p.adb:17
 p.adb:10:40: info: overflow check proved (CVC4: 2 VC), in call inlined at p.adb:17
-p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17
+p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17 (e.g. when Var = (Access_Count => 1, Locked => False))
 p.adb:14:04: info: initialization of "Var" proved
 p.adb:14:04: info: predicate check proved on default value (CVC4: 2 VC)
 p.adb:17:04: info: analyzing call to "Bad" in context

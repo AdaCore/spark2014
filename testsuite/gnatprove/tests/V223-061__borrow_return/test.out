@@ -1,8 +1,8 @@
 bar.adb:5:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-bar.adb:8:12: medium: pointer dereference check might fail [possible fix: loop at line 7 should mention Z in a loop invariant]
+bar.adb:8:12: medium: pointer dereference check might fail (e.g. when Z = null) [possible fix: loop at line 7 should mention Z in a loop invariant]
 bar.adb:9:12: info: absence of memory leak proved (CVC4: 1 VC)
-bar.adb:13:09: medium: pointer dereference check might fail [possible fix: loop at line 7 should mention Z in a loop invariant]
-bar.adb:13:18: medium: pointer dereference check might fail [possible fix: loop at line 7 should mention Z in a loop invariant]
+bar.adb:13:09: medium: pointer dereference check might fail (e.g. when Z = null) [possible fix: loop at line 7 should mention Z in a loop invariant]
+bar.adb:13:18: medium: pointer dereference check might fail (e.g. when Z = null) [possible fix: loop at line 7 should mention Z in a loop invariant]
 bar.adb:13:22: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 7 should mention Z in a loop invariant]
 blob.adb:5:04: medium: memory leak might occur at end of scope
 blob.adb:6:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)

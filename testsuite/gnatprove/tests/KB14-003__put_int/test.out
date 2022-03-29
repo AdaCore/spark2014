@@ -9,6 +9,6 @@ put.adb:19:10: medium: array index check might fail (e.g. when First = 0) [reaso
 put.adb:19:55: info: overflow check proved (CVC4: 2 VC)
 put.adb:19:55: info: range check proved (CVC4: 2 VC)
 put.adb:24:22: info: range check proved (CVC4: 2 VC)
-put.adb:25:10: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 13 should mention First in a loop invariant]
+put.adb:25:10: medium: array index check might fail (e.g. when First = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 13 should mention First in a loop invariant]
 put.adb:28:09: info: range check proved (CVC4: 4 VC)
 put.adb:28:09: medium: "S" might not be initialized
