@@ -31,9 +31,14 @@ with Checked_Types;                use Checked_Types;
 with Common_Containers;
 with Errout;                       use Errout;
 with Erroutc;
+with Flow_Types;                   use Flow_Types;
+with Flow_Utility;                 use Flow_Utility;
+with Gnat2Why_Args;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
+with Opt;
 with Sem_Aux;                      use Sem_Aux;
+with Sem_Prag;                     use Sem_Prag;
 with Sinfo.Utils;                  use Sinfo.Utils;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
@@ -83,6 +88,11 @@ package body SPARK_Definition.Annotate is
    Annotations : Annot_Ranges.List := Annot_Ranges.Empty_List;
    --  Sorted ranges
 
+   At_End_Borrow_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores function entities with a pragma Annotate
+   --  (GNATprove, At_End_Borrow, E).
+
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
@@ -96,10 +106,10 @@ package body SPARK_Definition.Annotate is
    Iterable_Annotations : Iterable_Maps.Map := Iterable_Maps.Empty_Map;
    --  A map from Iterable aspects to Iterable annotations
 
-   Terminate_Annotations : Common_Containers.Node_Sets.Set :=
+   Logical_Eq_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
-   --  Stores subprogram and package entities with a pragma Annotate
-   --  (GNATprove, Terminating, E).
+   --  Stores all the function entities E with a pragma Annotate
+   --  (GNATprove, Logical_Equal, E).
 
    Might_Not_Return_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
@@ -111,10 +121,10 @@ package body SPARK_Definition.Annotate is
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, No_Wrap_Around, E).
 
-   At_End_Borrow_Annotations : Common_Containers.Node_Sets.Set :=
+   Terminate_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
-   --  Stores function entities with a pragma Annotate
-   --  (GNATprove, At_End_Borrow, E).
+   --  Stores subprogram and package entities with a pragma Annotate
+   --  (GNATprove, Terminating, E).
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
@@ -165,6 +175,11 @@ package body SPARK_Definition.Annotate is
    --  has been detected, or if the pragma Annotate is not used for
    --  justification purposes.
 
+   procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) with
+     Pre => Present (Arg3_Exp);
+   --  Check validity of a pragma Annotate (Gnatprove, At_End_Borrow, E) and
+   --  insert it in the At_End_Borrow_Annotations map.
+
    procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
    --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, E)
    --  and insert it in the Inline_Annotations map.
@@ -175,6 +190,10 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, E)
    --  and insert it in the Iterable_Annotations map.
 
+   procedure Check_Logical_Equal_Annotation (Arg3_Exp : Node_Id);
+   --  Check validity of a pragma Annotate (Gnatprove, Logical_Equal, E)
+   --  and insert it in the Logical_Eq_Annotations set.
+
    procedure Check_Might_Not_Return_Annotation
      (Arg3_Exp : Node_Id;
       Prag     : Node_Id);
@@ -184,11 +203,6 @@ package body SPARK_Definition.Annotate is
    procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, No_Wrap_Around, E)
    --  and insert it in the No_Wrap_Around_Annotations map.
-
-   procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) with
-     Pre => Present (Arg3_Exp);
-   --  Check validity of a pragma Annotate (Gnatprove, At_End_Borrow, E) and
-   --  insert it in the At_End_Borrow_Annotations map.
 
    procedure Check_Terminate_Annotation
      (Arg3_Exp : Node_Id;
@@ -388,6 +402,15 @@ package body SPARK_Definition.Annotate is
                & " have a postcondition of the form `&''Result = Expr`", E, E);
             return;
          end if;
+      end if;
+
+      --  Inline_For_Proof and Logical_Equal are incompatible
+
+      if Has_Logical_Eq_Annotation (E) then
+         Error_Msg_N
+           ("Entity parameter of a pragma Inline_For_Proof shall not have a"
+            & " Logical_Equal annotation", Arg3_Exp);
+         return;
       end if;
 
       Inline_Annotations.Include (E, Value);
@@ -665,6 +688,126 @@ package body SPARK_Definition.Annotate is
       end if;
    end Check_Iterable_Annotation;
 
+   ------------------------------
+   -- Check_Logical_Equal_Annotation --
+   ------------------------------
+
+   procedure Check_Logical_Equal_Annotation (Arg3_Exp : Node_Id) is
+      E : Entity_Id;
+
+   begin
+      --  The third argument must be an entity
+
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate Logical_Equal must be "
+            & "an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+
+      --  This entity must be a function
+
+      if Ekind (E) /= E_Function then
+         Error_Msg_N
+           ("Entity parameter of a pragma Logical_Equal must be a function",
+            Arg3_Exp);
+         return;
+      end if;
+
+      --  The function shall have the signature of an equality
+
+      if No (First_Formal (E)) or else Number_Formals (E) /= 2 then
+         Error_Msg_N
+           ("Entity parameter of a pragma Logical_Equal shall have exactly"
+            & " two parameters", E);
+         return;
+      elsif not Is_Standard_Boolean_Type (Etype (E)) then
+         Error_Msg_N
+           ("Entity parameter of a pragma Logical_Equal shall return a"
+            & " Boolean", E);
+         return;
+      else
+         declare
+            First_Param : constant Formal_Kind_Id := First_Formal (E);
+            Snd_Param   : constant Formal_Kind_Id := Next_Formal (First_Param);
+
+         begin
+            if Etype (First_Param) /= Etype (Snd_Param) then
+               Error_Msg_N
+                 ("both parameters of an equality function shall have the"
+                  & " same subtype", E);
+               return;
+            end if;
+         end;
+      end if;
+
+      --  The function shall not access any global data
+
+      declare
+         Globals : Global_Flow_Ids;
+      begin
+         Get_Globals
+           (Subprogram          => E,
+            Scope               => (Ent => E, Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+
+         if not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+           or else not Globals.Outputs.Is_Empty
+         then
+            Error_Msg_N
+              ("Entity parameter of a pragma Logical_Equal shall not access"
+               & " any global data", E);
+            return;
+         end if;
+      end;
+
+      --  The function shall not have a body or this body shall not be in SPARK
+
+      declare
+         N_Body     : constant Node_Id := Get_Body (E);
+         SPARK_Prag : constant Node_Id :=
+           (if Present (N_Body) then SPARK_Pragma (Defining_Entity (N_Body))
+            else SPARK_Pragma (E));
+         SPARK_Mode : constant Opt.SPARK_Mode_Type :=
+           (if No (SPARK_Prag) then Opt.None
+            else Get_SPARK_Mode_From_Annotation (SPARK_Prag));
+         use type Opt.SPARK_Mode_Type;
+
+      begin
+         if (Present (N_Body) and then SPARK_Mode = Opt.On)
+           or else
+             (Is_Expression_Function_Or_Completion (E)
+              and then SPARK_Mode /= Opt.Off)
+         then
+            Error_Msg_N
+              ("Entity parameter of a pragma Logical_Equal shall not have a"
+               & " body visible from SPARK",
+               Arg3_Exp);
+            return;
+         end if;
+      end;
+
+      --  Inline_For_Proof and Logical_Equal are incompatible
+
+      if Present (Retrieve_Inline_Annotation (E)) then
+         Error_Msg_N
+           ("Entity parameter of a pragma Logical_Equal shall not have an"
+            & " Inline_For_Proof annotation",
+            Arg3_Exp);
+         return;
+      end if;
+
+      Logical_Eq_Annotations.Include (E);
+   end Check_Logical_Equal_Annotation;
+
    ---------------------------------------
    -- Check_Might_Not_Return_Annotation --
    ---------------------------------------
@@ -883,6 +1026,14 @@ package body SPARK_Definition.Annotate is
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean is
      (Ekind (E) = E_Function
       and then At_End_Borrow_Annotations.Contains (E));
+
+   -------------------------------
+   -- Has_Logical_Eq_Annotation --
+   -------------------------------
+
+   function Has_Logical_Eq_Annotation (E : Entity_Id) return Boolean is
+     (Ekind (E) = E_Function
+      and then Logical_Eq_Annotations.Contains (E));
 
    -------------------------------------
    -- Has_Might_Not_Return_Annotation --
@@ -1268,6 +1419,7 @@ package body SPARK_Definition.Annotate is
       elsif Name = "at_end_borrow"
         or else Name = "init_by_proof"
         or else Name = "inline_for_proof"
+        or else Name = "logical_equal"
         or else Name = "might_not_return"
         or else Name = "no_wrap_around"
         or else Name = "terminating"
@@ -1313,6 +1465,9 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "logical_equal" then
+         Check_Logical_Equal_Annotation (Arg3_Exp);
 
       elsif Name = "might_not_return" then
          Check_Might_Not_Return_Annotation (Arg3_Exp, Prag);
