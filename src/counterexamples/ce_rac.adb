@@ -488,6 +488,10 @@ package body CE_RAC is
      (Param_Spec : Node_Id; Iteration : not null access procedure);
    --  Iterate a loop parameter specification by calling Iteration
 
+   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id);
+   --  Test the expression against each case choice expression and fill A
+   --  with the matching one.
+
    function RAC_Expr
      (N   : N_Subexpr_Id;
       Ty0 : Entity_Id := Empty) return Value_Type;
@@ -1613,6 +1617,115 @@ package body CE_RAC is
 
       end;
    end Iterate_Loop_Param_Spec;
+
+   ----------------------------
+   -- Match_Case_Alternative --
+   ----------------------------
+
+   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id) is
+
+      function Check_Range
+        (Range_Node : Node_Id;
+         Expr       : Value_Type) return Boolean;
+      --  Check if Expr falls into the range described by Range_Node
+
+      function Check_Subtype
+        (Def_Id : Type_Kind_Id;
+         Expr   : Value_Type) return Boolean;
+      --  Check if Expr matches with the possible values of the type when they
+      --  are described by a static predicate or by a range.
+
+      -----------------
+      -- Check_Range --
+      -----------------
+
+      function Check_Range
+        (Range_Node : Node_Id;
+         Expr       : Value_Type) return Boolean
+      is
+         Low        : constant Big_Integer :=
+           Value_Enum_Integer (RAC_Expr (Low_Bound (Range_Node)));
+         High       : constant Big_Integer :=
+           Value_Enum_Integer (RAC_Expr (High_Bound (Range_Node)));
+         Expr_Value : constant Big_Integer := Value_Enum_Integer (Expr);
+      begin
+         return In_Range (Expr_Value, Low, High);
+      end Check_Range;
+
+      -------------------
+      -- Check_Subtype --
+      -------------------
+
+      function Check_Subtype
+        (Def_Id : Type_Kind_Id;
+         Expr   : Value_Type) return Boolean
+      is
+         Option : Node_Id;
+         Match  : Boolean := False;
+      begin
+         --  Subtype with static predicate
+         if Has_Predicates (Def_Id) and then Has_Static_Predicate (Def_Id)
+         then
+            Option := First (Static_Discrete_Predicate (Def_Id));
+
+            while not Match and then Present (Option) loop
+               if Nkind (Option) = N_Range then
+                  Match := Check_Range (Get_Range (Option), Expr);
+               else
+                  Match := Value_Enum_Integer (Expr) =
+                    Value_Enum_Integer (RAC_Expr (Option));
+               end if;
+
+               Next (Option);
+            end loop;
+
+         --  Other subtypes
+         else
+            Match := Check_Range (Get_Range (Def_Id), Expr);
+         end if;
+
+         return Match;
+      end Check_Subtype;
+      --  Local variables
+
+      V     : constant Value_Type := RAC_Expr (Expression (N));
+      Match : Boolean := False;
+      Ch    : Node_Id;
+
+   begin
+      A := First (Alternatives (N));
+
+      while Present (A) loop
+         Ch := First (Discrete_Choices (A));
+
+         while Present (Ch) loop
+            --  Others
+            if Nkind (Ch) = N_Others_Choice then
+               Match := True;
+
+            --  Subtypes
+            elsif Is_Entity_Name (Ch) and then Is_Type (Entity (Ch)) then
+               Match := Check_Subtype (Retysp (Entity (Ch)), V);
+
+            --  Ranges
+            elsif Nkind (Ch) = N_Range then
+               Match := Check_Range (Get_Range (Ch), V);
+
+            --  Other expressions
+            else
+               Match := V = RAC_Expr (Ch);
+            end if;
+
+            if Match then
+               return;
+            end if;
+
+            Next (Ch);
+         end loop;
+         Next (A);
+      end loop;
+
+   end Match_Case_Alternative;
 
    -----------------
    -- Param_Scope --
@@ -2935,6 +3048,14 @@ package body CE_RAC is
                end if;
             end;
 
+         when N_Case_Expression =>
+            declare
+               Alternative : Node_Id;
+            begin
+               Match_Case_Alternative (N, Alternative);
+               Res := RAC_Expr (Expression (Alternative));
+            end;
+
          when others =>
             RAC_Unsupported ("RAC_Expr", N);
       end case;
@@ -3352,38 +3473,10 @@ package body CE_RAC is
 
          when N_Case_Statement =>
             declare
-               V     : constant Value_Type := RAC_Expr (Expression (N));
-               A     : Node_Id := First (Alternatives (N));
-               Ch    : Node_Id;
-               Match : Boolean;
+               Alternative : Node_Id;
             begin
-               Outer :
-               while Present (A) loop
-                  Match := False;
-                  Ch := First (Discrete_Choices (A));
-                  while Present (Ch) loop
-                     if Nkind (Ch) = N_Others_Choice then
-                        Match := True;
-                     elsif Nkind (Ch) in N_Subexpr then
-                        if Nkind (Ch) in N_Has_Entity
-                          and then Entity (Ch) in Type_Kind_Id
-                        then
-                           RAC_Unsupported ("case choise type", Ch);
-                        end if;
-                        Match := V = RAC_Expr (Ch);
-                     else
-                        RAC_Unsupported ("RAC_Statement choice", Ch);
-                     end if;
-
-                     if Match then
-                        RAC_List (Statements (A));
-                        exit Outer;
-                     end if;
-
-                     Next (Ch);
-                  end loop;
-                  Next (A);
-               end loop Outer;
+               Match_Case_Alternative (N, Alternative);
+               RAC_List (Statements (Alternative));
             end;
 
          when others =>
