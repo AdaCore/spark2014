@@ -78,7 +78,7 @@ dynamic_preds_array.adb:23:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:28:18: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:17 should mention X in a precondition]
 dynamic_preds_array.adb:29:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:34:18: medium: in inlined predicate at dynamic_preds_array.ads:9
-dynamic_preds_array.adb:34:18: medium: predicate check might fail, cannot prove Ext_Even_Pair(1) in Even (e.g. when X = (1 => 4, 2 => 4)) [possible fix: subprogram at dynamic_preds_array.ads:18 should mention X in a precondition]
+dynamic_preds_array.adb:34:18: medium: predicate check might fail, cannot prove Ext_Even_Pair(1) in Even [possible fix: subprogram at dynamic_preds_array.ads:18 should mention X in a precondition]
 dynamic_preds_array.adb:35:21: info: predicate check proved (CVC4: 6 VC)
 dynamic_preds_array.adb:40:27: info: range check proved (CVC4: 2 VC)
 dynamic_preds_array.adb:40:27: medium: predicate check might fail (e.g. when A = 3) [possible fix: subprogram at dynamic_preds_array.ads:23 should mention A in a precondition]
