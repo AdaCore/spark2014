@@ -51,7 +51,6 @@ project GNAT2Why is
       for Excluded_Units use (--  Exclude files that cause errors
                               "ce_interval_sets",
                               "ce_pretty_printing",
-                              "name_ordered_entities",
 
                               --  Exclude units not exercized in gnat2why itself
                               "assumptions.search",
