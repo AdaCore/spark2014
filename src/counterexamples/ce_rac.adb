@@ -2616,27 +2616,26 @@ package body CE_RAC is
                      else
                         declare
                            Res     : Value_Type := Copy (Left);
-                           R_First : constant Integer :=
-                             To_Integer (Right.First_Attr.Content);
-                           L_Last  : constant Integer :=
-                             To_Integer (Left.Last_Attr.Content);
+                           R_First : Big_Integer renames
+                             Right.First_Attr.Content;
+                           L_Last  : Big_Integer renames
+                             Left.Last_Attr.Content;
                            Val     : Value_Access;
 
                         begin
                            for K in 1 .. To_Integer (R_Length) loop
                               if Right.Array_Values.Contains
-                                (To_Big_Integer (R_First - 1 + K))
+                                (R_First - 1 + To_Big_Integer (K))
                               then
                                  Val := Right.Array_Values
-                                   (To_Big_Integer (R_First - 1 + K));
+                                   (R_First - 1 + To_Big_Integer (K));
                               else
                                  Val := Right.Array_Others;
                               end if;
 
                               if Val /= null then
                                  Res.Array_Values.Insert
-                                   (To_Big_Integer (L_Last) +
-                                      To_Big_Integer (K),
+                                   (L_Last + To_Big_Integer (K),
                                     new Value_Type'(Copy (Val.all)));
                               end if;
                            end loop;
