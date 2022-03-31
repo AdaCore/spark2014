@@ -2635,7 +2635,8 @@ package body CE_RAC is
 
                               if Val /= null then
                                  Res.Array_Values.Insert
-                                   (To_Big_Integer (L_Last + K),
+                                   (To_Big_Integer (L_Last) +
+                                      To_Big_Integer (K),
                                     new Value_Type'(Copy (Val.all)));
                               end if;
                            end loop;
