@@ -73,9 +73,9 @@
   </goal>
   <goal name="def&#39;vc.19">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="outofmemory"/></proof>
   <proof prover="3"><result status="unknown" steps="149"/></proof>
-  <proof prover="5"><result status="unknown" steps="1261"/></proof>
+  <proof prover="5"><result status="unknown" steps="1232"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.19.0">
    <proof prover="4"><result status="unknown" steps="173"/></proof>

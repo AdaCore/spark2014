@@ -5134,10 +5134,17 @@ package body Gnat2Why.Expr is
 
          --  If a scalar variable is not initialized, then its dynamic property
          --  may be false. As initialization is checked separately by flow
-         --  analysis, we can assume that the variable is in bound as long as
-         --  it does not introduce any unsoundness (the range is not empty).
+         --  analysis, we can assume that the variable is in the type bounds
+         --  as long as it does not introduce any unsoundness (the range is
+         --  not empty). We can skip this if the range is staticically
+         --  non-empty.
 
-         if T /= True_Pred then
+         if T /= True_Pred  and then
+           not (Has_Discrete_Type (Ty_Ext)
+                and then Has_Static_Scalar_Subtype (Ty_Ext)
+                and then UI_Le (Expr_Value (Type_Low_Bound (Ty_Ext)),
+                                Expr_Value (Type_High_Bound (Ty_Ext))))
+         then
             declare
                Why_Rep_Type : constant W_Type_Id := Base_Why_Type (Ty_Ext);
                Le_Op        : constant W_Identifier_Id :=
@@ -5179,10 +5186,10 @@ package body Gnat2Why.Expr is
                   else Pred_Of_Boolean_Term (W => Initialized));
             begin
                T := New_Conditional
-                      (Condition   =>
-                         New_Or_Pred (Init_Flag, Fst_Le_Last),
-                       Then_Part   => T,
-                       Typ         => EW_Bool_Type);
+                 (Condition   =>
+                    New_Or_Pred (Init_Flag, Fst_Le_Last),
+                  Then_Part   => T,
+                  Typ         => EW_Bool_Type);
             end;
          end if;
 
