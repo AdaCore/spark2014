@@ -3673,6 +3673,17 @@ package body Why.Gen.Expr is
          New_And_Expr (Left, Right, Domain);
    end New_Range_Expr;
 
+   function New_Range_Expr
+     (Low, High : W_Term_Id;
+      Expr      : W_Term_Id)
+      return W_Pred_Id
+   is
+   begin
+      --  ??? gnatcov complains if this is an expression function (V330-044);
+      --  otherwise it could be declared in spec.
+      return +W_Expr_Id'(New_Range_Expr (EW_Pred, +Low, +High, +Expr));
+   end New_Range_Expr;
+
    ---------------------------
    -- New_Simpl_Conditional --
    ---------------------------
