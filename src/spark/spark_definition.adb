@@ -2369,7 +2369,8 @@ package body SPARK_Definition is
                      declare
                         Fixed_Type : constant Type_Kind_Id :=
                           (if From_Fixed then From_Type else To_Type);
-                        Small : constant Ureal := Small_Value (Fixed_Type);
+                        Small      : constant Ureal :=
+                          Small_Value (Retysp (Fixed_Type));
                      begin
                         if Norm_Num (Small) /= Uint_1
                           and then Norm_Den (Small) /= Uint_1
