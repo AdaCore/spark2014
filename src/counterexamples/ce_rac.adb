@@ -3329,7 +3329,7 @@ package body CE_RAC is
                --  Clean the nearest scope by removing 'Loop_Entry values
                for N of Loop_Entry_Nodes loop
                   Other_Att := Find_Other_Attributes (N);
-                  Other_Att.Exclude (Snames.Name_Loop_Entry);
+                  Other_Att.Delete (Snames.Name_Loop_Entry);
                end loop;
             end;
 
