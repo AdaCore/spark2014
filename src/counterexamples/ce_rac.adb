@@ -46,7 +46,6 @@ with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Gnat2Why_Opts.Reading;
 with Gnat2Why.Tables;         use Gnat2Why.Tables;
 with Gnat2Why.Util;           use Gnat2Why.Util;
-with Hashing;                 use Hashing;
 with Namet;                   use Namet;
 with Nlists;                  use Nlists;
 with Nmake;                   use Nmake;
@@ -304,30 +303,11 @@ package body CE_RAC is
    -- The evaluation environment and context --
    --------------------------------------------
 
-   function Name_Hash (N : Name_Id) return Hash_Type is
-     (Generic_Integer_Hash (Integer (N)));
-
-   package Attributes is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
-      Element_Type    => Value_Type,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=");
-   --  Attributes (e.g. X'A for X) in a map binding names to values
-
-   type Attributes_Access is access Attributes.Map;
-
-   function To_String (Attrs : Attributes.Map) return String;
-
-   package Other_Attributes is new Ada.Containers.Hashed_Maps
+   package Node_To_Value is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
-      Element_Type    => Attributes_Access,
+      Element_Type    => Value_Type,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
-   --  Special attributes that can be used on expressions and not only on
-   --  entity nodes. It is useful for Old and Loop_Entry attributes whose
-   --  values are stored here no matter the node type of their prefix.
-
-   type Other_Attributes_Access is access Other_Attributes.Map;
 
    type Binding is record
       Val         : Value_Access;
@@ -349,8 +329,9 @@ package body CE_RAC is
    type Scopes is record
       Bindings    : Entity_Bindings_Access :=
         new Entity_Bindings.Map'(Entity_Bindings.Empty);
-      Other_Attrs : Other_Attributes_Access :=
-        new Other_Attributes.Map'(Other_Attributes.Empty);
+
+      Old_Attrs        : Node_To_Value.Map;
+      Loop_Entry_Attrs : Node_To_Value.Map;
    end record;
    --  A scope is a flat mapping of variable (defining identifiers) to bindings
    --  and a mapping of old and loop entry values of expressions.
@@ -406,14 +387,11 @@ package body CE_RAC is
       Prefixes  : Node_Sets.Set)
      with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
    --  For each node in Prefixes, evaluate it and add its value to the
-   --  "other attributes" map for the Attr_Name attribute.
+   --  appropriate map from prefixes to their values.
 
    function Find_Binding (E : Entity_Id) return Binding;
    --  Find the binding of a variable in the context environment. If not found,
    --  it is assumed to be a global constant and initialised as it.
-
-   function Find_Other_Attributes (N : Node_Id) return Attributes_Access;
-   --  Find the map of 'Old and 'Loop_Entry attributes.
 
    -------------------
    -- Value oracles --
@@ -1290,16 +1268,28 @@ package body CE_RAC is
      (Attr_Name : Name_Id;
       Prefixes  : Node_Sets.Set)
    is
-      Other_Att : Attributes_Access;
-      Position  : Attributes.Cursor;
-      Inserted  : Boolean;
    begin
       for P of Prefixes loop
-         Other_Att := Find_Other_Attributes (P);
-         Other_Att.Insert (Attr_Name,
-                           RAC_Expr (P),
-                           Position,
-                           Inserted);
+         declare
+            Val : constant Value_Type := RAC_Expr (P);
+            --  While evaluating the value we might modify the global context,
+            --  so first evaluate the value and only then add it to the
+            --  context.
+
+            Inserted : Boolean;
+            Position : Node_To_Value.Cursor;
+
+         begin
+            if Attr_Name = Name_Old then
+               Ctx.Env (Ctx.Env.First).Old_Attrs.Insert
+                 (P, Val, Position, Inserted);
+
+            else pragma Assert (Attr_Name = Name_Loop_Entry);
+               Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Insert
+                 (P, Val, Position, Inserted);
+
+            end if;
+         end;
       end loop;
    end Evaluate_Attribute_Prefix_Values;
 
@@ -1325,22 +1315,6 @@ package body CE_RAC is
                    "constant without variable input");
       return B;
    end Find_Binding;
-
-   ---------------------------
-   -- Find_Other_Attributes --
-   ---------------------------
-
-   function Find_Other_Attributes (N : Node_Id) return Attributes_Access
-   is
-      Other_Attrs : constant Other_Attributes_Access :=
-        Ctx.Env (Ctx.Env.First).Other_Attrs;
-   begin
-      if not Other_Attrs.Contains (N) then
-         Other_Attrs.Insert (N, new Attributes.Map'(Attributes.Empty));
-      end if;
-
-      return Other_Attrs (N);
-   end Find_Other_Attributes;
 
    -----------------------
    -- Flush_RAC_Failure --
@@ -1898,7 +1872,7 @@ package body CE_RAC is
 
       Ctx.Env.Prepend (Sc);
 
-      --  Add old values to "other attributes" map
+      --  Store value of the 'Old prefixes
       Collect_Attr_Parts (Posts, Snames.Name_Old, Old_Nodes);
       Evaluate_Attribute_Prefix_Values (Snames.Name_Old, Old_Nodes);
 
@@ -2379,7 +2353,7 @@ package body CE_RAC is
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return Find_Other_Attributes (P) (Snames.Name_Old);
+                  return Ctx.Env (Ctx.Env.First).Old_Attrs (P);
                end;
 
             when Snames.Name_Loop_Entry =>
@@ -2387,8 +2361,7 @@ package body CE_RAC is
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return
-                    Find_Other_Attributes (P) (Snames.Name_Loop_Entry);
+                  return Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs (P);
                end;
 
             when Snames.Name_Result =>
@@ -3391,11 +3364,10 @@ package body CE_RAC is
             declare
                Scheme           : constant Node_Id := Iteration_Scheme (N);
                Loop_Entry_Nodes : Node_Sets.Set;
-               Other_Att        : Attributes_Access;
             begin
                --  Collect prefixes of all 'Loop_Entry attribute uses and store
-               --  the result of their evaluation in the "other attributes"
-               --  map.
+               --  the result of their evaluation.
+
                Collect_Attr_Parts (N,
                                    Snames.Name_Loop_Entry,
                                    Loop_Entry_Nodes);
@@ -3448,8 +3420,7 @@ package body CE_RAC is
 
                --  Clean the nearest scope by removing 'Loop_Entry values
                for N of Loop_Entry_Nodes loop
-                  Other_Att := Find_Other_Attributes (N);
-                  Other_Att.Delete (Snames.Name_Loop_Entry);
+                  Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Delete (N);
                end loop;
             end;
 
@@ -3638,23 +3609,36 @@ package body CE_RAC is
          when Res_Not_Executed =>
             "NOT EXECUTED");
 
-   function To_String (Attrs : Attributes.Map) return String is
-      Res : Unbounded_String;
-   begin
-      for C in Attrs.Iterate loop
-         Append (Res, " '" & Get_Name_String (Attributes.Key (C)));
-         Append (Res, "=" & To_String (Attrs (C)));
-      end loop;
-      return To_String (Res);
-   end To_String;
-
    function To_String (B : Binding) return String is
      ((if B.Val = null then "NULL" else To_String (B.Val.all))
       & " - " & To_String (B.Result_Attr));
 
    function To_String (S : Scopes) return String is
-      Res   : Unbounded_String;
+      Res : Unbounded_String;
+
+      procedure Append_Attrs (Attr : String; M : Node_To_Value.Map);
+      --  Append mappings of attributes Attr in M
+
+      ------------------
+      -- Append_Attrs --
+      ------------------
+
+      procedure Append_Attrs (Attr : String; M : Node_To_Value.Map) is
+         First : Boolean := True;
+      begin
+         for C in M.Iterate loop
+            if not First then
+               Append (Res, ", ");
+            end if;
+            Append (Res, Attr);
+            Append (Res, " (" & Node_Id'Image (Node_To_Value.Key (C)) & ")");
+            Append (Res, " = " & To_String (M (C)));
+            First := False;
+         end loop;
+      end Append_Attrs;
+
       First : Boolean := True;
+
    begin
       for C in S.Bindings.Iterate loop
          if not First then
@@ -3666,15 +3650,8 @@ package body CE_RAC is
          First := False;
       end loop;
 
-      for C in S.Other_Attrs.Iterate loop
-         if not First then
-            Append (Res, ", ");
-         end if;
-         Append (Res, Get_Name_String (Chars (Other_Attributes.Key (C))));
-         Append (Res, " (" & Node_Id'Image (Other_Attributes.Key (C)) & ")");
-         Append (Res, " = " & To_String (S.Other_Attrs (C).all));
-         First := False;
-      end loop;
+      Append_Attrs ("Old", S.Old_Attrs);
+      Append_Attrs ("Loop_Entry", S.Loop_Entry_Attrs);
 
       return To_String (Res);
    end To_String;
