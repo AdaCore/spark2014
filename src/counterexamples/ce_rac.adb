@@ -513,12 +513,11 @@ package body CE_RAC is
    --  Execute a builtin E, if it exists, or raise No_Builtin otherwise
 
    procedure Init_Global
-     (Scope         : in out Scopes;
-      N             :        Node_Id;
-      Use_Expr      :        Boolean;
-      Default_Value :        Boolean;
-      B             :    out Binding;
-      Descr         :        String);
+     (N             :     Node_Id;
+      Use_Expr      :     Boolean;
+      Default_Value :     Boolean;
+      B             : out Binding;
+      Descr         :     String);
    --  Initialize a global variable from the counterexample value, from the
    --  expression in the declaration (if Use_Expr is true), or by a default
    --  value (if Default_Value is true).
@@ -1307,8 +1306,8 @@ package body CE_RAC is
       end loop;
 
       --  Lazily initialize globals that were not initialized by Global_Scope
-      Init_Global (Ctx.Env (Ctx.Env.Last), E, True, False, B,
-                   "constant without variable input");
+      Init_Global (E, True, False, B, "constant without variable input");
+
       return B;
    end Find_Binding;
 
@@ -1465,12 +1464,11 @@ package body CE_RAC is
    -----------------
 
    procedure Init_Global
-     (Scope         : in out Scopes;
-      N             :        Node_Id;
-      Use_Expr      :        Boolean;
-      Default_Value :        Boolean;
-      B             :    out Binding;
-      Descr         :        String)
+     (N             :     Node_Id;
+      Use_Expr      :     Boolean;
+      Default_Value :     Boolean;
+      B             : out Binding;
+      Descr         :     String)
    is
       Origin : Value_Origin;
       Expr   : constant Node_Id :=
@@ -1480,7 +1478,7 @@ package body CE_RAC is
       B :=
         (Val    => new Value_Type'(Get_Value (N, Expr, Default_Value, Origin)),
          others => <>);
-      Scope.Bindings.Insert (N, B);
+      Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, B);
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
                  & To_String (B.Val.all) & " " & Value_Origin'Image (Origin));
@@ -2103,9 +2101,7 @@ package body CE_RAC is
          for Id of Reads loop
             if Id.Kind = Direct_Mapping then
                Use_Expr := Ekind (Id.Node) = E_Constant;
-               Init_Global
-                 (Ctx.Env (Ctx.Env.First),
-                  Id.Node, Use_Expr, False, B, "read");
+               Init_Global (Id.Node, Use_Expr, False, B, "read");
             end if;
          end loop;
 
@@ -2114,9 +2110,7 @@ package body CE_RAC is
               Id.Kind = Direct_Mapping
               and then not Reads.Contains (Id)
             then
-               Init_Global
-                 (Ctx.Env (Ctx.Env.First),
-                  Id.Node, False, True, B, "write");
+               Init_Global (Id.Node, False, True, B, "write");
             end if;
          end loop;
       end Init_Global_Scope;
