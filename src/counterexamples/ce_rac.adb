@@ -485,7 +485,7 @@ package body CE_RAC is
    --  The largest modular type to execute modulo operators
 
    procedure Iterate_Loop_Param_Spec
-     (Param_Spec : Node_Id; Iteration : access procedure);
+     (Param_Spec : Node_Id; Iteration : not null access procedure);
    --  Iterate a loop parameter specification by calling Iteration
 
    function RAC_Expr
@@ -1543,7 +1543,7 @@ package body CE_RAC is
    -----------------------------
 
    procedure Iterate_Loop_Param_Spec
-     (Param_Spec : Node_Id; Iteration : access procedure)
+     (Param_Spec : Node_Id; Iteration : not null access procedure)
    is
       Def          : constant Node_Id :=
         Discrete_Subtype_Definition (Param_Spec);
