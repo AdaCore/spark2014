@@ -1154,10 +1154,10 @@ package body CE_RAC is
 
       elsif Is_Array_Type (Rep_Ty) then
          declare
-            Fst, Lst          : Big_Integer;
-            Other             : Value_Access;
-            U_Fst             : Uint;
-            U_Lst             : Uint;
+            Fst, Lst : Big_Integer;
+            Other    : Value_Access;
+            U_Fst    : Uint;
+            U_Lst    : Uint;
 
          begin
             --  Use static array type bounds or index type bounds as default
