@@ -330,10 +330,10 @@ package body CE_RAC is
    type Other_Attributes_Access is access Other_Attributes.Map;
 
    type Binding is record
-      Val   : Value_Access;
-      Attrs : Attributes.Map;
+      Val         : Value_Access;
+      Result_Attr : Opt_Value_Type;
    end record;
-   --  A binding is a variable value and the attributes of the variable
+   --  A binding is a variable value and optionally its Result attribute
 
    function To_String (B : Binding) return String;
 
@@ -1845,7 +1845,8 @@ package body CE_RAC is
       begin
          --  Add result attribute for checking the postcondition
          if Res.Present then
-            Bind.Attrs.Insert (Snames.Name_Result, Res.Content);
+            pragma Assert (not Bind.Result_Attr.Present);
+            Bind.Result_Attr := (Present => True, Content => Res.Content);
             Bindings.Insert (E, Bind);
          end if;
 
@@ -2283,7 +2284,7 @@ package body CE_RAC is
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
                   B : constant Binding := Find_Binding (E);
                begin
-                  return B.Attrs (Snames.Name_Result);
+                  return B.Result_Attr.Content;
                end;
 
             when Snames.Name_First
@@ -3557,7 +3558,7 @@ package body CE_RAC is
 
    function To_String (B : Binding) return String is
      ((if B.Val = null then "NULL" else To_String (B.Val.all))
-      & " - " & To_String (B.Attrs));
+      & " - " & To_String (B.Result_Attr));
 
    function To_String (S : Scopes) return String is
       Res   : Unbounded_String;
