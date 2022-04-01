@@ -309,7 +309,7 @@ package body CE_RAC is
 
    package Attributes is new Ada.Containers.Hashed_Maps
      (Key_Type        => Name_Id,
-      Element_Type    => Value_Access,
+      Element_Type    => Value_Type,
       Hash            => Name_Hash,
       Equivalent_Keys => "=");
    --  Attributes (e.g. X'A for X) in a map binding names to values
@@ -1293,7 +1293,7 @@ package body CE_RAC is
       for P of Prefixes loop
          Other_Att := Find_Other_Attributes (P);
          Other_Att.Insert (Attr_Name,
-                           new Value_Type'(RAC_Expr (P)),
+                           RAC_Expr (P),
                            Position,
                            Inserted);
       end loop;
@@ -1845,8 +1845,7 @@ package body CE_RAC is
       begin
          --  Add result attribute for checking the postcondition
          if Res.Present then
-            Bind.Attrs.Insert
-              (Snames.Name_Result, new Value_Type'(Res.Content));
+            Bind.Attrs.Insert (Snames.Name_Result, Res.Content);
             Bindings.Insert (E, Bind);
          end if;
 
@@ -2266,7 +2265,7 @@ package body CE_RAC is
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return Find_Other_Attributes (P) (Snames.Name_Old).all;
+                  return Find_Other_Attributes (P) (Snames.Name_Old);
                end;
 
             when Snames.Name_Loop_Entry =>
@@ -2275,7 +2274,7 @@ package body CE_RAC is
                   P : constant Node_Id := Prefix (N);
                begin
                   return
-                    Find_Other_Attributes (P) (Snames.Name_Loop_Entry).all;
+                    Find_Other_Attributes (P) (Snames.Name_Loop_Entry);
                end;
 
             when Snames.Name_Result =>
@@ -2284,7 +2283,7 @@ package body CE_RAC is
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
                   B : constant Binding := Find_Binding (E);
                begin
-                  return B.Attrs (Snames.Name_Result).all;
+                  return B.Attrs (Snames.Name_Result);
                end;
 
             when Snames.Name_First
@@ -3551,7 +3550,7 @@ package body CE_RAC is
    begin
       for C in Attrs.Iterate loop
          Append (Res, " '" & Get_Name_String (Attributes.Key (C)));
-         Append (Res, "=" & To_String (Attrs (C).all));
+         Append (Res, "=" & To_String (Attrs (C)));
       end loop;
       return To_String (Res);
    end To_String;
