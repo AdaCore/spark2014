@@ -445,7 +445,8 @@ Only the following (named or anonymous) access types are in |SPARK|:
 - an anonymous type occurring as a parameter type, or as a function result type
   of a traversal function (defined below), or
 
-- an access-to-subprogram type associated with the "Ada" calling convention.
+- an access-to-subprogram type associated with the "Ada" or "C" calling
+  convention.
 
 [Redundant: For example, access discriminants and access-to-subprogram types
 with the "protected" calling convention are not in |SPARK|.]
