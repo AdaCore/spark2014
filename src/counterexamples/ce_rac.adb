@@ -309,16 +309,9 @@ package body CE_RAC is
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
-   type Binding is record
-      Val : Value_Access;
-   end record;
-   --  A binding is value of a variable or of a function 'Result attribute
-
-   function To_String (B : Binding) return String;
-
    package Entity_Bindings is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
-      Element_Type    => Binding,
+      Element_Type    => Value_Access,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
    --  Flat mapping of variables to bindings
@@ -384,7 +377,7 @@ package body CE_RAC is
    --  For each node in Prefixes, evaluate it and add its value to the
    --  appropriate map from prefixes to their values.
 
-   function Find_Binding (E : Entity_Id) return Binding;
+   function Find_Binding (E : Entity_Id) return Value_Access;
    --  Find the binding of a variable in the context environment. If not found,
    --  it is assumed to be a global constant and initialised as it.
 
@@ -515,7 +508,7 @@ package body CE_RAC is
      (N             :     Node_Id;
       Use_Expr      :     Boolean;
       Default_Value :     Boolean;
-      B             : out Binding;
+      Val           : out Value_Access;
       Descr         :     String);
    --  Initialize a global variable from the counterexample value, from the
    --  expression in the declaration (if Use_Expr is true), or by a default
@@ -1081,7 +1074,7 @@ package body CE_RAC is
            and then Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
          then
             RAC_Expr_LHS (Actual).all :=
-              Sc.Bindings (Formal).Val.all;
+              Sc.Bindings (Formal).all;
          end if;
       end Process_Param;
 
@@ -1291,10 +1284,10 @@ package body CE_RAC is
    -- Find_Binding --
    ------------------
 
-   function Find_Binding (E : Entity_Id) return Binding
+   function Find_Binding (E : Entity_Id) return Value_Access
    is
       C : Entity_Bindings.Cursor;
-      B : Binding;
+      B : Value_Access;
    begin
       for Scope of Ctx.Env loop
          C := Scope.Bindings.Find (E);
@@ -1466,7 +1459,7 @@ package body CE_RAC is
      (N             :     Node_Id;
       Use_Expr      :     Boolean;
       Default_Value :     Boolean;
-      B             : out Binding;
+      Val           : out Value_Access;
       Descr         :     String)
    is
       Origin : Value_Origin;
@@ -1474,12 +1467,11 @@ package body CE_RAC is
         (if Use_Expr and then Ekind (N) not in Formal_Kind
          then Expression (Enclosing_Declaration (N)) else Empty);
    begin
-      B :=
-        (Val => new Value_Type'(Get_Value (N, Expr, Default_Value, Origin)));
-      Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, B);
+      Val := new Value_Type'(Get_Value (N, Expr, Default_Value, Origin));
+      Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
-                 & To_String (B.Val.all) & " " & Value_Origin'Image (Origin));
+                 & To_String (Val.all) & " " & Value_Origin'Image (Origin));
    end Init_Global;
 
    -------------------
@@ -1734,7 +1726,7 @@ package body CE_RAC is
             end case;
          end if;
 
-         Res.Bindings.Insert (Formal, (Val => Val));
+         Res.Bindings.Insert (Formal, Val);
       end Process_Param;
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
@@ -1790,7 +1782,7 @@ package body CE_RAC is
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
             V := Get_Value (Param, Empty, Is_Out, Origin);
-            Res.Bindings.Insert (Param, (Val => new Value_Type'(V)));
+            Res.Bindings.Insert (Param, new Value_Type'(V));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "
                        & To_String (V) & " " & Value_Origin'Image (Origin));
@@ -1919,7 +1911,7 @@ package body CE_RAC is
       --  Add result attribute for checking the postcondition
       if Res.Present then
          Ctx.Env (Ctx.Env.First).Bindings.Insert
-           (E, Binding'(Val => new Value_Type'(Res.Content)));
+           (E, new Value_Type'(Res.Content));
       end if;
 
       Check_List (Posts, "Postcondition", VC_Postcondition);
@@ -1959,7 +1951,7 @@ package body CE_RAC is
          if Do_Sideeffects then
             declare
                Val     : Value_Access renames
-                 Sc.Bindings (Sc.Bindings.First).Val;
+                 Sc.Bindings (Sc.Bindings.First);
                Fst     : constant Big_Integer := Val.First_Attr.Content;
                Lst     : constant Big_Integer := Val.Last_Attr.Content;
                S       : String (To_Integer (Fst) .. To_Integer (Lst));
@@ -2085,7 +2077,7 @@ package body CE_RAC is
       procedure Init_Global_Scope is
          Reads, Writes : Flow_Id_Sets.Set;
          Use_Expr      : Boolean;
-         B             : Binding;
+         B             : Value_Access;
          Scope         : constant Flow_Scope := Get_Flow_Scope (E);
       begin
          Get_Proof_Globals (E, Reads, Writes, False, Scope);
@@ -2348,9 +2340,8 @@ package body CE_RAC is
                --  E'Result
                declare
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
-                  B : constant Binding := Find_Binding (E);
                begin
-                  return B.Val.all;
+                  return Find_Binding (E).all;
                end;
 
             when Snames.Name_First
@@ -2863,7 +2854,7 @@ package body CE_RAC is
                then
                   RAC_Incomplete ("protected component or part of variable");
                else
-                  Res := Find_Binding (E).Val.all;
+                  Res := Find_Binding (E).all;
                end if;
             end;
 
@@ -3029,7 +3020,7 @@ package body CE_RAC is
       RAC_Trace ("expr lhs " & Node_Kind'Image (Nkind (N)), N);
       case Nkind (N) is
          when N_Identifier | N_Expanded_Name =>
-            return Find_Binding (SPARK_Atree.Entity (N)).Val;
+            return Find_Binding (SPARK_Atree.Entity (N));
 
          when N_Type_Conversion =>
             return RAC_Expr_LHS (Expression (N));
@@ -3524,14 +3515,13 @@ package body CE_RAC is
       E :        Entity_Id;
       V :        Value_Access)
    is
-      Bin : constant Binding := (Val => V);
       C   : Entity_Bindings.Cursor;
       Ins : Boolean;
    begin
-      S.Bindings.Insert (E, Bin, C, Ins);
+      S.Bindings.Insert (E, V, C, Ins);
 
       if not Ins then
-         S.Bindings (C).Val := V;
+         S.Bindings (C) := V;
       end if;
    end Set_Value;
 
@@ -3589,9 +3579,6 @@ package body CE_RAC is
          when Res_Not_Executed =>
             "NOT EXECUTED");
 
-   function To_String (B : Binding) return String is
-     (if B.Val = null then "NULL" else To_String (B.Val.all));
-
    function To_String (S : Scopes) return String is
       Res : Unbounded_String;
 
@@ -3625,7 +3612,7 @@ package body CE_RAC is
          end if;
          Append (Res, Get_Name_String (Chars (Entity_Bindings.Key (C))));
          Append (Res, " (" & Entity_Id'Image (Entity_Bindings.Key (C)) & ")");
-         Append (Res, " = " & To_String (S.Bindings (C)));
+         Append (Res, " = " & To_String (S.Bindings (C).all));
          First := False;
       end loop;
 
@@ -3665,7 +3652,7 @@ package body CE_RAC is
          BC := Env (EC).Bindings.Find (E);
 
          if Entity_Bindings.Has_Element (BC) then
-            Env (EC).Bindings (BC).Val := V;
+            Env (EC).Bindings (BC) := V;
             return;
          end if;
       end loop;
@@ -3676,7 +3663,7 @@ package body CE_RAC is
                      and then not Is_Access_Variable (Etype (E))
                      then not Has_Variable_Input (E));
 
-      Env (Env.Last).Bindings.Insert (E, (Val => V));
+      Env (Env.Last).Bindings.Insert (E, V);
    end Update_Value;
 
    -------------------
