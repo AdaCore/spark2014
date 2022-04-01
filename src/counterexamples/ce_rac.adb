@@ -3119,7 +3119,6 @@ package body CE_RAC is
          when others =>
             RAC_Unsupported ("RAC_Expr_LHS", N);
       end case;
-      return null;
    end RAC_Expr_LHS;
 
    -----------------
