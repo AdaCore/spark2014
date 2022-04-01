@@ -324,12 +324,8 @@ package body CE_RAC is
       Equivalent_Keys => "=");
    --  Flat mapping of variables to bindings
 
-   type Entity_Bindings_Access is access Entity_Bindings.Map;
-
    type Scopes is record
-      Bindings    : Entity_Bindings_Access :=
-        new Entity_Bindings.Map'(Entity_Bindings.Empty);
-
+      Bindings         : Entity_Bindings.Map;
       Old_Attrs        : Node_To_Value.Map;
       Loop_Entry_Attrs : Node_To_Value.Map;
    end record;
@@ -1926,22 +1922,20 @@ package body CE_RAC is
       end;
 
       declare
-         Bindings : constant Entity_Bindings_Access :=
-           Ctx.Env (Ctx.Env.First).Bindings;
-         Bind     : Binding;
+         Bind : Binding;
       begin
          --  Add result attribute for checking the postcondition
          if Res.Present then
             pragma Assert (not Bind.Result_Attr.Present);
             Bind.Result_Attr := (Present => True, Content => Res.Content);
-            Bindings.Insert (E, Bind);
+            Ctx.Env (Ctx.Env.First).Bindings.Insert (E, Bind);
          end if;
 
          Check_List (Posts, "Postcondition", VC_Postcondition);
 
          --  Cleanup
          if Res.Present then
-            Bindings.Delete (E);
+            Ctx.Env (Ctx.Env.First).Bindings.Delete (E);
          end if;
       end;
 
