@@ -310,10 +310,9 @@ package body CE_RAC is
       Equivalent_Keys => "=");
 
    type Binding is record
-      Val         : Value_Access;
-      Result_Attr : Opt_Value_Type;
+      Val : Value_Access;
    end record;
-   --  A binding is a variable value and optionally its Result attribute
+   --  A binding is value of a variable or of a function 'Result attribute
 
    function To_String (B : Binding) return String;
 
@@ -1476,8 +1475,7 @@ package body CE_RAC is
          then Expression (Enclosing_Declaration (N)) else Empty);
    begin
       B :=
-        (Val    => new Value_Type'(Get_Value (N, Expr, Default_Value, Origin)),
-         others => <>);
+        (Val => new Value_Type'(Get_Value (N, Expr, Default_Value, Origin)));
       Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, B);
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
@@ -1736,7 +1734,7 @@ package body CE_RAC is
             end case;
          end if;
 
-         Res.Bindings.Insert (Formal, (Val => Val, others => <>));
+         Res.Bindings.Insert (Formal, (Val => Val));
       end Process_Param;
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
@@ -1792,8 +1790,7 @@ package body CE_RAC is
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
             V := Get_Value (Param, Empty, Is_Out, Origin);
-            Res.Bindings.Insert (Param, (Val => new Value_Type'(V),
-                                         others => <>));
+            Res.Bindings.Insert (Param, (Val => new Value_Type'(V)));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "
                        & To_String (V) & " " & Value_Origin'Image (Origin));
@@ -1919,23 +1916,18 @@ package body CE_RAC is
             Res := Flush_RAC_Return;
       end;
 
-      declare
-         Bind : Binding;
-      begin
-         --  Add result attribute for checking the postcondition
-         if Res.Present then
-            pragma Assert (not Bind.Result_Attr.Present);
-            Bind.Result_Attr := (Present => True, Content => Res.Content);
-            Ctx.Env (Ctx.Env.First).Bindings.Insert (E, Bind);
-         end if;
+      --  Add result attribute for checking the postcondition
+      if Res.Present then
+         Ctx.Env (Ctx.Env.First).Bindings.Insert
+           (E, Binding'(Val => new Value_Type'(Res.Content)));
+      end if;
 
-         Check_List (Posts, "Postcondition", VC_Postcondition);
+      Check_List (Posts, "Postcondition", VC_Postcondition);
 
-         --  Cleanup
-         if Res.Present then
-            Ctx.Env (Ctx.Env.First).Bindings.Delete (E);
-         end if;
-      end;
+      --  Cleanup
+      if Res.Present then
+         Ctx.Env (Ctx.Env.First).Bindings.Delete (E);
+      end if;
 
       Sc := Ctx.Env (Ctx.Env.First);
       Ctx.Env.Delete_First;
@@ -2358,7 +2350,7 @@ package body CE_RAC is
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
                   B : constant Binding := Find_Binding (E);
                begin
-                  return B.Result_Attr.Content;
+                  return B.Val.all;
                end;
 
             when Snames.Name_First
@@ -3532,7 +3524,7 @@ package body CE_RAC is
       E :        Entity_Id;
       V :        Value_Access)
    is
-      Bin : constant Binding := (Val => V, others => <>);
+      Bin : constant Binding := (Val => V);
       C   : Entity_Bindings.Cursor;
       Ins : Boolean;
    begin
@@ -3598,8 +3590,7 @@ package body CE_RAC is
             "NOT EXECUTED");
 
    function To_String (B : Binding) return String is
-     ((if B.Val = null then "NULL" else To_String (B.Val.all))
-      & " - " & To_String (B.Result_Attr));
+     (if B.Val = null then "NULL" else To_String (B.Val.all));
 
    function To_String (S : Scopes) return String is
       Res : Unbounded_String;
@@ -3685,7 +3676,7 @@ package body CE_RAC is
                      and then not Is_Access_Variable (Etype (E))
                      then not Has_Variable_Input (E));
 
-      Env (Env.Last).Bindings.Insert (E, (Val => V, others => <>));
+      Env (Env.Last).Bindings.Insert (E, (Val => V));
    end Update_Value;
 
    -------------------
