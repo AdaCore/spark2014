@@ -3648,11 +3648,11 @@ package body CE_RAC is
    is
       BC : Entity_Bindings.Cursor;
    begin
-      for EC in Env.Iterate loop
-         BC := Env (EC).Bindings.Find (E);
+      for Scope of Env loop
+         BC := Scope.Bindings.Find (E);
 
          if Entity_Bindings.Has_Element (BC) then
-            Env (EC).Bindings (BC) := V;
+            Scope.Bindings (BC) := V;
             return;
          end if;
       end loop;
