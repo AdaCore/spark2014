@@ -331,7 +331,7 @@ package body CE_RAC is
 
    type Binding is record
       Val   : Value_Access;
-      Attrs : Attributes_Access := new Attributes.Map'(Attributes.Empty);
+      Attrs : Attributes.Map;
    end record;
    --  A binding is a variable value and the attributes of the variable
 
@@ -3557,7 +3557,7 @@ package body CE_RAC is
 
    function To_String (B : Binding) return String is
      ((if B.Val = null then "NULL" else To_String (B.Val.all))
-      & " - " & To_String (B.Attrs.all));
+      & " - " & To_String (B.Attrs));
 
    function To_String (S : Scopes) return String is
       Res   : Unbounded_String;
