@@ -2716,9 +2716,9 @@ package body CE_RAC is
                   begin
                      --  If Left or Right is empty, return the other
 
-                     if L_Length = 0 then
+                     if L_Length <= 0 then
                         return Copy (Right);
-                     elsif R_Length = 0 then
+                     elsif R_Length <= 0 then
                         return Copy (Left);
 
                      --  Otherwise, add the elements of Right into Left
