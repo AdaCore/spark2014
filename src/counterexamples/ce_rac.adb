@@ -29,7 +29,7 @@ with Ada.Numerics.Big_Numbers.Big_Reals;
 use  Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Containers;          use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
 with Ada.Text_IO;             use Ada.Text_IO;
 with CE_Parsing;              use CE_Parsing;
@@ -357,7 +357,7 @@ package body CE_RAC is
 
    function To_String (S : Scopes) return String;
 
-   package Environments is new Ada.Containers.Indefinite_Vectors
+   package Environments is new Ada.Containers.Vectors
      (Index_Type   => Natural,
       Element_Type => Scopes,
       "="          => "=");
