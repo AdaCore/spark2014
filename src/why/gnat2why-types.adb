@@ -1371,12 +1371,27 @@ package body Gnat2Why.Types is
 
          Declare_Init_Wrapper (Th, E);
 
-         Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => True);
+         --  We declare a reference type and an havoc function for the init
+         --  wrapper as well as move functions. For record types, the init
+         --  wrapper module might have been cloned if E has a parent with the
+         --  same fields. In this case, we should not regenerate the move
+         --  predicates. It is still necessary to regenerate the reference type
+         --  and havoc function if the types have different names as those
+         --  are named after the type.
 
-         if Has_Predeclared_Move_Predicates (E)
-           and then Contains_Allocated_Parts (E)
+         if not Is_Record_Type_In_Why (Retysp (E))
+           or else Oldest_Parent_With_Same_Fields (Retysp (E)) = Retysp (E)
          then
-            Create_Predicates_For_Move (Th, E, Predeclare => True);
+            Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => True);
+            if Has_Predeclared_Move_Predicates (E)
+              and then Contains_Allocated_Parts (E)
+            then
+               Create_Predicates_For_Move (Th, E, Predeclare => True);
+            end if;
+         elsif Short_Name (Retysp (E))
+           /= Short_Name (Oldest_Parent_With_Same_Fields (Retysp (E)))
+         then
+            Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => True);
          end if;
 
          Close_Theory (Th, Kind => Definition_Theory);

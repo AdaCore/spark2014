@@ -1,0 +1,2 @@
+main.adb:1:11: warning: subprogram "Main" has no effect
+main.adb:20:19: medium: assertion might fail
