@@ -454,9 +454,21 @@ package body CE_RAC is
      (Param_Spec : Node_Id; Iteration : not null access procedure);
    --  Iterate a loop parameter specification by calling Iteration
 
-   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id);
-   --  Test the expression against each case choice expression and fill A
-   --  with the matching one.
+   function Match_Alternative
+     (V  : Value_Type;
+      Ch : Node_Id) return Boolean;
+   --  Test V against Ch, return true if V is:
+   --  * in the range described by Ch
+   --  * of the type denoted by Ch
+   --  * equal to the value of Ch
+   --  * falls in the others alternative. This is only used in case statements
+   --    or expressions.
+   --  Return false otherwise.
+
+   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id)
+     with Pre => Nkind (N) in N_Case_Expression | N_Case_Statement;
+   --  Test the expression against each case choice expression. Fill A
+   --  with the matching alternative.
 
    function RAC_Expr
      (N   : N_Subexpr_Id;
@@ -1576,11 +1588,14 @@ package body CE_RAC is
       end;
    end Iterate_Loop_Param_Spec;
 
-   ----------------------------
-   -- Match_Case_Alternative --
-   ----------------------------
+   -----------------------
+   -- Match_Alternative --
+   -----------------------
 
-   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id) is
+   function Match_Alternative
+     (V  : Value_Type;
+      Ch : Node_Id) return Boolean
+   is
 
       function Check_Range
         (Range_Node : Node_Id;
@@ -1644,12 +1659,34 @@ package body CE_RAC is
 
          return Match;
       end Check_Subtype;
-      --  Local variables
 
+   begin
+      --  Others
+      if Nkind (Ch) = N_Others_Choice then
+         return True;
+
+      --  Subtypes
+      elsif Is_Entity_Name (Ch) and then Is_Type (Entity (Ch)) then
+         return Check_Subtype (Retysp (Entity (Ch)), V);
+
+      --  Ranges
+      elsif Nkind (Ch) = N_Range then
+         return Check_Range (Get_Range (Ch), V);
+
+      --  Other expressions
+      else
+         return V = RAC_Expr (Ch);
+      end if;
+
+   end Match_Alternative;
+
+   ----------------------------
+   -- Match_Case_Alternative --
+   ----------------------------
+
+   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id) is
       V     : constant Value_Type := RAC_Expr (Expression (N));
-      Match : Boolean := False;
       Ch    : Node_Id;
-
    begin
       A := First (Alternatives (N));
 
@@ -1657,24 +1694,8 @@ package body CE_RAC is
          Ch := First (Discrete_Choices (A));
 
          while Present (Ch) loop
-            --  Others
-            if Nkind (Ch) = N_Others_Choice then
-               Match := True;
 
-            --  Subtypes
-            elsif Is_Entity_Name (Ch) and then Is_Type (Entity (Ch)) then
-               Match := Check_Subtype (Retysp (Entity (Ch)), V);
-
-            --  Ranges
-            elsif Nkind (Ch) = N_Range then
-               Match := Check_Range (Get_Range (Ch), V);
-
-            --  Other expressions
-            else
-               Match := V = RAC_Expr (Ch);
-            end if;
-
-            if Match then
+            if Match_Alternative (V, Ch) then
                return;
             end if;
 
@@ -2154,7 +2175,7 @@ package body CE_RAC is
 
       function RAC_If_Expression return Value_Type;
 
-      function RAC_In return Value_Type;
+      function RAC_In (Negate : Boolean := False) return Value_Type;
 
       function RAC_Op_Compare (Left, Right : Value_Type) return Boolean;
 
@@ -2733,33 +2754,212 @@ package body CE_RAC is
       -- RAC_In --
       ------------
 
-      function RAC_In return Value_Type is
+      function RAC_In (Negate : Boolean := False) return Value_Type
+      is
+         procedure Get_Array_Bounds
+           (Op_Node     :     Node_Id;
+            Op_Ty       :     Type_Kind_Id;
+            First, Last : out Big_Integer);
+         --  Fill First and Last with the value of the bounds of the array
+         --  type. If the array is not constrained, the node which has this
+         --  array type is evaluated to get the bounds.
+
+         procedure Get_Discriminant_Values
+           (Op_Node      :     Node_Id;
+            Op_Ty        :     Type_Kind_Id;
+            Discr_Values : out Entity_To_Value_Maps.Map);
+         --  Given a record, store each of its discriminants' values in a map
+
+         function Match_Alternative_Non_Discrete
+           (Left_Op  : Node_Id;
+            Right_Op : Node_Id) return Boolean;
+         --  Return true if Left_Op is a member of Right_Op
+
+         ----------------------
+         -- Get_Array_Bounds --
+         ----------------------
+
+         procedure Get_Array_Bounds
+           (Op_Node  :     Node_Id;
+            Op_Ty    :     Type_Kind_Id;
+            First, Last : out Big_Integer)
+         is
+            Arr_Value :          Value_Type;
+            First_Idx : constant Node_Id := First_Index (Op_Ty);
+         begin
+            if Is_Constrained (Op_Ty) then
+               Get_Bounds (Get_Range (First_Idx), First, Last);
+            else
+               Arr_Value := RAC_Expr (Op_Node);
+               First := Arr_Value.First_Attr.Content;
+               Last  := Arr_Value.Last_Attr.Content;
+            end if;
+         end Get_Array_Bounds;
+
+         -----------------------------
+         -- Get_Discriminant_Values --
+         -----------------------------
+
+         procedure Get_Discriminant_Values
+           (Op_Node      :     Node_Id;
+            Op_Ty        :     Type_Kind_Id;
+            Discr_Values : out Entity_To_Value_Maps.Map)
+         is
+            Discr       : Entity_Id;
+            Elmt        : Elmt_Id;
+            Rec_Value   : Value_Type;
+            Discr_Value : Value_Access;
+            Discr_Cur   : Entity_To_Value_Maps.Cursor;
+         begin
+            Discr := First_Discriminant (Root_Retysp (Op_Ty));
+
+            if Is_Constrained (Op_Ty) then
+               Elmt := First_Elmt (Discriminant_Constraint (Op_Ty));
+
+               while Present (Discr) loop
+                  Discr_Values.Insert
+                    (Discr,
+                     new Value_Type'(
+                       RAC_Expr (Node (Elmt), Retysp (Etype (Discr)))));
+
+                  Next_Discriminant (Discr);
+                  Next_Elmt (Elmt);
+               end loop;
+
+            else
+               Rec_Value := RAC_Expr (Op_Node);
+               while Present (Discr) loop
+
+                  Discr_Cur := Rec_Value.Record_Fields.Find (Discr);
+                  Discr_Value := Entity_To_Value_Maps.Element (Discr_Cur);
+                  Discr_Values.Insert (Discr,
+                                       new Value_Type'(Discr_Value.all));
+
+                  Next_Discriminant (Discr);
+               end loop;
+
+            end if;
+         end Get_Discriminant_Values;
+
+         ------------------------------------
+         -- Match_Alternative_Non_Discrete --
+         ------------------------------------
+
+         function Match_Alternative_Non_Discrete
+           (Left_Op  : Node_Id;
+            Right_Op : Node_Id) return Boolean
+         is
+            Left_Ty      : constant Type_Kind_Id := Retysp (Etype (Left_Op));
+            Right_Ty     : constant Type_Kind_Id := Retysp (Etype (Right_Op));
+            Root_Left_Ty : constant Type_Kind_Id := Root_Retysp (Left_Ty);
+            Match        : Boolean := False;
+         begin
+            --  Records
+            if Is_Record_Type (Left_Ty) then
+
+               if not Is_Constrained (Right_Ty)
+                 or else Left_Ty = Right_Ty
+                 or else Root_Left_Ty = Right_Ty
+               then
+                  return True;
+
+               elsif Is_Tagged_Type (Left_Ty) then
+                  RAC_Unsupported ("RAC_In tagged types", Left_Ty);
+
+               elsif Has_Discriminants (Left_Ty)
+                 and then Is_Constrained (Right_Ty)
+               then
+                  declare
+                     Left_Dis_Val  : Entity_To_Value_Maps.Map;
+                     Right_Dis_Val : Entity_To_Value_Maps.Map;
+                  begin
+                     Get_Discriminant_Values
+                       (Left_Op, Left_Ty, Left_Dis_Val);
+                     Get_Discriminant_Values
+                       (Right_Op, Right_Ty, Right_Dis_Val);
+
+                     Match := Left_Dis_Val = Right_Dis_Val;
+                  end;
+               else
+                  --  If there are no discriminants or if the type is not
+                  --  constrained, the left and right operands necessarily
+                  --  match.
+                  Match := True;
+               end if;
+
+            --  Arrays
+            elsif Is_Array_Type (Left_Ty) then
+               if not Is_Constrained (Right_Ty)
+                 or else Left_Ty = Right_Ty
+                 or else Root_Left_Ty = Right_Ty
+               then
+                  return True;
+
+               else
+                  declare
+                     Left_First,  Left_Last  : Big_Integer;
+                     Right_First, Right_Last : Big_Integer;
+                  begin
+
+                     Get_Array_Bounds
+                       (Left_Op, Left_Ty, Left_First, Left_Last);
+                     Get_Array_Bounds
+                       (Right_Op, Right_Ty, Right_First, Right_Last);
+
+                     Match := Left_First = Right_First
+                       and then Left_Last = Right_Last;
+                  end;
+               end if;
+
+            --  Floating and fixed point types
+            elsif not Is_Discrete_Type (Etype (Left_Op)) then
+               RAC_Unsupported ("RAC_In real type", Left_Op);
+            end if;
+
+            return Match;
+         end Match_Alternative_Non_Discrete;
+
+         --  Local variables
+
          Left_Op  : constant Node_Id := Left_Opnd (N);
-         Right_Op : constant Node_Id := Right_Opnd (N);
-         Left     : constant Value_Type := RAC_Expr (Left_Op);
-         Fst, Lst, I : Big_Integer;
+         Right_Op :          Node_Id := Right_Opnd (N);
+         Left_Val :          Value_Type;
+         Match    :          Boolean := False;
       begin
-         if not Is_Discrete_Type (Etype (Left_Op)) then
-            RAC_Unsupported ("RAC_In left not discrete type", Left_Opnd (N));
+
+         --  Discrete types
+         if Is_Discrete_Type (Etype (Left_Op)) then
+            Left_Val := RAC_Expr (Left_Op);
+
+            if Right_Op /= Empty then
+               Match := Match_Alternative (Left_Val, Right_Op);
+            else
+               Right_Op := First (Alternatives (N));
+               while not Match and then Present (Right_Op) loop
+                  Match := Match_Alternative (Left_Val, Right_Op);
+                  Next (Right_Op);
+               end loop;
+            end if;
+
+         --  Non-discrete types
+         else
+            if Right_Op /= Empty then
+               Match := Match_Alternative_Non_Discrete (Left_Op, Right_Op);
+            else
+               Right_Op := First (Alternatives (N));
+               while not Match and then Present (Right_Op) loop
+                  Match :=
+                    Match_Alternative_Non_Discrete (Left_Op, Right_Op);
+                  Next (Right_Op);
+               end loop;
+            end if;
          end if;
 
-         if Right_Op = Empty or else not Is_Discrete_Type (Etype (Right_Op))
-         then
-            RAC_Unsupported ("RAC_In right not discrete type", Right_Op);
+         if Negate then
+            Match := not Match;
          end if;
 
-         case Nkind (Right_Op) is
-            when N_Entity =>
-               Get_Integer_Type_Bounds (Entity (Right_Op), Fst, Lst);
-            when N_Range =>
-               Fst := Value_Enum_Integer (RAC_Expr (Low_Bound (Right_Op)));
-               Lst := Value_Enum_Integer (RAC_Expr (High_Bound (Right_Op)));
-            when others =>
-               RAC_Unsupported ("RAC_In right", Right_Op);
-         end case;
-
-         I := Value_Enum_Integer (Left);
-         return Boolean_Value (Fst <= I and then I <= Lst, Etype (N));
+         return Boolean_Value (Match, Etype (N));
       end RAC_In;
 
       --------------------
@@ -2890,6 +3090,9 @@ package body CE_RAC is
 
          when N_In =>
             Res := RAC_In;
+
+         when N_Not_In =>
+            return RAC_In (Negate => True);
 
          when N_If_Expression =>
             Res := RAC_If_Expression;
