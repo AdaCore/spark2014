@@ -737,7 +737,7 @@ package body CE_RAC is
       if Is_Floating_Point_Type (Ty) then
          RAC_Unsupported ("Floating point type", Ty);
       end if;
-      if Ty in Array_Kind_Id
+      if Is_Array_Type (Ty)
         and then Number_Dimensions (Ty) > 1
       then
          RAC_Unsupported ("Multidimensional array type", Ty);
@@ -1464,7 +1464,7 @@ package body CE_RAC is
    is
       Origin : Value_Origin;
       Expr   : constant Node_Id :=
-        (if Use_Expr and then Ekind (N) not in Formal_Kind
+        (if Use_Expr and then not Is_Formal (N)
          then Expression (Enclosing_Declaration (N)) else Empty);
    begin
       Val := new Value_Type'(Get_Value (N, Expr, Default_Value, Origin));
@@ -1525,7 +1525,7 @@ package body CE_RAC is
          RAC_Unsupported
            ("Iterate_Loop_Param_Spec iterator filter", Param_Spec);
       end if;
-      if Etype (Low_Bnd) not in Discrete_Kind_Id then
+      if not Is_Discrete_Type (Etype (Low_Bnd)) then
          RAC_Unsupported
            ("Iterate_Lop_Param_Spec not discrete type", Param_Spec);
       end if;
