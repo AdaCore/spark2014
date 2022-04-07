@@ -39,6 +39,7 @@ with Osint;
 with Output;
 with Pprint;                        use Pprint;
 with SPARK_Definition;              use SPARK_Definition;
+with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Sem_Ch12;                      use Sem_Ch12;
@@ -924,6 +925,56 @@ package body SPARK_Util is
    begin
       return Check_Allocator (N) = Abandon;
    end Contains_Allocator;
+
+   -----------------------------
+   -- Contains_Cut_Operations --
+   -----------------------------
+
+   function Contains_Cut_Operations (N : N_Subexpr_Id) return Boolean is
+   begin
+      case Nkind (N) is
+         when N_Op_And
+            | N_Op_Or
+            | N_And_Then
+            | N_Or_Else
+            =>
+            return Contains_Cut_Operations (Left_Opnd (N))
+              or else Contains_Cut_Operations (Right_Opnd (N));
+         when N_Quantified_Expression =>
+            return Contains_Cut_Operations (Condition (N));
+         when N_Expression_With_Actions =>
+            return Contains_Cut_Operations (Expression (N));
+         when N_If_Expression =>
+            declare
+               Cond        : constant N_Subexpr_Id :=
+                 First (Expressions (N));
+               Then_Part   : constant N_Subexpr_Id := Next (Cond);
+               Else_Part   : constant Opt_N_Subexpr_Id := Next (Then_Part);
+            begin
+               return Contains_Cut_Operations (Then_Part)
+                 or else (Present (Else_Part)
+                          and then Contains_Cut_Operations (Else_Part));
+            end;
+         when N_Case_Expression =>
+            declare
+               Alt : Node_Id := First (Alternatives (N));
+            begin
+               while Present (Alt) loop
+                  if Contains_Cut_Operations (Expression (Alt)) then
+                     return True;
+                  end if;
+                  Next (Alt);
+               end loop;
+               return False;
+            end;
+         when N_Function_Call =>
+            return Present (Get_Called_Entity (N))
+              and then Is_From_Hardcoded_Unit
+                (Get_Called_Entity (N), Cut_Operations);
+         when others =>
+            return False;
+      end case;
+   end Contains_Cut_Operations;
 
    ----------------------------
    -- Contains_Function_Call --

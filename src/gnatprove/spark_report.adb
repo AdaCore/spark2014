@@ -1115,6 +1115,8 @@ procedure SPARK_Report is
             return Runtime_Checks;
 
          when VC_Assert
+            | VC_Assert_Premise
+            | VC_Assert_Step
             | VC_Loop_Invariant
             | VC_Loop_Invariant_Init
             | VC_Loop_Invariant_Preserv

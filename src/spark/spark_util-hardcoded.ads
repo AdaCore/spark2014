@@ -25,7 +25,7 @@
 
 package SPARK_Util.Hardcoded is
 
-   type Hardcoded_Enum is (Big_Integers, Big_Reals);
+   type Hardcoded_Enum is (Big_Integers, Big_Reals, Cut_Operations);
    --  Enum type of the hardcoded units
 
    package Big_Integers_Names is
@@ -64,6 +64,13 @@ package SPARK_Util.Hardcoded is
    --  Conversions to a fixed or floating point type from a big real are also
    --  left uninterpreted. However, because they have a precondition featuring
    --  a raise expression, they are not currently supported in SPARK.
+
+   package Cut_Operations_Names is
+      By : constant String := "by";
+      So : constant String := "so";
+   end Cut_Operations_Names;
+   --  Names of entities that will be considered as hardcoded in the
+   --  Cut_Operations unit.
 
    function Is_From_Hardcoded_Unit
      (E    : Entity_Id;

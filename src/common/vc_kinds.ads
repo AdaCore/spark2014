@@ -107,6 +107,8 @@ package VC_Kinds is
       VC_Loop_Variant,
       VC_Subprogram_Variant,
       VC_Assert,
+      VC_Assert_Step,                --  Side condition for proof cut points
+      VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
       VC_Inline_Check,               --  Check that the Inline_For_Proof
                                      --  annotation provided for a function is

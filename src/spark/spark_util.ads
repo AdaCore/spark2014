@@ -907,6 +907,12 @@ package SPARK_Util is
    --  @return True iff the tree starting with N contains an N_Allocator
    --    node.
 
+   function Contains_Cut_Operations (N : N_Subexpr_Id) return Boolean;
+   --  @param N an expression
+   --  @return True iff the tree starting with N contains a call to a cut
+   --    operation. Takes advantage of the supported context for these nodes
+   --    to cut branches.
+
    function Contains_Function_Call (N : Node_Id) return Boolean;
    --  Return True iff N contains an N_Function_Call node
 

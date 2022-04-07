@@ -310,7 +310,7 @@ def is_ada_assertion_tag(tag):
 
 
 def is_spark_assertion_tag(tag):
-    """Returns True if the given tag corresponds to an Ada assertion proof
+    """Returns True if the given tag corresponds to a SPARK assertion proof
     message"""
     return tag in (
         "DEFAULT_INITIAL_CONDITION",
@@ -340,6 +340,8 @@ def is_other_proof_tag(tag):
         "STRONGER_POST_ACCESS",
         "UNCHECKED_CONVERSION",
         "UNCHECKED_CONVERSION_SIZE",
+        "ASSERT_PREMISE",
+        "ASSERT_STEP",
     )
 
 
@@ -498,6 +500,10 @@ def check_marks(strlist):
             return "LOOP_VARIANT"
         elif "subprogram variant" in text:
             return "SUBPROGRAM_VARIANT"
+        elif "assertion premise" in text:
+            return "ASSERT_PREMISE"
+        elif "assertion step" in text:
+            return "ASSERT_STEP"
         elif "assertion" in text:
             return "ASSERT"
         elif "raise statement" in text or "exception" in text:

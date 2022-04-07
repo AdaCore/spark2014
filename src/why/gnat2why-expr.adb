@@ -381,18 +381,29 @@ package body Gnat2Why.Expr is
 
    generic
       with function Generate_Branch_Expr
-        (N             : Node_Id;
-         Expected_Type : W_Type_OId := Why_Empty;
-         Domain        : EW_Domain;
-         Params        : Transformation_Params) return W_Expr_Id;
+        (N      : Node_Id;
+         Domain : EW_Domain;
+         Params : Transformation_Params) return W_Expr_Id;
    function Generate_Case_Expression
-     (N             : N_Case_Kind_Id;
-      Expected_Type : W_Type_OId := Why_Empty;
-      Domain        : EW_Domain;
-      Params        : Transformation_Params)
+     (N      : N_Case_Kind_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
       return W_Expr_Id;
    --  Build Case expression. The branches are computed by calling
    --  Generate_Branch_Expr on each branch.
+
+   generic
+      with function Generate_Expr
+        (Expr    : Node_Id;
+         Domain  : EW_Domain;
+         Params  : Transformation_Params) return W_Expr_Id;
+   function Generate_Expr_With_Actions
+     (Expr    : Node_Id;
+      Actions : List_Id;
+      Domain  : EW_Domain;
+      Params  : Transformation_Params) return W_Expr_Id;
+   --  Handles an expression with actions. Its expression is computed by
+   --  calling Generate_Expr on Expr.
 
    generic
       with function Generate_Condition
@@ -893,6 +904,25 @@ package body Gnat2Why.Expr is
    --         which has a modular index.
    --  @return the translation of the expression contained in the invariant
    --          applied on Expr.
+
+   procedure Transform_Expr_With_Cutpoints
+     (Assertion :     N_Subexpr_Id;
+      Runtime   : out W_Prog_Id;
+      Premise   : out W_Pred_Id;
+      Result    : out W_Pred_Id)
+   with Pre => Contains_Cut_Operations (Assertion);
+   --  Expressions containing occurrences of the cut operations By and So are
+   --  translated differently depending on whether they occur as an assumption
+   --  or a goal. The fact that the two translations are compatible is checked
+   --  by generating side-conditions.
+   --
+   --  For each such expression Assertion, we generate:
+   --   * A program expression Runtime which performs checks for the absence of
+   --     RTE in Assertion and the side-conditions of the cut operations;
+   --   * A predicate Premise which is the translation of Assertion when we
+   --     want to prove it;
+   --   * A predicate Result which is the translation of Assertion when we
+   --     want to assume it.
 
    procedure Transform_String_Literal (N : N_String_Literal_Id);
    --  Create an uninterpreted logic function with no parameters that returns a
@@ -6508,10 +6538,9 @@ package body Gnat2Why.Expr is
    ------------------------------
 
    function Generate_Case_Expression
-     (N             : N_Case_Kind_Id;
-      Expected_Type : W_Type_OId := Why_Empty;
-      Domain        : EW_Domain;
-      Params        : Transformation_Params)
+     (N      : N_Case_Kind_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
       return W_Expr_Id
    is
       --  For a given case expression
@@ -6554,7 +6583,7 @@ package body Gnat2Why.Expr is
            Match_Domain,
            Params));
       Then_Expr    : constant W_Expr_Id := Generate_Branch_Expr
-        (First_Case, Expected_Type, Domain, Params);
+        (First_Case, Domain, Params);
       Elsif_Parts  : W_Expr_Array (1 .. Integer (List_Length (Cases)) - 2);
 
    --  Start of processing for Generate_Case_Expression
@@ -6586,7 +6615,7 @@ package body Gnat2Why.Expr is
                        else
                           Disc_Choices),
                     Then_Part => Generate_Branch_Expr
-                      (Cur_Case, Expected_Type, Domain, Params));
+                      (Cur_Case, Domain, Params));
                Next (Cur_Case);
             end;
          end loop;
@@ -6617,11 +6646,50 @@ package body Gnat2Why.Expr is
                       Then_Part   => Then_Expr,
                       Elsif_Parts => Elsif_Parts,
                       Else_Part   => Generate_Branch_Expr
-                        (Last_Case, Expected_Type, Domain, Params),
+                        (Last_Case, Domain, Params),
                       Typ         => Get_Type (Then_Expr)));
          end;
       end if;
    end Generate_Case_Expression;
+
+   --------------------------------
+   -- Generate_Expr_With_Actions --
+   --------------------------------
+
+   function Generate_Expr_With_Actions
+     (Expr    : Node_Id;
+      Actions : List_Id;
+      Domain  : EW_Domain;
+      Params  : Transformation_Params) return W_Expr_Id
+   is
+   begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      if Present (Actions) then
+         Transform_Actions_Preparation (Actions);
+      end if;
+
+      declare
+         Result : W_Expr_Id := Generate_Expr (Expr, Domain, Params);
+      begin
+
+         --  Add check for absence of memory leaks at end of scope
+
+         if Domain = EW_Prog then
+            Prepend
+              (Check_No_Memory_Leaks_At_End_Of_Scope (Decls => Actions),
+               Result);
+         end if;
+
+         if Present (Actions) then
+            Result := Transform_Actions (Actions, Result, Domain, Params);
+         end if;
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+         return Result;
+      end;
+   end Generate_Expr_With_Actions;
 
    ------------------------------------
    -- Generate_Quantified_Expression --
@@ -18942,10 +19010,9 @@ package body Gnat2Why.Expr is
          when N_Case_Expression =>
             declare
                function Transform_Branch
-                 (N             : Node_Id;
-                  Expected_Type : W_Type_OId := Why_Empty;
-                  Domain        : EW_Domain;
-                  Params        : Transformation_Params) return W_Expr_Id;
+                 (N      : Node_Id;
+                  Domain : EW_Domain;
+                  Params : Transformation_Params) return W_Expr_Id;
                --  Transform the actions and the expression of a branch
 
                ----------------------
@@ -18953,10 +19020,9 @@ package body Gnat2Why.Expr is
                ----------------------
 
                function Transform_Branch
-                 (N             : Node_Id;
-                  Expected_Type : W_Type_OId := Why_Empty;
-                  Domain        : EW_Domain;
-                  Params        : Transformation_Params) return W_Expr_Id
+                 (N      : Node_Id;
+                  Domain : EW_Domain;
+                  Params : Transformation_Params) return W_Expr_Id
                is
                   T : W_Expr_Id;
                begin
@@ -18983,7 +19049,6 @@ package body Gnat2Why.Expr is
             begin
                T := Transform_Case_Expr
                  (Expr,
-                  Expected_Type,
                   Domain,
                   Local_Params);
             end;
@@ -19470,36 +19535,605 @@ package body Gnat2Why.Expr is
       Params        : Transformation_Params)
       return W_Expr_Id
    is
-      T : W_Expr_Id;
+      function Transform_Expr_Internal
+        (Expr   : N_Subexpr_Id;
+         Domain : EW_Domain;
+         Params : Transformation_Params) return W_Expr_Id
+      is (Transform_Expr (Expr, Expected_Type, Domain, Params));
+
+      function Transform_Expr_With_Actions is new Generate_Expr_With_Actions
+        (Transform_Expr_Internal);
 
    begin
-      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-      if Present (Actions) then
-         Transform_Actions_Preparation (Actions);
-      end if;
-
-      T := Transform_Expr (Expr,
-                           Expected_Type,
-                           Domain,
-                           Params);
-
-      --  Add check for absence of memory leaks at end of scope
-
-      if Domain = EW_Prog then
-         Prepend
-           (Check_No_Memory_Leaks_At_End_Of_Scope (Decls => Actions),
-            T);
-      end if;
-
-      if Present (Actions) then
-         T := Transform_Actions (Actions, T, Domain, Params);
-      end if;
-
-      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-
-      return T;
+      return Transform_Expr_With_Actions (Expr, Actions, Domain, Params);
    end Transform_Expr_With_Actions;
+
+   -----------------------------------
+   -- Transform_Expr_With_Cutpoints --
+   -----------------------------------
+
+   procedure Transform_Expr_With_Cutpoints
+     (Assertion :     N_Subexpr_Id;
+      Runtime   : out W_Prog_Id;
+      Premise   : out W_Pred_Id;
+      Result    : out W_Pred_Id)
+   is
+      package COpN renames Cut_Operations_Names;
+      Params       : constant Transformation_Params := Assert_Params;
+      Split_Params : constant Transformation_Params :=
+        (Params with delta Gen_Marker => GM_Label);
+
+      function Compute_Premise
+        (Expr         : N_Subexpr_Id;
+         Local_Params : Transformation_Params) return W_Pred_Id;
+      --  Compute the premise of Expr as a predicate
+
+      function Compute_Result (Expr : N_Subexpr_Id) return W_Pred_Id;
+      --  Compute the result of Expr as a predicate
+
+      function Compute_Runtime_Checks (Expr : N_Subexpr_Id) return W_Prog_Id;
+      --  Compute a program which performs all the checks necessary for Expr.
+      --  This includes the side-conditions of cut operations.
+
+      ---------------------
+      -- Compute_Premise --
+      ---------------------
+
+      function Compute_Premise
+        (Expr         : N_Subexpr_Id;
+         Local_Params : Transformation_Params) return W_Pred_Id
+      is
+         function Compute_Premise
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id;
+         --  Wrapper on Compute_Premise used for instances of generic treatment
+
+         function Compute_Premise_For_Expr_With_Actions
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id;
+
+         ---------------------
+         -- Compute_Premise --
+         ---------------------
+
+         function Compute_Premise
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id
+         is
+            pragma Unreferenced (Domain);
+         begin
+            return +Compute_Premise (Expr, Params);
+         end Compute_Premise;
+
+         function Compute_Premise_For_Expr_With_Actions is new
+           Generate_Expr_With_Actions (Compute_Premise);
+
+         -------------------------------------------
+         -- Compute_Premise_For_Expr_With_Actions --
+         -------------------------------------------
+
+         function Compute_Premise_For_Expr_With_Actions
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id
+         is
+         begin
+            return Compute_Premise_For_Expr_With_Actions
+              (Expression (Expr), Actions (Expr), Domain, Params);
+         end Compute_Premise_For_Expr_With_Actions;
+
+      begin
+         if not Contains_Cut_Operations (Expr) then
+            return Transform_Pred (Expr, Local_Params);
+         end if;
+
+         case Nkind (Expr) is
+            when N_Op_And
+               | N_And_Then
+               =>
+               return New_And_Pred
+                 (Compute_Premise (Left_Opnd (Expr), Local_Params),
+                  Compute_Premise (Right_Opnd (Expr), Local_Params));
+
+            when N_Op_Or
+               | N_Or_Else
+               =>
+
+               --  We have traversed a disjunction, the predicate cannot be
+               --  splitted any further. Change the tranformation parameters
+               --  accordingly and introduce a label if necessary.
+
+               declare
+                  Pred : W_Pred_Id := New_Or_Pred
+                    (Compute_Premise (Left_Opnd (Expr), Params),
+                     Compute_Premise (Right_Opnd (Expr), Params));
+               begin
+                  if Expr /= Assertion
+                    and then Local_Params.Gen_Marker = GM_Label
+                  then
+                     Pred := New_Label
+                       (Labels => Symbol_Sets.To_Set
+                          (New_Sub_VC_Marker (Expr)),
+                        Def    => +Pred,
+                        Typ    => EW_Bool_Type);
+                  end if;
+                  return Pred;
+               end;
+
+            when N_Quantified_Expression =>
+               declare
+                  function Compute_Premise_For_Quantified_Expr is new
+                    Generate_Quantified_Expression (Compute_Premise);
+
+               begin
+                  return +Compute_Premise_For_Quantified_Expr
+                    (Expr, EW_Pred, Local_Params);
+               end;
+
+            when N_Expression_With_Actions =>
+               return +Compute_Premise_For_Expr_With_Actions
+                 (Expr, EW_Pred, Local_Params);
+
+            when N_If_Expression =>
+               declare
+                  Cond      : constant N_Subexpr_Id :=
+                    First (Expressions (Expr));
+                  Then_Part : constant N_Subexpr_Id := Next (Cond);
+                  Else_Part : constant Opt_N_Subexpr_Id := Next (Then_Part);
+
+               begin
+                  return New_Conditional
+                    (Ada_Node  => Expr,
+                     Condition => Transform_Pred (Cond, Params),
+                     Then_Part => +Compute_Premise_For_Expr_With_Actions
+                       (Then_Part, Then_Actions (Expr), EW_Pred, Local_Params),
+                     Else_Part => +Compute_Premise_For_Expr_With_Actions
+                       (Else_Part, Else_Actions (Expr), EW_Pred,
+                        Local_Params));
+               end;
+
+            when N_Case_Expression =>
+               declare
+                  function Compute_Premise_For_Case_Expr is new
+                    Generate_Case_Expression
+                      (Compute_Premise_For_Expr_With_Actions);
+
+               begin
+                  return +Compute_Premise_For_Case_Expr
+                    (Expr, EW_Pred, Local_Params);
+               end;
+
+            when N_Function_Call =>
+               declare
+                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Name_String : constant String :=
+                    Get_Name_String (Chars (Subp));
+                  Fst_Param   : constant Node_Id := First_Actual (Expr);
+                  Snd_Param   : constant Node_Id := Next_Actual (Fst_Param);
+
+               begin
+                  pragma Assert
+                    (Is_From_Hardcoded_Unit (Subp, Cut_Operations));
+
+                  --  For By, the premise is the second parameter
+
+                  if Name_String = COpN.By then
+                     return Compute_Premise (Snd_Param, Local_Params);
+
+                  --  For So, it is the first
+
+                  else
+                     pragma Assert (Name_String = COpN.So);
+                     return Compute_Premise (Fst_Param, Local_Params);
+                  end if;
+               end;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Compute_Premise;
+
+      --------------------
+      -- Compute_Result --
+      --------------------
+
+      function Compute_Result (Expr : N_Subexpr_Id) return W_Pred_Id is
+
+         function Compute_Result
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id;
+         --  Wrapper on Compute_Result used for instances of generic treatment
+
+         function Compute_Result_For_Expr_With_Actions
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id;
+
+         --------------------
+         -- Compute_Result --
+         --------------------
+
+         function Compute_Result
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id
+         is
+            pragma Unreferenced (Domain, Params);
+         begin
+            return +Compute_Result (Expr);
+         end Compute_Result;
+
+         function Compute_Result_For_Expr_With_Actions is new
+           Generate_Expr_With_Actions (Compute_Result);
+
+         ------------------------------------------
+         -- Compute_Result_For_Expr_With_Actions --
+         ------------------------------------------
+
+         function Compute_Result_For_Expr_With_Actions
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id
+         is
+         begin
+            return Compute_Result_For_Expr_With_Actions
+              (Expression (Expr), Actions (Expr), Domain, Params);
+         end Compute_Result_For_Expr_With_Actions;
+
+      begin
+         if not Contains_Cut_Operations (Expr) then
+            return Transform_Pred (Expr, Params);
+         end if;
+
+         case Nkind (Expr) is
+            when N_Op_And
+               | N_And_Then
+               =>
+               return New_And_Pred
+                 (Compute_Result (Left_Opnd (Expr)),
+                  Compute_Result (Right_Opnd (Expr)));
+
+            when N_Op_Or
+               | N_Or_Else
+               =>
+               return New_Or_Pred
+                 (Compute_Result (Left_Opnd (Expr)),
+                  Compute_Result (Right_Opnd (Expr)));
+
+            when N_Quantified_Expression =>
+               declare
+                  function Compute_Result_For_Quantified_Expr is new
+                    Generate_Quantified_Expression (Compute_Result);
+
+               begin
+                  return +Compute_Result_For_Quantified_Expr
+                    (Expr, EW_Pred, Params);
+               end;
+
+            when N_Expression_With_Actions =>
+               return +Compute_Result_For_Expr_With_Actions
+                 (Expr, EW_Pred, Params);
+
+            when N_If_Expression =>
+               declare
+                  Cond      : constant N_Subexpr_Id :=
+                    First (Expressions (Expr));
+                  Then_Part : constant N_Subexpr_Id := Next (Cond);
+                  Else_Part : constant Opt_N_Subexpr_Id := Next (Then_Part);
+
+               begin
+                  return New_Conditional
+                    (Ada_Node  => Expr,
+                     Condition => Transform_Pred (Cond, Params),
+                     Then_Part => +Compute_Result_For_Expr_With_Actions
+                       (Then_Part, Then_Actions (Expr), EW_Pred, Params),
+                     Else_Part => +Compute_Result_For_Expr_With_Actions
+                       (Else_Part, Else_Actions (Expr), EW_Pred, Params));
+               end;
+
+            when N_Case_Expression =>
+               declare
+                  function Compute_Result_For_Case_Expr is new
+                    Generate_Case_Expression
+                      (Compute_Result_For_Expr_With_Actions);
+
+               begin
+                  return +Compute_Result_For_Case_Expr (Expr, EW_Pred, Params);
+               end;
+
+            when N_Function_Call =>
+               declare
+                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Name_String : constant String :=
+                    Get_Name_String (Chars (Subp));
+                  Fst_Param   : constant Node_Id := First_Actual (Expr);
+                  Snd_Param   : constant Node_Id := Next_Actual (Fst_Param);
+
+               begin
+                  pragma Assert
+                    (Is_From_Hardcoded_Unit (Subp, Cut_Operations));
+
+                  --  For By, the consequence is the first parameter
+
+                  if Name_String = COpN.By then
+                     return Compute_Result (Fst_Param);
+
+                  --  For So, keep both operands
+
+                  else
+                     pragma Assert (Name_String = COpN.So);
+                     return New_And_Pred
+                       (Compute_Result (Fst_Param),
+                        Compute_Result (Snd_Param));
+                  end if;
+               end;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Compute_Result;
+
+      ----------------------------
+      -- Compute_Runtime_Checks --
+      ----------------------------
+
+      function Compute_Runtime_Checks (Expr : N_Subexpr_Id) return W_Prog_Id is
+
+         function Compute_Runtime_Checks
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id;
+         --  Wrapper on Compute_Runtime_Checks used for instances of generic
+         --  treatment.
+
+         Warn_On_Dead_Branches : Boolean := True;
+         --  Flag that should be set to True if we want to warn on dead
+         --  branches inside Compute_Runtime_Checks.
+
+         function Compute_Runtime_Checks_For_Expr_With_Actions
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id;
+
+         ----------------------------
+         -- Compute_Runtime_Checks --
+         ----------------------------
+
+         function Compute_Runtime_Checks
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id
+         is
+            pragma Unreferenced (Domain);
+            Result : constant W_Expr_Id := +Compute_Runtime_Checks (Expr);
+
+         begin
+            --  Possibly warn on an unreachable branches
+
+            if Warn_On_Dead_Branches then
+               return +Warn_On_Dead_Branch (Expr, +Result, Params.Phase);
+            else
+               return Result;
+            end if;
+         end Compute_Runtime_Checks;
+
+         function Compute_Runtime_Checks_For_Expr_With_Actions is new
+           Generate_Expr_With_Actions (Compute_Runtime_Checks);
+
+         --------------------------------------------------
+         -- Compute_Runtime_Checks_For_Expr_With_Actions --
+         --------------------------------------------------
+
+         function Compute_Runtime_Checks_For_Expr_With_Actions
+           (Expr   : Node_Id;
+            Domain : EW_Domain;
+            Params : Transformation_Params) return W_Expr_Id
+         is
+         begin
+            return Compute_Runtime_Checks_For_Expr_With_Actions
+              (Expression (Expr), Actions (Expr), Domain, Params);
+         end Compute_Runtime_Checks_For_Expr_With_Actions;
+
+      begin
+         if not Contains_Cut_Operations (Expr) then
+            return New_Ignore (Prog => Transform_Prog (Expr, Params));
+         end if;
+
+         case Nkind (Expr) is
+            when N_Op_And
+               | N_Op_Or
+               =>
+               return Sequence
+                 (Compute_Runtime_Checks (Left_Opnd (Expr)),
+                  Compute_Runtime_Checks (Right_Opnd (Expr)));
+
+            when N_And_Then
+               | N_Or_Else
+               =>
+
+               --  For short-circuit operators, check the right operand in the
+               --  context of the left.
+
+               declare
+                  Left_Res : constant W_Pred_Id :=
+                    Compute_Result (Left_Opnd (Expr));
+               begin
+                  return Sequence
+                    ((1 => Compute_Runtime_Checks (Left_Opnd (Expr)),
+                      2 => New_Assume_Statement
+                        (Pred => (if Nkind (Expr) = N_And_Then then Left_Res
+                                  else New_Not (Right => Left_Res))),
+                      3 => Compute_Runtime_Checks (Right_Opnd (Expr))));
+               end;
+
+            when N_Quantified_Expression =>
+
+               --  Warn on dead branches inside a quantified expression
+
+               Warn_On_Dead_Branches := True;
+
+               declare
+                  function Compute_Runtime_Checks_For_Quantified_Expr is new
+                    Generate_Quantified_Expression (Compute_Runtime_Checks);
+
+               begin
+                  return +Compute_Runtime_Checks_For_Quantified_Expr
+                    (Expr, EW_Prog, Params);
+               end;
+
+            when N_Expression_With_Actions =>
+
+               --  No need to warn on dead branches inside an expression with
+               --  actions.
+
+               Warn_On_Dead_Branches := False;
+
+               return +Compute_Runtime_Checks_For_Expr_With_Actions
+                 (Expr, EW_Prog, Params);
+
+            when N_If_Expression =>
+
+               declare
+                  Cond        : constant N_Subexpr_Id :=
+                    First (Expressions (Expr));
+                  Then_Part   : constant N_Subexpr_Id := Next (Cond);
+                  Else_Part   : constant Opt_N_Subexpr_Id := Next (Then_Part);
+                  Then_Checks : W_Prog_Id;
+                  Else_Checks : W_Prog_Id;
+
+               begin
+                  --  Warn on dead branches inside the then branch
+
+                  Warn_On_Dead_Branches := True;
+
+                  Then_Checks := +Compute_Runtime_Checks_For_Expr_With_Actions
+                    (Then_Part, Then_Actions (Expr), EW_Pred, Params);
+
+                  --  Do not warn on an unreachable branch "else True" whether
+                  --  it comes from source or it was generated by the frontend.
+
+                  Warn_On_Dead_Branches :=
+                    Nkind (Else_Part) not in N_Expanded_Name |  N_Identifier
+                    or else Entity (Else_Part) /= Standard_True;
+
+                  Else_Checks := +Compute_Runtime_Checks_For_Expr_With_Actions
+                    (Else_Part, Else_Actions (Expr), EW_Pred, Params);
+
+                  return New_Conditional
+                    (Ada_Node  => Expr,
+                     Condition => Transform_Prog (Cond, Params),
+                     Then_Part => Then_Checks,
+                     Else_Part => Else_Checks);
+               end;
+
+            when N_Case_Expression =>
+
+               --  Warn on dead branches inside a case expression
+
+               Warn_On_Dead_Branches := True;
+
+               declare
+                  function Compute_Runtime_Checks_For_Case_Expr is new
+                    Generate_Case_Expression
+                      (Compute_Runtime_Checks_For_Expr_With_Actions);
+
+               begin
+                  return +Compute_Runtime_Checks_For_Case_Expr
+                    (Expr, EW_Prog, Params);
+               end;
+
+            when N_Function_Call =>
+               declare
+                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Name_String : constant String :=
+                    Get_Name_String (Chars (Subp));
+                  Fst_Param   : constant Node_Id := First_Actual (Expr);
+                  Snd_Param   : constant Node_Id := Next_Actual (Fst_Param);
+                  Premise     : Node_Id;
+                  Consequence : Node_Id;
+                  Result      : W_Statement_Sequence_Id := Void_Sequence;
+
+               begin
+                  pragma Assert
+                    (Is_From_Hardcoded_Unit (Subp, Cut_Operations));
+
+                  --  For both BY and SO, we generate:
+                  --    Ignore
+                  --      (<Compute_Runtime_Checks (Premise)>;
+                  --       assume {<Compute_Result (Premise)>};
+                  --       <Compute_Runtime_Checks (Consequence)>;
+                  --       assert {<Compute_Premise (Consequence)>})
+
+                  if Name_String = COpN.By then
+                     Premise := Snd_Param;
+                     Consequence := Fst_Param;
+                  else
+                     pragma Assert (Name_String = COpN.So);
+                     Premise := Fst_Param;
+                     Consequence := Snd_Param;
+                  end if;
+
+                  if Contains_Cut_Operations (Premise) then
+                     Append
+                       (Result,
+                        Compute_Runtime_Checks (Premise));
+                     Append
+                       (Result,
+                        New_Assume_Statement
+                          (Pred => Compute_Result (Premise)));
+
+                  --  If the premise does not contain any cut operation, avoid
+                  --  the duplication by generating:
+                  --    let temp_premise = <Premise> in
+                  --    assume { temp_premise }
+                  --  We do not do the same for the consequence as we would
+                  --  lose the splitting.
+
+                  else
+                     declare
+                        Tmp : constant W_Identifier_Id :=
+                          New_Temp_Identifier
+                            (Base_Name => "premise", Typ => EW_Bool_Type);
+                     begin
+                        Append
+                          (Result,
+                           New_Typed_Binding
+                             (Name    => Tmp,
+                              Def     => Transform_Prog (Premise, Params),
+                              Context =>
+                                New_Assume_Statement (Pred => +Tmp)));
+                     end;
+                  end if;
+
+                  Append
+                    (Result, Compute_Runtime_Checks (Consequence));
+                  Append
+                    (Result,
+                     New_Located_Assert
+                       (Ada_Node => Consequence,
+                        Reason   => VC_Assert_Step,
+                        Kind     => EW_Assert,
+                        Pred     =>
+                          Compute_Premise (Consequence, Split_Params)));
+                  return New_Ignore (Prog => +Result);
+               end;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Compute_Runtime_Checks;
+
+   --  Start of processing for Transform_Expr_With_Cutpoints
+
+   begin
+      Premise := Compute_Premise (Assertion, Split_Params);
+      Result := Compute_Result (Assertion);
+      Runtime := Compute_Runtime_Checks (Assertion);
+   end Transform_Expr_With_Cutpoints;
 
    -----------------------------
    -- Transform_Function_Call --
@@ -21209,10 +21843,26 @@ package body Gnat2Why.Expr is
       end if;
 
       if Present (Expr) then
-         Runtime := Transform_Prog (Expr, EW_Bool_Type, Params);
-         Params.Gen_Marker := GM_Toplevel;
-         Pred := Transform_Pred (Expr, Params);
-         return;
+
+         --  Special translation for assertions with cut operations
+
+         if Contains_Cut_Operations (Expr) then
+            declare
+               Cond : W_Pred_Id;
+            begin
+               Transform_Expr_With_Cutpoints (Expr, Runtime, Cond, Pred);
+               Runtime := Sequence
+                 (Runtime,
+                  New_Located_Assert
+                    (Expr, Cond, VC_Assert_Premise, EW_Assert));
+            end;
+            return;
+         else
+            Runtime := Transform_Prog (Expr, EW_Bool_Type, Params);
+            Params.Gen_Marker := GM_Toplevel;
+            Pred := Transform_Pred (Expr, Params);
+            return;
+         end if;
       else
          raise Program_Error;
       end if;
@@ -21279,31 +21929,37 @@ package body Gnat2Why.Expr is
                   if Proved then
                      Emit_Static_Proof_Result
                        (Expr, Reason, Proved, Current_Subp);
-                     return +Void;
+                     Append (T, +Void);
                   else
-                     return
-                       New_VC_Prog
-                         (Ada_Node => Prag,
-                          Expr     => +New_Identifier (Name => "absurd"),
-                          Reason   => Reason);
+                     Append
+                       (T, New_VC_Prog
+                          (Ada_Node => Prag,
+                           Expr     => +New_Identifier (Name => "absurd"),
+                           Reason   => Reason));
                   end if;
                end;
+
+            --  Now handle remaining cases of "regular" pragma Check/Assert
+            --  and pragma Assume. This is also how pragmas Preconditions and
+            --  Postconditions inside a subprogram body are translated, i.e.
+            --  as regular assertions.
+
+            elsif Is_Pragma_Check (Prag, Name_Assume) then
+               Append (T, New_Assume_Statement (Pred => Pred));
+               Append (T, Warn_On_Inconsistent_Assume (Prag));
+               Register_Pragma_Assume_Statement (Prag);
+
+            --  If the assertion contains a cut operation, its premise and
+            --  side-conditions will be checked as part of the runtime checks,
+            --  so the predicate should be assumed.
+
+            elsif Contains_Cut_Operations (Expr) then
+               Append (T, New_Assume_Statement (Pred => Pred));
+            else
+               Append (T,
+                       New_Located_Assert (Expr, Pred, Reason, EW_Assert));
             end if;
          end;
-
-         --  Now handle remaining cases of "regular" pragma Check/Assert
-         --  and pragma Assume. This is also how pragmas Preconditions and
-         --  Postconditions inside a subprogram body are translated, i.e.
-         --  as regular assertions.
-
-         if Is_Pragma_Check (Prag, Name_Assume) then
-            Append (T, New_Assume_Statement (Pred => Pred));
-            Append (T, Warn_On_Inconsistent_Assume (Prag));
-            Register_Pragma_Assume_Statement (Prag);
-         else
-            Append (T,
-              New_Located_Assert (Expr, Pred, Reason, EW_Assert));
-         end if;
       end if;
 
       if Check_Expr /= Why_Empty then
@@ -22783,10 +23439,9 @@ package body Gnat2Why.Expr is
          when N_Case_Statement =>
             declare
                function Transform_Branch
-                 (N             : Node_Id;
-                  Expected_Type : W_Type_OId := Why_Empty;
-                  Domain        : EW_Domain;
-                  Params        : Transformation_Params) return W_Expr_Id;
+                 (N      : Node_Id;
+                  Domain : EW_Domain;
+                  Params : Transformation_Params) return W_Expr_Id;
                --  Transform the statements of a branch
 
                ----------------------
@@ -22794,12 +23449,11 @@ package body Gnat2Why.Expr is
                ----------------------
 
                function Transform_Branch
-                 (N             : Node_Id;
-                  Expected_Type : W_Type_OId := Why_Empty;
-                  Domain        : EW_Domain;
-                  Params        : Transformation_Params) return W_Expr_Id
+                 (N      : Node_Id;
+                  Domain : EW_Domain;
+                  Params : Transformation_Params) return W_Expr_Id
                is
-                  pragma Unreferenced (Expected_Type, Domain);
+                  pragma Unreferenced (Domain);
                   T : W_Expr_Id;
                begin
                   --  ??? Maybe we should merge the code for statements?
@@ -22929,14 +23583,29 @@ package body Gnat2Why.Expr is
       --  statements in an abstract block and only keep the Cut_Assertion.
 
       elsif Cut_Assertion /= Why_Empty then
-         Seq :=
-           +Sequence
-             (Progs =>
-                (1 => New_Located_Abstract
-                   (Ada_Node => Cut_Assertion_Expr,
-                    Expr     => +Seq,
-                    Post     => Cut_Assertion,
-                    Reason   => VC_Assert)));
+
+         --  If the assertion contains a cut operation, its premise and
+         --  side-conditions will be checked as part of the runtime checks, so
+         --  the assertion should be assumed.
+
+         if Contains_Cut_Operations (Cut_Assertion_Expr) then
+            Seq :=
+              +Sequence
+              (Progs =>
+                 (1 => New_Ignore
+                      (Ada_Node => Cut_Assertion_Expr,
+                       Prog     => +Seq),
+                  2 => New_Assume_Statement (Pred => Cut_Assertion)));
+         else
+            Seq :=
+              +Sequence
+              (Progs =>
+                 (1 => New_Located_Abstract
+                      (Ada_Node => Cut_Assertion_Expr,
+                       Expr     => +Seq,
+                       Post     => Cut_Assertion,
+                       Reason   => VC_Assert)));
+         end if;
 
          --  Assume the dynamic property of variables referenced in
          --  Cut_Assertion.

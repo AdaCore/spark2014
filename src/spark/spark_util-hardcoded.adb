@@ -95,6 +95,8 @@ package body SPARK_Util.Hardcoded is
                         (Generic_Parent
                            (Par))) in "fixed_conversions"
                                     | "float_conversions";
+         when Cut_Operations =>
+            return False;
       end case;
    end Is_From_Hardcoded_Generic_Unit;
 
@@ -157,6 +159,19 @@ package body SPARK_Util.Hardcoded is
             end if;
 
             return Scope (S_Ptr) = Standard_Standard;
+
+         when Cut_Operations =>
+            if Get_Name_String (Chars (S_Ptr)) /= "cut_operations" then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Get_Name_String (Chars (S_Ptr)) /= "spark" then
+               return False;
+            end if;
+
+            return Scope (S_Ptr) = Standard_Standard;
       end case;
 
    end Is_From_Hardcoded_Unit;
@@ -168,6 +183,7 @@ package body SPARK_Util.Hardcoded is
    function Is_Hardcoded_Entity (E : Entity_Id) return Boolean is
       package BIN renames Big_Integers_Names; use BIN;
       package BRN renames Big_Reals_Names; use BRN;
+      package COpN renames Cut_Operations_Names; use COpN;
    begin
 
       if Is_From_Hardcoded_Unit (E, Big_Integers) then
@@ -205,6 +221,9 @@ package body SPARK_Util.Hardcoded is
 
       elsif Is_From_Hardcoded_Generic_Unit (E, Big_Reals) then
          return Get_Name_String (Chars (E)) in BRN.Generic_To_Big_Real;
+
+      elsif Is_From_Hardcoded_Unit (E, Cut_Operations) then
+         return Get_Name_String (Chars (E)) in COpN.By | COpN.So;
       end if;
 
       return False;

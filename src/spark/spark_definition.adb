@@ -1889,6 +1889,13 @@ package body SPARK_Definition is
                             (Loop_Parameter_Specification (N)));
                Mark (Discrete_Subtype_Definition
                        (Loop_Parameter_Specification (N)));
+
+               --  Mark the iterator filter if any
+
+               if Present (Iterator_Filter (Loop_Parameter_Specification (N)))
+               then
+                  Mark (Iterator_Filter (Loop_Parameter_Specification (N)));
+               end if;
             else
                Mark (Iterator_Specification (N));
             end if;
@@ -4337,6 +4344,84 @@ package body SPARK_Definition is
                  ("actual parameter of a function annotated with At_End_Borrow"
                   & " which is not a path",
                   Fst_Actual);
+            end if;
+         end;
+      end if;
+
+      --  Check that cut operations occurs in a supported context, that is:
+      --
+      --   * As the expression of a pragma ASSERT or ASSERT_AND_CUT;
+      --   * As an operand of a AND, OR, AND THEN, or OR ELSE operation which
+      --     itself occurs in a supported context;
+      --   * As the THEN or ELSE branch of a IF expression which itself
+      --     occurs in a supported context;
+      --   * As an alternative of a CASE expression which itself occurs in a
+      --     supported context;
+      --   * As the condition of a quantified expression which itself occurs in
+      --     a supported context;
+      --   * As a parameter to a call to a cut operation which itself occurs in
+      --     a supported context;
+      --   * As the body expression of a DECLARE expression which itself occurs
+      --     in a supported context.
+
+      if Is_From_Hardcoded_Unit (E, Cut_Operations) then
+         declare
+            function Check_Call_Context (Call : Node_Id) return Boolean;
+            --  Check whether Call occurs in a context where it can be handled
+
+            ------------------------
+            -- Check_Call_Context --
+            ------------------------
+
+            function Check_Call_Context (Call : Node_Id) return Boolean is
+               N : Node_Id := Call;
+               P : Node_Id;
+            begin
+               loop
+                  P := Parent (N);
+
+                  case Nkind (P) is
+                     when N_Pragma_Argument_Association =>
+                        return Is_Pragma_Check (Parent (P), Name_Assert)
+                          or else Is_Pragma_Check
+                            (Parent (P), Name_Assert_And_Cut);
+                     when N_Op_And
+                        | N_Op_Or
+                        | N_And_Then
+                        | N_Or_Else
+                        | N_Case_Expression_Alternative
+                        | N_Quantified_Expression
+                        | N_Expression_With_Actions
+                        | N_Parameter_Association
+                     =>
+                        null;
+                     when N_If_Expression =>
+                        if N = First (Expressions (P)) then
+                           return False;
+                        end if;
+                     when N_Case_Expression =>
+                        if N = Expression (P) then
+                           return False;
+                        end if;
+                     when N_Function_Call =>
+                        if No (Get_Called_Entity (P))
+                          or else not Is_From_Hardcoded_Unit
+                            (Get_Called_Entity (P), Cut_Operations)
+                        then
+                           return False;
+                        end if;
+                     when others =>
+                        return False;
+                  end case;
+                  N := P;
+               end loop;
+            end Check_Call_Context;
+
+         begin
+            if not Check_Call_Context (N) then
+               Mark_Violation
+                 ("call to a cut operation in an incorrect context",
+                  N);
             end if;
          end;
       end if;
