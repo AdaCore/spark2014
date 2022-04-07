@@ -75,11 +75,11 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="5491"/></proof>
+  <proof prover="0"><result status="valid" steps="4684"/></proof>
   <proof prover="2"><result status="unknown" steps="20549"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
-  <proof prover="0"><result status="valid" steps="5489"/></proof>
+  <proof prover="0"><result status="valid" steps="4680"/></proof>
   <proof prover="2"><result status="unknown" steps="21194"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">

@@ -92,13 +92,13 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.27" proved="true">
-  <proof prover="1"><result status="valid" steps="2269"/></proof>
+  <proof prover="1"><result status="valid" steps="2281"/></proof>
   </goal>
   <goal name="def&#39;vc.28" proved="true">
-  <proof prover="1"><result status="valid" steps="2550"/></proof>
+  <proof prover="1"><result status="valid" steps="2560"/></proof>
   </goal>
   <goal name="def&#39;vc.29" proved="true">
-  <proof prover="1"><result status="valid" steps="6590"/></proof>
+  <proof prover="1"><result status="valid" steps="6824"/></proof>
   </goal>
  </transf>
  </goal>

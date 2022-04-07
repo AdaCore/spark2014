@@ -66,9 +66,9 @@
   </goal>
   <goal name="def&#39;vc.17">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="55190005"/></proof>
+  <proof prover="1"><result status="timeout" steps="61540270"/></proof>
   <proof prover="3" timelimit="20" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4"><result status="unknown" steps="678"/></proof>
+  <proof prover="4"><result status="unknown" steps="627"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.17.0">
    </goal>

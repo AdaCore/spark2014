@@ -24,22 +24,22 @@
   <proof prover="2"><result status="valid" steps="926"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="415"/></proof>
+  <proof prover="0"><result status="valid" steps="402"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="420"/></proof>
+  <proof prover="0"><result status="valid" steps="407"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="420"/></proof>
+  <proof prover="0"><result status="valid" steps="407"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="574"/></proof>
+  <proof prover="0"><result status="valid" steps="558"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
@@ -58,15 +58,15 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="443"/></proof>
+  <proof prover="0"><result status="valid" steps="428"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="0"><result status="valid" steps="462"/></proof>
+  <proof prover="0"><result status="valid" steps="446"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="0"><result status="valid" steps="822"/></proof>
+  <proof prover="0"><result status="valid" steps="804"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

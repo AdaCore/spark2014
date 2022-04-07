@@ -102,7 +102,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="3"><result status="valid" steps="121437"/></proof>
-  <proof prover="5"><result status="unknown" steps="1249"/></proof>
+  <proof prover="5"><result status="unknown" steps="1194"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.28.0">
    <proof prover="4"><result status="timeout"/></proof>
