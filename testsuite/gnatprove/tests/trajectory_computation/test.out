@@ -164,7 +164,8 @@ complex_trajectory.ads:36:50: info: float overflow check proved (Trivial)
 complex_trajectory.ads:36:58: info: float overflow check proved (Trivial)
 complex_trajectory.ads:44:32: info: initialization of "Average" proved
 complex_trajectory.ads:45:09: info: data dependencies proved
-complex_trajectory.ads:48:19: info: postcondition proved (CVC4: 3 VC; colibri: 1 VC)
+complex_trajectory.ads:48:19: medium: in inlined expression function body at complex_trajectory.ads:35
+complex_trajectory.ads:48:19: medium: postcondition might fail, cannot prove Distance in Float64 (N) * Float64 (N + 1) * (- Bound) * 0.5 .. Float64 (N) * Float64 (N + 1) * Bound * 0.5
 complex_trajectory.ads:48:32: info: range check proved (CVC4: 2 VC)
 complex_trajectory_overflow.adb:14:46: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:14:46: info: range check proved (Trivial)
