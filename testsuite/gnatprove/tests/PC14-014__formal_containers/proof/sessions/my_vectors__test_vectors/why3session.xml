@@ -602,7 +602,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="unknown" steps="4301"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
+  <proof prover="4"><result status="unknown" steps="3164"/></proof>
   </goal>
  </transf>
  </goal>

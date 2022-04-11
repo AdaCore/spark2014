@@ -310,7 +310,7 @@
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="valid" steps="12966004"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4" timelimit="5"><result status="highfailure"/></proof>
+  <proof prover="4" timelimit="5"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.94" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>
@@ -360,7 +360,7 @@
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="valid" steps="22110603"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4" timelimit="5"><result status="highfailure"/></proof>
+  <proof prover="4" timelimit="5"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.109" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>
@@ -387,7 +387,7 @@
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4" memlimit="2000"><result status="highfailure"/></proof>
+  <proof prover="4" memlimit="2000"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.117" proved="true">
   <proof prover="3"><result status="valid" steps="14671"/></proof>
@@ -448,7 +448,7 @@
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4" memlimit="2000"><result status="highfailure"/></proof>
+  <proof prover="4" memlimit="2000"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
