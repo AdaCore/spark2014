@@ -9,11 +9,10 @@ proof = """
 Open Scope Z_scope.
 
 (* rewrite hypotheses *)
-unfold dynamic_invariant1, in_range1 in h3.
+unfold in_range1 in h3.
 
 (* apply arithmetic theorem *)
 apply Z.quot_le_mono; auto with zarith.
-intuition.
 Qed.
 """
 

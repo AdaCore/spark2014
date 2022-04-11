@@ -1,4 +1,4 @@
-intros dummy arg2_type pre.
+intros arg2_type pre.
 Open Scope Z_scope.
 Require Import SPARK.
 
@@ -8,7 +8,7 @@ unfold in_range in arg2_type.
 destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub).
 auto.
 unfold ule in arg2_lb, arg2_ub.
-rewrite rliteral_axiom2 in arg2_lb.
+rewrite rliteral_axiom in arg2_lb.
 rewrite rliteral_axiom1 in arg2_ub.
 assert (0 < t'int arg2) as arg2_pos by auto with zarith.
 unfold ule in pre.

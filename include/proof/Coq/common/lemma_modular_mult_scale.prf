@@ -1,4 +1,4 @@
-intros dummy dummy1 scale_denom_type dummy2 ((scale_ratio,mul_no_ovfl),res_def).
+intros scale_denom_type ((scale_ratio,mul_no_ovfl),res_def).
 Open Scope Z_scope.
 Require Import SPARK.
 
@@ -7,7 +7,7 @@ pose (to_uint_bounds val__) as val_type; clearbody val_type.
 pose (to_uint_bounds scale_num) as scale_num_type; clearbody scale_num_type.
 destruct val_type as (val_lb, val_ub), scale_num_type as (scale_num_lb, scale_num_ub), scale_denom_type as (scale_denom_lb, scale_denom_up); auto.
 unfold ule in *.
-rewrite rliteral_axiom2 in scale_denom_lb.
+rewrite rliteral_axiom in scale_denom_lb.
 rewrite rliteral_axiom1 in scale_denom_up.
 assert (0 < t'int scale_denom) as scale_denom_pos by auto with zarith.
 
@@ -36,7 +36,7 @@ destruct (Z.eq_dec (t'int scale_num) 0) as [scale_num_zero|scale_num_not_zero].
   (* no overflow in val * num *)
   + split; [auto with zarith|].
     destruct mul_no_ovfl as [scale_num_zero|val_le_div].
-      { rewrite scale_num_zero, rliteral_axiom in scale_num_not_zero by auto with zarith.
+      { rewrite scale_num_zero, rliteral_axiom2 in scale_num_not_zero by auto with zarith.
         contradict scale_num_not_zero; auto.
       }
     rewrite to_uint_udiv, rliteral_axiom1 in val_le_div by auto with zarith.
