@@ -20,13 +20,13 @@
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="1054"/></proof>
   <proof prover="3"><result status="unknown" steps="2410"/></proof>
-  <proof prover="4"><result status="unknown" steps="111"/></proof>
+  <proof prover="4"><result status="unknown" steps="104"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="324356"/></proof>
   <proof prover="3"><result status="unknown" steps="4511"/></proof>
-  <proof prover="4"><result status="unknown" steps="175"/></proof>
+  <proof prover="4"><result status="unknown" steps="168"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="3"><result status="valid" steps="2166"/></proof>

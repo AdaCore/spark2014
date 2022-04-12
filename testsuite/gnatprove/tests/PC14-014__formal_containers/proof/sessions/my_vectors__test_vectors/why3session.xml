@@ -598,7 +598,10 @@
   <goal name="def&#39;vc.194" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
-  <goal name="def&#39;vc.195">
+  <goal name="def&#39;vc.195" proved="true">
+  <proof prover="2"><result status="valid" steps="1"/></proof>
+  </goal>
+  <goal name="def&#39;vc.196">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="unknown" steps="4301"/></proof>
