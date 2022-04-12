@@ -43,6 +43,8 @@ def compute_prover_name(proverdir):
         return "z3"
     if p.startswith("altergo"):
         return "altergo"
+    if p.startswith("cvc5"):
+        return "cvc5"
     raise ValueError
 
 

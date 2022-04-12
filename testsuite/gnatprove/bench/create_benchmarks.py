@@ -5,6 +5,7 @@ import os
 import re
 import shutil
 import subprocess
+import config
 
 descr = """
 Create VC files for selected tests from the testsuite. Store the VCs in the
@@ -54,7 +55,7 @@ def create_benchmarks(testsuitedir, tmpdir, resultdir, testlist):
     """
 
     driver = os.path.join(testsuitedir, "run-tests")
-    for prover in ["cvc4", "altergo", "z3"]:
+    for prover in config.all_provers:
         if os.path.exists(tmpdir):
             shutil.rmtree(tmpdir)
         os.mkdir(tmpdir)
