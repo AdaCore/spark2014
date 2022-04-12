@@ -1,3 +1,4 @@
 spark_off.adb:11:07: error: "Off" is not allowed in SPARK
+spark_off.adb:11:07: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
 spark_off.adb:11:07: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

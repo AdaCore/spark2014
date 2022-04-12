@@ -126,8 +126,9 @@ private package SPARK_Definition.Violations is
    --  insertions).
 
    procedure Mark_Violation
-     (N    : Node_Id;
-      From : Entity_Id)
+     (N        : Node_Id;
+      From     : Entity_Id;
+      Cont_Msg : String := "")
      with Global => (Output => Violation_Detected,
                      Input  => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK, due to the use of entity

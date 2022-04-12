@@ -1,0 +1,4 @@
+main.adb:10:40: error: "New_integer" is not allowed in SPARK
+main.adb:10:40: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
+main.adb:10:40: error: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof

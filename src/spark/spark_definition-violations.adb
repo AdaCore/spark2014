@@ -320,8 +320,10 @@ package body SPARK_Definition.Violations is
    end Mark_Violation;
 
    procedure Mark_Violation
-     (N    : Node_Id;
-      From : Entity_Id) is
+     (N        : Node_Id;
+      From     : Entity_Id;
+      Cont_Msg : String := "")
+   is
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.
@@ -344,6 +346,11 @@ package body SPARK_Definition.Violations is
                else " (due to " & Root_Cause & ")");
          begin
             Error_Msg_FE ("& is not allowed in SPARK" & Root_Msg, N, From);
+
+            if Cont_Msg /= "" then
+               Error_Msg_F ('\' & Cont_Msg, N);
+            end if;
+
             Mark_Violation_Of_SPARK_Mode (N);
          end;
       end if;
