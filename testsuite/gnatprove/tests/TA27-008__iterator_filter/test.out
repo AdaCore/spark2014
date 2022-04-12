@@ -38,7 +38,7 @@ test_fold.adb:61:35: info: division check proved (CVC4: 2 VC)
 test_fold.adb:67:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 test_fold.adb:67:47: info: division check proved (CVC4: 1 VC)
 test_fold.adb:67:62: info: division check proved (CVC4: 1 VC)
-test_fold.adb:68:19: medium: assertion might fail
+test_fold.adb:68:19: info: assertion proved (CVC4: 1 VC)
 test_fold.adb:68:48: info: division check proved (CVC4: 1 VC)
 test_fold.adb:68:63: info: division check proved (CVC4: 1 VC)
 test_fold.adb:70:28: info: division check proved (CVC4: 2 VC)
