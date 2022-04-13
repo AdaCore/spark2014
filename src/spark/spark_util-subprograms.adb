@@ -698,27 +698,8 @@ package body SPARK_Util.Subprograms is
      (E : E_Function_Id)
       return Opt_N_Subexpr_Id
    is
-      Body_N : constant Node_Id := Subprogram_Body (E);
-      Stmt   : Node_Id;
-
    begin
-      Stmt := First (Statements (Handled_Statement_Sequence (Body_N)));
-
-      while Present (Stmt) loop
-
-         --  Return the argument of the first return statement in the statement
-         --  list if any.
-
-         if Nkind (Stmt) = N_Simple_Return_Statement then
-            return Expression (Stmt);
-         end if;
-
-         Next (Stmt);
-      end loop;
-
-      --  Otherwise return Empty
-
-      return Empty;
+      return Predicate_Expression (E);
    end Get_Expr_From_Return_Only_Func;
 
    -----------------------------
