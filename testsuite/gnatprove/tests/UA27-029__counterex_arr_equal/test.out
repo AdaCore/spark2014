@@ -1,3 +1,15 @@
+arr_equal.adb:7:22: high: assertion might fail (e.g. when A = (42 => 42) and A'First = 42 and A'Last = 42) [possible fix: subprogram at arr_equal.ads:5 should mention A in a precondition]
+arr_equal.adb:16:22: high: assertion might fail (e.g. when A = (-1 => -1, 0 => 0, 1 => 1) and A'First = -1 and A'Last = 1) [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A]
+arr_equal.adb:25:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:10 should mention A]
+arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (1 => 1, others => 2) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A]
+arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (-1 => 0, 0 => 3, 1 => -1) and A'First = -1 and A'Last = 1) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A]
+arr_equal.adb:59:22: high: assertion might fail (e.g. when A = (-6 => 1, 2 => 3, 3 => 3, others => 4) and A'First = -7 and A'Last = 3) [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A]
+arr_not_equal.adb:7:22: high: assertion might fail (e.g. when A'First = 1 and A'Last = 0) [possible fix: subprogram at arr_not_equal.ads:5 should mention A in a precondition]
+arr_not_equal.adb:16:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_not_equal.ads:7 should mention A]
+arr_not_equal.adb:25:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_not_equal.ads:10 should mention A]
+arr_not_equal.adb:34:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:13 should mention A]
+arr_not_equal.adb:43:22: high: assertion might fail (e.g. when A = (1 => 1, 2 => 2, 3 => 3) and A'First = 1 and A'Last = 3) [possible fix: precondition of subprogram at arr_not_equal.ads:16 should mention A]
+arr_not_equal.adb:59:22: high: assertion might fail (e.g. when A(2) = 3 and A(3) = 3 and A(5) = 4 and A(7) = 5 and A(9) = 2 and A'First = 1 and A'Last = 11) [possible fix: precondition of subprogram at arr_not_equal.ads:19 should mention A]
 palindrom.adb:6:28: info: range check proved (CVC4: 2 VC)
 palindrom.adb:9:34: info: overflow check proved (CVC4: 2 VC)
 palindrom.adb:9:44: info: overflow check proved (CVC4: 2 VC)
