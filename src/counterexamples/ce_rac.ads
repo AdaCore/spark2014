@@ -53,6 +53,10 @@ package CE_RAC is
    --  functions grows higher than this number. Raises RAC_Unexpected_Error
    --  when something unforeseen happens.
 
+   procedure RAC_Stuck (Reason : String) with No_Return;
+   --  Raise Exn_RAC_Stuck and set result, i.e. the RAC execution failed
+   --  due to a false assumption.
+
    type Result_Kind is
      (Res_Normal,
       --  RAC execution terminated normally, without encountering an invalid
