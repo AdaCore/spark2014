@@ -4203,7 +4203,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Has_Tag : constant Boolean :=
-        (Is_Tagged_Type (Ty)
+        (Is_Tagged_Type (Retysp (Ty))
          and then (From_Expr /= Why_Empty
            or else not Is_Class_Wide_Type (Ty)));
       --  If Ty is tagged, its 'Tag attribute should be preserved except for
@@ -4218,7 +4218,7 @@ package body Why.Gen.Records is
                else New_Tag_Access
                  (Domain => Domain,
                   Name   => From_Expr,
-                  Ty     => Ty));
+                  Ty     => Get_Ada_Node (+Get_Type (From_Expr))));
          begin
             return
               (New_Record_Update
