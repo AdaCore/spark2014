@@ -9,8 +9,9 @@ package Libst with SPARK_Mode is
    subtype Extended_Index is Natural range 0 .. Max_Index;
    subtype Index is Positive range 1 .. Max_Index;
 
-   Max_Value : constant :=
-     Float'Floor (Max_Exact_Integer_Computation / Float (Max_Index));
+   Max_Value_Int : constant Integer :=
+     Integer (Max_Exact_Integer_Computation) / Max_Index;
+   Max_Value : constant Float := Float (Max_Value_Int);
    --  Biggest integer value for which the sum is garanteed to be exact
    subtype Value is Float range -Max_Value .. Max_Value;
    type Value_Array is array (Index) of Value;

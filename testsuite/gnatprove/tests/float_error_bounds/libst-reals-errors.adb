@@ -1,14 +1,6 @@
-package body Libst.Reals.Errors with SPARK_Mode is
+with SPARK.Float_Arithmetic_Lemmas; use SPARK.Float_Arithmetic_Lemmas;
 
-   Epsilon      : constant := 1.0E-7;
-   pragma Assert (2.0 ** (-24) <= Epsilon);
-   --  Over-approximation of the machine epsilon for 32bits floats
-   First_Norm   : constant := 1.2E-38;
-   pragma Assert (2.0 ** (-126) <= First_Norm);
-   --  Over-approximation of the first positive normal number
-   Error_Denorm : constant := 1.0E-45;
-   pragma Assert (2.0 ** (-150) <= Error_Denorm);
-   --  Over-approximation of the error bound on denormal numbers
+package body Libst.Reals.Errors with SPARK_Mode is
 
    --  Types for which the floating point operations are safe
 
@@ -18,33 +10,6 @@ package body Libst.Reals.Errors with SPARK_Mode is
      Static_Predicate =>
        Floats_For_Div in Float'First .. - 1.0 / Float_Sqrt
                        | 1.0 / Float_Sqrt .. Float'Last;
-
-   --  Lemmas giving an error bound for each binary operator
-
-   procedure Bound_Error_Sub (X, Y : Floats_For_Add) with
-     Post => abs (To_Big_Real (X - Y) - (To_Big_Real (X) - To_Big_Real (Y))) <=
-       (if abs (To_Big_Real (X) - To_Big_Real (Y)) >= Big_Real'(First_Norm)
-        then Big_Real'(Epsilon) * abs (To_Big_Real (X) - To_Big_Real (Y))
-        else Big_Real'(Error_Denorm));
-   procedure Bound_Error_Sub (X, Y : Floats_For_Add) is null;
-   procedure Bound_Error_Add (X, Y : Floats_For_Add) with
-     Post => abs (To_Big_Real (X + Y) - (To_Big_Real (X) + To_Big_Real (Y))) <=
-       (if abs (To_Big_Real (X) + To_Big_Real (Y)) >= Big_Real'(First_Norm)
-        then Big_Real'(Epsilon) * abs (To_Big_Real (X) + To_Big_Real (Y))
-        else Big_Real'(Error_Denorm));
-   procedure Bound_Error_Add (X, Y : Floats_For_Add) is null;
-   procedure Bound_Error_Mul (X, Y : Floats_For_Mul) with
-     Post => abs (To_Big_Real (X * Y) - To_Big_Real (X) * To_Big_Real (Y)) <=
-       (if abs (To_Big_Real (X) * To_Big_Real (Y)) >= Big_Real'(First_Norm)
-        then Big_Real'(Epsilon) * abs (To_Big_Real (X) * To_Big_Real (Y))
-        else Big_Real'(Error_Denorm));
-   procedure Bound_Error_Mul (X, Y : Floats_For_Mul) is null;
-   procedure Bound_Error_Div (X : Floats_For_Mul; Y : Floats_For_Div) with
-     Post => abs (To_Big_Real (X / Y) - To_Big_Real (X) / To_Big_Real (Y)) <=
-       (if abs (To_Big_Real (X) / To_Big_Real (Y)) >= Big_Real'(First_Norm)
-        then Big_Real'(Epsilon) * abs (To_Big_Real (X) / To_Big_Real (Y))
-        else Big_Real'(Error_Denorm));
-   procedure Bound_Error_Div (X : Floats_For_Mul; Y : Floats_For_Div) is null;
 
    --  Proofs of error bound lemmas on our specification
 
@@ -64,15 +29,22 @@ package body Libst.Reals.Errors with SPARK_Mode is
       with
         Pre => I > 1 and Sum_R >= 0.0 and Sum_F >= 0.0 and W >= 0.0
         and Res_F = Sum_F + W and Res_R = Sum_R + To_Big_Real (W)
-        and abs (To_Big_Real (Sum_F) - Sum_R) <= 1.001E-7 * To_Real (I - 2) * Sum_R
+        and abs (To_Big_Real (Sum_F) - Sum_R) <=
+          5.972E-08 * To_Real (I - 2) * Sum_R
         and abs (To_Big_Real (Sum_F + W) - (To_Big_Real (Sum_F) + To_Big_Real (W)))
-          <= 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (W)),
+          <= 5.971E-08 * (To_Big_Real (Sum_F) + To_Big_Real (W)),
         Post => abs (To_Big_Real (Res_F) - Res_R)
-          <= 1.001E-7 * To_Real (I - 1) * Res_R;
+          <= 5.972E-08 * To_Real (I - 1) * Res_R;
       procedure Aggregate_Bounds
         (Sum_F, W     : Floats_For_Add;
          Res_F        : Float;
-         Sum_R, Res_R : Big_Real) is null;
+         Sum_R, Res_R : Big_Real)
+      is
+      begin
+         pragma Assert
+           (5.97E-08 * To_Big_Real (W)
+            <= 5.971E-08 * To_Real (I - 1) * To_Big_Real (W));
+      end Aggregate_Bounds;
 
       Sum_F : constant Float := Sum_Weight_Rec (Weights, I - 1);
       Res_F : constant Float := Sum_Weight_Rec (Weights, I);
@@ -89,9 +61,10 @@ package body Libst.Reals.Errors with SPARK_Mode is
          --  Compute the error for the summation up to I - 1
          Error_For_SW_Rec (Weights, I - 1);
          --  Compute the error for the last addition
-         Bound_Error_Add (Sum_Weight_Rec (Weights, I - 1), Weights (I));
-         --  We don't need to consider denormal numbers here
-         pragma Assert (Weights (I) = 0.0 or To_Big_Real (Weights (I)) >= Big_Real'(First_Norm));
+         Lemma_Rounding_Error_Add (Sum_Weight_Rec (Weights, I - 1), Weights (I));
+         --  The weight is big enough that the absolute error term Eta can be
+         --  ignored.
+         pragma Assert (W = 0.0 or W >= Min_Weight);
          --  Aggregate together both bounds
          Aggregate_Bounds (Sum_F, W, Res_F, Sum_R, Res_R);
       end if;
@@ -158,21 +131,17 @@ package body Libst.Reals.Errors with SPARK_Mode is
       with
         Pre => I /= 1 and W >= 0.0 and abs (Sum_R) <= Sum_A
         and abs (To_Big_Real (Sum_F) - Sum_R)
-          <= 2.01E-45 * To_Real (I - 1) + (1.0E-7 + 1.01E-7 * To_Real (I - 2)) * Sum_A
+          <= 1.403E-45 * To_Real (I - 1) + 5.971E-08 * To_Real (I - 1) * Sum_A
         and abs (To_Big_Real (Sum_F + W * V) - (To_Big_Real (Sum_F) + To_Big_Real (W * V)))
-          <= 1.0E-45 + 1.0E-7 * abs (To_Big_Real (Sum_F) + To_Big_Real (W * V))
+          <= 7.01E-46 + 5.97E-08 * abs (To_Big_Real (Sum_F) + To_Big_Real (W * V))
         and abs (To_Big_Real (W * V) - (To_Big_Real (W) * To_Big_Real (V)))
-          <= 1.0E-45 + 1.0E-7 * abs (To_Big_Real (W) * To_Big_Real (V)),
+          <= 7.01E-46 + 5.97E-08 * abs (To_Big_Real (W) * To_Big_Real (V)),
         Post => abs (To_Big_Real (Sum_F + W * V) - (To_Big_Real (Sum_F) + To_Big_Real (W * V)))
-          <= 1.01E-45 + 1.01E-7 * Sum_A + 1.01E-7 * To_Big_Real (W) * abs (To_Big_Real (V));
+          <= 7.011E-46 + 5.971E-08 * Sum_A + 5.971E-08 * To_Big_Real (W) * abs (To_Big_Real (V));
       procedure EB_For_Add
         (Sum_F        : Floats_For_Add;
          W, V         : Floats_For_Mul;
-         Sum_R, Sum_A : Big_Real) is
-      begin
-         pragma Assert
-           (1.0E-7 * abs (To_Big_Real (Sum_F)) <= 1.0E-47 + 1.01E-7 * Sum_A);
-      end EB_For_Add;
+         Sum_R, Sum_A : Big_Real) is null;
 
       --  Lemma: Aggregate together error bounds coming from:
       --    * The computation of the summation up to I - 1
@@ -191,13 +160,13 @@ package body Libst.Reals.Errors with SPARK_Mode is
         and Res_R = Sum_R + To_Big_Real (W) * To_Big_Real (V)
         and Res_A = Sum_A + To_Big_Real (W) * abs (To_Big_Real (V))
         and abs (To_Big_Real (Sum_F) - Sum_R)
-          <= 2.01E-45 * To_Real (I - 1) + (1.0E-7 + 1.01E-7 * To_Real (I - 2)) * Sum_A
+          <= 1.403E-45 * To_Real (I - 1) + 5.971E-08 * To_Real (I - 1) * Sum_A
         and abs (To_Big_Real (Sum_F + W * V) - (To_Big_Real (Sum_F) + To_Big_Real (W * V)))
-          <= 1.01E-45 + 1.01E-7 * Sum_A + 1.01E-7 * To_Big_Real (W) * abs (To_Big_Real (V))
+          <= 7.011E-46 + 5.971E-08 * Sum_A + 5.971E-08 * To_Big_Real (W) * abs (To_Big_Real (V))
         and abs (To_Big_Real (W * V) - (To_Big_Real (W) * To_Big_Real (V)))
-          <= 1.0E-45 + 1.0E-7 * abs (To_Big_Real (W) * To_Big_Real (V)),
+          <= 7.01E-46 + 5.97E-08 * abs (To_Big_Real (W) * To_Big_Real (V)),
         Post => abs (To_Big_Real (Res_F) - Res_R)
-          <= 2.01E-45 * To_Real (I) + (1.0E-7 + 1.01E-7 * To_Real (I - 1)) * Res_A;
+          <= 1.403E-45 * To_Real (I) + 5.971E-08 * To_Real (I) * Res_A;
       procedure Aggregate_Bounds
         (Sum_F        : Floats_For_Add;
          Res_F        : Floats_For_Add;
@@ -217,20 +186,24 @@ package body Libst.Reals.Errors with SPARK_Mode is
    begin
       if I = 1 then
          --  Compute the error for the multiplication
-         Bound_Error_Mul (W, V);
+         Lemma_Rounding_Error_Mul (W, V);
          --  The prostcondition gives a correct error bound
          pragma Assert
+           (abs (To_Big_Real (W * V) - To_Big_Real (W) * To_Big_Real (V))
+            <= 1.403E-45 * To_Real (I)
+            + 5.971E-08 * To_Real (I) * abs (To_Big_Real (W) * To_Big_Real (V)));
+         pragma Assert
            (abs (To_Big_Real (Res_F) - Res_R)
-            <= 2.01E-45 * To_Real (I) + (1.0E-7 + 1.01E-7 * To_Real (I - 1)) * Res_A);
+            <= 1.403E-45 * To_Real (I) + 5.971E-08 * To_Real (I) * Res_A);
       else
          --  The summation up to I - 1 can be used inside additions
          Bound_Weighted_Sum (Sum_F);
          --  Compute the error for the summation up to I - 1
          Error_For_Sum_Rec (Weights, Values, I - 1);
          --  Compute the error for the last addition
-         Bound_Error_Add (Sum_F, W * V);
+         Lemma_Rounding_Error_Add (Sum_F, W * V);
          --  Compute the error for the multiplication
-         Bound_Error_Mul (W, V);
+         Lemma_Rounding_Error_Mul (W, V);
          --  The absolute value of the weighted sum is less than the weighted
          --  sum of the absolute values.
          Sum_Less_Than_Sum_Abs (Weights, Values, I - 1);
@@ -241,6 +214,13 @@ package body Libst.Reals.Errors with SPARK_Mode is
          Aggregate_Bounds (Sum_F, Res_F, W, V, Sum_R, Sum_A, Res_R, Res_A);
       end if;
    end Error_For_Sum_Rec;
+
+   procedure Error_For_Sum
+     (Weights : Weight_Array;
+      Values  : Value_Array) is
+   begin
+      Error_For_Sum_Rec (Weights, Values, Max_Index);
+   end Error_For_Sum;
 
    procedure Error_For_Average
      (Weights : Weight_Array;
@@ -255,15 +235,19 @@ package body Libst.Reals.Errors with SPARK_Mode is
          Den_F               : Floats_For_Div;
          Num_R, Den_R, Num_A : Big_Real)
       with
-        Pre  => Den_F > 0.0 and Den_R > 0.0 and Num_A >= abs (Num_R)
-        and abs (To_Big_Real (Num_F) - Num_R) <= 2.01E-43 + 1.01E-5 * Num_A
-        and abs (To_Big_Real (Den_F) - Den_R) <= 1.0E-5 * Den_R,
+        Pre  => Den_F >= Min_Weight and Num_A >= abs (Num_R)
+        and abs (To_Big_Real (Num_F) - Num_R) <= 1.403E-43 + 5.971E-06 * Num_A
+        and abs (To_Big_Real (Den_F) - Den_R) <= 5.92E-06 * Den_R,
         Post => abs (To_Big_Real (Num_F) / To_Big_Real (Den_F) - Num_R / To_Big_Real (Den_F))
-            <= 2.02E-43 / Den_R + 1.02E-5 * Num_A / Den_R;
+            <= 1.404E-43 / Den_R + 5.972E-06 * Num_A / Den_R;
       procedure EB_For_Sum
         (Num_F               : Floats_For_Mul;
          Den_F               : Floats_For_Div;
-         Num_R, Den_R, Num_A : Big_Real) is null;
+         Num_R, Den_R, Num_A : Big_Real)
+      is
+      begin
+         pragma Assert (Den_R / To_Big_Real (Den_F) <= 1.0 + 5.921E-06);
+      end EB_For_Sum;
 
       --  Lemma: Lift the error bound on the computation of the denominator so
       --     that it is expressed in terms of the real functions.
@@ -273,15 +257,17 @@ package body Libst.Reals.Errors with SPARK_Mode is
          Den_F               : Floats_For_Div;
          Num_R, Den_R, Num_A : Big_Real)
       with
-        Pre  => Den_F > 0.0 and Den_R > 0.0 and Num_A >= abs (Num_R)
-        and abs (To_Big_Real (Num_F) - Num_R) <= 2.01E-43 + 1.01E-5 * Num_A
-        and abs (To_Big_Real (Den_F) - Den_R) <= 1.0E-5 * Den_R,
+        Pre  => Den_F >= Min_Weight and Den_F > 0.0 and Den_R > 0.0 and Num_A >= abs (Num_R)
+        and abs (To_Big_Real (Num_F) - Num_R) <= 1.403E-43 + 5.971E-06 * Num_A
+        and abs (To_Big_Real (Den_F) - Den_R) <= 5.92E-06 * Den_R,
         Post => abs (Num_R / To_Big_Real (Den_F) - Num_R / Den_R)
-            <= 1.01E-5 * Num_A / Den_R;
+            <= 5.922E-06 * Num_A / Den_R;
       procedure EB_For_Weights
         (Num_F               : Floats_For_Mul;
          Den_F               : Floats_For_Div;
-         Num_R, Den_R, Num_A : Big_Real) is null;
+         Num_R, Den_R, Num_A : Big_Real)
+      is null;
+
 
       --  Lemma: Lift the error bound on the division so that it is expressed
       --     in terms of the real functions.
@@ -293,13 +279,13 @@ package body Libst.Reals.Errors with SPARK_Mode is
       with
         Pre  => Den_F > 0.0 and then Den_R > 0.0 and then Num_A >= abs (Num_R)
         and then abs (Num_R / To_Big_Real (Den_F) - Num_R / Den_R)
-            <= 1.01E-5 * Num_A / Den_R
+            <= 5.922E-06 * Num_A / Den_R
         and then abs (To_Big_Real (Num_F) / To_Big_Real (Den_F) - Num_R / To_Big_Real (Den_F))
-            <= 2.02E-43 / Den_R + 1.02E-5 * Num_A / Den_R
-        and then abs (To_Big_Real (Num_F / Den_F)- (To_Big_Real (Num_F) / To_Big_Real (Den_F)))
-          <= 1.01E-45 + 1.0E-7 * abs (To_Big_Real (Num_F) / To_Big_Real (Den_F)),
+            <= 1.404E-43 / Den_R + 5.972E-06 * Num_A / Den_R
+        and then abs (To_Big_Real (Num_F / Den_F) - (To_Big_Real (Num_F) / To_Big_Real (Den_F)))
+          <= 7.01E-46 + 5.97E-08 * abs (To_Big_Real (Num_F) / To_Big_Real (Den_F)),
         Post => abs (To_Big_Real (Num_F / Den_F) - (To_Big_Real (Num_F) / To_Big_Real (Den_F)))
-            <= 1.01E-45 + 1.01E-7 * Num_A / Den_R + 2.02E-50 / Den_R;
+            <= 7.011E-46 + 5.971E-08 * Num_A / Den_R + 1.404E-43 / Den_R;
       procedure EB_For_Div
         (Num_F               : Floats_For_Mul;
          Den_F               : Floats_For_Div;
@@ -309,9 +295,9 @@ package body Libst.Reals.Errors with SPARK_Mode is
                           abs (To_Big_Real (Num_F) / To_Big_Real (Den_F) - Num_R / To_Big_Real (Den_F))
                         + abs (Num_R / To_Big_Real (Den_F) - Num_R / Den_R)
                         + Num_A / Den_R);
-         pragma Assert (1.0E-7 * abs (To_Big_Real (Num_F) / To_Big_Real (Den_F)) <=
-                          1.0E-7 * (Num_A / Den_R + 2.02E-43 / Den_R + 2.03E-5 * Num_A / Den_R));
-         pragma Assert (1.0E-7 * Num_A / Den_R + 1.0E-7 * 2.03E-5 * Num_A / Den_R <= 1.01E-7 * Num_A / Den_R);
+         pragma Assert (5.97E-08 * abs (To_Big_Real (Num_F) / To_Big_Real (Den_F)) <=
+                          5.97E-08 * (Num_A / Den_R + 1.404E-43 / Den_R + 1.19E-05 * Num_A / Den_R));
+         pragma Assert (5.97E-08 * Num_A / Den_R + 5.97E-08 * 1.19E-05 * Num_A / Den_R <= 5.971E-08 * Num_A / Den_R);
       end EB_For_Div;
 
       --  Lemma: Aggregate together error bounds coming from:
@@ -330,11 +316,11 @@ package body Libst.Reals.Errors with SPARK_Mode is
         and then Res_F = Num_F / Den_F
         and then Res_R = Num_R / Den_R and then Res_A = Num_A / Den_R
         and then abs (To_Big_Real (Num_F / Den_F) - (To_Big_Real (Num_F) / To_Big_Real (Den_F)))
-          <= 1.01E-45 + 1.01E-7 * Num_A / Den_R + 2.02E-50 / Den_R
+          <= 7.011E-46 + 5.971E-08 * Num_A / Den_R + 1.404E-43 / Den_R
         and then abs (To_Big_Real (Num_F) / To_Big_Real (Den_F) - Num_R / To_Big_Real (Den_F))
-          <= 2.02E-43 / Den_R + 1.02E-5 * Num_A / Den_R
-        and then abs (Num_R / To_Big_Real (Den_F) - Num_R / Den_R) <= 1.01E-5 * Num_A / Den_R,
-        Post => abs (To_Big_Real (Res_F)- Res_R) <= 1.01E-45 + 2.03E-43 / Den_R + 2.05E-5 * Res_A;
+          <= 1.404E-43 / Den_R + 5.972E-06 * Num_A / Den_R
+        and then abs (Num_R / To_Big_Real (Den_F) - Num_R / Den_R) <= 5.922E-06 * Num_A / Den_R,
+        Post => abs (To_Big_Real (Res_F)- Res_R) <= 7.011E-46 + 2.808E-43 / Den_R + 1.2E-5 * Res_A;
       procedure Aggregate_Bounds
         (Num_F               : Floats_For_Mul;
          Den_F               : Floats_For_Div;
@@ -344,15 +330,15 @@ package body Libst.Reals.Errors with SPARK_Mode is
       is
       begin
          pragma Assert
-           (1.01E-45 + 1.01E-7 * Num_A / Den_R + 2.02E-50 / Den_R
-            + 2.02E-43 / Den_R + 1.02E-5 * Num_A / Den_R
-            + 1.01E-5 * Num_A / Den_R
-            <= 1.01E-45 + 2.03E-43 / Den_R + 2.05E-5 * Num_A / Den_R);
+           (7.011E-46 + 5.971E-08 * Num_A / Den_R + 1.404E-43 / Den_R
+            + 1.404E-43 / Den_R + 5.972E-06 * Num_A / Den_R
+            + 5.922E-06 * Num_A / Den_R
+            <= 7.011E-46 + 2.808E-43 / Den_R + 1.2E-5 * Num_A / Den_R);
          pragma Assert
            (abs (To_Big_Real (Num_F / Den_F) - (To_Big_Real (Num_F) / To_Big_Real (Den_F)))
             + abs (To_Big_Real (Num_F) / To_Big_Real (Den_F) - Num_R / To_Big_Real (Den_F))
             + abs (Num_R / To_Big_Real (Den_F) - Num_R / Den_R)
-            <= 1.01E-45 + 2.03E-43 / Den_R + 2.05E-5 * Num_A / Den_R);
+            <= 7.011E-46 + 2.808E-43 / Den_R + 1.2E-5 * Num_A / Den_R);
       end Aggregate_Bounds;
 
       Num_F : constant Float := Weighted_Sum_Rec (Weights, Values, Max_Index);
@@ -366,16 +352,13 @@ package body Libst.Reals.Errors with SPARK_Mode is
 
    begin
       --  Compute the error for the numerator
-      begin
-         Error_For_Sum_Rec (Weights, Values, Max_Index);
-         pragma Assert_And_Cut (abs (To_Big_Real (Num_F) - Num_R) <= 2.01E-43 + 1.01E-5 * Num_A);
-      end;
+      Error_For_Sum (Weights, Values);
       --  Compute the error for the denominator
       Error_For_SW (Weights);
       pragma Assert (Den_F >= Min_Weight);
       Res_F := Weighted_Average (Weights, Values);
       --  Compute the error for the division
-      Bound_Error_Div (Num_F, Den_F);
+      Lemma_Rounding_Error_Div (Num_F, Den_F);
       --  The absolute value of the weighted sum is less than the weighted
       --  sum of the absolute values.
       Sum_Less_Than_Sum_Abs (Weights, Values, Max_Index);

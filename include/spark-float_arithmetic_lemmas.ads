@@ -27,7 +27,20 @@
 ------------------------------------------------------------------------------
 
 pragma SPARK_Mode;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Reals;
+use  Ada.Numerics.Big_Numbers.Big_Reals;
+with SPARK.Float_Conversions;         use SPARK.Float_Conversions;
 with SPARK.Floating_Point_Arithmetic_Lemmas;
+
 pragma Elaborate_All (SPARK.Floating_Point_Arithmetic_Lemmas);
 package SPARK.Float_Arithmetic_Lemmas is new
-  SPARK.Floating_Point_Arithmetic_Lemmas (Float, 2.0**63);
+  SPARK.Floating_Point_Arithmetic_Lemmas
+    (Fl           => Float,
+     Int          => Integer,
+     Fl_Last_Sqrt => 2.0 ** 63,
+     Max_Int      => 2 ** 24,
+     Epsilon      => 2.0 ** (-24),
+     Eta          => 2.0 ** (-150),
+     Real         => To_Big_Real);
