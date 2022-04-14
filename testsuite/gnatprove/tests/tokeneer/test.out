@@ -544,7 +544,7 @@ certprocessing.ads:225:11: info: flow dependencies proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
 certprocessing.ads:241:11: info: data dependencies proved
 certprocessing.ads:242:11: info: flow dependencies proved
-certtypes.ads:63:21: info: for inherited predicate at commontypes.ads:65
+certtypes.ads:63:21: info: for inherited predicate at commontypes.ads:66
 certtypes.ads:63:21: info: medium: for inherited predicate at commontypes.ads:60
 certtypes.ads:63:21: info: medium: in inlined predicate at commontypes.ads:60
 certtypes.ads:63:21: info: predicate check justified
@@ -846,7 +846,7 @@ configdata.adb:1571:07: info: initialization of "DayStart" proved
 configdata.adb:1685:13: info: division check proved (CVC4: 1 VC)
 configdata.adb:1685:13: info: range check proved (CVC4: 2 VC)
 configdata.ads:30:08: info: flow dependencies proved
-configdata.ads:40:17: info: for inherited predicate at commontypes.ads:65
+configdata.ads:40:17: info: for inherited predicate at commontypes.ads:66
 configdata.ads:40:17: info: medium: for inherited predicate at commontypes.ads:60
 configdata.ads:40:17: info: medium: in inlined predicate at commontypes.ads:60
 configdata.ads:40:17: info: predicate check justified
