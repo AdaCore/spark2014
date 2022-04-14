@@ -6571,8 +6571,8 @@ package body Gnat2Why.Expr is
       --  for them.
 
       Cases        : constant List_Id := Alternatives (N);
-      First_Case   : constant Node_Id := First (Cases);
-      Last_Case    : constant Node_Id := Last (Cases);
+      First_Case   : constant Node_Id := First_Non_Pragma (Cases);
+      Last_Case    : constant Node_Id := Last_Non_Pragma (Cases);
       Expr         : constant Node_Id := Expression (N);
       Cur_Case     : Node_Id;
       Matched_Expr : constant W_Expr_Id :=
@@ -6585,6 +6585,7 @@ package body Gnat2Why.Expr is
       Then_Expr    : constant W_Expr_Id := Generate_Branch_Expr
         (First_Case, Domain, Params);
       Elsif_Parts  : W_Expr_Array (1 .. Integer (List_Length (Cases)) - 2);
+      Elsif_Count  : Natural;
 
    --  Start of processing for Generate_Case_Expression
 
@@ -6593,7 +6594,8 @@ package body Gnat2Why.Expr is
          return Then_Expr;
 
       else
-         Cur_Case := Next (First_Case);
+         Cur_Case    := Next_Non_Pragma (First_Case);
+         Elsif_Count := 0;
          for Offset in 1 .. List_Length (Cases) - 2 loop
             declare
                Disc_Choices : constant W_Expr_Id :=
@@ -6616,7 +6618,8 @@ package body Gnat2Why.Expr is
                           Disc_Choices),
                     Then_Part => Generate_Branch_Expr
                       (Cur_Case, Domain, Params));
-               Next (Cur_Case);
+               Next_Non_Pragma (Cur_Case);
+               Elsif_Count := Elsif_Count + 1;
             end;
          end loop;
 
@@ -6644,7 +6647,7 @@ package body Gnat2Why.Expr is
                          else
                             Disc_Choices),
                       Then_Part   => Then_Expr,
-                      Elsif_Parts => Elsif_Parts,
+                      Elsif_Parts => Elsif_Parts (1 .. Elsif_Count),
                       Else_Part   => Generate_Branch_Expr
                         (Last_Case, Domain, Params),
                       Typ         => Get_Type (Then_Expr)));
