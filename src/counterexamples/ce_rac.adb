@@ -1685,10 +1685,10 @@ package body CE_RAC is
    ----------------------------
 
    procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id) is
-      V     : constant Value_Type := RAC_Expr (Expression (N));
-      Ch    : Node_Id;
+      V  : constant Value_Type := RAC_Expr (Expression (N));
+      Ch : Node_Id;
    begin
-      A := First (Alternatives (N));
+      A := First_Non_Pragma (Alternatives (N));
 
       while Present (A) loop
          Ch := First (Discrete_Choices (A));
@@ -1701,7 +1701,7 @@ package body CE_RAC is
 
             Next (Ch);
          end loop;
-         Next (A);
+         Next_Non_Pragma (A);
       end loop;
 
    end Match_Case_Alternative;

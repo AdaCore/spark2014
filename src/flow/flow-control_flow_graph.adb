@@ -1861,7 +1861,7 @@ package body Flow.Control_Flow_Graph is
                  Graph_Connections'(Standard_Entry => V_Case,
                                     Standard_Exits => Empty_Set));
 
-      Alternative := First (Alternatives (N));
+      Alternative := First_Non_Pragma (Alternatives (N));
 
       loop
          declare
@@ -1900,7 +1900,7 @@ package body Flow.Control_Flow_Graph is
 
             CM.Delete (Union_Id (Stmts));
 
-            Next (Alternative);
+            Next_Non_Pragma (Alternative);
 
             exit when No (Alternative);
          end;
