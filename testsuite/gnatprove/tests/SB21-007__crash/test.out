@@ -6,6 +6,6 @@ database.adb:7:04: error: object was declared as not writable at a-cofuve.ads:33
 database.adb:12:04: info: initialization of "Database" proved
 database.adb:13:04: info: initialization of "DB_Model" proved
 database.ads:23:04: error: "Item" is not writable
-database.ads:23:04: error: instantiation error at a-cofuse.ads:252
-database.ads:23:04: error: object was declared as not writable at a-cofuse.ads:252, instance at line 23
+database.ads:23:04: error: instantiation error at a-cofuse.ads:258
+database.ads:23:04: error: object was declared as not writable at a-cofuse.ads:258, instance at line 23
 gnatprove: error during flow analysis and proof
