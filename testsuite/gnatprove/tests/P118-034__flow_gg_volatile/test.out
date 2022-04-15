@@ -23,9 +23,7 @@ Generated contracts for A
    Initializes =>
       A.Ext_State
       A.State
-a.adb:9:04: info: object is suitable for aliasing via address clause (Trivial)
 a.adb:12:11: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
-a.adb:14:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Boolean has 2 values but has Object_Size 8]
 a.adb:17:11: warning: indirect writes to "Actuator" through a potential alias are ignored
 a.adb:17:11: warning: consider annotating "Actuator" with Async_Writers
 a.adb:17:11: warning: writing to "Actuator" is assumed to have no effects on other non-volatile objects

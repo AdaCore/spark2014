@@ -17202,12 +17202,17 @@ package body Gnat2Why.Expr is
                              (Overlay_Alias (Defining_Identifier (Decl))));
                      end if;
 
-                     Suitable_For_UC_Target
-                       (Retysp (Etype (Defining_Identifier (Decl))),
-                        True, Valid, Explanation);
-                     Emit_Static_Proof_Result
-                       (Decl, VC_UC_Target, Valid, Current_Subp,
-                        Explanation => To_String (Explanation));
+                     --  This check is needed only for overlays between two
+                     --  SPARK objects.
+
+                     if Is_Top_Level_Address_Clause then
+                        Suitable_For_UC_Target
+                          (Retysp (Etype (Defining_Identifier (Decl))),
+                           True, Valid, Explanation);
+                        Emit_Static_Proof_Result
+                          (Decl, VC_UC_Target, Valid, Current_Subp,
+                           Explanation => To_String (Explanation));
+                     end if;
 
                      --  If the address clause has a root object which is a
                      --  variable, check that we can account for indirect

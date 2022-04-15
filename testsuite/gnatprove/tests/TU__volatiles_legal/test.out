@@ -1,22 +1,14 @@
-external_variables_legal.ads:11:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:14:12: warning: consider annotating "Var1" with Async_Writers
 external_variables_legal.ads:14:12: warning: indirect writes to "Var1" through a potential alias are ignored
 external_variables_legal.ads:14:12: warning: writing to "Var1" is assumed to have no effects on other non-volatile objects
-external_variables_legal.ads:16:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:19:12: warning: writing to "Var2" is assumed to have no effects on other non-volatile objects
-external_variables_legal.ads:21:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:23:12: warning: consider annotating "Var3" with Async_Writers
 external_variables_legal.ads:23:12: warning: indirect writes to "Var3" through a potential alias are ignored
 external_variables_legal.ads:23:12: warning: writing to "Var3" is assumed to have no effects on other non-volatile objects
-external_variables_legal.ads:25:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:27:12: warning: writing to "Var4" is assumed to have no effects on other non-volatile objects
-external_variables_legal.ads:29:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:33:12: warning: writing to "Var5" is assumed to have no effects on other non-volatile objects
-external_variables_legal.ads:35:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:39:12: warning: writing to "Var6" is assumed to have no effects on other non-volatile objects
-external_variables_legal.ads:41:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:44:12: warning: writing to "Var7" is assumed to have no effects on other non-volatile objects
-external_variables_legal.ads:46:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 external_variables_legal.ads:51:12: warning: writing to "Var8" is assumed to have no effects on other non-volatile objects
 volatiles_legal.adb:7:04: warning: analyzing unreferenced procedure "P1"
 volatiles_legal.adb:8:07: info: initialization of "Tmp1" proved
@@ -24,11 +16,9 @@ volatiles_legal.adb:8:13: info: initialization of "Tmp2" proved
 volatiles_legal.adb:17:22: medium: assertion might fail
 volatiles_legal.adb:29:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 volatiles_legal.adb:34:14: warning: unused assignment
-volatiles_legal.ads:40:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Vol_Rec_T doesn't have an Object_Size representation clause or aspect]
 volatiles_legal.ads:43:11: warning: consider annotating "Vol" with Async_Writers
 volatiles_legal.ads:43:11: warning: indirect writes to "Vol" through a potential alias are ignored
 volatiles_legal.ads:43:11: warning: writing to "Vol" is assumed to have no effects on other non-volatile objects
-volatiles_legal.ads:45:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Vol_Rec_T doesn't have an Object_Size representation clause or aspect]
 volatiles_legal.ads:47:11: warning: writing to "Vol2" is assumed to have no effects on other non-volatile objects
 volatiles_legal.ads:50:11: info: data dependencies proved
 volatiles_legal.ads:53:11: info: data dependencies proved
