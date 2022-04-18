@@ -1,7 +1,6 @@
 def my_plan():
     anod_install("stable-codepeer-core", query_range=20)
     anod_install("cvc4", query_range=20)
-    anod_install("opam", query_range=20)
     anod_install("alt-ergo", query_range=20)
     anod_install("colibri", query_range=20)
     anod_build("spark2014-doc")
