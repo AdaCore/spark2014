@@ -577,52 +577,46 @@ package body VC_Kinds is
    function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map is
 
       Map : Cntexample_File_Maps.Map;
-
-      procedure Process_Entry (Name : UTF8_String; Value : JSON_Value);
-
-      -------------------
-      -- Process_Entry --
-      -------------------
-
-      procedure Process_Entry (Name : UTF8_String; Value : JSON_Value) is
-      begin
-         Map.Insert (Name, From_JSON (Value));
-      end Process_Entry;
-
-   --  Start of processing for From_JSON
+      Ar : constant JSON_Array :=
+        (if Is_Empty (V)
+         then Empty_Array
+         else Get (V));
 
    begin
-      Map_JSON_Object (V, Process_Entry'Access);
+      for Var_Index in Positive range 1 .. Length (Ar) loop
+         declare
+            Elt : constant JSON_Value := Get (Ar, Var_Index);
+         begin
+            Map.Insert (Get (Elt, "filename"), From_JSON (Get (Elt, "model")));
+         end;
+      end loop;
       return Map;
    end From_JSON;
 
    function From_JSON (V : JSON_Value) return Cntexample_Lines is
+
+      Ar : constant JSON_Array := Get (V);
       Res : Cntexample_Lines :=
-        Cntexample_Lines'(VC_Line        =>
-                            (if Has_Field (V, "vc_line")
-                             then From_JSON ((Get (V, "vc_line")))
-                             else Cntexample_Elt_Lists.Empty_List),
+        Cntexample_Lines'(VC_Line        => Cntexample_Elt_Lists.Empty_List,
                           Other_Lines    => Cntexample_Line_Maps.Empty_Map,
                           Previous_Lines => Previous_Line_Maps.Empty_Map);
 
-      procedure Process_Entry (Name : UTF8_String; Value : JSON_Value);
-
-      -------------------
-      -- Process_Entry --
-      -------------------
-
-      procedure Process_Entry (Name : UTF8_String; Value : JSON_Value) is
-      begin
-         if Name /= "vc_line" then
-            Res.Other_Lines.Insert
-              (Natural'Value (Name), From_JSON (Value));
-         end if;
-      end Process_Entry;
-
-   --  Start of processing for From_JSON
-
    begin
-      Map_JSON_Object (V, Process_Entry'Access);
+      for Var_Index in Positive range 1 .. Length (Ar) loop
+         declare
+            Elt : constant JSON_Value := Get (Ar, Var_Index);
+            Loc : constant String := Get (Elt, "loc");
+            Is_VC_Line : constant Boolean := Get (Elt, "is_vc_line");
+         begin
+            if Is_VC_Line then
+               Res.VC_Line := From_JSON ((Get (Elt, "model_elements")));
+            else
+               Res.Other_Lines.Insert
+                 (Natural'Value (Loc),
+                  From_JSON (Get (Elt, "model_elements")));
+            end if;
+         end;
+      end loop;
       return Res;
    end From_JSON;
 
@@ -686,7 +680,10 @@ package body VC_Kinds is
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
       Res : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty_List;
-      Ar  : constant JSON_Array       := Get (V);
+      Ar  : constant JSON_Array       :=
+        (if Is_Empty (V)
+         then Empty_Array
+         else Get (V));
    begin
       for Var_Index in Positive range 1 .. Length (Ar) loop
          declare
