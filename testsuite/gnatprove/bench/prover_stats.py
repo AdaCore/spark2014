@@ -172,9 +172,14 @@ class CVC4(Prover):
         try:
             status = Prover.regex_get(Prover.status_reg, output)
             steps = 0
-            time = 0
+            time = time
             try:
                 steps = int(Prover.regex_get(self.limit_reg, output, 1))
+            except ValueError:
+                pass
+            except TypeError:
+                pass
+            try:
                 time = float(Prover.regex_get(self.time_reg, output, 1))
             except ValueError:
                 pass
