@@ -171,7 +171,18 @@ package body SPARK_Util.Hardcoded is
                return False;
             end if;
 
-            return Scope (S_Ptr) = Standard_Standard;
+            S_Ptr := Scope (S_Ptr);
+
+            --  The special runtime unit System.SPARK.Cut_Operations duplicates
+            --  the operations of SPARK.Cut_Operations for use inside the
+            --  runtime.
+            if Get_Name_String (Chars (S_Ptr)) = "system"
+              and then Scope (S_Ptr) = Standard_Standard
+            then
+               return True;
+            end if;
+
+            return S_Ptr = Standard_Standard;
       end case;
 
    end Is_From_Hardcoded_Unit;
