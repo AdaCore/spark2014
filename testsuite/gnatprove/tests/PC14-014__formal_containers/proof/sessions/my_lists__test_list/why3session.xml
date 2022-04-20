@@ -253,7 +253,7 @@
   <goal name="def&#39;vc.77" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="143454"/></proof>
+  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="143456"/></proof>
   <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.78" proved="true">
@@ -286,7 +286,7 @@
   <goal name="def&#39;vc.84" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="617798"/></proof>
+  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="617060"/></proof>
   <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.85" proved="true">
@@ -295,7 +295,7 @@
   <goal name="def&#39;vc.86" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="619681"/></proof>
+  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="620422"/></proof>
   <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.87" proved="true">
@@ -310,7 +310,7 @@
   <goal name="def&#39;vc.89" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="628053"/></proof>
+  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="627296"/></proof>
   <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.90" proved="true">
@@ -418,7 +418,7 @@
   <goal name="def&#39;vc.122" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="191885"/></proof>
+  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="190908"/></proof>
   <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.123" proved="true">
