@@ -1,7 +1,7 @@
-main.adb:20:14: info: postcondition proved (colibri: 1 VC)
+main.adb:20:14: medium: postcondition might fail
 main.adb:20:65: info: range check proved (Trivial)
 main.adb:25:04: warning: analyzing unreferenced function "Prove_Constr_Exact"
 main.adb:28:45: info: range check proved (Trivial)
 main.adb:29:36: info: float overflow check proved (Trivial)
 main.adb:31:22: info: assertion proved (colibri: 1 VC)
-main.adb:32:22: info: assertion proved (colibri: 1 VC)
+main.adb:32:22: medium: assertion might fail
