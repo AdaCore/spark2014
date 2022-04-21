@@ -168,13 +168,6 @@ package body Flow_Sanity is
       --  Start of processing for Check_Incomplete_Globals
 
       begin
-         --  ??? Once class-wide Global and Depends aspects are supported we
-         --  can check the Pre'Class and Post'Class on abstract subprograms.
-
-         if Is_Abstract_Subprogram (E) then
-            return;
-         end if;
-
          Get_Proof_Globals
            (Subprogram      => E,
             Reads           => Reads,
@@ -204,6 +197,35 @@ package body Flow_Sanity is
 
          if Ekind (E) = E_Function then
             Proof_Context.Insert (Direct_Mapping_Id (E));
+         end if;
+
+         --  ??? Once class-wide Global and Depends aspects are supported we
+         --  should check the Pre'Class and Post'Class against them. For now
+         --  we check them against the implicit Global => null.
+
+         if Is_Abstract_Subprogram (E) then
+            pragma Assert (Reads.Is_Empty and then Writes.Is_Empty);
+
+            for Pre of Get_Precondition_Expressions (E) loop
+               Check_Expr
+                 (Expr          => Pre,
+                  Proof_Context => Proof_Context,
+                  Error_Loc     => Error_Loc,
+                  Msg           => "reference to global & in Pre'Class " &
+                                   "is not yet supported");
+            end loop;
+
+            for Post of Get_Postcondition_Expressions (E, Refined => False)
+            loop
+               Check_Expr
+                 (Expr          => Post,
+                  Proof_Context => Proof_Context,
+                  Error_Loc     => Error_Loc,
+                  Msg           => "reference to global & in Post'Class " &
+                                   "is not yet supported");
+            end loop;
+
+            return;
          end if;
 
          if Is_Expression_Function (E)
