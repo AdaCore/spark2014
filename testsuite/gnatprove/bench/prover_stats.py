@@ -196,7 +196,12 @@ class CVC5(CVC4):
         self.version_arg = "--version"
 
     def command(self, timeout, rlimit):
-        result = [self.executable_name, "--stats-internal", "--quiet"]
+        result = [
+            self.executable_name,
+            "--prenex-quant=none",
+            "--stats-internal",
+            "--quiet",
+        ]
         if timeout:
             result.append("--tlimit=" + str(timeout * 1000))
         if rlimit:
