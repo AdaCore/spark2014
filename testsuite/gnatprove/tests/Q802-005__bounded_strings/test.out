@@ -188,8 +188,6 @@ test.ads:10:03: info: function contract not available for proof ("Is_Empty" migh
 test.ads:10:03: info: function contract not available for proof ("Is_Empty" might not return)
 test.ads:10:03: info: function contract not available for proof ("Is_Empty" might not return)
 test.ads:10:03: info: function contract not available for proof ("Is_Empty" might not return)
-test.ads:10:03: info: function contract not available for proof ("Is_Empty" might not return)
-test.ads:10:03: info: function contract not available for proof ("Is_Empty" might not return)
 test.ads:10:03: info: function contract not available for proof ("Iter_Has_Element" might not return)
 test.ads:10:03: info: function contract not available for proof ("K_Keys_Included" might not return)
 test.ads:10:03: info: function contract not available for proof ("K_Keys_Included" might not return)
@@ -326,7 +324,6 @@ test.ads:10:03: info: function contract not available for proof ("Length" might 
 test.ads:10:03: info: function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: function contract not available for proof ("Length" might not return)
-test.ads:10:03: info: function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: function contract not available for proof ("Mapping_Preserved" might not return)
 test.ads:10:03: info: function contract not available for proof ("Mapping_Preserved" might not return)
 test.ads:10:03: info: function contract not available for proof ("Mapping_Preserved" might not return)
@@ -440,8 +437,6 @@ test.ads:10:03: info: implicit function contract not available for proof ("Lengt
 test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
-test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
-test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("W_Get" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("W_Get" might not return)
 test.ads:10:03: info: in instantiation at a-cfhama.ads:100
@@ -484,9 +479,6 @@ test.ads:10:03: info: in instantiation at a-cfhama.ads:100
 test.ads:10:03: info: in instantiation at a-cfhama.ads:100
 test.ads:10:03: info: in instantiation at a-cfhama.ads:100
 test.ads:10:03: info: in instantiation at a-cfhama.ads:100
-test.ads:10:03: info: in instantiation at a-cfhama.ads:100
-test.ads:10:03: info: in instantiation at a-cfhama.ads:100
-test.ads:10:03: info: in instantiation at a-cfhama.ads:113
 test.ads:10:03: info: in instantiation at a-cfhama.ads:113
 test.ads:10:03: info: in instantiation at a-cfhama.ads:113
 test.ads:10:03: info: in instantiation at a-cfhama.ads:113
@@ -552,8 +544,6 @@ test.ads:10:03: info: in instantiation at a-cfhama.ads:149
 test.ads:10:03: info: in instantiation at a-cfhama.ads:150
 test.ads:10:03: info: in instantiation at a-cfhama.ads:150
 test.ads:10:03: info: in instantiation at a-cfhama.ads:151
-test.ads:10:03: info: in instantiation at a-cfhama.ads:153
-test.ads:10:03: info: in instantiation at a-cfhama.ads:153
 test.ads:10:03: info: in instantiation at a-cfhama.ads:153
 test.ads:10:03: info: in instantiation at a-cfhama.ads:153
 test.ads:10:03: info: in instantiation at a-cfhama.ads:153
