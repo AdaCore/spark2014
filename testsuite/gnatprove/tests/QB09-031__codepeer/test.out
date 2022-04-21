@@ -1,9 +1,9 @@
-integer_arrays.adb:10:23: info: index check proved (CVC4: 4 VC)
+integer_arrays.adb:10:23: info: index check proved (CVC5: 4 VC)
 integer_arrays.adb:12:42: info: overflow check proved (CodePeer)
 integer_arrays.adb:13:27: info: assertion proved (CodePeer)
-integer_arrays.adb:14:20: info: index check proved (CVC4: 4 VC)
-integer_arrays.adb:17:32: info: loop invariant initialization proved (CVC4: 1 VC)
-integer_arrays.adb:17:32: info: loop invariant preservation proved (CVC4: 1 VC)
-integer_arrays.adb:18:32: info: loop invariant initialization proved (CVC4: 1 VC)
+integer_arrays.adb:14:20: info: index check proved (CVC5: 4 VC)
+integer_arrays.adb:17:32: info: loop invariant initialization proved (CVC5: 1 VC)
+integer_arrays.adb:17:32: info: loop invariant preservation proved (CVC5: 1 VC)
+integer_arrays.adb:18:32: info: loop invariant initialization proved (CVC5: 1 VC)
 integer_arrays.adb:18:32: medium: loop invariant might not be preserved by an arbitrary iteration
 integer_arrays.ads:4:14: warning: subprogram "make_unique" has no effect

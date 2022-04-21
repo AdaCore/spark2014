@@ -1,1 +1,1 @@
-p.adb:4:15: info: range check proved (CVC4: 2 VC)
+p.adb:4:15: info: range check proved (CVC5: 2 VC)

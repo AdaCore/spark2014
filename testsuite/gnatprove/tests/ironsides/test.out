@@ -4,99 +4,99 @@ dns_network_receive.ads:29:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:31:07: info: initialization of "Failure" proved
 dns_network_receive.ads:32:09: info: data dependencies proved
 dns_network_receive.ads:33:09: info: flow dependencies proved
-dns_network_receive.ads:39:11: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+dns_network_receive.ads:39:11: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 dns_network_receive.ads:47:07: info: initialization of "Packet" proved
 dns_network_receive.ads:48:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:49:07: info: initialization of "Reply_Address" proved
 dns_network_receive.ads:50:07: info: initialization of "Failure" proved
 dns_network_receive.ads:51:09: info: data dependencies proved
 dns_network_receive.ads:52:09: info: flow dependencies proved
-dns_network_receive.ads:58:11: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+dns_network_receive.ads:58:11: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 dns_table_pkg.adb:34:10: info: initialization of "Length" proved
-dns_table_pkg.adb:37:14: info: range check proved (CVC4: 2 VC)
+dns_table_pkg.adb:37:14: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:45:36: info: function contract not available for proof ("WireNameLength" might not return)
-dns_table_pkg.adb:45:62: info: index check proved (CVC4: 2 VC)
-dns_table_pkg.adb:45:70: info: index check proved (CVC4: 2 VC)
-dns_table_pkg.adb:57:16: info: loop invariant initialization proved (CVC4: 3 VC)
-dns_table_pkg.adb:57:16: info: loop invariant preservation proved (CVC4: 3 VC)
-dns_table_pkg.adb:61:24: info: overflow check proved (CVC4: 2 VC)
-dns_table_pkg.adb:63:22: info: division check proved (CVC4: 1 VC)
+dns_table_pkg.adb:45:62: info: index check proved (CVC5: 2 VC)
+dns_table_pkg.adb:45:70: medium: array index check might fail [reason for check: value must be a valid index into the array]
+dns_table_pkg.adb:57:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Val <= (I - 1)*Character'pos
+dns_table_pkg.adb:59:19: medium: loop invariant might fail in first iteration, cannot prove Character'Pos (DomainName (Q)) <= 255 [possible fix: subprogram at line 47 should mention DomainName in a precondition]
+dns_table_pkg.adb:61:24: medium: overflow check might fail, cannot prove lower bound for Val + Character'pos [reason for check: result of addition must fit in a 32-bits machine integer]
+dns_table_pkg.adb:63:22: info: division check proved (CVC5: 1 VC)
 dns_table_pkg.adb:72:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:73:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:85:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:85:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:91:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:92:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:85:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:85:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:91:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:92:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:102:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:103:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:113:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:113:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:122:35: info: range check proved (CVC4: 2 VC)
+dns_table_pkg.adb:113:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:113:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:122:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
 dns_table_pkg.adb:131:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:132:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:142:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:142:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:151:34: info: range check proved (CVC4: 2 VC)
+dns_table_pkg.adb:142:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:142:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:151:34: medium: range check might fail, cannot prove lower bound for HowMany+1 [reason for check: result of addition must fit in the target type of the assignment]
 dns_table_pkg.adb:161:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:162:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:174:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:174:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:183:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:184:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:174:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:174:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:183:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:184:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:194:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:195:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:207:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:207:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:213:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:214:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:207:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:207:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:213:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:214:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:224:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:225:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:237:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:237:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:243:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:244:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:237:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:237:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:243:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:244:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:254:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:255:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:267:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:267:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:273:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:274:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:267:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:267:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:273:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:274:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:284:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:285:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:294:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:294:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:300:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:301:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:294:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:294:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:300:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:301:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:311:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:312:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:324:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:324:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:330:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:331:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:324:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:324:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:330:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:331:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:341:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:342:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:350:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:350:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:356:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:357:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:350:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:350:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:356:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:357:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:367:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:368:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:380:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:380:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:386:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:387:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:380:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:380:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:386:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:387:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:397:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:398:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:409:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:409:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:415:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:416:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:409:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:409:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:415:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:416:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:426:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:427:10: info: initialization of "Lower_DomainName" proved
-dns_table_pkg.adb:439:16: info: loop invariant initialization proved (CVC4: 4 VC)
-dns_table_pkg.adb:439:16: info: loop invariant preservation proved (CVC4: 4 VC)
-dns_table_pkg.adb:445:35: info: range check proved (CVC4: 2 VC)
-dns_table_pkg.adb:446:33: info: index check proved (CVC4: 2 VC)
+dns_table_pkg.adb:439:16: info: loop invariant initialization proved (CVC5: 4 VC)
+dns_table_pkg.adb:439:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:445:35: medium: range check might fail, cannot prove lower bound for HowMany + 1 [reason for check: result of addition must fit in the target type of the assignment]
+dns_table_pkg.adb:446:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:457:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:458:10: info: initialization of "Lower_Key" proved
 dns_table_pkg.adb:480:10: info: initialization of "Bucket" proved
@@ -121,7 +121,7 @@ dns_table_pkg.adb:686:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:688:10: info: initialization of "NumFound" proved
 dns_table_pkg.adb:689:10: info: initialization of "Lower_Key" proved
 dns_table_pkg.adb:697:38: warning: "ReturnedSOARecords" is set by "QuerySOARecords" but not used after the call
-dns_table_pkg.ads:56:24: info: range check proved (CVC4: 2 VC)
+dns_table_pkg.ads:56:24: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.ads:61:10: info: initialization of "Success" proved
 dns_table_pkg.ads:62:12: info: data dependencies proved
 dns_table_pkg.ads:63:12: info: flow dependencies proved
@@ -206,14 +206,14 @@ dns_table_pkg.ads:264:10: info: initialization of "HowMany" proved
 dns_table_pkg.ads:265:12: info: data dependencies proved
 dns_table_pkg.ads:266:12: info: flow dependencies proved
 dns_types.ads:149:09: info: flow dependencies proved
-dns_types.ads:151:06: info: postcondition proved (CVC4: 1 VC)
+dns_types.ads:151:06: info: postcondition proved (CVC5: 1 VC)
 dns_types.ads:151:37: info: implicit function contract not available for proof ("Byte_Swap_US" might not return)
 dns_types.ads:152:37: info: implicit function contract not available for proof ("Byte_Swap_US" might not return)
 dns_types.ads:153:37: info: implicit function contract not available for proof ("Byte_Swap_US" might not return)
 dns_types.ads:154:37: info: implicit function contract not available for proof ("Byte_Swap_US" might not return)
 dns_types.ads:155:37: info: implicit function contract not available for proof ("Byte_Swap_US" might not return)
-driver.adb:38:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-driver.adb:39:20: info: range check proved (CVC4: 2 VC)
+driver.adb:38:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+driver.adb:39:20: info: range check proved (CVC5: 2 VC)
 driver.adb:40:04: info: initialization of "ReturnedARecords" proved
 driver.adb:41:04: info: initialization of "ReturnedAAAARecords" proved
 driver.adb:42:04: info: initialization of "ReturnedCNameRecords" proved
@@ -232,111 +232,111 @@ driver.adb:73:20: medium: precondition might fail
 driver.adb:74:22: high: "ZoneFile" is not initialized
 driver.adb:86:40: warning: "ZoneFile" is set by "ProcessZoneFile" but not used after the call
 driver.adb:90:04: info: initialization of "Success" proved
-driver.adb:95:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:98:53: info: range check proved (CVC4: 2 VC)
-driver.adb:99:11: info: range check proved (CVC4: 2 VC)
-driver.adb:102:48: info: index check proved (CVC4: 2 VC)
-driver.adb:107:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:110:54: info: range check proved (CVC4: 2 VC)
-driver.adb:112:11: info: range check proved (CVC4: 2 VC)
-driver.adb:115:51: info: index check proved (CVC4: 2 VC)
-driver.adb:120:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:123:54: info: range check proved (CVC4: 2 VC)
-driver.adb:125:11: info: range check proved (CVC4: 2 VC)
-driver.adb:127:49: info: index check proved (CVC4: 2 VC)
-driver.adb:132:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:135:54: info: range check proved (CVC4: 2 VC)
-driver.adb:137:11: info: range check proved (CVC4: 2 VC)
-driver.adb:139:50: info: index check proved (CVC4: 2 VC)
-driver.adb:144:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:147:54: info: range check proved (CVC4: 2 VC)
-driver.adb:149:11: info: range check proved (CVC4: 2 VC)
-driver.adb:152:49: info: index check proved (CVC4: 2 VC)
-driver.adb:154:46: info: index check proved (CVC4: 2 VC)
-driver.adb:159:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:162:53: info: range check proved (CVC4: 2 VC)
-driver.adb:164:11: info: range check proved (CVC4: 2 VC)
-driver.adb:167:66: info: index check proved (CVC4: 2 VC)
-driver.adb:170:50: info: index check proved (CVC4: 2 VC)
-driver.adb:173:66: info: index check proved (CVC4: 2 VC)
-driver.adb:175:47: info: index check proved (CVC4: 2 VC)
-driver.adb:180:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:183:54: info: range check proved (CVC4: 2 VC)
-driver.adb:185:11: info: range check proved (CVC4: 2 VC)
-driver.adb:187:48: info: index check proved (CVC4: 2 VC)
-driver.adb:192:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:195:54: info: range check proved (CVC4: 2 VC)
-driver.adb:196:11: info: range check proved (CVC4: 2 VC)
-driver.adb:198:46: info: index check proved (CVC4: 2 VC)
-driver.adb:203:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:210:54: info: range check proved (CVC4: 2 VC)
-driver.adb:212:11: info: range check proved (CVC4: 2 VC)
-driver.adb:214:47: info: index check proved (CVC4: 2 VC)
-driver.adb:219:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:222:54: info: range check proved (CVC4: 2 VC)
-driver.adb:224:11: info: range check proved (CVC4: 2 VC)
-driver.adb:226:49: info: index check proved (CVC4: 2 VC)
-driver.adb:231:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:234:54: info: range check proved (CVC4: 2 VC)
-driver.adb:236:11: info: range check proved (CVC4: 2 VC)
-driver.adb:238:47: info: index check proved (CVC4: 2 VC)
+driver.adb:95:17: medium: precondition might fail
+driver.adb:98:53: low: range check might fail, cannot prove lower bound for Integer'Image(NumFound) & " A records returned" [reason for check: input value must fit in parameter type]
+driver.adb:99:11: info: range check proved (CVC5: 2 VC)
+driver.adb:102:48: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:107:17: medium: precondition might fail
+driver.adb:110:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " AAAA records returned" [reason for check: input value must fit in parameter type]
+driver.adb:112:11: info: range check proved (CVC5: 2 VC)
+driver.adb:115:51: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:120:17: medium: precondition might fail
+driver.adb:123:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " CNAME records returned" [reason for check: input value must fit in parameter type]
+driver.adb:125:11: info: range check proved (CVC5: 2 VC)
+driver.adb:127:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:132:17: medium: precondition might fail
+driver.adb:135:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " DNSKEY records returned" [reason for check: input value must fit in parameter type]
+driver.adb:137:11: info: range check proved (CVC5: 2 VC)
+driver.adb:139:50: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:144:17: medium: precondition might fail
+driver.adb:147:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " MX records returned" [reason for check: input value must fit in parameter type]
+driver.adb:149:11: info: range check proved (CVC5: 2 VC)
+driver.adb:152:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:154:46: info: index check proved (CVC5: 2 VC)
+driver.adb:159:17: medium: precondition might fail
+driver.adb:162:53: low: range check might fail, cannot prove lower bound for Integer'Image(NumFound) & " SRV records returned" [reason for check: input value must fit in parameter type]
+driver.adb:164:11: info: range check proved (CVC5: 2 VC)
+driver.adb:167:66: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:170:50: info: index check proved (CVC5: 2 VC)
+driver.adb:173:66: info: index check proved (CVC5: 2 VC)
+driver.adb:175:47: info: index check proved (CVC5: 2 VC)
+driver.adb:180:17: medium: precondition might fail
+driver.adb:183:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " NSEC records returned" [reason for check: input value must fit in parameter type]
+driver.adb:185:11: info: range check proved (CVC5: 2 VC)
+driver.adb:187:48: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:192:17: medium: precondition might fail
+driver.adb:195:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " NS records returned" [reason for check: input value must fit in parameter type]
+driver.adb:196:11: info: range check proved (CVC5: 2 VC)
+driver.adb:198:46: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:203:17: medium: precondition might fail
+driver.adb:210:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " PTR records returned" [reason for check: input value must fit in parameter type]
+driver.adb:212:11: info: range check proved (CVC5: 2 VC)
+driver.adb:214:47: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:219:17: medium: precondition might fail
+driver.adb:222:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " RRSIG records returned" [reason for check: input value must fit in parameter type]
+driver.adb:224:11: info: range check proved (CVC5: 2 VC)
+driver.adb:226:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
+driver.adb:231:17: medium: precondition might fail
+driver.adb:234:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " SOA records returned" [reason for check: input value must fit in parameter type]
+driver.adb:236:11: info: range check proved (CVC5: 2 VC)
+driver.adb:238:47: medium: array index check might fail [reason for check: value must be a valid index into the array]
 parser_utilities.adb:56:07: info: initialization of "Retval" proved
 parser_utilities.adb:85:07: info: initialization of "FirstChar" proved
 parser_utilities.adb:86:07: info: initialization of "LastChar" proved
 parser_utilities.adb:87:07: info: initialization of "LengthToken" proved
 parser_utilities.adb:88:07: info: initialization of "Retval" proved
-parser_utilities.adb:92:40: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:113:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:125:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:137:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:149:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:161:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:162:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:175:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:176:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:190:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:191:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:192:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:206:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:207:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:208:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:222:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:223:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:224:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:225:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:92:40: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:113:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:125:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:137:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:149:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:161:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:162:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:175:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:176:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:190:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:191:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:192:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:206:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:207:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:208:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:222:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:223:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:224:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:225:60: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:247:07: info: initialization of "FirstChar" proved
 parser_utilities.adb:248:07: info: initialization of "LastChar" proved
 parser_utilities.adb:249:07: info: initialization of "LengthToken" proved
 parser_utilities.adb:250:07: info: initialization of "Retval" proved
-parser_utilities.adb:254:40: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:271:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:279:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:287:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:295:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:303:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:304:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:313:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:314:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:323:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:324:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:325:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:334:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:335:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:336:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:345:57: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:346:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:347:60: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:348:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:254:40: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:271:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:279:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:287:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:295:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:303:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:304:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:313:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:314:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:323:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:324:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:325:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:334:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:335:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:336:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:345:57: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:346:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:347:60: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:348:60: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:390:07: info: initialization of "Length" proved
-parser_utilities.adb:403:38: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:404:43: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:408:14: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:411:27: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:411:49: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:403:38: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:404:43: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:408:14: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:411:27: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:411:49: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:430:07: info: initialization of "Length" proved
 parser_utilities.adb:432:07: info: initialization of "Position" proved
-parser_utilities.adb:446:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:461:28: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:446:11: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:461:28: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:490:07: info: initialization of "EndIdx" proved
 parser_utilities.adb:491:07: info: initialization of "ContainsOnlyNumbers" proved
 parser_utilities.adb:492:07: info: initialization of "containsOnlyLetters" proved
@@ -345,17 +345,17 @@ parser_utilities.adb:494:07: info: initialization of "containsColon" proved
 parser_utilities.adb:495:07: info: initialization of "ContainsDecimalNumbers" proved
 parser_utilities.adb:496:07: info: initialization of "ContainsHexNumbers" proved
 parser_utilities.adb:497:07: info: initialization of "ContainsLetters" proved
-parser_utilities.adb:504:33: info: loop invariant initialization proved (CVC4: 2 VC)
-parser_utilities.adb:504:33: info: loop invariant preservation proved (CVC4: 2 VC)
-parser_utilities.adb:505:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:517:13: info: loop invariant initialization proved (CVC4: 4 VC)
-parser_utilities.adb:517:13: info: loop invariant preservation proved (CVC4: 4 VC)
-parser_utilities.adb:521:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:529:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:540:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:542:13: info: loop invariant initialization proved (CVC4: 4 VC)
-parser_utilities.adb:542:13: info: loop invariant preservation proved (CVC4: 4 VC)
-parser_utilities.adb:594:37: info: precondition proved (CVC4: 1 VC)
+parser_utilities.adb:504:33: info: loop invariant initialization proved (CVC5: 2 VC)
+parser_utilities.adb:504:33: info: loop invariant preservation proved (CVC5: 2 VC)
+parser_utilities.adb:505:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:517:13: info: loop invariant initialization proved (CVC5: 4 VC)
+parser_utilities.adb:517:13: info: loop invariant preservation proved (CVC5: 4 VC)
+parser_utilities.adb:521:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:529:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:540:11: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:542:13: info: loop invariant initialization proved (CVC5: 4 VC)
+parser_utilities.adb:542:13: info: loop invariant preservation proved (CVC5: 4 VC)
+parser_utilities.adb:594:37: info: precondition proved (CVC5: 1 VC)
 parser_utilities.adb:615:07: info: initialization of "ContainsOnlyNumbers" proved
 parser_utilities.adb:616:07: info: initialization of "ContainsOnlyLetters" proved
 parser_utilities.adb:617:07: info: initialization of "ContainsPeriod" proved
@@ -363,131 +363,131 @@ parser_utilities.adb:618:07: info: initialization of "ContainsColon" proved
 parser_utilities.adb:619:07: info: initialization of "ContainsDecimalNumbers" proved
 parser_utilities.adb:620:07: info: initialization of "ContainsHexNumbers" proved
 parser_utilities.adb:621:07: info: initialization of "ContainsLetters" proved
-parser_utilities.adb:628:33: info: loop invariant initialization proved (CVC4: 1 VC)
-parser_utilities.adb:628:33: info: loop invariant preservation proved (CVC4: 1 VC)
-parser_utilities.adb:629:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:641:13: info: loop invariant initialization proved (CVC4: 3 VC)
-parser_utilities.adb:641:13: info: loop invariant preservation proved (CVC4: 3 VC)
-parser_utilities.adb:642:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:650:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:662:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:667:13: info: loop invariant initialization proved (CVC4: 7 VC; Trivial: 1 VC)
-parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC4: 7 VC; Trivial: 1 VC)
-parser_utilities.adb:673:25: info: range check proved (CVC4: 4 VC)
-parser_utilities.adb:674:22: info: index check proved (CVC4: 4 VC)
-parser_utilities.adb:674:39: info: index check proved (CVC4: 4 VC)
-parser_utilities.adb:723:37: info: precondition proved (CVC4: 1 VC)
+parser_utilities.adb:628:33: info: loop invariant initialization proved (CVC5: 1 VC)
+parser_utilities.adb:628:33: info: loop invariant preservation proved (CVC5: 1 VC)
+parser_utilities.adb:629:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:641:13: info: loop invariant initialization proved (CVC5: 3 VC)
+parser_utilities.adb:641:13: info: loop invariant preservation proved (CVC5: 3 VC)
+parser_utilities.adb:642:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:650:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:662:11: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:667:13: info: loop invariant initialization proved (CVC5: 7 VC; Trivial: 1 VC)
+parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC5: 7 VC; Trivial: 1 VC)
+parser_utilities.adb:673:25: info: range check proved (CVC5: 4 VC)
+parser_utilities.adb:674:22: info: index check proved (CVC5: 4 VC)
+parser_utilities.adb:674:39: info: index check proved (CVC5: 4 VC)
+parser_utilities.adb:723:37: info: precondition proved (CVC5: 1 VC)
 parser_utilities.adb:736:07: info: initialization of "C" proved
 parser_utilities.adb:737:07: info: initialization of "Retval" proved
 parser_utilities.adb:755:07: info: initialization of "DigitVal" proved
 parser_utilities.adb:756:07: info: initialization of "TmpVal" proved
-parser_utilities.adb:760:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:762:13: info: loop invariant initialization proved (CVC4: 2 VC)
-parser_utilities.adb:762:13: info: loop invariant preservation proved (CVC4: 2 VC)
-parser_utilities.adb:765:55: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:766:22: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:766:30: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:773:45: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:760:11: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:762:13: info: loop invariant initialization proved (CVC5: 2 VC)
+parser_utilities.adb:762:13: info: loop invariant preservation proved (CVC5: 2 VC)
+parser_utilities.adb:765:55: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:766:22: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:766:30: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:773:45: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:784:07: info: initialization of "DigitVal" proved
 parser_utilities.adb:785:07: info: initialization of "TmpVal" proved
-parser_utilities.adb:789:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:791:13: info: loop invariant initialization proved (CVC4: 2 VC)
-parser_utilities.adb:791:13: info: loop invariant preservation proved (CVC4: 2 VC)
-parser_utilities.adb:793:55: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:794:22: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:794:30: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:802:46: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:789:11: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:791:13: info: loop invariant initialization proved (CVC5: 2 VC)
+parser_utilities.adb:791:13: info: loop invariant preservation proved (CVC5: 2 VC)
+parser_utilities.adb:793:55: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:794:22: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:794:30: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:802:46: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:813:07: info: initialization of "DigitVal" proved
 parser_utilities.adb:814:07: info: initialization of "TmpVal" proved
-parser_utilities.adb:818:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:820:13: info: loop invariant initialization proved (CVC4: 3 VC)
-parser_utilities.adb:820:13: info: loop invariant preservation proved (CVC4: 3 VC)
-parser_utilities.adb:824:22: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:824:30: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:831:46: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:818:11: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:820:13: info: loop invariant initialization proved (CVC5: 3 VC)
+parser_utilities.adb:820:13: info: loop invariant preservation proved (CVC5: 3 VC)
+parser_utilities.adb:824:22: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:824:30: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:831:46: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:851:07: info: initialization of "CurrentChar" proved
-parser_utilities.adb:855:22: info: postcondition proved (CVC4: 2 VC)
+parser_utilities.adb:855:22: info: postcondition proved (CVC5: 2 VC)
 parser_utilities.adb:858:10: info: initialization of "C" proved
 parser_utilities.adb:859:10: info: initialization of "RetVal" proved
-parser_utilities.adb:881:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:883:13: info: loop invariant initialization proved (CVC4: 4 VC)
-parser_utilities.adb:883:13: info: loop invariant preservation proved (CVC4: 4 VC)
-parser_utilities.adb:889:23: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:889:29: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:897:28: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:897:48: info: precondition proved (CVC4: 1 VC)
-parser_utilities.adb:898:27: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:917:44: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:881:11: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:883:13: info: loop invariant initialization proved (CVC5: 4 VC)
+parser_utilities.adb:885:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Tmp >= 0
+parser_utilities.adb:889:23: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:889:29: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:897:28: medium: overflow check might fail, cannot prove upper bound for Blob*Long_Long_Integer (MultValue (CurrentChar)) [reason for check: result of multiplication must fit in a 64-bits machine integer] [possible fix: loop invariant at line 882 should mention CurrentChar]
+parser_utilities.adb:897:48: info: precondition proved (CVC5: 1 VC)
+parser_utilities.adb:898:27: medium: overflow check might fail, cannot prove upper bound for Tmp + Blob [reason for check: result of addition must fit in a 64-bits machine integer]
+parser_utilities.adb:917:44: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 parser_utilities.adb:931:07: info: initialization of "Num" proved
-parser_utilities.adb:936:13: info: loop invariant initialization proved (CVC4: 6 VC)
-parser_utilities.adb:936:13: info: loop invariant preservation proved (CVC4: 6 VC)
-parser_utilities.adb:942:47: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:944:24: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:944:31: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:946:25: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:946:33: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:948:22: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:948:28: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:950:24: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:950:31: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:952:25: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:952:34: info: overflow check proved (CVC4: 2 VC)
+parser_utilities.adb:936:13: info: loop invariant initialization proved (CVC5: 6 VC)
+parser_utilities.adb:936:13: info: loop invariant preservation proved (CVC5: 6 VC)
+parser_utilities.adb:942:47: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:944:24: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:944:31: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:946:25: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:946:33: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:948:22: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:948:28: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:950:24: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:950:31: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:952:25: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:952:34: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:953:10: warning: statement has no effect
-parser_utilities.adb:955:26: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:955:35: info: overflow check proved (CVC4: 2 VC)
+parser_utilities.adb:955:26: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:955:35: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:991:07: info: initialization of "BegIdx" proved
 parser_utilities.adb:992:07: info: initialization of "EndIdx" proved
 parser_utilities.adb:993:07: info: initialization of "ReturnedType" proved
-parser_utilities.adb:1000:33: info: loop invariant initialization proved (CVC4: 2 VC)
-parser_utilities.adb:1000:33: info: loop invariant preservation proved (CVC4: 2 VC)
-parser_utilities.adb:1001:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1010:13: info: loop invariant initialization proved (CVC4: 4 VC)
-parser_utilities.adb:1010:13: info: loop invariant preservation proved (CVC4: 4 VC)
-parser_utilities.adb:1014:26: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1024:14: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC4: 6 VC)
-parser_utilities.adb:1026:16: info: loop invariant preservation proved (CVC4: 6 VC)
-parser_utilities.adb:1034:42: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:1034:42: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1034:48: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1034:58: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1037:65: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1043:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1044:10: info: precondition proved (CVC4: 1 VC)
+parser_utilities.adb:1000:33: info: loop invariant initialization proved (CVC5: 2 VC)
+parser_utilities.adb:1000:33: info: loop invariant preservation proved (CVC5: 2 VC)
+parser_utilities.adb:1001:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1010:13: info: loop invariant initialization proved (CVC5: 4 VC)
+parser_utilities.adb:1011:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BegIdx <= EndIdx
+parser_utilities.adb:1014:26: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+parser_utilities.adb:1024:14: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC5: 6 VC)
+parser_utilities.adb:1028:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I >= BegIdx
+parser_utilities.adb:1034:42: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+parser_utilities.adb:1034:42: medium: overflow check might fail, cannot prove lower bound for RRSig_Rec.SignatureLength + ((I - BegIdx) + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1034:48: medium: overflow check might fail, cannot prove lower bound for I - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
+parser_utilities.adb:1034:58: medium: overflow check might fail, cannot prove lower bound for (I - BegIdx) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1037:65: medium: range check might fail, cannot prove lower bound for RRSig_Rec.SignatureLength + ((EndIdx - BegIdx) + 1) [reason for check: result of addition must fit in the target type of the assignment]
+parser_utilities.adb:1043:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+parser_utilities.adb:1044:10: info: precondition proved (CVC5: 1 VC)
 parser_utilities.adb:1062:07: info: initialization of "BegIdx" proved
 parser_utilities.adb:1063:07: info: initialization of "EndIdx" proved
-parser_utilities.adb:1070:33: info: loop invariant initialization proved (CVC4: 2 VC)
-parser_utilities.adb:1070:33: info: loop invariant preservation proved (CVC4: 2 VC)
-parser_utilities.adb:1071:27: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1080:13: info: loop invariant initialization proved (CVC4: 4 VC)
-parser_utilities.adb:1080:13: info: loop invariant preservation proved (CVC4: 4 VC)
-parser_utilities.adb:1084:26: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1094:14: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1096:16: info: loop invariant initialization proved (CVC4: 6 VC)
-parser_utilities.adb:1096:16: info: loop invariant preservation proved (CVC4: 6 VC)
-parser_utilities.adb:1103:50: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:1103:50: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1103:56: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1103:66: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1106:55: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:1070:33: info: loop invariant initialization proved (CVC5: 2 VC)
+parser_utilities.adb:1070:33: info: loop invariant preservation proved (CVC5: 2 VC)
+parser_utilities.adb:1071:27: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1080:13: info: loop invariant initialization proved (CVC5: 4 VC)
+parser_utilities.adb:1081:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BegIdx <= EndIdx
+parser_utilities.adb:1084:26: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1094:14: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1096:16: info: loop invariant initialization proved (CVC5: 6 VC)
+parser_utilities.adb:1098:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I >= BegIdx
+parser_utilities.adb:1103:50: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+parser_utilities.adb:1103:50: medium: overflow check might fail, cannot prove lower bound for DNSKey_Rec.KeyLength + ((I - BegIdx) + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1103:56: medium: overflow check might fail, cannot prove lower bound for I - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
+parser_utilities.adb:1103:66: medium: overflow check might fail, cannot prove lower bound for (I - BegIdx) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1106:55: medium: range check might fail, cannot prove lower bound for DNSKey_Rec.KeyLength + ((EndIdx - BegIdx) + 1) [reason for check: result of addition must fit in the target type of the assignment]
 parser_utilities.adb:1135:07: info: initialization of "Ctr" proved
 parser_utilities.adb:1136:07: info: initialization of "NumSeparators" proved
 parser_utilities.adb:1137:07: info: initialization of "FieldTotal" proved
 parser_utilities.adb:1138:07: info: initialization of "NumDigitsInField" proved
-parser_utilities.adb:1172:13: info: loop invariant initialization proved (CVC4: 3 VC)
-parser_utilities.adb:1172:13: info: loop invariant preservation proved (CVC4: 3 VC)
-parser_utilities.adb:1178:50: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1183:50: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1185:44: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1186:34: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:1187:21: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:1191:21: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1199:50: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1200:35: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:1200:35: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1205:50: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1206:35: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:1206:35: info: overflow check proved (CVC4: 2 VC)
+parser_utilities.adb:1172:13: info: loop invariant initialization proved (CVC5: 3 VC)
+parser_utilities.adb:1172:13: info: loop invariant preservation proved (CVC5: 3 VC)
+parser_utilities.adb:1178:50: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1183:50: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1185:44: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1186:34: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:1187:21: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:1191:21: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1199:50: medium: overflow check might fail, cannot prove lower bound for NumDigitsInField + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1200:35: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+parser_utilities.adb:1200:35: medium: overflow check might fail, cannot prove lower bound for NumSeparators + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1205:50: medium: overflow check might fail, cannot prove lower bound for NumDigitsInField + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1206:35: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+parser_utilities.adb:1206:35: medium: overflow check might fail, cannot prove lower bound for NumSeparators + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 parser_utilities.adb:1246:07: info: initialization of "Ctr" proved
 parser_utilities.adb:1247:07: info: initialization of "NumSeparators" proved
 parser_utilities.adb:1248:07: info: initialization of "ByteTotal" proved
@@ -495,13 +495,13 @@ parser_utilities.adb:1249:07: info: initialization of "NumDigitsInByte" proved
 parser_utilities.adb:1250:07: info: initialization of "GrandTotal" proved
 parser_utilities.adb:1251:07: info: initialization of "RetVal" proved
 parser_utilities.adb:1258:10: info: initialization of "RetVal" proved
-parser_utilities.adb:1285:13: info: loop invariant initialization proved (CVC4: 3 VC)
-parser_utilities.adb:1285:13: info: loop invariant preservation proved (CVC4: 3 VC)
-parser_utilities.adb:1291:48: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1293:44: info: overflow check proved (CVC4: 2 VC)
-parser_utilities.adb:1294:34: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:1299:21: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:1308:48: info: overflow check proved (CVC4: 2 VC)
+parser_utilities.adb:1285:13: info: loop invariant initialization proved (CVC5: 3 VC)
+parser_utilities.adb:1285:13: info: loop invariant preservation proved (CVC5: 3 VC)
+parser_utilities.adb:1291:48: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1293:44: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1294:34: info: index check proved (CVC5: 2 VC)
+parser_utilities.adb:1299:21: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1308:48: medium: overflow check might fail, cannot prove lower bound for NumDigitsInByte + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 parser_utilities.ads:42:09: info: flow dependencies proved
 parser_utilities.ads:48:09: info: flow dependencies proved
 parser_utilities.ads:53:09: info: flow dependencies proved
@@ -510,25 +510,25 @@ parser_utilities.ads:60:09: info: flow dependencies proved
 parser_utilities.ads:66:07: info: initialization of "EndIdx" proved
 parser_utilities.ads:67:07: info: initialization of "T" proved
 parser_utilities.ads:68:09: info: flow dependencies proved
-parser_utilities.ads:70:20: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
-parser_utilities.ads:74:32: info: range check proved (CVC4: 2 VC)
-parser_utilities.ads:75:29: info: index check proved (CVC4: 2 VC)
-parser_utilities.ads:75:46: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:70:20: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC)
+parser_utilities.ads:74:32: info: range check proved (CVC5: 2 VC)
+parser_utilities.ads:75:29: info: index check proved (CVC5: 2 VC)
+parser_utilities.ads:75:46: info: index check proved (CVC5: 2 VC)
 parser_utilities.ads:78:07: info: initialization of "Value" proved
 parser_utilities.ads:83:09: info: flow dependencies proved
-parser_utilities.ads:85:29: info: range check proved (CVC4: 2 VC)
-parser_utilities.ads:86:37: info: index check proved (CVC4: 2 VC)
-parser_utilities.ads:86:65: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:85:29: info: range check proved (CVC5: 2 VC)
+parser_utilities.ads:86:37: info: index check proved (CVC5: 2 VC)
+parser_utilities.ads:86:65: info: index check proved (CVC5: 2 VC)
 parser_utilities.ads:89:07: info: initialization of "Value" proved
 parser_utilities.ads:94:09: info: flow dependencies proved
-parser_utilities.ads:96:29: info: range check proved (CVC4: 2 VC)
-parser_utilities.ads:97:37: info: index check proved (CVC4: 2 VC)
-parser_utilities.ads:97:64: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:96:29: info: range check proved (CVC5: 2 VC)
+parser_utilities.ads:97:37: info: index check proved (CVC5: 2 VC)
+parser_utilities.ads:97:64: info: index check proved (CVC5: 2 VC)
 parser_utilities.ads:100:07: info: initialization of "Value" proved
 parser_utilities.ads:105:09: info: flow dependencies proved
-parser_utilities.ads:107:29: info: range check proved (CVC4: 2 VC)
-parser_utilities.ads:108:37: info: index check proved (CVC4: 2 VC)
-parser_utilities.ads:108:65: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:107:29: info: range check proved (CVC5: 2 VC)
+parser_utilities.ads:108:37: info: index check proved (CVC5: 2 VC)
+parser_utilities.ads:108:65: info: index check proved (CVC5: 2 VC)
 parser_utilities.ads:114:07: info: initialization of "RetVal" proved
 parser_utilities.ads:116:09: info: flow dependencies proved
 parser_utilities.ads:119:07: info: initialization of "TimeVal" proved
@@ -537,7 +537,7 @@ parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
 process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
-process_dns_request.ads:223:50: info: range check proved (CVC4: 2 VC)
+process_dns_request.ads:223:50: medium: range check might fail, cannot prove lower bound for Nameserver_Name_Length+Mailbox_Name_Length [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: use "and then" instead of "and" in precondition]
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved
 process_first_line_of_record.adb:66:07: info: initialization of "CurrentDomainName" proved
@@ -564,61 +564,61 @@ process_first_line_of_record.ads:54:07: info: initialization of "RecordSuccessfu
 process_first_line_of_record.ads:56:09: info: data dependencies proved
 process_first_line_of_record.ads:57:09: info: flow dependencies proved
 protected_spark_io_05.ads:23:08: info: flow dependencies proved
-protected_spark_io_05.ads:50:23: info: range check proved (CVC4: 2 VC)
+protected_spark_io_05.ads:50:23: info: range check proved (CVC5: 2 VC)
 rr_type.adb:30:07: info: initialization of "Index" proved
-rr_type.adb:35:30: info: index check proved (CVC4: 4 VC)
-rr_type.adb:38:13: info: loop invariant initialization proved (CVC4: 2 VC)
-rr_type.adb:38:13: info: loop invariant preservation proved (CVC4: 2 VC)
-rr_type.adb:39:22: info: range check proved (CVC4: 4 VC)
-rr_type.adb:40:21: info: index check proved (CVC4: 4 VC)
-rr_type.adb:41:25: info: range check proved (CVC4: 2 VC)
+rr_type.adb:35:30: info: index check proved (CVC5: 4 VC)
+rr_type.adb:38:13: info: loop invariant initialization proved (CVC5: 2 VC)
+rr_type.adb:38:13: info: loop invariant preservation proved (CVC5: 2 VC)
+rr_type.adb:39:22: info: range check proved (CVC5: 4 VC)
+rr_type.adb:40:21: info: index check proved (CVC5: 4 VC)
+rr_type.adb:41:25: info: range check proved (CVC5: 2 VC)
 rr_type.adb:55:07: info: initialization of "LengthL" proved
 rr_type.adb:56:07: info: initialization of "LengthR" proved
-rr_type.adb:71:27: info: index check proved (CVC4: 2 VC)
-rr_type.adb:72:17: info: range check proved (CVC4: 2 VC)
-rr_type.adb:74:19: info: loop invariant initialization proved (CVC4: 4 VC)
-rr_type.adb:74:19: info: loop invariant preservation proved (CVC4: 4 VC)
-rr_type.adb:78:36: info: index check proved (CVC4: 2 VC)
-rr_type.adb:78:36: info: overflow check proved (CVC4: 2 VC)
+rr_type.adb:71:27: info: index check proved (CVC5: 2 VC)
+rr_type.adb:72:17: info: range check proved (CVC5: 2 VC)
+rr_type.adb:74:19: info: loop invariant initialization proved (CVC5: 4 VC)
+rr_type.adb:74:19: info: loop invariant preservation proved (CVC5: 4 VC)
+rr_type.adb:78:36: info: index check proved (CVC5: 2 VC)
+rr_type.adb:78:36: info: overflow check proved (CVC5: 2 VC)
 rr_type.adb:92:07: info: initialization of "Index" proved
-rr_type.adb:97:13: info: loop invariant initialization proved (CVC4: 2 VC)
-rr_type.adb:97:13: info: loop invariant preservation proved (CVC4: 2 VC)
-rr_type.adb:98:22: info: range check proved (CVC4: 4 VC)
-rr_type.adb:99:22: info: index check proved (CVC4: 4 VC)
-rr_type.adb:100:25: info: range check proved (CVC4: 2 VC)
-rr_type.adb:111:11: info: range check proved (CVC4: 2 VC)
-rr_type.adb:111:36: info: range check proved (CVC4: 2 VC)
-rr_type.adb:112:25: info: index check proved (CVC4: 2 VC)
+rr_type.adb:97:13: info: loop invariant initialization proved (CVC5: 2 VC)
+rr_type.adb:97:13: info: loop invariant preservation proved (CVC5: 2 VC)
+rr_type.adb:98:22: info: range check proved (CVC5: 4 VC)
+rr_type.adb:99:22: info: index check proved (CVC5: 4 VC)
+rr_type.adb:100:25: info: range check proved (CVC5: 2 VC)
+rr_type.adb:111:11: info: range check proved (CVC5: 2 VC)
+rr_type.adb:111:36: info: range check proved (CVC5: 2 VC)
+rr_type.adb:112:25: info: index check proved (CVC5: 2 VC)
 rr_type.adb:112:34: medium: array index check might fail [reason for check: value must be a valid index into the array]
 rr_type.adb:126:07: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:127:07: info: initialization of "WireVersion" proved
 rr_type.adb:134:10: info: initialization of "Result" proved
-rr_type.adb:138:27: info: index check proved (CVC4: 4 VC)
-rr_type.adb:141:16: info: loop invariant initialization proved (CVC4: 2 VC)
-rr_type.adb:141:16: info: loop invariant preservation proved (CVC4: 2 VC)
-rr_type.adb:142:30: info: range check proved (CVC4: 2 VC)
-rr_type.adb:144:39: info: range check proved (CVC4: 2 VC)
-rr_type.adb:151:11: info: range check proved (CVC4: 2 VC)
-rr_type.adb:155:13: info: loop invariant initialization proved (CVC4: 2 VC)
-rr_type.adb:155:13: info: loop invariant preservation proved (CVC4: 2 VC)
-rr_type.adb:158:28: info: index check proved (CVC4: 2 VC)
-rr_type.adb:158:28: info: overflow check proved (CVC4: 2 VC)
-rr_type.adb:158:69: info: overflow check proved (CVC4: 2 VC)
-rr_type.adb:158:69: info: range check proved (CVC4: 2 VC)
-rr_type.adb:160:28: info: index check proved (CVC4: 2 VC)
-rr_type.adb:160:28: info: overflow check proved (CVC4: 2 VC)
-rr_type.adb:172:39: info: precondition proved (CVC4: 1 VC)
+rr_type.adb:138:27: info: index check proved (CVC5: 4 VC)
+rr_type.adb:141:16: info: loop invariant initialization proved (CVC5: 2 VC)
+rr_type.adb:141:16: info: loop invariant preservation proved (CVC5: 2 VC)
+rr_type.adb:142:30: info: range check proved (CVC5: 2 VC)
+rr_type.adb:144:39: info: range check proved (CVC5: 2 VC)
+rr_type.adb:151:11: info: range check proved (CVC5: 2 VC)
+rr_type.adb:155:13: info: loop invariant initialization proved (CVC5: 2 VC)
+rr_type.adb:155:13: info: loop invariant preservation proved (CVC5: 2 VC)
+rr_type.adb:158:28: info: index check proved (CVC5: 2 VC)
+rr_type.adb:158:28: info: overflow check proved (CVC5: 2 VC)
+rr_type.adb:158:69: info: overflow check proved (CVC5: 2 VC)
+rr_type.adb:158:69: info: range check proved (CVC5: 2 VC)
+rr_type.adb:160:28: info: index check proved (CVC5: 2 VC)
+rr_type.adb:160:28: info: overflow check proved (CVC5: 2 VC)
+rr_type.adb:172:39: info: precondition proved (CVC5: 1 VC)
 rr_type.ads:77:09: info: flow dependencies proved
-rr_type.ads:81:06: info: postcondition proved (CVC4: 1 VC)
-rr_type.ads:83:18: info: range check proved (CVC4: 2 VC)
-rr_type.ads:85:18: info: index check proved (CVC4: 2 VC)
-rr_type.ads:91:06: info: postcondition proved (CVC4: 1 VC)
+rr_type.ads:81:06: info: postcondition proved (CVC5: 1 VC)
+rr_type.ads:83:18: info: range check proved (CVC5: 2 VC)
+rr_type.ads:85:18: info: index check proved (CVC5: 2 VC)
+rr_type.ads:91:06: info: postcondition proved (CVC5: 1 VC)
 rr_type.ads:93:37: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
-rr_type.ads:94:18: info: range check proved (CVC4: 2 VC)
-rr_type.ads:96:18: info: index check proved (CVC4: 2 VC)
-rr_type.ads:102:06: info: postcondition proved (CVC4: 2 VC)
-rr_type.ads:109:17: info: range check proved (CVC4: 2 VC)
-rr_type.ads:112:17: info: range check proved (CVC4: 2 VC)
+rr_type.ads:94:18: info: range check proved (CVC5: 2 VC)
+rr_type.ads:96:18: info: index check proved (CVC5: 2 VC)
+rr_type.ads:102:06: info: postcondition proved (CVC5: 2 VC)
+rr_type.ads:109:17: info: range check proved (CVC5: 2 VC)
+rr_type.ads:112:17: info: range check proved (CVC5: 2 VC)
 spark-text_io.ads:28:08: info: flow dependencies proved
 spark-text_io.ads:29:42: high: "Standard_Input" is not initialized
 spark-text_io.ads:30:42: high: "Standard_Output" is not initialized
@@ -629,12 +629,12 @@ spark-text_io.ads:82:04: high: "Standard_Error" is not initialized in "Text_IO" 
 spark-text_io.ads:106:11: info: data dependencies proved
 spark-text_io.ads:112:11: info: data dependencies proved
 spark-text_io.ads:134:31: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:134:31: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:134:31: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:135:11: info: data dependencies proved
 spark-text_io.ads:139:12: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:139:12: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:139:12: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:139:43: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:139:43: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:139:43: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:140:11: info: data dependencies proved
 spark-text_io.ads:150:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:151:25: info: implicit function contract not available for proof ("Mode" might not return)
@@ -654,34 +654,34 @@ spark-text_io.ads:191:25: info: implicit function contract not available for pro
 spark-text_io.ads:192:25: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:194:22: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:194:36: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:194:36: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:194:36: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:195:22: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:195:36: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:195:36: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:195:36: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:202:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:202:35: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:202:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:202:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:203:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:203:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:203:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:203:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:204:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:204:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:204:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:204:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:221:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:221:35: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:221:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:221:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:222:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:222:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:222:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:222:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:223:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:223:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:223:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:223:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:224:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:224:42: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:224:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:224:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:225:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:225:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:225:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:225:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:231:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:232:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:232:46: info: implicit function contract not available for proof ("Name" might not return)
@@ -701,16 +701,16 @@ spark-text_io.ads:245:25: info: implicit function contract not available for pro
 spark-text_io.ads:246:25: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:248:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:248:35: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:248:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:248:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:249:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:249:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:249:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:249:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:250:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:250:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:250:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:250:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:251:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:251:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:251:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:251:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:256:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:257:25: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:259:21: info: implicit function contract not available for proof ("Mode" might not return)
@@ -728,16 +728,16 @@ spark-text_io.ads:270:23: info: implicit function contract not available for pro
 spark-text_io.ads:270:52: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:271:38: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:271:52: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:271:52: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:271:52: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:272:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:272:33: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:272:33: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:272:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:273:19: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:273:33: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:273:33: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:273:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:274:19: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:274:40: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:274:40: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:274:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:279:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:280:24: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:282:21: info: implicit function contract not available for proof ("Mode" might not return)
@@ -753,19 +753,19 @@ spark-text_io.ads:286:24: medium: in inlined expression function body at spark-t
 spark-text_io.ads:286:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:309:40: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:309:54: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:309:54: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:309:54: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:310:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:310:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:310:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:310:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:311:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:311:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:311:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:311:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:312:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:312:42: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:312:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:312:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:313:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:313:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:313:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:313:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:319:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:320:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:320:46: info: implicit function contract not available for proof ("Name" might not return)
@@ -781,35 +781,35 @@ spark-text_io.ads:324:21: info: implicit function contract not available for pro
 spark-text_io.ads:325:24: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:325:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:325:24: medium: precondition might fail, cannot prove Is_Open (File)
-spark-text_io.ads:331:53: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:331:53: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:333:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:333:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:333:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:333:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:334:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:334:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:334:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:334:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:340:25: info: function contract not available for proof ("End_Of_File" might not return)
 spark-text_io.ads:342:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:342:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:342:45: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:342:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:343:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:343:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:343:45: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:343:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:356:40: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:356:54: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:356:54: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:356:54: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:357:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:357:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:357:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:357:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:358:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:358:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:358:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:358:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:359:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:359:42: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:359:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:359:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:360:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:360:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:360:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:360:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:366:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:367:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:368:24: info: implicit function contract not available for proof ("Name" might not return)
@@ -825,25 +825,25 @@ spark-text_io.ads:373:21: info: implicit function contract not available for pro
 spark-text_io.ads:374:24: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:374:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:374:24: medium: precondition might fail, cannot prove Is_Open (File)
-spark-text_io.ads:379:53: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:379:53: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:381:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:381:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:381:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:381:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:382:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:382:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:382:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:382:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:388:25: info: function contract not available for proof ("End_Of_File" might not return)
 spark-text_io.ads:390:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:390:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:390:45: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:390:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:391:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:391:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:391:45: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:391:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:411:53: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:411:53: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:411:53: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:412:31: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:412:31: info: precondition proved (CVC4: 2 VC)
-spark-text_io.ads:413:56: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:412:31: info: precondition proved (CVC5: 2 VC)
+spark-text_io.ads:413:56: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:414:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:416:40: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:416:54: info: implicit function contract not available for proof ("Mode" might not return)
@@ -863,70 +863,70 @@ spark-text_io.ads:421:42: info: implicit function contract not available for pro
 spark-text_io.ads:421:42: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:421:42: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:427:25: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:427:25: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:427:25: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:428:31: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:428:31: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:428:31: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:429:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:431:22: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:431:47: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:431:47: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:431:47: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:432:22: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:432:47: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:432:47: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:432:47: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:434:22: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:435:22: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:436:25: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:436:25: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:436:25: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:437:22: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:438:25: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:438:25: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:438:25: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:444:25: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:444:25: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:444:25: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:445:31: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:445:31: info: precondition proved (CVC4: 2 VC)
-spark-text_io.ads:446:56: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:445:31: info: precondition proved (CVC5: 2 VC)
+spark-text_io.ads:446:56: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:447:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:450:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:450:35: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:450:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:450:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:451:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:451:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:451:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:451:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:452:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:452:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:452:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:452:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:453:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:453:42: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:453:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:453:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:454:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:454:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:454:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:454:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:460:25: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:461:31: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:461:31: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:461:31: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:462:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:465:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:466:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:466:46: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:466:46: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:466:46: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:467:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:467:46: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:467:46: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:467:46: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:468:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:469:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:469:24: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:469:24: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:470:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:471:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:471:24: info: precondition proved (CVC4: 2 VC)
-spark-text_io.ads:499:53: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:471:24: info: precondition proved (CVC5: 2 VC)
+spark-text_io.ads:499:53: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:501:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:501:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:501:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:501:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:502:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:502:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:502:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:502:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:507:25: info: function contract not available for proof ("End_Of_File" might not return)
-spark-text_io.ads:509:31: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:509:31: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:511:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:511:45: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:511:45: medium: precondition might fail
@@ -937,19 +937,19 @@ spark-text_io.ads:516:25: info: implicit function contract not available for pro
 spark-text_io.ads:520:49: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:523:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:523:35: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:523:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:523:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:524:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:524:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:524:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:524:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:525:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:525:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:525:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:525:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:526:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:526:42: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:526:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:526:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:527:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:527:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:527:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:527:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:532:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:534:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:535:21: info: implicit function contract not available for proof ("Name" might not return)
@@ -968,50 +968,50 @@ spark-text_io.ads:542:24: medium: in inlined expression function body at spark-t
 spark-text_io.ads:542:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:551:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:551:33: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:551:33: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:551:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:552:19: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:552:33: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:552:33: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:552:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:559:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:559:45: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:559:45: medium: precondition might fail
 spark-text_io.ads:560:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:560:45: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:560:45: medium: precondition might fail
-spark-text_io.ads:566:53: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:566:53: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:568:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:568:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:568:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:568:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:569:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:569:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:569:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:569:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:575:25: info: function contract not available for proof ("End_Of_File" might not return)
 spark-text_io.ads:577:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:577:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:577:45: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:577:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:578:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:578:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:578:45: info: precondition proved (CVC4: 1 VC)
-spark-text_io.ads:585:53: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:578:45: info: precondition proved (CVC5: 1 VC)
+spark-text_io.ads:585:53: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:587:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:587:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:587:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:587:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:588:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:588:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:588:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:588:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:595:25: info: function contract not available for proof ("End_Of_File" might not return)
 spark-text_io.ads:597:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:597:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:597:45: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:597:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:598:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:598:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:598:45: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:598:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:608:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:608:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:608:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:608:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:609:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:609:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:609:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:609:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:612:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:616:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:618:21: info: implicit function contract not available for proof ("Name" might not return)
@@ -1024,19 +1024,19 @@ spark-text_io.ads:621:25: info: implicit function contract not available for pro
 spark-text_io.ads:626:49: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:629:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:629:35: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:629:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:629:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:630:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:630:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:630:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:630:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:631:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:631:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:631:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:631:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:632:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:632:42: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:632:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:632:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:633:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:633:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:633:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:633:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:638:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:640:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:641:21: info: implicit function contract not available for proof ("Name" might not return)
@@ -1055,10 +1055,10 @@ spark-text_io.ads:646:23: medium: in inlined expression function body at spark-t
 spark-text_io.ads:646:23: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:660:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:660:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:660:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:660:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:661:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:661:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:661:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:661:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:664:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:671:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:671:45: info: implicit function contract not available for proof ("Name" might not return)
@@ -1070,19 +1070,19 @@ spark-text_io.ads:674:25: info: implicit function contract not available for pro
 spark-text_io.ads:680:49: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:683:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:683:35: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:683:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:683:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:684:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:684:35: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:684:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:684:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:685:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:685:35: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:685:35: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:685:35: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:686:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:686:42: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:686:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:686:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:687:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:687:42: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:687:42: info: precondition proved (CVC4: 2 VC)
+spark-text_io.ads:687:42: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:693:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:695:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:696:21: info: implicit function contract not available for proof ("Name" might not return)
@@ -1103,27 +1103,27 @@ spark_ada_command_line.ads:61:09: info: Initial_Condition of package "Text_IO" i
 spark_ada_command_line.ads:61:09: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 spark_ada_command_line.ads:61:09: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 spark_ada_command_line.ads:63:08: info: flow dependencies proved
-spark_dns_main.adb:27:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+spark_dns_main.adb:27:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 spark_dns_main.adb:28:08: info: data dependencies proved
 spark_dns_main.adb:29:46: info: initialization of "TCP_DNS_Package.Startup_Suspension" proved
 spark_dns_main.adb:30:46: info: initialization of "UDP_DNS_Package.Startup_Suspension" proved
 spark_dns_main.adb:32:08: info: flow dependencies proved
 spark_dns_main.adb:36:04: info: initialization of "Success" proved
-spark_dns_main.adb:39:20: info: range check proved (CVC4: 2 VC)
+spark_dns_main.adb:39:20: info: range check proved (CVC5: 2 VC)
 spark_dns_main.adb:40:04: info: initialization of "ZoneFile" proved
 spark_dns_main.adb:43:34: warning: "ZoneFile" is set by "ProcessZoneFile" but not used after the call
-task_limit.adb:42:16: info: refined post proved (CVC4: 6 VC; Trivial: 2 VC)
-task_limit.adb:50:38: info: range check proved (CVC4: 2 VC)
-task_limit.adb:64:16: info: refined post proved (CVC4: 4 VC; Trivial: 2 VC)
-task_limit.adb:71:38: info: range check proved (CVC4: 2 VC)
-task_limit.ads:25:23: info: range check proved (CVC4: 2 VC)
+task_limit.adb:42:16: info: refined post proved (CVC5: 6 VC; Trivial: 2 VC)
+task_limit.adb:50:38: info: range check proved (CVC5: 2 VC)
+task_limit.adb:64:16: info: refined post proved (CVC5: 4 VC; Trivial: 2 VC)
+task_limit.adb:71:38: info: range check proved (CVC5: 2 VC)
+task_limit.ads:25:23: info: range check proved (CVC5: 2 VC)
 task_limit.ads:29:28: info: initialization of "Success" proved
 task_limit.ads:30:14: info: data dependencies proved
 task_limit.ads:31:14: info: flow dependencies proved
 task_limit.ads:36:14: info: data dependencies proved
 task_limit.ads:37:14: info: flow dependencies proved
-tcp_dns_package.ads:45:23: info: range check proved (CVC4: 2 VC)
-udp_dns_package.ads:47:23: info: range check proved (CVC4: 2 VC)
+tcp_dns_package.ads:45:23: info: range check proved (CVC5: 2 VC)
+udp_dns_package.ads:47:23: info: range check proved (CVC5: 2 VC)
 zone_file_io.adb:44:14: info: Initial_Condition of package "Text_IO" is ignored
 zone_file_io.adb:44:14: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 zone_file_io.adb:44:14: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
@@ -1139,31 +1139,31 @@ zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec" proved
 zone_file_io.adb:87:07: info: initialization of "RRSig_Rec" proved
 zone_file_io.adb:107:20: medium: in inlined expression function body at spark-text_io.ads:134
 zone_file_io.adb:107:20: medium: precondition might fail, cannot prove Is_Open (File) [possible fix: subprogram at zone_file_io.ads:24 should mention ZoneFile in a precondition]
-zone_file_io.adb:125:16: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:147:22: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:160:22: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:176:25: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:197:53: info: precondition proved (CVC4: 2 VC)
-zone_file_io.adb:204:28: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:230:31: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:236:31: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:240:58: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:243:59: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:246:60: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:250:44: info: precondition proved (CVC4: 1 VC)
-zone_file_io.adb:252:31: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:262:50: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:264:44: info: precondition proved (CVC4: 1 VC)
-zone_file_io.adb:266:31: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:329:38: info: precondition proved (CVC4: 1 VC)
-zone_file_io.adb:330:38: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:348:53: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:361:55: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:366:31: info: range check proved (CVC4: 2 VC)
+zone_file_io.adb:125:16: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:147:22: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:160:22: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:176:25: info: range check proved (CVC5: 2 VC)
+zone_file_io.adb:197:53: info: precondition proved (CVC5: 2 VC)
+zone_file_io.adb:204:28: info: range check proved (CVC5: 2 VC)
+zone_file_io.adb:230:31: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:236:31: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:240:58: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:243:59: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:246:60: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:250:44: info: precondition proved (CVC5: 1 VC)
+zone_file_io.adb:252:31: info: range check proved (CVC5: 2 VC)
+zone_file_io.adb:262:50: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_io.adb:264:44: medium: precondition might fail [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:266:31: info: range check proved (CVC5: 2 VC)
+zone_file_io.adb:329:38: info: precondition proved (CVC5: 1 VC)
+zone_file_io.adb:330:38: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:348:53: info: range check proved (CVC5: 2 VC)
+zone_file_io.adb:361:55: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
+zone_file_io.adb:366:31: medium: range check might fail, cannot prove lower bound for LastPos [reason for check: input value must fit in parameter type] [possible fix: loop at line 113 should mention LastPos in a loop invariant]
 zone_file_io.adb:404:26: medium: in inlined expression function body at spark-text_io.ads:134
 zone_file_io.adb:404:26: medium: precondition might fail, cannot prove Is_Open (File) [possible fix: loop at line 113 should mention ZoneFile in a loop invariant]
-zone_file_io.adb:410:20: info: range check proved (CVC4: 2 VC)
-zone_file_io.adb:410:47: info: overflow check proved (CVC4: 2 VC)
+zone_file_io.adb:410:20: info: range check proved (CVC5: 2 VC)
+zone_file_io.adb:410:47: medium: overflow check might fail, cannot prove lower bound for LastPos + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 zone_file_io.ads:23:09: info: Initial_Condition of package "Text_IO" is ignored
 zone_file_io.ads:23:09: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 zone_file_io.ads:23:09: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
@@ -1172,53 +1172,53 @@ zone_file_io.ads:27:09: info: data dependencies proved
 zone_file_io.ads:28:09: info: flow dependencies proved
 zone_file_parser.adb:51:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:52:07: info: initialization of "FoundType" proved
-zone_file_parser.adb:59:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:68:49: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:69:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:80:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:81:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:89:29: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:102:30: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:103:29: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:111:32: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:128:30: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:129:29: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:137:32: info: precondition proved (CVC4: 2 VC)
+zone_file_parser.adb:59:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:68:49: medium: range check might fail, cannot prove lower bound for ((BegIdx - BegIdx) + EndIdx) + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 67 should mention BegIdx in a loop invariant]
+zone_file_parser.adb:69:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:80:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:81:26: medium: precondition might fail [possible fix: loop at line 67 should mention BegIdx in a loop invariant]
+zone_file_parser.adb:89:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:33 should mention ZoneFileLine in a precondition]
+zone_file_parser.adb:102:30: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:103:29: medium: precondition might fail [possible fix: loop at line 67 should mention BegIdx in a loop invariant]
+zone_file_parser.adb:111:32: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:33 should mention ZoneFileLine in a precondition]
+zone_file_parser.adb:128:30: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:129:29: medium: precondition might fail [possible fix: loop at line 67 should mention BegIdx in a loop invariant]
+zone_file_parser.adb:137:32: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:33 should mention ZoneFileLine in a precondition]
 zone_file_parser.adb:155:11: info: flow dependencies proved
 zone_file_parser.adb:159:07: info: initialization of "BegIdx" proved
 zone_file_parser.adb:160:07: info: initialization of "FoundType" proved
-zone_file_parser.adb:166:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:167:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:174:54: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:182:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:183:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:190:29: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:201:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:202:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:209:29: info: precondition proved (CVC4: 2 VC)
+zone_file_parser.adb:166:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:167:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:174:54: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:182:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:183:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:190:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at line 149 should mention ZoneFileLine in a precondition]
+zone_file_parser.adb:201:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at line 149 should mention EndIdx in a precondition]
+zone_file_parser.adb:202:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:209:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at line 149 should mention ZoneFileLine in a precondition]
 zone_file_parser.adb:226:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:227:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:229:07: warning: initialization of "TimeString" has no effect
-zone_file_parser.adb:237:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:246:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:247:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:264:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:265:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:271:29: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:290:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:291:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:305:29: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:313:19: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 1 VC)
-zone_file_parser.adb:313:19: info: loop invariant preservation proved (CVC4: 5 VC; Trivial: 1 VC)
-zone_file_parser.adb:320:59: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:326:19: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:326:19: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:326:27: info: range check proved (CVC4: 4 VC)
-zone_file_parser.adb:327:33: info: index check proved (CVC4: 4 VC)
-zone_file_parser.adb:327:59: info: index check proved (CVC4: 4 VC)
-zone_file_parser.adb:334:32: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:344:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:345:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:237:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:246:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:247:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:264:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition]
+zone_file_parser.adb:265:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:271:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:40 should mention ZoneFileLine in a precondition]
+zone_file_parser.adb:290:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition]
+zone_file_parser.adb:291:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:305:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition]
+zone_file_parser.adb:313:19: info: loop invariant preservation proved (CVC5: 5 VC; Trivial: 1 VC)
+zone_file_parser.adb:316:19: medium: loop invariant might fail in first iteration, cannot prove EndIdx <= ZLength [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition]
+zone_file_parser.adb:320:59: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: loop at line 245 should mention BegIdx in a loop invariant]
+zone_file_parser.adb:326:19: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:326:27: medium: range check might fail
+zone_file_parser.adb:327:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TimeString (J) >= '0' [possible fix: loop invariant at line 312 should mention TimeString]
+zone_file_parser.adb:327:33: info: index check proved (CVC5: 4 VC)
+zone_file_parser.adb:327:59: medium: array index check might fail [reason for check: value must be a valid index into the array]
+zone_file_parser.adb:334:32: medium: precondition might fail, cannot prove TimeString (I) >= '0' [possible fix: loop invariant at line 312 should mention TimeString]
+zone_file_parser.adb:344:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition]
+zone_file_parser.adb:345:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:347:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:348:42: warning: "EndIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:363:07: info: initialization of "BegIdx" proved
@@ -1226,92 +1226,92 @@ zone_file_parser.adb:364:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:365:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:366:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:367:07: warning: initialization of "TimeString" has no effect
-zone_file_parser.adb:372:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:385:29: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:393:19: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 1 VC)
-zone_file_parser.adb:393:19: info: loop invariant preservation proved (CVC4: 5 VC; Trivial: 1 VC)
-zone_file_parser.adb:400:59: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:406:19: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:406:19: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:406:27: info: range check proved (CVC4: 4 VC)
-zone_file_parser.adb:407:33: info: index check proved (CVC4: 4 VC)
-zone_file_parser.adb:407:59: info: index check proved (CVC4: 4 VC)
-zone_file_parser.adb:414:32: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:424:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:425:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:432:29: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:443:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:444:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:452:48: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:460:20: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:462:22: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:462:22: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:465:44: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:465:49: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:465:49: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:467:20: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:471:42: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:471:42: info: loop invariant preservation proved (CVC4: 1 VC)
+zone_file_parser.adb:372:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:385:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:47 should mention ZoneFileLine in a precondition]
+zone_file_parser.adb:393:19: info: loop invariant initialization proved (CVC5: 5 VC; Trivial: 1 VC)
+zone_file_parser.adb:393:19: info: loop invariant preservation proved (CVC5: 5 VC; Trivial: 1 VC)
+zone_file_parser.adb:400:59: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:406:19: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:406:27: medium: range check might fail
+zone_file_parser.adb:407:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TimeString (J) >= '0' [possible fix: loop invariant at line 392 should mention TimeString]
+zone_file_parser.adb:407:33: info: index check proved (CVC5: 4 VC)
+zone_file_parser.adb:407:59: medium: array index check might fail [reason for check: value must be a valid index into the array]
+zone_file_parser.adb:414:32: medium: precondition might fail, cannot prove TimeString (I) >= '0' [possible fix: loop invariant at line 392 should mention TimeString]
+zone_file_parser.adb:424:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:425:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:432:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:47 should mention ZoneFileLine in a precondition]
+zone_file_parser.adb:443:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:444:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:452:48: medium: range check might fail, cannot prove upper bound for (EndIdx - BegIdx) + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:460:20: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:462:22: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:462:22: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:465:44: medium: overflow check might fail, cannot prove lower bound for I + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+zone_file_parser.adb:465:49: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
+zone_file_parser.adb:465:49: medium: overflow check might fail, cannot prove lower bound for (I + 1) - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
+zone_file_parser.adb:467:20: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:471:42: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:471:42: info: loop invariant preservation proved (CVC5: 1 VC)
 zone_file_parser.adb:491:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:492:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:493:07: info: initialization of "LengthOfToken" proved
-zone_file_parser.adb:499:23: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:499:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:501:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:508:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:508:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:509:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:510:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:508:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:508:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:509:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:510:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:512:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:522:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:523:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:522:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:523:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:527:42: warning: "FoundType" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:530:45: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:538:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:540:19: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:540:19: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:543:34: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:543:39: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:543:39: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:545:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:547:39: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:547:39: info: loop invariant preservation proved (CVC4: 1 VC)
+zone_file_parser.adb:530:45: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:538:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:540:19: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:540:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:543:34: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:543:39: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:543:39: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:545:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:547:39: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:547:39: info: loop invariant preservation proved (CVC5: 1 VC)
 zone_file_parser.adb:564:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:565:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:566:07: info: initialization of "LengthOfToken" proved
-zone_file_parser.adb:573:23: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:573:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:575:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:582:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:582:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:583:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:584:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:582:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:582:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:583:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:584:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:586:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:596:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:597:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:596:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:597:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:601:42: warning: "FoundType" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:604:45: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:612:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:614:19: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:614:19: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:617:34: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:617:39: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:617:39: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:619:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:622:39: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:622:39: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:630:30: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:631:29: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:604:45: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:612:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:614:19: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:614:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:617:34: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:617:39: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:617:39: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:619:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:622:39: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:622:39: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:630:30: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:631:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:635:45: warning: "FoundType" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:639:48: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:648:20: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:650:22: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:650:22: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:653:32: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:653:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:653:37: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:655:20: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:659:42: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:659:42: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:660:28: info: index check proved (CVC4: 2 VC)
+zone_file_parser.adb:639:48: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:648:20: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:650:22: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:650:22: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:653:32: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:653:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:653:37: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:655:20: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:659:42: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:659:42: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:660:28: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:691:07: info: initialization of "BegIdx" proved
 zone_file_parser.adb:692:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:693:07: info: initialization of "FoundType" proved
@@ -1324,232 +1324,232 @@ zone_file_parser.adb:700:07: info: initialization of "BitNumber" proved
 zone_file_parser.adb:702:16: info: types in unchecked conversion have the same size (Trivial)
 zone_file_parser.adb:703:10: info: type is suitable as source for unchecked conversion (Trivial)
 zone_file_parser.adb:703:32: info: type is suitable for unchecked conversion (Trivial)
-zone_file_parser.adb:713:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:723:40: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:726:53: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:727:23: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:729:86: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:729:92: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:729:92: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:731:43: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:737:80: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:737:86: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:737:90: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:748:16: info: loop invariant initialization proved (CVC4: 7 VC)
-zone_file_parser.adb:748:16: info: loop invariant preservation proved (CVC4: 7 VC)
-zone_file_parser.adb:760:29: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:766:46: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:769:59: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:770:29: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:773:62: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:773:68: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:773:68: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:782:86: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:782:92: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:782:96: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:800:13: info: assertion proved (CVC4: 5 VC)
-zone_file_parser.adb:812:16: info: loop invariant initialization proved (CVC4: 6 VC)
-zone_file_parser.adb:812:16: info: loop invariant preservation proved (CVC4: 6 VC)
-zone_file_parser.adb:824:49: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:825:30: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:826:30: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:840:13: info: assertion proved (CVC4: 4 VC)
-zone_file_parser.adb:851:14: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:855:16: info: loop invariant initialization proved (CVC4: 4 VC)
-zone_file_parser.adb:855:16: info: loop invariant preservation proved (CVC4: 4 VC)
-zone_file_parser.adb:862:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:866:19: info: loop invariant initialization proved (CVC4: 6 VC)
-zone_file_parser.adb:866:19: info: loop invariant preservation proved (CVC4: 6 VC)
-zone_file_parser.adb:877:68: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:877:74: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:877:74: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:884:81: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:884:87: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:884:91: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:887:67: info: division check proved (CVC4: 1 VC)
-zone_file_parser.adb:890:22: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:891:24: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:891:55: info: range check proved (CVC4: 2 VC)
+zone_file_parser.adb:713:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:723:40: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:726:53: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:727:23: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:729:86: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:729:92: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:729:92: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion]
+zone_file_parser.adb:731:43: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:737:80: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:737:86: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:737:90: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:748:16: medium: loop invariant might fail in first iteration, cannot prove EndIdx >= 0
+zone_file_parser.adb:748:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove EndIdx >= 0
+zone_file_parser.adb:760:29: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:766:46: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:769:59: medium: range check might fail, cannot prove lower bound for NumberOfRecordTypes + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:770:29: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:773:62: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:773:68: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:773:68: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop invariant at line 747 should mention RecordType]
+zone_file_parser.adb:782:86: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:782:92: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:782:96: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:802:16: medium: assertion might fail, cannot prove BlockLengthMap (J) >= RR_Type.Nsec_Record_Type.blockLengthValue'first
+zone_file_parser.adb:812:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove NumberOfBlocks >= 1
+zone_file_parser.adb:815:20: medium: loop invariant might fail in first iteration, cannot prove BlockLengthMap(J) >= RR_Type.NSec_Record_Type.BlockLengthValue'first
+zone_file_parser.adb:824:49: medium: range check might fail, cannot prove lower bound for NumberOfBlocks + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:825:30: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:826:30: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:843:13: medium: assertion might fail, cannot prove NumberOfBlocks >= 1
+zone_file_parser.adb:851:14: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:855:16: info: loop invariant initialization proved (CVC5: 4 VC)
+zone_file_parser.adb:855:16: info: loop invariant preservation proved (CVC5: 4 VC)
+zone_file_parser.adb:862:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:866:19: info: loop invariant initialization proved (CVC5: 6 VC)
+zone_file_parser.adb:866:19: info: loop invariant preservation proved (CVC5: 6 VC)
+zone_file_parser.adb:877:68: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:877:74: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:877:74: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop invariant at line 747 should mention RecordTypes]
+zone_file_parser.adb:884:81: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:884:87: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:884:91: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:887:67: info: division check proved (CVC5: 1 VC)
+zone_file_parser.adb:890:22: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:891:24: medium: array index check might fail [reason for check: value must be a valid index into the array]
+zone_file_parser.adb:891:55: medium: range check might fail, cannot prove lower bound for 7-BitNumber [reason for check: exponent value must fit in type Natural] [possible fix: loop invariant at line 854 should mention BitNumber]
 zone_file_parser.adb:903:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:904:07: info: initialization of "FoundType" proved
-zone_file_parser.adb:907:23: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:907:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:935:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:936:07: info: initialization of "FoundType" proved
-zone_file_parser.adb:943:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:952:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:953:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:954:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:955:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:956:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:957:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:960:36: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:961:35: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:974:23: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:975:45: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:975:45: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:990:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:991:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:992:37: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:995:36: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:996:35: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1009:23: info: range check proved (CVC4: 2 VC)
+zone_file_parser.adb:943:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:952:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:953:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:954:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:955:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:956:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:957:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:960:36: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:961:35: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:974:23: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:975:45: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:975:45: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:990:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:991:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:992:37: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:995:36: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:996:35: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1009:23: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1034:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1035:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1036:07: info: initialization of "DigitVal" proved
 zone_file_parser.adb:1037:07: info: initialization of "TmpVal" proved
-zone_file_parser.adb:1042:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1053:14: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1055:16: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:1055:16: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:1059:26: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1059:35: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1067:59: info: range check proved (CVC4: 1 VC)
+zone_file_parser.adb:1042:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1053:14: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1055:16: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:1056:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TmpVal >= 0
+zone_file_parser.adb:1059:26: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1059:35: medium: overflow check might fail, cannot prove lower bound for 10 * TmpVal + Long_Long_Integer (DigitVal) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: loop invariant at line 1054 should mention DigitVal]
+zone_file_parser.adb:1067:59: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 zone_file_parser.adb:1082:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1083:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1084:07: info: initialization of "DigitVal" proved
 zone_file_parser.adb:1085:07: info: initialization of "TmpVal" proved
 zone_file_parser.adb:1086:07: info: initialization of "LengthOfToken" proved
-zone_file_parser.adb:1094:23: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1094:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1096:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:1103:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1103:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:1104:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1105:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1103:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1103:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1104:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1105:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1107:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:1117:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1118:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1127:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1129:19: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:1129:19: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:1145:36: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1146:35: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1151:54: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1161:26: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1163:28: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:1163:28: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:1167:43: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1167:48: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:1167:48: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1169:26: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1173:48: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1173:48: info: loop invariant preservation proved (CVC4: 1 VC)
+zone_file_parser.adb:1117:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1118:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1127:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1129:19: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:1129:19: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1145:36: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1146:35: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1151:54: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1161:26: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1163:28: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:1163:28: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1167:43: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1167:48: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:1167:48: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1169:26: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1173:48: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1173:48: info: loop invariant preservation proved (CVC5: 1 VC)
 zone_file_parser.adb:1196:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1197:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1198:07: info: initialization of "DigitVal" proved
 zone_file_parser.adb:1199:07: info: initialization of "TmpVal" proved
 zone_file_parser.adb:1200:07: info: initialization of "LengthOfToken" proved
-zone_file_parser.adb:1209:23: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1209:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1211:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:1218:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1218:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:1219:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1220:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1218:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1218:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1219:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1220:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1222:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:1232:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1233:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1242:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1244:19: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:1244:19: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:1261:36: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1262:35: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1271:26: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1273:28: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:1273:28: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:1292:45: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1293:44: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1302:35: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1304:37: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:1304:37: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:1326:54: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1327:53: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1333:72: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1348:44: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:1356:61: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1356:66: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:1356:66: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1359:44: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1363:66: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1363:66: info: loop invariant preservation proved (CVC4: 1 VC)
+zone_file_parser.adb:1232:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1233:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1242:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1244:19: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:1244:19: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1261:36: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1262:35: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1271:26: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1273:28: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:1273:28: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1292:45: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1293:44: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1302:35: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1304:37: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:1304:37: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1326:54: medium: range check might fail, cannot prove upper bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:1327:53: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1333:72: medium: range check might fail, cannot prove upper bound for (EndIdx - BegIdx) + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1356:61: medium: overflow check might fail, cannot prove lower bound for I + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+zone_file_parser.adb:1356:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
+zone_file_parser.adb:1356:66: medium: overflow check might fail, cannot prove lower bound for (I + 1) - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
+zone_file_parser.adb:1359:44: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1363:66: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1363:66: info: loop invariant preservation proved (CVC5: 1 VC)
 zone_file_parser.adb:1387:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1388:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1389:07: info: initialization of "TmpVal" proved
-zone_file_parser.adb:1393:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1400:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1400:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:1401:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1402:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1393:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1400:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1400:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1401:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1402:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1430:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1431:07: info: initialization of "FoundType" proved
-zone_file_parser.adb:1435:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1443:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1443:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:1444:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1445:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1435:23: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1443:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1443:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1444:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1445:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1475:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1476:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1477:07: info: initialization of "LengthOfToken" proved
-zone_file_parser.adb:1484:23: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1484:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1486:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:1493:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1493:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:1494:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1495:26: info: precondition proved (CVC4: 1 VC)
+zone_file_parser.adb:1493:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1493:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1494:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1495:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1497:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
-zone_file_parser.adb:1507:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1508:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1513:45: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1523:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1525:19: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:1525:19: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:1528:34: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1528:39: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:1528:39: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1530:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1532:39: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1532:39: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:1545:27: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1546:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1551:45: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1561:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1563:19: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:1563:19: info: loop invariant preservation proved (CVC4: 3 VC)
-zone_file_parser.adb:1567:29: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1567:34: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:1567:34: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1569:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1573:39: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1573:39: info: loop invariant preservation proved (CVC4: 1 VC)
+zone_file_parser.adb:1507:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1508:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1513:45: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1523:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1525:19: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:1525:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1528:34: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1528:39: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:1528:39: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1530:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1532:39: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1532:39: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1545:27: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1546:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1551:45: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1561:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1563:19: info: loop invariant initialization proved (CVC5: 3 VC)
+zone_file_parser.adb:1563:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1567:29: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1567:34: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:1567:34: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1569:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1573:39: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1573:39: info: loop invariant preservation proved (CVC5: 1 VC)
 zone_file_parser.adb:1593:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1596:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:1597:07: info: initialization of "TokenType" proved
 zone_file_parser.adb:1599:07: info: initialization of "FirstChar" proved
 zone_file_parser.adb:1600:07: info: initialization of "LastChar" proved
-zone_file_parser.adb:1608:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1613:45: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1614:14: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1615:36: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:1615:36: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:1616:23: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1616:28: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:1616:28: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1626:17: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1628:19: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:1628:19: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:1630:26: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:1638:30: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1645:26: info: precondition proved (CVC4: 2 VC)
-zone_file_parser.adb:1651:33: info: loop invariant initialization proved (CVC4: 1 VC)
-zone_file_parser.adb:1651:33: info: loop invariant preservation proved (CVC4: 1 VC)
-zone_file_parser.adb:1652:14: info: range check proved (CVC4: 2 VC)
-zone_file_parser.adb:1653:36: info: loop invariant initialization proved (CVC4: 2 VC)
-zone_file_parser.adb:1653:36: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:1654:23: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1654:28: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:1654:28: info: overflow check proved (CVC4: 2 VC)
-zone_file_parser.adb:1678:43: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1692:30: info: range check proved (CVC4: 2 VC)
+zone_file_parser.adb:1608:26: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1613:45: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1614:14: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1615:36: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:1615:36: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1616:23: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1616:28: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:1616:28: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1626:17: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1628:19: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:1628:19: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1630:26: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:1638:30: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1645:26: medium: precondition might fail
+zone_file_parser.adb:1651:33: info: loop invariant initialization proved (CVC5: 1 VC)
+zone_file_parser.adb:1651:33: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1652:14: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1653:36: info: loop invariant initialization proved (CVC5: 2 VC)
+zone_file_parser.adb:1653:36: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1654:23: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1654:28: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1654:28: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
+zone_file_parser.adb:1678:43: info: precondition proved (CVC5: 1 VC)
+zone_file_parser.adb:1692:30: medium: range check might fail, cannot prove upper bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
 zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec" proved
 zone_file_parser.ads:38:09: info: flow dependencies proved
 zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec" proved
@@ -1568,7 +1568,7 @@ zone_file_parser.ads:85:07: info: initialization of "BlockNumbers" proved
 zone_file_parser.ads:86:07: info: initialization of "BlockLengths" proved
 zone_file_parser.ads:87:07: info: initialization of "BitMaps" proved
 zone_file_parser.ads:90:09: info: flow dependencies proved
-zone_file_parser.ads:98:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+zone_file_parser.ads:98:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 zone_file_parser.ads:101:07: info: initialization of "NewIPV4" proved
 zone_file_parser.ads:105:09: info: flow dependencies proved
 zone_file_parser.ads:109:07: info: initialization of "NewIPV6" proved

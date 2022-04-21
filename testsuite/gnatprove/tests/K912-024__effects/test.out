@@ -1,2 +1,2 @@
 using.ads:5:14: warning: subprogram "P" has no effect
-using.ads:6:19: warning: precondition is always False (CVC4: 1 VC)
+using.ads:6:19: warning: precondition is always False (CVC5: 1 VC)

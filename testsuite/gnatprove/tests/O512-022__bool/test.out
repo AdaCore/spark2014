@@ -1,4 +1,4 @@
-bool.adb:4:14: info: postcondition proved (CVC4: 4 VC)
-bool.adb:15:14: info: postcondition proved (CVC4: 9 VC)
+bool.adb:4:14: info: postcondition proved (CVC5: 4 VC)
+bool.adb:15:14: info: postcondition proved (CVC5: 9 VC)
 bool.adb:27:04: info: initialization of "X" proved
 bool.adb:27:07: info: initialization of "Y" proved

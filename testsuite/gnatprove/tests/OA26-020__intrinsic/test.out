@@ -1,2 +1,2 @@
-use_intrinsic.adb:6:19: info: assertion proved (CVC4: 1 VC)
+use_intrinsic.adb:6:19: info: assertion proved (CVC5: 1 VC)
 use_intrinsic.adb:7:19: medium: assertion might fail

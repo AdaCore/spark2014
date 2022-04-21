@@ -13,7 +13,7 @@ cascade.adb:14:04: warning: statement has no effect
 cascade.adb:15:10: warning: unused assignment
 cascade.adb:17:10: warning: unused assignment
 cascade.adb:19:07: warning: unused assignment
-cascade.adb:19:13: info: overflow check proved (CVC4: 2 VC)
+cascade.adb:19:13: info: overflow check proved (CVC5: 2 VC)
 cascade.adb:20:07: warning: unused assignment
 cascade.adb:20:12: high: overflow check might fail, cannot prove upper bound for 2 * T3 (e.g. when T3 = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 cascade.adb:21:07: warning: unused assignment

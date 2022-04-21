@@ -1,6 +1,6 @@
 prove_all:
   steps: 1
-  prover: ["cvc4"]
+  prover: ["cvc5"]
   counterexample: False
   opt: ["--no-loop-unrolling", "--no-inlining"]
 large: True

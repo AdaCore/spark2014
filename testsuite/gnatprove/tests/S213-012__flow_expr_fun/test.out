@@ -7,4 +7,4 @@ repro-b.adb:6:07: warning: statement has no effect
 repro-b.ads:6:19: warning: unused initial value of "Word"
 repro-b.ads:7:06: info: data dependencies proved
 repro-b.ads:7:28: warning: "A.State" is not modified, could be INPUT
-repro-b.ads:9:16: info: postcondition proved (CVC4: 1 VC)
+repro-b.ads:9:16: info: postcondition proved (CVC5: 1 VC)

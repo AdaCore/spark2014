@@ -1,7 +1,7 @@
 tagged_conv.adb:10:14: warning: subprogram "Conv_Child_To_Root_Ok" has no effect
-tagged_conv.adb:13:29: info: tag check proved (CVC4: 1 VC)
+tagged_conv.adb:13:29: info: tag check proved (CVC5: 1 VC)
 tagged_conv.adb:18:14: warning: subprogram "Conv_Child_To_Root_Ok2" has no effect
-tagged_conv.adb:23:29: info: tag check proved (CVC4: 1 VC)
+tagged_conv.adb:23:29: info: tag check proved (CVC5: 1 VC)
 tagged_conv.adb:28:14: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
 tagged_conv.adb:36:14: warning: subprogram "Bad1" has no effect
 tagged_conv.adb:37:41: medium: tag check might fail

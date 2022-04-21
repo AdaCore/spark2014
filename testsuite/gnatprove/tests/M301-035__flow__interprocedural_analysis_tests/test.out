@@ -6,15 +6,15 @@ across_compilation_units-child.ads:30:24: medium: missing dependency "Z => X"
 across_compilation_units-child.ads:30:24: medium: missing self-dependency "Z => Z"
 across_compilation_units-child.ads:41:12: info: data dependencies proved
 across_compilation_units-child.ads:42:12: info: flow dependencies proved
-across_compilation_units.adb:4:23: info: division check proved (CVC4: 1 VC)
+across_compilation_units.adb:4:23: info: division check proved (CVC5: 1 VC)
 across_compilation_units.adb:4:27: info: cannot unroll loop (too many loop iterations)
-across_compilation_units.adb:5:16: info: division check proved (CVC4: 1 VC)
+across_compilation_units.adb:5:16: info: division check proved (CVC5: 1 VC)
 across_compilation_units.adb:13:07: info: initialization of "Temp" proved
 across_compilation_units.adb:21:07: info: initialization of "Temp" proved
 across_compilation_units.ads:7:12: info: flow dependencies proved
 caller_of_across_compilation_units.adb:19:32: info: cannot unroll loop (too many loop iterations)
-caller_of_across_compilation_units.adb:20:16: info: division check proved (CVC4: 1 VC)
-caller_of_across_compilation_units.adb:20:39: info: division check proved (CVC4: 1 VC)
+caller_of_across_compilation_units.adb:20:16: info: division check proved (CVC5: 1 VC)
+caller_of_across_compilation_units.adb:20:39: info: division check proved (CVC5: 1 VC)
 single_compilation_unit.adb:18:19: info: initialization of "Maximum" proved
 single_compilation_unit.adb:19:12: info: data dependencies proved
 single_compilation_unit.adb:20:12: info: flow dependencies proved
@@ -26,10 +26,10 @@ single_compilation_unit.adb:39:04: warning: analyzing unreferenced function "Dou
 single_compilation_unit.adb:40:07: info: initialization of "Temp" proved
 single_compilation_unit.adb:43:16: medium: overflow check might fail, cannot prove lower bound for 2 * Temp [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 42 should mention Maximum (for argument Temp) in a postcondition]
 single_compilation_unit.adb:50:39: info: initialization of "Fact" proved
-single_compilation_unit.adb:53:25: info: range check proved (CVC4: 2 VC)
+single_compilation_unit.adb:53:25: info: range check proved (CVC5: 2 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail, cannot prove upper bound for Fact * Var [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 53 should mention Fact (for argument Fact) in a postcondition]
-single_compilation_unit.adb:69:30: info: overflow check proved (CVC4: 2 VC)
+single_compilation_unit.adb:69:30: info: overflow check proved (CVC5: 2 VC)
 single_compilation_unit.adb:69:35: medium: overflow check might fail, cannot prove lower bound for Fibonacci (N - 1) + Fibonacci (N - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Fibonacci (N - 2) >= 0 then Fibonacci (N - 1) <= Integer'Last - Fibonacci (N - 2) else Fibonacci (N - 1) >= Integer'First - Fibonacci (N - 2)) to subprogram at line 64]
-single_compilation_unit.adb:69:50: info: overflow check proved (CVC4: 2 VC)
+single_compilation_unit.adb:69:50: info: overflow check proved (CVC5: 2 VC)
 single_compilation_unit.adb:94:17: medium: overflow check might fail, cannot prove lower bound for 2 * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 27 should mention X in a precondition]
 single_compilation_unit.adb:108:17: medium: overflow check might fail, cannot prove lower bound for 2 * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 31 should mention Y in a precondition]

@@ -1,6 +1,6 @@
 hello.ads:36:14: warning: subprogram "Hello_Spg_1" has no effect
 hello.ads:37:14: warning: subprogram "Hello_Spg_2" has no effect
-node_a.adb:21:20: info: range check proved (CVC4: 2 VC)
+node_a.adb:21:20: info: range check proved (CVC5: 2 VC)
 polyorb_hi-epoch.adb:32:06: warning: unit "System" is not referenced [-gnatwu]
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
@@ -18,10 +18,10 @@ polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" ha
 polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:65:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:65:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.ads:73
 polyorb_hi_generated-activity.ads:22:03: warning: pragma "Storage_Size" ignored (not yet supported)

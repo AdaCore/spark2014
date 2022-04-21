@@ -1,13 +1,13 @@
-full.adb:9:16: info: overflow check proved (CVC4: 2 VC)
-full.adb:14:12: info: precondition proved (CVC4: 1 VC)
-full.ads:11:20: info: postcondition proved (CVC4: 1 VC)
-full.ads:11:36: info: overflow check proved (CVC4: 2 VC)
+full.adb:9:16: info: overflow check proved (CVC5: 2 VC)
+full.adb:14:12: info: precondition proved (CVC5: 1 VC)
+full.ads:11:20: info: postcondition proved (CVC5: 1 VC)
+full.ads:11:36: info: overflow check proved (CVC5: 2 VC)
 full.ads:14:12: info: data dependencies proved
-full.ads:16:22: info: postcondition proved (CVC4: 1 VC)
-my_pack.adb:15:07: info: precondition proved (CVC4: 1 VC)
+full.ads:16:22: info: postcondition proved (CVC5: 1 VC)
+my_pack.adb:15:07: info: precondition proved (CVC5: 1 VC)
 my_pack.ads:14:12: info: data dependencies proved
-my_pack.ads:16:22: info: postcondition proved (CVC4: 1 VC)
-my_pack.ads:16:36: info: overflow check proved (CVC4: 2 VC)
+my_pack.ads:16:22: info: postcondition proved (CVC5: 1 VC)
+my_pack.ads:16:36: info: overflow check proved (CVC5: 2 VC)
 max steps used for successful proof: 1
 
 
@@ -37,11 +37,11 @@ Assertions . . . . . .
 Concurrency . . . . . .
 Data Dependencies 2 2 . . . .
 Flow Dependencies . . . . . .
-Functional Contracts 5 . . 5 . .
+Functional Contracts 5 . . 5 (CVC5) . .
 Initialization . . . . . .
 LSP Verification . . . . . .
 Non-Aliasing . . . . . .
-Run-time Checks 3 . . 3 . .
+Run-time Checks 3 . . 3 (CVC5) . .
 SPARK Analysis results Total Flow CodePeer Provers Justified Unproved
 Summary of SPARK analysis
 Termination . . . . . .

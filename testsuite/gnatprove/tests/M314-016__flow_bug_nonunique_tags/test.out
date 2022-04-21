@@ -4,14 +4,14 @@ segway.adb:11:13: high: either make "Speed" an input in the Global contract or i
 segway.adb:12:22: high: "Speed" is not an input in the Global contract of subprogram "State_Update" at segway.ads:22
 segway.adb:12:22: high: "Speed" is not initialized
 segway.adb:12:22: high: either make "Speed" an input in the Global contract or initialize it before use
-segway.adb:12:28: info: range check proved (CVC4: 2 VC)
+segway.adb:12:28: info: range check proved (CVC5: 2 VC)
 segway.adb:15:13: high: "Speed" is not an input in the Global contract of subprogram "State_Update" at segway.ads:22
 segway.adb:15:13: high: "Speed" is not initialized
 segway.adb:15:13: high: either make "Speed" an input in the Global contract or initialize it before use
 segway.adb:16:22: high: "Speed" is not an input in the Global contract of subprogram "State_Update" at segway.ads:22
 segway.adb:16:22: high: "Speed" is not initialized
 segway.adb:16:22: high: either make "Speed" an input in the Global contract or initialize it before use
-segway.adb:16:28: info: range check proved (CVC4: 2 VC)
+segway.adb:16:28: info: range check proved (CVC5: 2 VC)
 segway.adb:19:19: high: "Speed" is not an input in the Global contract of subprogram "State_Update" at segway.ads:22
 segway.adb:19:19: high: "Speed" is not initialized
 segway.adb:19:19: high: either make "Speed" an input in the Global contract or initialize it before use
@@ -32,4 +32,4 @@ segway.ads:24:17: medium: postcondition might fail
 segway.ads:25:09: info: data dependencies proved
 segway.ads:25:31: medium: "Speed" might not be initialized
 segway.ads:25:38: medium: "State" might not be initialized
-segway.ads:29:17: info: postcondition proved (CVC4: 2 VC)
+segway.ads:29:17: info: postcondition proved (CVC5: 2 VC)

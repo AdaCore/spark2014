@@ -1,50 +1,50 @@
-basicmath_small.adb:28:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:28:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:29:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+basicmath_small.adb:28:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:28:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:29:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:38:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:49:10: info: precondition proved (CVC4: 1 VC)
+basicmath_small.adb:49:10: info: precondition proved (CVC5: 1 VC)
 basicmath_small.adb:49:10: warning: "CarryFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:49:10: warning: "OverflowFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:49:10: warning: "SignFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:49:10: warning: "ZeroFlag" is set by "usqrt" but not used after the call
-basicmath_small.adb:89:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:89:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:90:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+basicmath_small.adb:89:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:89:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:90:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:95:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:143:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:143:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:144:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+basicmath_small.adb:143:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:143:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:144:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:149:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:195:07: warning: initialization of "SaveStackPtr" has no effect
-basicmath_small.adb:195:39: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:195:39: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:196:07: warning: initialization of "ra0" has no effect
-basicmath_small.adb:196:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:196:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:197:07: warning: initialization of "ra1" has no effect
-basicmath_small.adb:197:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:197:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:198:07: warning: initialization of "ra2" has no effect
-basicmath_small.adb:198:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:198:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:199:07: warning: initialization of "ra3" has no effect
-basicmath_small.adb:199:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:199:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:200:07: warning: initialization of "ra4" has no effect
-basicmath_small.adb:200:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:200:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:201:07: warning: initialization of "ra5" has no effect
-basicmath_small.adb:201:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:201:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:202:07: warning: initialization of "ra6" has no effect
-basicmath_small.adb:202:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:202:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:203:07: warning: initialization of "ra7" has no effect
-basicmath_small.adb:203:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:203:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:204:07: warning: initialization of "SaveRBX" has no effect
-basicmath_small.adb:204:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:204:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:205:07: warning: initialization of "SaveRBP" has no effect
-basicmath_small.adb:205:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:205:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:206:07: warning: initialization of "SaveR12" has no effect
-basicmath_small.adb:206:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:206:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:207:07: warning: initialization of "SaveR13" has no effect
-basicmath_small.adb:207:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:207:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:208:07: warning: initialization of "SaveR14" has no effect
-basicmath_small.adb:208:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:208:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:209:07: warning: initialization of "SaveR15" has no effect
-basicmath_small.adb:209:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:209:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:223:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:223:10: warning: statement has no effect
 basicmath_small.adb:253:15: warning: unused assignment
@@ -54,8 +54,8 @@ basicmath_small.adb:265:16: warning: unused assignment
 basicmath_small.adb:268:16: warning: unused assignment
 basicmath_small.adb:271:16: warning: unused assignment
 basicmath_small.adb:296:21: warning: unused assignment
-basicmath_small.adb:302:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:302:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:302:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:302:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:305:19: warning: unused assignment
 basicmath_small.adb:308:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:308:13: warning: statement has no effect
@@ -72,8 +72,8 @@ basicmath_small.adb:367:16: warning: unused assignment
 basicmath_small.adb:378:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:378:10: warning: statement has no effect
 basicmath_small.adb:391:21: warning: unused assignment
-basicmath_small.adb:397:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:397:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:397:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:397:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:400:19: warning: unused assignment
 basicmath_small.adb:403:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:403:13: warning: statement has no effect
@@ -91,8 +91,8 @@ basicmath_small.adb:462:16: warning: unused assignment
 basicmath_small.adb:473:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:473:10: warning: statement has no effect
 basicmath_small.adb:486:21: warning: unused assignment
-basicmath_small.adb:492:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:492:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:492:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:492:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:495:19: warning: unused assignment
 basicmath_small.adb:498:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:498:13: warning: statement has no effect
@@ -110,8 +110,8 @@ basicmath_small.adb:557:16: warning: unused assignment
 basicmath_small.adb:568:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:568:10: warning: statement has no effect
 basicmath_small.adb:581:21: warning: unused assignment
-basicmath_small.adb:587:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:587:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:587:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:587:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:591:19: warning: unused assignment
 basicmath_small.adb:594:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:594:13: warning: statement has no effect
@@ -119,28 +119,28 @@ basicmath_small.adb:603:18: warning: unused assignment
 basicmath_small.adb:613:24: warning: unused assignment
 basicmath_small.adb:624:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:624:10: warning: statement has no effect
-basicmath_small.adb:642:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:642:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:643:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+basicmath_small.adb:642:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:642:32: medium: loop invariant might not be preserved by an arbitrary iteration
+basicmath_small.adb:643:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:660:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:672:35: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:672:35: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:673:35: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+basicmath_small.adb:672:35: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:672:35: medium: loop invariant might not be preserved by an arbitrary iteration
+basicmath_small.adb:673:35: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:686:40: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:698:38: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:698:38: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:699:38: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+basicmath_small.adb:698:38: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:698:38: medium: loop invariant might not be preserved by an arbitrary iteration
+basicmath_small.adb:699:38: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:708:43: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:720:41: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:720:41: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:721:41: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+basicmath_small.adb:720:41: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:720:41: medium: loop invariant might not be preserved by an arbitrary iteration
+basicmath_small.adb:721:41: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:726:46: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:728:27: warning: unused assignment
 basicmath_small.adb:746:28: warning: unused assignment
 basicmath_small.adb:749:28: warning: unused assignment
 basicmath_small.adb:773:33: warning: unused assignment
-basicmath_small.adb:779:44: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:779:44: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:779:44: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:779:44: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:782:31: warning: unused assignment
 basicmath_small.adb:804:36: warning: unused assignment
 basicmath_small.adb:904:07: warning: "CarryFlag" is set by "loop_6" but not used after the call
@@ -155,34 +155,34 @@ basicmath_small.adb:948:07: warning: "XMM1" is set by "loop_7" but not used afte
 basicmath_small.adb:948:07: warning: "ZeroFlag" is set by "loop_7" but not used after the call
 basicmath_small.adb:964:07: warning: "RBP" is set by "loop_8" but not used after the call
 basicmath_small.adb:964:07: warning: "RBX" is set by "loop_8" but not used after the call
-basicmath_small.adb:1042:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:1042:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:1042:32: info: loop invariant initialization proved (CVC5: 1 VC)
+basicmath_small.adb:1042:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:1094:07: warning: initialization of "SaveStackPtr" has no effect
-basicmath_small.adb:1094:39: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1094:39: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1095:07: warning: initialization of "ra0" has no effect
-basicmath_small.adb:1095:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1095:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1096:07: warning: initialization of "ra1" has no effect
-basicmath_small.adb:1096:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1096:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1097:07: warning: initialization of "ra2" has no effect
-basicmath_small.adb:1097:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1097:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1098:07: warning: initialization of "ra3" has no effect
-basicmath_small.adb:1098:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1098:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1099:07: warning: initialization of "ra4" has no effect
-basicmath_small.adb:1099:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1099:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1100:07: warning: initialization of "ra5" has no effect
-basicmath_small.adb:1100:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1100:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1101:07: warning: initialization of "ra6" has no effect
-basicmath_small.adb:1101:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1101:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1102:07: warning: initialization of "ra7" has no effect
-basicmath_small.adb:1102:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1102:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.ads:17:09: info: data dependencies proved
-basicmath_small.ads:18:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:18:17: info: postcondition proved (CVC5: 1 VC)
 basicmath_small.ads:21:09: info: data dependencies proved
-basicmath_small.ads:22:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:22:17: info: postcondition proved (CVC5: 1 VC)
 basicmath_small.ads:25:09: info: data dependencies proved
-basicmath_small.ads:26:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:26:17: info: postcondition proved (CVC5: 1 VC)
 basicmath_small.ads:29:09: info: data dependencies proved
-basicmath_small.ads:30:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:30:17: info: postcondition proved (CVC5: 1 VC)
 basicmath_small.ads:33:06: info: data dependencies proved
 basicmath_small.ads:33:31: info: initialization of "RSI" proved
 basicmath_small.ads:34:31: info: initialization of "ZeroFlag" proved
@@ -241,13 +241,13 @@ basicmath_small.ads:98:30: low: unused global "StackAddressSize"
 basicmath_small.ads:98:64: low: unused global "FS"
 basicmath_small.ads:98:72: low: unused global "GS"
 basicmath_small.ads:98:80: low: unused global "RDI"
-basicmath_small.ads:99:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:99:17: info: postcondition proved (CVC5: 1 VC)
 basicmath_small.ads:101:09: info: data dependencies proved
 basicmath_small.ads:102:30: low: unused global "StackAddressSize"
 basicmath_small.ads:102:64: low: unused global "FS"
 basicmath_small.ads:102:72: low: unused global "GS"
 basicmath_small.ads:102:80: low: unused global "RDI"
-basicmath_small.ads:103:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:103:17: info: postcondition proved (CVC5: 1 VC)
 basicmath_small.ads:106:06: info: data dependencies proved
 basicmath_small.ads:106:31: info: initialization of "RCX" proved
 basicmath_small.ads:107:31: info: initialization of "ZeroFlag" proved
@@ -265,4 +265,4 @@ basicmath_small.ads:115:27: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:115:41: info: initialization of "SignFlag" proved
 basicmath_small.ads:115:55: info: initialization of "CarryFlag" proved
 basicmath_small.ads:115:70: info: initialization of "OverflowFlag" proved
-basicmath_small.ads:130:23: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:120:17: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'old)

@@ -7,6 +7,6 @@ three.adb:5:04: high: alignment of overlayed object might not be an integral mul
 three.adb:5:04: info: object is suitable for aliasing via address clause (Trivial)
 three.adb:5:40: info: object is suitable for aliasing via address clause (Trivial)
 three.adb:5:40: info: types of aliased objects have the same size (Trivial)
-three.adb:8:19: info: assertion proved (CVC4: 1 VC)
+three.adb:8:19: info: assertion proved (CVC5: 1 VC)
 three.adb:11:19: medium: assertion might fail (e.g. when Y = -1) [possible fix: add or complete related loop invariants or postconditions]
-three.adb:12:19: info: assertion proved (CVC4: 1 VC)
+three.adb:12:19: info: assertion proved (CVC5: 1 VC)

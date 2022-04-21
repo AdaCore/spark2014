@@ -1,2 +1,2 @@
-test.adb:4:22: info: assertion proved (CVC4: 1 VC)
+test.adb:4:22: info: assertion proved (CVC5: 1 VC)
 test.ads:1291:17: warning: unused initial value of "X"

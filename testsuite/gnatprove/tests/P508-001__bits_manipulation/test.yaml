@@ -1,7 +1,7 @@
 comment: "Do not use Z3 which causes diffs between platforms. And Alt-Ergo doesn't do anything here."
 prove_all:
   opt: ["--no-axiom-guard", "--proof-warnings"]
-  prover: ["cvc4"]
+  prover: ["cvc5"]
   steps: 3000
   counterexample: False
 timeout: 1500

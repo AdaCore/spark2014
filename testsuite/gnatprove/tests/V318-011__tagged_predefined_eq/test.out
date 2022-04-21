@@ -1,5 +1,5 @@
 dcltg.adb:11:22: info: expression function body not available for proof ("FakeUse" might not return)
 dcltg.adb:13:08: info: expression function body not available for proof ("FakeUse" might not return)
-dcltg.adb:13:22: info: tag check proved (CVC4: 1 VC)
-dcltg.adb:16:44: info: tag check proved (CVC4: 1 VC)
+dcltg.adb:13:22: info: tag check proved (CVC5: 1 VC)
+dcltg.adb:16:44: info: tag check proved (CVC5: 1 VC)
 dcltg.adb:16:54: info: expression function body not available for proof ("FakeUse" might not return)

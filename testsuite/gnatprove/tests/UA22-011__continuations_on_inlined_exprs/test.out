@@ -1,7 +1,7 @@
 main.adb:20:16: medium: in default value at main.adb:47
 main.adb:20:16: medium: in inlined predicate at main.adb:12
 main.adb:20:16: medium: predicate check might fail, cannot prove T.G >= 0
-main.adb:27:04: info: predicate check proved on default value (CVC4: 2 VC)
+main.adb:27:04: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:30:08: medium: in inlined predicate at main.adb:11
 main.adb:30:08: medium: predicate check might fail, cannot prove T.F >= 0
 main.adb:32:08: medium: in inlined predicate at main.adb:12

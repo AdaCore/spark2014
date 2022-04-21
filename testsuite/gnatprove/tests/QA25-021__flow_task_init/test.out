@@ -1,3 +1,3 @@
-p.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
+p.ads:2:09: info: nontermination of task proved (CVC5: 1 VC)
 p.ads:2:09: low: initialization of "T" must be mentioned in the Initializes contract of "P" (SPARK RM 7.1.5(9))
 p.ads:8:04: low: initialization of "Y" must be mentioned in the Initializes contract of "P" (SPARK RM 7.1.5(9))

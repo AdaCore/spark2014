@@ -1,4 +1,4 @@
-saturation.adb:11:06: info: complete contract cases proved (CVC4: 1 VC)
-saturation.adb:11:06: info: disjoint contract cases proved (CVC4: 1 VC)
+saturation.adb:11:06: info: complete contract cases proved (CVC5: 1 VC)
+saturation.adb:11:06: info: disjoint contract cases proved (CVC5: 1 VC)
 saturation.adb:12:38: medium: contract case might fail
 saturation.adb:14:38: medium: contract case might fail

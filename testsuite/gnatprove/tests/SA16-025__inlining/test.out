@@ -3,7 +3,7 @@ time.adb:22:07: info: initialization of "temp_time" proved
 time.adb:26:07: info: initialization of "temp_years" proved
 time.adb:30:17: warning: unused assignment
 time.adb:34:34: info: no contextual analysis of "ddays_in_year" (in while loop condition)
-time.adb:34:57: info: range check proved (CVC4: 4 VC)
+time.adb:34:57: info: range check proved (CVC5: 4 VC)
 time.adb:35:07: warning: loop condition is stable
 time.adb:35:07: warning: statement has no effect
 time.ads:71:40: warning: unused initial value of "time_in"

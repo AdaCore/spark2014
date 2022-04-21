@@ -1,9 +1,9 @@
 default_init.adb:1:11: warning: subprogram "Default_Init" has no effect
 default_init.adb:6:49: info: in default value at default_init.adb:7
-default_init.adb:6:49: info: range check proved (CVC4: 2 VC)
+default_init.adb:6:49: info: range check proved (CVC5: 2 VC)
 default_init.adb:7:04: info: initialization of "X1" proved
 default_init.adb:12:04: info: initialization of "X2" proved
 default_init.adb:16:04: info: initialization of "X3" proved
-default_init.adb:19:19: info: assertion proved (CVC4: 1 VC)
-default_init.adb:20:19: info: assertion proved (CVC4: 1 VC)
-default_init.adb:21:19: info: assertion proved (CVC4: 1 VC)
+default_init.adb:19:19: info: assertion proved (CVC5: 1 VC)
+default_init.adb:20:19: info: assertion proved (CVC5: 1 VC)
+default_init.adb:21:19: info: assertion proved (CVC5: 1 VC)

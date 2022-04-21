@@ -1,1 +1,1 @@
-max.ads:4:19: info: postcondition proved (CVC4: 2 VC)
+max.ads:4:19: info: postcondition proved (CVC5: 2 VC)

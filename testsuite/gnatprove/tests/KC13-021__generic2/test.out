@@ -8,7 +8,7 @@ p.adb:8:29: medium: overflow check might fail, cannot prove upper bound for (Tmp
 p.adb:8:29: medium: overflow check might fail, cannot prove upper bound for (Tmp + F1 (Y)) + (Z + T), in instantiation at q.ads:9 (e.g. when Tmp = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function QF1 or turning it into an expression function]
 p.adb:9:07: medium: precondition might fail, in instantiation at q.adb:13 (e.g. when Tmp = Integer'Last) [possible fix: add or complete related loop invariants or postconditions]
 p.adb:9:07: medium: precondition might fail, in instantiation at q.ads:9 (e.g. when Tmp = Integer'Last) [possible fix: add or complete related loop invariants or postconditions]
-q.adb:10:14: info: overflow check proved (CVC4: 2 VC)
+q.adb:10:14: info: overflow check proved (CVC5: 2 VC)
 q.adb:16:07: info: initialization of "R1" proved
 q.adb:17:07: info: initialization of "R2" proved
 q.adb:21:18: medium: overflow check might fail, cannot prove lower bound for R1.D + R2.D (e.g. when R1 = (A => -1, B => False, C => 0, D => -1) and R2 = (A => False, B => -1, C => 0, D => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add or complete related loop invariants or postconditions]

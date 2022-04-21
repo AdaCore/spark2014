@@ -4,8 +4,8 @@ main.adb:16:29: medium: initialization check might fail (e.g. when X.X'Initializ
 main.adb:21:25: info: data dependencies proved
 main.adb:21:45: low: unused global "X"
 main.adb:22:07: medium: memory leak might occur at end of scope
-main.adb:22:29: info: initialization check proved (CVC4: 2 VC; Trivial: 5 VC)
+main.adb:22:29: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)
 main.adb:30:25: info: data dependencies proved
 main.adb:31:07: medium: memory leak might occur at end of scope
-main.adb:32:22: info: pointer dereference check proved (CVC4: 1 VC)
-main.adb:33:19: info: initialization check proved (CVC4: 2 VC; Trivial: 5 VC)
+main.adb:32:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:33:19: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)

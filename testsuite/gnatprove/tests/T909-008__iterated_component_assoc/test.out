@@ -1,1 +1,1 @@
-test_aggr.adb:7:38: info: overflow check proved (CVC4: 2 VC)
+test_aggr.adb:7:38: info: overflow check proved (CVC5: 2 VC)

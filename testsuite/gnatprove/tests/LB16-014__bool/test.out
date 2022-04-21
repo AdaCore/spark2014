@@ -1,3 +1,3 @@
-data.ads:14:17: info: postcondition proved (CVC4: 2 VC)
-data.ads:15:24: info: precondition proved (CVC4: 1 VC)
-data.ads:33:24: info: discriminant check proved (CVC4: 1 VC)
+data.ads:14:17: info: postcondition proved (CVC5: 2 VC)
+data.ads:15:24: info: precondition proved (CVC5: 1 VC)
+data.ads:33:24: info: discriminant check proved (CVC5: 1 VC)

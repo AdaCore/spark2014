@@ -18,7 +18,7 @@ r1.ads:7:03: info: flow dependencies proved
 r1.ads:11:26: info: initialization of "R2.S2" constituent of "R1.S1" proved
 r1.ads:11:51: info: initialization of "R2.U2" constituent of "R1.U1" proved
 r1.ads:12:06: info: flow dependencies proved
-r1.ads:14:17: info: nontermination of task proved (CVC4: 1 VC)
+r1.ads:14:17: info: nontermination of task proved (CVC5: 1 VC)
 r1.ads:14:26: info: data dependencies proved
 r1.ads:19:32: info: initialization of "R3.S3" constituent of "R2.S2" proved
 r1.ads:19:57: info: initialization of "R3.U3" constituent of "R2.U2" proved

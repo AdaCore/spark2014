@@ -3,8 +3,8 @@ main.adb:13:39: medium: range check might fail, cannot prove upper bound for foo
 main.adb:14:39: medium: range check might fail, cannot prove upper bound for foo.c2'Position [reason for check: default component value must fit in the type]
 main.adb:16:19: medium: assertion might fail
 main.adb:17:19: medium: assertion might fail
-main.adb:18:24: info: range check proved (CVC4: 2 VC)
-main.adb:19:24: info: range check proved (CVC4: 2 VC)
+main.adb:18:24: info: range check proved (CVC5: 2 VC)
+main.adb:19:24: info: range check proved (CVC5: 2 VC)
 main2.adb:4:11: high: all paths in "main2" raise exceptions or do not terminate normally
 main2.adb:21:19: info: assertion proved (Trivial)
 main2.adb:22:04: medium: assertion might fail

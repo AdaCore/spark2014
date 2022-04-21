@@ -1,12 +1,12 @@
 array_aggregates.adb:53:11: info: flow dependencies proved
 array_aggregates.adb:55:07: info: initialization of "M" proved
-array_aggregates.adb:63:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:63:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:69:12: info: flow dependencies proved
 array_aggregates.adb:71:07: info: initialization of "M" proved
 array_aggregates.adb:75:22: high: assertion might fail (e.g. when M = (Elem_0 => Elem_0, others => Elem_1))
 array_aggregates.adb:79:32: info: initialization of "M" proved
 array_aggregates.adb:80:11: info: flow dependencies proved
-array_aggregates.adb:84:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:84:22: info: assertion proved (altergo: 1 VC)
 array_aggregates.adb:87:32: info: initialization of "M" proved
 array_aggregates.adb:88:11: info: flow dependencies proved
 array_aggregates.adb:92:22: high: assertion might fail (e.g. when M = (Elem_2 => Elem_2, others => Elem_0))
@@ -15,7 +15,7 @@ array_aggregates.adb:96:11: info: flow dependencies proved
 array_aggregates.adb:100:22: high: assertion might fail (e.g. when X = (others => 8))
 array_aggregates.adb:103:32: info: initialization of "X" proved
 array_aggregates.adb:104:11: info: flow dependencies proved
-array_aggregates.adb:108:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:108:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:111:32: info: initialization of "X" proved
 array_aggregates.adb:112:11: info: flow dependencies proved
 array_aggregates.adb:118:22: high: assertion might fail (e.g. when X = (4 => 8, 7 => 10, others => 2))
@@ -36,37 +36,37 @@ array_aggregates.adb:159:11: info: flow dependencies proved
 array_aggregates.adb:164:22: high: assertion might fail (e.g. when X = (others => Elem_1))
 array_aggregates.adb:167:32: info: initialization of "X" proved
 array_aggregates.adb:168:11: info: flow dependencies proved
-array_aggregates.adb:173:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:173:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:176:32: info: initialization of "X" proved
 array_aggregates.adb:177:11: info: flow dependencies proved
 array_aggregates.adb:186:22: high: assertion might fail (e.g. when X(2).A = 5 and X(3).A = 10 and X(3).B = True and X(3).C = Elem_1)
 array_aggregates.adb:189:32: info: initialization of "X" proved
 array_aggregates.adb:190:11: info: flow dependencies proved
-array_aggregates.adb:199:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:199:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:202:32: info: initialization of "X" proved
 array_aggregates.adb:203:11: info: flow dependencies proved
 array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(2)(1) = 1 and X(2)(2) = 2 and X(3)(1) = 12 and X(3)(2) = 12 and X(3)(3) = 12)
 array_aggregates.adb:215:32: info: initialization of "X" proved
 array_aggregates.adb:216:11: info: flow dependencies proved
-array_aggregates.adb:225:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:225:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:228:32: info: initialization of "X" proved
 array_aggregates.adb:229:12: info: flow dependencies proved
 array_aggregates.adb:234:22: high: assertion might fail (e.g. when X = (3 => (4 => 12, others => 10), others => (others => 10)))
 array_aggregates.adb:237:32: info: initialization of "X" proved
 array_aggregates.adb:238:11: info: flow dependencies proved
-array_aggregates.adb:243:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:243:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:246:32: info: initialization of "X" proved
 array_aggregates.adb:247:11: info: flow dependencies proved
 array_aggregates.adb:251:22: high: assertion might fail (e.g. when X = (others => (others => 12)))
 array_aggregates.adb:254:32: info: initialization of "X" proved
 array_aggregates.adb:255:11: info: flow dependencies proved
-array_aggregates.adb:259:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:259:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:262:32: info: initialization of "X" proved
 array_aggregates.adb:263:12: info: flow dependencies proved
 array_aggregates.adb:273:22: high: assertion might fail (e.g. when X = (3 => (Len => 5, Elem => "Hello"), others => (Len => 5, Elem => "lllll")))
 array_aggregates.adb:276:32: info: initialization of "X" proved
 array_aggregates.adb:277:12: info: flow dependencies proved
-array_aggregates.adb:287:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:287:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:290:32: info: initialization of "X" proved
 array_aggregates.adb:291:11: info: flow dependencies proved
 array_aggregates.adb:297:22: high: assertion might fail (e.g. when X = (2 => Elem_0, others => Elem_2))
@@ -102,16 +102,16 @@ array_aggregates.adb:393:11: info: flow dependencies proved
 array_aggregates.adb:397:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get_Length or turning it into an expression function in its unit spec]
 array_aggregates.adb:400:33: info: initialization of "X" proved
 array_aggregates.adb:401:11: info: flow dependencies proved
-array_aggregates.adb:408:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:408:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:414:33: info: initialization of "X" proved
 array_aggregates.adb:415:11: info: flow dependencies proved
-array_aggregates.adb:422:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:422:22: info: assertion proved (altergo: 1 VC)
 array_aggregates.adb:433:11: info: flow dependencies proved
-array_aggregates.adb:436:22: info: assertion proved (CVC4: 1 VC)
-array_aggregates.adb:439:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:436:22: info: assertion proved (altergo: 1 VC)
+array_aggregates.adb:439:22: info: assertion proved (Z3: 1 VC)
 array_aggregates.adb:447:33: info: initialization of "X" proved
 array_aggregates.adb:448:11: info: flow dependencies proved
-array_aggregates.adb:452:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:452:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:456:33: info: initialization of "X" proved
 array_aggregates.adb:458:11: info: flow dependencies proved
-array_aggregates.adb:462:22: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:462:22: info: assertion proved (CVC5: 1 VC)

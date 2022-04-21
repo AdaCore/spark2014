@@ -2,6 +2,6 @@ prove_all:
   counterexample: False
   opt: ["--no-axiom-guard"]
   steps: 1
-  prover: ["cvc4"]
+  prover: ["cvc5"]
 large: True
 timeout: 5000

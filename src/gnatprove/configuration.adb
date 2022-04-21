@@ -1137,8 +1137,8 @@ package body Configuration is
         GNAT.OS_Lib.Locate_Exec_On_Path ("alt-ergo");
       Colibri : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("colibri");
-      CVC4 : String_Access :=
-        GNAT.OS_Lib.Locate_Exec_On_Path ("cvc4");
+      CVC5 : String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path ("cvc5");
       Z3 : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("z3");
       Status : aliased Integer;
@@ -1166,12 +1166,12 @@ package body Configuration is
                            Status    => Status);
          Free (Colibri);
       end if;
-      if CVC4 /= null then
-         Ada.Text_IO.Put (CVC4.all & ": ");
-         Call_With_Status (CVC4.all,
+      if CVC5 /= null then
+         Ada.Text_IO.Put (CVC5.all & ": ");
+         Call_With_Status (CVC5.all,
                            Arguments => Dash_Dash_Version,
                            Status    => Status);
-         Free (CVC4);
+         Free (CVC5);
       end if;
       if Z3 /= null then
          Ada.Text_IO.Put (Z3.all & ": ");
@@ -1249,7 +1249,7 @@ package body Configuration is
 
       procedure Limit_Provers (Provers : in out String_Lists.List);
       --  This subprogram is here for SPARK Discovery. It removes
-      --  cvc4/z3/colibri from the provers list, if not found on the PATH. If
+      --  cvc5/z3/colibri from the provers list, if not found on the PATH. If
       --  that makes the list of provers become empty, alt-ergo is added as
       --  prover, so that we have at least one prover.
 
@@ -1386,8 +1386,8 @@ package body Configuration is
       --  Start of processing for Limit_Prover
 
       begin
-         if not SPARK_Install.CVC4_Present then
-            Remove_Prover ("cvc4");
+         if not SPARK_Install.CVC5_Present then
+            Remove_Prover ("cvc5");
          end if;
          if not SPARK_Install.Z3_Present then
             Remove_Prover ("z3");
@@ -1431,7 +1431,7 @@ package body Configuration is
          Sanity_Checking;
 
          SPARK_Install.Z3_Present      := On_Path ("z3");
-         SPARK_Install.CVC4_Present    := On_Path ("cvc4");
+         SPARK_Install.CVC5_Present    := On_Path ("cvc5");
          SPARK_Install.Colibri_Present := On_Path ("colibri");
 
          Debug := CL_Switches.D or CL_Switches.Flow_Debug;
@@ -1584,7 +1584,7 @@ package body Configuration is
 
             when Invalid_Level =>
 
-               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("cvc5");
                FS.Steps := Default_Steps;
                FS.Timeout := 0;
                FS.Memlimit := 0;
@@ -1593,14 +1593,14 @@ package body Configuration is
             --  See the UG for the meaning of the level switches
 
             when 0 =>
-               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("cvc5");
                FS.Steps := 0;
                FS.Timeout := 1;
                FS.Memlimit := 1000;
                FS.Counterexamples := False;
 
             when 1 =>
-               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
                FS.Steps := 0;
@@ -1609,7 +1609,7 @@ package body Configuration is
                FS.Counterexamples := False;
 
             when 2 =>
-               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
                FS.Steps := 0;
@@ -1618,7 +1618,7 @@ package body Configuration is
                FS.Counterexamples := True;
 
             when 3 =>
-               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
                FS.Steps := 0;
@@ -1627,7 +1627,7 @@ package body Configuration is
                FS.Counterexamples := True;
 
             when 4 =>
-               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
                FS.Steps := 0;
@@ -1712,7 +1712,7 @@ package body Configuration is
 
          FS.Counterexamples :=
            FS.Counterexamples
-           and then SPARK_Install.CVC4_Present
+           and then SPARK_Install.CVC5_Present
            and then not Is_Manual_Prover (FS)
            and then not CL_Switches.Output_Msg_Only;
 
@@ -1966,11 +1966,11 @@ package body Configuration is
                FS.Provers.Append (S (First .. S'Last));
             end if;
 
-            --  Check if cvc4/z3/colibri have explicitly been requested, but
+            --  Check if cvc5/z3/colibri have explicitly been requested, but
             --  are missing from the install.
 
             for Prover of FS.Provers loop
-               if (Prover = "cvc4" and then not SPARK_Install.CVC4_Present)
+               if (Prover = "cvc5" and then not SPARK_Install.CVC5_Present)
                  or else
                    (Prover = "z3" and then not SPARK_Install.Z3_Present)
                  or else
@@ -1986,8 +1986,8 @@ package body Configuration is
          --  prover switch is set to "all"
 
          else
-            if SPARK_Install.CVC4_Present then
-               FS.Provers.Append ("cvc4");
+            if SPARK_Install.CVC5_Present then
+               FS.Provers.Append ("cvc5");
             end if;
             if SPARK_Install.Z3_Present then
                FS.Provers.Append ("z3");
@@ -2594,8 +2594,8 @@ package body Configuration is
 
       if FS.Check_Counterexamples and then not FS.Provers.Is_Empty then
          Args.Append ("--rac-prover");
-         if SPARK_Install.CVC4_Present then
-            Args.Append ("cvc4");
+         if SPARK_Install.CVC5_Present then
+            Args.Append ("cvc5");
          else
             Args.Append ("altergo");
          end if;
@@ -2607,8 +2607,8 @@ package body Configuration is
       end if;
 
       Args.Append ("--warn-prover");
-      if SPARK_Install.CVC4_Present then
-         Args.Append ("cvc4");
+      if SPARK_Install.CVC5_Present then
+         Args.Append ("cvc5");
       else
          Args.Append ("altergo");
       end if;

@@ -2,5 +2,5 @@ event_package.ads:11:56: error: reference to global "Log" in Post'Class is not y
 event_package.ads:11:56: error: reference to global "Log" in Post'Class is not yet supported
 event_package.ads:11:56: error: reference to global "Max_Entries" in Pre'Class is not yet supported
 event_package.ads:11:56: error: reference to global "Max_Entries" in Pre'Class is not yet supported
-history.ads:24:43: info: overflow check proved (CVC4: 2 VC)
+history.ads:24:43: info: overflow check proved (CVC5: 2 VC)
 gnatprove: error during flow analysis and proof

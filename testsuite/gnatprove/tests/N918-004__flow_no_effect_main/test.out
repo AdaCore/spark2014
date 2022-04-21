@@ -1,8 +1,8 @@
-main.adb:17:19: info: postcondition proved (CVC4: 1 VC; Trivial: 2 VC)
-main.adb:17:33: info: overflow check proved (CVC4: 2 VC)
-main.adb:18:30: info: overflow check proved (CVC4: 2 VC)
-main.adb:18:40: info: overflow check proved (CVC4: 2 VC)
-main.adb:18:50: info: overflow check proved (CVC4: 2 VC)
+main.adb:17:19: info: postcondition proved (CVC5: 1 VC; Trivial: 2 VC)
+main.adb:17:33: info: overflow check proved (CVC5: 2 VC)
+main.adb:18:30: info: overflow check proved (CVC5: 2 VC)
+main.adb:18:40: info: overflow check proved (CVC5: 2 VC)
+main.adb:18:50: info: overflow check proved (CVC5: 2 VC)
 main.adb:25:20: medium: overflow check might fail, cannot prove upper bound for Long_Side * Long_Side [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Long_Side * Long_Side in Integer) to subprogram at line 14]
 main.adb:25:42: medium: overflow check might fail, cannot prove upper bound for Side_2 * Side_2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Side_2 * Side_2 in Integer) to subprogram at line 14]
 main.adb:25:52: medium: overflow check might fail, cannot prove upper bound for (Side_2 * Side_2) + (Side_3 * Side_3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Side_3 * Side_3 >= 0 then Side_2 * Side_2 <= Integer'Last - Side_3 * Side_3 else Side_2 * Side_2 >= Integer'First - Side_3 * Side_3) to subprogram at line 14]

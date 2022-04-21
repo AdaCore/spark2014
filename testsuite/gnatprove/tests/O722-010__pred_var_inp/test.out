@@ -1,4 +1,4 @@
-const.ads:8:54: info: division check proved (CVC4: 1 VC)
+const.ads:8:54: info: division check proved (CVC5: 1 VC)
 var.ads:8:60: error: predicate cannot depend on variable input "Global_Variable" (SPARK RM 4.4(2))
 var.ads:8:60: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

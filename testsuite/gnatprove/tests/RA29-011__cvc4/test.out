@@ -1,43 +1,48 @@
 
-Copyright (c) 2009-2020 by the authors and their institutional
-affiliations listed at http://cvc4.cs.stanford.edu/authors
+Copyright (c) 2009-2022 by the authors and their institutional
+affiliations listed at https://cvc5.github.io/people.html
 
-CVC4 is open-source and is covered by the BSD license (modified).
+cvc5 is open-source and is covered by the BSD license (modified).
 
 THIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.
 USE AT YOUR OWN RISK.
 
-CVC4 incorporates code from ANTLR3 (http://www.antlr.org).
+cvc5 incorporates code from ANTLR3 (http://www.antlr.org).
 See licenses/antlr3-LICENSE for copyright and licensing information.
 
-This version of CVC4 is linked against the following non-(L)GPL'ed
+This version of cvc5 is linked against the following non-(L)GPL'ed
 third party libraries.
 
-  SymFPU - The Symbolic Floating Point Unit
-  See https://github.com/martin-cs/symfpu/tree/CVC4 for copyright information.
+  CaDiCaL - Simplified Satisfiability Solver
+  See https://github.com/arminbiere/cadical for copyright information.
 
-This version of CVC4 is linked against the following third party
+  SymFPU - The Symbolic Floating Point Unit
+  See https://github.com/martin-cs/symfpu/tree/cvc5 for copyright information.
+
+This version of cvc5 is linked against the following third party
 libraries covered by the LGPLv3 license.
 See licenses/lgpl-3.0.txt for more information.
 
   GMP - Gnu Multi Precision Arithmetic Library
   See http://gmplib.org for copyright information.
 
+cvc5 is statically linked against these libraries. To recompile
+this version of cvc5 with different versions of these libraries
+follow the instructions on https://github.com/cvc5/cvc5/blob/main/INSTALL.md
+
 See the file COPYING (distributed with the source code, and with
-all binaries) for the full CVC4 copyright, licensing, and (lack of)
+all binaries) for the full cvc5 copyright, licensing, and (lack of)
 warranty information.
 
-version       : 1.8
+version       : 1.0.0
 
-library       : 1.8.0
+library       : 1.0.0
 
 debug code    : no
 statistics    : yes
 tracing       : no
-dumping       : yes
 muzzled       : no
 assertions    : no
-proof         : no
 coverage      : no
 profiling     : no
 asan          : no
@@ -45,14 +50,11 @@ ubsan         : no
 tsan          : no
 competition   : no
 
-abc           : no
 cln           : no
 glpk          : no
-cadical       : no
 cryptominisat : no
-drat2er       : no
 gmp           : yes
 kissat        : no
-lfsc          : no
-readline      : no
-symfpu        : yes
+poly          : no
+cocoa         : no
+editline      : no

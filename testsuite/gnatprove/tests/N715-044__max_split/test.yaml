@@ -1,2 +1,2 @@
 prove_all:
-  prover: ["cvc4"]
+  prover: ["cvc5"]

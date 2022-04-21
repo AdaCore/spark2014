@@ -1,9 +1,9 @@
 info_flow_tests.adb:6:09: info: data dependencies proved
 info_flow_tests.adb:7:09: info: flow dependencies proved
-info_flow_tests.adb:12:12: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:13:12: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:15:23: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:16:23: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:12:12: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:13:12: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:15:23: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:16:23: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:20:23: warning: unused initial value of "A"
 info_flow_tests.adb:21:23: warning: unused initial value of "B"
 info_flow_tests.adb:22:11: info: data dependencies proved
@@ -11,37 +11,37 @@ info_flow_tests.adb:23:06: medium: missing dependency "null => A"
 info_flow_tests.adb:23:06: medium: missing dependency "null => B"
 info_flow_tests.adb:23:23: medium: incorrect dependency "A => B"
 info_flow_tests.adb:24:23: medium: incorrect dependency "B => A"
-info_flow_tests.adb:28:12: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:29:12: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:28:12: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:29:12: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:35:24: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
 info_flow_tests.adb:35:26: medium: range check might fail, cannot prove lower bound for T2'Last [reason for check: value must be convertible to the target type of the conversion]
 info_flow_tests.adb:36:24: high: constant with variable input "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
 info_flow_tests.adb:36:26: medium: range check might fail, cannot prove lower bound for T1'Last [reason for check: value must be convertible to the target type of the conversion]
 info_flow_tests.adb:44:09: info: data dependencies proved
 info_flow_tests.adb:45:09: info: flow dependencies proved
-info_flow_tests.adb:50:12: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:51:12: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:50:12: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:51:12: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:54:12: info: data dependencies proved
 info_flow_tests.adb:55:34: info: initialization of "A" proved
 info_flow_tests.adb:55:37: info: initialization of "B" proved
 info_flow_tests.adb:56:12: info: flow dependencies proved
-info_flow_tests.adb:60:26: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:61:26: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:60:26: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:61:26: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:69:11: info: data dependencies proved
 info_flow_tests.adb:72:54: medium: overflow check might fail, cannot prove upper bound for A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 72 should mention A and X in a precondition]
 info_flow_tests.adb:74:14: info: data dependencies proved
 info_flow_tests.adb:76:14: info: flow dependencies proved
-info_flow_tests.adb:79:22: info: postcondition proved (CVC4: 1 VC)
-info_flow_tests.adb:84:32: info: precondition proved (CVC4: 1 VC)
-info_flow_tests.adb:86:32: info: precondition proved (CVC4: 1 VC)
-info_flow_tests.adb:87:32: info: precondition proved (CVC4: 1 VC)
+info_flow_tests.adb:79:22: info: postcondition proved (CVC5: 1 VC)
+info_flow_tests.adb:84:32: info: precondition proved (CVC5: 1 VC)
+info_flow_tests.adb:86:32: info: precondition proved (CVC5: 1 VC)
+info_flow_tests.adb:87:32: info: precondition proved (CVC5: 1 VC)
 info_flow_tests.adb:89:25: info: initialization of "X" proved
 info_flow_tests.adb:90:14: info: data dependencies proved
 info_flow_tests.adb:90:25: medium: constant without variable input "C1" cannot appear in Globals
 info_flow_tests.adb:90:29: medium: constant without variable input "C2" cannot appear in Globals
 info_flow_tests.adb:90:37: medium: constant without variable input "C4" cannot appear in Globals
 info_flow_tests.adb:90:45: medium: constant without variable input "C6" cannot appear in Globals
-info_flow_tests.adb:93:18: info: overflow check proved (CVC4: 2 VC)
+info_flow_tests.adb:93:18: info: overflow check proved (CVC5: 2 VC)
 info_flow_tests.adb:93:23: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:93:28: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 + C4 [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:93:33: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 + C4 + C5 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -51,13 +51,13 @@ info_flow_tests.adb:100:09: info: data dependencies proved
 info_flow_tests.adb:103:54: medium: overflow check might fail, cannot prove upper bound for A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 103 should mention A and X in a precondition]
 info_flow_tests.adb:105:14: info: data dependencies proved
 info_flow_tests.adb:107:14: info: flow dependencies proved
-info_flow_tests.adb:110:22: info: postcondition proved (CVC4: 1 VC)
-info_flow_tests.adb:115:32: info: precondition proved (CVC4: 1 VC)
-info_flow_tests.adb:117:32: info: precondition proved (CVC4: 1 VC)
-info_flow_tests.adb:118:32: info: precondition proved (CVC4: 1 VC)
+info_flow_tests.adb:110:22: info: postcondition proved (CVC5: 1 VC)
+info_flow_tests.adb:115:32: info: precondition proved (CVC5: 1 VC)
+info_flow_tests.adb:117:32: info: precondition proved (CVC5: 1 VC)
+info_flow_tests.adb:118:32: info: precondition proved (CVC5: 1 VC)
 info_flow_tests.adb:120:25: info: initialization of "X" proved
 info_flow_tests.adb:121:12: info: data dependencies proved
-info_flow_tests.adb:124:18: info: overflow check proved (CVC4: 2 VC)
+info_flow_tests.adb:124:18: info: overflow check proved (CVC5: 2 VC)
 info_flow_tests.adb:124:23: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:124:28: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 + C4 [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:124:33: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 + C4 + C5 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -75,26 +75,26 @@ info_flow_tests.adb:164:21: info: cannot unroll loop (too many loop iterations)
 info_flow_tests.adb:175:23: info: initialization of "C" proved
 info_flow_tests.adb:176:09: info: data dependencies proved
 info_flow_tests.adb:177:09: info: flow dependencies proved
-info_flow_tests.adb:179:15: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:179:15: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:186:23: info: initialization of "C" proved
 info_flow_tests.adb:187:09: info: data dependencies proved
 info_flow_tests.adb:188:09: info: flow dependencies proved
-info_flow_tests.adb:190:15: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:190:15: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:202:23: info: initialization of "C" proved
 info_flow_tests.adb:203:09: info: data dependencies proved
 info_flow_tests.adb:204:09: info: flow dependencies proved
-info_flow_tests.adb:206:15: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:206:15: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:214:23: info: initialization of "C" proved
 info_flow_tests.adb:215:23: info: initialization of "D" proved
 info_flow_tests.adb:216:23: info: initialization of "E" proved
 info_flow_tests.adb:217:23: info: initialization of "F" proved
 info_flow_tests.adb:218:09: info: data dependencies proved
 info_flow_tests.adb:219:09: info: flow dependencies proved
-info_flow_tests.adb:223:15: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:223:15: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:225:15: medium: range check might fail
-info_flow_tests.adb:226:12: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:228:23: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:229:23: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:226:12: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:228:23: info: range check proved (CVC5: 2 VC)
+info_flow_tests.adb:229:23: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:235:23: warning: unused initial value of "B"
 info_flow_tests.adb:236:23: info: initialization of "C" proved
 info_flow_tests.adb:241:12: info: flow dependencies proved

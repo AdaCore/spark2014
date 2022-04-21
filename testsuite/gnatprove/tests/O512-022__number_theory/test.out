@@ -2,23 +2,23 @@ number_theory.adb:6:07: info: initialization of "Result" proved
 number_theory.adb:7:07: info: initialization of "Old" proved
 number_theory.adb:8:07: info: initialization of "Oldest" proved
 number_theory.adb:9:07: info: initialization of "Temp" proved
-number_theory.adb:18:17: info: range check proved (CVC4: 2 VC)
-number_theory.adb:19:38: info: loop invariant initialization proved (CVC4: 2 VC)
-number_theory.adb:19:38: info: loop invariant preservation proved (CVC4: 2 VC)
-number_theory.adb:19:50: info: range check proved (CVC4: 4 VC)
-number_theory.adb:19:74: info: range check proved (CVC4: 4 VC)
+number_theory.adb:18:17: info: range check proved (CVC5: 2 VC)
+number_theory.adb:19:38: info: loop invariant initialization proved (CVC5: 2 VC)
+number_theory.adb:19:38: info: loop invariant preservation proved (CVC5: 2 VC)
+number_theory.adb:19:50: info: range check proved (CVC5: 4 VC)
+number_theory.adb:19:74: info: range check proved (CVC5: 4 VC)
 number_theory.adb:23:30: medium: overflow check might fail, cannot prove upper bound for Old + Temp [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 19 should mention Temp]
 number_theory.ads:17:13: info: function contract might not be available on recursive calls
 number_theory.ads:18:08: medium: "Fib" is recursive, terminating annotation could be incorrect
-number_theory.ads:20:32: info: range check proved (CVC4: 2 VC)
+number_theory.ads:20:32: info: range check proved (CVC5: 2 VC)
 number_theory.ads:20:37: medium: overflow check might fail, cannot prove upper bound for Fib(N - 1) + Fib(N - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Fib(N - 1) <= Integer'Last - Fib(N - 2)) to subprogram at line 17]
-number_theory.ads:20:45: info: range check proved (CVC4: 2 VC)
+number_theory.ads:20:45: info: range check proved (CVC5: 2 VC)
 number_theory.ads:23:16: medium: postcondition might fail
 number_theory.ads:23:25: info: range check proved (Trivial)
-number_theory.ads:23:43: info: division check proved (CVC4: 1 VC; Trivial: 1 VC)
-number_theory.ads:23:43: info: float overflow check proved (CVC4: 1 VC)
-number_theory.ads:23:47: info: division check proved (CVC4: 1 VC)
+number_theory.ads:23:43: info: division check proved (CVC5: 1 VC; Trivial: 1 VC)
+number_theory.ads:23:43: info: float overflow check proved (CVC5: 1 VC)
+number_theory.ads:23:47: info: division check proved (CVC5: 1 VC)
 number_theory.ads:23:47: info: float overflow check proved (Trivial)
 number_theory.ads:23:55: info: float overflow check proved (Trivial)
-number_theory.ads:28:19: info: postcondition proved (CVC4: 1 VC)
+number_theory.ads:28:19: info: postcondition proved (CVC5: 1 VC)
 number_theory.ads:32:19: medium: postcondition might fail

@@ -1,10 +1,10 @@
-arrays.adb:51:18: info: postcondition proved (CVC4: 2 VC)
+arrays.adb:51:18: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:60:11: info: flow dependencies proved
 arrays.adb:62:22: high: postcondition might fail (e.g. when C = 'NUL' and S = ('a' => True, others => False))
-arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
+arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'NUL' and M = (others => 'a'))
 arrays.adb:88:11: info: flow dependencies proved
-arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
+arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:99:11: info: flow dependencies proved
 arrays.adb:104:22: medium: assertion might fail [possible fix: precondition of subprogram at line 97 should mention C]
 arrays.adb:108:11: info: flow dependencies proved
@@ -15,34 +15,34 @@ arrays.adb:124:11: info: flow dependencies proved
 arrays.adb:128:22: high: assertion might fail [possible fix: subprogram at line 123 should mention MM in a precondition]
 arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:132:11: info: flow dependencies proved
-arrays.adb:136:22: info: assertion proved (CVC4: 1 VC)
+arrays.adb:136:22: info: assertion proved (altergo: 1 VC)
 arrays.adb:140:11: info: flow dependencies proved
 arrays.adb:144:22: high: assertion might fail (e.g. when R = (A => (others => 5), Exists => False)) [possible fix: subprogram at line 139 should mention R in a precondition]
-arrays.adb:146:22: info: assertion proved (CVC4: 1 VC)
+arrays.adb:146:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:148:22: high: assertion might fail (e.g. when R = (A => (1 => 0, others => 5), Exists => True)) [possible fix: subprogram at line 139 should mention R in a precondition]
 arrays.adb:152:11: info: flow dependencies proved
-arrays.adb:153:31: info: range check proved (CVC4: 2 VC)
-arrays.adb:154:33: info: index check proved (CVC4: 2 VC)
-arrays.adb:156:22: info: postcondition proved (CVC4: 1 VC)
-arrays.adb:156:31: info: range check proved (CVC4: 2 VC)
-arrays.adb:157:33: info: index check proved (CVC4: 2 VC)
-arrays.adb:160:22: info: range check proved (CVC4: 2 VC)
-arrays.adb:161:16: info: index check proved (CVC4: 2 VC)
+arrays.adb:153:31: info: range check proved (CVC5: 2 VC)
+arrays.adb:154:33: info: index check proved (CVC5: 2 VC)
+arrays.adb:156:22: info: postcondition proved (CVC5: 1 VC)
+arrays.adb:156:31: info: range check proved (CVC5: 2 VC)
+arrays.adb:157:33: info: index check proved (CVC5: 2 VC)
+arrays.adb:160:22: info: range check proved (CVC5: 2 VC)
+arrays.adb:161:16: info: index check proved (CVC5: 2 VC)
 arrays.adb:165:12: info: flow dependencies proved
-arrays.adb:170:22: info: assertion proved (CVC4: 1 VC)
-arrays.adb:170:31: info: index check proved (CVC4: 2 VC)
+arrays.adb:170:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:170:31: info: index check proved (CVC5: 2 VC)
 arrays.adb:175:11: info: flow dependencies proved
 arrays.adb:178:22: high: assertion might fail [possible fix: subprogram at line 174 should mention A in a precondition]
-arrays.adb:183:19: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:191:33: info: loop invariant initialization proved (CVC4: 2 VC)
-arrays.adb:191:33: info: loop invariant preservation proved (CVC4: 2 VC)
-arrays.adb:191:41: info: range check proved (CVC4: 4 VC)
+arrays.adb:183:19: info: postcondition proved (CVC5: 2 VC)
+arrays.adb:191:33: info: loop invariant initialization proved (CVC5: 2 VC)
+arrays.adb:191:33: info: loop invariant preservation proved (CVC5: 2 VC)
+arrays.adb:191:41: info: range check proved (CVC5: 4 VC)
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: medium: "R" might not be initialized
 arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C)
-arrays.adb:206:33: info: loop invariant initialization proved (CVC4: 2 VC)
-arrays.adb:206:33: info: loop invariant preservation proved (CVC4: 2 VC)
-arrays.adb:206:41: info: range check proved (CVC4: 4 VC)
+arrays.adb:206:33: info: loop invariant initialization proved (CVC5: 2 VC)
+arrays.adb:206:33: info: loop invariant preservation proved (CVC5: 2 VC)
+arrays.adb:206:41: info: range check proved (CVC5: 4 VC)
 arrays.adb:207:57: medium: "R" might not be initialized
 arrays.adb:209:14: medium: "R" might not be initialized
 arrays.adb:213:11: info: flow dependencies proved
@@ -50,13 +50,13 @@ arrays.adb:215:07: info: initialization of "A" proved
 arrays.adb:218:22: medium: assertion might fail
 arrays.adb:222:11: info: flow dependencies proved
 arrays.adb:224:07: info: initialization of "A" proved
-arrays.adb:227:22: info: assertion proved (CVC4: 1 VC)
+arrays.adb:227:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:231:11: info: flow dependencies proved
 arrays.adb:233:07: info: initialization of "A" proved
 arrays.adb:236:22: medium: assertion might fail
 arrays.adb:240:11: info: flow dependencies proved
 arrays.adb:242:07: info: initialization of "A" proved
-arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
+arrays.adb:245:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:249:11: info: flow dependencies proved
 arrays.adb:251:07: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]

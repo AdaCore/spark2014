@@ -1,2 +1,2 @@
 q.adb:7:33: high: "X" is not initialized
-q.adb:9:13: info: pointer dereference check proved (CVC4: 1 VC)
+q.adb:9:13: info: pointer dereference check proved (CVC5: 1 VC)

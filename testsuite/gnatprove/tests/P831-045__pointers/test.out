@@ -39,7 +39,7 @@ n05.adb:48:07: warning: unused assignment
 n05.adb:48:10: high: "a0" is not initialized
 n05.adb:49:07: warning: unused assignment
 n05.adb:49:10: high: "a1" is not initialized
-n05.adb:50:07: info: pointer dereference check proved (CVC4: 1 VC)
+n05.adb:50:07: info: pointer dereference check proved (CVC5: 1 VC)
 n05.adb:50:11: warning: unused assignment
 n05.adb:51:05: medium: pointer dereference check might fail
 n05.adb:51:09: warning: unused assignment

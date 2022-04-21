@@ -1,90 +1,90 @@
 a-cfdlli.ads:392:08: info: dynamic accessibility check proved (Trivial), in instantiation at for_loops_on_lists.ads:5
 a-cfdlli.ads:398:08: info: dynamic accessibility check proved (Trivial), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:417:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:522:49: info: overflow check proved (CVC4: 2 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:655:49: info: overflow check proved (CVC4: 2 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:745:57: info: overflow check proved (CVC4: 2 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:811:57: info: overflow check proved (CVC4: 2 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:898:28: info: overflow check proved (CVC4: 2 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:898:39: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1074:43: info: overflow check proved (CVC4: 2 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1255:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1394:20: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1409:20: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1424:20: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1439:20: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1461:14: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1467:23: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1516:14: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
-a-cfdlli.ads:1523:23: info: precondition proved (CVC4: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:417:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:522:49: info: overflow check proved (CVC5: 2 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:655:49: info: overflow check proved (CVC5: 2 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:745:57: info: overflow check proved (CVC5: 2 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:898:28: info: overflow check proved (CVC5: 2 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:898:39: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1074:43: info: overflow check proved (CVC5: 2 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1255:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1394:20: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1409:20: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1424:20: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1439:20: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1461:14: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1467:23: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1516:14: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
+a-cfdlli.ads:1523:23: info: precondition proved (CVC5: 1 VC), in instantiation at for_loops_on_lists.ads:5
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
-for_loops_on_lists.adb:5:11: info: precondition proved (CVC4: 1 VC)
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at for_loops_on_lists.ads:5
+for_loops_on_lists.adb:5:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:5:11: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.adb:7:13: info: loop invariant initialization proved (CVC4: 1 VC)
-for_loops_on_lists.adb:7:13: info: loop invariant preservation proved (CVC4: 1 VC)
-for_loops_on_lists.adb:7:32: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.adb:8:15: info: precondition proved (CVC4: 4 VC)
-for_loops_on_lists.adb:9:13: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.adb:18:11: info: precondition proved (CVC4: 1 VC)
+for_loops_on_lists.adb:7:13: info: loop invariant initialization proved (CVC5: 1 VC)
+for_loops_on_lists.adb:7:13: info: loop invariant preservation proved (Z3: 1 VC)
+for_loops_on_lists.adb:7:32: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.adb:8:15: info: precondition proved (CVC5: 4 VC)
+for_loops_on_lists.adb:9:13: info: precondition proved (CVC5: 1 VC)
+for_loops_on_lists.adb:18:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:18:11: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.adb:28:11: info: precondition proved (CVC4: 1 VC)
+for_loops_on_lists.adb:28:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:28:11: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.adb:29:13: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.adb:34:33: info: loop invariant initialization proved (CVC4: 1 VC)
-for_loops_on_lists.adb:34:33: info: loop invariant preservation proved (CVC4: 1 VC)
-for_loops_on_lists.adb:36:13: info: loop invariant initialization proved (CVC4: 2 VC)
-for_loops_on_lists.adb:36:13: info: loop invariant preservation proved (CVC4: 2 VC)
-for_loops_on_lists.adb:36:32: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.adb:37:15: info: precondition proved (CVC4: 4 VC)
-for_loops_on_lists.adb:38:22: info: precondition proved (CVC4: 4 VC)
-for_loops_on_lists.adb:39:22: info: precondition proved (CVC4: 4 VC)
-for_loops_on_lists.adb:41:13: info: loop invariant initialization proved (CVC4: 1 VC)
-for_loops_on_lists.adb:41:13: info: loop invariant preservation proved (CVC4: 1 VC)
-for_loops_on_lists.adb:41:27: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.adb:42:17: info: precondition proved (CVC4: 4 VC)
-for_loops_on_lists.adb:42:37: info: range check proved (CVC4: 4 VC)
-for_loops_on_lists.adb:43:17: info: precondition proved (CVC4: 4 VC)
-for_loops_on_lists.adb:43:48: info: range check proved (CVC4: 4 VC)
-for_loops_on_lists.adb:44:33: info: loop invariant initialization proved (CVC4: 1 VC)
-for_loops_on_lists.adb:44:33: info: loop invariant preservation proved (CVC4: 1 VC)
-for_loops_on_lists.adb:44:33: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.adb:46:10: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.adb:46:34: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.adb:46:50: info: range check proved (CVC4: 2 VC)
-for_loops_on_lists.adb:55:11: info: precondition proved (CVC4: 1 VC)
+for_loops_on_lists.adb:29:13: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.adb:34:33: info: loop invariant initialization proved (CVC5: 1 VC)
+for_loops_on_lists.adb:34:33: info: loop invariant preservation proved (CVC5: 1 VC)
+for_loops_on_lists.adb:36:13: info: loop invariant initialization proved (CVC5: 2 VC)
+for_loops_on_lists.adb:36:13: info: loop invariant preservation proved (CVC5: 2 VC)
+for_loops_on_lists.adb:36:32: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.adb:37:15: info: precondition proved (CVC5: 4 VC)
+for_loops_on_lists.adb:38:22: info: precondition proved (CVC5: 4 VC)
+for_loops_on_lists.adb:39:22: info: precondition proved (CVC5: 4 VC)
+for_loops_on_lists.adb:41:13: info: loop invariant initialization proved (CVC5: 1 VC)
+for_loops_on_lists.adb:41:13: info: loop invariant preservation proved (Z3: 1 VC)
+for_loops_on_lists.adb:41:27: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.adb:42:17: info: precondition proved (CVC5: 4 VC)
+for_loops_on_lists.adb:42:37: info: range check proved (CVC5: 4 VC)
+for_loops_on_lists.adb:43:17: info: precondition proved (CVC5: 4 VC)
+for_loops_on_lists.adb:43:48: info: range check proved (CVC5: 4 VC)
+for_loops_on_lists.adb:44:33: info: loop invariant initialization proved (CVC5: 1 VC)
+for_loops_on_lists.adb:44:33: info: loop invariant preservation proved (CVC5: 1 VC)
+for_loops_on_lists.adb:44:33: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.adb:46:10: info: precondition proved (CVC5: 1 VC)
+for_loops_on_lists.adb:46:34: info: precondition proved (CVC5: 1 VC)
+for_loops_on_lists.adb:46:50: info: range check proved (CVC5: 2 VC)
+for_loops_on_lists.adb:55:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:55:11: info: precondition proved (Trivial: 1 VC)
 for_loops_on_lists.adb:57:32: medium: overflow check might fail, cannot prove upper bound for Count_0 + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
-for_loops_on_lists.adb:60:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-for_loops_on_lists.adb:60:13: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+for_loops_on_lists.adb:60:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+for_loops_on_lists.adb:60:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 for_loops_on_lists.adb:60:34: info: precondition proved (Trivial: 2 VC)
-for_loops_on_lists.adb:60:54: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.adb:62:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-for_loops_on_lists.adb:62:13: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+for_loops_on_lists.adb:60:54: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.adb:62:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+for_loops_on_lists.adb:62:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 for_loops_on_lists.adb:62:34: info: precondition proved (Trivial: 2 VC)
-for_loops_on_lists.adb:62:54: info: precondition proved (CVC4: 2 VC)
+for_loops_on_lists.adb:62:54: info: precondition proved (CVC5: 2 VC)
 for_loops_on_lists.adb:64:32: medium: overflow check might fail, cannot prove upper bound for Count_1 + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 for_loops_on_lists.ads:10:14: info: postcondition proved (Z3: 1 VC)
-for_loops_on_lists.ads:11:19: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.ads:13:18: info: precondition proved (CVC4: 2 VC)
+for_loops_on_lists.ads:11:19: info: precondition proved (CVC5: 1 VC)
+for_loops_on_lists.ads:13:18: info: precondition proved (CVC5: 2 VC)
 for_loops_on_lists.ads:13:18: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.ads:16:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-for_loops_on_lists.ads:16:49: info: precondition proved (CVC4: 2 VC)
+for_loops_on_lists.ads:16:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+for_loops_on_lists.ads:16:49: info: precondition proved (CVC5: 2 VC)
 for_loops_on_lists.ads:16:49: info: precondition proved (Trivial: 1 VC)
 for_loops_on_lists.ads:18:46: info: initialization of "C" proved
-for_loops_on_lists.ads:19:14: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
-for_loops_on_lists.ads:19:42: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.ads:21:41: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.ads:22:18: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.ads:23:25: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.ads:24:25: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.ads:27:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
-for_loops_on_lists.ads:28:19: info: precondition proved (CVC4: 2 VC)
+for_loops_on_lists.ads:19:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+for_loops_on_lists.ads:19:42: info: precondition proved (CVC5: 1 VC)
+for_loops_on_lists.ads:21:41: info: precondition proved (CVC5: 1 VC)
+for_loops_on_lists.ads:22:18: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.ads:23:25: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.ads:24:25: info: precondition proved (CVC5: 2 VC)
+for_loops_on_lists.ads:27:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+for_loops_on_lists.ads:28:19: info: precondition proved (CVC5: 2 VC)
 for_loops_on_lists.ads:28:19: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.ads:28:51: info: precondition proved (CVC4: 2 VC)
+for_loops_on_lists.ads:28:51: info: precondition proved (CVC5: 2 VC)
 for_loops_on_lists.ads:28:51: info: precondition proved (Trivial: 1 VC)

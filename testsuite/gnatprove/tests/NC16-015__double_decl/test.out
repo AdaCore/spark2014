@@ -1,6 +1,6 @@
 controller.adb:28:40: high: range check might fail, cannot prove upper bound for Piece_count +1 (e.g. when Piece_count = Piece_count_type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at controller.ads:6 should mention Piece_count in a precondition]
-tetris.adb:42:28: info: range check proved (CVC4: 2 VC)
-tetris.adb:46:28: info: range check proved (CVC4: 2 VC)
-tetris.adb:48:36: info: range check proved (CVC4: 2 VC)
+tetris.adb:42:28: info: range check proved (CVC5: 2 VC)
+tetris.adb:46:28: info: range check proved (CVC5: 2 VC)
+tetris.adb:48:36: info: range check proved (CVC5: 2 VC)
 tetris.ads:53:31: warning: "P" is not modified, could be IN
 tetris.ads:53:31: warning: unused variable "P"

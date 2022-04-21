@@ -1,5 +1,5 @@
 main.adb:2:11: medium: ceiling priority protocol might not be respected
-main.adb:3:21: info: range check proved (CVC4: 2 VC)
+main.adb:3:21: info: range check proved (CVC5: 2 VC)
 p.adb:5:11: warning: subprogram "P" has no effect
-q.ads:3:24: info: range check proved (CVC4: 2 VC)
-t.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
+q.ads:3:24: info: range check proved (CVC5: 2 VC)
+t.ads:2:09: info: nontermination of task proved (CVC5: 1 VC)

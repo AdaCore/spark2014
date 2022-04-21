@@ -1,7 +1,7 @@
-p.adb:5:12: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:5:25: info: pointer dereference check proved (CVC4: 1 VC)
-p.ads:4:14: info: nontermination of task proved (CVC4: 1 VC)
+p.adb:5:12: info: pointer dereference check proved (CVC5: 1 VC)
+p.adb:5:25: info: pointer dereference check proved (CVC5: 1 VC)
+p.ads:4:14: info: nontermination of task proved (CVC5: 1 VC)
 p.ads:4:22: info: data dependencies proved
-q.adb:4:09: info: pointer dereference check proved (CVC4: 1 VC)
-q.adb:4:22: info: pointer dereference check proved (CVC4: 1 VC)
+q.adb:4:09: info: pointer dereference check proved (CVC5: 1 VC)
+q.adb:4:22: info: pointer dereference check proved (CVC5: 1 VC)
 q.ads:4:24: info: data dependencies proved

@@ -1,14 +1,14 @@
 p.adb:10:04: medium: memory leak might occur at end of scope
-p.adb:11:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+p.adb:11:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
 p.adb:13:04: info: initialization of "A" proved
 p.adb:13:04: medium: memory leak might occur at end of scope
-p.adb:17:06: info: absence of memory leak proved (CVC4: 1 VC)
+p.adb:17:06: info: absence of memory leak proved (CVC5: 1 VC)
 p.adb:17:14: medium: memory leak might occur
-p.adb:18:19: info: assertion proved (CVC4: 1 VC)
-p.adb:18:23: info: pointer dereference check proved (CVC4: 1 VC)
-p.adb:20:06: info: absence of memory leak proved (CVC4: 1 VC)
-p.adb:20:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-p.adb:20:14: info: absence of memory leak proved (CVC4: 1 VC)
-p.adb:20:27: info: index check proved (CVC4: 2 VC)
-p.adb:21:19: info: assertion proved (CVC4: 1 VC)
-p.adb:21:24: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:18:19: info: assertion proved (CVC5: 1 VC)
+p.adb:18:23: info: pointer dereference check proved (CVC5: 1 VC)
+p.adb:20:06: info: absence of memory leak proved (CVC5: 1 VC)
+p.adb:20:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+p.adb:20:14: info: absence of memory leak proved (CVC5: 1 VC)
+p.adb:20:27: info: index check proved (CVC5: 2 VC)
+p.adb:21:19: info: assertion proved (CVC5: 1 VC)
+p.adb:21:24: info: pointer dereference check proved (CVC5: 1 VC)

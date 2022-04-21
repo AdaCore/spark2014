@@ -4,23 +4,23 @@ ap-altitude-pitch-rate.adb:18:07: info: initialization of "Gap" proved
 ap-altitude-pitch-rate.adb:18:07: info: initialization of "Gap" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:19:07: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:19:07: info: initialization of "Average" proved, in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:22:21: info: overflow check proved (CVC4: 4 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:24:13: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:24:13: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:29:45: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:29:45: info: overflow check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:29:45: info: range check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:22:21: info: overflow check proved (CVC5: 4 VC), in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:24:13: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:24:13: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:29:45: info: division check proved (CVC5: 1 VC), in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:29:45: info: overflow check proved (CVC5: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:29:45: info: range check proved (CVC5: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:35:11: info: flow dependencies proved
 ap-altitude-pitch-rate.adb:38:30: info: unrolling loop
-ap-altitude-pitch-rate.adb:40:24: info: index check proved (CVC4: 20 VC)
+ap-altitude-pitch-rate.adb:40:24: info: index check proved (CVC5: 20 VC)
 ap-altitude-pitch-rate.adb:54:07: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:55:07: info: initialization of "Early_Pitch" proved
 ap-altitude-pitch-rate.adb:58:18: info: analyzing call to "History_Average" in context
-ap-altitude-pitch-rate.adb:64:14: info: division check proved (CVC4: 1 VC)
-ap-altitude-pitch-rate.adb:64:14: info: range check proved (CVC4: 2 VC)
-ap-altitude-pitch-rate.adb:70:14: info: division check proved (CVC4: 1 VC)
-ap-altitude-pitch-rate.adb:70:14: info: range check proved (CVC4: 2 VC)
-ap-altitude-pitch-rate.adb:75:55: info: division check proved (CVC4: 1 VC)
+ap-altitude-pitch-rate.adb:64:14: info: division check proved (CVC5: 1 VC)
+ap-altitude-pitch-rate.adb:64:14: info: range check proved (CVC5: 2 VC)
+ap-altitude-pitch-rate.adb:70:14: info: division check proved (CVC5: 1 VC)
+ap-altitude-pitch-rate.adb:70:14: info: range check proved (CVC5: 2 VC)
+ap-altitude-pitch-rate.adb:75:55: info: division check proved (CVC5: 1 VC)
 ap-altitude-pitch-rate.ads:6:08: info: flow dependencies proved
 ap-altitude-pitch-rate.ads:9:29: info: initialization of "Present_Pitchrate" proved
 ap-altitude-pitch-rate.ads:10:11: info: data dependencies proved
@@ -30,9 +30,9 @@ ap-altitude-pitch.adb:21:13: info: local subprogram "Target_ROC" only analyzed i
 ap-altitude-pitch.adb:25:07: info: initialization of "Result" proved
 ap-altitude-pitch.adb:25:07: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45
 ap-altitude-pitch.adb:25:07: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:28:69: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:28:69: info: range check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:34:14: info: range check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:28:69: info: division check proved (CVC5: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:28:69: info: range check proved (CVC5: 2 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:34:14: info: range check proved (CVC5: 2 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:37:13: info: add a contract to analyze it separately from calling contexts
 ap-altitude-pitch.adb:37:13: info: local subprogram "Target_Rate" only analyzed in the context of calls
 ap-altitude-pitch.adb:41:07: info: initialization of "Target_Climb_Rate" proved
@@ -42,16 +42,16 @@ ap-altitude-pitch.adb:42:07: info: initialization of "Floor_Climb_Rate" proved, 
 ap-altitude-pitch.adb:43:07: info: initialization of "Result" proved
 ap-altitude-pitch.adb:43:07: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:45:28: info: analyzing call to "Target_ROC" in context
-ap-altitude-pitch.adb:51:30: info: range check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:53:30: info: assertion proved (CVC4: 4 VC), in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:55:71: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:51:30: info: range check proved (CVC5: 2 VC), in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:53:30: info: assertion proved (CVC5: 4 VC), in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:55:71: info: division check proved (CVC5: 1 VC), in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:64:13: info: add a contract to analyze it separately from calling contexts
 ap-altitude-pitch.adb:64:13: info: local subprogram "Calc_Elevator_Move" only analyzed in the context of calls
 ap-altitude-pitch.adb:69:07: info: initialization of "Target_Angle" proved
 ap-altitude-pitch.adb:69:07: info: initialization of "Target_Angle" proved, in call inlined at ap-altitude-pitch.adb:104
-ap-altitude-pitch.adb:71:28: info: precondition proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:104
-ap-altitude-pitch.adb:73:54: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:104
-ap-altitude-pitch.adb:74:53: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:104
+ap-altitude-pitch.adb:71:28: info: precondition proved (CVC5: 1 VC), in call inlined at ap-altitude-pitch.adb:104
+ap-altitude-pitch.adb:73:54: info: division check proved (CVC5: 1 VC), in call inlined at ap-altitude-pitch.adb:104
+ap-altitude-pitch.adb:74:53: info: division check proved (CVC5: 1 VC), in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:86:49: info: initialization of "Surfaces.Elevators" proved
 ap-altitude-pitch.adb:96:07: info: initialization of "Present_Pitchrate" proved
 ap-altitude-pitch.adb:97:07: info: initialization of "Target_Pitchrate" proved
@@ -73,8 +73,8 @@ ap-heading-roll.adb:24:07: info: initialization of "Result" proved, in call inli
 ap-heading-roll.adb:25:07: info: initialization of "Offset" proved
 ap-heading-roll.adb:25:07: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:25:07: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
-ap-heading-roll.adb:33:42: info: range check proved (CVC4: 2 VC), in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
-ap-heading-roll.adb:35:46: info: range check proved (CVC4: 2 VC), in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:33:42: info: range check proved (CVC5: 2 VC), in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:35:46: info: range check proved (CVC5: 2 VC), in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:40:13: info: add a contract to analyze it separately from calling contexts
 ap-heading-roll.adb:40:13: info: local subprogram "Target_Rate" only analyzed in the context of calls
 ap-heading-roll.adb:45:07: info: initialization of "Target_Bank" proved
@@ -82,14 +82,14 @@ ap-heading-roll.adb:45:07: info: initialization of "Target_Bank" proved, in call
 ap-heading-roll.adb:46:07: info: initialization of "Result" proved
 ap-heading-roll.adb:46:07: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:48:22: info: analyzing call to "Target_ROR" in context
-ap-heading-roll.adb:49:53: info: division check proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:49:53: info: division check proved (CVC5: 1 VC), in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:59:13: info: add a contract to analyze it separately from calling contexts
 ap-heading-roll.adb:59:13: info: local subprogram "Calc_Aileron_Move" only analyzed in the context of calls
 ap-heading-roll.adb:64:07: info: initialization of "Target_Angle" proved
 ap-heading-roll.adb:64:07: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-roll.adb:97
-ap-heading-roll.adb:66:28: info: precondition proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:97
-ap-heading-roll.adb:68:49: info: division check proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:97
-ap-heading-roll.adb:69:48: info: division check proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:97
+ap-heading-roll.adb:66:28: info: precondition proved (CVC5: 1 VC), in call inlined at ap-heading-roll.adb:97
+ap-heading-roll.adb:68:49: info: division check proved (CVC5: 1 VC), in call inlined at ap-heading-roll.adb:97
+ap-heading-roll.adb:69:48: info: division check proved (CVC5: 1 VC), in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:80:49: info: initialization of "Surfaces.Ailerons" proved
 ap-heading-roll.adb:89:07: info: initialization of "Present_Rollrate" proved
 ap-heading-roll.adb:90:07: info: initialization of "Target_Rollrate" proved
@@ -104,8 +104,8 @@ ap-heading-yaw.adb:19:13: info: add a contract to analyze it separately from cal
 ap-heading-yaw.adb:19:13: info: local subprogram "Calc_Rudder_Move" only analyzed in the context of calls
 ap-heading-yaw.adb:23:07: info: initialization of "Target_Angle" proved
 ap-heading-yaw.adb:23:07: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-yaw.adb:47
-ap-heading-yaw.adb:25:28: info: precondition proved (CVC4: 1 VC), in call inlined at ap-heading-yaw.adb:47
-ap-heading-yaw.adb:27:53: info: division check proved (CVC4: 1 VC), in call inlined at ap-heading-yaw.adb:47
+ap-heading-yaw.adb:25:28: info: precondition proved (CVC5: 1 VC), in call inlined at ap-heading-yaw.adb:47
+ap-heading-yaw.adb:27:53: info: division check proved (CVC5: 1 VC), in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:36:49: info: initialization of "Surfaces.Rudder" proved
 ap-heading-yaw.adb:43:07: info: initialization of "Present_Sliprate" proved
 ap-heading-yaw.adb:44:07: info: initialization of "Rudder_Movement" proved
@@ -136,31 +136,31 @@ main.adb:4:08: info: data dependencies proved
 main.adb:16:08: info: flow dependencies proved
 scale.adb:16:07: info: initialization of "Calc" proved
 scale.adb:17:07: info: initialization of "Ans" proved
-scale.adb:19:20: info: overflow check proved (CVC4: 2 VC)
-scale.adb:19:32: info: division check proved (CVC4: 1 VC)
-scale.adb:19:32: info: overflow check proved (CVC4: 2 VC)
-scale.adb:19:44: info: overflow check proved (CVC4: 2 VC)
-scale.adb:20:15: info: range check proved (CVC4: 2 VC)
+scale.adb:19:20: info: overflow check proved (CVC5: 2 VC)
+scale.adb:19:32: info: division check proved (CVC5: 1 VC)
+scale.adb:19:32: info: overflow check proved (CVC5: 2 VC)
+scale.adb:19:44: info: overflow check proved (CVC5: 2 VC)
+scale.adb:20:15: info: range check proved (CVC5: 2 VC)
 scale.adb:31:07: info: initialization of "Target_Angle" proved
 scale.adb:32:07: info: initialization of "K1" proved
 scale.adb:32:11: info: initialization of "K2" proved
 scale.adb:32:15: info: initialization of "Gap" proved
-scale.adb:48:33: info: assertion proved (CVC4: 2 VC)
-scale.adb:53:16: info: precondition proved (CVC4: 3 VC)
-scale.adb:54:16: info: precondition proved (CVC4: 3 VC)
-scale.adb:54:25: info: range check proved (CVC4: 2 VC)
-scale.adb:55:19: info: overflow check proved (CVC4: 2 VC)
-scale.adb:55:25: info: overflow check proved (CVC4: 2 VC)
-scale.adb:57:33: info: assertion proved (CVC4: 4 VC)
-scale.adb:58:64: info: overflow check proved (CVC4: 2 VC)
-scale.adb:58:70: info: division check proved (CVC4: 1 VC)
-scale.adb:58:70: info: overflow check proved (CVC4: 2 VC)
-scale.adb:58:70: info: range check proved (CVC4: 2 VC)
+scale.adb:48:33: info: assertion proved (CVC5: 2 VC)
+scale.adb:53:16: info: precondition proved (CVC5: 3 VC)
+scale.adb:54:16: info: precondition proved (CVC5: 3 VC)
+scale.adb:54:25: info: range check proved (CVC5: 2 VC)
+scale.adb:55:19: info: overflow check proved (CVC5: 2 VC)
+scale.adb:55:25: info: overflow check proved (CVC5: 2 VC)
+scale.adb:57:33: info: assertion proved (CVC5: 4 VC)
+scale.adb:58:64: info: overflow check proved (CVC5: 2 VC)
+scale.adb:58:70: info: division check proved (CVC5: 1 VC)
+scale.adb:58:70: info: overflow check proved (CVC5: 2 VC)
+scale.adb:58:70: info: range check proved (CVC5: 2 VC)
 scale.adb:70:07: info: initialization of "V" proved
 scale.adb:71:07: info: initialization of "Ans" proved
-scale.adb:74:30: info: assertion proved (CVC4: 2 VC)
-scale.adb:76:17: info: overflow check proved (CVC4: 2 VC)
-scale.adb:78:30: info: assertion proved (CVC4: 2 VC)
-scale.adb:79:38: info: range check proved (CVC4: 2 VC)
-scale.ads:16:19: info: postcondition proved (CVC4: 2 VC)
+scale.adb:74:30: info: assertion proved (CVC5: 2 VC)
+scale.adb:76:17: info: overflow check proved (CVC5: 2 VC)
+scale.adb:78:30: info: assertion proved (CVC5: 2 VC)
+scale.adb:79:38: info: range check proved (CVC5: 2 VC)
+scale.ads:16:19: info: postcondition proved (CVC5: 2 VC)
 surfaces.ads:5:08: info: flow dependencies proved

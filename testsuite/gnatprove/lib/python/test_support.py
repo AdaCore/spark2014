@@ -18,7 +18,7 @@ max_steps = 200
 default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
-default_provers = ["cvc4", "altergo", "z3", "colibri"]
+default_provers = ["cvc5", "altergo", "z3", "colibri"]
 provers_output_regex = re.compile(r"\((Trivial|Interval|CVC4|Z3|altergo|colibri).*\)")
 default_ada = 2022
 
@@ -883,7 +883,7 @@ def do_flow(
         procs=procs,
         steps=1,
         counterexample=False,
-        prover=["cvc4"],
+        prover=["cvc5"],
         no_fail=no_fail,
         mode=mode,
         sort_output=sort_output,

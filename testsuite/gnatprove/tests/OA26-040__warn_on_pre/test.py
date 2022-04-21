@@ -8,7 +8,7 @@ clean()
 print("")
 print("only CVC4")
 print("----------------")
-prove_all(prover=["cvc4"], opt=["--proof-warnings"])
+prove_all(prover=["cvc5"], opt=["--proof-warnings"])
 clean()
 
 print("")

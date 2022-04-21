@@ -1,11 +1,11 @@
 counter_example_loop_index.adb:14:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 1)
-counter_example_loop_index.adb:14:33: info: loop invariant initialization proved (CVC4: 1 VC)
+counter_example_loop_index.adb:14:33: info: loop invariant initialization proved (CVC5: 1 VC)
 counter_example_loop_index.adb:19:04: warning: analyzing unreferenced procedure "P1"
 counter_example_loop_index.adb:19:14: warning: subprogram "P1" has no effect
 counter_example_loop_index.adb:24:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:24:33: info: loop invariant preservation proved (Trivial: 1 VC)
 counter_example_loop_index.adb:25:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 51)
-counter_example_loop_index.adb:25:33: info: loop invariant initialization proved (CVC4: 1 VC)
+counter_example_loop_index.adb:25:33: info: loop invariant initialization proved (CVC5: 1 VC)
 counter_example_loop_index.adb:26:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:26:33: info: loop invariant preservation proved (Trivial: 1 VC)
 counter_example_loop_index.adb:41:04: warning: analyzing unreferenced procedure "P2"
@@ -20,11 +20,11 @@ counter_example_loop_index.adb:48:33: info: loop invariant preservation proved (
 counter_example_loop_index.adb:55:04: warning: analyzing unreferenced procedure "P3"
 counter_example_loop_index.adb:55:14: warning: subprogram "P3" has no effect
 counter_example_loop_index.adb:61:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 51)
-counter_example_loop_index.adb:61:33: info: loop invariant initialization proved (CVC4: 1 VC)
+counter_example_loop_index.adb:61:33: info: loop invariant initialization proved (CVC5: 1 VC)
 counter_example_loop_index.adb:67:04: warning: analyzing unreferenced procedure "P4"
 counter_example_loop_index.adb:67:14: warning: subprogram "P4" has no effect
 counter_example_loop_index.adb:74:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 51)
-counter_example_loop_index.adb:74:33: info: loop invariant initialization proved (CVC4: 1 VC)
+counter_example_loop_index.adb:74:33: info: loop invariant initialization proved (CVC5: 1 VC)
 counter_example_loop_index.ads:8:14: warning: subprogram "P" has no effect
 counterexample expected for check at counter_example_loop_index.adb:14
   trace at counter_example_loop_index.adb:12 --> I = 1

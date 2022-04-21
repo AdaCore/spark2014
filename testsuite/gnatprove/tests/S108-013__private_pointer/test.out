@@ -1,7 +1,7 @@
-private_pointer.ads:14:46: info: pointer dereference check proved (CVC4: 1 VC)
-private_pointer.ads:14:54: info: pointer dereference check proved (CVC4: 1 VC)
+private_pointer.ads:14:46: info: pointer dereference check proved (CVC5: 1 VC)
+private_pointer.ads:14:54: info: pointer dereference check proved (CVC5: 1 VC)
 private_pointer.ads:29:05: info: initialization of "X_1" proved
-private_pointer.ads:30:20: info: assertion proved (CVC4: 3 VC; Trivial: 1 VC)
-private_pointer.ads:31:20: info: assertion proved (CVC4: 1 VC)
+private_pointer.ads:30:20: info: assertion proved (CVC5: 3 VC; Trivial: 1 VC)
+private_pointer.ads:31:20: info: assertion proved (CVC5: 1 VC)
 private_pointer.ads:32:05: info: initialization of "X_2" proved
-private_pointer.ads:33:20: info: assertion proved (CVC4: 1 VC)
+private_pointer.ads:33:20: info: assertion proved (CVC5: 1 VC)

@@ -1,5 +1,5 @@
 prove_all:
   ada: 2012
-  prover: ["cvc4"]
+  prover: ["cvc5"]
   steps: 1
   opt: ["-u", "hw-dbc-transfer_rings.adb"]

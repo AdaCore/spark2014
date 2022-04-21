@@ -1,6 +1,6 @@
 depends_exercise.adb:11:38: high: range check might fail, cannot prove upper bound for Stack_Pointer + 1 (e.g. when Stack_Pointer = Pointer_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at depends_exercise.ads:13 should mention Stack_Pointer in a precondition]
-depends_exercise.adb:12:14: info: index check proved (CVC4: 2 VC)
-depends_exercise.adb:23:11: info: range check proved (CVC4: 2 VC)
+depends_exercise.adb:12:14: info: index check proved (CVC5: 2 VC)
+depends_exercise.adb:23:11: info: range check proved (CVC5: 2 VC)
 depends_exercise.adb:23:37: info: cannot unroll loop (too many loop iterations)
 depends_exercise.ads:10:11: info: data dependencies proved
 depends_exercise.ads:10:34: info: initialization of "Stack" proved
@@ -21,7 +21,7 @@ Data Dependencies                 3          3          .           .           
 Flow Dependencies                 4          4          .           .           .          .
 Initialization                    2          2          .           .           .          .
 Non-Aliasing                      .          .          .           .           .          .
-Run-time Checks                   3          .          .    2 (CVC4)           .          1
+Run-time Checks                   3          .          .    2 (CVC5)           .          1
 Assertions                        .          .          .           .           .          .
 Functional Contracts              .          .          .           .           .          .
 LSP Verification                  .          .          .           .           .          .

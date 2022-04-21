@@ -1,11 +1,11 @@
-p_warn.ads:6:19: info: assertion proved (CVC4: 1 VC)
+p_warn.ads:6:19: info: assertion proved (CVC5: 1 VC)
 p_warn.ads:6:21: warning: attribute "Img" has an implementation-defined length
-p_warn.ads:7:19: info: assertion proved (CVC4: 1 VC)
+p_warn.ads:7:19: info: assertion proved (CVC5: 1 VC)
 p_warn.ads:7:26: warning: attribute "Image" has an implementation-defined length
-p_warn.ads:11:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:12:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:16:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:17:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:21:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:22:19: info: assertion proved (CVC4: 1 VC)
+p_warn.ads:11:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:12:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:16:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:17:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:21:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:22:19: info: assertion proved (CVC5: 1 VC)
 p_warn.ads:23:19: medium: assertion might fail

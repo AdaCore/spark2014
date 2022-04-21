@@ -35,29 +35,29 @@ bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190], ca
 bad_assign_arr.adb:2:27: medium: "X" might not be initialized in "Bad_Assign_Arr" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 bad_assign_arr.adb:4:07: high: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: add precondition (Y in 1 .. 10) to subprogram at line 2]
 bad_assign_arr.adb:5:09: high: array index check might fail [CWE 119] (e.g. when Y = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y <= 10 - 10) to subprogram at line 2]
-bad_assign_arr.adb:5:09: info: overflow check proved (CVC4: 2 VC)
+bad_assign_arr.adb:5:09: info: overflow check proved (CVC5: 2 VC)
 bad_assign_rec.adb:2:27: high: "X.D.A" is not initialized in "Bad_Assign_Rec" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.D.A" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 bad_assign_rec.adb:4:13: high: overflow check might fail [CWE 190], cannot prove lower bound for Y * 1000000 (e.g. when Y = -2148) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Y * 1000000 in Integer) to subprogram at line 2]
-bad_assign_rec.adb:5:15: info: division check proved (CVC4: 1 VC)
+bad_assign_rec.adb:5:15: info: division check proved (CVC5: 1 VC)
 bad_call_assign.adb:3:28: warning: unused initial value of "X" [CWE 563]
 bad_call_search.adb:6:20: info: unrolling loop
 bad_call_search.adb:9:19: medium: "X" might not be initialized [CWE 457]
 bad_cond_assign.adb:1:28: info: initialization of "X" proved
 bad_cond_assign.adb:4:14: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 1]
-bad_cond_assign.adb:6:14: info: overflow check proved (CVC4: 2 VC)
+bad_cond_assign.adb:6:14: info: overflow check proved (CVC5: 2 VC)
 bad_induction.adb:3:21: info: unrolling loop
 bad_induction.adb:4:12: high: "X" is not initialized [CWE 457]
 bad_induction.adb:4:14: high: overflow check might fail [CWE 190], cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 bad_multi_cond_assign.adb:1:34: info: initialization of "X" proved
 bad_multi_cond_assign.adb:4:14: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 1]
-bad_multi_cond_assign.adb:7:17: info: overflow check proved (CVC4: 2 VC)
+bad_multi_cond_assign.adb:7:17: info: overflow check proved (CVC5: 2 VC)
 bad_multi_cond_assign.adb:9:17: high: overflow check might fail [CWE 190], cannot prove upper bound for Y * 2 (e.g. when Y = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Y * 2 in Integer) to subprogram at line 1]
 bad_multi_induction.adb:1:32: info: initialization of "X1" proved
 bad_multi_induction.adb:1:36: info: initialization of "X2" proved
 bad_multi_induction.adb:5:17: warning: loop condition is stable
 bad_multi_induction.adb:6:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for X2 + 6 (e.g. when X2 = 2147483642) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention X2 in a loop invariant]
 bad_self_assign.adb:2:21: high: overflow check might fail [CWE 190], cannot prove lower bound for X - 1 (e.g. when X = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
-bad_self_assign.adb:4:11: info: overflow check proved (CVC4: 2 VC)
+bad_self_assign.adb:4:11: info: overflow check proved (CVC5: 2 VC)
 call_search.adb:3:52: info: initialization of "U" proved
 call_search.adb:3:55: info: initialization of "V" proved
 call_unknown.adb:2:25: info: initialization of "X" proved
@@ -66,7 +66,7 @@ call_unknown_pos.adb:4:13: medium: range check might fail [CWE 682], cannot prov
 call_unknown_rel.adb:2:29: info: initialization of "X" proved
 call_unknown_rel.adb:5:19: medium: assertion might fail (e.g. when X = 1 and Y = 0) [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:5:25: medium: overflow check might fail [CWE 190], cannot prove lower bound for 2 * Y (e.g. when Y = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-call_unknown_rel.adb:5:29: info: overflow check proved (CVC4: 2 VC)
+call_unknown_rel.adb:5:29: info: overflow check proved (CVC5: 2 VC)
 case_assign.adb:6:19: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at case_assign.ads:3]
 case_assign.adb:8:19: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at case_assign.ads:3]
 case_assign.adb:10:19: high: overflow check might fail [CWE 190], cannot prove lower bound for Y * 2 (e.g. when Y = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Y * 2 in Integer) to subprogram at case_assign.ads:3]
@@ -87,18 +87,18 @@ cond_assign.adb:6:14: high: overflow check might fail [CWE 190], cannot prove lo
 context.adb:3:04: info: initialization of "X" proved
 context.adb:4:14: info: add a contract to analyze it separately from calling contexts
 context.adb:4:14: info: local subprogram "Local" only analyzed in the context of calls
-context.adb:7:25: info: overflow check proved (CVC4: 20 VC), in call inlined at context.adb:12
+context.adb:7:25: info: overflow check proved (CVC5: 20 VC), in call inlined at context.adb:12
 context.adb:12:04: info: in inlined body at line 6
 context.adb:12:04: info: unrolling loop
 filter.adb:5:21: info: unrolling loop
-filter.adb:7:13: info: index check proved (CVC4: 20 VC)
-filter.adb:8:17: info: overflow check proved (CVC4: 20 VC)
+filter.adb:7:13: info: index check proved (CVC5: 17 VC; Z3: 3 VC)
+filter.adb:8:17: info: overflow check proved (CVC5: 20 VC)
 ident_arr.adb:3:21: info: unrolling loop
 ident_arr.ads:2:22: info: initialization of "X" proved
-ident_arr.ads:3:11: info: postcondition proved (CVC4: 1 VC)
+ident_arr.ads:3:11: info: postcondition proved (CVC5: 1 VC)
 induction.adb:1:22: info: initialization of "X" proved
 induction.adb:4:21: info: unrolling loop
-induction.adb:5:14: info: overflow check proved (CVC4: 20 VC)
+induction.adb:5:14: info: overflow check proved (CVC5: 20 VC)
 map.adb:2:44: info: initialization of "Z" proved
 map.adb:4:21: info: unrolling loop
 map.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + Y (e.g. when J = 1 and X = (others => Integer'First) and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X and Y in a precondition]
@@ -112,10 +112,10 @@ multi_induction.adb:6:16: medium: overflow check might fail [CWE 190], cannot pr
 multi_induction.adb:7:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for X2 + 6 (e.g. when X2 = 2147483642) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention X2 in a loop invariant]
 search.adb:4:21: info: unrolling loop
 search_loop.adb:9:13: medium: array index check might fail [CWE 119] (e.g. when J = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention J in a loop invariant]
-search_loop.adb:12:14: info: overflow check proved (CVC4: 2 VC)
+search_loop.adb:12:14: info: overflow check proved (CVC5: 2 VC)
 search_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
 search_while.adb:6:13: medium: array index check might fail [CWE 119] (e.g. when J = 0) [reason for check: value must be a valid index into the array] [possible fix: add or complete related loop invariants or postconditions]
-search_while.adb:9:14: info: overflow check proved (CVC4: 2 VC)
+search_while.adb:9:14: info: overflow check proved (CVC5: 2 VC)
 self_assign.adb:3:11: high: overflow check might fail [CWE 190], cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 sum_all_arr.adb:5:21: info: unrolling loop
 sum_all_arr.adb:6:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Sum + X (J) (e.g. when J = 2 and Sum = -1 and X = (2 => Integer'First, others => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]

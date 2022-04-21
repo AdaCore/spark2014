@@ -1,6 +1,6 @@
-generic_queue.ads:46:32: info: range check proved (CVC4: 2 VC), in instantiation at some_package.adb:8
-generic_queue.ads:65:32: info: range check proved (CVC4: 2 VC), in instantiation at some_package.adb:8
-generic_queue.ads:73:32: info: range check proved (CVC4: 2 VC), in instantiation at some_package.adb:8
+generic_queue.ads:46:32: info: range check proved (CVC5: 2 VC), in instantiation at some_package.adb:8
+generic_queue.ads:65:32: info: range check proved (CVC5: 2 VC), in instantiation at some_package.adb:8
+generic_queue.ads:73:32: info: range check proved (CVC5: 2 VC), in instantiation at some_package.adb:8
 some_package.adb:7:72: info: in default value of private type at generic_queue.ads:22, in instantiation at some_package.adb:8
 some_package.adb:7:72: info: range check proved (Trivial)
 some_package.adb:8:04: info: implicit function contract not available for proof ("Length" might not return)

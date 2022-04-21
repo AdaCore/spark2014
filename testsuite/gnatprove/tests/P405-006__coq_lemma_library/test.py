@@ -34,7 +34,7 @@ os.environ["SPARK_LEMMAS_INSTALLED"] = "False"
 
 prove_all(
     replay=True,
-    prover=["coq", "cvc4", "z3", "altergo", "colibri"],
+    prover=["coq", "cvc5", "z3", "altergo", "colibri"],
     counterexample=False,
     #  We need to remove useless coq warning for Grammar extension
     filter_output=".*Grammar extension",

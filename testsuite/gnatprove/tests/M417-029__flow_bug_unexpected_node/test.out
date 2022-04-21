@@ -1,18 +1,18 @@
 clock.adb:8:40: info: initialization of "Current_Time" constituent of "State" proved
-clock.adb:18:27: info: precondition proved (CVC4: 1 VC)
+clock.adb:18:27: info: precondition proved (CVC5: 1 VC)
 clock.ads:8:06: info: data dependencies proved
 clock.ads:12:06: info: data dependencies proved
-clock.ads:13:16: info: postcondition proved (CVC4: 1 VC)
+clock.ads:13:16: info: postcondition proved (CVC5: 1 VC)
 clock.ads:17:06: info: data dependencies proved
-clock.ads:19:16: info: postcondition proved (CVC4: 1 VC)
-clock.ads:19:39: info: precondition proved (CVC4: 1 VC)
-time.adb:7:43: info: range check proved (CVC4: 2 VC)
-time.adb:14:46: info: range check proved (CVC4: 2 VC)
-time.adb:19:42: info: overflow check proved (CVC4: 2 VC)
+clock.ads:19:16: info: postcondition proved (CVC5: 1 VC)
+clock.ads:19:39: info: precondition proved (CVC5: 1 VC)
+time.adb:7:43: info: range check proved (CVC5: 2 VC)
+time.adb:14:46: info: range check proved (CVC5: 2 VC)
+time.adb:19:42: info: overflow check proved (CVC5: 2 VC)
 time.ads:23:05: info: data dependencies proved
-time.ads:25:05: info: complete contract cases proved (CVC4: 1 VC)
-time.ads:25:05: info: disjoint contract cases proved (CVC4: 1 VC)
-time.ads:27:08: info: contract case proved (CVC4: 3 VC; Trivial: 1 VC)
-time.ads:34:08: info: contract case proved (CVC4: 3 VC; Trivial: 1 VC)
-time.ads:41:08: info: contract case proved (CVC4: 3 VC; Trivial: 1 VC)
-time.ads:44:54: info: overflow check proved (CVC4: 2 VC)
+time.ads:25:05: info: complete contract cases proved (CVC5: 1 VC)
+time.ads:25:05: info: disjoint contract cases proved (CVC5: 1 VC)
+time.ads:27:08: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
+time.ads:34:08: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
+time.ads:41:08: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
+time.ads:44:54: info: overflow check proved (CVC5: 2 VC)

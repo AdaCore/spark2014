@@ -23,11 +23,11 @@ foo.adb:80:24: info: unrolling loop
 foo.adb:82:13: medium: "A" might not be initialized
 foo.adb:88:04: warning: analyzing unreferenced procedure "Test_07_Ok_Hard"
 foo.adb:88:31: medium: "A" might not be initialized in "Test_07_Ok_Hard" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-foo.adb:93:33: info: loop invariant initialization proved (CVC4: 1 VC)
-foo.adb:93:33: info: loop invariant preservation proved (CVC4: 1 VC)
-foo.adb:93:41: info: range check proved (CVC4: 4 VC)
+foo.adb:93:33: info: loop invariant initialization proved (CVC5: 1 VC)
+foo.adb:93:33: info: loop invariant preservation proved (CVC5: 1 VC)
+foo.adb:93:41: info: range check proved (CVC5: 4 VC)
 foo.adb:94:38: medium: "A" might not be initialized
-foo.adb:94:41: info: index check proved (CVC4: 4 VC)
+foo.adb:94:41: info: index check proved (CVC5: 4 VC)
 foo.adb:98:04: warning: analyzing unreferenced procedure "Test_08_E"
 foo.adb:101:24: info: unrolling loop
 foo.adb:103:19: medium: "A" might not be initialized
@@ -64,7 +64,7 @@ foo.adb:178:25: medium: "A" might not be initialized in "Test_15_E" [reason for 
 foo.adb:181:48: info: unrolling loop
 foo.adb:186:04: warning: analyzing unreferenced procedure "Test_16_E"
 foo.adb:186:25: medium: "A" might not be initialized in "Test_16_E" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-foo.adb:190:11: info: range check proved (CVC4: 2 VC)
+foo.adb:190:11: info: range check proved (CVC5: 2 VC)
 foo.adb:190:49: info: unrolling loop
 foo.adb:195:04: warning: analyzing unreferenced procedure "Test_17_Maybe"
 foo.adb:195:29: medium: "A" might not be initialized in "Test_17_Maybe" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

@@ -1,5 +1,5 @@
 prove_all:
-  prover: ["cvc4"]
+  prover: ["cvc5"]
   codepeer: True
   opt: ["-XMODE=Analyze"]
 large: True

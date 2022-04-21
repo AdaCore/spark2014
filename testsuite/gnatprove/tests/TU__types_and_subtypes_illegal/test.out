@@ -1,8 +1,8 @@
 types_and_subtypes_illegal_2.adb:2:08: medium: constant without variable input "B" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 types_and_subtypes_illegal_2.adb:9:38: medium: constant without variable input "A" cannot appear in Depends
 types_and_subtypes_illegal_2.adb:9:41: medium: constant without variable input "B" cannot appear in Depends
-types_and_subtypes_illegal_2.adb:12:14: info: overflow check proved (CVC4: 2 VC)
-types_and_subtypes_illegal_2.adb:12:18: info: overflow check proved (CVC4: 2 VC)
+types_and_subtypes_illegal_2.adb:12:14: info: overflow check proved (CVC5: 2 VC)
+types_and_subtypes_illegal_2.adb:12:18: info: overflow check proved (CVC5: 2 VC)
 types_and_subtypes_illegal_2.ads:4:34: medium: constant without variable input "A" cannot appear in Initializes
 types_and_subtypes_illegal_2.ads:9:11: info: data dependencies proved
 types_and_subtypes_illegal_2.ads:9:21: medium: constant without variable input "A" cannot appear in Globals

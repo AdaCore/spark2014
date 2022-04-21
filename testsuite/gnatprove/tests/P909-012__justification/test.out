@@ -4,6 +4,6 @@ numerics.ads:13:99: info: float overflow check justified
 numerics.ads:13:99: info: range check proved (Trivial)
 numerics.ads:16:99: info: range check proved (Trivial)
 numerics.ads:16:99: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 16 should mention Left and Right]
-numerics.ads:18:99: info: division check proved (CVC4: 1 VC)
+numerics.ads:18:99: info: division check proved (CVC5: 1 VC)
 numerics.ads:18:99: info: range check proved (Trivial)
 numerics.ads:18:99: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 18 should mention Left]

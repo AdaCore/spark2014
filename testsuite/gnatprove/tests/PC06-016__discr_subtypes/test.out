@@ -1,7 +1,7 @@
 discr_checks.adb:5:28: medium: range check might fail, cannot prove upper bound for (Bad)
 discr_checks.adb:11:29: medium: range check might fail, cannot prove upper bound for (Bad)
 discr_checks.adb:17:29: medium: range check might fail, cannot prove upper bound for (Bad)
-discr_checks.adb:23:30: info: range check proved (CVC4: 2 VC)
+discr_checks.adb:23:30: info: range check proved (CVC5: 2 VC)
 discr_checks.adb:23:30: medium: range check might fail, cannot prove upper bound for (Bad)
 discr_checks.adb:29:29: medium: range check might fail, cannot prove upper bound for (Bad)
 discr_checks.adb:43:26: medium: range check might fail, cannot prove upper bound for (Bad)

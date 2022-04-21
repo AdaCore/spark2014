@@ -1,2 +1,2 @@
-renaming.adb:5:13: info: precondition proved (CVC4: 1 VC)
-renaming.adb:7:48: info: precondition proved (CVC4: 1 VC)
+renaming.adb:5:13: info: precondition proved (CVC5: 1 VC)
+renaming.adb:7:48: info: precondition proved (CVC5: 1 VC)

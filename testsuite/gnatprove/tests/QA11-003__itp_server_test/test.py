@@ -136,7 +136,7 @@ def launch_server(limit_line, input_file):
     return "DONE"
 
 
-prove_all(counterexample=False, prover=["cvc4"], cache_allowed=False)
+prove_all(counterexample=False, prover=["cvc5"], cache_allowed=False)
 sleep(5)
 result = launch_server(
     limit_line="test.adb:11:16:VC_POSTCONDITION", input_file="test.in"

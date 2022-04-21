@@ -2,7 +2,7 @@ test.adb:16:24: info: initialization of "Sum" proved
 test.adb:18:17: info: add a contract to analyze it separately from calling contexts
 test.adb:18:17: info: local subprogram "HRB_Add" only analyzed in the context of calls
 test.adb:19:26: warning: "B" is not modified, could be IN
-test.adb:22:17: info: overflow check proved (CVC4: 2 VC), in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
+test.adb:22:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
 test.adb:22:17: medium: overflow check might fail, cannot prove lower bound for A + B, in call inlined at test.adb:36, in call inlined at test.adb:45 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 44 should mention Sum in a loop invariant]
 test.adb:25:17: info: add a contract to analyze it separately from calling contexts
 test.adb:25:17: info: local subprogram "HRB_Increment" only analyzed in the context of calls
@@ -13,7 +13,7 @@ test.adb:53:29: warning: unused initial value of "A"
 test.adb:70:07: info: initialization of "Tmp" proved
 test.adb:79:07: info: initialization of "Tmp" proved
 test.adb:119:19: medium: overflow check might fail, cannot prove upper bound for N * Factorial (N - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (N * Factorial (N - 1) in Integer) to subprogram at line 114]
-test.adb:119:34: info: range check proved (CVC4: 2 VC)
+test.adb:119:34: info: range check proved (CVC5: 2 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
 test.adb:130:26: medium: range check might fail, cannot prove lower bound for N [reason for check: input value must fit in parameter type] [possible fix: subprogram at line 123 should mention N in a precondition]
 test.adb:138:30: info: initialization of "N" proved
@@ -30,7 +30,7 @@ test.adb:168:07: warning: statement has no effect
 test.adb:171:30: info: initialization of "N" proved
 test.adb:175:17: info: add a contract to analyze it separately from calling contexts
 test.adb:175:17: info: local subprogram "Do_Stuff_C" only analyzed in the context of calls
-test.adb:178:23: info: overflow check proved (CVC4: 2 VC), in call inlined at test.adb:190
+test.adb:178:23: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:190
 test.adb:179:18: warning: unused assignment, in call inlined at test.adb:190
 test.adb:179:21: high: "Counter" is not initialized, in call inlined at test.adb:190
 test.adb:179:29: medium: overflow check might fail, cannot prove upper bound for Counter + 1, in call inlined at test.adb:190 [reason for check: result of addition must fit in a 32-bits machine integer]

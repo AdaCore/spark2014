@@ -1,7 +1,7 @@
 main.adb:4:03: info: data dependencies proved
 main.adb:10:14: warning: subprogram "A" has no effect
-main.adb:11:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-main.adb:13:22: info: assertion proved (CVC4: 1 VC)
-main.adb:13:24: info: pointer dereference check proved (CVC4: 1 VC)
-main.adb:15:22: info: assertion proved (CVC4: 1 VC)
+main.adb:11:07: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+main.adb:13:22: info: assertion proved (CVC5: 1 VC)
+main.adb:13:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:15:22: info: assertion proved (CVC5: 1 VC)
 main.adb:21:04: info: precondition proved (Trivial: 1 VC)

@@ -1,2 +1,2 @@
-test_img.ads:2:45: info: range check proved (CVC4: 4 VC)
-test_img.ads:2:63: info: overflow check proved (CVC4: 2 VC)
+test_img.ads:2:45: info: range check proved (CVC5: 4 VC)
+test_img.ads:2:63: info: overflow check proved (CVC5: 2 VC)

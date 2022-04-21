@@ -2,82 +2,82 @@ a-cfinve.ads:316:08: info: dynamic accessibility check proved (Trivial), in inst
 a-cfinve.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:44
 a-cfinve.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:27
 a-cfinve.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:44
-a-cfinve.ads:341:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names.adb:27
-a-cfinve.ads:341:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names.adb:44
-a-cfinve.ads:341:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names.adb:27
-a-cfinve.ads:341:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names.adb:44
-a-cfinve.ads:364:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:364:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:406:73: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:406:73: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:439:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:439:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:474:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:474:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:520:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:520:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:544:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:544:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:585:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:585:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:650:28: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:650:28: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:650:57: info: overflow check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:650:57: info: range check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:650:57: info: range check proved (CVC4: 2 VC), in instantiation at names.adb:44
-a-cfinve.ads:778:23: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:27
-a-cfinve.ads:778:23: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:44
-a-cfinve.ads:781:38: info: range check proved (CVC4: 2 VC), in instantiation at names.adb:27
-a-cfinve.ads:814:14: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:27
-a-cfinve.ads:814:14: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:44
-a-cfinve.ads:818:35: info: range check proved (CVC4: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:27
+a-cfinve.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:44
+a-cfinve.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:27
+a-cfinve.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:44
+a-cfinve.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:650:57: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:44
+a-cfinve.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:27
+a-cfinve.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:44
+a-cfinve.ads:781:38: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
+a-cfinve.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:27
+a-cfinve.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:44
+a-cfinve.ads:818:35: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:27
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names.adb:44
 names.adb:34:04: info: initialization of "Char_Table" proved
-names.adb:34:38: info: range check proved (CVC4: 2 VC)
+names.adb:34:38: info: range check proved (CVC5: 2 VC)
 names.adb:48:49: medium: range check might fail, cannot prove upper bound for Name_Entry'Size [reason for check: default component value must fit in the type]
 names.adb:51:04: info: initialization of "Entry_Table" proved
-names.adb:51:39: info: range check proved (CVC4: 2 VC)
-names.adb:63:30: info: division check proved (CVC4: 1 VC)
-names.adb:63:30: info: range check proved (CVC4: 2 VC)
-names.adb:74:16: info: precondition proved (CVC4: 1 VC)
+names.adb:51:39: info: range check proved (CVC5: 2 VC)
+names.adb:63:30: info: division check proved (CVC5: 1 VC)
+names.adb:63:30: info: range check proved (CVC5: 2 VC)
+names.adb:74:16: info: precondition proved (CVC5: 1 VC)
 names.adb:79:23: medium: precondition might fail [possible fix: loop at line 73 should mention Ptr in a loop invariant]
 names.adb:79:45: medium: range check might fail, cannot prove lower bound for Ptr [reason for check: input value must fit in parameter type] [possible fix: loop at line 73 should mention Ptr in a loop invariant]
 names.adb:80:20: medium: precondition might fail [possible fix: loop at line 73 should mention Ptr in a loop invariant]
-names.adb:80:42: info: range check proved (CVC4: 2 VC)
+names.adb:80:42: info: range check proved (CVC5: 2 VC)
 names.adb:84:21: info: cannot unroll loop (too many loop iterations)
 names.adb:85:10: medium: precondition might fail [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
-names.adb:88:22: info: assertion proved (CVC4: 1 VC)
-names.adb:89:22: info: assertion proved (CVC4: 1 VC)
-names.adb:90:22: info: assertion proved (CVC4: 1 VC)
+names.adb:88:22: info: assertion proved (CVC5: 1 VC)
+names.adb:89:22: info: assertion proved (Z3: 1 VC)
+names.adb:90:22: info: assertion proved (CVC5: 1 VC)
 names.adb:92:07: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:9 should mention Entry_Table]
-names.adb:93:55: info: overflow check proved (CVC4: 2 VC)
+names.adb:93:55: info: overflow check proved (CVC5: 2 VC)
 names.adb:93:55: medium: range check might fail, cannot prove lower bound for Last_Index (Char_Table) - (S'Length - 1) [reason for check: result of subtraction must fit in component type] [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
-names.adb:93:59: info: range check proved (CVC4: 2 VC)
-names.adb:94:32: info: range check proved (CVC4: 2 VC)
+names.adb:93:59: info: range check proved (CVC5: 2 VC)
+names.adb:94:32: info: range check proved (CVC5: 2 VC)
 names.adb:99:10: medium: precondition might fail
-names.adb:100:27: info: range check proved (CVC4: 2 VC)
+names.adb:100:27: info: range check proved (CVC5: 2 VC)
 names.adb:101:27: medium: precondition might fail
-names.adb:101:49: info: range check proved (CVC4: 2 VC)
+names.adb:101:49: info: range check proved (CVC5: 2 VC)
 names.adb:120:37: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
-names.adb:120:59: info: range check proved (CVC4: 2 VC)
+names.adb:120:59: info: range check proved (CVC5: 2 VC)
 names.adb:123:17: info: initialization of "S" proved
-names.adb:123:17: info: range check proved (CVC4: 2 VC)
-names.adb:124:17: info: range check proved (CVC4: 2 VC)
+names.adb:123:17: info: range check proved (CVC5: 2 VC)
+names.adb:124:17: info: range check proved (CVC5: 2 VC)
 names.adb:124:44: info: cannot unroll loop (too many loop iterations)
 names.adb:125:25: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table]
 names.adb:126:48: medium: overflow check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
 names.adb:126:48: medium: range check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
 names.ads:10:22: info: initialization of "N" proved
-names.ads:13:19: info: postcondition proved (CVC4: 1 VC)
+names.ads:13:19: info: postcondition proved (CVC5: 1 VC)

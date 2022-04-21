@@ -1,155 +1,155 @@
 a-cfdlli.ads:392:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:9
 a-cfdlli.ads:398:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:9
-a-cfdlli.ads:417:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:522:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:655:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:745:57: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:811:57: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:898:28: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:898:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1074:43: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1255:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1394:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1409:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1424:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1439:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1461:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1467:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1516:14: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
-a-cfdlli.ads:1523:23: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:417:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:522:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:655:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:745:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:898:28: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:898:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1074:43: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1255:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1394:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1409:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1424:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1439:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1461:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1467:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1516:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+a-cfdlli.ads:1523:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
 a-cfdlli.ads:1667:04: warning: unused variable constant without variable input "Empty_List", in instantiation at test_conts.adb:9
 a-cfhama.ads:400:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:17
-a-cfhama.ads:400:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_conts.adb:17
+a-cfhama.ads:400:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
 a-cfhama.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:17
-a-cfhama.ads:425:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_conts.adb:17
-a-cfhama.ads:463:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_conts.adb:17
-a-cfhama.ads:776:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:17
-a-cfhama.ads:785:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:17
-a-cfhama.ads:815:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:17
-a-cfhama.ads:830:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:17
+a-cfhama.ads:425:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+a-cfhama.ads:463:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+a-cfhama.ads:776:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+a-cfhama.ads:785:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+a-cfhama.ads:815:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+a-cfhama.ads:830:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
 a-cfhama.ads:909:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:17
-a-cfhase.ads:503:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:829:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:838:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:859:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:860:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:908:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:1085:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:1086:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:1086:44: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:1126:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:1218:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:19
-a-cfhase.ads:1239:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:503:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:829:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:838:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:859:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:860:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:908:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:1085:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:1086:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:1086:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:1126:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:1218:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+a-cfhase.ads:1239:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
 a-cfhase.ads:1490:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:19
 a-cforma.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:11
-a-cforma.ads:406:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:406:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
 a-cforma.ads:412:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:11
-a-cforma.ads:431:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:469:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:840:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:849:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:884:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:892:21: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:919:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:927:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:997:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:1012:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:1027:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:1042:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:1082:46: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
-a-cforma.ads:1097:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:431:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:469:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:840:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:849:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:884:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:892:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:919:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:927:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:997:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:1012:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:1027:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:1042:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:1082:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+a-cforma.ads:1097:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
 a-cforma.ads:1148:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:11
-a-cforse.ads:517:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:886:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:895:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:930:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:938:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:965:42: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:973:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:990:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:991:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1039:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1209:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1210:26: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1210:44: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1249:49: info: overflow check proved (CVC4: 2 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1353:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1368:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1383:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1398:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1432:47: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
-a-cforse.ads:1447:40: info: precondition proved (CVC4: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:517:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:886:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:895:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:930:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:938:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:965:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:973:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:990:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:991:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1039:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1209:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1210:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1210:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1249:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1353:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1368:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1383:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1398:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1432:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+a-cforse.ads:1447:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
 a-cforse.ads:1800:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:13
-a-cofuse.ads:249:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
-a-cofuse.ads:249:22: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
-a-cofuse.ads:250:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
-a-cofuse.ads:250:26: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
+a-cofuse.ads:249:22: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
+a-cofuse.ads:249:22: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
+a-cofuse.ads:250:26: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at test_conts.adb:19
+a-cofuse.ads:250:26: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at test_conts.adb:13
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at test_conts.adb:9
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at test_conts.adb:17
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhase.ads:108, in instantiation at test_conts.adb:19
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at test_conts.adb:11
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:113, in instantiation at test_conts.adb:13
 test_conts.adb:8:23: info: initialization of "X" proved
 test_conts.adb:26:07: info: initialization of "L" proved
-test_conts.adb:26:17: info: range check proved (CVC4: 2 VC)
+test_conts.adb:26:17: info: range check proved (CVC5: 2 VC)
 test_conts.adb:27:07: info: initialization of "C" proved
-test_conts.adb:29:07: info: precondition proved (CVC4: 1 VC)
-test_conts.adb:31:07: info: precondition proved (CVC4: 1 VC)
-test_conts.adb:33:17: info: overflow check proved (CVC4: 2 VC)
+test_conts.adb:29:07: info: precondition proved (Z3: 1 VC)
+test_conts.adb:31:07: info: precondition proved (Z3: 1 VC)
+test_conts.adb:33:17: info: overflow check proved (CVC5: 2 VC)
 test_conts.adb:38:07: info: initialization of "L" proved
-test_conts.adb:38:16: info: range check proved (CVC4: 2 VC)
+test_conts.adb:38:16: info: range check proved (CVC5: 2 VC)
 test_conts.adb:39:07: info: initialization of "C" proved
-test_conts.adb:41:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
-test_conts.adb:43:07: info: precondition proved (CVC4: 1 VC)
-test_conts.adb:45:17: info: overflow check proved (CVC4: 2 VC)
+test_conts.adb:41:07: info: precondition proved (Z3: 2 VC)
+test_conts.adb:43:07: info: precondition proved (Z3: 1 VC)
+test_conts.adb:45:17: info: overflow check proved (Z3: 2 VC)
 test_conts.adb:50:07: info: initialization of "L" proved
-test_conts.adb:50:16: info: range check proved (CVC4: 2 VC)
-test_conts.adb:50:21: info: range check proved (CVC4: 1 VC)
+test_conts.adb:50:16: info: range check proved (CVC5: 2 VC)
+test_conts.adb:50:21: info: range check proved (CVC5: 1 VC)
 test_conts.adb:51:07: info: initialization of "C" proved
-test_conts.adb:53:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
-test_conts.adb:55:07: info: precondition proved (CVC4: 1 VC)
-test_conts.adb:57:17: info: overflow check proved (CVC4: 2 VC)
+test_conts.adb:53:07: info: precondition proved (Z3: 2 VC)
+test_conts.adb:55:07: info: precondition proved (Z3: 1 VC)
+test_conts.adb:57:17: info: overflow check proved (Z3: 2 VC)
 test_conts.adb:62:07: info: initialization of "L" proved
-test_conts.adb:62:16: info: range check proved (CVC4: 2 VC)
+test_conts.adb:62:16: info: range check proved (CVC5: 2 VC)
 test_conts.adb:63:07: info: initialization of "C" proved
-test_conts.adb:65:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
-test_conts.adb:67:07: info: precondition proved (CVC4: 1 VC)
-test_conts.adb:69:17: info: overflow check proved (CVC4: 2 VC)
+test_conts.adb:65:07: info: precondition proved (Z3: 2 VC)
+test_conts.adb:67:07: info: precondition proved (Z3: 1 VC)
+test_conts.adb:69:17: info: overflow check proved (Z3: 2 VC)
 test_conts.adb:74:07: info: initialization of "L" proved
-test_conts.adb:74:16: info: range check proved (CVC4: 2 VC)
-test_conts.adb:74:21: info: range check proved (CVC4: 1 VC)
+test_conts.adb:74:16: info: range check proved (CVC5: 2 VC)
+test_conts.adb:74:21: info: range check proved (CVC5: 1 VC)
 test_conts.adb:75:07: info: initialization of "C" proved
-test_conts.adb:77:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
-test_conts.adb:79:07: info: precondition proved (CVC4: 1 VC)
-test_conts.adb:81:17: info: overflow check proved (CVC4: 2 VC)
-test_conts.adb:84:19: info: assertion proved (CVC4: 1 VC)
+test_conts.adb:77:07: info: precondition proved (Z3: 2 VC)
+test_conts.adb:79:07: info: precondition proved (Z3: 1 VC)
+test_conts.adb:81:17: info: overflow check proved (Z3: 2 VC)
+test_conts.adb:84:19: info: assertion proved (Z3: 1 VC)

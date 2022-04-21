@@ -1,4 +1,4 @@
-client.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+client.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 client.adb:3:11: warning: "ada.task_identification.tasking_state" is not modified, could be INPUT
 client.adb:5:08: error: side effects of function "Blocking" are not modeled in SPARK
 p.adb:12:52: warning: statement has no effect

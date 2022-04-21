@@ -1,5 +1,5 @@
 p.adb:4:14: warning: subprogram "Proc" has no effect
-p.adb:8:15: info: range check proved (CVC4: 2 VC)
+p.adb:8:15: info: range check proved (CVC5: 2 VC)
 p.adb:9:07: info: initialization of "Tmp_S" proved
 p.adb:11:07: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:11:17: warning: subprogram "Proc_Loop" has no effect

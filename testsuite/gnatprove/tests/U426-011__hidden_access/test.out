@@ -1,8 +1,8 @@
 main.adb:6:06: info: flow dependencies proved
 main.adb:35:06: info: data dependencies proved
 main.adb:38:07: info: initialization of "Y" proved
-main.adb:40:22: info: assertion proved (CVC4: 1 VC)
-main.adb:43:22: info: assertion proved (CVC4: 1 VC)
+main.adb:40:22: info: assertion proved (CVC5: 1 VC)
+main.adb:43:22: info: assertion proved (CVC5: 1 VC)
 main.adb:82:40: info: data dependencies proved
-main.adb:86:22: info: assertion proved (CVC4: 1 VC)
-main.adb:89:22: info: assertion proved (CVC4: 1 VC)
+main.adb:86:22: info: assertion proved (CVC5: 1 VC)
+main.adb:89:22: info: assertion proved (CVC5: 1 VC)

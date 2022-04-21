@@ -1,8 +1,8 @@
-logical_eq.adb:14:07: info: range check proved (CVC4: 2 VC)
+logical_eq.adb:14:07: info: range check proved (CVC5: 2 VC)
 logical_eq.adb:25:06: info: data dependencies proved
-logical_eq.adb:29:22: info: assertion proved (CVC4: 1 VC)
-logical_eq.adb:30:22: info: assertion proved (CVC4: 1 VC)
+logical_eq.adb:29:22: info: assertion proved (CVC5: 1 VC)
+logical_eq.adb:30:22: info: assertion proved (CVC5: 1 VC)
 logical_eq.adb:33:06: info: data dependencies proved
-logical_eq.adb:37:22: info: assertion proved (CVC4: 1 VC)
+logical_eq.adb:37:22: info: assertion proved (CVC5: 1 VC)
 logical_eq.adb:40:06: info: data dependencies proved
-logical_eq.adb:44:22: info: assertion proved (CVC4: 1 VC)
+logical_eq.adb:44:22: info: assertion proved (CVC5: 1 VC)

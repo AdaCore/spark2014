@@ -66,19 +66,19 @@ tests.adb:285:07: info: initialization of "Tmp" proved
 tests.adb:286:07: info: initialization of "Tmp2" proved
 tests.adb:301:23: info: initialization of "X" proved
 tests.adb:302:09: info: data dependencies proved
-tests.adb:315:13: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+tests.adb:315:13: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 tests.adb:320:23: info: initialization of "X" proved
 tests.adb:321:09: info: data dependencies proved
-tests.adb:331:48: info: range check proved (CVC4: 1 VC)
-tests.adb:334:20: info: range check proved (CVC4: 1 VC)
+tests.adb:331:48: info: range check proved (CVC5: 1 VC)
+tests.adb:334:20: info: range check proved (CVC5: 1 VC)
 tests.adb:336:16: high: "H1.Content.Field" is not initialized
-tests.adb:336:19: info: range check proved (CVC4: 1 VC)
+tests.adb:336:19: info: range check proved (CVC5: 1 VC)
 tests.adb:340:23: info: initialization of "R" proved
 tests.adb:341:09: info: data dependencies proved
-tests.adb:352:14: info: range check proved (CVC4: 1 VC)
-tests.adb:352:24: info: discriminant check proved (CVC4: 1 VC)
+tests.adb:352:14: info: range check proved (CVC5: 1 VC)
+tests.adb:352:24: info: discriminant check proved (CVC5: 1 VC)
 tests.adb:353:07: info: initialization of "B" proved
-tests.adb:355:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+tests.adb:355:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 tests.adb:360:23: info: initialization of "N" proved
 tests.adb:361:23: info: initialization of "M" proved
 tests.adb:362:09: info: data dependencies proved
@@ -90,16 +90,16 @@ tests.adb:384:07: info: initialization of "Tmp" proved
 tests.adb:393:23: info: initialization of "B" proved
 tests.adb:394:09: info: data dependencies proved
 tests.adb:395:09: info: flow dependencies proved
-tests.adb:398:37: info: range check proved (CVC4: 1 VC)
+tests.adb:398:37: info: range check proved (CVC5: 1 VC)
 tests.adb:399:07: info: initialization of "X" proved
-tests.adb:401:15: info: discriminant check proved (CVC4: 1 VC)
+tests.adb:401:15: info: discriminant check proved (CVC5: 1 VC)
 tests.adb:408:23: info: initialization of "N" proved
 tests.adb:409:23: info: initialization of "M" proved
 tests.adb:410:23: info: initialization of "O" proved
 tests.adb:411:09: info: data dependencies proved
 tests.adb:413:21: medium: missing dependency "M => B"
 tests.adb:414:21: medium: missing dependency "O => A"
-tests.adb:420:43: info: tag check proved (CVC4: 1 VC)
+tests.adb:420:43: info: tag check proved (CVC5: 1 VC)
 tests.adb:423:13: medium: range check might fail, cannot prove lower bound for Z.X [reason for check: value must fit in the target type of the assignment]
 tests.adb:428:23: info: initialization of "N" proved
 tests.adb:429:09: info: data dependencies proved

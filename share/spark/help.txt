@@ -91,7 +91,7 @@ gnatprove advanced switches:
  --proof-warnings     Issue warnings by proof
  --proof=g[:l]        Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)
- --prover=s[,s]*      Use given provers (s=altergo, cvc4*, z3, ..., or s=all
+ --prover=s[,s]*      Use given provers (s=altergo, cvc5*, z3, ..., or s=all
                       for using all built-in provers)
  --RTS=dir            Specify the Ada runtime name/location
  --steps=nnn          Set the maximum number of proof steps (prover-specific)
@@ -118,9 +118,9 @@ gnatprove advanced switches:
                      (most suited for combination of automatic and manual proof)
 
  * Prover name values
-   (Default prover is cvc4.)
+   (Default prover is cvc5.)
    . altergo       - Use Alt-Ergo
    . colibri       - Use Colibri
-   . cvc4          - Use CVC4
+   . cvc5          - Use CVC5
    . z3            - Use Z3
    . ...           - Any other prover configured in your .why3.conf file

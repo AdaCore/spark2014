@@ -1,4 +1,4 @@
 comment: "colibri disabled because test too slow"
 prove_all:
   steps: 600
-  prover: ["cvc4", "altergo", "z3"]
+  prover: ["cvc5", "altergo", "z3"]

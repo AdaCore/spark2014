@@ -1,6 +1,6 @@
 anti_aliasing.adb:15:14: info: add a contract to analyze it separately from calling contexts
 anti_aliasing.adb:15:14: info: local subprogram "One_In_One_Out" only analyzed in the context of calls
-anti_aliasing.adb:18:14: info: overflow check proved (CVC4: 2 VC), in call inlined at anti_aliasing.adb:40
+anti_aliasing.adb:18:14: info: overflow check proved (CVC5: 2 VC), in call inlined at anti_aliasing.adb:40
 anti_aliasing.adb:21:54: info: data dependencies proved
 anti_aliasing.adb:23:07: info: initialization of "Temp" proved
 anti_aliasing.adb:26:14: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition]
@@ -32,17 +32,17 @@ externals.ads:22:11: info: flow dependencies proved
 externals.ads:26:11: info: data dependencies proved
 externals.ads:32:11: info: data dependencies proved
 externals.ads:33:11: info: flow dependencies proved
-f.adb:3:16: info: postcondition proved (CVC4: 2 VC)
-f.adb:10:16: info: range check proved (CVC4: 4 VC)
-f.adb:10:38: info: overflow check proved (CVC4: 2 VC)
-f.adb:11:10: info: initialization check proved (CVC4: 1 VC)
-f.adb:11:36: info: index check proved (CVC4: 2 VC)
-f.adb:11:36: info: overflow check proved (CVC4: 2 VC)
-f.adb:13:26: info: range check proved (CVC4: 2 VC)
-f.adb:13:37: info: index check proved (CVC4: 2 VC)
-f.adb:13:37: info: overflow check proved (CVC4: 2 VC)
-f.adb:21:07: info: initialization check proved (CVC4: 1 VC)
-f.adb:22:12: info: initialization check proved (CVC4: 1 VC)
+f.adb:3:16: info: postcondition proved (CVC5: 2 VC)
+f.adb:10:16: info: range check proved (CVC5: 4 VC)
+f.adb:10:38: info: overflow check proved (CVC5: 2 VC)
+f.adb:11:10: info: initialization check proved (CVC5: 1 VC)
+f.adb:11:36: info: index check proved (CVC5: 2 VC)
+f.adb:11:36: info: overflow check proved (CVC5: 2 VC)
+f.adb:13:26: info: range check proved (CVC5: 2 VC)
+f.adb:13:37: info: index check proved (CVC5: 2 VC)
+f.adb:13:37: info: overflow check proved (CVC5: 2 VC)
+f.adb:21:07: info: initialization check proved (CVC5: 1 VC)
+f.adb:22:12: info: initialization check proved (CVC5: 1 VC)
 global_and_generics.ads:7:09: info: data dependencies proved, in instantiation at global_and_generics.adb:10
 global_and_generics.ads:8:09: info: flow dependencies proved, in instantiation at global_and_generics.adb:10
 global_and_generics.ads:12:06: info: data dependencies proved
@@ -89,18 +89,18 @@ initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
 inter_unit_elaboration_examples.adb:8:14: high: overflow check might fail, cannot prove lower bound for 2 * I (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:3:50: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26]
-intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC4: 2 VC)
+intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC5: 2 VC)
 intra_unit_elaboration_order_examples.adb:35:14: high: overflow check might fail, cannot prove lower bound for A + Y (e.g. when A = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
 intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
-intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
+intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC5: 1 VC)
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
 intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) in Integer) to subprogram at line 27]
-loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:11:14: info: range check proved (CVC4: 2 VC)
-loop_var_loop_invar.adb:12:14: info: range check proved (CVC4: 2 VC)
+loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC5: 1 VC)
+loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC5: 1 VC)
+loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC5: 1 VC)
+loop_var_loop_invar.adb:11:14: info: range check proved (CVC5: 2 VC)
+loop_var_loop_invar.adb:12:14: info: range check proved (CVC5: 2 VC)
 main_hal.adb:6:08: info: data dependencies proved
 main_hal.adb:9:34: info: initialization of "HAL.FIFO_Control" proved
 main_hal.adb:10:34: medium: "HAL.Serial_Out" might not be written
@@ -134,8 +134,8 @@ output_port.ads:9:11: warning: make sure that all overlapping objects have Async
 output_port.ads:9:11: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 p.ads:2:08: info: flow dependencies proved
 param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-param_1_illegal.adb:9:10: info: index check proved (CVC4: 2 VC)
-param_1_legal.adb:7:10: info: index check proved (CVC4: 2 VC)
+param_1_illegal.adb:9:10: info: index check proved (CVC5: 2 VC)
+param_1_legal.adb:7:10: info: index check proved (CVC5: 2 VC)
 q-child.adb:9:44: info: initialization of "Actual_State" constituent of "C1" proved
 q-child.ads:12:14: info: data dependencies proved
 q-child.ads:13:14: info: flow dependencies proved
@@ -175,48 +175,48 @@ refined_global_examples.ads:9:11: info: data dependencies proved
 refined_global_examples.ads:11:20: info: initialization of "Result" proved
 refined_global_examples.ads:12:11: info: data dependencies proved
 refined_global_examples.ads:15:11: info: data dependencies proved
-reverse_ord.adb:7:19: info: postcondition proved (CVC4: 2 VC)
+reverse_ord.adb:7:19: info: postcondition proved (CVC5: 2 VC)
 reverse_ord.adb:10:07: info: initialization of "Temp" proved
-reverse_ord.adb:18:13: info: loop invariant initialization proved (CVC4: 3 VC)
-reverse_ord.adb:18:13: info: loop invariant preservation proved (CVC4: 3 VC)
-reverse_ord.adb:19:19: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:19:49: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:20:30: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:20:51: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:24:21: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:24:40: info: index check proved (CVC4: 4 VC)
-stacks_1.adb:16:27: info: refined post proved (CVC4: 2 VC)
-stacks_1.adb:17:48: info: index check proved (CVC4: 2 VC)
-stacks_1.adb:17:48: info: range check proved (CVC4: 2 VC)
-stacks_1.adb:23:30: info: range check proved (CVC4: 2 VC)
-stacks_1.adb:24:18: info: index check proved (CVC4: 2 VC)
+reverse_ord.adb:18:13: info: loop invariant initialization proved (CVC5: 3 VC)
+reverse_ord.adb:18:13: info: loop invariant preservation proved (CVC5: 3 VC)
+reverse_ord.adb:19:19: info: index check proved (CVC5: 4 VC)
+reverse_ord.adb:19:49: info: index check proved (CVC5: 4 VC)
+reverse_ord.adb:20:30: info: index check proved (CVC5: 4 VC)
+reverse_ord.adb:20:51: info: index check proved (CVC5: 4 VC)
+reverse_ord.adb:24:21: info: index check proved (CVC5: 4 VC)
+reverse_ord.adb:24:40: info: index check proved (CVC5: 4 VC)
+stacks_1.adb:16:27: info: refined post proved (CVC5: 2 VC)
+stacks_1.adb:17:48: info: index check proved (CVC5: 2 VC)
+stacks_1.adb:17:48: info: range check proved (CVC5: 2 VC)
+stacks_1.adb:23:30: info: range check proved (CVC5: 2 VC)
+stacks_1.adb:24:18: info: index check proved (CVC5: 2 VC)
 stacks_1.adb:28:27: medium: refined postcondition might fail
-stacks_1.adb:34:33: info: range check proved (CVC4: 2 VC)
-stacks_1.adb:38:64: info: index check proved (CVC4: 2 VC)
-stacks_1.ads:14:19: info: postcondition proved (CVC4: 1 VC)
-stacks_1.ads:17:19: info: postcondition proved (CVC4: 1 VC)
-stacks_2.adb:15:29: info: refined post proved (CVC4: 2 VC)
-stacks_2.adb:25:29: info: refined post proved (CVC4: 2 VC)
-stacks_2.adb:34:29: info: refined post proved (CVC4: 2 VC; Trivial: 1 VC)
-stacks_2.adb:35:65: info: range check proved (CVC4: 2 VC)
-stacks_2.adb:40:30: info: range check proved (CVC4: 2 VC)
-stacks_2.adb:41:17: info: index check proved (CVC4: 2 VC)
-stacks_2.adb:46:29: info: refined post proved (CVC4: 1 VC)
+stacks_1.adb:34:33: info: range check proved (CVC5: 2 VC)
+stacks_1.adb:38:64: info: index check proved (CVC5: 2 VC)
+stacks_1.ads:14:19: info: postcondition proved (CVC5: 1 VC)
+stacks_1.ads:17:19: info: postcondition proved (CVC5: 1 VC)
+stacks_2.adb:15:29: info: refined post proved (CVC5: 2 VC)
+stacks_2.adb:25:29: info: refined post proved (CVC5: 2 VC)
+stacks_2.adb:34:29: info: refined post proved (CVC5: 2 VC; Trivial: 1 VC)
+stacks_2.adb:35:65: info: range check proved (CVC5: 2 VC)
+stacks_2.adb:40:30: info: range check proved (CVC5: 2 VC)
+stacks_2.adb:41:17: info: index check proved (CVC5: 2 VC)
+stacks_2.adb:46:29: info: refined post proved (CVC5: 1 VC)
 stacks_2.adb:51:30: medium: range check might fail, cannot prove lower bound for A_Pointer - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
-stacks_2.adb:54:46: info: index check proved (CVC4: 2 VC)
+stacks_2.adb:54:46: info: index check proved (CVC5: 2 VC)
 stacks_2.ads:4:08: info: flow dependencies proved
 stacks_2.ads:7:11: info: data dependencies proved
 stacks_2.ads:11:11: info: data dependencies proved
 stacks_2.ads:15:11: info: data dependencies proved
-stacks_2.ads:17:21: info: postcondition proved (CVC4: 1 VC)
+stacks_2.ads:17:21: info: postcondition proved (CVC5: 1 VC)
 stacks_2.ads:20:11: info: data dependencies proved
-stacks_2.ads:21:16: info: postcondition proved (CVC4: 1 VC)
+stacks_2.ads:21:16: info: postcondition proved (CVC5: 1 VC)
 stacks_2.ads:24:11: info: data dependencies proved
 times_2.adb:3:13: high: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X in Integer) to subprogram at line 1]
-up_timer.adb:14:36: info: overflow check proved (CVC4: 2 VC)
-update_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
-update_examples.ads:27:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-update_examples.ads:35:19: info: postcondition proved (CVC4: 1 VC)
-update_examples.ads:37:69: info: index check proved (CVC4: 2 VC)
-update_examples.ads:49:08: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-update_examples.ads:54:54: info: index check proved (CVC4: 2 VC)
+up_timer.adb:14:36: info: overflow check proved (CVC5: 2 VC)
+update_examples.ads:20:19: info: postcondition proved (CVC5: 1 VC)
+update_examples.ads:27:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_examples.ads:35:19: info: postcondition proved (CVC5: 1 VC)
+update_examples.ads:37:69: info: index check proved (CVC5: 2 VC)
+update_examples.ads:49:08: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_examples.ads:54:54: info: index check proved (CVC5: 2 VC)
