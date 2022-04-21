@@ -1,1 +1,1 @@
-NT XFAIL small proof diffs on windows
+NT SKIP small proof diffs on windows
