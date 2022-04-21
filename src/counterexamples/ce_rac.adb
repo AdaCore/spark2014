@@ -2088,9 +2088,9 @@ package body CE_RAC is
          end if;
 
          if Is_Record_Type (Ty) then
-            if Has_Exprs then
-               RAC_Unsupported
-                 ("RAC_Expr aggregate record", "expressions");
+
+            if Is_Tagged_Type (Ty) then
+               RAC_Unsupported ("RAC_Expr aggregate record", "tagged types");
             end if;
 
             while Present (As) loop
@@ -2098,13 +2098,9 @@ package body CE_RAC is
 
                V := RAC_Expr (Expression (As));
                Ch := First (Choice_List (As));
+
                while Present (Ch) loop
                   Check_Fuel_Decrease (Ctx.Fuel);
-
-                  if Nkind (Ch) = N_Others_Choice then
-                     RAC_Unsupported
-                       ("RAC_Expr aggregate", "record others");
-                  end if;
 
                   declare
                      Comp : constant Entity_Id :=
@@ -2117,10 +2113,12 @@ package body CE_RAC is
                end loop;
                Next (As);
             end loop;
+
             Cleanup_Counterexample_Value (Res, N);
 
          else
             pragma Assert (Is_Array_Type (Ty));
+
             if
               Has_Exprs and then Present (Component_Associations (N))
             then
