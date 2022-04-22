@@ -1,0 +1,10 @@
+test.adb:29:14: error: object was moved at line 47
+test.adb:29:14: error: return from "Foo_2" with moved value for "X"
+test.adb:51:14: error: object was moved at line 69
+test.adb:51:14: error: return from "Foo_3" with moved value for "X"
+test.adb:73:14: error: object was moved at line 91
+test.adb:73:14: error: return from "Foo_4" with moved value for "X"
+test.adb:95:14: error: object was moved at line 100
+test.adb:95:14: error: return from "Foo_5" with moved value for "X"
+test.adb:112:13: warning: unused assignment
+gnatprove: error during flow analysis and proof
