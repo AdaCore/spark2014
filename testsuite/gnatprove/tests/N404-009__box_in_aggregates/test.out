@@ -17,7 +17,8 @@ aggs.ads:40:28: info: range check proved (CVC4: 2 VC)
 aggs.ads:40:28: info: range check proved (CVC4: 2 VC)
 dynval.adb:1:11: warning: subprogram "Dynval" has no effect
 dynval.adb:4:12: info: range check proved (CVC4: 2 VC)
-dynval.adb:5:61: medium: in default value at dynval.adb:6
+dynval.adb:5:61: high: in default value at dynval.adb:6
+dynval.adb:5:61: high: range check might fail, cannot prove lower bound for 5 (e.g. when L = 6) [reason for check: default component value must fit in the component type]
 dynval.adb:5:61: medium: range check might fail, cannot prove lower bound for 5 [reason for check: default component value must fit in the component type]
 dynval.adb:8:06: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 dynval.adb:8:10: info: index check proved (CVC4: 2 VC)
