@@ -5,7 +5,7 @@ procedure Main with
 is
    procedure Set_Boolean
      (Variable_To_Set  :    out Boolean;
-      Address_Of_Value : in Address) -- warning: unused variable "Address_Of_Value"
+      Address_Of_Value : in Address) with Depends => (Variable_To_Set => Address_Of_Value)
    is
       Value_In_Spark : Boolean with
          Address => Address_Of_Value,

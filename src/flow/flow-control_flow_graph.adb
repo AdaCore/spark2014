@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                Copyright (C) 2013-2021, Altran UK Limited                --
+--                Copyright (C) 2013-2022, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -4360,6 +4360,50 @@ package body Flow.Control_Flow_Graph is
             Ctx.Folded_Function_Checks.Append (Expr);
          end;
          pragma Assert (not Inits.Is_Empty);
+
+      --  We have a non-overlaid object with Import and Address clause
+
+      elsif Is_Imported (E)
+        and then No (Alias)
+        and then Present (Address_Clause (E))
+      then
+         declare
+            Addr_Expr : constant N_Subexpr_Id :=
+              Expression (Address_Clause (E));
+            Addr_Deps : constant Flow_Id_Sets.Set :=
+              Get_Variables
+                (Addr_Expr,
+                 Scope                => FA.B_Scope,
+                 Target_Name          => Null_Flow_Id,
+                 Fold_Functions       => Inputs,
+                 Use_Computed_Globals => not FA.Generating_Globals);
+            Funcs     : Node_Sets.Set;
+
+         begin
+            Collect_Functions_And_Read_Locked_POs
+              (Addr_Expr,
+               Scop               => FA.B_Scope,
+               Functions_Called   => Funcs,
+               Tasking            => FA.Tasking,
+               Generating_Globals => FA.Generating_Globals);
+
+            for F of Flatten_Variable (E, FA.B_Scope) loop
+               Add_Vertex
+                 (FA,
+                  Make_Basic_Attributes
+                    (Var_Def       => Flow_Id_Sets.To_Set (F),
+                     Var_Ex_Use    => Addr_Deps,
+                     Sub_Called    => Funcs,
+                     Loops         => Ctx.Current_Loops,
+                     In_Nested_Pkg => Ctx.In_Nested_Package,
+                     Print_Hint    => Pretty_Print_Record_Field,
+                     E_Loc         => Addr_Expr),
+                  V);
+               Inits.Append (V);
+            end loop;
+
+            Ctx.Folded_Function_Checks.Append (Addr_Expr);
+         end;
 
       --  We have no initializing expression so we fall back to the default
       --  initialization (if any).
