@@ -34,6 +34,7 @@ with Ada.Strings.Unbounded;
 with Ada.Unchecked_Conversion;
 with CE_Utils;                 use CE_Utils;
 with GNAT.String_Split;        use GNAT.String_Split;
+with Gnat2Why.Tables;          use Gnat2Why.Tables;
 with Gnat2Why.Util;            use Gnat2Why.Util;
 with Interfaces;               use Interfaces;
 with SPARK_Atree;              use SPARK_Atree;
@@ -710,12 +711,15 @@ package body CE_Parsing is
                              (Elt.Value, Current_Val.Initialized_Attr);
                         end if;
 
-                     --  Regular record attribute
+                     --  Regular record field
 
                      else
                         pragma Assert (not Is_Attribute);
 
-                        if Current_Val.K /= Record_K then
+                        if Current_Val.K /= Record_K
+                          or else No
+                            (Search_Component_In_Type (Current_Ty, Comp_E))
+                        then
                            raise Parse_Error;
                         elsif not Current_Val.Record_Fields.Contains (Comp_E)
                         then
