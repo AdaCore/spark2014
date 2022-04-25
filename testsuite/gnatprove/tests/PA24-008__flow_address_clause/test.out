@@ -2,4 +2,3 @@ utils.adb:12:07: info: initialization of "Reg" proved
 utils.adb:15:10: warning: consider annotating "Reg" with Async_Writers
 utils.adb:15:10: warning: indirect writes to "Reg" through a potential alias are ignored
 utils.adb:15:10: warning: writing to "Reg" is assumed to have no effects on other non-volatile objects
-utils.ads:9:07: warning: unused variable "Address"

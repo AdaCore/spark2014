@@ -1,6 +1,5 @@
-main.adb:6:04: warning: analyzing unreferenced procedure "Set_Boolean"
 main.adb:7:07: info: initialization of "Variable_To_Set" proved
-main.adb:8:07: warning: unused variable "Address_Of_Value"
+main.adb:8:43: info: flow dependencies proved
 main.adb:10:07: info: initialization of "Value_In_Spark" proved
 main.adb:11:10: warning: consider annotating "Value_In_Spark" with Async_Writers
 main.adb:11:10: warning: indirect writes to "Value_In_Spark" through a potential alias are ignored
