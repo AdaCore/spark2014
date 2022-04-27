@@ -600,6 +600,8 @@ procedures with a suitable annotation.
    the unit body is not part of the files analyzed by |GNATprove| (see
    :ref:`Specifying Files To Analyze` and :ref:`Excluding Files From
    Analysis`), is treated by |GNATprove| like an imported subprogram.
+   The latter includes in particular subprograms from library projects that
+   are externally built.
 
 .. note::
 
