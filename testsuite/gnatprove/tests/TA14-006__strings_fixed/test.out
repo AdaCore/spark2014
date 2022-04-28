@@ -33,8 +33,8 @@ main.adb:50:19: info: range check proved (CVC4: 4 VC)
 main.adb:50:19: medium: assertion might fail
 main.adb:51:19: info: range check proved (CVC4: 4 VC)
 main.adb:51:19: medium: assertion might fail
+main.adb:52:19: info: assertion proved (CVC4: 1 VC)
 main.adb:52:19: info: range check proved (CVC4: 4 VC)
-main.adb:52:19: medium: assertion might fail
 main.adb:52:33: info: range check proved (CVC4: 4 VC)
 main.adb:53:19: info: range check proved (CVC4: 4 VC)
 main.adb:53:19: medium: assertion might fail

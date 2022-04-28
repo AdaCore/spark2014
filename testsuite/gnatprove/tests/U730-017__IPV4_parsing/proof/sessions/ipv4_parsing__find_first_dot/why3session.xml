@@ -56,10 +56,10 @@
   <proof prover="0"><result status="valid" steps="13700"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="0"><result status="valid" steps="12195"/></proof>
+  <proof prover="0"><result status="valid" steps="11917"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="0"><result status="valid" steps="12191"/></proof>
+  <proof prover="0"><result status="valid" steps="11913"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <proof prover="0"><result status="valid" steps="12507"/></proof>

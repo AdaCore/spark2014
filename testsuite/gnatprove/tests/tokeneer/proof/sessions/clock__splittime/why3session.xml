@@ -25,10 +25,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="362"/></proof>
+  <proof prover="0"><result status="valid" steps="275"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="371"/></proof>
+  <proof prover="0"><result status="valid" steps="282"/></proof>
   </goal>
  </transf>
  </goal>

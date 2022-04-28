@@ -45,7 +45,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="3" timelimit="20" memlimit="2000"><result status="valid" steps="168063"/></proof>
-  <proof prover="5"><result status="unknown" steps="48"/></proof>
+  <proof prover="5"><result status="unknown" steps="46"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.9.0">
    <proof prover="4"><result status="timeout"/></proof>

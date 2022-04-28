@@ -87,8 +87,8 @@ integer32_parsing.adb:124:18: info: precondition proved (CVC4: 5 VC)
 integer32_parsing.adb:125:51: medium: postcondition might fail, cannot prove s2 (I) in '0' .. '9'
 integer32_parsing.adb:125:55: info: index check proved (CVC4: 2 VC)
 integer32_parsing.adb:126:18: info: precondition proved (CVC4: 5 VC)
+integer32_parsing.adb:130:13: info: precondition proved (CVC4: 13 VC)
 integer32_parsing.adb:130:13: info: subprogram variant proved (CVC4: 1 VC)
-integer32_parsing.adb:130:13: medium: precondition might fail, cannot prove s1 (First1 .. Last1) = s2 (First2..Last2)
 integer32_parsing.adb:130:65: info: range check proved (CVC4: 2 VC)
 integer32_parsing.adb:130:84: info: range check proved (CVC4: 2 VC)
 integer32_parsing.adb:130:91: info: division check proved (CVC4: 1 VC)
@@ -297,7 +297,7 @@ integer32_parsing.adb:282:20: info: overflow check proved (CVC4: 2 VC)
 integer32_parsing.adb:285:14: medium: array index check might fail (e.g. when top = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 267 should mention top in a loop invariant]
 integer32_parsing.adb:286:20: info: range check proved (CVC4: 2 VC)
 integer32_parsing.adb:289:22: medium: assertion might fail (e.g. when First = 1 and V = 1999999999 and res = "89222222227") [possible fix: loop at line 267 should mention res in a loop invariant]
-integer32_parsing.adb:289:40: medium: precondition might fail, cannot prove s'Last - First = 9 (e.g. when First = 1 and res = "89777777777")
+integer32_parsing.adb:289:40: medium: precondition might fail, cannot prove s'Last - First = 9 (e.g. when First = 1)
 integer32_parsing.adb:289:71: info: range check proved (CVC4: 2 VC)
 integer32_parsing.adb:295:09: info: range check proved (CVC4: 2 VC)
 integer32_parsing.adb:295:47: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
