@@ -63,7 +63,7 @@
   <proof prover="5"><result status="unknown" steps="2492"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.14.0">
-   <proof prover="4"><result status="timeout" steps="73443"/></proof>
+   <proof prover="4"><result status="timeout"/></proof>
    </goal>
   </transf>
   </goal>

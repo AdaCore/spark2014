@@ -1016,7 +1016,7 @@
   <proof prover="1"><result status="valid" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.335" proved="true">
-  <proof prover="1"><result status="valid" steps="591"/></proof>
+  <proof prover="1"><result status="valid" steps="586"/></proof>
   </goal>
   <goal name="def&#39;vc.336" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
