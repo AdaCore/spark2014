@@ -1,2 +1,1 @@
 foo.adb:4:04: warning: analyzing unreferenced procedure "P3"
-foo.ads:13:11: warning: writing to "Vol2" is assumed to have no effects on other non-volatile objects

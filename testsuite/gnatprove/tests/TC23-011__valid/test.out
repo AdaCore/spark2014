@@ -1,5 +1,3 @@
-u2.adb:16:11: warning: writing to "Raw_Port1" is assumed to have no effects on other non-volatile objects
-u2.adb:22:11: warning: writing to "Raw_Port2" is assumed to have no effects on other non-volatile objects
 u2.adb:24:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_8 and type Boolean differ]
 u2.adb:24:51: info: type is suitable as source for unchecked conversion (Trivial)
 u2.adb:24:74: info: type is suitable for unchecked conversion (Trivial)

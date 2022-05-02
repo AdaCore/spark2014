@@ -23,10 +23,8 @@ Generated contracts for A
    Initializes =>
       A.Ext_State
       A.State
-a.adb:12:11: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
-a.adb:17:11: warning: indirect writes to "Actuator" through a potential alias are ignored
-a.adb:17:11: warning: consider annotating "Actuator" with Async_Writers
 a.adb:17:11: warning: writing to "Actuator" is assumed to have no effects on other non-volatile objects
+a.adb:17:11: warning: make sure that all overlapping objects have Async_Writers set to True
 Generated contracts for B.Priv.P_Read_State
    Global =>
       Input =>

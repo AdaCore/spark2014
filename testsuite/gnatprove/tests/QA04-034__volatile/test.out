@@ -1,3 +1,4 @@
+hw-dbc-transfer_rings.adb:38:07: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-dbc-transfer_rings.adb:38:07: warning: writing to "Rings" is assumed to have no effects on other non-volatile objects
 hw-dbc-transfer_rings.adb:116:07: info: initialization of "Toggle" proved
 hw-dbc-transfer_rings.adb:133:13: info: add a contract to analyze it separately from calling contexts

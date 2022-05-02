@@ -2975,15 +2975,15 @@ package body SPARK_Definition is
             Mark (Address_Expr);
 
             --  If we cannot determine which object the address of E
-            --  references, check that E has asynchronous writers. If it is
-            --  not the case, issue a warning that we cannot account for
-            --  indirect writes.
+            --  references, check whether E is annotated with some Volatile
+            --  properties. If it is not the case, issue a warning that we
+            --  cannot account for indirect writes.
 
             if Is_Object (E)
               and then not Supported_Alias
-              and then not
-                (Has_Volatile (E)
-                 and then Has_Volatile_Property (E, Pragma_Async_Writers))
+              and then not Has_Volatile (E)
+              and then
+                (Ekind (E) /= E_Variable or else not No_Caching_Enabled (E))
             then
                Error_Msg_NE
                  ("?indirect writes to & through a potential alias are"
@@ -3005,9 +3005,24 @@ package body SPARK_Definition is
                --  warning.
 
                if not Supported_Alias then
-                  Error_Msg_NE
-                    ("?writing to & is assumed to have no effects on"
-                     & " other non-volatile objects", Address, E);
+
+                  --  If E has a volatile annotation with Async_Readers set to
+                  --  False, writing to E cannot have any effects on other
+                  --  variables. Do not emit the warning.
+
+                  if (if Has_Volatile (E)
+                      then Has_Volatile_Property (E, Pragma_Async_Readers)
+                      else Ekind (E) /= E_Variable
+                        or else not No_Caching_Enabled (E))
+                  then
+                     Error_Msg_NE
+                       ("?writing to & is assumed to have no effects on"
+                        & " other non-volatile objects", Address, E);
+                     Error_Msg_NE
+                       ("\make sure that all overlapping objects have"
+                        & " Async_Writers set to True",
+                        Address, E);
+                  end if;
 
                --  We do not handle yet overlays between (parts of) objects of
                --  a deep type.

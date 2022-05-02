@@ -1,8 +1,12 @@
 legal.adb:7:20: info: initialization of "X" proved
 legal.adb:11:20: info: initialization of "X" proved
+legal.adb:16:06: warning: make sure that all overlapping objects have Async_Writers set to True
 legal.adb:16:06: warning: writing to "V1" is assumed to have no effects on other non-volatile objects
+legal.adb:21:06: warning: make sure that all overlapping objects have Async_Writers set to True
 legal.adb:21:06: warning: writing to "V2" is assumed to have no effects on other non-volatile objects
+legal.adb:26:06: warning: make sure that all overlapping objects have Async_Writers set to True
 legal.adb:26:06: warning: writing to "V3" is assumed to have no effects on other non-volatile objects
+legal.adb:32:06: warning: make sure that all overlapping objects have Async_Writers set to True
 legal.adb:32:06: warning: writing to "V4" is assumed to have no effects on other non-volatile objects
 legal.adb:61:07: error: volatile variable "V1" cannot act as global item of nonvolatile function "Test_01"
 legal.adb:67:13: error: function with output global "V2" is not allowed in SPARK
@@ -15,7 +19,9 @@ legal.adb:139:20: info: initialization of "X" proved
 legal.adb:146:20: info: initialization of "X" proved
 legal.adb:153:20: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof
+illegal.adb:17:06: warning: make sure that all overlapping objects have Async_Writers set to True
 illegal.adb:17:06: warning: writing to "V3" is assumed to have no effects on other non-volatile objects
+illegal.adb:23:06: warning: make sure that all overlapping objects have Async_Writers set to True
 illegal.adb:23:06: warning: writing to "V4" is assumed to have no effects on other non-volatile objects
 illegal.adb:57:35: error: call to a volatile function in interfering context is not allowed in SPARK
 illegal.adb:57:35: error: violation of pragma SPARK_Mode at test.adc:1

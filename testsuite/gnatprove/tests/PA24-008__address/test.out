@@ -1,2 +1,4 @@
+addr.ads:13:09: warning: make sure that all overlapping objects have Async_Writers set to True
 addr.ads:13:09: warning: writing to "Y" is assumed to have no effects on other non-volatile objects
+addr.ads:17:09: warning: make sure that all overlapping objects have Async_Writers set to True
 addr.ads:17:09: warning: writing to "Z" is assumed to have no effects on other non-volatile objects
