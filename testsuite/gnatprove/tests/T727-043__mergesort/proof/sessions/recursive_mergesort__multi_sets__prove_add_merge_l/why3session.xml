@@ -29,22 +29,22 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="10288"/></proof>
+  <proof prover="0"><result status="valid" steps="10399"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="10037"/></proof>
+  <proof prover="0"><result status="valid" steps="10148"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="8236"/></proof>
+  <proof prover="0"><result status="valid" steps="8347"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="7756"/></proof>
+  <proof prover="0"><result status="valid" steps="7867"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="6377"/></proof>
+  <proof prover="0"><result status="valid" steps="6488"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="6787"/></proof>
+  <proof prover="0"><result status="valid" steps="6898"/></proof>
   </goal>
  </transf>
  </goal>

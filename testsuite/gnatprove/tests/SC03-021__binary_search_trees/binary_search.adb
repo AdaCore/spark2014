@@ -1,6 +1,9 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Functional_Sets;
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 procedure Binary_Search with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
@@ -128,7 +131,7 @@ procedure Binary_Search with SPARK_Mode is
      Ghost,
      Annotate => (GNATprove, Terminating),
      Pre  => Size (T) < Natural'Last,
-     Post => Length (All_V'Result) <= Count_Type (Size (T))
+     Post => Length (All_V'Result) <= To_Big_Integer (Size (T))
      and then (for all I in Integer => M_Contains (T, i) = Contains (All_V'Result, I))
    is
    begin
@@ -171,7 +174,7 @@ procedure Binary_Search with SPARK_Mode is
             pragma Loop_Invariant (X < H and L < X);
             pragma Loop_Invariant (V < H and L < V);
             pragma Loop_Invariant
-              (Length (Seen) <= Count_Type (Size (X)'Loop_Entry - Size (X)));
+              (Length (Seen) <= To_Big_Integer (Size (X)'Loop_Entry - Size (X)));
             pragma Loop_Invariant
               (for all I in Integer =>
                  (if M_Contains (X, I) then Contains (T_Old, I)));

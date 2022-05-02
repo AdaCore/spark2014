@@ -1,8 +1,17 @@
 with Ada.Containers.Formal_Doubly_Linked_Lists;
 use Ada.Containers;
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 package body Database with SPARK_Mode
 is
+
+   package Big_From_Count is new Signed_Conversions
+     (Int => Count_Type);
+
+   function Big (C : Count_Type) return Big_Integer renames
+     Big_From_Count.To_Big_Integer;
 
    package DB_Pack is new Ada.Containers.Formal_Doubly_Linked_Lists
      (Element_Type => DB_Entry_Type,
@@ -39,7 +48,7 @@ is
 
       and (for all Pair of Database => Contains (DB_Model, Pair))
       and (for all Pair of DB_Model => Contains (Database, Pair))
-      and Length (DB_Model) = Length (Database))
+      and Length (DB_Model) = Big (Length (Database)))
    with SPARK_Mode => Off; -- due to call to allocating function
 
 end Database;

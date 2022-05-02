@@ -26,8 +26,10 @@
 with Ada.Containers.Formal_Ordered_Sets;
 with Ada.Containers.Functional_Sets;
 with Ada.Containers;
+with Ada.Numerics.Big_Numbers.Big_Integers;
 
 use type Ada.Containers.Count_Type;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 
 with types;
 with OpenConf;
@@ -114,7 +116,7 @@ is
          Initializes => Model,
          Initial_Condition =>
           (Length (Model.Ready) = 0 and then
-           Length (Model.Idle) = OS_MAX_TASK_CNT and then
+           Length (Model.Idle) = To_Big_integer (OS_MAX_TASK_CNT) and then
            (for all task_id in os_task_id_param_t =>
                                Contains (Model.Idle, task_id)))
       is

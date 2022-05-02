@@ -1,27 +1,28 @@
-a-cforse.ads:72:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
-a-cforse.ads:135:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
-a-cforse.ads:148:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
-a-cforse.ads:1430:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
-a-cforse.ads:1430:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:124
-a-cforse.ads:1445:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
-a-cforse.ads:1445:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:124
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:113, in instantiation at moth.ads:124
+a-cforse.ads:81:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:144:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:157:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1439:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1439:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1454:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1454:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:122, in instantiation at moth.ads:126
 moth-config.ads:37:08: info: data dependencies proved
 moth-config.ads:45:07: info: data dependencies proved
 moth-mailbox.adb:192:07: info: initialization of "status" proved
 moth-mailbox.adb:229:07: info: initialization of "status" proved
 moth-mailbox.adb:237:07: info: initialization of "ret" proved
 moth-mailbox.adb:354:07: info: initialization of "mbx_index" proved
-moth-scheduler.adb:290:24: info: initialization of "task_id" proved
-moth-scheduler.adb:354:07: info: initialization of "tmp_mask" proved
-moth.ads:114:10: info: flow dependencies proved
-moth.ads:141:10: info: initialization of "Model" proved
-moth.ads:190:23: info: initialization of "task_id" proved
-moth.ads:205:24: info: initialization of "task_id" proved
-moth.ads:217:28: info: initialization of "task_id" proved
-moth.ads:242:23: info: initialization of "task_id" proved
-moth.ads:292:26: info: initialization of "status" proved
-moth.ads:293:26: info: initialization of "mbx_entry" proved
-moth.ads:303:23: info: initialization of "status" proved
-moth.ads:323:20: info: initialization of "task_id" proved
+moth-scheduler.adb:304:24: info: initialization of "task_id" proved
+moth-scheduler.adb:368:07: info: initialization of "tmp_mask" proved
+moth.ads:29:30: warning: "Ada.Numerics.Big_Numbers.Big_Integers" is an Ada 2022 unit [-gnatwi]
+moth.ads:116:10: info: flow dependencies proved
+moth.ads:143:10: info: initialization of "Model" proved
+moth.ads:192:23: info: initialization of "task_id" proved
+moth.ads:207:24: info: initialization of "task_id" proved
+moth.ads:219:28: info: initialization of "task_id" proved
+moth.ads:244:23: info: initialization of "task_id" proved
+moth.ads:294:26: info: initialization of "status" proved
+moth.ads:295:26: info: initialization of "mbx_entry" proved
+moth.ads:305:23: info: initialization of "status" proved
+moth.ads:325:20: info: initialization of "task_id" proved
 gnatprove: error during flow analysis and proof

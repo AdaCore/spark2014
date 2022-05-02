@@ -1,9 +1,17 @@
 with Ada.Containers; use type Ada.Containers.Count_Type;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 
 package body Simple_Allocator with
   SPARK_Mode,
   Refined_State => (State => Data)
 is
+   package Big_From_Resource is new Signed_Conversions
+     (Int => Resource);
+
+   function Big (R : Resource) return Big_Integer renames
+     Big_From_Resource.To_Big_Integer;
+
    type Status is (Available, Allocated);
 
    type A is array (Valid_Resource) of Status;
@@ -43,7 +51,7 @@ is
                when Allocated => Alloc := Add (Alloc, R);
             end case;
             pragma Loop_Invariant
-              (Length (Avail) + Length (Alloc) = Ada.Containers.Count_Type (R)
+              (Length (Avail) + Length (Alloc) = Big (R)
                   and then
                (for all E of Avail => E in 1 .. R)
                   and then

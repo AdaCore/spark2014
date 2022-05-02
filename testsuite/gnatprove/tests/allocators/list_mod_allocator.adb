@@ -1,7 +1,22 @@
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 package body List_Mod_Allocator with
   SPARK_Mode,
   Refined_State => (State => (Data, First_Available))
 is
+   package Big_From_Resource is new Signed_Conversions
+     (Int => Resource);
+     
+   function Big (R : Resource) return Big_Integer renames
+     Big_From_Resource.To_Big_Integer;
+
+   package Big_From_Count is new Signed_Conversions
+     (Int => Ada.Containers.Count_Type);
+
+   function Big (R : Ada.Containers.Count_Type) return Big_Integer renames
+     Big_From_Count.To_Big_Integer;
+
    type Status is (Available, Allocated);
 
    type Cell is record
@@ -94,8 +109,8 @@ is
               (for all E in 1 .. R - 1 =>
                  (if Data (E).Stat = Allocated then Contains (Alloc, E)
                   else Contains (Unseen, E)));
-            pragma Loop_Invariant (Length (Alloc) <= Ada.Containers.Count_Type (R - 1));
-            pragma Loop_Invariant (Length (Unseen) <= Ada.Containers.Count_Type (R - 1));
+            pragma Loop_Invariant (Length (Alloc) <= Big (R - 1));
+            pragma Loop_Invariant (Length (Unseen) <= Big (R - 1));
             if Data (R).Stat = Allocated then
                Alloc := Add (Alloc, R);
             else
@@ -112,8 +127,8 @@ is
                R := Data (R).Next;
 
                pragma Loop_Variant (Increases => Length (Avail));
-               pragma Loop_Invariant (Length (Unseen) <= Capacity);
-               pragma Loop_Invariant (Length (Avail) <= Capacity - Length (Unseen));
+               pragma Loop_Invariant (Length (Unseen) <= To_Big_Integer (Capacity));
+               pragma Loop_Invariant (Big (Length (Avail)) <= To_Big_Integer (Capacity) - Length (Unseen));
                pragma Loop_Invariant
                  (for all E in Valid_Resource =>
                     (if Data (E).Stat = Available and then not Contains (Avail, E)
