@@ -1439,6 +1439,7 @@ package body CE_RAC is
                  & To_String (Stop) & " by " & To_String (Step));
       begin
          while Test (Curr, Stop) loop
+            Check_Fuel_Decrease (Ctx.Fuel);
 
             RAC_Trace ("Iterate : " & To_String (Curr));
             if Is_Integer_Type (Iter_Typ) then
