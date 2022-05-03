@@ -1407,7 +1407,8 @@ package body CE_RAC is
       Curr, Stop   : Big_Integer;
       Step         : Big_Integer := To_Big_Integer (1);
       Test         : -- Test for Curr and Stop during iteration
-      access function (L, R : Valid_Big_Integer) return Boolean := "<="'Access;
+        not null access function (L, R : Valid_Big_Integer) return Boolean :=
+          "<="'Access;
       Val          : Value_Type;
    begin
       if Present (Iterator_Filter (Param_Spec)) then
