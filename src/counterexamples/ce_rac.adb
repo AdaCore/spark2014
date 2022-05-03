@@ -1403,6 +1403,7 @@ package body CE_RAC is
       High         : constant Value_Type :=
         RAC_Expr (High_Bound (Actual_Range));
       Id           : constant Entity_Id := Defining_Identifier (Param_Spec);
+      Iter_Typ     : constant Entity_Id := Etype (Low_Bnd);
       Curr, Stop   : Big_Integer;
       Step         : Big_Integer := To_Big_Integer (1);
       Test         : -- Test for Curr and Stop during iteration
@@ -1413,7 +1414,7 @@ package body CE_RAC is
          RAC_Unsupported
            ("Iterate_Loop_Param_Spec iterator filter", Param_Spec);
       end if;
-      if not Is_Discrete_Type (Etype (Low_Bnd)) then
+      if not Is_Discrete_Type (Iter_Typ) then
          RAC_Unsupported
            ("Iterate_Lop_Param_Spec not discrete type", Param_Spec);
       end if;
@@ -1439,11 +1440,10 @@ package body CE_RAC is
          while Test (Curr, Stop) loop
 
             RAC_Trace ("Iterate : " & To_String (Curr));
-            if Is_Integer_Type (Etype (Low_Bnd)) then
-               Val := Integer_Value (Curr, Etype (Low_Bnd), Empty);
-            elsif Is_Enumeration_Type (Etype (Low_Bnd)) then
-               Val := Enum_Value
-                 (UI_From_String (To_String (Curr)), Etype (Low_Bnd));
+            if Is_Integer_Type (Iter_Typ) then
+               Val := Integer_Value (Curr, Iter_Typ, Empty);
+            elsif Is_Enumeration_Type (Iter_Typ) then
+               Val := Enum_Value (UI_From_String (To_String (Curr)), Iter_Typ);
             end if;
             Set_Value (Ctx.Env (Ctx.Env.First), Id, new Value_Type'(Val));
             Iteration.all;
