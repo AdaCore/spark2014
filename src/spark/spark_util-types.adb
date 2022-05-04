@@ -25,6 +25,7 @@
 
 with Aspects;                    use Aspects;
 with Elists;                     use Elists;
+with Rtsfind;                    use Rtsfind;
 with Sem_Eval;                   use Sem_Eval;
 with Sinfo.Utils;                use Sinfo.Utils;
 with SPARK_Definition;           use SPARK_Definition;
@@ -70,6 +71,16 @@ package body SPARK_Util.Types is
       Result      : out Boolean;
       Explanation : out Unbounded_String);
    --  same as Check_Known_RM_Size, but for Esize
+
+   type Test_Result is (Pass, Fail, Continue);
+
+   generic
+      with function Test (Typ : Access_Kind_Id) return Test_Result;
+   function Traverse_Access_Parts (Typ : Type_Kind_Id) return Boolean;
+   --  Generic function which applies test to all access subcomponents of Typ,
+   --  until one is found on which Test returns Pass. If Test returns
+   --  Continue on an access subcomponent, the designated type is also searched
+   --  for access subcomponents with the given property.
 
    ---------------------------------------------
    -- Queries related to representative types --
@@ -600,98 +611,46 @@ package body SPARK_Util.Types is
       end if;
    end Check_Needed_On_Conversion;
 
+   -----------------------------------
+   -- Contains_Access_Subcomponents --
+   -----------------------------------
+
+   function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean
+   is
+
+      function Always_Pass (Unused : Type_Kind_Id) return Test_Result is
+        (Pass);
+
+      function Contains_Access_Subcomponents is new
+        Traverse_Access_Parts (Always_Pass);
+
+   begin
+      return Contains_Access_Subcomponents (Typ);
+   end Contains_Access_Subcomponents;
+
    ------------------------------
    -- Contains_Allocated_Parts --
    ------------------------------
 
    function Contains_Allocated_Parts (Typ : Type_Kind_Id) return Boolean is
-      Seen : Node_Sets.Set;
-      --  Set of general access types already traversed. This is used to avoid
-      --  infinite recursion on recursive structures with general access types.
 
-      function Contains_Allocated_Parts_Ann
-        (Typ : Type_Kind_Id)
-         return Boolean;
-      --  Recursive function looking for parts of a pool specific access type
-      --  in Typ.
+      function Access_Is_Allocated (Typ : Type_Kind_Id) return Test_Result is
 
-      ----------------------------------
-      -- Contains_Allocated_Parts_Ann --
-      ----------------------------------
+         --  If Typ is a general access type, look at its designated type
+        (if Is_General_Access_Type (Typ) then Continue
 
-      function Contains_Allocated_Parts_Ann
-        (Typ : Type_Kind_Id)
-         return Boolean
-      is
-         Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
-      begin
-         if Is_Array_Type (Rep_Ty) then
-            return Contains_Allocated_Parts_Ann (Component_Type (Rep_Ty));
+         --  Otherwise, the type contains allocated parts if it is a pool
+         --  specific access type or an anonymous access-to-object type.
+         elsif Is_Access_Object_Type (Typ)
+         and then (not Is_Access_Constant (Typ)
+           or else Is_Anonymous_Access_Type (Typ))
+         then Pass else Fail);
 
-         elsif Is_Record_Type (Rep_Ty) then
-
-            --  Tagged types with cannot contain access types currently
-
-            if Is_Tagged_Type (Rep_Ty) then
-               return False;
-            else
-               declare
-                  Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
-               begin
-                  while Present (Comp) loop
-                     if Component_Is_Visible_In_SPARK (Comp)
-                       and then Contains_Allocated_Parts_Ann (Etype (Comp))
-                     then
-                        return True;
-                     end if;
-                     Next_Component (Comp);
-                  end loop;
-               end;
-            end if;
-
-            return False;
-
-         elsif Is_Access_Type (Rep_Ty) then
-
-            --  If Rep_Ty is a general access type, look at its designated
-            --  type.
-
-            if Is_General_Access_Type (Rep_Ty) then
-               declare
-                  Inserted : Boolean;
-                  Position : Node_Sets.Cursor;
-                  Des_Ty   : constant Type_Kind_Id :=
-                    Directly_Designated_Type (Rep_Ty);
-               begin
-                  Seen.Insert (Rep_Ty, Position, Inserted);
-
-                  return not Inserted
-                    or else Contains_Allocated_Parts_Ann
-                      (if Is_Incomplete_Type (Des_Ty) then Full_View (Des_Ty)
-                       else Des_Ty);
-               end;
-
-            --  Otherwise, the type contains allocated parts if it is a pool
-            --  specific access type or an anonymous access-to-object type.
-
-            else
-               return Is_Access_Object_Type (Rep_Ty)
-                 and then (not Is_Access_Constant (Rep_Ty)
-                           or else Is_Anonymous_Access_Type (Rep_Ty));
-            end if;
-         else
-            pragma Assert
-              (Is_Private_Type (Rep_Ty)
-               or else Is_Scalar_Type (Rep_Ty)
-               or else Is_Concurrent_Type (Rep_Ty));
-            return False;
-         end if;
-      end Contains_Allocated_Parts_Ann;
-
-   --  Start of processing for Contains_Allocated_Parts
+      function Contains_Allocated_Parts is new
+        Traverse_Access_Parts (Access_Is_Allocated);
 
    begin
-      return Contains_Allocated_Parts_Ann (Typ);
+      return Contains_Allocated_Parts (Typ);
    end Contains_Allocated_Parts;
 
    ---------------------------------
@@ -1101,71 +1060,19 @@ package body SPARK_Util.Types is
    -------------
 
    function Is_Deep (Typ : Type_Kind_Id) return Boolean is
-      Rep_Typ : constant Type_Kind_Id := Retysp (Typ);
+      function Test_Access_Type (Typ : Type_Kind_Id) return Test_Result is
+        (if Ekind (Directly_Designated_Type (Typ)) /=
+           E_Subprogram_Type
+         and then (not Is_Access_Constant (Typ)
+           or else Is_Anonymous_Access_Type (Typ))
+         then Pass else Fail);
+      --  Access to subprograms are not subjected to ownership rules, nor
+      --  are access-to-constant types, unless they are observers
+      --  (anonymous access-to-constant types).
+
+      function Is_Deep is new Traverse_Access_Parts (Test_Access_Type);
    begin
-      case Type_Kind'(Ekind (Rep_Typ)) is
-         when Access_Kind =>
-
-            --  Access to subprograms are not subjected to ownership rules, nor
-            --  are access-to-constant types, unless they are observers
-            --  (anonymous access-to-constant types).
-
-            return Ekind (Directly_Designated_Type (Rep_Typ)) /=
-              E_Subprogram_Type
-              and then (not Is_Access_Constant (Rep_Typ)
-                        or else Is_Anonymous_Access_Type (Rep_Typ));
-
-         when E_Array_Type
-            | E_Array_Subtype
-         =>
-            return Is_Deep (Component_Type (Rep_Typ));
-
-         when Record_Kind =>
-            --  For tagged records, search only in the root type, extensions
-            --  are not allowed to introduce deep components.
-
-            if Is_Tagged_Type (Typ) and then Root_Retysp (Typ) /= Typ then
-               return Is_Deep (Root_Retysp (Typ));
-            end if;
-
-            --  Otherwise, go over the list of components
-
-            declare
-               Comp : Opt_Record_Field_Kind_Id :=
-                 First_Component_Or_Discriminant (Rep_Typ);
-            begin
-               while Present (Comp) loop
-
-                  --  Ignore components not visible in SPARK
-
-                  if Component_Is_Visible_In_SPARK (Comp)
-                    and then Is_Deep (Etype (Comp))
-                  then
-                     return True;
-                  end if;
-                  Next_Component_Or_Discriminant (Comp);
-               end loop;
-            end;
-            return False;
-
-         when Scalar_Kind
-            | E_String_Literal_Subtype
-            | Concurrent_Kind
-            | Incomplete_Kind
-            | E_Exception_Type
-            | E_Subprogram_Type
-         =>
-            return False;
-
-         --  Ignore full view of types if it is not in SPARK
-
-         when E_Private_Type
-            | E_Private_Subtype
-            | E_Limited_Private_Type
-            | E_Limited_Private_Subtype
-         =>
-            return False;
-      end case;
+      return Is_Deep (Typ);
    end Is_Deep;
 
    -----------------------------------
@@ -1248,6 +1155,13 @@ package body SPARK_Util.Types is
      (Is_Array_Type (E)
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
+
+   ----------------------------
+   -- Is_System_Address_Type --
+   ----------------------------
+
+   function Is_System_Address_Type (E : Type_Kind_Id) return Boolean is
+      (Is_RTE (E, RE_Address));
 
    ----------------------------
    -- Iterate_Applicable_DIC --
@@ -2160,6 +2074,89 @@ package body SPARK_Util.Types is
          return Empty;
       end if;
    end Task_Body_Entity;
+
+   ---------------------------
+   -- Traverse_Access_Parts --
+   ---------------------------
+
+   function Traverse_Access_Parts (Typ : Type_Kind_Id) return Boolean is
+      Seen : Node_Sets.Set;
+      --  Set of access types already traversed. This is used to avoid infinite
+      --  recursion on recursive structures.
+
+      function Traverse_Access_Parts_Ann (Typ : Type_Kind_Id) return Boolean;
+      --  Recursive function looking for access subcomponents
+
+      -------------------------------
+      -- Traverse_Access_Parts_Ann --
+      -------------------------------
+
+      function Traverse_Access_Parts_Ann (Typ : Type_Kind_Id) return Boolean is
+         Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
+      begin
+         if Is_Array_Type (Rep_Ty) then
+            return Traverse_Access_Parts_Ann (Component_Type (Rep_Ty));
+
+         elsif Is_Record_Type (Rep_Ty) then
+
+            --  For tagged records, search only in the root type, extensions
+            --  are not allowed to introduce deep components.
+
+            if Is_Tagged_Type (Typ) and then Root_Retysp (Typ) /= Typ then
+               return Traverse_Access_Parts_Ann (Root_Retysp (Typ));
+            end if;
+
+            declare
+               Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
+            begin
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then Traverse_Access_Parts_Ann (Etype (Comp))
+                  then
+                     return True;
+                  end if;
+                  Next_Component (Comp);
+               end loop;
+            end;
+
+            return False;
+
+         elsif Is_Access_Type (Rep_Ty) then
+            case Test (Rep_Ty) is
+               when Fail =>
+                  return False;
+               when Pass =>
+                  return True;
+               when Continue =>
+                  declare
+                     Inserted : Boolean;
+                     Position : Node_Sets.Cursor;
+                     Des_Ty   : constant Type_Kind_Id :=
+                       Directly_Designated_Type (Rep_Ty);
+                  begin
+                     Seen.Insert (Rep_Ty, Position, Inserted);
+
+                     return not Inserted
+                       or else Traverse_Access_Parts_Ann
+                         (if Is_Incomplete_Type (Des_Ty)
+                          then Full_View (Des_Ty)
+                          else Des_Ty);
+                  end;
+            end case;
+         else
+            pragma Assert
+              (Is_Private_Type (Rep_Ty)
+               or else Is_Scalar_Type (Rep_Ty)
+               or else Is_Concurrent_Type (Rep_Ty));
+            return False;
+         end if;
+      end Traverse_Access_Parts_Ann;
+
+   --  Start of processing for Traverse_Access_Parts
+
+   begin
+      return Traverse_Access_Parts_Ann (Typ);
+   end Traverse_Access_Parts;
 
    ---------------------------
    -- Have_Same_Known_Esize --
