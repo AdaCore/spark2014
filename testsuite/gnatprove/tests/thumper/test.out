@@ -14,10 +14,10 @@ client_timestamp_maker.adb:68:07: medium: exception might be raised
 client_timestamp_maker.adb:69:07: warning: this statement is never reached
 client_timestamp_maker.ads:17:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
 client_timestamp_maker.ads:23:13: high: all paths in "Verify_Timestamp" raise exceptions or do not terminate normally
-data_storage.adb:48:32: warning: formal parameter "Serial_Number" is not referenced [-gnatwu]
+data_storage.adb:48:32: warning: formal parameter "Serial_Number" is not referenced [-gnatwf]
 data_storage.adb:52:10: warning: variable "Result" is read but never assigned [-gnatwv]
-data_storage.adb:59:32: warning: formal parameter "Start" is not referenced [-gnatwu]
-data_storage.adb:59:46: warning: formal parameter "Stop" is not referenced [-gnatwu]
+data_storage.adb:59:32: warning: formal parameter "Start" is not referenced [-gnatwf]
+data_storage.adb:59:46: warning: formal parameter "Stop" is not referenced [-gnatwf]
 hermes-der-decode.adb:59:11: info: data dependencies proved
 hermes-der-decode.adb:59:48: info: initialization of "Tag_Class" proved
 hermes-der-decode.adb:60:11: info: flow dependencies proved

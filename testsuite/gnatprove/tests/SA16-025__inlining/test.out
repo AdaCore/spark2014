@@ -1,5 +1,4 @@
 time.adb:5:07: info: initialization of "result" proved
-time.adb:19:40: warning: formal parameter "time_out" is not referenced [-gnatwf]
 time.adb:22:07: info: initialization of "temp_time" proved
 time.adb:26:07: info: initialization of "temp_years" proved
 time.adb:30:17: warning: unused assignment
