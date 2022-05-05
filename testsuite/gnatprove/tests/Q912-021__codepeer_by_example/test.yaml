@@ -1,4 +1,2 @@
 prove_all:
   opt: ["--cwe"]
-  counterexample: null
-  check_counterexamples: null
