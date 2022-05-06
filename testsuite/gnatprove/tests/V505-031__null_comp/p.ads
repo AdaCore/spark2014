@@ -16,7 +16,7 @@ package P with SPARK_Mode is
    Rec : Buffer_Rec := To_Rec;
    Arr : Buffer_Arr := To_Arr;
 
-   pragma Assert (Acc /= null);
-   pragma Assert (Rec.Data /= null);
-   pragma Assert (Arr (True) /= null);
+   pragma Assert (Acc /= null);         --@ASSERT:PASS
+   pragma Assert (Rec.Data /= null);    --@ASSERT:PASS
+   pragma Assert (Arr (True) /= null);  --@ASSERT:PASS
 end;
