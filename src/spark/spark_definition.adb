@@ -3408,15 +3408,16 @@ package body SPARK_Definition is
                      null;
                   elsif Nkind (P) /= N_Function_Call then
                      Mark_Violation
-                       ("prefix of """ & Astring
-                        & """ attribute which is not a function call",
-                        P, SRM_Reference => "SPARK RM 3.10(13)");
+                       ("prefix of """ & Astring & """ introducing aliasing",
+                        P, SRM_Reference => "SPARK RM 3.10(13)",
+                        Cont_Msg => "call a deep copy function for type """
+                        & Source_Name (Etype (P)) & """ as prefix of """
+                        & Astring & """ to avoid aliasing");
 
                   elsif Is_Traversal_Function_Call (P) then
                      Mark_Violation
-                       ("prefix of """ & Astring
-                        & """ attribute which is a call to a traversal "
-                        & "function",
+                       ("traversal function call as a prefix of """ & Astring
+                        & """ attribute",
                         P, SRM_Reference => "SPARK RM 3.10(13)");
                   end if;
                end;
