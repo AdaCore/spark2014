@@ -196,7 +196,7 @@ is
 
    function Single_Char_Set_Broken (C : in Character) return Char_Set
      with Post => (for all I in Character =>
-                     Single_Char_Set_Broken'Result (I) = (I > C))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+                     Single_Char_Set_Broken'Result (I) = (I > C))  --  @POSTCONDITION:FAIL
    is
       R : Char_Set;
    begin
