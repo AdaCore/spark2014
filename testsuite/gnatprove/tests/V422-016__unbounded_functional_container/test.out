@@ -1,0 +1,172 @@
+a-cfinse.ads:82:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:85:06: info: data dependencies proved, in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:130:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:130:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:147:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:147:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:162:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:162:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:180:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:180:21: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:180:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:180:42: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:199:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:199:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:199:39: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:199:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:218:08: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:218:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:220:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:220:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:221:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:221:24: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:221:31: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:221:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:221:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:221:53: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:249:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:249:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:274:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:274:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:274:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:298:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:298:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+infinite_sequence.adb:1:06: warning: "Ada.Containers.Functional_Infinite_Sequences" is an internal GNAT unit [-gnatwi]
+infinite_sequence.adb:1:06: warning: use of this unit is non-portable and version-dependent [-gnatwi]
+infinite_sequence.adb:17:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:17:19: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:17:33: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:18:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:18:19: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:18:33: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:25:20: info: unrolling loop
+infinite_sequence.adb:29:20: info: unrolling loop
+infinite_sequence.adb:33:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:33:19: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:33:33: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:34:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:34:19: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:34:33: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:36:08: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:36:08: info: precondition proved (Trivial: 1 VC)
+infinite_sequence.adb:37:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:37:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:37:36: info: range check proved (CVC5: 2 VC)
+infinite_sequence.adb:37:48: info: predicate check proved (Trivial: 2 VC)
+infinite_sequence.adb:40:08: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:40:08: info: precondition proved (Trivial: 1 VC)
+infinite_sequence.adb:41:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:41:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:41:36: info: range check proved (CVC5: 2 VC)
+infinite_sequence.adb:41:48: info: predicate check proved (Trivial: 2 VC)
+infinite_sequence.adb:46:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:47:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:51:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:52:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:53:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:57:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:57:19: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:57:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:57:36: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:58:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:58:23: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:58:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:58:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:63:07: info: initialization of "S3" proved
+infinite_sequence.adb:67:13: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:67:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:72:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:72:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:72:44: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:73:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:73:26: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:73:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:80:13: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:80:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:81:13: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:81:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:86:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:86:22: info: precondition proved (CVC5: 2 VC)
+infinite_sequence.adb:86:44: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:86:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:87:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:87:26: info: precondition proved (CVC5: 2 VC)
+infinite_sequence.adb:87:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:87:51: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:1:06: warning: "Ada.Containers.Functional_Infinite_Sequences" is an internal GNAT unit [-gnatwi]
+infinite_sequence.adb:1:06: warning: use of this unit is non-portable and version-dependent [-gnatwi]
+infinite_sequence.adb:94:07: info: initialization of "S3" proved
+infinite_sequence.adb:95:07: info: initialization of "S4" proved
+infinite_sequence.adb:101:13: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:101:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:104:11: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:104:11: info: precondition proved (Trivial: 1 VC)
+infinite_sequence.adb:105:14: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:105:18: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:106:28: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:106:28: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:108:28: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:108:28: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:108:42: info: range check proved (CVC5: 2 VC)
+infinite_sequence.adb:108:54: info: predicate check proved (Trivial: 2 VC)
+infinite_sequence.adb:108:57: info: overflow check proved (CVC5: 2 VC)
+infinite_sequence.adb:116:11: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:116:11: info: precondition proved (Trivial: 1 VC)
+infinite_sequence.adb:117:25: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:117:25: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:117:39: info: range check proved (CVC5: 2 VC)
+infinite_sequence.adb:117:51: info: predicate check proved (Trivial: 2 VC)
+infinite_sequence.adb:122:13: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:122:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:123:13: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:123:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:127:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:127:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:128:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:128:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:129:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:129:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:130:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:130:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:139:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:139:22: info: precondition proved (CVC5: 2 VC)
+infinite_sequence.adb:139:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:139:46: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:140:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:140:26: info: precondition proved (CVC5: 2 VC)
+infinite_sequence.adb:140:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:140:50: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:144:22: info: assertion proved (Z3: 1 VC)
+infinite_sequence.adb:144:22: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
+infinite_sequence.adb:144:45: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:144:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:145:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:145:22: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
+infinite_sequence.adb:145:45: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:145:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:145:52: info: predicate check proved (Trivial: 1 VC)
+infinite_sequence.adb:146:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:146:26: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
+infinite_sequence.adb:146:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:146:52: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:150:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:150:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:150:42: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:150:45: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:151:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:151:26: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:151:46: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:151:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:159:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:161:10: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:161:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:163:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:165:10: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:165:19: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:167:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:169:10: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:169:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:171:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:171:19: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:172:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:172:19: info: precondition proved (CVC5: 1 VC)

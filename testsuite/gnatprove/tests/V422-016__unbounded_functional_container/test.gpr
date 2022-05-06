@@ -1,0 +1,11 @@
+project Test is
+
+   for Main use ("infinite_sequence.adb");
+
+   package Builder is
+      for Switches ("ada") use ("-gnata", "-gnat2020");
+   end Builder;
+
+
+end Test;
+
