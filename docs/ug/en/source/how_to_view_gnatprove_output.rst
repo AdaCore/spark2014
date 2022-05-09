@@ -55,9 +55,9 @@ this::
   Flow Dependencies               228           228          .          .                              .           .          .
   Initialization                  693           692          .          .                              .           1          .
   Non-Aliasing                      .             .          .          .                              .           .          .
-  Run-time Checks                 474             .          .          .     458 (CVC4 95%, Trivial 5%)          16          .
-  Assertions                       45             .          .          .     45 (CVC4 82%, Trivial 18%)           .          .
-  Functional Contracts            304             .          .          .    302 (CVC4 82%, Trivial 18%)           2          .
+  Run-time Checks                 474             .          .          .     458 (CVC5 95%, Trivial 5%)          16          .
+  Assertions                       45             .          .          .     45 (CVC5 82%, Trivial 18%)           .          .
+  Functional Contracts            304             .          .          .    302 (CVC5 82%, Trivial 18%)           2          .
   LSP Verification                  .             .          .          .                              .           .          .
   Termination                       .             .          .          .                              .           .          .
   Concurrency                       .             .          .          .                              .           .          .
@@ -336,12 +336,12 @@ feasible execution of the program:
 #. When some property cannot be proved due to prover shortcomings (see details
    in section on :ref:`Investigating Prover Shortcomings`), the counterexample
    may explain why the prover cannot prove the property. However, note that
-   since the counterexample is always generated only using CVC4 prover, it can
+   since the counterexample is always generated only using CVC5 prover, it can
    just explain why this prover cannot prove the property. Also note that if
-   CVC4 is not selected and generating of a counterexample is enabled by
+   CVC5 is not selected and generating of a counterexample is enabled by
    ``--counterexamples=on`` switch (explicitly or implicitly through the use of
    ``--level`` switch), a counterexample is still attempted to be generated
-   using CVC4, but the proof result of CVC4 is not taken into account in this
+   using CVC5, but the proof result of CVC5 is not taken into account in this
    case.
 
 #. When using a short value of timeout or steps, the prover may hit the

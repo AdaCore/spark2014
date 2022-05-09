@@ -71,7 +71,7 @@ This part of SPARK serves two purposes:
 Why3
 ^^^^
 
-This part of SPARK takes the information in the Why language produced by GNAT2Why, translates it further into a format suitable for SMT solvers such as Z3 and CVC4, and runs these tools. The results are reported back to gnat2why.
+This part of SPARK takes the information in the Why language produced by GNAT2Why, translates it further into a format suitable for SMT solvers such as Z3 and CVC5, and runs these tools. The results are reported back to gnat2why.
 
 History: Started around the year 2000 by Jean-Christophe Filliâtre as “Why” (see Jean-Christophe Filliâtre. Why: a multi-language multi-prover verification tool. Research Report 1366, LRI, Université Paris Sud, March 2003), it has undergone a number of redevelopments until its current version Why3 (since 2010).
 
@@ -139,21 +139,21 @@ related to a deterministic resource limiting switch.
 * Stackoverflow community: http://stackoverflow.com/questions/tagged/z3
 * Bug tracking: https://github.com/Z3Prover/z3/issues/
 
-CVC4
+CVC5
 ^^^^
 
-History: CVC4 is the fourth in the Cooperating Validity Checker family of tools, which dates back to `1996 <http://cvc4.cs.nyu.edu/web/#History_of_CVC>`_, but does not directly incorporate code from any previous version. CVC4 development started in 2012.
+History: CVC5 is the fifth version of the CVC prover family. It has `evolved from the CVC4 prover <https://cs.stanford.edu/~gkremer/static/2022-tacas-cvc5.pdf>`_,  whose development started in 2012.
 
 Track record: Very good results in various `SMT competitions <http://smtcomp.sourceforge.net>`_. Used in `TNO tool <http://torxakis.esi.nl/>`_.
 
-Relationship with AdaCore/Capgemini Engineering: AdaCore and Capgemini Engineering have provided bug reports, feature requests and small fixes to the CVC4 team, in particular related to a deterministic resource limiting switch.
+Relationship with AdaCore/Capgemini Engineering: AdaCore and Capgemini Engineering have provided bug reports, feature requests and small fixes to the CVC5 team, in particular related to a deterministic resource limiting switch.
 
 * Main developers: New York University
-* Main website: http://cvc4.cs.nyu.edu/web/
+* Main website: https://cvc5.github.io/
 * Version Management: Git
 * License: Modified BSD License
-* Mailing List: cvc-users@cs.nyu.edu
-* Bug tracking: http://cvc4.cs.nyu.edu/bugs/
+* Discussions: https://github.com/cvc5/cvc5/discussions
+* Bug tracking: https://github.com/cvc5/cvc5/issues
 
 
 COLIBRI

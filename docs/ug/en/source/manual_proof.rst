@@ -315,7 +315,7 @@ the loop invariant, playing the role of an induction hypothesis:
    :language: ada
 
 The procedure Selection_Sort can be verified using |GNATprove|, with the
-default prover CVC4, in less than 1s per verification condition.
+default prover CVC5, in less than 1s per verification condition.
 
 .. literalinclude:: /examples/ug__sort/test.out
    :language: none
@@ -333,7 +333,7 @@ currently cannot be verified by |GNATprove|.
    :language: ada
 
 |GNATprove| proves automatically all checks on the final program, with a small
-timeout of 1s for the default automatic prover CVC4.
+timeout of 1s for the default automatic prover CVC5.
 
 .. literalinclude:: /examples/ug__long__perm/test.out
    :language: none
@@ -361,7 +361,7 @@ timeout:
 
 This is expected, as the automatic prover Alt-Ergo has only a simple support
 for non-linear integer arithmetic. More generally, it is a known difficulty for
-all automatic provers, although, in the case above, using prover CVC4 is enough
+all automatic provers, although, in the case above, using prover CVC5 is enough
 to prove automatically the postcondition of procedure ``Nonlinear``. We will
 use this case to demonstrate the use of a manual prover, as an example of what
 can be done when automatic provers fail to prove a check. We will use Coq here.
