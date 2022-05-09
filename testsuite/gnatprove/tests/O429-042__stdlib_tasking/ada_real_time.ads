@@ -310,7 +310,10 @@ private
       " except for an extra negative value");
 
    --  Ghost type cannot appear in Compile_Time_Error expressions
-   Duration_Rep_Last : constant := Duration_Rep'Last;
+   package Check with Ghost is
+      Duration_Rep_Last : constant := Duration_Rep'Last;
+   end Check;
+   use Check;
 
    --  Conversion from Integer value of Minutes to Time_Span needs a
    --  precondition; make sure that other conversions are always safe.
