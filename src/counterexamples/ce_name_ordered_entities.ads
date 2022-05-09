@@ -33,7 +33,7 @@ generic
    type Info is private;
    with function "=" (Left : Info; Right : Info) return Boolean;
 
-package Name_Ordered_Entities is
+package CE_Name_Ordered_Entities is
 
    --  This package implements a map ordered using the name of elements. The
    --  main differences with a normal map is:
@@ -45,7 +45,7 @@ package Name_Ordered_Entities is
    --  general counterexamples type String_CNT_Elements.Map.
 
    --  ??? S528-030: The implementation is purposefully very similar to the
-   --  former code used inside gnat2why-counter_examples. This datastructure
+   --  former code used inside ce_display.ads. This datastructure
    --  could certainly be improved.
 
    type Var_Info is private;
@@ -151,7 +151,7 @@ private
       --  Vector of variable entities in the order in that variables should be
       --  displayed.
 
-      Variables_Map : Entity_Infos.Map;
+      Variables_Map   : Entity_Infos.Map;
       --  Map from variable entities to information about these variables.
       --  This includes values of variables, informations about possible
       --  record fields and informations about possible attributes.
@@ -179,4 +179,4 @@ private
      (Object   : Iterator;
       Position : Cursor) return Cursor;
 
-end Name_Ordered_Entities;
+end CE_Name_Ordered_Entities;

@@ -1,0 +1,24 @@
+project Test is
+    -- It is a mixed-language C and Ada project
+    for Languages use ("Ada", "C");
+
+    -- Output directory for objects and executable files
+    for Object_Dir use "objdir";
+
+    -- Program entry point is the main() function in this C file:
+    for Main use ("main.c");
+
+    -- Linux x64 native project
+    for Target use "x86_64-linux";
+
+    -- Specify name of executable
+    package Builder is
+	    for Executable ("main.c") use "prog";
+    end Builder;
+
+    -- Enable debugging and PIE
+    package Compiler is
+	    for Default_Switches ("Ada") use ("-g") & ("-fPIE");
+	    for Default_Switches ("C") use ("-g") & ("-fPIE");
+    end Compiler;
+end Test;

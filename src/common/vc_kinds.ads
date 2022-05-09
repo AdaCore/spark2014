@@ -557,12 +557,18 @@ package VC_Kinds is
    --  fourth component Elems gives the value of individual non-others non-nul
    --  subcomponents, to be used if the Count is too large for printing Str.
 
-   type Cntexample_Elt is record
+   type Cntexample_Kind is (Raw, Pretty_Printed);
+
+   type Cntexample_Elt (K : Cntexample_Kind := Raw) is record
       Kind    : CEE_Kind;
       Name    : Unbounded_String;
-      Labels  : S_String_List.List;
-      Value   : Cntexmp_Value_Ptr;
-      Val_Str : CNT_Unbounded_String;
+      case K is
+         when Raw =>
+            Labels : S_String_List.List;
+            Value  : Cntexmp_Value_Ptr;
+         when Pretty_Printed =>
+            Val_Str : CNT_Unbounded_String;
+      end case;
    end record;
 
    package Cntexample_Elt_Maps is new

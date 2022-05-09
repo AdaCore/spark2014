@@ -284,6 +284,13 @@ package SPARK_Atree.Entities is
    function Is_Discriminal (E : Object_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Discriminal;
 
+   function Is_Dispatching_Operation
+     (Subp : Callable_Kind_Id)
+      return Boolean;
+   --  Return True if Subp is a dispatching operation and there is a visibly
+   --  tagged dispatching type (SPARK_Util.Subprograms.Find_Dispatching_Type
+   --  returns True).
+
    function Is_Discrete_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Discrete_Type;
 
@@ -730,13 +737,6 @@ package SPARK_Atree.Entities is
       return Boolean;
 
    function Is_Predicate_Function (Subp : Subprogram_Kind_Id) return Boolean;
-
-   function Is_Visible_Dispatching_Operation
-     (Subp : Callable_Kind_Id)
-      return Boolean;
-   --  Return True if Subp is a dispatching operation and there is a visibly
-   --  tagged dispatching type (SPARK_Util.Subprograms.Find_Dispatching_Type
-   --  returns True).
 
    function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id;
    --  Same as Einfo.Utils.Next_Formal except that it ignores the formal

@@ -27,7 +27,7 @@ with GNATCOLL.JSON; use GNATCOLL.JSON;
 with Types;         use Types;
 with VC_Kinds;      use VC_Kinds;
 
-package Gnat2Why.Counter_Examples is
+package CE_Display is
 
    function Create_Pretty_Cntexmp
      (Cntexmp : Cntexample_File_Maps.Map;
@@ -56,4 +56,4 @@ package Gnat2Why.Counter_Examples is
      (if Has_Field (Val, Field) then Get (Val, Field)
       else Opt_Result);
 
-end Gnat2Why.Counter_Examples;
+end CE_Display;

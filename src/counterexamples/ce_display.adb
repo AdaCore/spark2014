@@ -29,18 +29,18 @@ with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Strings;                 use Ada.Strings;
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
-with Ce_Interval_Sets;
-with Ce_Pretty_Printing;          use Ce_Pretty_Printing;
+with CE_Interval_Sets;
+with CE_Pretty_Printing;          use CE_Pretty_Printing;
 with Erroutc;                     use Erroutc;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
 with GNAT.String_Split;           use GNAT.String_Split;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;               use Gnat2Why_Opts;
-with Gnat2Why.CE_Utils;           use Gnat2Why.CE_Utils;
+with CE_Utils;                    use CE_Utils;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
-with Name_Ordered_Entities;
+with CE_Name_Ordered_Entities;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -53,7 +53,7 @@ with String_Utils;                use String_Utils;
 with Uintp;                       use Uintp;
 with Why.Gen.Names;               use Why.Gen.Names;
 
-package body Gnat2Why.Counter_Examples is
+package body CE_Display is
 
    function Remap_VC_Info
      (Cntexmp : Cntexample_File_Maps.Map;
@@ -93,7 +93,7 @@ package body Gnat2Why.Counter_Examples is
         Element_Type => CNT_Element_Ptr);
 
    package Name_Ordered_Entities_Info is
-     new Name_Ordered_Entities
+     new CE_Name_Ordered_Entities
        (Info => String_CNT_Elements.Map,
         "="  => String_CNT_Elements."=");
 
@@ -253,8 +253,8 @@ package body Gnat2Why.Counter_Examples is
 
    function Refine_Value
      (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id;
-      Is_Index  : Boolean := False) return CNT_Unbounded_String;
+      AST_Type  : Entity_Id) return CNT_Unbounded_String
+   with Pre => Is_Scalar_Type (AST_Type);
    --  This function takes a value from Why3 CNT_Element and converts it into a
    --  suitable string for an entity of type AST_Type.
    --  Example: (97, Character_entity) -> "'a'"
@@ -320,7 +320,7 @@ package body Gnat2Why.Counter_Examples is
                  Refine_Value (CNT_Element.Value,
                                CNT_Element.Ent_Ty);
             begin
-               if Refined_Value.Str = "" then
+               if Refined_Value = Dont_Display then
                   return Dont_Display;
                else
                   CNT_Element.Val_Str := Refined_Value;
@@ -349,7 +349,8 @@ package body Gnat2Why.Counter_Examples is
    begin
       if Value.Is_Null then
          Value.Val_Str :=
-           Make_Trivial (Nul => False, Str => To_Unbounded_String ("null"));
+           Make_CNT_Unbounded_String
+             (Nul => False, Str => To_Unbounded_String ("null"));
 
       elsif Value.Ptr_Val = null then
          Value.Val_Str := Dont_Display;
@@ -371,8 +372,9 @@ package body Gnat2Why.Counter_Examples is
             else
                Elems := Prefix_Elements (V.Elems, ".all");
                Value.Val_Str :=
-                 Make_Trivial (Nul => V.Nul, Str => "(all => " & V.Str & ")",
-                               Cnt => V.Count, Els => Elems);
+                 Make_CNT_Unbounded_String
+                   (Nul => V.Nul, Str => "(all => " & V.Str & ")",
+                    Cnt => V.Count, Els => Elems);
 
             end if;
          end;
@@ -473,7 +475,7 @@ package body Gnat2Why.Counter_Examples is
                  new Cntexmp_Value'(T => Cnt_Integer,
                                     I => To_Unbounded_String (Indice));
                Ind_Printed  : constant CNT_Unbounded_String :=
-                 Refine_Value (Ind_Val, Index_Type, True);
+                 Refine_Value (Ind_Val, Index_Type);
                Elem_Printed : constant CNT_Unbounded_String :=
                  Refine (Elem);
                Ind_Value    : constant Uint := UI_From_String (Indice);
@@ -483,7 +485,7 @@ package body Gnat2Why.Counter_Examples is
                --  and the value for this index given by cvc4 is outside of the
                --  range of the enumeration type.
 
-               if Ind_Printed.Str /= Null_Unbounded_String
+               if Ind_Printed /= Dont_Display
                  and then UI_Le (Fst, Ind_Value)
                  and then UI_Le (Ind_Value, Lst)
                  and then Elem_Printed /= Dont_Display
@@ -520,11 +522,13 @@ package body Gnat2Why.Counter_Examples is
                    (T => Cnt_Integer,
                     I => To_Unbounded_String (UI_Image (Missing_Ind)));
                Ind_Printed  : constant CNT_Unbounded_String :=
-                 Refine_Value (Ind_Val, Index_Type, True);
+                 Refine_Value (Ind_Val, Index_Type);
                Elem_Printed : constant CNT_Unbounded_String :=
                  Refine (Value.Other);
             begin
-               if Elem_Printed /= Dont_Display then
+               if Ind_Printed /= Dont_Display
+                 and then Elem_Printed /= Dont_Display
+               then
                   S_Array.Include (Missing_Ind,
                                    Array_Elem'(Ind_Printedt  => Ind_Printed,
                                                Elem_Printedt => Elem_Printed));
@@ -592,7 +596,7 @@ package body Gnat2Why.Counter_Examples is
       if S = "" then
          return Dont_Display;
       else
-         return Make_Trivial (Nul => Nul, Str => "(" & S & ")",
+         return Make_CNT_Unbounded_String (Nul => Nul, Str => "(" & S & ")",
                               Cnt => Count, Els => Elems);
       end if;
    end Refine_Array_Components;
@@ -608,24 +612,24 @@ package body Gnat2Why.Counter_Examples is
    begin
       case Why3_Type is
          when Cnt_Integer =>
-            return Make_Trivial
+            return Make_CNT_Unbounded_String
               (Nul => CNT_Element.I = "0", Str => CNT_Element.I);
 
          when Cnt_Bitvector =>
-            return Make_Trivial
+            return Make_CNT_Unbounded_String
               (Nul => CNT_Element.B = "0", Str => CNT_Element.B);
 
          when Cnt_Boolean =>
-            return Make_Trivial (Nul => CNT_Element.Bo = False,
+            return Make_CNT_Unbounded_String (Nul => CNT_Element.Bo = False,
                                  Str => To_Unbounded_String
                                    (CNT_Element.Bo));
 
          when Cnt_Unparsed =>
-            return Make_Trivial (Nul => CNT_Element.U = "0",
+            return Make_CNT_Unbounded_String (Nul => CNT_Element.U = "0",
                                  Str => CNT_Element.U);
 
          when others =>
-            return Make_Trivial (Nul => True,
+            return Make_CNT_Unbounded_String (Nul => True,
                                  Str => Null_Unbounded_String);
       end case;
 
@@ -721,14 +725,14 @@ package body Gnat2Why.Counter_Examples is
       --  E = A (<value>)
 
       if Is_Array_Type (Value.Cnt_Typ) then
-         return Make_Trivial (Nul => Refined_Value.Nul,
+         return Make_CNT_Unbounded_String (Nul => Refined_Value.Nul,
                               Str => Value.Cnt_Nam & " (" &
                                 Refined_Value.Str  & ")");
 
       --  E = Element (C, <value>)
 
       else
-         return Make_Trivial (Nul => Refined_Value.Nul,
+         return Make_CNT_Unbounded_String (Nul => Refined_Value.Nul,
                               Str => Refine_Container_Iterator_Value
                                 (Refined_Value.Str,
                                  Value.Cnt_Typ, Value.Cnt_Nam));
@@ -798,7 +802,7 @@ package body Gnat2Why.Counter_Examples is
       begin
          Ordered_Values.Insert
            (Get_Loc_Info (Comp),
-            Make_Trivial (Nul => Val.Nul,
+            Make_CNT_Unbounded_String (Nul => Val.Nul,
                           Str => Comp_Name & " => " & Val.Str & Expl,
                           Cnt => Val.Count,
                           Els => Prefix_Elements
@@ -922,7 +926,8 @@ package body Gnat2Why.Counter_Examples is
          if not Need_Others and then Present (First_Unseen) then
             Get_Value_Of_Component
               (First_Unseen,
-               Make_Trivial (Nul => True, Str => To_Unbounded_String ("?")),
+               Make_CNT_Unbounded_String
+                 (Nul => True, Str => To_Unbounded_String ("?")),
                Visibility_Map.Element (First_Unseen));
          end if;
 
@@ -951,7 +956,7 @@ package body Gnat2Why.Counter_Examples is
          end if;
          Append (Value, ')');
 
-         return Make_Trivial (Nul => Nul, Str => Value,
+         return Make_CNT_Unbounded_String (Nul => Nul, Str => Value,
                               Cnt => Count, Els => Elems);
       end;
    end Refine_Record_Components;
@@ -962,14 +967,12 @@ package body Gnat2Why.Counter_Examples is
 
    function Refine_Value
      (Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Type  : Entity_Id;
-      Is_Index  : Boolean := False) return CNT_Unbounded_String
+      AST_Type  : Entity_Id) return CNT_Unbounded_String
    is
       Res : constant CNT_Unbounded_String :=
-        Print_Cntexmp_Value (Cnt_Value, AST_Type, Is_Index);
-      Str : constant Unbounded_String := Trim (Res.Str, Both);
+        Print_Scalar_Value (Cnt_Value, AST_Type);
    begin
-      return Make_Trivial (Nul => Res.Nul, Str => Str);
+      return Res;
    end Refine_Value;
 
    -----------------------
@@ -1155,12 +1158,9 @@ package body Gnat2Why.Counter_Examples is
 
                      if Value /= Dont_Display and Value.Str /= "" then
                         Pretty_Line_Cntexmp_Arr.Append
-                          (Cntexample_Elt'(Kind    => CEE_Variable,
+                          (Cntexample_Elt'(K       => Pretty_Printed,
+                                           Kind    => CEE_Variable,
                                            Name    => Name,
-                                           --  Labels and Value not necessary
-                                           --  at this point
-                                           Labels  => S_String_List.Empty_List,
-                                           Value   => null,
                                            Val_Str => Value));
                      end if;
                   end Add_CNT;
@@ -2518,4 +2518,4 @@ package body Gnat2Why.Counter_Examples is
       return (Remapped_Cntexmp);
    end Remap_VC_Info;
 
-end Gnat2Why.Counter_Examples;
+end CE_Display;

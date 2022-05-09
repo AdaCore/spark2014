@@ -39,7 +39,7 @@ with GNAT.Traceback;
 with GNAT.Traceback.Symbolic;
 with GNATCOLL.JSON;           use GNATCOLL.JSON;
 with GNATCOLL.Utils;          use GNATCOLL.Utils;
-with Gnat2Why.CE_Utils;       use Gnat2Why.CE_Utils;
+with CE_Utils;       use CE_Utils;
 with Gnat2Why_Opts.Reading;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Hashing;                 use Hashing;
@@ -63,7 +63,7 @@ with Stringt;
 with Treepr;
 with Uintp;                   use Uintp;
 
-package body SPARK_RAC is
+package body CE_RAC is
 
    -----------
    -- Types --
@@ -3572,4 +3572,4 @@ package body SPARK_RAC is
       return To_String (V.String_Content);
    end Value_String;
 
-end SPARK_RAC;
+end CE_RAC;

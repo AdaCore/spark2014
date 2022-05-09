@@ -27,7 +27,7 @@ with Ada.Containers.Ordered_Sets;
 generic
    --  type restricting the global interval
    type N is range <>;
-package Ce_Interval_Sets is
+package CE_Interval_Sets is
 
    --  This package defines Sets of disjoint intervals
 
@@ -96,4 +96,4 @@ private
 
    Empty_Set : constant Interval_Set := (Intervals.Empty_Set with null record);
 
-end Ce_Interval_Sets;
+end CE_Interval_Sets;

@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body Name_Ordered_Entities is
+package body CE_Name_Ordered_Entities is
 
    -----------
    -- First --
@@ -196,4 +196,4 @@ package body Name_Ordered_Entities is
       Container.Variables_Map.Include (Id (C), C_Info);
    end Set_Info;
 
-end Name_Ordered_Entities;
+end CE_Name_Ordered_Entities;

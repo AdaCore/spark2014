@@ -23,27 +23,60 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Reals;
+use Ada.Numerics.Big_Numbers.Big_Reals;
+with Ada.Strings;              use Ada.Strings;
 with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
 with Casing;                   use Casing;
-with Gnat2Why.CE_Utils;        use Gnat2Why.CE_Utils;
+with CE_Parsing;               use CE_Parsing;
 with Gnat2Why_Args;
-with Interfaces;               use Interfaces;
 with Namet;                    use Namet;
 with SPARK_Atree;              use SPARK_Atree;
+with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
 with SPARK_Util;               use SPARK_Util;
 with SPARK_Util.Types;         use SPARK_Util.Types;
-with String_Utils;             use String_Utils;
+with Stand;                    use Stand;
 with Uintp;                    use Uintp;
 
-package body Ce_Pretty_Printing is
+package body CE_Pretty_Printing is
 
-   ------------------
-   -- Make_Trivial --
-   ------------------
+   -----------------------
+   -- Local_Subprograms --
+   -----------------------
 
-   function Make_Trivial
+   generic
+      Bound_Type  : Big_Natural;
+      Bound_Value : Big_Natural;
+   function Print_Discrete (Nb : Big_Integer; Ty : Entity_Id) return String
+     with Pre => Is_Discrete_Type (Ty);
+   --  This routine is used to alter printing for values of Discrete_Type.
+   --  When a value is close enough to the bounds of its type (Bound_Value
+   --  close) and the type is not too small (Range greater than Bound_Type)
+   --  then we print the value as a function of the bound of the type.
+   --  Example:
+   --  type Byte is range -128..127;
+   --  V = - 127 is printed V = Byte'First + 1
+
+   function Print_Fixed (Small : Big_Real; Nb : Big_Integer) return String;
+   --  If the computation of Small * Nb is an integer we print it as an
+   --  integer. If not, we print Nb * Num (Small) / Den (Small) with Small
+   --  normalized.
+
+   generic
+      type T_Float is digits <>;
+      K : CE_Parsing.Float_Kind;
+   function Print_Float (Nb : T_Float) return String;
+   --  Print a counterexample value as a float
+
+   -------------------------------
+   -- Make_CNT_Unbounded_String --
+   -------------------------------
+
+   function Make_CNT_Unbounded_String
      (Nul : Boolean;
       Str : Unbounded_String;
       Cnt : Natural := 1;
@@ -52,7 +85,7 @@ package body Ce_Pretty_Printing is
    is
       Nul_Internal : constant Boolean :=
         Nul and not Gnat2Why_Args.Debug_Trivial;
-      Elems : S_String_List.List;
+      Elems        : S_String_List.List;
 
    begin
       --  Leave Elems empty for a nul value
@@ -74,56 +107,13 @@ package body Ce_Pretty_Printing is
               Str   => Str,
               Count => Cnt,
               Elems => Elems);
-   end Make_Trivial;
-
-   ----------
-   -- Size --
-   ----------
-
-   function Size (S : String) return Integer is
-     (if S (S'First + 1) = 'x' then
-           4 * (S'Length - 2)
-      else
-        (S'Length - 2));
-   --  Size returns the associate binary size of a #b or #x number (to help
-   --  when building an unsigned integer).
-
-   --  This package is generic so that part of the work done can be shared
-   --  between 32bit and 64 bits float numbers.
-
-   ----------------------
-   -- Print_Conversion --
-   ----------------------
-
-   generic
-      type T_Unsigned is mod <>;
-      type T_Float is digits <>;
-   package Print_Conversion is
-
-      Bound : constant Integer := T_Unsigned'Size;
-
-      function StringBits_To_Floatrepr (Sign, Significand, Exp : String)
-                                        return T_Unsigned;
-      --  Transform three stringbits into a single unsigned modular number
-      --  (representing a float).
-
-      function Unsigned_To_Float_String (U : T_Unsigned)
-                                         return String;
-      --  Convert an unsigned number to string representation of a float.
-
-      function StringBits_To_Float_Approx (Sign, Significand, Exp : String)
-                                           return String
-      is
-        (Unsigned_To_Float_String (
-           StringBits_To_Floatrepr (Sign, Significand, Exp)));
-
-   end Print_Conversion;
+   end Make_CNT_Unbounded_String;
 
    --------------------
    -- Print_Discrete --
    --------------------
 
-   function Print_Discrete (Nb : String; Ty : Entity_Id) return String is
+   function Print_Discrete (Nb : Big_Integer; Ty : Entity_Id) return String is
 
       function Beautiful_Source_Name (Ty : Entity_Id) return String
         with Pre => Is_Discrete_Type (Ty);
@@ -152,37 +142,16 @@ package body Ce_Pretty_Printing is
 
       --  Local variables
 
-      Nb_Value : Uint;
       Nb_Type  : Entity_Id := Ty;
 
    --  Start of processing for Print_Discrete
 
    begin
-      --  Handle exception from UI_From_String
-      begin
-         Nb_Value := UI_From_String (Nb);
-      exception
-         when others => return Nb;
-      end;
-
-      --  Do not print the counterexample if a value falls outside of the
-      --  bounds of its type.
-
-      if Compile_Time_Known_Value (Type_Low_Bound (Nb_Type))
-        and then Nb_Value < Expr_Value (Type_Low_Bound (Nb_Type))
-      then
-         return "";
-
-      elsif Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
-        and then Nb_Value > Expr_Value (Type_High_Bound (Nb_Type))
-      then
-         return "";
-      end if;
-
       --  If one of the bounds is not known, use the base type for evaluating
       --  the type range to decide if we alter printing.
-      if not Compile_Time_Known_Value (Type_Low_Bound (Nb_Type)) or else
-         not Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
+
+      if not Compile_Time_Known_Value (Type_Low_Bound (Nb_Type))
+        or else not Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
       then
          Nb_Type := Base_Type (Nb_Type);
       end if;
@@ -191,362 +160,173 @@ package body Ce_Pretty_Printing is
 
       declare
          --  Type informations
-         Low_Bound  : constant Uint   :=
-           Expr_Value (Type_Low_Bound (Nb_Type));
-         High_Bound : constant Uint   :=
-           Expr_Value (Type_High_Bound (Nb_Type));
-         Type_Range : constant Uint   := High_Bound - Low_Bound;
+
+         Low_Bound  : constant Big_Integer :=
+           From_String
+             (UI_Image (Expr_Value (Type_Low_Bound (Nb_Type)), Decimal));
+         High_Bound : constant Big_Integer :=
+           From_String
+             (UI_Image (Expr_Value (Type_High_Bound (Nb_Type)), Decimal));
+         Type_Range : constant Big_Integer := High_Bound - Low_Bound;
          Type_Name  : constant String := Beautiful_Source_Name (Nb_Type);
 
          --  Difference calculations
-         Diff_To_High : constant Uint := abs (Nb_Value - High_Bound);
-         Diff_To_Low  : constant Uint := abs (Nb_Value - Low_Bound);
+
+         Diff_To_High : constant Big_Natural := abs (Nb - High_Bound);
+         Diff_To_Low  : constant Big_Natural := abs (Nb - Low_Bound);
          Side         : Character;
 
       begin
+         --  Do not print the counterexample if a value falls outside of the
+         --  bounds of its type.
+
+         if Nb < Low_Bound or else Nb > High_Bound then
+            raise Parse_Error;
+         end if;
+
          --  If the range of type is too small, we do nothing. If the type
          --  we are given is internal then we don't want to print it as it
          --  would confuse the user.
          --  Example: type Data_T is array (1 .. 1000) of Integer;
          --  There is an internal type Tdata_tD1 for range (1..1000) for
          --  indices: we don't want to print Tdata_tD1'First.
-         if Type_Range <= UI_From_Int (Bound_Type) or else
-           (not Comes_From_Source (Nb_Type) and then
-                not Is_Standard_Type (Nb_Type))
+
+         if Type_Range <= Bound_Type
+           or else (not Comes_From_Source (Nb_Type)
+                    and then not Is_Standard_Type (Nb_Type))
          then
-            return Nb;
+            return To_String (Nb);
          end if;
 
          --  Nb is closer to the highest bound
+
          if Diff_To_High <= Diff_To_Low then
 
             if Diff_To_High = 0 then
                return Type_Name & "'Last";
 
             elsif Diff_To_High < Bound_Value then
-               Side := (if Nb_Value < High_Bound then '-' else '+');
-               return Type_Name & "'Last" & Side & UI_Image (Diff_To_High);
+               Side := (if Nb < High_Bound then '-' else '+');
+               return Type_Name & "'Last" & Side
+                 & Trim (To_String (Diff_To_High), Left);
 
             else
-               return Nb;
+               return To_String (Nb);
             end if;
 
          --  We don't want to print Natural'First + 5 as counterexample. So,
          --  there is a special case when Low_Bound of the type is in 0 .. 1.
 
          elsif Low_Bound = 0 or else Low_Bound = 1 then
-            return Nb;
+            return To_String (Nb);
 
          else
             if Diff_To_Low = 0 then
                return Type_Name & "'First";
 
             elsif Diff_To_Low < Bound_Value then
-               Side := (if Nb_Value < Low_Bound then '-' else '+');
-               return Type_Name & "'First" & Side & UI_Image (Diff_To_Low);
+               Side := (if Nb < Low_Bound then '-' else '+');
+               return Type_Name & "'First" & Side
+                 & Trim (To_String (Diff_To_Low), Left);
 
             else
-               return Nb;
+               return To_String (Nb);
             end if;
          end if;
       end;
    end Print_Discrete;
 
-   --  Start of package body for Print_Conversion
-
-   package body Print_Conversion is
-
-      pragma Assert (T_Unsigned'Size = T_Float'Size);
-
-      function StringBits_To_Unsigned (S : String) return T_Unsigned;
-      --  This transforms a number written in bin #b0101 or hex #x5 to an
-      --  unsigned integer. (Inside a generic package so the size of unsigned
-      --  integer can vary: checks for the size are done outside this
-      --  function).
-
-      ----------------------------
-      -- StringBits_To_Unsigned --
-      ----------------------------
-
-      function StringBits_To_Unsigned (S : String) return T_Unsigned
-      is
-      begin
-         pragma Assert (S (S'First) = '#');
-         return T_Unsigned'Value
-           (if S (S'First + 1) = 'x' then
-              "16#" & S (S'First + 2 .. S'Last) & "#"
-            elsif S (S'First + 1) = 'b' then
-               "2#" & S (S'First + 2 .. S'Last) & "#"
-            else
-              raise Program_Error);
-      end StringBits_To_Unsigned;
-
-      -----------------------------
-      -- StringBits_To_Floatrepr --
-      -----------------------------
-
-      function StringBits_To_Floatrepr (Sign, Significand, Exp : String)
-                                       return T_Unsigned
-      is
-         I_Sign           : constant T_Unsigned :=
-           StringBits_To_Unsigned (Sign);
-         I_Significand    : constant T_Unsigned :=
-           StringBits_To_Unsigned (Significand);
-         Size_Significand : constant Integer := Size (Significand);
-         I_Exp            : constant T_Unsigned :=
-           StringBits_To_Unsigned (Exp);
-      begin
-         return I_Sign * 2 ** (Bound - 1) +
-           I_Exp * 2 ** Size_Significand +
-           I_Significand;
-      end StringBits_To_Floatrepr;
-
-      ------------------------------
-      -- Unsigned_To_Float_String --
-      ------------------------------
-
-      function Unsigned_To_Float_String (U : T_Unsigned) return String is
-         function Convert is new Ada.Unchecked_Conversion
-           (Source => T_Unsigned,
-            Target => T_Float);
-         package F_IO is new Ada.Text_IO.Float_IO (T_Float);
-         Result        : T_Float;
-         Result_String : String (1 .. Bound);
-      begin
-         if Convert (U)'Valid then
-
-            --  Unchecked conversion
-            Result := Convert (U);
-
-            --  To get nicer results we print small, exactly represented
-            --  integers as 123.0 and not in the scientific notation. The
-            --  choice of what is "small" is arbitrary; it could be anything
-            --  within +/- 2**24 and +/- 2**54 (bounds excluded) for single and
-            --  double precision floating point numbers, respectively.
-
-            if abs (Result) < 1000.0
-              and then Result = T_Float'Truncation (Result)
-            then
-               F_IO.Put (To   => Result_String,
-                         Item => Result,
-                         Aft  => 0,
-                         Exp  => 0);
-            else
-               F_IO.Put (To   => Result_String,
-                         Item => Result,
-                         --  In the case of long_float, we print 10 decimals
-                         --  and we print 7 in case of short float.
-                         Aft  => (if Bound = 64 then 10 else 7),
-                         Exp  => 1);
-            end if;
-
-            return Trim (Source => Result_String,
-                         Side   => Ada.Strings.Both);
-         else
-            return "";
-         end if;
-      end Unsigned_To_Float_String;
-
-   end Print_Conversion;
-
-   --------------------------
-   -- StringBits_To_Approx --
-   --------------------------
-
-   function StringBits_To_Approx (Sign, Significand, Exp : String)
-                                  return String
-   is
-   begin
-      pragma Assert (Size (Sign) = 1);
-      if Size (Significand) <= 23 then
-         pragma Assert (Size (Exp) = 8);
-         pragma Assert (Size (Significand) = 23);
-         declare
-            package P is new Print_Conversion (Unsigned_32, Float);
-         begin
-            return P.StringBits_To_Float_Approx (Sign, Significand, Exp);
-         end;
-      else
-         pragma Assert (Size (Exp) = 11);
-         pragma Assert (Size (Significand) = 52);
-         declare
-            package P is new Print_Conversion
-              (Interfaces.Unsigned_64, Long_Float);
-         begin
-            return P.StringBits_To_Float_Approx (Sign, Significand, Exp);
-         end;
-
-      end if;
-   end StringBits_To_Approx;
-
    -----------------
    -- Print_Fixed --
    -----------------
 
-   function Print_Fixed (Small : Ureal; Nb : String) return String
-   is
+   function Print_Fixed (Small : Big_Real; Nb : Big_Integer) return String is
    begin
       declare
-         Nb_Int : constant Uint := UI_From_String (Nb);
-         Nb_Real : constant Ureal := UR_From_Uint (Nb_Int) * Small;
+         Nb_Real : constant Big_Real := To_Big_Real (Nb) * Small;
       begin
-         if Nb_Real = UR_From_Uint (UR_Trunc (Nb_Real)) then
-            return UI_Image (UR_To_Uint (Nb_Real), Decimal);
+         if Denominator (Nb_Real) = 1 then
+            return To_String (Numerator (Nb_Real));
          else
             declare
-               Num_Small : constant String :=
-                 UI_Image (Norm_Num (Small), Decimal);
-               Den_Small : constant String :=
-                 UI_Image (Norm_Den (Small), Decimal);
+               Num_Small : constant Big_Integer := Numerator (Small);
+               Den_Small : constant Big_Integer := Denominator (Small);
             begin
-               return Nb
-                 & (if Num_Small /= "1" then "*" & Num_Small else "")
-                 & (if Den_Small /= "1" then "/" & Den_Small else "");
+               return To_String (Nb)
+                 & (if Num_Small /= 1
+                    then "*" & Trim (To_String (Num_Small), Left)
+                    else "")
+                 & (if Den_Small /= 1
+                    then "/" & Trim (To_String (Den_Small), Left)
+                    else "");
             end;
          end if;
       end;
-   exception when others =>
-         return "";
    end Print_Fixed;
 
    -----------------
    -- Print_Float --
    -----------------
 
-   function Print_Float (Cnt_Value : Cntexmp_Value) return Unbounded_String
-   is
-      F : Float_Value renames Cnt_Value.F.all;
+   function Print_Float (Nb : T_Float) return String is
+      package F_IO is new Ada.Text_IO.Float_IO (T_Float);
+      Bound : constant Natural :=
+        (case K is
+            when Float_32_K => 32,
+            when Float_64_K => 64,
+            when Extended_K => 80);
+      Result : String (1 .. Bound);
+
    begin
-      case F.F_Type is
-         when Float_Plus_Infinity | Float_Minus_Infinity | Float_NaN =>
+      --  To get nicer results we print small, exactly represented
+      --  integers as 123.0 and not in the scientific notation. The
+      --  choice of what is "small" is arbitrary; it could be anything
+      --  within +/- 2**24 and +/- 2**54 (bounds excluded) for single and
+      --  double precision floating point numbers, respectively.
 
-            --  Decision: we don't print infinities or Nan
-            return Null_Unbounded_String;
-
-         when Float_Plus_Zero | Float_Minus_Zero =>
-
-            --  Decision: we print zero+ and zero- as 0 (0.0 for type)
-            return To_Unbounded_String ("0.0");
-
-         when Float_Val =>
-            declare
-               F_S   : constant String := To_String (F.F_Sign);
-               F_Si  : constant String := To_String (F.F_Significand);
-               F_Exp : constant String := To_String (F.F_Exponent);
-            begin
-               return
-                 To_Unbounded_String
-                   (Ce_Pretty_Printing.StringBits_To_Approx
-                      (F_S, F_Si, F_Exp));
-            end;
-      end case;
+      if abs (Nb) < 1000.0 and then T_Float'Truncation (Nb) = Nb then
+         F_IO.Put (To   => Result,
+                   Item => Nb,
+                   Aft  => 0,
+                   Exp  => 0);
+      else
+         F_IO.Put (To   => Result,
+                   Item => Nb,
+                   --  In the case of long_float, we print 10 decimals
+                   --  and we print 7 in case of short float.
+                   Aft  => (case K is
+                               when Float_32_K => 7,
+                               when Float_64_K => 10,
+                               when Extended_K => 10),
+                   Exp  => 1);
+      end if;
+      return Trim (Source => Result,
+                   Side   => Both);
    end Print_Float;
 
-   -------------------------
-   -- Print_Cntexmp_Value --
-   -------------------------
+   ------------------------
+   -- Print_Scalar_Value --
+   ------------------------
 
-   function Print_Cntexmp_Value (Cnt_Value : Cntexmp_Value_Ptr;
-                                 AST_Type  : Entity_Id;
-                                 Is_Index  : Boolean := False)
-                                 return CNT_Unbounded_String
+   function Print_Scalar_Value
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      AST_Type  : Entity_Id) return CNT_Unbounded_String
    is
+      function To_String
+        (Value : Scalar_Value; Nul : out Boolean) return String;
+      --  Turn Value into a string. Set Nul to True if Value might be
+      --  represented as 0.
 
-      Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
-   begin
-      case Why3_Type is
-         when Cnt_Integer =>
+      ---------------
+      -- To_String --
+      ---------------
 
-            --  Necessary for some types that makes boolean be translated to
-            --  integers like: "subype only_true := True .. True".
-
-            if Is_Boolean_Type (AST_Type) then
-               return Make_Trivial (Nul => Cnt_Value.I = "0",
-                                    Str => To_Unbounded_String
-                                      (Cnt_Value.I /= "0"));
-
-            elsif Is_Enumeration_Type (AST_Type) then
-               declare
-                  Value : constant Uint := UI_From_String
-                    (To_String (Cnt_Value.I));
-                  Nul   : constant Boolean := Cnt_Value.I = "0";
-
-                  --  Call Get_Enum_Lit_From_Pos to get a corresponding
-                  --  enumeration entity.
-
-                  Lit : Node_Id;
-
-               begin
-                  --  Initialization of Enum can raise Constraint_Error if
-                  --  there is no literal value for the position.
-
-                  Lit := Get_Enum_Lit_From_Pos (AST_Type, Value);
-
-                  --  Special case for characters, which are defined in the
-                  --  standard unit Standard.ASCII, and as such do not have
-                  --  a source code representation.
-
-                  if Is_Character_Type (AST_Type) then
-                     --  Call Get_Unqualified_Decoded_Name_String to get a
-                     --  correctly printed character in Name_Buffer.
-
-                     Get_Unqualified_Decoded_Name_String (Chars (Lit));
-
-                     --  The call to Get_Unqualified_Decoded_Name_String set
-                     --  Name_Buffer to '<char>' where <char> is the character
-                     --  we are interested in. Just retrieve it directly at
-                     --  Name_Buffer(2).
-
-                     return Make_Trivial (Nul => Nul,
-                                          Str => "'" & To_Unbounded_String
-                                            (Char_To_String_Representation
-                                               (Name_Buffer (2))) & "'");
-
-                     --  For all enumeration types that are not character,
-                     --  call Get_Enum_Lit_From_Pos to get a corresponding
-                     --  enumeratio n entity, then Source_Name to get a
-                     --  correctly capitalized enumeration value.
-
-                  else
-                     return Make_Trivial
-                       (Nul => Nul,
-                        Str => To_Unbounded_String (Source_Name (Lit)));
-                  end if;
-
-                  --  An exception is raised by Get_Enum_Lit_From_Pos if the
-                  --  position Value is outside the bounds of the enumeration.
-                  --  In such a case, return the raw integer returned by the
-                  --  prover.
-
-               exception
-                  when Constraint_Error =>
-                     if Is_Index then
-                        return Make_Trivial (Nul => True,
-                                             Str => Null_Unbounded_String);
-                     else
-                        return Make_Trivial (Nul => Nul,
-                                             Str => Cnt_Value.I);
-                     end if;
-               end;
-
-               --  Cvc4 returns Floating_point value with integer type. We
-               --  don't want to print those.
-
-            elsif Is_Floating_Point_Type (AST_Type) then
-               return Make_Trivial (Nul => True,
-                                    Str => Null_Unbounded_String);
-
-            elsif Is_Fixed_Point_Type (AST_Type) then
-               return Make_Trivial
-                 (Nul => Cnt_Value.I = "0",
-                  Str => To_Unbounded_String
-                    (Print_Fixed (Small_Value (AST_Type),
-                     To_String (Cnt_Value.I))));
-
-            --  Only integer types are expected in that last case
-
-            else
-               pragma Assert (Has_Integer_Type (AST_Type));
+      function To_String
+        (Value : Scalar_Value; Nul : out Boolean) return String
+      is
+      begin
+         case Value.K is
+            when Integer_K =>
 
                declare
                   --  Decision: generic values for Bound_Type and Bound_Value
@@ -556,70 +336,119 @@ package body Ce_Pretty_Printing is
                     new Print_Discrete (Bound_Type  => 10,
                                         Bound_Value => 5);
                begin
-                  return Make_Trivial
-                    (Nul => Cnt_Value.I = "0",
-                     Str => To_Unbounded_String (
-                       Pretty_Print
-                         (To_String (Cnt_Value.I), AST_Type)));
+                  Nul := Value.Integer_Content = 0;
+                  return Pretty_Print (Value.Integer_Content, AST_Type);
                end;
-            end if;
 
-         when Cnt_Boolean =>
-            return Make_Trivial
-              (Nul => not Cnt_Value.Bo,
-               Str => To_Unbounded_String (Cnt_Value.Bo));
+            when Enum_K =>
 
-         when Cnt_Bitvector =>
+               --  Necessary for some types that makes boolean be translated to
+               --  integers like: "subype only_true := True .. True".
 
-            --  Boolean are translated into bitvector of size 1 for CVC4
-            --  because it fails to produce a model when booleans are used
-            --  inside translated arrays_of_records.
+               if Is_Boolean_Type (AST_Type) then
+                  Nul := Value.Enum_Entity = Boolean_Literals (False);
+                  if Value.Enum_Entity = Boolean_Literals (True) then
+                     return "True";
+                  else
+                     return "False";
+                  end if;
 
-            if Is_Boolean_Type (AST_Type) then
-               return Make_Trivial
-                 (Nul => Cnt_Value.B = "0",
-                  Str => To_Unbounded_String (Cnt_Value.B /= "0"));
-            end if;
+               else
+                  pragma Assert (Is_Enumeration_Type (AST_Type));
 
-            return Make_Trivial (Nul => Cnt_Value.B = "0",
-                                 Str => Cnt_Value.B);
+                  declare
+                     Lit : constant Entity_Id := Value.Enum_Entity;
 
-         when Cnt_Decimal =>
-            return Make_Trivial (Nul => Cnt_Value.D = "0.0",
-                                 Str => Cnt_Value.D);
+                  begin
+                     --  Special case for characters, which are defined in the
+                     --  standard unit Standard.ASCII, and as such do not have
+                     --  a source code representation.
 
-         when Cnt_Float =>
+                     if Is_Character_Type (AST_Type) then
 
-            pragma Assert (Is_Floating_Point_Type (AST_Type));
-            declare
-               S : constant Unbounded_String := Print_Float (Cnt_Value.all);
-            begin
-               return Make_Trivial (Nul => S = "0.0", Str => S);
-            end;
+                        --  Nul is True if we have the literal at position 0
 
-         when Cnt_Unparsed =>
-            return Make_Trivial (Nul => Cnt_Value.U = "0",
-                                 Str => Cnt_Value.U);
+                        Nul := Char_Literal_Value (Value.Enum_Entity) = Uint_0;
 
-            --  This case only happens when the why3 counterexamples are
-            --  incorrect. Ideally, this case should be removed but it
-            --  still happens in practice.
+                        --  Call Get_Unqualified_Decoded_Name_String to get a
+                        --  correctly printed character in Name_Buffer.
 
-         when Cnt_Invalid =>
-            return Make_Trivial (Nul => True,
-                                 Str => Cnt_Value.S);
+                        Get_Unqualified_Decoded_Name_String (Chars (Lit));
 
-         when Cnt_Projection =>
-            pragma Assert (False);
-            --  This case should never happen: we never built a Cnt_Projection
-            --  ever.
-            return Make_Trivial (Nul => True,
-                                 Str => Cnt_Value.Er);
+                        --  The call to Get_Unqualified_Decoded_Name_String set
+                        --  Name_Buffer to '<char>' where <char> is the
+                        --  character we are interested in. Just retrieve it
+                        --  directly at Name_Buffer(2).
 
-         when Cnt_Record | Cnt_Array =>
-            pragma Assert (False);
-            return Dont_Display;
-      end case;
-   end Print_Cntexmp_Value;
+                        return "'"
+                          & Char_To_String_Representation (Name_Buffer (2))
+                          & "'";
 
-end Ce_Pretty_Printing;
+                     --  For all enumeration types that are not character,
+                     --  call Get_Enum_Lit_From_Pos to get a corresponding
+                     --  enumeratio n entity, then Source_Name to get a
+                     --  correctly capitalized enumeration value.
+
+                     else
+                        --  Nul is True if we have the literal at position 0
+
+                        Nul := (Enumeration_Pos (Value.Enum_Entity) = 0);
+
+                        return Source_Name (Lit);
+                     end if;
+                  end;
+               end if;
+
+            when Fixed_K =>
+               Nul := Value.Fixed_Content = 0;
+               return Print_Fixed (Value.Small, Value.Fixed_Content);
+
+            when Float_K =>
+               case Value.Float_Content.K is
+                  when Float_32_K =>
+                     Nul := Value.Float_Content.Content_32 = 0.0;
+                     declare
+                        function Print is new Print_Float
+                          (Float, Value.Float_Content.K);
+                     begin
+                        return Print (Value.Float_Content.Content_32);
+                     end;
+                  when Float_64_K =>
+                     Nul := Value.Float_Content.Content_64 = 0.0;
+                     declare
+                        function Print is new Print_Float
+                          (Long_Float, Value.Float_Content.K);
+                     begin
+                        return Print (Value.Float_Content.Content_64);
+                     end;
+                  when Extended_K =>
+                     Nul := Value.Float_Content.Ext_Content = 0.0;
+                     declare
+                        function Print is new Print_Float
+                          (Long_Long_Float, Value.Float_Content.K);
+                     begin
+                        return Print (Value.Float_Content.Ext_Content);
+                     end;
+               end case;
+         end case;
+      end To_String;
+
+   --  Start of processing for Print_Scalar_Value
+
+   begin
+      declare
+         Value  : constant Scalar_Value :=
+           Parse_Scalar_Value (Cnt_Value, AST_Type);
+         Nul    : Boolean;
+         Result : constant String := To_String (Value, Nul);
+      begin
+         return Make_CNT_Unbounded_String
+           (Nul => Nul,
+            Str => To_Unbounded_String (Trim (Result, Both)));
+      end;
+   exception
+      when Parse_Error =>
+         return Dont_Display;
+   end Print_Scalar_Value;
+
+end CE_Pretty_Printing;

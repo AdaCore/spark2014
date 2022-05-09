@@ -906,11 +906,13 @@ package body SPARK_Atree is
 
    --  We cannot use directly Sinfo.Has_Wide_Character which is not set for
    --  string literals not from source, say created as a result of inlining.
+
    function Has_Wide_Character (N : Node_Id) return Boolean is
+      S : constant String_Id := Strval (N);
    begin
-      for J in 1 .. String_Length (Strval (N)) loop
+      for J in 1 .. String_Length (S) loop
          declare
-            Code : constant Char_Code := Get_String_Char (Strval (N), J);
+            Code : constant Char_Code := Get_String_Char (S, J);
          begin
             if not In_Character_Range (Code)
               and then In_Wide_Character_Range (Code)
@@ -929,11 +931,13 @@ package body SPARK_Atree is
    --  We cannot use directly Sinfo.Has_Wide_Wide_Character which is not
    --  set for string literals not from source, say created as a result
    --  of inlining.
+
    function Has_Wide_Wide_Character (N : Node_Id) return Boolean is
+      S : constant String_Id := Strval (N);
    begin
-      for J in 1 .. String_Length (Strval (N)) loop
+      for J in 1 .. String_Length (S) loop
          declare
-            Code : constant Char_Code := Get_String_Char (Strval (N), J);
+            Code : constant Char_Code := Get_String_Char (S, J);
          begin
             if not In_Wide_Character_Range (Code) then
                return True;

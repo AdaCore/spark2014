@@ -34,6 +34,7 @@ with ALI;                             use ALI;
 with Atree;                           use Atree;
 with Binderr;
 with Call;
+with CE_RAC;                          use CE_RAC;
 with Common_Containers;               use Common_Containers;
 with Debug;                           use Debug;
 with Debug.Timing;                    use Debug.Timing;
@@ -77,7 +78,6 @@ with Sinfo.Nodes;                     use Sinfo.Nodes;
 with Sinput;                          use Sinput;
 with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Definition;                use SPARK_Definition;
-with SPARK_RAC;                       use SPARK_RAC;
 with SPARK_Register;                  use SPARK_Register;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
 with SPARK_Util;                      use SPARK_Util;
@@ -415,7 +415,7 @@ package body Gnat2Why.Driver is
                declare
                   LSP_Applies : constant Boolean :=
                     Is_Dispatching_Operation (E) and then
-                    not Is_Invisible_Dispatching_Operation (E);
+                    Present (Find_Dispatching_Type (E));
                begin
                   if LSP_Applies then
                      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -768,7 +768,7 @@ package body Gnat2Why.Driver is
                --  Return the name of the assertion that is triggered for at
                --  the given VC.
 
-               Res : constant Result := SPARK_RAC.RAC_Execute
+               Res : constant Result := CE_RAC.RAC_Execute
                  (Unique_Main_Unit_Entity,
                   VC_Kinds.Cntexample_File_Maps.Empty,
                   Do_Sideeffects => True);

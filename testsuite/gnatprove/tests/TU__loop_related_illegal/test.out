@@ -4,8 +4,7 @@ raised ADA.ASSERTIONS.ASSERTION_ERROR : Loop_Variant failed at loop_related_ille
 raised ADA.ASSERTIONS.ASSERTION_ERROR : Loop_Invariant failed at main2.adb:15
 loop_related_illegal.adb:17:07: error: pragma "Loop_Invariant" must appear immediately within the statements of a loop
 loop_related_illegal.adb:36:13: error: pragma "Loop_Invariant" must appear immediately within the statements of a loop
-loop_related_illegal.adb:51:44: error: expected a discrete type
-loop_related_illegal.adb:51:44: error: found type "Real" defined at line 46
+loop_related_illegal.adb:51:44: error: expected a discrete or Big_Integer type
 loop_related_illegal.adb:72:07: error: pragma "Assert" with Loop_Entry must appear immediately within the statements of a loop
 loop_related_illegal.adb:88:16: error: attribute "Loop_Entry" must appear within appropriate pragma
 loop_related_illegal.adb:113:36: error: prefix of attribute "Loop_Entry" cannot reference local entities

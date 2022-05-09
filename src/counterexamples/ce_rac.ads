@@ -36,7 +36,7 @@ with Common_Containers;     use Common_Containers;
 with Types;                 use Types;
 with VC_Kinds;              use VC_Kinds;
 
-package SPARK_RAC is
+package CE_RAC is
 
    type Result;
    --  Information about the termination of the RAC execution
@@ -171,4 +171,4 @@ package SPARK_RAC is
 
    function Do_RAC_Info return Boolean;
 
-end SPARK_RAC;
+end CE_RAC;
