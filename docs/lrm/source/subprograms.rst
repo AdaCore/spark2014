@@ -1759,8 +1759,9 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
 
    * it is an assignment statement whose target is a ghost variable; or
 
-   * it is a pragma which encloses a name denoting a ghost entity or
-     which specifies an aspect of a ghost entity.
+   * it is a pragma which specifies an aspect of a ghost entity; or
+
+   * it is an assertion pragma which encloses a name denoting a ghost entity.
 
 
 4. If the Ghost assertion policy in effect at the point of a
