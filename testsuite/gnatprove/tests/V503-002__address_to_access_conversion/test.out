@@ -1,0 +1,7 @@
+main.adb:5:04: warning: in instantiation at s-atacco.ads:50
+main.adb:5:04: warning: pragma "No_Strict_Aliasing" ignored (not yet supported)
+main.adb:8:36: warning: call to "To_Pointer" is assumed to return a valid access designating a valid value
+main.adb:8:36: warning: the value returned by a call to "To_Pointer" is assumed to have no aliases
+main.adb:10:12: error: "To_Address" is not allowed in SPARK
+main.adb:10:12: error: violation of aspect SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof

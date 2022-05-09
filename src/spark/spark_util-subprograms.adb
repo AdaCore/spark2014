@@ -1324,6 +1324,25 @@ package body SPARK_Util.Subprograms is
       return Chars (First (Choices (First_Variant))) = Name_Structural;
    end Is_Structural_Subprogram_Variant;
 
+   --------------------------------------------
+   -- Is_System_Address_To_Access_Conversion --
+   --------------------------------------------
+
+   function Is_System_Address_To_Access_Conversion
+     (E : Entity_Id)
+      return Boolean
+   is
+      Par : constant Node_Id := Parent (Scope (E));
+   begin
+      return
+        (Get_Name_String (Chars (E)) = "to_pointer"
+         and then Nkind (Par) in N_Package_Specification
+         and then Present (Generic_Parent (Par))
+         and then
+           Is_RTU (Generic_Parent (Par),
+                   System_Address_To_Access_Conversions));
+   end Is_System_Address_To_Access_Conversion;
+
    -----------------------------
    -- Is_Tagged_Predefined_Eq --
    -----------------------------

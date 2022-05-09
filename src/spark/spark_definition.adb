@@ -4162,10 +4162,14 @@ package body SPARK_Definition is
 
       --  On supported unchecked conversions to access types, emit warnings
       --  stating that we assume the returned value to be valid and with no
-      --  harmful aliases.
+      --  harmful aliases. The warnings are also emitted on calls to
+      --  To_Pointer function from an instance of
+      --  System.Address_To_Access_Conversions, which performs the same
+      --  operation.
 
-      elsif Is_Unchecked_Conversion_Instance (E)
-        and then Has_Access_Type (Etype (E))
+      elsif Is_System_Address_To_Access_Conversion (E)
+        or else (Is_Unchecked_Conversion_Instance (E)
+                 and then Has_Access_Type (Etype (E)))
       then
          Error_Msg_NE
            ("?call to & is assumed to return a valid access"
