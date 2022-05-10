@@ -44,7 +44,7 @@ admintoken.adb:80:43: info: initialization of "TokenPresence" constituent of "St
 admintoken.adb:119:41: info: initialization of "AuthCert" constituent of "State" proved
 admintoken.adb:120:41: info: initialization of "IDCert" constituent of "State" proved
 admintoken.adb:121:41: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:150:30: info: refined post proved (CVC4: 4 VC)
+admintoken.adb:150:30: info: refined post proved (CVC4: 5 VC)
 admintoken.adb:156:07: info: initialization of "AuthValid" proved
 admintoken.adb:156:18: info: initialization of "IDValid" proved
 admintoken.adb:156:27: info: initialization of "RoleOK" proved
@@ -94,7 +94,7 @@ admintoken.ads:128:07: info: initialization of "Description" proved
 admintoken.ads:129:07: info: initialization of "TokenOK" proved
 admintoken.ads:130:11: info: data dependencies proved
 admintoken.ads:140:11: info: flow dependencies proved
-admintoken.ads:158:22: info: postcondition proved (CVC4: 4 VC)
+admintoken.ads:158:22: info: postcondition proved (CVC4: 5 VC)
 admintoken.ads:172:11: info: data dependencies proved
 admintoken.ads:184:11: info: data dependencies proved
 admintoken.ads:197:11: info: data dependencies proved
@@ -102,7 +102,7 @@ admintoken.ads:210:11: info: data dependencies proved
 admintoken.ads:225:11: info: data dependencies proved
 admintoken.ads:226:11: info: flow dependencies proved
 admintoken.ads:227:22: info: postcondition proved (CVC4: 3 VC)
-admintoken.ads:279:21: info: range check proved (CVC4: 1 VC)
+admintoken.ads:279:21: info: range check proved (CVC4: 2 VC)
 alarm.adb:42:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:45:30: info: refined post proved (CVC4: 1 VC; Trivial: 1 VC)
 alarm.ads:26:08: info: flow dependencies proved
@@ -348,7 +348,7 @@ bio.adb:154:11: info: data dependencies proved
 bio.adb:163:07: info: initialization of "TheCodeName" proved
 bio.adb:175:17: info: postcondition proved (Trivial: 1 VC)
 bio.adb:177:38: info: range check proved (CVC4: 2 VC)
-bio.adb:178:12: info: range check proved (CVC4: 1 VC)
+bio.adb:178:12: info: range check proved (CVC4: 2 VC)
 bio.adb:178:41: info: range check proved (CVC4: 2 VC)
 bio.adb:179:12: info: range check proved (CVC4: 2 VC)
 bio.adb:179:57: info: range check proved (CVC4: 2 VC)
@@ -919,7 +919,7 @@ configuration.adb:101:66: info: range check proved (CVC4: 2 VC)
 configuration.adb:102:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:102:58: info: division check proved (CVC4: 1 VC)
 configuration.adb:102:64: info: range check proved (CVC4: 2 VC)
-configuration.adb:103:12: info: range check proved (CVC4: 1 VC)
+configuration.adb:103:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:103:58: info: range check proved (CVC4: 2 VC)
 configuration.adb:104:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:104:19: info: range check proved (CVC4: 4 VC)
@@ -930,9 +930,9 @@ configuration.adb:105:62: info: range check proved (CVC4: 2 VC)
 configuration.adb:106:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:106:19: info: range check proved (CVC4: 4 VC)
 configuration.adb:106:62: info: range check proved (CVC4: 2 VC)
-configuration.adb:107:12: info: range check proved (CVC4: 1 VC)
+configuration.adb:107:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:107:62: info: range check proved (CVC4: 2 VC)
-configuration.adb:108:12: info: range check proved (CVC4: 1 VC)
+configuration.adb:108:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:108:55: info: range check proved (CVC4: 2 VC)
 configuration.adb:109:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:109:64: info: division check proved (CVC4: 1 VC)
@@ -1098,7 +1098,7 @@ enclave.adb:470:06: info: initialization of "TokenOK" proved
 enclave.adb:471:06: info: initialization of "Description" proved
 enclave.adb:485:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:494:21: info: precondition proved (CVC4: 1 VC)
-enclave.adb:504:48: info: precondition proved (CVC4: 3 VC)
+enclave.adb:504:48: info: precondition proved (CVC4: 4 VC)
 enclave.adb:510:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:537:11: info: data dependencies proved
 enclave.adb:539:33: info: initialization of "Status" constituent of "State" proved
@@ -1348,7 +1348,7 @@ keystore-interfac.ads:96:20: info: predicate check justified
 keystore-interfac.ads:96:20: info: range check proved (CVC4: 1 VC)
 keystore.adb:97:35: info: range check proved (CVC4: 2 VC)
 keystore.adb:97:39: info: range check proved (CVC4: 2 VC)
-keystore.adb:98:09: info: range check proved (CVC4: 1 VC)
+keystore.adb:98:09: info: range check proved (CVC4: 2 VC)
 keystore.adb:101:19: info: range check proved (CVC4: 2 VC)
 keystore.adb:102:10: info: range check proved (CVC4: 4 VC)
 keystore.adb:102:32: info: range check proved (CVC4: 2 VC)
@@ -1798,7 +1798,7 @@ tokenreader.adb:154:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:166:14: info: data dependencies proved
 tokenreader.adb:170:14: info: flow dependencies proved
 tokenreader.adb:174:47: info: range check proved (CVC4: 2 VC)
-tokenreader.adb:175:12: info: range check proved (CVC4: 1 VC)
+tokenreader.adb:175:12: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:175:55: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:176:12: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:176:57: info: range check proved (CVC4: 2 VC)

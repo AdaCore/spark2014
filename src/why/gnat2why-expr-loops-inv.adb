@@ -722,15 +722,12 @@ package body Gnat2Why.Expr.Loops.Inv is
          elsif Has_Discriminants (Expr_Ty)
            and then not Is_Constrained (Expr_Ty)
          then
-            return +New_Comparison
+            return New_Comparison
               (Symbol => Why_Eq,
-               Left   => New_Discriminants_Access (Domain => EW_Term,
-                                                   Name   => Expr,
-                                                   Ty     => Expr_Ty),
-               Right  => New_Discriminants_Access (Domain => EW_Term,
-                                                   Name   => At_Entry,
-                                                   Ty     => Expr_Ty),
-               Domain => EW_Pred);
+               Left   => New_Discriminants_Access (Name => +Expr,
+                                                   Ty   => Expr_Ty),
+               Right  => New_Discriminants_Access (Name => +At_Entry,
+                                                   Ty   => Expr_Ty));
          else
             return True_Pred;
          end if;

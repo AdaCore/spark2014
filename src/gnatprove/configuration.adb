@@ -2595,16 +2595,6 @@ package body Configuration is
          end if;
       end if;
 
-      if not (FS.Counterexamples and then FS.Check_Counterexamples) then
-         --  Counterexample checking requires variables for return values in
-         --  the prover models. Introducing these variables changes the proof
-         --  tasks and possibly results in proof regressions, so we *disable*
-         --  the generation of variables for return values when counterexamples
-         --  are not checked or not requested.
-         Args.Append ("--debug-why3");
-         Args.Append ("vc:do_not_keep_trace");
-      end if;
-
       if CL_Switches.Z3_Counterexample then
          Args.Append ("--ce-prover");
          Args.Append ("z3_ce");

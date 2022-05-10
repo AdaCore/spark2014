@@ -265,7 +265,8 @@ package Why.Gen.Arrays is
    function New_Bounds_Equality
      (Left_Arr : W_Term_Id;
       Right_Ty : Entity_Id;
-      Params   : Transformation_Params := Body_Params) return W_Pred_Id
+      Params   : Transformation_Params := Body_Params)
+      return W_Pred_Id
    with Pre => Is_Constrained (Right_Ty);
    --  same as above but takes the bounds of a type for Right
 
@@ -302,7 +303,8 @@ package Why.Gen.Arrays is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Args   : W_Expr_Array;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id;
+      Params : Transformation_Params := Body_Params)
+      return W_Expr_Id;
    --  @param Domain The domain of the returned expression
    --  @param Ty the entity for the Ada array type
    --  @param Args bound values on which we want to check the dynamic predicate
@@ -377,7 +379,8 @@ package Why.Gen.Arrays is
       Expr   : W_Expr_Id;
       Attr   : Attribute_Id;
       Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
+      Typ    : W_Type_Id := EW_Int_Type)
+      return W_Expr_Id
      with Pre =>
        Attr in Attribute_First | Attribute_Last | Attribute_Length
        and then (Typ = EW_Int_Type or else Why_Type_Is_BitVector (Typ));

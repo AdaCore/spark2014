@@ -91,6 +91,15 @@ package Why.Gen.Records is
 
    function New_Ada_Record_Access
      (Ada_Node : Node_Id := Empty;
+      Name     : W_Prog_Id;
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Prog_Id
+   is (+W_Expr_Id'
+         (New_Ada_Record_Access (Ada_Node, EW_Prog, +Name, Field, Ty)));
+
+   function New_Ada_Record_Access
+     (Ada_Node : Node_Id := Empty;
       Name     : W_Term_Id;
       Field    : Entity_Id;
       Ty       : Entity_Id)
@@ -114,6 +123,26 @@ package Why.Gen.Records is
    --  @param Ty      the type of the record, as Ada entity
    --  @return a Why expression that checks that the field access is allowed
    --          for that expression
+
+   function New_Ada_Record_Check_For_Field
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Term_Id;
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Pred_Id
+   is (+W_Expr_Id'
+         (New_Ada_Record_Check_For_Field
+           (Ada_Node, EW_Pred, +Name, Field, Ty)));
+
+   function New_Ada_Record_Check_For_Field
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Prog_Id;
+      Field    : Entity_Id;
+      Ty       : Entity_Id)
+      return W_Prog_Id
+   is (+W_Expr_Id'
+         (New_Ada_Record_Check_For_Field
+           (Ada_Node, EW_Prog, +Name, Field, Ty)));
 
    function New_Ada_Record_Update
      (Ada_Node : Node_Id;
@@ -182,21 +211,47 @@ package Why.Gen.Records is
 
    function New_Discriminants_Access
      (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Ty       : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an access to the
    --  top-level field for discriminants.
 
+   function New_Discriminants_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Prog_Id;
+      Ty       : Entity_Id)
+      return W_Prog_Id
+   is (+W_Expr_Id'(New_Discriminants_Access (Ada_Node, +Name, Ty)));
+
+   function New_Discriminants_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Term_Id;
+      Ty       : Entity_Id)
+      return W_Term_Id
+   is (+W_Expr_Id'(New_Discriminants_Access (Ada_Node, +Name, Ty)));
+
    function New_Fields_Access
      (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Ty       : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an access to the
    --  top-level field for fields.
+
+   function New_Fields_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Prog_Id;
+      Ty       : Entity_Id)
+      return W_Prog_Id
+   is (+W_Expr_Id'(New_Fields_Access (Ada_Node, +Name, Ty)));
+
+   function New_Fields_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Term_Id;
+      Ty       : Entity_Id)
+      return W_Term_Id
+   is (+W_Expr_Id'(New_Fields_Access (Ada_Node, +Name, Ty)));
 
    function New_Fields_Update
      (Ada_Node : Node_Id := Empty;
@@ -234,6 +289,22 @@ package Why.Gen.Records is
    --  of Ty, that is, 'Tag is the Ty's tag for specific tagged types.
    --  @result Name updated with values of From_Expr attribute if present and
    --     default one otherwise.
+
+   function New_Tag_Update
+     (Ada_Node  : Node_Id := Empty;
+      Name      : W_Prog_Id;
+      From_Expr : W_Prog_Id := Why_Empty;
+      Ty        : Entity_Id)
+      return W_Prog_Id
+   is (+New_Tag_Update (Ada_Node, EW_Prog, +Name, +From_Expr, Ty));
+
+   function New_Tag_Update
+     (Ada_Node  : Node_Id := Empty;
+      Name      : W_Term_Id;
+      From_Expr : W_Term_Id := Why_Empty;
+      Ty        : Entity_Id)
+      return W_Term_Id
+   is (+New_Tag_Update (Ada_Node, EW_Term, +Name, +From_Expr, Ty));
 
    function Insert_Subtype_Discriminant_Check
      (Ada_Node : Node_Id;

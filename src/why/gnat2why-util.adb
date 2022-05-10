@@ -767,8 +767,8 @@ package body Gnat2Why.Util is
          Result :=
            New_Binding_Ref (Name    => W_Identifier_Id (V),
                             Def     =>
-                              +New_Discrete_Constant (Value => Uint_0,
-                                                      Typ   => Get_Type (+V)),
+                              New_Discrete_Constant (Value => Uint_0,
+                                                     Typ   => Get_Type (+V)),
                             Context => Result,
                             Typ     => Get_Type (+Prog));
       end loop;

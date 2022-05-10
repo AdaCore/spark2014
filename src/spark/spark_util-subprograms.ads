@@ -26,6 +26,7 @@
 with Ada.Containers;
 with Gnat2Why_Args;
 with Sem_Disp;
+with Sinfo.Utils;                        use Sinfo.Utils;
 with Stand;
 
 use type Ada.Containers.Count_Type;
@@ -500,6 +501,9 @@ package SPARK_Util.Subprograms is
    --     2 ** 64 (enforced by GNAT frontend), with no functional contract
    --     (precondition, postcondition or contract cases). Otherwise, return
    --     N_Unused_At_Start.
+
+   function Is_Structural_Subprogram_Variant (P : N_Pragma_Id) return Boolean
+     with Pre => Pragma_Name (P) = Name_Subprogram_Variant;
 
    function Is_Tagged_Predefined_Eq (E : Entity_Id) return Boolean;
    --  Returns True iff E is an internally generated equality function

@@ -9,7 +9,7 @@ stacks.adb:35:18: info: index check proved (CVC4: 2 VC)
 stacks.adb:40:28: info: range check proved (CVC4: 2 VC)
 stacks.adb:44:29: info: range check proved (CVC4: 2 VC)
 stacks.ads:7:09: info: default initial condition proved (CVC4: 1 VC)
-stacks.ads:16:20: info: postcondition proved (CVC4: 3 VC), in inherited contract at stacks.ads:40
+stacks.ads:16:20: info: postcondition proved (CVC4: 5 VC), in inherited contract at stacks.ads:40
 stacks.ads:18:33: info: range check proved (CVC4: 2 VC)
 stacks.ads:24:20: info: postcondition proved (CVC4: 1 VC), in inherited contract at stacks.ads:44
 stacks.ads:27:20: info: postcondition proved (CVC4: 2 VC), in inherited contract at stacks.ads:46

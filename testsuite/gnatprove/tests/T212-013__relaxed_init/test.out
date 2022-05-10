@@ -30,7 +30,7 @@ test_init_by_proof.adb:77:24: info: initialization check proved (CVC4: 1 VC)
 test_init_by_proof.adb:81:04: warning: analyzing unreferenced procedure "P4"
 test_init_by_proof.adb:81:14: warning: subprogram "P4" has no effect
 test_init_by_proof.adb:83:23: high: "X2.X" is not initialized
-test_init_by_proof.adb:84:24: medium: initialization check might fail
+test_init_by_proof.adb:84:24: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => ?, Z => False) and X2.Y'Initialized = False)
 test_init_by_proof.adb:88:04: warning: analyzing unreferenced procedure "P5"
 test_init_by_proof.adb:88:14: warning: subprogram "P5" has no effect
 test_init_by_proof.adb:94:15: info: initialization check proved (CVC4: 1 VC)

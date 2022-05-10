@@ -371,9 +371,8 @@ package body Why.Gen.Pointers is
               New_Call
                 (Name => E_Symb (Root_Retysp (Des_Ty), WNE_Range_Pred),
                  Args => Args (1 .. Num) & New_Discriminants_Access
-                 (Domain => EW_Term,
-                  Name   => +R_Val,
-                  Ty     => Retysp (Directly_Designated_Type (Root))),
+                   (Name   => +R_Val,
+                    Ty     => Retysp (Directly_Designated_Type (Root))),
                  Typ  => EW_Bool_Type);
          end if;
 

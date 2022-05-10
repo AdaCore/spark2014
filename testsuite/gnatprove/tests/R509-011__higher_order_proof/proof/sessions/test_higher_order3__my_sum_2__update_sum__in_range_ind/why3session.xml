@@ -108,10 +108,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.32" proved="true">
-  <proof prover="0"><result status="valid" steps="1912"/></proof>
+  <proof prover="0"><result status="valid" steps="1918"/></proof>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
-  <proof prover="0"><result status="valid" steps="1661"/></proof>
+  <proof prover="0"><result status="valid" steps="1664"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">
   <transf name="trivial_true" proved="true" >

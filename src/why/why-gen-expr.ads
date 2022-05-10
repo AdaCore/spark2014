@@ -136,14 +136,14 @@ package Why.Gen.Expr is
 
    function New_Counterexample_Assign
      (If_Node   : Node_Id;
-      Condition : W_Expr_Id)
-      return W_Expr_Id;
-   --  This takes a condition of an if-statement (or case statement)
+      Condition : W_Prog_Id)
+      return W_Prog_Id;
+   --  This takes a condition of an if-statement (or case-statement)
    --  [Condition] and builds an assignment to a variable spark__branch with
-   --  label [If_Node] , which is then dereferenced to yield the value of the
+   --  label [If_Node], which is then dereferenced to yield the value of the
    --  condition.
-   --  [C] becomes
-   --  [spark__branch.bool__content < - C;
+   --  [Condition] becomes
+   --  [spark__branch.bool__content <- Condition;
    --  ("node_id:If_Node" spark__branch).bool__content]
 
    function New_Ada_Equality
@@ -198,12 +198,30 @@ package Why.Gen.Expr is
    --  Return the default value for a given type
 
    function New_Simpl_Conditional
-      (Condition : W_Expr_Id;
-       Then_Part : W_Expr_Id;
-       Else_Part : W_Expr_Id;
-       Domain    : EW_Domain)
-       return W_Expr_Id;
+     (Condition : W_Expr_Id;
+      Then_Part : W_Expr_Id;
+      Else_Part : W_Expr_Id;
+      Domain    : EW_Domain)
+      return W_Expr_Id;
    --  Conditional, simplify if condition is true/false.
+
+   function New_Simpl_Conditional
+     (Condition : W_Prog_Id;
+      Then_Part : W_Prog_Id;
+      Else_Part : W_Prog_Id)
+      return W_Prog_Id
+   is (+W_Expr_Id'
+         (New_Simpl_Conditional
+            (+Condition, +Then_Part, +Else_Part, EW_Prog)));
+
+   function New_Simpl_Conditional
+     (Condition : W_Pred_Id;
+      Then_Part : W_Pred_Id;
+      Else_Part : W_Pred_Id)
+      return W_Pred_Id
+   is (+W_Expr_Id'
+         (New_Simpl_Conditional
+            (+Condition, +Then_Part, +Else_Part, EW_Pred)));
 
    function New_Shape_Label (Node : Node_Id) return Symbol;
    --  Return a label representing the shape of the Ada code surrounding the
@@ -243,8 +261,10 @@ package Why.Gen.Expr is
        Check      : Boolean;
        Domain     : EW_Domain;
        Typ        : W_Type_Id;
-       Check_Info : Check_Info_Type := New_Check_Info) return W_Expr_Id
-   with Pre => (if Check then Domain = EW_Prog);
+       Check_Info : Check_Info_Type := New_Check_Info)
+       return W_Expr_Id
+   with
+     Pre => (if Check then Domain = EW_Prog);
    --  If Check is True, build a call to Name(Progs) using New_VC_Call. When
    --  Fix_Name is True, adjust Name to the program space. Otherwise, build a
    --  call in the appropriate domain.
@@ -255,22 +275,41 @@ package Why.Gen.Expr is
        Progs      : W_Expr_Array;
        Reason     : VC_Kind;
        Typ        : W_Type_Id;
-       Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id;
+       Check_Info : Check_Info_Type := New_Check_Info)
+       return W_Prog_Id;
    --  Build a call to Name(Progs) with VC and location labels
 
    function New_VC_Expr
-      (Ada_Node   : Node_Id;
-       Expr       : W_Expr_Id;
-       Reason     : VC_Kind;
-       Domain     : EW_Domain;
-       Check_Info : Check_Info_Type := New_Check_Info) return W_Expr_Id
+     (Ada_Node   : Node_Id;
+      Expr       : W_Expr_Id;
+      Reason     : VC_Kind;
+      Domain     : EW_Domain;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Expr_Id
    with Pre => Present (Ada_Node) and then Domain /= EW_Term;
    --  Put VC and location labels on the expression
+
+   function New_VC_Pred
+     (Ada_Node   : Node_Id;
+      Expr       : W_Pred_Id;
+      Reason     : VC_Kind;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Pred_Id
+   is (+New_VC_Expr (Ada_Node, +Expr, Reason, EW_Pred, Check_Info));
+
+   function New_VC_Prog
+     (Ada_Node   : Node_Id;
+      Expr       : W_Prog_Id;
+      Reason     : VC_Kind;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Prog_Id
+   is (+New_VC_Expr (Ada_Node, +Expr, Reason, EW_Prog, Check_Info));
 
    function New_VC_Labels
      (N          : Node_Id;
       Reason     : VC_Kind;
-      Check_Info : Check_Info_Type) return Symbol_Set;
+      Check_Info : Check_Info_Type)
+      return Symbol_Set;
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
 
@@ -278,7 +317,8 @@ package Why.Gen.Expr is
      (Domain    : EW_Domain;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id;
-      Pretty    : Boolean := False) return W_Expr_Id;
+      Pretty    : Boolean := False)
+      return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real). If Pretty is set to true,
    --  the two parts of a conjunction get a GP_Pretty_Ada attribute, which can
@@ -286,14 +326,16 @@ package Why.Gen.Expr is
 
    function New_Range_Expr
      (Low, High : W_Term_Id;
-      Expr      : W_Term_Id) return W_Pred_Id
+      Expr      : W_Term_Id)
+      return W_Pred_Id
    is (+W_Expr_Id'(New_Range_Expr (EW_Term, +Low, +High, +Expr)));
 
    function New_Discrete_Add
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
       Right  : W_Expr_Id;
-      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty)
+      return W_Expr_Id;
    --  @param Left Right the operand of the operation.
    --  @return an addition in either the representation type of Typ or
    --          the representation type of left if Typ is left empty; This
@@ -306,7 +348,8 @@ package Why.Gen.Expr is
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
       Right  : W_Expr_Id;
-      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty)
+      return W_Expr_Id;
    --  @param Typ the type of the operation
    --  @param Left Right the operand of the operation.
    --  @return a substraction in either the representation type of Typ or
@@ -326,11 +369,26 @@ package Why.Gen.Expr is
    --  @return a modular constant if Typ satisfies Why_Type_Is_BitVector
    --          or an integer constant in all other cases.
 
+   function New_Discrete_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint;
+      Typ      : W_Type_Id)
+      return W_Term_Id
+   is (+W_Expr_Id'(New_Discrete_Constant (Ada_Node, Value, Typ)));
+
+   function New_Discrete_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint;
+      Typ      : W_Type_Id)
+      return W_Prog_Id
+   is (+W_Expr_Id'(New_Discrete_Constant (Ada_Node, Value, Typ)));
+
    function New_Dynamic_Property
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Expr   : W_Expr_Id;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id
+      Params : Transformation_Params := Body_Params)
+      return W_Expr_Id
    with Pre => Is_Type (Ty);
    --  Function to generate a call expressing that Expr is of the dynamic type
    --  Ty.
@@ -357,7 +415,8 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Arr_Expr : W_Expr_Id;
       W_Expr   : W_Expr_Id;
-      Dim      : Positive) return W_Prog_Id;
+      Dim      : Positive)
+      return W_Prog_Id;
    --  Returns the Why program that does index checking on an index W_Expr in
    --  an array Arr_Expr.
 
@@ -397,7 +456,8 @@ package Why.Gen.Expr is
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
       Lvalue   : Boolean := False;
-      No_Init  : Boolean := False) return W_Expr_Id;
+      No_Init  : Boolean := False)
+      return W_Expr_Id;
    --  Returns the expression of type To that converts Expr possibly inserting
    --  checks during the conversion.
    --  @param Ada_Node node which causes the check to be inserted. This node
@@ -419,7 +479,8 @@ package Why.Gen.Expr is
       Domain         : EW_Domain;
       Expr           : W_Expr_Id;
       To             : W_Type_Id;
-      Force_No_Slide : Boolean := False) return W_Expr_Id;
+      Force_No_Slide : Boolean := False)
+      return W_Expr_Id;
    --  Returns the expression Expr converted to type To. No
    --  check is inserted in the conversion.
    --  @param Ada_Node node which causes the check to be inserted.
@@ -581,7 +642,8 @@ package Why.Gen.Expr is
      (Ty     : Entity_Id;
       Domain : EW_Domain;
       Attr   : Supported_Attribute_Id;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id
+      Params : Transformation_Params := Body_Params)
+      return W_Expr_Id
    with Pre => Is_Type (Ty);
    --  Compute an expression for a type attribute Ty'Attr.
    --  @param Ty The entity for the Ada type.
@@ -620,27 +682,38 @@ package Why.Gen.Expr is
    --  expression for later use. If Need_Temp is False, do not actually
    --  introduce a temp variable.
 
+   function New_Temp_For_Expr (E : W_Prog_Id) return W_Prog_Id
+   is (+W_Expr_Id'(New_Temp_For_Expr (+E, Need_Temp => True)));
+
    function New_Temp_For_Expr (E : W_Term_Id) return W_Term_Id
    is (+W_Expr_Id'(New_Temp_For_Expr (+E, Need_Temp => True)));
+
+   function New_Temp_For_Expr (E : W_Expr_Id) return W_Term_Id
+   is (+W_Expr_Id'(New_Temp_For_Expr (E, Need_Temp => True)));
+   --  Take an arbitrary expression in parameter (possibly a program one),
+   --  while still returning a term, which is useful in some cases.
 
    function Binding_For_Temp
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Tmp      : W_Expr_Id;
-      Context  : W_Expr_Id) return W_Expr_Id;
+      Context  : W_Expr_Id)
+      return W_Expr_Id;
    --  Introduce a let binding for Tmp on top of "Context". The value of Tmp is
    --  the one provided to the corresponding call to New_Temp_For_Expr.
 
    function Binding_For_Temp
      (Ada_Node : Node_Id := Empty;
       Tmp      : W_Term_Id;
-      Context  : W_Pred_Id) return W_Pred_Id
+      Context  : W_Pred_Id)
+      return W_Pred_Id
    is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Pred, +Tmp, +Context)));
 
    function Binding_For_Temp
      (Ada_Node : Node_Id := Empty;
       Tmp      : W_Term_Id;
-      Context  : W_Prog_Id) return W_Prog_Id
+      Context  : W_Prog_Id)
+      return W_Prog_Id
    is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Prog, +Tmp, +Context)));
 
 end Why.Gen.Expr;

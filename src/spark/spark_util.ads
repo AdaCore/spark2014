@@ -418,7 +418,7 @@ package SPARK_Util is
 
    function Is_Constant_Borrower (E : Object_Kind_Id) return Boolean with
      Pre => Is_Local_Borrower (E);
-   --  Return True is E is a local borrower which is acting like an observer
+   --  Return True if E is a local borrower which is acting like an observer
    --  (it is directly or indirectly rooted at the first parameter of a
    --  borrowing traversal function).
 
@@ -426,7 +426,7 @@ package SPARK_Util is
    --  Returns True iff E represent an entity that can be a global
 
    function Is_Local_Borrower (E : Entity_Id) return Boolean;
-   --  Return True is E is a constant or a variable of an anonymous access to
+   --  Return True if E is a constant or a variable of an anonymous access to
    --  variable type.
 
    function Is_Not_Hidden_Discriminant (E : E_Discriminant_Id) return Boolean;
@@ -784,6 +784,12 @@ package SPARK_Util is
    function Is_Path_Expression (Expr : N_Subexpr_Id) return Boolean;
    --  Return whether Expr corresponds to a path
 
+   function Is_Strict_Subpath (Expr : N_Subexpr_Id) return Boolean
+   with Pre => Is_Path_Expression (Expr)
+     and then Present (Get_Root_Object (Expr));
+   --  Return True is the structure referenced from Expr is a strictly
+   --  smaller substructure of the structure referenced from its root.
+
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function
@@ -956,5 +962,19 @@ package SPARK_Util is
    function Value_Is_Never_Leaked (Expr : N_Subexpr_Id) return Boolean with
      Pre => Is_Access_Type (Etype (Expr));
    --  Checks whether a created access value is known to never leak
+
+   procedure Structurally_Decreases_In_Call
+     (Param       : Formal_Kind_Id;
+      Call        : N_Call_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
+   --  Return True if Param is a structural variant for the recursive call Call
+
+   procedure Structurally_Decreases_In_Loop
+     (Brower      : Entity_Id;
+      Loop_Stmt   : N_Loop_Statement_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
+   --  Return True if Brower is a structural variant for Loop_Stmt
 
 end SPARK_Util;

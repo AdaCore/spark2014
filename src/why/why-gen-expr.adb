@@ -3434,8 +3434,8 @@ package body Why.Gen.Expr is
 
    function New_Counterexample_Assign
      (If_Node   : Node_Id;
-      Condition : W_Expr_Id)
-      return W_Expr_Id
+      Condition : W_Prog_Id)
+      return W_Prog_Id
    is
       Node_Label : constant Symbol_Sets.Set :=
         Symbol_Sets.To_Set
@@ -3444,25 +3444,25 @@ package body Why.Gen.Expr is
                                         Side   => Left)));
    begin
       return
-        +Sequence
-        (+Insert_Cnt_Loc_Label
-           (Ada_Node => If_Node,
-            E        =>
-              New_Assignment (Ada_Node => If_Node,
-                              Name     =>
-                                +M_Main.Spark_CE_Branch,
-                              Labels   => Node_Label,
-                              Value    => +Condition,
-                              Typ      => EW_Bool_Type)),
-         New_Record_Access (Name  =>
+        Sequence
+          (+Insert_Cnt_Loc_Label
+             (Ada_Node => If_Node,
+              E        =>
+                New_Assignment (Ada_Node => If_Node,
+                                Name     => +M_Main.Spark_CE_Branch,
+                                Labels   => Node_Label,
+                                Value    => Condition,
+                                Typ      => EW_Bool_Type)),
+           New_Record_Access (Name  =>
                                 New_Label
-                              (Ada_Node => If_Node,
-                               Labels   => Node_Label,
-                               Def      => +M_Main.Spark_CE_Branch,
-                               Typ      => Get_Typ (M_Main.Spark_CE_Branch)),
-                            Field =>
-                              +New_Identifier (Name => "bool__content"),
-                            Typ   => EW_Bool_Type));
+                                  (Ada_Node => If_Node,
+                                   Labels   => Node_Label,
+                                   Def      => +M_Main.Spark_CE_Branch,
+                                   Typ      =>
+                                     Get_Typ (M_Main.Spark_CE_Branch)),
+                              Field =>
+                                +New_Identifier (Name => "bool__content"),
+                              Typ   => EW_Bool_Type));
    end New_Counterexample_Assign;
 
    -----------------
@@ -3789,10 +3789,10 @@ package body Why.Gen.Expr is
    begin
       if Check then
          pragma Assert (Domain = EW_Prog);
-         return +New_VC_Expr (Ada_Node => Ada_Node,
-                              Reason   => VC_Precondition,
-                              Expr     => Call,
-                              Domain   => Domain);
+         return New_VC_Expr (Ada_Node => Ada_Node,
+                             Reason   => VC_Precondition,
+                             Expr     => Call,
+                             Domain   => Domain);
 
       elsif Domain in EW_Prog
         or else not Use_Guard_For_Function (Subp)
@@ -3896,7 +3896,8 @@ package body Why.Gen.Expr is
       Check      : Boolean;
       Domain     : EW_Domain;
       Typ        : W_Type_Id;
-      Check_Info : Check_Info_Type := New_Check_Info) return W_Expr_Id
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Expr_Id
    is
       Name_Spec : constant W_Identifier_Id :=
         (if Check and not Fix_Name then To_Program_Space (Name) else Name);
@@ -3908,11 +3909,11 @@ package body Why.Gen.Expr is
                   Typ      => Typ);
    begin
       if Check then
-         return +New_VC_Expr (Ada_Node   => Ada_Node,
-                              Reason     => Reason,
-                              Expr       => Call,
-                              Check_Info => Check_Info,
-                              Domain     => Domain);
+         return New_VC_Expr (Ada_Node   => Ada_Node,
+                             Reason     => Reason,
+                             Expr       => Call,
+                             Check_Info => Check_Info,
+                             Domain     => Domain);
       else
          return Call;
       end if;
@@ -3928,20 +3929,19 @@ package body Why.Gen.Expr is
       Progs      : W_Expr_Array;
       Reason     : VC_Kind;
       Typ        : W_Type_Id;
-      Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Prog_Id
    is
-      Call : constant W_Expr_Id :=
+      Call : constant W_Prog_Id :=
         New_Call (Ada_Node => Ada_Node,
                   Name     => Name,
                   Args     => Progs,
-                  Domain   => EW_Prog,
                   Typ      => Typ);
    begin
-      return +New_VC_Expr (Ada_Node   => Ada_Node,
-                           Reason     => Reason,
-                           Check_Info => Check_Info,
-                           Expr       => Call,
-                           Domain     => EW_Prog);
+      return New_VC_Prog (Ada_Node   => Ada_Node,
+                          Reason     => Reason,
+                          Check_Info => Check_Info,
+                          Expr       => Call);
    end New_VC_Call;
 
    -----------------
@@ -3954,7 +3954,7 @@ package body Why.Gen.Expr is
       Reason     : VC_Kind;
       Domain     : EW_Domain;
       Check_Info : Check_Info_Type := New_Check_Info)
-       return W_Expr_Id
+      return W_Expr_Id
    is
    begin
       return

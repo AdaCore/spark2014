@@ -269,23 +269,21 @@ package body Why.Gen.Records is
         EW_Abstract
           (Ty_Ext,
            Relaxed_Init => Is_Init_Wrapper_Type (Get_Type (+Expr1)));
-      R_Expr1 : constant W_Expr_Id :=
-        Insert_Simple_Conversion (Domain => EW_Term,
-                                  Expr   => +Expr1,
-                                  To     => To_Typ);
-      R_Expr2 : constant W_Expr_Id :=
-        Insert_Simple_Conversion (Domain => EW_Term,
-                                  Expr   => +Expr2,
-                                  To     => To_Typ);
+      R_Expr1 : constant W_Term_Id :=
+        Insert_Simple_Conversion (Expr => Expr1,
+                                  To   => To_Typ);
+      R_Expr2 : constant W_Term_Id :=
+        Insert_Simple_Conversion (Expr => Expr2,
+                                  To   => To_Typ);
       Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
       Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
                             then First_Discriminant (Ty_Ext)
                             else Empty);
       T_Comp  : W_Pred_Id;
-      R_Acc1  : W_Expr_Id;
-      R_Acc2  : W_Expr_Id;
+      R_Acc1  : W_Term_Id;
+      R_Acc2  : W_Term_Id;
       Tmps    : W_Identifier_Array (1 .. Discrs);
-      Binds   : W_Expr_Array (1 .. Discrs);
+      Binds   : W_Term_Array (1 .. Discrs);
       I       : Positive := 1;
       T       : W_Pred_Id := True_Pred;
 
@@ -298,10 +296,8 @@ package body Why.Gen.Records is
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       while Present (Discr) loop
-            R_Acc1 := New_Ada_Record_Access
-              (Empty, EW_Term, R_Expr1, Discr, Ty_Ext);
-            R_Acc2 := New_Ada_Record_Access
-              (Empty, EW_Term, R_Expr2, Discr, Ty_Ext);
+            R_Acc1 := New_Ada_Record_Access (Empty, R_Expr1, Discr, Ty_Ext);
+            R_Acc2 := New_Ada_Record_Access (Empty, R_Expr2, Discr, Ty_Ext);
 
             Tmps (I) := New_Temp_Identifier
               (Discr, EW_Abstract (Etype (Discr)));
@@ -315,14 +311,12 @@ package body Why.Gen.Records is
 
             T_Comp :=
               Build_Predicate_For_Discr
-                (D_Expr1 => +R_Acc1,
-                 D_Expr2 => +R_Acc2,
+                (D_Expr1 => R_Acc1,
+                 D_Expr2 => R_Acc2,
                  D_Ty    => Etype (Discr),
                  E       => Discr);
 
-            T := +New_And_Then_Expr (Left   => +T,
-                                     Right  => +T_Comp,
-                                     Domain => EW_Pred);
+            T := New_And_Pred (T, T_Comp);
 
          Next_Discriminant (Discr);
          I := I + 1;
@@ -334,8 +328,8 @@ package body Why.Gen.Records is
       if Is_Simple_Private_Type (Ty_Ext) then
          if not Ignore_Private_State then
             T := Build_Predicate_For_Field
-                (F_Expr1 => +R_Expr1,
-                 F_Expr2 => +R_Expr2,
+                (F_Expr1 => R_Expr1,
+                 F_Expr2 => R_Expr2,
                  F_Ty    => Ty_Ext,
                  E       => Ty_Ext);
          else
@@ -361,24 +355,24 @@ package body Why.Gen.Records is
                      R_Acc2 := R_Expr2;
                   else
                      R_Acc1 := New_Ada_Record_Access
-                       (Empty, EW_Term, R_Expr1, Field, Ty_Ext);
+                       (Empty, R_Expr1, Field, Ty_Ext);
                      R_Acc2 := New_Ada_Record_Access
-                       (Empty, EW_Term, R_Expr2, Field, Ty_Ext);
+                       (Empty, R_Expr2, Field, Ty_Ext);
                   end if;
 
                   --  Call Build_Predicate_For_Field on fields
 
                   T_Comp :=
                     Build_Predicate_For_Field
-                      (F_Expr1 => +R_Acc1,
-                       F_Expr2 => +R_Acc2,
+                      (F_Expr1 => R_Acc1,
+                       F_Expr2 => R_Acc2,
                        F_Ty    => (if Is_Type (Field) then Field
                                    else Etype (Field)),
                        E       => Field);
 
                   if T_Comp /= True_Pred then
-                     T_Guard := +New_Ada_Record_Check_For_Field
-                       (Empty, EW_Pred, R_Expr1, Field, Ty_Ext);
+                     T_Guard := New_Ada_Record_Check_For_Field
+                       (Empty, R_Expr1, Field, Ty_Ext);
 
                      Count := Count + 1;
                      Conjuncts (Count) := New_Conditional
@@ -396,11 +390,10 @@ package body Why.Gen.Records is
 
       if T /= True_Pred then
          for I in 1 .. Discrs loop
-            T := +New_Typed_Binding
-              (Domain  => EW_Pred,
-               Name    => Tmps (I),
+            T := New_Typed_Binding
+              (Name    => Tmps (I),
                Def     => Binds (I),
-               Context => +T);
+               Context => T);
          end loop;
       end if;
 
@@ -2380,11 +2373,10 @@ package body Why.Gen.Records is
          return W_Pred_Id
       is
       begin
-         return +Gnat2Why.Expr.Transform_Discrete_Choices
+         return Gnat2Why.Expr.Transform_Discrete_Choices
            (Choices      => Discrete_Choices (Case_N),
             Choice_Type  => Empty,  --  not used for predicates, can be empty
-            Matched_Expr => +Expr,
-            Cond_Domain  => EW_Pred,
+            Matched_Expr => Expr,
             Params       => Logic_Params);
       end Transform_Discrete_Choices;
 
@@ -3541,7 +3533,6 @@ package body Why.Gen.Records is
       if Has_Discriminants (Ty) then
          Discr_Expr := New_Discriminants_Access
            (Ada_Node => Ada_Node,
-            Domain   => Term_Domain (Domain),
             Name     => Expr,
             Ty       => Anc_Ty);
       else
@@ -3781,9 +3772,8 @@ package body Why.Gen.Records is
             Init_Wrapper => Init_Wrapper));
       Top_Field    : constant W_Expr_Id :=
         (if Ekind (Field) = E_Discriminant
-         then New_Discriminants_Access
-           (Ada_Node, Domain, Name, Ty)
-         else New_Fields_Access (Ada_Node, Domain, Name, Ty));
+         then New_Discriminants_Access (Ada_Node, Name, Ty)
+         else New_Fields_Access (Ada_Node, Name, Ty));
    begin
       if Domain = EW_Prog
         and then Ekind (Field) = E_Component
@@ -4001,10 +3991,9 @@ package body Why.Gen.Records is
       Value    : W_Expr_Id)
       return W_Expr_Id
    is
-      Tmp         : constant W_Expr_Id := New_Temp_For_Expr (Name);
-      Ty          : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
-      Top_Field   : constant W_Expr_Id :=
-        New_Fields_Access (Ada_Node, Domain, Tmp, Ty);
+      Tmp       : constant W_Expr_Id := New_Temp_For_Expr (Name);
+      Ty        : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
+      Top_Field : constant W_Expr_Id := New_Fields_Access (Ada_Node, Tmp, Ty);
 
       Init_Wrapper : constant Boolean :=
         Is_Init_Wrapper_Type (Get_Type (Name));
@@ -4056,10 +4045,10 @@ package body Why.Gen.Records is
       Updates  : W_Field_Association_Array)
       return W_Expr_Id
    is
-      Tmp         : constant W_Expr_Id := New_Temp_For_Expr (Name);
-      Ty          : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
-      Top_Field   : constant W_Expr_Id :=
-        New_Fields_Access (Ada_Node, Domain, Tmp, Ty);
+      Tmp       : constant W_Expr_Id := New_Temp_For_Expr (Name);
+      Ty        : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
+      Top_Field : constant W_Expr_Id := New_Fields_Access (Ada_Node, Tmp, Ty);
+
       Update_Expr : constant W_Expr_Id :=
         New_Fields_Update
           (Ada_Node => Ada_Node,
@@ -4081,12 +4070,10 @@ package body Why.Gen.Records is
 
    function New_Discriminants_Access
      (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Ty       : Entity_Id)
       return W_Expr_Id
    is
-      pragma Unreferenced (Domain);
       Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
       --  Use a the init wrapper type if needed
    begin
@@ -4102,12 +4089,10 @@ package body Why.Gen.Records is
 
    function New_Fields_Access
      (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Ty       : Entity_Id)
       return W_Expr_Id
    is
-      pragma Unreferenced (Domain);
       Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
       --  Use a the init wrapper type if needed
    begin
@@ -4311,9 +4296,8 @@ package body Why.Gen.Records is
    is
      (Get_Discriminants_Of_Subtype (Check_Ty)
       & New_Discriminants_Access
-        (Domain => EW_Term,
-         Name   => Expr,
-         Ty     => Get_Ada_Node (+Get_Type (Expr))));
+        (Name => Expr,
+         Ty   => Get_Ada_Node (+Get_Type (Expr))));
 
    ----------------------------
    -- Record_From_Split_Form --

@@ -154,6 +154,15 @@ package Why.Gen.Pointers is
    function New_Pointer_Value_Access
      (Ada_Node : Node_Id := Empty;
       E        : Entity_Id;
+      Name     : W_Prog_Id;
+      Local    : Boolean := False)
+      return W_Prog_Id
+   is (+W_Expr_Id'
+         (New_Pointer_Value_Access (Ada_Node, E, +Name, EW_Prog, Local)));
+
+   function New_Pointer_Value_Access
+     (Ada_Node : Node_Id := Empty;
+      E        : Entity_Id;
       Name     : W_Term_Id;
       Local    : Boolean := False)
       return W_Term_Id

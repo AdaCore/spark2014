@@ -1,5 +1,5 @@
 basic.adb:8:17: info: discriminant check proved (CVC4: 1 VC)
-basic.adb:13:17: medium: discriminant check might fail (e.g. when V = (X => B, Base => 0, A_Field => 0, C_Field1 => False, C_Field2 => 0)) [possible fix: subprogram at basic.ads:45 should mention V in a precondition]
+basic.adb:13:17: medium: discriminant check might fail (e.g. when V = (X => B, Base => 0)) [possible fix: subprogram at basic.ads:45 should mention V in a precondition]
 basic.adb:17:17: info: discriminant check proved (CVC4: 1 VC)
 basic.adb:18:22: info: discriminant check proved (CVC4: 1 VC)
 basic.ads:45:14: warning: subprogram "P" has no effect

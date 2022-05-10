@@ -23,16 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Debug;
 with Gnat2Why_Args;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Namet;                   use Namet;
 with Nlists;                  use Nlists;
 with Opt;                     use type Opt.Warning_Mode_Type;
 with Sinput;                  use Sinput;
 with Snames;                  use Snames;
+with SPARK_Util.Hardcoded;    use SPARK_Util.Hardcoded;
 with Uintp;                   use Uintp;
 with VC_Kinds;                use VC_Kinds;
 with Why;                     use Why;
@@ -161,18 +165,50 @@ package body Gnat2Why.Expr.Loops is
       Variant : Opt_N_Pragma_Argument_Association_Id;
    begin
       Variant := First (Pragma_Argument_Associations (Stmt));
+
       while Present (Variant) loop
          declare
-            Expr : constant N_Subexpr_Id := Expression (Variant);
+            Expr   : constant N_Subexpr_Id := Expression (Variant);
+            W_Expr : W_Prog_Id := Transform_Prog
+              (Expr          => Expr,
+               Expected_Type =>
+                 Base_Why_Type_No_Bool (Expr),
+               Params        => Body_Params);
+
          begin
-            Append
-              (Prog,
-               New_Ignore
-                 (Prog =>
-                      Transform_Prog (Expr          => Expr,
-                                      Expected_Type =>
-                                        Base_Why_Type_No_Bool (Expr),
-                                      Params        => Body_Params)));
+            --  If Expr is a big integer, insert a check to make sure that the
+            --  value stays non-negative.
+
+            if Chars (Variant) /= Name_Structural
+              and then not Has_Discrete_Type (Etype (Expr))
+            then
+               pragma Assert
+                 (Is_From_Hardcoded_Unit
+                    (Base_Type (Etype (Expr)), Big_Integers));
+
+               declare
+                  Tmp : constant W_Expr_Id := New_Temp_For_Expr (+W_Expr);
+               begin
+                  W_Expr := Sequence
+                    (New_Located_Assert
+                       (Ada_Node => Expr,
+                        Pred     => New_Comparison
+                          (Symbol => Int_Infix_Ge,
+                           Left   => +Tmp,
+                           Right  => New_Integer_Constant (Value => Uint_0)),
+                        Reason   => VC_Range_Check,
+                        Kind     => EW_Assert),
+                     +Tmp);
+
+                  W_Expr := +Binding_For_Temp
+                    (Ada_Node => Expr,
+                     Domain   => EW_Prog,
+                     Tmp      => Tmp,
+                     Context  => +W_Expr);
+               end;
+            end if;
+
+            Append (Prog, New_Ignore (Prog => W_Expr));
             Next (Variant);
          end;
       end loop;
@@ -442,16 +478,18 @@ package body Gnat2Why.Expr.Loops is
         (List : Node_Lists.List)
          return W_Prog_Id
       is
-         Stmts : W_Prog_Array (1 .. Natural (List.Length));
+         Stmts   : W_Prog_Array (1 .. Natural (List.Length));
          Counter : Positive := 1;
       begin
          if List.Is_Empty then
             return +Void;
          end if;
+
          for Variant of List loop
             Stmts (Counter) := Check_Loop_Variant (Variant);
             Counter := Counter + 1;
          end loop;
+
          return Sequence (Stmts);
       end Check_Loop_Variants;
 
@@ -464,13 +502,48 @@ package body Gnat2Why.Expr.Loops is
          return W_Variants_Array
       is
          Variants_Ar : W_Variants_Array (1 .. Natural (List.Length));
-         Count       : Integer := 1;
+         Count       : Natural := 0;
       begin
          for Loop_Variant of List loop
-            Variants_Ar (Count) := Transform_Loop_Variant (Loop_Variant);
-            Count := Count + 1;
+
+            --  Structural variants are checked statically
+
+            if Chars (First (Pragma_Argument_Associations (Loop_Variant))) =
+              Name_Structural
+            then
+               declare
+                  Variant : constant Node_Id :=
+                    First (Pragma_Argument_Associations (Loop_Variant));
+
+               begin
+                  pragma Assert (No (Next (Variant)));
+                  pragma Assert
+                    (Nkind (Expression (Variant)) in N_Identifier
+                                                   | N_Expanded_Name);
+
+                  declare
+                     Result      : Boolean;
+                     Explanation : Unbounded_String;
+                  begin
+                     Structurally_Decreases_In_Loop
+                       (Brower      => Entity (Expression (Variant)),
+                        Loop_Stmt   => Stmt,
+                        Result      => Result,
+                        Explanation => Explanation);
+                     Emit_Static_Proof_Result
+                       (Node        => Loop_Variant,
+                        Kind        => VC_Loop_Variant,
+                        Proved      => Result,
+                        E           => Current_Subp,
+                        Explanation => To_String (Explanation));
+                  end;
+               end;
+            else
+               Count := Count + 1;
+               Variants_Ar (Count) := Transform_Loop_Variant (Loop_Variant);
+            end if;
          end loop;
-         return Variants_Ar;
+         return Variants_Ar (1 .. Count);
       end Transform_Loop_Variants;
 
       --  Local variables
@@ -615,17 +688,15 @@ package body Gnat2Why.Expr.Loops is
 
                      Inv_Check :=
                        New_Binding (Name    => One_Inv_Var,
-                                    Def     => +One_Inv_Check,
-                                    Context =>
-                                      +New_Ignore (Prog => Inv_Check));
+                                    Def     => One_Inv_Check,
+                                    Context => New_Ignore (Prog => Inv_Check));
 
                      --  Add the predicate for the Nth loop invariant
 
                      Why_Invariants (Count) :=
-                       +New_VC_Expr (Ada_Node => Expr,
-                                     Expr     => +One_Invariant,
-                                     Reason   => VC_Loop_Invariant,
-                                     Domain   => EW_Pred);
+                       New_VC_Pred (Ada_Node => Expr,
+                                    Expr     => One_Invariant,
+                                    Reason   => VC_Loop_Invariant);
                      Count := Count - 1;
                   end;
                end loop;

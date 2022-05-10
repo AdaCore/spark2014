@@ -156,11 +156,12 @@ package Why.Gen.Progs is
    --   Build the program "ignore(prog)" of return type "unit".
 
    function New_Located_Assert
-      (Ada_Node   : Node_Id;
-       Pred       : W_Pred_Id;
-       Reason     : VC_Kind;
-       Kind       : EW_Assert_Kind;
-       Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id;
+     (Ada_Node   : Node_Id;
+      Pred       : W_Pred_Id;
+      Reason     : VC_Kind;
+      Kind       : EW_Assert_Kind;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Prog_Id;
 
    function New_Located_Abstract
      (Ada_Node : Node_Id;
@@ -172,7 +173,8 @@ package Why.Gen.Progs is
 
    function New_Simpl_Any_Prog
      (T    : W_Type_Id;
-      Pred : W_Pred_OId := Why_Empty) return W_Prog_Id;
+      Pred : W_Pred_OId := Why_Empty)
+      return W_Prog_Id;
    --  Build a "any" expression whose type is a simple type, satisfying
    --  proposition Pred.
 

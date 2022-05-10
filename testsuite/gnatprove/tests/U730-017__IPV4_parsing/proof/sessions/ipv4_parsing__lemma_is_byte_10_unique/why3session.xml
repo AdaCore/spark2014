@@ -9,7 +9,7 @@
 <path name="ipv4_parsing__lemma_is_byte_10_unique.gnat-json"/>
 <theory name="Ipv4_parsing__lemma_is_byte_10_unique__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+ <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="2830"/></proof>
   </goal>
@@ -23,16 +23,16 @@
   <proof prover="0"><result status="valid" steps="2830"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="3349"/></proof>
+  <proof prover="0"><result status="valid" steps="3445"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="3349"/></proof>
+  <proof prover="0"><result status="valid" steps="3445"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="3349"/></proof>
+  <proof prover="0"><result status="valid" steps="3445"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="3349"/></proof>
+  <proof prover="0"><result status="valid" steps="3445"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -43,7 +43,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="unknown" steps="31839"/></proof>
+  <proof prover="0"><result status="unknown" steps="31859"/></proof>
   <proof prover="1"><result status="valid" steps="23559"/></proof>
   </goal>
  </transf>

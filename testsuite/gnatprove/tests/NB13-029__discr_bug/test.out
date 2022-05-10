@@ -1,1 +1,1 @@
-minimal.adb:12:19: medium: assertion might fail
+minimal.adb:12:19: medium: assertion might fail (e.g. when C2 = (Present => False))

@@ -9,7 +9,7 @@
 <path name="use_ordered_sets__from_cursors_to_model.gnat-json"/>
 <theory name="Use_ordered_sets__from_cursors_to_model__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+ <transf name="split_vc_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -54,8 +54,8 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="556"/></proof>
-  <proof prover="1"><result status="unknown" steps="244"/></proof>
+  <proof prover="0"><result status="valid" steps="532"/></proof>
+  <proof prover="1"><result status="unknown" steps="237"/></proof>
   </goal>
  </transf>
  </goal>

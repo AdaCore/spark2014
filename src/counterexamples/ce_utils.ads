@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with CE_Values;            use CE_Values;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
@@ -46,6 +47,13 @@ package CE_Utils is
    --  be of the form "'@Loop 4200@'filename.adb" in which case it should
    --  set Is_Previous to true and Ada_Node to the value corresponding to
    --  the integer in location. The function returns the filename itself.
+
+   function Component_Is_Removed_In_Type
+     (Ty   : Entity_Id;
+      Comp : Entity_Id;
+      Vals : Entity_To_Value_Maps.Map) return Boolean;
+   --  Return True if we can infer from the discriminant associations in Vals
+   --  that the component Comp does not occur in the counterexample value.
 
    function Convert_Node (N : Integer) return Node_Id;
    --  Convert an integer to Node_Id. Return empty on exception.
@@ -80,6 +88,11 @@ package CE_Utils is
    --  True if Comp is a component of an ancestor of Rec which is visible in
    --  Rec.
 
+   function Prefix_Elements
+     (Elems : S_String_List.List;
+      Pref  : String) return S_String_List.List;
+   --  Return a copy of Elems where every string has been prefixed with Pref
+
    function UI_From_String (Val : String) return Uint;
    --  Naive computation of a Uint form a string which is the representation of
    --  an integer in base 10.
@@ -93,5 +106,8 @@ package CE_Utils is
       --  (those that are before the loop).
 
    end Remove_Vars;
+
+   function Ultimate_Cursor_Type (Typ : Entity_Id) return Entity_Id;
+   --  Type on which the iteration is done in Why
 
 end CE_Utils;

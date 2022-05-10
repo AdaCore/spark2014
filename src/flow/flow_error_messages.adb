@@ -1386,7 +1386,22 @@ package body Flow_Error_Messages is
                return "exponent value must fit in type Natural";
 
             when N_Component_Association =>
-               return Value & " must fit in component type";
+               declare
+                  Ancestor : constant Node_Id := Parent (Parent (Par));
+                  --  Construct enclosing the aggregate
+               begin
+                  if Nkind (Ancestor) = N_Pragma_Argument_Association
+                    and then Pragma_Name (Parent (Ancestor)) =
+                      Name_Subprogram_Variant
+                  then
+                     pragma Assert
+                       (Is_From_Hardcoded_Unit (Etype (N), Big_Integers));
+                     return
+                       "expression of type Big_Integer must be non-negative";
+                  else
+                     return Value & " must fit in component type";
+                  end if;
+               end;
 
             when N_Range =>
                return
@@ -1425,6 +1440,15 @@ package body Flow_Error_Messages is
 
             when N_Allocator =>
                return "value must fit in the designated type of the allocator";
+
+            when N_Pragma_Argument_Association =>
+               if Pragma_Name (Parent (Par)) = Name_Loop_Variant then
+                  pragma Assert
+                    (Is_From_Hardcoded_Unit (Etype (N), Big_Integers));
+                  return "expression of type Big_Integer must be non-negative";
+               else
+                  return "";
+               end if;
 
             when others =>
                return "";

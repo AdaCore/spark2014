@@ -60,7 +60,7 @@ math_simple_abstract.adb:15:19: info: division check proved (Z3: 1 VC)
 math_simple_abstract.adb:16:14: info: postcondition proved (CVC4: 1 VC)
 math_simple_abstract.adb:21:25: info: assertion proved (Z3: 2 VC)
 math_simple_abstract.adb:22:33: info: loop invariant initialization proved (Z3: 1 VC)
-math_simple_abstract.adb:22:33: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple_abstract.adb:22:33: info: loop invariant preservation proved (CVC4: 1 VC)
 math_simple_abstract.adb:28:06: info: data dependencies proved
 math_simple_abstract.adb:29:19: info: division check proved (Z3: 1 VC)
 math_simple_abstract.adb:30:14: info: postcondition proved (altergo: 1 VC)
