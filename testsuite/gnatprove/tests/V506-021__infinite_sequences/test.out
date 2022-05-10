@@ -1,6 +1,6 @@
 a-cfinse.ads:72:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:72:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-a-cfinse.ads:82:43: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+a-cfinse.ads:82:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:85:06: info: data dependencies proved, in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:130:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:130:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
@@ -33,12 +33,12 @@ a-cfinse.ads:274:28: info: predicate check proved (Trivial: 1 VC), in instantiat
 a-cfinse.ads:274:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:298:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:298:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-infinite_sequence.adb:18:19: info: assertion proved (CVC4: 1 VC)
-infinite_sequence.adb:18:19: info: precondition proved (CVC4: 1 VC)
-infinite_sequence.adb:18:28: info: predicate check proved (CVC4: 1 VC; Trivial: 1 VC)
-infinite_sequence.adb:20:08: info: precondition proved (CVC4: 1 VC)
+infinite_sequence.adb:18:19: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:18:19: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:18:28: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+infinite_sequence.adb:20:08: info: precondition proved (CVC5: 1 VC)
 infinite_sequence.adb:20:08: info: precondition proved (Trivial: 1 VC)
-infinite_sequence.adb:22:22: info: assertion proved (CVC4: 1 VC)
-infinite_sequence.adb:22:22: info: precondition proved (CVC4: 1 VC)
-infinite_sequence.adb:22:36: info: range check proved (CVC4: 2 VC)
+infinite_sequence.adb:22:22: info: assertion proved (CVC5: 1 VC)
+infinite_sequence.adb:22:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:22:36: info: range check proved (CVC5: 2 VC)
 infinite_sequence.adb:22:48: info: predicate check proved (Trivial: 2 VC)

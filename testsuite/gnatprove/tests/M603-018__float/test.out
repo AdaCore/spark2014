@@ -13,7 +13,7 @@ testfloat.adb:24:22: info: assertion proved (Z3: 1 VC)
 testfloat.adb:26:22: info: assertion proved (Z3: 1 VC)
 testfloat.adb:27:22: info: assertion proved (colibri: 1 VC)
 testfloat.adb:28:22: info: assertion proved (CVC5: 1 VC)
-testfloat.adb:29:22: info: assertion proved (colibri: 1 VC)
+testfloat.adb:29:22: medium: assertion might fail
 testfloat.adb:31:22: info: assertion proved (CVC5: 2 VC)
 testfloat.adb:32:22: info: assertion proved (Z3: 2 VC)
 testfloat.adb:36:19: info: assertion proved (CVC5: 1 VC)

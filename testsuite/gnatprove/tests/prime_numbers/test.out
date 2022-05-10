@@ -142,5 +142,5 @@ test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" prov
 test_prime_and_coprime_numbers.adb:12:15: info: precondition proved (CVC5: 6 VC; altergo: 1 VC)
 test_prime_and_coprime_numbers.adb:12:15: info: range check proved (CVC5: 2 VC)
 test_prime_and_coprime_numbers.adb:13:17: info: precondition proved (CVC5: 1 VC)
+test_prime_and_coprime_numbers.adb:14:15: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
 test_prime_and_coprime_numbers.adb:14:15: info: range check proved (CVC5: 2 VC)
-test_prime_and_coprime_numbers.adb:14:15: medium: precondition might fail, cannot prove Has_True (Number_List, Number_List'First, Value)
