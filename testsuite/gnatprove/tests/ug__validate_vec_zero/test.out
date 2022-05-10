@@ -3,7 +3,6 @@ validate_vec_zero.adb:5:11: info: postcondition proved
 validate_vec_zero.adb:5:72: info: precondition proved
 validate_vec_zero.adb:5:84: info: range check proved
 validate_vec_zero.adb:9:10: info: precondition proved
-validate_vec_zero.adb:9:22: info: range check proved
 validate_vec_zero.adb:13:30: info: loop invariant initialization proved
 validate_vec_zero.adb:13:30: info: loop invariant preservation proved
 validate_vec_zero.adb:13:67: info: precondition proved

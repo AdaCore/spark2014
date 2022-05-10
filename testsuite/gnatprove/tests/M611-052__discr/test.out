@@ -20,7 +20,6 @@ list.adb:15:50: info: cannot unroll loop (too many loop iterations)
 list.adb:16:10: medium: precondition might fail [possible fix: loop at line 15 should mention S in a loop invariant]
 list.adb:16:16: medium: private part of "S" might not be initialized
 list.adb:16:19: info: precondition proved (CVC5: 2 VC)
-list.adb:16:31: info: range check proved (CVC5: 2 VC)
 list.adb:20:10: medium: precondition might fail
 list.adb:20:23: medium: precondition might fail [possible fix: loop invariant at line 22 should mention S]
 list.adb:20:28: medium: private part of "S" might not be initialized

@@ -24,5 +24,4 @@ map_vec_incr.adb:21:60: info: range check proved
 map_vec_incr.adb:22:07: info: precondition proved
 map_vec_incr.adb:22:27: info: range check proved
 map_vec_incr.adb:22:30: info: precondition proved
-map_vec_incr.adb:22:42: info: range check proved
 map_vec_incr.adb:22:45: info: overflow check proved

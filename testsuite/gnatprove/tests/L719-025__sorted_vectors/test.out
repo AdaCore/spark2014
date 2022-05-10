@@ -18,7 +18,6 @@ sorted_vectors.adb:10:09: info: precondition proved (CVC5: 4 VC)
 sorted_vectors.adb:12:13: info: loop invariant initialization proved (CVC5: 1 VC)
 sorted_vectors.adb:12:13: info: loop invariant preservation proved (CVC5: 1 VC)
 sorted_vectors.adb:13:13: info: precondition proved (CVC5: 4 VC)
-sorted_vectors.adb:13:42: info: range check proved (CVC5: 4 VC)
 sorted_vectors.adb:14:31: info: range check proved (CVC5: 2 VC)
 sorted_vectors.adb:17:07: info: precondition proved (CVC5: 3 VC)
 sorted_vectors.ads:22:25: info: initialization of "Position" proved

@@ -53,9 +53,7 @@ names.adb:63:30: info: division check proved (CVC5: 1 VC)
 names.adb:63:30: info: range check proved (CVC5: 2 VC)
 names.adb:74:16: info: precondition proved (CVC5: 1 VC)
 names.adb:79:23: medium: precondition might fail [possible fix: loop at line 73 should mention Ptr in a loop invariant]
-names.adb:79:45: medium: range check might fail, cannot prove lower bound for Ptr [reason for check: input value must fit in parameter type] [possible fix: loop at line 73 should mention Ptr in a loop invariant]
 names.adb:80:20: medium: precondition might fail [possible fix: loop at line 73 should mention Ptr in a loop invariant]
-names.adb:80:42: info: range check proved (CVC5: 2 VC)
 names.adb:84:21: info: cannot unroll loop (too many loop iterations)
 names.adb:85:10: medium: precondition might fail [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
 names.adb:88:22: info: assertion proved (CVC5: 1 VC)
@@ -69,15 +67,12 @@ names.adb:94:32: info: range check proved (CVC5: 2 VC)
 names.adb:99:10: medium: precondition might fail
 names.adb:100:27: info: range check proved (CVC5: 2 VC)
 names.adb:101:27: medium: precondition might fail
-names.adb:101:49: info: range check proved (CVC5: 2 VC)
 names.adb:120:37: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
-names.adb:120:59: info: range check proved (CVC5: 2 VC)
 names.adb:123:17: info: initialization of "S" proved
 names.adb:123:17: info: range check proved (CVC5: 2 VC)
 names.adb:124:17: info: range check proved (CVC5: 2 VC)
 names.adb:124:44: info: cannot unroll loop (too many loop iterations)
 names.adb:125:25: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table]
 names.adb:126:48: medium: overflow check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
-names.adb:126:48: medium: range check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
 names.ads:10:22: info: initialization of "N" proved
 names.ads:13:19: info: postcondition proved (CVC5: 1 VC)

@@ -23,6 +23,5 @@ update_vec_zero.adb:23:26: info: range check proved
 update_vec_zero.adb:23:31: info: precondition proved
 update_vec_zero.adb:23:62: info: range check proved
 update_vec_zero.adb:24:10: info: precondition proved
-update_vec_zero.adb:24:22: info: range check proved
 update_vec_zero.adb:25:10: info: precondition proved
 update_vec_zero.adb:25:30: info: range check proved
