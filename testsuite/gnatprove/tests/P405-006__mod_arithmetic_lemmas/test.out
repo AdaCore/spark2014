@@ -27,15 +27,15 @@ test_arith.adb:77:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test_arith.adb:83:60: info: initialization of "R1" proved
 test_arith.adb:83:64: info: initialization of "R2" proved
 test_arith.adb:85:14: info: postcondition proved (CVC5: 1 VC)
-test_arith.adb:90:07: info: precondition proved (CVC5: 2 VC)
+test_arith.adb:90:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_arith.adb:93:86: info: initialization of "R1" proved
 test_arith.adb:93:90: info: initialization of "R2" proved
 test_arith.adb:95:14: info: postcondition proved (CVC5: 1 VC)
-test_arith.adb:100:07: info: precondition proved (CVC5: 2 VC)
+test_arith.adb:100:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_arith.adb:103:71: info: initialization of "R" proved
 test_arith.adb:105:14: info: postcondition proved (CVC5: 2 VC)
 test_arith.adb:108:20: info: division check proved (CVC5: 1 VC)
-test_arith.adb:109:07: info: precondition proved (CVC5: 3 VC)
+test_arith.adb:109:07: info: precondition proved (CVC5: 2 VC; altergo: 1 VC)
 test_arith.adb:112:52: info: initialization of "R1" proved
 test_arith.adb:112:56: info: initialization of "R2" proved
 test_arith.adb:113:14: info: postcondition proved (CVC5: 1 VC)
@@ -43,7 +43,7 @@ test_arith.adb:122:44: info: initialization of "R" proved
 test_arith.adb:124:14: info: postcondition proved (CVC5: 2 VC)
 test_arith.adb:127:20: info: division check proved (CVC5: 1 VC)
 test_arith.adb:130:66: info: initialization of "R" proved
-test_arith.adb:131:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+test_arith.adb:131:14: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC)
 test_arith.adb:134:14: info: division check proved (CVC5: 1 VC)
 test_arith.adb:137:76: info: initialization of "R1" proved
 test_arith.adb:137:80: info: initialization of "R2" proved
@@ -54,9 +54,9 @@ test_arith.adb:144:07: info: precondition proved (CVC5: 1 VC)
 test_arith.adb:149:52: info: initialization of "R" proved
 test_arith.adb:150:14: info: postcondition proved (CVC5: 1 VC)
 test_arith.adb:153:20: info: division check proved (CVC5: 1 VC)
-test_arith.adb:154:07: info: precondition proved (CVC5: 1 VC)
+test_arith.adb:154:07: info: precondition proved (altergo: 1 VC)
 test_arith.adb:157:66: info: initialization of "R" proved
-test_arith.adb:158:14: info: postcondition proved (CVC5: 4 VC)
+test_arith.adb:158:14: info: postcondition proved (CVC5: 3 VC; altergo: 1 VC)
 test_arith.adb:164:15: info: division check proved (CVC5: 1 VC)
 test_arith.adb:165:07: info: precondition proved (CVC5: 1 VC)
 test_arith.adb:168:79: info: initialization of "R" proved
@@ -64,7 +64,7 @@ test_arith.adb:169:21: info: division check proved (CVC5: 1 VC)
 test_arith.adb:170:14: info: postcondition proved (CVC5: 1 VC)
 test_arith.adb:173:07: info: precondition proved (CVC5: 1 VC)
 test_arith.adb:179:47: info: initialization of "R" proved
-test_arith.adb:181:14: info: postcondition proved (CVC5: 1 VC)
+test_arith.adb:181:14: info: postcondition proved (altergo: 1 VC)
 test_arith.adb:184:14: info: division check proved (CVC5: 1 VC)
 test_arith.adb:187:46: info: initialization of "R" proved
 test_arith.adb:189:14: info: postcondition proved (CVC5: 1 VC)
@@ -72,7 +72,7 @@ test_arith.adb:192:14: info: division check proved (CVC5: 1 VC)
 test_arith.adb:195:50: info: initialization of "R" proved
 test_arith.adb:197:14: info: postcondition proved (CVC5: 1 VC)
 test_arith.adb:197:16: info: division check proved (CVC5: 1 VC)
-test_arith.adb:201:07: info: precondition proved (CVC5: 1 VC)
+test_arith.adb:201:07: info: precondition proved (altergo: 1 VC)
 test_arith.adb:201:39: info: range check proved (CVC5: 2 VC)
 test_arith.adb:204:04: info: initialization of "X" proved
 test_arith.adb:204:07: info: initialization of "Y" proved
