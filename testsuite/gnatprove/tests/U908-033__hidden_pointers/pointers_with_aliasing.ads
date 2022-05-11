@@ -120,7 +120,10 @@ is
      Pre  => Valid (Memory, Address (P)) or P = Null_Pointer,
      Post => P = Null_Pointer
      and then Allocates (Memory'Old, Memory, None)
-     and then Deallocates (Memory'Old, Memory, Only (Address (P)))
+     and then
+       (if P'Old = Null_Pointer
+        then Deallocates (Memory'Old, Memory, None)
+        else Deallocates (Memory'Old, Memory, Only (Address (P)'Old)))
      and then Writes (Memory'Old, Memory, None);
 
    --  Primitives to access the content of a memory cell directly. Ownership is
