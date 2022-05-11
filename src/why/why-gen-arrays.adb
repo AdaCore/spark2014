@@ -147,11 +147,12 @@ package body Why.Gen.Arrays is
    --          arrays.
 
    function New_Length_Equality
-     (L_First_E : W_Expr_Id;
-      L_Last_E  : W_Expr_Id;
-      R_First_E : W_Expr_Id;
-      R_Last_E  : W_Expr_Id;
-      Base_Ty   : W_Type_Id) return W_Pred_Id;
+     (L_First_E : W_Term_Id;
+      L_Last_E  : W_Term_Id;
+      R_First_E : W_Term_Id;
+      R_Last_E  : W_Term_Id;
+      Base_Ty   : W_Type_Id)
+      return W_Pred_Id;
    --  @param L_First_E first bound of the left array
    --  @param L_Last_E last bound of the left array
    --  @param R_First_E first bound of the right array
@@ -270,7 +271,7 @@ package body Why.Gen.Arrays is
       Args (Arg_Ind) :=
         Insert_Conversion_To_Rep_No_Bool
           (Domain,
-           Get_Array_Attr (Domain, Expr, Attr, Dim));
+           +Get_Array_Attr (+Expr, Attr, Dim));
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -287,7 +288,7 @@ package body Why.Gen.Arrays is
       Args (Arg_Ind) :=
         Insert_Conversion_To_Rep_No_Bool
           (Domain,
-           Get_Array_Attr (Domain, Ty, Attr, Dim, Params));
+           +Get_Array_Attr (Term_Domain (Domain), Ty, Attr, Dim, Params));
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -555,7 +556,8 @@ package body Why.Gen.Arrays is
    function Build_Length_Expr
      (Domain      : EW_Domain;
       First, Last : W_Expr_Id;
-      Typ         : W_Type_Id := EW_Int_Type) return W_Expr_Id
+      Typ         : W_Type_Id := EW_Int_Type)
+      return W_Expr_Id
    is
       First_Rep : constant W_Expr_Id :=
         Insert_Scalar_Conversion (Domain, Empty, First, Typ);
@@ -602,13 +604,15 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
       Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id is
+      Typ    : W_Type_Id := EW_Int_Type)
+      return W_Expr_Id
+   is
    begin
       return
         Build_Length_Expr
           (Domain,
-           Get_Array_Attr (Domain, Expr, Attribute_First, Dim),
-           Get_Array_Attr (Domain, Expr, Attribute_Last, Dim),
+           +Get_Array_Attr (+Expr, Attribute_First, Dim),
+           +Get_Array_Attr (+Expr, Attribute_Last, Dim),
            Typ);
    end Build_Length_Expr;
 
@@ -616,13 +620,15 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id is
+      Typ    : W_Type_Id := EW_Int_Type)
+      return W_Expr_Id
+   is
    begin
       return
         Build_Length_Expr
           (Domain,
-           Get_Array_Attr (Domain, Ty, Attribute_First, Dim),
-           Get_Array_Attr (Domain, Ty, Attribute_Last, Dim),
+           +Get_Array_Attr (Term_Domain (Domain), Ty, Attribute_First, Dim),
+           +Get_Array_Attr (Term_Domain (Domain), Ty, Attribute_Last, Dim),
            Typ);
    end Build_Length_Expr;
 
@@ -1263,12 +1269,11 @@ package body Why.Gen.Arrays is
       --      s >= 0 -> Standard__string.length (to_string x s) <= s))
 
       declare
-         Call_Expr   : constant W_Expr_Id :=
-           New_Call (Domain => EW_Term,
-                     Name   => To_Local (To_String_Id),
-                     Args   => (1 => +Dummy_Ident,
-                                2 => +Size_Ident),
-                     Typ    => Str_Typ);
+         Call_Expr   : constant W_Term_Id :=
+           New_Call (Name => To_Local (To_String_Id),
+                     Args => (1 => +Dummy_Ident,
+                              2 => +Size_Ident),
+                     Typ  => Str_Typ);
          Guard       : constant W_Pred_Id :=
            +New_Comparison
              (Symbol => Int_Infix_Ge,
@@ -1282,35 +1287,31 @@ package body Why.Gen.Arrays is
                   Binders  => To_String_Binders,
                   Triggers => New_Triggers
                     (Triggers =>
-                         (1 => New_Trigger (Terms => (1 => Call_Expr)))),
-                  Def      => +New_Comparison
+                         (1 => New_Trigger (Terms => (1 => +Call_Expr)))),
+                  Def      => New_Comparison
                     (Symbol => Why_Eq,
                      Left   =>
-                       Get_Array_Attr (Domain => EW_Term,
-                                       Expr   => Call_Expr,
-                                       Attr   => Attribute_First,
-                                       Dim    => 1),
+                       Get_Array_Attr (Expr => Call_Expr,
+                                       Attr => Attribute_First,
+                                       Dim  => 1),
                      Right  =>
                        New_Discrete_Constant (Value => Uint_1,
-                                              Typ   => EW_Int_Type),
-                     Domain => EW_Pred)));
+                                              Typ   => EW_Int_Type))));
          Emit (Th,
                New_Guarded_Axiom
                  (Name     => NID ("to_string__length"),
                   Binders  => To_String_Binders,
                   Triggers => New_Triggers
                     (Triggers =>
-                         (1 => New_Trigger (Terms => (1 => Call_Expr)))),
+                         (1 => New_Trigger (Terms => (1 => +Call_Expr)))),
                   Pre      => Guard,
-                  Def      => +New_Comparison
+                  Def      => New_Comparison
                     (Symbol => Int_Infix_Le,
                      Left   =>
-                       Get_Array_Attr (Domain => EW_Term,
-                                       Expr   => Call_Expr,
-                                       Attr   => Attribute_Length,
-                                       Dim    => 1),
-                     Right  => +Size_Ident,
-                     Domain => EW_Pred)));
+                       Get_Array_Attr (Expr => Call_Expr,
+                                       Attr => Attribute_Length,
+                                       Dim  => 1),
+                     Right  => +Size_Ident)));
       end;
    end Declare_Additional_Symbols_For_String;
 
@@ -2252,57 +2253,56 @@ package body Why.Gen.Arrays is
    --------------------
 
    function Get_Array_Attr
-     (Domain : EW_Domain;
+     (Domain : EW_Terms;
       Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive;
       Params : Transformation_Params := Body_Params;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id is
+      Typ    : W_Type_Id := EW_Int_Type)
+      return W_Term_Id
+   is
    begin
-
       if Attr in Attribute_First | Attribute_Last then
          declare
             Index_Type : constant Entity_Id := Nth_Index_Type (Ty, Dim);
          begin
             return Insert_Simple_Conversion
-              (Domain => EW_Term,
-               Expr   => New_Attribute_Expr (Ty     => Index_Type,
-                                             Domain => Domain,
-                                             Attr   => Attr,
-                                             Params => Params),
-               To     => Nth_Index_Rep_Type_No_Bool (Ty, Dim));
+              (Expr => +New_Attribute_Expr (Ty     => Index_Type,
+                                            Domain => Domain,
+                                            Attr   => Attr,
+                                            Params => Params),
+               To   => Nth_Index_Rep_Type_No_Bool (Ty, Dim));
          end;
+
       elsif Is_Static_Array_Type (Ty) then
          pragma Assert (Is_Constrained (Ty));
          return
            New_Discrete_Constant (Value => Static_Array_Length (Ty, Dim),
                                   Typ   => Typ);
+
       else
          pragma Assert (Is_Constrained (Ty));
-         return Build_Length_Expr (Domain, Ty, Dim, Typ);
+         return +Build_Length_Expr (Domain, Ty, Dim, Typ);
       end if;
    end Get_Array_Attr;
 
    function Get_Array_Attr
-     (Domain : EW_Domain;
-      Expr   : W_Expr_Id;
-      Attr   : Attribute_Id;
-      Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type)
-      return W_Expr_Id
+     (Expr : W_Term_Id;
+      Attr : Attribute_Id;
+      Dim  : Positive;
+      Typ  : W_Type_Id := EW_Int_Type)
+      return W_Term_Id
    is
-      W_Ty         : constant W_Type_Id := Get_Type (Expr);
+      W_Ty         : constant W_Type_Id := Get_Type (+Expr);
       Ty           : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Init_Wrapper : constant Boolean := Is_Init_Wrapper_Type (W_Ty);
    begin
-
       --  If the type is constrained, just use the type information
 
       if Is_Static_Array_Type (Ty) then
-         return Get_Array_Attr (Domain, Ty, Attr, Dim, Typ => Typ);
+         return Get_Array_Attr (EW_Term, Ty, Attr, Dim, Typ => Typ);
 
       else
-
          if Attr in Attribute_First | Attribute_Last then
             declare
                Enum : constant Why_Name_Enum :=
@@ -2313,54 +2313,54 @@ package body Why.Gen.Arrays is
             begin
                return
                  New_Call
-                   (Domain => Domain,
-                    Name   => E_Symb (Ty, Enum, Init_Wrapper),
-                    Args   => (1 => Expr),
+                   (Name   => E_Symb (Ty, Enum, Init_Wrapper),
+                    Args   => (1 => +Expr),
                     Typ    => Nth_Index_Rep_Type_No_Bool (Ty, Dim));
             end;
+
          elsif Typ = EW_Int_Type then
             return
               New_Call
-                (Domain => Domain,
-                 Name   => E_Symb (Ty, WNE_Attr_Length (Dim), Init_Wrapper),
-                 Args   => (1 => Expr),
+                (Name   => E_Symb (Ty, WNE_Attr_Length (Dim), Init_Wrapper),
+                 Args   => (1 => +Expr),
                  Typ    => EW_Int_Type);
+
          else
             return
-              Build_Length_Expr (Domain => Domain,
-                                 Expr   => Expr,
-                                 Dim    => Dim,
-                                 Typ    => Typ);
+              +Build_Length_Expr (Domain => EW_Term,
+                                  Expr   => +Expr,
+                                  Dim    => Dim,
+                                  Typ    => Typ);
          end if;
       end if;
    end Get_Array_Attr;
 
    function Get_Array_Attr
-     (Domain : EW_Domain;
-      Item   : Item_Type;
-      Attr   : Attribute_Id;
-      Dim    : Positive;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
+     (Item : Item_Type;
+      Attr : Attribute_Id;
+      Dim  : Positive;
+      Typ  : W_Type_Id := EW_Int_Type)
+      return W_Term_Id
    is
    begin
       case Item.Kind is
          when Regular =>
-            return Get_Array_Attr (Domain, +Item.Main.B_Name, Attr, Dim, Typ);
+            return Get_Array_Attr (+Item.Main.B_Name, Attr, Dim, Typ);
          when UCArray =>
             case Attr is
-            when Attribute_First =>
-               return +Item.Bounds (Dim).First;
-            when Attribute_Last =>
-               return +Item.Bounds (Dim).Last;
-            when Attribute_Length =>
-               return
-                 Build_Length_Expr
-                   (Domain => Domain,
-                    First  => +Item.Bounds (Dim).First,
-                    Last   => +Item.Bounds (Dim).Last,
-                    Typ    => Typ);
-            when others =>
-               raise Program_Error;
+               when Attribute_First =>
+                  return +Item.Bounds (Dim).First;
+               when Attribute_Last =>
+                  return +Item.Bounds (Dim).Last;
+               when Attribute_Length =>
+                  return
+                    +Build_Length_Expr
+                      (Domain => EW_Term,
+                       First  => +Item.Bounds (Dim).First,
+                       Last   => +Item.Bounds (Dim).Last,
+                       Typ    => Typ);
+               when others =>
+                  raise Program_Error;
             end case;
          when others =>
             raise Program_Error;
@@ -2520,30 +2520,28 @@ package body Why.Gen.Arrays is
    --------------------------
 
    function New_Array_Range_Expr
-     (Index_Expr : W_Expr_Id;
-      Array_Expr : W_Expr_Id;
+     (Index_Expr : W_Term_Id;
+      Array_Expr : W_Term_Id;
       Domain     : EW_Domain;
       Dim        : Positive)
-     return W_Expr_Id
+      return W_Expr_Id
    is
    begin
       return New_Range_Expr
              (Domain => Domain,
               Low    => Insert_Conversion_To_Rep_No_Bool
-                (Prog_Or_Term_Domain (Domain),
-                 Get_Array_Attr (Domain => Prog_Or_Term_Domain (Domain),
-                                 Expr   => Array_Expr,
-                                 Attr   => Attribute_First,
-                                 Dim    => Dim)),
+                (EW_Term,
+                 +Get_Array_Attr (Expr => Array_Expr,
+                                  Attr => Attribute_First,
+                                  Dim  => Dim)),
               High   => Insert_Conversion_To_Rep_No_Bool
-                (Prog_Or_Term_Domain (Domain),
-                 Get_Array_Attr (Domain => Prog_Or_Term_Domain (Domain),
-                                 Expr   => Array_Expr,
-                                 Attr   => Attribute_Last,
-                                 Dim    => Dim)),
+                (EW_Term,
+                 +Get_Array_Attr (Expr => Array_Expr,
+                                  Attr => Attribute_Last,
+                                  Dim  => Dim)),
               Expr   => Insert_Conversion_To_Rep_No_Bool
-                (Prog_Or_Term_Domain (Domain),
-                 Index_Expr));
+                (EW_Term,
+                 +Index_Expr));
    end New_Array_Range_Expr;
 
    ----------------------
@@ -2634,10 +2632,9 @@ package body Why.Gen.Arrays is
                     Left   =>
                       +Insert_Conversion_To_Rep_No_Bool
                         (EW_Term,
-                         Get_Array_Attr (Domain => EW_Term,
-                                         Expr   => +Left_Arr,
-                                         Attr   => Attribute_First,
-                                         Dim    => I)),
+                         +Get_Array_Attr (Expr => Left_Arr,
+                                          Attr => Attribute_First,
+                                          Dim  => I)),
                     Right  => +Right_Bounds (2 * I - 1)),
 
                  --  <left_arr>.last__I = <right_arr>.last__I
@@ -2647,10 +2644,9 @@ package body Why.Gen.Arrays is
                     Left   =>
                       +Insert_Conversion_To_Rep_No_Bool
                         (EW_Term,
-                         Get_Array_Attr (Domain => EW_Term,
-                                         Expr   => +Left_Arr,
-                                         Attr   => Attribute_Last,
-                                         Dim    => I)),
+                         +Get_Array_Attr (Expr => Left_Arr,
+                                          Attr => Attribute_Last,
+                                          Dim  => I)),
                     Right  => +Right_Bounds (2 * I))));
       end loop;
 
@@ -2762,19 +2758,17 @@ package body Why.Gen.Arrays is
             W_Typ      : constant W_Type_Id :=
               Nth_Index_Rep_Type_No_Bool (E   => Rep_Ty,
                                           Dim => Count + 1);
-            First_Expr : constant W_Expr_Id :=
-              Insert_Simple_Conversion (Domain => Domain,
-                                        Expr   => Get_Array_Attr
-                                          (Domain => Domain,
+            First_Expr : constant W_Term_Id :=
+              Insert_Simple_Conversion (Expr   => Get_Array_Attr
+                                          (Domain => Term_Domain (Domain),
                                            Ty     => Rep_Ty,
                                            Attr   => Attribute_First,
                                            Dim    => Count + 1,
                                            Params => Params),
                                         To     => W_Typ);
-            Last_Expr : constant W_Expr_Id :=
-              Insert_Simple_Conversion (Domain => Domain,
-                                        Expr   => Get_Array_Attr
-                                          (Domain => Domain,
+            Last_Expr : constant W_Term_Id :=
+              Insert_Simple_Conversion (Expr   => Get_Array_Attr
+                                          (Domain => Term_Domain (Domain),
                                            Ty     => Rep_Ty,
                                            Attr   => Attribute_Last,
                                            Dim    => Count + 1,
@@ -2789,8 +2783,8 @@ package body Why.Gen.Arrays is
                                         Expr   => Args (2 * Count + 2),
                                         To     => W_Typ);
          begin
-            Call_Args (4 * Count + 1) := First_Expr;
-            Call_Args (4 * Count + 2) := Last_Expr;
+            Call_Args (4 * Count + 1) := +First_Expr;
+            Call_Args (4 * Count + 2) := +Last_Expr;
             Call_Args (4 * Count + 3) := F_Expr;
             Call_Args (4 * Count + 4) := L_Expr;
          end;
@@ -2839,11 +2833,12 @@ package body Why.Gen.Arrays is
    -------------------------
 
    function New_Length_Equality
-     (L_First_E : W_Expr_Id;
-      L_Last_E  : W_Expr_Id;
-      R_First_E : W_Expr_Id;
-      R_Last_E  : W_Expr_Id;
-      Base_Ty   : W_Type_Id) return W_Pred_Id
+     (L_First_E : W_Term_Id;
+      L_Last_E  : W_Term_Id;
+      R_First_E : W_Term_Id;
+      R_Last_E  : W_Term_Id;
+      Base_Ty   : W_Type_Id)
+      return W_Pred_Id
    is
       Le_Op     : constant W_Identifier_Id :=
         (if Base_Ty = EW_Int_Type then Int_Infix_Le
@@ -2870,43 +2865,39 @@ package body Why.Gen.Arrays is
 
       return New_Conditional
         (Condition => New_Call
-           (Name     => Le_Op,
-            Args     => (L_First_E, L_Last_E),
-            Typ      => EW_Bool_Type),
-         Then_Part => +New_And_Then_Expr
-           (Left   => New_Call
-                (Domain   => EW_Pred,
-                 Name     => Le_Op,
-                 Args     => (R_First_E, R_Last_E),
-                 Typ      => EW_Bool_Type),
-            Right  => New_Comparison
+           (Name  => Le_Op,
+            Args  => [+L_First_E, +L_Last_E],
+            Typ   => EW_Bool_Type),
+         Then_Part => New_And_Pred
+           (Left  => New_Call
+                (Name => Le_Op,
+                 Args => [+R_First_E, +R_Last_E],
+                 Typ  => EW_Bool_Type),
+            Right => New_Comparison
               (Symbol => Why_Eq,
                Left   => New_Call
-                 (Domain   => EW_Pred,
-                  Name     => Sub_Op,
-                  Args     => (L_Last_E, L_First_E),
-                  Typ      => Base_Ty),
+                 (Name => Sub_Op,
+                  Args => [+L_Last_E, +L_First_E],
+                  Typ  => Base_Ty),
                Right  => New_Call
-                 (Domain   => EW_Pred,
-                  Name     => Sub_Op,
-                  Args     => (R_Last_E, R_First_E),
-                  Typ      => Base_Ty),
-               Domain => EW_Pred),
-            Domain => EW_Pred),
+                 (Name => Sub_Op,
+                  Args => [+R_Last_E, +R_First_E],
+                  Typ  => Base_Ty))),
          Else_Part => New_Call
-           (Name   => Lt_Op,
-            Args   => (R_Last_E, R_First_E),
-            Typ    => Base_Ty),
+           (Name  => Lt_Op,
+            Args  => [+R_Last_E, +R_First_E],
+            Typ   => Base_Ty),
          Typ       => EW_Bool_Type);
    end New_Length_Equality;
 
    function New_Length_Equality
-     (Left_Arr  : W_Expr_Id;
-      Right_Arr : W_Expr_Id;
-      Dim       : Positive) return W_Pred_Id
+     (Left_Arr  : W_Term_Id;
+      Right_Arr : W_Term_Id;
+      Dim       : Positive)
+      return W_Pred_Id
    is
-      L_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Left_Arr));
-      R_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Right_Arr));
+      L_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (+Left_Arr));
+      R_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (+Right_Arr));
       Is_Static : constant Boolean := Has_Static_Array_Type (L_Ty)
         and then Has_Static_Array_Type (R_Ty);
       Result    : W_Pred_Id := True_Pred;
@@ -2926,37 +2917,29 @@ package body Why.Gen.Arrays is
                pragma Assert
                  (Base_Ty = Nth_Index_Rep_Type_No_Bool (R_Ty, Dim));
 
-               L_First_E : constant W_Expr_Id :=
+               L_First_E : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Expr => Left_Arr,
+                                            Attr => Attribute_First,
+                                            Dim  => I),
                     To     => Base_Ty);
-               L_Last_E  : constant W_Expr_Id :=
+               L_Last_E  : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Expr => Left_Arr,
+                                            Attr => Attribute_Last,
+                                            Dim  => I),
                     To     => Base_Ty);
-               R_First_E : constant W_Expr_Id :=
+               R_First_E : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Right_Arr,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Expr => Right_Arr,
+                                            Attr => Attribute_First,
+                                            Dim  => I),
                     To     => Base_Ty);
-               R_Last_E  : constant W_Expr_Id :=
+               R_Last_E  : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Right_Arr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Expr => Right_Arr,
+                                            Attr => Attribute_Last,
+                                            Dim  => I),
                     To     => Base_Ty);
             begin
                Result :=
@@ -2973,11 +2956,12 @@ package body Why.Gen.Arrays is
    end New_Length_Equality;
 
    function New_Length_Equality
-     (Left_Arr : W_Expr_Id;
+     (Left_Arr : W_Term_Id;
       Right    : Entity_Id;
-      Dim      : Positive) return W_Pred_Id
+      Dim      : Positive)
+      return W_Pred_Id
    is
-      L_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Left_Arr));
+      L_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (+Left_Arr));
       Is_Static : constant Boolean := Has_Static_Array_Type (L_Ty)
         and then Has_Static_Array_Type (Right);
       Result    : W_Pred_Id := True_Pred;
@@ -2997,37 +2981,31 @@ package body Why.Gen.Arrays is
                pragma Assert
                  (Base_Ty = Nth_Index_Rep_Type_No_Bool (Right, Dim));
 
-               L_First_E : constant W_Expr_Id :=
+               L_First_E : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Expr => Left_Arr,
+                                            Attr => Attribute_First,
+                                            Dim  => I),
                     To     => Base_Ty);
-               L_Last_E  : constant W_Expr_Id :=
+               L_Last_E  : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Expr => Left_Arr,
+                                            Attr => Attribute_Last,
+                                            Dim  => I),
                     To     => Base_Ty);
-               R_First_E : constant W_Expr_Id :=
+               R_First_E : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Ty     => Right,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Domain => EW_Term,
+                                            Ty     => Right,
+                                            Attr   => Attribute_First,
+                                            Dim    => I),
                     To     => Base_Ty);
-               R_Last_E  : constant W_Expr_Id :=
+               R_Last_E  : constant W_Term_Id :=
                  Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => Get_Array_Attr (Domain => EW_Term,
-                                              Ty     => Right,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
+                   (Expr => Get_Array_Attr (Domain => EW_Term,
+                                            Ty     => Right,
+                                            Attr   => Attribute_Last,
+                                            Dim    => I),
                     To     => Base_Ty);
             begin
                Result :=

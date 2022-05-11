@@ -4,7 +4,7 @@ decl1.adb:10:07: info: alignment of overlaid objects is compatible (Trivial)
 decl1.adb:10:07: info: object is suitable for aliasing via address clause (Trivial)
 decl1.adb:11:21: info: object is suitable for aliasing via address clause (Trivial)
 decl1.adb:11:21: info: types of aliased objects have the same size (Trivial)
-decl1.adb:13:22: medium: assertion might fail (e.g. when A = -1)
+decl1.adb:13:22: medium: assertion might fail (e.g. when A = -1) [possible fix: add or complete related loop invariants or postconditions]
 decl1.adb:17:04: info: precondition proved (Trivial: 1 VC)
 decl2.adb:2:04: info: data dependencies proved
 decl2.adb:6:50: info: in default value at decl2.adb:13
@@ -14,5 +14,5 @@ decl2.adb:13:07: info: alignment of overlaid objects is compatible (Trivial)
 decl2.adb:13:07: info: object is suitable for aliasing via address clause (Trivial)
 decl2.adb:14:21: info: object is suitable for aliasing via address clause (Trivial)
 decl2.adb:14:21: info: types of aliased objects have the same size (Trivial)
-decl2.adb:16:22: medium: assertion might fail (e.g. when A = -1)
+decl2.adb:16:22: medium: assertion might fail (e.g. when A = -1) [possible fix: add or complete related loop invariants or postconditions]
 decl2.adb:20:04: info: precondition proved (Trivial: 1 VC)

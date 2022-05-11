@@ -28,10 +28,12 @@ with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
+with Ada.Strings;              use Ada.Strings;
+with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Unchecked_Conversion;
 with CE_Utils;                 use CE_Utils;
-with GNAT.String_Split;           use GNAT.String_Split;
+with GNAT.String_Split;        use GNAT.String_Split;
 with Gnat2Why.Util;            use Gnat2Why.Util;
 with Interfaces;               use Interfaces;
 with SPARK_Atree;              use SPARK_Atree;
@@ -90,6 +92,14 @@ package body CE_Parsing is
 
    end Parse_Conversion;
 
+   procedure Parse_Counterexample_Line
+     (Cnt_List  : Cntexample_Elt_Lists.List;
+      Obj       : Entity_Id;
+      Value_Map : in out Entity_To_Extended_Value_Maps.Map);
+   --  Go over a list of raw Why3 counterexample values and transform them into
+   --  a map of counterexample values. If Obj is not empty, then only consider
+   --  values applying to Obj at the current line (with modifier None).
+
    procedure Set_Boolean_Flag
      (Cnt_Value : Cntexmp_Value_Ptr; Flag : in out Opt_Boolean);
 
@@ -104,6 +114,28 @@ package body CE_Parsing is
    --  Size returns the associate binary size of a #b or #x number (to help
    --  when building an unsigned integer).
 
+   ------------------------------
+   -- Get_Counterexample_Value --
+   ------------------------------
+
+   function Get_Counterexample_Value
+     (Obj      : Entity_Id;
+      Cnt_List : Cntexample_Elt_Lists.List) return Opt_Value_Type
+   is
+      V_Map : Entity_To_Extended_Value_Maps.Map;
+
+   begin
+      Parse_Counterexample_Line (Cnt_List, Obj, V_Map);
+      pragma Assert (V_Map.Length <= 1);
+
+      if V_Map.Contains (Obj) then
+         pragma Assert (V_Map (Obj) (None) /= null);
+         return (True, V_Map (Obj) (None).all);
+      else
+         return (Present => False);
+      end if;
+   end Get_Counterexample_Value;
+
    --------------
    -- New_Item --
    --------------
@@ -114,10 +146,15 @@ package body CE_Parsing is
          then Retysp (Get_Specific_Type_From_Classwide (AST_Ty))
          else Retysp (AST_Ty));
    begin
-      if Is_Array_Type (Ty) then
+      if Is_Array_Type (Ty) and then Number_Dimensions (Ty) = 1 then
          return Value_Type'(K      => Array_K,
                             AST_Ty => Ty,
                             others => <>);
+      elsif Is_Array_Type (Ty) then
+         return Value_Type'
+           (K      => Multidim_K,
+            AST_Ty => Ty,
+            Bounds => (Dim => Natural (Number_Dimensions (Ty)), others => <>));
       elsif Is_Record_Type_In_Why (Ty) then
          return Value_Type'(K      => Record_K,
                             AST_Ty => Ty,
@@ -179,6 +216,11 @@ package body CE_Parsing is
                Val.Scalar_Content := new Scalar_Value_Type'
                  (Parse_Scalar_Value (Cnt_Value.all, Ty));
             end if;
+
+         --  No counterexample values are expected for multi-dimensional arrays
+
+         when Multidim_K =>
+            raise Parse_Error;
 
          when Array_K =>
 
@@ -407,8 +449,14 @@ package body CE_Parsing is
 
    procedure Parse_Counterexample_Line
      (Cnt_List  : Cntexample_Elt_Lists.List;
+      Obj       : Entity_Id;
       Value_Map : in out Entity_To_Extended_Value_Maps.Map)
    is
+
+      function Is_Multidim_Label (Label, Attr_Label : String) return Boolean is
+         (for some Dim in 1 .. 4 =>
+             Label = Attr_Label & " (" & Trim (Dim'Image, Left) & ")");
+
    begin
       for Elt of Cnt_List loop
          declare
@@ -517,6 +565,15 @@ package body CE_Parsing is
                   end;
                end if;
 
+               --  If Obj is set, skip the value if it does not apply to Obj or
+               --  if the modifier is not None.
+
+               if Present (Obj)
+                 and then (Var /= Obj or else Var_Modifier /= None)
+               then
+                  raise Parse_Error;
+               end if;
+
                --  Search for the variable Ent in Value_Map. If we already have
                --  an association for the Var_Modifier modifier for it,
                --  retrieve it. Otherwise, create a new one.
@@ -603,6 +660,40 @@ package body CE_Parsing is
                              (Elt.Value, Current_Val.Last_Attr);
                         end if;
 
+                     elsif Is_Multidim_Label (Label, First_Label) then
+                        declare
+                           Dim : constant Natural :=
+                             Natural'Value
+                               (Label (Label'Last - 1 .. Label'Last - 1));
+                        begin
+                           if Current_Val.K /= Multidim_K
+                             or else Dim > Current_Val.Bounds.Dim
+                           then
+                              raise Parse_Error;
+                           else
+                              Set_Integer_Flag
+                                (Elt.Value,
+                                 Current_Val.Bounds.Content (Dim).First);
+                           end if;
+                        end;
+
+                     elsif Is_Multidim_Label (Label, Last_Label) then
+                        declare
+                           Dim : constant Natural :=
+                             Natural'Value
+                               (Label (Label'Last - 1 .. Label'Last - 1));
+                        begin
+                           if Current_Val.K /= Multidim_K
+                             or else Dim > Current_Val.Bounds.Dim
+                           then
+                              raise Parse_Error;
+                           else
+                              Set_Integer_Flag
+                                (Elt.Value,
+                                 Current_Val.Bounds.Content (Dim).Last);
+                           end if;
+                        end;
+
                      elsif Label = Constrained_Label then
                         if Current_Val.K /= Record_K then
                            raise Parse_Error;
@@ -673,7 +764,23 @@ package body CE_Parsing is
                               Current_Val.Initialized_Attr :=
                                 New_Val.Initialized_Attr;
                            end if;
-                        when Array_K  =>
+
+                        when Multidim_K =>
+                           pragma Assert
+                             (Current_Val.Bounds.Dim = New_Val.Bounds.Dim);
+
+                           for I in Current_Val.Bounds.Content'Range loop
+                              if New_Val.Bounds.Content (I).First.Present then
+                                 Current_Val.Bounds.Content (I).First :=
+                                   New_Val.Bounds.Content (I).First;
+                              end if;
+                              if New_Val.Bounds.Content (I).Last.Present then
+                                 Current_Val.Bounds.Content (I).Last :=
+                                   New_Val.Bounds.Content (I).Last;
+                              end if;
+                           end loop;
+
+                        when Array_K =>
                            Current_Val.Array_Values := New_Val.Array_Values;
                            Current_Val.Array_Others := New_Val.Array_Others;
 
@@ -683,6 +790,7 @@ package body CE_Parsing is
                            if New_Val.Last_Attr.Present then
                               Current_Val.Last_Attr := New_Val.Last_Attr;
                            end if;
+
                         when Record_K =>
                            for Pos in New_Val.Record_Fields.Iterate loop
                               Current_Val.Record_Fields.Include
@@ -693,6 +801,7 @@ package body CE_Parsing is
                               Current_Val.Constrained_Attr :=
                                 New_Val.Constrained_Attr;
                            end if;
+
                         when Access_K =>
                            Current_Val.Designated_Value :=
                              New_Val.Designated_Value;
@@ -708,6 +817,14 @@ package body CE_Parsing is
             when Parse_Error => null;
          end;
       end loop;
+   end Parse_Counterexample_Line;
+
+   procedure Parse_Counterexample_Line
+     (Cnt_List  : Cntexample_Elt_Lists.List;
+      Value_Map : in out Entity_To_Extended_Value_Maps.Map)
+   is
+   begin
+      Parse_Counterexample_Line (Cnt_List, Empty, Value_Map);
    end Parse_Counterexample_Line;
 
    -----------------

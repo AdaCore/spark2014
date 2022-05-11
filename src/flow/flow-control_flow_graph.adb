@@ -389,8 +389,8 @@ package body Flow.Control_Flow_Graph is
       Goto_Jumps             : Goto_Jump_Maps.Map;
       --  Map for connecting gotos with labels
 
-      Extended_Returns       : Node_Lists.List;
-      --  The extended return statements currently processed
+      Extended_Return        : Opt_N_Extended_Return_Statement_Id;
+      --  The extended return statement
    end record;
 
    No_Context : constant Context :=
@@ -403,7 +403,7 @@ package body Flow.Control_Flow_Graph is
               Borrowers              => Node_Lists.Empty_List,
               Borrow_Numbers         => Borrowers_Markers.Empty_List,
               Goto_Jumps             => Goto_Jump_Maps.Empty_Map,
-              Extended_Returns       => Node_Lists.Empty_List);
+              Extended_Return        => Types.Empty);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -628,8 +628,10 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Pre => Nkind (N) = N_Extended_Return_Statement
-               and then not Ctx.In_Nested_Package;
+   with Pre  => Nkind (N) = N_Extended_Return_Statement
+                and then not Ctx.In_Nested_Package
+                and then No (Ctx.Extended_Return),
+        Post => No (Ctx.Extended_Return);
    --  The CFG that we generate for extended return statements looks
    --  like the following:
    --
@@ -2123,7 +2125,9 @@ package body Flow.Control_Flow_Graph is
                  Graph_Connections'(Standard_Entry => V,
                                     Standard_Exits => Empty_Set));
 
-      Ctx.Extended_Returns.Append (New_Item => N);
+      --  Store the extended return node in context, because it cannot be
+      --  retrieved from the AST when we see a simple_return_statement.
+      Ctx.Extended_Return := N;
 
       --  Process the statements of Ret_Object_L
       Process_Statement_List (Ret_Object_L, FA, CM, Ctx);
@@ -2168,7 +2172,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       CM.Delete (Union_Id (Ret_Object_L));
-      Ctx.Extended_Returns.Delete_Last;
+      Ctx.Extended_Return := Types.Empty;
 
       --  When borrowers go out of scope, we pop them from the stack and
       --  assign back to the borrowed objects. This way we keep track of
@@ -5332,7 +5336,7 @@ package body Flow.Control_Flow_Graph is
          --  statement (Ada RM 6.5), however accept statements are not allowed
          --  in SPARK.
 
-         if Ctx.Extended_Returns.Is_Empty then
+         if No (Ctx.Extended_Return) then
             Add_Vertex (FA,
                         Direct_Mapping_Id (N),
                         Make_Aux_Vertex_Attributes (E_Loc => N),
@@ -5344,8 +5348,8 @@ package body Flow.Control_Flow_Graph is
          else
             pragma Assert (Ekind (FA.Spec_Entity) = E_Function);
 
-            Ret_Object := Get_Return_Object
-              (Ctx.Extended_Returns.Last_Element);
+            Ret_Object := Get_Return_Object (Ctx.Extended_Return);
+
             Add_Vertex
               (FA => FA,
                F  => Direct_Mapping_Id (N),
@@ -5357,7 +5361,7 @@ package body Flow.Control_Flow_Graph is
                   Object_Returned => Ret_Object,
                   Loops           => Ctx.Current_Loops,
                   E_Loc           => Return_Statement_Entity
-                    (Ctx.Extended_Returns.Last_Element)),
+                                       (Ctx.Extended_Return)),
                V  => V);
          end if;
       else

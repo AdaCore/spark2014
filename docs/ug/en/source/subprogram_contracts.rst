@@ -664,12 +664,20 @@ Subprogram Variant
 [|SPARK|]
 
 To ensure termination of recursive subprograms, it is possible to annotate them
-using the aspect ``Subprogram_Variant``. This aspect provides a discrete
-value along with a direction (``Increases`` or ``Decreases``). On every
-recursive call, a check is generated to ensure that the discrete value progresses
-(decreases or increases) with respect to its value at the beginning of the
-subprogram. Since a discrete value is necessarily bounded by its Ada type, it
-is enough to ensure that there will be no infinite chain of recursive calls.
+using the aspect ``Subprogram_Variant``. This aspect provides a value which
+should *progress* in some sense between the beginning of the subprogram and each
+recursive call. The value is associated to a direction, which can be either
+``Increases`` or ``Decreases`` for *numeric* variants, or ``Structural`` for
+*structural* variants.
+
+Numeric variants can take a discrete value or, in the
+case of the direction ``Decreases``, a big natural (see
+``Ada.Numerics.Big_Integers``). On every recursive call, a check is generated
+to ensure that the value progresses (decreases or increases) with respect to its
+value at the beginning of the subprogram. Since a discrete value is necessarily
+bounded by its Ada type, and a big natural is always greater than 0, it is
+enough to ensure that there will be no infinite chain of recursive calls.
+
 In the following example, we can verify that the ``Fibonacci`` function
 terminates stating that its parameter ``N`` decreases at each recursive call:
 
@@ -684,14 +692,14 @@ value of ``N`` on entry of ``Fibonacci``:
 .. literalinclude:: /examples/ug__recursive_subprograms/test.out
    :language: none
 
-It is possible to give more than one discrete value in a subprogram variant. In
+It is possible to give more than one numeric value in a subprogram variant. In
 this case, values are checked in the order in which they appear. If a
 value progresses (increases or decreases as specified) then it is enough to
 ensure the progression of the whole variant and the subsequent values are not
 considered. In the same way, if a value annotated with ``Increases`` actually
 decreases strictly (or the other way around) then the evaluation terminates and
 the verification of the variant fails. It is only if the values of all the
-preceding discrete expressions have been found to be preserved that the subsequent
+preceding expressions have been found to be preserved that the subsequent
 value is considered. The function ``Max`` computes the index of the maximal
 value in a slice of an array. At each recursive call, it shifts the bound
 containing the smallest value:
@@ -708,9 +716,34 @@ be verified by |GNATprove|.
 .. literalinclude:: /examples/ug__recursive_subprograms-multiple/test.out
    :language: none
 
+Structural variants are generally used on recursive data-structures. The value
+associated to such a variant is necessarily a formal parameter of the
+subprogram. On every recursive call, a check is generated to ensure that the
+actual parameter denoted by the variant designates a strict subcomponent of the
+formal parameter denoted the variant at the beggining of the call. Since,
+due to the :ref:`Memory Ownership Policy` of |SPARK|, the data-structures cannot
+contain cycles, it is enough to ensure that there will be no infinite
+chain of recursive calls. A structural variant cannot be combined with other
+variants.
+
+In the following example, we can verify that the ``Length`` function on
+singly-linked lists terminates stating that the structure designated by its
+parameter ``L`` structurally decreases between two recursive calls:
+
+.. literalinclude:: /examples/ug__recursive_subprograms-structural/recursive_subprograms.ads
+   :language: ada
+   :linenos:
+
+The fact that the actual parameter for ``L`` on the recursive call designates a
+strict subcomponent of the structure designated by formal parameter ``L`` can
+be verified by |GNATprove|:
+
+.. literalinclude:: /examples/ug__recursive_subprograms-structural/test.out
+   :language: none
+
 To verify the termination of mutually recursive subprograms, all subprograms
 should be annotated with `compatible` variants. We say that two variants are
-compatible if they have the same number of discrete expressions, and matching
+compatible if they have the same number of expressions, and matching
 values in the list have the same direction and the same base type. For example,
 the variants of ``Is_Even`` and ``Is_Odd`` are compatible,
 because both are of type ``Integer`` and both decrease.

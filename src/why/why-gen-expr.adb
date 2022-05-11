@@ -411,17 +411,17 @@ package body Why.Gen.Expr is
       Dim       : constant Positive := Positive (Number_Dimensions (To_Ent));
 
       function Insert_Array_Index_Check
-        (Expr   : W_Expr_Id;
+        (Expr   : W_Term_Id;
          To_Ent : Entity_Id)
          return W_Prog_Id;
 
       function Insert_Length_Check
-        (Expr   : W_Expr_Id;
+        (Expr   : W_Term_Id;
          To_Ent : Entity_Id)
          return W_Prog_Id;
 
       function Insert_Array_Range_Check
-        (Expr   : W_Expr_Id;
+        (Expr   : W_Term_Id;
          To_Ent : Entity_Id)
          return W_Prog_Id;
 
@@ -430,7 +430,7 @@ package body Why.Gen.Expr is
       ------------------------------
 
       function Insert_Array_Range_Check
-        (Expr   : W_Expr_Id;
+        (Expr   : W_Term_Id;
          To_Ent : Entity_Id)
          return W_Prog_Id
       is
@@ -442,7 +442,7 @@ package body Why.Gen.Expr is
          --  For dynamic types, use dynamic_property
 
          Check := +New_Dynamic_Property
-           (Domain => EW_Prog,
+           (Domain => EW_Pred,
             Ty     => To_Ent,
             Expr   => Expr);
 
@@ -457,7 +457,7 @@ package body Why.Gen.Expr is
       ------------------------------
 
       function Insert_Array_Index_Check
-        (Expr   : W_Expr_Id;
+        (Expr   : W_Term_Id;
          To_Ent : Entity_Id)
          return W_Prog_Id
       is
@@ -481,12 +481,11 @@ package body Why.Gen.Expr is
                Count := Count + 1;
                Eqs (Count) := New_Comparison
                  (Symbol => Why_Eq,
-                  Left   => +Get_Array_Attr
-                    (Domain => EW_Term,
-                     Expr   => Expr,
-                     Attr   => Attribute_First,
-                     Dim    => I),
-                  Right  => +Get_Array_Attr
+                  Left   => Get_Array_Attr
+                    (Expr => Expr,
+                     Attr => Attribute_First,
+                     Dim  => I),
+                  Right  => Get_Array_Attr
                     (Domain => EW_Term,
                      Attr   => Attribute_First,
                      Dim    => I,
@@ -499,12 +498,11 @@ package body Why.Gen.Expr is
                Count := Count + 1;
                Eqs (Count) := New_Comparison
                  (Symbol => Why_Eq,
-                  Left   => +Get_Array_Attr
-                    (Domain => EW_Term,
-                     Expr   => Expr,
-                     Attr   => Attribute_Last,
-                     Dim    => I),
-                  Right  => +Get_Array_Attr
+                  Left   => Get_Array_Attr
+                    (Expr => Expr,
+                     Attr => Attribute_Last,
+                     Dim  => I),
+                  Right  => Get_Array_Attr
                     (Domain => EW_Term,
                      Attr   => Attribute_Last,
                      Dim    => I,
@@ -533,7 +531,7 @@ package body Why.Gen.Expr is
       -------------------------
 
       function Insert_Length_Check
-        (Expr   : W_Expr_Id;
+        (Expr   : W_Term_Id;
          To_Ent : Entity_Id)
          return W_Prog_Id
       is
@@ -555,7 +553,8 @@ package body Why.Gen.Expr is
       Need_Slide : constant Boolean := Needs_Slide (From_Ent, To_Ent);
       Sliding    : constant Boolean :=
         not Force_No_Slide and then Need_Slide and then not Is_Qualif;
-      Arr_Expr   : W_Expr_Id := Expr;
+      Arr_Init   : W_Expr_Id := Expr;
+      Arr_Expr   : W_Term_Id;
       T          : W_Expr_Id;
 
       Pred_Check : constant Boolean :=
@@ -597,18 +596,15 @@ package body Why.Gen.Expr is
       --  check if we should check predicates.
 
       if Init_Check or else Pred_Check then
-         Arr_Expr := Insert_Initialization_Check
+         Arr_Init := Insert_Initialization_Check
            (Ada_Node               => Ada_Node,
             E                      => From_Ent,
-            Name                   => Arr_Expr,
+            Name                   => Arr_Init,
             Domain                 => Domain,
             Exclude_Always_Relaxed => True);
       end if;
 
-      Arr_Expr :=
-        New_Temp_For_Expr
-          (Arr_Expr,
-           Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
+      Arr_Expr := New_Temp_For_Expr (Arr_Init);
 
       --  1 - Put array in split form. If reconstruction is needed, also store
       --  appropriate bounds in Args.
@@ -636,10 +632,10 @@ package body Why.Gen.Expr is
                Arg_Ind : Positive := 1;
                To_Idx  : Entity_Id := First_Index (To_Ent);
             begin
-               Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
+               Add_Map_Arg (Domain, Args, +Arr_Expr, Arg_Ind);
                for I in 1 .. Dim loop
                   Add_Attr_Arg
-                    (Domain, Args, Arr_Expr,
+                    (Domain, Args, +Arr_Expr,
                      Attribute_First, I, Arg_Ind);
 
                   if Is_Constrained (To_Ent)
@@ -650,7 +646,7 @@ package body Why.Gen.Expr is
                         Attribute_First, I, Arg_Ind);
                   else
                      Add_Attr_Arg
-                       (Domain, Args, Arr_Expr,
+                       (Domain, Args, +Arr_Expr,
                         Attribute_First, I, Arg_Ind);
                   end if;
 
@@ -708,7 +704,7 @@ package body Why.Gen.Expr is
                            Target      : constant Entity_Id :=
                              Nth_Index_Type (To_Ent, I);
                            Length_Expr : constant W_Expr_Id :=
-                             Build_Length_Expr (Domain, Arr_Expr, I);
+                             Build_Length_Expr (Domain, +Arr_Expr, I);
                            First_Expr  : constant W_Expr_Id :=
                              Args (Arg_Ind - 1);
                            Last_Expr   : constant W_Expr_Id := New_Discrete_Add
@@ -775,10 +771,10 @@ package body Why.Gen.Expr is
 
                   else
                      Add_Attr_Arg
-                       (Domain, Args, Arr_Expr,
+                       (Domain, Args, +Arr_Expr,
                         Attribute_First, I, Arg_Ind);
                      Add_Attr_Arg
-                       (Domain, Args, Arr_Expr,
+                       (Domain, Args, +Arr_Expr,
                         Attribute_Last, I, Arg_Ind);
                   end if;
                end loop;
@@ -788,20 +784,20 @@ package body Why.Gen.Expr is
          --  first element of Args.
 
          elsif not Is_Static_Array_Type (To_Ent) then
-            Add_Array_Arg (Domain, Args, Arr_Expr, Arg_Ind);
+            Add_Array_Arg (Domain, Args, +Arr_Expr, Arg_Ind);
             T := Args (1);
 
          --  Both are statically constrained, T is Arr_Expr
 
          elsif Is_Static_Array_Type (From_Ent) then
-            T := Arr_Expr;
+            T := +Arr_Expr;
 
          --  To is in constrained but not From. Convert From to base.
 
          else
             T := Array_Convert_To_Base
               (Domain => Domain,
-               Ar     => Arr_Expr);
+               Ar     => +Arr_Expr);
          end if;
 
          --  2. If From has relaxed initialization and we are not doing the
@@ -885,7 +881,7 @@ package body Why.Gen.Expr is
                      +T);
                elsif not Sliding then
                   T := +Sequence
-                    (Insert_Array_Range_Check (Arr_Expr, Check_Type),
+                    (Insert_Array_Range_Check (+Arr_Expr, Check_Type),
                      +T);
                else
                   --  For FLB types, the check that the last bound is in the
@@ -947,7 +943,7 @@ package body Why.Gen.Expr is
       end;
 
       T := Binding_For_Temp (Domain  => Domain,
-                             Tmp     => Arr_Expr,
+                             Tmp     => +Arr_Expr,
                              Context => T);
 
       return T;
@@ -1408,27 +1404,23 @@ package body Why.Gen.Expr is
 
    function Do_Index_Check
      (Ada_Node : Node_Id;
-      Arr_Expr : W_Expr_Id;
+      Arr_Expr : W_Term_Id;
       W_Expr   : W_Expr_Id;
       Dim      : Positive)
       return W_Prog_Id
    is
-      Tmp        : constant W_Expr_Id :=
+      Tmp        : constant W_Term_Id :=
         New_Temp_For_Expr (W_Expr);
-      First_Expr : constant W_Expr_Id :=
-        Insert_Conversion_To_Rep_No_Bool (Domain => EW_Term,
-                                          Expr   => Get_Array_Attr
-                                            (Domain => EW_Term,
-                                             Expr   => Arr_Expr,
-                                             Attr   => Attribute_First,
-                                             Dim    => Dim));
-      Last_Expr  : constant W_Expr_Id :=
-        Insert_Conversion_To_Rep_No_Bool (Domain => EW_Term,
-                                          Expr   => Get_Array_Attr
-                                            (Domain => EW_Term,
-                                             Expr   => Arr_Expr,
-                                             Attr   => Attribute_Last,
-                                             Dim    => Dim));
+      First_Expr : constant W_Term_Id :=
+        Insert_Conversion_To_Rep_No_Bool (Expr => Get_Array_Attr
+                                            (Expr => Arr_Expr,
+                                             Attr => Attribute_First,
+                                             Dim  => Dim));
+      Last_Expr  : constant W_Term_Id :=
+        Insert_Conversion_To_Rep_No_Bool (Expr => Get_Array_Attr
+                                            (Expr => Arr_Expr,
+                                             Attr => Attribute_Last,
+                                             Dim  => Dim));
 
       Check_Info : Check_Info_Type := New_Check_Info;
       T          : W_Prog_Id;
@@ -1436,24 +1428,22 @@ package body Why.Gen.Expr is
       --  For arrays of dimension 1 only, record the index type used for the
       --  index check associated with the Ada node.
 
-      if Number_Dimensions (Get_Ada_Node (+Get_Type (Arr_Expr))) = 1 then
+      if Number_Dimensions (Get_Ada_Node (+Get_Type (+Arr_Expr))) = 1 then
          Check_Info.Fix_Info.Range_Check_Ty :=
-           Nth_Index_Type (Get_Ada_Node (+Get_Type (Arr_Expr)), 1);
+           Nth_Index_Type (Get_Ada_Node (+Get_Type (+Arr_Expr)), 1);
       end if;
 
       T := New_Located_Assert (Ada_Node   => Ada_Node,
                                Reason     => VC_Index_Check,
-                               Pred       => +New_Range_Expr
-                                 (Domain => EW_Pred,
-                                  Low    => First_Expr,
-                                  High   => Last_Expr,
-                                  Expr   => Tmp),
+                               Pred       => New_Range_Expr
+                                 (Low  => First_Expr,
+                                  High => Last_Expr,
+                                  Expr => Tmp),
                                Kind       => EW_Assert,
                                Check_Info => Check_Info);
 
-      return +Binding_For_Temp (Domain => EW_Prog,
-                                Tmp    => Tmp,
-                                Context => +Sequence (T, +Tmp));
+      return Binding_For_Temp (Tmp     => Tmp,
+                               Context => Sequence (T, +Tmp));
    end Do_Index_Check;
 
    --------------------
@@ -3131,7 +3121,7 @@ package body Why.Gen.Expr is
    function New_Dynamic_Property
      (Domain : EW_Domain;
       Ty     : Entity_Id;
-      Expr   : W_Expr_Id;
+      Expr   : W_Term_Id;
       Params : Transformation_Params := Body_Params)
       return W_Expr_Id
    is
@@ -3150,7 +3140,7 @@ package body Why.Gen.Expr is
                           Name   => Dynamic_Prop_Name (Ty),
                           Args   =>
                             Args_For_Scalar_Dynamic_Property
-                              (Ty, Expr, Term_Domain (Domain), Params),
+                              (Ty, +Expr, Term_Domain (Domain), Params),
                           Typ    => EW_Bool_Type);
 
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
@@ -3160,21 +3150,19 @@ package body Why.Gen.Expr is
          begin
             for Count in 0 .. Dim - 1 loop
                declare
-                  F_Expr    : constant W_Expr_Id :=
+                  F_Expr : constant W_Term_Id :=
                     Get_Array_Attr
-                      (Domain => Domain,
-                       Expr   => Expr,
-                       Attr   => Attribute_First,
-                       Dim    => Count + 1);
-                  L_Expr : constant W_Expr_Id :=
+                      (Expr => Expr,
+                       Attr => Attribute_First,
+                       Dim  => Count + 1);
+                  L_Expr : constant W_Term_Id :=
                     Get_Array_Attr
-                      (Domain => Domain,
-                       Expr   => Expr,
-                       Attr   => Attribute_Last,
-                       Dim    => Count + 1);
+                      (Expr => Expr,
+                       Attr => Attribute_Last,
+                       Dim  => Count + 1);
                begin
-                  Args (2 * Count + 1) := F_Expr;
-                  Args (2 * Count + 2) := L_Expr;
+                  Args (2 * Count + 1) := +F_Expr;
+                  Args (2 * Count + 2) := +L_Expr;
                end;
             end loop;
 
@@ -3189,7 +3177,7 @@ package body Why.Gen.Expr is
                                         To       =>
                                           EW_Abstract
                                             (Root_Retysp (Ty)),
-                                        Expr     => Expr);
+                                        Expr     => +Expr);
          begin
             return New_Call
               (Name   => Range_Pred_Name (Root_Retysp (Ty)),
@@ -3794,7 +3782,7 @@ package body Why.Gen.Expr is
                              Expr     => Call,
                              Domain   => Domain);
 
-      elsif Domain in EW_Prog
+      elsif Domain = EW_Prog
         or else not Use_Guard_For_Function (Subp)
       then
          return Call;

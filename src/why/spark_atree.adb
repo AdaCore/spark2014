@@ -1247,6 +1247,13 @@ package body SPARK_Atree is
    function Pragma_Argument_Associations (N : Node_Id) return List_Id is
       (Sinfo.Nodes.Pragma_Argument_Associations (N));
 
+   -----------------------
+   -- Pragma_Identifier --
+   -----------------------
+
+   function Pragma_Identifier (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Pragma_Identifier (N));
+
    ------------
    -- Prefix --
    ------------

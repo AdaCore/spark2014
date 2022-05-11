@@ -142,6 +142,8 @@ end Test;
             self.gprfile,
             "--quiet",
             "--debug-exec-rac",
+            "--no-inlining",
+            "--warnings=off",
             "-cargs",
             "-gnat2022",
         ]

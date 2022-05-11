@@ -20,7 +20,7 @@
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="175665"/></proof>
+  <proof prover="1"><result status="unknown" steps="1331015"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="3"><result status="valid" steps="196"/></proof>
   </goal>

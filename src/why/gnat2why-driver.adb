@@ -759,6 +759,17 @@ package body Gnat2Why.Driver is
          Do_Ownership_Checking;
 
          if Gnat2Why_Args.Debug_Exec_RAC then
+
+            --  Store information for entities
+
+            for E of Entities_To_Translate loop
+
+               --  Set error node so that bugbox information will be correct
+
+               Current_Error_Node := E;
+               Store_Information_For_Entity (E);
+            end loop;
+
             declare
 
                function Assertion (VC : VC_Kind) return String is

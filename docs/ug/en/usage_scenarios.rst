@@ -32,6 +32,8 @@ SPARK analysis can give strong guarantees that a program:
 * accesses global data only as intended,
 * does not contain concurrency errors (deadlocks and data races),
 * does not contain run-time errors (e.g., division by zero or buffer overflow),
+  except for ``Storage_Error``, which is not covered by SPARK analysis (see
+  also section :ref:`Dealing with Storage_Error` below)
 * respects key integrity properties (e.g., interaction between components or global invariants),
 * is a correct implementation of software requirements expressed as contracts.
 
@@ -640,6 +642,8 @@ It is not always possible to achieve 100% proof of AoRTE, for multiple reasons:
 
 #. Some run-time checks may not be proved automatically due to prover
    shortcomings (see :ref:`Investigating Prover Shortcomings` for details).
+
+#. ``Storage_Error`` exceptions are not covered by SPARK analysis.
 
 #. It may not be cost-effective to add the required contracts for proving AoRTE
    in a less critical part of the code, compared to using testing as a means of
@@ -1753,3 +1757,34 @@ is in general preferable to apply ``SPARK_Mode => On`` selectively rather than
 by default, so that units that have non-|SPARK| declarations in the public part
 of their package spec need not be marked ``SPARK_Mode => Off``. See
 :ref:`Using SPARK_Mode to Select or Exclude Code` for details.
+
+
+Dealing with Storage_Error
+--------------------------
+
+As mentioned, SPARK analysis doesn't cover the possible exhaustion of data
+storage, either by exhausting the stack (this can happen by placing too much
+data on the stack, or via a too deep recursion) or by exhausting the heap (this
+can happen by allocating too much data using ``new``).
+
+To protect against stack exhaustion, we recommend using GNATstack.
+
+As GNATstack doesn't analyze the secondary stack, if protection against
+exhaustion of the secondary stack is desired, we recommend using ``pragma
+Restrictions (No_Secondary_Stack);``.
+
+To protect against heap exhaustion, a possible way is to encapsulate
+allocations in a wrapper that handles the possible ``Storage_Error`` exception
+and signals the failure of the allocation to the calling environment via a
+return type.  This wrapper needs to be marked with ``SPARK_Mode`` set to
+``Off``, because handling exceptions is currently not allowed in SPARK. The
+following example, inspired by `this Stackoverflow post
+<https://stackoverflow.com/questions/67806008/how-to-check-for-storage-error-in-spark-ada>`_
+shows such a wrapper, that returns an "invalid" pointer that can't be
+dereferenced in case of memory exhaustion:
+
+.. literalinclude:: /examples/ug__storage_error/storage.ads
+   :language: ada
+
+.. literalinclude:: /examples/ug__storage_error/storage.adb
+   :language: ada

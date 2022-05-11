@@ -33,13 +33,13 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="14014"/></proof>
+  <proof prover="0"><result status="valid" steps="13221"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="14011"/></proof>
+  <proof prover="0"><result status="valid" steps="13218"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="15575"/></proof>
+  <proof prover="0"><result status="valid" steps="14365"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="2278"/></proof>

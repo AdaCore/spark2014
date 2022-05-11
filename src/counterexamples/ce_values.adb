@@ -24,9 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with Ada.Strings;               use Ada.Strings;
+with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Namet;                     use Namet;
-with Sinfo.Nodes;               use Sinfo.Nodes;
+with SPARK_Atree;               use SPARK_Atree;
 with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
 with Uintp;                     use Uintp;
 
@@ -44,6 +46,9 @@ package body CE_Values is
 
    function To_String (V : Scalar_Value_Type) return String;
    --  Convert a scalar value to a string
+
+   function To_String (B : Multidim_Bounds) return String;
+   --  Convert the representation of a multi-dimensional array to a string
 
    function To_String
      (Fst, Lst : Opt_Big_Integer;
@@ -70,7 +75,7 @@ package body CE_Values is
    begin
       if Nkind (E) = N_Character_Literal then
          return (1 => Get_Character
-           (UI_To_CC (Uint (Char_Literal_Value (E)))));
+           (UI_To_CC (Char_Literal_Value (E))));
       else
          pragma Assert (Ekind (E) = E_Enumeration_Literal);
          return To_Upper (Get_Name_String (Chars (E)));
@@ -157,9 +162,25 @@ package body CE_Values is
       end if;
    end To_String;
 
+   function To_String (B : Multidim_Bounds) return String is
+      Res : Unbounded_String;
+   begin
+      for Dim in B.Content'Range loop
+         if B.Content (Dim).First.Present then
+            Append (Res, "'First (" & Trim (Dim'Image, Left) & ") => "
+                    & To_String (B.Content (Dim).First.Content) & ", ");
+         end if;
+         if B.Content (Dim).Last.Present then
+            Append (Res, "'Last (" & Trim (Dim'Image, Left) & ") => "
+                    & To_String (B.Content (Dim).Last.Content) & ", ");
+         end if;
+      end loop;
+      return To_String ("(" & Res & "others => ?)");
+   end To_String;
+
    function To_String (V : Value_Type) return String is
      (case V.K is
-         when Scalar_K =>
+         when Scalar_K  =>
            (if V.Initialized_Attr.Present
             then "('Initialize => " & V.Initialized_Attr.Content'Image
               & ", Value => "
@@ -167,10 +188,11 @@ package body CE_Values is
            & (if V.Scalar_Content = null then "UNDEFINED"
               else To_String (V.Scalar_Content.all))
            & (if V.Initialized_Attr.Present then ")" else ""),
-         when Record_K  => To_String (V.Record_Fields, V.Constrained_Attr),
-         when Array_K   => To_String
+         when Record_K   => To_String (V.Record_Fields, V.Constrained_Attr),
+         when Array_K    => To_String
            (V.First_Attr, V.Last_Attr, V.Array_Values, V.Array_Others),
-         when Access_K  => To_String (V.Designated_Value, V.Is_Null));
+         when Multidim_K => To_String (V.Bounds),
+         when Access_K   => To_String (V.Designated_Value, V.Is_Null));
 
    function To_String (V : Opt_Value_Type) return String is
      (if V.Present then To_String (V.Content) else "NONE");

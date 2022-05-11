@@ -1,2 +1,3 @@
 inverse-prover SKIP test too slow
 NT SKIP platform diffs
+ALL XFAIL replay results not reproducible (V202-006)

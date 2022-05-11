@@ -304,13 +304,6 @@ package body SPARK_Util is
             return True;
          end if;
 
-         --  Check if we reached outside of the expression without encountering
-         --  an assignment.
-
-         if Nkind (P) not in N_Subexpr then
-            return False;
-         end if;
-
          case Nkind (P) is
             when N_Qualified_Expression
                | N_Type_Conversion
@@ -326,10 +319,11 @@ package body SPARK_Util is
             =>
                null;
 
+            --  Deep aggregate cannot be the prefix of an expression (SPARK RM
+            --  3.10(6)) except for the special case of 'Update.
+
             when N_Attribute_Reference =>
-               if Attribute_Name (P) /= Name_Update then
-                  return False;
-               end if;
+               pragma Assert (Attribute_Name (P) = Name_Update);
 
             --  In other cases, the aggregate is not directly on the rhs of
             --  an assignment.
@@ -342,7 +336,7 @@ package body SPARK_Util is
          P := Parent (P);
       end loop;
 
-      return False;
+      raise Program_Error;
    end Aggregate_Is_In_Assignment;
 
    ---------------------------
@@ -596,13 +590,11 @@ package body SPARK_Util is
             if Result /= No_Unrolling then
                Error_Msg_N ("info: ?unrolling loop", Loop_Stmt);
 
-            elsif Reason /= "" then
+            else
+               pragma Assert (Reason /= "");
                Error_Msg_N
                  ("info: ?cannot unroll loop (" & To_String (Reason) & ")",
                   Loop_Stmt);
-
-            else
-               Error_Msg_N ("info: ?cannot unroll loop", Loop_Stmt);
             end if;
          end if;
       end if;
@@ -1421,8 +1413,6 @@ package body SPARK_Util is
       if Full_Name_Is_Not_Unique_Name (E) then
          if Is_Standard_Boolean_Type (E) then
             return "bool";
-         elsif E = Universal_Fixed then
-            return "real";
          else
             raise Program_Error;
          end if;
@@ -1439,9 +1429,7 @@ package body SPARK_Util is
    ----------------------------------
 
    function Full_Name_Is_Not_Unique_Name (E : Entity_Id) return Boolean is
-     ((Is_Type (E) and then Is_Standard_Boolean_Type (E))
-        or else
-      E = Universal_Fixed);
+     ((Is_Type (E) and then Is_Standard_Boolean_Type (E)));
 
    ----------------------
    -- Full_Source_Name --
@@ -1969,20 +1957,6 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Has_Volatile_Property;
-
-   ---------------
-   -- Int_Image --
-   ---------------
-
-   function Int_Image (Val : Int) return String is
-      S : constant String := Int'Image (Val);
-   begin
-      if Val < 0 then
-         return S;
-      else
-         return S (S'First + 1 .. S'Last);
-      end if;
-   end Int_Image;
 
    ------------------------------------------------
    -- Is_Additional_Param_Of_Access_Subp_Wrapper --
@@ -2935,10 +2909,12 @@ package body SPARK_Util is
                null;
 
             when others =>
+               pragma Annotate (Xcov, Exempt_On, "Debugging code");
                Ada.Text_IO.Put_Line
                  ("[SPARK_Util.Is_Reborrowed_On_All_Paths] kind ="
                   & Node_Kind'Image (Nkind (N)));
                raise Program_Error;
+               pragma Annotate (Xcov, Exempt_Off);
          end case;
          Next (N);
       end loop;
@@ -3498,10 +3474,12 @@ package body SPARK_Util is
                   null;
 
                when others =>
+                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   Ada.Text_IO.Put_Line
                     ("[SPARK_Util.No_Deep_Updates] kind ="
                      & Node_Kind'Image (Nkind (N)));
                   raise Program_Error;
+                  pragma Annotate (Xcov, Exempt_Off);
             end case;
             Next (N);
          end loop;
@@ -4337,12 +4315,6 @@ package body SPARK_Util is
 
    function String_Value (Str_Id : String_Id) return String is
    begin
-      --  ??? pragma Assert (Str_Id /= No_String);
-
-      if Str_Id = No_String then
-         return "";
-      end if;
-
       String_To_Name_Buffer (Str_Id);
 
       return Name_Buffer (1 .. Name_Len);

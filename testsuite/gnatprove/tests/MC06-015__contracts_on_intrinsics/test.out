@@ -1,5 +1,5 @@
 p.adb:9:13: info: precondition proved (CVC4: 1 VC)
-p.adb:16:13: medium: precondition might fail
+p.adb:16:13: high: precondition might fail
 p.ads:10:19: info: postcondition proved (CVC4: 1 VC)
 p.ads:10:29: info: division check proved (CVC4: 1 VC)
 p.ads:13:19: info: postcondition proved (CVC4: 1 VC)

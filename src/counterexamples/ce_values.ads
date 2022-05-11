@@ -72,7 +72,7 @@ package CE_Values is
 
    type Scalar_Value_Access is access Scalar_Value_Type;
 
-   type Value_Kind is (Scalar_K, Record_K, Array_K, Access_K);
+   type Value_Kind is (Scalar_K, Record_K, Array_K, Multidim_K, Access_K);
    --  The kind of counterexample values
 
    type Value_Type;
@@ -111,28 +111,42 @@ package CE_Values is
       end case;
    end record;
 
+   subtype Supported_Dimensions is Positive range 1 .. 4;
+
+   type Bound_Type is record
+      First : Opt_Big_Integer;
+      Last  : Opt_Big_Integer;
+   end record;
+
+   type Bound_Array is array (Natural range <>) of Bound_Type;
+   type Multidim_Bounds (Dim : Supported_Dimensions := 1) is record
+      Content : Bound_Array (1 .. Dim);
+   end record;
+
    type Value_Type (K : Value_Kind := Scalar_K) is record
       AST_Ty : Entity_Id;
 
       case K is
-         when Scalar_K =>
+         when Scalar_K   =>
             Scalar_Content   : Scalar_Value_Access;
             Initialized_Attr : Opt_Boolean;
-         when Record_K =>
+         when Record_K   =>
             Record_Fields    : Entity_To_Value_Maps.Map;
             Constrained_Attr : Opt_Boolean;
-         when Array_K =>
-            First_Attr   : Opt_Big_Integer;
-            Last_Attr    : Opt_Big_Integer;
-            Array_Values : Big_Integer_To_Value_Maps.Map;
-            Array_Others : Value_Access;
-         when Access_K =>
+         when Array_K    =>
+            First_Attr       : Opt_Big_Integer;
+            Last_Attr        : Opt_Big_Integer;
+            Array_Values     : Big_Integer_To_Value_Maps.Map;
+            Array_Others     : Value_Access;
+         when Multidim_K =>
+            Bounds           : Multidim_Bounds;
+         when Access_K   =>
             Designated_Value : Value_Access;
             Is_Null          : Opt_Boolean;
       end case;
    end record;
    --  Representation of a counterexample value.
-   --  It can be of 4 different kinds:
+   --  It can be of 5 different kinds:
    --  * Scalar values contains a scalar representation and optionally an
    --    initialization flag.
    --  * Array values are 1-dim array aggregates. They contain optional
@@ -143,6 +157,9 @@ package CE_Values is
    --    components/discriminants to values and an optional boolean value
    --    for the constrained attribute if any.
    --  * Access values contain an Is_Null boolean flag and a designated value.
+   --  * For multi-dimensional arrays, only store the bounds currently as no
+   --    counterexample values can be supplied by the provers for their
+   --    content.
 
    type Opt_Value_Type (Present : Boolean := False) is record
       case Present is
@@ -172,6 +189,7 @@ package CE_Values is
    --  used when parsing all counterexample values supplied for a line.
 
    function To_String (V : Value_Type) return String;
+   --  Debug printing for counterexample values
 
    function To_String (V : Opt_Value_Type) return String;
 

@@ -130,6 +130,17 @@ procedure Main with SPARK_Mode is
       end case;
    end P8;
 
+   type My_Matrix is array (Positive range <>, Positive range <>) of Natural;
+
+   procedure P9 (X : My_Matrix) with
+     Global => null,
+     Pre => X'First (1) = 1 and then X'Last (1) = 1
+       and then X'First (2) = 1 and then X'Last (2) = 1 and then X (1, 1) = 1
+   is
+   begin
+      pragma Assert (X (1, 1) /= 1); --@ASSERT:FAIL
+   end P9;
+
 begin
    null;
 end Main;

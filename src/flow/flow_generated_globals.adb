@@ -4,7 +4,7 @@
 --                                                                          --
 --                 F L O W . G E N E R A T E D _ G L O B A L S              --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --              Copyright (C) 2017-2022, Capgemini Engineering              --
 --                                                                          --

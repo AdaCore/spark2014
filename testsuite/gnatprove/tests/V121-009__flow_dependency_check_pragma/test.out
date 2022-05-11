@@ -1,0 +1,10 @@
+assert_flow.adb:1:11: warning: subprogram "Assert_Flow" has no effect
+assert_flow.adb:3:24: info: data dependencies proved
+assert_flow.adb:3:47: low: unused global "X"
+assert_flow.adb:18:22: medium: assertion might fail
+assert_flow.adb:19:22: info: assertion proved (CVC4: 1 VC)
+p.adb:1:32: info: initialization of "Y1" proved
+p.adb:1:36: info: initialization of "Y2" proved
+p.adb:2:16: medium: missing dependency "Y1 => X2"
+p.adb:2:26: medium: missing dependency "Y2 => X1"
+p.adb:3:12: info: postcondition proved (CVC4: 2 VC)

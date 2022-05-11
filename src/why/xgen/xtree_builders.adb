@@ -4,7 +4,7 @@
 --                                                                          --
 --                       X T R E E _ B U I L D E R S                        --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                     Copyright (C) 2010-2022, AdaCore                     --
 --                                                                          --

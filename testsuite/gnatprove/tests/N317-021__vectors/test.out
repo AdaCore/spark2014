@@ -397,12 +397,12 @@ indefinite_bounded_tagged.adb:50:25: info: assertion proved (CVC4: 2 VC; Trivial
 indefinite_bounded_tagged.adb:50:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:51:25: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
 indefinite_bounded_tagged.adb:51:25: info: precondition proved (CVC4: 2 VC)
+indefinite_bounded_tagged.adb:52:25: info: assertion proved (Trivial: 1 VC; Z3: 2 VC)
 indefinite_bounded_tagged.adb:52:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:52:25: medium: assertion might fail
+indefinite_bounded_tagged.adb:53:25: info: assertion proved (Trivial: 1 VC; Z3: 2 VC)
 indefinite_bounded_tagged.adb:53:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:53:25: medium: assertion might fail
+indefinite_bounded_tagged.adb:54:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 indefinite_bounded_tagged.adb:54:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:54:25: medium: assertion might fail
 indefinite_bounded_tagged.adb:56:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_bounded_tagged.adb:57:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:58:25: info: assertion proved (CVC4: 1 VC)
@@ -605,12 +605,12 @@ indefinite_unbounded_tagged.adb:46:25: info: assertion proved (CVC4: 2 VC; Trivi
 indefinite_unbounded_tagged.adb:46:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:47:25: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
 indefinite_unbounded_tagged.adb:47:25: info: precondition proved (CVC4: 2 VC)
+indefinite_unbounded_tagged.adb:48:25: info: assertion proved (Trivial: 1 VC; Z3: 2 VC)
 indefinite_unbounded_tagged.adb:48:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:48:25: medium: assertion might fail
+indefinite_unbounded_tagged.adb:49:25: info: assertion proved (Trivial: 1 VC; Z3: 2 VC)
 indefinite_unbounded_tagged.adb:49:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:49:25: medium: assertion might fail
+indefinite_unbounded_tagged.adb:50:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 indefinite_unbounded_tagged.adb:50:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:50:25: medium: assertion might fail
 indefinite_unbounded_tagged.adb:52:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_unbounded_tagged.adb:53:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:54:25: info: assertion proved (CVC4: 1 VC)

@@ -16,19 +16,19 @@
   <proof prover="0"><result status="valid" steps="3688"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="18267"/></proof>
+  <proof prover="0"><result status="valid" steps="17241"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="17731"/></proof>
+  <proof prover="0"><result status="valid" steps="17056"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="3747"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="9372"/></proof>
+  <proof prover="0"><result status="valid" steps="8680"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="18513"/></proof>
+  <proof prover="0"><result status="valid" steps="17454"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >

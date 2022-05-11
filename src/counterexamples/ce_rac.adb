@@ -31,14 +31,11 @@ with Ada.Containers;          use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Environment_Variables;
-with Ada.Strings;             use Ada.Strings;
-with Ada.Strings.Fixed;       use Ada.Strings.Fixed;
 with Ada.Text_IO;             use Ada.Text_IO;
-with Atree;                   use Atree;
+with CE_Parsing;              use CE_Parsing;
 with CE_Utils;                use CE_Utils;
 with Common_Containers;       use Common_Containers;
-with Einfo.Entities;          use Einfo.Entities;
-with Einfo.Utils;             use Einfo.Utils;
+with Elists;                  use Elists;
 with Flow_Refinement;         use Flow_Refinement;
 with Flow_Types;              use Flow_Types;
 with Flow_Utility;            use Flow_Utility;
@@ -47,19 +44,17 @@ with GNAT.Traceback.Symbolic;
 with GNATCOLL.JSON;           use GNATCOLL.JSON;
 with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Gnat2Why_Opts.Reading;
+with Gnat2Why.Tables;         use Gnat2Why.Tables;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Hashing;                 use Hashing;
 with Namet;                   use Namet;
 with Nlists;                  use Nlists;
 with Nmake;                   use Nmake;
 with Output;                  use Output;
-with Sem_Aux;                 use Sem_Aux;
-with Sem_Util;                use Sem_Util;
-with Sinfo.Nodes;             use Sinfo.Nodes;
-with Sinfo.Utils;             use Sinfo.Utils;
 with Sinput;                  use Sinput;
 with Snames;                  use Snames;
-with SPARK_Atree;
+with SPARK_Atree;             use SPARK_Atree;
+with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
 with SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
 with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
@@ -78,12 +73,6 @@ package body CE_RAC is
    procedure Check_Supported_Type (Ty : Entity_Id);
    --  Call RAC_Unsupported if Ty is not supported yet
 
-   function Safe_Retysp (T : Type_Kind_Id) return Entity_Id is
-     (if SPARK_Definition.Entity_Marked (T) then
-         Retysp (T)
-      else T);
-   --  Apply Retysp safely
-
    ------------
    -- Values --
    ------------
@@ -101,13 +90,13 @@ package body CE_RAC is
       Ty : Entity_Id) return Value_Type
    is
      (K                => Scalar_K,
-      AST_Ty           => Ty,
+      AST_Ty           => Retysp (Ty),
       Scalar_Content   => new Scalar_Value_Type'(V),
       Initialized_Attr => <>);
    --  Make a value of kind scalar out of a scalar value
 
    function Enum_Value (E : Entity_Id; Ty : Entity_Id) return Value_Type is
-     (Scalar_Value ((K => Enum_K, Enum_Entity => E), Ty));
+     (Scalar_Value ((K => Enum_K, Enum_Entity => E), Retysp (Ty)));
    --  Make an enum value from an enumeration literal E
 
    function Enum_Value (I : Uint; Ty : Entity_Id) return Value_Type;
@@ -128,7 +117,7 @@ package body CE_RAC is
       Ty          : Entity_Id) return Value_Type
    is
      (K            => Array_K,
-      AST_Ty       => Ty,
+      AST_Ty       => Retysp (Ty),
       First_Attr   => (True, First),
       Last_Attr    => (True, Last),
       Array_Values => Values,
@@ -175,7 +164,7 @@ package body CE_RAC is
    --  if V is an integer, signaling errors for node N.
 
    function Int_Value (I : Big_Integer; Ty : Entity_Id) return Value_Type is
-      (Scalar_Value ((K => Integer_K, Integer_Content => I), Ty));
+      (Scalar_Value ((K => Integer_K, Integer_Content => I), Retysp (Ty)));
 
    function Integer_Value
      (I     : Big_Integer;
@@ -187,7 +176,7 @@ package body CE_RAC is
    --  applying modulo for type Ty, signaling errors for node N.
 
    function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type is
-     (Integer_Value (I, Safe_Retysp (Etype (N)), N));
+     (Integer_Value (I, Retysp (Etype (N)), N));
    --  Construct an integer value after checking against type bounds or
    --  applying modulo for type Etype (N), signaling errors for node N.
 
@@ -224,6 +213,11 @@ package body CE_RAC is
 
    function "=" (V1, V2 : Value_Type) return Boolean;
    --  Ada equality of two values
+
+   procedure Cleanup_Counterexample_Value (V : in out Value_Type; N : Node_Id);
+   --  Clean-up counterexample values so they can be used by the RAC.
+   --  Call RAC_Unsupported if the counterexample value is unsupported yet, and
+   --  Exn_RAC_Stuck if the value is incomplete.
 
    --------------------------------
    -- Runtime control exceptions --
@@ -354,7 +348,7 @@ package body CE_RAC is
 
    procedure Set_Value
      (S : in out Scopes.Map;
-      E :        N_Defining_Identifier_Id;
+      E :        Entity_Id;
       V :        Value_Access);
    --  Set (or update) the value of an identifier in a scope
 
@@ -387,7 +381,7 @@ package body CE_RAC is
    Ctx : Context;
    --  Lo and behold! The global execution context
 
-   function Find_Binding (E : N_Entity_Id) return Binding;
+   function Find_Binding (E : Entity_Id) return Binding;
    --  Find the binding of a variable in the context environment. If not found,
    --  it is assumed to be a global constant and initialised as it.
 
@@ -400,36 +394,6 @@ package body CE_RAC is
    with
      Ghost => True;
    --  Predicate for nodes, for which the counterexample may have a value
-
-   function Import
-     (V    : Cntexmp_Value;
-      Ty   : Entity_Id;
-      N    : Node_Id;
-      Name : String := "";
-      Elts : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty)
-      return Value_Type
-   with
-     Pre => (if Present (N) then Can_Get (N));
-   --  Import a counterexample value V of type Ty (the context of node is used
-   --  only to signal errors).
-   --  For the toplevel call, Elts are the other counterexample values at the
-   --  position of V. For the import of nested values, N and Elts are Empty.
-
-   type Cntexample_Elt_Opt (Cntexample_Elt_Present : Boolean := False)
-   is record
-      case Cntexample_Elt_Present is
-         when True =>
-            Cntexample_Elt_Content : Cntexample_Elt;
-         when False =>
-            null;
-      end case;
-   end record;
-
-   function Find_Cntexmp_Elt
-     (Name : String;
-      Elts : Cntexample_Elt_Lists.List)
-      return Cntexample_Elt_Opt;
-   --  Find a counterexample value by name in a list of counterexample values
 
    function Get_Cntexmp_Value
      (N       : Node_Id;
@@ -472,16 +436,6 @@ package body CE_RAC is
      Pre => Is_Integer_Type (Ty);
    --  Write the first and last value of an integer type Ty in Fst and Lst
 
-   function Get_Enum_Type_Last (Ty : Entity_Id) return Positive;
-   --  Returns the index of the last enumeration literal
-
-   procedure Get_Array_Info
-     (Ty                :     Entity_Id;
-      Index_Ty, Comp_Ty : out Entity_Id;
-      Fst, Lst          : out Big_Integer);
-   --  Get the index type and component type, and the bounds of a
-   --  one-dimensional, constrained array.
-
    procedure Check_Fuel_Decrease (Fuel : in out Integer);
    --  Check fuel and decrease. Raise RAC_Incomplete when fuel becomes zero.
    --  Do nothing for negative values of Fuel.
@@ -513,7 +467,7 @@ package body CE_RAC is
    --  Evaluate node N to a value pointer for the left-hand side of an
    --  assignment.
 
-   procedure RAC_Statement (N : N_Statement_Other_Than_Procedure_Call_Id);
+   procedure RAC_Statement (N : Node_Id);
    --  RAC execution of a statement N
 
    procedure RAC_Pragma (N : N_Pragma_Id);
@@ -534,7 +488,6 @@ package body CE_RAC is
    function RAC_Call
      (N       : Node_Id;
       E       : Entity_Id;
-      Args    : List_Id;
       Is_Main : Boolean := False)
       return Opt_Value_Type;
    --  RAC execution of a call to E with parameters in Scope. If Is_Main is
@@ -562,12 +515,11 @@ package body CE_RAC is
    --  expression in the declaration (if Use_Expr is true), or by a default
    --  value (if Default_Value is true).
 
-   function Param_Scope (E : Entity_Id; Args : List_Id) return Scopes.Map;
-   --  Create a scope of parameters for a call from the associations Args
+   function Param_Scope (Call : Node_Id) return Scopes.Map;
+   --  Create a scope of parameters for a call Call
 
    procedure Copy_Out_Parameters
-     (E    :        Entity_Id;
-      Args :        List_Id;
+     (Call :        Node_Id;
       Sc   : in out Scopes.Map);
    --  Copy scalar values of out and in_out parameters from the parameter scope
    --  Sc to the environment.
@@ -689,6 +641,11 @@ package body CE_RAC is
          when Record_K =>
             return V1.Record_Fields = V2.Record_Fields;
 
+         --  Multidimensional arrays are not supported yet
+
+         when Multidim_K =>
+            raise Program_Error;
+
          when Array_K  =>
 
             --  ??? We should change to use Ada equality on arrays
@@ -750,19 +707,21 @@ package body CE_RAC is
 
    procedure Check_Supported_Type (Ty : Entity_Id) is
    begin
-      if Has_Discriminants (Ty) then
-         RAC_Unsupported ("Type has discrimants", Ty);
+      --  We do not support the 'Constrained attribute yet
+
+      if Has_Discriminants (Ty) and then Has_Defaulted_Discriminants (Ty) then
+         RAC_Unsupported ("Type has mutable discrimants", Ty);
       end if;
       if Has_Predicates (Ty) then
          RAC_Unsupported ("Type has predicates", Ty);
       end if;
-      if Has_Invariants (Ty) then
+      if Has_Invariants_In_SPARK (Ty) then
          RAC_Unsupported ("Type has invariants", Ty);
       end if;
       if Is_Class_Wide_Type (Ty) then
          RAC_Unsupported ("Type is class wide type", Ty);
       end if;
-      if Has_Dynamic_Predicate_Aspect (Ty) then
+      if Has_Predicates (Ty) and then not Has_Static_Predicate (Ty) then
          RAC_Unsupported ("Type has dynamic predicate aspect", Ty);
       end if;
       if Is_Floating_Point_Type (Ty) then
@@ -856,6 +815,183 @@ package body CE_RAC is
       end if;
    end Check_Node;
 
+   ----------------------------------
+   -- Cleanup_Counterexample_Value --
+   ----------------------------------
+
+   procedure Cleanup_Counterexample_Value (V : in out Value_Type; N : Node_Id)
+   is
+   begin
+      Check_Supported_Type (V.AST_Ty);
+
+      case V.K is
+         when Scalar_K =>
+
+            --  Check that we have an actual value for the scalar
+
+            if (V.Initialized_Attr.Present
+                and then not V.Initialized_Attr.Content)
+              or else V.Scalar_Content = null
+            then
+               RAC_Unsupported ("uninitialized scalar", N);
+
+            --  Real types are not supported yet
+
+            elsif V.Scalar_Content.K not in Integer_K .. Enum_K then
+               RAC_Unsupported
+                 ("value of real type " & Full_Name (V.AST_Ty), N);
+            end if;
+
+         when Record_K =>
+
+            --  Check that we have values for all components and discriminants.
+            --  Delete components which are not present in the type.
+
+            if Has_Discriminants (V.AST_Ty) then
+               declare
+                  Discr : Entity_Id := First_Discriminant
+                    (Root_Retysp (V.AST_Ty));
+                  Elmt  : Elmt_Id :=
+                    (if Is_Constrained (V.AST_Ty)
+                     then First_Elmt (Discriminant_Constraint (V.AST_Ty))
+                     else No_Elmt);
+
+               begin
+                  while Present (Discr) loop
+                     if not V.Record_Fields.Contains (Discr) then
+                        if Is_Constrained (V.AST_Ty) then
+                           V.Record_Fields.Insert
+                             (Discr,
+                              new Value_Type'
+                                (RAC_Expr
+                                     (Node (Elmt), Retysp (Etype (Discr)))));
+                        else
+                           RAC_Stuck
+                             ("missing value for discriminant "
+                              & Source_Name (Discr)
+                              & " in " & Full_Name (V.AST_Ty));
+                        end if;
+                     else
+                        Cleanup_Counterexample_Value
+                          (V.Record_Fields (Discr).all, N);
+                     end if;
+
+                     Next_Discriminant (Discr);
+                     if Is_Constrained (V.AST_Ty) then
+                        Next_Elmt (Elmt);
+                     end if;
+                  end loop;
+               end;
+            end if;
+
+            for Comp of Get_Component_Set (V.AST_Ty) loop
+               if Component_Is_Removed_In_Type
+                 (V.AST_Ty, Comp, V.Record_Fields)
+               then
+                  V.Record_Fields.Exclude (Comp);
+               elsif Is_Type (Comp) then
+                  RAC_Unsupported
+                    ("invisible component from type " & Full_Name (Comp),
+                     N);
+               elsif not V.Record_Fields.Contains (Comp) then
+                  RAC_Stuck
+                    ("missing value for field "
+                     & Source_Name (Comp) & " of type "
+                     & Source_Name (Original_Declaration (Comp)));
+               elsif Has_Discriminant_Dependent_Constraint (Comp) then
+                  RAC_Unsupported
+                    ("discriminant dependant component " & Source_Name (Comp),
+                     N);
+               else
+                  Cleanup_Counterexample_Value (V.Record_Fields (Comp).all, N);
+               end if;
+            end loop;
+
+         when Array_K =>
+
+            declare
+               Type_Fst  : Big_Integer;
+               Type_Lst  : Big_Integer;
+               Fst, Lst  : Big_Integer;
+
+            begin
+               Get_Bounds
+                 (Get_Range (First_Index (V.AST_Ty)), Type_Fst, Type_Lst);
+
+               --  For constrained arrays, fill the bounds
+
+               if Is_Constrained (V.AST_Ty) then
+                  Fst := Type_Fst;
+                  Lst := Type_Lst;
+                  V.First_Attr := (True, Fst);
+                  V.Last_Attr := (True, Lst);
+
+               --  For other arrays, check that the bounds are provided, and
+               --  that they are in the index type.
+
+               else
+                  if not V.First_Attr.Present
+                    or else not V.Last_Attr.Present
+                  then
+                     RAC_Stuck
+                       ("Missing bound in unconstrained array"
+                        & " counterexample");
+                  end if;
+
+                  Fst := V.First_Attr.Content;
+                  Lst := V.Last_Attr.Content;
+
+                  if Fst <= Lst
+                    and then (Fst < Type_Fst or else Lst > Type_Lst)
+                  then
+                     RAC_Stuck
+                       ("Incorrect bound in unconstrained array"
+                        & " counterexample");
+                  end if;
+               end if;
+
+               --  Check the supplied values. Delete out-of-bounds values.
+
+               declare
+                  use Big_Integer_To_Value_Maps;
+                  C : Cursor := First (V.Array_Values);
+
+               begin
+                  while Has_Element (C) loop
+                     declare
+                        Idx : Big_Integer renames Key (C);
+                        Val : Value_Access renames Element (C);
+
+                     begin
+                        if not (Fst <= Idx and then Idx <= Lst) then
+                           declare
+                              Nxt : constant Cursor := Next (C);
+                           begin
+                              V.Array_Values.Delete (C);
+                              C := Nxt;
+                           end;
+
+                        else
+                           Cleanup_Counterexample_Value (Val.all, N);
+                           Next (C);
+                        end if;
+                     end;
+                  end loop;
+               end;
+
+               if V.Array_Others /= null then
+                  Cleanup_Counterexample_Value (V.Array_Others.all, N);
+               end if;
+            end;
+
+         when Multidim_K =>
+            RAC_Unsupported ("multidimensional array type", N);
+
+         when Access_K =>
+            RAC_Unsupported ("value of an access type", N);
+      end case;
+   end Cleanup_Counterexample_Value;
+
    ----------
    -- Copy --
    ----------
@@ -886,46 +1022,53 @@ package body CE_RAC is
 
    function Copy (V : Value_Type) return Value_Type is
      (case V.K is
-         when Record_K =>
+         when Record_K   =>
             (V with delta Record_Fields => Copy (V.Record_Fields)),
-         when Array_K  =>
+         when Array_K    =>
             (V with delta
                  Array_Values => Copy (V.Array_Values),
                  Array_Others =>
                    (if V.Array_Others = null then null
                     else new Value_Type'(Copy (V.Array_Others.all)))),
-         when Scalar_K =>
+         when Scalar_K   =>
             (V with delta Scalar_Content =>
                 (if V.Scalar_Content = null then null
                  else new Scalar_Value_Type'(V.Scalar_Content.all))),
-         when Access_K =>
+         when Access_K   =>
             (V with delta Designated_Value =>
                 (if V.Designated_Value = null then null
-                 else new Value_Type'(Copy (V.Designated_Value.all)))));
+                 else new Value_Type'(Copy (V.Designated_Value.all)))),
+         when Multidim_K => V);
 
    -------------------------
    -- Copy_Out_Parameters --
    -------------------------
    procedure Copy_Out_Parameters
-     (E    :        Entity_Id;
-      Args :        List_Id;
+     (Call :        Node_Id;
       Sc   : in out Scopes.Map)
    is
-      Par : Entity_Id := First_Formal (E);
-      Arg : Node_Id := First (Args);
-   begin
-      while Present (Par) loop
-         pragma Assert (Present (Arg));
-         if
-           Is_Scalar_Type (Etype (Par)) and then
-           Ekind (Par) in E_In_Out_Parameter | E_Out_Parameter
+      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  Do the copy out for one parameter
+
+      -------------------
+      -- Process_Param --
+      -------------------
+
+      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
+      begin
+         if Is_Scalar_Type (Etype (Formal))
+           and then Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
          then
-            RAC_Expr_LHS (Arg).all := Sc (Par).Val.all;
+            RAC_Expr_LHS (Actual).all := Sc (Formal).Val.all;
          end if;
-         Next_Formal (Par);
-         Next (Arg);
-      end loop;
-      pragma Assert (No (Arg));
+      end Process_Param;
+
+      procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
+
+   --  Start of processing for Copy_Out_Parameters
+
+   begin
+      Iterate_Call (Call);
    end Copy_Out_Parameters;
 
    -------------------
@@ -933,63 +1076,115 @@ package body CE_RAC is
    -------------------
 
    function Default_Value
-     (Ty : Node_Id; Check : Boolean := True) return Value_Type is
+     (Ty : Node_Id; Check : Boolean := True) return Value_Type
+   is
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
    begin
 
       --  ??? Use Default_Value or Default_Component_Value of Ty when this is
       --      specified
 
-      if Is_Integer_Type (Ty) then
+      if Is_Integer_Type (Rep_Ty) then
          --  0 or Ty'First
          declare
             Fst, Lst, I : Big_Integer;
             Zero        : constant Big_Integer := 0;
          begin
-            Get_Integer_Type_Bounds (Ty, Fst, Lst);
+            Get_Integer_Type_Bounds (Rep_Ty, Fst, Lst);
             I := (if In_Range (Zero, Fst, Lst) then Zero else Fst);
-            return Integer_Value (I, Ty, Empty, Check => Check);
+            return Integer_Value (I, Rep_Ty, Empty, Check => Check);
          end;
 
-      elsif Is_Character_Type (Ty) then
+      elsif Is_Character_Type (Rep_Ty) then
          --  ??? Is this the right way to make a character literal node? Why
          --  does it print as 'h'? C.f. gnat/sem_eval.adb:2823.
          return Enum_Value
            (Make_Character_Literal
               (No_Location, Name_Find, UI_From_Int (Character'Pos ('a'))),
-            Ty);
+            Rep_Ty);
 
-      elsif Is_Enumeration_Type (Ty) then
-         return Enum_Value (First_Literal (Ty), Ty);
+      elsif Is_Enumeration_Type (Rep_Ty) then
+         return Enum_Value (First_Literal (Rep_Ty), Rep_Ty);
 
-      elsif Is_Array_Type (Ty) then
+      elsif Is_Array_Type (Rep_Ty) then
          declare
-            Index_Ty, Comp_Ty : Entity_Id;
             Fst, Lst          : Big_Integer;
             Other             : Value_Access;
+            U_Fst             : Uint;
+            U_Lst             : Uint;
+
          begin
-            Get_Array_Info (Ty, Index_Ty, Comp_Ty, Fst, Lst);
-            if not Is_Constrained (Ty) then
+            --  Use static array type bounds or index type bounds as default
+
+            Find_First_Static_Range (First_Index (Rep_Ty), U_Fst, U_Lst);
+            Fst := From_String (UI_Image (U_Fst, Decimal));
+            Lst := From_String (UI_Image (U_Lst, Decimal));
+
+            if not Is_Constrained (Rep_Ty) then
                Lst := Fst;
             end if;
-            Other := new Value_Type'(Default_Value (Comp_Ty));
+            Other := new Value_Type'(Default_Value (Component_Type (Rep_Ty)));
             return Array_Value
-              (Fst, Lst, Big_Integer_To_Value_Maps.Empty, Other, Ty);
+              (Fst, Lst, Big_Integer_To_Value_Maps.Empty, Other, Rep_Ty);
          end;
 
-      elsif Is_Record_Type (Ty) then
+      elsif Is_Record_Type (Rep_Ty) then
          declare
-            F : Entity_To_Value_Maps.Map;
-            E : Entity_Id := First_Component_Or_Discriminant (Ty);
+            F     : Entity_To_Value_Maps.Map;
+            Discr : Entity_Id;
+            Elmt  : Elmt_Id;
          begin
-            while Present (E) loop
-               F.Insert (E, new Value_Type'(Default_Value (Etype (E))));
-               Next_Component_Or_Discriminant (E);
-            end loop;
-            return Record_Value (F, Ty);
-         end;
+            if Has_Discriminants (Rep_Ty) then
+               Discr := First_Discriminant (Root_Retysp (Rep_Ty));
 
-      elsif Is_Private_Type (Ty) then
-         return Default_Value (Full_View (Ty));
+               --  For constrained subtypes get the discriminant values from
+               --  the type.
+
+               if Is_Constrained (Rep_Ty) then
+                  Elmt := First_Elmt (Discriminant_Constraint (Rep_Ty));
+                  while Present (Discr) loop
+                     F.Insert
+                       (Discr,
+                        new Value_Type'
+                          (RAC_Expr (Node (Elmt), Retysp (Etype (Discr)))));
+                     Next_Discriminant (Discr);
+                     Next_Elmt (Elmt);
+                  end loop;
+
+               --  Use default values for discriminants
+
+               else
+                  while Present (Discr) loop
+                     F.Insert
+                       (Discr, new Value_Type'(Default_Value (Etype (Discr))));
+                     Next_Discriminant (Discr);
+                  end loop;
+               end if;
+            end if;
+
+            for Comp of Get_Component_Set (Rep_Ty) loop
+               if Component_Is_Removed_In_Type (Rep_Ty, Comp, F) then
+                  null;
+               elsif Is_Type (Comp) then
+                  RAC_Unsupported
+                    ("private part in type " & Full_Name (Comp), Rep_Ty);
+
+               --  Use the default value of the component if any
+
+               elsif Present (Expression (Enclosing_Declaration (Comp))) then
+                  F.Insert
+                    (Comp,
+                     new Value_Type'
+                       (RAC_Expr (Expression (Enclosing_Declaration (Comp)),
+                        Retysp (Etype (Comp)))));
+               else
+                  F.Insert
+                    (Comp, new Value_Type'(Default_Value (Etype (Comp))));
+               end if;
+            end loop;
+
+            return Record_Value (F, Rep_Ty);
+         end;
 
       else
          RAC_Unsupported ("Default_Value", Ty);
@@ -1026,7 +1221,7 @@ package body CE_RAC is
       Lit : Node_Id;
    begin
       Check_Supported_Type (Ty);
-      Lit := Get_Enum_Lit_From_Pos (Ty, I, No_Location);
+      Lit := Get_Enum_Lit_From_Pos (Ty, I);
       return Scalar_Value
         ((K          => Enum_K,
           Enum_Entity =>
@@ -1041,7 +1236,7 @@ package body CE_RAC is
    -- Find_Binding --
    ------------------
 
-   function Find_Binding (E : N_Entity_Id) return Binding
+   function Find_Binding (E : Entity_Id) return Binding
    is
       C : Scopes.Cursor;
       B : Binding;
@@ -1053,13 +1248,6 @@ package body CE_RAC is
             return Scope (C);
          end if;
       end loop;
-
-      --  E must be a global constant without variable input (otherwise it
-      --  would have been initialized in Init_Global_Scope).
-      --  ??? Fails for O429-003__aliasing/alias.ads:20
-      pragma Assert (if Ekind (E) = E_Constant
-                     and then not Is_Access_Variable (Etype (E))
-                     then not Has_Variable_Input (E));
 
       --  Lazily initialize globals that were not initialized by Global_Scope
       Init_Global (Ctx.Env (Ctx.Env.Last), E, True, False, B,
@@ -1099,49 +1287,6 @@ package body CE_RAC is
       return V;
    end Flush_RAC_Return;
 
-   --------------------
-   -- Get_Array_Info --
-   --------------------
-
-   procedure Get_Array_Info
-     (Ty                :     Entity_Id;
-      Index_Ty, Comp_Ty : out Entity_Id;
-      Fst, Lst          : out Big_Integer)
-   is
-   begin
-      Check_Supported_Type (Ty);
-      Index_Ty := Etype (First_Index (Ty));
-      Comp_Ty  :=
-        Component_Type
-          (if Ekind (Ty) = E_Array_Subtype then Base_Type (Ty) else Ty);
-      if Is_Enumeration_Type (Index_Ty) then
-         Fst := 0;
-         Lst := To_Big_Integer (Get_Enum_Type_Last (Index_Ty));
-      else
-         Get_Integer_Type_Bounds (Index_Ty, Fst, Lst);
-      end if;
-   end Get_Array_Info;
-
-   ----------------------
-   -- Find_Cntexmp_Elt --
-   ----------------------
-
-   function Find_Cntexmp_Elt
-     (Name : String;
-      Elts : Cntexample_Elt_Lists.List)
-      return Cntexample_Elt_Opt
-   is
-   begin
-      for Elt of Elts loop
-         if Name = Elt.Name then
-            return
-              (Cntexample_Elt_Present => True,
-               Cntexample_Elt_Content => Elt);
-         end if;
-      end loop;
-      return (Cntexample_Elt_Present => False);
-   end Find_Cntexmp_Elt;
-
    -----------------------
    -- Get_Cntexmp_Value --
    -----------------------
@@ -1156,15 +1301,10 @@ package body CE_RAC is
         Integer (Get_Physical_Line_Number (Sloc (N)));
       Files_C  : constant Cntexample_File_Maps.Cursor :=
         Cntexmp.Find (Filename);
-      Name     : constant String := Trim (Node_Id'Image (N), Ada.Strings.Left)
-         & (if Is_Mutable_In_Why (N)
-            and then Is_Record_Type_In_Why (Retysp (Etype (N)))
-            and then Count_Why_Top_Level_Fields (Retysp (Etype (N))) > 0
-            then "'Fields" else "");
-      --  Mutable records are split in a part for fields and a part for
-      --  discriminants. Here we only query the fields, as discriminants are
-      --  not supported currently.
-      Elt      : Cntexample_Elt_Opt;
+      Obj      : constant Entity_Id :=
+        (if Nkind (N) in N_Identifier | N_Expanded_Name then Entity (N)
+         else N);
+
    begin
       if not Cntexample_File_Maps.Has_Element (Files_C) then
          return No_Value;
@@ -1174,22 +1314,19 @@ package body CE_RAC is
          Lines   : Cntexample_Lines renames Cntexmp (Files_C);
          Lines_C : constant Cntexample_Line_Maps.Cursor :=
            Lines.Other_Lines.Find (Line);
+         Val     : Opt_Value_Type;
       begin
          if not Cntexample_Line_Maps.Has_Element (Lines_C) then
             return No_Value;
          end if;
 
-         Elt := Find_Cntexmp_Elt (Name, Lines.Other_Lines (Lines_C));
+         Val := Get_Counterexample_Value
+           (Obj, Cntexample_Line_Maps.Element (Lines_C));
 
-         if Elt.Cntexample_Elt_Present then
-            return Some_Value
-              (Import
-                 (Elt.Cntexample_Elt_Content.Value.all,
-                  Safe_Retysp (Etype (N)), N,
-                  Name, Lines.Other_Lines (Lines_C)));
-         else
-            return No_Value;
+         if Val.Present then
+            Cleanup_Counterexample_Value (Val.Content, N);
          end if;
+         return Val;
       end;
    end Get_Cntexmp_Value;
 
@@ -1206,7 +1343,7 @@ package body CE_RAC is
          if SPARK_Atree.Compile_Time_Known_Value (N) then
             return From_String (UI_Image (SPARK_Atree.Expr_Value (N)));
          else
-            return Value_Integer (RAC_Expr (N));
+            return Value_Enum_Integer (RAC_Expr (N));
          end if;
       end To_Big_Integer;
 
@@ -1217,36 +1354,6 @@ package body CE_RAC is
       High := To_Big_Integer (High_Bound (N));
    end Get_Bounds;
 
-   ------------------------
-   -- Get_Enum_Type_Last --
-   ------------------------
-
-   function Get_Enum_Type_Last (Ty : Entity_Id) return Positive is
-   begin
-      if Ty = Standard_Character then
-         return Character'Pos (Character'Last);
-      else
-         declare
-            Res : Natural := 0;
-            Lit : Node_Id;
-         begin
-            case Ekind (Ty) is
-            when E_Enumeration_Type =>
-               Lit := First (Literals (Type_Definition (Parent (Ty))));
-            when E_Enumeration_Subtype =>
-               Lit := Entity (Low_Bound (Scalar_Range (Ty)));
-            when others =>
-               RAC_Unsupported ("Get_Enum_Type_Last", Ty);
-            end case;
-            while Present (Lit) loop
-               Lit := Next (Lit);
-               Res := Res + 1;
-            end loop;
-            return Res;
-         end;
-      end if;
-   end Get_Enum_Type_Last;
-
    -----------------------------
    -- Get_Integer_Type_Bounds --
    -----------------------------
@@ -1256,29 +1363,7 @@ package body CE_RAC is
       Fst, Lst : out Big_Integer)
    is
    begin
-      if Ty = Standard_Integer then
-         Fst := To_Big_Integer (Integer'First);
-         Lst := To_Big_Integer (Integer'Last);
-      elsif Ty = Standard_Short_Integer then
-         Fst := To_Big_Integer (Integer (Short_Integer'First));
-         Lst := To_Big_Integer (Integer (Short_Integer'Last));
-      elsif Ty = Standard_Short_Short_Integer then
-         Fst := To_Big_Integer (Integer (Short_Short_Integer'First));
-         Lst := To_Big_Integer (Integer (Short_Short_Integer'Last));
-      elsif Ty = Standard_Long_Integer then
-         Fst := From_String (Long_Integer'First'Image);
-         Lst := From_String (Long_Integer'Last'Image);
-      elsif Ty = Standard_Long_Long_Integer then
-         Fst := From_String (Long_Long_Integer'First'Image);
-         Lst := From_String (Long_Long_Integer'Last'Image);
-      elsif Ty = Standard_Long_Long_Long_Integer then
-         Fst := From_String (Long_Long_Long_Integer'First'Image);
-         Lst := From_String (Long_Long_Long_Integer'Last'Image);
-      elsif Ty in Scalar_Kind_Id then
-         Get_Bounds (Scalar_Range (Ty), Fst, Lst);
-      else
-         RAC_Unsupported ("Get_Integer_Type_Bounds", Ty);
-      end if;
+      Get_Bounds (Get_Range (Ty), Fst, Lst);
    end Get_Integer_Type_Bounds;
 
    ---------------
@@ -1318,209 +1403,6 @@ package body CE_RAC is
       return Res;
    end Get_Value;
 
-   ------------
-   -- Import --
-   ------------
-
-   function Import
-     (V    : Cntexmp_Value;
-      Ty   : Entity_Id;
-      N    : Node_Id;
-      Name : String := "";
-      Elts : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty)
-      return Value_Type
-   is
-      function Field_Value
-        (E  : Entity_Id;
-         Fi : Cntexmp_Value_Array.Map)
-         return Value_Type;
-
-      procedure Import_Error (Msg : String) with No_Return;
-
-      -----------------
-      -- Field_Value --
-      -----------------
-
-      function Field_Value
-        (E  : Entity_Id;
-         Fi : Cntexmp_Value_Array.Map)
-         return Value_Type
-      is
-         K : constant String := "." & Trim (Entity_Id'Image (E), Left);
-      begin
-         for C in Fi.Iterate loop
-            if Cntexmp_Value_Array.Key (C) = K then
-               return Import (V.Fi (C).all, Etype (E), N);
-            end if;
-         end loop;
-         Import_Error ("field value " & K & "(" & Full_Name (E) & ", "
-                       & Full_Name (Ty) & ")");
-      end Field_Value;
-
-      ------------------
-      -- Import_Error --
-      ------------------
-
-      procedure Import_Error  (Msg : String) is
-      begin
-         if Do_RAC_Info then
-            Treepr.Print_Tree_Node (N);
-            Write_Line (Write (To_JSON (V), Compact => False));
-         end if;
-         raise RAC_Unexpected_Error with
-           ("counterexample value import error: " & Msg);
-         --  ??? Import errors are programming errors, but should we be more
-         --  defensively, by just signalling Exn_RAC_Incomplete? Then only the
-         --  counterexample classification would fail, instead of dragging
-         --  along all the rest.
-      end Import_Error;
-
-   --  Start of processing for Import
-
-   begin
-      Check_Supported_Type (Ty);
-
-      if Is_Integer_Type (Ty) then
-         if V.T = Cnt_Record
-           and then SPARK_Definition.In_Relaxed_Init (Base_Retysp (Ty))
-         then
-            RAC_Unsupported
-              ("Import integer value with relaxed initialization", N);
-         elsif V.T /= Cnt_Integer then
-            Import_Error ("not integer value but " & Cntexmp_Type'Image (V.T));
-         end if;
-         return Integer_Value (From_String (To_String (V.I)), Ty, N);
-
-      elsif Is_Enumeration_Type (Ty) then
-         case V.T is
-            when Cnt_Boolean =>
-               return Boolean_Value (V.Bo, Ty);
-            when Cnt_Integer =>
-               return Enum_Value (UI_From_String (To_String (V.I)), Ty);
-            when others =>
-               Import_Error ("unexpected value type for enumeration but "
-                             & Cntexmp_Type'Image (V.T));
-         end case;
-
-      elsif Is_Boolean_Type (Ty) then
-
-         if V.T /= Cnt_Boolean then
-            Import_Error ("not boolean value");
-         end if;
-
-         return Boolean_Value (Boolean'Value (To_String (V.B)), Ty);
-
-      elsif Is_Record_Type (Ty) then
-
-         if Has_Discriminants (Ty) or else Is_Derived_Type (Ty) then
-            RAC_Unsupported
-              ("Import value of discrimant or derived record", N);
-         end if;
-
-         if V.T /= Cnt_Record then
-            Import_Error ("not record value");
-         end if;
-
-         declare
-            F : Entity_To_Value_Maps.Map;
-            E : Entity_Id := First_Component_Or_Discriminant (Ty);
-         begin
-            while Present (E) loop
-               F.Insert (E, new Value_Type'(Field_Value (E, V.Fi)));
-               Next_Component_Or_Discriminant (E);
-            end loop;
-            --  ??? TODO Check that all fields have values, or fill with
-            --      default values
-            return Record_Value (F, Ty);
-         end;
-
-      elsif Is_Array_Type (Ty) then
-         if V.T /= Cnt_Array then
-            Import_Error ("not array value");
-         end if;
-
-         declare
-            function Find_Bound
-              (Name : String; Index_Ty : Entity_Id) return Big_Integer;
-
-            ----------------
-            -- Find_Bound --
-            ----------------
-
-            function Find_Bound
-              (Name : String; Index_Ty : Entity_Id) return Big_Integer
-            is
-               Elt : constant Cntexample_Elt_Opt :=
-                 Find_Cntexmp_Elt (Name, Elts);
-            begin
-               if Elt.Cntexample_Elt_Present then
-                  return Value_Integer
-                    (Import
-                       (Elt.Cntexample_Elt_Content.Value.all,
-                        Index_Ty, Empty));
-               else
-                  RAC_Stuck
-                    ("Missing bound in unconstrained array counterexample");
-               end if;
-            end Find_Bound;
-
-            Index_Ty, Comp_Ty  : Entity_Id;
-            Values             : Big_Integer_To_Value_Maps.Map;
-            Other              : Value_Access;
-            Type_Fst, Type_Lst : Big_Integer;
-            Fst, Lst           : Big_Integer;
-         begin
-            Get_Array_Info (Ty, Index_Ty, Comp_Ty, Type_Fst, Type_Lst);
-            if Is_Constrained (Ty) then
-               Fst := Type_Fst;
-               Lst := Type_Lst;
-            else
-               --  No nested unconstrained arrays
-               pragma Assert (not (Name = "" and then Elts.Is_Empty));
-               Fst := Find_Bound (Name & "'First", Index_Ty);
-               Lst := Find_Bound (Name & "'Last", Index_Ty);
-            end if;
-            pragma Assert (Is_Integer_Type (Index_Ty)
-                            or else Is_Enumeration_Type (Index_Ty));
-
-            for C in V.Array_Indices.Iterate loop
-               declare
-                  Key : Big_Integer;
-                  Val : Value_Type;
-               begin
-                  Key := From_String (Cntexmp_Value_Array.Key (C));
-                  if not (Fst <= Key and then Key <= Lst) then
-                     RAC_Stuck ("counterexample array index out of scope");
-                  end if;
-                  Val :=
-                    Import (V.Array_Indices (C).all, Safe_Retysp (Comp_Ty), N);
-                  Values.Insert (Key, new Value_Type'(Val));
-               exception
-                  when Constraint_Error =>
-                     RAC_Incomplete
-                       ("Array index not an integer (or not in range)");
-               end;
-            end loop;
-
-            Other :=
-              new Value_Type'(Import (V.Array_Others.all, Comp_Ty, N));
-
-            return Array_Value (Fst, Lst, Values, Other, Ty);
-         end;
-
-      else
-         RAC_Unsupported
-           ("Import", "counterexample value import for " &
-              Get_Name_String (Chars (Ty)));
-      end if;
-
-   exception
-      when Exn_RAC_Failure =>
-         RAC_Stuck
-           ("error in counterexample value: " &
-              Description (Flush_Exn_RAC_Result.Res_VC_Kind));
-   end Import;
-
    -----------------
    -- Init_Global --
    -----------------
@@ -1535,7 +1417,8 @@ package body CE_RAC is
    is
       Origin : Value_Origin;
       Expr   : constant Node_Id :=
-        (if Use_Expr then Expression (Parent (N)) else Empty);
+        (if Use_Expr and then Ekind (N) not in Formal_Kind
+         then Expression (Enclosing_Declaration (N)) else Empty);
    begin
       B :=
         (Val    => new Value_Type'(Get_Value (N, Expr, Default_Value, Origin)),
@@ -1651,20 +1534,19 @@ package body CE_RAC is
    -- Param_Scope --
    -----------------
 
-   function Param_Scope
-     (E : Entity_Id; Args : List_Id) return Scopes.Map
-   is
-      Res : Scopes.Map := Scopes.Empty;
-      Arg : Node_Id := First (Args);
-      Par : Entity_Id := First_Formal (E);
-      Val : Value_Access;
-   begin
-      while Present (Arg) loop
-         pragma Assert (Present (Par));
+   function Param_Scope (Call : Node_Id) return Scopes.Map is
+      Res : Scopes.Map;
 
-         if Nkind (Arg) = N_Parameter_Association then
-            RAC_Unsupported ("Param_Scope association", Arg);
-         end if;
+      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  Add a parameter to Res
+
+      -------------------
+      -- Process_Param --
+      -------------------
+
+      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
+         Val : Value_Access;
+      begin
 
          --  if Is_Scalar_Type (Etype (Par)) then
          --    -> pass by value; copy out parameters after return
@@ -1678,22 +1560,26 @@ package body CE_RAC is
          --  ??? Due to SPARK anti-aliasing rules the copying of scalar values
          --      could be removed
 
-         if Is_Scalar_Type (Etype (Arg)) then
-            Val := new Value_Type'(Copy (RAC_Expr (Arg)));
+         if Is_Scalar_Type (Etype (Actual)) then
+            Val := new Value_Type'(Copy (RAC_Expr (Actual)));
          else
-            case Formal_Kind (Ekind (Par)) is
-            when E_In_Parameter =>
-               Val := new Value_Type'(Copy (RAC_Expr (Arg)));
-            when E_In_Out_Parameter | E_Out_Parameter =>
-               Val := RAC_Expr_LHS (Arg);
+            case Formal_Kind (Ekind (Formal)) is
+               when E_In_Parameter =>
+                  Val := new Value_Type'(Copy (RAC_Expr (Actual)));
+               when E_In_Out_Parameter | E_Out_Parameter =>
+                  Val := RAC_Expr_LHS (Actual);
             end case;
          end if;
 
-         Res.Insert (Par, (Val => Val, others => <>));
-         Next (Arg);
-         Next_Formal (Par);
-      end loop;
-      pragma Assert (No (Par));
+         Res.Insert (Formal, (Val => Val, others => <>));
+      end Process_Param;
+
+      procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
+
+   --  Start of processing for Param_Scope
+
+   begin
+      Iterate_Call (Call);
       return Res;
    end Param_Scope;
 
@@ -1717,7 +1603,6 @@ package body CE_RAC is
    function RAC_Call
      (N       : Node_Id;
       E       : Entity_Id;
-      Args    : List_Id;
       Is_Main : Boolean := False)
       return Opt_Value_Type
    is
@@ -1796,8 +1681,8 @@ package body CE_RAC is
 
       if Is_Main then
          Sc := Cntexmp_Param_Scope;
-      else
-         Sc := Param_Scope (E, Args);
+      elsif Present (N) then
+         Sc := Param_Scope (N);
       end if;
 
       begin
@@ -1806,10 +1691,7 @@ package body CE_RAC is
          return Res;
       exception
          when No_Builtin =>
-            if No (Bodie) then
-               RAC_Incomplete
-                 ("No body for subprogram " & Get_Name_String (Chars (E)));
-            end if;
+            null;
       end;
 
       Collect_Old_Parts (Posts, Old_Nodes);
@@ -1823,7 +1705,7 @@ package body CE_RAC is
       --  Add old values to bindings (note that the entities of Old_Nodes are
       --  not unique)
       for N of Old_Nodes loop
-         if N not in N_Has_Entity_Id or else No (Entity (N)) then
+         if Nkind (N) not in N_Has_Entity or else No (Entity (N)) then
             RAC_Unsupported ("old value not entity", N);
          end if;
          B := Find_Binding (Entity (N));
@@ -1857,6 +1739,18 @@ package body CE_RAC is
                raise;
             end if;
       end;
+
+      --  We do not execute the call if there is no body for E or if the body
+      --  is not in SPARK.
+
+      if No (Bodie) then
+         RAC_Incomplete
+           ("No body for subprogram " & Get_Name_String (Chars (E)));
+      elsif not SPARK_Definition.Entity_Body_In_SPARK (E) then
+         RAC_Incomplete
+           ("Body for subprogram " & Get_Name_String (Chars (E))
+            & " is not in SPARK");
+      end if;
 
       RAC_Decls (Declarations (Bodie));
 
@@ -1899,8 +1793,8 @@ package body CE_RAC is
 
       Sc := Ctx.Env (Ctx.Env.First);
       Ctx.Env.Delete_First;
-      if not Is_Main then
-         Copy_Out_Parameters (E, Args, Sc);
+      if not Is_Main and then Present (N) then
+         Copy_Out_Parameters (N, Sc);
       end if;
 
       RAC_Trace ("call result of " & Get_Name_String (Chars (E)) &
@@ -1922,13 +1816,8 @@ package body CE_RAC is
       --  The implementation of Ada.Text_IO.Put_Line is just added for running
       --  the added tests TC02-027__RAC and comparing the execution with the
       --  compiled program based on the output.
-      if Get_Name_String (Chars (E)) = "put_line"
-        and then Present (Scope (E))
-        and then Get_Name_String (Chars (Scope (E))) = "text_io"
-        and then Present (Sinfo.Nodes.Scope (Scope (Sinfo.Nodes.Scope (E))))
-        and then
-          Get_Name_String (Chars (Scope (Sinfo.Nodes.Scope (E)))) = "ada"
-      then
+
+      if Is_Unary_Text_IO_Put_Line (E) then
          if Do_Sideeffects then
             declare
                Val     : Value_Access renames Sc (Sc.First).Val;
@@ -1975,19 +1864,13 @@ package body CE_RAC is
       case Nkind (Decl) is
          when N_Object_Declaration =>
             declare
-               Obj_Def : Node_Id;
-               V       : Value_Type;
-               Ty      : Entity_Id;
+               V  : Value_Type;
+               Ty : Entity_Id;
             begin
                if Present (Expression (Decl)) then
                   V := RAC_Expr (Expression (Decl));
                else
-                  Obj_Def := Object_Definition (Decl);
-                  if Nkind (Obj_Def) not in N_Has_Entity then
-                     RAC_Unsupported
-                       ("RAC_Decl with type not entity", Obj_Def);
-                  end if;
-                  Ty := Safe_Retysp (Etype (Obj_Def));
+                  Ty := Retysp (Etype (Unique_Defining_Entity (Decl)));
                   Check_Supported_Type (Ty);
                   --  ??? Don't check range of integer values
                   V := Default_Value (Ty, Check => False);
@@ -1999,14 +1882,11 @@ package body CE_RAC is
             end;
 
          when N_Pragma
-            | N_Call_Marker
             | N_Full_Type_Declaration
-            | N_Implicit_Label_Declaration
-            | N_Freeze_Entity
             | N_Subtype_Declaration
             | N_Subprogram_Declaration
-            | N_Subprogram_Specification
             | N_Subprogram_Body
+            | N_Ignored_In_SPARK
          =>
             null;
 
@@ -2110,7 +1990,7 @@ package body CE_RAC is
             Init_Global_Scope;
             return
               (Res_Kind  => Res_Normal,
-               Res_Value => RAC_Call (Empty, E, No_List, Is_Main => True));
+               Res_Value => RAC_Call (Empty, E, Is_Main => True));
          when E_Package
             | E_Package_Body
             | E_Task_Type
@@ -2137,7 +2017,7 @@ package body CE_RAC is
      (N : N_Subexpr_Id; Ty0 : Entity_Id := Empty) return Value_Type
    is
       Ty : constant Entity_Id :=
-             (if Present (Ty0) then Ty0 else Safe_Retysp (Etype (N)));
+        (if Present (Ty0) then Retysp (Ty0) else Retysp (Etype (N)));
 
       function RAC_Aggregate return Value_Type;
 
@@ -2191,7 +2071,7 @@ package body CE_RAC is
                Check_Fuel_Decrease (Ctx.Fuel);
 
                V := RAC_Expr (Expression (As));
-               Ch := First (Choices (As));
+               Ch := First (Choice_List (As));
                while Present (Ch) loop
                   Check_Fuel_Decrease (Ctx.Fuel);
 
@@ -2199,12 +2079,19 @@ package body CE_RAC is
                      RAC_Unsupported
                        ("RAC_Expr aggregate", "record others");
                   end if;
-                  Res.Record_Fields.Include (Entity (Ch), new Value_Type'(V));
+
+                  declare
+                     Comp : constant Entity_Id :=
+                       Search_Component_In_Type (Ty, Entity (Ch));
+                  begin
+                     pragma Assert (Present (Comp));
+                     Res.Record_Fields.Include (Comp, new Value_Type'(V));
+                  end;
                   Next (Ch);
                end loop;
                Next (As);
             end loop;
-            --  ??? TODO Check all values present (fill with others)
+            Cleanup_Counterexample_Value (Res, N);
 
          else
             pragma Assert (Is_Array_Type (Ty));
@@ -2257,7 +2144,7 @@ package body CE_RAC is
                   end if;
 
                   V := RAC_Expr (Expression (As));
-                  Ch := First (Choices (As));
+                  Ch := First (Choice_List (As));
                   while Present (Ch) loop
                      Check_Fuel_Decrease (Ctx.Fuel);
 
@@ -2381,9 +2268,10 @@ package body CE_RAC is
 
                declare
                   Ex : constant Node_Id := First (Expressions (N));
-                  I1 : constant Big_Integer := Value_Integer (RAC_Expr (Ex));
+                  I1 : constant Big_Integer :=
+                    Value_Enum_Integer (RAC_Expr (Ex));
                   I2 : constant Big_Integer :=
-                    Value_Integer (RAC_Expr (Next (Ex)));
+                    Value_Enum_Integer (RAC_Expr (Next (Ex)));
                begin
                   case Attribute_Name (N) is
                      when Snames.Name_Min =>
@@ -2444,16 +2332,18 @@ package body CE_RAC is
                   Record_Not_Array : constant Boolean := Is_Record_Type (Ty);
                   Prefix_Value     : constant Value_Type :=
                                        RAC_Expr (Prefix (N));
+                  Comp             : Entity_Id;
                begin
                   pragma Assert (Record_Not_Array xor Is_Array_Type (Ty));
                   if Record_Not_Array then
                      F := Copy (Prefix_Value.Record_Fields);
                      Ex := First (Expressions (N));
+
                      while Present (Ex) loop
                         As := First (Component_Associations (Ex));
                         while Present (As) loop
                            V := RAC_Expr (Expression (As));
-                           Ch := First (Choices (As));
+                           Ch := First (Choice_List (As));
 
                            if Nkind (Ch) /= N_Identifier then
                               RAC_Unsupported
@@ -2461,9 +2351,16 @@ package body CE_RAC is
                            end if;
 
                            while Present (Ch) loop
-                              FC := F.Find (SPARK_Atree.Entity (Ch));
-                              pragma Assert
-                                (Entity_To_Value_Maps.Has_Element (FC));
+                              Comp := Search_Component_In_Type
+                                (Prefix_Value.AST_Ty, Entity (Ch));
+                              FC := F.Find (Comp);
+
+                              if not Entity_To_Value_Maps.Has_Element (FC) then
+                                 pragma Assert
+                                   (Has_Discriminants (Prefix_Value.AST_Ty));
+                                 RAC_Failure (Ch, VC_Discriminant_Check);
+                              end if;
+
                               F.Replace_Element (FC, new Value_Type'(V));
                               Next (Ch);
                            end loop;
@@ -2471,6 +2368,7 @@ package body CE_RAC is
                         end loop;
                         Next (Ex);
                      end loop;
+
                      return Record_Value (F, Ty);
                   else
                      RAC_Unsupported
@@ -2525,7 +2423,7 @@ package body CE_RAC is
          Left  : constant Value_Type := RAC_Expr (Left_Opnd (N));
          Right : constant Value_Type := RAC_Expr (Right_Opnd (N));
       begin
-         case N_Binary_Op (Nkind (N)) is
+         case Nkind (N) is
             when N_Op_Add =>
                return
                  Integer_Value
@@ -2541,7 +2439,7 @@ package body CE_RAC is
                  Integer_Value
                    (Value_Integer (Left) - Value_Integer (Right), N);
 
-            when N_Multiplying_Operator =>
+            when N_Op_Divide .. N_Op_Rem =>
                if Nkind (N) in N_Op_Divide | N_Op_Mod | N_Op_Rem
                  and then Value_Integer (Right) = 0
                then
@@ -2550,7 +2448,7 @@ package body CE_RAC is
 
                return
                  Integer_Value
-                   ((case N_Multiplying_Operator (Nkind (N)) is
+                   ((case Nkind (N) is
                        when N_Op_Multiply =>
                           Value_Integer (Left) * Value_Integer (Right),
                        when N_Op_Divide   =>
@@ -2558,14 +2456,16 @@ package body CE_RAC is
                        when N_Op_Mod      =>
                           Value_Integer (Left) mod Value_Integer (Right),
                        when N_Op_Rem      =>
-                          Value_Integer (Left) rem Value_Integer (Right)),
+                          Value_Integer (Left) rem Value_Integer (Right),
+                       when others        =>
+                          raise Program_Error),
                     N);
 
-            when N_Op_Boolean =>
+            when N_Op_And .. N_Op_Xor =>
                if Is_Boolean_Type (Etype (N)) then
                   return
                     Boolean_Value
-                      ((case N_Op_Boolean (Nkind (N)) is
+                      ((case Nkind (N) is
                           when N_Op_Or  =>
                             Value_Boolean (Left) or Value_Boolean (Right),
                           when N_Op_And =>
@@ -2587,7 +2487,7 @@ package body CE_RAC is
                      is (From_String (Ulargest'Image (U)));
 
                   begin
-                     case N_Op_Boolean (Nkind (N)) is
+                     case Nkind (N) is
                         when N_Op_Or  =>
                            return Integer_Value (From_Ulargest (L or R), N);
                         when N_Op_And =>
@@ -2674,6 +2574,9 @@ package body CE_RAC is
 
             when N_Op_Shift =>
                RAC_Unsupported ("RAC_Binary_Op", N);
+
+            when others =>
+               raise Program_Error;
          end case;
       end RAC_Binary_Op;
 
@@ -2703,26 +2606,26 @@ package body CE_RAC is
          Left     : constant Value_Type := RAC_Expr (Left_Op);
          Fst, Lst, I : Big_Integer;
       begin
-         if not Is_Integer_Type (Etype (Left_Op)) then
-            RAC_Unsupported ("RAC_In left", Left_Opnd (N));
+         if not Is_Discrete_Type (Etype (Left_Op)) then
+            RAC_Unsupported ("RAC_In left not discrete type", Left_Opnd (N));
          end if;
 
-         if Right_Op = Empty or else not Is_Integer_Type (Etype (Right_Op))
+         if Right_Op = Empty or else not Is_Discrete_Type (Etype (Right_Op))
          then
-            RAC_Unsupported ("RAC_In right not integer type", Right_Op);
+            RAC_Unsupported ("RAC_In right not discrete type", Right_Op);
          end if;
 
          case Nkind (Right_Op) is
             when N_Entity =>
                Get_Integer_Type_Bounds (Entity (Right_Op), Fst, Lst);
             when N_Range =>
-               Fst := Value_Integer (RAC_Expr (Low_Bound (Right_Op)));
-               Lst := Value_Integer (RAC_Expr (High_Bound (Right_Op)));
+               Fst := Value_Enum_Integer (RAC_Expr (Low_Bound (Right_Op)));
+               Lst := Value_Enum_Integer (RAC_Expr (High_Bound (Right_Op)));
             when others =>
                RAC_Unsupported ("RAC_In right", Right_Op);
          end case;
 
-         I := Value_Integer (Left);
+         I := Value_Enum_Integer (Left);
          return Boolean_Value (Fst <= I and then I <= Lst, Etype (N));
       end RAC_In;
 
@@ -2760,7 +2663,7 @@ package body CE_RAC is
       function RAC_Unary_Op return Value_Type is
          Right : constant Value_Type := RAC_Expr (Right_Opnd (N));
       begin
-         case N_Unary_Op (Nkind (N)) is
+         case Nkind (N) is
             when N_Op_Abs   =>
                return Integer_Value (abs Value_Integer (Right), N);
 
@@ -2776,6 +2679,9 @@ package body CE_RAC is
                else
                   RAC_Unsupported ("RAC_Unary_Op N_Op_Not", N);
                end if;
+
+            when others =>
+               raise Program_Error;
          end case;
       end RAC_Unary_Op;
 
@@ -2810,6 +2716,10 @@ package body CE_RAC is
             begin
                if Ekind (E) = E_Enumeration_Literal then
                   Res := Enum_Value (E, Etype (N));
+               elsif Is_Discriminal (E)
+                 or else Is_Protected_Component_Or_Discr_Or_Part_Of (E)
+               then
+                  RAC_Incomplete ("protected component or part of variable");
                else
                   Res := Find_Binding (E).Val.all;
                end if;
@@ -2843,9 +2753,7 @@ package body CE_RAC is
                RAC_Unsupported ("RAC_Procedure_Call name", Name (N));
             end if;
 
-            Res :=
-              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N))
-                .Content;
+            Res := RAC_Call (N, Entity (Name (N))).Content;
 
          when N_In =>
             Res := RAC_In;
@@ -2857,6 +2765,9 @@ package body CE_RAC is
             Res := RAC_Expr (Expression (N), Entity (Subtype_Mark (N)));
 
          when N_Type_Conversion =>
+
+            --  ??? Do we handle array conversions then?
+
             if Is_Record_Type (Entity (Subtype_Mark (N))) then
                RAC_Unsupported ("Type conversion between record types", N);
             end if;
@@ -2866,9 +2777,19 @@ package body CE_RAC is
             Res := RAC_Aggregate;
 
          when N_Selected_Component =>
-            Res :=
-              RAC_Expr (Prefix (N)).Record_Fields
-                (Entity (Selector_Name (N))).all;
+            declare
+               Prefix_Value : constant Value_Type := RAC_Expr (Prefix (N));
+               Comp         : constant Entity_Id :=
+                 Search_Component_In_Type
+                   (Prefix_Value.AST_Ty, Entity (Selector_Name (N)));
+            begin
+               pragma Assert (Present (Comp));
+               if not Prefix_Value.Record_Fields.Contains (Comp) then
+                  pragma Assert (Has_Discriminants (Prefix_Value.AST_Ty));
+                  RAC_Failure (N, VC_Discriminant_Check);
+               end if;
+               Res := Prefix_Value.Record_Fields (Comp).all;
+            end;
 
          when N_Indexed_Component =>
             declare
@@ -3080,19 +3001,17 @@ package body CE_RAC is
       if Nkind (N) not in N_Ignored_In_SPARK then
          case Nkind (N) is
          when N_Handled_Sequence_Of_Statements =>
-            if Present (Exception_Handlers (N)) then
-               RAC_Unsupported ("RAC_Node exception handler", N);
-            end if;
+
+            --  Ignore exception handler, they cannot occur in SPARK code
+
             RAC_List (Statements (N));
          when N_Procedure_Call_Statement =>
             Ignore :=
-              RAC_Call (N, Entity (Name (N)), Parameter_Associations (N));
-         when N_Statement_Other_Than_Procedure_Call =>
-            RAC_Statement (N);
+              RAC_Call (N, Entity (Name (N)));
          when N_Pragma =>
             RAC_Pragma (N);
          when others =>
-            RAC_Unsupported ("RAC_Node", N);
+            RAC_Statement (N);
          end case;
       end if;
    end RAC_Node;
@@ -3106,7 +3025,7 @@ package body CE_RAC is
       Desc : constant String :=
         Get_Name_String (Chars (Pragma_Identifier (N)));
    begin
-      case Get_Pragma_Id (Pragma_Name (N)) is
+      case Get_Pragma_Id (N) is
          when Pragma_Check =>
             Check_Node (Expression (Next (Arg1)), Desc, VC_Assert);
          when others =>
@@ -3128,18 +3047,19 @@ package body CE_RAC is
    -- RAC_Statement --
    -------------------
 
-   procedure RAC_Statement (N : N_Statement_Other_Than_Procedure_Call_Id) is
+   procedure RAC_Statement (N : Node_Id) is
    begin
       case Nkind (N) is
-         when N_Null_Statement =>
+         when N_Ignored_In_SPARK =>
             null;
 
          when N_Simple_Return_Statement =>
             if Present (Expression (N)) then
                declare
                   Ty  : constant Type_Kind_Id :=
-                    Safe_Retysp (Etype (Return_Applies_To
-                                 (Return_Statement_Entity (N))));
+                    Retysp
+                      (Etype
+                         (Return_Applies_To (Return_Statement_Entity (N))));
                   Res : constant Value_Type :=
                     Copy (RAC_Expr (Expression (N), Ty));
                begin
@@ -3151,10 +3071,50 @@ package body CE_RAC is
 
          when N_Assignment_Statement =>
             declare
-               Ty  : constant Entity_Id := Safe_Retysp (Etype (Name (N)));
+               Ty  : constant Entity_Id := Retysp (Etype (Name (N)));
                RHS : constant Value_Access :=
                  new Value_Type'(Copy (RAC_Expr (Expression (N), Ty)));
+
             begin
+               --  Perform discriminant check
+
+               if Has_Discriminants (Ty)
+                 and then not Has_Defaulted_Discriminants (Ty)
+               then
+                  declare
+                     LHS   : Value_Type := (K => Record_K, others => <>);
+                     Discr : Entity_Id;
+                     Elmt  : Elmt_Id;
+
+                  begin
+                     if Is_Constrained (Ty) then
+                        Discr := First_Discriminant (Root_Retysp (Ty));
+                        Elmt := First_Elmt (Discriminant_Constraint (Ty));
+                        while Present (Discr) loop
+                           LHS.Record_Fields.Insert
+                             (Discr,
+                              new Value_Type'
+                                (RAC_Expr
+                                     (Node (Elmt), Retysp (Etype (Discr)))));
+                           Next_Elmt (Elmt);
+                           Next_Discriminant (Discr);
+                        end loop;
+                     else
+                        LHS := RAC_Expr (Name (N), Ty);
+                     end if;
+
+                     Discr := First_Discriminant (Root_Retysp (Ty));
+                     while Present (Discr) loop
+                        if LHS.Record_Fields (Discr).all /=
+                          RHS.Record_Fields (Discr).all
+                        then
+                           RAC_Failure (N, VC_Discriminant_Check);
+                        end if;
+                        Next_Discriminant (Discr);
+                     end loop;
+                  end;
+               end if;
+
                case Nkind (Name (N)) is
                   when N_Identifier | N_Expanded_Name =>
                      Update_Value (Ctx.Env, Entity (Name (N)), RHS);
@@ -3164,9 +3124,17 @@ package body CE_RAC is
                         LHS : constant Value_Access :=
                           RAC_Expr_LHS (Prefix (Name (N)));
                         E   : constant Entity_Id :=
-                          Entity (Selector_Name (Name (N)));
+                          Search_Component_In_Type
+                            (LHS.AST_Ty, Entity (Selector_Name (Name (N))));
                      begin
-                        LHS.all.Record_Fields.Include (E, RHS);
+                        pragma Assert (Present (E));
+
+                        if not LHS.Record_Fields.Contains (E) then
+                           pragma Assert (Has_Discriminants (LHS.AST_Ty));
+                           RAC_Failure
+                             (Prefix (Name (N)), VC_Discriminant_Check);
+                        end if;
+                        LHS.Record_Fields.Include (E, RHS);
                      end;
 
                   when N_Indexed_Component =>
@@ -3191,7 +3159,7 @@ package body CE_RAC is
                            RAC_Failure (E, VC_Index_Check);
                         end if;
 
-                        A.all.Array_Values.Include (I, RHS);
+                        A.Array_Values.Include (I, RHS);
                      end;
 
                   when others =>
@@ -3304,9 +3272,8 @@ package body CE_RAC is
                      if Nkind (Ch) = N_Others_Choice then
                         Match := True;
                      elsif Nkind (Ch) in N_Subexpr then
-                        if
-                          Ch in N_Has_Entity_Id and then
-                          Entity (Ch) in Type_Kind_Id
+                        if Nkind (Ch) in N_Has_Entity
+                          and then Entity (Ch) in Type_Kind_Id
                         then
                            RAC_Unsupported ("case choise type", Ch);
                         end if;
@@ -3418,7 +3385,7 @@ package body CE_RAC is
 
    procedure Set_Value
      (S : in out Scopes.Map;
-      E :        N_Defining_Identifier_Id;
+      E :        Entity_Id;
       V :        Value_Access)
    is
       Bin : constant Binding := (Val => V, others => <>);
@@ -3561,9 +3528,9 @@ package body CE_RAC is
       Env (Env.Last).Insert (E, (Val => V, others => <>));
    end Update_Value;
 
-   -------------
-   -- Boolean --
-   -------------
+   -------------------
+   -- Value_Boolean --
+   -------------------
 
    function Value_Boolean (V : Value_Type) return Boolean is
    begin

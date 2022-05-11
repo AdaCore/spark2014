@@ -50,6 +50,11 @@ package body Terminating_Annotations with SPARK_Mode is
          pragma Loop_Variant (Decreases => Y);
          Y := Y - 1;
       end loop;
-      return Y;
+
+      if X = 0 then
+         return Y;
+      else
+         return F_Term (X - 1);
+      end if;
    end F_Term;
 end Terminating_Annotations;

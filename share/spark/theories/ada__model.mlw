@@ -1528,11 +1528,11 @@ module Unconstr_Array_2
 
   use int.Int
 
-  function first [@model_trace:'First(1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  function first [@model_trace:'First (1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
 
-  function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function last [@model_trace:'Last (1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
 
@@ -1542,11 +1542,11 @@ module Unconstr_Array_2
   val length (a : __t) : int
   ensures { result = length a }
 
-  function first_2 [@model_trace:'First(2)]  (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
+  function first_2 [@model_trace:'First (2)]  (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
   val first_2 (a : __t) : index_rep_type_2
   ensures { result = first_2 a }
 
-  function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  function last_2 [@model_trace:'Last (2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
   val last_2 (a : __t) : index_rep_type_2
   ensures { result = last_2 a }
 
@@ -1682,11 +1682,11 @@ module Unconstr_Array_3
 
   use int.Int
 
-  function first [@model_trace:'First(1)]  (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  function first [@model_trace:'First (1)]  (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
 
-  function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function last [@model_trace:'Last (1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
 
@@ -1696,11 +1696,11 @@ module Unconstr_Array_3
   val length (a : __t) : int
   ensures { result = length a }
 
-  function first_2 [@model_trace:'First(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
+  function first_2 [@model_trace:'First (2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
   val first_2 (a : __t) : index_rep_type_2
   ensures { result = first_2 a }
 
-  function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  function last_2 [@model_trace:'Last (2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
   val last_2 (a : __t) : index_rep_type_2
   ensures { result = last_2 a }
 
@@ -1710,11 +1710,11 @@ module Unconstr_Array_3
   val length_2 (a : __t) : int
   ensures { result = length_2 a }
 
-  function first_3 [@model_trace:'First(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
+  function first_3 [@model_trace:'First (3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
   val first_3 (a : __t) : index_rep_type_3
   ensures { result = first_3 a }
 
-  function last_3 [@model_trace:'Last(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
+  function last_3 [@model_trace:'Last (3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
   val last_3 (a : __t) : index_rep_type_3
   ensures { result = last_3 a }
 
@@ -1880,11 +1880,11 @@ module Unconstr_Array_4
 
   use int.Int
 
-  function first [@model_trace:'First(1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  function first [@model_trace:'First (1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
 
-  function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function last [@model_trace:'Last (1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
 
@@ -1894,11 +1894,11 @@ module Unconstr_Array_4
   val length (a : __t) : int
   ensures { result = length a }
 
-  function first_2 [@model_trace:'First(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
+  function first_2 [@model_trace:'First (2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
   val first_2 (a : __t) : index_rep_type_2
   ensures { result = first_2 a }
 
-  function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  function last_2 [@model_trace:'Last (2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
   val last_2 (a : __t) : index_rep_type_2
   ensures { result = last_2 a }
 
@@ -1908,11 +1908,11 @@ module Unconstr_Array_4
   val length_2 (a : __t) : int
   ensures { result = length_2 a }
 
-  function first_3 [@model_trace:'First(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
+  function first_3 [@model_trace:'First (3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
   val first_3 (a : __t) : index_rep_type_3
   ensures { result = first_3 a }
 
-  function last_3 [@model_trace:'Last(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
+  function last_3 [@model_trace:'Last (3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
   val last_3 (a : __t) : index_rep_type_3
   ensures { result = last_3 a }
 
@@ -1922,11 +1922,11 @@ module Unconstr_Array_4
   val length_3 (a : __t) : int
   ensures { result = length_3 a }
 
-  function first_4 [@model_trace:'First(4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.first a.rt_4)
+  function first_4 [@model_trace:'First (4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.first a.rt_4)
   val first_4 (a : __t) : index_rep_type_4
   ensures { result = first_4 a }
 
-  function last_4 [@model_trace:'Last(4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.last a.rt_4)
+  function last_4 [@model_trace:'Last (4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.last a.rt_4)
   val last_4 (a : __t) : index_rep_type_4
   ensures { result = last_4 a }
 

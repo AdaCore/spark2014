@@ -328,7 +328,7 @@ package Why.Gen.Expr is
      (Low, High : W_Term_Id;
       Expr      : W_Term_Id)
       return W_Pred_Id
-   is (+W_Expr_Id'(New_Range_Expr (EW_Term, +Low, +High, +Expr)));
+   is (+W_Expr_Id'(New_Range_Expr (EW_Pred, +Low, +High, +Expr)));
 
    function New_Discrete_Add
      (Domain : EW_Domain;
@@ -386,7 +386,7 @@ package Why.Gen.Expr is
    function New_Dynamic_Property
      (Domain : EW_Domain;
       Ty     : Entity_Id;
-      Expr   : W_Expr_Id;
+      Expr   : W_Term_Id;
       Params : Transformation_Params := Body_Params)
       return W_Expr_Id
    with Pre => Is_Type (Ty);
@@ -411,9 +411,14 @@ package Why.Gen.Expr is
    --  Convert argument to representation type or ew_int_id if expr is of
    --  type Bool.
 
+   function Insert_Conversion_To_Rep_No_Bool
+     (Expr : W_Term_Id)
+      return W_Term_Id
+   is (+Insert_Conversion_To_Rep_No_Bool (EW_Term, +Expr));
+
    function Do_Index_Check
      (Ada_Node : Node_Id;
-      Arr_Expr : W_Expr_Id;
+      Arr_Expr : W_Term_Id;
       W_Expr   : W_Expr_Id;
       Dim      : Positive)
       return W_Prog_Id;
