@@ -562,7 +562,7 @@ package Gnat2Why.Util is
    -- Symbol table subprograms --
    ------------------------------
 
-   procedure Insert_Entity
+   procedure Insert_Tmp_Item_For_Entity
      (E       : Entity_Id;
       Name    : W_Identifier_Id;
       Mutable : Boolean := False);
@@ -578,7 +578,7 @@ package Gnat2Why.Util is
    with Pre => Has_Scalar_Type (Etype (E));
    --  For a variable or constant decide whether it has a builtin type in Why3.
    --  Must be called after E has been registered in the symbol table (see
-   --  [Insert_Entity] and [Insert_Item]).
+   --  [Insert_Tmp_Item_For_Entity] and [Insert_Item]).
    --  @param E variable or constant of scalar type
    --  @return True iff E has a builtin type in Why3
 

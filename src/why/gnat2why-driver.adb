@@ -97,7 +97,6 @@ with Why.Atree.Tables;                use Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Gen.Names;
 with Why.Inter;                       use Why.Inter;
-with Why.Types;                       use Why.Types;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -1136,12 +1135,8 @@ package body Gnat2Why.Driver is
                | E_Function
                | E_Procedure =>
                if Is_Translated_Subprogram (E) then
-                  if Ekind (E) in E_Function | E_Procedure then
-                     Ada_Ent_To_Why.Insert
-                       (Symbol_Table, E, Mk_Item_Of_Entity (E));
-                  else
-                     Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
-                  end if;
+                  Ada_Ent_To_Why.Insert
+                    (Symbol_Table, E, Mk_Item_Of_Entity (E));
                end if;
             when Object_Kind =>
 

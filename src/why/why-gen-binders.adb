@@ -27,7 +27,6 @@ with Flow_Utility;        use Flow_Utility;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with SPARK_Util.Types;    use SPARK_Util.Types;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Expr;        use Why.Gen.Expr;
@@ -669,7 +668,7 @@ package body Why.Gen.Binders is
    begin
       --  For procedures, use a regular binder
 
-      if Ekind (E) = E_Procedure then
+      if Ekind (E) in E_Procedure | E_Entry then
          return (Regular,
                  False,
                  Init => <>,

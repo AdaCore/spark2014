@@ -1,0 +1,1 @@
+ALL XFAIL 'Old attribute not supported in delta aggregates (V214-011)

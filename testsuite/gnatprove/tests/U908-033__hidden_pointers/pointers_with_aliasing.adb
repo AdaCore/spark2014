@@ -1,15 +1,16 @@
 with Unchecked_Conversion;
 with Unchecked_Deallocation;
 
-package body Hidden_Pointers with SPARK_Mode => Off is
+package body Pointers_With_Aliasing with SPARK_Mode => Off is
    function Null_Pointer return Pointer is (null);
 
    function "=" (P1, P2 : Pointer) return Boolean is (Eq (P1, P2));
 
    function Deref (P : Pointer) return Object is (P.all);
 
-   function Pointer_To_Integer is new Unchecked_Conversion (Pointer, Integer_64);
-   function Address (P : Pointer) return Integer_64 is
+   function Pointer_To_Integer is new
+     Unchecked_Conversion (Pointer, Address_Type);
+   function Address (P : Pointer) return Address_Type is
      (Pointer_To_Integer (P));
 
    procedure Assign (P : Pointer; O : Object) is
@@ -27,4 +28,10 @@ package body Hidden_Pointers with SPARK_Mode => Off is
    begin
       P := new Object'(O);
    end Create;
-end Hidden_Pointers;
+
+   function Constant_Reference (Memory : Memory_Type; P : Pointer) return not null access constant Object is
+     (P);
+
+   function Reference (Memory : not null access Memory_Type; P : Pointer) return not null access Object is
+     (P);
+end Pointers_With_Aliasing;

@@ -18,7 +18,6 @@ foo.adb:72:39: medium: overflow check might fail, cannot prove lower bound for A
 foo.adb:77:23: info: initialization of "O" proved
 foo.adb:78:09: info: flow dependencies proved
 foo.adb:80:07: info: initialization of "Tmp" proved
-foo.adb:83:13: warning: unused assignment
 foo.adb:87:23: info: initialization of "A" proved
 foo.adb:88:23: info: initialization of "B" proved
 foo.adb:89:09: info: flow dependencies proved

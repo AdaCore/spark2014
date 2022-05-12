@@ -1,11 +1,11 @@
 procedure Warns2 (X : in out Integer) with
   SPARK_Mode
 is
-   Tmp : Integer;
+   XXX : Integer;
 begin
-   Tmp := X + 1;
-   X := Tmp;
+   XXX := X + 1;
+   X := XXX;
    pragma Warnings (Off, "useless assignment");
-   Tmp := Tmp + 1;
+   XXX := XXX + 1;
    pragma Warnings (On, "useless assignment");
 end Warns2;

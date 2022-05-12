@@ -40,9 +40,11 @@ with SPARK_Util.Hardcoded;    use SPARK_Util.Hardcoded;
 with Uintp;                   use Uintp;
 with VC_Kinds;                use VC_Kinds;
 with Why;                     use Why;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Builders;      use Why.Atree.Builders;
 with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Conversions;         use Why.Conversions;
+with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Progs;           use Why.Gen.Progs;
@@ -602,19 +604,24 @@ package body Gnat2Why.Expr.Loops is
          if Present (Loop_Parameter_Specification (Scheme)) then
             Loop_Param_Ent  :=
               Defining_Identifier (Loop_Parameter_Specification (Scheme));
-            Loop_Index_Type := Base_Why_Type_No_Bool (Loop_Param_Ent);
          else
             pragma Assert (Present (Iterator_Specification (Scheme)));
             Loop_Param_Ent :=
               Defining_Identifier (Iterator_Specification (Scheme));
-            Loop_Index_Type := Type_Of_Node (Loop_Param_Ent);
          end if;
 
-         Loop_Index := To_Why_Id (E      => Loop_Param_Ent,
-                                  Domain => EW_Prog,
-                                  Typ    => Loop_Index_Type);
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         Insert_Entity (Loop_Param_Ent, Loop_Index, Mutable => True);
+
+         declare
+            Index_Item : constant Item_Type :=
+              Mk_Item_Of_Entity (Loop_Param_Ent);
+         begin
+            pragma Assert (Index_Item.Kind = Regular);
+
+            Loop_Index := Index_Item.Main.B_Name;
+            Loop_Index_Type := Base_Why_Type (Get_Typ (Loop_Index));
+            Insert_Item (Loop_Param_Ent, Index_Item);
+         end;
 
          Low_Id  := New_Temp_Identifier (Typ => Loop_Index_Type);
          High_Id := New_Temp_Identifier (Typ => Loop_Index_Type);
@@ -1461,8 +1468,9 @@ package body Gnat2Why.Expr.Loops is
                   --  checks for Cond.
 
                   Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-                  Insert_Entity (E    => Loop_Param_Ent,
-                                 Name => Index_Tmp);
+                  Insert_Tmp_Item_For_Entity
+                    (E    => Loop_Param_Ent,
+                     Name => Index_Tmp);
 
                   --  Compute:
                   --    (forall tmp. old !i <= tmp < !i -> not cond)

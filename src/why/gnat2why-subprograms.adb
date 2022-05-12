@@ -3232,7 +3232,7 @@ package body Gnat2Why.Subprograms is
                        Field    => Discr_N,
                        Ty       => E));
             begin
-               Insert_Entity (Discr_N, Discr_W.Id);
+               Insert_Tmp_Item_For_Entity (Discr_N, Discr_W.Id);
 
                W_Discriminants.Append (Discr_W);
             end;

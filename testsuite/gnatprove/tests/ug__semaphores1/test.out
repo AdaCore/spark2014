@@ -4,10 +4,6 @@ semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bou
       |                     ~~~~~~~~~^~~
   reason for check: result of addition must fit in a 32-bits machine integer
 
-semaphores1.adb:45:13: warning: initialization of "Tmp" has no effect
-   45 |            Tmp : Natural := Protected_Natural.Get;
-      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected
     6 |   task T1;
       |        ^~

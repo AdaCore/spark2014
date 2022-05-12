@@ -14,7 +14,6 @@ proof_in_illegal.adb:20:43: low: unused global "Body_Var" constituent of "State"
 proof_in_illegal.adb:21:43: low: unused global "Var"
 proof_in_illegal.ads:3:26: warning: no procedure exists that can initialize abstract state "Proof_In_Illegal.State"
 proof_in_illegal.ads:12:11: info: data dependencies proved
-proof_in_illegal_2.adb:10:07: warning: initialization of "Temp" has no effect
 proof_in_illegal_2.adb:12:24: info: unrolling loop
 proof_in_illegal_2.adb:14:18: info: overflow check proved (CVC4: 20 VC)
 proof_in_illegal_2.adb:15:26: info: overflow check proved (CVC4: 20 VC)

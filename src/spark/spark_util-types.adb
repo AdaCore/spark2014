@@ -1289,17 +1289,26 @@ package body SPARK_Util.Types is
             Pred_Fun : constant Entity_Id := Predicate_Function (Rep_Ty);
 
          begin
-            if Entity_In_SPARK (Pred_Fun) then
-               Process_Pred_Expression
-                 (Type_Instance   => First_Formal (Pred_Fun),
-                  Pred_Expression => Get_Expr_From_Return_Only_Func
-                    (Pred_Fun));
+            --  There might be no predicate functions if the full view of
+            --  Rep_Ty is an Itype. In this case, the predicate is inherited,
+            --  ignore it.
+
+            if No (Pred_Fun) then
+               null;
+            else
+               if Entity_In_SPARK (Pred_Fun) then
+                  Process_Pred_Expression
+                    (Type_Instance   => First_Formal (Pred_Fun),
+                     Pred_Expression => Get_Expr_From_Return_Only_Func
+                       (Pred_Fun));
+               end if;
+
+               --  Go directly to the first type on which the predicate applies
+               --  using the type of the first formal of the predicate
+               --  function.
+
+               Rep_Ty := Retysp (Etype (First_Formal (Pred_Fun)));
             end if;
-
-            --  Go directly to the first type on which the predicate applies
-            --  using the type of the first formal of the predicate function.
-
-            Rep_Ty := Retysp (Etype (First_Formal (Pred_Fun)));
          end;
 
          --  Go to the next type in the derivation tree of Rep_Ty to continue

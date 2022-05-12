@@ -2580,7 +2580,7 @@ package body Gnat2Why.Expr is
       begin
          --  Store the entity for the type variable
 
-         Insert_Entity (DIC_Param, Tmp_Id);
+         Insert_Tmp_Item_For_Entity (DIC_Param, Tmp_Id);
 
          DIC_Check := Sequence
            (New_Ignore (Prog => Transform_Prog (Expr   => DIC_Expr,
@@ -2654,7 +2654,7 @@ package body Gnat2Why.Expr is
             Inv_Param : constant Entity_Id := First_Formal (Inv_Subp);
          begin
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-            Insert_Entity (Inv_Param, Tmp_Id);
+            Insert_Tmp_Item_For_Entity (Inv_Param, Tmp_Id);
             Inv_RTE := Transform_Prog (Expr          => Inv_Expr,
                                        Expected_Type => EW_Bool_Type,
                                        Params        => Params);
@@ -3588,7 +3588,7 @@ package body Gnat2Why.Expr is
                Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
                if Tmp_Exp /= Why_Empty then
-                  Insert_Entity
+                  Insert_Tmp_Item_For_Entity
                     (Default_Init_Param,
                      Tmp_Exp,
                      Mutable => False);
@@ -3831,7 +3831,7 @@ package body Gnat2Why.Expr is
                   Tmps (I) := New_Temp_Identifier
                     (Discr, Type_Of_Node (Etype (Discr)));
 
-                  Insert_Entity (Discr, Tmps (I));
+                  Insert_Tmp_Item_For_Entity (Discr, Tmps (I));
 
                   --  Store constrained value of discriminants
 
@@ -4477,7 +4477,7 @@ package body Gnat2Why.Expr is
                --  used as the type used to represent Init_Param
                --  (avoiding type conversion).
 
-               Insert_Entity (Default_Init_Param, Init_Id);
+               Insert_Tmp_Item_For_Entity (Default_Init_Param, Init_Id);
 
                --  Transform the default init expression into Why3
 
@@ -4726,7 +4726,8 @@ package body Gnat2Why.Expr is
                   Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
                   for Discr_Id of Discr_Ids loop
-                     Insert_Entity (Get_Ada_Node (+Discr_Id), Discr_Id);
+                     Insert_Tmp_Item_For_Entity
+                       (Get_Ada_Node (+Discr_Id), Discr_Id);
                   end loop;
 
                   Count := 1;
@@ -6347,7 +6348,7 @@ package body Gnat2Why.Expr is
       --  time (preventing name capture), and that the type of Expr is used as
       --  the type used to represent Pred_Param (avoiding type conversion).
 
-      Insert_Entity (Pred_Param, Pred_Id);
+      Insert_Tmp_Item_For_Entity (Pred_Param, Pred_Id);
 
       --  Transform the predicate expression into Why3
 
@@ -11560,7 +11561,7 @@ package body Gnat2Why.Expr is
                        (Post        => Constr,
                         Return_Type => Index_Base,
                         Labels      => Symbol_Sets.Empty_Set);
-                     Insert_Entity (Quant_Var, Idx);
+                     Insert_Tmp_Item_For_Entity (Quant_Var, Idx);
 
                      if Present (Loop_Actions (Association)) then
                         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -12213,7 +12214,7 @@ package body Gnat2Why.Expr is
                --  current index variable.
 
                if Nkind (Expr_Or_Assoc) = N_Iterated_Component_Association then
-                  Insert_Entity
+                  Insert_Tmp_Item_For_Entity
                     (Defining_Identifier (Expr_Or_Assoc),
                      +Indexes (Positive (Dim)));
                end if;
@@ -13438,7 +13439,8 @@ package body Gnat2Why.Expr is
                         and then Brower = Get_Root_Object (Prefix (Expr)));
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         Insert_Entity (Brower, Get_Brower_At_End (Brower), Mutable => True);
+         Insert_Tmp_Item_For_Entity
+           (Brower, Get_Brower_At_End (Brower), Mutable => True);
          W_Expr := Transform_Expr
            (Expr   => Expr,
             Domain => Domain,
@@ -13463,7 +13465,7 @@ package body Gnat2Why.Expr is
                else Get_Borrowed_At_End (Brower));
          begin
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-            Insert_Entity (Borrowed_Entity, Borrowed_At_End);
+            Insert_Tmp_Item_For_Entity (Borrowed_Entity, Borrowed_At_End);
             W_Expr := Transform_Expr
               (Expr   => Expr,
                Domain => Domain,
@@ -13516,7 +13518,7 @@ package body Gnat2Why.Expr is
             --  Borrowed_Id.
 
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-            Insert_Entity (Borrowed_Entity, Borrowed_Id);
+            Insert_Tmp_Item_For_Entity (Borrowed_Entity, Borrowed_Id);
             W_Expr := Transform_Expr
               (Expr   => Expr,
                Domain => Domain,
@@ -15666,7 +15668,7 @@ package body Gnat2Why.Expr is
                Vars (I) := New_Temp_Identifier
                  (Base_Name => Short_Name (Discr),
                   Typ       => Typ);
-               Insert_Entity (Discr, Vars (I));
+               Insert_Tmp_Item_For_Entity (Discr, Vars (I));
 
                Vals (I) := New_Any_Statement
                  (Post        => Compute_Dynamic_Invariant
@@ -16444,7 +16446,7 @@ package body Gnat2Why.Expr is
                         Field    => D,
                         Ty       => Pref_Typ);
 
-                     Insert_Entity (D, Tmps (I));
+                     Insert_Tmp_Item_For_Entity (D, Tmps (I));
 
                      Next_Discriminant (D);
                   end loop;
@@ -18734,6 +18736,7 @@ package body Gnat2Why.Expr is
          declare
             Tags   : W_Expr_Array (1 .. 2);
             Tag_Id : Positive := 1;
+
             procedure One_Param (Formal : Entity_Id; Actual : Node_Id);
             --  Compute the tag expression for each parameter and store it
             --  inside Tags.
@@ -18746,12 +18749,12 @@ package body Gnat2Why.Expr is
                pragma Unreferenced (Formal);
                pragma Assert (Is_Controlling_Actual (Actual));
                Tmp : constant W_Expr_Id :=
-                 Transform_Expr (Actual, EW_Term, Params);
+                 Transform_Expr (Actual, Term_Domain (Domain), Params);
             begin
                Tags (Tag_Id) :=
                  New_Tag_Access
                    (Ada_Node => Actual,
-                    Domain   => EW_Term,
+                    Domain   => Term_Domain (Domain),
                     Name     => Tmp,
                     Ty       => Get_Ada_Node (+Get_Type (Tmp)));
                Tag_Id := Tag_Id + 1;
@@ -21118,7 +21121,7 @@ package body Gnat2Why.Expr is
       --          context where the quantified variable is known.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-      Insert_Entity (Quant_Var, W_Quant_Var);
+      Insert_Tmp_Item_For_Entity (Quant_Var, W_Quant_Var);
       Result := Transform_Expr (Condition (Expr), Domain, Params);
 
       --  If there is a filter, add it as an additional condition on the
@@ -21444,7 +21447,8 @@ package body Gnat2Why.Expr is
                         Base_Name => Short_Name (Component),
                         Typ       => EW_Abstract (Etype (Component)));
 
-                     Insert_Entity (Component, Discr_Ids (Discr_Index));
+                     Insert_Tmp_Item_For_Entity
+                       (Component, Discr_Ids (Discr_Index));
 
                      Discr_Vals (Discr_Index) := Expr;
                      Discr_Assoc (Discr_Index) := New_Field_Association
@@ -22932,7 +22936,7 @@ package body Gnat2Why.Expr is
       --  time (preventing name capture), and that the type of Expr is used as
       --  the type used to represent Inv_Param (avoiding type conversion).
 
-      Insert_Entity (Inv_Param, Inv_Id);
+      Insert_Tmp_Item_For_Entity (Inv_Param, Inv_Id);
 
       --  Transform the invariant expression into Why3
 

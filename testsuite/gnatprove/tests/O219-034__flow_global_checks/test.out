@@ -32,5 +32,4 @@ foo.adb:77:07: info: initialization of "Tmp1" proved
 foo.adb:80:22: medium: assertion might fail [possible fix: subprogram at line 72 should mention X in a precondition]
 foo.adb:81:15: medium: Proof_In global "Y" can only be used in assertions (SPARK RM 6.1.4(18))
 foo.adb:82:15: medium: Proof_In global "Y" can only be used in assertions (SPARK RM 6.1.4(18))
-foo.adb:83:12: warning: unused assignment
 foo.adb:83:15: medium: Proof_In global "Y" can only be used in assertions (SPARK RM 6.1.4(18))

@@ -53,7 +53,7 @@ is
      Post => abs (To_Big_Real (Sqrt (X)) - Sqrt (To_Big_Real (X))) <=
        (if Sqrt (To_Big_Real (X)) >= Big_Real'(First_Norm)
         then Big_Real'(Epsilon) * Sqrt (To_Big_Real (X))
-        else Error_Denorm);
+        else Big_Real'(Error_Denorm));
 
    --  Axiom: Sqrt is monotonic
    procedure Sqrt_Is_Monotonic (X, Y : Float) with

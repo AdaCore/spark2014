@@ -153,7 +153,6 @@ my_map.adb:181:21: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:183:16: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:185:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 my_map.ads:12:13: info: function contract might not be available on recursive calls
-my_map.ads:16:06: warning: postcondition does not mention function result [-gnatw.t]
 my_map.ads:16:18: info: postcondition proved (Trivial: 1 VC)
 my_map.ads:18:13: info: implicit function contract might not be available on recursive calls
 my_map.ads:25:07: info: dynamic accessibility check proved (Trivial)

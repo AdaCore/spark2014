@@ -305,7 +305,7 @@ package body Why.Gen.Records is
 
             --  We need entities of discriminants
 
-            Insert_Entity (Discr, Tmps (I));
+            Insert_Tmp_Item_For_Entity (Discr, Tmps (I));
 
             --  Call Build_Predicate_For_Discr on discriminants
 

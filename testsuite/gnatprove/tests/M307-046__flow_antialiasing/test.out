@@ -54,7 +54,6 @@ test.adb:247:04: warning: analyzing unreferenced procedure "Slice_07"
 test.adb:251:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:252:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:253:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
-test.adb:254:36: warning: "Tmp" is set by "Op_String_Char" but not used after the call
 test.adb:256:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:259:04: warning: analyzing unreferenced procedure "Slice_08"
 test.adb:263:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)

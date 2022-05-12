@@ -778,7 +778,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Binds (I) := New_Ada_Record_Access
                     (Types.Empty, EW_Term, Expr, Discr, Expr_Ty);
 
-                  Insert_Entity (Discr, Tmps (I));
+                  Insert_Tmp_Item_For_Entity (Discr, Tmps (I));
 
                   Next_Discriminant (Discr);
                   I := I + 1;
