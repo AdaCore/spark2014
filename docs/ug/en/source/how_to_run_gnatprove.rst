@@ -101,9 +101,10 @@ be analyzed by |GNATprove|:
 
      gnatprove -P <project-file.gpr>
 
-  All main units in the project and all units they (recursively) depend on
-  are analyzed. If there are no main units specified, analyze all files in
-  the project.
+  All main units in the specified project and all units they (recursively)
+  depend on are analyzed. If there are no main units specified, analyze all
+  files in the project. Note that main units of projects that the specified
+  project depends on are not taken into account.
 
   This is what you want to use for the analysis of a particular executable
   only, or if you want to analyze different executables within a complex
@@ -113,11 +114,19 @@ be analyzed by |GNATprove|:
 
      gnatprove -P <project-file.gpr> [-u] FILES...
 
-  If ``-u`` is specified, we only analyze the given files. If ``-u`` is not
-  specified, we also analyze all units these files (recursively) depend on.
+  If ``-u`` is specified, we only analyze the units that contain the given
+  files. If ``-u`` is not specified, we also analyze all units these units
+  (recursively) depend on.
 
-  This is intended for the day-to-day command-line or IDE use of
+  This usage is intended for the day-to-day command-line or IDE use of
   |GNATprove| when implementing a project.
+
+  Note that |GNATprove| always analyzes units as a whole, and cannot analyze a
+  specification (``.ads``) file independently from a body (``.adb``) file. So
+  if you specify a specification file that has a corresponding body, both are
+  analyzed. The same is true for subunits such as separate subprograms: if you
+  specify such a file name, the entire unit is analyzed.
+
 
 .. index:: --mode
            Stone level; command-line switch
