@@ -1001,6 +1001,24 @@ Finally, the two functions used to allocate memory to create
 attribute. Indeed, calling those functions twice in a row with the
 same parameters would return different objects.
 
+.. index:: address-to-access-conversion
+
+Addresses to Access Conversions
+-------------------------------
+
+The run-time library ``System.Address_To_Access_Conversions`` enables
+the user to convert ``System.Address_Type`` values to general access-to-object
+types. The conversions are subject to the same rules as
+``Unchecked_Conversion`` between such types (see :ref:`Data Validity`),
+that is:
+
+* ``To_Pointer`` is allowed in |SPARK| and annotated with ``Global =>
+  null``. On a call to this function, |GNATprove| will emit warnings
+  to ensure that the designated data has no aliases and is initialized.
+
+* ``To_Address`` is forbidden in |SPARK| because it does not handle
+  addresses.
+
 Cut Operations
 --------------
 
