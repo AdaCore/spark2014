@@ -76,13 +76,14 @@ tool. You can set it manually in this case::
 Running GNATprove from the Command Line
 ---------------------------------------
 
-|GNATprove| can be run from the command line as follows::
+We recommend running |GNATprove| from the command line using a project file, as
+follows::
 
     gnatprove -P <project-file.gpr>
 
 In the appendix, section :ref:`Command Line Invocation`, you can find an
 exhaustive list of switches; here we only give an overview over the most common
-uses. Note that |GNATprove| cannot be run without a project file.
+uses.
 
 There are essentially three common ways you can select the files which will
 be analyzed by |GNATprove|:
@@ -691,6 +692,15 @@ When editing an Ada file, |GNATprove| can also be run from a
 
 .. index:: manual proof
            Platinum level; manual proof
+
+Running GNATprove without a project file
+----------------------------------------
+
+|GNATprove| accepts the invocation without a project file (``-P`` switch on the
+command line). In that case, if the current directory contains exactly one
+project file, |GNATprove| uses this project file.  If no project file exists,
+|GNATprove| creates a trivial project file with the name ``default.gpr`` and
+uses that.
 
 GNATprove and Manual Proof
 --------------------------

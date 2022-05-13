@@ -90,6 +90,13 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs.
 
+   function No_Project_File_Mode return String;
+   --  This function is supposed to be called when no project file was given.
+   --  It searches for a project file in the current directory. If there is
+   --  exactly one, it returns the first one (= a random one). If there are
+   --  more than one, we abort with an error. Otherwise, a default project
+   --  is created and the name of that project is returned.
+
    procedure Prepare_Prover_Lib (Obj_Dir : String);
    --  Deal with the why3 libraries manual provers might need.
    --  Copies needed sources into gnatprove and builds the library.
@@ -532,6 +539,77 @@ package body Configuration is
       return Case_Insensitive_Contains (FS.Provers, "coq");
    end Is_Coq_Prover;
 
+   --------------------------
+   -- No_Project_File_Mode --
+   --------------------------
+
+   function No_Project_File_Mode return String is
+
+      function Create_Default_Project_File return String;
+      --  Create a project file with name default.gpr and default contents.
+      --  Return the name of the project file (default.gpr).
+
+      function Find_Project_File_In_CWD return String;
+      --  If the current directory contains exactly one .gpr file, return it,
+      --  otherwise return the empty string.
+
+      ---------------------------------
+      -- Create_Default_Project_File --
+      ---------------------------------
+
+      function Create_Default_Project_File return String is
+         F : File_Type;
+         Name : constant String := "default.gpr";
+      begin
+         Create (F, Out_File, Name);
+         Put_Line (F, "project default is");
+         Put_Line (F, "end default;");
+         Flush (F);
+         Close (F);
+         return Name;
+      end Create_Default_Project_File;
+
+      ------------------------------
+      -- Find_Project_File_In_CWD --
+      ------------------------------
+
+      function Find_Project_File_In_CWD return String is
+         S : Search_Type;
+         D : Directory_Entry_Type;
+      begin
+         Start_Search
+           (S, ".", "*.gpr", [Ordinary_File => True, others => False]);
+         if not More_Entries (S) then
+            return "";
+         end if;
+         Get_Next_Entry (S, D);
+         if More_Entries (S) then
+            Abort_With_Message
+              ("No project file given, and current directory contains more "
+               & "than one project file. Please specify a project file.");
+         end if;
+         return Simple_Name (D);
+      end Find_Project_File_In_CWD;
+
+      Result : constant String := Find_Project_File_In_CWD;
+
+   --  Start of processing for No_Project_File_Mode
+
+   begin
+      if Result /= "" then
+         Ada.Text_IO.Put_Line ("No project file given, using " & Result);
+         return Result;
+      else
+         declare
+            Name : constant String := Create_Default_Project_File;
+         begin
+            Ada.Text_IO.Put_Line
+              ("No project file given, creating " & Name);
+            return Name;
+         end;
+      end if;
+   end No_Project_File_Mode;
+
    --------------------
    -- Parse_Switches --
    --------------------
@@ -553,16 +631,6 @@ package body Configuration is
       Set_Usage (Config,
                  Usage    => Usage_Message,
                  Help_Msg => SPARK_Install.Help_Message);
-
-      --  If no arguments have been given, print help message and exit.
-      --  Empty switches list is allowed for modes File_Specific_Only and
-      --  Global_Switches_Only.
-
-      if Mode in Project_Parsing | All_Switches
-        and then Com_Lin'Length = 0
-      then
-         Abort_Msg ("", With_Help => True);
-      end if;
 
       if Mode in Project_Parsing | All_Switches then
          Define_Switch (Config, "-aP=");
@@ -1348,15 +1416,18 @@ package body Configuration is
             Proj_Env.Set_Predefined_Project_Path (Arr & Arr2);
          end;
 
-         if CL_Switches.P.all /= "" then
+         declare
+            Project_File : constant String :=
+              (if Null_Or_Empty_String (CL_Switches.P) then
+                    No_Project_File_Mode
+               else CL_Switches.P.all);
+         begin
             Tree.Load
-              (GNATCOLL.VFS.Create (Filesystem_String (CL_Switches.P.all)),
+              (GNATCOLL.VFS.Create (Filesystem_String (Project_File)),
                Proj_Env,
                Errors => Print_Errors'Access);
-         else
-            Abort_Msg ("No project file is given", With_Help => False);
-         end if;
-         return Tree;
+            return Tree;
+         end;
       end Init;
 
       -------------------
