@@ -11,7 +11,7 @@
 <path name="my_ordered_sets__get_f.gnat-json"/>
 <theory name="My_ordered_sets__get_f__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="timeout"/></proof>

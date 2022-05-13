@@ -50,6 +50,11 @@ with Treepr;                      use Treepr;
 
 package body Gnat2Why.Borrow_Checker is
 
+   function Is_Read_Only (E : Entity_Id) return Boolean with
+     Pre => Is_Object (E);
+   --  Return True if E is declared as Read_Only (ie. a constant which is not
+   --  of access-to-variable type, or a variable of access-to-constant type).
+
    ---------------------------------------------------
    -- Handling of Permissions Associated with Paths --
    ---------------------------------------------------
@@ -264,6 +269,11 @@ package body Gnat2Why.Borrow_Checker is
       procedure Free_Env (PE : in out Perm_Env);
       --  Procedure to free a permission environment
 
+      procedure Reset_Env (PE : in out Perm_Env);
+      --  Procedure to remove all restrictions from a permission environment.
+      --  This is different from Free_Env in that all variables are kept in the
+      --  environment.
+
       procedure Free_Tree (PT : in out Perm_Tree_Access);
       --  Procedure to free a permission tree
 
@@ -401,6 +411,36 @@ package body Gnat2Why.Borrow_Checker is
 
          Reset (PE);
       end Free_Env;
+
+      ---------------
+      -- Reset_Env --
+      ---------------
+
+      procedure Reset_Env (PE : in out Perm_Env) is
+         E : Perm_Tree_Maps.Key_Option;
+      begin
+         E := Get_First_Key (PE);
+         while E.Present loop
+            declare
+               Perm : constant Perm_Kind :=
+                 (if Is_Read_Only (E.K) then Read_Only else Read_Write);
+               Tree : Perm_Tree_Access :=
+                 Perm_Tree_Maps.Get (Perm_Tree_Maps.Instance (PE), E.K);
+               New_Tree : constant Perm_Tree_Access :=
+                 new Perm_Tree_Wrapper'
+                   (Tree =>
+                      (Kind                => Entire_Object,
+                       Is_Node_Deep        => Is_Node_Deep (Tree),
+                       Explanation         => Explanation (Tree),
+                       Permission          => Perm,
+                       Children_Permission => Perm));
+            begin
+               Free_Tree (Tree);
+               Set (PE, E.K, New_Tree);
+               E := Get_Next_Key (PE);
+            end;
+         end loop;
+      end Reset_Env;
 
       ---------------
       -- Free_Tree --
@@ -774,11 +814,6 @@ package body Gnat2Why.Borrow_Checker is
    --  Determine if the candidate Prefix is indeed a prefix of Expr, or almost
    --  a prefix, in the sense that they could still refer to overlapping memory
    --  locations.
-
-   function Is_Read_Only (E : Entity_Id) return Boolean with
-     Pre => Is_Object (E);
-   --  Return True if E is declared as Read_Only (ie. a constant which is not
-   --  of access-to-variable type, or a variable of access-to-constant type).
 
    function Loop_Of_Exit (N : Node_Id) return Entity_Id;
    --  A function that takes an exit statement node and returns the entity of
@@ -3668,6 +3703,8 @@ package body Gnat2Why.Borrow_Checker is
                   Return_Parameters (Subp);
                end if;
                Return_Globals (Subp);
+
+               Reset_Env (Current_Perm_Env);
             end;
 
          when N_Extended_Return_Statement =>
@@ -3708,6 +3745,8 @@ package body Gnat2Why.Borrow_Checker is
                   Return_Parameters (Subp);
                end if;
                Return_Globals (Subp);
+
+               Reset_Env (Current_Perm_Env);
             end;
 
          --  On loop exit, merge the current permission environment with the
@@ -3733,6 +3772,8 @@ package body Gnat2Why.Borrow_Checker is
                   --  of loop accumulators to directly store permission
                   --  environments.
                end if;
+
+               Reset_Env (Current_Perm_Env);
             end;
 
          --  On branches, analyze each branch independently on a fresh copy of
@@ -3795,12 +3836,8 @@ package body Gnat2Why.Borrow_Checker is
                Free_Env (Saved_Env);
             end;
 
-         --  We should ideally ignore the branch after raising an exception,
-         --  so that it is not taken into account in merges. For now, just
-         --  propagate the current environment.
-
          when N_Raise_Statement =>
-            null;
+            Reset_Env (Current_Perm_Env);
 
          when N_Null_Statement =>
             null;

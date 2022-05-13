@@ -1,5 +1,3 @@
 aliasing.adb:13:13: info: justified that formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
-aliasing.adb:13:16: info: index check proved (CVC4: 2 VC)
 aliasing.adb:13:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:8]
-aliasing.adb:13:23: info: index check proved (CVC4: 2 VC)
 aliasing.adb:13:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:8]

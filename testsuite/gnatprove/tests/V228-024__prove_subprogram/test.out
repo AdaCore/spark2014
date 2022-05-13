@@ -1,0 +1,1 @@
+gen.adb:4:14: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at inst.adb:4 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at gen.ads:4 should mention X in a precondition]

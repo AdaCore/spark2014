@@ -745,7 +745,11 @@ package body Why.Inter is
       Relaxed_Init : Boolean := False) return W_Type_Id is
    begin
       if Is_Standard_Boolean_Type (N) then
-         return EW_Bool_Type;
+         if Relaxed_Init then
+            return M_Boolean_Init_Wrapper.Wrapper_Ty;
+         else
+            return EW_Bool_Type;
+         end if;
 
       elsif N = Universal_Fixed then
          return EW_Real_Type;

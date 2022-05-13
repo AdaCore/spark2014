@@ -392,7 +392,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.106">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="8620"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="8620"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -410,7 +410,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.111">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10818"/></proof>
   </goal>
   <goal name="def&#39;vc.112" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -420,7 +420,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.114">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10588"/></proof>
   </goal>
   <goal name="def&#39;vc.115" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -442,7 +442,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.120">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="10185"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10185"/></proof>
   </goal>
   <goal name="def&#39;vc.121" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -453,7 +453,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.123">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9506"/></proof>
   </goal>
   <goal name="def&#39;vc.124" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -476,7 +476,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.129">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10650"/></proof>
   </goal>
   <goal name="def&#39;vc.130" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -491,7 +491,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.133">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="10617"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10617"/></proof>
   </goal>
   <goal name="def&#39;vc.134" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -506,7 +506,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.137">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10298"/></proof>
   </goal>
   <goal name="def&#39;vc.138" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -521,7 +521,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.141">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9092"/></proof>
   </goal>
   <goal name="def&#39;vc.142" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -535,7 +535,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.145">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10592"/></proof>
   </goal>
   <goal name="def&#39;vc.146" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -545,7 +545,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.148">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9099"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9099"/></proof>
   </goal>
   <goal name="def&#39;vc.149" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -560,7 +560,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.152">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9000"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9000"/></proof>
   </goal>
   <goal name="def&#39;vc.153" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -583,7 +583,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.158">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="8580"/></proof>
   </goal>
   <goal name="def&#39;vc.159" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -754,7 +754,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.207">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9791"/></proof>
   </goal>
   <goal name="def&#39;vc.208" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -772,7 +772,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.212">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9782"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9782"/></proof>
   </goal>
   <goal name="def&#39;vc.213" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -795,7 +795,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.218">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="11325"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="11325"/></proof>
   </goal>
   <goal name="def&#39;vc.219" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -810,7 +810,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.222">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9519"/></proof>
   </goal>
   <goal name="def&#39;vc.223" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -825,7 +825,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.226">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="7679"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="7679"/></proof>
   </goal>
   <goal name="def&#39;vc.227" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -839,7 +839,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.230">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9555"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9555"/></proof>
   </goal>
   <goal name="def&#39;vc.231" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -849,7 +849,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.233">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="7682"/></proof>
   </goal>
   <goal name="def&#39;vc.234" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -864,7 +864,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.237">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9837"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9837"/></proof>
   </goal>
   <goal name="def&#39;vc.238" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -887,7 +887,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.243">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9357"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9357"/></proof>
   </goal>
   <goal name="def&#39;vc.244" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -897,7 +897,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.246">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="8700"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="8700"/></proof>
   </goal>
   <goal name="def&#39;vc.247" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -912,7 +912,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.250">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="10700"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="10700"/></proof>
   </goal>
   <goal name="def&#39;vc.251" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -931,7 +931,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.255">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="11187"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="11187"/></proof>
   </goal>
   <goal name="def&#39;vc.256" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -950,7 +950,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.260">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="9187"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="9187"/></proof>
   </goal>
   <goal name="def&#39;vc.261" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -981,7 +981,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.268">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="11589"/></proof>
   </goal>
   <goal name="def&#39;vc.269" proved="true">
   <transf name="trivial_true" proved="true" >

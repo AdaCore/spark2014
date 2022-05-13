@@ -1,6 +1,8 @@
 p.adb:12:16: info: range check proved (CVC4: 2 VC)
 p.adb:13:33: info: range check proved (CVC4: 2 VC)
 p.adb:14:16: info: range check proved (CVC4: 4 VC)
+p.adb:14:24: info: index check proved (CVC4: 2 VC)
+p.adb:14:35: info: index check proved (CVC4: 2 VC)
 p.adb:14:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.adb:14:47: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.ads:13:20: medium: "Target.Value" might not be initialized in "Copy" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Target.Value" on all paths, make "Target" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

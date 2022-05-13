@@ -26,6 +26,7 @@
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;   use Ada.Directories;
+with Ada.Environment_Variables;
 with Ada.Strings.Hash;
 with Call;              use Call;
 with GNAT.Strings;
@@ -283,6 +284,12 @@ package Configuration is
         Compose (Share_Spark_Config, "gnat2why");
       Gnatprove_Conf           : constant String :=
         Compose (Share_Spark_Config, "gnatprove.conf");
+      GNSA_Dir                 : constant String :=
+        (if Ada.Environment_Variables.Exists ("GNSA_ROOT")
+         then Ada.Environment_Variables.Value ("GNSA_ROOT")
+         else Libexec_Spark);
+      GNSA_Dir_Bin             : constant String :=
+        Compose (GNSA_Dir, "bin");
       Z3_Present               : Boolean;
       CVC4_Present             : Boolean;
       Colibri_Present          : Boolean;

@@ -694,10 +694,16 @@ Contracts on subprograms provide a natural boundary for combining proof and
 test:
 
 * If proof is used to demonstrate that a subprogram is free of run-time errors
-  and respects its contract, this proof depends on the precondition of the
-  subprogram being respected at the call site. This verification can be
-  achieved by proving the caller too, or by checking dynamically the
-  precondition of the called subprogram during unit testing of the caller.
+  and respects its contract, this proof depends on these properties being respected at the call site:
+
+  * the precondition of the subprogram;
+  * all inputs (including global variables) of the subprogram contain valid
+    data for their types;
+  * the Anti-Aliasing rules in SPARK RM 6.4.2 are respected.
+
+  This verification can be achieved by proving the caller too, or, in the case
+  of the precondition, by checking it dynamically during unit testing of the
+  caller.
 
 * If proof is used to demonstrate that a subprogram is free of run-time errors
   and respects its contract, and this subprogram calls other subprograms, this

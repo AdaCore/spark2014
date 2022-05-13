@@ -267,4 +267,13 @@ package Flow.Control_Flow_Graph.Utility is
       return V_Attributes;
    --  Create attributes for package initialization vertices.
 
+   function Process_Discriminants (Intermediate_Vars_Used : Flow_Id_Sets.Set;
+                                   Var_Defined            : Flow_Id)
+                                   return Flow_Id_Sets.Set;
+   --  Flow_Utility.Get_Variables can return a "variable" in the form of
+   --  <Record_Type>.Component when a record discriminant is used in a default
+   --  initialization expression. This function reassembles this intermediate
+   --  representation into the defined variable's discriminant to correctly
+   --  identify "variables used".
+
 end Flow.Control_Flow_Graph.Utility;

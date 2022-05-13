@@ -57,7 +57,7 @@ test_bad_variant.adb:193:32: medium: subprogram variant might fail [possible fix
 test_bad_variant.adb:193:41: info: pointer dereference check proved (CVC4: 1 VC)
 test_bad_variant.adb:193:83: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]
 test_bad_variant.adb:193:92: info: pointer dereference check proved (CVC4: 1 VC)
-test_bad_variant.adb:193:96: info: overflow check proved (CVC4: 2 VC)
+test_bad_variant.adb:193:96: info: overflow check proved (CVC4: 1 VC)
 test_variant.adb:9:43: info: index check proved (CVC4: 2 VC)
 test_variant.adb:9:62: info: index check proved (CVC4: 2 VC)
 test_variant.adb:14:23: info: index check proved (CVC4: 2 VC)

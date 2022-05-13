@@ -77,6 +77,86 @@ package body Flow.Control_Flow_Graph.Utility is
    end Add_Volatile_Effects;
 
    ---------------------------
+   -- Process_Discriminants --
+   ---------------------------
+
+   function Process_Discriminants (Intermediate_Vars_Used : Flow_Id_Sets.Set;
+                                   Var_Defined            : Flow_Id)
+                                   return Flow_Id_Sets.Set
+   is
+      Variables_Used : Flow_Id_Sets.Set;
+      use type Ada.Containers.Count_Type;
+   begin
+      for Im_Var of Intermediate_Vars_Used loop
+
+         --  ??? Check whether elements within Composite_Kind other than
+         --  E_Record_Type and E_Private_Type are required here.
+         if Im_Var.Kind = Record_Field
+           and then Ekind (Im_Var.Node) in E_Record_Type | E_Private_Type
+         then
+            --  We have an intermediate "variable used" of the form T.X where
+            --  T is a type and X a discriminant thereof. Such a construct may
+            --  only be used to define a record component.
+            pragma Assert
+              (Im_Var.Component.Length = 1
+               and then
+               Ekind (Im_Var.Component.Last_Element) = E_Discriminant
+               and then
+               Var_Defined.Kind = Record_Field
+               and then
+               Var_Defined.Component.Length >= 1);
+            --  There are two cases to consider:
+            --  1) Var_Defined is a discriminant; in this case an inner
+            --  discriminant (e.g. A.B.C.Y) references an outer one (e.g.
+            --  A.B.X). The inner discriminant can only refer to another
+            --  discriminant one layer "up", so to get the variable used we
+            --  must chop Y and C from Var_Defined, then append X.
+            --  2) Var_Defined is not a discriminant; this case is where a
+            --  component (e.g. A.B.C.D) references a discriminant at a higher
+            --  level (e.g. A.B.X). We must successively "chop" components from
+            --  Var_Defined until we reach a layer whose type is T, then append
+            --  X. Note that we obtain the type of the layer above the current
+            --  component via a check of its Scope.
+
+            declare
+               Im_Var_Type : constant Entity_Id :=
+                 Get_Direct_Mapping_Id (Im_Var);
+               pragma Assert
+                 (Im_Var_Type = Scope (Im_Var.Component.Last_Element));
+               Var_Defined_Copy : Flow_Id := Var_Defined;
+            begin
+               if Is_Discriminant (Var_Defined) then
+                  Var_Defined_Copy.Component.Delete_Last; --  1st Chop
+               else
+                  loop
+                     if Scope (Var_Defined_Copy.Component.Last_Element) =
+                       Im_Var_Type
+                     then
+                        exit;
+                     else
+                        Var_Defined_Copy.Component.Delete_Last;
+                        --  Chop & continue
+                     end if;
+                  end loop;
+               end if;
+
+               pragma Assert (Scope (Var_Defined_Copy.Component.Last_Element) =
+                                Im_Var_Type);
+
+               Var_Defined_Copy.Component.Delete_Last; --  Final Chop
+               Var_Defined_Copy.Component.Append
+                 (Im_Var.Component.Last_Element);
+               Variables_Used.Insert (Var_Defined_Copy);
+            end;
+         else
+            Variables_Used.Insert (Im_Var);
+         end if;
+
+      end loop;
+      return Variables_Used;
+   end Process_Discriminants;
+
+   ---------------------------
    -- Make_Basic_Attributes --
    ---------------------------
 
@@ -752,11 +832,15 @@ package body Flow.Control_Flow_Graph.Utility is
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       if Present (DI) then
-         A.Variables_Used := Get_All_Variables
-           (A.Default_Init_Val,
-            Scope                => Scope,
-            Target_Name          => Null_Flow_Id,
-            Use_Computed_Globals => not FA.Generating_Globals);
+         A.Variables_Used :=
+           Process_Discriminants
+             (Intermediate_Vars_Used =>
+                Get_All_Variables
+                  (N                    => A.Default_Init_Val,
+                   Scope                => Scope,
+                   Target_Name          => Null_Flow_Id,
+                   Use_Computed_Globals => not FA.Generating_Globals),
+              Var_Defined            => F);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;
 

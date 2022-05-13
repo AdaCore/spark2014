@@ -868,10 +868,13 @@ procedure Gnatprove with SPARK_Mode is
       Clear ("GCC_ROOT");
       Clear ("GNAT_ROOT");
 
-      --  Add <prefix>/libexec/spark/bin in front of the PATH
+      --  Add <prefix>/libexec/spark/bin in front of the PATH to find gnatwhy3
+      --  and provers. Also add GNSA dir in front of PATH for gprbuild and
+      --  other compiler tools.
 
       Set ("PATH",
-           SPARK_Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
+           SPARK_Install.GNSA_Dir_Bin & Path_Separator
+           & SPARK_Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
 
       --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
       --  so that project files installed with GNAT (not with SPARK)

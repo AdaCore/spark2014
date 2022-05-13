@@ -171,8 +171,10 @@ class CVC4(Prover):
         """run on single file and extract statistics"""
         try:
             status = Prover.regex_get(Prover.status_reg, output)
-            steps = int(Prover.regex_get(self.limit_reg, output, 1))
+            steps = 0
+            time = 0
             try:
+                steps = int(Prover.regex_get(self.limit_reg, output, 1))
                 time = float(Prover.regex_get(self.time_reg, output, 1))
             except ValueError:
                 pass

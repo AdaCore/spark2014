@@ -5,56 +5,23 @@ with Pointers_With_Aliasing;
 procedure Example_Recursive with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
-   package P1 is
-      type Object is tagged null record;
-
-      --  Lemma: Equality on Object is an equivalence.
-      --  It will need to be proved for each new derivation
-      function Witness (O : Object) return Big_Integer is (0);
-      function "=" (O1, O2 : Object) return Boolean is
-        (True)
-      with Post'Class => "="'Result = (Witness (O1) = Witness (O2));
-   end P1;
-   use P1;
+   type Object is tagged null record;
 
    package Pointers_To_Obj is new Pointers_With_Aliasing (Object'Class);
 
    use Pointers_To_Obj;
    use Memory_Model;
 
-   package Address_Conversions is new Signed_Conversions (Integer_64);
-   use Address_Conversions;
+   type L_Cell is new Object with record
+      V : Natural;
+      N : Pointer;
+   end record;
 
-   package P2 is
-      type L_Cell is new Object with record
-         V : Natural;
-         N : Pointer;
-      end record;
-
-      package Address_Conversions is new Unsigned_Conversions (Address_Type);
-      use Address_Conversions;
-
-      --  Lemma: Equality on List is still an equivalence
-      function Witness (O : L_Cell) return Big_Integer is
-        (To_Big_Integer (Address (O.N)) * 2_147_483_648 + To_Big_Integer (O.V));
-
-      function "=" (O1, O2 : L_Cell) return Boolean with
-        Post => "="'Result = (O1.V = O2.V and O1.N = O2.N)
-        and then "="'Result = (Witness (O1) = Witness (O2));
-   end P2;
-
-   package body P2 is
-
-      function "=" (O1, O2 : L_Cell) return Boolean is
-      begin
-         pragma Assert
-           (if Witness (O1) = Witness (O2)
-            then To_Big_Integer (Address (O1.N)) = To_Big_Integer (Address (O2.N)));
-         return O1.V = O2.V and O1.N = O2.N;
-      end "=";
-
-   end P2;
-   use P2;
+   function Valid_Memory (M : Memory_Type) return Boolean is
+     (for all A in M => Get (M, A) in L_Cell);
+   --  The memory only contains list cells. It is important because the
+   --  modelisation of the memory is based on "=" on Object, so we need to
+   --  know what it is.
 
    type List is record
       Length : Natural;
@@ -65,10 +32,10 @@ procedure Example_Recursive with SPARK_Mode is
      (if L = 0 then N = 0
       else N /= 0
         and then Valid (M, L)
-        and then Get (M, L) in L_Cell
         and then Valid_List (Address (L_Cell (Get (M, L)).N), N - 1, M))
    with Subprogram_Variant => (Decreases => N),
      Global => null,
+     Pre => Valid_Memory (M),
      Ghost;
    -- L is an acyclic list of N elements
 
@@ -78,7 +45,7 @@ procedure Example_Recursive with SPARK_Mode is
      Subprogram_Variant => (Decreases => N1),
      Ghost,
      Global => null,
-     Pre => Valid_List (L, N1, M) and then Valid_List (L, N2, M),
+     Pre => Valid_Memory (M) and then Valid_List (L, N1, M) and then Valid_List (L, N2, M),
      Post => N1 = N2
    is
    begin
@@ -92,6 +59,7 @@ procedure Example_Recursive with SPARK_Mode is
    function Valid_List (L : List) return Boolean is
      (Valid_List (Address (L.Values), L.Length, Memory))
    with Global => Memory,
+     Pre => Valid_Memory (Memory),
      Ghost;
 
    function Reachable (L : Address_Type; N : Natural; A : Address_Type; M : Memory_Type) return Boolean is
@@ -101,7 +69,7 @@ procedure Example_Recursive with SPARK_Mode is
    with Subprogram_Variant => (Decreases => N),
      Global => null,
      Ghost,
-     Pre => Valid_List (L, N, M);
+     Pre => Valid_Memory (M) and then Valid_List (L, N, M);
    --  A is reachable in the acyclic list starting at L in M
 
    --  Lemma:
@@ -110,7 +78,7 @@ procedure Example_Recursive with SPARK_Mode is
      Subprogram_Variant => (Decreases => N1),
      Ghost,
      Global => null,
-     Pre => Valid_List (L1, N1, M) and then Valid_List (L2, N2, M)
+     Pre => Valid_Memory (M) and then Valid_List (L1, N1, M) and then Valid_List (L2, N2, M)
      and then Reachable (L1, N1, L2, M)
      and then Reachable (L2, N2, P, M),
      Post => Reachable (L1, N1, P, M)
@@ -132,7 +100,7 @@ procedure Example_Recursive with SPARK_Mode is
      Subprogram_Variant => (Decreases => N),
      Ghost,
      Global => null,
-     Pre => Valid_List (L, N, M1)
+     Pre => Valid_Memory (M1) and then Valid_Memory (M2) and then Valid_List (L, N, M1)
      and then (for all A in M1 =>
                  (if Reachable (L, N, A, M1)
                   then Valid (M2, A) and then Get (M1, A) = Get (M2, A))),
@@ -152,7 +120,7 @@ procedure Example_Recursive with SPARK_Mode is
      Subprogram_Variant => (Decreases => N),
      Ghost,
      Global => null,
-     Pre => Valid_List (L, N, M1)
+     Pre => Valid_Memory (M1) and then Valid_Memory (M2) and then Valid_List (L, N, M1)
      and then (for all A in M1 =>
                  (if Reachable (L, N, A, M1)
                   then Valid (M2, A) and then Get (M1, A) = Get (M2, A))),
@@ -171,7 +139,8 @@ procedure Example_Recursive with SPARK_Mode is
      Subprogram_Variant => (Decreases => N1),
      Ghost,
      Global => null,
-     Pre => Valid_List (L1, N1, M1) and then Valid_List (L2, N2, M1)
+     Pre => Valid_Memory (M1) and then Valid_Memory (M2)
+     and then Valid_List (L1, N1, M1) and then Valid_List (L2, N2, M1)
      and then Reachable (L1, N1, P, M1)
      and then not Reachable (L2, N2, P, M1)
      and then Valid_List (P, 1, M1)
@@ -199,7 +168,8 @@ procedure Example_Recursive with SPARK_Mode is
      Subprogram_Variant => (Decreases => N1),
      Ghost,
      Global => null,
-     Pre => Valid_List (L1, N1, M1) and then Valid_List (L2, N2, M1)
+     Pre => Valid_Memory (M1) and then Valid_Memory (M2)
+     and then Valid_List (L1, N1, M1) and then Valid_List (L2, N2, M1)
      and then Reachable (L1, N1, P, M1)
      and then not Reachable (L2, N2, P, M1)
      and then Valid_List (P, 1, M1)
@@ -222,24 +192,24 @@ procedure Example_Recursive with SPARK_Mode is
    end Prove_Append_Reach;
 
    function Disjoint (L1, L2 : List) return Boolean is
-     (for all A in Memory =>
+     (for all A in Address_Type =>
         (if Reachable (Address (L1.Values), L1.Length, A, Memory)
          then not Reachable (Address (L2.Values), L2.Length, A, Memory)))
    with Global => Memory,
      Ghost,
-     Pre => Valid_List (L1) and Valid_List (L2);
+     Pre => Valid_Memory (Memory) and then Valid_List (L1) and then Valid_List (L2);
 
    function Reachable_Locations (A : Address_Type; N : Natural; M : Memory_Type) return Addresses is
      ([for Q in Address_Type => Reachable (A, N, Q, M)])
    with Ghost,
-     Pre => Valid_List (A, N, M),
+     Pre => Valid_Memory (M) and then Valid_List (A, N, M),
      Annotate => (GNATprove, Inline_For_Proof);
    --  All locations reachable from A in M
 
    function Reachable_Locations (L : List) return Addresses is
      (Reachable_Locations (Address (L.Values), L.Length, Memory))
    with Ghost,
-     Pre => Valid_List (L),
+     Pre => Valid_Memory (Memory) and then Valid_List (L),
      Annotate => (GNATprove, Inline_For_Proof);
    --  All locations reachable through L
 
@@ -247,15 +217,17 @@ procedure Example_Recursive with SPARK_Mode is
    --  here, just the list structure.
    procedure Append (L1 : in out List; L2 : List) with
      Global => (In_Out => Memory),
-     --  L1 and L2 are valid list segments
-     Pre => Valid_List (L1) and then Valid_List (L2)
+     Pre => Valid_Memory (Memory)
+     --  L1 and L2 are valid lists
+     and then Valid_List (L1) and then Valid_List (L2)
      --  L1 and L2 are disjoint
      and then Disjoint (L1, L2)
-     --  the sum of their lengthes is a natural
+     --  the sum of their lengths is a natural
      and then Natural'Last - L1.Length >= L2.Length,
 
-     --  L1 is a valid list segment
-     Post => Valid_List (L1)
+     Post => Valid_Memory (Memory)
+     --  L1 is a valid list
+     and then Valid_List (L1)
      --  It is long as L1 + L2
      and then L1.Length = L1.Length'Old + L2.Length'Old
      --  The new list contains the same pointers as the 2 input lists
@@ -265,8 +237,8 @@ procedure Example_Recursive with SPARK_Mode is
      --  Nothing has been allocated or deallocated
      and then Allocates (Memory'Old, Memory, None)
      and then Deallocates (Memory'Old, Memory, None)
-     --  Only cells reachable from L1 have been modified
-     and then Writes (Memory'Old, Memory, Reachable_Locations (L1))
+     --  Only cells reachable from L1 before the call have been modified
+     and then Writes (Memory'Old, Memory, Reachable_Locations (L1)'Old)
    is
       Mem_Old : constant Memory_Type := Memory with Ghost;
    begin
@@ -304,7 +276,9 @@ procedure Example_Recursive with SPARK_Mode is
 
    type Nat_Array is array (Positive range <>) of Natural;
    procedure Create_List (Values : Nat_Array; L : out List) with
-     Post => L.Length = Values'Length
+     Pre => Valid_Memory (Memory),
+     Post => Valid_Memory (Memory)
+     and L.Length = Values'Length
      and Valid_List (L)
      and Allocates (Memory'Old, Memory, Reachable_Locations (L))
      and Deallocates (Memory'Old, Memory, None)
@@ -320,6 +294,7 @@ procedure Example_Recursive with SPARK_Mode is
            (Address (L_Cell (Deref (L.Values)).N), Values'Last - I, M, Memory);
          Prove_Reach_Preserved
            (Address (L_Cell (Deref (L.Values)).N), Values'Last - I, M, Memory);
+         pragma Loop_Invariant (Valid_Memory (Memory));
          pragma Loop_Invariant
            (Valid_List (Address (L.Values), Values'Last - I + 1, Memory));
          pragma Loop_Invariant
@@ -333,10 +308,39 @@ procedure Example_Recursive with SPARK_Mode is
       L.Length := Values'Length;
    end Create_List;
 
+   function Rand (X : Integer) return Boolean with Import;
+
    L1 : List;
    L2 : List;
+   L3 : List;
+   M  : Memory_Type with Ghost;
 begin
    Create_List ((1, 2, 3), L1);
    Create_List ((4, 5, 6), L2);
+   Create_List ((7, 8, 9), L3);
+   pragma Assert (Valid_List (L1));
+   pragma Assert (Valid_List (L2));
+   pragma Assert (Valid_List (L3));
+   pragma Assert (Disjoint (L1, L2));
+   pragma Assert (Disjoint (L2, L3));
+   pragma Assert (Disjoint (L1, L3));
+
+   M := Memory;
    Append (L1, L2);
+   Prove_Valid_Preserved (Address (L2.Values), L2.Length, M, Memory);
+   Prove_Reach_Preserved (Address (L2.Values), L2.Length, M, Memory);
+   Prove_Valid_Preserved (Address (L3.Values), L3.Length, M, Memory);
+   Prove_Reach_Preserved (Address (L3.Values), L3.Length, M, Memory);
+
+   if Rand (0) then
+      Append (L1, L3);
+      pragma Assert (Valid_List (L2)); --  Not provable, L2 has been silently updated in an unknown way
+   elsif Rand (1) then
+      M := Memory;
+      Append (L3, L2);
+      Prove_Valid_Preserved (Address (L1.Values), L1.Length, M, Memory);
+      pragma Assert (Valid_List (L1)); --  Ok, L1 and L3 are valid lists sharing the same tail
+   elsif Rand (2) then
+      Append (L1, L2); --  The call is not allowed, L1 and L2 are not disjoint, it would cause a cycle
+   end if;
 end Example_Recursive;

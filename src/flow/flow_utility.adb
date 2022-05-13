@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;                  use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
 with Exp_Util;                        use Exp_Util;
@@ -2176,6 +2177,7 @@ package body Flow_Utility is
 
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set
       with Pre => Ekind (E) in E_Constant
+                             | E_Discriminant
                              | E_Loop_Parameter
                              | E_Variable
                              | Formal_Kind
@@ -2259,10 +2261,21 @@ package body Flow_Utility is
 
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set is
       begin
-         if Is_Concurrent_Component_Or_Discr (E) then
-            return Flatten_Variable (Add_Component
-                                     (Direct_Mapping_Id (Scope (E)), E),
-                                     Ctx.Scope);
+         --  Concurrent components and discriminants are associated with
+         --  a type, which is available from the entity's Scope. We return
+         --  a construct of the form <Type>.<Entity> for these cases. Note
+         --  <Record Type>.<Discriminant> constructs should be either filtered
+         --  (using Ignore_Record_Type_Discriminants) or post-processed into
+         --  a corresponding record variable.
+         if Is_Concurrent_Component_Or_Discr (E)
+           or else Ekind (E) = E_Discriminant
+         then
+            return Flatten_Variable
+              (F     => Add_Component (F    => Direct_Mapping_Id (Scope (E)),
+                                       Comp =>
+                                         (if Ekind (E) = E_Discriminant then
+                                               Unique_Component (E) else E)),
+               Scope => Ctx.Scope);
 
          elsif Is_Part_Of_Concurrent_Object (E) then
             return Flatten_Variable
@@ -2668,16 +2681,6 @@ package body Flow_Utility is
                if Is_Single_Concurrent_Object (E)
                  and then Present (Ctx.Scope)
                  and then Is_CCT_Instance (Etype (E), Ctx.Scope.Ent)
-               then
-                  return Flow_Id_Sets.Empty_Set;
-               end if;
-
-               --  Ignore discriminants unless they come from task or protected
-               --  types.
-
-               if Ekind (E) = E_Discriminant
-                 and then Ekind (Scope (E)) not in E_Protected_Type
-                                                 | E_Task_Type
                then
                   return Flow_Id_Sets.Empty_Set;
                end if;
@@ -4127,24 +4130,43 @@ package body Flow_Utility is
             when N_Allocator =>
                declare
                   Expr : constant Node_Id := Expression (N);
-                  Def_Expr : Node_Id;
                begin
                   --  If the allocated expression is just a type name, then
-                  --  pull dependencies coming from default expressions of
-                  --  direct mappings or allocated record components.
+                  --  pull dependencies coming from default expressions.
 
                   if Is_Entity_Name (Expr)
                     and then Is_Type (Entity (Expr))
                   then
-                     for F of Flatten_Variable (Entity (Expr), Ctx.Scope) loop
-                        if F.Kind in Direct_Mapping | Record_Field then
+                     declare
+                        E : constant Node_Id := Entity (Expr);
+                        Typ : constant Entity_Id :=
+                          (if Is_Access_Type (E)
+                           then Designated_Type (E)
+                           else E);
+                        Def_Expr : Node_Id;
+
+                     begin
+                        if Has_Discriminants (Typ) then
+                           for C of Iter (Discriminant_Constraint (Typ)) loop
+                              Variables.Union (Recurse (C));
+                           end loop;
+                        end if;
+                        for F of Flatten_Variable (E, Ctx.Scope) loop
                            Def_Expr := Get_Default_Initialization (F);
                            if Present (Def_Expr) then
-                              Variables.Union (Recurse (Def_Expr));
+                              --  Dependencies coming from record discriminant
+                              --  constraints and default initializations have
+                              --  already been pulled above. Other discriminant
+                              --  dependencies can only come from the
+                              --  dependency of inner discriminants on outer
+                              --  ones (which don't add new dependencies) so
+                              --  filter them out here.
+                              Variables.Union
+                                (Ignore_Record_Type_Discriminants
+                                   (Recurse (Def_Expr)));
                            end if;
-                        end if;
-                     end loop;
-
+                        end loop;
+                     end;
                      --  Subpools are not currently allowed in SPARK, but make
                      --  sure that we don't forget to traverse them if they
                      --  become allowed.
@@ -4514,6 +4536,29 @@ package body Flow_Utility is
       return Is_Array_Type (T)
         and then not Is_Constrained (T);
    end Has_Bounds;
+
+   --------------------------------------
+   -- Ignore_Record_Type_Discriminants --
+   --------------------------------------
+
+   function Ignore_Record_Type_Discriminants (Vars_Used : Flow_Id_Sets.Set)
+                                              return Flow_Id_Sets.Set
+   is
+      Results : Flow_Id_Sets.Set;
+   begin
+      for Var_Used of Vars_Used loop
+         if Is_Discriminant (Var_Used)
+           and then
+             Ekind (Get_Direct_Mapping_Id (Var_Used)) = E_Record_Type
+         then
+            null; --  Filter it out
+         else
+            Results.Insert (Var_Used);
+         end if;
+      end loop;
+
+      return Results;
+   end Ignore_Record_Type_Discriminants;
 
    ---------------------
    -- Is_Ghost_Entity --

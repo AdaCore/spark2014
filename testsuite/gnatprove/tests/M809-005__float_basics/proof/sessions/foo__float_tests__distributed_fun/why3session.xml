@@ -2,53 +2,53 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
-<prover id="3" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
+<prover id="3" name="colibri" version="2137" timelimit="120" steplimit="12000" memlimit="0"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__float_tests__distributed_fun.gnat-json"/>
 <theory name="Foo__float_tests__distributed_fun__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="724550"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="1032556"/></proof>
   <proof prover="2"><result status="unknown" steps="10084"/></proof>
   <proof prover="3"><result status="unknown" steps="205"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="1655733"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="742856"/></proof>
   <proof prover="2"><result status="unknown" steps="12278"/></proof>
   <proof prover="3"><result status="unknown" steps="266"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="1994549"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450477"/></proof>
   <proof prover="2"><result status="unknown" steps="25580"/></proof>
-  <proof prover="3"><result status="unknown" steps="506"/></proof>
+  <proof prover="3"><result status="unknown" steps="272"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="3101327"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="822050"/></proof>
   <proof prover="2"><result status="unknown" steps="326675"/></proof>
-  <proof prover="3"><result status="unknown" steps="548"/></proof>
+  <proof prover="3"><result status="unknown" steps="314"/></proof>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="20263815"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450515"/></proof>
+  <proof prover="2"><result status="unknown" steps="365002"/></proof>
+  <proof prover="3"><result status="steplimitexceeded"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.6">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="55972499"/></proof>
+  <proof prover="0"><result status="steplimitexceeded"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450433"/></proof>
   <proof prover="2"><result status="unknown" steps="18440"/></proof>
   <proof prover="3"><result status="unknown" steps="426"/></proof>
   </goal>

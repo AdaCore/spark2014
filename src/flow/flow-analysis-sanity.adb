@@ -199,7 +199,7 @@ package body Flow.Analysis.Sanity is
 
       function Variables (N : Node_Id) return Flow_Id_Sets.Set
       is
-        (Get_All_Variables (N,
+        (Get_All_Variables (N                       => N,
                             Scope                   => FA.B_Scope,
                             Target_Name             => Null_Flow_Id,
                             Use_Computed_Globals    => True,
@@ -719,28 +719,47 @@ package body Flow.Analysis.Sanity is
                           Post => (if Is_Protected_Discriminant'Result
                                    then F.Component.Length = 1);
 
+                     function Is_Record_Discriminant (F : Flow_Id)
+                                                      return Boolean
+                     is (F.Kind = Record_Field
+                           and then
+                         Ekind (Get_Direct_Mapping_Id (F)) in
+                           Record_Kind | Private_Kind
+                           and then
+                         Ekind (F.Component.First_Element) = E_Discriminant)
+                       with Post => (if Is_Record_Discriminant'Result
+                                     then F.Component.Length = 1);
+
                   begin
-                     --  We shall not get internal objects here, because
-                     --  we call Get_Variables with Expand_Internal_Objects
-                     --  parameter set.
-                     pragma Assert (not Is_Internal (F.Node));
+                     --  We call Get_Variables with Expand_Internal_Objects
+                     --  parameter set. The only times we should get
+                     --  an internal object here are for type discriminant
+                     --  constructs.
+                     pragma Assert (if Is_Internal (Var) then
+                                       Is_Type (Var)
+                                    and then
+                                    Is_Discriminant (F));
 
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:
                      --  * a bound
                      --  * a constant object
+                     --  * a record discriminant
                      --  * a discriminant of a protected type
                      --  * a component or part of a protected type accessed
                      --    from within a protected function.
 
                      if not (Is_Bound (F)
-                             or else
-                               (Ekind (Var) = E_Protected_Type
-                                and then
-                                  (Is_Protected_Discriminant (F)
-                                   or else
-                                   Is_Within_Protected_Function))
-                             or else Is_Constant_Object (Var))
+                               or else
+                             Is_Constant_Object (Var)
+                               or else
+                             Is_Record_Discriminant (F)
+                               or else
+                             (Ekind (Var) = E_Protected_Type
+                              and then
+                                (Is_Protected_Discriminant (F)
+                                 or else
+                                 Is_Within_Protected_Function)))
                      then
                         Emit_Error (F);
                      end if;

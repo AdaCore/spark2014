@@ -1,5 +1,7 @@
 decadriver.adb:73:21: medium: range check might fail, cannot prove upper bound for Frame'Length
 decadriver.adb:74:16: info: range check proved (CVC4: 4 VC)
+decadriver.adb:74:28: info: index check proved (CVC4: 2 VC)
+decadriver.adb:74:50: info: index check proved (CVC4: 2 VC)
 decadriver.adb:74:50: info: overflow check proved (CVC4: 2 VC)
 decadriver.adb:75:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:75:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

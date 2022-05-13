@@ -1861,6 +1861,8 @@ package body Why.Gen.Expr is
         (if not Is_Init_Wrapper_Type (To) then To
          elsif Get_Type_Kind (To) = EW_Abstract
          then EW_Abstract (Get_Ada_Node (+To))
+         elsif Get_Type_Kind (To) = EW_Builtin
+         then EW_Bool_Type
          else EW_Split (Get_Ada_Node (+To)));
       --  Concrete type for To if To is a wrapper for initialization
 
@@ -2006,6 +2008,13 @@ package body Why.Gen.Expr is
                                     Def    => Result,
                                     Domain => Domain,
                                     Typ    => EW_Split (From_Node));
+            elsif From = M_Boolean_Init_Wrapper.Wrapper_Ty then
+               Result := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => M_Boolean_Init_Wrapper.Of_Wrapper,
+                  Args     => (1 => Result),
+                  Typ      => EW_Bool_Type);
             else
                Result := New_Call
                  (Ada_Node => Ada_Node,
@@ -2209,6 +2218,13 @@ package body Why.Gen.Expr is
                                  Def    => Result,
                                  Domain => Domain,
                                  Typ    => To);
+         elsif To = M_Boolean_Init_Wrapper.Wrapper_Ty then
+            Result := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => M_Boolean_Init_Wrapper.To_Wrapper,
+               Args     => (1 => Result),
+               Typ      => To);
          else
             Result := New_Call
               (Ada_Node => Ada_Node,

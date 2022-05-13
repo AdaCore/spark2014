@@ -1,1 +1,1 @@
-bad_function.adb:4:57: medium: overflow check might fail, cannot prove upper bound for Ident (Integer'Last) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+bad_function.adb:4:57: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]

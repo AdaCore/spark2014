@@ -44,13 +44,15 @@ admintoken.adb:80:43: info: initialization of "TokenPresence" constituent of "St
 admintoken.adb:119:41: info: initialization of "AuthCert" constituent of "State" proved
 admintoken.adb:120:41: info: initialization of "IDCert" constituent of "State" proved
 admintoken.adb:121:41: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:150:30: info: refined post proved (CVC4: 5 VC)
+admintoken.adb:150:30: info: refined post proved (CVC4: 4 VC)
 admintoken.adb:156:07: info: initialization of "AuthValid" proved
 admintoken.adb:156:18: info: initialization of "IDValid" proved
 admintoken.adb:156:27: info: initialization of "RoleOK" proved
 admintoken.adb:158:07: info: initialization of "AuthCertContents" proved
 admintoken.adb:159:07: info: initialization of "IDCertContents" proved
 admintoken.adb:176:13: info: range check proved (CVC4: 4 VC)
+admintoken.adb:176:21: info: index check proved (CVC4: 2 VC)
+admintoken.adb:176:30: info: index check proved (CVC4: 2 VC)
 admintoken.adb:176:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 admintoken.adb:176:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 admintoken.adb:182:23: info: range check proved (CVC4: 4 VC)
@@ -94,7 +96,7 @@ admintoken.ads:128:07: info: initialization of "Description" proved
 admintoken.ads:129:07: info: initialization of "TokenOK" proved
 admintoken.ads:130:11: info: data dependencies proved
 admintoken.ads:140:11: info: flow dependencies proved
-admintoken.ads:158:22: info: postcondition proved (CVC4: 5 VC)
+admintoken.ads:158:22: info: postcondition proved (CVC4: 4 VC)
 admintoken.ads:172:11: info: data dependencies proved
 admintoken.ads:184:11: info: data dependencies proved
 admintoken.ads:197:11: info: data dependencies proved
@@ -102,7 +104,7 @@ admintoken.ads:210:11: info: data dependencies proved
 admintoken.ads:225:11: info: data dependencies proved
 admintoken.ads:226:11: info: flow dependencies proved
 admintoken.ads:227:22: info: postcondition proved (CVC4: 3 VC)
-admintoken.ads:279:21: info: range check proved (CVC4: 2 VC)
+admintoken.ads:279:21: info: range check proved (CVC4: 1 VC)
 alarm.adb:42:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:45:30: info: refined post proved (CVC4: 1 VC; Trivial: 1 VC)
 alarm.ads:26:08: info: flow dependencies proved
@@ -181,6 +183,8 @@ auditlog.adb:435:11: info: flow dependencies proved
 auditlog.adb:443:07: info: initialization of "OK" proved
 auditlog.adb:444:07: info: initialization of "Now" proved
 auditlog.adb:463:10: info: range check proved (CVC4: 4 VC)
+auditlog.adb:463:22: info: index check proved (CVC4: 2 VC)
+auditlog.adb:463:61: info: index check proved (CVC4: 2 VC)
 auditlog.adb:463:68: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 auditlog.adb:464:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 auditlog.adb:511:35: info: precondition proved (Trivial: 1 VC)
@@ -348,11 +352,13 @@ bio.adb:154:11: info: data dependencies proved
 bio.adb:163:07: info: initialization of "TheCodeName" proved
 bio.adb:175:17: info: postcondition proved (Trivial: 1 VC)
 bio.adb:177:38: info: range check proved (CVC4: 2 VC)
-bio.adb:178:12: info: range check proved (CVC4: 2 VC)
+bio.adb:178:12: info: range check proved (CVC4: 1 VC)
 bio.adb:178:41: info: range check proved (CVC4: 2 VC)
 bio.adb:179:12: info: range check proved (CVC4: 2 VC)
 bio.adb:179:57: info: range check proved (CVC4: 2 VC)
 bio.adb:185:13: info: range check proved (CVC4: 4 VC)
+bio.adb:185:21: info: index check proved (CVC4: 2 VC)
+bio.adb:185:35: info: index check proved (CVC4: 2 VC)
 bio.adb:185:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bio.adb:185:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bio.adb:187:23: info: range check proved (CVC4: 4 VC)
@@ -429,6 +435,8 @@ cert-attr.adb:36:09: info: range check proved (CVC4: 2 VC)
 cert-attr.adb:37:09: info: range check proved (CVC4: 2 VC)
 cert-attr.adb:38:09: info: range check proved (CVC4: 2 VC)
 cert-attr.adb:42:07: info: range check proved (CVC4: 4 VC)
+cert-attr.adb:42:18: info: index check proved (CVC4: 2 VC)
+cert-attr.adb:42:33: info: index check proved (CVC4: 2 VC)
 cert-attr.adb:42:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert-attr.adb:42:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert-id.adb:61:07: info: initialization of "LocalContents" proved
@@ -448,6 +456,8 @@ cert.adb:61:09: info: range check proved (CVC4: 2 VC)
 cert.adb:62:09: info: range check proved (CVC4: 2 VC)
 cert.adb:63:09: info: range check proved (CVC4: 2 VC)
 cert.adb:66:07: info: range check proved (CVC4: 4 VC)
+cert.adb:66:18: info: index check proved (CVC4: 2 VC)
+cert.adb:66:33: info: index check proved (CVC4: 2 VC)
 cert.adb:66:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert.adb:66:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert.adb:100:07: info: initialization of "LocalRawData" proved
@@ -474,10 +484,14 @@ certificatestore.adb:215:14: info: flow dependencies proved
 certificatestore.adb:222:23: info: range check proved (CVC4: 2 VC)
 certificatestore.adb:222:31: info: range check proved (CVC4: 2 VC)
 certificatestore.adb:223:10: info: range check proved (CVC4: 4 VC)
+certificatestore.adb:223:15: info: index check proved (CVC4: 2 VC)
+certificatestore.adb:223:18: info: index check proved (CVC4: 2 VC)
 certificatestore.adb:223:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 certificatestore.adb:223:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 certificatestore.adb:223:29: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:224:10: info: range check proved (CVC4: 4 VC)
+certificatestore.adb:224:22: info: index check proved (CVC4: 2 VC)
+certificatestore.adb:224:35: info: index check proved (CVC4: 2 VC)
 certificatestore.adb:224:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 certificatestore.adb:224:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 certificatestore.adb:265:42: info: initialization of "NextSerialNumber" constituent of "State" proved
@@ -919,7 +933,7 @@ configuration.adb:101:66: info: range check proved (CVC4: 2 VC)
 configuration.adb:102:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:102:58: info: division check proved (CVC4: 1 VC)
 configuration.adb:102:64: info: range check proved (CVC4: 2 VC)
-configuration.adb:103:12: info: range check proved (CVC4: 2 VC)
+configuration.adb:103:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:103:58: info: range check proved (CVC4: 2 VC)
 configuration.adb:104:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:104:19: info: range check proved (CVC4: 4 VC)
@@ -930,9 +944,9 @@ configuration.adb:105:62: info: range check proved (CVC4: 2 VC)
 configuration.adb:106:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:106:19: info: range check proved (CVC4: 4 VC)
 configuration.adb:106:62: info: range check proved (CVC4: 2 VC)
-configuration.adb:107:12: info: range check proved (CVC4: 2 VC)
+configuration.adb:107:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:107:62: info: range check proved (CVC4: 2 VC)
-configuration.adb:108:12: info: range check proved (CVC4: 2 VC)
+configuration.adb:108:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:108:55: info: range check proved (CVC4: 2 VC)
 configuration.adb:109:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:109:64: info: division check proved (CVC4: 1 VC)
@@ -943,6 +957,8 @@ configuration.adb:110:71: info: range check proved (CVC4: 2 VC)
 configuration.adb:111:12: info: range check proved (CVC4: 2 VC)
 configuration.adb:116:26: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
+configuration.adb:118:23: info: index check proved (CVC4: 2 VC)
+configuration.adb:118:31: info: index check proved (CVC4: 2 VC)
 configuration.adb:118:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 configuration.adb:118:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 configuration.adb:161:18: info: precondition proved (CVC4: 1 VC)
@@ -1098,7 +1114,7 @@ enclave.adb:470:06: info: initialization of "TokenOK" proved
 enclave.adb:471:06: info: initialization of "Description" proved
 enclave.adb:485:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:494:21: info: precondition proved (CVC4: 1 VC)
-enclave.adb:504:48: info: precondition proved (CVC4: 4 VC)
+enclave.adb:504:48: info: precondition proved (CVC4: 3 VC)
 enclave.adb:510:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:537:11: info: data dependencies proved
 enclave.adb:539:33: info: initialization of "Status" constituent of "State" proved
@@ -1181,7 +1197,7 @@ enclave.adb:1413:11: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1417:14: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1417:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1422:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1425:17: info: precondition proved (CVC4: 3 VC)
+enclave.adb:1425:17: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1427:13: info: precondition proved (CVC4: 9 VC; Trivial: 3 VC)
 enclave.adb:1430:13: info: precondition proved (CVC4: 4 VC)
 enclave.adb:1433:13: info: precondition proved (CVC4: 8 VC; Trivial: 3 VC)
@@ -1279,6 +1295,8 @@ enrolment.adb:67:66: info: range check proved (CVC4: 2 VC)
 enrolment.adb:68:54: info: range check proved (CVC4: 2 VC)
 enrolment.adb:68:62: info: range check proved (CVC4: 2 VC)
 enrolment.adb:72:13: info: range check proved (CVC4: 4 VC)
+enrolment.adb:72:21: info: index check proved (CVC4: 2 VC)
+enrolment.adb:72:33: info: index check proved (CVC4: 2 VC)
 enrolment.adb:72:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 enrolment.adb:72:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 enrolment.adb:74:23: info: range check proved (CVC4: 4 VC)
@@ -1348,9 +1366,11 @@ keystore-interfac.ads:96:20: info: predicate check justified
 keystore-interfac.ads:96:20: info: range check proved (CVC4: 1 VC)
 keystore.adb:97:35: info: range check proved (CVC4: 2 VC)
 keystore.adb:97:39: info: range check proved (CVC4: 2 VC)
-keystore.adb:98:09: info: range check proved (CVC4: 2 VC)
+keystore.adb:98:09: info: range check proved (CVC4: 1 VC)
 keystore.adb:101:19: info: range check proved (CVC4: 2 VC)
 keystore.adb:102:10: info: range check proved (CVC4: 4 VC)
+keystore.adb:102:18: info: index check proved (CVC4: 2 VC)
+keystore.adb:102:32: info: index check proved (CVC4: 2 VC)
 keystore.adb:102:32: info: range check proved (CVC4: 2 VC)
 keystore.adb:102:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 keystore.adb:102:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
@@ -1571,7 +1591,9 @@ screen.adb:410:07: info: initialization of "MaxFAR" proved
 screen.adb:412:07: info: initialization of "NewConfig" proved
 screen.adb:442:37: info: index check proved (CVC4: 2 VC)
 screen.adb:446:13: info: range check proved (CVC4: 4 VC)
+screen.adb:446:19: info: index check proved (CVC4: 2 VC)
 screen.adb:446:19: info: overflow check proved (CVC4: 2 VC)
+screen.adb:446:38: info: index check proved (CVC4: 2 VC)
 screen.adb:446:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:446:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:446:44: info: range check proved (CVC4: 4 VC)
@@ -1589,6 +1611,10 @@ screen.adb:481:67: info: range check proved (CVC4: 2 VC), in call inlined at scr
 screen.adb:481:67: info: range check proved (CVC4: 2 VC), in call inlined at screen.adb:665
 screen.adb:485:10: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:659
 screen.adb:485:10: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:665
+screen.adb:485:17: info: index check proved (CVC4: 2 VC), in call inlined at screen.adb:659
+screen.adb:485:17: info: index check proved (CVC4: 2 VC), in call inlined at screen.adb:665
+screen.adb:485:32: info: index check proved (CVC4: 2 VC), in call inlined at screen.adb:659
+screen.adb:485:32: info: index check proved (CVC4: 2 VC), in call inlined at screen.adb:665
 screen.adb:485:32: info: overflow check proved (CVC4: 2 VC), in call inlined at screen.adb:659
 screen.adb:485:32: info: overflow check proved (CVC4: 2 VC), in call inlined at screen.adb:665
 screen.adb:485:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at screen.adb:659
@@ -1598,12 +1624,18 @@ screen.adb:485:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in cal
 screen.adb:485:40: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:659
 screen.adb:485:40: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:665
 screen.adb:505:10: info: range check proved (CVC4: 4 VC)
+screen.adb:505:17: info: index check proved (CVC4: 2 VC)
+screen.adb:505:26: info: index check proved (CVC4: 2 VC)
 screen.adb:505:33: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:505:36: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:524:10: info: range check proved (CVC4: 4 VC)
+screen.adb:524:17: info: index check proved (CVC4: 2 VC)
+screen.adb:524:26: info: index check proved (CVC4: 2 VC)
 screen.adb:524:33: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:524:36: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:545:10: info: range check proved (CVC4: 4 VC)
+screen.adb:545:17: info: index check proved (CVC4: 2 VC)
+screen.adb:545:32: info: index check proved (CVC4: 2 VC)
 screen.adb:545:32: info: overflow check proved (CVC4: 2 VC)
 screen.adb:545:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:545:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
@@ -1635,6 +1667,8 @@ screen.adb:773:09: info: initialization of "FailEntry" proved
 screen.adb:774:09: info: initialization of "SuccessBio" proved
 screen.adb:775:09: info: initialization of "FailBio" proved
 screen.adb:794:10: info: range check proved (CVC4: 4 VC)
+screen.adb:794:17: info: index check proved (CVC4: 2 VC)
+screen.adb:794:32: info: index check proved (CVC4: 2 VC)
 screen.adb:794:32: info: overflow check proved (CVC4: 2 VC)
 screen.adb:794:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:794:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
@@ -1798,11 +1832,13 @@ tokenreader.adb:154:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:166:14: info: data dependencies proved
 tokenreader.adb:170:14: info: flow dependencies proved
 tokenreader.adb:174:47: info: range check proved (CVC4: 2 VC)
-tokenreader.adb:175:12: info: range check proved (CVC4: 2 VC)
+tokenreader.adb:175:12: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:175:55: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:176:12: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:176:57: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:181:13: info: range check proved (CVC4: 4 VC)
+tokenreader.adb:181:21: info: index check proved (CVC4: 2 VC)
+tokenreader.adb:181:36: info: index check proved (CVC4: 2 VC)
 tokenreader.adb:181:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 tokenreader.adb:181:46: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 tokenreader.adb:183:23: info: range check proved (CVC4: 4 VC)
@@ -1933,6 +1969,8 @@ userentry.adb:471:17: info: data dependencies proved
 userentry.adb:473:17: info: flow dependencies proved
 userentry.adb:476:15: info: range check proved (CVC4: 2 VC)
 userentry.adb:479:13: info: range check proved (CVC4: 4 VC)
+userentry.adb:479:21: info: index check proved (CVC4: 2 VC)
+userentry.adb:479:35: info: index check proved (CVC4: 2 VC)
 userentry.adb:479:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 userentry.adb:479:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 userentry.adb:527:21: info: precondition proved (CVC4: 1 VC)

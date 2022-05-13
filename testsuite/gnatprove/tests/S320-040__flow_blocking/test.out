@@ -4,8 +4,8 @@ a-ngelfu.ads:119:66: info: float overflow check proved (Trivial), in instantiati
 a-ngelfu.ads:119:66: info: float overflow check proved (Trivial), in instantiation at p.adb:7
 a-ngelfu.ads:128:32: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:16
 a-ngelfu.ads:128:32: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:7
-a-ngelfu.ads:129:36: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:16
-a-ngelfu.ads:129:36: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:7
+a-ngelfu.ads:129:36: medium: divide by zero might fail, in instantiation at p.adb:16 [possible fix: add precondition (Cycle /= 0) to subprogram at line 125]
+a-ngelfu.ads:129:36: medium: divide by zero might fail, in instantiation at p.adb:7 [possible fix: add precondition (Cycle /= 0) to subprogram at line 125]
 a-ngelfu.ads:129:65: info: float overflow check proved (Trivial), in instantiation at p.adb:16
 a-ngelfu.ads:129:65: info: float overflow check proved (Trivial), in instantiation at p.adb:7
 a-tiflio.ads:57:40: info: precondition proved (CVC4: 1 VC), in instantiation at p.adb:28

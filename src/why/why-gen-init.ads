@@ -28,6 +28,7 @@ with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
 with SPARK_Util.Types;         use SPARK_Util.Types;
 with Types;                    use Types;
 with Why.Atree.Accessors;      use Why.Atree.Accessors;
+with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Conversions;          use Why.Conversions;
 with Why.Ids;                  use Why.Ids;
 with Why.Sinfo;                use Why.Sinfo;
@@ -56,8 +57,9 @@ package Why.Gen.Init is
    function Is_Init_Wrapper_Type (Typ : W_Type_Id) return Boolean;
 
    function EW_Init_Wrapper (Ty : W_Type_Id) return W_Type_Id with
-     Pre => Get_Type_Kind (Ty) in EW_Abstract | EW_Split
-     and then Might_Contain_Relaxed_Init (Get_Ada_Node (+Ty));
+     Pre => Ty = EW_Bool_Type
+     or else (Get_Type_Kind (Ty) in EW_Abstract | EW_Split
+              and then Might_Contain_Relaxed_Init (Get_Ada_Node (+Ty)));
    --  Return the init wrapper type with the same Ada node and kind as Ty
 
    function Compute_Is_Initialized

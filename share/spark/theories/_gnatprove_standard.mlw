@@ -82,6 +82,66 @@ module Main
   val spark__branch [@model_trace:0000]: bool__ref
 end
 
+(* Module for the initialization wrapper for the bool type. This mimics the
+   automatically generated initialization modules. Any change in the handling
+   of relaxed initialization should be reflected here. *)
+module Boolean__init_wrapper
+  use bool.Bool
+
+  type boolean__init_wrapper =
+  {
+    rec__value [@model_trace:'Init_Val] : bool;
+     __attr__init [@model_trace:'Initialized] : bool
+   }
+
+  function boolean__init_wrapper_rec__value__projection (a: boolean__init_wrapper) :
+    bool =
+    a.rec__value
+
+  meta "model_projection" function boolean__init_wrapper_rec__value__projection
+
+  meta "inline:no" function boolean__init_wrapper_rec__value__projection
+
+  function boolean__init_wrapper___attr__init__projection (a: boolean__init_wrapper) : bool =
+    __attr__init a
+
+  meta "model_projection" function boolean__init_wrapper___attr__init__projection
+
+  meta "inline:no" function boolean__init_wrapper___attr__init__projection
+
+  function of_wrapper (a: boolean__init_wrapper) : bool =
+    a.rec__value
+
+  val of_wrapper (a: boolean__init_wrapper) : bool
+    ensures { result = of_wrapper a }
+
+  function to_wrapper (x: bool) : boolean__init_wrapper =
+    { rec__value = x ; __attr__init = True }
+
+  val to_wrapper (x: bool) : boolean__init_wrapper
+    ensures { result = to_wrapper x }
+
+  val function dummy : boolean__init_wrapper
+
+  axiom dummy__def: __attr__init dummy = False
+
+  type boolean__init_wrapper__ref = {
+                                   mutable boolean__init_wrapper__content :
+                                     boolean__init_wrapper
+                                   }
+
+  function boolean__init_wrapper__ref_boolean__init_wrapper__content__projection (a: boolean__init_wrapper__ref) : boolean__init_wrapper =
+    a.boolean__init_wrapper__content
+
+  meta "model_projection" function boolean__init_wrapper__ref_boolean__init_wrapper__content__projection
+
+  meta "inline:no" function boolean__init_wrapper__ref_boolean__init_wrapper__content__projection
+
+  val boolean__init_wrapper__havoc (x: boolean__init_wrapper__ref) :
+    unit
+    writes { x }
+end
+
 (* Functions reading built-in values from __image *)
 
 module Builtin_from_image

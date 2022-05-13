@@ -3091,11 +3091,10 @@ package body Why.Gen.Records is
                   end;
                end if;
 
-               --  For simple private types, equality is an uninterpreted
-               --  function. For now, it is as good as using equality on
-               --  EW_Private. If at some point, we choose to assume more about
-               --  equality on private types, we may want to replace this one
-               --  with a clone of an appropriate equality module.
+               --  For simple private types, the equality function is the
+               --  mathematical equality if we know that it is an appropriate
+               --  model of the Ada equality for the full view and
+               --  uninterpreted otherwise.
 
                Emit
                  (Th,
@@ -3111,16 +3110,36 @@ package body Why.Gen.Records is
                      Location    => No_Location,
                      Labels      => Symbol_Sets.Empty_Set,
                      Def         =>
-                       (if Is_Simple_Private_Type (E) then Why_Empty
-                        else New_Conditional
+                       (if not Is_Simple_Private_Type (E)
+                        then New_Conditional
                           (Domain    => EW_Term,
                            Condition => +Condition,
                            Then_Part => +True_Term,
-                           Else_Part => +False_Term))));
+                           Else_Part => +False_Term)
+
+                        --  Give the defintion of the predefined equality on
+                        --  hardcoded types. For Big_Reals and Big_Integers it
+                        --  should not be necessary as their full view is a
+                        --  record type and therefore their primitive equality
+                        --  should be used everywhere.
+
+                        elsif Is_Hardcoded_Entity (E)
+                        then New_Comparison
+                          (Hardcoded_Equality_Symbol (E, EW_Term),
+                           +A_Ident, +B_Ident, EW_Term)
+
+                        --  For simple private types, use Why3 "=" if the type
+                        --  allows it.
+
+                        elsif Use_Real_Eq_For_Private_Type (E)
+                        then New_Comparison
+                          (Why_Eq, +A_Ident, +B_Ident, EW_Term)
+                        else Why_Empty)));
             end;
          end if;
 
          --  Declare the dispatching equality function in root types
+
          if Is_Root and then Is_Tagged_Type (E) then
             Emit
               (Th,
@@ -3269,8 +3288,10 @@ package body Why.Gen.Records is
 
    begin
       --  For types which have a private part, declare a new uninterpreted type
-      --  for the private part as well as a new uninterpreted equality
-      --  function and a dummy declaration of an object of this type.
+      --  for the private part as well as a new equality function and a dummy
+      --  declaration of an object of this type. The equality function will be
+      --  the mathematical equality if we know that it is an appropriate model
+      --  of the Ada equality for the full view and uninterpreted otherwise.
 
       if not Is_Simple_Private_Type (E) and then Has_Private_Part (E) then
          declare
@@ -3278,11 +3299,13 @@ package body Why.Gen.Records is
               To_Local (E_Symb (E, WNE_Private_Type));
             Priv_Ty   : constant W_Type_Id    :=
               New_Named_Type (Name => Priv_Name);
+            A_Ident   : constant W_Identifier_Id :=
+              New_Identifier (Name => "a", Typ => Priv_Ty);
+            B_Ident   : constant W_Identifier_Id :=
+              New_Identifier (Name => "b", Typ => Priv_Ty);
             Binders   : constant Binder_Array :=
-              (1 => (B_Name => New_Identifier (Name => "a", Typ => Priv_Ty),
-                     others => <>),
-               2 => (B_Name => New_Identifier (Name => "b", Typ => Priv_Ty),
-                     others => <>));
+              (1 => (B_Name => A_Ident, others => <>),
+               2 => (B_Name => B_Ident, others => <>));
 
          begin
             Emit (Th,
@@ -3296,7 +3319,22 @@ package body Why.Gen.Records is
                   Binders     => Binders,
                   Return_Type => +EW_Bool_Type,
                   Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set));
+                  Labels      => Symbol_Sets.Empty_Set,
+
+                  --  Use Why3 "=" for the private part if the type allows it.
+                  --  Theoretically, we should only check the components which
+                  --  are actually part of this private part (only new
+                  --  components in record extensions, no checks for visible
+                  --  discriminants etc), but it is not necessary. Indeed,
+                  --  Why3 "=" can never be used for tagged types because of
+                  --  the extension part and discriminants are discrete types
+                  --  which are always ok for equality.
+
+                  Def         =>
+                    (if Use_Real_Eq_For_Private_Type (E)
+                     then New_Comparison (Why_Eq, +A_Ident, +B_Ident, EW_Term)
+                     else Why_Empty)));
+
             Emit
               (Th,
                New_Function_Decl

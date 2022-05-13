@@ -307,8 +307,8 @@ lsc-bignum.adb:441:19: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:441:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:443:07: info: precondition proved (Z3: 5 VC)
 lsc-bignum.adb:443:48: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:444:13: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:446:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
+lsc-bignum.adb:444:13: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Aux1_First in Aux1'First .. Aux1'Last) to subprogram at lsc-bignum.ads:176]
+lsc-bignum.adb:446:07: medium: precondition might fail, cannot prove C_First + (A_Last - A_First) in C'range
 lsc-bignum.adb:447:39: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:451:07: medium: precondition might fail, cannot prove A_Last in A'range
 lsc-bignum.adb:452:39: medium: overflow check might fail, cannot prove upper bound for Aux4_First + L [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -358,7 +358,7 @@ lsc-bignum.adb:498:10: medium: precondition might fail, cannot prove B_First in 
 lsc-bignum.adb:500:30: medium: overflow check might fail, cannot prove upper bound for Aux4_First + (H - 1) * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 lsc-bignum.adb:500:40: medium: overflow check might fail, cannot prove lower bound for (H - 1) * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 lsc-bignum.adb:500:45: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:503:10: medium: precondition might fail, cannot prove B_First in B'range
+lsc-bignum.adb:503:10: medium: precondition might fail, cannot prove A_First in A'range
 lsc-bignum.adb:503:53: medium: overflow check might fail, cannot prove upper bound for Aux4_First + H * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 lsc-bignum.adb:503:57: medium: overflow check might fail, cannot prove upper bound for H * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 lsc-bignum.adb:503:62: info: overflow check proved (Z3: 2 VC)
@@ -496,7 +496,7 @@ lsc-bignum.adb:629:53: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:632:45: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:632:45: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:634:16: medium: precondition might fail, cannot prove B_First in B'range
-lsc-bignum.adb:639:16: info: precondition proved (Z3: 9 VC)
+lsc-bignum.adb:639:16: medium: precondition might fail, cannot prove A_First in A'range
 lsc-bignum.adb:642:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:643:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:645:55: info: overflow check proved (Z3: 2 VC)
@@ -536,9 +536,9 @@ lsc-bignum.adb:677:33: medium: overflow check might fail, cannot prove upper bou
 lsc-bignum.adb:677:54: medium: range check might fail, cannot prove lower bound for Interfaces.Shift_Right (W, 1) [reason for check: value must be convertible to the target type of the conversion]
 lsc-bignum.adb:677:75: medium: overflow check might fail, cannot prove lower bound for Natural (Interfaces.Shift_Right (W, 1)) * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 lsc-bignum.adb:677:80: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:680:13: info: precondition proved (Z3: 9 VC)
-lsc-bignum.adb:684:13: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
-lsc-bignum.adb:689:13: info: precondition proved (Z3: 9 VC)
+lsc-bignum.adb:680:13: medium: precondition might fail, cannot prove A_First in A'range
+lsc-bignum.adb:684:13: medium: precondition might fail, cannot prove B_First in B'range
+lsc-bignum.adb:689:13: medium: precondition might fail, cannot prove A_First in A'range
 lsc-bignum.adb:693:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:694:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:696:49: info: overflow check proved (Z3: 2 VC)
