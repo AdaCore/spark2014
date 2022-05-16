@@ -82,6 +82,40 @@ package body CE_Values is
       end if;
    end Enum_Entity_To_String;
 
+   -------------------
+   -- Get_Array_Elt --
+   -------------------
+
+   function Get_Array_Elt
+     (V : Value_Type;
+      J : Positive) return Value_Access
+   is
+      C : constant Big_Integer_To_Value_Maps.Cursor :=
+        V.Array_Values.Find (V.First_Attr.Content + To_Big_Integer (J - 1));
+   begin
+      if Big_Integer_To_Value_Maps.Has_Element (C) then
+         return V.Array_Values (C);
+      else
+         return V.Array_Others;
+      end if;
+   end Get_Array_Elt;
+
+   ----------------------
+   -- Get_Array_Length --
+   ----------------------
+
+   function Get_Array_Length (V : Value_Type) return Opt_Big_Integer is
+      Length : Big_Integer;
+   begin
+      if V.First_Attr.Present and V.Last_Attr.Present then
+         Length := V.Last_Attr.Content - V.First_Attr.Content + 1;
+         return (Present => True,
+                 Content => (if Length > 0 then Length else 0));
+      else
+         return (Present => False);
+      end if;
+   end Get_Array_Length;
+
    ---------------
    -- To_String --
    ---------------

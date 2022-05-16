@@ -2406,20 +2406,6 @@ package body SPARK_Definition is
             declare
                E : constant Type_Kind_Id := Defining_Entity (N);
             begin
-               --  Store correspondence from completions of private types, so
-               --  that Is_Full_View can be used for dealing correctly with
-               --  private types, when the public part of the package is marked
-               --  as SPARK_Mode On, and the private part of the package is
-               --  marked as SPARK_Mode Off. This is also used later during
-               --  generation of Why.
-
-               if Is_Private_Type (E)
-                 and then Present (Full_View (E))
-                 and then not Is_Full_View (Full_View (E)) -- ??? why needed
-               then
-                  Set_Partial_View (Full_View (E), E);
-               end if;
-
                if In_SPARK (E) then
                   if Nkind (N) = N_Full_Type_Declaration then
                      declare
@@ -5751,6 +5737,20 @@ package body SPARK_Definition is
             --  might not be relevant.
 
             return;
+         end if;
+
+         --  Store correspondence from completions of private types, so
+         --  that Is_Full_View can be used for dealing correctly with
+         --  private types, when the public part of the package is marked
+         --  as SPARK_Mode On, and the private part of the package is
+         --  marked as SPARK_Mode Off. This is also used later during
+         --  generation of Why.
+
+         if Is_Private_Type (E)
+           and then Present (Full_View (E))
+           and then not Is_Full_View (E)
+         then
+            Set_Partial_View (Full_View (E), E);
          end if;
 
          --  Look at the parent type for subtypes and derived types

@@ -1,5 +1,5 @@
 prove_all:
-  steps: 5000
+  steps: 8000
   counterexample: False
 large: True
 timeout: 1500

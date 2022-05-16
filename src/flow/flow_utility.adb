@@ -3694,6 +3694,60 @@ package body Flow_Utility is
                      Variables.Union (Recurse (High_Bound (Array_Bounds)));
                   end if;
                end;
+               --  If this aggregate has a type (not always the case despite
+               --  N_Aggregate being in N_Has_Etype) pull dependencies arising
+               --  from the aggregate type's components' default initialization
+               --  when the box notation is used.
+               if Present (Etype (N)) then
+                  declare
+                     P         : Node_Id :=
+                       First (Component_Associations (N));
+                     Aggr_Type : constant Entity_Id := Get_Type (N, Ctx.Scope);
+                     Comp_Type : Entity_Id;
+                     Any_Boxes : Boolean := False;
+                     Def_Expr  : Node_Id;
+                  begin
+                     while Present (P) loop
+                        --  Each component must be associated with either a
+                        --  box or an expression. Expressions are detected and
+                        --  handled elsewhere.
+                        pragma Assert
+                          (Box_Present (P) xor Present (Expression (P)));
+
+                        if Box_Present (P) then
+                           Any_Boxes := True;
+
+                           pragma Assert (Default_Initialization (Aggr_Type)
+                                          /= No_Default_Initialization);
+                           exit;
+                        end if;
+                        Next (P);
+                     end loop;
+                     --  ??? Record components are handled properly by the
+                     --  Untangle_... machinery. Consider similar machinery
+                     --  for array types.
+                     if Any_Boxes and then Is_Array_Type (Aggr_Type) then
+                        Comp_Type := Component_Type (Aggr_Type);
+                        if Has_Discriminants (Comp_Type) then
+                           for C of Iter (Discriminant_Constraint (Comp_Type))
+                           loop
+                              Variables.Union (Recurse (C));
+                           end loop;
+                        end if;
+
+                        for F of Flatten_Variable (Comp_Type, Ctx.Scope) loop
+                           Def_Expr := Get_Default_Initialization (F);
+                           if Present (Def_Expr) then
+                              --  Discriminant dependencies from default
+                              --  expressions are managed above.
+                              Variables.Union
+                                (Ignore_Record_Type_Discriminants
+                                   (Recurse (Def_Expr)));
+                           end if;
+                        end loop;
+                     end if;
+                  end;
+               end if;
 
             when N_Delta_Aggregate =>
                declare
@@ -3840,9 +3894,14 @@ package body Flow_Utility is
                end;
 
                if Box_Present (N) then
-                  null;  -- ??? use default component expression
+                  --  Default component expression managed at the level of
+                  --  the aggregate expression.
+                  null;
                else
-                  Variables.Union (Recurse (Expression (N)));
+                  --  Avoid <Record Type>.Discriminant constructs from default
+                  --  expressions.
+                  Variables.Union (Ignore_Record_Type_Discriminants
+                                   (Recurse (Expression (N))));
                end if;
 
                return Skip;

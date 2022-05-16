@@ -4579,6 +4579,9 @@ package body SPARK_Util is
       exception
          when Search_Is_Over =>
             return Search_Result;
+            pragma Annotate
+              (CodePeer, False_Positive, "validity check",
+               "Search_Result is initialized before raising Search_Is_Over");
       end No_Deep_Updates_Up_To_Stmt;
 
       ------------------

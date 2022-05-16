@@ -255,19 +255,28 @@ procedure Example_Recursive with SPARK_Mode is
                pragma Loop_Invariant (X /= Null_Pointer);
                pragma Loop_Invariant (Valid_List (Address (X), Max, Memory));
                pragma Loop_Invariant (Reachable (Address (L1.Values), L1.Length, Address (X), Memory));
-               if L_Cell (Deref (X)).N = Null_Pointer then
+
+               --  Use Constant_Reference to convert X into an ownership
+               --  pointer so its designated value is not copied.
+
+               if L_Cell (Constant_Reference (Memory, X).all).N = Null_Pointer then
+
+                  --  Use Reference to convert X into an ownership pointer so
+                  --  its designated value can be updated in place.
+
                   declare
-                     L : constant L_Cell := (L_Cell (Deref (X)) with delta N => L2.Values);
+                     Mem_Access : access Memory_Type := Memory'Access;
+                     X_Ptr      : access Object'Class := Reference (Mem_Access, X);
                   begin
-                     Assign (X, Object'Class (L));
-                     Prove_Append_Valid (Address (L1.Values), Address (L2.Values), Address (X), L1.Length, L2.Length, Mem_Old, Memory);
-                     Prove_Append_Reach (Address (L1.Values), Address (L2.Values), Address (X), L1.Length, L2.Length, Mem_Old, Memory);
-                     L1.Length := L1.Length + L2.Length;
+                     L_Cell (X_Ptr.all).N := L2.Values;
                   end;
+                  Prove_Append_Valid (Address (L1.Values), Address (L2.Values), Address (X), L1.Length, L2.Length, Mem_Old, Memory);
+                  Prove_Append_Reach (Address (L1.Values), Address (L2.Values), Address (X), L1.Length, L2.Length, Mem_Old, Memory);
+                  L1.Length := L1.Length + L2.Length;
                   exit;
                end if;
                Prove_Reach_Transitive (Address (L1.Values), Address (X), Address (L_Cell (Deref (X)).N), L1.Length, Max, Memory);
-               X := L_Cell (Deref (X)).N;
+               X := L_Cell (Constant_Reference (Memory, X).all).N;
                Max := Max - 1;
             end loop;
          end;

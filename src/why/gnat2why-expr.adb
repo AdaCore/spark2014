@@ -16977,9 +16977,12 @@ package body Gnat2Why.Expr is
        --  operator applies is private in SPARK. Thus, we only check for this
        --  case here. This may result in SPARK being a little too smart and
        --  knowing the value of operators even if their intrinsic pragma
-       --  shold not be visible.
+       --  should not be visible.
 
-      elsif Nkind (Expr) in N_Op and then Is_Private_Intrinsic_Op (Expr) then
+      elsif Nkind (Expr) in N_Op
+        and then Nkind (Expr) not in N_Op_Eq | N_Op_Ne
+        and then Is_Private_Intrinsic_Op (Expr)
+      then
          T := Transform_Function_Call (Expr, Domain, Local_Params);
 
       else

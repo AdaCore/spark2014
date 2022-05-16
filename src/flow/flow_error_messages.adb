@@ -2421,6 +2421,15 @@ package body Flow_Error_Messages is
 
       elsif Tag = VC_Subprogram_Variant and then How_Proved = PC_Trivial then
          return "";
+
+      --  Do not try to generate a fix message for memory leaks statically
+      --  known to leak memory, as the value of variables involved in the
+      --  allocating or assignment expression are not responsible for the leak.
+
+      elsif Tag in VC_Memory_Leak | VC_Memory_Leak_At_End_Of_Scope
+        and then How_Proved = PC_Trivial
+      then
+         return "";
       end if;
 
       --  Adjust the enclosing subprogram entity

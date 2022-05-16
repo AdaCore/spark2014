@@ -39,13 +39,13 @@ arrays_of_records.adb:192:11: info: flow dependencies proved
 arrays_of_records.adb:193:22: medium: postcondition might fail
 arrays_of_records.adb:195:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:204:11: info: flow dependencies proved
-arrays_of_records.adb:206:22: medium: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0))) [possible fix: add or complete related loop invariants or postconditions]
+arrays_of_records.adb:206:22: high: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))
 arrays_of_records.adb:208:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:219:11: info: flow dependencies proved
 arrays_of_records.adb:220:22: high: postcondition might fail (e.g. when A(23).Flag = True and A'Old(23).Flag = True)
 arrays_of_records.adb:222:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:234:11: info: flow dependencies proved
-arrays_of_records.adb:236:22: medium: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0))) [possible fix: add or complete related loop invariants or postconditions]
+arrays_of_records.adb:236:22: high: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))
 arrays_of_records.adb:238:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:251:11: info: flow dependencies proved
 arrays_of_records.adb:252:22: high: postcondition might fail, cannot prove A /= A'old
@@ -57,5 +57,5 @@ arrays_of_records.adb:275:11: info: flow dependencies proved
 arrays_of_records.adb:276:22: high: postcondition might fail
 arrays_of_records.adb:278:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:288:11: info: flow dependencies proved
-arrays_of_records.adb:289:22: medium: postcondition might fail [possible fix: add or complete related loop invariants or postconditions]
+arrays_of_records.adb:289:22: high: postcondition might fail
 arrays_of_records.adb:291:07: info: initialization of "Tmp" proved

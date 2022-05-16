@@ -203,8 +203,6 @@ package body CE_RAC is
 
    function "=" (F1, F2 : Entity_To_Value_Maps.Map) return Boolean;
 
-   function "=" (M1, M2 : Big_Integer_To_Value_Maps.Map) return Boolean;
-
    function "=" (V1, V2 : CE_Values.Float_Value) return Boolean;
    --  Equality of floating point values
 
@@ -283,13 +281,13 @@ package body CE_RAC is
    --  Raise Exn_RAC_Failure and set result, i.e. the RAC execution failed
    --  due to a false check.
 
-   procedure RAC_Stuck (Reason : String) with No_Return;
-   --  Raise Exn_RAC_Stuck and set result, i.e. the RAC execution failed
-   --  due to a false assumption.
-
    procedure RAC_Incomplete (Reason : String) with No_Return;
    --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
    --  not complete due to technical or theoretical limitations.
+
+   procedure RAC_Stuck (Reason : String) with No_Return;
+   --  Raise Exn_RAC_Stuck and set result, i.e. the RAC execution failed
+   --  due to a false assumption.
 
    procedure RAC_Unsupported (Str : String; N : Node_Id) with No_Return;
    --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
@@ -572,27 +570,6 @@ package body CE_RAC is
       return True;
    end "=";
 
-   function "=" (M1, M2 : Big_Integer_To_Value_Maps.Map) return Boolean is
-      use Big_Integer_To_Value_Maps;
-      C2 : Cursor;
-   begin
-      --  ??? Cannot use Values_Map."=" because cannot define "=" for Value
-      --  before definition of Values_Map
-
-      if M1.Length /= M2.Length then
-         return False;
-      end if;
-      for C1 in M1.Iterate loop
-         C2 := M2.Find (Key (C1));
-         if not Has_Element (C2)
-           or else M1 (C1).all /= M2 (C2).all
-         then
-            return False;
-         end if;
-      end loop;
-      return True;
-   end "=";
-
    function "=" (V1, V2 : CE_Values.Float_Value) return Boolean is
      (V1.K = V2.K
       and then
@@ -647,11 +624,43 @@ package body CE_RAC is
             raise Program_Error;
 
          when Array_K  =>
+            declare
+               Length_V1 : Natural;
+               Length_V2 : Natural;
+            begin
+               begin
+                  Length_V1 := To_Integer (Get_Array_Length (V1).Content);
+                  Length_V2 := To_Integer (Get_Array_Length (V2).Content);
+               exception
+                  when Constraint_Error => RAC_Stuck ("Array length too big");
+               end;
 
-            --  ??? We should change to use Ada equality on arrays
+               if V1.First_Attr.Present and then V1.Last_Attr.Present
+                 and then V2.First_Attr.Present and then V2.Last_Attr.Present
+               then
+                  if Length_V1 = Length_V2 then
+                     --  The equality check performed by the following for loop
+                     --  could be improved by only checking the elements we
+                     --  know could differ.
+                     for J in 1 .. Length_V1 loop
+                        Check_Fuel_Decrease (Ctx.Fuel);
 
-            return (V1.Array_Others = null) = (V2.Array_Others = null)
-              and then V1.Array_Values = V2.Array_Values;
+                        if Get_Array_Elt (V1, J).all /=
+                           Get_Array_Elt (V2, J).all
+                        then
+                           return False;
+                        end if;
+                     end loop;
+                  else
+                     return False;
+                  end if;
+
+                  return True;
+               else
+                  RAC_Stuck
+                    ("Missing index of string, cannot compute length");
+               end if;
+            end;
 
          when Access_K =>
 
@@ -855,7 +864,6 @@ package body CE_RAC is
                     (if Is_Constrained (V.AST_Ty)
                      then First_Elmt (Discriminant_Constraint (V.AST_Ty))
                      else No_Elmt);
-
                begin
                   while Present (Discr) loop
                      if not V.Record_Fields.Contains (Discr) then

@@ -1075,7 +1075,7 @@ procedure Gnatprove with SPARK_Mode is
             if CL_Switches.Memcached_Server /= null
               and then CL_Switches.Memcached_Server.all /= ""
             then
-               return "spark_memcached_wrapper " &
+               return "spark_memcached_wrapper %t " &
                  CL_Switches.Memcached_Server.all & " " &
                  Cmd;
             else

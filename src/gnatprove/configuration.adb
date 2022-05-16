@@ -2493,6 +2493,9 @@ package body Configuration is
         and then CL_Switches.Memcached_Server.all /= ""
       then
          Args.Append ("spark_memcached_wrapper");
+         --  The first argument of spark_memcached_wrapper is the salt. We
+         --  don't use the salt for gnatwhy3, so use any dummy string.
+         Args.Append ("salt");
          Args.Append (CL_Switches.Memcached_Server.all);
       end if;
 
