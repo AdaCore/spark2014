@@ -116,19 +116,21 @@ whether a read or write is always significant.
 
 A type is said to be *effectively volatile* if it is either a volatile type, an
 array type whose Volatile_Components aspect is True, an array type whose
-component type is effectively volatile, a protected type, or a descendant of
+component type is effectively volatile, a record type for which all components
+have an effectively volatile type, a protected type, or a descendant of
 the type Ada.Synchronous_Task_Control.Suspension_Object.
 
 .. index:: effectively volatile for reading; type
 
-A type is said to be *effectively volatile for reading* if it is either a
-volatile type with the properties Async_Writers or Effective_Reads set to True
-(as described below), an array type whose Volatile_Components aspect is True
-unless the array type has the properties Async_Writers and Effective_Reads set
-to False (as described below), an array type whose component type is
-effectively volatile for reading, a protected type, or a descendant of the type
-Ada.Synchronous_Task_Control.Suspension_Object. [An effectively volatile type
-for reading is also an effectively volatile type.]
+An *effectively volatile* type is said to be *effectively volatile for reading*
+if it is either a volatile type with the properties Async_Writers or
+Effective_Reads set to True (as described below), an array type whose
+Volatile_Components aspect is True unless the array type has the properties
+Async_Writers and Effective_Reads set to False (as described below), an array
+type whose component type is effectively volatile for reading, a record type
+for which at least one component has an effectively volatile type for reading,
+a protected type, or a descendant of the type
+Ada.Synchronous_Task_Control.Suspension_Object.
 
 A nonvolatile protected type is said to be *nonvolatile during a protected
 action* if none of its subcomponent types are effectively volatile. [In other
