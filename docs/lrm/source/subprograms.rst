@@ -636,7 +636,7 @@ is used purely for static analysis purposes and is not executed.
 
 17. Where the refinement of a state abstraction is not visible (see
     :ref:`State Refinement`) and a subprogram references one or more
-    of its constituents the constituents may be represented by a
+    of its constituents, the constituents may be represented by a
     ``global_item`` that denotes the state abstraction in the
     ``global_specification`` of the subprogram. [The state abstraction
     encapsulating a constituent is known from the Part_Of indicator on
