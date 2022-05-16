@@ -92,6 +92,11 @@ package body Flow is
      Ada.Strings.Maps.To_Set
        (Ada.Characters.Latin_1.Space &
         Ada.Characters.Latin_1.CR &
+        Ada.Characters.Latin_1.LF) with Ghost;
+
+   Linebreak : constant Ada.Strings.Maps.Character_Set :=
+     Ada.Strings.Maps.To_Set
+       (Ada.Characters.Latin_1.CR &
         Ada.Characters.Latin_1.LF);
 
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
@@ -631,8 +636,11 @@ package body Flow is
             end if;
          end Print_Node;
 
-         procedure Append_To_Label (S : String);
-         --  Append S to Rv.Label trimming the whitespace if required
+         procedure Append_To_Label (S : String)
+           with Pre => (if Ada.Strings.Maps.Is_In (S (S'First), Whitespace)
+                        then S'Length = 1);
+         --  Append S to Rv.Label trimming the trailing linebreaks if required;
+         --  no leading whitespace is expected (except for a single linebreak).
 
          ----------------------
          -- Append_To_Label  --
@@ -642,8 +650,12 @@ package body Flow is
          begin
             Append
               (Rv.Label,
-               Ada.Strings.Fixed.Trim (S, Whitespace, Whitespace));
+               Ada.Strings.Fixed.Trim
+                 (S, Ada.Strings.Maps.Null_Set, Linebreak));
          end Append_To_Label;
+
+         Output_Buffer : constant Saved_Output_Buffer := Save_Output_Buffer;
+         --  Store previous buffer and indentation settings
 
       --  Start of processing for NDI
 
@@ -1090,6 +1102,7 @@ package body Flow is
 
          Write_Eol;
          Cancel_Special_Output;
+         Restore_Output_Buffer (Output_Buffer);
 
          return Rv;
       end NDI;
