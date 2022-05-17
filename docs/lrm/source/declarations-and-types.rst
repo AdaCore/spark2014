@@ -746,7 +746,8 @@ every name of a reachable element of the object is borrowed.
 The following operations are said to be *move* operations:
 
 - An assignment operation, where the target is a variable, a constant, or
-  return object (see Ada RM 6.5) of an owning type.
+  return object (see Ada RM 6.5) of an owning type that is not an anonymous
+  access-to-variable type.
 
   [Redundant: In the case of a formal parameter of an access type of mode **in
   out** or **out**, this includes all assignments to or from such a formal
