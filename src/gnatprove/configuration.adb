@@ -92,10 +92,11 @@ package body Configuration is
 
    function No_Project_File_Mode return String;
    --  This function is supposed to be called when no project file was given.
-   --  It searches for a project file in the current directory. If there is
-   --  exactly one, it returns the first one (= a random one). If there are
-   --  more than one, we abort with an error. Otherwise, a default project
-   --  is created and the name of that project is returned.
+   --  It searches for project files in the current directory:
+   --  - If there is no such file, a default project is created and the name of
+   --    that project is returned.
+   --  - If there is exactly one, it returns the name of this project file.
+   --  - If there is more than one, it aborts with an error.
 
    procedure Prepare_Prover_Lib (Obj_Dir : String);
    --  Deal with the why3 libraries manual provers might need.
