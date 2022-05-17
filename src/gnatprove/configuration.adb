@@ -1553,6 +1553,12 @@ package body Configuration is
            or not Null_Or_Empty_String (CL_Switches.Limit_Subp)
            or not Null_Or_Empty_String (CL_Switches.Limit_Line);
 
+         if CL_Switches.U and then CL_Switches.File_List.Is_Empty then
+            Put_Line
+              (Standard_Error,
+               "warning: switch -u does nothing without a filename");
+         end if;
+
          Process_Limit_Switches;
 
          Set_CodePeer_Mode (CL_Switches.CodePeer.all);
