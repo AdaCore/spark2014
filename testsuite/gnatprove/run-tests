@@ -124,6 +124,11 @@ end Test;
         self.output = Log("")
 
     @property
+    def test_control_creator(self):
+        assert isinstance(self.env.discs, list)
+        return SPARKControlCreator(self.env.discs, self.test_env)
+
+    @property
     def baseline(self):
         return None, self._baseline, False
 

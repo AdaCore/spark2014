@@ -1,9 +1,9 @@
 reason_for_check.adb:8:41: info: initialization of "W" proved
 reason_for_check.adb:12:14: info: overflow check proved (CVC5: 2 VC)
 reason_for_check.adb:18:07: high: precondition might fail, cannot prove V < 1000 (e.g. when X1 = 1000 and X2 = 0) [possible fix: precondition of subprogram at line 16 should mention X1 and X2]
-reason_for_check.adb:18:21: medium: range check might fail, cannot prove lower bound for X1 [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at line 16 should mention X1]
+reason_for_check.adb:18:21: high: range check might fail, cannot prove lower bound for X1 (e.g. when X1 = -1 and X2 = 0) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at line 16 should mention X1]
+reason_for_check.adb:18:29: high: range check might fail, cannot prove lower bound for X2 (e.g. when X2 = -1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention X2]
 reason_for_check.adb:18:29: info: range check proved (CVC5: 2 VC)
-reason_for_check.adb:18:29: medium: range check might fail, cannot prove lower bound for X2 [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention X2]
 reason_for_check.adb:19:07: high: precondition might fail, cannot prove V < 1000 (e.g. when Y1 = 1000 and Y2 = 1) [possible fix: precondition of subprogram at line 16 should mention Y1 and Y2]
 reason_for_check.adb:19:25: medium: range check might fail, cannot prove lower bound for Y1 [reason for check: output value must fit in argument type] [possible fix: call at line 19 should mention W (for argument Y1) in a postcondition]
 reason_for_check.adb:19:29: info: range check proved (CVC5: 2 VC)

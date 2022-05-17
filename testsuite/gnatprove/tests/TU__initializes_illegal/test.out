@@ -21,7 +21,7 @@ initializes_illegal_4.ads:20:07: low: initialization of "X" must be mentioned in
 initializes_illegal_4.ads:33:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
 initializes_illegal_4.ads:36:12: low: initialization of "Var2" must be mentioned in the Initializes contract of "Pac2" (SPARK RM 7.1.5(9))
 initializes_illegal_4.ads:50:11: info: flow dependencies proved
-initializes_illegal_4.ads:53:30: medium: overflow check might fail, cannot prove lower bound for G_Var + G_Var2 (e.g. when G_Var = 0) [reason for check: result of addition must fit in a 32-bits machine integer]
+initializes_illegal_4.ads:53:30: medium: overflow check might fail, cannot prove lower bound for G_Var + G_Var2 [reason for check: result of addition must fit in a 32-bits machine integer]
 initializes_illegal_4.ads:53:32: high: "G_Var2" must be mentioned as an input of the Initializes aspect of "Pac3" (SPARK RM 7.1.5(11))
 initializes_illegal_4.ads:63:11: info: flow dependencies proved
 initializes_illegal_4.ads:65:22: high: "G_Var" must be mentioned as an input of the Initializes aspect of "Pac4" (SPARK RM 7.1.5(11))
