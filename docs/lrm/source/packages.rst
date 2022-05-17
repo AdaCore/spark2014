@@ -1190,12 +1190,17 @@ where
     a synchronized state abstraction, or an external state abstraction.
 
 
+14. Each ``constituent`` of a state abstraction shall be declared before the
+    first subprogram, package, task, or protected body, or
+    expression_function_declaration, in the same ``declarative_part``.
+
+
 .. container:: heading
 
    Static Semantics
 
 
-14. A Refined_State aspect of a ``package_body`` completes the
+15. A Refined_State aspect of a ``package_body`` completes the
     declaration of the state abstractions occurring in the
     corresponding ``package_specification`` and defines the objects
     and each subordinate state abstraction that are the
@@ -1203,7 +1208,7 @@ where
     the ``package_specification``.
 
 
-15. A **null** ``constituent_list`` indicates that the named abstract
+16. A **null** ``constituent_list`` indicates that the named abstract
     state has no constituents and termed a *null_refinement*. The
     state abstraction does not represent any actual state at
     all. [This feature may be useful to minimize changes to Global and
@@ -1222,11 +1227,11 @@ There are no dynamic semantics associated with Refined_State aspect.
    Verification Rules
 
 
-16. Each ``constituent`` that is a constant shall be a constant *with
+17. Each ``constituent`` that is a constant shall be a constant *with
     variable inputs*.
 
 
-17. If the Async_Writers aspect of a state abstraction is True and the
+18. If the Async_Writers aspect of a state abstraction is True and the
     Async_Writers aspect of a constituent of that state abstraction is
     False, then after the elaboration of the (possibly implicit) body
     of the package which declares the abstraction, the constituent
