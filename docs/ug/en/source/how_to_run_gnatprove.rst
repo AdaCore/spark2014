@@ -693,7 +693,7 @@ When editing an Ada file, |GNATprove| can also be run from a
 .. index:: manual proof
            Platinum level; manual proof
 
-Running GNATprove without a project file
+Running GNATprove Without a Project File
 ----------------------------------------
 
 |GNATprove| accepts the invocation without a project file (``-P`` switch on the
