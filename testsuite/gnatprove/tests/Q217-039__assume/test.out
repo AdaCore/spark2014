@@ -26,11 +26,11 @@ Assertions . . . . . .
 Concurrency . . . . . .
 Data Dependencies . . . . . .
 Flow Dependencies . . . . . .
-Functional Contracts 2 . . 2 (CVC5) . .
+Functional Contracts 2 . . 2 . .
 Initialization . . . . . .
 LSP Verification . . . . . .
 Non-Aliasing . . . . . .
-Run-time Checks 2 . . 1 (CVC5) . 1
+Run-time Checks 2 . . 1 . 1
 SPARK Analysis results Total Flow CodePeer Provers Justified Unproved
 Summary of SPARK analysis
 Termination . . . . . .
