@@ -8,12 +8,12 @@
 <path name="ghc_sort.gnat-json"/>
 <theory name="Ghc_sort__package_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_vc_conj" proved="true" >
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="2397"/></proof>
+  <proof prover="0"><result status="valid" steps="2395"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="2395"/></proof>
+  <proof prover="0"><result status="valid" steps="2393"/></proof>
   </goal>
  </transf>
  </goal>

@@ -123,6 +123,18 @@ package SPARK_Definition.Annotate is
    --  definition in Why3 on which the label "inline" is set so that gnatwhy3
    --  inlines its definition for provers.
 
+   --  A pragma Annotate for logical equality has the following form:
+   --    pragma Annotate (GNATprove, Logical_Equal, Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Logical_Equal       is a fixed identifier
+   --    E                   is a function with the signature of an equality
+   --                        function and no visible body.
+
+   --  When such an annotation is provided for a function E, is is assumed to
+   --  be an application of the logical "=" operator of Why3.
+
    --  A pragma Annotate for termination has the following form:
    --    pragma Annotate (GNATprove, Terminating, Entity => E);
 
@@ -203,6 +215,9 @@ package SPARK_Definition.Annotate is
    --  pragma Annotate Iterable_For_Proof that applies to type. If so, set
    --  Found to True and fill in the Info record. Otherwise, set Found to False
    --  and leave Info uninitialized.
+
+   function Has_Logical_Eq_Annotation (E : Entity_Id) return Boolean;
+   --  Return True if a pragma Annotate Logical_Equal applies to entity E
 
    function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in Entry_Kind

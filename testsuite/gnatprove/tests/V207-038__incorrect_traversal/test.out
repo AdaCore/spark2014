@@ -1,0 +1,4 @@
+main.adb:10:14: error: borrowing traversal functions whose first parameter does not have an anonymous access-to-variable type is not yet supported
+main.adb:16:19: error: "f" is not allowed in SPARK (due to borrowing traversal functions whose first parameter does not have an anonymous access-to-variable type)
+main.adb:16:19: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

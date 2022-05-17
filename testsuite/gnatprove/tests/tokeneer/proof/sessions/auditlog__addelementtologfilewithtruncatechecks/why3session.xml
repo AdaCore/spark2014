@@ -9,9 +9,9 @@
 <path name="auditlog__addelementtologfilewithtruncatechecks.gnat-json"/>
 <theory name="Auditlog__addelementtologfilewithtruncatechecks__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="152"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="184"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -20,19 +20,19 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="1"><result status="valid" steps="91"/></proof>
+  <proof prover="1"><result status="valid" steps="121"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="198"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="230"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.7">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="210"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="243"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -44,43 +44,43 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="46"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="1"><result status="valid" steps="167"/></proof>
+  <proof prover="1"><result status="valid" steps="186"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="46"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="1"><result status="valid" steps="290"/></proof>
+  <proof prover="1"><result status="valid" steps="304"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="1"><result status="valid" steps="316"/></proof>
+  <proof prover="1"><result status="valid" steps="255"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="1"><result status="valid" steps="339"/></proof>
+  <proof prover="1"><result status="valid" steps="272"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="1"><result status="valid" steps="94"/></proof>
+  <proof prover="1"><result status="valid" steps="60"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
-  <proof prover="1"><result status="valid" steps="392"/></proof>
+  <proof prover="1"><result status="valid" steps="308"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="1"><result status="valid" steps="377"/></proof>
+  <proof prover="1"><result status="valid" steps="328"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="1"><result status="valid" steps="392"/></proof>
+  <proof prover="1"><result status="valid" steps="308"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>

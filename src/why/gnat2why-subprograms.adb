@@ -209,7 +209,9 @@ package body Gnat2Why.Subprograms is
    --  @param Params parameters for the translation
    --  @return if Function_Entity is non recursive and has a pragma
    --     Annotate (GNATprove, Inline_For_Proof), return the Why3 expression
-   --     for its value; otherwise return Why_Empty.
+   --     for its value; if Function_Entity has a pragma Annotate (GNATprove,
+   --     Logic_Equal), return a call to the builtin equality of Why3;
+   --     otherwise return Why_Empty.
 
    function Compute_Moved_Property_For_Deep_Outputs
      (E      : Entity_Id;
@@ -2284,8 +2286,24 @@ package body Gnat2Why.Subprograms is
       Value : constant Node_Id :=
         Retrieve_Inline_Annotation (Function_Entity);
       W_Def : W_Term_Id;
+
    begin
-      if No (Value) then
+      --  If the function is annotated Logical_Eq, return a call to Why_Eq
+
+      if Has_Logical_Eq_Annotation (Function_Entity) then
+         pragma Assert (No (Value));
+
+         declare
+            Args : constant W_Expr_Array :=
+              Get_Args_From_Binders (To_Binder_Array (Logic_Func_Binders),
+                                     Params.Ref_Allowed);
+         begin
+            pragma Assert (Args'Length = 2);
+            W_Def := New_Comparison
+              (Symbol => Why_Eq, Left => +Args (1), Right => +Args (2));
+         end;
+
+      elsif No (Value) then
          W_Def := Why_Empty;
 
       --  If Function_Entity is recursive, it is not inlined as it may

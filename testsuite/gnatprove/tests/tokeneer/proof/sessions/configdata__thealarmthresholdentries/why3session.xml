@@ -9,15 +9,15 @@
 <path name="configdata__thealarmthresholdentries.gnat-json"/>
 <theory name="Configdata__thealarmthresholdentries__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="1452"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="1488"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="1452"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="1488"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -26,10 +26,10 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="1"><result status="valid" steps="225"/></proof>
+  <proof prover="1"><result status="valid" steps="231"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="1"><result status="valid" steps="271"/></proof>
+  <proof prover="1"><result status="valid" steps="277"/></proof>
   </goal>
  </transf>
  </goal>

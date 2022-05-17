@@ -495,6 +495,93 @@ package body Gnat2Why.Util is
       return Plan;
    end Build_Printing_Plan;
 
+   ------------------------
+   -- Collect_Attr_Parts --
+   ------------------------
+
+   procedure Collect_Attr_Parts
+     (N         :        Node_Id;
+      Attr_Name :        Name_Id;
+      Parts     : in out Node_Sets.Set)
+   is
+      function Old_Attribute (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for 'Old attibute and enter its prefix in the map
+
+      function Loop_Entry_Attribute (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for 'Loop_Entry attibute and enter its prefix in the map
+
+      --  Local variables
+
+      Loop_Name : E_Loop_Id;
+
+      -------------------
+      -- Old_Attribute --
+      -------------------
+
+      function Old_Attribute (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         if Nkind (N) = N_Attribute_Reference
+           and then Attribute_Name (N) = Snames.Name_Old
+         then
+            Parts.Include (Prefix (N));
+            --  Attributes are assumed not to be nested in prefixes
+            return Atree.Skip;
+         else
+            return Atree.OK;
+         end if;
+      end Old_Attribute;
+
+      --------------------------
+      -- Loop_Entry_Attribute --
+      --------------------------
+
+      function Loop_Entry_Attribute (N : Node_Id) return Atree.Traverse_Result
+      is
+         Loop_Entry_Name : E_Loop_Id;
+      begin
+         if Nkind (N) = N_Attribute_Reference
+           and then Attribute_Name (N) = Snames.Name_Loop_Entry
+         then
+            Loop_Entry_Name := Name_For_Loop_Entry (N);
+
+            if Loop_Entry_Name = Loop_Name then
+               Parts.Include (Prefix (N));
+               --  Attributes are assumed not to be nested in prefixes
+               return Atree.Skip;
+
+            end if;
+         end if;
+         return Atree.OK;
+      end Loop_Entry_Attribute;
+
+      procedure Search_Old_Attributes is new Traverse_More_Proc
+        (Old_Attribute);
+
+      procedure Search_Loop_Entry_Attributes is new Traverse_More_Proc
+        (Loop_Entry_Attribute);
+
+   begin
+      if Attr_Name = Snames.Name_Old then
+         --  'Old
+         Search_Old_Attributes (N);
+      else
+         --  'Loop_Entry
+         Loop_Name := Entity (Identifier (N));
+         Search_Loop_Entry_Attributes (N);
+      end if;
+   end Collect_Attr_Parts;
+
+   procedure Collect_Attr_Parts
+     (L         :        Node_Lists.List;
+      Attr_Name :        Name_Id;
+      Parts     : in out Node_Sets.Set)
+   is
+   begin
+      for N of L loop
+         Collect_Attr_Parts (N, Attr_Name, Parts);
+      end loop;
+   end Collect_Attr_Parts;
+
    ------------------------------
    -- Collect_Contextual_Nodes --
    ------------------------------
@@ -570,41 +657,16 @@ package body Gnat2Why.Util is
    -- Collect_Old_Parts --
    -----------------------
 
-   procedure Collect_Old_Parts (N : Node_Id; Old_Parts : in out Node_Sets.Set)
-   is
-      function Is_Old_Attribute (N : Node_Id) return Atree.Traverse_Result;
-      --  Search for attribute Old and enter its prefix in the map
-
-      ----------------------
-      -- Is_Old_Attribute --
-      ----------------------
-
-      function Is_Old_Attribute (N : Node_Id) return Atree.Traverse_Result is
-      begin
-         if Nkind (N) = N_Attribute_Reference
-             and then Attribute_Name (N) = Name_Old
-         then
-            Old_Parts.Include (Prefix (N));
-            return Atree.Skip;
-         else
-            return Atree.OK;
-         end if;
-      end Is_Old_Attribute;
-
-      procedure Search_Old_Attributes is new Traverse_More_Proc
-        (Is_Old_Attribute);
+   procedure Collect_Old_Parts (N : Node_Id; Parts : in out Node_Sets.Set) is
    begin
-      Search_Old_Attributes (N);
+      Collect_Attr_Parts (N, Snames.Name_Old, Parts);
    end Collect_Old_Parts;
 
    procedure Collect_Old_Parts
-     (L         :        Node_Lists.List;
-      Old_Parts : in out Node_Sets.Set)
-   is
+     (L     :        Node_Lists.List;
+      Parts : in out Node_Sets.Set) is
    begin
-      for N of L loop
-         Collect_Old_Parts (N, Old_Parts);
-      end loop;
+      Collect_Attr_Parts (L, Snames.Name_Old, Parts);
    end Collect_Old_Parts;
 
    ------------------
@@ -1183,13 +1245,15 @@ package body Gnat2Why.Util is
 
    function Name_For_Loop_Entry
      (Attr : N_Attribute_Reference_Id)
-      return W_Identifier_Id
+      return E_Loop_Id
    is
       function Is_Loop_Stmt (N : Node_Id) return Boolean is
         (Nkind (N) = N_Loop_Statement);
 
       function Enclosing_Loop_Stmt is new
         First_Parent_With_Property (Is_Loop_Stmt);
+
+      --  Local variables
 
       Arg       : constant Opt_N_Identifier_Id := First (Expressions (Attr));
       Loop_Id   : E_Loop_Id;
@@ -1199,17 +1263,24 @@ package body Gnat2Why.Util is
       --  The loop to which attribute Loop_Entry applies is either
       --  identified explicitly in argument, or, if Loop_Entry takes
       --  no arguments, it is the innermost enclosing loop.
-
       if Present (Arg) then
          Loop_Id := Entity (Arg);
 
       --  Climb the parent chain to find the nearest enclosing loop
-
       else
          Loop_Stmt := Enclosing_Loop_Stmt (Attr);
          Loop_Id := Entity (Identifier (Loop_Stmt));
       end if;
 
+      return Loop_Id;
+   end Name_For_Loop_Entry;
+
+   function Name_For_Loop_Entry
+     (Attr : N_Attribute_Reference_Id)
+      return W_Identifier_Id
+   is
+      Loop_Id : constant E_Loop_Id := Name_For_Loop_Entry (Attr);
+   begin
       return Name_For_Loop_Entry (Prefix (Attr), Loop_Id);
    end Name_For_Loop_Entry;
 

@@ -1,1 +1,2 @@
 NT SKIP tests has diffs on windows
+inverse-prover SKIP diff in output filtering

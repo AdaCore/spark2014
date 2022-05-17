@@ -9,15 +9,15 @@
 <path name="screen__writealarms.gnat-json"/>
 <theory name="Screen__writealarms__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="1"><result status="unknown" steps="23"/></proof>
+  <proof prover="1"><result status="unknown" steps="42"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="1"><result status="unknown" steps="15"/></proof>
+  <proof prover="1"><result status="unknown" steps="31"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -26,7 +26,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="1"><result status="unknown" steps="21"/></proof>
+  <proof prover="1"><result status="unknown" steps="24"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -35,13 +35,13 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.8">
-  <proof prover="1"><result status="unknown" steps="28"/></proof>
+  <proof prover="1"><result status="unknown" steps="52"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10">
-  <proof prover="1"><result status="unknown" steps="20"/></proof>
+  <proof prover="1"><result status="unknown" steps="41"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -50,7 +50,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.13">
-  <proof prover="1"><result status="unknown" steps="26"/></proof>
+  <proof prover="1"><result status="unknown" steps="34"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>

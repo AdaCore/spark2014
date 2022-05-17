@@ -9,7 +9,7 @@
 <path name="enclave__presentadminhasdeparted.gnat-json"/>
 <theory name="Enclave__presentadminhasdeparted__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
@@ -17,7 +17,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="1"><result status="unknown" steps="69"/></proof>
+  <proof prover="1"><result status="unknown" steps="76"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -26,7 +26,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="1"><result status="unknown" steps="86"/></proof>
+  <proof prover="1"><result status="unknown" steps="93"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -35,19 +35,19 @@
   <proof prover="1" timelimit="20"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.8">
-  <proof prover="1"><result status="unknown" steps="182"/></proof>
+  <proof prover="1"><result status="unknown" steps="177"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10">
-  <proof prover="1"><result status="unknown" steps="96"/></proof>
+  <proof prover="1"><result status="unknown" steps="103"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="1"><result status="unknown" steps="122"/></proof>
+  <proof prover="1"><result status="unknown" steps="118"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>

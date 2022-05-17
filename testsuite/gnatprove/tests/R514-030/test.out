@@ -1,1 +1,1 @@
-saturation.ads:12:23: medium: postcondition might fail
+saturation.ads:12:23: high: postcondition might fail (e.g. when Val = (Value => 49152, Upper_Bound => 49152) and Val'Old = (Value => 8191, Upper_Bound => 49152))

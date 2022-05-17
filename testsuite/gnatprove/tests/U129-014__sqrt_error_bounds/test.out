@@ -93,7 +93,7 @@ norm-reals-errors.adb:150:22: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:155:22: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:159:10: info: precondition proved (CVC4: 3 VC)
-norm-reals-errors.adb:160:22: medium: range check might fail (e.g. when I = 2 and Values = (2 => 1.6285006E+19, others => 1.6285006E+19)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:160:22: medium: range check might fail (e.g. when I = 2 and Values = (2 => 1.3257926E+19, others => 1.7861736E+0)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:161:22: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:184:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:184:35: info: predicate check proved (Trivial: 1 VC)
@@ -144,6 +144,10 @@ norm-reals-errors.ads:10:48: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.ads:16:08: info: postcondition proved (CVC4: 1 VC)
 norm-reals-errors.ads:17:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.ads:17:24: info: predicate check proved (Trivial: 1 VC)
+norm-reals.ads:5:04: info: analyzing call to "Log2_Estimate" in context
+norm-reals.ads:5:04: info: analyzing call to "Minus_Log2_Estimate" in context
+norm-reals.ads:5:04: info: in instantiation at a-nbnbre.adb:256
+norm-reals.ads:5:04: info: in instantiation at a-nbnbre.adb:264
 norm-reals.ads:12:13: info: function contract might not be available on recursive calls
 norm-reals.ads:16:14: info: postcondition proved (altergo: 1 VC)
 norm-reals.ads:16:43: info: predicate check proved (Trivial: 1 VC)
@@ -284,6 +288,10 @@ spark-test_array_lemmas.ads:64:53: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:41: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:41: info: overflow check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:53: info: index check proved (CVC4: 2 VC)
+sqrt_spec.ads:7:04: info: analyzing call to "Log2_Estimate" in context
+sqrt_spec.ads:7:04: info: analyzing call to "Minus_Log2_Estimate" in context
+sqrt_spec.ads:7:04: info: in instantiation at a-nbnbre.adb:256
+sqrt_spec.ads:7:04: info: in instantiation at a-nbnbre.adb:264
 sqrt_spec.ads:13:19: info: assertion proved (Trivial)
 sqrt_spec.ads:16:19: info: assertion proved (Trivial)
 sqrt_spec.ads:19:19: info: assertion proved (Trivial)

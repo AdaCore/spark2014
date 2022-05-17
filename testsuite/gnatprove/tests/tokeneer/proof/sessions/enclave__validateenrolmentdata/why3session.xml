@@ -9,7 +9,7 @@
 <path name="enclave__validateenrolmentdata.gnat-json"/>
 <theory name="Enclave__validateenrolmentdata__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
@@ -17,7 +17,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="95"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="141"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -29,7 +29,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.6">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="110"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="180"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -41,10 +41,10 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="1"><result status="valid" steps="69"/></proof>
+  <proof prover="1"><result status="valid" steps="97"/></proof>
   </goal>
   <goal name="def&#39;vc.11">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="110"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="141"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -56,7 +56,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="1"><result status="valid" steps="69"/></proof>
+  <proof prover="1"><result status="valid" steps="93"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -68,7 +68,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="1"><result status="valid" steps="11"/></proof>
+  <proof prover="1"><result status="valid" steps="19"/></proof>
   </goal>
  </transf>
  </goal>

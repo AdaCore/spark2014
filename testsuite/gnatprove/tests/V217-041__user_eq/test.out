@@ -1,1 +1,1 @@
-main.adb:26:19: medium: assertion might fail
+main.adb:26:19: medium: assertion might fail (e.g. when C1 = (G => 1, F => 2) and C2 = (G => 2, F => 2))

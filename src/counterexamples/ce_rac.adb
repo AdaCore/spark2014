@@ -318,6 +318,17 @@ package body CE_RAC is
 
    function To_String (Attrs : Attributes.Map) return String;
 
+   package Other_Attributes is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Attributes_Access,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+   --  Special attributes that can be used on expressions and not only on
+   --  entity nodes. It is useful for Old and Loop_Entry attributes whose
+   --  values are stored here no matter the node type of their prefix.
+
+   type Other_Attributes_Access is access Other_Attributes.Map;
+
    type Binding is record
       Val   : Value_Access;
       Attrs : Attributes_Access := new Attributes.Map'(Attributes.Empty);
@@ -326,26 +337,37 @@ package body CE_RAC is
 
    function To_String (B : Binding) return String;
 
-   package Scopes is new Ada.Containers.Hashed_Maps
+   package Entity_Bindings is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Binding,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
-   --  A scope is a flat mapping of variable (defining identifiers) to bindings
+   --  Flat mapping of variables to bindings
 
-   function To_String (S : Scopes.Map) return String;
+   type Entity_Bindings_Access is access Entity_Bindings.Map;
+
+   type Scopes is record
+      Bindings    : Entity_Bindings_Access :=
+        new Entity_Bindings.Map'(Entity_Bindings.Empty);
+      Other_Attrs : Other_Attributes_Access :=
+        new Other_Attributes.Map'(Other_Attributes.Empty);
+   end record;
+   --  A scope is a flat mapping of variable (defining identifiers) to bindings
+   --  and a mapping of old and loop entry values of expressions.
+
+   function To_String (S : Scopes) return String;
 
    package Environments is new Ada.Containers.Indefinite_Vectors
      (Index_Type   => Natural,
-      Element_Type => Scopes.Map,
-      "="          => Scopes."=");
+      Element_Type => Scopes,
+      "="          => "=");
    --  An execution environment is a stack of scopes
 
    function To_String (E : Environments.Vector) return String
      with Unreferenced;
 
    procedure Set_Value
-     (S : in out Scopes.Map;
+     (S : in out Scopes;
       E :        Entity_Id;
       V :        Value_Access);
    --  Set (or update) the value of an identifier in a scope
@@ -379,9 +401,19 @@ package body CE_RAC is
    Ctx : Context;
    --  Lo and behold! The global execution context
 
+   procedure Evaluate_Attribute_Prefix_Values
+     (Attr_Name : Name_Id;
+      Prefixes  : Node_Sets.Set)
+     with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
+   --  For each node in Prefixes, evaluate it and add its value to the
+   --  "other attributes" map for the Attr_Name attribute.
+
    function Find_Binding (E : Entity_Id) return Binding;
    --  Find the binding of a variable in the context environment. If not found,
    --  it is assumed to be a global constant and initialised as it.
+
+   function Find_Other_Attributes (N : Node_Id) return Attributes_Access;
+   --  Find the map of 'Old and 'Loop_Entry attributes.
 
    -------------------
    -- Value oracles --
@@ -497,13 +529,13 @@ package body CE_RAC is
 
    function RAC_Call_Builtin
      (E              : Entity_Id;
-      Sc             : Scopes.Map;
+      Sc             : Scopes;
       Do_Sideeffects : Boolean)
       return Opt_Value_Type;
    --  Execute a builtin E, if it exists, or raise No_Builtin otherwise
 
    procedure Init_Global
-     (Scope         : in out Scopes.Map;
+     (Scope         : in out Scopes;
       N             :        Node_Id;
       Use_Expr      :        Boolean;
       Default_Value :        Boolean;
@@ -513,12 +545,12 @@ package body CE_RAC is
    --  expression in the declaration (if Use_Expr is true), or by a default
    --  value (if Default_Value is true).
 
-   function Param_Scope (Call : Node_Id) return Scopes.Map;
+   function Param_Scope (Call : Node_Id) return Scopes;
    --  Create a scope of parameters for a call Call
 
    procedure Copy_Out_Parameters
      (Call :        Node_Id;
-      Sc   : in out Scopes.Map);
+      Sc   : in out Scopes);
    --  Copy scalar values of out and in_out parameters from the parameter scope
    --  Sc to the environment.
 
@@ -1053,7 +1085,7 @@ package body CE_RAC is
    -------------------------
    procedure Copy_Out_Parameters
      (Call :        Node_Id;
-      Sc   : in out Scopes.Map)
+      Sc   : in out Scopes)
    is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
       --  Do the copy out for one parameter
@@ -1067,7 +1099,8 @@ package body CE_RAC is
          if Is_Scalar_Type (Etype (Formal))
            and then Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
          then
-            RAC_Expr_LHS (Actual).all := Sc (Formal).Val.all;
+            RAC_Expr_LHS (Actual).all :=
+              Sc.Bindings (Formal).Val.all;
          end if;
       end Process_Param;
 
@@ -1240,20 +1273,41 @@ package body CE_RAC is
          RAC_Stuck ("Enum_Value: value outside of range");
    end Enum_Value;
 
+   --------------------------------------
+   -- Evaluate_Attribute_Prefix_Values --
+   --------------------------------------
+
+   procedure Evaluate_Attribute_Prefix_Values
+     (Attr_Name : Name_Id;
+      Prefixes  : Node_Sets.Set)
+   is
+      Other_Att : Attributes_Access;
+      Position  : Attributes.Cursor;
+      Inserted  : Boolean;
+   begin
+      for P of Prefixes loop
+         Other_Att := Find_Other_Attributes (P);
+         Other_Att.Insert (Attr_Name,
+                           new Value_Type'(RAC_Expr (P)),
+                           Position,
+                           Inserted);
+      end loop;
+   end Evaluate_Attribute_Prefix_Values;
+
    ------------------
    -- Find_Binding --
    ------------------
 
    function Find_Binding (E : Entity_Id) return Binding
    is
-      C : Scopes.Cursor;
+      C : Entity_Bindings.Cursor;
       B : Binding;
    begin
       for Scope of Ctx.Env loop
-         C := Scope.Find (E);
+         C := Scope.Bindings.Find (E);
 
-         if Scopes.Has_Element (C) then
-            return Scope (C);
+         if Entity_Bindings.Has_Element (C) then
+            return Scope.Bindings (C);
          end if;
       end loop;
 
@@ -1262,6 +1316,22 @@ package body CE_RAC is
                    "constant without variable input");
       return B;
    end Find_Binding;
+
+   ---------------------------
+   -- Find_Other_Attributes --
+   ---------------------------
+
+   function Find_Other_Attributes (N : Node_Id) return Attributes_Access
+   is
+      Other_Attrs : constant Other_Attributes_Access :=
+        Ctx.Env (Ctx.Env.First).Other_Attrs;
+   begin
+      if not Other_Attrs.Contains (N) then
+         Other_Attrs.Insert (N, new Attributes.Map'(Attributes.Empty));
+      end if;
+
+      return Other_Attrs (N);
+   end Find_Other_Attributes;
 
    -----------------------
    -- Flush_RAC_Failure --
@@ -1416,7 +1486,7 @@ package body CE_RAC is
    -----------------
 
    procedure Init_Global
-     (Scope         : in out Scopes.Map;
+     (Scope         : in out Scopes;
       N             :        Node_Id;
       Use_Expr      :        Boolean;
       Default_Value :        Boolean;
@@ -1431,7 +1501,7 @@ package body CE_RAC is
       B :=
         (Val    => new Value_Type'(Get_Value (N, Expr, Default_Value, Origin)),
          others => <>);
-      Scope.Insert (N, B);
+      Scope.Bindings.Insert (N, B);
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
                  & To_String (B.Val.all) & " " & Value_Origin'Image (Origin));
@@ -1510,7 +1580,6 @@ package body CE_RAC is
 
       RAC_Trace ("Loop from " & To_String (Curr) & " to "
                  & To_String (Stop) & " by " & To_String (Step));
-      Ctx.Env.Prepend (Scopes.Empty);
       begin
          while Test (Curr, Stop) loop
 
@@ -1525,25 +1594,27 @@ package body CE_RAC is
             Iteration.all;
             Curr := Curr + Step;
          end loop;
+         Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
       exception
          when Exn_RAC_Exit =>
+            Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
             null;
 
          --  The call to Iteration will raise local exception Break to return
-         --  early from the iteration. Pop the environment in that case too.
+         --  early from the iteration.
          when others =>
-            Ctx.Env.Delete_First;
+            Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
             raise;
+
       end;
-      Ctx.Env.Delete_First;
    end Iterate_Loop_Param_Spec;
 
    -----------------
    -- Param_Scope --
    -----------------
 
-   function Param_Scope (Call : Node_Id) return Scopes.Map is
-      Res : Scopes.Map;
+   function Param_Scope (Call : Node_Id) return Scopes is
+      Res : Scopes;
 
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
       --  Add a parameter to Res
@@ -1579,7 +1650,7 @@ package body CE_RAC is
             end case;
          end if;
 
-         Res.Insert (Formal, (Val => Val, others => <>));
+         Res.Bindings.Insert (Formal, (Val => Val, others => <>));
       end Process_Param;
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
@@ -1614,7 +1685,7 @@ package body CE_RAC is
       Is_Main : Boolean := False)
       return Opt_Value_Type
    is
-      function Cntexmp_Param_Scope return Scopes.Map;
+      function Cntexmp_Param_Scope return Scopes;
       --  Create a scope of parameters from the counterexample
 
       procedure Rem_Stack_Height_Push;
@@ -1625,8 +1696,8 @@ package body CE_RAC is
       -- Initial_Param_Scope --
       -------------------------
 
-      function Cntexmp_Param_Scope return Scopes.Map is
-         Res    : Scopes.Map := Scopes.Empty;
+      function Cntexmp_Param_Scope return Scopes is
+         Res    : Scopes;
          Param  : Entity_Id  := First_Formal (E);
          Is_Out : Boolean;
          V      : Value_Type;
@@ -1635,7 +1706,8 @@ package body CE_RAC is
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
             V := Get_Value (Param, Empty, Is_Out, Origin);
-            Res.Insert (Param, (Val => new Value_Type'(V), others => <>));
+            Res.Bindings.Insert (Param, (Val => new Value_Type'(V),
+                                         others => <>));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "
                        & To_String (V) & " " & Value_Origin'Image (Origin));
@@ -1677,9 +1749,8 @@ package body CE_RAC is
         Find_Contracts (E, Pragma_Postcondition);
       Bodie     : constant Node_Id := Get_Body (E);
       Old_Nodes : Node_Sets.Set;
-      B         : Binding;
       Res       : Opt_Value_Type;
-      Sc        : Scopes.Map;
+      Sc        : Scopes;
 
    --  Start of processing for RAC_Call
 
@@ -1702,7 +1773,6 @@ package body CE_RAC is
             null;
       end;
 
-      Collect_Old_Parts (Posts, Old_Nodes);
       if Present (Get_Pragma (E, Pragma_Contract_Cases)) then
          RAC_Unsupported ("RAC_Call pragma contract cases",
                           Get_Pragma (E, Pragma_Contract_Cases));
@@ -1710,19 +1780,9 @@ package body CE_RAC is
 
       Ctx.Env.Prepend (Sc);
 
-      --  Add old values to bindings (note that the entities of Old_Nodes are
-      --  not unique)
-      for N of Old_Nodes loop
-         if Nkind (N) not in N_Has_Entity or else No (Entity (N)) then
-            RAC_Unsupported ("old value not entity", N);
-         end if;
-         B := Find_Binding (Entity (N));
-         if not B.Attrs.Contains (Snames.Name_Old) then
-            B.Attrs.Insert
-              (Snames.Name_Old, new Value_Type'(Copy (B.Val.all)));
-         end if;
-      end loop;
-      --  ??? Evaluate prefix expressions like F(X, Y, Z)'Old
+      --  Add old values to "other attributes" map
+      Collect_Attr_Parts (Posts, Snames.Name_Old, Old_Nodes);
+      Evaluate_Attribute_Prefix_Values (Snames.Name_Old, Old_Nodes);
 
       --  Check preconditions and get stuck in main functions
       begin
@@ -1774,30 +1834,24 @@ package body CE_RAC is
       end;
 
       declare
-         C    : Scopes.Cursor;
-         B    : Boolean;
-         Bind : Binding;
+         Bindings : constant Entity_Bindings_Access :=
+           Ctx.Env (Ctx.Env.First).Bindings;
+         Bind     : Binding;
       begin
          --  Add result attribute for checking the postcondition
          if Res.Present then
             Bind.Attrs.Insert
               (Snames.Name_Result, new Value_Type'(Res.Content));
-            Ctx.Env (Ctx.Env.First).Insert (E, Bind, C, B);
+            Bindings.Insert (E, Bind);
          end if;
 
          Check_List (Posts, "Postcondition", VC_Postcondition);
 
          --  Cleanup
          if Res.Present then
-            Ctx.Env (Ctx.Env.First).Delete (C);
+            Bindings.Delete (E);
          end if;
       end;
-
-      --  Remove old values from bindings
-      for N of Old_Nodes loop
-         B := Find_Binding (Entity (N));
-         B.Attrs.Exclude (Snames.Name_Old);
-      end loop;
 
       Sc := Ctx.Env (Ctx.Env.First);
       Ctx.Env.Delete_First;
@@ -1817,7 +1871,7 @@ package body CE_RAC is
 
    function RAC_Call_Builtin
      (E              : Entity_Id;
-      Sc             : Scopes.Map;
+      Sc             : Scopes;
       Do_Sideeffects : Boolean)
       return Opt_Value_Type is
    begin
@@ -1828,7 +1882,8 @@ package body CE_RAC is
       if Is_Unary_Text_IO_Put_Line (E) then
          if Do_Sideeffects then
             declare
-               Val     : Value_Access renames Sc (Sc.First).Val;
+               Val     : Value_Access renames
+                 Sc.Bindings (Sc.Bindings.First).Val;
                Fst     : constant Big_Integer := Val.First_Attr.Content;
                Lst     : constant Big_Integer := Val.Last_Attr.Content;
                S       : String (To_Integer (Fst) .. To_Integer (Lst));
@@ -1943,7 +1998,7 @@ package body CE_RAC is
       is
          Env : Environments.Vector := Environments.Empty;
       begin
-         Env.Append (Scopes.Empty);
+         Env.Append (Scopes'(others => <>));
          return Env;
       end Empty_Global_Env;
 
@@ -2204,10 +2259,18 @@ package body CE_RAC is
             when Snames.Name_Old =>
                --  E'Old
                declare
-                  E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
-                  B : constant Binding := Find_Binding (E);
+                  P : constant Node_Id := Prefix (N);
                begin
-                  return B.Attrs (Snames.Name_Old).all;
+                  return Find_Other_Attributes (P) (Snames.Name_Old).all;
+               end;
+
+            when Snames.Name_Loop_Entry =>
+               --  E'Loop_Entry
+               declare
+                  P : constant Node_Id := Prefix (N);
+               begin
+                  return
+                    Find_Other_Attributes (P) (Snames.Name_Loop_Entry).all;
                end;
 
             when Snames.Name_Result =>
@@ -3201,8 +3264,19 @@ package body CE_RAC is
 
          when N_Loop_Statement =>
             declare
-               Scheme : constant Node_Id := Iteration_Scheme (N);
+               Scheme           : constant Node_Id := Iteration_Scheme (N);
+               Loop_Entry_Nodes : Node_Sets.Set;
+               Other_Att        : Attributes_Access;
             begin
+               --  Collect prefixes of all 'Loop_Entry attribute uses and store
+               --  the result of their evaluation in the "other attributes"
+               --  map.
+               Collect_Attr_Parts (N,
+                                   Snames.Name_Loop_Entry,
+                                   Loop_Entry_Nodes);
+               Evaluate_Attribute_Prefix_Values (Snames.Name_Loop_Entry,
+                                                 Loop_Entry_Nodes);
+
                if No (Scheme) then
                   begin
                      loop
@@ -3246,6 +3320,12 @@ package body CE_RAC is
                   pragma Assert (Present (Iterator_Specification (Scheme)));
                   RAC_Unsupported ("RAC_Statement loop iterator", N);
                end if;
+
+               --  Clean the nearest scope by removing 'Loop_Entry values
+               for N of Loop_Entry_Nodes loop
+                  Other_Att := Find_Other_Attributes (N);
+                  Other_Att.Exclude (Snames.Name_Loop_Entry);
+               end loop;
             end;
 
          when N_Exit_Statement =>
@@ -3260,7 +3340,7 @@ package body CE_RAC is
             end if;
 
          when N_Block_Statement =>
-            Ctx.Env.Prepend (Scopes.Empty);
+            Ctx.Env.Prepend (Scopes'(others => <>));
             RAC_Decls (Declarations (N));
             RAC_Node (Handled_Statement_Sequence (N));
             Ctx.Env.Delete_First;
@@ -3392,18 +3472,18 @@ package body CE_RAC is
    ---------------
 
    procedure Set_Value
-     (S : in out Scopes.Map;
+     (S : in out Scopes;
       E :        Entity_Id;
       V :        Value_Access)
    is
       Bin : constant Binding := (Val => V, others => <>);
-      C   : Scopes.Cursor;
+      C   : Entity_Bindings.Cursor;
       Ins : Boolean;
    begin
-      S.Insert (E, Bin, C, Ins);
+      S.Bindings.Insert (E, Bin, C, Ins);
 
       if not Ins then
-         S (C).Val := V;
+         S.Bindings (C).Val := V;
       end if;
    end Set_Value;
 
@@ -3475,17 +3555,27 @@ package body CE_RAC is
      ((if B.Val = null then "NULL" else To_String (B.Val.all))
       & " - " & To_String (B.Attrs.all));
 
-   function To_String (S : Scopes.Map) return String is
+   function To_String (S : Scopes) return String is
       Res   : Unbounded_String;
       First : Boolean := True;
    begin
-      for C in S.Iterate loop
+      for C in S.Bindings.Iterate loop
          if not First then
             Append (Res, ", ");
          end if;
-         Append (Res, Get_Name_String (Chars (Scopes.Key (C))));
-         Append (Res, " (" & Entity_Id'Image (Scopes.Key (C)) & ")");
-         Append (Res, " = " & To_String (S (C)));
+         Append (Res, Get_Name_String (Chars (Entity_Bindings.Key (C))));
+         Append (Res, " (" & Entity_Id'Image (Entity_Bindings.Key (C)) & ")");
+         Append (Res, " = " & To_String (S.Bindings (C)));
+         First := False;
+      end loop;
+
+      for C in S.Other_Attrs.Iterate loop
+         if not First then
+            Append (Res, ", ");
+         end if;
+         Append (Res, Get_Name_String (Chars (Other_Attributes.Key (C))));
+         Append (Res, " (" & Node_Id'Image (Other_Attributes.Key (C)) & ")");
+         Append (Res, " = " & To_String (S.Other_Attrs (C).all));
          First := False;
       end loop;
 
@@ -3516,13 +3606,13 @@ package body CE_RAC is
       E   :        Entity_Id;
       V   :        Value_Access)
    is
-      SC : Scopes.Cursor;
+      BC : Entity_Bindings.Cursor;
    begin
       for EC in Env.Iterate loop
-         SC := Env (EC).Find (E);
+         BC := Env (EC).Bindings.Find (E);
 
-         if Scopes.Has_Element (SC) then
-            Env (EC) (SC).Val := V;
+         if Entity_Bindings.Has_Element (BC) then
+            Env (EC).Bindings (BC).Val := V;
             return;
          end if;
       end loop;
@@ -3533,7 +3623,7 @@ package body CE_RAC is
                      and then not Is_Access_Variable (Etype (E))
                      then not Has_Variable_Input (E));
 
-      Env (Env.Last).Insert (E, (Val => V, others => <>));
+      Env (Env.Last).Bindings.Insert (E, (Val => V, others => <>));
    end Update_Value;
 
    -------------------

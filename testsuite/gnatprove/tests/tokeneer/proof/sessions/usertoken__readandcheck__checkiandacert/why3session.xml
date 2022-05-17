@@ -9,7 +9,7 @@
 <path name="usertoken__readandcheck__checkiandacert.gnat-json"/>
 <theory name="Usertoken__readandcheck__checkiandacert__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
@@ -53,13 +53,13 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.14">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="171"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="20"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.16">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="171"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="20"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -80,7 +80,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.23">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="143"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="116"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -101,7 +101,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.30">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="110"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="116"/></proof>
   </goal>
   <goal name="def&#39;vc.31" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>

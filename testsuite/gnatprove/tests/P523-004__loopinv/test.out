@@ -1,5 +1,5 @@
 math.adb:6:07: info: initialization of "Tmp_Value" proved
-math.adb:11:10: info: predicate check proved (CVC4: 1 VC; Z3: 1 VC)
+math.adb:11:10: info: predicate check proved (CVC4: 2 VC)
 math.adb:13:33: info: loop invariant initialization proved (CVC4: 1 VC)
 math.adb:13:33: info: loop invariant preservation proved (CVC4: 1 VC)
 math.adb:15:13: info: loop invariant initialization proved (CVC4: 1 VC)

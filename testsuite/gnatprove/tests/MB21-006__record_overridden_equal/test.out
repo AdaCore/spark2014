@@ -1,2 +1,2 @@
 test_equal.adb:25:19: info: assertion proved (CVC4: 1 VC)
-test_equal.adb:26:19: medium: assertion might fail
+test_equal.adb:26:19: medium: assertion might fail [possible fix: add or complete related loop invariants or postconditions]

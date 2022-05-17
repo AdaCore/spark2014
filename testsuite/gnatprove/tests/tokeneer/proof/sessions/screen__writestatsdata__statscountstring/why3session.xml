@@ -9,7 +9,7 @@
 <path name="screen__writestatsdata__statscountstring.gnat-json"/>
 <theory name="Screen__writestatsdata__statscountstring__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
@@ -38,16 +38,16 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="1"><result status="valid" steps="213"/></proof>
+  <proof prover="1"><result status="valid" steps="172"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="1"><result status="valid" steps="269"/></proof>
+  <proof prover="1"><result status="valid" steps="226"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="1"><result status="valid" steps="145"/></proof>
+  <proof prover="1"><result status="valid" steps="177"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="1"><result status="valid" steps="174"/></proof>
+  <proof prover="1"><result status="valid" steps="170"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="1"><result status="valid" steps="14"/></proof>
@@ -62,7 +62,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="1"><result status="valid" steps="151"/></proof>
+  <proof prover="1"><result status="valid" steps="147"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>

@@ -13,7 +13,7 @@
 <path name="test_higher_order2__my_fold_left_i__acc__prove_last.gnat-json"/>
 <theory name="Test_higher_order2__my_fold_left_i__acc__prove_last__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="3"><result status="valid" steps="5"/></proof>
   </goal>
@@ -54,8 +54,12 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="19147"/></proof>
   <proof prover="3"><result status="unknown" steps="99"/></proof>
-  <proof prover="4"><result status="unknown" steps="117"/></proof>
   <proof prover="5"><result status="unknown" steps="803"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="def&#39;vc.12.0">
+   <proof prover="4"><result status="unknown" steps="117"/></proof>
+   </goal>
+  </transf>
   </goal>
  </transf>
  </goal>

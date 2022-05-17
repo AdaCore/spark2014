@@ -9,9 +9,9 @@
 <path name="tokenreader__poll__disconnecttoken.gnat-json"/>
 <theory name="Tokenreader__poll__disconnecttoken__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="1"><result status="unknown" steps="45"/></proof>
+  <proof prover="1"><result status="unknown" steps="66"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>

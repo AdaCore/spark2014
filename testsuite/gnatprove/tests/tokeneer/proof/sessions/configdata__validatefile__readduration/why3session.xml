@@ -9,36 +9,36 @@
 <path name="configdata__validatefile__readduration.gnat-json"/>
 <theory name="Configdata__validatefile__readduration__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="1"><result status="unknown" steps="14"/></proof>
+  <proof prover="1"><result status="unknown" steps="24"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="1"><result status="unknown" steps="14"/></proof>
+  <proof prover="1"><result status="unknown" steps="26"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="1" timelimit="20"><result status="valid" steps="5"/></proof>
+  <proof prover="1" timelimit="20"><result status="valid" steps="19"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="1" timelimit="20"><result status="valid" steps="5"/></proof>
+  <proof prover="1" timelimit="20"><result status="valid" steps="19"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="1" timelimit="20"><result status="valid" steps="5"/></proof>
+  <proof prover="1" timelimit="20"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="1" timelimit="20"><result status="valid" steps="5"/></proof>
+  <proof prover="1" timelimit="20"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.9">
-  <proof prover="1"><result status="unknown" steps="19"/></proof>
+  <proof prover="1"><result status="unknown" steps="33"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -47,7 +47,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="1"><result status="unknown" steps="22"/></proof>
+  <proof prover="1"><result status="unknown" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -56,7 +56,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.15">
-  <proof prover="1"><result status="unknown" steps="22"/></proof>
+  <proof prover="1"><result status="unknown" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>

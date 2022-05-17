@@ -10,7 +10,7 @@ main.adb:29:26: info: pointer dereference check proved (CVC4: 1 VC)
 main.adb:35:06: info: data dependencies proved
 main.adb:39:22: medium: assertion might fail (e.g. when A = (1 => 0, others => ?) and A (1)'Initialized = True and A (2)'Initialized = False)
 main.adb:44:06: info: data dependencies proved
-main.adb:48:40: medium: assertion might fail, cannot prove E /= 1 (e.g. when A = (others => 1) and E = A (1))
+main.adb:48:40: medium: assertion might fail, cannot prove E /= 1
 main.adb:57:06: info: data dependencies proved
 main.adb:58:52: info: pointer dereference check proved (CVC4: 1 VC)
 main.adb:58:56: info: index check proved (CVC4: 2 VC)
@@ -19,7 +19,7 @@ main.adb:61:23: info: pointer dereference check proved (CVC4: 1 VC)
 main.adb:61:27: info: index check proved (CVC4: 2 VC)
 main.adb:83:06: info: data dependencies proved
 main.adb:85:07: info: initialization of "X" proved
-main.adb:87:22: medium: assertion might fail (e.g. when X = (F => 1, Child.G => 1, G => 1))
+main.adb:87:22: medium: assertion might fail (e.g. when X = (F => 1, Child.G => 1, G => 2))
 main.adb:112:06: info: data dependencies proved
 main.adb:115:21: info: discriminant check proved (CVC4: 1 VC)
 main.adb:115:33: info: discriminant check proved (CVC4: 1 VC)

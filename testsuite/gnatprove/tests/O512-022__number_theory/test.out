@@ -20,5 +20,5 @@ number_theory.ads:23:43: info: float overflow check proved (CVC4: 1 VC)
 number_theory.ads:23:47: info: division check proved (CVC4: 1 VC)
 number_theory.ads:23:47: info: float overflow check proved (Trivial)
 number_theory.ads:23:55: info: float overflow check proved (Trivial)
-number_theory.ads:28:19: medium: postcondition might fail
+number_theory.ads:28:19: info: postcondition proved (CVC4: 1 VC)
 number_theory.ads:32:19: medium: postcondition might fail

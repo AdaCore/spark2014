@@ -832,6 +832,12 @@ package SPARK_Util is
    --  Store the link between a call to a function annotated with
    --  At_End_Borrow and the entity whose scope the at end refers to.
 
+   function Path_Contains_Traversal_Calls (Expr : N_Subexpr_Id) return Boolean
+   with
+     Pre => Is_Path_Expression (Expr);
+   --  Return True if the path from Expr contains a call to a traversal
+   --  function.
+
    function Traverse_Access_To_Constant (Expr : N_Subexpr_Id) return Boolean
    with
      Pre => Is_Path_Expression (Expr);
@@ -957,8 +963,7 @@ package SPARK_Util is
    --    * The prefix is not part of a constant and we are not in an assertion,
    --      otherwise this is not a move.
 
-   function Value_Is_Never_Leaked (Expr : N_Subexpr_Id) return Boolean with
-     Pre => Is_Access_Type (Etype (Expr));
+   function Value_Is_Never_Leaked (Expr : N_Subexpr_Id) return Boolean;
    --  Checks whether a created access value is known to never leak
 
    procedure Structurally_Decreases_In_Call

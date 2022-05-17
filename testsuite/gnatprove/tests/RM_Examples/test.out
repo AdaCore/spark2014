@@ -109,7 +109,7 @@ intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
-intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) in Integer) to subprogram at line 27]
+intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) in Integer) to subprogram at line 27]
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC4: 1 VC)

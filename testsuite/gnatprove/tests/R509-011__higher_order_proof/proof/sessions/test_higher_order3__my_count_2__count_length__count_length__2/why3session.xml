@@ -10,7 +10,7 @@
 <path name="test_higher_order3__my_count_2__count_length__count_length__2.gnat-json"/>
 <theory name="Test_higher_order3__my_count_2__count_length__count_length__2__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
- <transf name="split_vc_conj" proved="true" >
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
@@ -24,7 +24,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="2"><result status="valid" steps="13"/></proof>
+  <proof prover="2"><result status="valid" steps="19"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -60,10 +60,10 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="2"><result status="valid" steps="726"/></proof>
+  <proof prover="2"><result status="valid" steps="713"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="2"><result status="valid" steps="645"/></proof>
+  <proof prover="2"><result status="valid" steps="666"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
   <proof prover="2"><result status="valid" steps="28"/></proof>
@@ -72,7 +72,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
-  <proof prover="2"><result status="valid" steps="96"/></proof>
+  <proof prover="2"><result status="valid" steps="101"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
   <proof prover="2"><result status="valid" steps="14"/></proof>
@@ -126,15 +126,15 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.38" proved="true">
-  <proof prover="0"><result status="valid" steps="2731"/></proof>
+  <proof prover="0"><result status="valid" steps="2639"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.39" proved="true">
-  <proof prover="0"><result status="valid" steps="1267"/></proof>
+  <proof prover="0"><result status="valid" steps="1254"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.40" proved="true">
-  <proof prover="0"><result status="valid" steps="2657"/></proof>
+  <proof prover="0"><result status="valid" steps="2658"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.41" proved="true">

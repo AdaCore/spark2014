@@ -663,7 +663,6 @@ package body Gnat2Why.Borrow_Checker is
       ((Is_Ent => False, Expr => X));
 
    function "<" (P1, P2 : Perm_Kind) return Boolean;
-   function ">=" (P1, P2 : Perm_Kind) return Boolean;
    function Glb  (P1, P2 : Perm_Kind) return Perm_Kind;
    function Lub  (P1, P2 : Perm_Kind) return Perm_Kind;
 
@@ -1034,6 +1033,27 @@ package body Gnat2Why.Borrow_Checker is
    ---------
 
    function "<" (P1, P2 : Perm_Kind) return Boolean is
+
+      function ">=" (P1, P2 : Perm_Kind) return Boolean;
+      --  Return if permission P1 is more restrictive than P2
+
+      function ">=" (P1, P2 : Perm_Kind) return Boolean is
+      begin
+         case P2 is
+            when No_Access  => return True;
+            when Read_Only  =>
+               --  When a loop starts with permission Read_Only for an object,
+               --  this permission cannot change by the end of the loop, so
+               --  P1 = P2 and function "<" does not even call ">=".
+               pragma Annotate (Xcov, Exempt_On, "Impossible case with P1"
+                                & " and P2 permissions around a loop");
+               return P1 in Read_Perm;
+               pragma Annotate (Xcov, Exempt_Off);
+            when Write_Only => return P1 in Write_Perm;
+            when Read_Write => return P1 = Read_Write;
+         end case;
+      end ">=";
+
    begin
       return P1 /= P2 and then P2 >= P1;
    end "<";
@@ -1041,16 +1061,6 @@ package body Gnat2Why.Borrow_Checker is
    ----------
    -- ">=" --
    ----------
-
-   function ">=" (P1, P2 : Perm_Kind) return Boolean is
-   begin
-      case P2 is
-         when No_Access  => return True;
-         when Read_Only  => return P1 in Read_Perm;
-         when Write_Only => return P1 in Write_Perm;
-         when Read_Write => return P1 = Read_Write;
-      end case;
-   end ">=";
 
    ----------------------
    -- Check_Assignment --
@@ -1077,7 +1087,9 @@ package body Gnat2Why.Borrow_Checker is
          Expr : Node_Id);
       --  Update map of current observers
 
-      function Is_Move_To_Constant (Expr : Node_Id) return Boolean;
+      function Is_Move_To_Constant (Expr : Node_Id) return Boolean
+      with
+        Pre => Is_Access_Constant (Retysp (Etype (Expr)));
       --  Even if the type of Expr is not deep, the assignment can still be a
       --  move. It occurs on allocators and conversions to access-to-constant
       --  types.
@@ -1147,21 +1159,22 @@ package body Gnat2Why.Borrow_Checker is
             --  moved if the designated type is deep.
 
             when N_Allocator =>
-               if Nkind (Expression (Expr)) = N_Qualified_Expression then
-                  declare
-                     Des_Ty : Entity_Id := Directly_Designated_Type
-                       (Retysp (Etype (Expr)));
-                  begin
-                     if Is_Incomplete_Type (Des_Ty) then
-                        Des_Ty := Full_View (Des_Ty);
-                     end if;
+               --  Ada RM 4.8(5/2): If the type of the allocator is an
+               --  access-to-constant type, the allocator shall be an
+               --  initialized allocator.
+               pragma Assert
+                 (Nkind (Expression (Expr)) = N_Qualified_Expression);
+               declare
+                  Des_Ty : Entity_Id := Directly_Designated_Type
+                    (Retysp (Etype (Expr)));
+               begin
+                  if Is_Incomplete_Type (Des_Ty) then
+                     Des_Ty := Full_View (Des_Ty);
+                  end if;
 
-                     return Is_Deep (Des_Ty)
-                       and then not Is_Rooted_In_Constant (Expression (Expr));
-                  end;
-               else
-                  return False;
-               end if;
+                  return Is_Deep (Des_Ty)
+                    and then not Is_Rooted_In_Constant (Expression (Expr));
+               end;
 
             --  A conversion from an access-to-variable type to an
             --  access-to-constant type is a move.
@@ -1508,18 +1521,14 @@ package body Gnat2Why.Borrow_Checker is
                end;
             end if;
 
-         when N_Iterator_Specification =>
-            null;
-
-         when N_Loop_Parameter_Specification =>
-            null;
-
          --  Checking should not be called directly on these nodes
 
          when N_Function_Specification
             | N_Entry_Declaration
             | N_Procedure_Specification
             | N_Component_Declaration
+            | N_Iterator_Specification
+            | N_Loop_Parameter_Specification
          =>
             raise Program_Error;
 
@@ -2183,17 +2192,20 @@ package body Gnat2Why.Borrow_Checker is
                   --  (like Length or Loop_Entry), hence only the prefix
                   --  needs to be read.
 
-                  when Attribute_Address
+                  when Attribute_Access
+                     | Attribute_Address
                      | Attribute_Alignment
+                     | Attribute_Bit_Order
                      | Attribute_Callable
                      | Attribute_Component_Size
                      | Attribute_Constrained
                      | Attribute_First
                      | Attribute_First_Bit
+                     | Attribute_Initialized
                      | Attribute_Last
                      | Attribute_Last_Bit
                      | Attribute_Length
-                     | Attribute_Loop_Entry
+                     | Attribute_Modulus
                      | Attribute_Object_Size
                      | Attribute_Position
                      | Attribute_Size
@@ -2207,6 +2219,9 @@ package body Gnat2Why.Borrow_Checker is
                   --  hence only the arguments need to be read.
 
                   when Attribute_Ceiling
+                     | Attribute_Copy_Sign
+                     | Attribute_Enum_Rep
+                     | Attribute_Enum_Val
                      | Attribute_Floor
                      | Attribute_Max
                      | Attribute_Min
@@ -2235,19 +2250,6 @@ package body Gnat2Why.Borrow_Checker is
                         Read_Expression_List (Args);
                      end if;
 
-                  --  Attribute Update takes expressions as both prefix and
-                  --  arguments, so both need to be read.
-
-                  when Attribute_Update =>
-                     Read_Expression (Pref);
-                     Read_Expression_List (Args);
-
-                  --  Attribute Modulus does not reference the evaluated
-                  --  expression, so it can be ignored for this analysis.
-
-                  when Attribute_Modulus =>
-                     null;
-
                   --  The following attributes apply to types; there are no
                   --  expressions to read.
 
@@ -2256,12 +2258,20 @@ package body Gnat2Why.Borrow_Checker is
                   =>
                      null;
 
-                  --  Postconditions should not be analyzed
+                  --  Postconditions should not be analyzed. Attributes Update,
+                  --  Old and Loop_Entry correspond to paths which are handled
+                  --  previously.
 
-                  when Attribute_Old
+                  when Attribute_Loop_Entry
+                     | Attribute_Old
                      | Attribute_Result
+                     | Attribute_Update
                   =>
                      raise Program_Error;
+
+                  --  Other attributes are not supported in SPARK (or only for
+                  --  static values), leading to an error in marking. Ignore
+                  --  them here.
 
                   when others =>
                      null;
@@ -4892,7 +4902,9 @@ package body Gnat2Why.Borrow_Checker is
         ((if Part then "part of " else "")
          & (if Is_Deref then "dereference from " else "")
          & "& is not "
-         & (if Perm in Read_Perm and then Found_Perm not in Read_Perm then
+         & (if (Perm in Read_Perm and then Found_Perm not in Read_Perm)
+             or else Forbidden_Perm
+           then
               "readable"
            else
               "writable"), Loc, Root);

@@ -9,7 +9,7 @@
 <path name="admin__opisavailable.gnat-json"/>
 <theory name="Admin__opisavailable__subprogram_def">
  <goal name="def&#39;vc">
- <transf name="split_vc_conj" >
+ <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
@@ -35,7 +35,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.8">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="6052"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="6058"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -47,7 +47,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="8143"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="7420"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -62,7 +62,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.17">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="3441"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="3489"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -77,7 +77,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.22">
-  <proof prover="1" timelimit="1"><result status="unknown" steps="3441"/></proof>
+  <proof prover="1" timelimit="1"><result status="unknown" steps="3489"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -95,7 +95,7 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.28" proved="true">
-  <proof prover="1"><result status="valid" steps="401"/></proof>
+  <proof prover="1"><result status="valid" steps="447"/></proof>
   </goal>
  </transf>
  </goal>
