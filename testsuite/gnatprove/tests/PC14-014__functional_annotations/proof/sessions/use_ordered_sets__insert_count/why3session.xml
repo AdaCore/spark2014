@@ -92,7 +92,7 @@
   <proof prover="1"><result status="valid" steps="24039"/></proof>
   </goal>
   <goal name="def&#39;vc.27" proved="true">
-  <proof prover="1"><result status="valid" steps="278022"/></proof>
+  <proof prover="1"><result status="valid" steps="273775"/></proof>
   </goal>
  </transf>
  </goal>

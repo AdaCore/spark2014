@@ -172,7 +172,7 @@
   <proof prover="3"><result status="valid" steps="218"/></proof>
   </goal>
   <goal name="def&#39;vc.53" proved="true">
-  <proof prover="3"><result status="valid" steps="486"/></proof>
+  <proof prover="3"><result status="valid" steps="491"/></proof>
   </goal>
   <goal name="def&#39;vc.54" proved="true">
   <proof prover="3"><result status="valid" steps="5"/></proof>
@@ -328,15 +328,15 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.105" proved="true">
-  <proof prover="3"><result status="valid" steps="6957"/></proof>
+  <proof prover="3"><result status="valid" steps="6945"/></proof>
   </goal>
   <goal name="def&#39;vc.106" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="105883"/></proof>
+  <proof prover="1"><result status="valid" steps="106474"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
-  <proof prover="0"><result status="valid" steps="109676"/></proof>
+  <proof prover="0"><result status="valid" steps="74306"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.108" proved="true">
@@ -430,14 +430,14 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.138" proved="true">
-  <proof prover="3"><result status="valid" steps="1153"/></proof>
+  <proof prover="3"><result status="valid" steps="1159"/></proof>
   </goal>
   <goal name="def&#39;vc.139" proved="true">
-  <proof prover="0"><result status="valid" steps="105032"/></proof>
+  <proof prover="0"><result status="valid" steps="93705"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.140" proved="true">
-  <proof prover="0"><result status="valid" steps="127110"/></proof>
+  <proof prover="0"><result status="valid" steps="126895"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>

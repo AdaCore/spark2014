@@ -723,3 +723,63 @@ Thanks to this postcondition, we can verify a program which borrows a part of
    pragma Assert (X.Next.Val = 2);
    pragma Assert (X.Next.Next.Val = 42);
    pragma Assert (X.Next.Next.Next.Val = 4);
+
+Accessing the Logical Equality for a Type
+-----------------------------------------
+
+In Ada, the equality is not the logical equality in general. In particular,
+arrays are considered to be equal if they contain the same elements, even with
+different bounds, +0.0 and -0.0 are considered equal...
+
+It is possible to use a ``pragma Annotate (GNATprove, Logical_Equal)`` to ask
+|GNATprove| to interpret a function with an equality profile as the logical
+equality for the type. The function shall not have a body visisble in
+|SPARK|: it can be left as non-executable (using ``Import``) or given an
+(approximated) definition which can be used when executing contracts.
+It comes in handy for example to express that a (part of a) data-structure
+is left unchanged by a procedure, as is done in the example below:
+
+.. code-block:: ada
+
+   subtype Length is Natural range 0 .. 100;
+   type Word (L : Length := 0) is record
+      Value : String (1 .. L);
+   end record;
+   function Real_Eq (W1, W2 : String) return Boolean with
+     Ghost,
+     Import,
+     Annotate => (GNATprove, Logical_Equal);
+   type Dictionnary is array (Positive range <>) of Word;
+
+   procedure Set (D : in out Dictionnary; I : Positive; W : String) with
+     Pre  => I in D'Range and W'Length <= 100,
+     Post => D (I).Value = W
+     and then (for all J in D'Range =>
+                 (if I /= J then Real_Eq (D (J).Value, D'Old (J).Value)))
+   is
+   begin
+      D (I) := (L => W'Length, Value => W);
+   end Set;
+
+Note that, in general, |GNATprove| is not able to prove the `extensionality` of
+the logical equality. For example, it will not be able to prove that two arrays
+are logically equal even if they have the same bounds and the same value. It
+is because it is not necessarily true in the underlying Why3 model, where,
+for example, arrays have values outside of their bounds. Therefore, using an
+assumption to state that two objects which are equal-in-Ada are logically equal
+might introduce an unsoundness, in particular in the presence of slices. It is
+demonstrated in the example below where |GNATprove| can prove that two strings
+are not logically equal even though they have the same bounds and the same
+elements. However, logical equality can be used safely as long as everything is
+proved correct (no assumption is used).
+
+.. code-block:: ada
+
+   procedure Test is
+      S1 : constant String := "foo1";
+      S2 : constant String := "foo2";
+
+   begin
+      pragma Assert (S1 (1 .. 3) = S2 (1 .. 3));
+      pragma Assert (not Real_Eq (S1 (1 .. 3), S2 (1 .. 3)));
+   end Test;

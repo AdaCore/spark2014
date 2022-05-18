@@ -87,7 +87,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="3"><result status="unknown" steps="140"/></proof>
-  <proof prover="5"><result status="unknown" steps="1356"/></proof>
+  <proof prover="5"><result status="unknown" steps="1327"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.23.0">
    <proof prover="4"><result status="unknown" steps="164"/></proof>

@@ -1039,7 +1039,8 @@ procedure SPARK_Report is
              when X86_Linux   | X86_64_Linux   => "Linux",
              when X86_64_Darwin                => "Darwin",
              when X86_64_FreeBSD               => "FreeBSD",
-             when CodePeer_OS                  => "CodePeer OS");
+             when CodePeer_OS                  => "CodePeer OS",
+             when AArch64_Darwin               => "Darwin");
 
       Pointer_Size : constant :=
         System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;
@@ -1115,6 +1116,8 @@ procedure SPARK_Report is
             return Runtime_Checks;
 
          when VC_Assert
+            | VC_Assert_Premise
+            | VC_Assert_Step
             | VC_Loop_Invariant
             | VC_Loop_Invariant_Init
             | VC_Loop_Invariant_Preserv

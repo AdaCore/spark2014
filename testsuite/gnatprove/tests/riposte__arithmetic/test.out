@@ -128,7 +128,7 @@ counterexample expected for check at arithmetic.adb:226
   trace at arithmetic.adb:223 --> N = -1
   trace at arithmetic.adb:226 --> N = -1
 counterexample expected for check at arithmetic.adb:254
-  trace at arithmetic.adb:250 --> A = Byte'First
+  trace at arithmetic.adb:250 --> A = Byte'First and C = 0
   trace at arithmetic.adb:251 --> B = -1
   trace at arithmetic.adb:252 --> C = 0
   trace at arithmetic.adb:254 --> A = Byte'First and B = -1

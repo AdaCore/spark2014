@@ -6,8 +6,6 @@
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
 <prover id="3" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="4" name="CVC4_CE" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="5" name="colibri" version="2137" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="bitwalker__lemma_less_than_max2.gnat-json"/>
@@ -43,14 +41,8 @@
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="20" memlimit="2000"><result status="valid" steps="296889"/></proof>
-  <proof prover="5"><result status="unknown" steps="105"/></proof>
-  <transf name="introduce_premises" >
-   <goal name="def&#39;vc.9.0">
-   <proof prover="4"><result status="timeout"/></proof>
-   </goal>
-  </transf>
+  <proof prover="1"><result status="valid" steps="9134751"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>

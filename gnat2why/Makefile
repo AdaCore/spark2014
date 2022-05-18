@@ -85,7 +85,7 @@ coverage-setup: setup force
 	gnatcov instrument --no-subprojects -P gnat2why.gpr --level=stmt --dump-trigger=atexit
 	mkdir -p obj_coverage
 
-coverage: GPRARGS=-XBuild=Coverage --src-subdirs=gnatcov-instr --implicit-with=gnatcov_rts_full
+coverage: GPRARGS=-XBuild=Coverage --src-subdirs=gnatcov-instr --implicit-with=gnatcov_rts
 coverage: coverage-setup build
 
 profile: CFLAGS = -pg

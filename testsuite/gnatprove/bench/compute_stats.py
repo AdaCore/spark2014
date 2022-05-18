@@ -3,10 +3,9 @@ import argparse
 import json
 import os.path
 import subprocess
+import config
 
 descr = """Compute statistics from json files for provers"""
-
-all_provers = ["cvc4", "altergo", "z3"]
 
 
 def parse_arguments():
@@ -25,7 +24,7 @@ def parse_arguments():
 
 
 def produce_version_output(f):
-    for p in all_provers:
+    for p in config.all_provers:
         exec_name = "alt-ergo" if p == "altergo" else p
         f.write(subprocess.check_output([exec_name, "--version"]).decode("utf-8"))
 
@@ -70,7 +69,7 @@ class Stats:
 stats_all_vcs = Stats()
 
 stats_provers_all = {}
-for p in all_provers:
+for p in config.all_provers:
     stats_provers_all[p] = Stats()
 
 stats_tests_provers = {}
@@ -93,7 +92,7 @@ def process_test_prover(json_file, testname, provername):
 
 def process_test(testdir, testname):
     stats_tests_provers[testname] = {}
-    for p in all_provers:
+    for p in config.all_provers:
         json_file = os.path.join(testdir, p + ".json")
         stats_tests_provers[testname][p] = Stats()
         process_test_prover(json_file, testname, p)
@@ -112,7 +111,7 @@ def print_stats(f):
     f.write("Statistics for all provers and all tests:\n")
     stats_all_vcs.print_stats(f)
     f.write("Statistics for each prover over all tests:\n")
-    for p in all_provers:
+    for p in config.all_provers:
         f.write(p + "\n")
         stats_provers_all[p].print_stats(f)
     f.write("Statistics for each prover for each test:\n")

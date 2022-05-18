@@ -133,6 +133,8 @@ package body VC_Kinds is
             | VC_Loop_Invariant_Preserv
             | VC_Subprogram_Variant
             | VC_Assert
+            | VC_Assert_Premise
+            | VC_Assert_Step
             | VC_Raise
             | VC_Inline_Check
             | VC_Weaker_Pre
@@ -346,6 +348,12 @@ package body VC_Kinds is
               "further iteration of the loop.";
          when VC_Assert                           =>
             return "Check that the given assertion evaluates to True.";
+         when VC_Assert_Premise                   =>
+            return "Check that the premise of an assertion with cut " &
+              "operations evaluates to True.";
+         when VC_Assert_Step                      =>
+            return "Check that the side-condition of a cut operation " &
+              "evaluates to True.";
          when VC_Raise                            =>
             return "Check that the raise statement or expression can never " &
               "be reached.";
@@ -927,6 +935,8 @@ package body VC_Kinds is
              when VC_Loop_Variant => "loop variant",
              when VC_Subprogram_Variant => "subprogram variant",
              when VC_Assert => "assertion",
+             when VC_Assert_Premise => "assertion premise",
+             when VC_Assert_Step => "assertion step",
              when VC_Raise => "raised exception",
              when VC_Inline_Check => "Inline_For_Proof annotation",
              when VC_UC_Source => "unchecked conversion source check",

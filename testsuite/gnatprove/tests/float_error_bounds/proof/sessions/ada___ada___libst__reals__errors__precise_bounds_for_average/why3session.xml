@@ -31,7 +31,7 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="1761"/></proof>
+  <proof prover="0"><result status="valid" steps="7402"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
@@ -41,7 +41,7 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="2340"/></proof>
+  <proof prover="0"><result status="valid" steps="9912"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
@@ -57,7 +57,7 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="2401"/></proof>
+  <proof prover="0"><result status="valid" steps="8158"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
@@ -80,7 +80,7 @@
   </goal>
   <goal name="def&#39;vc.21" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="7339606"/></proof>
+  <proof prover="1"><result status="valid" steps="10620212"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
@@ -90,11 +90,11 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
-  <proof prover="0"><result status="valid" steps="3890"/></proof>
+  <proof prover="0"><result status="valid" steps="10894"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
-  <proof prover="0"><result status="valid" steps="3872"/></proof>
+  <proof prover="0"><result status="valid" steps="10771"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>

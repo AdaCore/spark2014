@@ -960,3 +960,83 @@ parameters are consistent, when parameter ``Drop`` is set to ``Error`` and the
           Drop    => Error,
           Justify => Left,
           Pad     => Space);
+
+Cut Operations
+--------------
+
+The |SPARK| product also includes boolean cut operations that can be used to
+manually help the proof of complicated assertions. These operations are
+provided as functions in a library but are handled in a specific way by
+|GNATprove|. They can be found in the ``SPARK.Cut_Operations`` package which
+is available using the same project file as the :ref:`SPARK Lemma Library`.
+
+This library provides two functions named ``By`` and ``So`` which are handled
+in the following way:
+
+*  If ``A`` and ``B`` are two boolean expressions, proving ``By (A, B)``
+   requires proving ``B``, the premise, and then ``A`` assuming ``B``, the
+   side-condition. When ``By (A, B)`` is assumed on the other hand, |GNATprove|
+   only assumes ``A``. The proposition ``B`` is used for the proof of ``A``,
+   but is not visible afterward.
+
+*  If ``A`` and ``B`` are two boolean expressions, proving ``So (A, B)``
+   requires proving ``A``, the premise, and then ``B`` assuming ``A``, the
+   side-condition. When ``So (A, B)`` is assumed both ``A`` and ``B`` are
+   assumed to be true.
+
+This allows to introduce intermediate assertions to help the proof of some
+part of an assertion by still controlling in a precise way what is added to the
+enclosing context. This is interesting when doing complex proofs when the
+size of the proof context (the amount of information known at a given program
+point) is an issue.
+
+In the example below, ``By`` is used to add the intermediate property ``B (I)``
+in the proof of ``C (I)`` from ``A (I)``:
+
+ .. code-block:: ada
+
+  with SPARK.Cut_Operations; use SPARK.Cut_Operations;
+
+  procedure Main with SPARK_Mode is
+     function A (I : Integer) return Boolean with Import;
+     function B (I : Integer) return Boolean with Import,
+       Post => B'Result and then (if A (I) then C (I));
+     function C (I : Integer) return Boolean with Import;
+  begin
+     pragma Assume (for all I in 1 .. 100 => A (I));
+     pragma Assert (for all I in 1 .. 100 => By (C (I), B (I)));
+  end;
+
+To prove the assertion, |GNATprove| will attempt to verify both that ``B (I)``
+is true for all ``I`` and that ``C (I)`` can be deduced from ``B (I)``.
+After the assertion, the call to ``B`` does not occur in the context anymore,
+it is as if the assertion ``(for all I in 1 .. 100 => C (I))`` had been written
+directly. Remark that here, ``B`` is really a lemma. Its result does not matter
+in itself (it always returns True) but its postcondition gives additional
+information for the proof (see the :ref:`SPARK Lemma Library` for more
+information about lemmas).
+
+As can be seen in the example above, ``By`` and ``So`` may not necessarily
+occur at top-level in an assertion. However, because of their specific
+treatment, they are only allowed in specific contexts. We define these
+supported contexts in a recursive way:
+
+* As the expression of a ``pragma Assert`` or ``Assert_And_Cut``;
+
+* As an operand of a AND, OR, AND THEN, or OR ELSE operation which itself occurs
+  in a supported context;
+
+* As the THEN or ELSE branch of a IF expression which itself occurs in a
+  supported context;
+
+* As an alternative of a CASE expression which itself occurs in a supported
+  context;
+
+* As the condition of a quantified expression which itself occurs in a supported
+  context;
+
+* As a parameter to a call to either ``By`` or ``So`` which itself occurs in a
+  supported context;
+
+* As the body expression of a DECLARE expression which itself occurs in a
+  supported context.

@@ -1,0 +1,10 @@
+case_expr.adb:14:05: info: initialization of "I" proved
+case_expr.adb:22:20: high: assertion might fail (e.g. when I = 2)
+case_expr.adb:31:05: info: initialization of "I" proved
+case_expr.adb:37:20: high: assertion might fail (e.g. when I = 1)
+case_expr.adb:46:05: info: initialization of "I" proved
+case_expr.adb:53:20: high: assertion might fail (e.g. when I = 1)
+case_expr.adb:64:22: info: unrolling loop
+case_expr.adb:65:20: info: range check proved (CVC4: 10 VC)
+case_expr.adb:67:35: high: assertion might fail, cannot prove False (e.g. when J = 1)
+case_expr.ads:17:13: warning: subprogram "Loop_Entry_In_Case_Expr" has no effect

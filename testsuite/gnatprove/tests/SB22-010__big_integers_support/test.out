@@ -196,7 +196,7 @@ curve25519.adb:54:35: info: overflow check proved (CVC4: 4 VC)
 curve25519.adb:54:47: info: predicate check proved (Trivial: 2 VC)
 curve25519.adb:55:25: info: assertion proved (CVC4: 2 VC)
 curve25519.adb:55:31: info: overflow check proved (CVC4: 4 VC)
-curve25519.adb:56:25: medium: assertion might fail
+curve25519.adb:56:25: info: assertion proved (altergo: 1 VC; colibri: 1 VC)
 curve25519.adb:56:35: info: overflow check proved (CVC4: 4 VC)
 curve25519.adb:56:47: info: predicate check proved (Trivial: 2 VC)
 curve25519.adb:57:40: info: predicate check proved (Trivial: 2 VC)

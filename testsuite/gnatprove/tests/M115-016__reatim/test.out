@@ -21,5 +21,5 @@ pck.adb:58:27: info: overflow check proved (CVC4: 2 VC)
 pck.adb:58:37: info: overflow check proved (CVC4: 2 VC)
 pck.adb:58:51: info: division check proved (CVC4: 1 VC)
 pck.adb:58:56: info: division check proved (CVC4: 1 VC)
-pck.adb:61:11: info: assertion proved (colibri: 1 VC)
+pck.adb:61:11: medium: assertion might fail
 pck.adb:70:24: info: overflow check proved (CVC4: 2 VC)

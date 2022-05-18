@@ -1,4 +1,4 @@
 prove_all:
   no_fail: True
-  steps :  1500
+  steps :  2000
   prover: ["altergo"]

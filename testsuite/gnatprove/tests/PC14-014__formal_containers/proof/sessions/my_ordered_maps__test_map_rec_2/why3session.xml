@@ -48,14 +48,14 @@
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="74019"/></proof>
+  <proof prover="1"><result status="valid" steps="73581"/></proof>
   <proof prover="3"><result status="unknown" steps="761"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <proof prover="3"><result status="valid" steps="57"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="3"><result status="valid" steps="1679"/></proof>
+  <proof prover="3"><result status="valid" steps="1683"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
   <proof prover="3"><result status="valid" steps="979"/></proof>
@@ -64,7 +64,7 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="3"><result status="valid" steps="5834"/></proof>
+  <proof prover="3"><result status="valid" steps="5833"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <proof prover="3"><result status="valid" steps="57"/></proof>
@@ -77,7 +77,7 @@
   </goal>
   <goal name="def&#39;vc.20" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="801650"/></proof>
+  <proof prover="1"><result status="valid" steps="786973"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
@@ -130,9 +130,8 @@
   </goal>
   <goal name="def&#39;vc.37" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="78331"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="5490741"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.38" proved="true">
   <proof prover="3"><result status="valid" steps="1002"/></proof>
@@ -148,8 +147,9 @@
   </goal>
   <goal name="def&#39;vc.42" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="4736645"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="479009"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
   <proof prover="3"><result status="valid" steps="373"/></proof>
@@ -179,7 +179,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="valid" steps="191240"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.52" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>
@@ -191,15 +191,19 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.55" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="5839419"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
+  <proof prover="1" timelimit="60" memlimit="2000"><result status="valid" steps="7377206"/></proof>
+  <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
-  <goal name="def&#39;vc.56">
+  <goal name="def&#39;vc.56" proved="true">
+  <proof prover="2"><result status="valid" steps="1"/></proof>
+  </goal>
+  <goal name="def&#39;vc.57">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="3" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4" timelimit="60" memlimit="2000"><result status="highfailure"/></proof>
+  <proof prover="4" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>

@@ -45,7 +45,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="556"/></proof>
+  <proof prover="0"><result status="valid" steps="441"/></proof>
   <proof prover="2"><result status="unknown" steps="244"/></proof>
   </goal>
  </transf>

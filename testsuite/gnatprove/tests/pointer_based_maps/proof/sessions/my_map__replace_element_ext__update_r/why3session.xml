@@ -60,10 +60,10 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
-  <proof prover="5"><result status="unknown" steps="2013"/></proof>
+  <proof prover="5"><result status="unknown" steps="2492"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.14.0">
-   <proof prover="4"><result status="timeout"/></proof>
+   <proof prover="4"><result status="timeout" steps="73443"/></proof>
    </goal>
   </transf>
   </goal>

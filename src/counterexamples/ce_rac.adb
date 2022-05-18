@@ -29,7 +29,7 @@ with Ada.Numerics.Big_Numbers.Big_Reals;
 use  Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Containers;          use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
 with Ada.Text_IO;             use Ada.Text_IO;
 with CE_Parsing;              use CE_Parsing;
@@ -46,7 +46,6 @@ with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Gnat2Why_Opts.Reading;
 with Gnat2Why.Tables;         use Gnat2Why.Tables;
 with Gnat2Why.Util;           use Gnat2Why.Util;
-with Hashing;                 use Hashing;
 with Namet;                   use Namet;
 with Nlists;                  use Nlists;
 with Nmake;                   use Nmake;
@@ -304,60 +303,30 @@ package body CE_RAC is
    -- The evaluation environment and context --
    --------------------------------------------
 
-   function Name_Hash (N : Name_Id) return Hash_Type is
-     (Generic_Integer_Hash (Integer (N)));
-
-   package Attributes is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
-      Element_Type    => Value_Access,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=");
-   --  Attributes (e.g. X'A for X) in a map binding names to values
-
-   type Attributes_Access is access Attributes.Map;
-
-   function To_String (Attrs : Attributes.Map) return String;
-
-   package Other_Attributes is new Ada.Containers.Hashed_Maps
+   package Node_To_Value is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
-      Element_Type    => Attributes_Access,
+      Element_Type    => Value_Type,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
-   --  Special attributes that can be used on expressions and not only on
-   --  entity nodes. It is useful for Old and Loop_Entry attributes whose
-   --  values are stored here no matter the node type of their prefix.
-
-   type Other_Attributes_Access is access Other_Attributes.Map;
-
-   type Binding is record
-      Val   : Value_Access;
-      Attrs : Attributes_Access := new Attributes.Map'(Attributes.Empty);
-   end record;
-   --  A binding is a variable value and the attributes of the variable
-
-   function To_String (B : Binding) return String;
 
    package Entity_Bindings is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
-      Element_Type    => Binding,
+      Element_Type    => Value_Access,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
    --  Flat mapping of variables to bindings
 
-   type Entity_Bindings_Access is access Entity_Bindings.Map;
-
    type Scopes is record
-      Bindings    : Entity_Bindings_Access :=
-        new Entity_Bindings.Map'(Entity_Bindings.Empty);
-      Other_Attrs : Other_Attributes_Access :=
-        new Other_Attributes.Map'(Other_Attributes.Empty);
+      Bindings         : Entity_Bindings.Map;
+      Old_Attrs        : Node_To_Value.Map;
+      Loop_Entry_Attrs : Node_To_Value.Map;
    end record;
    --  A scope is a flat mapping of variable (defining identifiers) to bindings
    --  and a mapping of old and loop entry values of expressions.
 
    function To_String (S : Scopes) return String;
 
-   package Environments is new Ada.Containers.Indefinite_Vectors
+   package Environments is new Ada.Containers.Vectors
      (Index_Type   => Natural,
       Element_Type => Scopes,
       "="          => "=");
@@ -406,14 +375,11 @@ package body CE_RAC is
       Prefixes  : Node_Sets.Set)
      with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
    --  For each node in Prefixes, evaluate it and add its value to the
-   --  "other attributes" map for the Attr_Name attribute.
+   --  appropriate map from prefixes to their values.
 
-   function Find_Binding (E : Entity_Id) return Binding;
+   function Find_Binding (E : Entity_Id) return Value_Access;
    --  Find the binding of a variable in the context environment. If not found,
    --  it is assumed to be a global constant and initialised as it.
-
-   function Find_Other_Attributes (N : Node_Id) return Attributes_Access;
-   --  Find the map of 'Old and 'Loop_Entry attributes.
 
    -------------------
    -- Value oracles --
@@ -485,8 +451,12 @@ package body CE_RAC is
    --  The largest modular type to execute modulo operators
 
    procedure Iterate_Loop_Param_Spec
-     (Param_Spec : Node_Id; Iteration : access procedure);
+     (Param_Spec : Node_Id; Iteration : not null access procedure);
    --  Iterate a loop parameter specification by calling Iteration
+
+   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id);
+   --  Test the expression against each case choice expression and fill A
+   --  with the matching one.
 
    function RAC_Expr
      (N   : N_Subexpr_Id;
@@ -535,12 +505,11 @@ package body CE_RAC is
    --  Execute a builtin E, if it exists, or raise No_Builtin otherwise
 
    procedure Init_Global
-     (Scope         : in out Scopes;
-      N             :        Node_Id;
-      Use_Expr      :        Boolean;
-      Default_Value :        Boolean;
-      B             :    out Binding;
-      Descr         :        String);
+     (N             :     Node_Id;
+      Use_Expr      :     Boolean;
+      Default_Value :     Boolean;
+      Val           : out Value_Access;
+      Descr         :     String);
    --  Initialize a global variable from the counterexample value, from the
    --  expression in the declaration (if Use_Expr is true), or by a default
    --  value (if Default_Value is true).
@@ -768,7 +737,7 @@ package body CE_RAC is
       if Is_Floating_Point_Type (Ty) then
          RAC_Unsupported ("Floating point type", Ty);
       end if;
-      if Ty in Array_Kind_Id
+      if Is_Array_Type (Ty)
         and then Number_Dimensions (Ty) > 1
       then
          RAC_Unsupported ("Multidimensional array type", Ty);
@@ -1061,28 +1030,33 @@ package body CE_RAC is
    end Copy;
 
    function Copy (V : Value_Type) return Value_Type is
-     (case V.K is
-         when Record_K   =>
-            (V with delta Record_Fields => Copy (V.Record_Fields)),
-         when Array_K    =>
-            (V with delta
-                 Array_Values => Copy (V.Array_Values),
-                 Array_Others =>
-                   (if V.Array_Others = null then null
-                    else new Value_Type'(Copy (V.Array_Others.all)))),
-         when Scalar_K   =>
-            (V with delta Scalar_Content =>
-                (if V.Scalar_Content = null then null
-                 else new Scalar_Value_Type'(V.Scalar_Content.all))),
-         when Access_K   =>
-            (V with delta Designated_Value =>
-                (if V.Designated_Value = null then null
-                 else new Value_Type'(Copy (V.Designated_Value.all)))),
-         when Multidim_K => V);
+   begin
+      --  ??? gnatcov complains if this is an expression function (V330-044)
+      return
+        (case V.K is
+            when Record_K   =>
+               (V with delta Record_Fields => Copy (V.Record_Fields)),
+            when Array_K    =>
+               (V with delta
+                    Array_Values => Copy (V.Array_Values),
+                    Array_Others =>
+                      (if V.Array_Others = null then null
+                       else new Value_Type'(Copy (V.Array_Others.all)))),
+            when Scalar_K   =>
+               (V with delta Scalar_Content =>
+                   (if V.Scalar_Content = null then null
+                    else new Scalar_Value_Type'(V.Scalar_Content.all))),
+            when Access_K   =>
+               (V with delta Designated_Value =>
+                   (if V.Designated_Value = null then null
+                    else new Value_Type'(Copy (V.Designated_Value.all)))),
+           when Multidim_K => V);
+   end Copy;
 
    -------------------------
    -- Copy_Out_Parameters --
    -------------------------
+
    procedure Copy_Out_Parameters
      (Call :        Node_Id;
       Sc   : in out Scopes)
@@ -1100,7 +1074,7 @@ package body CE_RAC is
            and then Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
          then
             RAC_Expr_LHS (Actual).all :=
-              Sc.Bindings (Formal).Val.all;
+              Sc.Bindings (Formal).all;
          end if;
       end Process_Param;
 
@@ -1149,10 +1123,10 @@ package body CE_RAC is
 
       elsif Is_Array_Type (Rep_Ty) then
          declare
-            Fst, Lst          : Big_Integer;
-            Other             : Value_Access;
-            U_Fst             : Uint;
-            U_Lst             : Uint;
+            Fst, Lst : Big_Integer;
+            Other    : Value_Access;
+            U_Fst    : Uint;
+            U_Lst    : Uint;
 
          begin
             --  Use static array type bounds or index type bounds as default
@@ -1281,16 +1255,28 @@ package body CE_RAC is
      (Attr_Name : Name_Id;
       Prefixes  : Node_Sets.Set)
    is
-      Other_Att : Attributes_Access;
-      Position  : Attributes.Cursor;
-      Inserted  : Boolean;
    begin
       for P of Prefixes loop
-         Other_Att := Find_Other_Attributes (P);
-         Other_Att.Insert (Attr_Name,
-                           new Value_Type'(RAC_Expr (P)),
-                           Position,
-                           Inserted);
+         declare
+            Val : constant Value_Type := RAC_Expr (P);
+            --  While evaluating the value we might modify the global context,
+            --  so first evaluate the value and only then add it to the
+            --  context.
+
+            Inserted : Boolean;
+            Position : Node_To_Value.Cursor;
+
+         begin
+            if Attr_Name = Name_Old then
+               Ctx.Env (Ctx.Env.First).Old_Attrs.Insert
+                 (P, Val, Position, Inserted);
+
+            else pragma Assert (Attr_Name = Name_Loop_Entry);
+               Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Insert
+                 (P, Val, Position, Inserted);
+
+            end if;
+         end;
       end loop;
    end Evaluate_Attribute_Prefix_Values;
 
@@ -1298,10 +1284,10 @@ package body CE_RAC is
    -- Find_Binding --
    ------------------
 
-   function Find_Binding (E : Entity_Id) return Binding
+   function Find_Binding (E : Entity_Id) return Value_Access
    is
       C : Entity_Bindings.Cursor;
-      B : Binding;
+      B : Value_Access;
    begin
       for Scope of Ctx.Env loop
          C := Scope.Bindings.Find (E);
@@ -1312,26 +1298,10 @@ package body CE_RAC is
       end loop;
 
       --  Lazily initialize globals that were not initialized by Global_Scope
-      Init_Global (Ctx.Env (Ctx.Env.Last), E, True, False, B,
-                   "constant without variable input");
+      Init_Global (E, True, False, B, "constant without variable input");
+
       return B;
    end Find_Binding;
-
-   ---------------------------
-   -- Find_Other_Attributes --
-   ---------------------------
-
-   function Find_Other_Attributes (N : Node_Id) return Attributes_Access
-   is
-      Other_Attrs : constant Other_Attributes_Access :=
-        Ctx.Env (Ctx.Env.First).Other_Attrs;
-   begin
-      if not Other_Attrs.Contains (N) then
-         Other_Attrs.Insert (N, new Attributes.Map'(Attributes.Empty));
-      end if;
-
-      return Other_Attrs (N);
-   end Find_Other_Attributes;
 
    -----------------------
    -- Flush_RAC_Failure --
@@ -1486,25 +1456,22 @@ package body CE_RAC is
    -----------------
 
    procedure Init_Global
-     (Scope         : in out Scopes;
-      N             :        Node_Id;
-      Use_Expr      :        Boolean;
-      Default_Value :        Boolean;
-      B             :    out Binding;
-      Descr         :        String)
+     (N             :     Node_Id;
+      Use_Expr      :     Boolean;
+      Default_Value :     Boolean;
+      Val           : out Value_Access;
+      Descr         :     String)
    is
       Origin : Value_Origin;
       Expr   : constant Node_Id :=
-        (if Use_Expr and then Ekind (N) not in Formal_Kind
+        (if Use_Expr and then not Is_Formal (N)
          then Expression (Enclosing_Declaration (N)) else Empty);
    begin
-      B :=
-        (Val    => new Value_Type'(Get_Value (N, Expr, Default_Value, Origin)),
-         others => <>);
-      Scope.Bindings.Insert (N, B);
+      Val := new Value_Type'(Get_Value (N, Expr, Default_Value, Origin));
+      Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
-                 & To_String (B.Val.all) & " " & Value_Origin'Image (Origin));
+                 & To_String (Val.all) & " " & Value_Origin'Image (Origin));
    end Init_Global;
 
    -------------------
@@ -1538,7 +1505,7 @@ package body CE_RAC is
    -----------------------------
 
    procedure Iterate_Loop_Param_Spec
-     (Param_Spec : Node_Id; Iteration : access procedure)
+     (Param_Spec : Node_Id; Iteration : not null access procedure)
    is
       Def          : constant Node_Id :=
         Discrete_Subtype_Definition (Param_Spec);
@@ -1558,7 +1525,7 @@ package body CE_RAC is
          RAC_Unsupported
            ("Iterate_Loop_Param_Spec iterator filter", Param_Spec);
       end if;
-      if Etype (Low_Bnd) not in Discrete_Kind_Id then
+      if not Is_Discrete_Type (Etype (Low_Bnd)) then
          RAC_Unsupported
            ("Iterate_Lop_Param_Spec not discrete type", Param_Spec);
       end if;
@@ -1609,6 +1576,115 @@ package body CE_RAC is
       end;
    end Iterate_Loop_Param_Spec;
 
+   ----------------------------
+   -- Match_Case_Alternative --
+   ----------------------------
+
+   procedure Match_Case_Alternative (N : Node_Id; A : out Node_Id) is
+
+      function Check_Range
+        (Range_Node : Node_Id;
+         Expr       : Value_Type) return Boolean;
+      --  Check if Expr falls into the range described by Range_Node
+
+      function Check_Subtype
+        (Def_Id : Type_Kind_Id;
+         Expr   : Value_Type) return Boolean;
+      --  Check if Expr matches with the possible values of the type when they
+      --  are described by a static predicate or by a range.
+
+      -----------------
+      -- Check_Range --
+      -----------------
+
+      function Check_Range
+        (Range_Node : Node_Id;
+         Expr       : Value_Type) return Boolean
+      is
+         Low        : constant Big_Integer :=
+           Value_Enum_Integer (RAC_Expr (Low_Bound (Range_Node)));
+         High       : constant Big_Integer :=
+           Value_Enum_Integer (RAC_Expr (High_Bound (Range_Node)));
+         Expr_Value : constant Big_Integer := Value_Enum_Integer (Expr);
+      begin
+         return In_Range (Expr_Value, Low, High);
+      end Check_Range;
+
+      -------------------
+      -- Check_Subtype --
+      -------------------
+
+      function Check_Subtype
+        (Def_Id : Type_Kind_Id;
+         Expr   : Value_Type) return Boolean
+      is
+         Option : Node_Id;
+         Match  : Boolean := False;
+      begin
+         --  Subtype with static predicate
+         if Has_Predicates (Def_Id) and then Has_Static_Predicate (Def_Id)
+         then
+            Option := First (Static_Discrete_Predicate (Def_Id));
+
+            while not Match and then Present (Option) loop
+               if Nkind (Option) = N_Range then
+                  Match := Check_Range (Get_Range (Option), Expr);
+               else
+                  Match := Value_Enum_Integer (Expr) =
+                    Value_Enum_Integer (RAC_Expr (Option));
+               end if;
+
+               Next (Option);
+            end loop;
+
+         --  Other subtypes
+         else
+            Match := Check_Range (Get_Range (Def_Id), Expr);
+         end if;
+
+         return Match;
+      end Check_Subtype;
+      --  Local variables
+
+      V     : constant Value_Type := RAC_Expr (Expression (N));
+      Match : Boolean := False;
+      Ch    : Node_Id;
+
+   begin
+      A := First (Alternatives (N));
+
+      while Present (A) loop
+         Ch := First (Discrete_Choices (A));
+
+         while Present (Ch) loop
+            --  Others
+            if Nkind (Ch) = N_Others_Choice then
+               Match := True;
+
+            --  Subtypes
+            elsif Is_Entity_Name (Ch) and then Is_Type (Entity (Ch)) then
+               Match := Check_Subtype (Retysp (Entity (Ch)), V);
+
+            --  Ranges
+            elsif Nkind (Ch) = N_Range then
+               Match := Check_Range (Get_Range (Ch), V);
+
+            --  Other expressions
+            else
+               Match := V = RAC_Expr (Ch);
+            end if;
+
+            if Match then
+               return;
+            end if;
+
+            Next (Ch);
+         end loop;
+         Next (A);
+      end loop;
+
+   end Match_Case_Alternative;
+
    -----------------
    -- Param_Scope --
    -----------------
@@ -1650,7 +1726,7 @@ package body CE_RAC is
             end case;
          end if;
 
-         Res.Bindings.Insert (Formal, (Val => Val, others => <>));
+         Res.Bindings.Insert (Formal, Val);
       end Process_Param;
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
@@ -1706,8 +1782,7 @@ package body CE_RAC is
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
             V := Get_Value (Param, Empty, Is_Out, Origin);
-            Res.Bindings.Insert (Param, (Val => new Value_Type'(V),
-                                         others => <>));
+            Res.Bindings.Insert (Param, new Value_Type'(V));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "
                        & To_String (V) & " " & Value_Origin'Image (Origin));
@@ -1780,7 +1855,7 @@ package body CE_RAC is
 
       Ctx.Env.Prepend (Sc);
 
-      --  Add old values to "other attributes" map
+      --  Store value of the 'Old prefixes
       Collect_Attr_Parts (Posts, Snames.Name_Old, Old_Nodes);
       Evaluate_Attribute_Prefix_Values (Snames.Name_Old, Old_Nodes);
 
@@ -1833,25 +1908,18 @@ package body CE_RAC is
             Res := Flush_RAC_Return;
       end;
 
-      declare
-         Bindings : constant Entity_Bindings_Access :=
-           Ctx.Env (Ctx.Env.First).Bindings;
-         Bind     : Binding;
-      begin
-         --  Add result attribute for checking the postcondition
-         if Res.Present then
-            Bind.Attrs.Insert
-              (Snames.Name_Result, new Value_Type'(Res.Content));
-            Bindings.Insert (E, Bind);
-         end if;
+      --  Add result attribute for checking the postcondition
+      if Res.Present then
+         Ctx.Env (Ctx.Env.First).Bindings.Insert
+           (E, new Value_Type'(Res.Content));
+      end if;
 
-         Check_List (Posts, "Postcondition", VC_Postcondition);
+      Check_List (Posts, "Postcondition", VC_Postcondition);
 
-         --  Cleanup
-         if Res.Present then
-            Bindings.Delete (E);
-         end if;
-      end;
+      --  Cleanup
+      if Res.Present then
+         Ctx.Env (Ctx.Env.First).Bindings.Delete (E);
+      end if;
 
       Sc := Ctx.Env (Ctx.Env.First);
       Ctx.Env.Delete_First;
@@ -1883,7 +1951,7 @@ package body CE_RAC is
          if Do_Sideeffects then
             declare
                Val     : Value_Access renames
-                 Sc.Bindings (Sc.Bindings.First).Val;
+                 Sc.Bindings (Sc.Bindings.First);
                Fst     : constant Big_Integer := Val.First_Attr.Content;
                Lst     : constant Big_Integer := Val.Last_Attr.Content;
                S       : String (To_Integer (Fst) .. To_Integer (Lst));
@@ -2009,7 +2077,7 @@ package body CE_RAC is
       procedure Init_Global_Scope is
          Reads, Writes : Flow_Id_Sets.Set;
          Use_Expr      : Boolean;
-         B             : Binding;
+         B             : Value_Access;
          Scope         : constant Flow_Scope := Get_Flow_Scope (E);
       begin
          Get_Proof_Globals (E, Reads, Writes, False, Scope);
@@ -2017,9 +2085,7 @@ package body CE_RAC is
          for Id of Reads loop
             if Id.Kind = Direct_Mapping then
                Use_Expr := Ekind (Id.Node) = E_Constant;
-               Init_Global
-                 (Ctx.Env (Ctx.Env.First),
-                  Id.Node, Use_Expr, False, B, "read");
+               Init_Global (Id.Node, Use_Expr, False, B, "read");
             end if;
          end loop;
 
@@ -2028,9 +2094,7 @@ package body CE_RAC is
               Id.Kind = Direct_Mapping
               and then not Reads.Contains (Id)
             then
-               Init_Global
-                 (Ctx.Env (Ctx.Env.First),
-                  Id.Node, False, True, B, "write");
+               Init_Global (Id.Node, False, True, B, "write");
             end if;
          end loop;
       end Init_Global_Scope;
@@ -2261,7 +2325,7 @@ package body CE_RAC is
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return Find_Other_Attributes (P) (Snames.Name_Old).all;
+                  return Ctx.Env (Ctx.Env.First).Old_Attrs (P);
                end;
 
             when Snames.Name_Loop_Entry =>
@@ -2269,17 +2333,15 @@ package body CE_RAC is
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return
-                    Find_Other_Attributes (P) (Snames.Name_Loop_Entry).all;
+                  return Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs (P);
                end;
 
             when Snames.Name_Result =>
                --  E'Result
                declare
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
-                  B : constant Binding := Find_Binding (E);
                begin
-                  return B.Attrs (Snames.Name_Result).all;
+                  return Find_Binding (E).all;
                end;
 
             when Snames.Name_First
@@ -2598,9 +2660,9 @@ package body CE_RAC is
                   begin
                      --  If Left or Right is empty, return the other
 
-                     if L_Length = 0 then
+                     if L_Length <= 0 then
                         return Copy (Right);
-                     elsif R_Length = 0 then
+                     elsif R_Length <= 0 then
                         return Copy (Left);
 
                      --  Otherwise, add the elements of Right into Left
@@ -2611,26 +2673,26 @@ package body CE_RAC is
                      else
                         declare
                            Res     : Value_Type := Copy (Left);
-                           R_First : constant Integer :=
-                             To_Integer (Right.First_Attr.Content);
-                           L_Last  : constant Integer :=
-                             To_Integer (Left.Last_Attr.Content);
+                           R_First : Big_Integer renames
+                             Right.First_Attr.Content;
+                           L_Last  : Big_Integer renames
+                             Left.Last_Attr.Content;
                            Val     : Value_Access;
 
                         begin
                            for K in 1 .. To_Integer (R_Length) loop
                               if Right.Array_Values.Contains
-                                (To_Big_Integer (R_First - 1 + K))
+                                (R_First - 1 + To_Big_Integer (K))
                               then
                                  Val := Right.Array_Values
-                                   (To_Big_Integer (R_First - 1 + K));
+                                   (R_First - 1 + To_Big_Integer (K));
                               else
                                  Val := Right.Array_Others;
                               end if;
 
                               if Val /= null then
                                  Res.Array_Values.Insert
-                                   (To_Big_Integer (L_Last + K),
+                                   (L_Last + To_Big_Integer (K),
                                     new Value_Type'(Copy (Val.all)));
                               end if;
                            end loop;
@@ -2792,7 +2854,7 @@ package body CE_RAC is
                then
                   RAC_Incomplete ("protected component or part of variable");
                else
-                  Res := Find_Binding (E).Val.all;
+                  Res := Find_Binding (E).all;
                end if;
             end;
 
@@ -2930,6 +2992,14 @@ package body CE_RAC is
                end if;
             end;
 
+         when N_Case_Expression =>
+            declare
+               Alternative : Node_Id;
+            begin
+               Match_Case_Alternative (N, Alternative);
+               Res := RAC_Expr (Expression (Alternative));
+            end;
+
          when others =>
             RAC_Unsupported ("RAC_Expr", N);
       end case;
@@ -2950,7 +3020,7 @@ package body CE_RAC is
       RAC_Trace ("expr lhs " & Node_Kind'Image (Nkind (N)), N);
       case Nkind (N) is
          when N_Identifier | N_Expanded_Name =>
-            return Find_Binding (SPARK_Atree.Entity (N)).Val;
+            return Find_Binding (SPARK_Atree.Entity (N));
 
          when N_Type_Conversion =>
             return RAC_Expr_LHS (Expression (N));
@@ -2993,7 +3063,6 @@ package body CE_RAC is
          when others =>
             RAC_Unsupported ("RAC_Expr_LHS", N);
       end case;
-      return null;
    end RAC_Expr_LHS;
 
    -----------------
@@ -3266,11 +3335,10 @@ package body CE_RAC is
             declare
                Scheme           : constant Node_Id := Iteration_Scheme (N);
                Loop_Entry_Nodes : Node_Sets.Set;
-               Other_Att        : Attributes_Access;
             begin
                --  Collect prefixes of all 'Loop_Entry attribute uses and store
-               --  the result of their evaluation in the "other attributes"
-               --  map.
+               --  the result of their evaluation.
+
                Collect_Attr_Parts (N,
                                    Snames.Name_Loop_Entry,
                                    Loop_Entry_Nodes);
@@ -3323,8 +3391,7 @@ package body CE_RAC is
 
                --  Clean the nearest scope by removing 'Loop_Entry values
                for N of Loop_Entry_Nodes loop
-                  Other_Att := Find_Other_Attributes (N);
-                  Other_Att.Exclude (Snames.Name_Loop_Entry);
+                  Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Delete (N);
                end loop;
             end;
 
@@ -3347,38 +3414,10 @@ package body CE_RAC is
 
          when N_Case_Statement =>
             declare
-               V     : constant Value_Type := RAC_Expr (Expression (N));
-               A     : Node_Id := First (Alternatives (N));
-               Ch    : Node_Id;
-               Match : Boolean;
+               Alternative : Node_Id;
             begin
-               Outer :
-               while Present (A) loop
-                  Match := False;
-                  Ch := First (Discrete_Choices (A));
-                  while Present (Ch) loop
-                     if Nkind (Ch) = N_Others_Choice then
-                        Match := True;
-                     elsif Nkind (Ch) in N_Subexpr then
-                        if Nkind (Ch) in N_Has_Entity
-                          and then Entity (Ch) in Type_Kind_Id
-                        then
-                           RAC_Unsupported ("case choise type", Ch);
-                        end if;
-                        Match := V = RAC_Expr (Ch);
-                     else
-                        RAC_Unsupported ("RAC_Statement choice", Ch);
-                     end if;
-
-                     if Match then
-                        RAC_List (Statements (A));
-                        exit Outer;
-                     end if;
-
-                     Next (Ch);
-                  end loop;
-                  Next (A);
-               end loop Outer;
+               Match_Case_Alternative (N, Alternative);
+               RAC_List (Statements (Alternative));
             end;
 
          when others =>
@@ -3476,14 +3515,13 @@ package body CE_RAC is
       E :        Entity_Id;
       V :        Value_Access)
    is
-      Bin : constant Binding := (Val => V, others => <>);
       C   : Entity_Bindings.Cursor;
       Ins : Boolean;
    begin
-      S.Bindings.Insert (E, Bin, C, Ins);
+      S.Bindings.Insert (E, V, C, Ins);
 
       if not Ins then
-         S.Bindings (C).Val := V;
+         S.Bindings (C) := V;
       end if;
    end Set_Value;
 
@@ -3541,23 +3579,32 @@ package body CE_RAC is
          when Res_Not_Executed =>
             "NOT EXECUTED");
 
-   function To_String (Attrs : Attributes.Map) return String is
-      Res : Unbounded_String;
-   begin
-      for C in Attrs.Iterate loop
-         Append (Res, " '" & Get_Name_String (Attributes.Key (C)));
-         Append (Res, "=" & To_String (Attrs (C).all));
-      end loop;
-      return To_String (Res);
-   end To_String;
-
-   function To_String (B : Binding) return String is
-     ((if B.Val = null then "NULL" else To_String (B.Val.all))
-      & " - " & To_String (B.Attrs.all));
-
    function To_String (S : Scopes) return String is
-      Res   : Unbounded_String;
+      Res : Unbounded_String;
+
+      procedure Append_Attrs (Attr : String; M : Node_To_Value.Map);
+      --  Append mappings of attributes Attr in M
+
+      ------------------
+      -- Append_Attrs --
+      ------------------
+
+      procedure Append_Attrs (Attr : String; M : Node_To_Value.Map) is
+         First : Boolean := True;
+      begin
+         for C in M.Iterate loop
+            if not First then
+               Append (Res, ", ");
+            end if;
+            Append (Res, Attr);
+            Append (Res, " (" & Node_Id'Image (Node_To_Value.Key (C)) & ")");
+            Append (Res, " = " & To_String (M (C)));
+            First := False;
+         end loop;
+      end Append_Attrs;
+
       First : Boolean := True;
+
    begin
       for C in S.Bindings.Iterate loop
          if not First then
@@ -3565,19 +3612,12 @@ package body CE_RAC is
          end if;
          Append (Res, Get_Name_String (Chars (Entity_Bindings.Key (C))));
          Append (Res, " (" & Entity_Id'Image (Entity_Bindings.Key (C)) & ")");
-         Append (Res, " = " & To_String (S.Bindings (C)));
+         Append (Res, " = " & To_String (S.Bindings (C).all));
          First := False;
       end loop;
 
-      for C in S.Other_Attrs.Iterate loop
-         if not First then
-            Append (Res, ", ");
-         end if;
-         Append (Res, Get_Name_String (Chars (Other_Attributes.Key (C))));
-         Append (Res, " (" & Node_Id'Image (Other_Attributes.Key (C)) & ")");
-         Append (Res, " = " & To_String (S.Other_Attrs (C).all));
-         First := False;
-      end loop;
+      Append_Attrs ("Old", S.Old_Attrs);
+      Append_Attrs ("Loop_Entry", S.Loop_Entry_Attrs);
 
       return To_String (Res);
    end To_String;
@@ -3608,11 +3648,11 @@ package body CE_RAC is
    is
       BC : Entity_Bindings.Cursor;
    begin
-      for EC in Env.Iterate loop
-         BC := Env (EC).Bindings.Find (E);
+      for Scope of Env loop
+         BC := Scope.Bindings.Find (E);
 
          if Entity_Bindings.Has_Element (BC) then
-            Env (EC).Bindings (BC).Val := V;
+            Scope.Bindings (BC) := V;
             return;
          end if;
       end loop;
@@ -3623,7 +3663,7 @@ package body CE_RAC is
                      and then not Is_Access_Variable (Etype (E))
                      then not Has_Variable_Input (E));
 
-      Env (Env.Last).Bindings.Insert (E, (Val => V, others => <>));
+      Env (Env.Last).Bindings.Insert (E, V);
    end Update_Value;
 
    -------------------

@@ -327,8 +327,7 @@ package Why.Gen.Expr is
    function New_Range_Expr
      (Low, High : W_Term_Id;
       Expr      : W_Term_Id)
-      return W_Pred_Id
-   is (+W_Expr_Id'(New_Range_Expr (EW_Pred, +Low, +High, +Expr)));
+      return W_Pred_Id;
 
    function New_Discrete_Add
      (Domain : EW_Domain;

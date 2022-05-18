@@ -571,7 +571,7 @@ package body CE_Pretty_Printing is
 
       if String_Lit and then Complete then
          for C of S_Array loop
-            S := S & Element (C.Elem_Printed.Str, 2);
+            Append (S, Element (C.Elem_Printed.Str, 2));
          end loop;
 
          if S = "" then

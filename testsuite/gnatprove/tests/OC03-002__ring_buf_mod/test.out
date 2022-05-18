@@ -16,11 +16,11 @@ ring_buf.adb:24:28: info: range check proved (CVC4: 2 VC)
 ring_buf.ads:41:11: info: range check proved (CVC4: 4 VC)
 ring_buf.ads:41:42: medium: range check might fail [reason for check: value must fit in the type of the expression] [possible fix: subprogram at line 38 should mention R in a precondition]
 ring_buf.ads:42:10: info: range check proved (CVC4: 4 VC)
-ring_buf.ads:43:47: medium: range check might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (R.Length in Ar_Index) to subprogram at line 38]
+ring_buf.ads:43:47: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (R.Length in Ar_Index) to subprogram at line 38]
 ring_buf.ads:45:13: info: range check proved (CVC4: 4 VC)
 ring_buf.ads:45:52: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (R.Length in Ar_Index) to subprogram at line 38]
 ring_buf.ads:47:58: info: index check proved (CVC4: 2 VC)
-ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (Ar_Index'Last => 0) and M'First = Ar_Index'Last and M'Last = Ar_Index'Last and X = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition]
+ring_buf.ads:50:67: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition]
 ring_buf.ads:51:51: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 51 should mention M]
 ring_buf.ads:58:21: info: initialization of "R" proved
 ring_buf.ads:59:19: medium: postcondition might fail
@@ -30,4 +30,4 @@ ring_buf.ads:67:19: medium: postcondition might fail
 ring_buf.ads:69:43: info: initialization of "Element" proved
 ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old)
 ring_buf.ads:71:34: medium: precondition might fail
-ring_buf.ads:72:24: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last))
+ring_buf.ads:72:24: medium: precondition might fail

@@ -1,4 +1,4 @@
-unfold dynamic_invariant1, dynamic_invariant, in_range, in_range1.
+unfold in_range, in_range1.
 intros.
 
 (* apply theorem about monotonicity of power *)

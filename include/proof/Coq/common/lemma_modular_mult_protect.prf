@@ -1,4 +1,4 @@
-intros dummy dummy1 dummy2 pre.
+intros pre.
 Open Scope Z_scope.
 Require Import SPARK.
 

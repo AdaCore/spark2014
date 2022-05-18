@@ -1,6 +1,5 @@
 (* proof shared by the two lemmas dealing 32/64-bit mul by less than 1 *)
 intros val1_finite val2_finite ((h3,h4),h5).
-unfold dynamic_invariant in *.
 assert (Hdumb: true = true \/ le (neg fliteral1) fliteral1); auto.
 specialize (val1_finite Hdumb).
 specialize (val2_finite Hdumb).

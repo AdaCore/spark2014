@@ -14,10 +14,10 @@ apply Z.quot_le_compat_l.
     (* 0 <= x *)
   - apply Z.le_0_1.
     (* 1 <= x *)
-  - unfold dynamic_invariant1, in_range1 in h1.
-    apply h1. left. apply eq_refl.
+  - unfold in_range1 in h1.
+    apply h1.
   (* 0 < z <= y *)
-  - unfold dynamic_invariant1, in_range1 in h3.
+  - unfold in_range1 in h3.
     intuition.
 Qed.
 """

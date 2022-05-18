@@ -317,6 +317,8 @@ package body Gnat2Why.Error_Messages is
                | VC_Memory_Leak_At_End_Of_Scope
                | VC_Dynamic_Accessibility_Check
                | VC_Unchecked_Union_Restriction
+               | VC_Assert_Premise
+               | VC_Assert_Step
             =>
                return (OK => False);
          end case;
@@ -914,6 +916,10 @@ package body Gnat2Why.Error_Messages is
             return "loop variant might fail";
          when VC_Assert                    =>
             return "assertion might fail";
+         when VC_Assert_Premise            =>
+            return "assertion premise might fail";
+         when VC_Assert_Step               =>
+            return "assertion step might fail";
          when VC_Raise                     =>
             --  Give explanations for exceptions which frontend statically
             --  determined to always happen, should the given node be executed.
@@ -1694,6 +1700,9 @@ package body Gnat2Why.Error_Messages is
             return "loop invariant preservation " & Verb;
          when VC_Loop_Variant              => return "loop variant " & Verb;
          when VC_Assert                    => return "assertion " & Verb;
+         when VC_Assert_Premise            =>
+            return "assertion premise " & Verb;
+         when VC_Assert_Step               => return "assertion step " & Verb;
          when VC_Raise                     =>
             --  Give explanations for exceptions which frontend statically
             --  determined to always happen, but backend proved to be

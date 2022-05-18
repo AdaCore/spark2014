@@ -75,6 +75,8 @@ VC_LOOP_INVARIANT_PRESERV(assertion) - loop invariant after first iteration - Ch
 VC_LOOP_VARIANT(assertion) - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop. - MEDIUM
 VC_SUBPROGRAM_VARIANT(assertion) - subprogram variant - Check that the given subprogram variant decreases/increases as specified during each recursive call. This implies there will be no infinite recursion. - MEDIUM
 VC_ASSERT(assertion) - assertion - Check that the given assertion evaluates to True. - MEDIUM
+VC_ASSERT_STEP(assertion) - assertion step - Check that the side-condition of a cut operation evaluates to True. - MEDIUM
+VC_ASSERT_PREMISE(assertion) - assertion premise - Check that the premise of an assertion with cut operations evaluates to True. - MEDIUM
 VC_RAISE(assertion) - raised exception - Check that the raise statement or expression can never be reached. - MEDIUM
 VC_INLINE_CHECK(assertion) - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct. - MEDIUM
 VC_UC_SOURCE(assertion) - unchecked conversion source check - Check that a source type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object. - MEDIUM

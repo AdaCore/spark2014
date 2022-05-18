@@ -108,10 +108,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.32" proved="true">
-  <proof prover="2"><result status="valid" steps="95618"/></proof>
+  <proof prover="2"><result status="valid" steps="90719"/></proof>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
-  <proof prover="0"><result status="valid" steps="6575"/></proof>
+  <proof prover="0"><result status="valid" steps="10207"/></proof>
   <proof prover="2"><result status="unknown" steps="13822"/></proof>
   </goal>
  </transf>

@@ -65,6 +65,11 @@ package body Why.Gen.Hardcoded is
       case Get_Hardcoded_Unit (E) is
          when Big_Integers => Alias := EW_Int_Type;
          when Big_Reals    => Alias := EW_Real_Type;
+
+         --  No types are declared in Cut_Operations
+
+         when Cut_Operations =>
+            raise Program_Error;
       end case;
 
       Emit (Th,
@@ -103,7 +108,8 @@ package body Why.Gen.Hardcoded is
             else
                return Why_Eq;
             end if;
-         when Big_Reals    =>
+
+         when Big_Reals =>
             if Domain = EW_Term then
                return M_Real.Bool_Eq;
             elsif Domain = EW_Pred then
@@ -111,6 +117,11 @@ package body Why.Gen.Hardcoded is
             else
                return Real_Infix_Eq;
             end if;
+
+         --  No types are declared in Cut_Operations
+
+         when Cut_Operations =>
+            raise Program_Error;
       end case;
    end Hardcoded_Equality_Symbol;
 
@@ -128,12 +139,17 @@ package body Why.Gen.Hardcoded is
       T           : W_Expr_Id := Why_Empty;
       Name_String : constant String :=
         Get_Name_String (Chars (Subp));
+
    begin
+      --  Cut operations are translated specifically depending on the context
+
+      if Is_From_Hardcoded_Unit (Subp, Cut_Operations) then
+         raise Program_Error;
 
       --  Conversion functions are translated in the same way in
       --  the Big_Integers package and its generic subpackages.
 
-      if (Is_From_Hardcoded_Generic_Unit (Subp, Big_Integers)
+      elsif (Is_From_Hardcoded_Generic_Unit (Subp, Big_Integers)
         and then Name_String in BIN.Generic_To_Big_Integer
                               | BIN.Generic_From_Big_Integer)
             or else
