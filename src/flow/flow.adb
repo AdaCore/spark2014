@@ -904,10 +904,8 @@ package body Flow is
                         when N_Loop_Statement =>
                            Rv.Shape := Shape_Diamond;
                            if No (Iteration_Scheme (N)) then
-                              --  Basic loop. Should never
-                              --  appear as a vertex in the
-                              --  graph.
-                              pragma Assert (False);
+                              --  Basic loop
+                              Write_Str ("loop");
                            elsif Present
                              (Condition (Iteration_Scheme (N)))
                            then
