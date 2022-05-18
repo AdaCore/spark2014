@@ -92,7 +92,7 @@ package body Flow is
      Ada.Strings.Maps.To_Set
        (Ada.Characters.Latin_1.Space &
         Ada.Characters.Latin_1.CR &
-        Ada.Characters.Latin_1.LF) with Ghost;
+        Ada.Characters.Latin_1.LF);
 
    Linebreak : constant Ada.Strings.Maps.Character_Set :=
      Ada.Strings.Maps.To_Set
@@ -636,11 +636,8 @@ package body Flow is
             end if;
          end Print_Node;
 
-         procedure Append_To_Label (S : String)
-           with Pre => (if Ada.Strings.Maps.Is_In (S (S'First), Whitespace)
-                        then S'Length = 1);
-         --  Append S to Rv.Label trimming the trailing linebreaks if required;
-         --  no leading whitespace is expected (except for a single linebreak).
+         procedure Append_To_Label (S : String);
+         --  Append S to Rv.Label
 
          ----------------------
          -- Append_To_Label  --
@@ -648,10 +645,15 @@ package body Flow is
 
          procedure Append_To_Label (S : String) is
          begin
+            --  Leading whitespace occurs when a node image takes several lines
+            --  (e.g. on complex expressions in the source or when a linebreak
+            --  is added when pretty-printing aspects); trailing whitespace is
+            --  added by the node printing routine anyway. Trim both.
+
             Append
               (Rv.Label,
                Ada.Strings.Fixed.Trim
-                 (S, Ada.Strings.Maps.Null_Set, Linebreak));
+                 (S, Whitespace, Linebreak));
          end Append_To_Label;
 
          Output_Buffer : constant Saved_Output_Buffer := Save_Output_Buffer;
