@@ -2730,11 +2730,19 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Do_Loop
 
       begin
-         --  We have a null vertex for the loop, as we have no
-         --  condition.
+         --  The important attributes here are Is_Null_Node equal False (to
+         --  prevent simplification of neverending loops), Is_Program_Node
+         --  equal False (to prevent warning about ineffective statements)
+         --  and Error_Location (to attach errors about neverending loops).
+         --
+         --  Other attributes are just for consistency.
+
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
-                     Null_Node_Attributes,
+                     (Null_Attributes with delta
+                        Error_Location    => N,
+                        In_Nested_Package => Ctx.In_Nested_Package,
+                        Loops             => Ctx.Current_Loops),
                      V);
 
          --  Entry point for the loop is V
@@ -6655,6 +6663,11 @@ package body Flow.Control_Flow_Graph is
 
          begin
             if Atr.Is_Null_Node then
+               --  Sanity-check: null vertices should not be flagged as
+               --  neverending and simplified.
+
+               pragma Assert (not Atr.Is_Neverending);
+
                --  Close the subgraph indicated by V's neighbours
                for A of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                loop

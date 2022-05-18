@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                Copyright (C) 2013-2021, Altran UK Limited                --
+--                Copyright (C) 2013-2022, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -891,10 +891,8 @@ package body Flow is
                         when N_Loop_Statement =>
                            Rv.Shape := Shape_Diamond;
                            if No (Iteration_Scheme (N)) then
-                              --  Basic loop. Should never
-                              --  appear as a vertex in the
-                              --  graph.
-                              pragma Assert (False);
+                              --  Basic loop
+                              Write_Str ("loop");
                            elsif Present
                              (Condition (Iteration_Scheme (N)))
                            then
