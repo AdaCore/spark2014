@@ -6,7 +6,7 @@ package Use_Vectors with SPARK_Mode is
    package Nested is
       function Id (X, F, L : Integer) return Integer
         with Post => (if X in F .. L then Id'Result in F .. L);
-      pragma Annotate (GNATprove, Terminating, Id);
+      pragma Annotate (GNATprove, Always_Return, Id);
    private
       pragma SPARK_Mode (Off);
       function Id (X, F, L : Integer) return Integer is (X);

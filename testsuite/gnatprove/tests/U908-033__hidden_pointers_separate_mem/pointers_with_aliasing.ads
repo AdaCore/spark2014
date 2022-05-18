@@ -6,7 +6,7 @@ generic
    type Object (<>) is private;
 package Pointers_With_Aliasing with
   SPARK_Mode,
-  Annotate => (GNATprove, Terminating)
+  Annotate => (GNATprove, Always_Return)
 is
    pragma Unevaluated_Use_Of_Old (Allow);
 

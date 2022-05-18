@@ -71,13 +71,13 @@ procedure Bad_Annotate with SPARK_Mode is
    type U32 is mod 2 ** 32;
    subtype S is U32 with Annotate => (GNATprove, No_Wrap_Around);
    type My_Int is new Integer with Annotate => (GNATprove, No_Wrap_Around);
-   type My_Boolean is new Boolean with Annotate => (GNATprove, Terminating);
+   type My_Boolean is new Boolean with Annotate => (GNATprove, Always_Return);
 
    procedure Do_Something_3 is null
      with Annotate => (GNATprove);
    pragma Annotate (GNATprove, Might_Not_Return, "foo");
    pragma Annotate (GNATprove, Inline_For_Proof, "foo");
-   pragma Annotate (GNATprove, Terminating, "foo");
+   pragma Annotate (GNATprove, Always_Return, "foo");
    pragma Annotate (GNATprove, No_Wrap_Around, "foo");
    pragma Annotate (GNATprove);
 begin

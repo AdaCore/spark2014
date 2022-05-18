@@ -48,7 +48,7 @@ foo.adb:148:24: info: range check proved (CVC5: 2 VC)
 foo.adb:152:14: info: subprogram "Invisible_Call_To_Nonterminating" will terminate, terminating annotation has been proved
 foo.adb:152:14: warning: subprogram "Invisible_Call_To_Nonterminating" has no effect
 foo.adb:153:24: info: data dependencies proved
-foo.adb:154:62: info: data dependencies proved
+foo.adb:154:64: info: data dependencies proved
 foo.adb:155:24: info: data dependencies proved
 foo.adb:158:28: medium: call to "C" might be nonterminating, terminating annotation on "B" could be incorrect
 foo.adb:170:13: info: implicit function contract might not be available on recursive calls

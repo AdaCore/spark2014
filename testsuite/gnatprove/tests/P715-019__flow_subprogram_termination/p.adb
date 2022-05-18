@@ -6,7 +6,7 @@ package body P is
    procedure Proc2;
    procedure Proc3;
 
-   procedure Proc with Annotate => (GNATprove, Terminating) is
+   procedure Proc with Annotate => (GNATprove, Always_Return) is
    begin
       Proc2;
    end Proc;
@@ -23,22 +23,22 @@ package body P is
       end loop;
    end Proc3;
 
-   procedure Proc4 with Annotate => (GNATprove, Terminating) is
+   procedure Proc4 with Annotate => (GNATprove, Always_Return) is
       Result : Boolean;
    begin
       Result := R.Proc3;
    end Proc4;
 
-   procedure Proc5 with Annotate => (GNATprove, Terminating) is
+   procedure Proc5 with Annotate => (GNATprove, Always_Return) is
    begin
       if True then
          Proc5;
       end if;
    end Proc5;
 
-   procedure Proc7 with Annotate => (GNATprove, Terminating);
+   procedure Proc7 with Annotate => (GNATprove, Always_Return);
 
-   procedure Proc6 with Annotate => (GNATprove, Terminating) is
+   procedure Proc6 with Annotate => (GNATprove, Always_Return) is
    begin
       if True then
          Proc7;

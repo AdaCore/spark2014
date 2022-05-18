@@ -11,11 +11,11 @@ procedure Main with SPARK_Mode is
 
    function B_Length (L : access constant L_Cell) return Big_Natural is
      (if L = null then Big_Natural'(0) else B_Length (L.N) + 1)
-   with Ghost, Annotate => (GNATprove, Terminating);
+   with Ghost, Annotate => (GNATprove, Always_Return);
 
    function Length (L : access constant L_Cell) return Natural is
      (if L = null then 0 else Length (L.N) + 1)
-   with Ghost, Annotate => (GNATprove, Terminating),
+   with Ghost, Annotate => (GNATprove, Always_Return),
        Pre => B_Length (L) <= To_Big_Integer (Natural'Last),
        Post => To_Big_Integer (Length'Result) = B_Length (L);
 

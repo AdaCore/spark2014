@@ -5856,7 +5856,7 @@ package body Flow.Analysis is
       Proved : Boolean := True;
 
    begin
-      if Has_Terminate_Annotation (Enclosing_Subp) then
+      if Has_Always_Return_Annotation (Enclosing_Subp) then
 
          --  If all paths in subprogram raise exceptions or, more importantly,
          --  call procedures with No_Return, then the CFG will be pruned. We

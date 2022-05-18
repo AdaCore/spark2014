@@ -5,7 +5,7 @@ with Types; use Types;
 package Conversion with
   SPARK_Mode
 is
-   pragma Annotate (GNATprove, Terminating, Conversion);
+   pragma Annotate (GNATprove, Always_Return, Conversion);
 
    function Partial_Conversion_Rec
      (X    : Integer_Curve25519;

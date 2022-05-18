@@ -2036,7 +2036,7 @@ package body Flow_Generated_Globals.Partial is
          --  Terminating stuff, picked no matter if body is in SPARK
          Contr.Has_Terminate :=
            (if Is_Callable (E)
-            then Has_Terminate_Annotation (E)
+            then Has_Always_Return_Annotation (E)
             else Meaningless);
 
          --  Subprogram_Variant stuff, picked no matter if body is in SPARK.

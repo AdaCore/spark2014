@@ -22,7 +22,7 @@ procedure Test_Eq with SPARK_Mode is
 
     function Bad (X, Y : RR) return Boolean is
       (X = Y);
-    pragma Annotate (GNATprove, Terminating, Bad);
+    pragma Annotate (GNATprove, Always_Return, Bad);
 
     X, Y : RR;
 begin

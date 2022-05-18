@@ -44,7 +44,7 @@ package SPARK.Constrained_Array_Lemmas
        Pure,
        Ghost
 is
-   pragma Annotate (GNATprove, Terminating, Constrained_Array_Lemmas);
+   pragma Annotate (GNATprove, Always_Return, Constrained_Array_Lemmas);
 
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");

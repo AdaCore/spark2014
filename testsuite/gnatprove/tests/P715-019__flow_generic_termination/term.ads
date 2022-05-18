@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Hashed_Sets;
 
-package Term with Annotate => (GNATprove, Terminating) is
+package Term with Annotate => (GNATprove, Always_Return) is
 
    type T is new Integer;
 

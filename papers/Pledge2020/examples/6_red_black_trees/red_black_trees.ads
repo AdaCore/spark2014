@@ -23,7 +23,7 @@ package Red_Black_Trees with SPARK_Mode is
       elsif Size (X.Left) < Natural'Last - Size (X.Right)
       then Size (X.Left) + Size (X.Right) + 1
       else Natural'Last)
-   with Annotate => (GNATprove, Terminating);
+   with Annotate => (GNATprove, Always_Return);
    --  Number of elements in the tree
 
    pragma Annotate

@@ -44,7 +44,7 @@ package SPARK.Mod_Arithmetic_Lemmas
        Pure,
        Ghost
 is
-   pragma Annotate (GNATprove, Terminating, Mod_Arithmetic_Lemmas);
+   pragma Annotate (GNATprove, Always_Return, Mod_Arithmetic_Lemmas);
 
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");

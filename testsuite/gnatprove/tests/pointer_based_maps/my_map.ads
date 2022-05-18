@@ -12,13 +12,13 @@ package My_Map with SPARK_Mode is
    function Model_Contains (M : access constant Map; K : Positive) return Boolean
    with
      Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Post     => True;
 
    function Model_Value (M : access constant Map; K : Positive) return Integer
    with
      Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Pre => Model_Contains (M, K);
 
    function At_End_Borrow (X : access constant Map) return access constant Map is
@@ -67,22 +67,22 @@ package My_Map with SPARK_Mode is
 
    function First (M : Map) return Natural with
      Ghost,
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
    function Has_Element (M : Map; K : Natural) return Boolean with
      Ghost,
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
    function Next (M : Map; K : Natural) return Natural with
      Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Pre => Has_Element (M, K);
    function Element (M : Map; K : Natural) return Integer with
      Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Pre      => Has_Element (M, K);
 
    function Deep_Copy (M : access constant Map) return Map_Acc with
      Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Post => (Deep_Copy'Result = null) = (M = null)
      and then
        (if M /= null then

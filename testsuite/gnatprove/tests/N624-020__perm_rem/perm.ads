@@ -28,7 +28,7 @@ package Perm with SPARK_Mode is
 
    function Is_Perm (A, B : Nat_Array) return Boolean with
      Pre => Invariant (A) and Invariant (B);
-   pragma Annotate (GNATprove, Terminating, Is_Perm);
+   pragma Annotate (GNATprove, Always_Return, Is_Perm);
 
    function Is_Perm (A, B : Nat_Array) return Boolean is
      ((A'Length = 0 and then B'Length = 0)

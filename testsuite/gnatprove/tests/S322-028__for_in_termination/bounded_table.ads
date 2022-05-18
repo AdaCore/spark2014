@@ -5,7 +5,7 @@ generic
 package Bounded_Table
 with Abstract_State => null
 is
-   pragma Annotate (GNATprove, Terminating, Bounded_Table);
+   pragma Annotate (GNATprove, Always_Return, Bounded_Table);
 
    type Cursor_Type is private;
 

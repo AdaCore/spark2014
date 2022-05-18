@@ -25,7 +25,7 @@ package Binary_Search with SPARK_Mode is
    function M_Contains (T : access constant Tree; V : Integer) return Boolean is
       (if T = null then False
        else V = T.Data or else M_Contains (T.Left, V) or else M_Contains (T.Right, V))
-   with Annotate => (GNATprove, Terminating),
+   with Annotate => (GNATprove, Always_Return),
      Ghost;
    --  Recursive contains function, used in the specification world
 
@@ -34,7 +34,7 @@ package Binary_Search with SPARK_Mode is
       "Recursive calls only occur on structuraly smaller values");
 
    function "<" (V : Integer; T : access constant Tree) return Boolean
-     with Annotate => (GNATprove, Terminating),
+     with Annotate => (GNATprove, Always_Return),
      Ghost,
      Post => "<"'Result =
        (for all I in Integer => (if M_Contains (T, I) then V < I))
@@ -48,7 +48,7 @@ package Binary_Search with SPARK_Mode is
       "Recursive calls only occur on structuraly smaller values");
 
    function "<" (T : access constant Tree; V : Integer) return Boolean
-     with Annotate => (GNATprove, Terminating),
+     with Annotate => (GNATprove, Always_Return),
      Ghost,
      Post => "<"'Result =
        (for all I in Integer => (if M_Contains (T, I) then I < V))
@@ -65,7 +65,7 @@ package Binary_Search with SPARK_Mode is
      (if T = null then True
       else T.Left < T.Data and then T.Data < T.Right
         and then Sorted (T.Left) and then Sorted (T.Right))
-   with Annotate => (GNATprove, Terminating),
+   with Annotate => (GNATprove, Always_Return),
      Ghost;
    --  A tree is sorted if its left subtree is smaller than its root value
    --  and its root value is smaller than its right subtree.
@@ -113,7 +113,7 @@ package Binary_Search with SPARK_Mode is
       elsif Size (T.Left) < Natural'Last - Size (T.Right)
       then Size (T.Left) + Size (T.Right) + 1
       else Natural'Last)
-   with Annotate => (GNATprove, Terminating),
+   with Annotate => (GNATprove, Always_Return),
      Ghost;
    --  Function returning the number of elements in a tree. It is used to
    --  bound the size of the tree so that its elements can all be contained in
@@ -126,7 +126,7 @@ package Binary_Search with SPARK_Mode is
 
    function All_V (T : access constant Tree) return Int_Set with
      Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Pre  => Size (T) < Natural'Last,
      Post => Length (All_V'Result) <= Count_Type (Size (T))
      and then (for all I in Integer => M_Contains (T, i) = Contains (All_V'Result, I));

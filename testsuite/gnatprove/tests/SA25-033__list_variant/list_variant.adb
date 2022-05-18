@@ -9,7 +9,7 @@ procedure List_Variant with SPARK_Mode is
 
    function Length_Ann (L : access constant List; Max : Natural := Natural'Last) return Natural with
      Subprogram_Variant => (Decreases => Max),
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Post => Length_Ann'Result <= Max;
 
    function Length_Ann (L : access constant List; Max : Natural := Natural'Last) return Natural is

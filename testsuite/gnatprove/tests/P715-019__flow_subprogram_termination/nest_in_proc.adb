@@ -1,6 +1,6 @@
 with GNAT.OS_Lib;            use GNAT.OS_Lib;
 procedure Nest_In_Proc is
-   pragma Annotate (GNATprove, Terminating, Nest_In_Proc);
+   pragma Annotate (GNATprove, Always_Return, Nest_In_Proc);
    package Pkg is
       procedure Nothing;
       package Pkg2 is
@@ -10,7 +10,7 @@ procedure Nest_In_Proc is
 
    package body Pkg is
       procedure Nothing is
-         pragma Annotate (GNATprove, Terminating, Nothing);
+         pragma Annotate (GNATprove, Always_Return, Nothing);
       begin
          null;
       end Nothing;

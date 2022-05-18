@@ -83,7 +83,7 @@ package Cartesian_Trees with SPARK_Mode is
      (R = X or (T (R).Left /= 0 and then Belongs_To (T, T (R).Left, X))
       or (T (R).Right /= 0 and then Belongs_To (T, T (R).Right, X)))
      with Pre  => R in T'Range and then X in T'Range and then Valid_Tree_Cell (T);
-   pragma Annotate (GNATprove, Terminating, Belongs_To);
+   pragma Annotate (GNATprove, Always_Return, Belongs_To);
    --  Returns True is X belongs to the subtree rooted at R in T
 
    function Left_Smaller (T : Tree_Cell_Array; R : Positive) return Boolean is

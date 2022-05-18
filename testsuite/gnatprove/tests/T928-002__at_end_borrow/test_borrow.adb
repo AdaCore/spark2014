@@ -22,7 +22,7 @@ procedure Test_Borrow with SPARK_Mode is
    function Length (X : access constant List) return Big_Natural is
      (if X = null then Big_Natural'(0) else Length (X.N) + 1)
    with Ghost,
-       Annotate => (GNATprove, Terminating);
+       Annotate => (GNATprove, Always_Return);
 
    function Get (X : access constant List; Pos : Positive) return Integer is
      (if Pos = 1 then X.V.all else Get (X.N, Pos - 1))

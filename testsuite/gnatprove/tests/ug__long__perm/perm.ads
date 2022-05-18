@@ -14,7 +14,7 @@ package Perm with SPARK_Mode, Ghost is
    with
      Post => Occ_Def'Result <= A'Length,
      Subprogram_Variant => (Decreases => A'Length);
-   pragma Annotate (GNATprove, Terminating, Occ_Def);
+   pragma Annotate (GNATprove, Always_Return, Occ_Def);
 
    function Occ (A : Nat_Array; E : Natural) return Nb_Occ is (Occ_Def (A, E))
    with

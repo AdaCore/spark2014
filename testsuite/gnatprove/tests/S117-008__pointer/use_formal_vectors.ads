@@ -6,7 +6,7 @@ package Use_Formal_Vectors with SPARK_Mode is
    function Model (X : Element_Type) return Element_Model is (X.all);
    function "=" (X, Y : Element_Type) return Boolean is (X.all = Y.all);
    function Copy (X : Element_Type) return Element_Type
-     with Post => Model (Copy'Result) = Model (X), Annotate => (GNATprove, Terminating);
+     with Post => Model (Copy'Result) = Model (X), Annotate => (GNATprove, Always_Return);
 
    package My_Vect is new Formal_Vectors
      (Element_Type  => Element_Type,

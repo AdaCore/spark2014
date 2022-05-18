@@ -7,7 +7,7 @@ generic
 package Generic_Ring_Buffer
 is
 
-   pragma Annotate (GNATprove, Terminating, Generic_Ring_Buffer);
+   pragma Annotate (GNATprove, Always_Return, Generic_Ring_Buffer);
 
    -- TYPES -------------------------------------------------------------------
 

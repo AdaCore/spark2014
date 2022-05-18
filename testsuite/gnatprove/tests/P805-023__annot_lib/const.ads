@@ -1,5 +1,5 @@
 package Const is
-   pragma Annotate (GNATprove, Terminating, Const);
+   pragma Annotate (GNATprove, Always_Return, Const);
    type R is record
       D : Integer;
    end record;

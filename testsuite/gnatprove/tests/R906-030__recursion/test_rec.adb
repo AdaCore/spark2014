@@ -8,7 +8,7 @@ procedure Test_Rec with SPARK_Mode is
      (if M'Length = 0 then 0
       else Sum (M (M'First .. M'Last - 1)) + M (M'Last))
        with Post => Sum'Result <= 100 * M'Length;
-   pragma Annotate (GNATprove, Terminating, Sum);
+   pragma Annotate (GNATprove, Always_Return, Sum);
 
    procedure Prove_Sum_Eq (A, B : My_Arr) with
      Ghost,

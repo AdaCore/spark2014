@@ -10,7 +10,7 @@ package body Foo with SPARK_Mode is
    procedure Recursive_Proc_W_Variant_Terminating (X : Natural)
    with
      Subprogram_Variant => (Decreases => X),
-     Annotate           => (GNATprove, Terminating)
+     Annotate           => (GNATprove, Always_Return)
    is
    begin
       if X > 0 then
@@ -18,12 +18,12 @@ package body Foo with SPARK_Mode is
       end if;
    end Recursive_Proc_W_Variant_Terminating;
 
-   procedure Call_To_Recursive_W_Variant_A with Annotate => (GNATprove, Terminating) is
+   procedure Call_To_Recursive_W_Variant_A with Annotate => (GNATprove, Always_Return) is
    begin
       Recursive_Proc_W_Variant (3);
    end Call_To_Recursive_W_Variant_A;
 
-   procedure Call_To_Recursive_W_Variant_B with Annotate => (GNATprove, Terminating) is
+   procedure Call_To_Recursive_W_Variant_B with Annotate => (GNATprove, Always_Return) is
    begin
       Recursive_Proc_W_Variant (3);
       while True loop
@@ -33,7 +33,7 @@ package body Foo with SPARK_Mode is
 
    procedure Mutually_A (X : Natural) with
      Global             => null,
-     Annotate           => (GNATprove, Terminating),
+     Annotate           => (GNATprove, Always_Return),
      Subprogram_Variant => (Decreases => X);
 
    procedure Mutually_B (X : Natural) with
@@ -60,7 +60,7 @@ package body Foo with SPARK_Mode is
 
    procedure Mutually_D (X : Natural) with
      Global             => null,
-     Annotate           => (GNATprove, Terminating);
+     Annotate           => (GNATprove, Always_Return);
 
    procedure Mutually_C (X : Natural) is
    begin
@@ -81,7 +81,7 @@ package body Foo with SPARK_Mode is
 
    procedure Mutually_F (X : Natural) with
      Global             => null,
-     Annotate           => (GNATprove, Terminating),
+     Annotate           => (GNATprove, Always_Return),
      Subprogram_Variant => (Decreases => X);
 
    procedure Mutually_E (X : Natural) is
@@ -103,7 +103,7 @@ package body Foo with SPARK_Mode is
 
    procedure Mutually_H (X : Natural) with
      Global             => null,
-     Annotate           => (GNATprove, Terminating),
+     Annotate           => (GNATprove, Always_Return),
      Subprogram_Variant => (Decreases => X);
 
    procedure Mutually_G (X : Natural) is
@@ -129,7 +129,7 @@ package body Foo with SPARK_Mode is
 
    procedure Mutually_J (X : Natural) with
      Global             => null,
-     Annotate           => (GNATprove, Terminating),
+     Annotate           => (GNATprove, Always_Return),
      Subprogram_Variant => (Decreases => X);
 
    procedure Mutually_I (X : Natural) is
@@ -149,9 +149,9 @@ package body Foo with SPARK_Mode is
       end if;
    end Mutually_J;
 
-   procedure Invisible_Call_To_Nonterminating with Annotate => (GNATprove, Terminating) is
+   procedure Invisible_Call_To_Nonterminating with Annotate => (GNATprove, Always_Return) is
       procedure A with Global => null;
-      procedure B with Annotate => (GNATprove, Terminating), Global => null;
+      procedure B with Annotate => (GNATprove, Always_Return), Global => null;
       procedure C with Global => null;
 
       procedure A is begin B; end A;
@@ -168,7 +168,7 @@ package body Foo with SPARK_Mode is
    end Invisible_Call_To_Nonterminating;
 
    function Subnested_Package (X : Natural) return Natural with
-     Annotate           => (GNATprove, Terminating),
+     Annotate           => (GNATprove, Always_Return),
      Subprogram_Variant => (Decreases => X)
    is
       function Aux (I : Natural) return Natural with
@@ -188,7 +188,7 @@ package body Foo with SPARK_Mode is
    end Subnested_Package;
 
    function Subnested_Package_Wo_Variant (X : Natural) return Natural with
-     Annotate           => (GNATprove, Terminating),
+     Annotate           => (GNATprove, Always_Return),
      Subprogram_Variant => (Decreases => X)
    is
       function Aux (I : Natural) return Natural is
@@ -207,7 +207,7 @@ package body Foo with SPARK_Mode is
    end Subnested_Package_Wo_Variant;
 
    function Function_W_Nested_Package (X : Natural) return Natural with
-     Annotate           => (GNATprove, Terminating),
+     Annotate           => (GNATprove, Always_Return),
      Subprogram_Variant => (Decreases => X)
    is
       package Nested is

@@ -17,7 +17,7 @@ package Test_List with SPARK_Mode is
    function Length (L : access constant List_Cell) return My_Nat is
      (if L = null then 0 else Length (L.Next) + 1)
    with Ghost,
-        Annotate => (GNATprove, Terminating);
+        Annotate => (GNATprove, Always_Return);
    --  Number of elements in the list. Returns My_Nat'Last if there is more
    --  than My_Nat'Last elements in the list.
 
@@ -28,7 +28,7 @@ package Test_List with SPARK_Mode is
    function Nth (L : access constant List_Cell; N : My_Pos) return Integer is
      (if N = 1 then L.Data else Nth (L.Next, N - 1))
    with Ghost,
-        Annotate => (GNATprove, Terminating),
+        Annotate => (GNATprove, Always_Return),
         Pre => N <= Length (L);
    --  Element at position N in the list
 

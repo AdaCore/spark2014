@@ -1,7 +1,7 @@
 procedure Main with SPARK_Mode is
 
    package Ptr_Accesses with
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Abstract_State => Allocated_Memory,
      Initializes => Allocated_Memory
    is
@@ -44,7 +44,7 @@ procedure Main with SPARK_Mode is
    end Ownership_Transfer;
 
    package Ptr_Accesses_2 with
-     Annotate => (GNATprove, Terminating)
+     Annotate => (GNATprove, Always_Return)
    is
       type Ptr is limited private;
       function Create (V : Integer) return Ptr with

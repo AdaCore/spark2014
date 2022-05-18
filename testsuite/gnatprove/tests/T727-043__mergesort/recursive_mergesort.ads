@@ -79,7 +79,7 @@ package Recursive_Mergesort with SPARK_Mode is
        (J < I  => Is_Empty (Occurrences'Result) and Length (Occurrences'Result) = 0,
         others => Is_Add (Occurrences (A, I, J - 1), A (J), Occurrences'Result)),
      Subprogram_Variant => (Decreases => J),
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
    --  Construct a multiset containing the occurrences of each element in an array
 
    function Is_Sorted (A : Arr) return Boolean is

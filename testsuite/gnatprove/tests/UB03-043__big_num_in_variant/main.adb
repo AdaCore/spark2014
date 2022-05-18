@@ -14,7 +14,7 @@ procedure Main with SPARK_Mode is
 
    function Length (L : access constant L_Cell) return Big_Natural is
      (if L = null then Big_Natural'(0) else Length (L.N) + 1)
-   with Ghost, Annotate => (GNATprove, Terminating);
+   with Ghost, Annotate => (GNATprove, Always_Return);
 
    function All_Zero (L : access constant L_Cell) return Boolean is
      (L = null or else (L.V = 0 and then All_Zero (L.N)))

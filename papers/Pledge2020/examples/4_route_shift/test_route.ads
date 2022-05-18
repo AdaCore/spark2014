@@ -52,7 +52,7 @@ package Test_Route with SPARK_Mode is
    function Length (R : access constant Route) return My_Nat is
      (if R = null then 0
       else Length (R.Rest) + 1)
-   with Annotate => (GNATprove, Terminating);
+   with Annotate => (GNATprove, Always_Return);
    --  Number of points in the route. It saturates at My_Nat'Last
 
    pragma Annotate
@@ -61,7 +61,7 @@ package Test_Route with SPARK_Mode is
 
    function Nth_X (R : access constant Route; N : My_Pos) return Integer is
      (if N = 1 then R.Current.X else Nth_X (R.Rest, N - 1))
-   with Annotate => (GNATprove, Terminating),
+   with Annotate => (GNATprove, Always_Return),
      Pre => N <= Length (R);
    --  Value of the X coordinate of the point at position N in Route
 

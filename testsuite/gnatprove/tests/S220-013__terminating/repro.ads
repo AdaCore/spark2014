@@ -1,8 +1,8 @@
 package Repro
-with Annotate => (GNATprove, Terminating)
+with Annotate => (GNATprove, Always_Return)
 is
 
-   --pragma Annotate (GNATprove, Terminating, Repro);
+   --pragma Annotate (GNATprove, Always_Return, Repro);
 
    procedure Foo;
 

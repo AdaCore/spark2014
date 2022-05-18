@@ -8,7 +8,7 @@ package P is
 
     function Down (X : Positive) return Positive is
        (if X = 1 then X else Down (X - 1) + 1);
-    pragma Annotate (GNATprove, Terminating, Down);
+    pragma Annotate (GNATprove, Always_Return, Down);
 
     procedure Use_Down (X : Positive) with
       Pre  => X > 1,
