@@ -18,4 +18,4 @@ pkg.adb:4:04: high: initialization of "Pkg.State_A" is specified at pkg.ads:3
 pkg.ads:3:03: info: flow dependencies proved
 pkg.ads:6:04: high: "B" is not initialized in "Pkg" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "B" at declaration or in the package body statements]
 pkg_body_off.ads:2:03: info: flow dependencies proved
-pkg_body_off.ads:5:04: high: "A" is not initialized in "Pkg_Body_Off" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "A" at declaration]
+pkg_body_off.ads:5:04: info: initialization of "A" proved
