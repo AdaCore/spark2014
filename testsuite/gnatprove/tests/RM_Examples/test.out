@@ -91,7 +91,6 @@ hal.ads:70:11: info: data dependencies proved
 hal.ads:71:11: info: flow dependencies proved
 initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved
 initialization_and_elaboration-private_child.ads:5:08: medium: initial condition might fail
-initialization_and_elaboration-private_child.ads:5:29: high: "Private_Child.State" constituent of "Initialization_And_Elaboration.State" must be mentioned as an input of the Initializes aspect of "Private_Child" (SPARK RM 7.1.5(11))
 initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved

@@ -7243,6 +7243,20 @@ package body Flow.Control_Flow_Graph is
       --  If you're now wondering where we deal with locally declared objects
       --  then we deal with them as they are encountered. See
       --  Do_Object_Declaration for enlightenment.
+      --
+      --  Here we only deal with abstract states whose constituents will not be
+      --  encountered, because they are hidden behind a SPARK_Mode => Off.
+
+      if FA.Kind = Kind_Package
+        and then Has_Non_Null_Abstract_State (FA.Spec_Entity)
+        and then
+        (not Private_Spec_In_SPARK (FA.Spec_Entity)
+           or else not Entity_Body_In_SPARK (FA.Spec_Entity))
+      then
+         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+            Create_Initial_And_Final_Vertices (E => State, FA => FA);
+         end loop;
+      end if;
 
       --  Produce flowgraph for the precondition and postcondition, if any
       case FA.Kind is
