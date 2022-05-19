@@ -171,6 +171,8 @@ class CVC4(Prover):
         """run on single file and extract statistics"""
         try:
             status = Prover.regex_get(Prover.status_reg, output)
+            if not status:
+                status = "error"
             steps = 0
             time = time
             try:

@@ -38,7 +38,8 @@
 #    This puts the directory install/bin in your path.
 
 .PHONY: clean doc gnat2why gnat2why-nightly gnatprove install \
-	install-all why3 all setup all-nightly doc-nightly benchmark
+	install-all why3 all setup all-nightly doc-nightly run-benchmark \
+        create-benchmark
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
@@ -207,10 +208,12 @@ clean:
 
 BENCHDIR=bench
 RESULTSDIR=benchout
-benchmark:
+create-benchmark:
 	rm -rf $(BENCHDIR)
 	mkdir -p $(BENCHDIR)
 	testsuite/gnatprove/bench/create_benchmarks.py --testsuite-dir=testsuite/gnatprove --target-dir=$(BENCHDIR) --testlist=testsuite/gnatprove/MANIFEST.bench
+
+run-benchmark:
 	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHDIR)/bench
 	testsuite/gnatprove/bench/process_results.py $(BENCHDIR)/bench $(RESULTSDIR) --testsuite-dir=testsuite/gnatprove
 	testsuite/gnatprove/bench/compute_stats.py $(BENCHDIR)/bench $(RESULTSDIR)

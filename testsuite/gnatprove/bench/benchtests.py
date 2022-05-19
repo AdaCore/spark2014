@@ -7,7 +7,15 @@ import subprocess
 
 timelimit = 10
 
-descr = """Run provers on a testsuite-like directory structure."""
+descr = """
+   This script expects a directory structure as follows. The "benchdir"
+   contains a number of folders which we call "tests". Each test folder
+   contains subdirs for each prover, e.g. cvc5, z3 etc. Each such prover folder
+   contains *.smt2 files.
+   This script runs the corresponding prover on all smt files, storing the
+   results in JSON files of the form
+     benchdir/testdir/<provername>.json
+"""
 
 
 def parse_arguments():
