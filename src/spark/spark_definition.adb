@@ -1105,12 +1105,12 @@ package body SPARK_Definition is
                   when N_Case_Statement =>
                      declare
                         Cases : constant List_Id := Alternatives (N);
-                        Cur   : Node_Id := First (Cases);
+                        Cur   : Node_Id := First_Non_Pragma (Cases);
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
                              (Statements (Cur), Goto_Labels, True);
-                           Next (Cur);
+                           Next_Non_Pragma (Cur);
                         end loop;
                      end;
 

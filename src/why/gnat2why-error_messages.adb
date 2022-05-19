@@ -1184,13 +1184,13 @@ package body Gnat2Why.Error_Messages is
                Cntexmp,
                Do_Sideeffects => False,
                Fuel           => 250_000,
-               Stack_Height   => 450);
+               Stack_Height   => 100);
             --  During execution CE_RAC counts the stacked calls in the
             --  interpreted program and terminates as incomplete when the
-            --  stack height is exceeded. But we cannot really know how many
+            --  stack height is exceeded. We cannot really know how many
             --  calls are in the interpreter between each call in the
-            --  interpreted program to anticipate a GNAT stackoverflow, but 450
-            --  seems to work.
+            --  interpreted program to anticipate a GNAT stackoverflow, but the
+            --  above value seems to work.
          end Small_Step_Rac;
 
          Rec            : constant Why3_Prove_Result :=

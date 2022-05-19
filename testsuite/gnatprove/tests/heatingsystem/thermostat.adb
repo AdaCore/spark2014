@@ -19,7 +19,6 @@ is
      with Volatile,
           Async_Writers,
           Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
-   pragma Annotate(Gnatprove, Intentional, "aliasing via address clause","");
 
    procedure AboveTemp (Result : out Boolean)
      with Refined_Global  => Input_Ext,

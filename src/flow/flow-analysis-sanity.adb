@@ -1057,11 +1057,11 @@ package body Flow.Analysis.Sanity is
                --  Process case alterantives
 
                declare
-                  Alt : Node_Id := First (Alternatives (N));
+                  Alt : Node_Id := First_Non_Pragma (Alternatives (N));
                begin
                   loop
                      Traverse_Declarations_Or_Statements (Statements (Alt));
-                     Next (Alt);
+                     Next_Non_Pragma (Alt);
                      exit when No (Alt);
                   end loop;
                end;

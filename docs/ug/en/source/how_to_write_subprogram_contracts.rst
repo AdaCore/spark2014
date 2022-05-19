@@ -661,9 +661,7 @@ imported from C:
    :linenos:
 
 Note that we added data dependencies to the imported procedures, as
-|GNATprove| would assume otherwise incorrectly ``null`` data dependencies. The
-example also suppresses some |GNATprove| messages related to the address clause
-of the variable, which are not relevant to the example.
+|GNATprove| would assume otherwise incorrectly ``null`` data dependencies.
 
 As before, all contracts are proved by |GNATprove|:
 

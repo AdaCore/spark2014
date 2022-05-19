@@ -1,14 +1,12 @@
-actuator.adb:8:04: info: justified that object is suitable for aliasing via address clause
 actuator.adb:11:11: warning: consider annotating "Output_Ext" with Async_Writers
 actuator.adb:11:11: warning: indirect writes to "Output_Ext" through a potential alias are ignored
 actuator.adb:11:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
-actuator.adb:15:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
-actuator.adb:23:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+actuator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+actuator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 actuator.ads:5:11: info: data dependencies proved
 actuator.ads:6:11: info: flow dependencies proved
 actuator.ads:10:11: info: data dependencies proved
 actuator.ads:11:11: info: flow dependencies proved
-advancebutton-raw.adb:8:04: info: justified that object is suitable for aliasing via address clause
 advancebutton-raw.adb:11:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 advancebutton-raw.ads:7:20: info: initialization of "Pressed" proved
 advancebutton-raw.ads:8:11: info: data dependencies proved
@@ -39,16 +37,14 @@ advancebutton.ads:48:11: info: flow dependencies proved
 advancebutton.ads:55:26: info: initialization of "Result" proved
 advancebutton.ads:56:11: info: data dependencies proved
 advancebutton.ads:57:11: info: flow dependencies proved
-clock.adb:7:04: info: justified that object is suitable for aliasing via address clause
 clock.adb:10:11: warning: writing to "Tick_Ext" is assumed to have no effects on other non-volatile objects
 clock.ads:7:19: info: initialization of "Time" proved
 clock.ads:8:10: info: data dependencies proved
 clock.ads:9:10: info: flow dependencies proved
-display.adb:7:04: info: justified that object is suitable for aliasing via address clause
 display.adb:10:11: warning: consider annotating "Output_Ext" with Async_Writers
 display.adb:10:11: warning: indirect writes to "Output_Ext" through a potential alias are ignored
 display.adb:10:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
-display.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+display.adb:13:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 display.ads:10:11: info: data dependencies proved
 display.ads:11:11: info: flow dependencies proved
 heatingsystem_dfa.adb:12:08: info: data dependencies proved
@@ -106,27 +102,23 @@ heatingsystem_dfa.adb:224:14: info: flow dependencies proved
 heatingsystem_dfa.adb:243:14: info: data dependencies proved
 heatingsystem_dfa.adb:245:45: info: initialization of "Indicator.Outputs" proved
 heatingsystem_dfa.adb:248:14: info: flow dependencies proved
-indicator.adb:8:04: info: justified that object is suitable for aliasing via address clause
 indicator.adb:11:11: warning: consider annotating "Output_Ext" with Async_Writers
 indicator.adb:11:11: warning: indirect writes to "Output_Ext" through a potential alias are ignored
 indicator.adb:11:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
-indicator.adb:15:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
-indicator.adb:23:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+indicator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+indicator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 indicator.ads:5:11: info: data dependencies proved
 indicator.ads:6:11: info: flow dependencies proved
 indicator.ads:10:11: info: data dependencies proved
 indicator.ads:11:11: info: flow dependencies proved
-modeswitch.adb:6:04: info: justified that object is suitable for aliasing via address clause
 modeswitch.adb:9:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 modeswitch.ads:6:20: info: initialization of "Value" proved
 modeswitch.ads:7:11: info: data dependencies proved
 modeswitch.ads:8:11: info: flow dependencies proved
-programswitch.adb:6:04: info: justified that object is suitable for aliasing via address clause
 programswitch.adb:9:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 programswitch.ads:6:20: info: initialization of "Value" proved
 programswitch.ads:7:11: info: data dependencies proved
 programswitch.ads:8:11: info: flow dependencies proved
-thermostat.adb:18:04: info: justified that object is suitable for aliasing via address clause
 thermostat.adb:21:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 thermostat.ads:16:25: info: initialization of "Result" proved
 thermostat.ads:17:11: info: data dependencies proved

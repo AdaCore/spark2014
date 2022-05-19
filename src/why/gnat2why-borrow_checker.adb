@@ -3595,9 +3595,9 @@ package body Gnat2Why.Borrow_Checker is
 
                --  First alternative
 
-               Alt := First (Alternatives (Stmt));
+               Alt := First_Non_Pragma (Alternatives (Stmt));
                Check_List (Statements (Alt));
-               Next (Alt);
+               Next_Non_Pragma (Alt);
 
                --  Cleanup
 
@@ -3614,7 +3614,7 @@ package body Gnat2Why.Borrow_Checker is
                   --  Next alternative
 
                   Check_List (Statements (Alt));
-                  Next (Alt);
+                  Next_Non_Pragma (Alt);
 
                   --  Merge Current_Perm_Env into New_Env
 

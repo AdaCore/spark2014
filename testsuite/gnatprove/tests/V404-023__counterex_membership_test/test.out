@@ -1,0 +1,34 @@
+discrete.adb:31:21: high: assertion might fail (e.g. when K = Primary)
+discrete.adb:48:22: high: assertion might fail (e.g. when K = Secondary)
+discrete.adb:65:22: high: assertion might fail (e.g. when K = Primary)
+discrete.adb:85:22: high: assertion might fail (e.g. when K = Primary)
+discrete.adb:102:22: high: assertion might fail (e.g. when K = Primary)
+discrete.adb:119:22: high: assertion might fail (e.g. when K = Secondary)
+discrete.adb:136:22: high: assertion might fail (e.g. when Work = False)
+discrete.adb:153:22: high: assertion might fail (e.g. when Sleep = False)
+discrete.adb:171:22: high: assertion might fail (e.g. when B = False)
+not_discrete.adb:15:22: high: assertion might fail (e.g. when Is_Sub = True)
+not_discrete.adb:32:22: high: assertion might fail (e.g. when Is_Sub = True)
+not_discrete.adb:49:22: high: assertion might fail (e.g. when Is_Rec = True)
+not_discrete.adb:66:22: high: assertion might fail (e.g. when Is_Small = True)
+not_discrete.adb:83:22: medium: assertion might fail
+not_discrete.adb:100:22: medium: assertion might fail
+not_discrete.adb:117:22: high: assertion might fail (e.g. when Is_Sub_42 = True)
+not_discrete.adb:145:22: medium: assertion might fail
+not_discrete.adb:161:22: medium: assertion might fail (e.g. when Is_Rec = True)
+not_discrete.adb:178:22: medium: assertion might fail
+not_discrete.adb:195:22: medium: assertion might fail
+not_discrete.adb:212:22: medium: assertion might fail
+not_discrete.adb:229:22: high: assertion might fail (e.g. when Is_Same = True)
+not_discrete.adb:246:22: high: assertion might fail (e.g. when Is_Up = True)
+not_discrete.adb:263:22: high: assertion might fail (e.g. when Is_Down = True)
+not_discrete.adb:281:22: high: assertion might fail (e.g. when Is_Same = True)
+not_discrete.adb:299:22: high: assertion might fail (e.g. when Is_Up = True)
+not_discrete.adb:317:22: high: assertion might fail (e.g. when Is_Up = True)
+not_discrete.adb:335:22: high: assertion might fail (e.g. when Is_Diff = True)
+not_discrete.adb:352:22: medium: assertion might fail
+not_discrete.ads:24:52: info: range check proved (CVC4: 2 VC)
+not_discrete.ads:26:52: info: range check proved (CVC4: 2 VC)
+not_discrete.ads:48:07: info: range check proved (CVC4: 2 VC)
+not_discrete.ads:51:43: info: range check proved (CVC4: 2 VC)
+not_discrete.ads:51:59: info: range check proved (CVC4: 2 VC)

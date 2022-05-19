@@ -1,8 +1,6 @@
-functional_imported.adb:9:04: info: justified that object is suitable for aliasing via address clause
-functional_imported.adb:13:04: info: justified that object is suitable for aliasing via address clause
-functional_imported.adb:46:10: info: precondition proved
+functional_imported.adb:44:10: info: precondition proved
+functional_imported.adb:45:10: info: precondition proved
 functional_imported.adb:47:10: info: precondition proved
-functional_imported.adb:49:10: info: precondition proved
 functional_imported.ads:6:03: info: flow dependencies proved
 functional_imported.ads:15:06: info: disjoint contract cases proved
 functional_imported.ads:15:06: info: complete contract cases proved

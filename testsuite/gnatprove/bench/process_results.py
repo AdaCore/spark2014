@@ -6,10 +6,9 @@ import json
 import os.path
 import shutil
 import subprocess
+import config
 
 descr = """Compute testsuite-like results from json files for provers"""
-
-all_provers = ["cvc4", "altergo", "z3"]
 
 
 def parse_arguments():
@@ -73,13 +72,15 @@ def compute_test_status(testsuitedir, outdir, test, results, resultfile):
     if os.path.exists(baseline_file):
         baseline = e3.yaml.load_with_config(baseline_file, {})
         shutil.copyfile(baseline_file, os.path.join(outdir, test + ".expected"))
-    else:
-        baseline = {"cvc4": 100, "altergo": 100, "z3": 100}
+    for prover in config.all_provers:
+        if prover not in baseline:
+            baseline[prover] = 100
     res = True
     with open(os.path.join(outdir, test + ".diff"), "w") as diff_fn:
-        for prover in all_provers:
-            res = res and compare_baseline(
-                baseline[prover], results[prover], prover, diff_fn
+        for prover in config.all_provers:
+            res = (
+                compare_baseline(baseline[prover], results[prover], prover, diff_fn)
+                and res
             )
     if res:
         resultfile.write(test + ":OK\n")
@@ -95,7 +96,7 @@ def compute_results(resultdir, outdir, testsuitedir, resultfile):
             continue
         results = {}
         with open(os.path.join(outdir, test + ".out"), "w") as f:
-            for p in all_provers:
+            for p in config.all_provers:
                 results[p] = compute_stat_count(os.path.join(mydir, p + ".json"))
                 f.write(p + ":")
                 f.write(str(results[p]))
@@ -106,7 +107,7 @@ def compute_results(resultdir, outdir, testsuitedir, resultfile):
 def produce_version_output(outdir, resultfile):
     resultfile.write("version:XFAIL:always fails\n")
     with open(os.path.join(outdir, "version.out"), "w") as f:
-        for p in all_provers:
+        for p in config.all_provers:
             exec_name = "alt-ergo" if p == "altergo" else p
             f.write(subprocess.check_output([exec_name, "--version"]).decode("utf-8"))
 

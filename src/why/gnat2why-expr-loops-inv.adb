@@ -1565,13 +1565,13 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Case_Statement =>
             declare
                Alternative : Opt_N_Case_Statement_Alternative_Id :=
-                 First (Alternatives (N));
+                 First_Non_Pragma (Alternatives (N));
             begin
                while Present (Alternative) loop
                   Process_Statement_List
                     (Statements (Alternative), Loop_Writes, Inv_Objects,
                      Inv_Seen, In_Nested => True);
-                  Next (Alternative);
+                  Next_Non_Pragma (Alternative);
                end loop;
             end;
 

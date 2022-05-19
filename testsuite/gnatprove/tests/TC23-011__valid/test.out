@@ -1,6 +1,4 @@
-u2.adb:12:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Boolean has 2 values but has Object_Size 8]
 u2.adb:16:11: warning: writing to "Raw_Port1" is assumed to have no effects on other non-volatile objects
-u2.adb:18:04: info: object is suitable for aliasing via address clause (Trivial)
 u2.adb:22:11: warning: writing to "Raw_Port2" is assumed to have no effects on other non-volatile objects
 u2.adb:24:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_8 and type Boolean differ]
 u2.adb:24:51: info: type is suitable as source for unchecked conversion (Trivial)

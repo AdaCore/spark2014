@@ -1,11 +1,9 @@
 pixel.adb:10:65: medium: divide by zero might fail
 pixel.adb:14:66: medium: divide by zero might fail
-pixel.adb:16:04: info: object is suitable for aliasing via address clause (Trivial)
 pixel.adb:17:15: warning: consider annotating "Asp" with Async_Writers
 pixel.adb:17:15: warning: indirect writes to "Asp" through a potential alias are ignored
 pixel.adb:17:15: warning: writing to "Asp" is assumed to have no effects on other non-volatile objects
 pixel.adb:17:65: medium: divide by zero might fail
-pixel.adb:19:04: info: object is suitable for aliasing via address clause (Trivial)
 pixel.adb:21:04: warning: consider annotating "Cla" with Async_Writers
 pixel.adb:21:04: warning: indirect writes to "Cla" through a potential alias are ignored
 pixel.adb:21:04: warning: writing to "Cla" is assumed to have no effects on other non-volatile objects

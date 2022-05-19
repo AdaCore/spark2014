@@ -2862,7 +2862,7 @@ package body SPARK_Util is
                declare
                   OK_On_All   : Boolean := True;
                   Alternative : Opt_N_Case_Statement_Alternative_Id :=
-                    First (Alternatives (N));
+                    First_Non_Pragma (Alternatives (N));
                begin
                   loop
                      if not Is_Reborrowed_On_All_Paths
@@ -2871,7 +2871,7 @@ package body SPARK_Util is
                         OK_On_All := False;
                         exit;
                      end if;
-                     Next (Alternative);
+                     Next_Non_Pragma (Alternative);
                      exit when No (Alternative);
                   end loop;
 
@@ -3438,7 +3438,7 @@ package body SPARK_Util is
                when N_Case_Statement =>
                   declare
                      Alternative : Opt_N_Case_Statement_Alternative_Id :=
-                       First (Alternatives (N));
+                       First_Non_Pragma (Alternatives (N));
                   begin
                      loop
                         if not No_Deep_Updates
@@ -3446,7 +3446,7 @@ package body SPARK_Util is
                         then
                            return False;
                         end if;
-                        Next (Alternative);
+                        Next_Non_Pragma (Alternative);
                         exit when No (Alternative);
                      end loop;
                   end;
