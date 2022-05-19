@@ -1,6 +1,5 @@
 exceptions.ads:9:24: info: initialization of "My_Exceptions.State" proved, in instantiation at my_exception_runtime.ads:12
 exceptions.ads:10:05: info: flow dependencies proved, in instantiation at my_exception_runtime.ads:12
-exceptions.ads:11:31: high: "My_Exceptions.State" is not initialized, in instantiation at my_exception_runtime.ads:12
 main.adb:5:12: info: precondition of main program proved (CVC5: 1 VC)
 main.adb:11:05: info: initialization of "Result" proved
 main.adb:13:11: info: precondition proved (CVC5: 2 VC)
