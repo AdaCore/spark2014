@@ -1,3 +1,6 @@
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
+
 package body Search_Trees with SPARK_Mode is
 
    ------------
@@ -28,7 +31,7 @@ package body Search_Trees with SPARK_Mode is
          then
             S := Add (S, T.Values (J));
          end if;
-         pragma Loop_Invariant (Length (S) <= J);
+         pragma Loop_Invariant (Length (S) <= To_Big_Integer (Integer (J)));
          pragma Loop_Invariant
            (for all I in 1 .. J =>
               (if Model (T.Struct, T.Root) (I).K then Contains (S, T.Values (I))));

@@ -1,3 +1,5 @@
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Containers.Functional_Sets;
 
 package body Binary_Trees with SPARK_Mode is
@@ -15,13 +17,13 @@ package body Binary_Trees with SPARK_Mode is
      Ghost,
      Post =>
        (for all I in Index_Type => I_Set.Contains (All_Indexes'Result, I))
-          and I_Set.Length (All_Indexes'Result) = Max
+          and I_Set.Length (All_Indexes'Result) = To_Big_Integer (Tree_Model.Max)
    is
       use I_Set;
       S : I_Set.Set;
    begin
       for I in Index_Type loop
-         pragma Loop_Invariant (Length (S) = I - 1);
+         pragma Loop_Invariant (Length (S) = To_Big_Integer (Integer (I - 1)));
          pragma Loop_Invariant
            (for all J in 1 .. I - 1 => Contains (S, J));
          pragma Loop_Invariant (for all J of S => J < I);
@@ -38,7 +40,7 @@ package body Binary_Trees with SPARK_Mode is
 
       --  Cells that are not allocated yet have default values
 
-     ((for all I in F.S + 1 .. Max => F.C (I) = (Empty, Empty, Empty, Top))
+     ((for all I in F.S + 1 .. Tree_Model.Max => F.C (I) = (Empty, Empty, Empty, Top))
 
       --  Parent and children of all cells are allocated or empty
 
@@ -205,7 +207,8 @@ package body Binary_Trees with SPARK_Mode is
          --  most.
          pragma Loop_Invariant
            (for all J in Index_Type =>
-              Length (R (J).A) <= Max - Length (Unseen));
+              To_Big_Integer (Integer (Length (R (J).A)))
+                 <= To_Big_Integer (Tree_Model.Max) - Length (Unseen));
 
          --  Nodes that have not been handled yet are either not in the tree or
          --  in the ToDo list.
