@@ -692,7 +692,8 @@ is used purely for static analysis purposes and is not executed.
 
 20. A ``global_item`` shall not denote a constant object other than a formal
     parameter [of an enclosing subprogram] of mode **in**, a generic formal
-    object of mode **in**, or a *constant with variable inputs*.
+    object of mode **in**, a constant of (named or anonymous)
+    access-to-variable type, or a *constant with variable inputs*.
 
     If a ``global_item`` denotes a generic formal object of mode **in**,
     then the corresponding ``global_item`` in an instance of the generic

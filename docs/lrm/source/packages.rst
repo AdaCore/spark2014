@@ -58,8 +58,9 @@ contain fields which are themselves records.
 
 1. The visible state of a package P consists of:
 
-   * any variables, or *constants with variable inputs*, declared immediately
-     within the visible part of package P; and
+   * any variables, stand-alone constants of access-to-variable type, or
+     *constants with variable inputs*, declared immediately within the visible
+     part of package P; and
 
    * the state abstractions declared by the Abstract_State aspect specification
      (if any) of package P; and
@@ -69,8 +70,9 @@ contain fields which are themselves records.
 
 2. The hidden state of a package P consists of:
 
-   * any variables, or *constants with variable inputs*, declared immediately
-     in the private part or body of P; and
+   * any variables, stand-alone constants of named access-to-variable type, or
+     *constants with variable inputs*, declared immediately in the private part
+     or body of P; and
 
    * the visible state of any packages declared immediately within
      the private part or body of P.
