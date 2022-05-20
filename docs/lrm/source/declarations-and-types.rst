@@ -754,7 +754,7 @@ The following operations are said to be *move* operations:
   assignments to or from the parameter during the call.]
 
 - An assignment operation where the target is part of an aggregate of an owning
-  type.
+  type, unless this assignment occurs as part of an assertion expression.
 
 [Redundant: Passing a parameter by reference is not a move operation.]
 
