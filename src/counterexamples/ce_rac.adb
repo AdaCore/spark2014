@@ -27,6 +27,7 @@ with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Containers;          use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Indefinite_Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
 with Ada.Text_IO;             use Ada.Text_IO;
@@ -3246,6 +3247,40 @@ package body CE_RAC is
                Res := RAC_Expr (Expression (Alternative));
             end;
 
+         when N_Slice =>
+            declare
+               Base_Array : constant Value_Type := RAC_Expr (Prefix (N));
+               Idx_Range  : constant Node_Id := Get_Range (Discrete_Range (N));
+               Low        : constant Big_Integer :=
+                 Value_Enum_Integer (RAC_Expr (Low_Bound (Idx_Range)));
+               High       : constant Big_Integer :=
+                 Value_Enum_Integer (RAC_Expr (High_Bound (Idx_Range)));
+            begin
+               Res := (K            => Array_K,
+                       AST_Ty       => Ty,
+                       First_Attr   => (Present => True, Content => Low),
+                       Last_Attr    => (Present => True, Content => High),
+                       Array_Values => Big_Integer_To_Value_Maps.Empty,
+                       Array_Others => Base_Array.Array_Others);
+
+               if Low > High then
+                  return Res;
+
+               else
+                  for C in Base_Array.Array_Values.Iterate loop
+                     declare
+                        K : constant Big_Integer :=
+                          Big_Integer_To_Value_Maps.Key (C);
+                     begin
+                        if Low <= K and then K <= High then
+                           Res.Array_Values.Insert
+                             (K, Big_Integer_To_Value_Maps.Element (C));
+                        end if;
+                     end;
+                  end loop;
+               end if;
+            end;
+
          when others =>
             RAC_Unsupported ("RAC_Expr", N);
       end case;
@@ -3434,6 +3469,60 @@ package body CE_RAC is
    -------------------
 
    procedure RAC_Statement (N : Node_Id) is
+
+      procedure Assignment_To_Slice (A, RHS : Value_Access);
+      --  Fill the part of the array designated by the slice bounds with the
+      --  elements of RHS.
+
+      -------------------------
+      -- Assignment_To_Slice --
+      -------------------------
+
+      procedure Assignment_To_Slice (A, RHS : Value_Access)
+      is
+         package Idx_Set is new
+           Indefinite_Ordered_Sets
+             (Element_Type => Big_Integer);
+
+         To_Update :          Idx_Set.Set;
+         Curr      :          Big_Integer  := RHS.First_Attr.Content;
+         Last      : constant Big_Integer  := RHS.Last_Attr.Content;
+      begin
+
+         --  For the indices included in the slice's range, update the values
+         --  of the elements which already have a specified value in
+         --  Array_Values.
+
+         while Curr <= Last loop
+            To_Update.Insert (Curr);
+            Curr := Curr + 1;
+         end loop;
+
+         for C in RHS.Array_Values.Iterate loop
+            declare
+               K : constant Big_Integer :=
+                 Big_Integer_To_Value_Maps.Key (C);
+               E : constant Value_Access :=
+                 Big_Integer_To_Value_Maps.Element (C);
+            begin
+               if E /= A.Array_Others then
+                  A.Array_Values.Include (K, new Value_Type'(Copy (E.all)));
+               end if;
+
+               To_Update.Delete (K);
+            end;
+         end loop;
+
+         if RHS.Array_Others /= A.Array_Others
+           and then To_Update.Length > 0
+         then
+            for C in To_Update.Iterate loop
+               A.Array_Values.Include
+                 (To_Update (C), new Value_Type'(Copy (RHS.Array_Others.all)));
+            end loop;
+         end if;
+      end Assignment_To_Slice;
+
    begin
       case Nkind (N) is
          when N_Ignored_In_SPARK =>
@@ -3562,6 +3651,10 @@ package body CE_RAC is
                            A.Array_Values.Include (I, RHS);
                         end if;
                      end;
+
+                  when N_Slice =>
+                     Assignment_To_Slice (RAC_Expr_LHS (Prefix (Name (N))),
+                                          RHS);
 
                   when others =>
                      RAC_Unsupported ("N_Assignment_Statement", Name (N));

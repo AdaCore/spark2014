@@ -28,6 +28,7 @@ do_checks.adb:118:30: medium: range check might fail [reason for check: slice bo
 do_checks.adb:118:52: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5]
 do_checks.adb:125:30: info: range check proved (CVC5: 4 VC)
 do_checks.adb:125:52: info: range check proved (CVC5: 2 VC)
+do_checks.adb:125:60: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when B'Last = 0 and Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:125:60: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:136:25: medium: range check might fail
 do_checks.adb:149:25: info: range check proved (CVC5: 2 VC)
