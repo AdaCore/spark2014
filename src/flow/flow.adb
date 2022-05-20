@@ -107,7 +107,7 @@ package body Flow is
    --  * classwide contracts conform to the legality rules laid out in SRM
    --  6.1.6.
    --  * global contracts do not use constants without variable input as per
-   --  SRM 6.1.4(15)
+   --  SRM 6.1.4(16)
    --  We do this for requested subprograms from the current unit whose spec
    --  has SPARK_Mode => On, regardless of the SPARK_Mode on their bodies.
 
