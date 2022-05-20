@@ -1,0 +1,13 @@
+project Test is
+
+   for Source_Dirs use (".", "1_set_all_to_zero", "2_linear_search", "3_pointer_based_maps", "4_route_shift", "5_binary_search_trees");
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
+   package Compiler is
+      for Switches ("ada") use ("-g", "-gnat2020");
+   end Compiler;
+
+end Test;
