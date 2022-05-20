@@ -63,8 +63,11 @@ package body SPARK_Util is
       Decls       : List_Id := No_List;
       End_Stmt    : Node_Id := Empty) return Boolean;
    --  Return True if Decls & Stmts contains no updates to a deep part of
-   --  Variable. Stop before the statement End_Stmt if any. If a deep update is
-   --  found, Explanation is set.
+   --  Variable. Stop before the statement End_Stmt if any. If an update is
+   --  found, check that it is not followed by a return statement in the
+   --  sequence of statement. If it is, the update is in a path which does not
+   --  lead to the next iteration or the next recursive call, so it can be
+   --  ignored. If a deep update is found, Explanation is set.
 
    Goto_Found : exception;
 
@@ -3402,18 +3405,41 @@ package body SPARK_Util is
                        and then Cur_Variables.Contains (Root)
                        and then Is_Deep (Etype (Lvalue))
                      then
+
+                        --  Search for return statements in the sequence of
+                        --  statements following N. If one is found, we do
+                        --  not care about the update.
+                        --  We could consider doing this optimization for
+                        --  exit statements of the corresponding loop when
+                        --  checking loop variants, and for statements
+                        --  following the current block, if statement, or
+                        --  case statement too.
+
                         declare
-                           Through_Borrow : constant String :=
-                             (if Get_Root_Object (Lvalue) = Variable
-                              then ""
-                              else " through local borrower """
-                              & Source_Name (Root) & '"');
+                           Following : Node_Id := N;
                         begin
-                           Explanation := To_Unbounded_String
-                             ("the value designated by """)
-                             & Source_Name (Variable)
-                             & """ might be updated" & Through_Borrow;
-                           return False;
+                           loop
+                              Next (Following);
+                              if No (Following) then
+                                 declare
+                                    Through_Borrow : constant String :=
+                                      (if Get_Root_Object (Lvalue) = Variable
+                                       then ""
+                                       else " through local borrower """
+                                       & Source_Name (Root) & '"');
+                                 begin
+                                    Explanation := To_Unbounded_String
+                                      ("the value designated by """)
+                                      & Source_Name (Variable)
+                                      & """ might be updated" & Through_Borrow;
+                                    return False;
+                                 end;
+                              end if;
+                              exit when Nkind (Following) in
+                                    N_Simple_Return_Statement
+                                  | N_Extended_Return_Statement
+                                  | N_Raise_Statement;
+                           end loop;
                         end;
                      end if;
                   end;
