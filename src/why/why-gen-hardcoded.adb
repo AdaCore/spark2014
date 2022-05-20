@@ -46,6 +46,7 @@ with Why.Types;           use Why.Types;
 package body Why.Gen.Hardcoded is
    package BIN renames Big_Integers_Names; use BIN;
    package BRN renames Big_Reals_Names;    use BRN;
+   package SSEN renames System_Storage_Elements_Names; use SSEN;
 
    function Uint_From_String (Str_Value : String) return Uint;
    --  Read an integer value from a string. Might raise Constraint_Error.
@@ -68,7 +69,7 @@ package body Why.Gen.Hardcoded is
 
          --  No types are declared in Cut_Operations
 
-         when Cut_Operations =>
+         when Cut_Operations | System_Storage_Elements  =>
             raise Program_Error;
       end case;
 
@@ -120,8 +121,9 @@ package body Why.Gen.Hardcoded is
 
          --  No types are declared in Cut_Operations
 
-         when Cut_Operations =>
+         when Cut_Operations | System_Storage_Elements =>
             raise Program_Error;
+
       end case;
    end Hardcoded_Equality_Symbol;
 
@@ -752,6 +754,38 @@ package body Why.Gen.Hardcoded is
                   Typ      => Type_Of_Node (Etype (Subp)));
             end if;
          end;
+
+      elsif Is_From_Hardcoded_Unit (Subp, System_Storage_Elements) then
+         if Name_String = SSEN.To_Integer
+           or else Name_String = SSEN.To_Address
+         then
+            T := Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                           Domain   => Domain,
+                                           Expr     => Args (1),
+                                           To       =>
+                                             Type_Of_Node (Etype (Subp)));
+         else
+            declare
+               Arg_1 : constant Node_Id := First_Formal (Subp);
+               Arg_1_Ty : constant Type_Kind_Id := Retysp (Etype (Arg_1));
+               Arg_2_Ty : constant Type_Kind_Id :=
+                 Retysp (Etype (Next_Formal (Arg_1)));
+            begin
+               pragma Assert (Args'Length = 2);
+               T := New_Binary_Op_Expr
+                 (Op          =>
+                    (if Name_String = SSEN.Add then N_Op_Add
+                     elsif Name_String = SSEN.Subtract then N_Op_Subtract
+                     else N_Op_Mod),
+                  Left        => Args (Args'First),
+                  Right       => Args (Args'Last),
+                  Left_Type   => Arg_1_Ty,
+                  Right_Type  => Arg_2_Ty,
+                  Return_Type => Retysp (Etype (Subp)),
+                  Domain      => Domain,
+                  Ada_Node    => Ada_Node);
+            end;
+         end if;
       else
          raise Program_Error;
       end if;

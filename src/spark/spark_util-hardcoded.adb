@@ -97,6 +97,9 @@ package body SPARK_Util.Hardcoded is
                                     | "float_conversions";
          when Cut_Operations =>
             return False;
+
+         when System_Storage_Elements =>
+            return False;
       end case;
    end Is_From_Hardcoded_Generic_Unit;
 
@@ -183,6 +186,19 @@ package body SPARK_Util.Hardcoded is
             end if;
 
             return S_Ptr = Standard_Standard;
+
+         when System_Storage_Elements =>
+            if Get_Name_String (Chars (S_Ptr)) /= "storage_elements" then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Get_Name_String (Chars (S_Ptr)) /= "system" then
+               return False;
+            end if;
+
+            return Scope (S_Ptr) = Standard_Standard;
       end case;
 
    end Is_From_Hardcoded_Unit;
@@ -195,6 +211,7 @@ package body SPARK_Util.Hardcoded is
       package BIN renames Big_Integers_Names; use BIN;
       package BRN renames Big_Reals_Names; use BRN;
       package COpN renames Cut_Operations_Names; use COpN;
+      package SSEN renames System_Storage_Elements_Names;
    begin
 
       if Is_From_Hardcoded_Unit (E, Big_Integers) then
@@ -235,6 +252,12 @@ package body SPARK_Util.Hardcoded is
 
       elsif Is_From_Hardcoded_Unit (E, Cut_Operations) then
          return Get_Name_String (Chars (E)) in COpN.By | COpN.So;
+      elsif Is_From_Hardcoded_Unit (E, System_Storage_Elements) then
+         return Get_Name_String (Chars (E)) in SSEN.To_Address
+                                             | SSEN.To_Integer
+                                             | SSEN.Add
+                                             | SSEN.Subtract
+                                             | SSEN.Modulus;
       end if;
 
       return False;

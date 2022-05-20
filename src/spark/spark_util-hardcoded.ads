@@ -25,7 +25,12 @@
 
 package SPARK_Util.Hardcoded is
 
-   type Hardcoded_Enum is (Big_Integers, Big_Reals, Cut_Operations);
+   type Hardcoded_Enum is
+     (Big_Integers,
+      Big_Reals,
+      Cut_Operations,
+      System_Storage_Elements
+     );
    --  Enum type of the hardcoded units
 
    package Big_Integers_Names is
@@ -63,7 +68,21 @@ package SPARK_Util.Hardcoded is
    --  In_Range are translated using the normal mechanism.
    --  Conversions to a fixed or floating point type from a big real are also
    --  left uninterpreted. However, because they have a precondition featuring
-   --  a raise expression, they are not currently supported in SPARK.
+   --  a raise expression, they are not currently supported in SPARK.\
+
+   package System_Storage_Elements_Names is
+      To_Address : constant String := "to_address";
+      To_Integer : constant String := "to_integer";
+      Add        : constant String := "Oadd";
+      Subtract   : constant String := "Osubtract";
+      Modulus    : constant String := "Omod";
+   end System_Storage_Elements_Names;
+   --  Names of entities that will be considered hardcoded in the
+   --  System.Storage_Elements unit.
+   --  Note that both "+" and "-" have two versions with different argument and
+   --  return types (all versions are binary operations). But it turns out the
+   --  handling of the homonyms is identical, so we don't need to distinguish
+   --  them.
 
    package Cut_Operations_Names is
       By : constant String := "by";
