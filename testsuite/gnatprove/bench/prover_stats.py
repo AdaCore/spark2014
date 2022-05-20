@@ -18,7 +18,7 @@ time and steps in machine-parsable format (JSON or CSV)."""
 
 
 class Prover:
-    status_reg = re.compile("unsat|sat|unknown|timeout")
+    status_reg = re.compile("(unsat|sat|unknown|timeout)$", re.MULTILINE)
     pattern = "*.smt2"
 
     def __init__(self):
@@ -342,7 +342,7 @@ def send_request(fd, cmd, timeout):
     global id_num
     id_num = id_num + 1
     cmdstr = ";".join(cmd)
-    s = f"run;{id_num};{timeout};0;{cmdstr}\n"
+    s = f"run;{id_num};{timeout};2000;{cmdstr}\n"
     fd.sendall(s.encode("utf-8"))
     return id_num
 
