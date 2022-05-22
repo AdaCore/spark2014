@@ -8,9 +8,9 @@
 	url = ../alt-ergo.git
 	ignore = dirty
         branch = master
-[submodule "cvc4"]
-	path = cvc4
-	url = ../cvc4.git
+[submodule "cvc5"]
+	path = cvc5
+	url = ../cvc5.git
 	ignore = dirty
         branch = master
 [submodule "z3"]
