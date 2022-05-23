@@ -58,7 +58,6 @@ with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;
 with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                 use Gnat2Why.Tables;
 with Gnat2Why.Types;                  use Gnat2Why.Types;
@@ -95,6 +94,7 @@ with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.To_Json;               use Why.Atree.To_Json;
 with Why.Atree.Tables;                use Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
+with Why.Gen.Expr;                    use Why.Gen.Expr;
 with Why.Gen.Names;
 with Why.Inter;                       use Why.Inter;
 
@@ -628,7 +628,7 @@ package body Gnat2Why.Driver is
       --  Initialize and check statically (in ghost code) tabled values for the
       --  nth roots of the modulus of machine integers.
 
-      Gnat2Why.Expr.Initialize_Tables_Nth_Roots;
+      Why.Gen.Expr.Initialize_Tables_Nth_Roots;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.

@@ -41,6 +41,12 @@ with Why.Types;                 use Why.Types;
 
 package Why.Gen.Expr is
 
+   procedure Initialize_Tables_Nth_Roots;
+   --  This initializing procedure is called after initializing the module
+   --  Uintp to fill in the tabled values for nth roots of the modulus of
+   --  machine integers, and check in ghost code that the tabled values are
+   --  correct.
+
    function Is_False_Boolean (P : W_Expr_Id) return Boolean;
    --  Check if the given program is the program "false"
 
@@ -656,6 +662,104 @@ package Why.Gen.Expr is
    --  @param Params The parameters used for the transformation of bound
    --  expressions.
    --  @return The translated type attribute into Why3.
+
+   function New_Binary_Op_Expr
+     (Op          : N_Binary_Op;
+      Left        : W_Expr_Id;
+      Right       : W_Expr_Id;
+      Left_Type   : Type_Kind_Id;
+      Right_Type  : Type_Kind_Id;
+      Return_Type : Type_Kind_Id;
+      Domain      : EW_Domain;
+      Ada_Node    : Node_Id := Empty)
+      return W_Expr_Id
+   with Pre => Op in N_Op_Add .. N_Op_Rem;
+   --  @param Op arithmetic binary operator
+   --  @param Left why expression for the left hand side
+   --  @param Right why expression for the right hand side
+   --  @param Left_Type Ada Type of the left hand side
+   --  @param Right_Type Ada Type of the right hand side
+   --  @param Return_Type Ada Type of the result of the operation
+   --  @param Domain domain of the operation
+   --  @param Ada_Node node associated to the operation
+   --  @return a Why3 expression for Left Op Right
+
+   function Transform_Non_Binary_Modular_Operation
+     (Ada_Node   : Node_Id;
+      Ada_Type   : Type_Kind_Id;
+      Domain     : EW_Domain;
+      Op         : N_Op;
+      Left_Opnd  : W_Expr_Id := Why_Empty;
+      Right_Opnd : W_Expr_Id;
+      Rep_Type   : W_Type_Id;
+      Modulus    : Uint)
+      return W_Expr_Id
+   with
+     --  GNAT does not support non-binary modulus greater than 2**32, we can
+     --  use that limit to simplify treatment here.
+     Pre => Modulus < UI_Expon (2, 32);
+   --  For non binary modular types, it is incorrect to apply the arithmetic
+   --  operations - + * on the base type and then apply the modulus on the
+   --  result. The special treatment needed in this case is implemented here.
+   --
+   --  @param Ada_Type type of the Ada node, used to retrieve type Size in bits
+   --  @param Op the operation, should be either Minus, Add, Sub or Mul
+   --  @param Left_Opnd the left operand of type [Rep_Type], should be empty if
+   --     Op is N_Op_Minus.
+   --  @param Right_Opnd the right operand of type [Rep_Type]
+   --  @param Rep_Type the representation type in which the operation is done.
+   --     Both operand should already be converted to this type.
+   --  @param Modulus the modulus of the type in which the operation is done.
+   --     It should be a non power of two smaller than 2 ** 32.
+   --  @return the Why3 expression corresponding to the operation with
+   --     modulus applied. One should not call Apply_Modulus after
+   --     calling this function.
+
+   function Check_No_Wrap_Around_Modular_Operation
+     (Ada_Node   : Node_Id;
+      Ada_Type   : Type_Kind_Id;
+      Op         : N_Op;
+      Left_Opnd  : W_Expr_Id := Why_Empty;
+      Right_Opnd : W_Expr_Id;
+      Rep_Type   : W_Type_Id;
+      Modulus    : Uint)
+      return W_Prog_Id
+   with Pre => Present (Ada_Node)
+     and then Op in N_Op_Minus
+                  | N_Op_Add
+                  | N_Op_Subtract
+                  | N_Op_Multiply
+                  | N_Op_Expon;
+   --  For modular type Ada_Type with annotation No_Wrap_Around, a check must
+   --  be emitted on unary operation - and binary operations - + * **
+   --
+   --  @param Ada_Node the node to which the check should be attached
+   --  @param Ada_Type type of the Ada node, used to retrieve type Size in bits
+   --  @param Op the operation, should be either Minus, Add, Sub, Mul or Expon
+   --  @param Left_Opnd the left operand of type [Rep_Type], should be empty if
+   --     Op is N_Op_Minus.
+   --  @param Right_Opnd the right operand of type [Rep_Type] for Add, Sub, Mul
+   --     or type int for Expon
+   --  @param Rep_Type the representation type in which the operation is done.
+   --     Both operand should already be converted to this type for Add, Sub,
+   --     Mul, only the first operand for Expon while the second is of type int
+   --  @param Modulus the modulus of the type in which the operation is done
+   --  @return the Why3 check expression
+
+   function Apply_Modulus
+     (Op     : N_Op;
+      E      : Type_Kind_Id;
+      T      : W_Expr_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id;
+   --  If E is a modular type, apply a modulus on T, else return T unchanged.
+   --  Beware that for additions, substractions and multiplications on a
+   --  modular type with a modulus that is not a power of two, it is not
+   --  correct to use this function. Instead, one should directly use
+   --  "Transform_Non_Binary_Modular_Operation" to deal with the whole
+   --  transformation.
+   --  Optimization: if E is a modular type, and Op is a division, do not add
+   --  the modulus operation.
 
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression
