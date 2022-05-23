@@ -17,19 +17,19 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="1"><result status="valid" steps="38552"/></proof>
+  <proof prover="1"><result status="valid" steps="38575"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="steplimitexceeded"/></proof>
-  <proof prover="1"><result status="unknown" steps="39352"/></proof>
-  <proof prover="2"><result status="unknown" steps="35600"/></proof>
+  <proof prover="1"><result status="unknown" steps="39376"/></proof>
+  <proof prover="2"><result status="unknown" steps="35322"/></proof>
   <proof prover="4"><result status="unknown" steps="224"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="1"><result status="valid" steps="39252"/></proof>
+  <proof prover="1"><result status="valid" steps="39348"/></proof>
   </goal>
  </transf>
  </goal>

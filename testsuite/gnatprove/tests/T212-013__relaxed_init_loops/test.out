@@ -101,7 +101,7 @@ test_loops_2.adb:85:17: medium: "X.G1" might not be initialized
 test_loops_2.adb:85:18: info: initialization check proved (CVC5: 3 VC; Trivial: 5 VC)
 test_loops_2.adb:86:27: info: cannot unroll loop (too many loop iterations)
 test_loops_2.adb:87:10: info: precondition proved (CVC5: 2 VC)
-test_loops_2.adb:87:21: info: initialization check proved (Trivial: 5 VC; Z3: 3 VC)
+test_loops_2.adb:87:21: info: initialization check proved (CVC5: 1 VC; Trivial: 5 VC; Z3: 2 VC)
 test_loops_2.adb:89:35: info: cannot unroll loop (too many loop iterations)
 test_loops_2.adb:90:16: info: index check proved (CVC5: 2 VC)
 test_loops_2.adb:92:27: info: cannot unroll loop (too many loop iterations)

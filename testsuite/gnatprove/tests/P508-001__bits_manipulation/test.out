@@ -47,7 +47,7 @@ bits_manipulation-functions.adb:35:07: info: initialization of "Result" proved, 
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:38:22: medium: assertion might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -107,7 +107,7 @@ bits_manipulation-functions.adb:74:26: info: precondition proved (CVC5: 1 VC), i
 bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:82:14: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
