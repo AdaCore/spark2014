@@ -85,7 +85,7 @@ textio-get_line.adb:239:23: info: overflow check proved (CVC5: 2 VC)
 textio-get_line.adb:240:16: info: index check proved (CVC5: 2 VC)
 textio-get_line.adb:240:40: info: range check proved (CVC5: 2 VC)
 textio.adb:10:38: info: initialization of "Ch" proved
-textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 textio.adb:12:14: info: postcondition proved (CVC5: 6 VC)
 textio.adb:35:10: info: raise statement or expression justified unreachable
 textio.adb:52:06: info: complete contract cases proved (CVC5: 1 VC)

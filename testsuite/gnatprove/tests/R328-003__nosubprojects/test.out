@@ -1,2 +1,2 @@
-c.adb:4:34: high: "a.state" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(14))
+c.adb:4:34: high: "a.state" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(15))
 c.adb:7:22: medium: assertion might fail [possible fix: call at line 6 should mention A.State in a postcondition]

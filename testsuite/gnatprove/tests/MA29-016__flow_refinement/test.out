@@ -68,7 +68,7 @@ levels.adb:24:12: info: flow dependencies proved
 levels.adb:36:45: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:36:57: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:37:27: info: refined post proved (CVC5: 1 VC)
-levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 levels.adb:45:27: medium: refined postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_0 or turning it into an expression function]
 levels.adb:45:42: medium: overflow check might fail, cannot prove upper bound for Read_Partial_0 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_0 or turning it into an expression function]
 levels.adb:52:23: info: initialization of "A" proved
