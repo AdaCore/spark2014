@@ -85,7 +85,7 @@ binary_search.adb:147:16: info: loop invariant initialization proved (CVC5: 1 VC
 binary_search.adb:147:16: info: loop invariant preservation proved (CVC5: 1 VC)
 binary_search.adb:147:16: info: precondition proved (Trivial: 2 VC)
 binary_search.adb:149:16: info: loop invariant initialization proved (CVC5: 1 VC)
-binary_search.adb:149:16: info: loop invariant preservation proved (CVC5: 1 VC)
+binary_search.adb:149:16: info: loop invariant preservation proved (Z3: 1 VC)
 binary_search.adb:149:16: info: precondition proved (Trivial: 2 VC)
 binary_search.adb:154:16: info: loop invariant initialization proved (CVC5: 1 VC)
 binary_search.adb:154:16: info: loop invariant preservation proved (CVC5: 1 VC)

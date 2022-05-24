@@ -270,7 +270,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1" timelimit="5"><result status="valid" steps="242024"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="5"><result status="unknown" steps="3169"/></proof>
+  <proof prover="5"><result status="timeout"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.84.0">
    </goal>
@@ -563,11 +563,6 @@
   <proof prover="1" timelimit="5"><result status="valid" steps="218127"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="5"><result status="timeout"/></proof>
-  <transf name="introduce_premises" >
-   <goal name="def&#39;vc.179.0">
-   <proof prover="4"><result status="timeout" steps="39043"/></proof>
-   </goal>
-  </transf>
   </goal>
   <goal name="def&#39;vc.180" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
@@ -581,7 +576,15 @@
   <proof prover="2"><result status="valid" steps="1797337"/></proof>
   </goal>
   <goal name="def&#39;vc.182" proved="true">
-  <proof prover="1"><result status="valid" steps="161789"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1" timelimit="5"><result status="valid" steps="161789"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="5"><result status="timeout"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="def&#39;vc.182.0">
+   <proof prover="4"><result status="timeout"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="def&#39;vc.183" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
