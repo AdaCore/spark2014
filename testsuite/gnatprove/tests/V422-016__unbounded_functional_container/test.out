@@ -31,8 +31,6 @@ a-cfinse.ads:274:28: info: predicate check proved (Trivial: 1 VC), in instantiat
 a-cfinse.ads:274:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
 a-cfinse.ads:298:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
 a-cfinse.ads:298:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-infinite_sequence.adb:1:06: warning: "Ada.Containers.Functional_Infinite_Sequences" is an internal GNAT unit [-gnatwi]
-infinite_sequence.adb:1:06: warning: use of this unit is non-portable and version-dependent [-gnatwi]
 infinite_sequence.adb:17:19: info: assertion proved (CVC5: 1 VC)
 infinite_sequence.adb:17:19: info: predicate check proved (Trivial: 1 VC)
 infinite_sequence.adb:17:33: info: predicate check proved (Trivial: 1 VC)
@@ -93,8 +91,6 @@ infinite_sequence.adb:87:22: info: assertion proved (CVC5: 1 VC)
 infinite_sequence.adb:87:26: info: precondition proved (CVC5: 2 VC)
 infinite_sequence.adb:87:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequence.adb:87:51: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-infinite_sequence.adb:1:06: warning: "Ada.Containers.Functional_Infinite_Sequences" is an internal GNAT unit [-gnatwi]
-infinite_sequence.adb:1:06: warning: use of this unit is non-portable and version-dependent [-gnatwi]
 infinite_sequence.adb:94:07: info: initialization of "S3" proved
 infinite_sequence.adb:95:07: info: initialization of "S4" proved
 infinite_sequence.adb:101:13: info: precondition proved (CVC5: 1 VC)
