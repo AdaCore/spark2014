@@ -19,7 +19,7 @@
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="1"><result status="valid" steps="55728"/></proof>
+  <proof prover="1"><result status="valid" steps="55904"/></proof>
   </goal>
  </transf>
  </goal>
