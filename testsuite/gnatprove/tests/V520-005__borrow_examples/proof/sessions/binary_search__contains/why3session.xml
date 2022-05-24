@@ -29,13 +29,13 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="3942"/></proof>
+  <proof prover="0"><result status="valid" steps="3639"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="4052"/></proof>
+  <proof prover="0"><result status="valid" steps="3749"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="4062"/></proof>
+  <proof prover="0"><result status="valid" steps="3759"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="valid" steps="2061"/></proof>
@@ -62,13 +62,13 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="0"><result status="valid" steps="13874"/></proof>
+  <proof prover="0"><result status="valid" steps="13364"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="36823"/></proof>
+  <proof prover="0"><result status="valid" steps="72549"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="0"><result status="valid" steps="11367"/></proof>
+  <proof prover="0"><result status="valid" steps="10967"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -77,10 +77,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
-  <proof prover="0"><result status="valid" steps="8372"/></proof>
+  <proof prover="0"><result status="valid" steps="8164"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0"><result status="valid" steps="102129"/></proof>
+  <proof prover="0"><result status="valid" steps="84302"/></proof>
   </goal>
  </transf>
  </goal>

@@ -13,7 +13,7 @@
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Ada.Containers.Functional_Vectors; -- use infinite sequences
+with Ada.Containers.Functional_Infinite_Sequences;
 with Big_Intervals; use Big_Intervals;
 package Test_Route with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
@@ -50,18 +50,16 @@ package Test_Route with SPARK_Mode is
      Pre => N <= Length (R);
    --  Value of the X coordinate of the point at position N in Route
 
-   package Int_Seqs is new Ada.Containers.Functional_Vectors
-     (Index_Type   => Positive,
-      Element_Type => Integer);
+   package Int_Seqs is new Ada.Containers.Functional_Infinite_Sequences
+     (Element_Type => Integer);
    type Int_Seq is new Int_Seqs.Sequence;
    --  Sequence of Integers to be used to model the X coordinates of elements
    --  of a route.
 
    function All_X (R : access constant Route) return Int_Seq with
-     Pre  => Length (R) <= To_Big_Integer (Integer'Last),
-     Post => To_Big_Integer (Last (All_X'Result)) = Length (R)
-     and (for all N in 1 .. Last (All_X'Result) =>
-              Get (All_X'Result, N) = Nth_X (R, To_Big_Integer (N)));
+     Post => Last (All_X'Result) = Length (R)
+     and (for all N in Interval'(1, Last (All_X'Result)) =>
+              Get (All_X'Result, N) = Nth_X (R, N));
    --  Gets all the X coordinates of points of a route
 
    function At_End
@@ -111,6 +109,6 @@ package Test_Route with SPARK_Mode is
      Post => Length (R) = Length (R)'Old
      and then Nth_X (R, N) = Nth_X (R, N)'Old + S
      and then (for all I in Interval'(1, Length (R)) =>
-                 (if I /= N then Nth_X (R, I) = Get (All_X (R)'Old, To_Integer (I))));
+                 (if I /= N then Nth_X (R, I) = Get (All_X (R)'Old, I)));
 
 end Test_Route;

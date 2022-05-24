@@ -13,9 +13,9 @@ package body Test_Route with SPARK_Mode is
          while X /= null loop
             pragma Loop_Variant (Structural => X);
             pragma Loop_Invariant (C = Length (R) - Length (X));
-            pragma Loop_Invariant (To_Big_Integer (Last (A)) = C);
+            pragma Loop_Invariant (Length (A) = C);
             pragma Loop_Invariant
-              (for all I in 1 .. Last (A) => Get (A, I) = Nth_X (R, To_Big_Integer (I)));
+              (for all I in Interval'(1, Length (A)) => Get (A, I) = Nth_X (R, I));
             pragma Loop_Invariant
               (for all I in Interval'(C + 1, Length (R)) => Nth_X (X, I - C) = Nth_X (R, I));
             A := Add (A, X.Current.X);

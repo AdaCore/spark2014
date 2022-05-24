@@ -17,10 +17,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="4457"/></proof>
+  <proof prover="0"><result status="valid" steps="4224"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="5290"/></proof>
+  <proof prover="0"><result status="valid" steps="5043"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="3010"/></proof>
@@ -41,10 +41,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="16324"/></proof>
+  <proof prover="0"><result status="valid" steps="16228"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="21278"/></proof>
+  <proof prover="0"><result status="valid" steps="20501"/></proof>
   </goal>
  </transf>
  </goal>

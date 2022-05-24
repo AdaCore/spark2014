@@ -50,10 +50,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="52284"/></proof>
+  <proof prover="0"><result status="valid" steps="52036"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="22054"/></proof>
+  <proof prover="0"><result status="valid" steps="22002"/></proof>
   </goal>
  </transf>
  </goal>
