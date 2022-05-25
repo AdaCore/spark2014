@@ -2154,15 +2154,13 @@ otherwise arise in the treatment of these hidden components.
 
 .. index:: Default_Initial_Condition
 
-Default_Initial_Condition Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Default Initial Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Default_Initial_Condition aspect is introduced by an aspect_specification
-where the aspect_mark is Default_Initial_Condition. The aspect may be
-specified only as part of the aspect_specification of a
-``private_type_declaration``.
-The ``aspect_definition``, if any, of such an aspect specification
-shall be either a null literal or a *Boolean_*\ ``expression``.
+The Default_Initial_Condition aspect may be specified only as part of the
+aspect_specification of a ``private_type_declaration``.  The
+``aspect_definition``, if any, of such an aspect specification shall be either
+a null literal or a *Boolean_*\ ``expression``.
 
 The ``aspect_definition`` may be omitted; this is semantically
 equivalent to specifying a static *Boolean_*\ ``expression`` having the
@@ -2171,44 +2169,12 @@ value True.
 An aspect specification of "null" indicates that the partial view of the
 type does not define full default initialization (see :ref:`Declarations`).
 [The full view of the type might or might not define full default
-initialization.]
+initialization.] This case has no associated dynamic semantics.
 
 Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
 that, in the partial view of the type, every part whose type is not
 annotated with the Relaxed_Initialization aspect defines full default
-initialization.
-
-Unlike the null literal case, this case has associated dynamic semantics.
-The *Boolean_*\ ``expression`` (which might typically mention the current
-instance of the type, although this is not required) is an assertion
-which is checked (at run time) after any object of the given type (or of
-any descendant of the given type for which the specified aspect is
-inherited and not overridden), is "initialized by
-default" (see Ada RM 3.3.1). [Note that an imported object is not
-"initialized by default" (see Ada RM B.3).]
-
-The *Boolean_*\ ``expression``, if any, causes freezing in the
-same way as the ``default_expression`` of a ``component_declaration``.
-[If the expresion is non-static, this means that the expression does not
-cause freezing where it occurs, but instead when an object of the type
-is initialized by default.]
-
-Default_Initial_Condition assertion is an assertion aspect, which means
-that it may be used in an Assertion_Policy pragma.
-
-Within the Boolean expression of the Default_Initial_Condition aspect of
-a tagged type T, a name that denotes the current instance of the
-tagged type is interpreted as though it had a (notional) type NT
-that is a formal derived type whose ancestor type is T, with
-directly visible primitive operations. [This name resolution rule
-is similar to the "notional formal derived type" name resolution
-rule introduced in Ada RM 6.1.1 for certain subexpressions of
-class-wide precondition and postcondition expressions.]
-Any operations within a Default_Initial_Condition expression that
-were resolved in this way (i.e., as primitive operations of the (notional)
-formal derived type NT), are in the evaluation of the expression
-(i.e., at run-time) bound to the corresponding operations of the type of the
-object being "initialized by default" (see Ada RM 3.3.1).
+initialization. This case also has dynamic semantics.
 
 Deferred Constants
 ------------------
