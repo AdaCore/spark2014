@@ -619,15 +619,9 @@ rr_type.ads:112:17: info: range check proved (CVC4: 2 VC)
 spark-text_io.ads:28:08: info: flow dependencies proved
 spark-text_io.ads:30:42: high: "Standard_Output" is not initialized
 spark-text_io.ads:31:42: high: "Standard_Error" is not initialized
-<<<<<<< HEAD   (d9cb0d V518-003 fix for package with Initializes and SPARK_Mode => )
-spark-text_io.ads:80:04: high: "Standard_Input" is not initialized in "Text_IO"
+spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
 spark-text_io.ads:81:04: high: "Standard_Output" is not initialized in "Text_IO"
 spark-text_io.ads:82:04: high: "Standard_Error" is not initialized in "Text_IO"
-=======
-spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
-spark-text_io.ads:81:04: high: "Standard_Output" is not initialized in "Text_IO" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Standard_Output" at declaration]
-spark-text_io.ads:82:04: high: "Standard_Error" is not initialized in "Text_IO" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Standard_Error" at declaration]
->>>>>>> CHANGE (f7830b V518-003 fix for package with Initializes and SPARK_Mode => )
 spark-text_io.ads:106:11: info: data dependencies proved
 spark-text_io.ads:112:11: info: data dependencies proved
 spark-text_io.ads:134:31: info: implicit function contract not available for proof ("Mode" might not return)
