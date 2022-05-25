@@ -41,6 +41,9 @@ with CE_RAC;                    use CE_RAC;
 with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
 with Debug;                     use Debug;
+with Flow_Refinement;           use Flow_Refinement;
+with Flow_Types;                use Flow_Types;
+with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Gnat2Why_Args;             use Gnat2Why_Args;
@@ -144,7 +147,10 @@ package body Gnat2Why.Error_Messages is
          or else
       (Target_Kind in VC_Range_Kind and then Found_Kind in VC_Range_Kind)
          or else
-      (Target_Kind in VC_Assert_Kind and then Found_Kind in VC_Assert_Kind));
+      (Target_Kind in VC_Assert_Kind and then Found_Kind in VC_Assert_Kind)
+         or else
+      (Target_Kind in VC_Inline_Check
+         and then Found_Kind in VC_Postcondition));
    --  When checking whether the VC kind by RAC matches the target VC kind,
    --  collapse all scalar checks for now, as RAC cannot distinguish with them
    --  when a node has has the Do_Range_Check flag set to True. Indeed, RAC
@@ -154,6 +160,10 @@ package body Gnat2Why.Error_Messages is
    --
    --  Similarly, RAC will use the generic VC_Assert for various kinds of
    --  assertions, so collapse all assertions for now.
+   --
+   --  If the target VC kind is VC_Inline_Check, we know that finding the
+   --  triggered VC to be VC_Postcondition corresponds to the same check.
+   --  Therefore it is also accepted.
 
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
@@ -1162,17 +1172,133 @@ package body Gnat2Why.Error_Messages is
 
       procedure Handle_Result (V : JSON_Value; SD_Id : Session_Dir_Base_ID) is
 
+         procedure Check_Counterexample
+           (Rec            :     Why3_Prove_Result;
+            VC             :     VC_Info;
+            Cntexmp        :     Cntexample_File_Maps.Map;
+            Fuel           :     Fuel_Access;
+            Small_Step_Res : out CE_RAC.Result;
+            Verdict        : out Cntexmp_Verdict;
+            Use_Fuzzing    :     Boolean := False);
+         --  Call the small step RAC to check the counterexample and create
+         --  the appropriate verdict.
+
+         function To_Initialize_Present (E : Entity_Id) return Boolean;
+         --  Determine if the subprogram has global variables that can be
+         --  initialized or if the function has IN parameters.
+
          function Small_Step_Rac
-           (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map; VC : Node_Id)
+           (E           : Entity_Id;
+            Cntexmp     : Cntexample_File_Maps.Map;
+            VC          : Node_Id;
+            Fuel        : Fuel_Access;
+            Use_Fuzzing : Boolean := False)
             return CE_RAC.Result;
          --  Run CE_RAC.Execute and print some debugging info if requested
+
+         --------------------------
+         -- Check_Counterexample --
+         --------------------------
+
+         procedure Check_Counterexample
+           (Rec            :     Why3_Prove_Result;
+            VC             :     VC_Info;
+            Cntexmp        :     Cntexample_File_Maps.Map;
+            Fuel           :     Fuel_Access;
+            Small_Step_Res : out CE_RAC.Result;
+            Verdict        : out Cntexmp_Verdict;
+            Use_Fuzzing    :     Boolean := False)
+         is
+         begin
+            Small_Step_Res :=
+              Small_Step_Rac
+                (VC.Entity, Cntexmp, VC.Node, Fuel, Use_Fuzzing);
+
+            if Small_Step_Res.Res_Kind = CE_RAC.Res_Failure then
+               begin
+                  Small_Step_Res.Res_VC_Id :=
+                    Natural
+                      (Find_VC
+                         (Small_Step_Res.Res_Node,
+                          Small_Step_Res.Res_VC_Kind));
+               exception
+                  when E : Program_Error =>
+                     --  Find_VC raises a Program_Error when unsuccessful
+                     --  but we want to handle it like an unexpected RAC
+                     --  error
+                     raise RAC_Unexpected_Error with
+                     Ada.Exceptions.Exception_Message (E);
+               end;
+            end if;
+
+            Verdict := Decide_Cntexmp_Verdict
+              (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
+         exception
+            when E : others =>
+               if Debug_Flag_K
+                 and then Exception_Identity (E)
+                 /= RAC_Unexpected_Error'Identity
+               --  We accept RAC_Unexpected_Error for now
+               --  ??? In Find_VC it can just result in RES_INCOMPLETE,
+               --  during CE value import this could be RAC_Unsupported
+               --  for now, and should be fixed
+               then
+                  raise;
+               else
+                  Verdict :=
+                    (Verdict_Category => Incomplete,
+                     Verdict_Reason   =>
+                       To_Unbounded_String
+                         (Exception_Name (E) & ": " & Exception_Message (E)));
+               end if;
+         end Check_Counterexample;
+
+         ---------------------------
+         -- To_Initialize_Present --
+         ---------------------------
+
+         function To_Initialize_Present (E : Entity_Id) return Boolean
+         is
+            Reads, Writes : Flow_Id_Sets.Set;
+            Scope         : constant Flow_Scope := Get_Flow_Scope (E);
+         begin
+            Get_Proof_Globals
+              (E, Reads, Writes, False, Scope);
+            --  Check that there are globals, i.e. that running the fuzzer
+            --  would have an effect. This is done to prevent the fuzzing
+            --  session to never stop when the verdict cannot be affected by
+            --  the fuzzer.
+
+            for Id of Reads loop
+               if Id.Kind = Direct_Mapping then
+                  return True;
+               end if;
+            end loop;
+
+            declare
+               Param : Entity_Id := First_Formal (E);
+            begin
+               while Present (Param) loop
+                  if Ekind (Param) /= E_Out_Parameter then
+                     return True;
+                  end if;
+                  Next_Formal (Param);
+               end loop;
+            end;
+
+            return False;
+         end To_Initialize_Present;
 
          --------------------
          -- Small_Step_Rac --
          --------------------
 
          function Small_Step_Rac
-           (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map; VC : Node_Id)
+           (E           : Entity_Id;
+            Cntexmp     : Cntexample_File_Maps.Map;
+            VC          : Node_Id;
+            Fuel        : Fuel_Access;
+            Use_Fuzzing : Boolean := False)
             return CE_RAC.Result
          is
          begin
@@ -1185,8 +1311,9 @@ package body Gnat2Why.Error_Messages is
               (E,
                Cntexmp,
                Do_Sideeffects => False,
-               Fuel           => 250_000,
-               Stack_Height   => 100);
+               Fuel           => Fuel,
+               Stack_Height   => 100,
+               Use_Fuzzing    => Use_Fuzzing);
             --  During execution CE_RAC counts the stacked calls in the
             --  interpreted program and terminates as incomplete when the
             --  stack height is exceeded. We cannot really know how many
@@ -1194,6 +1321,8 @@ package body Gnat2Why.Error_Messages is
             --  interpreted program to anticipate a GNAT stackoverflow, but the
             --  above value seems to work.
          end Small_Step_Rac;
+
+         --  Local variables
 
          Rec            : constant Why3_Prove_Result :=
            Parse_Why3_Prove_Result (V);
@@ -1234,6 +1363,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmp        : constant Cntexample_File_Maps.Map :=
                             From_JSON (Rec.Cntexmp);
          Check_Info     : Check_Info_Type := VC.Check_Info;
+         Fuel           : constant Fuel_Access := new Fuel_Type'(250_000);
 
       --  Start of processing for Handle_Result
 
@@ -1249,49 +1379,46 @@ package body Gnat2Why.Error_Messages is
                   Verdict_Reason   => To_Unbounded_String
                     ("No counterexample"));
             else
-               begin
-                  Small_Step_Res :=
-                    Small_Step_Rac (VC.Entity, Cntexmp, VC.Node);
+               --  Check the counterexample like normal
 
-                  if Small_Step_Res.Res_Kind = CE_RAC.Res_Failure then
-                     begin
-                        Small_Step_Res.Res_VC_Id :=
-                          Natural
-                            (Find_VC
-                               (Small_Step_Res.Res_Node,
-                                Small_Step_Res.Res_VC_Kind));
-                     exception
-                        when E : Program_Error =>
-                           --  Find_VC raises a Program_Error when unsuccessful
-                           --  but we want to handle it like an unexpected RAC
-                           --  error
-                           raise RAC_Unexpected_Error with
-                           Ada.Exceptions.Exception_Message (E);
-                     end;
-                  end if;
+               Check_Counterexample
+                 (Rec, VC, Cntexmp, Fuel, Small_Step_Res, Verdict);
 
-                  Verdict := Decide_Cntexmp_Verdict
-                    (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
-               exception
-                  when E : others =>
-                     if Debug_Flag_K
-                       and then Exception_Identity (E)
-                                /= RAC_Unexpected_Error'Identity
-                     --  We accept RAC_Unexpected_Error for now
-                     --  ??? In Find_VC it can just result in RES_INCOMPLETE,
-                     --  during CE value import this could be RAC_Unsupported
-                     --  for now, and should be fixed
-                     then
-                        raise;
-                     else
-                        Verdict :=
-                          (Verdict_Category => Incomplete,
-                           Verdict_Reason   =>
-                             To_Unbounded_String
-                               (Exception_Name (E) & ": "
-                                & Exception_Message (E)));
-                     end if;
-               end;
+               --  Only call the fuzzer when there are global variables or
+               --  function parameters on which it can have an impact. If
+               --  the giant or small step RAC resulted in Res_Failure, the
+               --  CE exhibits a behaviour of the program is not the expected
+               --  one and is worth keeping, so the fuzzer shouldn't be used.
+
+               if Rec.Giant_Step_Res.Res_Kind not in Res_Failure
+                 and then Small_Step_Res.Res_Kind not in Res_Failure
+                 and then Ekind (VC.Entity) in E_Function | E_Procedure
+                 and then To_Initialize_Present (VC.Entity)
+               then
+                  --  Begin fuzzing
+
+                  --  While the counterexample is bad or the verdict is
+                  --  Incomplete, the small-step RAC was able to finish the
+                  --  execution and if there is fuel remaining, it is worth
+                  --  using the fuzzer to look for a better counterexample.
+
+                  while Fuel.all > 0
+                    and then Small_Step_Res.Res_Kind not in Res_Incomplete
+                    and then Verdict.Verdict_Category in Incomplete
+                                                       | Bad_Counterexample
+                  loop
+                     Check_Fuel_Decrease (Fuel);
+
+                     Check_Counterexample
+                       (Rec            => Rec,
+                        VC             => VC,
+                        Cntexmp        => Cntexmp,
+                        Fuel           => Fuel,
+                        Small_Step_Res => Small_Step_Res,
+                        Verdict        => Verdict,
+                        Use_Fuzzing    => True);
+                  end loop;
+               end if;
             end if;
          else
             Verdict :=
@@ -1349,7 +1476,7 @@ package body Gnat2Why.Error_Messages is
                      To_Unbounded_String
                        ("in inlined " &
                         (if In_Predicate then "predicate"
-                         else "expression function body"))));
+                           else "expression function body"))));
             end;
          end if;
 

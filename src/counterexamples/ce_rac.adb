@@ -23,14 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Containers;          use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
 with Ada.Text_IO;             use Ada.Text_IO;
+with CE_Fuzzer;               use CE_Fuzzer;
 with CE_Parsing;              use CE_Parsing;
 with CE_Utils;                use CE_Utils;
 with Common_Containers;       use Common_Containers;
@@ -52,7 +51,6 @@ with Output;                  use Output;
 with Sinput;                  use Sinput;
 with Snames;                  use Snames;
 with SPARK_Atree;             use SPARK_Atree;
-with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
 with SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
 with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
@@ -173,11 +171,6 @@ package body CE_RAC is
    --  Construct an integer value after checking against type bounds or
    --  applying modulo for type Ty, signaling errors for node N.
 
-   function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type is
-     (Integer_Value (I, Retysp (Etype (N)), N));
-   --  Construct an integer value after checking against type bounds or
-   --  applying modulo for type Etype (N), signaling errors for node N.
-
    function Copy (V : Value_Type) return Value_Type;
    --  Make a copy of a value
 
@@ -194,6 +187,9 @@ package body CE_RAC is
      (Ty    : Node_Id;
       Check : Boolean := True) return Value_Type;
    --  Return the type default value
+
+   function Fuzz_Value (Ty : Node_Id) return Value_Type;
+   --  Return a random value amongst those that often highlight bugs
 
    function Enum_Entity_To_Integer (E : Entity_Id) return Uint;
    --  Convert an enum entity (enum literal entity or character literal) to an
@@ -339,7 +335,7 @@ package body CE_RAC is
       --  The variable environment
       Cntexmp          : Cntexample_File_Maps.Map;
       --  The counterexample
-      Fuel             : Integer;
+      Fuel             : Fuel_Access := null;
       --  If Fuel is non-negative, it is decreased at the execution of each
       --  expression and statement and the execution terminates as incomplete
       --  when out of fuel.
@@ -385,22 +381,25 @@ package body CE_RAC is
      Pre => Can_Get (N);
    --  Get the value of variable N from the counterexample
 
-   type Value_Origin is (From_Counterexample, From_Expr, From_Type_Default);
+   type Value_Origin is
+     (From_Counterexample, From_Expr, From_Type_Default, From_Fuzzer);
    --  The origin of a value in a call to Get
 
    function Get_Value
      (N           :     Node_Id;
       Ex          :     Node_Id;
       Use_Default :     Boolean;
+      Use_Fuzzing :     Boolean;
       Origin      : out Value_Origin)
       return Value_Type
    with
      Pre => Can_Get (N);
    --  Get a value for variable N using the first successful of the following
    --  strategies:
-   --  1) from the counterexample in the context,
-   --  2) from the evaluation of an expression Ex (if present),
-   --  3) or the type default (if Use_Default is True)
+   --  1) from the fuzzer (if Use_Fuzzing is True),
+   --  2) from the counterexample in the context,
+   --  3) from the evaluation of an expression Ex (if present),
+   --  4) or the type default (if Use_Default is True)
    --  If neither of the strategies provides a value, the function signals
    --  RAC_Incomplete.
 
@@ -410,17 +409,6 @@ package body CE_RAC is
 
    procedure Get_Bounds (N : Node_Id; Low, High : out Big_Integer);
    --  Get the low and high bounds of node N
-
-   procedure Get_Integer_Type_Bounds
-     (Ty       :     Entity_Id;
-      Fst, Lst : out Big_Integer)
-   with
-     Pre => Is_Integer_Type (Ty);
-   --  Write the first and last value of an integer type Ty in Fst and Lst
-
-   procedure Check_Fuel_Decrease (Fuel : in out Integer);
-   --  Check fuel and decrease. Raise RAC_Incomplete when fuel becomes zero.
-   --  Do nothing for negative values of Fuel.
 
    procedure Check_Node
      (N    : N_Subexpr_Id;
@@ -484,13 +472,16 @@ package body CE_RAC is
    --  Add declarations to the first scope of the context environment
 
    function RAC_Call
-     (N       : Node_Id;
-      E       : Entity_Id;
-      Is_Main : Boolean := False)
+     (N            : Node_Id;
+      E            : Entity_Id;
+      Is_Main      : Boolean := False;
+      Fuzz_Formals : Boolean := False)
       return Opt_Value_Type;
    --  RAC execution of a call to E with parameters in Scope. If Is_Main is
    --  True, the argument values are taken from the counterexample and failing
-   --  preconditions trigger stuck instead of failure.
+   --  preconditions trigger stuck instead of failure. If Fuzz_Formals is set
+   --  to True, use the fuzzer to generated to values for the function's
+   --  parameter.
 
    No_Builtin : exception;
    --  Raisen when the entity is not builtin in RAC_Call_Builtin
@@ -505,12 +496,12 @@ package body CE_RAC is
    procedure Init_Global
      (N             :     Node_Id;
       Use_Expr      :     Boolean;
+      Use_Fuzzing   :     Boolean;
       Default_Value :     Boolean;
       Val           : out Value_Access;
       Descr         :     String);
-   --  Initialize a global variable from the counterexample value, from the
-   --  expression in the declaration (if Use_Expr is true), or by a default
-   --  value (if Default_Value is true).
+   --  Initialize a global variable from the appropriate source. The decision
+   --  of the source of the value is made by Get_Value.
 
    function Param_Scope (Call : Node_Id) return Scopes;
    --  Create a scope of parameters for a call Call
@@ -654,12 +645,14 @@ package body CE_RAC is
    -- Check_Fuel_Decrease --
    -------------------------
 
-   procedure Check_Fuel_Decrease (Fuel : in out Integer) is
+   procedure Check_Fuel_Decrease (Fuel : Fuel_Access) is
    begin
-      if Fuel = 0 then
-         RAC_Incomplete ("out of fuel");
-      elsif Fuel > 0 then
-         Fuel := Fuel - 1;
+      if Fuel /= null then
+         if Fuel.all = 0 then
+            RAC_Incomplete ("out of fuel");
+         elsif Fuel.all > 0 then
+            Fuel.all := Fuel.all - 1;
+         end if;
       end if;
    end Check_Fuel_Decrease;
 
@@ -1209,7 +1202,12 @@ package body CE_RAC is
       end loop;
 
       --  Lazily initialize globals that were not initialized by Global_Scope
-      Init_Global (E, True, False, B, "constant without variable input");
+      Init_Global (N             => E,
+                   Use_Expr      => True,
+                   Use_Fuzzing   => False,
+                   Default_Value => False,
+                   Val           => B,
+                   Descr         => "constant without variable input");
 
       return B;
    end Find_Binding;
@@ -1245,6 +1243,20 @@ package body CE_RAC is
       Exn_RAC_Return_Value := null;
       return V;
    end Flush_RAC_Return;
+
+   ----------------
+   -- Fuzz_Value --
+   ----------------
+
+   function Fuzz_Value (Ty : Node_Id) return Value_Type is
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
+   begin
+      if Is_Integer_Type (Rep_Ty) then
+         return Fuzz_Integer_Value (Rep_Ty);
+      else
+         RAC_Unsupported ("Fuzzed_Value", Ty);
+      end if;
+   end Fuzz_Value;
 
    -----------------------
    -- Get_Cntexmp_Value --
@@ -1333,26 +1345,32 @@ package body CE_RAC is
      (N           :     Node_Id;
       Ex          :     Node_Id;
       Use_Default :     Boolean;
+      Use_Fuzzing :     Boolean;
       Origin      : out Value_Origin)
       return Value_Type
    is
       OV  : Opt_Value_Type;
       Res : Value_Type;
    begin
-      OV := Get_Cntexmp_Value (N, Ctx.Cntexmp);
-      if OV.Present then
-         Res := OV.Content;
-         Origin := From_Counterexample;
-      elsif Present (Ex) then
-         Res := RAC_Expr (Ex);
-         Origin := From_Expr;
-      elsif Use_Default then
-         Res := Default_Value (Etype (N));
-         Origin := From_Type_Default;
+      if Use_Fuzzing then
+         Res := Fuzz_Value (Etype (N));
+         Origin := From_Fuzzer;
       else
-         RAC_Incomplete
-           ("No counterexample value for program parameter " &
-              Get_Name_String (Chars (N)) & "(" & Node_Id'Image (N) & ")");
+         OV := Get_Cntexmp_Value (N, Ctx.Cntexmp);
+         if OV.Present then
+            Res := OV.Content;
+            Origin := From_Counterexample;
+         elsif Present (Ex) then
+            Res := RAC_Expr (Ex);
+            Origin := From_Expr;
+         elsif Use_Default then
+            Res := Default_Value (Etype (N));
+            Origin := From_Type_Default;
+         else
+            RAC_Incomplete
+              ("No counterexample value for program parameter " &
+                 Get_Name_String (Chars (N)) & "(" & Node_Id'Image (N) & ")");
+         end if;
       end if;
 
       RAC_Info
@@ -1369,6 +1387,7 @@ package body CE_RAC is
    procedure Init_Global
      (N             :     Node_Id;
       Use_Expr      :     Boolean;
+      Use_Fuzzing   :     Boolean;
       Default_Value :     Boolean;
       Val           : out Value_Access;
       Descr         :     String)
@@ -1378,7 +1397,10 @@ package body CE_RAC is
         (if Use_Expr and then not Is_Formal (N)
          then Expression (Enclosing_Declaration (N)) else Empty);
    begin
-      Val := new Value_Type'(Get_Value (N, Expr, Default_Value, Origin));
+
+      Val :=
+        new Value_Type'
+          (Get_Value (N, Expr, Default_Value, Use_Fuzzing, Origin));
       Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
@@ -1409,6 +1431,11 @@ package body CE_RAC is
          Check_Integer (I, Ty, N);
       end if;
       return Scalar_Value ((K => Integer_K, Integer_Content => Res), Ty);
+   end Integer_Value;
+
+   function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type is
+   begin
+      return Integer_Value (I, Retysp (Etype (N)), N);
    end Integer_Value;
 
    -----------------------------
@@ -1716,9 +1743,10 @@ package body CE_RAC is
    --------------
 
    function RAC_Call
-     (N       : Node_Id;
-      E       : Entity_Id;
-      Is_Main : Boolean := False)
+     (N            : Node_Id;
+      E            : Entity_Id;
+      Is_Main      : Boolean := False;
+      Fuzz_Formals : Boolean := False)
       return Opt_Value_Type
    is
       function Cntexmp_Param_Scope return Scopes;
@@ -1741,7 +1769,7 @@ package body CE_RAC is
       begin
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
-            V := Get_Value (Param, Empty, Is_Out, Origin);
+            V := Get_Value (Param, Empty, Is_Out, Fuzz_Formals, Origin);
             Res.Bindings.Insert (Param, new Value_Type'(V));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "
@@ -2047,8 +2075,9 @@ package body CE_RAC is
      (E              : Entity_Id;
       Cntexmp        : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty;
       Do_Sideeffects : Boolean := False;
-      Fuel           : Integer := -1;
-      Stack_Height   : Integer := -1)
+      Fuel           : Fuel_Access := null;
+      Stack_Height   : Integer := -1;
+      Use_Fuzzing    : Boolean := False)
       return Result
    is
       function Empty_Global_Env return Environments.Vector;
@@ -2056,7 +2085,8 @@ package body CE_RAC is
 
       procedure Init_Global_Scope;
       --  Initializes the global scope (Ctx.Env (Ctx.Env.First)) with global
-      --  variables with values from Get_Value
+      --  variables with values from Get_Value. The global scope is initialized
+      --  with fuzzed values if Use_Fuzzing is set to True.
 
       ----------------------
       -- Empty_Global_Env --
@@ -2085,16 +2115,15 @@ package body CE_RAC is
          for Id of Reads loop
             if Id.Kind = Direct_Mapping then
                Use_Expr := Ekind (Id.Node) = E_Constant;
-               Init_Global (Id.Node, Use_Expr, False, B, "read");
+               Init_Global (Id.Node, Use_Expr, Use_Fuzzing, False, B, "read");
             end if;
          end loop;
 
          for Id of Writes loop
-            if
-              Id.Kind = Direct_Mapping
+            if Id.Kind = Direct_Mapping
               and then not Reads.Contains (Id)
             then
-               Init_Global (Id.Node, False, True, B, "write");
+               Init_Global (Id.Node, False, False, True, B, "write");
             end if;
          end loop;
       end Init_Global_Scope;
@@ -2115,11 +2144,13 @@ package body CE_RAC is
       case Ekind (E) is
          when E_Function
             | E_Procedure
-         =>
+            =>
             Init_Global_Scope;
             return
               (Res_Kind  => Res_Normal,
-               Res_Value => RAC_Call (Empty, E, Is_Main => True));
+               Res_Value =>
+                  RAC_Call
+                 (Empty, E, Is_Main => True, Fuzz_Formals => Use_Fuzzing));
 
          when E_Package
             | E_Package_Body
