@@ -1,0 +1,62 @@
+main.adb:30:06: info: data dependencies proved
+main.adb:32:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:38:06: info: data dependencies proved
+main.adb:40:14: medium: postcondition might fail
+main.adb:46:06: info: data dependencies proved
+main.adb:48:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:54:06: info: data dependencies proved
+main.adb:56:14: high: postcondition might fail
+main.adb:63:06: info: data dependencies proved
+main.adb:68:22: info: assertion proved (CVC5: 1 VC)
+main.adb:69:22: info: assertion proved (Trivial: 1 VC)
+main.adb:70:22: info: assertion proved (CVC5: 1 VC)
+main.adb:71:22: info: assertion proved (CVC5: 1 VC)
+main.adb:72:22: info: assertion proved (CVC5: 1 VC)
+main.adb:73:22: info: assertion proved (CVC5: 1 VC)
+main.adb:74:22: info: assertion proved (CVC5: 1 VC)
+main.adb:75:22: info: assertion proved (CVC5: 1 VC)
+main.adb:79:06: info: data dependencies proved
+main.adb:86:28: high: assertion might fail
+main.adb:88:28: high: assertion might fail
+main.adb:90:28: medium: assertion might fail
+main.adb:92:28: medium: assertion might fail
+main.adb:94:28: medium: assertion might fail
+main.adb:96:28: medium: assertion might fail
+main.adb:98:28: medium: assertion might fail
+main.adb:100:28: medium: assertion might fail
+main.adb:105:06: info: data dependencies proved
+main.adb:110:22: info: assertion proved (CVC5: 1 VC)
+main.adb:111:22: info: assertion proved (Trivial: 1 VC)
+main.adb:112:22: info: assertion proved (CVC5: 1 VC)
+main.adb:113:22: info: assertion proved (CVC5: 1 VC)
+main.adb:114:22: info: assertion proved (CVC5: 1 VC)
+main.adb:115:22: info: assertion proved (CVC5: 1 VC)
+main.adb:116:22: info: assertion proved (CVC5: 1 VC)
+main.adb:117:22: info: assertion proved (CVC5: 1 VC)
+main.adb:121:06: info: data dependencies proved
+main.adb:128:28: medium: assertion might fail
+main.adb:130:28: medium: assertion might fail
+main.adb:132:28: medium: assertion might fail
+main.adb:134:28: medium: assertion might fail
+main.adb:136:28: medium: assertion might fail
+main.adb:138:28: medium: assertion might fail
+main.adb:140:28: medium: assertion might fail
+main.adb:142:28: medium: assertion might fail
+main.adb:147:06: info: data dependencies proved
+main.adb:152:22: info: assertion proved (CVC5: 1 VC)
+main.adb:153:22: info: assertion proved (Trivial: 1 VC)
+main.adb:154:22: info: assertion proved (CVC5: 1 VC)
+main.adb:155:22: info: assertion proved (CVC5: 1 VC)
+main.adb:156:22: info: assertion proved (CVC5: 1 VC)
+main.adb:157:22: info: assertion proved (CVC5: 1 VC)
+main.adb:158:22: info: assertion proved (CVC5: 1 VC)
+main.adb:159:22: info: assertion proved (CVC5: 1 VC)
+main.adb:163:06: info: data dependencies proved
+main.adb:170:28: medium: assertion might fail
+main.adb:172:28: medium: assertion might fail
+main.adb:174:28: medium: assertion might fail
+main.adb:176:28: medium: assertion might fail
+main.adb:178:28: medium: assertion might fail
+main.adb:180:28: medium: assertion might fail
+main.adb:182:28: medium: assertion might fail
+main.adb:184:28: medium: assertion might fail

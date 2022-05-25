@@ -118,6 +118,6 @@ test_tag.adb:74:04: warning: analyzing unreferenced procedure "Test_Init_5"
 test_tag.adb:74:14: warning: subprogram "Test_Init_5" has no effect
 test_tag.adb:75:07: info: initialization of "C" proved
 test_tag.adb:76:07: info: initialization of "R" proved
-test_tag.adb:77:07: info: absence of memory leak at end of scope proved (Z3: 1 VC)
+test_tag.adb:77:07: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
 test_tag.adb:79:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_tag.adb:79:13: medium: tag check might fail

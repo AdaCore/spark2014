@@ -204,6 +204,11 @@ package body Why.Gen.Records is
       Local : Boolean := True) return W_Identifier_Id;
    --  Return the name of the extract function for an extension
 
+   function Get_Compatible_Tags_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Is_Tagged_Type (E) and then Root_Retysp (E) = E;
+   --  Return the name of the module for compatibility between tags for a root
+   --  tagged type E.
+
    function Get_Rep_Record_Completion (E : Entity_Id) return W_Module_Id;
    --  Return the name of a record's representative completion module
 
@@ -222,6 +227,9 @@ package body Why.Gen.Records is
       Local : Boolean := True) return W_Identifier_Id;
    --  Record component of a concrete extension type standing for a component
    --  Field not present in Rec.
+
+   function Next_Tag return Int;
+   --  Return a fresh Int value to be used as the tag of a new tagged type
 
    function W_Type_Of_Component
      (Field        : Entity_Id;
@@ -478,6 +486,100 @@ package body Why.Gen.Records is
 
       return Count;
    end Count_Fields_Not_In_Root;
+
+   -----------------------------------
+   -- Create_Compatible_Tags_Theory --
+   -----------------------------------
+
+   procedure Create_Compatible_Tags_Theory (E : Entity_Id) is
+      Compat_Tag_Symb : constant W_Identifier_Id :=
+        To_Local (Get_Compatible_Tags_Predicate (E));
+      Descendants     : constant Node_Sets.Set := Get_Descendant_Set (E);
+      Tag1_Ident      : constant W_Identifier_Id :=
+        New_Identifier (Name => "tag1", Typ => EW_Int_Type);
+      Tag2_Ident      : constant W_Identifier_Id :=
+        New_Identifier (Name => "tag2", Typ => EW_Int_Type);
+      Tag_Binders     : constant Binder_Array :=
+        (1 => (B_Name => Tag1_Ident, others => <>),
+         2 => (B_Name => Tag2_Ident, others => <>));
+      Th              : Theory_UC;
+   begin
+      Th := Open_Theory
+        (WF_Context,
+         Get_Compatible_Tags_Module (E),
+         Comment =>
+           "Module for compatibility between tags associated to type "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  Declare the renaming of __compatible_tags
+
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain      => EW_Pred,
+            Name        => Compat_Tag_Symb,
+            Binders     => Tag_Binders,
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Def         => New_Call
+              (Domain  => EW_Pred,
+               Name    => M_Compat_Tags.Compat_Tags_Id,
+               Binders => Tag_Binders)));
+
+      --  Emit axioms for the compatibility of the tags of all the descendants
+      --  of E.
+
+      declare
+         procedure Generate_Axioms_For_Type (E : Type_Kind_Id);
+         --  For all D in Descendants, generate an axiom giving the value of
+         --  __compatible_tags <D>.tag <E>.tag, depending on whether or not
+         --  D is a descendant of E.
+
+         ------------------------------
+         -- Generate_Axioms_For_Type --
+         ------------------------------
+
+         procedure Generate_Axioms_For_Type (E : Type_Kind_Id) is
+            E_Descendants : constant Node_Sets.Set :=
+              Get_Descendant_Set (E);
+         begin
+            for Descendant of Descendants loop
+               if E /= Descendant then
+                  declare
+                     Axiom_Name : constant String :=
+                       Full_Name (E)
+                       & "__" & Full_Name (Descendant)
+                       & "__" & Compat_Axiom;
+                     Def        : W_Pred_Id := New_Call
+                       (Name => Compat_Tag_Symb,
+                        Args =>  (1 => +E_Symb (Descendant, WNE_Tag),
+                                  2 => +E_Symb (E, WNE_Tag)));
+
+                  begin
+                     if not E_Descendants.Contains (Descendant) then
+                        Def := New_Not (Right => Def);
+                     end if;
+
+                     Emit
+                       (Th, New_Axiom (Name => NID (Axiom_Name), Def => Def));
+                  end;
+               end if;
+            end loop;
+         end Generate_Axioms_For_Type;
+
+      begin
+         Generate_Axioms_For_Type (E);
+         for Descendant of Descendants loop
+            Generate_Axioms_For_Type (Descendant);
+         end loop;
+      end;
+
+      Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => E);
+   end Create_Compatible_Tags_Theory;
 
    --------------------------------------------
    -- Create_Rep_Record_Completion_If_Needed --
@@ -1104,7 +1206,9 @@ package body Why.Gen.Records is
                  +New_Named_Type
                    (Name => To_Name (WNE_Rec_Rep))));
 
-      --  The static tag for the type is defined as a logic constant
+      --  The static tag for the type is defined as a logic constant. For new
+      --  types, we use a fresh integer value so all tags can be proved to be
+      --  different. For subtypes, we reuse the tag of the base type.
 
       if Is_Tagged_Type (E) then
          Emit (Th,
@@ -1113,7 +1217,12 @@ package body Why.Gen.Records is
                   Name        => To_Local (E_Symb (E, WNE_Tag)),
                   Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
-                  Return_Type => EW_Int_Type));
+                  Return_Type => EW_Int_Type,
+                  Def         =>
+                    (if Base_Retysp (E) /= E
+                     then +E_Symb (Base_Retysp (E), WNE_Tag)
+                     else New_Integer_Constant
+                       (Value => UI_From_Int (Next_Tag)))));
       end if;
 
       if Root = E
@@ -3601,6 +3710,43 @@ package body Why.Gen.Records is
       pragma Assert (Index = Field_Assocs'Last);
    end Generate_Associations_From_Ancestor;
 
+   --------------------------------
+   -- Get_Compatible_Tags_Module --
+   --------------------------------
+
+   function Get_Compatible_Tags_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String := Full_Name (E) & "__Compatible_Tags";
+   begin
+      return New_Module (File => No_Symbol,
+                         Name => Name);
+   end Get_Compatible_Tags_Module;
+
+   -----------------------------------
+   -- Get_Compatible_Tags_Predicate --
+   -----------------------------------
+
+   function Get_Compatible_Tags_Predicate
+     (E : Entity_Id) return W_Identifier_Id
+   is
+      M : constant W_Module_Id := Get_Compatible_Tags_Module (Root_Retysp (E));
+
+   begin
+      --  For concurrent type, we do not generate any compatibility module.
+      --  Raise Program_Error as the frontend seem to handle membership tests
+      --  on concurrent types badly. We could simply use
+      --  M_Compat_Tags.Compat_Tags_Id instead.
+
+      if Is_Concurrent_Type (E) then
+         raise Program_Error;
+      else
+         return
+           New_Identifier (Domain => EW_Pred,
+                           Module => M,
+                           Symb   => NID ("__compatible_tags"),
+                           Typ    => EW_Bool_Type);
+      end if;
+   end Get_Compatible_Tags_Predicate;
+
    ----------------------------------
    -- Get_Discriminants_Of_Subtype --
    ----------------------------------
@@ -3741,7 +3887,7 @@ package body Why.Gen.Records is
       Call  : constant W_Expr_Id := New_Call
         (Ada_Node => Ada_Node,
          Domain   => EW_Pred,
-         Name     => M_Compat_Tags.Compat_Tags_Id,
+         Name     => Get_Compatible_Tags_Predicate (Root),
          Args     =>
            (1 => New_Tag_Access
                 (Domain => EW_Term,
@@ -3757,6 +3903,7 @@ package body Why.Gen.Records is
                           S => WNE_Tag)),
          Typ      => EW_Bool_Type);
       --  Call Compat_Tags_Id on the object's tag and the type's tag
+
       Check : constant W_Prog_Id := New_Located_Assert
         (Ada_Node => Ada_Node,
          Pred     => +Call,
@@ -4238,6 +4385,18 @@ package body Why.Gen.Records is
          return Name;
       end if;
    end New_Tag_Update;
+
+   --------------
+   -- Next_Tag --
+   --------------
+
+   Last_Tag_Used : Int := 0;
+
+   function Next_Tag return Int is
+   begin
+      Last_Tag_Used := Last_Tag_Used + 1;
+      return Last_Tag_Used;
+   end Next_Tag;
 
    ------------------------------------
    -- Oldest_Parent_With_Same_Fields --

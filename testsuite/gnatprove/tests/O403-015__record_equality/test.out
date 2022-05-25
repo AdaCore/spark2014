@@ -12,7 +12,7 @@ record_equality.adb:14:22: info: assertion proved (CVC5: 1 VC)
 record_equality.adb:15:22: info: assertion proved (CVC5: 1 VC)
 record_equality.adb:16:22: info: assertion proved (CVC5: 1 VC)
 record_equality.adb:17:22: info: assertion proved (CVC5: 1 VC)
-record_equality.adb:18:22: medium: assertion might fail
+record_equality.adb:18:22: info: assertion proved (CVC5: 1 VC)
 record_equality.adb:21:07: info: initialization of "C_Pu1" proved
 record_equality.adb:21:22: info: range check proved (CVC5: 2 VC)
 record_equality.adb:25:22: medium: assertion might fail

@@ -996,7 +996,16 @@ package body Gnat2Why.Types is
 
             Add_With_Clause (Th, Rep_Module, EW_Export);
          end;
+
       elsif Is_Tagged_Type (E) then
+
+         --  If E is a root of a tagged hierarchy, generate axioms for the
+         --  compatibility of the concrete tags of its visible descendants.
+
+         if E = Root_Retysp (E) and then not Is_Concurrent_Type (E) then
+            Create_Compatible_Tags_Theory (E);
+         end if;
+
          Complete_Tagged_Record_Type (Th, E);
       end if;
 

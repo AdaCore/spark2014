@@ -19855,7 +19855,7 @@ package body Gnat2Why.Expr is
                            then
                               Tag_Cond := New_Call
                                 (Domain => Domain,
-                                 Name => M_Compat_Tags.Compat_Tags_Id,
+                                 Name => Get_Compatible_Tags_Predicate (Ty),
                                  Args => (1 => New_Tag_Access
                                           (Domain   => EW_Term,
                                            Name     => +Var_Tmp,

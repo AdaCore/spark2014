@@ -169,10 +169,31 @@ module Builtin_from_image
 end
 
 module Compatible_Tags
-  (* A prediacte to check compatibility between tags *)
+  (* A predicate to check compatibility between tags:
+     __compatible_tags tag1 tag2 means objects of type T1'Class also have type
+     T2'Class. *)
+
   val predicate __compatible_tags (from_tag : int) (to_tag : int)
+
   axiom __compatible_tags_refl :
     forall tag : int. __compatible_tags tag tag
+  (* Objects of type T'Class also have type T'Class *)
+
+  axiom __compatible_tags_transitive :
+    forall tag1, tag2, tag3 : int.
+      __compatible_tags tag2 tag1 ->
+      __compatible_tags tag3 tag2 ->  __compatible_tags tag3 tag1
+  (* If objects of type T2'Class also have type T1'Class and objects of type
+     T3'Class also have type T2'Class then objects of type T3'Class also have
+     type T1'Class. *)
+
+  axiom __compatible_tags_separate_trees :
+    forall tag1, tag2, tag3 : int.
+      not __compatible_tags tag1 tag2 ->
+      not __compatible_tags tag2 tag1 -> __compatible_tags tag3 tag1 ->
+      not __compatible_tags tag3 tag2
+  (* If T1'Class and T2'Class are disjoint, then objects of type T3'Class
+     cannot be in both. *)
 end
 
 module Integer
