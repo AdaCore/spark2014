@@ -563,11 +563,6 @@ Two names are said to be *potential aliases* when:
 
 - both names are dereferences and their prefixes are potential aliases; or
 
-- one name is a dereference whose prefix is an Access attribute reference
-  (or has such an attribute reference as an operative constituent
-  - see Ada RM 4.4), and the prefix of the attribute reference and the
-  other name are potential aliases; or
-
 - at least one name denotes an object renaming declaration, and the other
   is a potential alias with the object_name denoting the renamed entity.
 
