@@ -374,7 +374,8 @@ Access Types
 
 In order to reduce the complexity associated with the specification
 and verification of a program's behavior in the face of pointer-related
-aliasing, |SPARK| supports only "owning" access-to-object types (described
+aliasing, |SPARK| supports only "owning" and "observing" access-to-object
+types (described
 below), named access-to-constant types, and access-to-subprogram types; other
 access types (including access discriminants) are not in |SPARK|.
 
@@ -405,8 +406,7 @@ typically requires being able to refer to a list element both from its
 predecessor element and from its successor element; that would violate
 the "single owner" rule. Such data structures can still be expressed in
 |SPARK| (e.g., by storing access values in an array and then using array
-indices instead of access values), but such data structures may be harder
-to reason about.
+indices instead of access values), but they may be harder to reason about.
 
 The single-owner model statically prevents storage leaks because
 a storage leak requires either an object with no outstanding pointers
@@ -472,12 +472,6 @@ observing type. A generic formal private type is not an owning type
 [redundant: , although the corresponding actual parameter in an instance
 of the generic might be an owning type].
 A tagged type shall not be an owning type.
-A composite type which is not a by-reference type shall not be an owning type.
-[Redundant: The requirement than an owning type must be a by-reference
-type is imposed in part in order to avoid problematic scenarios involving
-a parameter of an owning type passed by value in the case where the
-call propagates an exception instead of returning normally. SPARK programs
-are not supposed to raise exceptions, but this rule still seems desirable.]
 
 .. index:: owning object
            observing object
@@ -570,7 +564,7 @@ Two names are said to be *potential aliases* when:
 - both names are dereferences and their prefixes are potential aliases; or
 
 - one name is a dereference whose prefix is an Access attribute reference
-  (or has such such an attribute reference as an operative constituent
+  (or has such an attribute reference as an operative constituent
   - see Ada RM 4.4), and the prefix of the attribute reference and the
   other name are potential aliases; or
 
