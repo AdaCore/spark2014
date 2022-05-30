@@ -39,12 +39,32 @@
 --  these instances instead of instantiating your own version of the generic,
 --  in order to benefit from the proofs already done on the existing instances.
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Reals;
+use  Ada.Numerics.Big_Numbers.Big_Reals;
+with SPARK.Float_Base;
+
 generic
    type Fl is digits <>;
+   --  Floating point type for the lemmas
+   type Int is range <>;
+   --  Integer type big enough to fit the range where all integers are
+   --  representable.
    Fl_Last_Sqrt : Fl;
+   --  Safe bound for the multiplication of two floating point numbers
+   Max_Int      : Big_Integer;
+   --  Maximal integer value such that all integer values up to Max_Int are
+   --  representiable in Fl.
+   Epsilon      : Big_Real;
+   --  Machile epsilon for Fl
+   Eta          : Big_Real;
+   --  Smallest positive floating-point number
+   with function Real (V : Fl) return Big_Real is <>;
+   --  Conversion to Big_Real
+
 package SPARK.Floating_Point_Arithmetic_Lemmas
   with SPARK_Mode,
-       Pure,
        Ghost
 is
    pragma Annotate (GNATprove, Terminating, Floating_Point_Arithmetic_Lemmas);
@@ -151,7 +171,7 @@ is
             (Val2 in Fl'First .. -1.0 / Fl_Last_Sqrt and then
                      Val3 in Fl'First .. -1.0 / Fl_Last_Sqrt)) and then
          Val2 <= Val3,
-         Post => Val1 / Val3 <= Val1 / Val2; --  COLIBRI
+       Post => Val1 / Val3 <= Val1 / Val2; --  COLIBRI
 
    ---------------------------------------------
    -- Conversions between floats and integers --
@@ -247,5 +267,86 @@ is
       --  converting F to an integer if it is too large.
       or else Fl (Integer_64 (F)) = F)
    with Ghost;
+
+   --------------------
+   -- Rounding Error --
+   --------------------
+
+   --  Additions, substractions and multiplications are exact on floating point
+   --  numbers which are integers if they are small enough to fit in the range
+   --  where all integers are representable.
+
+   package Integer_64_Conversions is new Signed_Conversions (Int);
+   function Big (X : Int) return Big_Integer renames
+     Integer_64_Conversions.To_Big_Integer;
+
+   procedure Lemma_Integer_Add_Exact
+     (Val1, Val2 : Fl; Int1, Int2 : Int)
+   with
+     Pre  =>
+       Val1 = Fl (Int1) and then
+       In_Range (Big (Int1), -Max_Int, Max_Int) and then
+       Val2 = Fl (Int2) and then
+       In_Range (Big (Int2), -Max_Int, Max_Int) and then
+       In_Range (Big (Int1) + Big (Int2), -Max_Int, Max_Int),
+     Post => Val1 + Val2 = Fl (Int1 + Int2);
+
+   procedure Lemma_Integer_Sub_Exact
+     (Val1, Val2 : Fl; Int1, Int2 : Int)
+   with
+     Pre  =>
+       Val1 = Fl (Int1) and then
+       In_Range (Big (Int1), -Max_Int, Max_Int) and then
+       Val2 = Fl (Int2) and then
+       In_Range (Big (Int2), -Max_Int, Max_Int) and then
+       In_Range (Big (Int1) - Big (Int2), -Max_Int, Max_Int),
+     Post => Val1 - Val2 = Fl (Int1 - Int2);
+
+   procedure Lemma_Integer_Mul_Exact
+     (Val1, Val2 : Fl; Int1, Int2 : Int)
+   with
+     Pre  =>
+       Val1 = Fl (Int1) and then
+       In_Range (Big (Int1), -Max_Int, Max_Int) and then
+       Val2 = Fl (Int2) and then
+       In_Range (Big (Int2), -Max_Int, Max_Int) and then
+       In_Range (Big (Int1) * Big (Int2), -Max_Int, Max_Int),
+     Post => Val1 * Val2 = Fl (Int1 * Int2);
+
+   --  The IEEE standard mandates the result of additions, substractions,
+   --  multiplications, and divisions to be the closest floating point number.
+   --  This allows us to bound the result of these operation using the linear
+   --  distance between two consecutive normalized floating-point numbers
+   --  Epsilon and the absolute distance between two consecutive denormalized
+   --  floating point numbers Eta.
+
+   procedure Lemma_Rounding_Error_Add (Val1, Val2 : Fl) with
+     Pre  =>
+       (Val1 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
+       (Val2 in Fl'First / 2.0 .. Fl'Last / 2.0),
+     Post => abs (Real (Val1 + Val2) - (Real (Val1) + Real (Val2))) <=
+         Epsilon * abs (Real (Val1) + Real (Val2)) + Eta;
+
+   procedure Lemma_Rounding_Error_Sub (Val1, Val2 : Fl) with
+     Pre  =>
+       (Val1 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
+       (Val2 in Fl'First / 2.0 .. Fl'Last / 2.0),
+     Post => abs (Real (Val1 - Val2) - (Real (Val1) - Real (Val2))) <=
+         Epsilon * abs (Real (Val1) - Real (Val2)) + Eta;
+
+   procedure Lemma_Rounding_Error_Mul (Val1, Val2 : Fl) with
+     Pre  =>
+       (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
+       (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt),
+     Post => abs (Real (Val1 * Val2) - (Real (Val1) * Real (Val2))) <=
+         Epsilon * abs (Real (Val1) * Real (Val2)) + Eta;
+
+   procedure Lemma_Rounding_Error_Div (Val1, Val2 : Fl) with
+     Pre  =>
+       (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
+       (Val2 in Fl'First .. -1.0 / Fl_Last_Sqrt
+              | 1.0 / Fl_Last_Sqrt .. Fl'Last),
+     Post => abs (Real (Val1 / Val2) - (Real (Val1) / Real (Val2))) <=
+         Epsilon * abs (Real (Val1) / Real (Val2)) + Eta;
 
 end SPARK.Floating_Point_Arithmetic_Lemmas;

@@ -585,7 +585,13 @@ Contracts are particularly useful to specify the behavior of imported
 subprograms, which cannot be analyzed by |GNATprove|. It is compulsory to
 specify in data dependencies the global variables these imported subprograms
 may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
-(no global variable read or written).
+(no global variable read or written). It is also compulsory to specify procedures
+which never terminate with aspect or pragma ``No_Return`` and procedures
+which may not terminate with annotation ``Might_Not_Return`` (see
+:ref:`Nonreturning Procedures`), otherwise |GNATprove| assumes that imported
+subprograms always terminate. Note that a function is in general expected to
+terminate in SPARK, so functions that do otherwise should be replaced by
+procedures with a suitable annotation.
 
 .. note::
 
@@ -594,6 +600,8 @@ may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
    the unit body is not part of the files analyzed by |GNATprove| (see
    :ref:`Specifying Files To Analyze` and :ref:`Excluding Files From
    Analysis`), is treated by |GNATprove| like an imported subprogram.
+   The latter includes in particular subprograms from library projects that
+   are externally built.
 
 .. note::
 

@@ -1,0 +1,1 @@
+ext.ads:15:19: medium: assertion might fail (e.g. when C1 = -1 and C2 = 0)

@@ -6,21 +6,12 @@ package body Libst with SPARK_Mode is
      (Weights : Weight_Array;
       I       : Extended_Index) return Float
    is
-
-      procedure Lemma_Add_Exact_On_Index (I, J : Natural) with
-        Ghost,
-        Pre  => I <= Max_Index and J <= Max_Index,
-        Post => Float (I) + Float (J) = Float (I + J);
-      --  Floating-point addition is exact on values of Index
-
-      procedure Lemma_Add_Exact_On_Index (I, J : Natural) is null;
-
    begin
       if I = 0 then
          return 0.0;
       else
          Lemma_Add_Is_Monotonic (Sum_Weight_Rec (Weights, I - 1), Float (I - 1), Weights (I));
-         Lemma_Add_Exact_On_Index (I - 1, 1);
+         Lemma_Integer_Add_Exact (Float (I - 1), 1.0, I - 1, 1);
          return Sum_Weight_Rec (Weights, I - 1) + Weights (I);
       end if;
    end Sum_Weight_Rec;
@@ -55,24 +46,6 @@ package body Libst with SPARK_Mode is
         (Min1, Val1, Max1, Min2, Val2, Max2 : Float)
       is null;
 
-      procedure Lemma_Add_Exact_On_Max_Value (I : Natural) with
-        Ghost,
-        Pre  => I < Max_Index,
-        Post => Max_Value * Float (I) + Max_Value = Max_Value * Float (I + 1)
-        and -(Max_Value * Float (I)) - Max_Value = -(Max_Value * Float (I + 1));
-      --  Compuations on Max_Value are exact
-
-      procedure Lemma_Add_Exact_On_Max_Value (I : Natural) is
-         Max_Value_Int : constant Integer := Integer (Max_Value);
-      begin
-         pragma Assert
-           (Max_Value * Float (I) = Float (Max_Value_Int * I));
-         pragma Assert (Max_Value * Float (I) + Max_Value =
-                          Float (Max_Value_Int * I + Max_Value_Int));
-         pragma Assert
-           (Max_Value * Float (I + 1) = Float (Max_Value_Int * (I + 1)));
-      end Lemma_Add_Exact_On_Max_Value;
-
    begin
       if I = 0 then
          return 0.0;
@@ -84,7 +57,10 @@ package body Libst with SPARK_Mode is
             Min2 => -(Max_Value * Float (I - 1)),
             Val2 => Weighted_Sum_Rec (Weights, Values, I - 1),
             Max2 => Max_Value * Float (I - 1));
-         Lemma_Add_Exact_On_Max_Value (I - 1);
+         Lemma_Integer_Mul_Exact (Max_Value, Float (I - 1), Max_Value_Int, I - 1);
+         Lemma_Integer_Mul_Exact (Max_Value, Float (I), Max_Value_Int, I);
+         Lemma_Integer_Add_Exact
+           (Max_Value * Float (I - 1), Max_Value, Max_Value_Int * (I - 1), Max_Value_Int);
          return Weighted_Sum_Rec (Weights, Values, I - 1) + Weights (I) * Values (I);
       end if;
    end Weighted_Sum_Rec;

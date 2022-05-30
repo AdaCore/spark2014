@@ -25,8 +25,6 @@
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Ada.Numerics.Big_Numbers.Big_Reals;
-use  Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Containers;          use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
@@ -202,15 +200,6 @@ package body CE_RAC is
 
    function "=" (F1, F2 : Entity_To_Value_Maps.Map) return Boolean;
 
-   function "=" (V1, V2 : CE_Values.Float_Value) return Boolean;
-   --  Equality of floating point values
-
-   function "=" (V1, V2 : Scalar_Value_Type) return Boolean;
-   --  Equality of scalar values
-
-   function "=" (V1, V2 : Value_Type) return Boolean;
-   --  Ada equality of two values
-
    procedure Cleanup_Counterexample_Value (V : in out Value_Type; N : Node_Id);
    --  Clean-up counterexample values so they can be used by the RAC.
    --  Call RAC_Unsupported if the counterexample value is unsupported yet, and
@@ -283,10 +272,6 @@ package body CE_RAC is
    procedure RAC_Incomplete (Reason : String) with No_Return;
    --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
    --  not complete due to technical or theoretical limitations.
-
-   procedure RAC_Stuck (Reason : String) with No_Return;
-   --  Raise Exn_RAC_Stuck and set result, i.e. the RAC execution failed
-   --  due to a false assumption.
 
    procedure RAC_Unsupported (Str : String; N : Node_Id) with No_Return;
    --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
@@ -581,115 +566,6 @@ package body CE_RAC is
          end if;
       end loop;
       return True;
-   end "=";
-
-   function "=" (V1, V2 : CE_Values.Float_Value) return Boolean is
-     (V1.K = V2.K
-      and then
-        (case V1.K is
-         when Float_32_K => V1.Content_32 = V2.Content_32,
-         when Float_64_K => V1.Content_64 = V2.Content_64,
-         when Extended_K => V1.Ext_Content = V2.Ext_Content));
-
-   function "=" (V1, V2 : Scalar_Value_Type) return Boolean is
-     (V1.K = V2.K
-      and then
-        (case V1.K is
-            when Enum_K    =>
-             (Nkind (V1.Enum_Entity) = N_Character_Literal)
-               = (Nkind (V2.Enum_Entity) = N_Character_Literal)
-             and then
-               (if Nkind (V1.Enum_Entity) = N_Character_Literal
-                then Char_Literal_Value (V1.Enum_Entity) =
-                  Char_Literal_Value (V2.Enum_Entity)
-                else V1.Enum_Entity = V2.Enum_Entity),
-            when Integer_K => V1.Integer_Content = V2.Integer_Content,
-            --  The 2 following cases are currently unused as the rac does not
-            --  support real values.
-            when Float_K   => V1.Float_Content = V2.Float_Content,
-            when Fixed_K   =>
-               V1.Small = V2.Small
-                 and then V1.Fixed_Content = V2.Fixed_Content));
-
-   function "=" (V1, V2 : Value_Type) return Boolean is
-   begin
-      if V1.K /= V2.K then
-         return False;
-      end if;
-
-      case V1.K is
-         when Scalar_K =>
-
-            --  Equality should only be called on initialized scalars
-
-            if V1.Scalar_Content = null or V2.Scalar_Content = null then
-               raise Program_Error;
-            end if;
-
-            return V1.Scalar_Content.all = V2.Scalar_Content.all;
-
-         when Record_K =>
-            return V1.Record_Fields = V2.Record_Fields;
-
-         --  Multidimensional arrays are not supported yet
-
-         when Multidim_K =>
-            raise Program_Error;
-
-         when Array_K  =>
-            declare
-               Length_V1 : Natural;
-               Length_V2 : Natural;
-            begin
-               begin
-                  Length_V1 := To_Integer (Get_Array_Length (V1).Content);
-                  Length_V2 := To_Integer (Get_Array_Length (V2).Content);
-               exception
-                  when Constraint_Error => RAC_Stuck ("Array length too big");
-               end;
-
-               if V1.First_Attr.Present and then V1.Last_Attr.Present
-                 and then V2.First_Attr.Present and then V2.Last_Attr.Present
-               then
-                  if Length_V1 = Length_V2 then
-                     --  The equality check performed by the following for loop
-                     --  could be improved by only checking the elements we
-                     --  know could differ.
-                     for J in 1 .. Length_V1 loop
-                        Check_Fuel_Decrease (Ctx.Fuel);
-
-                        if Get_Array_Elt (V1, J).all /=
-                           Get_Array_Elt (V2, J).all
-                        then
-                           return False;
-                        end if;
-                     end loop;
-                  else
-                     return False;
-                  end if;
-
-                  return True;
-               else
-                  RAC_Stuck
-                    ("Missing index of string, cannot compute length");
-               end if;
-            end;
-
-         when Access_K =>
-
-            --  Equality on access should only be called when one operand in
-            --  null. This case is currently unused as the rac does not support
-            --  access values.
-
-            if not (V1.Is_Null.Present and then V1.Is_Null.Content)
-              and then not (V2.Is_Null.Present and then V2.Is_Null.Content)
-            then
-               raise Program_Error;
-            end if;
-
-            return (V1.Is_Null.Present and then V1.Is_Null.Content
-                    and then V2.Is_Null.Present and then V2.Is_Null.Content);
-      end case;
    end "=";
 
    -------------------

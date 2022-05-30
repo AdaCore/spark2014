@@ -2,7 +2,6 @@ main bin/ dir
 gnatprove
 libexec/spark/bin/ dir
 alt-ergo
-canalyzer
 codepeer-gcc
 codepeer-gnatls
 codepeer-gprbuild
@@ -10,6 +9,7 @@ codepeer-gprls
 codepeer_be
 colibri
 cvc4
+cvc5
 gcc
 gnat2why
 gnat_server
@@ -41,7 +41,6 @@ libexec/spark/share dir
 alt-ergo
 codepeer
 doc
-gnatcheck
 gpr
 gprconfig
 info

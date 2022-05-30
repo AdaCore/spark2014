@@ -980,6 +980,12 @@ package body Gnat2Why.Borrow_Checker is
    --  restrictive than the saved environment at the beginning of the loop, and
    --  the permission environment after the loop is equal to the accumulator.
 
+   Current_Goto_Accumulators : Env_Backups;
+   --  This variable contains the environments used as accumulators for goto
+   --  labels, that consist of the merge of all environments at each goto
+   --  statements mentioning this label. When a goto label is encountered, this
+   --  environment is merged with the current one.
+
    Current_Borrowers : Variable_Mapping;
    --  Mapping from borrowers to the path borrowed
 
@@ -3033,6 +3039,22 @@ package body Gnat2Why.Borrow_Checker is
          when N_Attribute_Reference =>
             null;
 
+         --  When a goto label is reached, we merge the accumulated
+         --  environment coming from goto statements mentioning this label in
+         --  the current environment.
+
+         when N_Label =>
+            declare
+               Label_Entity : constant Entity_Id := Entity (Identifier (N));
+               Label_Env    : constant Perm_Env_Access :=
+                 Get (Current_Goto_Accumulators, Label_Entity);
+            begin
+               if Label_Env /= null then
+                  Merge_Env (Label_Env.all, Current_Perm_Env);
+                  Remove (Current_Goto_Accumulators, Label_Entity);
+               end if;
+            end;
+
          --  Ignored constructs for pointer checking
 
          when N_Abstract_Subprogram_Declaration
@@ -3056,7 +3078,6 @@ package body Gnat2Why.Borrow_Checker is
             | N_Generic_Subprogram_Declaration
             | N_Implicit_Label_Declaration
             | N_Itype_Reference
-            | N_Label
             | N_Number_Declaration
             | N_Object_Renaming_Declaration
             | N_Others_Choice
@@ -3852,6 +3873,32 @@ package body Gnat2Why.Borrow_Checker is
          when N_Null_Statement =>
             null;
 
+         --  When a goto statement is encountered, the current environment is
+         --  merged in the appropriate accumulator to be used once the label
+         --  is reached. The environment is reset afterward as the path is
+         --  cut.
+
+         when N_Goto_Statement =>
+            declare
+               Label_Entity     : constant Entity_Id := Entity (Name (Stmt));
+               Label_Env        : constant Perm_Env_Access :=
+                 Get (Current_Goto_Accumulators, Label_Entity);
+               Environment_Copy : constant Perm_Env_Access :=
+                 new Perm_Env;
+            begin
+               Copy_Env (Current_Perm_Env, Environment_Copy.all);
+               if Label_Env = null then
+                  Set
+                    (Current_Goto_Accumulators,
+                     Label_Entity,
+                     Environment_Copy);
+               else
+                  Merge_Env (Environment_Copy.all, Label_Env.all);
+               end if;
+
+               Reset_Env (Current_Perm_Env);
+            end;
+
          --  Unsupported constructs in SPARK
 
          when N_Abort_Statement
@@ -3859,7 +3906,6 @@ package body Gnat2Why.Borrow_Checker is
             | N_Asynchronous_Select
             | N_Code_Statement
             | N_Conditional_Entry_Call
-            | N_Goto_Statement
             | N_Requeue_Statement
             | N_Selective_Accept
             | N_Timed_Entry_Call
@@ -4005,7 +4051,7 @@ package body Gnat2Why.Borrow_Checker is
 
          if C = null then
 
-            --  If E is a variable and it is not in the environement, it must
+            --  If E is a variable and it is not in the environment, it must
             --  be missing from the global contract of the enclosing
             --  subprogram. Raise an error.
 

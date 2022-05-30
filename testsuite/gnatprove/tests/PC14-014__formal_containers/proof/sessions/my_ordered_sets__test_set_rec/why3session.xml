@@ -150,9 +150,7 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.44" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="527210"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="3"><result status="valid" steps="100769"/></proof>
   </goal>
   <goal name="def&#39;vc.45" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>

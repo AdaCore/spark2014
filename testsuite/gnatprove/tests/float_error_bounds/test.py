@@ -7,7 +7,7 @@ os.environ["SPARK_LEMMAS_OBJECT_DIR"] = TESTDIR
 
 def replay():
     prove_all(procs=0, level=2)
-    prove_all(procs=0, level=3)
+    prove_all(procs=0, level=4)
 
 
 if __name__ == "__main__":

@@ -48,6 +48,9 @@ package CE_Values is
       end case;
    end record;
 
+   function "=" (V1, V2 : Float_Value) return Boolean;
+   --  Equality of floating point values
+
    type Scalar_Kind is (Integer_K, Enum_K, Float_K, Fixed_K);
    --  Kind for a counterexample value for a scalar type
 
@@ -72,12 +75,25 @@ package CE_Values is
 
    type Scalar_Value_Access is access Scalar_Value_Type;
 
+   function "=" (V1, V2 : Scalar_Value_Type) return Boolean;
+   --  Equality of scalar values
+
    type Value_Kind is (Scalar_K, Record_K, Array_K, Multidim_K, Access_K);
    --  The kind of counterexample values
 
    type Value_Type;
 
    type Value_Access is access Value_Type;
+
+   function Default_Equal (V1, V2 : Value_Access) return Boolean renames "=";
+   --  Rename the default equality operator before overriding it to avoid
+   --  infinite recursive calls.
+
+   function "=" (V1, V2 : Value_Type) return Boolean;
+   --  Ada equality of two values
+
+   function "=" (V1, V2 : Value_Access) return Boolean;
+   --  Redefine equality for Value_Access based on equality for Value_Type
 
    package Entity_To_Value_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -187,11 +203,6 @@ package CE_Values is
       Equivalent_Keys => "=");
    --  Map entities to counterexample values extended with a modifier. This is
    --  used when parsing all counterexample values supplied for a line.
-
-   function Get_Array_Elt
-      (V : Value_Type;
-       J : Positive) return Value_Access;
-   --  Retrieve value of V at index J - 1
 
    function Get_Array_Length (V : Value_Type) return Opt_Big_Integer
    with

@@ -1,1 +1,0 @@
-ALL XFAIL Concatenation does not check for negative length strings

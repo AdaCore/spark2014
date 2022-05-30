@@ -93,6 +93,7 @@ private
    Check_Mode_Name              : constant String := "check_mode";
    Debug_Mode_Name              : constant String := "debug";
    Debug_Trivial_Name           : constant String := "debug_trivial";
+   Exclude_Line_Name            : constant String := "exclude_line";
    File_Specific_Name           : constant String := "file_specific";
    Flow_Advanced_Debug_Name     : constant String := "flow_advanced_debug";
    Flow_Analysis_Mode_Name      : constant String := "flow_analysis_mode";

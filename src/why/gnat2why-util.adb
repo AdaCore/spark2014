@@ -1141,13 +1141,20 @@ package body Gnat2Why.Util is
 
          when E_Constant =>
 
+            --  Volatile constants with async writers are mutable
+
+            if Has_Volatile (E)
+              and then Has_Volatile_Property (E, Pragma_Async_Writers)
+            then
+               return True;
+
             --  Constants defined locally to a loop inside a subprogram (or
             --  any other dynamic scope) may end up having different values, so
             --  should be mutable in Why, except when they are defined inside
             --  "actions" (in which case they are defined as local "let" bound
             --  variables in Why) or when they have no variable inputs.
 
-            if SPARK_Definition.Is_Loop_Entity (E)
+            elsif SPARK_Definition.Is_Loop_Entity (E)
               and then not SPARK_Definition.Is_Actions_Entity (E)
             then
                return Flow_Utility.Has_Variable_Input (E);

@@ -3453,6 +3453,27 @@ package body Flow_Error_Messages is
       return Value;
    end Get_Session_Map_JSON;
 
+   ----------------------
+   -- Is_Excluded_Line --
+   ----------------------
+
+   function Is_Excluded_Line (Slc : Source_Ptr) return Boolean is
+      Result : Boolean := False;
+   begin
+      if Gnat2Why_Args.Exclude_Line /= Null_Unbounded_String then
+         declare
+            File : constant String := File_Name (Slc);
+            Line : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Slc);
+         begin
+            Result := To_String (Gnat2Why_Args.Exclude_Line) =
+              File & ":" & Image (Value => Positive (Line), Min_Width => 1);
+         end;
+      end if;
+
+      return Result;
+   end Is_Excluded_Line;
+
    -----------------------
    -- Is_Specified_Line --
    -----------------------

@@ -56,13 +56,15 @@ package body Flow_Sanity is
       -----------------------------
 
       procedure Check_Incomplete_Global (E : Entity_Id) is
-         Reads, Writes : Flow_Id_Sets.Set;
-         Proof_Context : Flow_Id_Sets.Set;
-         --  Entities listed in the Global contract and formal parameters
-
-         Unused : Boolean;
-
-         use type Flow_Id_Sets.Set;
+         procedure Check_Expr
+           (Expr          : Node_Id;
+            Proof_Context : Flow_Id_Sets.Set;
+            Error_Loc     : Node_Id;
+            Msg           : String)
+         with Pre => Nkind (Expr) in N_Subexpr;
+         --  Check expression Expr for references objects that are not in the
+         --  Proof_Context and post message at Error_Loc using Msg for any
+         --  violations.
 
          function Get_Vars (N : Node_Id) return Flow_Id_Sets.Set
          with Pre => Nkind (N) in N_Subexpr;
@@ -75,6 +77,26 @@ package body Flow_Sanity is
          function To_Global (Var : Flow_Id) return Flow_Id;
          --  Converts Var from the fully-expanded proof view to what should
          --  appear in the Global contract.
+
+         procedure Check_Expr
+           (Expr          : Node_Id;
+            Proof_Context : Flow_Id_Sets.Set;
+            Error_Loc     : Node_Id;
+            Msg           : String)
+         is
+            Unused : Boolean;
+         begin
+            for Var of Get_Vars (Expr) loop
+               if not Proof_Context.Contains (Var) then
+                  Error_Msg_Flow (E          => E,
+                                  Msg        => Msg,
+                                  F1         => To_Global (Var),
+                                  Severity   => Error_Kind,
+                                  N          => Error_Loc,
+                                  Suppressed => Unused);
+               end if;
+            end loop;
+         end Check_Expr;
 
          --------------
          -- Get_Vars --
@@ -131,20 +153,21 @@ package body Flow_Sanity is
             return Up_Project (F, Get_Flow_Scope (E));
          end To_Global;
 
-         --  Local constants:
+         --  Local variables
 
          Error_Loc : constant Node_Id := Global_Pragma (E);
+
+         Reads, Writes : Flow_Id_Sets.Set;
+         Proof_Context : Flow_Id_Sets.Set;
+         --  Entities listed in the Global contract and formal parameters
+
+         Unused : Boolean;
+
+         use type Flow_Id_Sets.Set;
 
       --  Start of processing for Check_Incomplete_Globals
 
       begin
-         --  ??? Once class-wide Global and Depends aspects are supported we
-         --  can check the Pre'Class and Post'Class on abstract subprograms.
-
-         if Is_Abstract_Subprogram (E) then
-            return;
-         end if;
-
          Get_Proof_Globals
            (Subprogram      => E,
             Reads           => Reads,
@@ -176,51 +199,63 @@ package body Flow_Sanity is
             Proof_Context.Insert (Direct_Mapping_Id (E));
          end if;
 
+         --  ??? Once class-wide Global and Depends aspects are supported we
+         --  should check the Pre'Class and Post'Class against them. For now
+         --  we check them against the implicit Global => null.
+
+         if Is_Abstract_Subprogram (E) then
+            pragma Assert (Reads.Is_Empty and then Writes.Is_Empty);
+
+            for Pre of Get_Precondition_Expressions (E) loop
+               Check_Expr
+                 (Expr          => Pre,
+                  Proof_Context => Proof_Context,
+                  Error_Loc     => Error_Loc,
+                  Msg           => "reference to global & in Pre'Class " &
+                                   "is not yet supported");
+            end loop;
+
+            for Post of Get_Postcondition_Expressions (E, Refined => False)
+            loop
+               Check_Expr
+                 (Expr          => Post,
+                  Proof_Context => Proof_Context,
+                  Error_Loc     => Error_Loc,
+                  Msg           => "reference to global & in Post'Class " &
+                                   "is not yet supported");
+            end loop;
+
+            return;
+         end if;
+
          if Is_Expression_Function (E)
            or else (Is_Expression_Function_Or_Completion (E)
                     and then Entity_Body_Compatible_With_SPARK (E))
          then
-            for Var of Get_Vars (Expression (Get_Expression_Function (E))) loop
-               if not Proof_Context.Contains (Var) then
-                  Error_Msg_Flow (E          => E,
-                                  Msg        => "& is referenced in " &
-                                                "expression function " &
-                                                "but missing from the Global",
-                                  F1         => To_Global (Var),
-                                  Severity   => Error_Kind,
-                                  N          => Error_Loc,
-                                  Suppressed => Unused);
-               end if;
-            end loop;
-
+            Check_Expr
+              (Expr          => Expression (Get_Expression_Function (E)),
+               Proof_Context => Proof_Context,
+               Error_Loc     => Error_Loc,
+               Msg           => "& is referenced in expression function " &
+                                "but missing from the Global");
          end if;
 
          for Pre of Get_Precondition_Expressions (E) loop
-            for Var of Get_Vars (Pre) loop
-               if not Proof_Context.Contains (Var) then
-                  Error_Msg_Flow (E          => E,
-                                  Msg        => "& is referenced in Pre " &
-                                                "but missing from the Global",
-                                  F1         => To_Global (Var),
-                                  Severity   => Error_Kind,
-                                  N          => Error_Loc,
-                                  Suppressed => Unused);
-               end if;
-            end loop;
+            Check_Expr
+              (Expr          => Pre,
+               Proof_Context => Proof_Context,
+               Error_Loc     => Error_Loc,
+               Msg           => "& is referenced in Pre " &
+                                "but missing from the Global");
          end loop;
 
          for Post of Get_Postcondition_Expressions (E, Refined => False) loop
-            for Var of Get_Vars (Post) loop
-               if not Proof_Context.Contains (Var) then
-                  Error_Msg_Flow (E          => E,
-                                  Msg        => "& is referenced in Post " &
-                                                "but missing from the Global",
-                                  F1         => To_Global (Var),
-                                  Severity   => Error_Kind,
-                                  N          => Error_Loc,
-                                  Suppressed => Unused);
-               end if;
-            end loop;
+            Check_Expr
+              (Expr          => Post,
+               Proof_Context => Proof_Context,
+               Error_Loc     => Error_Loc,
+               Msg           => "& is referenced in Post " &
+                                "but missing from the Global");
          end loop;
       end Check_Incomplete_Global;
 

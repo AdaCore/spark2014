@@ -72,6 +72,8 @@ def compute_test_status(testsuitedir, outdir, test, results, resultfile):
     if os.path.exists(baseline_file):
         baseline = e3.yaml.load_with_config(baseline_file, {})
         shutil.copyfile(baseline_file, os.path.join(outdir, test + ".expected"))
+    else:
+        baseline = {}
     for prover in config.all_provers:
         if prover not in baseline:
             baseline[prover] = 100

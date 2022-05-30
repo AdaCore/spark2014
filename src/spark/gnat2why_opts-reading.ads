@@ -124,6 +124,12 @@ package Gnat2Why_Opts.Reading is
 
    Report_Mode : Report_Mode_Type;
 
+   --  Exclude line from the code analyzed, as if it was commented out. This
+   --  is done under the experimental switch --exclude-line=file:line which is
+   --  intentionally not documented, so that it can be removed later.
+
+   Exclude_Line : Unbounded_String;
+
    --  Limit analysis to the given units
 
    Limit_Units : Boolean;

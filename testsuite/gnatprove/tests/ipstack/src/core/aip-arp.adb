@@ -319,7 +319,7 @@ is
       ---------------
 
       function Netif_MAC return AIP.Ethernet_Address with
-        Global => null
+        Global => Netif_MAC_Addr_Ptr
       is
          Result : Ethernet_Address;
          for Result'Address use Netif_MAC_Addr_Ptr;

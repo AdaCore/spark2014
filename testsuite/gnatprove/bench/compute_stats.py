@@ -1,11 +1,25 @@
 #!/usr/bin/env python
 import argparse
+import dataclasses
+from typing import List
 import json
 import os.path
 import subprocess
 import config
 
 descr = """Compute statistics from json files for provers"""
+
+stats_filename = "stats.txt"
+results_filename = "results.json"
+
+
+# from StackOverflow:
+# https://stackoverflow.com/questions/51286748
+class EnhancedJSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if dataclasses.is_dataclass(o):
+            return dataclasses.asdict(o)
+        return super().default(o)
 
 
 def parse_arguments():
@@ -17,7 +31,7 @@ def parse_arguments():
     parser.add_argument(
         "outdir",
         metavar="F",
-        help="directory where results/diffs for GAIA will be stored",
+        help="directory where results will be stored",
     )
     args = parser.parse_args()
     return args
@@ -29,15 +43,27 @@ def produce_version_output(f):
         f.write(subprocess.check_output([exec_name, "--version"]).decode("utf-8"))
 
 
+@dataclasses.dataclass
+class Entry:
+    testname: str
+    filename: str
+    prover: str
+    time: float
+    steps: int
+    status: str
+
+
 class Stats:
     def __init__(self):
         self.status_count = {}
         self.proved_entries_time = []
         self.proved_entries_steps = []
         self.proved_entries_stats = []
+        self.entries: List[Entry] = []
 
-    def add_result(self, status, time, steps):
+    def add_result(self, testname, filename, prover, status, time, steps):
         """add single result to stats object"""
+        self.entries.append(Entry(testname, filename, prover, time, steps, status))
         if status not in self.status_count:
             self.status_count[status] = 0
         self.status_count[status] += 1
@@ -80,6 +106,7 @@ def process_test_prover(json_file, testname, provername):
         data = json.load(f)
     for elt in data["results"]:
         status = elt["status"]
+        filename = os.path.basename(elt["filename"])
         time = elt["time"] if "time" in elt else 0
         steps = elt["steps"] if "steps" in elt else 0
         for stats_obj in [
@@ -87,7 +114,7 @@ def process_test_prover(json_file, testname, provername):
             stats_provers_all[provername],
             stats_tests_provers[testname][provername],
         ]:
-            stats_obj.add_result(status, time, steps)
+            stats_obj.add_result(testname, filename, provername, status, time, steps)
 
 
 def process_test(testdir, testname):
@@ -125,11 +152,12 @@ def print_stats(f):
 def main():
     args = parse_arguments()
     assert os.path.exists(args.outdir)
-    outfile = os.path.join(args.outdir, "stats.txt")
     compute_stats(args.resultsdir)
-    with open(outfile, "w") as f:
+    with open(os.path.join(args.outdir, stats_filename), "w") as f:
         produce_version_output(f)
         print_stats(f)
+    with open(os.path.join(args.outdir, results_filename), "w") as f:
+        json.dump(stats_all_vcs.entries, f, cls=EnhancedJSONEncoder)
 
 
 if __name__ == "__main__":

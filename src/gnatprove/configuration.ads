@@ -96,6 +96,7 @@ package Configuration is
       Debug_Trivial         : aliased Boolean;
       Debug_Prover_Errors   : aliased Boolean;
       Dbg_Proof_Only        : aliased Boolean;
+      Exclude_Line          : aliased GNAT.Strings.String_Access;
       F                     : aliased Boolean;
       File_List             : String_Lists.List;
       --  The list of files to be compiled

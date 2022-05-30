@@ -24,9 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with Ada.Containers.Ordered_Sets;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with CE_RAC;
 with Namet;                     use Namet;
 with SPARK_Atree;               use SPARK_Atree;
 with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
@@ -67,6 +69,178 @@ package body CE_Values is
       N : Opt_Boolean) return String;
    --  Convert the fields of an access value to a string
 
+   ---------
+   -- "=" --
+   ---------
+
+   function "=" (V1, V2 : Float_Value) return Boolean is
+     (V1.K = V2.K
+      and then
+        (case V1.K is
+         when Float_32_K => V1.Content_32 = V2.Content_32,
+         when Float_64_K => V1.Content_64 = V2.Content_64,
+         when Extended_K => V1.Ext_Content = V2.Ext_Content));
+
+   function "=" (V1, V2 : Scalar_Value_Type) return Boolean is
+     (V1.K = V2.K
+      and then
+        (case V1.K is
+            when Enum_K    =>
+             (Nkind (V1.Enum_Entity) = Nkind (V2.Enum_Entity))
+              and then
+                (if Nkind (V1.Enum_Entity) = N_Character_Literal
+                then Char_Literal_Value (V1.Enum_Entity) =
+                  Char_Literal_Value (V2.Enum_Entity)
+                else V1.Enum_Entity = V2.Enum_Entity),
+            when Integer_K => V1.Integer_Content = V2.Integer_Content,
+            --  The 2 following cases are currently unused as the rac does not
+            --  support real values.
+            when Float_K   => V1.Float_Content = V2.Float_Content,
+            when Fixed_K   =>
+               V1.Small = V2.Small
+                 and then V1.Fixed_Content = V2.Fixed_Content));
+
+   function "=" (V1, V2 : Value_Type) return Boolean is
+
+      package Checked_Indices_Set is new Ada.Containers.Ordered_Sets
+        (Element_Type => Big_Integer);
+      --  Set of the indices that have been checked in an array.
+
+      function Check_Array_Values
+        (Arr1_Values :     Big_Integer_To_Value_Maps.Map;
+         Arr1_First  :     Big_Integer;
+         Arr2        :     Value_Type;
+         Checked     : out Checked_Indices_Set.Set) return Boolean;
+      --  Check that all the named components of the first array (which are all
+      --  stored in Arr1_Values) are equal to the element at the same position
+      --  in the second array Arr2. The Checked set is used to log which
+      --  positions have been checked by the call to this function. Because
+      --  equivalent arrays can have different First and Last indices, an
+      --  element is identified by its offset from the array's first index
+      --  Arr1_First.
+
+      ------------------------
+      -- Check_Array_Values --
+      ------------------------
+
+      function Check_Array_Values
+        (Arr1_Values :     Big_Integer_To_Value_Maps.Map;
+         Arr1_First  :     Big_Integer;
+         Arr2        :     Value_Type;
+         Checked     : out Checked_Indices_Set.Set) return Boolean
+      is
+         use Big_Integer_To_Value_Maps;
+
+         Arr2_Values : constant Map          := Arr2.Array_Values;
+         Arr2_Others : constant Value_Access := Arr2.Array_Others;
+      begin
+
+         for C1 in Arr1_Values.Iterate loop
+            declare
+               Checked_C :          Checked_Indices_Set.Cursor;
+               Inserted  :          Boolean;
+               Position  : constant Big_Integer := Key (C1) - Arr1_First;
+               Offset    : constant Big_Integer :=
+                 Position + Arr2.First_Attr.Content;
+               C2        : constant Cursor      := Arr2_Values.Find (Offset);
+            begin
+               if (Has_Element (C2) and then Element (C1) = Element (C2))
+                 or else Element (C1) = Arr2_Others
+               then
+                  Checked.Insert (Position, Checked_C, Inserted);
+               else
+                  return False;
+               end if;
+            end;
+         end loop;
+
+         return True;
+      end Check_Array_Values;
+
+   begin
+      if V1.K /= V2.K then
+         return False;
+      end if;
+
+      case V1.K is
+         when Scalar_K =>
+
+            --  Equality should only be called on initialized scalars
+
+            if V1.Scalar_Content = null or else V2.Scalar_Content = null then
+               raise Program_Error;
+            end if;
+
+            return V1.Scalar_Content.all = V2.Scalar_Content.all;
+
+         when Record_K =>
+            return Entity_To_Value_Maps."="
+              (V1.Record_Fields, V2.Record_Fields);
+
+         --  Multidimensional arrays are not supported yet
+
+         when Multidim_K =>
+            raise Program_Error;
+
+         when Array_K  =>
+            declare
+               use Checked_Indices_Set;
+
+               Length_V1  : constant Opt_Big_Integer := Get_Array_Length (V1);
+               Length_V2  : constant Opt_Big_Integer := Get_Array_Length (V2);
+               Checked_V1 : Set;
+               Checked_V2 : Set;
+            begin
+               if Length_V1.Present and Length_V2.Present then
+                  return (Length_V1.Content = 0 and then Length_V2.Content = 0)
+                    or else (Length_V1.Content = Length_V2.Content
+                    and then
+                      Check_Array_Values
+                        (V1.Array_Values, V1.First_Attr.Content, V2,
+                         Checked_V1)
+                    and then
+                      Check_Array_Values
+                        (V2.Array_Values, V2.First_Attr.Content, V1,
+                         Checked_V2)
+                    and then
+                  --  If the length of the set containing all checked
+                  --  indices is smaller than the total number of indices to
+                  --  check (i.e. the values maps did not cover the whole
+                  --  arrays) then the "others" values need to be checked for
+                  --  equality.
+                      (To_Big_Integer
+                        (Integer
+                           (Length (Union (Checked_V1, Checked_V2)))) =
+                             Length_V1.Content
+                      or else V1.Array_Others = V2.Array_Others));
+               else
+                  CE_RAC.RAC_Stuck
+                    ("Missing index of array, cannot compute length");
+               end if;
+            end;
+
+         when Access_K =>
+
+            --  Equality on access should only be called when one operand in
+            --  null. This case is currently unused as the rac does not support
+            --  access values.
+
+            if not (V1.Is_Null.Present and then V1.Is_Null.Content)
+              and then not (V2.Is_Null.Present and then V2.Is_Null.Content)
+            then
+               raise Program_Error;
+            end if;
+
+            return (V1.Is_Null.Present and then V1.Is_Null.Content
+                    and then V2.Is_Null.Present and then V2.Is_Null.Content);
+      end case;
+   end "=";
+
+   function "=" (V1, V2 : Value_Access) return Boolean is
+     (if Default_Equal (V1, null)
+      then Default_Equal (V2, null)
+      else not Default_Equal (V2, null) and then V1.all = V2.all);
+
    ---------------------------
    -- Enum_Entity_To_String --
    ---------------------------
@@ -81,24 +255,6 @@ package body CE_Values is
          return To_Upper (Get_Name_String (Chars (E)));
       end if;
    end Enum_Entity_To_String;
-
-   -------------------
-   -- Get_Array_Elt --
-   -------------------
-
-   function Get_Array_Elt
-     (V : Value_Type;
-      J : Positive) return Value_Access
-   is
-      C : constant Big_Integer_To_Value_Maps.Cursor :=
-        V.Array_Values.Find (V.First_Attr.Content + To_Big_Integer (J - 1));
-   begin
-      if Big_Integer_To_Value_Maps.Has_Element (C) then
-         return V.Array_Values (C);
-      else
-         return V.Array_Others;
-      end if;
-   end Get_Array_Elt;
 
    ----------------------
    -- Get_Array_Length --

@@ -80,7 +80,7 @@
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="185720"/></proof>
+  <proof prover="1"><result status="valid" steps="265867"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
