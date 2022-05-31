@@ -27,6 +27,7 @@ import ada_pygments  # noqa E402
 def setup(app):
     app.add_lexer("ada", ada_pygments.AdaLexer)
     app.add_lexer("gpr", ada_pygments.GNATProjectLexer)
+    app.add_css_file("css/table-wrap.css")
 
 
 needs_sphinx = "1.4"
@@ -106,7 +107,7 @@ html_favicon = "../favicon.ico"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path = ["static"]
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "SPARK2014UsersGuidedoc"
