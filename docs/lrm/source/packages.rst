@@ -7,7 +7,8 @@ Packages
 
 
 1. The elaboration of a package shall not update, directly or
-   indirectly, a reachable element of a variable that is not declared
+   indirectly, a reachable part (see :ref:`Access Types`) of a
+   variable that is not declared
    immediately within the package. [Roughly speaking, this means that
    the outputs of the notional spec and body elaboration subprograms
    shall all be objects declared immediately within the package.]
@@ -403,11 +404,10 @@ there is no notion of inheritance in that case.]
 The value of a given volatility refinement aspect of an effectively
 volatile object is determined as follows:
 
-  * if the object is a reachable element of a stand-alone object or
+  * if the object is a reachable part (see :ref:`Access Types`) of a
+    stand-alone object or
     of a formal parameter but is not itself such an object, then it is
-    the value of the given aspect of that enclosing or owning object
-    (see section :ref:`Subprogram Declarations` for definitions of
-    "reachable element" and "owning object").
+    the value of the given aspect of that object.
 
   * otherwise, if the object is declared by an object declaration and the
     given aspect is explicitly specified for the object declaration then

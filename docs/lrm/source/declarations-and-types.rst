@@ -374,12 +374,10 @@ Access Types
 
 In order to reduce the complexity associated with the specification
 and verification of a program's behavior in the face of pointer-related
-aliasing, |SPARK| supports only "owning" and "observing" access-to-object
-types (described
-below), named access-to-constant types, and access-to-subprogram types; other
-access types (including access discriminants) are not in |SPARK|.
+aliasing, anonymous access-to-constant types and (named or anonymous)
+access-to-variable types are subjected to an *ownership policy*.
 
-Restrictions are imposed on the use of "owning" access objects in order
+Restrictions are imposed on the use of these access objects in order
 to ensure, roughly speaking (and using terms that have not been defined yet),
 that at any given point in a program's execution, there is a unique "owning"
 reference to any given allocated object. The "owner" of that allocated
@@ -437,10 +435,8 @@ Only the following (named or anonymous) access types are in |SPARK|:
 
 - a named access-to-object type,
 
-- the anonymous type of a stand-alone object (including a generic formal **in**
+- the anonymous type of a stand-alone object (excluding a generic formal **in**
   mode object) which is not Part_Of a protected object,
-
-- the anonymous type of an object renaming declaration,
 
 - an anonymous type occurring as a parameter type, or as a function result type
   of a traversal function (defined below), or
@@ -451,36 +447,9 @@ Only the following (named or anonymous) access types are in |SPARK|:
 [Redundant: For example, access discriminants and access-to-subprogram types
 with the "protected" calling convention are not in |SPARK|.]
 
-.. index:: access type; owning
-           access type; observing
-
-An access-to-object type abiding by these rules is said to be an *owning*
-access type when it is an access-to-variable type, and an *observing* access
-type when it is an anonymous access-to-constant type.
-
 User-defined storage pools are not in |SPARK|; more specifically, the package
 System.Storage_Pools, Storage_Pool aspect specifications, and the Storage_Pool
 attribute are not in |SPARK|.
-
-.. index:: owning type
-
-A composite type is also said to be an *owning* type if it has an
-access-to-variable subcomponent.
-
-Privacy is ignored in determining whether a type is an owning or
-observing type. A generic formal private type is not an owning type
-[redundant: , although the corresponding actual parameter in an instance
-of the generic might be an owning type].
-A tagged type shall not be an owning type.
-
-.. index:: owning object
-           observing object
-           managed object
-
-An object of an owning access type is said to be an *owning* object;
-an object of an observing access type is said to be an *observing* object.
-An object that is a part of an object of an owning or observing type, or that
-is part of a dereference of an access value is said to be a *managed* object.
 
 In the case of a constant object of an access-to-variable type where the
 object is not a stand-alone object and not a formal parameter (e.g.,
@@ -529,42 +498,66 @@ The *root object* of a name that denotes an object is defined as follows:
 - if the name is a qualified_expression or a type conversion, the root
   object is the root object of the operand of the name;
 
-- if the name is a reference to the Access attribute, the root object is the
-  root object of the prefix of the name;
-
 - otherwise, the name statically denotes an object and the root
   object is the statically denoted object.
 
+A *path* is either:
+
+- a stand-alone object or a formal parameter,
+
+- a component_selection or dereference whose prefix is a path,
+
+- a slice whose discrete range is made of two literals and whose prefix is
+  a path which is not a slice, or
+
+- an indexed_component whose expressions are literals and whose prefix is a
+  path which is not a slice.
+
+The *path extracted from a name* whose root object is a stand-alone object or a
+formal parameter and which does not contain any traversal function calls is
+defined as follows:
+
+- if the name is a dereference (implicit or explicit), then it is a
+  dereference of the path extracted from the prefix of the name;
+
+- if the name is a component_selection, then it is a component_selection
+  of the same component on the path extracted from the prefix of the name;
+
+- if the name is an indexed_component, then it is an indexed_component with
+  the literals that each index expression evalutates to, on the path extracted
+  from the prefix of the name, or, if this path is a slice, the prefix of this
+  slice;
+
+- if the name is a slice, then it is a slice whose discrete range is
+  constructed with the literals that the discrete range of the name
+  evalutates to, on the path extracted from the prefix of the name, or, if this
+  path is a slice, the prefix of this slice;
+
+- if the name is a qualified_expression or a type conversion, then it is the
+  path extracted from the path of the expression of the name;
+
+- if the name denotes an object renaming, then it is the path extracted from
+  the renamed name;
+
+- otherwise, the name is a stand-alone object or formal parameter and the
+  path is this object.
+
+If a path P1 has another path P2 as a prefix, then P1 is an *extension* of
+P2.
+
 .. index:: potential aliases
 
-Two names are said to be *potential aliases* when:
+Two names are said to be *potential aliases* when their root object is
+a stand-alone object or a formal parameter, they do not contain any traversal
+function calls, and either:
 
-- both names statically denote the same entity [redundant: , which
-  might be an object renaming declaration]; or
-
-- both names are selected components, they have the same selector, and
-  their prefixes are potential aliases; or
-
-- both names are indexed components, their prefixes are potential
-  aliases, and if all indexing expressions are static then each
-  pair of corresponding indexing expressions have the same value; or
-
-- both names are slices, their prefixes are potential aliases, and
-  if both discrete_ranges are static ranges then the two
-  discrete_ranges overlap; or
-
-- one name is a slice and the other is an indexed component, their
-  prefixes are potential aliases, and if both the discrete_range and
-  the indexing expression are static then the value of the indexing
-  expression is within the range; or
-
-- one name is a slice whose prefix is a potential alias of the other name
-  and the other name is neither a slice nor an indexed component; or
-
-- both names are dereferences and their prefixes are potential aliases; or
-
-- at least one name denotes an object renaming declaration, and the other
-  is a potential alias with the object_name denoting the renamed entity.
+ - they have the same extracted path,
+ - the extracted path of one of the names is a slice and the extracted
+   path of the other is an indexed_component whose index is in the
+   discrete range of the slice, or
+ - the extracted path of one of the names is a slice and the extracted
+   path of the other is another slice and the discrete range of both slices
+   overlap.
 
 .. index:: potentially overlap
 
@@ -583,53 +576,123 @@ or array indexing.]
 The prefix and the name that are potential aliases are called the
 *potentially aliased parts* of the potentially overlapping names.
 
-A name that denotes a managed object can be in one of the
-following ownership states: Unrestricted, Observed, Borrowed, or Moved.
-A name that denotes an object which is not managed but is used as a
-prefix of a reference to the Access attribute or as the first parameter of a
-call to a traversal function can also be in the Unrestricted, Observed,
-Borrowed, or Moved state.
+.. index:: reachable part
 
-A given name may take on different states at different points in the
-program. For example, within a block_statement which declares an observer
-(observers have not been defined yet), a name might have a state of Observed
-while having a state of Unrestricted immediately before and immediately
-after the block_statement. [Redundant: This is a compile-time notion;
-no object-to-state mapping of any sort is maintained at runtime.]
+An object O1 is said to be a *reachable part* of an object O2 if:
 
-In the Unrestricted state, no additional restrictions are imposed on the
-use of the name. In particular, if the name denotes a variable
-of an access-to-variable type then a dereference of the name provides a
-variable view.
+- O1 is a part of O2; or
+- O1 is a reachable part of the object designated by (the value of) an
+  access-valued part of O2.
 
-In the Observed state, the name provides a constant view (even if the
-named object is a variable). If it denotes an access object then
-a dereference of the name provides a constant view [redundant: , even if
-the object is of an access-to-variable type].
+A path is said to denote a reachable part of an object, if it is the
+path extracted from a name which denotes this reachable part.
 
-In the Moved state, the name is unusable for reading
-(although the name itself can be assigned to).
+A path can be marked by one of the following
+*ownership markers* for this object: Persistent, Observed,
+Borrowed, or Moved.
+Due to aliasing, there can be several paths denoting a given object, with
+different associated markers.
 
-In the Borrowed state, the name is unusable for writing, observing and
-borrowing (see below).
+A given path cannot have more than one marker at a given program point,
+but it may have different markers at different points in the program.
+For example, within a block_statement which declares a borrower
+(borrowers have not been defined yet), the path extracted from the
+borrowed name will be marked as Borrowed, while it will have no
+marks immediately before and immediately after the
+block_statement. [Redundant: This is a compile-time notion; no
+mapping of any sort is maintained at runtime.]
+
+When a path P is marked as Observed or Persistent, then all names whose
+extracted path is an extension of P provide a constant view of their denoted
+object and its reachable parts (even if the root object is a variable).
+If P is marked as Persistent, then it will never be possible to
+modify its denoted object and its reachable parts again in the program, and
+it is OK to lose track of the owner of its potential access-to-variable parts.
+
+When a path P is marked as Moved, then names whose extracted path is an
+extension of P cannot be used to read or modify the objected denoted by P or its
+reachable parts (although names whose extracted path is a strict prefix of P
+can be assigned to).
+
+When a path P is marked as Borrowed, then names whose extracted path is an
+extension of P cannot be used to read or modify the objected denoted by P or its
+reachable parts, and names whose extracted path is a strict prefix of P
+cannot be assigned to.
+
+A path P is said to have *unrestricted prefixes* if all prefixes of P are
+unmarked.
+
+A path P is said to be *unrestricted*, if P has unrestricted prefixes and no
+extensions of P are marked as either Observed, Borrowed,
+or Moved [A path P can be unrestricted even if there are extensions of P
+which are marked as Persistent].
+
+A path P said to be *observable*, if no prefixes of P and no extensions P
+are marked as either Borrowed or Moved.
+
+The ownership rules presented in this section ensure that:
+
+- [single-ownership] if a given object O is denoted by two distinct paths
+  P1 and P2 at a given program point and P1 is unrestricted, then P2 is not
+  observable.
+
+Together with the fact that:
+
+- [ownership-write] O can only be written from a name with an unrestricted
+  extracted path and
+- [ownership-read] O can only be read from a name with an observable
+  extracted path,
+
+these are enough to ensure absence of harmful aliasing.
+
 
 .. index:: ownership; move
            ownership; observe
            ownership; borrow
 
 
-Unless otherwise specified, a name that denotes an object has an
-initial ownership state of Unrestricted if it is variable and Observed
-if it is a constant view.
-Certain constructs (described below) are said to *observe*, *borrow*,
-or *move* the value of an object; these may change the ownership
-state (to Observed, Borrowed, or Moved respectively) of a name within a
-certain portion of the program text (described below). In the first two
-cases (i.e. observing and borrowing), the ownership state of a name
-reverts to its previous value at the end of this region of text.
+Unless otherwise specified, all paths are initially unmarked except:
 
-The following operations *observe* a name that denotes an object
-and identify a corresponding *observer*:
+- a root object R is marked as Observed if R is a constant and does not have
+  an access-to-variable type, and
+- a dereference is marked as Persistent if its prefix is a path denoting an
+  object of an access-to-constant type.
+
+Certain constructs (described below) are said to *observe*, *borrow*,
+or *move* a path; these may change the
+ownership markers (to Observed, Borrowed, or Moved respectively) of
+a path within a certain portion of the program text
+(described below). In the first two cases (i.e. observing and borrowing),
+the ownership marker of the path
+reverts to its previous value at the end of this region of text.
+The markers are considered to be reverted after the finalization
+of the borrower/observer but before the
+finalization of the root of the borrowed or observed paths if
+they are declared in the same memory region.
+
+If the root object of a name is a stand-alone object or a formal
+parameter, then the *known extracted path* of that name is either:
+
+- the path extracted from the name, if it does not include any traversal
+  function calls from the root object,
+- the path extracted from the first parameter to the innermost traversal
+  function call within the name otherwise.
+
+[Redundant: The root of the known extracted path of a name is always
+the root object of the name.]
+
+A *markable expression* is either a name whose root object is a
+stand-alone object or a formal parameter or a reference to the Access
+attribute whose prefix is a name whose root object is a stand-alone
+object or a formal parameter.
+
+By extension, the root object and known extracted path of
+a markable expression are defined as the root object and known
+extracted path of the prefix for a reference to the Access
+attribute and of the name otherwise.
+
+The following operations *observe* a path and identify a corresponding
+*observer*:
 
 - An assignment operation that is used to initialize an access object,
   where this target object (the observer) is a stand-alone variable of an
@@ -637,119 +700,63 @@ and identify a corresponding *observer*:
   parameter of a procedure or generic formal object of mode **in**) of an
   anonymous access-to-constant type.
 
-  The source expression of the assignment shall be either a name denoting a
-  part of a stand-alone object or of a parameter, a call on a traversal
-  function whose result type is an (anonymous) access type, or a reference
-  to the Access attribute whose prefix is a name denoting a part of
-  a stand-alone object or of a parameter.
-  If the source of the assignment is a call on a traversal function then the
-  name being observed denotes the actual traversed parameter of the call. If
-  the source is a reference to the Access attribute, the name being observed
-  denotes the prefix of the attribute reference. Otherwise the name being
-  observed denotes the source of the assignment.
+  The source expression of the assignment shall be a markable expression.
+  The known extracted path of the source of the assignment is
+  observed by the assignment.
 
 - Inside the body of a borrowing traversal function, an assignment operation
   that is used to initialize an access object, where this target object (the
-  observer) is a stand-alone object of an anonymous access-to-variable type
-  [redundant: which does not include a formal parameter of a procedure or
-  generic formal object of mode **in**] and the source expression of the
-  assignment is either directly or indirectly a name denoting a part of the
-  traversed parameter for the traversal function. The indirect case occurs when
-  the source expression denotes a part of a call to another traversal function
-  whose argument for its own traversed parameter respects the same constraint
-  [redundant: of being either directly or indirectly a name denoting a part of
-  the traversed parameter for the traversal function]. The name being observed
-  denotes the traversed parameter for the traversal function whose body is
-  considered.
-
-- A procedure call where an actual parameter is a name denoting a managed
-  object, and the corresponding formal parameter is of mode **in** and composite
-  or aliased. The name being observed denotes the actual parameter.  The formal
-  parameter is the observer.
+  observer) is a stand-alone object of an anonymous access-to-variable type,
+  and the source expression of the assignment is a markable expression whose
+  root object is either the traversed parameter for the
+  traversal function or another object of an access-to-variable type
+  initialized as an observer.
+  The known extracted path of the source of the assignment is
+  observed by the assignment.
 
 Such an operation is called an *observing operation*.
 
-In the region of program text between the point where a name denoting an
-object is observed and the end of the scope of the observer, the
-ownership state of the name is Observed. While a name that denotes an
-object is in the Observed state it provides a constant view
-[redundant: , even if the name denotes a variable].
+In the region of program text between the point where a path
+is observed and the end of the scope of the observer, the path is marked as
+Observed.
 
-At the point where a name that denotes an object is observed,
-every name of a reachable element of the object is observed.
-
-The following operations *borrow* a name that denotes an object
+The following operations *borrow* a path
 and identify a corresponding *borrower*:
 
 - An assignment operation that is used to initialize an access object, where
   this target object (the borrower) is a stand-alone variable or constant of an
-  anonymous access-to-variable type, or a formal parameter of a procedure of a
-  (named or anonymous) access-to-variable type, unless this assignment is
+  anonymous access-to-variable type, unless this assignment is
   already an *observing operation* inside the body of a borrowing traversal
   function, per the rules defining *observe* above.
 
-  The source expression of the assignment shall be either a name denoting a
-  part of a stand-alone object or of a parameter, a call on a traversal
-  function whose result type is an (anonymous) access-to-variable type, or a
-  reference to the Access attribute whose prefix is a name denoting a part of
-  a stand-alone object or of a parameter. If the source of the assignment is a
-  call on a traversal function then the name being borrowed denotes the actual
-  traversed parameter of the call. If the source is a reference to the Access
-  attribute, the name being borrowed denotes the prefix of the attribute
-  reference. Otherwise the name being borrowed denotes the source of the
-  assignment.
-
-- A call (or instantiation) where the (borrowed) name denotes an actual
-  parameter that is a managed object other than an owning access object, and
-  the formal parameter (the borrower) is of mode **out** or **in out** (or the
-  generic formal object is of mode **in out**).
-
-- An object renaming where the (borrowed) name is the object_name denoting the
-  renamed object. In this case, the renamed object shall not be in the Observed
-  or Borrowed state. The newly declared name is the borrower.
+  The source expression of the assignment shall be a markable expression.
+  The known extracted path of the source of the assignment is
+  borrowed by the assignment.
 
 Such an operation is called a *borrowing operation*.
 
-The *borrowed name* of the source of a borrow operation is the smallest
-name that is borrowed in the borrow operation.
+In the region of program text between the point where a path
+is borrowed and the end of the scope of the borrower, the
+path is marked as Borrowed.
 
-In the region of program text between the point where a name denoting an
-object is borrowed and the end of the scope of the borrower, the
-ownership state of the name is Borrowed.
-
-An indirect borrower of a name is defined to be a borrower either of
-a borrower of the name or of an indirect borrower of the name.
-A direct borrower of a name is just another term for a borrower of
-the name, usually used together with the term "indirect borrower".
+An indirect borrower of a path is defined to be a borrower either of
+a borrower of the path or of an indirect borrower of the path.
+A direct borrower of a markable part is just another term for a borrower of
+the path, usually used together with the term "indirect borrower".
 The terms "indirect observer" and "direct observer" are defined analogously.
-
-While a name that denotes an object is in the Borrowed state it
-is incorrect to move, borrow, observe or modify it. [Intuitively,
-the value of a borrowed object is frozen for the duration of the borrow,
-while the ownership is held by the borrower].
-
-At the point where a name that denotes an object is borrowed,
-every name of a reachable element of the object is borrowed.
 
 The following operations are said to be *move* operations:
 
 - An assignment operation, where the target is a variable, a constant, or
-  return object (see Ada RM 6.5) of an owning type, unless this assignment is
-  already a *borrowing operation*, per the rules defining *borrow* above.
-
-  [Redundant: In the case of a formal parameter of an access type of mode **in
-  out** or **out**, this includes all assignments to or from such a formal
-  parameter: copy-in before the call, copy-back after the call, and any
-  assignments to or from the parameter during the call.]
-
-- An assignment operation where the target is part of an aggregate of an owning
-  type, unless this assignment occurs as part of an assertion expression.
+  return object (see Ada RM 6.5) of a type containing subcomponents of a
+  named access-to-variable type. [This includes the case of an object of
+  named access-to-variable type.]
 
 [Redundant: Passing a parameter by reference is not a move operation.]
 
-A move operation results in a transfer of ownership. The state of
-the source object of the assignment operation becomes Moved and
-remains in this state until the object is assigned another value.
+A move operation results in a transfer of ownership. The state of the paths
+that are marked as Moved by the operation remain in this state until
+the object is assigned another value.
 
 [Redundant: Roughly speaking, any access-valued parts of an object in the
 Moved state can be thought of as being "poisoned"; such a poisoned object
@@ -777,46 +784,46 @@ X.Link is poisoned by the assignment to Y.]
 
    Legality Rules
 
-[Redundant: For clarity of presentation, some legality rules are stated in the
-preceding "Static Semantics" section (e.g., the rule that an owning type shall
-not be a tagged type; stating that rule earlier eliminates the need to say
-anything about the circumstances, if any, under which a class-wide type might
-be an owning type).]
+1. At the point of a move operation, the source shall be a name which does
+   not involve any traversal function calls from the root object or a reference
+   to the Access attribute whose prefix is a name which does
+   not involve any traversal function calls from the root object.
+   In addition, if the source is a markable expression,
+   the known extracted path P of the source shall be unrestricted.
+   If the source is a markable expression which is not a reference
+   to the Access attribute, for all extensions Q of P with no additional
+   dereferences designating objects of a named access-to-variable type,
+   Q.all is marked as Moved after the move operation.
+   If the source is a markable expression which is a reference to the Access
+   attribute, the known extracted path of it prefix is marked as Moved
+   after the move operation.
 
+2. A name whose type has subcomponents of a [named] access-to-variable type
+   which is used as the target of an assignment or as an actual
+   parameter of mode **out** or **in out** shall have a root object which
+   is either a stand-alone object or a formal parameter, and it shall not
+   involve any traversal function calls
+   from this root object. In addition, if P is the path extracted from a
+   name used as the target of an assignment operation or as an actual
+   parameter of mode **out** in a call,
 
-1. At the point of a move operation the state of the source object (if any) and
-   all of its reachable elements shall be Unrestricted. After a move operation,
-   the state of any access parts of the source object (if there is one) becomes
-   Moved. In addition, if the source is a reference to the Access attribute,
-   the state of the first enclosing access part of the source object becomes
-   Moved if there is one. Otherwise, the object can no longer be read or
-   written in the rest of the program.
+   - P shall have unrestricted prefixes,
+   - there shall be no extension of P marked as Borrowed or Observed, and
+   - all extensions of P marked as Moved shall contain additional dereferences.
 
-..
-  _This is not entirely True. The parts of the last dereference or complete
-  object (if no such dereference) that are not moved can still be
-  read/written. This cannot easily be stated without making a difference
-  between the permissions Write_Only and No_Access for moves, and without
-  describing the effects of moves on prefixes/suffixes of moved expressions.
+   All paths with the target as a root are reset to their initial value after
+   the operation.
 
-2. An owning object's state shall be Moved or Unrestricted at any point where
-
-   - the object is the target of an assignment operation; or
-   - the object is part of an actual parameter of mode **out** in a call.
-
-   [Redundant: In the case of a call, the state of an actual parameter of mode
+   [Redundant: In the case of a call, the mark of an actual parameter of mode
    **in** or **in out** remains unchanged (although one might choose to think
-   of it as being borrowed at the point of the call and then "unborrowed" when
-   the call returns - either model yields the same results); the state of an
-   actual parameter of mode **out** becomes Unrestricted.]
+   of it as being moved at the point of the call and then moved back when
+   the call returns - either model yields the same results); an
+   actual parameter of mode **out** becomes unrestricted.]
 
 
 3. If the target of an assignment operation is an object of an anonymous
    access-to-object type (including copy-in for a parameter), then the source
-   shall be a name denoting a part of a stand-alone object, a part of a
-   parameter, a part of a call to a traversal function, or a reference to the
-   Access attribute whose prefix is either a name denoting a part of a
-   stand-alone object or a part of a parameter.
+   shall be a markable expression.
 
    [Redundant: One consequence of this rule is that every allocator is of a
    named access type.]
@@ -835,88 +842,96 @@ be an owning type).]
 
 5. A return statement that applies to a traversal function that has an
    anonymous access-to-constant (respectively, access-to-variable) result type,
-   shall return either the literal null or an access object denoted by a direct
-   or indirect observer (respectively, borrower) of the traversed parameter.
+   shall return either the literal null or a markable expression whose root
+   object is a direct or indirect observer (respectively, borrower) of the
+   traversed parameter.
    [Redundant: Roughly speaking, a traversal function always yields either null
    or a result which is reachable from the traversed parameter.]
 
 
-6. If a prefix of a name is of an owning type, then the prefix shall denote
-   neither a non-traversal function call, an aggregate, an allocator, nor any
-   other expression whose associated object is (or, as in the case of a
-   conditional expression, might be) the same as that of such a forbidden
-   expression (e.g., a qualified expression or type conversion whose operand
-   would be forbidden as a prefix by this rule).
+6. If a name whose type has subcomponents of a named access-to-variable type
+   is a non-traversal function call or an allocator, it shall only occur
+   in an acceptable context, namely:
+
+   - As the initial expression of an object declaration which does not
+     occur in a declare expression,
+
+   - As the source of an assignment,
+
+   - As the return value of a return statement,
+
+   - As the expression of a type conversion or qualified expression itself
+     occurring in an acceptable context,
+
+   - As an aggregate itself occurring in an acceptable context, or
+
+   - Anywhere inside a contract or an assertion.
+     [While legal, such an expression inside a contract or assertion will
+     leak memory. A verification rule below forbids leaking memory, leading
+     to a violation on such uses. The intent is to allow the use of
+     allocators and allocating functions inside contracts and assertions,
+     but make sure that users are aware of the possible memory leaks if
+     such contracts and assertions are executed at runtime.]
 
 
 7. For an assignment statement where the target is a stand-alone object of an
-   anonymous access-to-object type:
+   anonymous access-to-object type, the source shall be a markable expression
+   whose root object is the target object itself. In addition:
 
-   - If the type of the target is an anonymous access-to-variable type (an
-     owning access type), and the target was declared as a local variable in
-     the body of a borrowing traversal function, whose initialization
-     expression was either directly or indirectly a name denoting a part of the
-     traversed parameter for the traversal function, then the source shall be
-     an owning access object [redundant: denoted by a name that is not in the
-     Moved state, and] whose root object is the target object itself;
+   - If the type of the target is an anonymous access-to-constant type or
+     if the target is a local object of a borrowing traversal function whose
+     initialization is an observing operation, the known extracted path
+     of the source shall be observable for the target object;
 
-   - If the type of the target is an anonymous access-to-variable type (an
-     owning access type), and the previous case does not apply, the source
-     shall be an owning access object denoted by a name that is in the
-     Unrestricted state, and whose root object is the target object itself;
-
-   - If the type of the target is an anonymous access-to-constant type (an
-     observing access type), the source shall be an owning access object
-     denoted by a name that is not in the Moved state, and whose root object is
-     not in the Moved state and is not declared at a statically deeper
-     accessibility level than that of the target object.
+   - If the type of the target is an anonymous access-to-variable type,
+     which does not fall in the case above, then the target object shall be
+     unrestricted.
 
 
-8. At the point of a dereference of an object, the object shall not be in the
-   Moved or Borrowed state.
-
-
-9. At the point of a read of an object, or of passing an object as an actual
+8. At the point of a read of an object, or of passing an object as an actual
    parameter of mode **in** or **in out**, or of a call where the object is a
-   global input of the callee, neither the object nor any of its reachable
-   elements shall be in the Moved or Borrowed state.
+   global input of the callee, if the object is a markable expression, then its
+   known extracted path shall be observable.
 
-   At the point of a return statement, or at any other point where a call
-   completes normally (e.g., the end of a procedure body), no inputs or outputs
-   of the callee being returned from shall be in the Moved state.  In the case
+9. At the point of a return statement, or at any other point where a call
+   completes normally (e.g., the end of a procedure body), there shall be
+   no paths marked as Moved with any inputs or outputs of the callee being
+   returned from as a root. In the case
    of an input of the callee which is not also an output, this rule may be
    enforced at the point of the move operation (because there is no way for the
-   moved input to transition out of the Moved state), even in the case of a
+   Moved marker to be removed from the input), even in the case of a
    subprogram which never returns.
 
    Similarly, at the end of the elaboration of both the declaration and of the
-   body of a package, no reachable element of an object denoted by the name of
+   body of a package, there shall be no paths marked as Moved whose root
+   is denoted by the name of
    an initialization_item of the package's Initializes aspect or by an input
-   occuring in the input_list of such an initialization_item shall be in the
-   Moved state.
+   occuring in the input_list of such an initialization_item.
 
-   The source of a move operation shall not be a part of a library-level
-   constant without variable inputs.
-
-
-10. If the state of a name that denotes an object is Observed, the name
-    shall not be moved, borrowed, or assigned.
+   At the end of the scope of an object of an anonymous access-to-variable
+   type, or at any other point where the scope of an object of an anonymous
+   access-to-variable type is exited normally, there shall be no paths marked
+   as Moved with the object as a root.
 
 
-11. If the state of a name that denotes an object is Borrowed, the name
-    shall not be moved, borrowed, observed, or assigned.
+10. For a borrowing operation, the borrowed path shall be unrestricted.
 
 
-12. At the point of a call, any name that denotes an object that is a
-    global output of the callee (i.e., an output other than a parameter of the
-    callee or a function result) shall not be in the Observed or Borrowed
-    state.  Similarly, any name that denotes an object that is a global
-    input of the callee shall not be in the Moved or Borrowed state.
+11. At the point of a call, no paths with any global output of the callee
+    (i.e., an output other than a parameter of the
+    callee or a function result) as a root shall be marked as
+    Borrowed or Observed, and all such paths which are marked as Moved shall
+    contain dereferences.
 
 
-13. The prefix of an Old or Loop_Entry attribute reference shall not be of an
-    owning or observing type unless the prefix is a function_call and the
-    called function is not a traversal function.
+12. The prefix of an Old or Loop_Entry attribute reference shall not be of an
+    anonymous access-to-object type nor of a type with subcomponents of a named
+    access-to-variable type unless the prefix is a call to a non-traversal
+    function.
+
+
+13. A derived tagged type shall not have a component of a named
+    access-to-variable type.
 
 
 14. If the designated type of a named nonderived access type is incomplete
@@ -928,8 +943,9 @@ be an owning type).]
     in that private part.]
 
 
-15. The name of an effectively volatile managed object shall not be moved,
-    borrowed, or observed. [This rule is meant to avoid introducing aliases
+15. A path rooted at an effectively volatile object shall not be
+    moved, borrowed, or observed.
+    [This rule is meant to avoid introducing aliases
     between volatile variables used by another task or thread. Borrowers can
     also break the invariant on the borrowed object for the time of the
     borrow.]
@@ -952,19 +968,33 @@ be an owning type).]
 .. index:: memory leak; for objects
            deallocation, Unchecked_Deallocation
 
-19. When an access object of a pool-specific access type which is not
-    in the Moved state is finalized, or when such an object
-    is passed as a part of an actual parameter of mode **out**, its value
-    shall be null.
+19. When an object R which does not have an anonymous access-to-object type
+    is finalized or when it is passed as an actual parameter
+    of mode **out**, all extensions of the path extracted from R which denote
+    an object of a pool-specific access type and
+    have unrestricted prefixes shall be null.
+
+    Similarly, at the point of a call, for each global output R of the callee
+    (i.e., an output other than a parameter of the callee or a function
+    result) that is not also an input, all paths rooted at R which denote
+    an object of a pool-specific access type and which have unrestricted
+    prefixes shall be null.
 
     [Redundant: This rule applies to any finalization associated with a
     call to an instance of Ada.Unchecked_Deallocation. For details, see
     the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
     the object designated by X".]
 
+    [Redundant:This rule effectively forbids the use of allocators and
+    calls to allocating functions inside contracts or assertions.]
+
 20. Allocators and conversions from a pool-specific access type to a named
     access-to-constant type or a general access-to-variable type shall only
     occur at library level.
+
+    In the same way, a reference to the Access attribute of a named
+    access-to-object type whose prefix contains a dereference of a
+    pool-specific access-type shall occur at library level.
 
     [Redundant: Together with the previous one, this rule disallows storage
     leaks. Without these rules, it would be possible to "lose" the last

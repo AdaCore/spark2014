@@ -31,14 +31,6 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. In particular, a component of a protected unit is not
 an *entire object*.
 
-.. index:: reachable element
-
-An object O1 is said to be a *reachable element* of an object O2 if
-
-- O1 is a part of O2; or
-- O1 is a reachable element of the object designated by
-  (the value of) an access-valued part of O2.
-
 .. container:: heading
 
    Static Semantics
@@ -52,7 +44,8 @@ An object O1 is said to be a *reachable element* of an object O2 if
 .. index:: subprogram output
 
 3. An *output* of a subprogram is a global item or parameter whose final value,
-   or the final value of any of its reachable elements, may be updated by a
+   or the final value of any of its reachable parts (see :ref:`Access Types`),
+   may be updated by a
    successful call to the subprogram. The result of a
    function is also an output.  A global item or parameter which is an external
    state with the property Async_Readers => True, and for which intermediate
@@ -66,8 +59,8 @@ An object O1 is said to be a *reachable element* of an object O2 if
 .. index:: subprogram input
 
 4. An *input* of a subprogram is a global item or parameter whose
-   initial value (or that of any of its reachable elements)
-   may be used in determining the exit value of an
+   initial value (or that of any of its reachable parts -
+   see :ref:`Access Types`) may be used in determining the exit value of an
    output of the subprogram.  For a global item or parameter which is
    an external state with Async_Writers => True, each successive value
    read from the external state is also an input of the subprogram
@@ -2096,10 +2089,11 @@ The prefix of an Initialized attribute reference shall denote an object.
 
       X'Initialized
 
-   X'Initialized is True if and only if every scalar reachable element of X
+   X'Initialized is True if and only if every scalar reachable part
+   (see :ref:`Access Types`) of X
    has been initialized. [It typicallly follows as a consequence of this
    definition and the other rules of |SPARK| that if X'Initialized is True,
-   then for every reachable element Y of X (scalar or not), Y belongs to its
+   then for every reachable part Y of X (scalar or not), Y belongs to its
    subtype. There are pathological counterexamples, such as a componentless
    record declared with "Dynamic_Predicate => False".] An Initialized attribute
    reference is never a static expression.
@@ -2173,9 +2167,10 @@ The prefix of an Initialized attribute reference shall denote an object.
     This includes the case where X is a subcomponent of a composite object
     that is passed as an argument in a call to a predefined relational
     operator (e.g., "=" or "<"). Such a verification condition is also
-    introduced in the case where X is a reachable element of the [source]
+    introduced in the case where X is a reachable part
+    (see :ref:`Access Types`) of the [source]
     expression of an assignment operation and the target of the assignment
-    does not have relaxed initialization, where X is a reachable element of
+    does not have relaxed initialization, where X is a reachable part of
     an actual parameter in a call where the corresponding formal parameter is
     of mode **in** or **in out** and does not have relaxed initialization,
     upon a call whose precondition implies X'Initialized, and upon return
@@ -2206,7 +2201,8 @@ The prefix of an Initialized attribute reference shall denote an object.
     initialized whenever it is read.]
 
 13. For any object X, evaluation of X'Initialized includes the evaluation
-    of Y'Initialized for every scalar reachable element Y of X (excluding
+    of Y'Initialized for every scalar reachable part
+    (see :ref:`Access Types`) Y of X (excluding
     "hidden" components of tagged objects - see :ref:`Type Invariants`).
     Evaluation of X'Initialized for a scalar object X is considered to be a
     read of X if and only if X does not have relaxed initialization. If X has
