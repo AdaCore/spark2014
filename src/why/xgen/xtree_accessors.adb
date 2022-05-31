@@ -230,7 +230,7 @@ package body Xtree_Accessors is
          PL (O, ";");
          Relative_Indent (O, -2);
 
-         if Next (Position) /= No_Element then
+         if Has_Element (Next (Position)) then
             NL (O);
          end if;
       end Print_Accessor_Parameterized_Expression;
@@ -269,7 +269,7 @@ package body Xtree_Accessors is
          Print_Accessor_Specification (O, Kind, FI, IK);
          PL (O, ";");
 
-         if Next (Position) /= No_Element then
+         if Has_Element (Next (Position)) then
             NL (O);
          end if;
       end Print_Accessor_Kind_Declaration;

@@ -249,7 +249,7 @@ package body Xtree_Children_Checks is
       procedure Print_Field_Check (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
       begin
-         if Previous (Position) /= No_Element then
+         if Has_Element (Previous (Position)) then
             Relative_Indent (O, 2);
          end if;
 
@@ -262,11 +262,11 @@ package body Xtree_Children_Checks is
             P (O, "True");
          end if;
 
-         if Previous (Position) /= No_Element then
+         if Has_Element (Previous (Position)) then
             Relative_Indent (O, -2);
          end if;
 
-         if Next (Position) /= No_Element then
+         if Has_Element (Next (Position)) then
             NL (O);
             PL (O, "and then");
          end if;
