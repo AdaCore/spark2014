@@ -1,10 +1,10 @@
 simple_test.adb:4:07: info: initialization of "B" proved
-simple_test.adb:13:14: info: overflow check proved (CVC4: 2 VC)
-simple_test.adb:15:22: info: assertion proved (CVC4: 1 VC)
-simple_test.ads:5:14: info: postcondition proved (CVC4: 1 VC)
-simple_test.ads:5:31: info: overflow check proved (CVC4: 2 VC)
-simple_test.ads:5:37: info: overflow check proved (CVC4: 2 VC)
-simple_test.ads:5:43: info: overflow check proved (CVC4: 2 VC)
+simple_test.adb:13:14: info: overflow check proved (CVC5: 2 VC)
+simple_test.adb:15:22: info: assertion proved (CVC5: 1 VC)
+simple_test.ads:5:14: info: postcondition proved (CVC5: 1 VC)
+simple_test.ads:5:31: info: overflow check proved (CVC5: 2 VC)
+simple_test.ads:5:37: info: overflow check proved (CVC5: 2 VC)
+simple_test.ads:5:43: info: overflow check proved (CVC5: 2 VC)
 simple_test__test
 proof
 simple_test.adb

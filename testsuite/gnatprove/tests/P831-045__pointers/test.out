@@ -17,7 +17,6 @@ n04.adb:37:03: info: initialization of "Y" proved
 n04.adb:40:08: high: "var0" is not initialized
 n04.adb:42:12: warning: "Y" is set by "Z_In" but not used after the call
 n05.adb:15:20: medium: "A" is not set in "Out_A" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "A" on all paths or make "A" an IN OUT parameter]
-n05.adb:15:20: warning: formal parameter "A" is not referenced [-gnatwf]
 n05.adb:15:20: warning: unused variable "A"
 n05.adb:22:19: warning: "A" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:22:19: warning: unused variable "A"
@@ -36,12 +35,11 @@ n05.adb:38:26: medium: pointer dereference check might fail (e.g. when B = null)
 n05.adb:42:03: info: initialization of "AA0" proved
 n05.adb:42:08: info: initialization of "AA1" proved
 n05.adb:44:03: warning: unused variable "C"
-n05.adb:44:03: warning: variable "C" is never read and never assigned [-gnatwv]
 n05.adb:48:07: warning: unused assignment
 n05.adb:48:10: high: "a0" is not initialized
 n05.adb:49:07: warning: unused assignment
 n05.adb:49:10: high: "a1" is not initialized
-n05.adb:50:07: info: pointer dereference check proved (CVC4: 1 VC)
+n05.adb:50:07: info: pointer dereference check proved (CVC5: 1 VC)
 n05.adb:50:11: warning: unused assignment
 n05.adb:51:05: medium: pointer dereference check might fail
 n05.adb:51:09: warning: unused assignment

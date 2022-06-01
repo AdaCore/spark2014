@@ -1,49 +1,48 @@
 main.adb:7:04: info: initialization of "T" proved
 main.adb:8:04: info: initialization of "S" proved
-main.adb:19:56: info: overflow check proved (CVC4: 2 VC)
-main.adb:19:66: info: range check proved (CVC4: 2 VC)
-main.adb:20:35: info: precondition proved (CVC4: 4 VC)
-main.adb:22:47: info: overflow check proved (CVC4: 2 VC)
-main.adb:23:36: info: precondition proved (CVC4: 4 VC)
-main.adb:24:14: info: postcondition proved (CVC4: 1 VC)
-main.adb:24:14: info: precondition proved (CVC4: 1 VC)
-main.adb:32:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-main.adb:32:12: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+main.adb:19:56: info: overflow check proved (CVC5: 2 VC)
+main.adb:19:66: info: range check proved (CVC5: 2 VC)
+main.adb:20:35: info: precondition proved (CVC5: 4 VC)
+main.adb:22:47: info: overflow check proved (CVC5: 2 VC)
+main.adb:23:36: info: precondition proved (CVC5: 4 VC)
+main.adb:24:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:24:14: info: precondition proved (CVC5: 1 VC)
+main.adb:32:12: medium: length check might fail [reason for check: array must be of the appropriate length]
+main.adb:32:12: medium: precondition might fail, cannot prove Left <= Natural'Last / Right'length
 main.adb:35:22: medium: assertion might fail
 main.adb:36:22: medium: assertion might fail
-main.adb:36:45: info: precondition proved (CVC4: 8 VC)
+main.adb:36:45: medium: precondition might fail, cannot prove Pattern'Length > 0
 main.adb:39:12: medium: loop invariant might fail in first iteration, cannot prove not (Ada.Strings.Search.Match (T, "91", Identity, J))
 main.adb:39:12: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not (Ada.Strings.Search.Match (T, "91", Identity, J))
-main.adb:39:35: info: precondition proved (CVC4: 8 VC)
+main.adb:39:35: medium: precondition might fail, cannot prove Pattern'Length > 0
 main.adb:42:21: medium: assertion might fail, cannot prove not (Ada.Strings.Search.Match (T, "91", Identity, K))
-main.adb:42:44: info: precondition proved (CVC4: 4 VC)
-main.adb:43:04: medium: in inlined expression function body at a-strsea.ads:84
-main.adb:43:04: medium: precondition might fail, cannot prove Pattern (K) = Ada.Strings.Maps.Value (Mapping, Source (From + (K - Pattern'first)))
-main.adb:44:19: info: precondition proved (CVC4: 1 VC)
+main.adb:42:44: medium: precondition might fail, cannot prove Pattern'Length > 0
+main.adb:43:04: medium: precondition might fail, cannot prove Pattern'Length /= 0
 main.adb:44:19: medium: assertion might fail
-main.adb:45:19: info: precondition proved (CVC4: 1 VC)
+main.adb:44:19: medium: precondition might fail
 main.adb:45:19: medium: assertion might fail
-main.adb:47:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-main.adb:47:09: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
-main.adb:48:19: info: range check proved (CVC4: 4 VC)
+main.adb:45:19: medium: precondition might fail
+main.adb:47:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+main.adb:47:09: medium: precondition might fail, cannot prove Position - Source'First <= Natural'Last - New_Item'length
+main.adb:48:19: info: range check proved (CVC5: 4 VC)
 main.adb:48:19: medium: assertion might fail
-main.adb:49:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-main.adb:49:09: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
-main.adb:50:19: info: range check proved (CVC4: 4 VC)
+main.adb:49:09: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
+main.adb:49:09: medium: length check might fail [reason for check: array must be of the appropriate length]
+main.adb:50:19: info: range check proved (CVC5: 4 VC)
 main.adb:50:19: medium: assertion might fail
-main.adb:51:19: info: range check proved (CVC4: 4 VC)
+main.adb:51:19: info: range check proved (CVC5: 4 VC)
 main.adb:51:19: medium: assertion might fail
-main.adb:52:19: info: range check proved (CVC4: 4 VC)
+main.adb:52:19: info: range check proved (CVC5: 4 VC)
 main.adb:52:19: medium: assertion might fail
-main.adb:52:33: info: range check proved (CVC4: 4 VC)
-main.adb:53:19: info: range check proved (CVC4: 4 VC)
+main.adb:52:33: info: range check proved (CVC5: 4 VC)
+main.adb:53:19: info: range check proved (CVC5: 4 VC)
 main.adb:53:19: medium: assertion might fail
-main.adb:54:19: info: range check proved (CVC4: 4 VC)
+main.adb:54:19: info: range check proved (CVC5: 4 VC)
 main.adb:54:19: medium: assertion might fail
-main.adb:55:19: info: range check proved (CVC4: 4 VC)
+main.adb:55:19: info: range check proved (CVC5: 4 VC)
 main.adb:55:19: medium: assertion might fail
-main.adb:55:35: info: range check proved (CVC4: 4 VC)
+main.adb:55:35: info: range check proved (CVC5: 4 VC)
 main.adb:56:19: medium: assertion might fail
-main.adb:56:23: info: precondition proved (CVC4: 3 VC)
+main.adb:56:23: medium: precondition might fail, cannot prove Source'Length <= Natural'Last - New_Item'length
 main.adb:57:19: medium: assertion might fail
-main.adb:57:23: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
+main.adb:57:23: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)

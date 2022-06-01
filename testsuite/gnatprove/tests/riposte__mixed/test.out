@@ -1,5 +1,5 @@
-mixed.adb:14:19: info: postcondition proved (CVC4: 1 VC)
-mixed.adb:21:19: info: postcondition proved (CVC4: 1 VC)
+mixed.adb:14:19: info: postcondition proved (CVC5: 1 VC)
+mixed.adb:21:19: info: postcondition proved (CVC5: 1 VC)
 mixed.adb:29:11: info: flow dependencies proved
 mixed.adb:31:07: info: initialization of "N" proved
 mixed.adb:34:22: high: assertion might fail (e.g. when N = -1)

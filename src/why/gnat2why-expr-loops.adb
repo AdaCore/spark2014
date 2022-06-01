@@ -604,24 +604,37 @@ package body Gnat2Why.Expr.Loops is
          if Present (Loop_Parameter_Specification (Scheme)) then
             Loop_Param_Ent  :=
               Defining_Identifier (Loop_Parameter_Specification (Scheme));
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+            declare
+               Index_Item : constant Item_Type :=
+                 Mk_Item_Of_Entity (Loop_Param_Ent);
+            begin
+               pragma Assert (Index_Item.Kind = Regular);
+
+               Loop_Index := Index_Item.Main.B_Name;
+               Loop_Index_Type := Base_Why_Type (Get_Typ (Loop_Index));
+               Insert_Item (Loop_Param_Ent, Index_Item);
+            end;
          else
             pragma Assert (Present (Iterator_Specification (Scheme)));
             Loop_Param_Ent :=
               Defining_Identifier (Iterator_Specification (Scheme));
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+            declare
+               Index_Item : constant Item_Type :=
+                 Mk_Item_Of_Entity (Loop_Param_Ent);
+            begin
+               pragma Assert (Index_Item.Kind = Regular);
+
+               Loop_Index := Index_Item.Main.B_Name;
+               Loop_Index_Type := Get_Typ (Loop_Index);
+               Insert_Item (Loop_Param_Ent, Index_Item);
+            end;
          end if;
-
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-         declare
-            Index_Item : constant Item_Type :=
-              Mk_Item_Of_Entity (Loop_Param_Ent);
-         begin
-            pragma Assert (Index_Item.Kind = Regular);
-
-            Loop_Index := Index_Item.Main.B_Name;
-            Loop_Index_Type := Base_Why_Type (Get_Typ (Loop_Index));
-            Insert_Item (Loop_Param_Ent, Index_Item);
-         end;
 
          Low_Id  := New_Temp_Identifier (Typ => Loop_Index_Type);
          High_Id := New_Temp_Identifier (Typ => Loop_Index_Type);
@@ -1230,29 +1243,39 @@ package body Gnat2Why.Expr.Loops is
                                     Params => Body_Params,
                                     T_Type => Loop_Index_Type);
 
-                  elsif Need_Iter then
-
-                     --  Has_Element (W_Container, Iter_Deref) and then
-                     --    Index_Deref = Element (W_Container, Iter_Deref)
-
-                     declare
-                        H_Elmt    : constant W_Expr_Id :=
-                          Constraint_For_Iterable (EW_Pred);
-                        Elmt_Iter : constant W_Expr_Id :=
-                          New_Comparison
-                            (Why_Eq,
-                             +Index_Deref,
-                             Loop_Index_Value (EW_Term),
-                             EW_Pred);
-                     begin
-                        return W_Pred_Id (New_And_Then_Expr
-                                          (H_Elmt, Elmt_Iter, EW_Pred));
-                     end;
                   else
+                     declare
+                        Cursor_Inv : constant W_Pred_Id :=
+                          New_And_Pred
+                            (Left   => Compute_Dynamic_Invariant
+                               (Expr   => +Iter_Deref,
+                                Ty     => Etype
+                                  (Get_Iterable_Type_Primitive
+                                       (Typ => Etype (Over_Node),
+                                        Nam => Name_First)),
+                                Params => Body_Params),
+                             Right  => +Constraint_For_Iterable (EW_Pred));
+                        --  Dynamic_Invariant (Iter_Deref)
+                        --  and Has_Element (W_Container, Iter_Deref)
 
-                     --  Has_Element (W_Container, Iter_Deref)
+                     begin
+                        --  If we are in a "for of" iteration, add:
+                        --    Index_Deref = Element (W_Container, Iter_Deref)
 
-                     return +Constraint_For_Iterable (EW_Pred);
+                        if Need_Iter then
+                           declare
+                              Elmt_Iter : constant W_Pred_Id :=
+                                New_Comparison
+                                  (Why_Eq,
+                                   +Index_Deref,
+                                   +Loop_Index_Value (EW_Term));
+                           begin
+                              return New_And_Pred (Cursor_Inv, Elmt_Iter);
+                           end;
+                        else
+                           return Cursor_Inv;
+                        end if;
+                     end;
                   end if;
                end Construct_Inv_For_Index;
 
@@ -1542,7 +1565,8 @@ package body Gnat2Why.Expr.Loops is
                -- Local Variables --
                ---------------------
 
-               Index_Inv   : constant W_Pred_Id := Construct_Inv_For_Index;
+               Index_Inv   : constant W_Pred_Id :=
+                 Construct_Inv_For_Index;
                Cond_Prog   : constant W_Prog_Id := Construct_Cond;
                Update_Stmt : constant W_Prog_Id :=
                  +Insert_Cnt_Loc_Label (Stmt, +Construct_Update_Stmt);

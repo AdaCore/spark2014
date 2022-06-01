@@ -1,59 +1,59 @@
 a-cfdlli.ads:392:08: info: dynamic accessibility check proved (Trivial), in instantiation at int_list.ads:10
 a-cfdlli.ads:398:08: info: dynamic accessibility check proved (Trivial), in instantiation at int_list.ads:10
-a-cfdlli.ads:417:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:522:49: info: overflow check proved (CVC4: 2 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:655:49: info: overflow check proved (CVC4: 2 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:745:57: info: overflow check proved (CVC4: 2 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:811:57: info: overflow check proved (CVC4: 2 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:898:28: info: overflow check proved (CVC4: 2 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:898:39: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1074:43: info: overflow check proved (CVC4: 2 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1255:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1394:20: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1409:20: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1424:20: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1439:20: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1461:14: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1467:23: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1516:14: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1523:23: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:417:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:522:49: info: overflow check proved (CVC5: 2 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:655:49: info: overflow check proved (CVC5: 2 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:745:57: info: overflow check proved (CVC5: 2 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:898:28: info: overflow check proved (CVC5: 2 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:898:39: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1074:43: info: overflow check proved (CVC5: 2 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1255:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1394:20: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1409:20: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1424:20: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1439:20: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1461:14: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1467:23: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1516:14: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1523:23: info: precondition proved (CVC5: 1 VC), in instantiation at int_list.ads:10
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
-int_list.adb:4:07: info: precondition proved (CVC4: 1 VC)
-int_list.adb:12:13: info: loop invariant initialization proved (CVC4: 1 VC)
-int_list.adb:12:13: info: loop invariant preservation proved (CVC4: 1 VC)
-int_list.adb:13:33: info: loop invariant initialization proved (CVC4: 1 VC)
-int_list.adb:13:33: info: loop invariant preservation proved (CVC4: 1 VC)
-int_list.adb:15:13: info: loop invariant initialization proved (CVC4: 1 VC)
-int_list.adb:15:13: info: loop invariant preservation proved (CVC4: 1 VC)
-int_list.adb:15:32: info: precondition proved (CVC4: 2 VC)
-int_list.adb:16:15: info: precondition proved (CVC4: 4 VC)
-int_list.adb:16:40: info: precondition proved (CVC4: 4 VC)
-int_list.adb:18:13: info: loop invariant initialization proved (CVC4: 1 VC)
-int_list.adb:18:13: info: loop invariant preservation proved (CVC4: 1 VC)
-int_list.adb:18:27: info: precondition proved (CVC4: 2 VC)
-int_list.adb:19:15: info: precondition proved (CVC4: 4 VC)
-int_list.adb:19:35: info: range check proved (CVC4: 4 VC)
-int_list.adb:19:40: info: precondition proved (CVC4: 4 VC)
-int_list.adb:19:71: info: range check proved (CVC4: 4 VC)
-int_list.adb:20:10: info: precondition proved (CVC4: 1 VC)
-int_list.adb:20:33: info: precondition proved (CVC4: 1 VC)
-int_list.adb:20:48: info: range check proved (CVC4: 2 VC)
-int_list.adb:21:10: info: precondition proved (CVC4: 1 VC)
-int_list.ads:17:08: info: postcondition proved (CVC4: 3 VC)
-int_list.ads:17:08: info: precondition proved (CVC4: 1 VC)
-int_list.ads:19:38: info: overflow check proved (CVC4: 2 VC)
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at int_list.ads:10
+int_list.adb:4:07: info: precondition proved (CVC5: 1 VC)
+int_list.adb:12:13: info: loop invariant initialization proved (CVC5: 1 VC)
+int_list.adb:12:13: info: loop invariant preservation proved (CVC5: 1 VC)
+int_list.adb:13:33: info: loop invariant initialization proved (CVC5: 1 VC)
+int_list.adb:13:33: info: loop invariant preservation proved (Z3: 1 VC)
+int_list.adb:15:13: info: loop invariant initialization proved (CVC5: 1 VC)
+int_list.adb:15:13: info: loop invariant preservation proved (CVC5: 1 VC)
+int_list.adb:15:32: info: precondition proved (CVC5: 2 VC)
+int_list.adb:16:15: info: precondition proved (CVC5: 4 VC)
+int_list.adb:16:40: info: precondition proved (CVC5: 4 VC)
+int_list.adb:18:13: info: loop invariant initialization proved (CVC5: 1 VC)
+int_list.adb:18:13: info: loop invariant preservation proved (CVC5: 1 VC)
+int_list.adb:18:27: info: precondition proved (CVC5: 2 VC)
+int_list.adb:19:15: info: precondition proved (CVC5: 4 VC)
+int_list.adb:19:35: info: range check proved (CVC5: 4 VC)
+int_list.adb:19:40: info: precondition proved (CVC5: 4 VC)
+int_list.adb:19:71: info: range check proved (CVC5: 4 VC)
+int_list.adb:20:10: info: precondition proved (CVC5: 1 VC)
+int_list.adb:20:33: info: precondition proved (CVC5: 1 VC)
+int_list.adb:20:48: info: range check proved (CVC5: 2 VC)
+int_list.adb:21:10: info: precondition proved (CVC5: 1 VC)
+int_list.ads:17:08: info: postcondition proved (CVC5: 3 VC)
+int_list.ads:17:08: info: precondition proved (CVC5: 1 VC)
+int_list.ads:19:38: info: overflow check proved (CVC5: 2 VC)
 int_list.ads:21:09: info: precondition proved (Trivial: 1 VC)
-int_list.ads:21:31: info: precondition proved (CVC4: 1 VC)
-int_list.ads:21:48: info: precondition proved (CVC4: 1 VC)
+int_list.ads:21:31: info: precondition proved (CVC5: 1 VC)
+int_list.ads:21:48: info: precondition proved (CVC5: 1 VC)
 int_list.ads:24:15: info: precondition proved (Trivial: 1 VC)
-int_list.ads:24:33: info: precondition proved (CVC4: 1 VC)
-int_list.ads:26:08: info: postcondition proved (CVC4: 3 VC)
+int_list.ads:24:33: info: precondition proved (CVC5: 1 VC)
+int_list.ads:26:08: info: postcondition proved (CVC5: 3 VC)
 int_list.ads:27:07: info: precondition proved (Trivial: 1 VC)
-int_list.ads:28:11: info: precondition proved (CVC4: 1 VC)
-int_list.ads:28:28: info: precondition proved (CVC4: 1 VC)
+int_list.ads:28:11: info: precondition proved (CVC5: 1 VC)
+int_list.ads:28:28: info: precondition proved (CVC5: 1 VC)

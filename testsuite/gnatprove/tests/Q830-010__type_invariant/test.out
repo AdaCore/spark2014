@@ -1,4 +1,4 @@
-my_type_invariant_test.ads:1:09: info: invariant check proved (CVC4: 1 VC)
-my_type_invariant_test.ads:11:09: info: invariant check proved on default value (CVC4: 1 VC)
-my_type_invariant_test.ads:19:04: info: invariant check proved (CVC4: 1 VC)
-my_type_invariant_test.ads:21:04: info: invariant check proved (CVC4: 1 VC)
+my_type_invariant_test.ads:1:09: info: invariant check proved (CVC5: 1 VC)
+my_type_invariant_test.ads:11:09: info: invariant check proved on default value (CVC5: 1 VC)
+my_type_invariant_test.ads:19:04: info: invariant check proved (CVC5: 1 VC)
+my_type_invariant_test.ads:21:04: info: invariant check proved (CVC5: 1 VC)

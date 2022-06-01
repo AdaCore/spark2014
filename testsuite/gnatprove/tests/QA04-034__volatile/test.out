@@ -1,3 +1,4 @@
+hw-dbc-transfer_rings.adb:38:07: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-dbc-transfer_rings.adb:38:07: warning: writing to "Rings" is assumed to have no effects on other non-volatile objects
 hw-dbc-transfer_rings.adb:116:07: info: initialization of "Toggle" proved
 hw-dbc-transfer_rings.adb:133:13: info: add a contract to analyze it separately from calling contexts
@@ -10,13 +11,13 @@ hw-dbc-transfer_rings.adb:160:14: info: add a contract to analyze it separately 
 hw-dbc-transfer_rings.adb:160:14: info: local subprogram "Dequeue_TRB" only analyzed in the context of calls
 hw-dbc-transfer_rings.adb:177:07: info: initialization of "Current" proved
 hw-dbc-transfer_rings.adb:178:07: info: initialization of "Invalid" proved
-hw-dbc-transfer_rings.adb:182:36: info: division check proved (CVC4: 1 VC)
-hw-dbc-transfer_rings.adb:185:39: info: division check proved (CVC4: 1 VC)
-hw-dbc-transfer_rings.adb:185:39: info: range check proved (CVC4: 2 VC)
+hw-dbc-transfer_rings.adb:182:36: info: division check proved (CVC5: 1 VC)
+hw-dbc-transfer_rings.adb:185:39: info: division check proved (CVC5: 1 VC)
+hw-dbc-transfer_rings.adb:185:39: medium: range check might fail [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition ((Pointer - Physical (EP)) / TRBs.trb_size in Ring_Range) to subprogram at hw-dbc-transfer_rings.ads:38]
 hw-dbc-transfer_rings.adb:250:07: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:275:07: info: precondition proved (CVC4: 3 VC)
+hw-dbc-transfer_rings.adb:275:07: info: precondition proved (CVC5: 3 VC)
 hw-dbc-transfer_rings.ads:17:24: warning: no procedure exists that can initialize abstract state "Transfer_Rings.State" constituent of "DbC.State"
-hw-dbc-transfer_rings.ads:55:19: info: division check proved (CVC4: 1 VC)
-hw-dbc-transfer_rings.ads:56:50: info: division check proved (CVC4: 1 VC)
-hw-dbc-transfer_rings.ads:66:19: info: division check proved (CVC4: 1 VC)
-hw-dbc-transfer_rings.ads:67:45: info: division check proved (CVC4: 1 VC)
+hw-dbc-transfer_rings.ads:55:19: info: division check proved (CVC5: 1 VC)
+hw-dbc-transfer_rings.ads:56:50: info: division check proved (CVC5: 1 VC)
+hw-dbc-transfer_rings.ads:66:19: info: division check proved (CVC5: 1 VC)
+hw-dbc-transfer_rings.ads:67:45: info: division check proved (CVC5: 1 VC)

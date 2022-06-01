@@ -514,6 +514,15 @@ package body CE_RAC is
    function Param_Scope (Call : Node_Id) return Scopes;
    --  Create a scope of parameters for a call Call
 
+   procedure Slide
+     (V : in out Value_Type;
+      E :        Entity_Id)
+     with Pre => V.K = Array_K
+     and then Is_Array_Type (E)
+     and then Is_Constrained (E);
+   --  Slide the values of Array_Values of V to the correct bounds described in
+   --  E if necessary.
+
    procedure Copy_Out_Parameters
      (Call :        Node_Id;
       Sc   : in out Scopes);
@@ -807,9 +816,9 @@ package body CE_RAC is
          when Array_K =>
 
             declare
-               Type_Fst  : Big_Integer;
-               Type_Lst  : Big_Integer;
-               Fst, Lst  : Big_Integer;
+               Type_Fst : Big_Integer;
+               Type_Lst : Big_Integer;
+               Fst, Lst : Big_Integer;
 
             begin
                Get_Bounds
@@ -820,6 +829,11 @@ package body CE_RAC is
                if Is_Constrained (V.AST_Ty) then
                   Fst := Type_Fst;
                   Lst := Type_Lst;
+
+                  if V.First_Attr.Present then
+                     Slide (V, V.AST_Ty);
+                  end if;
+
                   V.First_Attr := (True, Fst);
                   V.Last_Attr := (True, Lst);
 
@@ -984,9 +998,6 @@ package body CE_RAC is
       Rep_Ty : constant Entity_Id := Retysp (Ty);
    begin
 
-      --  ??? Use Default_Value or Default_Component_Value of Ty when this is
-      --      specified
-
       if Is_Integer_Type (Rep_Ty) then
          --  0 or Ty'First
          declare
@@ -1026,7 +1037,15 @@ package body CE_RAC is
             if not Is_Constrained (Rep_Ty) then
                Lst := Fst;
             end if;
-            Other := new Value_Type'(Default_Value (Component_Type (Rep_Ty)));
+
+            if Has_Default_Aspect (Rep_Ty) then
+               Other := new Value_Type'
+                 (RAC_Expr (Default_Aspect_Component_Value (Rep_Ty)));
+            else
+               Other := new Value_Type'
+                 (Default_Value (Component_Type (Rep_Ty)));
+            end if;
+
             return Array_Value
               (Fst, Lst, Big_Integer_To_Value_Maps.Empty, Other, Rep_Ty);
          end;
@@ -1403,17 +1422,19 @@ package body CE_RAC is
       High         : constant Value_Type :=
         RAC_Expr (High_Bound (Actual_Range));
       Id           : constant Entity_Id := Defining_Identifier (Param_Spec);
+      Iter_Typ     : constant Entity_Id := Etype (Low_Bnd);
       Curr, Stop   : Big_Integer;
       Step         : Big_Integer := To_Big_Integer (1);
       Test         : -- Test for Curr and Stop during iteration
-      access function (L, R : Valid_Big_Integer) return Boolean := "<="'Access;
+        not null access function (L, R : Valid_Big_Integer) return Boolean :=
+          "<="'Access;
       Val          : Value_Type;
    begin
       if Present (Iterator_Filter (Param_Spec)) then
          RAC_Unsupported
            ("Iterate_Loop_Param_Spec iterator filter", Param_Spec);
       end if;
-      if not Is_Discrete_Type (Etype (Low_Bnd)) then
+      if not Is_Discrete_Type (Iter_Typ) then
          RAC_Unsupported
            ("Iterate_Lop_Param_Spec not discrete type", Param_Spec);
       end if;
@@ -1437,13 +1458,13 @@ package body CE_RAC is
                  & To_String (Stop) & " by " & To_String (Step));
       begin
          while Test (Curr, Stop) loop
+            Check_Fuel_Decrease (Ctx.Fuel);
 
             RAC_Trace ("Iterate : " & To_String (Curr));
-            if Is_Integer_Type (Etype (Low_Bnd)) then
-               Val := Integer_Value (Curr, Etype (Low_Bnd), Empty);
-            elsif Is_Enumeration_Type (Etype (Low_Bnd)) then
-               Val := Enum_Value
-                 (UI_From_String (To_String (Curr)), Etype (Low_Bnd));
+            if Is_Integer_Type (Iter_Typ) then
+               Val := Integer_Value (Curr, Iter_Typ, Empty);
+            elsif Is_Enumeration_Type (Iter_Typ) then
+               Val := Enum_Value (UI_From_String (To_String (Curr)), Iter_Typ);
             end if;
             Set_Value (Ctx.Env (Ctx.Env.First), Id, new Value_Type'(Val));
             Iteration.all;
@@ -1634,6 +1655,40 @@ package body CE_RAC is
       Iterate_Call (Call);
       return Res;
    end Param_Scope;
+
+   -----------
+   -- Slide --
+   -----------
+
+   procedure Slide
+     (V : in out Value_Type;
+      E :        Entity_Id)
+   is
+      New_Bounds : constant Node_Id := Get_Range (First_Index (E));
+      New_First  : constant Big_Integer :=
+        Value_Enum_Integer (RAC_Expr (Low_Bound (New_Bounds)));
+      Offset     : constant Big_Integer := New_First - V.First_Attr.Content;
+
+   begin
+      if Offset /= 0 then
+         declare
+            use Big_Integer_To_Value_Maps;
+
+            New_Values :          Map;
+            Old_Values : constant Map := V.Array_Values;
+            New_Last   : constant Big_Integer :=
+              Value_Enum_Integer (RAC_Expr (High_Bound (New_Bounds)));
+         begin
+            for C in Old_Values.Iterate loop
+               New_Values.Insert (Key (C) + Offset, Element (C));
+            end loop;
+
+            V.First_Attr   := (True, New_First);
+            V.Last_Attr    := (True, New_Last);
+            V.Array_Values := New_Values;
+         end;
+      end if;
+   end Slide;
 
    -------------------------
    -- Peek_Exn_RAC_Result --
@@ -1893,16 +1948,23 @@ package body CE_RAC is
          when N_Object_Declaration =>
             declare
                V  : Value_Type;
-               Ty : Entity_Id;
+               Ty : Entity_Id :=
+                 Retysp (Etype (Unique_Defining_Entity (Decl)));
             begin
                if Present (Expression (Decl)) then
                   V := RAC_Expr (Expression (Decl));
+
+                  if V.K = Array_K and then Is_Constrained (Ty) then
+                        Slide (V, Ty);
+                  end if;
                else
-                  Ty := Retysp (Etype (Unique_Defining_Entity (Decl)));
+                  Ty := Retysp (Ty);
                   Check_Supported_Type (Ty);
                   --  ??? Don't check range of integer values
+
                   V := Default_Value (Ty, Check => False);
                end if;
+
                Set_Value
                  (Ctx.Env (Ctx.Env.First),
                   Defining_Identifier (Decl),
@@ -2063,150 +2125,255 @@ package body CE_RAC is
 
       function RAC_Aggregate return Value_Type is
          --  ([E with delta] Ch, ... => V, ...)
-         As        : Node_Id := First (Component_Associations (N));
-         Ch        : Node_Id;
-         V         : Value_Type;
-         Has_Exprs : constant Boolean :=
-           Nkind (N) = N_Aggregate and then Present (Expressions (N));
-         Fst, Lst  : Big_Integer;
-         Res       : Value_Type;
+
+         procedure Iterated_Component
+           (Iterated_Assoc   :     Node_Id;
+            Component_Values : out Big_Integer_To_Value_Maps.Map);
+         --  Set the iterated array components' values. Opens a new scope for
+         --  the iteration variable, bind it and update its value throughout
+         --  the execution in case the expression depends on it. Remove the
+         --  scope upon exit.
+
+         ------------------------
+         -- Iterated_Component --
+         ------------------------
+
+         procedure Iterated_Component
+           (Iterated_Assoc   :     Node_Id;
+            Component_Values : out Big_Integer_To_Value_Maps.Map)
+         is
+            Choice :          Node_Id :=
+              First (Discrete_Choices (Iterated_Assoc));
+            Def_Id : constant Node_Id := Defining_Identifier (Iterated_Assoc);
+            Expr   : constant Node_Id := Expression (Iterated_Assoc);
+         begin
+            --  Add a new scope for the for loop in order to store the
+            --  iteration variable.
+
+            Ctx.Env.Prepend (Scopes'(others => <>));
+
+            while Present (Choice) loop
+               Check_Fuel_Decrease (Ctx.Fuel);
+
+               if Nkind (Choice) in N_Range | N_Subtype_Indication
+                 or else (Is_Entity_Name (Choice)
+                          and then Is_Type (Entity (Choice)))
+               then
+                  declare
+                     Choice_Range : constant Node_Id     := Get_Range (Choice);
+                     Curr         :          Big_Integer :=
+                       Value_Enum_Integer
+                         (RAC_Expr (Low_Bound (Choice_Range)));
+                     High         : constant Big_Integer :=
+                       Value_Enum_Integer
+                         (RAC_Expr (High_Bound (Choice_Range)));
+                     Iter_Param   :          Value_Type;
+                  begin
+                     while Curr <= High loop
+                        Check_Fuel_Decrease (Ctx.Fuel);
+
+                        Iter_Param := Int_Value (Curr, Etype (Def_Id));
+
+                        Set_Value (Ctx.Env (Ctx.Env.First),
+                                   Def_Id,
+                                   new Value_Type'(Iter_Param));
+
+                        Component_Values.Include
+                          (Curr, new Value_Type'(RAC_Expr (Expr)));
+
+                        Curr := Curr + 1;
+                     end loop;
+                  end;
+
+               else
+                  declare
+                     Choice_Val : constant Value_Type := RAC_Expr (Choice);
+                  begin
+                     Set_Value (Ctx.Env (Ctx.Env.First),
+                                Def_Id,
+                                new Value_Type'(Choice_Val));
+
+                     Component_Values.Include
+                       (Value_Enum_Integer (Choice_Val),
+                        new Value_Type'(RAC_Expr (Expr)));
+                  end;
+               end if;
+               Next (Choice);
+            end loop;
+
+            Ctx.Env.Delete_First;
+         end Iterated_Component;
+
+         --  Local variables
+
+         Assoc  : Node_Id := First (Component_Associations (N));
+         Choice : Node_Id;
+         Res    : Value_Type;
+         Val    : Value_Access;
+
       begin
 
          if Nkind (N) = N_Delta_Aggregate then
             Res := RAC_Expr (Expression (N));
+            Res.AST_Ty := Etype (N);
          else
             if Is_Record_Type (Ty) then
                Res := Record_Value (Entity_To_Value_Maps.Empty, Ty);
             else
                pragma Assert (Is_Array_Type (Ty));
-               Get_Bounds (Aggregate_Bounds (N), Fst, Lst);
-               Res := Array_Value
-                 (Fst, Lst, Big_Integer_To_Value_Maps.Empty, null, Ty);
+               declare
+                  First, Last : Big_Integer;
+               begin
+                  Get_Bounds (Aggregate_Bounds (N), First, Last);
+                  Res := Array_Value
+                    (First, Last, Big_Integer_To_Value_Maps.Empty, null, Ty);
+               end;
             end if;
          end if;
 
          if Is_Record_Type (Ty) then
-            if Has_Exprs then
-               RAC_Unsupported
-                 ("RAC_Expr aggregate record", "expressions");
-            end if;
 
-            while Present (As) loop
+            declare
+               Root_Ty : constant Type_Kind_Id := Root_Retysp (Ty);
+            begin
+               if Ty /= Root_Ty and then Is_Tagged_Type (Root_Ty) then
+                  RAC_Unsupported ("RAC_Expr aggregate record",
+                                   "tagged types extension");
+               end if;
+            end;
+
+            while Present (Assoc) loop
                Check_Fuel_Decrease (Ctx.Fuel);
 
-               V := RAC_Expr (Expression (As));
-               Ch := First (Choice_List (As));
-               while Present (Ch) loop
+               Val := new Value_Type'(RAC_Expr (Expression (Assoc)));
+               Choice := First (Choice_List (Assoc));
+
+               while Present (Choice) loop
                   Check_Fuel_Decrease (Ctx.Fuel);
 
-                  if Nkind (Ch) = N_Others_Choice then
-                     RAC_Unsupported
-                       ("RAC_Expr aggregate", "record others");
-                  end if;
-
                   declare
-                     Comp : constant Entity_Id :=
-                       Search_Component_In_Type (Ty, Entity (Ch));
+                     Component : constant Entity_Id :=
+                       Search_Component_In_Type (Ty, Entity (Choice));
                   begin
-                     pragma Assert (Present (Comp));
-                     Res.Record_Fields.Include (Comp, new Value_Type'(V));
+                     pragma Assert (Present (Component));
+                     Res.Record_Fields.Include (Component, Val);
                   end;
-                  Next (Ch);
+                  Next (Choice);
                end loop;
-               Next (As);
+               Next (Assoc);
             end loop;
-            Cleanup_Counterexample_Value (Res, N);
 
          else
             pragma Assert (Is_Array_Type (Ty));
-            if
-              Has_Exprs and then Present (Component_Associations (N))
-            then
-               RAC_Unsupported ("RAC_Expr aggregate array",
-                                "expressions and associations");
+
+            --  Positional components
+
+            if Nkind (N) = N_Aggregate and then Present (Expressions (N)) then
+               declare
+                  Expr : Node_Id     := First (Expressions (N));
+                  Curr : Big_Integer := Value_Enum_Integer
+                    (RAC_Expr (Low_Bound (Aggregate_Bounds (N))));
+               begin
+                  while Present (Expr) loop
+                     Check_Fuel_Decrease (Ctx.Fuel);
+
+                     Res.Array_Values.Include (Curr,
+                                               new Value_Type'
+                                                 (RAC_Expr (Expr)));
+                     Next (Expr);
+                     Curr := Curr + 1;
+                  end loop;
+               end;
             end if;
 
-            if Has_Exprs then
-               if No (Aggregate_Bounds (N)) then
-                  RAC_Unsupported ("RAC_Expr aggregate array",
-                                   "expressions without static bounds");
-               end if;
+            --  Named components
 
-               declare
-                  Ix  : Big_Integer := Value_Enum_Integer
-                    (RAC_Expr (Low_Bound (Aggregate_Bounds (N))));
-                  Hig : constant Big_Integer := Value_Enum_Integer
-                    (RAC_Expr (High_Bound (Aggregate_Bounds (N))));
-                  Ex  : Node_Id := First (Expressions (N));
-               begin
-                  while Present (Ex) loop
-                     Check_Fuel_Decrease (Ctx.Fuel);
+            if Present (Component_Associations (N)) then
 
-                     Res.Array_Values.Include
-                       (Ix, new Value_Type'(Copy (RAC_Expr (Ex))));
-                     Ex := Next (Ex);
-                     Ix := Ix + 1;
-                  end loop;
-                  if Ix /= Hig + 1 then
-                     RAC_Failure (N, VC_Range_Check);
-                  end if;
-               end;
-
-            elsif Present (Component_Associations (N)) then
-               while Present (As) loop
+               while Present (Assoc) loop
                   Check_Fuel_Decrease (Ctx.Fuel);
 
-                  if Nkind (As) = N_Iterated_Component_Association
-                    and then Present (Defining_Identifier (As))
-                  then
-                     RAC_Unsupported
-                       ("iterated component with defining identifier", N);
-                  end if;
-                  if Box_Present (As) then
-                     RAC_Unsupported
-                       ("iterated component with box present", N);
-                  end if;
+                  Choice := First (Choice_List (Assoc));
 
-                  V := RAC_Expr (Expression (As));
-                  Ch := First (Choice_List (As));
-                  while Present (Ch) loop
+                  while Present (Choice) loop
                      Check_Fuel_Decrease (Ctx.Fuel);
 
-                     if Nkind (Ch) = N_Range then
-                        declare
-                           Cur : Big_Integer := Value_Enum_Integer
-                             (RAC_Expr (Low_Bound (Ch)));
-                           Hig : constant Big_Integer := Value_Enum_Integer
-                             (RAC_Expr (High_Bound (Ch)));
-                        begin
-                           while Cur <= Hig loop
-                              Check_Fuel_Decrease (Ctx.Fuel);
+                     --  When the elements' values are attributed using a loop,
+                     --  iterate over it to retrieve the value of each
+                     --  individual element. Then, add the values to the actual
+                     --  array.
 
+                     if Nkind (Assoc) = N_Iterated_Component_Association
+                       and then Present (Defining_Identifier (Assoc))
+                     then
+                        declare
+                           Iter_Comp_Values : Big_Integer_To_Value_Maps.Map;
+                        begin
+                           Iterated_Component (Assoc, Iter_Comp_Values);
+
+                           for Component in Iter_Comp_Values.Iterate loop
                               Res.Array_Values.Include
-                                (Cur, new Value_Type'(Copy (V)));
-                              Cur := Cur + 1;
+                                (Big_Integer_To_Value_Maps.Key (Component),
+                                 Big_Integer_To_Value_Maps.Element
+                                   (Component));
                            end loop;
                         end;
+
                      else
-                        case Nkind (Ch) is
+                        Val := new Value_Type'
+                          (if Box_Present (Assoc)
+                           then (if Has_Default_Aspect (Ty)
+                                 then RAC_Expr
+                                   (Default_Aspect_Component_Value (Ty))
+                                 else
+                                    Default_Value (Component_Type (Ty)))
+                           else RAC_Expr (Expression (Assoc)));
+
+                        if Nkind (Choice) in N_Range | N_Subtype_Indication
+                          or else (Is_Entity_Name (Choice)
+                                   and then Is_Type (Entity (Choice)))
+                        then
+                           declare
+                              Choice_Range : constant Node_Id :=
+                                Get_Range (Choice);
+                              Curr         :          Big_Integer :=
+                                Value_Enum_Integer
+                                  (RAC_Expr (Low_Bound (Choice_Range)));
+                              High         : constant Big_Integer :=
+                                Value_Enum_Integer
+                                  (RAC_Expr (High_Bound (Choice_Range)));
+                           begin
+                              while Curr <= High loop
+                                 Check_Fuel_Decrease (Ctx.Fuel);
+
+                                 Res.Array_Values.Include (Curr, Val);
+                                 Curr := Curr + 1;
+                              end loop;
+                           end;
+
+                        else
+                           case Nkind (Choice) is
                            when N_Subexpr =>
                               Res.Array_Values.Include
-                                (Value_Enum_Integer (RAC_Expr (Ch)),
-                                 new Value_Type'(Copy (V)));
+                                (Value_Enum_Integer (RAC_Expr (Choice)), Val);
+
                            when N_Others_Choice =>
-                              Res.Array_Others := new Value_Type'(Copy (V));
+                              Res.Array_Others := Val;
+
                            when others =>
-                              RAC_Unsupported
-                                ("RAC_Expr array aggregate choice", Ch);
-                        end case;
+                              raise Program_Error;
+
+                           end case;
+                        end if;
                      end if;
-                     Next (Ch);
+                     Next (Choice);
                   end loop;
-                  Next (As);
+                  Next (Assoc);
                end loop;
             end if;
          end if;
 
+         Cleanup_Counterexample_Value (Res, N);
          return Res;
       end RAC_Aggregate;
 
@@ -2656,8 +2823,8 @@ package body CE_RAC is
          ----------------------
 
          procedure Get_Array_Bounds
-           (Op_Node  :     Node_Id;
-            Op_Ty    :     Type_Kind_Id;
+           (Op_Node     :     Node_Id;
+            Op_Ty       :     Type_Kind_Id;
             First, Last : out Big_Integer)
          is
             Arr_Value :          Value_Type;
@@ -3295,6 +3462,12 @@ package body CE_RAC is
                  new Value_Type'(Copy (RAC_Expr (Expression (N), Ty)));
 
             begin
+               --  Slide the array value if necessary
+
+               if RHS.K = Array_K and then Is_Constrained (Ty) then
+                     Slide (RHS.all, Ty);
+               end if;
+
                --  Perform discriminant check
 
                if Has_Discriminants (Ty)

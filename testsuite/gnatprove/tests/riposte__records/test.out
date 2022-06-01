@@ -1,34 +1,34 @@
-records.adb:6:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:6:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:8:07: info: initialization of "R" proved
-records.adb:16:19: info: postcondition proved (CVC4: 2 VC)
+records.adb:16:19: info: postcondition proved (CVC5: 2 VC)
 records.adb:18:07: info: initialization of "R" proved
-records.adb:26:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:26:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:28:07: info: initialization of "R" proved
-records.adb:36:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:36:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:38:07: info: initialization of "R" proved
-records.adb:45:19: info: postcondition proved (CVC4: 1 VC)
-records.adb:56:19: info: postcondition proved (CVC4: 1 VC)
-records.adb:60:29: info: range check proved (CVC4: 2 VC)
-records.adb:61:29: info: range check proved (CVC4: 2 VC)
-records.adb:65:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+records.adb:45:19: info: postcondition proved (CVC5: 1 VC)
+records.adb:56:19: info: postcondition proved (CVC5: 1 VC)
+records.adb:60:29: info: range check proved (CVC5: 2 VC)
+records.adb:61:29: info: range check proved (CVC5: 2 VC)
+records.adb:65:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 records.adb:70:07: info: initialization of "R" proved
-records.adb:75:15: info: precondition proved (CVC4: 4 VC)
+records.adb:75:15: info: precondition proved (CVC5: 4 VC)
 records.adb:86:25: high: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0))
 records.adb:89:07: info: initialization of "R" proved
-records.adb:94:15: info: precondition proved (CVC4: 4 VC)
-records.adb:103:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
-records.adb:111:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+records.adb:94:15: info: precondition proved (CVC5: 4 VC)
+records.adb:103:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+records.adb:111:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 records.adb:119:19: high: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:129:25: info: initialization of "Dst" proved
 records.adb:130:11: info: flow dependencies proved
-records.adb:132:22: info: postcondition proved (CVC4: 2 VC)
+records.adb:132:22: info: postcondition proved (CVC5: 2 VC)
 records.adb:139:25: info: initialization of "Dst" proved
 records.adb:140:11: info: flow dependencies proved
 records.adb:142:22: high: postcondition might fail, cannot prove Is_Valid (Dst) (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:150:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_A"
 records.adb:150:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_A"
 records.adb:151:11: info: flow dependencies proved
-records.adb:152:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+records.adb:152:22: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
 records.adb:153:49: info: justified that "Dst.The_Pair.A" might not be initialized
 records.adb:153:49: info: justified that "Dst.The_Pair.B" might not be initialized
 records.adb:164:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_B"
@@ -38,7 +38,7 @@ records.adb:166:22: high: postcondition might fail (e.g. when Dst = (Exists => F
 records.adb:166:22: info: justified that "Dst.The_Pair.A" might not be initialized
 records.adb:166:22: info: justified that "Dst.The_Pair.B" might not be initialized
 records.adb:177:11: info: flow dependencies proved
-records.adb:178:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+records.adb:178:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:183:07: info: initialization of "Tmp" proved
 records.adb:191:11: info: flow dependencies proved
 records.adb:195:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0))) [possible fix: add or complete related loop invariants or postconditions]
@@ -46,13 +46,13 @@ records.adb:197:07: info: initialization of "Tmp" proved
 records.adb:205:11: info: flow dependencies proved
 records.adb:209:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0))) [possible fix: add or complete related loop invariants or postconditions]
 records.adb:211:07: info: initialization of "Tmp" proved
-records.adb:215:30: info: assertion proved (CVC4: 2 VC)
-records.adb:219:10: info: assertion proved (CVC4: 2 VC)
+records.adb:215:30: info: assertion proved (CVC5: 2 VC)
+records.adb:219:10: info: assertion proved (CVC5: 2 VC)
 records.adb:226:11: info: flow dependencies proved
-records.adb:227:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+records.adb:227:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:232:07: info: initialization of "Tmp" proved
 records.adb:242:11: info: flow dependencies proved
-records.adb:243:22: info: postcondition proved (CVC4: 1 VC)
+records.adb:243:22: info: postcondition proved (CVC5: 1 VC)
 records.adb:247:07: info: initialization of "Tmp" proved
 records.adb:255:11: info: flow dependencies proved
 records.adb:256:22: medium: postcondition might fail (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))) [possible fix: add or complete related loop invariants or postconditions]
@@ -61,25 +61,25 @@ records.adb:269:11: info: flow dependencies proved
 records.adb:270:22: high: postcondition might fail (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:275:07: info: initialization of "Tmp" proved
 records.adb:285:11: info: flow dependencies proved
-records.adb:286:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+records.adb:286:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:296:11: info: flow dependencies proved
 records.adb:300:44: high: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 0)))
-records.adb:309:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:309:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:312:07: info: initialization of "Tmp" proved
 records.adb:323:19: high: postcondition might fail (e.g. when N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1)))
 records.adb:326:07: info: initialization of "Tmp" proved
-records.adb:329:27: info: range check proved (CVC4: 2 VC)
+records.adb:329:27: info: range check proved (CVC5: 2 VC)
 records.adb:334:11: info: flow dependencies proved
-records.adb:335:22: info: postcondition proved (CVC4: 1 VC)
+records.adb:335:22: info: postcondition proved (CVC5: 1 VC)
 records.adb:344:11: info: flow dependencies proved
-records.adb:345:22: info: postcondition proved (CVC4: 1 VC)
-records.adb:352:19: info: postcondition proved (CVC4: 2 VC)
-records.adb:359:19: info: postcondition proved (CVC4: 2 VC)
-records.adb:366:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:345:22: info: postcondition proved (CVC5: 1 VC)
+records.adb:352:19: info: postcondition proved (CVC5: 2 VC)
+records.adb:359:19: info: postcondition proved (CVC5: 2 VC)
+records.adb:366:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:370:07: info: initialization of "R" proved
 records.adb:380:19: high: postcondition might fail (e.g. when Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0))
 records.adb:384:07: info: initialization of "R" proved
-records.adb:394:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:394:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:398:07: info: initialization of "R" proved
 records.adb:406:11: info: flow dependencies proved
 records.adb:410:22: high: assertion might fail (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 1))) [possible fix: subprogram at line 405 should mention X in a precondition]
@@ -96,16 +96,16 @@ records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:448:07: info: initialization of "R" proved
 records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment]
 records.adb:465:11: info: flow dependencies proved
-records.adb:466:22: info: postcondition proved (CVC4: 1 VC)
-records.adb:474:30: info: assertion proved (CVC4: 1 VC)
+records.adb:466:22: info: postcondition proved (CVC5: 1 VC)
+records.adb:474:30: info: assertion proved (CVC5: 1 VC)
 records.adb:482:11: info: flow dependencies proved
 records.adb:483:22: high: postcondition might fail (e.g. when R = (Exists => True, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = 1)
-records.adb:491:30: info: assertion proved (CVC4: 1 VC)
-records.adb:501:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+records.adb:491:30: info: assertion proved (CVC5: 1 VC)
+records.adb:501:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 records.adb:504:22: high: assertion might fail [possible fix: subprogram at line 498 should mention R in a precondition]
 records.adb:513:11: info: flow dependencies proved
-records.adb:514:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-records.adb:523:19: info: postcondition proved (CVC4: 2 VC)
+records.adb:514:22: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+records.adb:523:19: info: postcondition proved (CVC5: 2 VC)
 records.adb:530:11: info: flow dependencies proved
 records.adb:534:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F_Of_Pair or turning it into an expression function in its unit spec]
 counterexample expected for check at records.adb:119

@@ -2,6 +2,6 @@ main.adb:2:11: info: Initial_Condition of package "Pkg" is ignored
 main.adb:2:11: info: the elaboration of "Pkg" is not known to precede the elaboration of the current unit
 main.adb:2:11: info: use pragma Elaborate_Body in "Pkg" or pragma Elaborate in the current unit
 main.adb:4:13: medium: precondition of main program might fail
-main.adb:7:07: info: precondition proved (CVC4: 1 VC)
-pkg.ads:3:06: info: initial condition proved (CVC4: 1 VC)
-pkg.ads:11:17: info: postcondition proved (CVC4: 1 VC)
+main.adb:7:07: info: precondition proved (CVC5: 1 VC)
+pkg.ads:3:06: info: initial condition proved (CVC5: 1 VC)
+pkg.ads:11:17: info: postcondition proved (CVC5: 1 VC)

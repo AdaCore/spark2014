@@ -1,2 +1,2 @@
-pack.ads:11:19: info: postcondition proved (CVC4: 2 VC)
-pack.ads:14:19: info: postcondition proved (CVC4: 2 VC)
+pack.ads:11:19: info: postcondition proved (CVC5: 2 VC)
+pack.ads:14:19: info: postcondition proved (CVC5: 2 VC)

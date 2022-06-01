@@ -18,10 +18,10 @@ weird.ads:14:06: error: procedure with aspect Annotate Terminating must not also
 gnatprove: error during generation of Global contracts
 pack.adb:5:07: medium: exception might be raised
 pack.adb:11:10: high: precondition might fail
-pack.adb:20:22: info: assertion proved (CVC4: 1 VC)
+pack.adb:20:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:29:10: medium: precondition might fail
 pack.ads:7:06: info: data dependencies proved
-pack.ads:8:14: info: postcondition proved (CVC4: 1 VC)
+pack.ads:8:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:12:06: info: data dependencies proved
-pack.ads:16:14: info: postcondition proved (CVC4: 1 VC)
+pack.ads:16:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:23:06: info: data dependencies proved

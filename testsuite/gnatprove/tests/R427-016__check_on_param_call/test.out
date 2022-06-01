@@ -1,36 +1,36 @@
-formals.adb:19:07: info: predicate check proved (CVC4: 1 VC)
-formals.adb:19:22: info: division check proved (CVC4: 1 VC)
-formals.adb:26:07: info: predicate check proved (CVC4: 1 VC)
-formals.adb:26:22: info: division check proved (CVC4: 1 VC)
+formals.adb:19:07: info: predicate check proved (CVC5: 1 VC)
+formals.adb:19:22: info: division check proved (CVC5: 1 VC)
+formals.adb:26:07: info: predicate check proved (CVC5: 1 VC)
+formals.adb:26:22: info: division check proved (CVC5: 1 VC)
 formals.adb:36:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:36:14: info: local subprogram "P3" only analyzed in the context of calls
-formals.adb:38:16: info: predicate check proved (CVC4: 1 VC), in call inlined at formals.adb:116
-formals.adb:38:22: info: division check proved (CVC4: 1 VC), in call inlined at formals.adb:116
+formals.adb:38:16: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:116
+formals.adb:38:22: info: division check proved (CVC5: 1 VC), in call inlined at formals.adb:116
 formals.adb:38:24: medium: predicate check might fail, in call inlined at formals.adb:116 [possible fix: call at line 115 should mention A (for argument X) in a postcondition]
 formals.adb:41:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:41:14: info: local subprogram "P3" only analyzed in the context of calls
-formals.adb:43:16: info: predicate check proved (CVC4: 1 VC), in call inlined at formals.adb:122
-formals.adb:43:22: info: division check proved (CVC4: 1 VC), in call inlined at formals.adb:122
+formals.adb:43:16: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:122
+formals.adb:43:22: info: division check proved (CVC5: 1 VC), in call inlined at formals.adb:122
 formals.adb:43:24: medium: predicate check might fail, in call inlined at formals.adb:122 [possible fix: call at line 121 should mention A (for argument X) in a postcondition]
 formals.adb:46:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:46:14: info: local subprogram "P4" only analyzed in the context of calls
-formals.adb:49:10: info: predicate check proved (CVC4: 1 VC), in call inlined at formals.adb:114
+formals.adb:49:10: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:114
 formals.adb:49:10: medium: predicate check might fail, in call inlined at formals.adb:114 [possible fix: call at line 113 should mention A (for argument Y) in a postcondition]
 formals.adb:53:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:53:14: info: local subprogram "P5" only analyzed in the context of calls
-formals.adb:56:10: info: predicate check proved (CVC4: 1 VC), in call inlined at formals.adb:120
+formals.adb:56:10: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:120
 formals.adb:56:10: medium: predicate check might fail, in call inlined at formals.adb:120 [possible fix: call at line 119 should mention A (for argument U) in a postcondition]
-formals.adb:64:15: info: division check proved (CVC4: 1 VC)
-formals.adb:64:15: info: predicate check proved (CVC4: 1 VC)
-formals.adb:71:15: info: division check proved (CVC4: 1 VC)
-formals.adb:71:15: info: predicate check proved (CVC4: 1 VC)
+formals.adb:64:15: info: division check proved (CVC5: 1 VC)
+formals.adb:64:15: info: predicate check proved (altergo: 1 VC)
+formals.adb:71:15: info: division check proved (CVC5: 1 VC)
+formals.adb:71:15: info: predicate check proved (altergo: 1 VC)
 formals.adb:74:18: info: initialization of "A" proved
-formals.adb:82:22: info: predicate check proved (CVC4: 1 VC)
-formals.adb:83:24: info: predicate check proved (CVC4: 1 VC)
-formals.adb:86:22: info: predicate check proved (CVC4: 1 VC)
-formals.adb:87:24: info: predicate check proved (CVC4: 1 VC)
+formals.adb:82:22: info: predicate check proved (CVC5: 1 VC)
+formals.adb:83:24: info: predicate check proved (CVC5: 1 VC)
+formals.adb:86:22: info: predicate check proved (CVC5: 1 VC)
+formals.adb:87:24: info: predicate check proved (CVC5: 1 VC)
 formals.adb:89:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:89:07: info: predicate check proved (CVC4: 1 VC)
+formals.adb:89:07: info: predicate check proved (CVC5: 1 VC)
 formals.adb:90:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:91:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:92:04: info: precondition proved (Trivial: 1 VC)
@@ -51,7 +51,7 @@ formals.adb:101:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:102:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:102:08: medium: predicate check might fail [possible fix: call at line 102 should mention A (for argument W) in a postcondition]
 formals.adb:103:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:103:07: info: predicate check proved (CVC4: 1 VC)
+formals.adb:103:07: info: predicate check proved (CVC5: 1 VC)
 formals.adb:104:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:105:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:106:04: info: precondition proved (Trivial: 1 VC)
@@ -73,112 +73,112 @@ formals.adb:118:18: medium: predicate check might fail [possible fix: call at li
 formals.adb:119:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:121:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:1:11: warning: subprogram "Formals_Arr_Split" has no effect
-formals_arr_split.adb:3:04: info: range check proved (CVC4: 2 VC)
-formals_arr_split.adb:5:04: info: range check proved (CVC4: 2 VC)
-formals_arr_split.adb:7:12: info: range check proved (CVC4: 2 VC)
+formals_arr_split.adb:3:04: info: range check proved (CVC5: 2 VC)
+formals_arr_split.adb:5:04: info: range check proved (CVC5: 2 VC)
+formals_arr_split.adb:7:12: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:10:17: info: initialization of "A" proved
-formals_arr_split.adb:14:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-formals_arr_split.adb:14:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-formals_arr_split.adb:14:12: info: range check proved (CVC4: 2 VC)
-formals_arr_split.adb:14:15: info: range check proved (CVC4: 2 VC)
+formals_arr_split.adb:14:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:14:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:14:12: info: range check proved (CVC5: 2 VC)
+formals_arr_split.adb:14:15: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:17:14: info: add a contract to analyze it separately from calling contexts
 formals_arr_split.adb:17:14: info: local subprogram "P2" only analyzed in the context of calls
 formals_arr_split.adb:17:18: info: initialization of "A" proved
 formals_arr_split.adb:20:07: medium: length check might fail, in call inlined at formals_arr_split.adb:48 [reason for check: array must be of the appropriate length] [possible fix: call at line 42 should mention A (for argument V) in a postcondition]
-formals_arr_split.adb:20:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
-formals_arr_split.adb:20:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
-formals_arr_split.adb:20:12: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:12: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:48
-formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:12: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:12: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:15: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:15: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:23:14: info: add a contract to analyze it separately from calling contexts
 formals_arr_split.adb:23:14: info: local subprogram "P3" only analyzed in the context of calls
 formals_arr_split.adb:23:18: info: initialization of "A" proved
 formals_arr_split.adb:26:07: medium: length check might fail, in call inlined at formals_arr_split.adb:54 [reason for check: array must be of the appropriate length] [possible fix: call at line 42 should mention A (for argument V) in a postcondition]
-formals_arr_split.adb:26:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
-formals_arr_split.adb:26:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
-formals_arr_split.adb:26:12: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:54
-formals_arr_split.adb:26:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:54
-formals_arr_split.adb:31:11: info: index check proved (CVC4: 2 VC)
-formals_arr_split.adb:36:07: info: precondition proved (CVC4: 1 VC)
+formals_arr_split.adb:26:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:12: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:15: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:31:11: info: index check proved (CVC5: 2 VC)
+formals_arr_split.adb:36:07: info: precondition proved (CVC5: 1 VC)
 formals_arr_split.adb:36:22: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at line 34 should mention A]
-formals_arr_split.adb:39:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-formals_arr_split.adb:40:24: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:39:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:40:24: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 formals_arr_split.adb:42:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:46:10: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:46:13: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type]
 formals_arr_split.adb:52:10: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:52:13: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type]
-formals_arr_split_pred.adb:5:31: info: index check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:8:33: info: index check proved (CVC4: 2 VC)
+formals_arr_split_pred.adb:5:31: info: index check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:8:33: info: index check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:14:07: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:14:07: info: predicate check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:14:07: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:14:10: info: index check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:14:19: info: index check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:14:22: info: division check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:14:27: info: index check proved (CVC4: 2 VC)
+formals_arr_split_pred.adb:14:07: info: predicate check proved (CVC5: 1 VC)
+formals_arr_split_pred.adb:14:07: info: predicate check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:14:10: info: index check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:14:19: info: index check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:14:22: info: division check proved (CVC5: 1 VC)
+formals_arr_split_pred.adb:14:27: info: index check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:21:07: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:21:07: info: predicate check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:21:07: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:21:10: info: index check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:21:19: info: index check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:21:22: info: division check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:21:27: info: index check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:28:07: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:28:10: info: index check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:31:20: info: predicate check proved (CVC4: 2 VC)
+formals_arr_split_pred.adb:21:07: info: predicate check proved (CVC5: 1 VC)
+formals_arr_split_pred.adb:21:07: info: predicate check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:21:10: info: index check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:21:19: info: index check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:21:22: info: division check proved (CVC5: 1 VC)
+formals_arr_split_pred.adb:21:27: info: index check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:28:07: info: predicate check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:28:10: info: index check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:31:20: info: predicate check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:32:22: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:32:22: info: predicate check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:32:22: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:32:22: info: range check proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:32:22: info: predicate check proved (CVC5: 1 VC)
+formals_arr_split_pred.adb:32:22: info: predicate check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:32:22: info: range check proved (CVC5: 1 VC)
 formals_arr_split_pred.adb:33:24: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:33:24: info: predicate check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:33:24: info: predicate check proved (CVC4: 2 VC)
+formals_arr_split_pred.adb:33:24: info: predicate check proved (CVC5: 1 VC)
+formals_arr_split_pred.adb:33:24: info: predicate check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:35:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:35:07: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:35:07: info: predicate check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:35:07: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:35:07: info: range check proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:35:07: info: predicate check proved (CVC5: 1 VC)
+formals_arr_split_pred.adb:35:07: info: predicate check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:35:07: info: range check proved (CVC5: 1 VC)
 formals_arr_split_pred.adb:36:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:37:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:38:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:38:07: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:38:07: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:38:07: info: range check proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:38:07: info: predicate check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:38:07: info: range check proved (CVC5: 1 VC)
 formals_arr_split_pred.adb:38:07: medium: predicate check might fail [possible fix: call at line 37 should mention A (for argument X) in a postcondition]
 formals_arr_split_pred.adb:39:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:40:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:40:19: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:40:19: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:40:19: info: range check proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:40:19: info: predicate check proved (CVC5: 2 VC)
+formals_arr_split_pred.adb:40:19: info: range check proved (CVC5: 1 VC)
 formals_arr_split_pred.adb:40:19: medium: predicate check might fail [possible fix: call at line 39 should mention A (for argument X) in a postcondition]
 formals_arr_split_pred.adb:41:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:42:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:42:08: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:42:08: info: predicate check proved (CVC4: 2 VC)
+formals_arr_split_pred.adb:42:08: info: predicate check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:42:08: medium: predicate check might fail [possible fix: call at line 41 should mention A (for argument Y) in a postcondition]
 formals_arr_split_pred.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:44:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:44:18: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:44:18: info: predicate check proved (CVC4: 2 VC)
+formals_arr_split_pred.adb:44:18: info: predicate check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:44:18: medium: predicate check might fail [possible fix: call at line 43 should mention A (for argument Y) in a postcondition]
 formals_arr_split_pred.adb:45:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:46:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:46:18: info: for inherited predicate at formals_arr_split_pred.adb:3
-formals_arr_split_pred.adb:46:18: info: predicate check proved (CVC4: 2 VC)
+formals_arr_split_pred.adb:46:18: info: predicate check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:46:18: medium: predicate check might fail [possible fix: call at line 45 should mention A (for argument U) in a postcondition]
 formals_rec_split.adb:1:11: warning: subprogram "Formals_Rec_Split" has no effect
-formals_rec_split.adb:11:31: info: range check proved (CVC4: 1 VC)
-formals_rec_split.adb:13:33: info: range check proved (CVC4: 1 VC)
+formals_rec_split.adb:11:31: info: range check proved (CVC5: 1 VC)
+formals_rec_split.adb:13:33: info: range check proved (CVC5: 1 VC)
 formals_rec_split.adb:15:17: low: "A.F" might not be set in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A.F" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-formals_rec_split.adb:20:11: info: discriminant check proved (CVC4: 1 VC)
+formals_rec_split.adb:20:11: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split.adb:24:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split.adb:24:14: info: local subprogram "P2" only analyzed in the context of calls
 formals_rec_split.adb:24:18: low: "A.F" might not be set in "P2" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A.F" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-formals_rec_split.adb:28:11: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split.adb:44
+formals_rec_split.adb:28:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split.adb:44
 formals_rec_split.adb:28:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:49 [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:32:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split.adb:32:14: info: local subprogram "P3" only analyzed in the context of calls
@@ -189,66 +189,66 @@ formals_rec_split.adb:47:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when U = (D => False) and X = True)
 formals_rec_split.adb:53:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => False) and X = True)
-formals_rec_split_pred.adb:13:31: info: range check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:16:34: info: range check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:17:31: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:23:08: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:23:08: info: predicate check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:23:15: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:23:18: info: division check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:23:21: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:30:08: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:30:08: info: predicate check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:30:15: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:30:18: info: division check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:30:21: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:38:11: info: discriminant check proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:13:31: info: range check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:16:34: info: range check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:17:31: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:23:08: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:23:08: info: predicate check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:23:15: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:23:18: info: division check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:23:21: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:30:08: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:30:08: info: predicate check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:30:15: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:30:18: info: division check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:30:21: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:38:11: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:42:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:42:14: info: local subprogram "P3" only analyzed in the context of calls
-formals_rec_split_pred.adb:44:08: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:85
-formals_rec_split_pred.adb:44:14: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:85
-formals_rec_split_pred.adb:44:14: info: predicate check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:85
-formals_rec_split_pred.adb:44:15: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:85
-formals_rec_split_pred.adb:44:18: info: division check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:85
-formals_rec_split_pred.adb:44:20: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:08: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:14: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:14: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:15: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:18: info: division check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:20: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:44:20: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:85 [possible fix: call at line 84 should mention A (for argument X) in a postcondition]
-formals_rec_split_pred.adb:44:21: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:21: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:47:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:47:14: info: local subprogram "P3" only analyzed in the context of calls
-formals_rec_split_pred.adb:49:08: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:89
-formals_rec_split_pred.adb:49:14: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:89
-formals_rec_split_pred.adb:49:14: info: predicate check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:89
-formals_rec_split_pred.adb:49:15: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:89
-formals_rec_split_pred.adb:49:18: info: division check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:89
-formals_rec_split_pred.adb:49:20: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:08: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:14: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:14: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:15: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:18: info: division check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:20: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:49:20: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:89 [possible fix: call at line 88 should mention A (for argument X) in a postcondition]
-formals_rec_split_pred.adb:49:21: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:21: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:52:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:52:14: info: local subprogram "P4" only analyzed in the context of calls
-formals_rec_split_pred.adb:54:11: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:83
-formals_rec_split_pred.adb:55:11: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:83
+formals_rec_split_pred.adb:54:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:83
+formals_rec_split_pred.adb:55:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:83
 formals_rec_split_pred.adb:55:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:83 (e.g. when Y = (D => ?, F => 0, G => 1, H => 1)) [possible fix: call at line 82 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:59:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:59:14: info: local subprogram "P5" only analyzed in the context of calls
-formals_rec_split_pred.adb:61:11: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:87
-formals_rec_split_pred.adb:62:11: info: discriminant check proved (CVC4: 1 VC), in call inlined at formals_rec_split_pred.adb:87
+formals_rec_split_pred.adb:61:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:87
+formals_rec_split_pred.adb:62:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:87
 formals_rec_split_pred.adb:62:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:87 [possible fix: call at line 86 should mention A (for argument U) in a postcondition]
-formals_rec_split_pred.adb:67:22: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:67:22: info: predicate check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:68:22: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:68:22: info: predicate check proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:67:22: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:67:22: info: predicate check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:68:22: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:68:22: info: predicate check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:70:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:70:07: info: discriminant check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:70:07: info: predicate check proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:70:07: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:70:07: info: predicate check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:71:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:72:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:73:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:73:07: info: discriminant check proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:73:07: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:73:07: medium: predicate check might fail (e.g. when X = (D => True, F => 1, G => 1, H => 0)) [possible fix: call at line 72 should mention A (for argument X) in a postcondition]
 formals_rec_split_pred.adb:74:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:75:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:75:19: info: discriminant check proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:75:19: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:75:19: medium: predicate check might fail (e.g. when X = (D => True, F => 1, G => 1, H => 0)) [possible fix: call at line 74 should mention A (for argument X) in a postcondition]
 formals_rec_split_pred.adb:76:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:77:04: info: precondition proved (Trivial: 1 VC)

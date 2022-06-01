@@ -1,67 +1,67 @@
-memcpy.adb:17:39: info: range check proved (CVC4: 1 VC)
+memcpy.adb:17:39: info: range check proved (CVC5: 1 VC)
 memcpy.adb:19:07: warning: initialization of "saved_ra" has no effect
-memcpy.adb:19:35: info: range check proved (CVC4: 1 VC)
+memcpy.adb:19:35: info: range check proved (CVC5: 1 VC)
 memcpy.adb:20:07: warning: initialization of "ra0" has no effect
-memcpy.adb:20:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:20:29: info: range check proved (CVC5: 1 VC)
 memcpy.adb:21:07: warning: initialization of "ra1" has no effect
-memcpy.adb:21:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:21:29: info: range check proved (CVC5: 1 VC)
 memcpy.adb:22:07: warning: initialization of "ra2" has no effect
-memcpy.adb:22:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:22:29: info: range check proved (CVC5: 1 VC)
 memcpy.adb:23:07: warning: initialization of "ra3" has no effect
-memcpy.adb:23:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:23:29: info: range check proved (CVC5: 1 VC)
 memcpy.adb:24:07: warning: initialization of "ra4" has no effect
-memcpy.adb:24:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:24:29: info: range check proved (CVC5: 1 VC)
 memcpy.adb:25:07: warning: initialization of "ra5" has no effect
-memcpy.adb:25:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:25:29: info: range check proved (CVC5: 1 VC)
 memcpy.adb:26:07: warning: initialization of "ra6" has no effect
-memcpy.adb:26:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:26:29: info: range check proved (CVC5: 1 VC)
 memcpy.adb:27:07: warning: initialization of "ra7" has no effect
-memcpy.adb:27:29: info: range check proved (CVC4: 1 VC)
-memcpy.adb:28:36: info: range check proved (CVC4: 1 VC)
-memcpy.adb:29:36: info: range check proved (CVC4: 1 VC)
-memcpy.adb:30:36: info: range check proved (CVC4: 1 VC)
+memcpy.adb:27:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:28:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:29:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:30:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
-memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
-memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
-memcpy.adb:151:21: info: assertion proved (CVC4: 1 VC)
+memcpy.adb:151:21: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
 memcpy.adb:160:21: medium: assertion might fail [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:164:12: medium: assertion might fail, cannot prove X86.Memory(i) = SaveMem(i)
-memcpy.adb:171:39: info: range check proved (CVC4: 1 VC)
-memcpy.adb:172:39: info: range check proved (CVC4: 1 VC)
-memcpy.adb:173:39: info: range check proved (CVC4: 1 VC)
-memcpy.adb:175:36: info: range check proved (CVC4: 1 VC)
-memcpy.adb:176:35: info: range check proved (CVC4: 1 VC)
-memcpy.adb:189:28: info: division check proved (CVC4: 2 VC)
-memcpy.adb:207:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:207:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:210:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-memcpy.adb:210:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-memcpy.adb:216:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:171:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:172:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:173:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:175:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:176:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:189:28: info: division check proved (CVC5: 2 VC)
+memcpy.adb:207:32: info: loop invariant preservation proved (CVC5: 1 VC)
+memcpy.adb:208:34: medium: loop invariant might fail in first iteration, cannot prove X86.InSafeRegion64(i,X86.RSP+8)
+memcpy.adb:210:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:213:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+memcpy.adb:216:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might not be preserved by an arbitrary iteration
-memcpy.adb:217:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:217:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:217:32: medium: loop invariant might not be preserved by an arbitrary iteration
-memcpy.adb:219:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:219:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:219:59: info: division check proved (CVC4: 2 VC)
-memcpy.adb:222:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:219:32: info: loop invariant initialization proved (CVC5: 1 VC)
+memcpy.adb:219:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:219:59: info: division check proved (CVC5: 2 VC)
+memcpy.adb:222:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:222:32: medium: loop invariant might not be preserved by an arbitrary iteration
-memcpy.adb:223:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:223:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:223:32: medium: loop invariant might not be preserved by an arbitrary iteration
 memcpy.adb:242:23: warning: unused assignment
 memcpy.adb:243:23: warning: unused assignment
 memcpy.adb:262:23: warning: unused assignment
 memcpy.adb:263:23: warning: unused assignment
-memcpy.adb:271:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:274:24: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
-memcpy.adb:280:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:281:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:283:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:283:51: info: division check proved (CVC4: 1 VC)
+memcpy.adb:271:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:274:24: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:280:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:281:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:283:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:283:51: info: division check proved (CVC5: 1 VC)
 memcpy.adb:285:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:286:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:287:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
@@ -70,69 +70,69 @@ memcpy.adb:289:24: medium: assertion might fail [possible fix: loop invariant at
 memcpy.adb:290:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:291:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:292:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
-memcpy.adb:309:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+memcpy.adb:312:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
 memcpy.adb:314:21: medium: assertion might fail
 memcpy.adb:315:21: medium: assertion might fail
 memcpy.adb:317:21: medium: assertion might fail
-memcpy.adb:317:76: info: division check proved (CVC4: 1 VC)
+memcpy.adb:317:76: info: division check proved (CVC5: 1 VC)
 memcpy.adb:319:21: medium: assertion might fail
 memcpy.adb:320:21: medium: assertion might fail
-memcpy.adb:326:35: info: range check proved (CVC4: 1 VC)
-memcpy.adb:327:35: info: range check proved (CVC4: 1 VC)
-memcpy.adb:328:39: info: range check proved (CVC4: 1 VC)
-memcpy.adb:330:36: info: range check proved (CVC4: 1 VC)
-memcpy.adb:331:35: info: range check proved (CVC4: 1 VC)
-memcpy.adb:353:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:353:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:356:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-memcpy.adb:356:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-memcpy.adb:362:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:326:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:327:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:328:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:330:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:331:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:353:32: info: loop invariant preservation proved (CVC5: 1 VC)
+memcpy.adb:354:34: medium: loop invariant might fail in first iteration, cannot prove X86.InSafeRegion64(i,X86.RSP+8)
+memcpy.adb:356:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:359:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+memcpy.adb:362:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:362:32: medium: loop invariant might not be preserved by an arbitrary iteration
-memcpy.adb:363:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:363:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:363:32: medium: loop invariant might not be preserved by an arbitrary iteration
-memcpy.adb:365:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:365:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:369:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:365:32: info: loop invariant initialization proved (CVC5: 1 VC)
+memcpy.adb:365:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:369:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:369:32: medium: loop invariant might not be preserved by an arbitrary iteration
-memcpy.adb:371:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:371:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:371:32: medium: loop invariant might not be preserved by an arbitrary iteration
 memcpy.adb:385:23: warning: unused assignment
 memcpy.adb:386:23: warning: unused assignment
 memcpy.adb:401:23: warning: unused assignment
 memcpy.adb:402:23: warning: unused assignment
-memcpy.adb:411:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:414:24: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
-memcpy.adb:420:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:421:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:423:24: info: assertion proved (CVC4: 1 VC)
+memcpy.adb:411:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:414:24: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:420:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:421:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:423:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:426:24: medium: assertion might fail [possible fix: loop invariant at line 353 should mention RDX]
-memcpy.adb:444:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+memcpy.adb:447:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
 memcpy.adb:449:21: medium: assertion might fail
 memcpy.adb:450:21: medium: assertion might fail
-memcpy.adb:452:21: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:452:76: info: division check proved (CVC4: 1 VC)
+memcpy.adb:452:21: medium: assertion might fail
+memcpy.adb:452:76: info: division check proved (CVC5: 1 VC)
 memcpy.adb:454:21: medium: assertion might fail
 memcpy.adb:455:21: medium: assertion might fail
 memcpy.adb:463:10: warning: initialization of "saved_ra" has no effect
-memcpy.adb:463:38: info: range check proved (CVC4: 1 VC)
+memcpy.adb:463:38: info: range check proved (CVC5: 1 VC)
 memcpy.adb:464:10: warning: initialization of "SaveStackPtr" has no effect
-memcpy.adb:464:42: info: range check proved (CVC4: 1 VC)
+memcpy.adb:464:42: info: range check proved (CVC5: 1 VC)
 memcpy.adb:465:10: warning: initialization of "ra0" has no effect
-memcpy.adb:465:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:465:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:466:10: warning: initialization of "ra1" has no effect
-memcpy.adb:466:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:466:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:467:10: warning: initialization of "ra2" has no effect
-memcpy.adb:467:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:467:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:468:10: warning: initialization of "ra3" has no effect
-memcpy.adb:468:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:468:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:469:10: warning: initialization of "ra4" has no effect
-memcpy.adb:469:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:469:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:470:10: warning: initialization of "ra5" has no effect
-memcpy.adb:470:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:470:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:471:10: warning: initialization of "ra6" has no effect
-memcpy.adb:471:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:471:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:472:10: warning: initialization of "ra7" has no effect
-memcpy.adb:472:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:472:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:485:23: warning: unused assignment
 memcpy.adb:486:23: warning: unused assignment
 memcpy.adb:505:13: warning: "RCX" is set by "Write_ECX" but not used after the call
@@ -146,7 +146,7 @@ memcpy.adb:535:13: warning: "RAX" is set by "Write_EAX" but not used after the c
 memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:543:18: warning: unused assignment
 memcpy.adb:546:18: warning: unused assignment
-memcpy.adb:574:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+memcpy.adb:574:10: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.rsp) [possible fix: subprogram at memcpy.ads:168 should mention RDX in a precondition]
 memcpy.adb:574:10: warning: "RAX" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSI" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSP" is set by "memcpy2" but not used after the call
@@ -154,9 +154,9 @@ memcpy.adb:590:18: warning: unused assignment
 memcpy.adb:591:10: warning: "RSP" is set by "printf" but not used after the call
 memcpy.adb:591:10: warning: statement has no effect
 memcpy.ads:17:06: info: data dependencies proved
-memcpy.ads:18:14: info: postcondition proved (CVC4: 1 VC)
+memcpy.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 memcpy.ads:21:06: info: data dependencies proved
-memcpy.ads:22:14: info: postcondition proved (CVC4: 1 VC)
+memcpy.ads:22:14: info: postcondition proved (CVC5: 1 VC)
 memcpy.ads:25:06: info: data dependencies proved
 memcpy.ads:25:28: low: unused global "Dummy_Var"
 memcpy.ads:25:28: warning: "Dummy_Var" is not modified, could be INPUT
@@ -190,22 +190,22 @@ memcpy.ads:30:61: warning: "R15" is not modified, could be INPUT
 memcpy.ads:31:31: low: unused global "StackAddressSize"
 memcpy.ads:31:53: low: unused global "FS"
 memcpy.ads:31:61: low: unused global "GS"
-memcpy.ads:35:14: info: postcondition proved (CVC4: 11 VC; Trivial: 1 VC)
+memcpy.ads:48:12: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
 memcpy.ads:52:06: info: data dependencies proved
 memcpy.ads:53:31: info: initialization of "RAX" proved
 memcpy.ads:53:40: info: initialization of "CarryFlag" proved
 memcpy.ads:53:55: info: initialization of "SignFlag" proved
 memcpy.ads:53:69: info: initialization of "OverflowFlag" proved
 memcpy.ads:53:87: info: initialization of "ZeroFlag" proved
-memcpy.ads:73:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-16+7) = X86.Memory'Old(X86.RBP'Old-16+7)
-memcpy.ads:86:92: info: division check proved (CVC4: 1 VC)
+memcpy.ads:63:22: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+memcpy.ads:86:92: info: division check proved (CVC5: 1 VC)
 memcpy.ads:111:06: info: data dependencies proved
 memcpy.ads:112:31: info: initialization of "ZeroFlag" proved
 memcpy.ads:112:45: info: initialization of "SignFlag" proved
 memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:113:61: warning: unused initial value of "RAX"
-memcpy.ads:125:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32) = X86.Memory'Old(X86.RBP'Old-32)
+memcpy.ads:123:22: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
 memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"

@@ -1,9 +1,9 @@
 fib.adb:3:07: info: initialization of "a" proved
 fib.adb:3:10: info: initialization of "b" proved
 fib.adb:3:13: info: initialization of "t" proved
-fib.adb:7:11: info: range check proved (CVC4: 2 VC)
-fib.adb:8:33: info: loop invariant initialization proved (CVC4: 2 VC)
-fib.adb:8:33: info: loop invariant preservation proved (CVC4: 2 VC)
+fib.adb:7:11: info: range check proved (CVC5: 2 VC)
+fib.adb:8:33: info: loop invariant initialization proved (CVC5: 2 VC)
+fib.adb:8:33: info: loop invariant preservation proved (CVC5: 2 VC)
 fib.adb:10:17: medium: overflow check might fail, cannot prove upper bound for a + b [reason for check: result of addition must fit in a 32-bits machine integer]
 fib.adb:17:07: info: initialization of "a1" proved
 fib.adb:17:11: info: initialization of "a2" proved
@@ -14,130 +14,130 @@ fib.adb:18:07: info: initialization of "copy_n1" proved
 fib.adb:18:16: info: initialization of "copy_n2" proved
 fib.adb:28:33: medium: loop invariant might fail in first iteration, cannot prove a1 = Fibonacci(i) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
 fib.adb:28:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove a1 = Fibonacci(i) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
-fib.adb:28:38: info: precondition proved (CVC4: 2 VC)
-fib.adb:29:30: info: precondition proved (CVC4: 2 VC)
-fib.adb:29:42: info: range check proved (CVC4: 4 VC)
-fib.adb:32:31: info: loop variant proved (CVC4: 1 VC)
+fib.adb:28:38: info: precondition proved (CVC5: 2 VC)
+fib.adb:29:30: info: precondition proved (CVC5: 2 VC)
+fib.adb:29:42: info: range check proved (CVC5: 4 VC)
+fib.adb:32:31: info: loop variant proved (CVC5: 1 VC)
 fib.adb:33:19: medium: overflow check might fail, cannot prove upper bound for a1 + b1 [reason for check: result of addition must fit in a 32-bits machine integer]
-fib.adb:34:19: info: overflow check proved (CVC4: 2 VC)
-fib.adb:34:19: info: range check proved (CVC4: 2 VC)
-fib.adb:35:19: info: range check proved (CVC4: 2 VC)
-fib.adb:36:17: info: overflow check proved (CVC4: 2 VC)
+fib.adb:34:19: info: overflow check proved (CVC5: 2 VC)
+fib.adb:34:19: info: range check proved (CVC5: 2 VC)
+fib.adb:35:19: info: range check proved (CVC5: 2 VC)
+fib.adb:36:17: info: overflow check proved (CVC5: 2 VC)
 fib.adb:40:33: medium: loop invariant might fail in first iteration, cannot prove a2 = Fibonacci(i) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
 fib.adb:40:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove a2 = Fibonacci(i) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
-fib.adb:40:38: info: precondition proved (CVC4: 2 VC)
-fib.adb:41:30: info: precondition proved (CVC4: 2 VC)
-fib.adb:41:42: info: range check proved (CVC4: 4 VC)
-fib.adb:44:31: info: loop variant proved (CVC4: 1 VC)
+fib.adb:40:38: info: precondition proved (CVC5: 2 VC)
+fib.adb:41:30: info: precondition proved (CVC5: 2 VC)
+fib.adb:41:42: info: range check proved (CVC5: 4 VC)
+fib.adb:44:31: info: loop variant proved (CVC5: 1 VC)
 fib.adb:45:19: medium: overflow check might fail, cannot prove upper bound for a2 + b2 [reason for check: result of addition must fit in a 32-bits machine integer]
-fib.adb:46:19: info: overflow check proved (CVC4: 2 VC)
-fib.adb:46:19: info: range check proved (CVC4: 2 VC)
-fib.adb:47:19: info: range check proved (CVC4: 2 VC)
-fib.adb:48:17: info: overflow check proved (CVC4: 2 VC)
+fib.adb:46:19: info: overflow check proved (CVC5: 2 VC)
+fib.adb:46:19: info: range check proved (CVC5: 2 VC)
+fib.adb:47:19: info: range check proved (CVC5: 2 VC)
+fib.adb:48:17: info: overflow check proved (CVC5: 2 VC)
 fib.adb:63:07: info: initialization of "p" proved
-fib.adb:66:11: info: range check proved (CVC4: 2 VC)
+fib.adb:66:11: info: range check proved (CVC5: 2 VC)
 fib.adb:66:35: info: cannot unroll loop (too many loop iterations)
 fib.adb:67:17: medium: overflow check might fail, cannot prove upper bound for i * p [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 66 should mention p in a loop invariant]
-fib.adb:75:11: info: range check proved (CVC4: 2 VC)
+fib.adb:75:11: info: range check proved (CVC5: 2 VC)
 fib.adb:76:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:76:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
-fib.adb:76:38: info: precondition proved (CVC4: 2 VC)
+fib.adb:76:38: info: precondition proved (CVC5: 2 VC)
 fib.adb:77:18: medium: overflow check might fail, cannot prove upper bound for i * p1 [reason for check: result of multiplication must fit in a 32-bits machine integer]
-fib.adb:80:11: info: range check proved (CVC4: 2 VC)
+fib.adb:80:11: info: range check proved (CVC5: 2 VC)
 fib.adb:81:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:81:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
-fib.adb:81:38: info: precondition proved (CVC4: 2 VC)
+fib.adb:81:38: info: precondition proved (CVC5: 2 VC)
 fib.adb:82:18: medium: overflow check might fail, cannot prove upper bound for i * p2 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 fib.adb:87:07: info: initialization of "b1" proved
 fib.adb:87:11: info: initialization of "b2" proved
 fib.adb:88:07: info: initialization of "k1" proved
 fib.adb:88:11: info: initialization of "k2" proved
-fib.adb:94:33: info: loop invariant initialization proved (CVC4: 2 VC)
-fib.adb:94:33: info: loop invariant preservation proved (CVC4: 1 VC; altergo: 1 VC)
-fib.adb:95:31: info: loop variant proved (CVC4: 1 VC)
-fib.adb:96:17: info: division check proved (CVC4: 1 VC)
+fib.adb:94:33: info: loop invariant initialization proved (CVC5: 2 VC)
+fib.adb:94:33: info: loop invariant preservation proved (CVC5: 1 VC; altergo: 1 VC)
+fib.adb:95:31: info: loop variant proved (CVC5: 1 VC)
+fib.adb:96:17: info: division check proved (CVC5: 1 VC)
 fib.adb:97:28: medium: assertion might fail
-fib.adb:97:50: info: division check proved (CVC4: 1 VC)
-fib.adb:98:22: info: division check proved (CVC4: 1 VC)
+fib.adb:97:50: info: division check proved (CVC5: 1 VC)
+fib.adb:98:22: info: division check proved (CVC5: 1 VC)
 fib.adb:99:22: medium: overflow check might fail, cannot prove upper bound for b1 * b1 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 fib.adb:101:28: medium: assertion might fail
-fib.adb:101:51: info: range check proved (CVC4: 2 VC)
-fib.adb:102:22: info: range check proved (CVC4: 2 VC)
+fib.adb:101:51: info: range check proved (CVC5: 2 VC)
+fib.adb:102:22: info: range check proved (CVC5: 2 VC)
 fib.adb:103:22: medium: overflow check might fail, cannot prove lower bound for b1 * p1 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 fib.adb:111:27: medium: loop invariant might fail in first iteration, cannot prove p2 <= a2 ** n2
 fib.adb:111:27: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove p2 <= a2 ** n2
-fib.adb:112:31: info: loop variant proved (CVC4: 1 VC)
-fib.adb:113:17: info: division check proved (CVC4: 1 VC)
+fib.adb:112:31: info: loop variant proved (CVC5: 1 VC)
+fib.adb:113:17: info: division check proved (CVC5: 1 VC)
 fib.adb:114:28: medium: assertion might fail
-fib.adb:114:50: info: division check proved (CVC4: 1 VC)
-fib.adb:115:22: info: division check proved (CVC4: 1 VC)
+fib.adb:114:50: info: division check proved (CVC5: 1 VC)
+fib.adb:115:22: info: division check proved (CVC5: 1 VC)
 fib.adb:116:22: medium: overflow check might fail, cannot prove upper bound for b2 * b2 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 fib.adb:118:28: medium: assertion might fail, cannot prove (p2 * b2) * (b2 ** (k2 - 1)) = a2 ** n2
-fib.adb:118:51: info: range check proved (CVC4: 2 VC)
-fib.adb:120:22: info: range check proved (CVC4: 2 VC)
+fib.adb:118:51: info: range check proved (CVC5: 2 VC)
+fib.adb:120:22: info: range check proved (CVC5: 2 VC)
 fib.adb:121:22: medium: overflow check might fail, cannot prove lower bound for b2 * p2 [reason for check: result of multiplication must fit in a 32-bits machine integer]
-fib.adb:130:11: info: range check proved (CVC4: 2 VC)
+fib.adb:130:11: info: range check proved (CVC5: 2 VC)
 fib.adb:130:43: info: cannot unroll loop (too many loop iterations)
-fib.adb:131:13: info: index check proved (CVC4: 2 VC)
-fib.adb:131:22: info: index check proved (CVC4: 2 VC)
-fib.adb:133:11: info: range check proved (CVC4: 2 VC)
-fib.adb:133:33: info: overflow check proved (CVC4: 2 VC)
+fib.adb:131:13: info: index check proved (CVC5: 2 VC)
+fib.adb:131:22: info: index check proved (CVC5: 2 VC)
+fib.adb:133:11: info: range check proved (CVC5: 2 VC)
+fib.adb:133:33: info: overflow check proved (CVC5: 2 VC)
 fib.adb:133:47: info: cannot unroll loop (too many loop iterations)
-fib.adb:134:13: info: index check proved (CVC4: 2 VC)
-fib.adb:134:24: info: index check proved (CVC4: 2 VC)
-fib.adb:134:24: info: overflow check proved (CVC4: 2 VC)
-fib.adb:136:11: info: range check proved (CVC4: 2 VC)
+fib.adb:134:13: info: index check proved (CVC5: 2 VC)
+fib.adb:134:24: info: index check proved (CVC5: 2 VC)
+fib.adb:134:24: info: overflow check proved (CVC5: 2 VC)
+fib.adb:136:11: info: range check proved (CVC5: 2 VC)
 fib.adb:136:43: info: cannot unroll loop (too many loop iterations)
-fib.adb:137:13: info: index check proved (CVC4: 2 VC)
-fib.adb:137:22: info: index check proved (CVC4: 2 VC)
-fib.adb:139:11: info: range check proved (CVC4: 2 VC)
-fib.adb:139:33: info: overflow check proved (CVC4: 2 VC)
+fib.adb:137:13: info: index check proved (CVC5: 2 VC)
+fib.adb:137:22: info: index check proved (CVC5: 2 VC)
+fib.adb:139:11: info: range check proved (CVC5: 2 VC)
+fib.adb:139:33: info: overflow check proved (CVC5: 2 VC)
 fib.adb:139:46: info: cannot unroll loop (too many loop iterations)
-fib.adb:140:13: info: index check proved (CVC4: 2 VC)
-fib.adb:140:24: info: index check proved (CVC4: 2 VC)
-fib.adb:140:24: info: overflow check proved (CVC4: 2 VC)
-fib.adb:148:11: info: range check proved (CVC4: 2 VC)
+fib.adb:140:13: info: index check proved (CVC5: 2 VC)
+fib.adb:140:24: info: index check proved (CVC5: 2 VC)
+fib.adb:140:24: info: overflow check proved (CVC5: 2 VC)
+fib.adb:148:11: info: range check proved (CVC5: 2 VC)
 fib.adb:148:42: info: cannot unroll loop (too many loop iterations)
-fib.adb:149:13: info: index check proved (CVC4: 2 VC)
-fib.adb:149:22: info: index check proved (CVC4: 2 VC)
-fib.adb:151:11: info: range check proved (CVC4: 2 VC)
-fib.adb:151:32: info: overflow check proved (CVC4: 2 VC)
+fib.adb:149:13: info: index check proved (CVC5: 2 VC)
+fib.adb:149:22: info: index check proved (CVC5: 2 VC)
+fib.adb:151:11: info: range check proved (CVC5: 2 VC)
+fib.adb:151:32: info: overflow check proved (CVC5: 2 VC)
 fib.adb:151:45: info: cannot unroll loop (too many loop iterations)
-fib.adb:152:13: info: index check proved (CVC4: 2 VC)
-fib.adb:152:24: info: index check proved (CVC4: 2 VC)
-fib.adb:152:24: info: overflow check proved (CVC4: 2 VC)
-fib.adb:154:11: info: range check proved (CVC4: 2 VC)
+fib.adb:152:13: info: index check proved (CVC5: 2 VC)
+fib.adb:152:24: info: index check proved (CVC5: 2 VC)
+fib.adb:152:24: info: overflow check proved (CVC5: 2 VC)
+fib.adb:154:11: info: range check proved (CVC5: 2 VC)
 fib.adb:154:42: info: cannot unroll loop (too many loop iterations)
-fib.adb:155:13: info: index check proved (CVC4: 2 VC)
-fib.adb:155:22: info: index check proved (CVC4: 2 VC)
-fib.adb:157:11: info: range check proved (CVC4: 2 VC)
-fib.adb:157:32: info: overflow check proved (CVC4: 2 VC)
+fib.adb:155:13: info: index check proved (CVC5: 2 VC)
+fib.adb:155:22: info: index check proved (CVC5: 2 VC)
+fib.adb:157:11: info: range check proved (CVC5: 2 VC)
+fib.adb:157:32: info: overflow check proved (CVC5: 2 VC)
 fib.adb:157:45: info: cannot unroll loop (too many loop iterations)
-fib.adb:158:13: info: index check proved (CVC4: 2 VC)
-fib.adb:158:24: info: index check proved (CVC4: 2 VC)
-fib.adb:158:24: info: overflow check proved (CVC4: 2 VC)
-fib.ads:14:14: info: postcondition proved (CVC4: 1 VC)
+fib.adb:158:13: info: index check proved (CVC5: 2 VC)
+fib.adb:158:24: info: index check proved (CVC5: 2 VC)
+fib.adb:158:24: info: overflow check proved (CVC5: 2 VC)
+fib.ads:14:14: info: postcondition proved (CVC5: 1 VC)
 fib.ads:23:48: info: initialization of "p1" proved
 fib.ads:23:52: info: initialization of "p2" proved
-fib.ads:25:14: info: postcondition proved (CVC4: 1 VC)
+fib.ads:25:14: info: postcondition proved (CVC5: 1 VC)
 fib.ads:29:65: info: initialization of "p1" proved
 fib.ads:29:69: info: initialization of "p2" proved
 fib.ads:33:14: medium: postcondition might fail
 fib.ads:36:41: medium: "A1" might not be initialized in "ArrayPartitionedTransferSC" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A1" on all paths, make "A1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 fib.ads:36:45: medium: "A2" might not be initialized in "ArrayPartitionedTransferSC" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A2" on all paths, make "A2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-fib.ads:41:50: info: index check proved (CVC4: 2 VC)
-fib.ads:41:58: info: index check proved (CVC4: 2 VC)
-fib.ads:42:55: info: index check proved (CVC4: 2 VC)
-fib.ads:42:68: info: index check proved (CVC4: 2 VC)
+fib.ads:41:50: info: index check proved (CVC5: 2 VC)
+fib.ads:41:58: info: index check proved (CVC5: 2 VC)
+fib.ads:42:55: info: index check proved (CVC5: 2 VC)
+fib.ads:42:68: info: index check proved (CVC5: 2 VC)
 fib.ads:43:49: medium: "A1" might not be initialized
 fib.ads:43:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) [possible fix: loop at fib.adb:139 should mention A2 in a loop invariant]
 fib.ads:43:57: medium: "A2" might not be initialized
 fib.ads:47:43: medium: "A1" might not be initialized in "ArrayPartitionedTransferSIFL" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A1" on all paths, make "A1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 fib.ads:47:47: medium: "A2" might not be initialized in "ArrayPartitionedTransferSIFL" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A2" on all paths, make "A2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-fib.ads:51:49: info: index check proved (CVC4: 2 VC)
-fib.ads:51:57: info: index check proved (CVC4: 2 VC)
-fib.ads:52:54: info: index check proved (CVC4: 2 VC)
-fib.ads:52:66: info: index check proved (CVC4: 2 VC)
+fib.ads:51:49: info: index check proved (CVC5: 2 VC)
+fib.ads:51:57: info: index check proved (CVC5: 2 VC)
+fib.ads:52:54: info: index check proved (CVC5: 2 VC)
+fib.ads:52:66: info: index check proved (CVC5: 2 VC)
 fib.ads:53:49: medium: "A1" might not be initialized
 fib.ads:53:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) [possible fix: loop at fib.adb:157 should mention A2 in a loop invariant]
 fib.ads:53:57: medium: "A2" might not be initialized

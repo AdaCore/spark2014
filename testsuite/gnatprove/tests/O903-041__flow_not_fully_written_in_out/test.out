@@ -1,5 +1,5 @@
 stack.adb:12:22: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:7 should mention Top in a precondition]
-stack.adb:13:19: info: range check proved (CVC4: 2 VC)
+stack.adb:13:19: info: range check proved (CVC5: 2 VC)
 stack.adb:18:19: medium: overflow check might fail, cannot prove upper bound for Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stack.ads:10 should mention Top in a precondition]
 stack.adb:19:17: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:10 should mention Top in a precondition]
 stack.ads:3:22: warning: no procedure exists that can initialize abstract state "Stack.The_Stack"

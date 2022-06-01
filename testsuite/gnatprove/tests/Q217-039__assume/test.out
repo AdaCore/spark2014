@@ -2,9 +2,9 @@ assume_call.adb:4:15: high: overflow check might fail, cannot prove upper bound 
 assume_call.adb:7:14: warning: subprogram "Wrong_Pre" has no effect
 assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller"
 assume_call.adb:14:14: warning: subprogram "Caller" has no effect
-assume_call.adb:17:07: info: precondition proved (CVC4: 1 VC)
-assume_call.ads:4:19: info: postcondition proved (CVC4: 1 VC)
-assume_call.ads:4:33: info: overflow check proved (CVC4: 2 VC)
+assume_call.adb:17:07: info: precondition proved (CVC5: 1 VC)
+assume_call.ads:4:19: info: postcondition proved (CVC5: 1 VC)
+assume_call.ads:4:33: info: overflow check proved (CVC5: 2 VC)
 max steps used for successful proof: 1
 
 
@@ -26,11 +26,11 @@ Assertions . . . . . .
 Concurrency . . . . . .
 Data Dependencies . . . . . .
 Flow Dependencies . . . . . .
-Functional Contracts 2 . . 2 . .
+Functional Contracts 2 . . 2 (CVC5) . .
 Initialization . . . . . .
 LSP Verification . . . . . .
 Non-Aliasing . . . . . .
-Run-time Checks 2 . . 1 . 1
+Run-time Checks 2 . . 1 (CVC5) . 1
 SPARK Analysis results Total Flow CodePeer Provers Justified Unproved
 Summary of SPARK analysis
 Termination . . . . . .

@@ -1,9 +1,8 @@
-input_port_14.adb:10:11: warning: writing to "Input_Port" is assumed to have no effects on other non-volatile objects
 input_port_14.adb:16:07: info: initialization of "First_Read" proved
 input_port_14.adb:17:07: info: initialization of "Second_Read" proved
 input_port_14.adb:20:22: warning: attribute Valid is assumed to return True
 input_port_14.adb:24:25: warning: attribute Valid is assumed to return True
-input_port_14.adb:29:22: info: assertion proved (CVC4: 1 VC)
+input_port_14.adb:29:22: info: assertion proved (CVC5: 1 VC)
 input_port_14.ads:5:29: info: initialization of "Input_Value" proved
 input_port_14.ads:6:11: info: data dependencies proved
 input_port_14.ads:7:11: info: flow dependencies proved

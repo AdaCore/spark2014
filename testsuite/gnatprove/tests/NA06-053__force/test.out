@@ -1,20 +1,20 @@
 tab_init.adb:5:19: medium: overflow check might fail, cannot prove lower bound for A*I [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at tab_init.ads:5 should mention A in a precondition]
-tab_init.adb:6:33: info: loop invariant initialization proved (CVC4: 1 VC)
-tab_init.adb:6:33: info: loop invariant preservation proved (CVC4: 1 VC)
+tab_init.adb:6:33: info: loop invariant initialization proved (CVC5: 1 VC)
+tab_init.adb:6:33: info: loop invariant preservation proved (CVC5: 1 VC)
 tab_init.adb:7:39: medium: "T" might not be initialized
-tab_init.adb:7:41: info: index check proved (CVC4: 4 VC)
-tab_init.adb:7:47: info: overflow check proved (CVC4: 4 VC)
-tab_init.adb:8:25: info: assertion proved (CVC4: 1 VC)
+tab_init.adb:7:41: info: index check proved (CVC5: 4 VC)
+tab_init.adb:7:47: info: overflow check proved (CVC5: 4 VC)
+tab_init.adb:8:25: info: assertion proved (CVC5: 1 VC)
 tab_init.adb:8:25: medium: "T" might not be initialized
 tab_init.adb:8:31: info: overflow check proved (altergo: 2 VC)
 tab_init.ads:5:21: medium: "T" might not be initialized in "Init" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "T" on all paths, make "T" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 tab_init.adb:5:19: medium: overflow check might fail, cannot prove lower bound for A*I [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at tab_init.ads:5 should mention A in a precondition]
-tab_init.adb:6:33: info: loop invariant initialization proved (CVC4: 1 VC)
-tab_init.adb:6:33: info: loop invariant preservation proved (CVC4: 1 VC)
+tab_init.adb:6:33: info: loop invariant initialization proved (CVC5: 1 VC)
+tab_init.adb:6:33: info: loop invariant preservation proved (CVC5: 1 VC)
 tab_init.adb:7:39: medium: "T" might not be initialized
-tab_init.adb:7:41: info: index check proved (CVC4: 4 VC)
-tab_init.adb:7:47: info: overflow check proved (CVC4: 4 VC)
-tab_init.adb:8:25: info: assertion proved (CVC4: 1 VC)
+tab_init.adb:7:41: info: index check proved (CVC5: 4 VC)
+tab_init.adb:7:47: info: overflow check proved (CVC5: 4 VC)
+tab_init.adb:8:25: info: assertion proved (CVC5: 1 VC)
 tab_init.adb:8:25: medium: "T" might not be initialized
 tab_init.adb:8:31: info: overflow check proved (altergo: 2 VC)
 tab_init.ads:5:21: medium: "T" might not be initialized in "Init" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "T" on all paths, make "T" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

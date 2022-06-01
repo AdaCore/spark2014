@@ -1,8 +1,8 @@
 simple_extended_return.adb:3:04: info: initialization of "C" proved
-simple_extended_return.adb:6:19: info: postcondition proved (CVC4: 1 VC)
+simple_extended_return.adb:6:19: info: postcondition proved (CVC5: 1 VC)
 simple_extended_return.adb:9:07: warning: statement has no effect
 simple_extended_return.adb:12:07: warning: this statement is never reached
 simple_extended_return.adb:12:14: warning: this statement is never reached
-simple_extended_return.adb:16:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+simple_extended_return.adb:16:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 simple_extended_return.adb:22:17: info: initialization of "B" proved
-simple_extended_return.adb:32:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+simple_extended_return.adb:32:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)

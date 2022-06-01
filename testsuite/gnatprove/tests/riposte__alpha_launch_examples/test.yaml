@@ -1,3 +1,2 @@
-comment: disable z3 for cross-platform stability
 prove_all:
-  prover: ["cvc4"]
+  prover: ["cvc5", "z3"]

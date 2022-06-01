@@ -1,81 +1,111 @@
-lib_level.adb:6:37: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:6:37: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+lib_level.adb:6:37: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:6:37: error: violation of pragma SPARK_Mode at line 1
-lib_level.adb:7:39: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:7:39: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+lib_level.adb:7:39: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:7:39: error: violation of pragma SPARK_Mode at line 1
-lib_level.adb:8:39: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:8:39: error: traversal function call as a prefix of "Loop_Entry" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:8:39: error: violation of pragma SPARK_Mode at line 1
-lib_level.adb:9:39: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:9:39: error: call a deep copy function for type "P" as prefix of "Loop_Entry" to avoid aliasing
+lib_level.adb:9:39: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:9:39: error: violation of pragma SPARK_Mode at line 1
-lib_level.adb:10:48: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:10:48: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+lib_level.adb:10:48: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:10:48: error: violation of pragma SPARK_Mode at line 1
-lib_level.adb:11:50: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:11:50: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+lib_level.adb:11:50: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:11:50: error: violation of pragma SPARK_Mode at line 1
-lib_level.adb:13:32: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:13:32: error: traversal function call as a prefix of "Loop_Entry" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:13:32: error: violation of pragma SPARK_Mode at line 1
-lib_level.adb:14:32: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:14:32: error: call a deep copy function for type "P" as prefix of "Loop_Entry" to avoid aliasing
+lib_level.adb:14:32: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.adb:14:32: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:5:22: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:5:22: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+lib_level.ads:5:22: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:5:22: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:6:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:6:27: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+lib_level.ads:6:27: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:6:27: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:7:27: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:7:27: error: traversal function call as a prefix of "Old" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:7:27: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:8:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:8:27: error: call a deep copy function for type "P" as prefix of "Old" to avoid aliasing
+lib_level.ads:8:27: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:8:27: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:10:30: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:10:30: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+lib_level.ads:10:30: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:10:30: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:11:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:11:32: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+lib_level.ads:11:32: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:11:32: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:12:43: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:12:43: error: traversal function call as a prefix of "Old" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:12:43: error: violation of pragma SPARK_Mode at line 1
-lib_level.ads:13:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:13:32: error: call a deep copy function for type "P" as prefix of "Old" to avoid aliasing
+lib_level.ads:13:32: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 lib_level.ads:13:32: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:27:41: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:27:41: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+old_loop_entry.adb:27:41: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:27:41: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:28:43: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:28:43: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+old_loop_entry.adb:28:43: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:28:43: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:29:43: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:29:43: error: traversal function call as a prefix of "Loop_Entry" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:29:43: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:30:43: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:30:43: error: call a deep copy function for type "P" as prefix of "Loop_Entry" to avoid aliasing
+old_loop_entry.adb:30:43: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:30:43: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:31:52: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:31:52: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+old_loop_entry.adb:31:52: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:31:52: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:32:54: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:32:54: error: call a deep copy function for type "T" as prefix of "Loop_Entry" to avoid aliasing
+old_loop_entry.adb:32:54: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:32:54: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:34:36: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:34:36: error: traversal function call as a prefix of "Loop_Entry" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:34:36: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:35:36: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:35:36: error: call a deep copy function for type "P" as prefix of "Loop_Entry" to avoid aliasing
+old_loop_entry.adb:35:36: error: prefix of "Loop_Entry" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:35:36: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:40:22: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:40:22: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.adb:40:22: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:40:22: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:41:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:41:27: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.adb:41:27: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:41:27: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:42:27: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:42:27: error: traversal function call as a prefix of "Old" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:42:27: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:43:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:43:27: error: call a deep copy function for type "P" as prefix of "Old" to avoid aliasing
+old_loop_entry.adb:43:27: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:43:27: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:45:30: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:45:30: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.adb:45:30: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:45:30: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:46:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:46:32: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.adb:46:32: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:46:32: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:47:43: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:47:43: error: traversal function call as a prefix of "Old" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:47:43: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:48:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:48:32: error: call a deep copy function for type "P" as prefix of "Old" to avoid aliasing
+old_loop_entry.adb:48:32: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.adb:48:32: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:27:22: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:27:22: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.ads:27:22: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:27:22: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:28:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:28:27: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.ads:28:27: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:28:27: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:29:27: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:29:27: error: traversal function call as a prefix of "Old" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:29:27: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:30:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:30:27: error: call a deep copy function for type "P" as prefix of "Old" to avoid aliasing
+old_loop_entry.ads:30:27: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:30:27: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:32:30: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:32:30: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.ads:32:30: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:32:30: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:33:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:33:32: error: call a deep copy function for type "T" as prefix of "Old" to avoid aliasing
+old_loop_entry.ads:33:32: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:33:32: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:34:43: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:34:43: error: traversal function call as a prefix of "Old" attribute is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:34:43: error: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:35:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:35:32: error: call a deep copy function for type "P" as prefix of "Old" to avoid aliasing
+old_loop_entry.ads:35:32: error: prefix of "Old" introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:35:32: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

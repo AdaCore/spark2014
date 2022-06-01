@@ -20,7 +20,7 @@ foo.adb:53:12: high: "Y" is not an input in the Global contract of subprogram "T
 foo.adb:53:12: high: "Y" is not initialized
 foo.adb:53:12: high: either make "Y" an input in the Global contract or initialize it before use
 foo.adb:53:14: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
-foo.adb:56:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+foo.adb:56:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 foo.adb:63:40: info: initialization of "N" proved
 foo.adb:64:09: info: data dependencies proved
 foo.adb:64:31: warning: "X" is not modified, could be INPUT

@@ -1,6 +1,6 @@
 p.adb:3:11: warning: subprogram "P" has no effect
-p.adb:11:18: info: range check proved (CVC4: 2 VC)
-p.adb:12:18: info: range check proved (CVC4: 2 VC)
+p.adb:11:18: info: range check proved (CVC5: 2 VC)
+p.adb:12:18: info: range check proved (CVC5: 2 VC)
 pack.ads:4:21: warning: "A" is not modified, could be IN
 pack.ads:4:21: warning: unused variable "A"
 pack.ads:4:24: warning: "B" is not modified, could be IN

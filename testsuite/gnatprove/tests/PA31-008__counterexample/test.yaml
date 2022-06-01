@@ -1,3 +1,3 @@
 comment: "disable colibri because of spurious syntax error U716-002"
 prove_all:
-  prover: ["cvc4", "altergo", "z3"]
+  prover: ["cvc5", "altergo", "z3"]

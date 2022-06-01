@@ -1,3 +1,3 @@
-test_might_not_return.ads:10:17: info: postcondition proved (CVC4: 1 VC)
-test_might_not_return.ads:15:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_might_not_return.adb:33
-test_might_not_return.ads:21:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_might_not_return.adb:41
+test_might_not_return.ads:10:17: info: postcondition proved (CVC5: 1 VC)
+test_might_not_return.ads:15:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_might_not_return.adb:33
+test_might_not_return.ads:21:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_might_not_return.adb:41

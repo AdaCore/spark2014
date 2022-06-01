@@ -1,3 +1,3 @@
 main.adb:3:11: medium: ceiling priority protocol might not be respected
-main.adb:4:21: info: range check proved (CVC4: 2 VC)
-p.ads:3:24: info: range check proved (CVC4: 2 VC)
+main.adb:4:21: info: range check proved (CVC5: 2 VC)
+p.ads:3:24: info: range check proved (CVC5: 2 VC)

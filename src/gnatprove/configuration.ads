@@ -292,7 +292,7 @@ package Configuration is
       GNSA_Dir_Bin             : constant String :=
         Compose (GNSA_Dir, "bin");
       Z3_Present               : Boolean;
-      CVC4_Present             : Boolean;
+      CVC5_Present             : Boolean;
       Colibri_Present          : Boolean;
       Help_Message             : constant String :=
         Read_File_Into_String (Help_Msg_File);

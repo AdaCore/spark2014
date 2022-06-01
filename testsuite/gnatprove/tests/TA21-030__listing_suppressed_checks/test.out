@@ -1,11 +1,11 @@
-p.adb:16:21: info: overflow check proved (CVC4: 2 VC)
-p.adb:18:21: info: overflow check proved (CVC4: 2 VC)
-p.adb:31:22: info: assertion proved (CVC4: 1 VC)
-p.adb:32:14: info: precondition proved (CVC4: 2 VC)
+p.adb:16:21: info: overflow check proved (CVC5: 2 VC)
+p.adb:18:21: info: overflow check proved (CVC5: 2 VC)
+p.adb:31:22: info: assertion proved (CVC5: 1 VC)
+p.adb:32:14: info: precondition proved (CVC5: 2 VC)
 p.adb:37:07: warning: variable "Z" is read but never assigned [-gnatwv]
 p.adb:42:10: info: justified that "X" might not be initialized
 p.adb:43:28: info: justified that "Z" is not initialized
-p.ads:7:20: info: postcondition proved (CVC4: 2 VC)
+p.ads:7:20: info: postcondition proved (CVC5: 2 VC)
 p.ads:12:14: warning: subprogram "Annotate_Intentional" has no effect
 Summary of SPARK analysis
 =========================
@@ -17,9 +17,9 @@ Data Dependencies                 .         .          .           .           .
 Flow Dependencies                 .         .          .           .           .          .
 Initialization                    2         .          .           .           2          .
 Non-Aliasing                      .         .          .           .           .          .
-Run-time Checks                   2         .          .    2 (CVC4)           .          .
-Assertions                        1         .          .    1 (CVC4)           .          .
-Functional Contracts              2         .          .    2 (CVC4)           .          .
+Run-time Checks                   2         .          .    2 (CVC5)           .          .
+Assertions                        1         .          .    1 (CVC5)           .          .
+Functional Contracts              2         .          .    2 (CVC5)           .          .
 LSP Verification                  .         .          .           .           .          .
 Termination                       .         .          .           .           .          .
 Concurrency                       .         .          .           .           .          .

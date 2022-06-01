@@ -1,13 +1,13 @@
 foo.adb:4:04: info: initialization of "A" constituent of "State" proved
 foo.adb:5:04: info: initialization of "B" constituent of "State" proved
 foo.ads:3:03: info: flow dependencies proved
-foo.ads:4:03: info: initial condition proved (CVC4: 1 VC)
+foo.ads:4:03: info: initial condition proved (CVC5: 1 VC)
 foo.ads:7:36: info: data dependencies proved
 foo.ads:10:04: info: initialization of "C" constituent of "State" proved
 foo2.adb:4:04: info: initialization of "A" constituent of "State" proved
 foo2.adb:5:04: info: initialization of "B" constituent of "State" proved
 foo2.ads:3:03: info: flow dependencies proved
-foo2.ads:4:03: info: initial condition proved (CVC4: 1 VC)
+foo2.ads:4:03: info: initial condition proved (CVC5: 1 VC)
 foo2.ads:7:36: info: flow dependencies proved
 foo2.ads:10:04: info: initialization of "C" constituent of "State" proved
 ok_semantics-priv.adb:6:35: low: unused global "X" constituent of "State1"

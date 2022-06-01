@@ -77,6 +77,7 @@ hw-gfx-dp_training.ads:56:07: info: initialization of "Success" proved, in insta
 hw-gfx-edid.adb:113:07: info: initialization of "Mode" proved
 hw-gfx-edid.ads:25:57: info: initialization of "Success" proved
 hw-gfx-framebuffer_filler.adb:25:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-framebuffer_filler.adb:25:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-gfx-framebuffer_filler.adb:25:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-framebuffer_filler.adb:35:09: warning: this statement is never reached
 hw-gfx-framebuffer_filler.adb:36:47: warning: this statement is never reached
@@ -313,8 +314,10 @@ hw-gfx-gma-power_and_clocks_ironlake.adb:47:19: warning: this statement is never
 hw-gfx-gma-power_and_clocks_ironlake.adb:50:19: warning: this statement is never reached
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: this statement is never reached
 hw-gfx-gma-registers.adb:41:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma-registers.adb:41:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-gfx-gma-registers.adb:41:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma-registers.adb:54:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-gfx-gma-registers.adb:54:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma-registers.adb:92:07: info: initialization of "Reg32" proved
 hw-gfx-gma-registers.adb:128:07: info: initialization of "Fence_Upper" proved
@@ -377,6 +380,9 @@ hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:36
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:38
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:40
+hw-gfx-gma.adb:68:04: warning: make sure that all overlapping objects have Async_Writers set to True
+hw-gfx-gma.adb:68:04: warning: make sure that all overlapping objects have Async_Writers set to True
+hw-gfx-gma.adb:68:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects

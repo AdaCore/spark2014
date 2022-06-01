@@ -1,3 +1,4 @@
 p.ads:9:33: warning: consider annotating "v" with Async_Writers
 p.ads:9:33: warning: indirect writes to "v" through a potential alias are ignored
+p.ads:9:33: warning: make sure that all overlapping objects have Async_Writers set to True
 p.ads:9:33: warning: writing to "v" is assumed to have no effects on other non-volatile objects

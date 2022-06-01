@@ -198,7 +198,7 @@ where:
   program, between the start of the subprogram and the location of the check
 * ``ext`` is the extension corresponding to the file format chosen. The format
   of the file depends on the prover used. For example, files for Alt-Ergo are
-  are in Why3 format, and files for CVC4 are in SMTLIB2 format.
+  are in Why3 format, and files for CVC5 are in SMTLIB2 format.
 
 For example, the proof files generated for prover Alt-Ergo for a range check at
 line 160, column 42, of the file ``f.adb`` are stored in::
@@ -208,7 +208,7 @@ line 160, column 42, of the file ``f.adb`` are stored in::
   f.adb_160_42_range_check_3.why
   ...
 
-Corresponding proof files generated for prover CVC4 are stored in::
+Corresponding proof files generated for prover CVC5 are stored in::
 
   f.adb_160_42_range_check.smt2
   f.adb_160_42_range_check_2.smt2

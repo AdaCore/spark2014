@@ -8,15 +8,15 @@ test.adb:18:33: medium: loop invariant might not be preserved by an arbitrary it
 test.adb:18:37: high: "X" is not initialized
 test.adb:22:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:25:46: info: unrolling loop
-test.adb:28:36: info: loop invariant preservation proved (CVC4: 10 VC)
+test.adb:28:36: info: loop invariant preservation proved (CVC5: 10 VC)
 test.adb:28:36: medium: loop invariant might fail in first iteration
 test.adb:28:40: high: "X" is not initialized
 test.adb:34:04: warning: analyzing unreferenced procedure "Test_04"
 test.adb:39:33: medium: loop invariant might fail in first iteration
 test.adb:39:33: medium: loop invariant might not be preserved by an arbitrary iteration
 test.adb:39:37: high: "X" is not initialized
-test.adb:41:36: info: loop invariant initialization proved (CVC4: 1 VC)
-test.adb:41:36: info: loop invariant preservation proved (CVC4: 1 VC)
+test.adb:41:36: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:41:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test.adb:47:04: warning: analyzing unreferenced procedure "Test_05"
 test.adb:52:31: medium: loop variant might fail
 test.adb:52:44: high: "X" is not initialized

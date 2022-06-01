@@ -505,6 +505,12 @@ package SPARK_Util.Subprograms is
    function Is_Structural_Subprogram_Variant (P : N_Pragma_Id) return Boolean
      with Pre => Pragma_Name (P) = Name_Subprogram_Variant;
 
+   function Is_System_Address_To_Access_Conversion
+     (E : Entity_Id)
+      return Boolean;
+   --  Returns True iff E is the function To_Pointer from an instance of
+   --  System.Address_To_Access_Conversions.
+
    function Is_Tagged_Predefined_Eq (E : Entity_Id) return Boolean;
    --  Returns True iff E is an internally generated equality function
 

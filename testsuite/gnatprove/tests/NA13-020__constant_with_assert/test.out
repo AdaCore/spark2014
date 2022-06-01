@@ -1,8 +1,7 @@
 main.adb:8:04: info: data dependencies proved
 main.adb:8:37: info: initialization of "The_Sink" proved
 main.adb:9:04: info: flow dependencies proved
-sink.ads:7:65: warning: consider annotating "The_Sink" with Async_Writers
-sink.ads:7:65: warning: indirect writes to "The_Sink" through a potential alias are ignored
+sink.ads:7:65: warning: make sure that all overlapping objects have Async_Writers set to True
 sink.ads:7:65: warning: writing to "The_Sink" is assumed to have no effects on other non-volatile objects
 skp-subjects.adb:400:09: info: assertion proved (Z3: 1 VC)
 skp-subjects.adb:402:09: info: assertion proved (Z3: 1 VC)

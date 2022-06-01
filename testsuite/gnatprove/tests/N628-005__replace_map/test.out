@@ -1,41 +1,41 @@
 a-cforma.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:9
-a-cforma.ads:406:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:406:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at replacement.ads:9
 a-cforma.ads:412:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:9
-a-cforma.ads:431:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:469:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:840:39: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:849:17: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:884:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:892:21: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:919:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:927:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:997:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:1012:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:1027:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:1042:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:1082:46: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:1097:40: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:431:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:469:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:840:39: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:849:17: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:884:42: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:892:21: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:919:42: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:927:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:997:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1012:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1027:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1042:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1082:46: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1097:40: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:9
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
-replacement.adb:7:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at replacement.ads:9
+replacement.adb:7:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 replacement.adb:7:22: info: precondition proved (Trivial: 1 VC)
-replacement.adb:7:44: info: precondition proved (CVC4: 1 VC)
-replacement.adb:7:68: info: precondition proved (CVC4: 1 VC)
+replacement.adb:7:44: info: precondition proved (CVC5: 1 VC)
+replacement.adb:7:68: info: precondition proved (CVC5: 1 VC)
 replacement.adb:7:68: medium: array index check might fail [reason for check: value must be a valid index into the array]
-replacement.adb:7:86: info: precondition proved (CVC4: 1 VC)
-replacement.adb:8:07: info: precondition proved (CVC4: 1 VC)
-replacement.adb:10:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+replacement.adb:7:86: info: precondition proved (CVC5: 1 VC)
+replacement.adb:8:07: info: precondition proved (CVC5: 1 VC)
+replacement.adb:10:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 replacement.adb:10:22: info: precondition proved (Trivial: 1 VC)
-replacement.adb:10:44: info: precondition proved (CVC4: 1 VC)
-replacement.adb:10:68: info: precondition proved (CVC4: 1 VC)
+replacement.adb:10:44: info: precondition proved (CVC5: 1 VC)
+replacement.adb:10:68: info: precondition proved (CVC5: 1 VC)
 replacement.adb:10:68: medium: array index check might fail [reason for check: value must be a valid index into the array]
-replacement.adb:10:86: info: precondition proved (CVC4: 1 VC)
+replacement.adb:10:86: info: precondition proved (CVC5: 1 VC)
 replacement.ads:17:14: info: precondition proved (Trivial: 1 VC)
-replacement.ads:17:35: info: precondition proved (CVC4: 1 VC)
+replacement.ads:17:35: info: precondition proved (CVC5: 1 VC)
 replacement.ads:17:35: medium: array index check might fail [reason for check: value must be a valid index into the array]
-replacement.ads:17:53: info: precondition proved (CVC4: 1 VC)
+replacement.ads:17:53: info: precondition proved (CVC5: 1 VC)

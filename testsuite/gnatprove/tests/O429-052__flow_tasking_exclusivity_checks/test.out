@@ -1,11 +1,11 @@
-entry_call_from_elaboration.adb:5:14: info: nontermination of task proved (CVC4: 1 VC)
+entry_call_from_elaboration.adb:5:14: info: nontermination of task proved (CVC5: 1 VC)
 entry_call_from_elaboration.adb:5:22: info: data dependencies proved
 entry_call_from_elaboration.adb:19:18: warning: unused assignment
 entry_call_from_elaboration.adb:23:04: high: possible data race when accessing variable "entry_call_from_elaboration.x"
 entry_call_from_elaboration.adb:23:04: high: task "entry_call_from_elaboration.t1" accesses "entry_call_from_elaboration.x"
 entry_call_from_elaboration.adb:23:04: high: task "entry_call_from_elaboration.t2" accesses "entry_call_from_elaboration.x"
 nested_po.adb:4:24: warning: statement has no effect
-nested_po.ads:21:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+nested_po.ads:21:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 nested_po.ads:21:14: medium: the task might terminate, which is not allowed in SPARK
 pack.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
 pack.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
@@ -16,7 +16,7 @@ pack.ads:25:04: high: possible data race when accessing variable "ada.text_io.fi
 pack.ads:25:04: high: task "pack.r" accesses "ada.text_io.file_system"
 pack.ads:25:04: high: task "pack.ta" accesses "ada.text_io.file_system"
 task_and_po_arrays.adb:9:24: warning: statement has no effect
-task_and_po_arrays.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+task_and_po_arrays.ads:5:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 task_and_po_arrays.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_po_arrays.ads:12:04: high: more tasks than allowed might queue on protected entry "task_and_po_arrays.pos.dummy" (restriction No_Entry_Queue active) (SPARK RM 9(11))
 task_and_po_arrays.ads:12:04: high: task "task_and_po_arrays.ts" is queueing
@@ -36,9 +36,9 @@ two_tasks_single_po.adb:4:20: warning: statement has no effect
 two_tasks_single_po.adb:10:09: high: more tasks than allowed might queue on protected entry "two_tasks_single_po.po.e" (restriction No_Entry_Queue active) (SPARK RM 9(11))
 two_tasks_single_po.adb:10:09: high: task "two_tasks_single_po.t1" is queueing
 two_tasks_single_po.adb:10:09: high: task "two_tasks_single_po.t2" is queueing
-two_tasks_single_po.adb:10:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+two_tasks_single_po.adb:10:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 two_tasks_single_po.adb:10:09: medium: the task might terminate, which is not allowed in SPARK
-two_tasks_single_po.adb:11:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+two_tasks_single_po.adb:11:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 two_tasks_single_po.adb:11:09: medium: the task might terminate, which is not allowed in SPARK
 two_tasks_single_so.ads:7:09: high: multiple tasks might suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))
 two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t1"

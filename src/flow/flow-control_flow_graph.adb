@@ -4463,6 +4463,7 @@ package body Flow.Control_Flow_Graph is
                      Sub_Called    => Funcs,
                      Loops         => Ctx.Current_Loops,
                      In_Nested_Pkg => Ctx.In_Nested_Package,
+                     Print_Hint    => Pretty_Print_Record_Field,
                      E_Loc         => Addr_Expr),
                   V);
                Inits.Append (V);

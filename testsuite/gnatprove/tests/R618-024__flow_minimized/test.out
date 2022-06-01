@@ -1,3 +1,3 @@
-test_record_cnt_ex.ads:16:33: info: range check proved (CVC4: 1 VC)
+test_record_cnt_ex.ads:16:33: info: range check proved (CVC5: 1 VC)
 test_record_cnt_ex.ads:17:07: high: cannot write constant without variable input "X" during elaboration of "test_record_cnt_ex" (SPARK RM 7.7.1(6))
-test_record_cnt_ex.ads:17:28: info: discriminant check proved (CVC4: 1 VC)
+test_record_cnt_ex.ads:17:28: info: discriminant check proved (CVC5: 1 VC)

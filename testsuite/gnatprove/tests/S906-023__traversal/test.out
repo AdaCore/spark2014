@@ -1,1 +1,1 @@
-traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC5: 1 VC)

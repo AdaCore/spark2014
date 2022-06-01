@@ -1,5 +1,5 @@
 split.adb:12:33: high: loop invariant might fail in first iteration, cannot prove U in 1 .. 20 (e.g. when U = 0) [possible fix: subprogram at split.ads:9 should mention U in a precondition]
-split.adb:12:33: info: loop invariant preservation proved (CVC4: 4 VC)
+split.adb:12:33: info: loop invariant preservation proved (CVC5: 4 VC)
 split.adb:13:10: high: precondition might fail, cannot prove U in 1 .. 10 (e.g. when U = 11) [possible fix: subprogram at split.ads:9 should mention U and V in a precondition]
 split.ads:6:14: warning: subprogram "P" has no effect
 split.ads:9:14: warning: subprogram "Q" has no effect

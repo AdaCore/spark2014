@@ -1,67 +1,67 @@
 a-cofove.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at list.ads:9
 a-cofove.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at list.ads:9
-a-cofove.ads:320:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:320:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:629:57: info: range check proved (CVC4: 2 VC), in instantiation at list.ads:9
-a-cofove.ads:757:23: info: precondition proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:760:38: info: range check proved (CVC4: 2 VC), in instantiation at list.ads:9
-a-cofove.ads:793:14: info: precondition proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:797:35: info: range check proved (CVC4: 2 VC), in instantiation at list.ads:9
+a-cofove.ads:320:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:320:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:629:57: info: range check proved (CVC5: 2 VC), in instantiation at list.ads:9
+a-cofove.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:760:38: info: range check proved (CVC5: 2 VC), in instantiation at list.ads:9
+a-cofove.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:797:35: info: range check proved (CVC5: 2 VC), in instantiation at list.ads:9
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at list.ads:9
 list.adb:16:07: info: initialization of "S" proved
 list.adb:20:14: info: initialization of "Res" proved
 list.adb:23:10: medium: precondition might fail
-list.adb:23:19: info: precondition proved (CVC4: 4 VC)
-list.adb:23:31: info: range check proved (CVC4: 4 VC)
+list.adb:23:19: info: precondition proved (CVC5: 4 VC)
+list.adb:23:31: info: range check proved (CVC5: 4 VC)
 list.adb:25:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = I - First + 1 [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec]
 list.adb:25:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model.To (S)'Last = I - First + 1 [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec]
-list.adb:25:35: info: overflow check proved (CVC4: 4 VC)
-list.adb:25:43: info: overflow check proved (CVC4: 4 VC)
+list.adb:25:35: info: overflow check proved (CVC5: 4 VC)
+list.adb:25:43: info: overflow check proved (CVC5: 4 VC)
 list.adb:26:54: medium: array index check might fail [reason for check: value must be a valid index into the array]
-list.adb:26:59: info: precondition proved (CVC4: 4 VC)
-list.adb:26:71: info: range check proved (CVC4: 4 VC)
+list.adb:26:59: info: precondition proved (CVC5: 4 VC)
+list.adb:26:71: info: range check proved (CVC5: 4 VC)
 list.adb:30:10: medium: precondition might fail
 list.adb:30:23: medium: precondition might fail
 list.adb:31:10: medium: precondition might fail
 list.adb:33:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = Last - I [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec]
 list.adb:33:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model.To (S)'Last = Last - I [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec]
-list.adb:33:38: info: overflow check proved (CVC4: 4 VC)
+list.adb:33:38: info: overflow check proved (CVC5: 4 VC)
 list.adb:34:21: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec]
-list.adb:34:44: info: overflow check proved (CVC4: 4 VC)
+list.adb:34:44: info: overflow check proved (CVC5: 4 VC)
 list.adb:35:24: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec]
-list.adb:35:58: info: overflow check proved (CVC4: 4 VC)
+list.adb:35:58: info: overflow check proved (CVC5: 4 VC)
 list.adb:37:15: medium: precondition might fail
-list.adb:37:29: info: range check proved (CVC4: 4 VC)
-list.adb:37:34: info: precondition proved (CVC4: 4 VC)
-list.adb:37:61: info: overflow check proved (CVC4: 4 VC)
-list.adb:37:65: info: overflow check proved (CVC4: 4 VC)
-list.adb:37:65: info: range check proved (CVC4: 4 VC)
-list.ads:10:37: info: range check proved (CVC4: 2 VC)
-list.ads:14:14: info: postcondition proved (CVC4: 1 VC)
-list.ads:15:17: info: precondition proved (CVC4: 2 VC)
-list.ads:15:29: info: range check proved (CVC4: 2 VC)
+list.adb:37:29: info: range check proved (CVC5: 4 VC)
+list.adb:37:34: info: precondition proved (CVC5: 4 VC)
+list.adb:37:61: info: overflow check proved (CVC5: 4 VC)
+list.adb:37:65: info: overflow check proved (CVC5: 4 VC)
+list.adb:37:65: info: range check proved (CVC5: 4 VC)
+list.ads:10:37: info: range check proved (CVC5: 2 VC)
+list.ads:14:14: info: postcondition proved (CVC5: 1 VC)
+list.ads:15:17: info: precondition proved (CVC5: 2 VC)
+list.ads:15:29: info: range check proved (CVC5: 2 VC)
 list.ads:15:34: medium: precondition might fail
-list.ads:15:79: info: overflow check proved (CVC4: 2 VC)
-list.ads:15:83: info: overflow check proved (CVC4: 2 VC)
-list.ads:15:83: info: range check proved (CVC4: 2 VC)
+list.ads:15:79: info: overflow check proved (CVC5: 2 VC)
+list.ads:15:83: info: overflow check proved (CVC5: 2 VC)
+list.ads:15:83: info: range check proved (CVC5: 2 VC)
 main.adb:5:04: info: initialization of "L" proved
 main.adb:8:21: info: unrolling loop
-main.adb:9:15: info: precondition proved (CVC4: 10 VC)
+main.adb:9:15: info: precondition proved (CVC5: 10 VC)
 main.adb:15:24: info: unrolling loop
 main.adb:16:29: medium: precondition might fail
-stack.adb:4:47: info: range check proved (CVC4: 1 VC)
-stack.adb:4:47: info: range check proved (CVC4: 4 VC)
-stack.adb:5:55: info: range check proved (CVC4: 1 VC)
-stack.adb:5:55: info: range check proved (CVC4: 4 VC)
-stack.adb:20:22: info: range check proved (CVC4: 2 VC)
-stack.adb:21:19: info: index check proved (CVC4: 2 VC)
-stack.adb:32:22: info: range check proved (CVC4: 2 VC)
-stack.ads:19:14: info: precondition proved (CVC4: 1 VC)
+stack.adb:4:47: info: range check proved (CVC5: 1 VC)
+stack.adb:4:47: info: range check proved (CVC5: 4 VC)
+stack.adb:5:55: info: range check proved (CVC5: 1 VC)
+stack.adb:5:55: info: range check proved (CVC5: 4 VC)
+stack.adb:20:22: info: range check proved (CVC5: 2 VC)
+stack.adb:21:19: info: index check proved (CVC5: 2 VC)
+stack.adb:32:22: info: range check proved (CVC5: 2 VC)
+stack.ads:19:14: info: precondition proved (CVC5: 1 VC)
 stack.ads:19:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (Top => 1, Content => (others => 0)) and X = 0)
-stack.ads:23:14: info: postcondition proved (CVC4: 1 VC)
+stack.ads:23:14: info: postcondition proved (CVC5: 1 VC)

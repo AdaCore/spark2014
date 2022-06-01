@@ -1,0 +1,2 @@
+prove_all:
+  opt: ["--exclude-line=proc.adb:5"]

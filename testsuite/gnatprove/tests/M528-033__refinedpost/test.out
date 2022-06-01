@@ -1,4 +1,4 @@
-refined.adb:4:28: info: refined post proved (CVC4: 1 VC)
-refined.adb:4:39: info: overflow check proved (CVC4: 2 VC)
-refined.adb:7:14: info: overflow check proved (CVC4: 2 VC)
-refined.ads:5:20: info: postcondition proved (CVC4: 1 VC)
+refined.adb:4:28: info: refined post proved (CVC5: 1 VC)
+refined.adb:4:39: info: overflow check proved (CVC5: 2 VC)
+refined.adb:7:14: info: overflow check proved (CVC5: 2 VC)
+refined.ads:5:20: info: postcondition proved (CVC5: 1 VC)

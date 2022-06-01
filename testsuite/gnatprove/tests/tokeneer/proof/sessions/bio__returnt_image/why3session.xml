@@ -3,8 +3,8 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
+<prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
 <prover id="4" name="colibri" version="2137" timelimit="20" steplimit="0" memlimit="1000"/>
 <file format="gnat-json">
@@ -14,32 +14,32 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="2"><result status="valid" steps="49"/></proof>
+  <proof prover="1"><result status="valid" steps="1641"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="17574"/></proof>
-  <proof prover="2"><result status="unknown" steps="103"/></proof>
-  <proof prover="4"><result status="unknown" steps="177"/></proof>
+  <proof prover="1"><result status="unknown" steps="1965"/></proof>
+  <proof prover="2"><result status="unknown" steps="15760"/></proof>
+  <proof prover="4"><result status="unknown" steps="77"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.1.0">
-   <proof prover="3"><result status="unknown" steps="112"/></proof>
+   <proof prover="3"><result status="unknown" steps="110"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="17869"/></proof>
-  <proof prover="2"><result status="unknown" steps="93"/></proof>
-  <proof prover="4"><result status="unknown" steps="251"/></proof>
+  <proof prover="1"><result status="unknown" steps="1978"/></proof>
+  <proof prover="2"><result status="unknown" steps="15799"/></proof>
+  <proof prover="4"><result status="unknown" steps="118"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.2.0">
-   <proof prover="3"><result status="unknown" steps="114"/></proof>
+   <proof prover="3"><result status="unknown" steps="89"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="2"><result status="valid" steps="106"/></proof>
+  <proof prover="1"><result status="valid" steps="1907"/></proof>
   </goal>
  </transf>
  </goal>

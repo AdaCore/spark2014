@@ -1,1 +1,1 @@
-iterated_comp_assoc.adb:5:71: info: overflow check proved (CVC4: 2 VC)
+iterated_comp_assoc.adb:5:71: info: overflow check proved (CVC5: 2 VC)

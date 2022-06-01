@@ -1,6 +1,6 @@
 useless_annot.adb:3:04: warning: no check message justified by this pragma
-useless_annot.adb:9:20: info: postcondition proved (CVC4: 1 VC)
-useless_annot.adb:13:16: info: overflow check proved (CVC4: 2 VC)
-useless_annot.adb:16:19: info: precondition proved (CVC4: 1 VC)
-useless_annot.adb:16:19: info: range check proved (CVC4: 2 VC)
+useless_annot.adb:9:20: info: postcondition proved (CVC5: 1 VC)
+useless_annot.adb:13:16: info: overflow check proved (CVC5: 2 VC)
+useless_annot.adb:16:19: info: precondition proved (CVC5: 1 VC)
+useless_annot.adb:16:19: info: range check proved (CVC5: 2 VC)
 useless_annot.adb:17:04: warning: only proved check messages justified by this pragma

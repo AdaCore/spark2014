@@ -1,8 +1,8 @@
 === test_01.ads ===
-test_01.ads:7:09: info: invariant check proved on default value (CVC4: 1 VC)
+test_01.ads:7:09: info: invariant check proved on default value (CVC5: 1 VC)
 
 === test_02.ads ===
-test_02.ads:9:09: info: invariant check proved on default value (CVC4: 1 VC)
+test_02.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 
 === test_03.ads ===
 test_03.ads:13:39: error: invariant cannot depend on variable input "C" (SPARK RM 4.4(2))
@@ -28,14 +28,14 @@ test_06.ads:13:27: medium: invariant check might fail
 test_07.ads:9:09: medium: invariant check might fail on default value
 
 === test_08.adb ===
-test_08.ads:11:09: info: invariant check proved on default value (CVC4: 1 VC)
-test_08.ads:17:09: info: invariant check proved on default value (CVC4: 1 VC)
-test_08.ads:23:09: info: invariant check proved on default value (CVC4: 1 VC)
+test_08.ads:11:09: info: invariant check proved on default value (CVC5: 1 VC)
+test_08.ads:17:09: info: invariant check proved on default value (CVC5: 1 VC)
+test_08.ads:23:09: info: invariant check proved on default value (CVC5: 1 VC)
 
 === test_08_util.adb ===
-test_08_util.ads:4:17: info: postcondition proved (CVC4: 2 VC)
-test_08_util.ads:7:17: info: postcondition proved (CVC4: 2 VC)
-test_08_util.ads:10:17: info: postcondition proved (CVC4: 2 VC)
+test_08_util.ads:4:17: info: postcondition proved (CVC5: 2 VC)
+test_08_util.ads:7:17: info: postcondition proved (CVC5: 2 VC)
+test_08_util.ads:10:17: info: postcondition proved (CVC5: 2 VC)
 
 === util.adb ===
-util.ads:4:17: info: postcondition proved (CVC4: 4 VC)
+util.ads:4:17: info: postcondition proved (CVC5: 4 VC)

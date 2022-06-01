@@ -252,6 +252,9 @@ package SPARK_Util.Types is
    function Is_Standard_Type (E : Type_Kind_Id) return Boolean;
    --  Returns True iff type E is declared in Standard
 
+   function Is_System_Address_Type (E : Type_Kind_Id) return Boolean;
+   --  Returns True iff type E is System.Address
+
    function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean;
    --  @param E type
    --  @return True if E needs a specific module to check its default
@@ -293,6 +296,9 @@ package SPARK_Util.Types is
       Result      : out Boolean;
       Explanation : out Unbounded_String);
    --  Same as Have_Same_Known_Esize, but checks the RM_Size.
+
+   function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
+   --  Returns True if Typ has access subcomponents
 
    function Contains_Allocated_Parts (Typ : Type_Kind_Id) return Boolean
      with Post => (if Contains_Allocated_Parts'Result then Is_Deep (Typ));

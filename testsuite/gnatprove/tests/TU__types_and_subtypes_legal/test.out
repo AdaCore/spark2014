@@ -1,1 +1,1 @@
-user_of_types_and_subtypes_legal.ads:8:06: info: postcondition proved (CVC4: 2 VC)
+user_of_types_and_subtypes_legal.ads:8:06: info: postcondition proved (CVC5: 2 VC)

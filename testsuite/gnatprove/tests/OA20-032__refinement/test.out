@@ -11,45 +11,45 @@ patris.adb:59:13: info: add a contract to analyze it separately from calling con
 patris.adb:59:13: info: local subprogram "Get_New_Piece" only analyzed in the context of calls
 patris.adb:67:49: warning: assuming "Rand" has no effect on global items
 patris.adb:67:49: warning: no Global contract available for "Rand"
-patris.adb:67:56: info: division check proved (CVC4: 1 VC), in call inlined at patris.adb:306
-patris.adb:67:56: info: division check proved (CVC4: 1 VC), in call inlined at patris.adb:323
+patris.adb:67:56: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:306
+patris.adb:67:56: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:323
 patris.adb:68:50: warning: assuming "Rand" has no effect on global items
 patris.adb:68:50: warning: no Global contract available for "Rand"
-patris.adb:68:57: info: division check proved (CVC4: 1 VC), in call inlined at patris.adb:306
-patris.adb:68:57: info: division check proved (CVC4: 1 VC), in call inlined at patris.adb:323
-patris.adb:105:33: info: index check proved (CVC4: 2 VC)
-patris.adb:105:47: info: index check proved (CVC4: 2 VC)
-patris.adb:106:36: info: index check proved (CVC4: 2 VC)
-patris.adb:106:51: info: index check proved (CVC4: 2 VC)
-patris.adb:107:33: info: index check proved (CVC4: 2 VC)
-patris.adb:107:50: info: index check proved (CVC4: 2 VC)
-patris.adb:108:36: info: index check proved (CVC4: 2 VC)
-patris.adb:108:54: info: index check proved (CVC4: 2 VC)
-patris.adb:113:16: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+patris.adb:68:57: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:306
+patris.adb:68:57: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:323
+patris.adb:105:33: info: index check proved (CVC5: 2 VC)
+patris.adb:105:47: info: index check proved (CVC5: 2 VC)
+patris.adb:106:36: info: index check proved (CVC5: 2 VC)
+patris.adb:106:51: info: index check proved (CVC5: 2 VC)
+patris.adb:107:33: info: index check proved (CVC5: 2 VC)
+patris.adb:107:50: info: index check proved (CVC5: 2 VC)
+patris.adb:108:36: info: index check proved (CVC5: 2 VC)
+patris.adb:108:54: info: index check proved (CVC5: 2 VC)
+patris.adb:113:16: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 patris.adb:118:30: info: unrolling loop
 patris.adb:119:33: info: unrolling loop
-patris.adb:121:45: info: index check proved (CVC4: 24 VC; altergo: 8 VC)
-patris.adb:121:63: info: index check proved (CVC4: 24 VC; Z3: 2 VC; altergo: 6 VC)
-patris.adb:129:16: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
-patris.adb:131:57: info: index check proved (CVC4: 2 VC)
+patris.adb:121:45: info: index check proved (CVC5: 24 VC; altergo: 8 VC)
+patris.adb:121:63: info: index check proved (CVC5: 24 VC; Z3: 2 VC; altergo: 6 VC)
+patris.adb:129:16: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+patris.adb:131:57: info: index check proved (CVC5: 2 VC)
 patris.adb:134:34: info: unrolling loop
 patris.adb:135:37: info: unrolling loop
-patris.adb:136:54: info: index check proved (CVC4: 18 VC)
-patris.adb:137:45: info: index check proved (CVC4: 10 VC; altergo: 8 VC)
-patris.adb:137:63: info: index check proved (CVC4: 10 VC; altergo: 8 VC)
-patris.adb:166:28: info: assertion proved (CVC4: 2 VC)
-patris.adb:169:13: info: loop invariant initialization proved (CVC4: 1 VC)
-patris.adb:169:13: info: loop invariant preservation proved (CVC4: 1 VC)
-patris.adb:169:88: info: index check proved (CVC4: 4 VC)
-patris.adb:172:22: info: assertion proved (CVC4: 1 VC)
-patris.adb:178:36: info: loop invariant initialization proved (CVC4: 1 VC)
-patris.adb:178:36: info: loop invariant preservation proved (CVC4: 1 VC)
-patris.adb:179:36: info: loop invariant initialization proved (CVC4: 1 VC)
-patris.adb:179:36: info: loop invariant preservation proved (CVC4: 1 VC)
-patris.adb:183:35: info: range check proved (CVC4: 2 VC)
-patris.adb:184:31: info: assertion proved (CVC4: 1 VC)
+patris.adb:136:54: info: index check proved (CVC5: 18 VC)
+patris.adb:137:45: info: index check proved (CVC5: 10 VC; altergo: 8 VC)
+patris.adb:137:63: info: index check proved (CVC5: 10 VC; altergo: 8 VC)
+patris.adb:166:28: info: assertion proved (CVC5: 2 VC)
+patris.adb:169:13: info: loop invariant initialization proved (CVC5: 1 VC)
+patris.adb:169:13: info: loop invariant preservation proved (CVC5: 1 VC)
+patris.adb:169:88: info: index check proved (CVC5: 4 VC)
+patris.adb:172:22: info: assertion proved (CVC5: 1 VC)
+patris.adb:178:36: info: loop invariant initialization proved (CVC5: 1 VC)
+patris.adb:178:36: info: loop invariant preservation proved (CVC5: 1 VC)
+patris.adb:179:36: info: loop invariant initialization proved (CVC5: 1 VC)
+patris.adb:179:36: info: loop invariant preservation proved (CVC5: 1 VC)
+patris.adb:183:35: info: range check proved (CVC5: 2 VC)
+patris.adb:184:31: info: assertion proved (CVC5: 1 VC)
 patris.adb:214:07: info: initialization of "Candidate" proved
-patris.adb:217:23: info: precondition proved (CVC4: 1 VC)
+patris.adb:217:23: info: precondition proved (CVC5: 1 VC)
 patris.adb:234:41: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:234:52: info: initialization of "Cur_State" constituent of "Game_State" proved
 patris.adb:234:63: info: initialization of "Cur_Piece" constituent of "Game_State" proved
@@ -66,51 +66,51 @@ patris.adb:261:41: info: initialization of "Next_Piece" constituent of "Game_Sta
 patris.adb:261:53: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:262:41: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:280:07: info: initialization of "Success" proved
-patris.adb:290:10: info: precondition proved (CVC4: 2 VC)
-patris.adb:294:13: info: precondition proved (CVC4: 2 VC)
-patris.adb:295:13: info: precondition proved (CVC4: 2 VC)
+patris.adb:290:10: info: precondition proved (CVC5: 2 VC)
+patris.adb:294:13: info: precondition proved (CVC5: 2 VC)
+patris.adb:295:13: info: precondition proved (CVC5: 2 VC)
 patris.adb:306:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:323:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:408:07: info: initialization of "Success" proved
-patris.adb:419:13: info: precondition proved (CVC4: 2 VC)
-patris.adb:421:57: info: overflow check proved (CVC4: 2 VC)
-patris.adb:432:56: info: division check proved (CVC4: 1 VC)
-patris.adb:432:64: info: range check proved (CVC4: 2 VC)
-patris.adb:434:41: info: division check proved (CVC4: 1 VC)
+patris.adb:419:13: info: precondition proved (CVC5: 2 VC)
+patris.adb:421:57: info: overflow check proved (CVC5: 2 VC)
+patris.adb:432:56: info: division check proved (CVC5: 1 VC)
+patris.adb:432:64: info: range check proved (CVC5: 2 VC)
+patris.adb:434:41: info: division check proved (CVC5: 1 VC)
 patris.ads:33:03: info: flow dependencies proved
 patris.ads:59:11: info: data dependencies proved
 patris.ads:80:11: info: data dependencies proved
 patris.ads:83:11: info: data dependencies proved
 patris.ads:97:11: info: data dependencies proved
-patris.ads:158:54: info: index check proved (CVC4: 2 VC)
-patris.ads:158:57: info: index check proved (CVC4: 2 VC)
+patris.ads:158:54: info: index check proved (CVC5: 2 VC)
+patris.ads:158:57: info: index check proved (CVC5: 2 VC)
 patris.ads:159:17: info: postcondition proved (Trivial: 1 VC)
 patris.ads:163:17: info: postcondition proved (Trivial: 1 VC)
 patris.ads:167:17: info: postcondition proved (Trivial: 1 VC)
-patris.ads:187:46: info: index check proved (CVC4: 2 VC)
-patris.ads:218:77: info: range check proved (CVC4: 1 VC)
-patris.ads:220:77: info: range check proved (CVC4: 1 VC)
+patris.ads:187:46: info: index check proved (CVC5: 2 VC)
+patris.ads:218:77: info: range check proved (CVC5: 1 VC)
+patris.ads:220:77: info: range check proved (CVC5: 1 VC)
 patris.ads:221:17: info: postcondition proved (Trivial: 1 VC)
 patris.ads:229:17: info: postcondition proved (Trivial: 1 VC)
-patris.ads:233:49: info: range check proved (CVC4: 2 VC)
-patris.ads:234:49: info: range check proved (CVC4: 2 VC)
-patris.ads:235:49: info: range check proved (CVC4: 2 VC)
-patris.ads:236:66: info: range check proved (CVC4: 2 VC)
+patris.ads:233:49: info: range check proved (CVC5: 2 VC)
+patris.ads:234:49: info: range check proved (CVC5: 2 VC)
+patris.ads:235:49: info: range check proved (CVC5: 2 VC)
+patris.ads:236:66: info: range check proved (CVC5: 2 VC)
 patris.ads:240:37: info: initialization of "Success" proved
-patris.ads:243:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:243:14: info: postcondition proved (CVC5: 1 VC)
 patris.ads:246:06: info: data dependencies proved
-patris.ads:249:16: info: postcondition proved (CVC4: 2 VC)
+patris.ads:249:16: info: postcondition proved (CVC5: 2 VC)
 patris.ads:255:06: info: data dependencies proved
-patris.ads:258:16: info: postcondition proved (CVC4: 2 VC)
+patris.ads:258:16: info: postcondition proved (CVC5: 2 VC)
 patris.ads:263:06: info: data dependencies proved
 patris.ads:266:14: medium: postcondition might fail, cannot prove (Valid_Configuration)
 patris.ads:271:06: info: data dependencies proved
-patris.ads:273:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:273:14: info: postcondition proved (CVC5: 1 VC)
 patris.ads:276:07: info: initialization of "Redraw_Board" proved
 patris.ads:276:21: info: initialization of "Redraw_Score" proved
 patris.ads:276:35: info: initialization of "Redraw_Current_Piece" proved
-patris.ads:278:14: info: postcondition proved (CVC4: 1 VC)
-patris.ads:282:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:278:14: info: postcondition proved (CVC5: 1 VC)
+patris.ads:282:14: info: postcondition proved (CVC5: 1 VC)
 patris.ads:285:11: info: data dependencies proved
 patris.ads:288:06: info: data dependencies proved
 patris.ads:291:11: info: data dependencies proved

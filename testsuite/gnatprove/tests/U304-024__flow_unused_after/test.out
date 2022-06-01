@@ -1,6 +1,6 @@
-ctx.adb:5:19: info: postcondition proved (CVC4: 1 VC)
+ctx.adb:5:19: info: postcondition proved (CVC5: 1 VC)
 ctx.adb:5:30: info: data dependencies proved
-ctx.adb:9:22: info: postcondition proved (CVC4: 5 VC)
+ctx.adb:9:22: info: postcondition proved (CVC5: 5 VC)
 ctx.adb:10:11: info: flow dependencies proved
 ctx.adb:18:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention Condition in a precondition]
 ctx.adb:36:04: info: precondition proved (Trivial: 1 VC)

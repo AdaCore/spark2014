@@ -11,8 +11,10 @@ test_overlays.adb:26:04: error: object with an address clause which is not fully
 test_overlays.adb:26:04: error: violation of aspect SPARK_Mode at line 3
 test_overlays.adb:30:06: warning: consider annotating "V6" with Async_Writers
 test_overlays.adb:30:06: warning: indirect writes to "V6" through a potential alias are ignored
+test_overlays.adb:30:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_overlays.adb:30:06: warning: writing to "V6" is assumed to have no effects on other non-volatile objects
 test_overlays.adb:32:06: warning: consider annotating "V7" with Async_Writers
 test_overlays.adb:32:06: warning: indirect writes to "V7" through a potential alias are ignored
+test_overlays.adb:32:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_overlays.adb:32:06: warning: writing to "V7" is assumed to have no effects on other non-volatile objects
 gnatprove: error during flow analysis and proof

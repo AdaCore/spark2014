@@ -27,7 +27,7 @@ def edit_file():
     copyfile(new_file, ads_file)
 
 
-# first call cvc4 to get rid of "easy" VCs. This call is removed.
+# first call cvc5 to get rid of "easy" VCs. This call is removed.
 print("=======================================")
 # first call to Coq, to produce a VC for the unproved postcondition
 prove_all(
@@ -64,5 +64,5 @@ prove_all(
     filter_output=".*Grammar extension",
 )
 print("=======================================")
-# run gnatprove again with cvc4 to see full results
+# run gnatprove again with cvc5 to see full results
 prove_all(counterexample=False)

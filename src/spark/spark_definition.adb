@@ -2975,15 +2975,15 @@ package body SPARK_Definition is
             Mark (Address_Expr);
 
             --  If we cannot determine which object the address of E
-            --  references, check that E has asynchronous writers. If it is
-            --  not the case, issue a warning that we cannot account for
-            --  indirect writes.
+            --  references, check whether E is annotated with some Volatile
+            --  properties. If it is not the case, issue a warning that we
+            --  cannot account for indirect writes.
 
             if Is_Object (E)
               and then not Supported_Alias
-              and then not
-                (Has_Volatile (E)
-                 and then Has_Volatile_Property (E, Pragma_Async_Writers))
+              and then not Has_Volatile (E)
+              and then
+                (Ekind (E) /= E_Variable or else not No_Caching_Enabled (E))
             then
                Error_Msg_NE
                  ("?indirect writes to & through a potential alias are"
@@ -3005,9 +3005,24 @@ package body SPARK_Definition is
                --  warning.
 
                if not Supported_Alias then
-                  Error_Msg_NE
-                    ("?writing to & is assumed to have no effects on"
-                     & " other non-volatile objects", Address, E);
+
+                  --  If E has a volatile annotation with Async_Readers set to
+                  --  False, writing to E cannot have any effects on other
+                  --  variables. Do not emit the warning.
+
+                  if (if Has_Volatile (E)
+                      then Has_Volatile_Property (E, Pragma_Async_Readers)
+                      else Ekind (E) /= E_Variable
+                        or else not No_Caching_Enabled (E))
+                  then
+                     Error_Msg_NE
+                       ("?writing to & is assumed to have no effects on"
+                        & " other non-volatile objects", Address, E);
+                     Error_Msg_NE
+                       ("\make sure that all overlapping objects have"
+                        & " Async_Writers set to True",
+                        Address, E);
+                  end if;
 
                --  We do not handle yet overlays between (parts of) objects of
                --  a deep type.
@@ -3393,15 +3408,16 @@ package body SPARK_Definition is
                      null;
                   elsif Nkind (P) /= N_Function_Call then
                      Mark_Violation
-                       ("prefix of """ & Astring
-                        & """ attribute which is not a function call",
-                        P, SRM_Reference => "SPARK RM 3.10(13)");
+                       ("prefix of """ & Astring & """ introducing aliasing",
+                        P, SRM_Reference => "SPARK RM 3.10(13)",
+                        Cont_Msg => "call a deep copy function for type """
+                        & Source_Name (Etype (P)) & """ as prefix of """
+                        & Astring & """ to avoid aliasing");
 
                   elsif Is_Traversal_Function_Call (P) then
                      Mark_Violation
-                       ("prefix of """ & Astring
-                        & """ attribute which is a call to a traversal "
-                        & "function",
+                       ("traversal function call as a prefix of """ & Astring
+                        & """ attribute",
                         P, SRM_Reference => "SPARK RM 3.10(13)");
                   end if;
                end;
@@ -4143,6 +4159,30 @@ package body SPARK_Definition is
            ("?no Global contract available for &", N, E);
          Error_Msg_NE
            ("\\assuming & has no effect on global items", N, E);
+
+      --  On supported unchecked conversions to access types, emit warnings
+      --  stating that we assume the returned value to be valid and with no
+      --  harmful aliases. The warnings are also emitted on calls to
+      --  To_Pointer function from an instance of
+      --  System.Address_To_Access_Conversions, which performs the same
+      --  operation.
+
+      elsif Is_System_Address_To_Access_Conversion (E)
+        or else (Is_Unchecked_Conversion_Instance (E)
+                 and then Has_Access_Type (Etype (E)))
+      then
+         Error_Msg_NE
+           ("?call to & is assumed to return a valid access"
+            & " designating a valid value", N, E);
+         if Is_Access_Constant (Etype (E)) then
+            Error_Msg_NE
+              ("?potential aliases of the value returned by a call"
+               & " to & are assumed to be constant", N, E);
+         else
+            Error_Msg_NE
+              ("?the value returned by a call to & is assumed to "
+               & "have no aliases", N, E);
+         end if;
       end if;
 
       --  A possibly nonreturning procedure should only be called from
@@ -5509,18 +5549,6 @@ package body SPARK_Definition is
             Mark_Violation_In_Tasking (E);
          end if;
 
-         --  Reject unchecked conversion to and from a deep type as it could
-         --  create an unknown alias.
-
-         if Is_Unchecked_Conversion_Instance (E)
-           and then (Is_Deep (Etype (E))
-                     or else Is_Deep (Etype (First_Formal (E))))
-         then
-            Mark_Violation
-              ("unchecked conversion instance to or from an ownership type",
-               E);
-         end if;
-
          --  Reject unchecked deallocation on general access types
 
          if Is_Unchecked_Deallocation_Instance (E)
@@ -5532,6 +5560,66 @@ package body SPARK_Definition is
          end if;
 
          Mark_Subprogram_Specification (E);
+
+         --  In general, reject unchecked conversion when the source or target
+         --  types contain access subcomponents. Converting from an integer
+         --  type of System.Address to an access-to-variable type is allowed
+         --  but warnings are emitted on calls.
+
+         if Is_Unchecked_Conversion_Instance (E) then
+            declare
+               From : constant Type_Kind_Id :=
+                 Retysp (Etype (First_Formal (E)));
+               To   : constant Type_Kind_Id := Retysp (Etype (E));
+
+            begin
+               --  Reject unchecked conversions from a type containing access
+               --  subcomponents. They cannot be modeled as we do not model the
+               --  address of access values.
+
+               if Contains_Access_Subcomponents (From) then
+                  Mark_Violation
+                    ("unchecked conversion instance from a type with access"
+                     & " subcomponents",
+                     E);
+
+               --  We reject unchecked conversions to a type containing access
+               --  subcomponents. We still accept conversion from integer types
+               --  or System.Address to access-to-object types as they are
+               --  deemed useful, but with warnings when they are called.
+
+               elsif Is_Access_Subprogram_Type (To) then
+                  Mark_Violation
+                    ("unchecked conversion instance to an access to"
+                     & " subprogram type", E);
+               elsif not Is_Access_Type (To)
+                 and then Contains_Access_Subcomponents (To)
+               then
+                  Mark_Violation
+                    ("unchecked conversion instance to a composite type with"
+                     & " access subcomponents",
+                     E);
+               elsif Is_Access_Type (To)
+                 and then
+                   (not Is_Integer_Type (From)
+                    and then not Is_System_Address_Type (Base_Retysp (From)))
+               then
+                  Mark_Violation
+                    ("unchecked conversion instance to an access-to-object"
+                     & " type from a type which is neither System.Address nor"
+                     & " an integer type",
+                     E);
+               elsif Is_Access_Type (To)
+                 and then not Is_Access_Constant (To)
+                 and then not Is_General_Access_Type (To)
+               then
+                  Mark_Violation
+                    ("unchecked conversion instance to a pool-specific access"
+                     & " type",
+                     E);
+               end if;
+            end;
+         end if;
 
          --  We mark bodies of predicate functions, and of expression functions
          --  when they are referenced (including those from other compilation

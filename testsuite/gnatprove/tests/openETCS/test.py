@@ -11,7 +11,7 @@ files = [
 
 for f in sorted(files):
     prove_all(
-        prover=["cvc4", "z3"],
+        prover=["cvc5", "z3"],
         vc_timeout=0,
         steps=3000,
         counterexample=False,

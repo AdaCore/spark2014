@@ -15,8 +15,8 @@ nest_in_task.adb:32:04: high: more tasks than allowed might queue on protected e
 nest_in_task.adb:32:04: high: task "nest_in_task.b" is queueing
 nest_in_task.adb:32:04: high: task "nest_in_task.c" is queueing
 nest_in_task.ads:4:17: info: subprogram "Proc" will terminate, terminating annotation has been proved
-nest_in_task.ads:9:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
-nest_in_task.ads:9:14: info: nontermination of task proved (CVC4: 1 VC)
+nest_in_task.ads:9:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
+nest_in_task.ads:9:14: info: nontermination of task proved (CVC5: 1 VC)
 recursion.adb:3:17: warning: subprogram "P" has no effect
 recursion.adb:10:26: info: unrolling loop
 recursion.adb:11:13: medium: "P" and "Recursion" are mutually recursive, terminating annotation on "P" could be incorrect

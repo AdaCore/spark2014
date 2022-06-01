@@ -1,2 +1,2 @@
-a~b.adb:8:20: info: overflow check proved (CVC4: 2 VC)
+a~b.adb:8:20: info: overflow check proved (CVC5: 2 VC)
 a~b.ads:5:06: info: data dependencies proved

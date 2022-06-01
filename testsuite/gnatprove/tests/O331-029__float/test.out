@@ -248,7 +248,7 @@ sensfusion6_pack.adb:188:21: info: float overflow check proved (Trivial), in cal
 sensfusion6_pack.adb:188:26: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:256
 sensfusion6_pack.adb:188:31: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:256
 sensfusion6_pack.adb:188:36: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:256
-sensfusion6_pack.adb:189:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:256
+sensfusion6_pack.adb:189:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: value must fit in the target type of the assignment]
 sensfusion6_pack.adb:189:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:190:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: value must fit in the target type of the assignment]
 sensfusion6_pack.adb:190:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:256 [reason for check: result of floating-point multiplication must be bounded]

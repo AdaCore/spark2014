@@ -1300,14 +1300,16 @@ package body Gnat2Why.Error_Messages is
 
          if CE_RAC.Do_RAC_Info then
             Write_Str
-              ("VERDICT"
-               & HT & Verdict.Verdict_Category'Image
-               & HT & Reason (Verdict)
-               & HT & Small_Step_Res.Res_Kind'Image
-               & HT & Reason (Small_Step_Res)
-               & HT & Rec.Giant_Step_Res.Res_Kind'Image
-               & HT & Reason (Rec.Giant_Step_Res)
-               & HT);
+              ("----------"
+               & LF & "VERDICT: "
+               & Verdict.Verdict_Category'Image
+               & ", Reason: "      & Reason (Verdict)
+               & " | Small-step: " & Small_Step_Res.Res_Kind'Image
+               & ", Reason: "      & Reason (Small_Step_Res)
+               & " | Giant-step: " & Rec.Giant_Step_Res.Res_Kind'Image
+               & ", Reason: "      & Reason (Rec.Giant_Step_Res)
+               & LF & "----------"
+               & LF);
             Write_Location (Sloc (VC.Node));
             Write_Eol;
          end if;

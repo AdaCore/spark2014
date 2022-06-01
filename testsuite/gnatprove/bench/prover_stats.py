@@ -336,11 +336,11 @@ def start_server(fname, parallel, verbose=False, need_server=False):
 id_num = 1
 
 
-def send_request(fd, cmd):
+def send_request(fd, cmd, timeout):
     global id_num
     id_num = id_num + 1
     cmdstr = ";".join(cmd)
-    s = "run;{id_num};0;0;{cmd}\n".format(id_num=id_num, cmd=cmdstr)
+    s = f"run;{id_num};{timeout};0;{cmdstr}\n"
     fd.sendall(s.encode("utf-8"))
     return id_num
 
@@ -411,7 +411,11 @@ def get_all_results(
         socket, parallel=parallel, verbose=verbose, need_server=need_server
     )
     for fn in fnlist:
-        my_id = send_request(fd, prover.command(timeout=timeout, rlimit=rlimit) + [fn])
+        my_id = send_request(
+            fd,
+            prover.command(timeout=timeout, rlimit=rlimit) + [fn],
+            timeout=2 * timeout,
+        )
         file_map[my_id] = fn
     if progress_bar:
         with tqdm(total=len(file_map)) as pbar:

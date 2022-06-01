@@ -3,18 +3,18 @@ main.adb:7:04: info: initialization of "X22" proved
 main.adb:8:04: info: initialization of "X23" proved
 main.adb:9:04: info: initialization of "X24" proved
 main.adb:10:04: info: initialization of "X25" proved
-main.adb:13:23: info: range check proved (CVC4: 2 VC)
-main.adb:14:23: info: range check proved (CVC4: 2 VC)
-main.adb:15:23: info: range check proved (CVC4: 2 VC)
-main.adb:16:23: info: range check proved (CVC4: 2 VC)
-main.adb:17:23: info: range check proved (CVC4: 2 VC)
+main.adb:13:23: info: range check proved (CVC5: 2 VC)
+main.adb:14:23: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+main.adb:15:23: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+main.adb:16:23: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+main.adb:17:23: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 numerics-algo.adb:13:16: info: precondition proved (Trivial: 1 VC)
 numerics-algo.adb:15:13: info: range check proved (Trivial)
 numerics-algo.adb:15:17: info: precondition proved (Trivial: 1 VC)
 numerics-algo.adb:17:16: info: precondition proved (Trivial: 1 VC)
-numerics-algo.adb:19:17: info: precondition proved (CVC4: 1 VC)
+numerics-algo.adb:19:17: info: precondition proved (CVC5: 1 VC)
 numerics-algo.adb:19:23: info: precondition proved (Trivial: 1 VC)
-numerics-algo.adb:20:17: info: precondition proved (CVC4: 1 VC)
+numerics-algo.adb:20:17: info: precondition proved (CVC5: 1 VC)
 numerics-algo.ads:6:20: info: initialization of "X1" proved
 numerics-algo.ads:7:20: info: initialization of "X2" proved
 numerics-algo.ads:8:20: info: initialization of "X3" proved
@@ -26,6 +26,6 @@ numerics.ads:23:99: info: float overflow check justified
 numerics.ads:23:99: info: range check proved (Trivial)
 numerics.ads:26:99: info: float overflow check justified
 numerics.ads:26:99: info: range check proved (Trivial)
-numerics.ads:29:99: info: division check proved (CVC4: 1 VC)
+numerics.ads:29:99: info: division check proved (CVC5: 1 VC)
 numerics.ads:29:99: info: float overflow check justified
 numerics.ads:29:99: info: range check proved (Trivial)

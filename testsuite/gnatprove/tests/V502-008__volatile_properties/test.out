@@ -1,0 +1,5 @@
+p.ads:29:08: error: illegal combination of external property "Async_Readers" and property "No_Caching" (SPARK RM 7.1.2(6))
+p.ads:41:08: error: illegal combination of external property "Async_Writers" and property "No_Caching" (SPARK RM 7.1.2(6))
+p.ads:49:08: error: illegal combination of external property "Effective_Reads" and property "No_Caching" (SPARK RM 7.1.2(6))
+p.ads:57:08: error: illegal combination of external property "Effective_Writes" and property "No_Caching" (SPARK RM 7.1.2(6))
+gnatprove: error during generation of Global contracts

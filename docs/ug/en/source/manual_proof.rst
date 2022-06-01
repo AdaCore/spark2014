@@ -274,11 +274,11 @@ A common way to define permutations is to use the number of occurrences of
 elements in the array, defined inductively over the size of its array parameter
 (but it is not the only one, see :ref:`Ghost Variables`):
 
-.. literalinclude:: /examples/ug__perm/sort_types.ads
+.. literalinclude:: /examples/ug__long__perm/sort_types.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/ug__perm/perm.ads
+.. literalinclude:: /examples/ug__long__perm/perm.ads
    :language: ada
    :linenos:
 
@@ -299,7 +299,7 @@ subprogram with the proper arguments is required whenever an instance of the
 axiom is needed, like in manual proofs in an interactive theorem prover. Here
 is how a lemma subprogram can be defined for the desired property of Occ:
 
-.. literalinclude:: /examples/ug__perm/perm-lemma_subprograms.ads
+.. literalinclude:: /examples/ug__long__perm/perm-lemma_subprograms.ads
    :language: ada
 
 This "axiom" can then be used to prove an implementation of the selection
@@ -315,7 +315,7 @@ the loop invariant, playing the role of an induction hypothesis:
    :language: ada
 
 The procedure Selection_Sort can be verified using |GNATprove|, with the
-default prover CVC4, in less than 1s per verification condition.
+default prover CVC5, in less than 1s per verification condition.
 
 .. literalinclude:: /examples/ug__sort/test.out
    :language: none
@@ -329,13 +329,13 @@ itself to assert the induction hypothesis. Note that the proof of the
 lemma is then conditioned to the termination of the lemma functions, which
 currently cannot be verified by |GNATprove|.
 
-.. literalinclude:: /examples/ug__perm/perm-lemma_subprograms.adb
+.. literalinclude:: /examples/ug__long__perm/perm-lemma_subprograms.adb
    :language: ada
 
 |GNATprove| proves automatically all checks on the final program, with a small
-timeout of 1s for the default automatic prover CVC4.
+timeout of 1s for the default automatic prover CVC5.
 
-.. literalinclude:: /examples/ug__perm/test.out
+.. literalinclude:: /examples/ug__long__perm/test.out
    :language: none
 
 .. index:: manual proof; using Coq
@@ -361,7 +361,7 @@ timeout:
 
 This is expected, as the automatic prover Alt-Ergo has only a simple support
 for non-linear integer arithmetic. More generally, it is a known difficulty for
-all automatic provers, although, in the case above, using prover CVC4 is enough
+all automatic provers, although, in the case above, using prover CVC5 is enough
 to prove automatically the postcondition of procedure ``Nonlinear``. We will
 use this case to demonstrate the use of a manual prover, as an example of what
 can be done when automatic provers fail to prove a check. We will use Coq here.

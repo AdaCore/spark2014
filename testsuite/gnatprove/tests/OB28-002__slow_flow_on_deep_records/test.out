@@ -1,3 +1,4 @@
+iommu.adb:15:08: warning: make sure that all overlapping objects have Async_Writers set to True
 iommu.adb:15:08: warning: writing to "IOMMUs" is assumed to have no effects on other non-volatile objects
 iommu.adb:23:07: info: initialization of "Value" proved
 iommu.adb:26:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Capability"

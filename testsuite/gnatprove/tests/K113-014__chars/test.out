@@ -1,4 +1,4 @@
 chars.adb:13:07: warning: initialization of "F" has no effect
 chars.adb:14:07: warning: initialization of "WF" has no effect
 chars.adb:15:07: warning: initialization of "WWF" has no effect
-chars.ads:3:20: info: postcondition proved (CVC4: 1 VC)
+chars.ads:3:20: info: postcondition proved (CVC5: 1 VC)

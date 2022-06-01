@@ -1,20 +1,20 @@
 a-cfhama.ads:400:08: info: dynamic accessibility check proved (Trivial), in instantiation at p.ads:19
-a-cfhama.ads:400:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at p.ads:19
+a-cfhama.ads:400:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at p.ads:19
 a-cfhama.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at p.ads:19
-a-cfhama.ads:425:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at p.ads:19
-a-cfhama.ads:463:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at p.ads:19
-a-cfhama.ads:776:39: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:19
-a-cfhama.ads:785:17: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:19
-a-cfhama.ads:815:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:19
-a-cfhama.ads:830:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:19
+a-cfhama.ads:425:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at p.ads:19
+a-cfhama.ads:463:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at p.ads:19
+a-cfhama.ads:776:39: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:19
+a-cfhama.ads:785:17: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:19
+a-cfhama.ads:815:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:19
+a-cfhama.ads:830:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:19
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at p.ads:19
 go.adb:7:04: info: initialization of "M" proved
 p.adb:6:22: medium: private part of "Map.X" is not set
-p.ads:31:19: info: range check proved (CVC4: 2 VC)
-p.ads:32:19: info: range check proved (CVC4: 1 VC)
+p.ads:31:19: info: range check proved (CVC5: 2 VC)
+p.ads:32:19: info: range check proved (CVC5: 1 VC)

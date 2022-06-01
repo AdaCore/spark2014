@@ -1,34 +1,34 @@
 === test_01.adb ===
-test_01.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+test_01.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
-test_01.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
-test_01.adb:22:06: warning: consider annotating "Sensor" with Async_Writers
-test_01.adb:22:06: warning: indirect writes to "Sensor" through a potential alias are ignored
+test_01.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
+test_01.adb:22:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_01.adb:22:06: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 test_01.ads:5:04: info: flow dependencies proved
 test_01.ads:10:09: info: data dependencies proved
 === test_02.adb ===
-test_02.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+test_02.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
-test_02.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
-test_02.adb:22:06: warning: consider annotating "Sensor" with Async_Writers
-test_02.adb:22:06: warning: indirect writes to "Sensor" through a potential alias are ignored
+test_02.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
+test_02.adb:22:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_02.adb:22:06: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 test_02.ads:5:04: info: flow dependencies proved
 test_02.ads:10:09: info: data dependencies proved
 === test_03.adb ===
-test_03.adb:23:14: warning: consider annotating "V_AR" with Async_Writers
-test_03.adb:23:14: warning: indirect writes to "V_AR" through a potential alias are ignored
+test_03.adb:23:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_03.adb:23:14: warning: writing to "V_AR" is assumed to have no effects on other non-volatile objects
-test_03.adb:28:14: warning: writing to "V_AW" is assumed to have no effects on other non-volatile objects
-test_03.adb:33:14: warning: writing to "V_ER" is assumed to have no effects on other non-volatile objects
-test_03.adb:38:14: warning: consider annotating "V_EW" with Async_Writers
-test_03.adb:38:14: warning: indirect writes to "V_EW" through a potential alias are ignored
+test_03.adb:38:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_03.adb:38:14: warning: writing to "V_EW" is assumed to have no effects on other non-volatile objects
+test_03.adb:43:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_03.adb:43:14: warning: writing to "V_V" is assumed to have no effects on other non-volatile objects
 === test_04.adb ===
+test_04.adb:23:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:23:14: warning: writing to "V_AR" is assumed to have no effects on other non-volatile objects
+test_04.adb:28:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:28:14: warning: writing to "V_AW" is assumed to have no effects on other non-volatile objects
+test_04.adb:33:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:33:14: warning: writing to "V_ER" is assumed to have no effects on other non-volatile objects
+test_04.adb:38:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:38:14: warning: writing to "V_EW" is assumed to have no effects on other non-volatile objects
+test_04.adb:43:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:43:14: warning: writing to "V_V" is assumed to have no effects on other non-volatile objects

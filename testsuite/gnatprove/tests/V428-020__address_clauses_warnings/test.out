@@ -1,0 +1,2 @@
+ext.ads:16:08: warning: make sure that all overlapping objects have Async_Writers set to True
+ext.ads:16:08: warning: writing to "V1" is assumed to have no effects on other non-volatile objects

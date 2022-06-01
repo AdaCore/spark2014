@@ -2,10 +2,10 @@ const.adb:3:10: medium: overflow check might fail, cannot prove lower bound for 
 const.adb:3:14: medium: overflow check might fail, cannot prove lower bound for A + B + C [reason for check: result of addition must fit in a 32-bits machine integer]
 const.adb:3:18: medium: overflow check might fail, cannot prove lower bound for A + B + C + D [reason for check: result of addition must fit in a 32-bits machine integer]
 const.adb:3:22: medium: overflow check might fail, cannot prove lower bound for A + B + C + D + E [reason for check: result of addition must fit in a 32-bits machine integer]
-const.adb:3:26: info: overflow check proved (CVC4: 2 VC)
+const.adb:3:26: info: overflow check proved (CVC5: 2 VC)
 const.adb:3:30: medium: overflow check might fail, cannot prove lower bound for A + B + C + D + E + F + G [reason for check: result of addition must fit in a 32-bits machine integer]
-const.adb:3:34: info: overflow check proved (CVC4: 2 VC)
-const.adb:3:38: info: overflow check proved (CVC4: 2 VC)
+const.adb:3:34: info: overflow check proved (CVC5: 2 VC)
+const.adb:3:38: info: overflow check proved (CVC5: 2 VC)
 const.ads:10:33: info: precondition proved (Trivial: 1 VC)
 const.ads:12:04: low: initialization of constant with variable input "D" through constant with variable input "C" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 const.ads:12:33: info: precondition proved (Trivial: 1 VC)
@@ -21,7 +21,7 @@ const3.adb:3:19: info: initialization of "F" proved
 const3.adb:4:19: info: initialization of "L" proved
 const3.adb:5:19: info: initialization of "R" proved
 const3.adb:7:08: info: flow dependencies proved
-const3.adb:14:12: info: range check proved (CVC4: 2 VC)
+const3.adb:14:12: info: range check proved (CVC5: 2 VC)
 const3.adb:18:04: warning: unused variable "A"
 const3.adb:20:22: info: initialization of "F" proved
 const3.adb:21:22: info: initialization of "L" proved
@@ -42,4 +42,4 @@ const4.ads:19:11: info: flow dependencies proved
 other.adb:4:49: medium: overflow check might fail, cannot prove lower bound for V + C [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at other.ads:13 should mention V]
 other.ads:2:08: info: flow dependencies proved
 other.ads:20:11: info: data dependencies proved
-other.ads:21:21: info: postcondition proved (CVC4: 1 VC)
+other.ads:21:21: info: postcondition proved (CVC5: 1 VC)

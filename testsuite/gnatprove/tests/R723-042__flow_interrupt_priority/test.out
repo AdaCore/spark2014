@@ -1,2 +1,2 @@
-init.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+init.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 logger.adb:6:39: medium: this interrupt might be reserved

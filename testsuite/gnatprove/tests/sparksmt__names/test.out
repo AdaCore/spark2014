@@ -2,108 +2,103 @@ a-cfinve.ads:316:08: info: dynamic accessibility check proved (Trivial), in inst
 a-cfinve.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at names-data.ads:74
 a-cfinve.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at names-data.ads:54
 a-cfinve.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at names-data.ads:74
-a-cfinve.ads:341:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:341:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:341:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:341:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:364:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:364:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:406:73: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:406:73: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:439:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:439:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:474:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:474:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:520:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:520:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:544:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:544:51: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:585:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:585:59: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:650:28: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:650:28: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:650:57: info: overflow check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:650:57: info: range check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:650:57: info: range check proved (CVC4: 2 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:778:23: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:778:23: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:781:38: info: range check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:814:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cfinve.ads:814:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:74
-a-cfinve.ads:818:35: info: range check proved (CVC4: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:650:57: info: overflow check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:781:38: info: range check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at names-data.ads:54
+a-cfinve.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at names-data.ads:74
+a-cfinve.ads:818:35: info: range check proved (CVC5: 2 VC), in instantiation at names-data.ads:54
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
-a-cofuve.ads:237:63: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
-a-cofuve.ads:239:30: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:54
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at names-data.ads:74
 names-data.ads:27:23: info: Initial_Condition of package "Names" is ignored
 names-data.ads:27:23: info: the elaboration of "Names" is not known to precede the elaboration of the current unit
 names-data.ads:27:23: info: use pragma Elaborate_Body in "Names" or pragma Elaborate in the current unit
 names.adb:40:04: info: initialization of "Char_Table" constituent of "Name_Table" proved
-names.adb:40:38: info: range check proved (CVC4: 2 VC)
+names.adb:40:38: info: range check proved (CVC5: 2 VC)
 names.adb:41:04: info: initialization of "Entry_Table" constituent of "Name_Table" proved
-names.adb:41:39: info: range check proved (CVC4: 2 VC)
-names.adb:60:34: info: overflow check proved (CVC4: 2 VC)
-names.adb:65:16: info: range check proved (CVC4: 2 VC)
-names.adb:67:10: info: precondition proved (CVC4: 2 VC)
-names.adb:67:23: info: precondition proved (CVC4: 2 VC)
-names.adb:67:45: info: range check proved (CVC4: 2 VC)
+names.adb:41:39: info: range check proved (CVC5: 2 VC)
+names.adb:60:34: info: overflow check proved (CVC5: 2 VC)
+names.adb:65:16: info: range check proved (CVC5: 2 VC)
+names.adb:67:10: info: precondition proved (CVC5: 2 VC)
+names.adb:67:23: info: precondition proved (CVC5: 2 VC)
+names.adb:67:45: info: range check proved (CVC5: 2 VC)
 names.adb:72:21: info: initialization of "N" proved
 names.adb:73:09: info: data dependencies proved
-names.adb:76:19: info: postcondition proved (CVC4: 6 VC)
-names.adb:77:67: info: overflow check proved (CVC4: 2 VC)
-names.adb:89:51: info: range check proved (CVC4: 2 VC)
-names.adb:92:11: info: range check proved (CVC4: 2 VC)
-names.adb:92:37: info: range check proved (CVC4: 2 VC)
-names.adb:93:10: info: precondition proved (CVC4: 2 VC)
-names.adb:93:35: info: index check proved (CVC4: 4 VC)
-names.adb:93:35: info: overflow check proved (CVC4: 4 VC)
-names.adb:93:46: info: overflow check proved (CVC4: 4 VC)
-names.adb:95:13: info: loop invariant initialization proved (CVC4: 4 VC)
-names.adb:95:13: info: loop invariant preservation proved (CVC4: 4 VC)
-names.adb:97:46: info: overflow check proved (CVC4: 4 VC)
-names.adb:100:07: info: precondition proved (CVC4: 1 VC)
-names.adb:101:55: info: overflow check proved (CVC4: 2 VC)
-names.adb:101:55: info: range check proved (CVC4: 2 VC)
-names.adb:101:59: info: range check proved (CVC4: 2 VC)
-names.adb:102:32: info: range check proved (CVC4: 2 VC)
-names.adb:117:30: info: division check proved (CVC4: 1 VC)
-names.adb:117:30: info: range check proved (CVC4: 2 VC)
-names.adb:128:16: info: precondition proved (CVC4: 6 VC)
-names.adb:134:16: info: loop invariant initialization proved (CVC4: 6 VC)
-names.adb:134:16: info: loop invariant preservation proved (CVC4: 6 VC)
-names.adb:138:23: info: precondition proved (CVC4: 2 VC)
-names.adb:138:45: info: range check proved (CVC4: 2 VC)
-names.adb:139:20: info: precondition proved (CVC4: 2 VC)
-names.adb:139:42: info: range check proved (CVC4: 2 VC)
-names.adb:143:07: info: precondition proved (CVC4: 4 VC)
-names.adb:149:10: info: precondition proved (CVC4: 2 VC)
-names.adb:150:27: info: range check proved (CVC4: 2 VC)
-names.adb:151:27: info: precondition proved (CVC4: 2 VC)
-names.adb:151:49: info: range check proved (CVC4: 2 VC)
-names.adb:173:37: info: precondition proved (CVC4: 2 VC)
-names.adb:173:59: info: range check proved (CVC4: 2 VC)
+names.adb:76:19: info: postcondition proved (CVC5: 6 VC)
+names.adb:77:67: info: overflow check proved (CVC5: 2 VC)
+names.adb:89:51: info: range check proved (CVC5: 2 VC)
+names.adb:92:11: info: range check proved (CVC5: 2 VC)
+names.adb:92:37: info: range check proved (CVC5: 2 VC)
+names.adb:93:10: info: precondition proved (CVC5: 2 VC)
+names.adb:93:35: info: index check proved (CVC5: 4 VC)
+names.adb:93:35: info: overflow check proved (CVC5: 4 VC)
+names.adb:93:46: info: overflow check proved (CVC5: 4 VC)
+names.adb:95:13: info: loop invariant initialization proved (CVC5: 4 VC)
+names.adb:95:13: info: loop invariant preservation proved (CVC5: 4 VC)
+names.adb:97:46: info: overflow check proved (CVC5: 4 VC)
+names.adb:100:07: info: precondition proved (CVC5: 1 VC)
+names.adb:101:55: info: overflow check proved (CVC5: 2 VC)
+names.adb:101:55: info: range check proved (CVC5: 2 VC)
+names.adb:101:59: info: range check proved (CVC5: 2 VC)
+names.adb:102:32: info: range check proved (CVC5: 2 VC)
+names.adb:117:30: info: division check proved (CVC5: 1 VC)
+names.adb:117:30: info: range check proved (CVC5: 2 VC)
+names.adb:128:16: info: precondition proved (CVC5: 6 VC)
+names.adb:134:16: info: loop invariant initialization proved (CVC5: 6 VC)
+names.adb:134:16: info: loop invariant preservation proved (CVC5: 6 VC)
+names.adb:138:23: info: precondition proved (CVC5: 2 VC)
+names.adb:139:20: info: precondition proved (CVC5: 2 VC)
+names.adb:143:07: info: precondition proved (CVC5: 4 VC)
+names.adb:149:10: info: precondition proved (CVC5: 2 VC)
+names.adb:150:27: info: range check proved (CVC5: 2 VC)
+names.adb:151:27: info: precondition proved (CVC5: 2 VC)
+names.adb:173:37: info: precondition proved (CVC5: 2 VC)
 names.adb:176:17: info: initialization of "S" proved
-names.adb:176:17: info: range check proved (CVC4: 2 VC)
-names.adb:177:17: info: range check proved (CVC4: 2 VC)
-names.adb:178:25: info: precondition proved (CVC4: 4 VC)
-names.adb:179:48: info: overflow check proved (CVC4: 4 VC)
-names.adb:179:48: info: range check proved (CVC4: 4 VC)
-names.adb:180:39: info: loop invariant initialization proved (CVC4: 3 VC)
-names.adb:180:39: info: loop invariant preservation proved (CVC4: 3 VC)
-names.adb:194:31: info: precondition proved (CVC4: 2 VC)
+names.adb:176:17: info: range check proved (CVC5: 2 VC)
+names.adb:177:17: info: range check proved (CVC5: 2 VC)
+names.adb:178:25: info: precondition proved (CVC5: 4 VC)
+names.adb:179:48: info: overflow check proved (CVC5: 4 VC)
+names.adb:180:39: info: loop invariant initialization proved (CVC5: 3 VC)
+names.adb:180:39: info: loop invariant preservation proved (CVC5: 3 VC)
+names.adb:194:31: info: precondition proved (CVC5: 2 VC)
 names.ads:30:04: info: flow dependencies proved
-names.ads:31:04: info: initial condition proved (CVC4: 3 VC)
+names.ads:31:04: info: initial condition proved (CVC5: 3 VC)
 names.ads:41:09: info: data dependencies proved
 names.ads:45:22: info: initialization of "N" proved
 names.ads:46:09: info: data dependencies proved
-names.ads:48:19: info: postcondition proved (CVC4: 3 VC)
+names.ads:48:19: info: postcondition proved (CVC5: 3 VC)
 names.ads:52:09: info: data dependencies proved

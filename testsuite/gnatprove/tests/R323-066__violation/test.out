@@ -33,7 +33,7 @@ known_satellites.ads:60:08: info: flow dependencies proved
 known_satellites.ads:67:08: info: data dependencies proved
 known_satellites.ads:68:08: info: flow dependencies proved
 known_satellites.ads:74:23: info: in default value of private type at known_satellites.ads:16
-known_satellites.ads:74:23: info: range check proved (CVC4: 2 VC)
+known_satellites.ads:74:23: info: range check proved (CVC5: 2 VC)
 spacecraft-ctors.adb:19:06: medium: predicate check might fail
 spacecraft-ctors.ads:10:20: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Revolutions in a precondition]
 spacecraft-ctors.ads:10:26: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention Revolutions in a precondition]

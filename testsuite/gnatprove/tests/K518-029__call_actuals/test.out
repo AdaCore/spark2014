@@ -12,25 +12,25 @@ call_actuals.adb:31:12: info: range check proved (CodePeer)
 call_actuals.adb:31:14: info: range check proved (CodePeer)
 call_actuals.adb:32:14: info: range check proved (CodePeer)
 call_actuals.adb:32:17: info: range check proved (CodePeer)
-call_actuals.adb:38:11: info: range check proved (CVC4: 2 VC)
+call_actuals.adb:38:11: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:38:11: medium: range check might fail, cannot prove lower bound for A1 (e.g. when A1 = -1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: add or complete related loop invariants or postconditions]
-call_actuals.adb:38:15: info: range check proved (CVC4: 2 VC)
-call_actuals.adb:41:11: info: range check proved (CVC4: 2 VC)
-call_actuals.adb:41:18: info: range check proved (CVC4: 2 VC)
+call_actuals.adb:38:15: info: range check proved (CVC5: 2 VC)
+call_actuals.adb:41:11: info: range check proved (CVC5: 2 VC)
+call_actuals.adb:41:18: info: range check proved (CVC5: 2 VC)
 call_actuals.ads:7:18: warning: unused initial value of "X"
 call_actuals.ads:7:21: warning: unused initial value of "Y"
-call_actuals.ads:7:54: info: postcondition proved (CVC4: 1 VC)
-call_actuals.ads:7:60: info: overflow check proved (CVC4: 2 VC)
+call_actuals.ads:7:54: info: postcondition proved (CVC5: 1 VC)
+call_actuals.ads:7:60: info: overflow check proved (CVC5: 2 VC)
 call_actuals.ads:8:18: warning: unused initial value of "X"
 call_actuals.ads:8:21: warning: unused initial value of "Y"
-call_actuals.ads:8:54: info: postcondition proved (CVC4: 1 VC)
-call_actuals.ads:8:60: info: overflow check proved (CVC4: 2 VC)
+call_actuals.ads:8:54: info: postcondition proved (CVC5: 1 VC)
+call_actuals.ads:8:60: info: overflow check proved (CVC5: 2 VC)
 call_actuals.ads:9:18: warning: unused initial value of "X"
 call_actuals.ads:9:21: warning: unused initial value of "Y"
-call_actuals.ads:9:48: info: postcondition proved (CVC4: 1 VC)
+call_actuals.ads:9:48: info: postcondition proved (CVC5: 1 VC)
 call_actuals.ads:10:19: warning: unused initial value of "X"
 call_actuals.ads:10:22: warning: unused initial value of "Y"
-call_actuals.ads:10:50: info: postcondition proved (CVC4: 1 VC)
+call_actuals.ads:10:50: info: postcondition proved (CVC5: 1 VC)
 call_actuals.ads:11:18: warning: unused initial value of "X"
 call_actuals.ads:11:21: warning: unused initial value of "Y"
-call_actuals.ads:11:48: info: postcondition proved (CVC4: 1 VC)
+call_actuals.ads:11:48: info: postcondition proved (CVC5: 1 VC)

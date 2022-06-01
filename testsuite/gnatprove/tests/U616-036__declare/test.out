@@ -1,6 +1,6 @@
 test.adb:8:10: medium: postcondition might fail, cannot prove Res = X + 1
 test.adb:8:18: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-test.adb:9:18: info: overflow check proved (CVC4: 2 VC)
+test.adb:9:18: info: overflow check proved (CVC5: 2 VC)
 test.adb:17:10: medium: postcondition might fail, cannot prove Res = X + 2
 test.adb:17:18: medium: overflow check might fail, cannot prove upper bound for X + 2 (e.g. when X = Integer'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-test.adb:21:07: info: postcondition proved (CVC4: 1 VC)
+test.adb:21:07: info: postcondition proved (CVC5: 1 VC)

@@ -12,24 +12,24 @@ dic.ads:45:04: medium: type "Pr_Liar_T" is not fully initialized
 dic2.adb:7:07: info: initialization of "T_Var" proved
 dic2.adb:8:07: info: initialization of "U_Var" proved
 dic2.adb:9:07: info: initialization of "R_Var" proved
-dic2.adb:11:22: info: assertion proved (CVC4: 2 VC)
-dic2.ads:2:09: info: default initial condition proved (CVC4: 1 VC)
-dic2.ads:5:09: info: default initial condition proved (CVC4: 1 VC)
+dic2.adb:11:22: info: assertion proved (CVC5: 2 VC)
+dic2.ads:2:09: info: default initial condition proved (CVC5: 1 VC)
+dic2.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
 dic2.ads:17:14: warning: subprogram "Test" has no effect
 dic2.ads:20:28: info: in default value of private type at dic2.ads:2
-dic2.ads:20:28: info: range check proved (CVC4: 2 VC)
+dic2.ads:20:28: info: range check proved (CVC5: 2 VC)
 dic2.ads:23:28: info: in default value of private type at dic2.ads:5
-dic2.ads:23:28: info: range check proved (CVC4: 2 VC)
+dic2.ads:23:28: info: range check proved (CVC5: 2 VC)
 dic3.adb:7:07: info: initialization of "X" proved
 dic3.adb:8:07: info: initialization of "Y" proved
-dic3.adb:10:22: info: assertion proved (CVC4: 1 VC)
-dic3.ads:2:09: info: default initial condition proved (CVC4: 1 VC)
-dic3.ads:5:09: info: default initial condition proved (CVC4: 2 VC)
+dic3.adb:10:22: info: assertion proved (CVC5: 1 VC)
+dic3.ads:2:09: info: default initial condition proved (CVC5: 1 VC)
+dic3.ads:5:09: info: default initial condition proved (CVC5: 2 VC)
 dic3.ads:12:14: warning: subprogram "Test" has no effect
 dic3.ads:15:28: info: in default value of private type at dic3.ads:2
 dic3.ads:15:28: info: in default value of private type at dic3.ads:5
-dic3.ads:15:28: info: range check proved (CVC4: 2 VC)
-dic3.ads:15:28: info: range check proved (CVC4: 2 VC)
+dic3.ads:15:28: info: range check proved (CVC5: 2 VC)
+dic3.ads:15:28: info: range check proved (CVC5: 2 VC)
 dic_test.adb:9:49: info: in default value of private type at dic_test.adb:7
-dic_test.adb:9:49: info: range check proved (CVC4: 2 VC)
+dic_test.adb:9:49: info: range check proved (CVC5: 2 VC)
 gnatprove: error during flow analysis and proof

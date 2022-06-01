@@ -1,17 +1,17 @@
 reason_for_check.adb:8:41: info: initialization of "W" proved
-reason_for_check.adb:12:14: info: overflow check proved (CVC4: 2 VC)
+reason_for_check.adb:12:14: info: overflow check proved (CVC5: 2 VC)
 reason_for_check.adb:18:07: high: precondition might fail, cannot prove V < 1000 (e.g. when X1 = 1000 and X2 = 0) [possible fix: precondition of subprogram at line 16 should mention X1 and X2]
 reason_for_check.adb:18:21: medium: range check might fail, cannot prove lower bound for X1 [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at line 16 should mention X1]
-reason_for_check.adb:18:29: info: range check proved (CVC4: 2 VC)
+reason_for_check.adb:18:29: info: range check proved (CVC5: 2 VC)
 reason_for_check.adb:18:29: medium: range check might fail, cannot prove lower bound for X2 [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention X2]
 reason_for_check.adb:19:07: high: precondition might fail, cannot prove V < 1000 (e.g. when Y1 = 1000 and Y2 = 1) [possible fix: precondition of subprogram at line 16 should mention Y1 and Y2]
 reason_for_check.adb:19:25: medium: range check might fail, cannot prove lower bound for Y1 [reason for check: output value must fit in argument type] [possible fix: call at line 19 should mention W (for argument Y1) in a postcondition]
-reason_for_check.adb:19:29: info: range check proved (CVC4: 2 VC)
+reason_for_check.adb:19:29: info: range check proved (CVC5: 2 VC)
 reason_for_check.adb:19:29: medium: range check might fail, cannot prove lower bound for Y2 [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention Y2]
 reason_for_check.adb:24:04: warning: analyzing unreferenced function "Get"
 reason_for_check.adb:26:16: high: array index check might fail (e.g. when J = 1 and S'First = 2 and S'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in Positive) to subprogram at line 24]
 reason_for_check.adb:29:04: warning: analyzing unreferenced procedure "Set"
-reason_for_check.adb:31:09: high: array index check might fail (e.g. when J = 1 and S'First = 2 and S'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in S'First .. S'Last) to subprogram at line 29]
+reason_for_check.adb:31:09: high: array index check might fail (e.g. when J = 1 and S'First = 2) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in S'First .. S'Last) to subprogram at line 29]
 reason_for_check.adb:42:04: warning: analyzing unreferenced procedure "Oper_Integer"
 reason_for_check.adb:42:68: info: initialization of "U" proved
 reason_for_check.adb:45:30: high: overflow check might fail, cannot prove upper bound for -X (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-X in Integer) to subprogram at line 42]
@@ -29,7 +29,7 @@ reason_for_check.adb:61:32: medium: float overflow check might fail [reason for 
 reason_for_check.adb:62:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
 reason_for_check.adb:63:32: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 55]
 reason_for_check.adb:63:32: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
-reason_for_check.adb:64:32: info: division check proved (CVC4: 1 VC; Trivial: 1 VC)
+reason_for_check.adb:64:32: info: division check proved (CVC5: 1 VC; Trivial: 1 VC)
 reason_for_check.adb:64:32: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 55 should mention E and X in a precondition]
 reason_for_check.adb:68:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 reason_for_check.adb:68:51: warning: unused variable "E"
@@ -62,10 +62,10 @@ reason_for_check.adb:121:09: medium: length check might fail [reason for check: 
 reason_for_check.adb:126:04: warning: analyzing unreferenced function "Get_Small"
 reason_for_check.adb:128:27: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
 reason_for_check.adb:134:04: warning: analyzing unreferenced procedure "Oper_Mask"
-reason_for_check.adb:137:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+reason_for_check.adb:137:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 reason_for_check.adb:137:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
-reason_for_check.adb:138:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+reason_for_check.adb:138:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 reason_for_check.adb:138:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
-reason_for_check.adb:139:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+reason_for_check.adb:139:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 reason_for_check.adb:139:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
 reason_for_check.adb:144:04: info: precondition proved (Trivial: 1 VC)

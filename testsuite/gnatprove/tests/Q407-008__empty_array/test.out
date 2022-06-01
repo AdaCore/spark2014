@@ -1,4 +1,4 @@
 p.adb:1:48: info: data dependencies proved
-p.adb:3:12: info: range check proved (CVC4: 2 VC)
-p.adb:7:13: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+p.adb:3:12: info: range check proved (CVC5: 2 VC)
+p.adb:7:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 p.adb:7:24: high: range check might fail, cannot prove upper bound for 1 [reason for check: value must fit in component type]

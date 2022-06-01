@@ -1,4 +1,4 @@
 pkg.ads:5:04: info: flow dependencies proved
 pkg.ads:10:07: info: data dependencies proved
 pkg.ads:11:07: info: flow dependencies proved
-pkg__a.adb:19:29: info: overflow check proved (CVC4: 2 VC)
+pkg__a.adb:19:29: info: overflow check proved (CVC5: 2 VC)

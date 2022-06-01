@@ -1,8 +1,8 @@
-my_package.adb:14:14: info: discriminant check proved (CVC4: 1 VC)
-my_package.adb:16:14: info: discriminant check proved (CVC4: 1 VC)
+my_package.adb:14:14: info: discriminant check proved (CVC5: 1 VC)
+my_package.adb:16:14: info: discriminant check proved (CVC5: 1 VC)
 my_package.ads:21:07: info: justified that "V.M_A" might not be initialized in "Init_Variant"
 my_package.ads:21:07: info: justified that "V.M_B" might not be initialized in "Init_Variant"
-my_package_2.adb:14:14: info: discriminant check proved (CVC4: 1 VC)
-my_package_2.adb:16:14: info: discriminant check proved (CVC4: 1 VC)
+my_package_2.adb:14:14: info: discriminant check proved (CVC5: 1 VC)
+my_package_2.adb:16:14: info: discriminant check proved (CVC5: 1 VC)
 my_package_2.ads:21:07: info: justified that "V.M_A" might not be initialized in "Init_Variant"
 my_package_2.ads:21:07: info: justified that "V.M_B" might not be initialized in "Init_Variant"

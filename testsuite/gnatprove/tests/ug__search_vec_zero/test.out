@@ -4,9 +4,7 @@ search_vec_zero.adb:5:11: info: postcondition proved
 search_vec_zero.adb:5:73: info: precondition proved
 search_vec_zero.adb:5:85: info: range check proved
 search_vec_zero.adb:6:28: info: precondition proved
-search_vec_zero.adb:6:40: info: range check proved
 search_vec_zero.adb:10:10: info: precondition proved
-search_vec_zero.adb:10:22: info: range check proved
 search_vec_zero.adb:12:17: info: range check proved
 search_vec_zero.adb:15:30: info: loop invariant initialization proved
 search_vec_zero.adb:15:30: info: loop invariant preservation proved

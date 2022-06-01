@@ -3,4 +3,5 @@ main.adb:8:43: info: flow dependencies proved
 main.adb:10:07: info: initialization of "Value_In_Spark" proved
 main.adb:11:10: warning: consider annotating "Value_In_Spark" with Async_Writers
 main.adb:11:10: warning: indirect writes to "Value_In_Spark" through a potential alias are ignored
+main.adb:11:10: warning: make sure that all overlapping objects have Async_Writers set to True
 main.adb:11:10: warning: writing to "Value_In_Spark" is assumed to have no effects on other non-volatile objects

@@ -4,22 +4,22 @@ layered.adb:5:03: info: flow dependencies proved
 layered.adb:22:37: info: in default initialization of component "Z" at layered.adb:26
 layered.adb:22:37: info: in default value at layered.adb:29
 layered.adb:22:37: info: in default value at layered.adb:30
-layered.adb:22:37: info: overflow check proved (CVC4: 2 VC)
-layered.adb:22:37: info: overflow check proved (CVC4: 2 VC)
-layered.adb:26:14: info: range check proved (CVC4: 2 VC)
+layered.adb:22:37: info: overflow check proved (CVC5: 2 VC)
+layered.adb:22:37: info: overflow check proved (CVC5: 2 VC)
+layered.adb:26:14: info: range check proved (CVC5: 2 VC)
 layered.adb:29:04: info: initialization of "Var" proved
-layered.adb:29:13: info: range check proved (CVC4: 2 VC)
+layered.adb:29:13: info: range check proved (CVC5: 2 VC)
 layered.adb:30:04: info: initialization of "Var2" proved
 m.adb:1:30: info: initialization of "Y" proved
 m.adb:2:03: info: flow dependencies proved
-m.adb:4:11: info: postcondition proved (CVC4: 1 VC)
+m.adb:4:11: info: postcondition proved (CVC5: 1 VC)
 m.adb:13:04: info: initialization of "A" proved
-m.adb:13:16: info: range check proved (CVC4: 2 VC)
+m.adb:13:16: info: range check proved (CVC5: 2 VC)
 m2.adb:1:11: warning: subprogram "M2" has no effect
 m2.adb:5:24: info: in default value at m2.adb:14
-m2.adb:5:24: info: overflow check proved (CVC4: 2 VC)
-m2.adb:8:22: info: overflow check proved (CVC4: 2 VC)
-m2.adb:8:22: info: range check proved (CVC4: 2 VC)
+m2.adb:5:24: info: overflow check proved (CVC5: 2 VC)
+m2.adb:8:22: info: overflow check proved (CVC5: 2 VC)
+m2.adb:8:22: info: range check proved (CVC5: 2 VC)
 m2.adb:8:22: medium: in default value at m2.adb:14
 m2.adb:8:22: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 1]
 m2.adb:12:11: info: data dependencies proved
@@ -27,51 +27,51 @@ m2.adb:14:16: medium: memory leak might occur [possible explanation: allocator i
 main.adb:3:17: info: initialization of "Y" proved
 main.adb:4:17: info: initialization of "Z" proved
 main.adb:6:03: info: flow dependencies proved
-main.adb:7:11: info: postcondition proved (CVC4: 2 VC)
-main.adb:7:27: info: overflow check proved (CVC4: 2 VC)
+main.adb:7:11: info: postcondition proved (CVC5: 2 VC)
+main.adb:7:27: info: overflow check proved (CVC5: 2 VC)
 main.adb:13:24: info: in default value at main.adb:16
 main.adb:13:24: info: in default value at main.adb:17
-main.adb:13:24: info: overflow check proved (CVC4: 2 VC)
-main.adb:13:24: info: overflow check proved (CVC4: 2 VC)
+main.adb:13:24: info: overflow check proved (CVC5: 2 VC)
+main.adb:13:24: info: overflow check proved (CVC5: 2 VC)
 main.adb:13:24: medium: in default value at main.adb:24
 main.adb:13:24: medium: overflow check might fail, cannot prove upper bound for D + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 main.adb:16:04: info: initialization of "A" proved
-main.adb:16:18: info: range check proved (CVC4: 2 VC)
+main.adb:16:18: info: range check proved (CVC5: 2 VC)
 main.adb:17:04: info: initialization of "B" proved
-main.adb:21:19: info: postcondition proved (CVC4: 1 VC)
-main.adb:21:34: info: overflow check proved (CVC4: 2 VC)
+main.adb:21:19: info: postcondition proved (CVC5: 1 VC)
+main.adb:21:34: info: overflow check proved (CVC5: 2 VC)
 main.adb:24:14: info: initialization of "Result" proved
-main.adb:31:19: info: assertion proved (CVC4: 1 VC)
-main.adb:31:27: info: overflow check proved (CVC4: 2 VC)
+main.adb:31:19: info: assertion proved (CVC5: 1 VC)
+main.adb:31:27: info: overflow check proved (CVC5: 2 VC)
 main2.adb:3:18: info: initialization of "Y" proved
 main2.adb:4:18: info: initialization of "Z" proved
 main2.adb:6:03: info: flow dependencies proved
-main2.adb:7:11: info: postcondition proved (CVC4: 2 VC)
-main2.adb:7:27: info: overflow check proved (CVC4: 2 VC)
+main2.adb:7:11: info: postcondition proved (CVC5: 2 VC)
+main2.adb:7:27: info: overflow check proved (CVC5: 2 VC)
 main2.adb:12:24: info: in default initialization of component "E" at main2.adb:16
 main2.adb:12:24: info: in default initialization of component "E" at main2.adb:16
 main2.adb:12:24: info: in default value at main2.adb:19
 main2.adb:12:24: info: in default value at main2.adb:20
-main2.adb:12:24: info: overflow check proved (CVC4: 2 VC)
-main2.adb:12:24: info: overflow check proved (CVC4: 2 VC)
-main2.adb:16:19: info: range check proved (CVC4: 2 VC)
+main2.adb:12:24: info: overflow check proved (CVC5: 2 VC)
+main2.adb:12:24: info: overflow check proved (CVC5: 2 VC)
+main2.adb:16:19: info: range check proved (CVC5: 2 VC)
 main2.adb:19:04: info: initialization of "G" proved
-main2.adb:19:18: info: range check proved (CVC4: 2 VC)
+main2.adb:19:18: info: range check proved (CVC5: 2 VC)
 main2.adb:20:04: info: initialization of "H" proved
-main2.adb:23:10: info: range check proved (CVC4: 2 VC)
+main2.adb:23:10: info: range check proved (CVC5: 2 VC)
 n.adb:3:03: info: flow dependencies proved
-n.adb:3:39: info: postcondition proved (CVC4: 1 VC)
+n.adb:3:39: info: postcondition proved (CVC5: 1 VC)
 n.adb:6:24: info: in default value at n.adb:13
 n.adb:6:24: info: in default value at n.adb:16
-n.adb:6:24: info: overflow check proved (CVC4: 2 VC)
-n.adb:6:24: info: overflow check proved (CVC4: 2 VC)
+n.adb:6:24: info: overflow check proved (CVC5: 2 VC)
+n.adb:6:24: info: overflow check proved (CVC5: 2 VC)
 n.adb:13:04: medium: memory leak might occur at end of scope
 n.adb:13:22: info: in default value at n.adb:13
-n.adb:13:22: info: overflow check proved (CVC4: 2 VC)
-n.adb:13:22: info: range check proved (CVC4: 2 VC)
-n.adb:16:19: info: assertion proved (CVC4: 1 VC)
+n.adb:13:22: info: overflow check proved (CVC5: 2 VC)
+n.adb:13:22: info: range check proved (CVC5: 2 VC)
+n.adb:16:19: info: assertion proved (CVC5: 1 VC)
 n.adb:16:22: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 n.adb:16:36: info: in default value at n.adb:16
-n.adb:16:36: info: overflow check proved (CVC4: 2 VC)
-n.adb:16:36: info: range check proved (CVC4: 2 VC)
-n.adb:17:12: info: pointer dereference check proved (CVC4: 1 VC)
+n.adb:16:36: info: overflow check proved (CVC5: 2 VC)
+n.adb:16:36: info: range check proved (CVC5: 2 VC)
+n.adb:17:12: info: pointer dereference check proved (CVC5: 1 VC)

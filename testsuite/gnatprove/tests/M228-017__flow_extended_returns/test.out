@@ -2,7 +2,7 @@ extended_returns.adb:7:07: medium: "Result.B" might not be initialized
 extended_returns.adb:7:07: medium: "Result.C" might not be initialized
 extended_returns.adb:7:07: medium: "Result.D" might not be initialized
 extended_returns.adb:7:33: medium: range check might fail, cannot prove lower bound for Discr [possible fix: add precondition (Discr in Natural) to subprogram at extended_returns.ads:17]
-extended_returns.adb:10:19: info: discriminant check proved (CVC4: 1 VC)
-extended_returns.adb:12:19: info: discriminant check proved (CVC4: 1 VC)
-extended_returns.adb:13:19: info: discriminant check proved (CVC4: 1 VC)
+extended_returns.adb:10:19: info: discriminant check proved (CVC5: 1 VC)
+extended_returns.adb:12:19: info: discriminant check proved (CVC5: 1 VC)
+extended_returns.adb:13:19: info: discriminant check proved (CVC5: 1 VC)
 extended_returns.adb:22:14: info: initialization of "X" proved

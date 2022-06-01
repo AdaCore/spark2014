@@ -1,4 +1,4 @@
-exp.adb:18:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:18:17: info: postcondition proved (CVC5: 4 VC)
 exp.adb:18:29: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 exp.adb:19:31: medium: overflow check might fail [reason for check: result of addition must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 exp.adb:20:31: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
@@ -7,16 +7,16 @@ exp.adb:24:16: medium: overflow check might fail [reason for check: value must f
 exp.adb:25:17: medium: overflow check might fail [reason for check: value must fit in a 16-bits machine integer] [possible fix: subprogram at line 14 should mention X16 in a precondition]
 exp.adb:26:17: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at line 14 should mention X32 in a precondition]
 exp.adb:27:17: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 14 should mention X64 in a precondition]
-exp.adb:38:17: info: postcondition proved (CVC4: 4 VC)
-exp.adb:38:29: info: overflow check proved (CVC4: 1 VC)
-exp.adb:39:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:40:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:41:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:44:16: info: overflow check proved (CVC4: 1 VC)
-exp.adb:45:17: info: overflow check proved (CVC4: 1 VC)
-exp.adb:46:17: info: overflow check proved (CVC4: 1 VC)
-exp.adb:47:17: info: overflow check proved (CVC4: 1 VC)
-exp.adb:54:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:38:17: info: postcondition proved (CVC5: 4 VC)
+exp.adb:38:29: info: overflow check proved (CVC5: 1 VC)
+exp.adb:39:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:40:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:41:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:44:16: info: overflow check proved (CVC5: 1 VC)
+exp.adb:45:17: info: overflow check proved (CVC5: 1 VC)
+exp.adb:46:17: info: overflow check proved (CVC5: 1 VC)
+exp.adb:47:17: info: overflow check proved (CVC5: 1 VC)
+exp.adb:54:17: info: postcondition proved (CVC5: 4 VC)
 exp.adb:54:29: medium: overflow check might fail [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 exp.adb:55:31: medium: overflow check might fail [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 exp.adb:56:31: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
@@ -25,16 +25,16 @@ exp.adb:60:16: medium: overflow check might fail [reason for check: value must f
 exp.adb:61:17: medium: overflow check might fail [reason for check: value must fit in a 16-bits machine integer] [possible fix: subprogram at line 50 should mention X16 in a precondition]
 exp.adb:62:17: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at line 50 should mention X32 in a precondition]
 exp.adb:63:17: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 50 should mention X64 in a precondition]
-exp.adb:74:17: info: postcondition proved (CVC4: 4 VC)
-exp.adb:74:29: info: overflow check proved (CVC4: 1 VC)
-exp.adb:75:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:76:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:77:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:80:16: info: overflow check proved (CVC4: 1 VC)
-exp.adb:81:17: info: overflow check proved (CVC4: 1 VC)
-exp.adb:82:17: info: overflow check proved (CVC4: 1 VC)
-exp.adb:83:17: info: overflow check proved (CVC4: 1 VC)
-exp.adb:90:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:74:17: info: postcondition proved (CVC5: 4 VC)
+exp.adb:74:29: info: overflow check proved (CVC5: 1 VC)
+exp.adb:75:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:76:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:77:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:80:16: info: overflow check proved (CVC5: 1 VC)
+exp.adb:81:17: info: overflow check proved (CVC5: 1 VC)
+exp.adb:82:17: info: overflow check proved (CVC5: 1 VC)
+exp.adb:83:17: info: overflow check proved (CVC5: 1 VC)
+exp.adb:90:17: info: postcondition proved (CVC5: 4 VC)
 exp.adb:90:29: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 exp.adb:91:31: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 exp.adb:92:31: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
@@ -43,23 +43,23 @@ exp.adb:96:17: medium: overflow check might fail [reason for check: result of ex
 exp.adb:97:18: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: subprogram at line 86 should mention X16 in a precondition]
 exp.adb:98:18: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 86 should mention X32 in a precondition]
 exp.adb:99:18: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: subprogram at line 86 should mention X64 in a precondition]
-exp.adb:110:17: info: postcondition proved (CVC4: 4 VC)
-exp.adb:110:29: info: overflow check proved (CVC4: 1 VC)
-exp.adb:110:29: info: overflow check proved (CVC4: 2 VC)
-exp.adb:111:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:112:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:113:31: info: overflow check proved (CVC4: 1 VC)
-exp.adb:116:17: info: overflow check proved (CVC4: 1 VC)
-exp.adb:116:17: info: overflow check proved (CVC4: 2 VC)
-exp.adb:117:18: info: overflow check proved (CVC4: 1 VC)
-exp.adb:118:18: info: overflow check proved (CVC4: 1 VC)
-exp.adb:119:18: info: overflow check proved (CVC4: 1 VC)
+exp.adb:110:17: info: postcondition proved (CVC5: 4 VC)
+exp.adb:110:29: info: overflow check proved (CVC5: 1 VC)
+exp.adb:110:29: info: overflow check proved (CVC5: 2 VC)
+exp.adb:111:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:112:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:113:31: info: overflow check proved (CVC5: 1 VC)
+exp.adb:116:17: info: overflow check proved (CVC5: 1 VC)
+exp.adb:116:17: info: overflow check proved (CVC5: 2 VC)
+exp.adb:117:18: info: overflow check proved (CVC5: 1 VC)
+exp.adb:118:18: info: overflow check proved (CVC5: 1 VC)
+exp.adb:119:18: info: overflow check proved (CVC5: 1 VC)
 exp.adb:127:17: medium: postcondition might fail, cannot prove X16 = X16'old
-exp.adb:133:20: info: overflow check proved (CVC4: 1 VC)
-exp.adb:133:20: info: overflow check proved (CVC4: 2 VC)
-exp.adb:136:21: info: overflow check proved (CVC4: 1 VC)
-exp.adb:139:21: info: overflow check proved (CVC4: 1 VC)
-exp.adb:142:21: info: overflow check proved (CVC4: 1 VC)
-exp.adb:152:04: info: precondition proved (CVC4: 4 VC)
-exp.adb:154:04: info: precondition proved (CVC4: 4 VC)
+exp.adb:133:20: info: overflow check proved (CVC5: 1 VC)
+exp.adb:133:20: info: overflow check proved (CVC5: 2 VC)
+exp.adb:136:21: info: overflow check proved (CVC5: 1 VC)
+exp.adb:139:21: info: overflow check proved (CVC5: 1 VC)
+exp.adb:142:21: info: overflow check proved (CVC5: 1 VC)
+exp.adb:152:04: info: precondition proved (CVC5: 4 VC)
+exp.adb:154:04: info: precondition proved (CVC5: 4 VC)
 exp.adb:156:04: medium: precondition might fail, cannot prove X16 <= 3

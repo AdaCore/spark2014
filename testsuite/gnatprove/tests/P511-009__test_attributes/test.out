@@ -1,9 +1,9 @@
-alignment_attribute.adb:18:23: info: range check proved (CVC4: 2 VC)
-alignment_attribute.adb:39:15: info: range check proved (CVC4: 2 VC)
+alignment_attribute.adb:18:23: info: range check proved (CVC5: 2 VC)
+alignment_attribute.adb:39:15: info: range check proved (CVC5: 2 VC)
 alignment_attribute.adb:47:04: warning: analyzing unreferenced procedure "Q"
 alignment_attribute.adb:47:14: high: all paths in "Q" raise exceptions or do not terminate normally
 alignment_attribute.adb:47:14: warning: subprogram "Q" has no effect
-alignment_attribute.adb:50:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+alignment_attribute.adb:50:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 alignment_attribute.adb:53:22: info: assertion proved (Trivial)
 alignment_attribute.adb:54:07: medium: assertion might fail
 alignment_attribute.adb:60:19: info: assertion proved (Trivial)
@@ -30,7 +30,7 @@ alignment_attribute.adb:83:19: info: assertion proved (Trivial)
 alignment_attribute.adb:84:19: info: assertion proved (Trivial)
 component_size_attribute.adb:13:04: warning: analyzing unreferenced procedure "P"
 component_size_attribute.adb:13:14: warning: subprogram "P" has no effect
-component_size_attribute.adb:17:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+component_size_attribute.adb:17:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 component_size_attribute.adb:20:22: info: assertion proved (Trivial)
 component_size_attribute.adb:21:22: medium: assertion might fail
 component_size_attribute.adb:28:04: warning: analyzing unreferenced procedure "Test1"
@@ -58,9 +58,9 @@ component_size_attribute.adb:52:14: high: all paths in "Test5" raise exceptions 
 component_size_attribute.adb:52:14: warning: subprogram "Test5" has no effect
 component_size_attribute.adb:54:22: info: assertion proved (Trivial)
 component_size_attribute.adb:55:07: medium: assertion might fail
-storage_place_attributes.adb:21:23: info: range check proved (CVC4: 2 VC)
-storage_place_attributes.adb:27:22: info: range check proved (CVC4: 2 VC)
-storage_place_attributes.adb:28:22: info: range check proved (CVC4: 2 VC)
+storage_place_attributes.adb:21:23: info: range check proved (CVC5: 2 VC)
+storage_place_attributes.adb:27:22: info: range check proved (CVC5: 2 VC)
+storage_place_attributes.adb:28:22: info: range check proved (CVC5: 2 VC)
 storage_place_attributes.adb:33:04: info: initialization of "R2a_arr" proved
 storage_place_attributes.adb:35:04: info: initialization of "O2a" proved
 storage_place_attributes.adb:37:04: info: initialization of "O2b" proved

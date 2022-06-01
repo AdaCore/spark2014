@@ -1,20 +1,20 @@
 test_raise.adb:2:11: warning: subprogram "Test_Raise" has no effect
 test_raise.adb:7:14: warning: subprogram "OK" has no effect
-test_raise.adb:19:22: info: assertion proved (CVC4: 1 VC; Trivial: 7 VC)
-test_raise.adb:19:41: info: raise statement or expression proved unreachable (CVC4: 1 VC)
-test_raise.adb:20:46: info: raise statement or expression proved unreachable (CVC4: 1 VC)
-test_raise.adb:22:29: info: raise statement or expression proved unreachable (CVC4: 1 VC)
-test_raise.adb:25:56: info: raise statement or expression proved unreachable (CVC4: 1 VC)
-test_raise.adb:27:56: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_raise.adb:19:22: info: assertion proved (CVC5: 1 VC; Trivial: 7 VC)
+test_raise.adb:19:41: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+test_raise.adb:20:46: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+test_raise.adb:22:29: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+test_raise.adb:25:56: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+test_raise.adb:27:56: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 test_raise.adb:30:14: warning: subprogram "KO" has no effect
-test_raise.adb:34:22: info: assertion proved (CVC4: 1 VC; Trivial: 7 VC)
+test_raise.adb:34:22: info: assertion proved (CVC5: 1 VC; Trivial: 7 VC)
 test_raise.adb:34:41: medium: exception might be raised
 test_raise.adb:35:46: medium: exception might be raised
 test_raise.adb:37:29: medium: exception might be raised
 test_raise.adb:40:56: medium: exception might be raised
 test_raise.adb:42:56: medium: exception might be raised
 test_raise.adb:45:14: warning: subprogram "KO2" has no effect
-test_raise.adb:50:25: info: assertion proved (CVC4: 1 VC)
+test_raise.adb:50:25: info: assertion proved (CVC5: 1 VC)
 test_raise.adb:50:25: medium: exception might be raised
 test_raise.adb:52:34: medium: exception might be raised
 test_raise.adb:54:25: medium: assertion might fail [possible fix: precondition of subprogram at line 45 should mention X and Y]
@@ -29,9 +29,9 @@ test_raise.adb:62:44: medium: exception might be raised
 test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else ... [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 test_raise.adb:71:07: medium: precondition might fail [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 test_raise.adb:73:07: medium: precondition might fail [possible fix: subprogram at line 2 should mention X and Y in a precondition]
-test_raise.adb:75:07: info: precondition proved (CVC4: 5 VC; Trivial: 3 VC)
+test_raise.adb:75:07: info: precondition proved (CVC5: 5 VC; Trivial: 3 VC)
 test_raise.adb:78:19: medium: assertion might fail
-test_raise.adb:78:29: info: precondition proved (CVC4: 1 VC)
+test_raise.adb:78:29: info: precondition proved (CVC5: 1 VC)
 test_raise_bad.adb:5:15: error: raise expression in a complex expression in a precondition is not yet supported
 test_raise_bad.adb:6:29: error: raise expression in a complex expression in a precondition is not yet supported
 test_raise_bad.adb:7:37: error: raise expression in a complex expression in a precondition is not yet supported

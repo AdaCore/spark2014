@@ -1,6 +1,6 @@
 mystr.adb:1:18: info: initialization of "S" proved
 mystr.adb:3:15: medium: missing self-dependency "S => S" (array bounds are preserved)
-mystr.adb:6:06: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+mystr.adb:6:06: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 outer.adb:1:18: info: initialization of "X" proved
 outer.adb:2:37: medium: missing self-dependency "X => X"
 outer.adb:2:56: medium: incorrect dependency "null => X"

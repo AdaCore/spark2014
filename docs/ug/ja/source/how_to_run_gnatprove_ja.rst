@@ -118,15 +118,15 @@ GNAT Studio のプロジェクトウィザードを用いて，会話的にプ�
 証明の速度と能力に影響を与える個々のスイッチを設定する代わりに，スイッチ ``--level`` を用いることもできます．レベルとは，既定義の証明レベルであり，最も高速なレベル 0 （デフォルト値）から，最も強力なレベル 4 まであります．正確に言えば，各 ``--level`` の値は，これまでに示してきた他のスイッチを組み合わせたものと等価になります：
 
 * ``--level=0`` は，次と等しい
-  ``--prover=cvc4 --proof=per_check --timeout=1``
+  ``--prover=cvc5 --proof=per_check --timeout=1``
 * ``--level=1`` は，次と等しい
-  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=1``
+  ``--prover=cvc5,z3,altergo --proof=per_check --timeout=1``
 * ``--level=2`` は，次と等しい
-  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=5``
+  ``--prover=cvc5,z3,altergo --proof=per_check --timeout=5``
 * ``--level=3`` は，次と等しい
-  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=5``
+  ``--prover=cvc5,z3,altergo --proof=progressive --timeout=5``
 * ``--level=4`` は，次と等しい
-  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=10``
+  ``--prover=cvc5,z3,altergo --proof=progressive --timeout=10``
 
 もし ``--level`` と重要なスイッチ ( ``--prover`` ， ``--steps`` または， ``--proof`` ) が, 同時に設定された場合は，後者が前者  ``--level`` の値を上書きします．
 

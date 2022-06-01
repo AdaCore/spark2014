@@ -1,2 +1,2 @@
 gnat_bug.ads:16:52: medium: this interrupt might be reserved
-main.adb:5:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+main.adb:5:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
