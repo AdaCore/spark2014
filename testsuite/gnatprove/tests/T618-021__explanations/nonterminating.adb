@@ -1,5 +1,5 @@
 procedure Nonterminating (I : Natural) with SPARK_Mode is
-   pragma Annotate (GNATprove, Terminating, Nonterminating);
+   pragma Annotate (GNATprove, Always_Return, Nonterminating);
 
    procedure Infinite_Loop is
       X : Integer := 1;

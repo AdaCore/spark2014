@@ -22,7 +22,7 @@ package Sum with SPARK_Mode is
 --    Post => abs (Sum'Result) <= (J - I) * 3000 and then
 --       (if I < J then Sum'Result = A (I) + Sum (A, I + 1, J)
 --                            else Sum'Result = 0);
-   pragma Annotate (GNATprove, Terminating, Sum);
+   pragma Annotate (GNATprove, Always_Return, Sum);
 
 --     procedure Sum_Axiom (A : Arr) with
 --       Ghost,

@@ -4,7 +4,7 @@ with Bounded_Table;
 procedure Repro_Main
 is
 
-   pragma Annotate (GNATprove, Terminating, Repro_Main);
+   pragma Annotate (GNATprove, Always_Return, Repro_Main);
 
    package Int_Table is new Bounded_Table
      (Elem_Type => Integer,

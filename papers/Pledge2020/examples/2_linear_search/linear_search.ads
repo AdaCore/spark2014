@@ -15,7 +15,7 @@ package Linear_Search with SPARK_Mode is
    (if L = null then 0
     else Natural'Min (Natural'Last - 1, Length (L.Next)) + 1)
   with Ghost,
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
    --  Number of elements in the list, it saturates at Natural'length.
 
    pragma Annotate
@@ -25,7 +25,7 @@ package Linear_Search with SPARK_Mode is
   function Nth (L : access constant List_Cell; N : Positive) return Integer is
    (if N = 1 then L.Data.all else Nth (L.Next, N - 1))
   with  Ghost,
-    Annotate => (GNATprove, Terminating),
+    Annotate => (GNATprove, Always_Return),
     Pre => N <= Length (L);
    --  Element at position N in the list
 

@@ -1,9 +1,21 @@
 with Ada.Containers.Functional_Sets;
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 package body Binary_Trees with SPARK_Mode is
 
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
+
+   package Big_From_Count is new Signed_Conversions
+     (Int => Count_Type);
+
+   function Big (C : Count_Type) return Big_Integer renames
+     Big_From_Count.To_Big_Integer;
+
+   function To_Big_Int (J : Integer) return Big_Integer renames
+     To_Big_Integer;
 
    package I_Set is new Ada.Containers.Functional_Sets (Index_Type, "=");
 
@@ -15,13 +27,13 @@ package body Binary_Trees with SPARK_Mode is
      Ghost,
      Post =>
        (for all I in Index_Type => I_Set.Contains (All_Indexes'Result, I))
-          and I_Set.Length (All_Indexes'Result) = Max
+          and I_Set.Length (All_Indexes'Result) = To_Big_Int (Tree_Model.Max)
    is
       use I_Set;
       S : I_Set.Set;
    begin
       for I in Index_Type loop
-         pragma Loop_Invariant (Length (S) = I - 1);
+         pragma Loop_Invariant (Length (S) = Big (I - 1));
          pragma Loop_Invariant
            (for all J in 1 .. I - 1 => Contains (S, J));
          pragma Loop_Invariant (for all J of S => J < I);
@@ -38,7 +50,7 @@ package body Binary_Trees with SPARK_Mode is
 
       --  Cells that are not allocated yet have default values
 
-     ((for all I in F.S + 1 .. Max => F.C (I) = (Empty, Empty, Empty, Top))
+     ((for all I in F.S + 1 .. Tree_Model.Max => F.C (I) = (Empty, Empty, Empty, Top))
 
       --  Parent and children of all cells are allocated or empty
 

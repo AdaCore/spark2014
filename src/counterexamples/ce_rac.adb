@@ -3551,7 +3551,16 @@ package body CE_RAC is
                            RAC_Failure (E, VC_Index_Check);
                         end if;
 
-                        A.Array_Values.Include (I, RHS);
+                        --  Only specify a component association if the value
+                        --  being assigned is not already that of "others".
+                        --  Update the value if the component association
+                        --  already exists.
+
+                        if A.Array_Values.Contains (I)
+                          or else RHS /= A.Array_Others
+                        then
+                           A.Array_Values.Include (I, RHS);
+                        end if;
                      end;
 
                   when others =>

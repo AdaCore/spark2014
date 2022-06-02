@@ -88,6 +88,11 @@ package body SPARK_Definition.Annotate is
    Annotations : Annot_Ranges.List := Annot_Ranges.Empty_List;
    --  Sorted ranges
 
+   Always_Return_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores subprogram and package entities with a pragma Annotate
+   --  (GNATprove, Always_Return, E).
+
    At_End_Borrow_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores function entities with a pragma Annotate
@@ -120,11 +125,6 @@ package body SPARK_Definition.Annotate is
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, No_Wrap_Around, E).
-
-   Terminate_Annotations : Common_Containers.Node_Sets.Set :=
-     Common_Containers.Node_Sets.Empty_Set;
-   --  Stores subprogram and package entities with a pragma Annotate
-   --  (GNATprove, Terminating, E).
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
@@ -175,6 +175,13 @@ package body SPARK_Definition.Annotate is
    --  has been detected, or if the pragma Annotate is not used for
    --  justification purposes.
 
+   procedure Check_Always_Return_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   with Pre => Present (Arg3_Exp);
+   --  Check validity of a pragma Annotate (Gnatprove, Always_Return, E) and
+   --  insert it in the Always_Return_Annotations map.
+
    procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) with
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (Gnatprove, At_End_Borrow, E) and
@@ -203,13 +210,6 @@ package body SPARK_Definition.Annotate is
    procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, No_Wrap_Around, E)
    --  and insert it in the No_Wrap_Around_Annotations map.
-
-   procedure Check_Terminate_Annotation
-     (Arg3_Exp : Node_Id;
-      Prag     : Node_Id)
-   with Pre => Present (Arg3_Exp);
-   --  Check validity of a pragma Annotate (Gnatprove, Terminating, E) and
-   --  insert it in the Terminate_Annotations map.
 
    ---------
    -- "<" --
@@ -853,12 +853,12 @@ package body SPARK_Definition.Annotate is
             & "Might_Not_Return must not also be marked with No_Return",
             Arg3_Exp);
 
-      --  The procedure should not be annotated as terminating
+      --  The procedure should not be annotated as Always_Return
 
-      elsif Has_Terminate_Annotation (E) then
+      elsif Has_Always_Return_Annotation (E) then
          Error_Msg_N
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
-            & "Might_Not_Return must not also be marked with Terminating",
+            & "Might_Not_Return must not also be marked with Always_Return",
             Arg3_Exp);
 
       --  The procedure should not be dispatching
@@ -925,11 +925,11 @@ package body SPARK_Definition.Annotate is
       Set_Has_No_Wrap_Around_Annotation (Base);
    end Check_No_Wrap_Around_Annotation;
 
-   --------------------------------
-   -- Check_Terminate_Annotation --
-   --------------------------------
+   ------------------------------------
+   -- Check_Always_Return_Annotation --
+   ------------------------------------
 
-   procedure Check_Terminate_Annotation
+   procedure Check_Always_Return_Annotation
      (Arg3_Exp : Node_Id;
       Prag     : Node_Id)
    is
@@ -943,7 +943,7 @@ package body SPARK_Definition.Annotate is
 
       if Nkind (Arg3_Exp) not in N_Has_Entity then
          Error_Msg_N
-           ("third argument of pragma Annotate Terminating must be "
+           ("third argument of pragma Annotate Always_Return must be "
             & "an entity",
             Arg3_Exp);
          return;
@@ -958,8 +958,8 @@ package body SPARK_Definition.Annotate is
         Subprogram_Kind | E_Package | Generic_Unit_Kind
       then
          Error_Msg_N
-           ("Entity parameter of a pragma Terminating must be a subprogram or "
-            & "a package",
+           ("Entity parameter of a pragma Always_Return must be a subprogram "
+            & "or a package",
             Arg3_Exp);
          return;
 
@@ -968,7 +968,7 @@ package body SPARK_Definition.Annotate is
       elsif No_Return (E) then
          Error_Msg_N
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
-            & "Terminating must not also be marked with No_Return",
+            & "Always_Return must not also be marked with No_Return",
             Arg3_Exp);
 
       --  It must not be a procedure with Might_Not_Return
@@ -978,14 +978,14 @@ package body SPARK_Definition.Annotate is
       then
          Error_Msg_N
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
-            & "Terminating must not also be marked with Might_Not_Return",
+            & "Always_Return must not also be marked with Might_Not_Return",
             Arg3_Exp);
       end if;
 
       --  Go through renamings to find the appropriate entity
 
-      Terminate_Annotations.Include (Get_Renamed_Entity (E));
-   end Check_Terminate_Annotation;
+      Always_Return_Annotations.Include (Get_Renamed_Entity (E));
+   end Check_Always_Return_Annotation;
 
    ------------------------
    -- Find_Inline_Pragma --
@@ -1050,11 +1050,11 @@ package body SPARK_Definition.Annotate is
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean is
      (No_Wrap_Around_Annotations.Contains (E));
 
-   ------------------------------
-   -- Has_Terminate_Annotation --
-   ------------------------------
+   ----------------------------------
+   -- Has_Always_Return_Annotation --
+   ----------------------------------
 
-   function Has_Terminate_Annotation (E : Entity_Id) return Boolean is
+   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean is
       Unit     : constant Opt_Unit_Kind_Id :=
         (if not Is_Child_Unit (E) and then Present (Scope (E))
          then Enclosing_Unit (E) else Empty);
@@ -1068,17 +1068,17 @@ package body SPARK_Definition.Annotate is
         (if Present (Spec) and then Present (Generic_Parent (Spec))
          then Generic_Parent (Spec)
          else Empty);
-      --  If E is a generic instance, also look for Terminating annotation on
+      --  If E is a generic instance, also look for Always_Return annotation on
       --  the enclosing scopes of the generic unit.
 
    begin
-      return Terminate_Annotations.Contains (E)
+      return Always_Return_Annotations.Contains (E)
         or else (Present (Unit)
                  and then Ekind (Unit) = E_Package
-                 and then Has_Terminate_Annotation (Unit))
+                 and then Has_Always_Return_Annotation (Unit))
         or else (Present (Gen_Unit)
-                 and then Has_Terminate_Annotation (Gen_Unit));
-   end Has_Terminate_Annotation;
+                 and then Has_Always_Return_Annotation (Gen_Unit));
+   end Has_Always_Return_Annotation;
 
    -----------------------------
    -- Infer_Inline_Annotation --
@@ -1422,6 +1422,7 @@ package body SPARK_Definition.Annotate is
         or else Name = "logical_equal"
         or else Name = "might_not_return"
         or else Name = "no_wrap_around"
+        or else Name = "always_return"
         or else Name = "terminating"
       then
          Check_Argument_Number (Name, 3, Ok);
@@ -1475,8 +1476,13 @@ package body SPARK_Definition.Annotate is
       elsif Name = "no_wrap_around" then
          Check_No_Wrap_Around_Annotation (Arg3_Exp);
 
-      elsif Name = "terminating" then
-         Check_Terminate_Annotation (Arg3_Exp, Prag);
+      elsif Name in "always_return" | "terminating" then
+         if Name = "terminating" then
+            Error_Msg_N ("?Terminating annotations are deprecated", Prag);
+            Error_Msg_N ("\use Always_Return instead", Prag);
+         end if;
+
+         Check_Always_Return_Annotation (Arg3_Exp, Prag);
 
       --  Annotations with 4 arguments
 

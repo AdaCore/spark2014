@@ -26,7 +26,7 @@ procedure Traversals with SPARK_Mode is
       elsif L.N = null then 1
       else Integer'Min (Natural'Last - 2, Length (L.N.N)) + 2)
    with Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Post => (if L /= null then Length'Result = Integer'Min (Natural'Last - 1, Length (L.N)) + 1);
 
    function Length (L : access constant List2) return Natural is
@@ -34,7 +34,7 @@ procedure Traversals with SPARK_Mode is
       elsif L.N = null then 1
       else Integer'Min (Natural'Last - 2, Length (L.N.N)) + 2)
    with Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Post => (if L /= null then Length'Result = Integer'Min (Natural'Last - 1, Length (L.N)) + 1);
 
    function Next (X : access List1) return access List2 with

@@ -20,7 +20,7 @@ is
              (if L1.Value <= Threshold then L2.Value = 0
               else L2.Value = L1.Value)
          and then Updated_If_Less_Than_Threshold (L1.Next, L2.Next, Threshold)))
-   with Annotate => (GNATprove, Terminating);
+   with Annotate => (GNATprove, Always_Return);
    pragma Annotate (GNATprove, False_Positive, "is recursive",
                     "The recursive call occurs on a strictly smaller lists");
 

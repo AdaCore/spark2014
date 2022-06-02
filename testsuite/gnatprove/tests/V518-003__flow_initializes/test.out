@@ -1,0 +1,2 @@
+e.ads:3:23: info: initialization of "E.State" proved
+e.ads:4:05: info: flow dependencies proved

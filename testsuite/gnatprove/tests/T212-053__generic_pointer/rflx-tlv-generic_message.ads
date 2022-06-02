@@ -6,7 +6,7 @@ package RFLX.TLV.Generic_Message with
   SPARK_Mode
 is
 
-   pragma Annotate (GNATprove, Terminating, Generic_Message);
+   pragma Annotate (GNATprove, Always_Return, Generic_Message);
 
    use type Types.Bytes, Types.Bytes_Ptr, Types.Index, Types.Length, Types.Bit_Index, Types.Bit_Length;
 

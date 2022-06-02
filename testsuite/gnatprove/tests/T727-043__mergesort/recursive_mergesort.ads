@@ -1,6 +1,9 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Functional_Maps;
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 package Recursive_Mergesort with SPARK_Mode is
 
    subtype Index is Positive range 1 .. Positive'Last - 1;
@@ -70,13 +73,13 @@ package Recursive_Mergesort with SPARK_Mode is
      Ghost,
      Pre => J < I or else (I in A'Range and J in A'Range),
      Post => J < I or else
-     (Length (Occurrences'Result) <= Count_Type (J - I + 1)
+     (Length (Occurrences'Result) <= To_Big_Integer (J - I + 1)
       and (for all K of Occurrences'Result => Get (Occurrences'Result, K) <= J - I + 1)),
      Contract_Cases =>
        (J < I  => Is_Empty (Occurrences'Result) and Length (Occurrences'Result) = 0,
         others => Is_Add (Occurrences (A, I, J - 1), A (J), Occurrences'Result)),
      Subprogram_Variant => (Decreases => J),
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
    --  Construct a multiset containing the occurrences of each element in an array
 
    function Is_Sorted (A : Arr) return Boolean is

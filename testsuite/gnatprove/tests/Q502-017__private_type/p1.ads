@@ -3,7 +3,7 @@ package P1 with SPARK_Mode is
 
    function Always_True (X, Y : T1) return Boolean with
      Post => Always_True'Result and (if X.D = Y.D then X = Y);
-   pragma Annotate (GNATprove, Terminating, Always_True);
+   pragma Annotate (GNATprove, Always_Return, Always_True);
 private
    pragma SPARK_Mode (Off);
    type T1 (D : Boolean) is null record;

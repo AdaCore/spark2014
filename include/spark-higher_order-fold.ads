@@ -48,7 +48,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_Left_Acc is
-      pragma Annotate (GNATprove, Terminating, Fold_Left_Acc);
+      pragma Annotate (GNATprove, Always_Return, Fold_Left_Acc);
 
       procedure Prove_Ind (A : Array_Type; X : Element_Out; I : Index_Type)
       with
@@ -99,7 +99,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_Left is
-      pragma Annotate (GNATprove, Terminating, Fold_Left);
+      pragma Annotate (GNATprove, Always_Return, Fold_Left);
 
       package Acc is new Fold_Left_Acc
         (Index_Type  => Index_Type,
@@ -141,7 +141,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_Left_I_Acc is
-      pragma Annotate (GNATprove, Terminating, Fold_Left_I_Acc);
+      pragma Annotate (GNATprove, Always_Return, Fold_Left_I_Acc);
 
       procedure Prove_Ind (A : Array_Type; X : Element_Out; I : Index_Type)
       with
@@ -195,7 +195,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_Left_I is
-      pragma Annotate (GNATprove, Terminating, Fold_Left_I);
+      pragma Annotate (GNATprove, Always_Return, Fold_Left_I);
 
       package Acc is new Fold_Left_I_Acc
         (Index_Type  => Index_Type,
@@ -234,7 +234,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_Right_Acc is
-      pragma Annotate (GNATprove, Terminating, Fold_Right_Acc);
+      pragma Annotate (GNATprove, Always_Return, Fold_Right_Acc);
 
       procedure Prove_Ind (A : Array_Type; X : Element_Out; I : Index_Type)
       with
@@ -285,7 +285,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_Right is
-      pragma Annotate (GNATprove, Terminating, Fold_Right);
+      pragma Annotate (GNATprove, Always_Return, Fold_Right);
 
       package Acc is new Fold_Right_Acc
         (Index_Type  => Index_Type,
@@ -313,7 +313,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Value (X : Element_In) return Element_Out;
       --  Sum the value of each element
    package Sum is
-      pragma Annotate (GNATprove, Terminating, Sum);
+      pragma Annotate (GNATprove, Always_Return, Sum);
 
       function In_Range
         (A : Array_Type; X : Element_Out'Base; I : Index_Type) return Boolean
@@ -370,7 +370,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Count the number of elements for which Choose return True
 
    package Count is
-      pragma Annotate (GNATprove, Terminating, Count);
+      pragma Annotate (GNATprove, Always_Return, Count);
 
       function In_Range
         (A : Array_Type; X : Natural; I : Index_Type) return Boolean
@@ -451,7 +451,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_2_Acc is
-      pragma Annotate (GNATprove, Terminating, Fold_2_Acc);
+      pragma Annotate (GNATprove, Always_Return, Fold_2_Acc);
 
       procedure Prove_Ind_Col
         (A : Array_Type; X : Element_Out; I : Index_1; J : Index_2)
@@ -530,7 +530,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Function that should be applied to elements of Array_Type
 
    package Fold_2 is
-      pragma Annotate (GNATprove, Terminating, Fold_2);
+      pragma Annotate (GNATprove, Always_Return, Fold_2);
 
       package Acc is new Fold_2_Acc
         (Index_1     => Index_1,
@@ -563,7 +563,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Value (X : Element_In) return Element_Out;
       --  Sum the value of each element
    package Sum_2 is
-      pragma Annotate (GNATprove, Terminating, Sum_2);
+      pragma Annotate (GNATprove, Always_Return, Sum_2);
 
       function In_Range
         (A : Array_Type; X : Element_Out'Base; I : Index_1; J : Index_2)
@@ -641,7 +641,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       --  Count the number of elements for which Choose return True
 
    package Count_2 is
-      pragma Annotate (GNATprove, Terminating, Count_2);
+      pragma Annotate (GNATprove, Always_Return, Count_2);
 
       function In_Range
         (A : Array_Type; X : Natural; I : Index_1; J : Index_2) return Boolean

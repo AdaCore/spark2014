@@ -32,7 +32,7 @@ procedure Constant_Access with SPARK_Mode is
 
    function Deep_Copy_2 (X : List_Acc) return C_List_Acc_2 is
       function Deep_Copy_Ann (X : List_Acc) return List_Acc with
-        Annotate => (GNATprove, Terminating),
+        Annotate => (GNATprove, Always_Return),
         Post => (Deep_Copy_Ann'Result = null) = (X = null)
       is
       begin

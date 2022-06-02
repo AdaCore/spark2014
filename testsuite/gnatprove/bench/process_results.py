@@ -8,7 +8,17 @@ import shutil
 import subprocess
 import config
 
-descr = """Compute testsuite-like results from json files for provers"""
+descr = """
+    This script expects subfolders in resultsdir such that:
+        - for each prover, the subfolder contains a file prover.json
+        - there is a subfolder with the same name in testsuite-dir/tests,
+          which contains a bench.yaml file.
+    The sript generates testsuite results in outdir that can be visualized by
+    GAIA.  Concretely, it generates files testname.expected and testname.diff,
+    as well as a file "results", that contains the OK/DIFF status of each test.
+    This status is calculated by comparing the results for each prover in the
+    prover.json file with the expected baseline in bench.yaml.
+"""
 
 
 def parse_arguments():

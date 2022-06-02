@@ -42,7 +42,7 @@
 
 package SPARK.Cut_Operations with
   SPARK_Mode,
-  Annotate => (GNATprove, Terminating)
+  Annotate => (GNATprove, Always_Return)
 is
 
    function By (Consequence, Premise : Boolean) return Boolean with

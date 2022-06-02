@@ -131,7 +131,7 @@ package body GHC_Sort with SPARK_Mode is
      (if L = null then True
       else (for all K in 2 .. L.L => L.Value (K - 1) <= L.Value (K))
       and then All_Sorted (L.Next));
-   pragma Annotate (GNATprove, Terminating, All_Sorted);
+   pragma Annotate (GNATprove, Always_Return, All_Sorted);
 
    --  Length of the concatenation of all subsequences in the list, saturated
    --  at Integer'Last if necessary.
@@ -141,7 +141,7 @@ package body GHC_Sort with SPARK_Mode is
       elsif L.L <= Integer'Last - Sum_Length_Aux (L.Next) then
            L.L + Sum_Length_Aux (L.Next)
       else Integer'Last);
-   pragma Annotate (GNATprove, Terminating, Sum_Length_Aux);
+   pragma Annotate (GNATprove, Always_Return, Sum_Length_Aux);
 
    function Sum_Length (L : Int_Array_List) return Natural is
      (Sum_Length_Aux (L));

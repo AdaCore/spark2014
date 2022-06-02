@@ -3,6 +3,9 @@ with Ada.Assertions; use Ada.Assertions;
 with Ada.Containers;
 use Ada.Containers;
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 procedure Set with SPARK_Mode is
    package Containers is new Ada.Containers.Functional_Sets
      (Element_Type => Integer);

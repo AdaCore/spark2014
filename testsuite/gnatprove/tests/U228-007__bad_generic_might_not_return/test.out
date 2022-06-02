@@ -8,9 +8,9 @@ bad_spec_prag.ads:21:50: error: pragma Annotate Might_Not_Return must apply to a
 gnatprove: error during generation of Global contracts
 bad.adb:26:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
 gnatprove: error during generation of Global contracts
-weird.ads:6:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Terminating
-weird.ads:12:06: error: procedure with aspect Annotate Terminating must not also be marked with Might_Not_Return
-weird.ads:17:06: error: procedure with aspect Annotate Terminating must not also be marked with No_Return
+weird.ads:6:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Always_Return
+weird.ads:12:06: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
+weird.ads:17:06: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return
 gnatprove: error during generation of Global contracts
 pack.adb:5:07: medium: exception might be raised
 pack.adb:11:10: high: precondition might fail, in instantiation at pack.adb:15

@@ -166,6 +166,36 @@ The following example shows some typical usages of unchecked conversions and
    :language: ada
    :linenos:
 
+|SPARK| allows conversions from (suitable) integer types or
+``System.Address_Type`` to general access-to-object types. When
+calling such instances of ``Unchecked_Conversion``, |GNATprove| makes
+some assumptions about the result of the call:
+
+* The designated data has no aliases if it is an access-to-variable
+  type and no mutable aliases otherwise.
+
+* The returned object is a valid access and it designates a valid
+  value of its type.
+
+At each call to such ``Unchecked_Conversion``, |GNATprove| raises
+warnings to notify the user that these assumptions need to be
+ascertained by other means.
+
+Conversions from integer types or ``System.Address_Type`` to
+pool-specific access-to-object types are still forbidden, as these
+pointers should not be deallocated nor considered when checking for
+memory leaks.
+Conversions from access-to-object types to integer
+types or ``System.Address_Type`` are still forbidden, because |SPARK|
+does not handle addresses.
+
+.. literalinclude:: /examples/ug__uc_to_access/uc_to_access.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__uc_to_access/test.out
+   :language: none
+
 .. index:: initialization
            Relaxed_Initialization; initialization policy
 

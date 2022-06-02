@@ -2734,11 +2734,19 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Do_Loop
 
       begin
-         --  We have a null vertex for the loop, as we have no
-         --  condition.
+         --  The important attributes here are Is_Null_Node equal False (to
+         --  prevent simplification of neverending loops), Is_Program_Node
+         --  equal False (to prevent warning about ineffective statements)
+         --  and Error_Location (to attach errors about neverending loops).
+         --
+         --  Other attributes are just for consistency.
+
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
-                     Null_Node_Attributes,
+                     (Null_Attributes with delta
+                        Error_Location    => N,
+                        In_Nested_Package => Ctx.In_Nested_Package,
+                        Loops             => Ctx.Current_Loops),
                      V);
 
          --  Entry point for the loop is V
@@ -6727,6 +6735,11 @@ package body Flow.Control_Flow_Graph is
 
          begin
             if Atr.Is_Null_Node then
+               --  Sanity-check: null vertices should not be flagged as
+               --  neverending and simplified.
+
+               pragma Assert (not Atr.Is_Neverending);
+
                --  Close the subgraph indicated by V's neighbours
                for A of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                loop
@@ -7118,6 +7131,7 @@ package body Flow.Control_Flow_Graph is
    procedure Create (FA : in out Flow_Analysis_Graphs) is
       Connection_Map : Connection_Maps.Map := Connection_Maps.Empty_Map;
       The_Context    : Context             := No_Context;
+      Init_Block     : Graph_Connections;
       Precon_Block   : Graph_Connections;
       Postcon_Block  : Graph_Connections;
       Body_N         : Node_Id;
@@ -7300,6 +7314,101 @@ package body Flow.Control_Flow_Graph is
       --  If you're now wondering where we deal with locally declared objects
       --  then we deal with them as they are encountered. See
       --  Do_Object_Declaration for enlightenment.
+      --
+      --  Here we only deal with abstract states whose constituents will not be
+      --  encountered, because they are hidden behind a SPARK_Mode => Off.
+
+      if FA.Kind = Kind_Package
+        and then Has_Non_Null_Abstract_State (FA.Spec_Entity)
+        and then
+        (not Private_Spec_In_SPARK (FA.Spec_Entity)
+           or else not Entity_Body_In_SPARK (FA.Spec_Entity))
+      then
+         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+            Create_Initial_And_Final_Vertices (E => State, FA => FA);
+         end loop;
+      end if;
+
+      --  For packages whose analysis stops at the SPARK_Mode => Off, we trust
+      --  the explicit Initializes. This only matters for packages with bodies,
+      --  because if without a body, there will be no abstract state; without
+      --  abstract state the Initializes contract can only reference objects
+      --  declared in visible part of the spec; and since there is no body,
+      --  those objects can be only initialized at their declarations anyway.
+
+      if FA.Kind = Kind_Package
+        and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Initializes))
+        and then Present (Body_Entity (FA.Spec_Entity))
+        and then (not Private_Spec_In_SPARK (FA.Spec_Entity)
+                    or else
+                  not Entity_Body_In_SPARK (FA.Spec_Entity)
+                    or else
+                  not Body_Statements_In_SPARK (FA.Spec_Entity))
+      then
+         declare
+            DM : constant Dependency_Maps.Map :=
+              Parse_Initializes (FA.Spec_Entity, FA.B_Scope);
+
+            Curr : Flow_Graphs.Vertex_Id;
+            Prev : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+
+         begin
+            for Clause in DM.Iterate loop
+               declare
+                  The_Out : Flow_Id renames Dependency_Maps.Key (Clause);
+                  The_Ins : Flow_Id_Sets.Set renames DM (Clause);
+
+                  A : V_Attributes;
+
+                  Split_Out : constant Flow_Id_Sets.Set :=
+                    (if Present (The_Out)
+                     then Flatten_Variable (The_Out, FA.B_Scope)
+                     else Flow_Id_Sets.Empty_Set);
+
+                  Split_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+               begin
+                  --  We will get a relation from an initializes like X => Y.
+                  --  But X and Y may be records, and so we need to split up
+                  --  both the state and the list of inputs.
+                  for The_In of The_Ins loop
+                     Split_Ins.Union
+                       (Flatten_Variable (The_In, FA.B_Scope));
+                  end loop;
+
+                  A :=
+                    Make_Basic_Attributes
+                      (Var_Def       => Split_Out,
+                       Var_Ex_Use    => Split_Ins,
+                       In_Nested_Pkg => False);
+
+                  Add_Vertex (FA, A, Curr);
+                  FA.Atr (Curr).Is_Package_Initialization := True;
+
+                  if Prev = Flow_Graphs.Null_Vertex then
+                     Init_Block := Trivial_Connection (Curr);
+                  else
+                     Linkup (FA, From => Prev, To => Curr);
+                  end if;
+
+                  Prev := Curr;
+               end;
+            end loop;
+
+            if Prev = Flow_Graphs.Null_Vertex then
+               --  We had a null sequence so we need to produce a null node
+               Add_Vertex (FA, Null_Node_Attributes, Curr);
+               Init_Block := Trivial_Connection (Curr);
+            end if;
+         end;
+      else
+         declare
+            V : Flow_Graphs.Vertex_Id;
+         begin
+            --  We had a null sequence so we need to produce a null node
+            Add_Vertex (FA, Null_Node_Attributes, V);
+            Init_Block := Trivial_Connection (V);
+         end;
+      end if;
 
       --  Produce flowgraph for the precondition and postcondition, if any
       case FA.Kind is
@@ -7462,6 +7571,10 @@ package body Flow.Control_Flow_Graph is
 
                Linkup (FA,
                        FA.Helper_End_Vertex,
+                       Init_Block.Standard_Entry);
+
+               Linkup (FA,
+                       Init_Block.Standard_Exits,
                        Postcon_Block.Standard_Entry);
 
                Linkup (FA,

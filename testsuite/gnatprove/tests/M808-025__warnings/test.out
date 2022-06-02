@@ -188,7 +188,7 @@ Flow Dependencies . . . . . .
 Initialization 1 1 . . . .
 Non-Aliasing . . . . . .
 Run-time Checks . . . . . .
-Assertions 1 . . 1 (CVC5) . .
+Assertions 1 . . 1 . .
 Functional Contracts . . . . . .
 LSP Verification . . . . . .
 Termination . . . . . .

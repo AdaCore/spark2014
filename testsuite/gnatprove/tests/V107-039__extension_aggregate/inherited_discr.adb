@@ -1,4 +1,4 @@
-procedure Inherited_Discr with SPARK_Mode, Annotate => (GNATprove, Terminating) is
+procedure Inherited_Discr with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
 
    function Id (X : Integer) return Integer is (X);
 

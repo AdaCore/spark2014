@@ -207,7 +207,7 @@ package Flow.Analysis is
                           | E_Task_Type
                and then not Entity_Body_In_SPARK (E);
    --  Check if the global contracts directly reference any constant without
-   --  variable inputs. This enforces SPARK RM 6.1.4(15).
+   --  variable inputs. This enforces SPARK RM 6.1.4(16).
 
 private
 

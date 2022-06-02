@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import argparse
 import dataclasses
-from typing import List
+import glob
 import json
 import os.path
 import subprocess
+from typing import List
 import config
 
 descr = """Compute statistics from json files for provers"""
@@ -26,11 +27,11 @@ def parse_arguments():
     args = None
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument(
-        "resultsdir", metavar="F", help="directory which contains proof results"
+        "resultsdir", metavar="R", help="directory which contains proof results"
     )
     parser.add_argument(
         "outdir",
-        metavar="F",
+        metavar="O",
         help="directory where results will be stored",
     )
     args = parser.parse_args()
@@ -95,8 +96,6 @@ class Stats:
 stats_all_vcs = Stats()
 
 stats_provers_all = {}
-for p in config.all_provers:
-    stats_provers_all[p] = Stats()
 
 stats_tests_provers = {}
 
@@ -109,6 +108,10 @@ def process_test_prover(json_file, testname, provername):
         filename = os.path.basename(elt["filename"])
         time = elt["time"] if "time" in elt else 0
         steps = elt["steps"] if "steps" in elt else 0
+        if provername not in stats_provers_all:
+            stats_provers_all[provername] = Stats()
+        if provername not in stats_tests_provers[testname]:
+            stats_tests_provers[testname][provername] = Stats()
         for stats_obj in [
             stats_all_vcs,
             stats_provers_all[provername],
@@ -119,10 +122,10 @@ def process_test_prover(json_file, testname, provername):
 
 def process_test(testdir, testname):
     stats_tests_provers[testname] = {}
-    for p in config.all_provers:
-        json_file = os.path.join(testdir, p + ".json")
-        stats_tests_provers[testname][p] = Stats()
-        process_test_prover(json_file, testname, p)
+    for json_file in glob.glob(os.path.join(testdir, "*.json")):
+        provername = os.path.splitext(os.path.basename(json_file))[0]
+        stats_tests_provers[testname][provername] = Stats()
+        process_test_prover(json_file, testname, provername)
 
 
 def compute_stats(resultsdir):
@@ -138,7 +141,7 @@ def print_stats(f):
     f.write("Statistics for all provers and all tests:\n")
     stats_all_vcs.print_stats(f)
     f.write("Statistics for each prover over all tests:\n")
-    for p in config.all_provers:
+    for p in stats_provers_all.keys():
         f.write(p + "\n")
         stats_provers_all[p].print_stats(f)
     f.write("Statistics for each prover for each test:\n")

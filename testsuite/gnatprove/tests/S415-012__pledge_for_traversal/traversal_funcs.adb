@@ -16,7 +16,7 @@ procedure Traversal_Funcs with SPARK_Mode is
      (if L = null then 0
       else Integer'Min (Natural'Last - 1, Length (L.N)) + 1)
    with Ghost,
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
 
    function Next (X : access List) return access List with
      Pre => Length (X) < Natural'Last,

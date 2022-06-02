@@ -13,14 +13,14 @@ procedure In_Out_Pledge with SPARK_mode is
        elsif Length_Aux (L.Next) = Integer'Last then
             Integer'Last
        else 1 + Length_Aux (L.Next));
-    pragma Annotate (GNATprove, Terminating, Length_Aux);
+    pragma Annotate (GNATprove, Always_Return, Length_Aux);
 
     function Length (L : access constant List_Cell) return Natural is (Length_Aux (L));
 
     function Get_Nth_Val (L : access constant List_Cell; N : Positive) return Integer is
       (if N = 1 then L.Value else Get_Nth_Val (L.Next, N - 1))
     with Pre => N <= Length (L);
-    pragma Annotate (GNATprove, Terminating, Get_Nth_Val);
+    pragma Annotate (GNATprove, Always_Return, Get_Nth_Val);
 
    type Model_Type is array (Positive range <>) of Integer with Ghost;
    function Model (X : access constant List_Cell) return Model_Type with

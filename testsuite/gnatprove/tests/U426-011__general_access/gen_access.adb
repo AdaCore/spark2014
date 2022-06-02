@@ -69,7 +69,7 @@ procedure Gen_Access with SPARK_Mode is
 
    function All_Null (L : List) return Boolean is
      (L.V = null and then (if L.N /= null then All_Null (L.N.all)))
-   with Annotate => (GNATprove, Terminating);
+   with Annotate => (GNATprove, Always_Return);
 
    procedure Set_All_To_Null (L : aliased in out List) with
      Post => All_Null (L)

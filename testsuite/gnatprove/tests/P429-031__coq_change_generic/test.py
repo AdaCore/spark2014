@@ -50,4 +50,4 @@ prove_all(
     filter_output=".*Grammar extension",
 )
 print("=======================================")
-prove_all(counterexample=False)
+prove_all(counterexample=False, steps=500)

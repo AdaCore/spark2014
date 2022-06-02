@@ -1,1 +1,1 @@
-all_provers = ["cvc4", "altergo", "z3", "cvc5"]
+all_provers = ["altergo", "z3", "cvc5"]

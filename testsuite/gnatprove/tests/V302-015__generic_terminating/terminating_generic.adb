@@ -2,7 +2,7 @@ pragma SPARK_Mode(On);
 
 procedure Terminating_Generic is
    package Variant_1 is
-      package A with Annotate => (GNATprove, Terminating) is
+      package A with Annotate => (GNATprove, Always_Return) is
          generic
          package B is
             function Inconsistent return Integer
@@ -25,7 +25,7 @@ procedure Terminating_Generic is
    package Variant_2 is
       package A is
          generic
-         package B with Annotate => (GNATprove, Terminating) is
+         package B with Annotate => (GNATprove, Always_Return) is
             function Inconsistent return Integer
               with Post => False;
          end B;

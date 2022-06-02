@@ -4,7 +4,7 @@ package Test_Types with SPARK_Mode is
 
    package Nested is
       function Id (X : Integer) return Integer;
-      pragma Annotate (GNATprove, Terminating, Id);
+      pragma Annotate (GNATprove, Always_Return, Id);
    private
       pragma SPARK_Mode (Off);
       function Id (X : Integer) return Integer is (X);

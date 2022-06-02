@@ -1,0 +1,10 @@
+No project file given, creating default.gpr
+Phase 1 of 2: generation of Global contracts ...
+Phase 2 of 2: flow analysis and proof ...
+
+add.ads:3:47: medium: overflow check might fail, cannot prove lower bound for X + Y
+    3 |      Pragma Precondition (Integer'First <= X + Y and then X + Y <= Integer'Last);
+      |                                            ~~^~~
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers
+Summary logged in gnatprove/gnatprove.out

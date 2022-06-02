@@ -16,7 +16,7 @@ package recursion with SPARK_Mode is
                                  index: Positive) return Natural with
      Pre => (arr'First < arr'Last and arr'First <= index and index <= arr'Last),
      Post => (count_true_recursive'Result <= (index - arr'First + 1));
---   pragma Annotate (GNATprove, Terminating, count_true_recursive);
+--   pragma Annotate (GNATprove, Always_Return, count_true_recursive);
 
    -- Count the number of true tems in an array using a loop. As above, the
    -- postcondition merely states that the count is bounded above by the length

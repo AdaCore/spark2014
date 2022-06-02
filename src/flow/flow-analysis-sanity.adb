@@ -1456,7 +1456,7 @@ package body Flow.Analysis.Sanity is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "& must be a global output of &",
-                           SRM_Ref  => "6.1.4(17)",
+                           SRM_Ref  => "6.1.4(18)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => High_Check_Kind,
                            F1       => Var,
@@ -1519,7 +1519,7 @@ package body Flow.Analysis.Sanity is
 
       SRM_Ref : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Task => "6.1.4(14)",
+            when Kind_Subprogram | Kind_Task => "6.1.4(15)",
             when Kind_Package                => "7.1.5(11)");
       --  String representation of the violated SPARK RM rule
 

@@ -3,6 +3,8 @@ with Ada.Containers.Functional_Vectors;
 with Ada.Containers.Functional_Sets;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 
 package List_Allocator with
   SPARK_Mode,

@@ -693,12 +693,11 @@ The following operations *borrow* a name that denotes an object
 and identify a corresponding *borrower*:
 
 - An assignment operation that is used to initialize an access object, where
-  this target object (the borrower) is a stand-alone variable of an anonymous
-  access-to-variable type, or a constant (including a formal parameter of a
-  procedure or generic formal object of mode **in**) of a (named or anonymous)
-  access-to-variable type, unless this assignment is already an *observing
-  operation* inside the body of a borrowing traversal function, per the rules
-  defining *observe* above.
+  this target object (the borrower) is a stand-alone variable or constant of an
+  anonymous access-to-variable type, or a formal parameter of a procedure of a
+  (named or anonymous) access-to-variable type, unless this assignment is
+  already an *observing operation* inside the body of a borrowing traversal
+  function, per the rules defining *observe* above.
 
   The source expression of the assignment shall be either a name denoting a
   part of a stand-alone object or of a parameter, a call on a traversal
@@ -746,7 +745,8 @@ every name of a reachable element of the object is borrowed.
 The following operations are said to be *move* operations:
 
 - An assignment operation, where the target is a variable, a constant, or
-  return object (see Ada RM 6.5) of an owning type.
+  return object (see Ada RM 6.5) of an owning type, unless this assignment is
+  already a *borrowing operation*, per the rules defining *borrow* above.
 
   [Redundant: In the case of a formal parameter of an access type of mode **in
   out** or **out**, this includes all assignments to or from such a formal

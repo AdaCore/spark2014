@@ -9,6 +9,6 @@ is
       type Int is mod <>;
    function Foo (Buffer : Bytes) return Int;
 
-   pragma Annotate (GNATprove, Terminating, Foo);
+   pragma Annotate (GNATprove, Always_Return, Foo);
 
 end Types;

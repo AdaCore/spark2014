@@ -1,6 +1,6 @@
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 
-procedure Nest_In_Proc with Annotate => (GNATprove, Terminating) is
+procedure Nest_In_Proc with Annotate => (GNATprove, Always_Return) is
 
    procedure Proxy with Pre => True;
 
@@ -9,7 +9,7 @@ procedure Nest_In_Proc with Annotate => (GNATprove, Terminating) is
       OS_Exit (1);
    end;
 
-   package Pkg with Annotate => (GNATprove, Terminating) is
+   package Pkg with Annotate => (GNATprove, Always_Return) is
       procedure Nothing;
    end Pkg;
 

@@ -14,7 +14,7 @@ procedure Borrow_Frame with SPARK_Mode is
 
    function Last (X : access constant List_Cell) return Integer is
      (if X.N = null then X.V else Last (X.N))
-   with Pre => X /= null, Annotate => (GNATprove, Terminating);
+   with Pre => X /= null, Annotate => (GNATprove, Always_Return);
 
    procedure Set_Last (X : List; V : Integer) with Pre => X /= null is
       B : not null access List_Cell := X;

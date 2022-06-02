@@ -8,7 +8,7 @@ procedure List_Borrow with SPARK_Mode is
    function All_Pos (X : List) return Boolean is
      (if X /= null then X.Value > 0
       and then All_Pos (X.Next));
-   pragma Annotate (GNATprove, Terminating, All_Pos);
+   pragma Annotate (GNATprove, Always_Return, All_Pos);
 
    subtype List_Pos is List with
      Predicate => All_Pos (List (List_Pos));

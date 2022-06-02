@@ -1,0 +1,2 @@
+unsound.adb:8:07: medium: loop might be nonterminating, terminating annotation on "Find_False" could be incorrect
+unsound.adb:9:33: info: unrolling loop

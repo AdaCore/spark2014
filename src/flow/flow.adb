@@ -94,6 +94,11 @@ package body Flow is
         Ada.Characters.Latin_1.CR &
         Ada.Characters.Latin_1.LF);
 
+   Linebreak : constant Ada.Strings.Maps.Character_Set :=
+     Ada.Strings.Maps.To_Set
+       (Ada.Characters.Latin_1.CR &
+        Ada.Characters.Latin_1.LF);
+
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
    --  Build flow graphs for the current compilation unit; phase 2
 
@@ -102,7 +107,7 @@ package body Flow is
    --  * classwide contracts conform to the legality rules laid out in SRM
    --  6.1.6.
    --  * global contracts do not use constants without variable input as per
-   --  SRM 6.1.4(15)
+   --  SRM 6.1.4(16)
    --  We do this for requested subprograms from the current unit whose spec
    --  has SPARK_Mode => On, regardless of the SPARK_Mode on their bodies.
 
@@ -632,7 +637,7 @@ package body Flow is
          end Print_Node;
 
          procedure Append_To_Label (S : String);
-         --  Append S to Rv.Label trimming the whitespace if required
+         --  Append S to Rv.Label
 
          ----------------------
          -- Append_To_Label  --
@@ -640,10 +645,19 @@ package body Flow is
 
          procedure Append_To_Label (S : String) is
          begin
+            --  Leading whitespace occurs when a node image takes several lines
+            --  (e.g. on complex expressions in the source or when a linebreak
+            --  is added when pretty-printing aspects); trailing whitespace is
+            --  added by the node printing routine anyway. Trim both.
+
             Append
               (Rv.Label,
-               Ada.Strings.Fixed.Trim (S, Whitespace, Whitespace));
+               Ada.Strings.Fixed.Trim
+                 (S, Whitespace, Linebreak));
          end Append_To_Label;
+
+         Output_Buffer : constant Saved_Output_Buffer := Save_Output_Buffer;
+         --  Store previous buffer and indentation settings
 
       --  Start of processing for NDI
 
@@ -890,10 +904,8 @@ package body Flow is
                         when N_Loop_Statement =>
                            Rv.Shape := Shape_Diamond;
                            if No (Iteration_Scheme (N)) then
-                              --  Basic loop. Should never
-                              --  appear as a vertex in the
-                              --  graph.
-                              pragma Assert (False);
+                              --  Basic loop
+                              Write_Str ("loop");
                            elsif Present
                              (Condition (Iteration_Scheme (N)))
                            then
@@ -1090,6 +1102,7 @@ package body Flow is
 
          Write_Eol;
          Cancel_Special_Output;
+         Restore_Output_Buffer (Output_Buffer);
 
          return Rv;
       end NDI;

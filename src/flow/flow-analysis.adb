@@ -3231,7 +3231,7 @@ package body Flow.Analysis is
               (FA       => FA,
                Msg      => "& must be a Proof_In as it is only " &
                            "used in assertions",
-               SRM_Ref  => "6.1.4(18)",
+               SRM_Ref  => "6.1.4(19)",
                N        => Find_Global (FA.Spec_Entity,
                                         Direct_Mapping_Id (Input)),
                F1       => Direct_Mapping_Id (Input),
@@ -3309,7 +3309,7 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      => "Proof_In global & " &
                                           "can only be used in assertions",
-                              SRM_Ref  => "6.1.4(18)",
+                              SRM_Ref  => "6.1.4(19)",
                               N        => First_Variable_Use
                                 (N       => Use_A.Error_Location,
                                  Scope   => FA.B_Scope,
@@ -5075,7 +5075,7 @@ package body Flow.Analysis is
                   N        => Find_Global (FA.Spec_Entity, Output),
                   F1       => Output,
                   F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                  SRM_Ref  => "6.1.4(21)",
+                  SRM_Ref  => "6.1.4(22)",
                   Tag      => Not_Constant_After_Elaboration);
             end if;
          end loop;
@@ -5091,7 +5091,7 @@ package body Flow.Analysis is
    is
       procedure Check_Subprogram (E : Entity_Id; Err_Loc : Node_Id);
       --  Inspects globals of subprogram E to detect violations of SPARK RM
-      --  6.1.4(21).
+      --  6.1.4(22).
 
       ----------------------
       -- Check_Subprogram --
@@ -5100,7 +5100,7 @@ package body Flow.Analysis is
       procedure Check_Subprogram (E : Entity_Id; Err_Loc : Node_Id) is
 
          procedure Emit_Check (Globals : Flow_Id_Sets.Set);
-         --  Emit check when SRM 6.1.4(21) is violated
+         --  Emit check when SRM 6.1.4(22) is violated
 
          ----------------
          -- Emit_Check --
@@ -5120,7 +5120,7 @@ package body Flow.Analysis is
                      F1       => Direct_Mapping_Id (E),
                      F2       => Global,
                      F3       => Direct_Mapping_Id (FA.Spec_Entity),
-                     SRM_Ref  => "6.1.4(21)",
+                     SRM_Ref  => "6.1.4(22)",
                      Tag      => Not_Constant_After_Elaboration);
                end if;
             end loop;
@@ -5856,7 +5856,7 @@ package body Flow.Analysis is
       Proved : Boolean := True;
 
    begin
-      if Has_Terminate_Annotation (Enclosing_Subp) then
+      if Has_Always_Return_Annotation (Enclosing_Subp) then
 
          --  If all paths in subprogram raise exceptions or, more importantly,
          --  call procedures with No_Return, then the CFG will be pruned. We
@@ -6044,7 +6044,7 @@ package body Flow.Analysis is
                   Suppressed => Unused,
                   F1         => The_Global_In,
                   F2         => Direct_Mapping_Id (E),
-                  SRM_Ref    => "6.1.4(15)",
+                  SRM_Ref    => "6.1.4(16)",
                   Tag        => Global_Wrong,
                   Severity   => Medium_Check_Kind);
             end;

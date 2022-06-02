@@ -6,7 +6,7 @@ is
 
    function Bar is new Foo (Byte);
 
-   pragma Annotate (GNATprove, Terminating, Bar);
+   pragma Annotate (GNATprove, Always_Return, Bar);
 
    function Test (Buffer : Bytes) return Byte is
       (Bar (Buffer));

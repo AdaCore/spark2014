@@ -5,7 +5,7 @@ use  Ada.Numerics.Big_Numbers.Big_Integers;
 generic
    type Element_Type (<>) is private;
 package Sequences with SPARK_Mode,
-  Annotate => (GNATprove, Terminating)
+  Annotate => (GNATprove, Always_Return)
 is
 
    type Sequence is private

@@ -69,7 +69,7 @@ Data Dependencies . . . . . .
 Flow Dependencies . . . . . .
 Initialization 7 7 . . . .
 Non-Aliasing . . . . . .
-Run-time Checks 21 . . 6 (CVC5) . 15
+Run-time Checks 21 . . 6 . 15
 Assertions . . . . . .
 Functional Contracts . . . . . .
 LSP Verification . . . . . .

@@ -26,18 +26,18 @@ a-cfhama.ads:776:39: info: precondition proved (CVC5: 1 VC), in instantiation at
 a-cfhama.ads:785:17: info: precondition proved (CVC5: 1 VC), in instantiation at use_maps.ads:9
 a-cfhama.ads:815:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_maps.ads:9
 a-cfhama.ads:830:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_maps.ads:9
-a-cfhase.ads:503:18: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:829:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:838:17: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:859:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:860:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:908:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1085:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1086:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1086:44: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1126:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1218:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1239:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:512:18: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:838:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:847:17: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:868:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:869:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:917:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1094:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1095:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1095:44: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1135:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1227:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1248:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_sets.ads:10
 a-cfinve.ads:66:12: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:23
 a-cfinve.ads:67:29: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:23
 a-cfinve.ads:68:71: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:23
@@ -90,80 +90,76 @@ a-cforma.ads:1027:20: info: precondition proved (CVC5: 1 VC), in instantiation a
 a-cforma.ads:1042:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_maps.ads:9
 a-cforma.ads:1082:46: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_maps.ads:9
 a-cforma.ads:1097:40: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforse.ads:517:18: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:886:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:895:17: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:930:42: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:938:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:965:42: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:973:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:990:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:991:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1039:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1209:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1210:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1210:44: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1249:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1353:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1368:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1383:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1398:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1432:47: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cforse.ads:1447:40: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cofuse.ads:249:22: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at use_sets.ads:10
-a-cofuse.ads:249:22: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at use_ordered_sets.ads:7
-a-cofuse.ads:250:26: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at use_sets.ads:10
-a-cofuse.ads:250:26: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:526:18: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:895:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:904:17: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:939:42: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:947:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:974:42: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:982:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:999:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1000:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1048:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1218:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1219:26: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1219:44: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1258:49: info: overflow check proved (CVC5: 2 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1362:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1377:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1392:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1407:20: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1441:47: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
+a-cforse.ads:1456:40: info: precondition proved (CVC5: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:45:12: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:46:33: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:95:55: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at use_lists.ads:7
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at use_maps.ads:9
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:108, in instantiation at use_sets.ads:10
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:117, in instantiation at use_sets.ads:10
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:113, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:122, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at use_lists.ads:7
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at use_maps.ads:9
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at use_sets.ads:10
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at use_sets.ads:10
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:233:25: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:27: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:51: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at use_lists.ads:7
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at use_maps.ads:9
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at use_sets.ads:10
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at use_sets.ads:10
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:238:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:238:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at use_lists.ads:7
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at use_maps.ads:9
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at use_sets.ads:10
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at use_sets.ads:10
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at use_lists.ads:7
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at use_maps.ads:9
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at use_sets.ads:10
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at use_sets.ads:10
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at use_lists.ads:7
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at use_maps.ads:9
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at use_sets.ads:10
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at use_sets.ads:10
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at use_lists.ads:7
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at use_maps.ads:9
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhase.ads:108, in instantiation at use_sets.ads:10
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhase.ads:117, in instantiation at use_sets.ads:10
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at use_vectors.ads:23
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:113, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:122, in instantiation at use_ordered_sets.ads:7
 use_lists.adb:10:13: info: loop invariant initialization proved (CVC5: 1 VC)
 use_lists.adb:10:13: info: loop invariant preservation proved (CVC5: 1 VC)
 use_lists.adb:10:32: info: precondition proved (CVC5: 2 VC)
@@ -1074,9 +1070,9 @@ use_sets.adb:26:13: info: loop invariant preservation proved (CVC5: 1 VC)
 use_sets.adb:26:32: info: precondition proved (CVC5: 2 VC)
 use_sets.adb:27:32: info: precondition proved (CVC5: 4 VC)
 use_sets.adb:29:13: info: loop invariant initialization proved (CVC5: 1 VC)
-use_sets.adb:29:13: info: loop invariant preservation proved (altergo: 1 VC)
 use_sets.adb:29:13: info: precondition proved (CVC5: 4 VC)
 use_sets.adb:29:13: info: precondition proved (Trivial: 2 VC)
+use_sets.adb:29:13: medium: loop invariant might not be preserved by an arbitrary iteration
 use_sets.adb:30:36: info: precondition proved (CVC5: 2 VC)
 use_sets.adb:31:28: info: precondition proved (CVC5: 4 VC)
 use_sets.adb:32:10: info: precondition proved (CVC5: 1 VC)
@@ -1119,7 +1115,7 @@ use_sets.adb:101:13: info: loop invariant initialization proved (CVC5: 1 VC)
 use_sets.adb:101:13: info: loop invariant preservation proved (CVC5: 1 VC)
 use_sets.adb:102:32: info: precondition proved (CVC5: 4 VC)
 use_sets.adb:104:13: info: loop invariant initialization proved (CVC5: 1 VC)
-use_sets.adb:104:13: info: loop invariant preservation proved (altergo: 1 VC)
+use_sets.adb:104:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:104:13: info: precondition proved (CVC5: 4 VC)
 use_sets.adb:104:13: info: precondition proved (Trivial: 2 VC)
 use_sets.adb:106:38: info: precondition proved (CVC5: 4 VC)
@@ -1135,7 +1131,7 @@ use_sets.adb:120:07: info: precondition proved (CVC5: 1 VC)
 use_sets.ads:17:12: info: postcondition proved (CVC5: 2 VC)
 use_sets.ads:20:14: info: postcondition proved (CVC5: 1 VC)
 use_sets.ads:24:35: info: overflow check proved (CVC5: 2 VC)
-use_sets.ads:28:14: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC)
+use_sets.ads:28:14: medium: postcondition might fail
 use_sets.ads:28:15: info: precondition proved (CVC5: 2 VC)
 use_sets.ads:28:15: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:29:11: info: precondition proved (CVC5: 2 VC)

@@ -9,11 +9,11 @@ procedure Test_Goto_Borrow with SPARK_Mode is
   function Length (L : access constant List_Cell) return Natural is
    (if L = null then 0
     else Natural'Min (Natural'Last - 1, Length (L.Next)) + 1)
-  with Annotate => (GNATprove, Terminating);
+  with Annotate => (GNATprove, Always_Return);
 
   function Nth (L : access constant List_Cell; N : Positive) return Integer is
    (if N = 1 then L.Data else Nth (L.Next, N - 1))
-  with Annotate => (GNATprove, Terminating),
+  with Annotate => (GNATprove, Always_Return),
     Pre => N <= Length (L);
 
    function At_End_Borrow (L : access constant List_Cell) return access constant List_Cell is

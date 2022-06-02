@@ -136,11 +136,11 @@ package SPARK_Definition.Annotate is
    --  be an application of the logical "=" operator of Why3.
 
    --  A pragma Annotate for termination has the following form:
-   --    pragma Annotate (GNATprove, Terminating, Entity => E);
+   --    pragma Annotate (GNATprove, Always_Return, Entity => E);
 
    --  where
    --    GNATprove           is a fixed identifier
-   --    Terminating         is a fixed identifier
+   --    Always_Return       is a fixed identifier
    --    E                   is a subprogram or a package entity
 
    --  When such an annotation is provided for a subprogram E, it is assumed to
@@ -245,8 +245,9 @@ package SPARK_Definition.Annotate is
          when Intentional    => "intentional");
    --  Return the string representation of the supplied annotation
 
-   function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
-   --  Return True if a pragma Annotate Terminating applies to the subprogram E
+   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean;
+   --  Return True if a pragma Annotate Always_Return applies to the subprogram
+   --  E.
 
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow

@@ -24,6 +24,8 @@
 with Interfaces;   use Interfaces;
 with Interfaces.C; use Interfaces.C;
 
+with Ada.Containers;
+
 with os_arch;
 with Moth.Config;
 
@@ -31,6 +33,18 @@ separate (Moth) package body Scheduler
 with
    SPARK_mode => on
 is
+
+   package Big_From_Count is new Signed_Conversions
+     (Int => Ada.Containers.Count_Type);
+
+   function Big (C : Ada.Containers.Count_Type) return Big_Integer renames
+     Big_From_Count.To_Big_Integer;
+
+   package Big_From_Signed_Char is new Signed_Conversions
+     (Int => Interfaces.C.signed_char);
+
+   function Big (C : Interfaces.C.signed_char) return Big_Integer renames
+     Big_From_Signed_Char.To_Big_Integer;
 
    OS_INTERRUPT_TASK_ID : constant := 0;
 
@@ -85,9 +99,9 @@ is
          (X.Idle = Y.Idle and then X.Ready = Y.Ready);
 
       function os_ghost_task_list_is_well_formed return Boolean is
-        (Length (Model.Idle) <= OS_MAX_TASK_CNT and then
+        (Length (Model.Idle) <= To_Big_Integer (OS_MAX_TASK_CNT) and then
          Length (Model.Ready) <= OS_MAX_TASK_CNT and then
-         Length (Model.Idle) + Length (Model.Ready) = OS_MAX_TASK_CNT and then
+         Length (Model.Idle) + Big (Length (Model.Ready)) = To_Big_Integer (OS_MAX_TASK_CNT) and then
          (if Length (Model.Ready) = 0
              then task_list_head = OS_TASK_ID_NONE
              else task_list_head = First_Element (Model.Ready) and
@@ -139,11 +153,11 @@ is
          pragma assert (not Contains (Model.Ready, task_id));
          Model.Idle := Add (Model.Idle, task_id);
          pragma Loop_Invariant (Length (Model.Ready) = 0);
-         pragma Loop_Invariant (Integer (Length (Model.Idle)) = Natural (task_id) + 1);
+         pragma Loop_Invariant (Length (Model.Idle) =  Big ((task_id) + 1));
          pragma Loop_Invariant (for all id2 in OS_TASK_ID_MIN .. task_id
                                    => Contains (Model.Idle, id2));
       end loop;
-      pragma Assert (Length (Model.Idle) = OS_MAX_TASK_CNT);
+      pragma Assert (Length (Model.Idle) = To_Big_Integer (OS_MAX_TASK_CNT));
    end M;
 
    ----------------------

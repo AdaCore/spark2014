@@ -1,0 +1,10 @@
+main.adb:5:15: info: precondition of main program proved (CVC5: 1 VC)
+main.adb:8:19: info: assertion proved (CVC5: 1 VC)
+main.adb:10:19: info: assertion proved (CVC5: 1 VC)
+p.ads:1:16: info: flow dependencies proved
+p.ads:1:34: info: initial condition proved (CVC5: 1 VC)
+p.ads:3:52: info: data dependencies proved
+p.ads:3:73: info: postcondition proved (CVC5: 2 VC)
+p.ads:4:25: info: data dependencies proved
+p.ads:4:46: info: initialization of "X" proved
+p.ads:4:58: info: postcondition proved (CVC5: 1 VC)

@@ -964,6 +964,61 @@ parameters are consistent, when parameter ``Drop`` is set to ``Error`` and the
           Justify => Left,
           Pad     => Space);
 
+.. index:: c-strings
+
+C Strings Interface
+-------------------
+
+``Interfaces.C.Strings`` is a library that provides an Ada interface to
+allocate, reference, update and free C strings.
+
+The provided preconditions protect users from getting
+``Dereference_Error`` and ``Update_Error``. However, those
+preconditions do not protect against ``Storage_Error``.
+
+All subprograms are annotated with Global contracts. To model the
+effects of the subprograms on the allocated memory, an abstract state
+``C_Memory`` is defined. Since ``chars_ptr`` is an access type that is
+hidden from |SPARK| (it is a private type and the private part of
+``Interfaces.C.Strings`` has ``SPARK_Mode => Off``), the user could
+create aliases that SPARK would not be able to see. Hence, we consider
+that calling ``Update`` on any ``chars_ptr`` modifies the allocated
+memory, ``C_Memory``, so that the effects of potential aliases are
+modelled correctly.
+
+Additionally, some subprograms are annotated with ``SPARK_Mode => Off``:
+
+*  ``To_Chars_Ptr``: This function creates an alias, thus it is not
+   compatible with |SPARK|.
+
+*  ``Free``: There is no way for |SPARK| to know whether or not it is
+   safe to deallocate these pointers. They might not be allocated on
+   the heap or there might be some aliases, which could lead to
+   dangling pointers.
+
+Finally, the two functions used to allocate memory to create
+``chars_ptr`` objects are annotated with the ``Volatile_Function``
+attribute. Indeed, calling those functions twice in a row with the
+same parameters would return different objects.
+
+.. index:: address-to-access-conversion
+
+Addresses to Access Conversions
+-------------------------------
+
+The run-time library ``System.Address_To_Access_Conversions`` enables
+the user to convert ``System.Address_Type`` values to general access-to-object
+types. The conversions are subject to the same rules as
+``Unchecked_Conversion`` between such types (see :ref:`Data Validity`),
+that is:
+
+* ``To_Pointer`` is allowed in |SPARK| and annotated with ``Global =>
+  null``. On a call to this function, |GNATprove| will emit warnings
+  to ensure that the designated data has no aliases and is initialized.
+
+* ``To_Address`` is forbidden in |SPARK| because it does not handle
+  addresses.
+
 Cut Operations
 --------------
 

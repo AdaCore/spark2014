@@ -759,7 +759,7 @@ more time and memory.
 
 .. index:: termination; proving termination
            Annotate; for subprogram termination
-           Terminating
+           Always_Return
 
 Subprogram Termination
 ----------------------
@@ -781,27 +781,28 @@ should terminate, which |GNATprove| will attempt proving:
    :language: ada
    :linenos:
 
-If every subprogram in a package is terminating, the package itself can be
-annotated with the terminating annotation. If the annotation is located on a
-generic package, then it should be valid for every instance of the package.
+If every subprogram in a package always returns, the package itself can be
+annotated with the ``Always_Return`` annotation. If the annotation is located
+on a generic package, then it should be valid for every instance of the package.
 
 An aspect can be used instead of a pragma for both packages and subprograms:
 
 .. code-block:: ada
 
    package Pack with
-      Annotate => (GNATprove, Terminating)
+      Annotate => (GNATprove, Always_Return)
    is
       procedure Proc with
-        Annotate => (GNATprove, Terminating);
+        Annotate => (GNATprove, Always_Return);
    ...
 
-If a subprogram in |SPARK| is explicitly annotated as terminating, flow analysis
+If a subprogram in |SPARK| is explicitly annotated with ``Always_Return``,
+flow analysis
 will attempt to make sure that all the paths through the subprogram effectively
 return. In effect, it will look for while loops with no loop variants, recursive
-calls and calls to subprograms which are not known to be terminating. If
-|GNATprove| cannot make sure that the annotated subprogram is always
-terminating, it will then emit a failed check. As an example, let us consider
+calls and calls to subprograms which are not known to always return. If
+|GNATprove| cannot make sure that the annotated subprogram will always
+return, it will then emit a failed check. As an example, let us consider
 the following implementation of the five ``F`` functions:
 
 .. literalinclude:: /examples/ug__terminating_annotations/terminating_annotations.adb
@@ -810,7 +811,7 @@ the following implementation of the five ``F`` functions:
 
 As can be easily verified by review, all these functions terminate, and all
 return 0. As can be seen below, |GNATprove| will fail to verify that ``F_Rec``,
-``F_While``, and ``F_Call`` terminate.
+``F_While``, and ``F_Call`` always return.
 
 .. literalinclude:: /examples/ug__terminating_annotations/test.out
    :language: none
@@ -819,33 +820,33 @@ return 0. As can be seen below, |GNATprove| will fail to verify that ``F_Rec``,
 Let us look at each function to understand what happens. The function ``F_Rec``
 is recursive, and the function ``F_While`` contains a while loop. Both cases
 can theoretically lead to an infinite path in the subprogram, which is why
-GNATprove cannot verify that they terminate. |GNATprove| does not complain
+|GNATprove| cannot verify that they terminate. |GNATprove| does not complain
 about not being able to verify the termination of ``F_Not_SPARK``. Clearly, it
 is not because it could verify it, as it contains exactly the same loop as
 ``F_While``. It is because, as the body of ``F_Not_SPARK`` has been excluded
 from analysis using ``SPARK_Mode => Off``, |GNATprove| does not attempt to
 prove that it terminates.  When looking at the body of ``F_Call``, we can see
-that it calls a procedure ``Not_SPARK``. Clearly, this procedure is
-terminating, as it does not do anything. But, as the body of ``No_SPARK`` has
+that it calls a procedure ``Not_SPARK``. Clearly, this procedure always
+returns, as it does not do anything. But, as the body of ``No_SPARK`` has
 been hidden from analysis using ``SPARK_Mode => Off``, |GNATprove| cannot
 deduce that it terminates. As a result, it stays in the safe side, and assumes
 that ``Not_SPARK`` could loop, which causes the verification of ``F_Call`` to
-fail. Finally, |GNATprove| is able to verify that ``F_Term`` terminates, though
-it contains both a while loop and  a recursive call.  Indeed, we have bounded
-both the number of possible iterations of the loop and the number of
+fail. Finally, |GNATprove| is able to verify that ``F_Term`` always returns,
+though it contains both a while loop and  a recursive call.  Indeed, we have
+bounded both the number of possible iterations of the loop and the number of
 recursive calls using a ``Loop_Variant`` (for the loop iterations) and a
 ``Subprogram_Variant`` (for the recursive calls). Also note that, though it was
 not able to prove termination of ``F_Rec``, ``F_While``, and ``F_Call``,
-|GNATprove| will still trust the annotation and consider them as terminating
-when verifying ``F_Term``.
+|GNATprove| will still trust the annotation and consider them as always
+returning when verifying ``F_Term``.
 
 .. note::
 
-   Possible nontermination of a subprogram may influence |GNATprove| proof
+   Possibly non-returning subprograms may influence |GNATprove| proof
    capabilities. Indeed, to avoid soundness issues due to nontermination in
    logical formulas, GNATprove will not be able to see the contract of
    nonterminating functions if they are called from definitions of constants,
    from contracts, or from assertions. In such a case, an information message
    will be emitted, stating that (implicit) contracts of the function are not
-   available for proof. This message won't appear if a ``Terminating``
+   available for proof. This message won't appear if an ``Always_Return``
    annotation is supplied for the function as explained above.

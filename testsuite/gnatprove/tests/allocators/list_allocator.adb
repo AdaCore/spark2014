@@ -1,7 +1,16 @@
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 package body List_Allocator with
   SPARK_Mode,
   Refined_State => (State => (Data, First_Available))
 is
+   package Big_From_Count is new Signed_Conversions
+     (Int => Ada.Containers.Count_Type);
+
+   function Big (C : Ada.Containers.Count_Type) return Big_Integer renames
+     Big_From_Count.To_Big_Integer;
+
    type Status is (Available, Allocated);
 
    type Cell is record
@@ -29,8 +38,8 @@ is
           Alloc : constant S2.Set := Model.Allocated;
         begin
           Length (Avail) <= Capacity and then
-          Length (Alloc) <= Capacity and then
-          Length (Avail) + Length (Alloc) = Capacity and then
+          Length (Alloc) <= To_Big_Integer (Capacity) and then
+          Big (Length (Avail)) + Length (Alloc) = To_Big_Integer (Capacity) and then
           (if First_Available /= No_Resource then
              Length (Avail) > 0 and then Get (Avail, 1) = First_Available
            else

@@ -605,6 +605,16 @@ and Refined_Depends.]
     ``mode_selector`` of In_Out or Output.
 
 
+14. A ``global_item`` occurring with mode Input in the Global aspect
+    specification of a function annotated with Pure_Function aspect or pragma
+    shall denote a constant object whose type is not an owning type (see
+    :ref:`Access Types`).
+
+    [This restriction ensures that two calls to the function with the same
+    parameters return the same value, so that the compiler can safely apply
+    corresponding optimizations.]
+
+
 .. container:: heading
 
    Dynamic Semantics
@@ -617,18 +627,18 @@ is used purely for static analysis purposes and is not executed.
    Verification Rules
 
 
-14. For a subprogram that has a ``global_specification``, an object (except a
+15. For a subprogram that has a ``global_specification``, an object (except a
     constant without variable inputs) or state abstraction that is declared
     outside the scope of the subprogram, shall only be referenced within its
     implementation if it is a ``global_item`` in the ``global_specification``.
 
 
-15. A ``global_item`` shall occur in a Global aspect of a subprogram if and
+16. A ``global_item`` shall occur in a Global aspect of a subprogram if and
     only if it denotes an entity (except for a constant without variable
     inputs) that is referenced by the subprogram.
 
 
-16. Where the refinement of a state abstraction is not visible (see
+17. Where the refinement of a state abstraction is not visible (see
     :ref:`State Refinement`) and a subprogram references one or more
     of its constituents the constituents may be represented by a
     ``global_item`` that denotes the state abstraction in the
@@ -637,7 +647,7 @@ is used purely for static analysis purposes and is not executed.
     the declaration of the constituent.]
 
 
-17. Each entity denoted by a ``global_item`` in a
+18. Each entity denoted by a ``global_item`` in a
     ``global_specification`` of a subprogram that is an input or
     output of the subprogram shall satisfy the following mode
     specification rules [which are checked during analysis of the
@@ -676,7 +686,7 @@ is used purely for static analysis purposes and is not executed.
    discriminants of the output might or might not be updated by the call.]
 
 
-18. An entity that is denoted by a ``global_item`` which is referenced
+19. An entity that is denoted by a ``global_item`` which is referenced
     by a subprogram but is neither an input nor an output but is only
     referenced directly, or indirectly in assertion expressions has a
     ``mode_selector`` of Proof_In.
@@ -684,7 +694,7 @@ is used purely for static analysis purposes and is not executed.
 
 .. index:: constant with variable inputs; in Global
 
-19. A ``global_item`` shall not denote a constant object other than a formal
+20. A ``global_item`` shall not denote a constant object other than a formal
     parameter [of an enclosing subprogram] of mode **in**, a generic formal
     object of mode **in**, or a *constant with variable inputs*.
 
@@ -704,13 +714,13 @@ is used purely for static analysis purposes and is not executed.
    :linenos:
 
 
-20. The ``mode_selector`` of a ``global_item`` denoting a *constant with
+21. The ``mode_selector`` of a ``global_item`` denoting a *constant with
     variable inputs* shall be ``Input`` or ``Proof_In``.
 
 
 .. index:: Constant_After_Elaboration; in Global
 
-21. The ``mode_selector`` of a ``global_item`` denoting a variable marked
+22. The ``mode_selector`` of a ``global_item`` denoting a variable marked
     as a *constant after elaboration* shall be ``Input`` or ``Proof_In`` [,
     to ensure that such variables are only updated directly by package
     elaboration code].

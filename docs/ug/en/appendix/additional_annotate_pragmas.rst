@@ -70,7 +70,7 @@ to specify that a procedure might not return. See the section
 :ref:`Nonreturning Procedures` for more details about this use of
 annotations.
 
-.. index:: Annotate; Terminating
+.. index:: Annotate; Always_Return
 
 Using Annotations to Request Proof of Termination
 -------------------------------------------------
@@ -81,7 +81,7 @@ instruct it to do so using annotations of the form:
 .. code-block:: ada
 
    procedure Proc
-     with Annotate => (GNATprove, Terminating);
+     with Annotate => (GNATprove, Always_Return);
 
 See the section :ref:`Subprogram Termination` about details of this use of
 annotations.

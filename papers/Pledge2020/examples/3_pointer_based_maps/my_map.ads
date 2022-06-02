@@ -7,7 +7,7 @@ package My_Map with SPARK_Mode is
    function Model_Contains (M : access constant Map; K : Positive) return Boolean
    with
      Ghost,
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
    --  Return True iff there is mapping for K in M. This is a specification
    --  function encoded in a recursive way.
 
@@ -18,7 +18,7 @@ package My_Map with SPARK_Mode is
    function Model_Value (M : access constant Map; K : Positive) return Integer
    with
      Ghost,
-     Annotate => (GNATprove, Terminating),
+     Annotate => (GNATprove, Always_Return),
      Pre => Model_Contains (M, K);
    --  Return the mapping associated to K in M. This is a specification
    --  function encoded in a recursive way.

@@ -359,18 +359,18 @@ pointers_with_aliasing.ads:63:16: info: subprogram "Deallocates" will terminate,
 pointers_with_aliasing.ads:75:04: info: initialization of "Memory" proved, in instantiation at example_recursive.adb:10
 pointers_with_aliasing.ads:75:04: info: initialization of "Memory" proved, in instantiation at example_tagged_obj.adb:18
 pointers_with_aliasing.ads:75:04: info: initialization of "Memory" proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:135:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:135:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:135:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:136:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:136:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:136:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:140:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:140:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:140:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:141:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:141:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:141:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:147:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:147:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:147:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
+pointers_with_aliasing.ads:138:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+pointers_with_aliasing.ads:138:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+pointers_with_aliasing.ads:138:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+pointers_with_aliasing.ads:139:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
+pointers_with_aliasing.ads:139:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
+pointers_with_aliasing.ads:139:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
+pointers_with_aliasing.ads:143:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+pointers_with_aliasing.ads:143:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+pointers_with_aliasing.ads:143:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+pointers_with_aliasing.ads:144:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
+pointers_with_aliasing.ads:144:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
+pointers_with_aliasing.ads:144:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
+pointers_with_aliasing.ads:150:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+pointers_with_aliasing.ads:150:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
+pointers_with_aliasing.ads:150:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10

@@ -187,7 +187,7 @@ procedure Test_Bad_Variant with SPARK_Mode is
 
    function Length (L : access constant List) return Natural with
      Subprogram_Variant => (Decreases => (if L = null then 0 else Length (L.N))), --@SUBPROGRAM_VARIANT:FAIL
-     Annotate => (GNATprove, Terminating);
+     Annotate => (GNATprove, Always_Return);
 
    function Length (L : access constant List) return Natural is
      (if L = null then 0 elsif Length (L.N) = Integer'Last then Integer'Last else Length (L.N) + 1);

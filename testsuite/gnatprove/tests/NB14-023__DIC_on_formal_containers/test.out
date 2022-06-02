@@ -26,18 +26,18 @@ a-cfhama.ads:776:39: info: precondition proved (CVC5: 1 VC), in instantiation at
 a-cfhama.ads:785:17: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:13
 a-cfhama.ads:815:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:13
 a-cfhama.ads:830:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:13
-a-cfhase.ads:503:18: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:829:39: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:838:17: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:859:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:860:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:908:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1085:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1086:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1086:44: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1126:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1218:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1239:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:512:18: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:838:39: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:847:17: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:868:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:869:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:917:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1094:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1095:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1095:44: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1135:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1227:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1248:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:18
 a-cforma.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at dic_of_cont.ads:22
 a-cforma.ads:406:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:22
 a-cforma.ads:412:08: info: dynamic accessibility check proved (Trivial), in instantiation at dic_of_cont.ads:22
@@ -55,26 +55,26 @@ a-cforma.ads:1027:20: info: precondition proved (CVC5: 1 VC), in instantiation a
 a-cforma.ads:1042:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:22
 a-cforma.ads:1082:46: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:22
 a-cforma.ads:1097:40: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:22
-a-cforse.ads:517:18: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:886:39: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:895:17: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:930:42: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:938:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:965:42: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:973:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:990:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:991:26: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1039:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1209:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1210:26: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1210:44: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1249:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1353:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1368:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1383:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1398:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1432:47: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
-a-cforse.ads:1447:40: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:526:18: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:895:39: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:904:17: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:939:42: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:947:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:974:42: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:982:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:999:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1000:26: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1048:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1218:24: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1219:26: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1219:44: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1258:49: info: overflow check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1362:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1377:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1392:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1407:20: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1441:47: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
+a-cforse.ads:1456:40: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:25
 a-cofove.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at dic_of_cont.ads:27
 a-cofove.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at dic_of_cont.ads:27
 a-cofove.ads:320:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:27
@@ -90,51 +90,47 @@ a-cofove.ads:629:28: info: overflow check proved (CVC5: 2 VC), in instantiation 
 a-cofove.ads:629:57: info: range check proved (CVC5: 2 VC), in instantiation at dic_of_cont.ads:27
 a-cofove.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:27
 a-cofove.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at dic_of_cont.ads:27
-a-cofuse.ads:249:22: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at dic_of_cont.ads:18
-a-cofuse.ads:249:22: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at dic_of_cont.ads:25
-a-cofuse.ads:250:26: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:96, in instantiation at dic_of_cont.ads:18
-a-cofuse.ads:250:26: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:101, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at dic_of_cont.ads:11
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at dic_of_cont.ads:13
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:108, in instantiation at dic_of_cont.ads:18
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:117, in instantiation at dic_of_cont.ads:18
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at dic_of_cont.ads:22
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:113, in instantiation at dic_of_cont.ads:25
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:122, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at dic_of_cont.ads:27
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at dic_of_cont.ads:11
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at dic_of_cont.ads:13
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at dic_of_cont.ads:18
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at dic_of_cont.ads:18
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at dic_of_cont.ads:22
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at dic_of_cont.ads:25
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at dic_of_cont.ads:27
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at dic_of_cont.ads:11
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at dic_of_cont.ads:13
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at dic_of_cont.ads:18
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at dic_of_cont.ads:18
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at dic_of_cont.ads:22
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at dic_of_cont.ads:25
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at dic_of_cont.ads:27
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at dic_of_cont.ads:11
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at dic_of_cont.ads:13
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at dic_of_cont.ads:18
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at dic_of_cont.ads:18
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at dic_of_cont.ads:22
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at dic_of_cont.ads:25
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at dic_of_cont.ads:27
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at dic_of_cont.ads:11
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at dic_of_cont.ads:13
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at dic_of_cont.ads:18
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at dic_of_cont.ads:18
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at dic_of_cont.ads:22
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at dic_of_cont.ads:25
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at dic_of_cont.ads:27
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:75, in instantiation at dic_of_cont.ads:11
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at dic_of_cont.ads:13
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:108, in instantiation at dic_of_cont.ads:18
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at dic_of_cont.ads:18
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforma.ads:118, in instantiation at dic_of_cont.ads:22
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:113, in instantiation at dic_of_cont.ads:25
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at dic_of_cont.ads:27
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfdlli.ads:75, in instantiation at dic_of_cont.ads:11
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at dic_of_cont.ads:13
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhase.ads:108, in instantiation at dic_of_cont.ads:18
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhase.ads:117, in instantiation at dic_of_cont.ads:18
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforma.ads:118, in instantiation at dic_of_cont.ads:22
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:113, in instantiation at dic_of_cont.ads:25
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:122, in instantiation at dic_of_cont.ads:25
 a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at dic_of_cont.ads:27
 dic_of_cont.adb:3:07: info: initialization of "Dlli" proved
 dic_of_cont.adb:3:28: info: range check proved (CVC5: 2 VC)

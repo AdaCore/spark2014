@@ -3235,7 +3235,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ---------------------------------
 
    function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean is
-     (not Has_Terminate_Annotation (E)
+     (not Has_Always_Return_Annotation (E)
       and then Is_Potentially_Nonreturning_Internal (E));
 
    ------------------

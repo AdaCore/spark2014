@@ -9,12 +9,12 @@ procedure Test_Empty with SPARK_Mode is
     function Eq (L1, L2 : access constant L_Cell) return Boolean is
       ((L1 = null) = (L2 = null)
        and then (if L1 /= null then L1.X = L2.X and then Eq (L1.N, L2.N)))
-    with Annotate => (GNATprove, Terminating);
+    with Annotate => (GNATprove, Always_Return);
 
     function Deep_Copy (L : access constant L_Cell) return List with
       Volatile_Function,
       Post     => Eq (L, Deep_Copy'Result),
-      Annotate => (GNATprove, Terminating)
+      Annotate => (GNATprove, Always_Return)
     is
     begin
        return Copy : List do

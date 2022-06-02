@@ -14,12 +14,12 @@ procedure Test_List with SPARK_Mode is
    function Length (L : List) return Big_Positive is
      (if L.N = null then Big_Positive'(1) else Length (L.N.all) + 1)
    with Ghost,
-       Annotate => (GNATprove, Terminating);
+       Annotate => (GNATprove, Always_Return);
 
    function Nth_Int (L : List; N : Big_Positive) return Integer is
      (if N = 1 then L.V else Nth_Int (L.N.all, N - 1))
    with Ghost,
-       Annotate => (GNATprove, Terminating),
+       Annotate => (GNATprove, Always_Return),
        Pre => N <= Length (L);
 
    function At_End (X : access constant List) return access constant List is (X)
@@ -81,7 +81,7 @@ procedure Test_List with SPARK_Mode is
    function All_Zeros (L : List) return Boolean is
      (L.V = 0 and then (L.N = null or else All_Zeros (L.N.all)))
    with Ghost,
-       Annotate => (GNATprove, Terminating);
+       Annotate => (GNATprove, Always_Return);
 
    procedure Set_All_To_Zero (L : aliased in out List)
    with Post => Length (L) = Length (L)'Old

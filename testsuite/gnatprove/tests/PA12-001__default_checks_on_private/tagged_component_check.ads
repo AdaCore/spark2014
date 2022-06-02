@@ -1,7 +1,7 @@
 package Tagged_Component_Check with SPARK_Mode is
    package P is
       function Hide (X : Integer) return Integer;
-      pragma Annotate (GNATprove, Terminating, Hide);
+      pragma Annotate (GNATprove, Always_Return, Hide);
    private
       pragma SPARK_Mode (Off);
       function Hide (X : Integer) return Integer is (X);
