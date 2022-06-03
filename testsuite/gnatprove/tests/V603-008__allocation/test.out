@@ -1,0 +1,5 @@
+incoh.adb:27:15: error: call to allocating function not stored in object as part of assignment, declaration or return is not allowed in SPARK
+incoh.adb:27:15: error: violation of aspect SPARK_Mode at line 1
+incoh.adb:28:09: error: call to allocating function not stored in object as part of assignment, declaration or return is not allowed in SPARK
+incoh.adb:28:09: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

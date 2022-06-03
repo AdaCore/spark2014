@@ -35,8 +35,17 @@ bad_relaxed_init.ads:23:07: error: component "F" of tagged type "Root" with rela
 bad_relaxed_init.ads:23:07: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:26:09: error: tagged type with initialization by proof is not yet supported
 bad_relaxed_init.ads:32:09: error: access type with initialization by proof is not yet supported
-case_prefix.adb:16:28: error: allocator as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
-case_prefix.adb:16:28: error: violation of aspect SPARK_Mode at line 1
+case_prefix.adb:5:04: medium: memory leak might occur at end of scope
+case_prefix.adb:5:29: info: null exclusion check proved (CVC5: 1 VC)
+case_prefix.adb:6:04: medium: memory leak might occur at end of scope
+case_prefix.adb:6:29: info: null exclusion check proved (CVC5: 1 VC)
+case_prefix.adb:7:04: medium: memory leak might occur at end of scope
+case_prefix.adb:7:29: info: null exclusion check proved (CVC5: 1 VC)
+case_prefix.adb:13:28: info: pointer dereference check proved (CVC5: 1 VC)
+case_prefix.adb:15:19: info: assertion proved (CVC5: 1 VC)
+case_prefix.adb:16:19: info: assertion proved (CVC5: 1 VC)
+case_prefix.adb:16:28: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+case_prefix.adb:16:45: info: pointer dereference check proved (CVC5: 1 VC)
 ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous access type)
 ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous access type)
 ext.ads:6:09: error: access to incomplete type "T_Acc" is required to be in SPARK
