@@ -635,6 +635,30 @@ screenshot which shows how symbols like :code:`=>` (arrow) or :code:`>=`
 
 .. image:: /static/firacode.png
 
+.. index:: Visual Studio Code
+
+Running GNATprove from Visual Studio Code
+-----------------------------------------
+
+|GNATprove| can be run from Visual Studio Code, using the `Ada/SPARK extension
+for Visual Studio Code
+<https://marketplace.visualstudio.com/items?itemName=AdaCore.ada>`_.  It
+provides the following "auto-detected" tasks (under menu
+:menuselection:`Terminal --> Run Task...`):
+
+.. csv-table::
+   :header: "Submenu", "Action"
+   :widths: 1, 4
+
+   "Examine project",        "This runs |GNATprove| in flow analysis mode on all mains and the units they depend on in the project."
+   "Examine file",           "This runs |GNATprove| in flow analysis mode on the current unit, its body and any subunits."
+   "Examine subprogram",     "This runs |GNATprove| in flow analysis mode on the current subprogram."
+   "Prove project",          "This runs |GNATprove| on all mains and the units they depend on in the project."
+   "Prove file",             "This runs |GNATprove| on the current unit, its body and any subunits."
+   "Prove subprogram",       "This runs |GNATprove| on the current subprogram."
+   "Prove selected region",  "This runs |GNATprove| on the currently selected region."
+   "Prove line",             "This runs |GNATprove| on the current line."
+
 .. index:: GNATbench
 
 Running GNATprove from GNATbench
