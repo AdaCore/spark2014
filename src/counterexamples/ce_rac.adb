@@ -359,10 +359,6 @@ package body CE_RAC is
    --  For each node in Prefixes, evaluate it and add its value to the
    --  appropriate map from prefixes to their values.
 
-   function Find_Binding (E : Entity_Id) return Value_Access;
-   --  Find the binding of a variable in the context environment. If not found,
-   --  it is assumed to be a global constant and initialised as it.
-
    -------------------
    -- Value oracles --
    -------------------
@@ -1398,10 +1394,11 @@ package body CE_RAC is
          then Expression (Enclosing_Declaration (N)) else Empty);
    begin
 
-      Val :=
-        new Value_Type'
-          (Get_Value (N, Expr, Default_Value, Use_Fuzzing, Origin));
+      Val := new Value_Type'
+        (Get_Value (N, Expr, Default_Value, Use_Fuzzing, Origin));
+
       Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
+
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
                  & To_String (Val.all) & " " & Value_Origin'Image (Origin));

@@ -49,6 +49,10 @@ package CE_RAC is
    --  Check fuel and decrease. Raise RAC_Incomplete when fuel becomes zero.
    --  Do nothing for negative values of Fuel.
 
+   function Find_Binding (E : Entity_Id) return Value_Access;
+   --  Find the binding of a variable in the context environment. If not found,
+   --  it is assumed to be a global constant and initialised as it.
+
    procedure Get_Integer_Type_Bounds
      (Ty       :     Entity_Id;
       Fst, Lst : out Big_Integer)

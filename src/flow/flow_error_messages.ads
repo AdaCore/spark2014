@@ -97,6 +97,14 @@ package Flow_Error_Messages is
    function Register_Session_Dir (S : String) return Session_Dir_ID;
    --  Register a string as a session file, create its ID and return it.
 
+   function Get_Filtered_Variables_For_Proof
+     (Expr    : Node_Id;
+      Context : Node_Id)
+      return Flow_Id_Sets.Set;
+   --  Wrapper on Flow_Utility.Get_Variables_For_Proof that excludes the
+   --  special variables __HEAP and SPARK.Heap.Dynamic_Memory used to model
+   --  (de)allocation.
+
    function Get_Flow_JSON return JSON_Array;
    function Get_Proof_JSON return JSON_Array;
    function Get_Session_Map_JSON return JSON_Value;
@@ -208,23 +216,24 @@ package Flow_Error_Messages is
    --  where the error was detected. This is printed in debug mode.
 
    procedure Error_Msg_Proof
-     (N           : Node_Id;
-      Msg         : String;
-      Is_Proved   : Boolean;
-      Tag         : VC_Kind;
-      Cntexmp     : JSON_Value;
-      Verdict     : Cntexmp_Verdict;
-      Check_Tree  : JSON_Value;
-      VC_File     : String;
-      VC_Loc      : Node_Id;
-      Editor_Cmd  : String;
-      Explanation : String;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      SD_Id       : Session_Dir_Base_ID;
-      Stats       : Prover_Stat_Maps.Map;
-      Place_First : Boolean;
-      Check_Info  : Check_Info_Type);
+     (N            : Node_Id;
+      Msg          : String;
+      Is_Proved    : Boolean;
+      Tag          : VC_Kind;
+      Cntexmp      : JSON_Value;
+      Verdict      : Cntexmp_Verdict;
+      Check_Tree   : JSON_Value;
+      VC_File      : String;
+      VC_Loc       : Node_Id;
+      Editor_Cmd   : String;
+      Explanation  : String;
+      E            : Entity_Id;
+      How_Proved   : Prover_Category;
+      SD_Id        : Session_Dir_Base_ID;
+      Stats        : Prover_Stat_Maps.Map;
+      Place_First  : Boolean;
+      Check_Info   : Check_Info_Type;
+      Fuzzing_Used : Boolean := False);
    --  register a message for proof (i.e. which corresponds to a check that is
    --  usually taken care of by proof)
    --  @param N the node on which this VC is placed

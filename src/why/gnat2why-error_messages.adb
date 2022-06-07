@@ -460,23 +460,24 @@ package body Gnat2Why.Error_Messages is
    -----------------------
 
    procedure Emit_Proof_Result
-     (Node        : Node_Id;
-      Id          : VC_Id;
-      Kind        : VC_Kind;
-      Proved      : Boolean;
-      E           : Entity_Id;
-      SD_Id       : Session_Dir_Base_ID;
-      How_Proved  : Prover_Category;
-      Check_Info  : Check_Info_Type;
-      Extra_Msg   : String := "";
-      Explanation : String := "";
-      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      Verdict     : Cntexmp_Verdict := (others => <>);
-      Check_Tree  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File     : String := "";
-      VC_Loc      : Node_Id := Empty;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "")
+     (Node         : Node_Id;
+      Id           : VC_Id;
+      Kind         : VC_Kind;
+      Proved       : Boolean;
+      E            : Entity_Id;
+      SD_Id        : Session_Dir_Base_ID;
+      How_Proved   : Prover_Category;
+      Check_Info   : Check_Info_Type;
+      Extra_Msg    : String := "";
+      Explanation  : String := "";
+      Cntexmp      : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Verdict      : Cntexmp_Verdict := (others => <>);
+      Check_Tree   : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File      : String := "";
+      VC_Loc       : Node_Id := Empty;
+      Stats        : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd   : String := "";
+      Fuzzing_Used : Boolean := False)
    is
       function Stat_Message return String;
       --  Prepare a message for statistics of proof results
@@ -583,19 +584,20 @@ package body Gnat2Why.Error_Messages is
             Msg,
             Proved,
             Kind,
-            Place_First => Locate_On_First_Token (Kind),
-            Cntexmp     => Cntexmp,
-            Verdict     => Verdict,
-            Check_Tree  => Check_Tree,
-            VC_File     => VC_File,
-            VC_Loc      => VC_Loc,
-            Editor_Cmd  => Editor_Cmd,
-            Explanation => Explanation,
-            Stats       => Stats,
-            How_Proved  => How_Proved,
-            SD_Id       => SD_Id,
-            E           => E,
-            Check_Info  => Check_Info);
+            Place_First  => Locate_On_First_Token (Kind),
+            Cntexmp      => Cntexmp,
+            Verdict      => Verdict,
+            Check_Tree   => Check_Tree,
+            VC_File      => VC_File,
+            VC_Loc       => VC_Loc,
+            Editor_Cmd   => Editor_Cmd,
+            Explanation  => Explanation,
+            Stats        => Stats,
+            How_Proved   => How_Proved,
+            SD_Id        => SD_Id,
+            E            => E,
+            Check_Info   => Check_Info,
+            Fuzzing_Used => Fuzzing_Used);
       end;
    end Emit_Proof_Result;
 
@@ -1364,6 +1366,7 @@ package body Gnat2Why.Error_Messages is
                             From_JSON (Rec.Cntexmp);
          Check_Info     : Check_Info_Type := VC.Check_Info;
          Fuel           : constant Fuel_Access := new Fuel_Type'(250_000);
+         Fuzzing_Used   : Boolean := False;
 
       --  Start of processing for Handle_Result
 
@@ -1408,6 +1411,7 @@ package body Gnat2Why.Error_Messages is
                                                        | Bad_Counterexample
                   loop
                      Check_Fuel_Decrease (Fuel);
+                     Fuzzing_Used := True;
 
                      Check_Counterexample
                        (Rec            => Rec,
@@ -1496,7 +1500,8 @@ package body Gnat2Why.Error_Messages is
             Editor_Cmd  => To_String (Rec.Editor_Cmd),
             Stats       => Rec.Stats,
             Extra_Msg   => CP_Msg,
-            Check_Info  => Check_Info);
+            Check_Info  => Check_Info,
+            Fuzzing_Used => Fuzzing_Used);
       end Handle_Result;
 
       --------------------
