@@ -8,3 +8,8 @@ shift_main.adb:20:13: info: add a contract to analyze it separately from calling
 shift_main.adb:20:13: info: local subprogram "S" only analyzed in the context of calls
 shift_main.adb:25:13: info: add a contract to analyze it separately from calling contexts
 shift_main.adb:25:13: info: local subprogram "T" only analyzed in the context of calls
+shift_main.adb:32:09: info: analyzing call to "P" in context
+shift_main.adb:33:09: info: analyzing call to "Q" in context
+shift_main.adb:34:09: info: analyzing call to "R" in context
+shift_main.adb:35:09: info: analyzing call to "S" in context
+shift_main.adb:36:09: info: analyzing call to "T" in context

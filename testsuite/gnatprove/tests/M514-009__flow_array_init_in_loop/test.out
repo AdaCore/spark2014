@@ -32,6 +32,7 @@ foo.adb:98:04: warning: analyzing unreferenced procedure "Test_08_E"
 foo.adb:101:24: info: unrolling loop
 foo.adb:103:19: medium: "A" might not be initialized
 foo.adb:103:24: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+foo.adb:107:04: info: no contextual analysis of "Test_09_E" (multiple returns)
 foo.adb:107:25: medium: "A" might not be initialized in "Test_09_E" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 foo.adb:110:24: info: unrolling loop
 foo.adb:118:04: warning: analyzing unreferenced procedure "Test_10_Ok"

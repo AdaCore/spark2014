@@ -1,3 +1,8 @@
+main.adb:6:04: info: analyzing call to "Log2_Estimate" in context
+main.adb:6:04: info: analyzing call to "Minus_Log2_Estimate" in context
+main.adb:6:04: info: in instantiation at a-nbnbre.adb:256
+main.adb:6:04: info: in instantiation at a-nbnbre.adb:264
+main.adb:20:06: warning: postcondition does not mention function result
 main.adb:20:14: medium: postcondition might fail
 main.adb:20:65: info: range check proved (Trivial)
 main.adb:25:04: warning: analyzing unreferenced function "Prove_Constr_Exact"

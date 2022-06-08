@@ -3,6 +3,7 @@ interrupt_priority.adb:14:20: info: overflow check proved (CVC5: 2 VC)
 interrupt_priority.adb:22:20: info: overflow check proved (CVC5: 2 VC)
 interrupt_priority.ads:7:24: info: range check proved (CVC5: 2 VC)
 interrupt_priority.ads:12:19: medium: ceiling priority might not be in Interrupt_Priority
+interrupt_priority.ads:13:07: warning: pragma Interrupt_Priority is preferred in presence of handlers
 interrupt_priority.ads:13:24: info: range check proved (CVC5: 2 VC)
 interrupt_priority.ads:14:43: medium: this interrupt might be reserved
 interrupt_priority.ads:19:24: info: range check proved (CVC5: 2 VC)

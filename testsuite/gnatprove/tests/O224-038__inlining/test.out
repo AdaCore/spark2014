@@ -4,6 +4,7 @@ main.adb:7:14: info: add a contract to analyze it separately from calling contex
 main.adb:7:14: info: local subprogram "Init" only analyzed in the context of calls
 main.adb:9:07: medium: precondition might fail, in call inlined at main.adb:14 (e.g. when V = (Content => (C => 0, Content => (others => 0))))
 main.adb:9:13: high: private part of "V.Content" is not initialized, in call inlined at main.adb:14
+main.adb:14:04: info: analyzing call to "Init" in context
 priv.adb:6:21: info: index check proved (CVC5: 2 VC)
 priv.adb:12:25: info: cannot unroll loop (too many loop iterations)
 priv.ads:9:07: info: range check proved (CVC5: 2 VC)

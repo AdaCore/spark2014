@@ -11,12 +11,14 @@ bytes.adb:21:25: info: types of aliased objects have the same size (Trivial), in
 bytes.adb:24:16: high: "Data.A" is not initialized, in instantiation at use_bytes_gen.adb:12
 bytes.adb:24:16: high: "Data.B" is not initialized, in instantiation at use_bytes_gen.adb:12
 bytes.adb:24:16: high: "Data.C" is not initialized, in instantiation at use_bytes_gen.adb:12
+use_bytes.adb:12:04: info: no contextual analysis of "Extract" (object renaming)
 use_bytes.adb:15:07: info: alignment of overlaid objects is compatible (Trivial)
 use_bytes.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes.adb:16:25: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes.adb:16:25: info: types of aliased objects have the same size (Trivial)
 use_bytes.adb:19:29: info: unrolling loop
 use_bytes.adb:26:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
+use_bytes2.adb:15:04: info: no contextual analysis of "Extract" (object renaming)
 use_bytes2.adb:16:07: info: range check proved (CVC5: 2 VC)
 use_bytes2.adb:17:07: info: alignment of overlaid objects is compatible (Trivial)
 use_bytes2.adb:17:07: info: object is suitable for aliasing via address clause (Trivial)

@@ -21,7 +21,10 @@ parameter_tests.adb:15:27: info: initialization of "F" proved
 parameter_tests.adb:21:14: info: add a contract to analyze it separately from calling contexts
 parameter_tests.adb:21:14: info: local subprogram "Clear_Coordinate" only analyzed in the context of calls
 parameter_tests.adb:21:32: info: initialization of "C" proved
+parameter_tests.adb:24:07: info: analyzing call to "Clear_Float" in context
+parameter_tests.adb:25:07: info: analyzing call to "Clear_Float" in context
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
+parameter_tests.adb:32:07: info: analyzing call to "Clear_Coordinate" in context
 parameter_tests.adb:36:11: info: data dependencies proved
 parameter_tests.adb:36:32: high: "G.Y" is not initialized
 parameter_tests.adb:43:11: info: data dependencies proved

@@ -11,6 +11,7 @@ aida.adb:14:07: warning: initialization of "From" has no effect
 aida.adb:15:07: warning: unused variable "Code"
 aida.adb:17:32: warning: loop condition is stable
 aida.adb:17:32: warning: statement has no effect
+aida.adb:18:10: info: analyzing call to "Get" in context
 aida.adb:18:22: info: range check proved (CVC5: 2 VC)
 aida.adb:20:14: high: "Result" is not initialized
 aida.ads:4:27: warning: unused initial value of "Value"

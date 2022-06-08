@@ -1,3 +1,4 @@
+ctx.adb:5:11: warning: postcondition does not check the outcome of calling "Assert"
 ctx.adb:5:19: info: postcondition proved (CVC5: 1 VC)
 ctx.adb:5:30: info: data dependencies proved
 ctx.adb:9:22: info: postcondition proved (CVC5: 5 VC)

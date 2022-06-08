@@ -6,8 +6,11 @@ flight_manager.adb:16:21: medium: overflow check might fail, cannot prove lower 
 flight_manager.adb:16:21: medium: overflow check might fail, cannot prove lower bound for F * Distance_To_Target, in call inlined at flight_manager.adb:43 (e.g. when Result = (X_Speed => -100, Y_Speed => 100)) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inlined at flight_manager.adb:42
 flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inlined at flight_manager.adb:43
+flight_manager.adb:20:07: info: no contextual analysis of "My_Abs" (multiple returns)
 flight_manager.adb:23:20: high: overflow check might fail, cannot prove upper bound for -I (e.g. when I = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-I in Integer) to subprogram at line 20]
+flight_manager.adb:42:07: info: analyzing call to "Adjust_Speed" in context
 flight_manager.adb:42:56: medium: overflow check might fail, cannot prove lower bound for Position_X - Target_X (e.g. when Position_X = Integer'First and Target_X = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Target_X >= 0 then Position_X >= Integer'First + Target_X else Position_X <= Integer'Last + Target_X) to subprogram at flight_manager.ads:7]
+flight_manager.adb:43:07: info: analyzing call to "Adjust_Speed" in context
 flight_manager.adb:43:56: medium: overflow check might fail, cannot prove lower bound for Position_Y - Target_Y (e.g. when Position_Y = Integer'First and Target_Y = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Target_Y >= 0 then Position_Y >= Integer'First + Target_Y else Position_Y <= Integer'Last + Target_Y) to subprogram at flight_manager.ads:7]
 flight_manager.adb:45:14: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:45:14: medium: "Result.Y_Speed" might not be initialized

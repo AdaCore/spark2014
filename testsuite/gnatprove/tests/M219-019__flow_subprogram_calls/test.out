@@ -1,4 +1,5 @@
 test.adb:16:24: info: initialization of "Sum" proved
+test.adb:18:07: info: no contextual analysis of "HRB_Main" (nested subprogram)
 test.adb:18:17: info: add a contract to analyze it separately from calling contexts
 test.adb:18:17: info: local subprogram "HRB_Add" only analyzed in the context of calls
 test.adb:19:26: warning: "B" is not modified, could be IN
@@ -6,16 +7,23 @@ test.adb:22:17: info: overflow check proved (CVC5: 2 VC), in call inlined at tes
 test.adb:22:17: medium: overflow check might fail, cannot prove lower bound for A + B, in call inlined at test.adb:36, in call inlined at test.adb:45 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 44 should mention Sum in a loop invariant]
 test.adb:25:17: info: add a contract to analyze it separately from calling contexts
 test.adb:25:17: info: local subprogram "HRB_Increment" only analyzed in the context of calls
+test.adb:29:10: info: analyzing call to "HRB_Add" in context
 test.adb:32:17: info: add a contract to analyze it separately from calling contexts
 test.adb:32:17: info: local subprogram "HRB_A" only analyzed in the context of calls
+test.adb:36:10: info: analyzing call to "HRB_Add" in context
+test.adb:37:10: info: analyzing call to "HRB_Increment" in context
 test.adb:40:07: info: initialization of "I" proved
+test.adb:45:10: info: analyzing call to "HRB_A" in context
 test.adb:53:29: warning: unused initial value of "A"
+test.adb:60:10: info: analyzing call to "Flo_Rec_Flush" in context
+test.adb:60:10: info: no contextual analysis of call to recursive subprogram
 test.adb:70:07: info: initialization of "Tmp" proved
 test.adb:79:07: info: initialization of "Tmp" proved
 test.adb:95:12: warning: assuming "Swap_Without_Contract" always returns
 test.adb:95:12: warning: assuming "Swap_Without_Contract" has no effect on global items
 test.adb:95:12: warning: no Global contract available for "Swap_Without_Contract"
 test.adb:95:12: warning: no returning annotation available for "Swap_Without_Contract"
+test.adb:114:04: info: no contextual analysis of "Factorial" (multiple returns)
 test.adb:119:19: medium: overflow check might fail, cannot prove upper bound for N * Factorial (N - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (N * Factorial (N - 1) in Integer) to subprogram at line 114]
 test.adb:119:34: info: range check proved (CVC5: 2 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
@@ -25,6 +33,7 @@ test.adb:143:12: info: data dependencies proved
 test.adb:144:12: info: flow dependencies proved
 test.adb:148:12: info: data dependencies proved
 test.adb:148:33: medium: "Counter" might not be initialized
+test.adb:150:07: info: no contextual analysis of "Global_Test_01" (nested subprogram)
 test.adb:153:23: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 142 should mention X in a precondition]
 test.adb:154:29: medium: overflow check might fail, cannot prove upper bound for Counter + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 142 should mention Counter in a precondition]
 test.adb:167:07: high: "Counter" is not initialized
@@ -32,6 +41,7 @@ test.adb:167:07: warning: "Counter" is set by "Do_Stuff_A" but not used after th
 test.adb:168:07: warning: "Counter" is set by "Do_Stuff_B" but not used after the call
 test.adb:168:07: warning: statement has no effect
 test.adb:171:30: info: initialization of "N" proved
+test.adb:175:07: info: no contextual analysis of "Global_Test_02" (nested subprogram)
 test.adb:175:17: info: add a contract to analyze it separately from calling contexts
 test.adb:175:17: info: local subprogram "Do_Stuff_C" only analyzed in the context of calls
 test.adb:178:23: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:190
@@ -41,15 +51,20 @@ test.adb:179:29: medium: overflow check might fail, cannot prove upper bound for
 test.adb:182:17: info: add a contract to analyze it separately from calling contexts
 test.adb:182:17: info: local subprogram "Do_Stuff_D" only analyzed in the context of calls
 test.adb:185:18: warning: unused assignment, in call inlined at test.adb:191
+test.adb:190:07: info: analyzing call to "Do_Stuff_C" in context
+test.adb:191:07: info: analyzing call to "Do_Stuff_D" in context
 test.adb:195:30: info: initialization of "B" proved
 test.adb:197:07: info: initialization of "S" proved
 test.adb:200:14: info: data dependencies proved
+test.adb:202:07: info: no contextual analysis of "Global_Test_03" (nested subprogram)
 test.adb:215:14: warning: subprogram "Global_Test_04" has no effect
 test.adb:223:14: info: data dependencies proved
 test.adb:223:35: info: initialization of "S" proved
 test.adb:228:22: info: initialization of "X" proved
+test.adb:230:07: info: no contextual analysis of "Global_Test_04" (nested subprogram)
 test.adb:233:12: high: "S" must be a global output of "Direct_Update_Bad" (SPARK RM 6.1.4(18))
 test.adb:245:10: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(18))
+test.adb:246:10: info: no contextual analysis of "Set" (body not seen yet)
 test.adb:246:15: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(18))
 test.adb:265:38: info: initialization of "Global_B" constituent of "State" proved
 test.adb:275:46: info: initialization of "Local_Y" proved
@@ -89,4 +104,3 @@ test.adb:167
 test.adb:101
 
 test.adb:101
-

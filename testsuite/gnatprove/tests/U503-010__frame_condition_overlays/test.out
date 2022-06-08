@@ -2,6 +2,7 @@ test_alias.adb:3:04: info: alignment of overlaid objects is compatible (Trivial)
 test_alias.adb:3:04: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:3:64: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:3:64: info: types of aliased objects have the same size (Trivial)
+test_alias.adb:10:07: info: no contextual analysis of "Rand" (body not seen yet)
 test_alias.adb:10:07: warning: assuming "Rand" always returns
 test_alias.adb:10:07: warning: assuming "Rand" has no effect on global items
 test_alias.adb:10:07: warning: no Global contract available for "Rand"
@@ -14,6 +15,7 @@ test_alias.adb:15:10: warning: no Global contract available for "Rand"
 test_alias.adb:15:10: warning: no returning annotation available for "Rand"
 test_alias.adb:16:25: info: cannot unroll loop (too many loop iterations)
 test_alias.adb:17:25: medium: assertion might fail (e.g. when Y = 1) [possible fix: loop at line 16 should mention Z and Z and Z and X and Y in a loop invariant]
+test_alias.adb:18:10: info: no contextual analysis of "Set" (body not seen yet)
 test_alias.adb:18:10: warning: assuming "Set" always returns
 test_alias.adb:18:10: warning: assuming "Set" has no effect on global items
 test_alias.adb:18:10: warning: no Global contract available for "Set"

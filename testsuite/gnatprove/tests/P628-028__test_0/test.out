@@ -7,7 +7,6 @@ node_a.adb:27:24: warning: assuming "Suspend_Forever" always returns
 node_a.adb:27:24: warning: assuming "Suspend_Forever" has no effect on global items
 node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever"
 node_a.adb:27:24: warning: no returning annotation available for "Suspend_Forever"
-polyorb_hi-epoch.adb:32:06: warning: unit "System" is not referenced [-gnatwu]
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
 polyorb_hi-epoch.ads:44:11: info: data dependencies proved
@@ -19,7 +18,6 @@ polyorb_hi-periodic_task.adb:53:07: info: initialization of "Error" proved, in i
 polyorb_hi-periodic_task.adb:53:07: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.ads:49:04: warning: formal object "Task_Deadline" is not referenced [-gnatwu]
 polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:65:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:22

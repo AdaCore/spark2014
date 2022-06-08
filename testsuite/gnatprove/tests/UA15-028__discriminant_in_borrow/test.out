@@ -38,6 +38,7 @@ main.adb:28:33: warning: no Global contract available for "At_End"
 main.adb:28:56: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:30:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:30:21: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:31:07: info: no contextual analysis of "DoStuff" (body not seen yet)
 main.adb:31:07: warning: assuming "DoStuff" always returns
 main.adb:31:07: warning: assuming "DoStuff" has no effect on global items
 main.adb:31:07: warning: no Global contract available for "DoStuff"

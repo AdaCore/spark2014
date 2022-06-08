@@ -27,6 +27,8 @@ test_annotate.adb:77:58: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:77:71: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:78:37: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:79:31: info: pointer dereference check proved (CVC5: 1 VC)
+test_annotate.adb:79:55: warning: consider extracting conjunct from quantified expression
+test_annotate.adb:79:55: warning: unused variable "P" in conjunct
 test_annotate.adb:79:79: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:79:91: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:82:16: info: pointer dereference check proved (CVC5: 1 VC)

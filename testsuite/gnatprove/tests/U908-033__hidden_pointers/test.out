@@ -329,6 +329,7 @@ example_recursive.adb:341:04: medium: in inlined expression function body at exa
 example_recursive.adb:341:04: medium: precondition might fail, cannot prove N = 0
 example_recursive.adb:342:04: medium: in inlined expression function body at example_recursive.adb:32
 example_recursive.adb:342:04: medium: precondition might fail, cannot prove N = 0
+example_recursive.adb:344:07: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:344:07: warning: assuming "Rand" always returns
 example_recursive.adb:344:07: warning: assuming "Rand" has no effect on global items
 example_recursive.adb:344:07: warning: no Global contract available for "Rand"

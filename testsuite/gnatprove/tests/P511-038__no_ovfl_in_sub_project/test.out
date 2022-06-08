@@ -1,3 +1,5 @@
 
 raised CONSTRAINT_ERROR : check.adb:8 overflow check failed
 check.adb:8:21: medium: overflow check might fail, cannot prove upper bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+sub.adb:1:16: warning: "X" is not modified, could be IN
+sub.adb:1:19: warning: "Y" is not modified, could be IN

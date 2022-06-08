@@ -1,0 +1,2 @@
+use_float_dims.adb:3:11: warning: file name does not match unit name, should be "use_dims.adb"
+use_long_dims.adb:3:11: warning: file name does not match unit name, should be "use_dims.adb"

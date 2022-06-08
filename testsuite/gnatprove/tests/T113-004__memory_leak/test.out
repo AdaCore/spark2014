@@ -123,13 +123,10 @@ glob.adb:24:12: medium: memory leak might occur [possible fix: subprogram at glo
 glob.adb:30:09: info: initial condition proved (CVC5: 3 VC)
 glob.adb:32:10: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
 glob.adb:32:10: info: initialization of "X" proved
-glob.adb:32:10: warning: variable "X" is read but never assigned [-gnatwv]
 glob.adb:33:10: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
 glob.adb:33:10: info: initialization of "Y" proved
-glob.adb:33:10: warning: variable "Y" is read but never assigned [-gnatwv]
 glob.adb:34:10: info: initialization of "Z" proved
 glob.adb:34:10: medium: memory leak might occur at end of scope
-glob.adb:34:10: warning: variable "Z" is read but never assigned [-gnatwv]
 glob.adb:37:13: info: absence of memory leak proved (CVC5: 1 VC)
 glob.adb:38:13: info: absence of memory leak proved (CVC5: 1 VC)
 glob.adb:39:13: info: absence of memory leak proved (CVC5: 1 VC)
@@ -226,7 +223,6 @@ pointers.adb:147:22: info: assertion proved (CVC5: 1 VC)
 pointers.adb:148:15: info: absence of memory leak proved (CVC5: 1 VC)
 pointers.adb:150:11: info: absence of memory leak proved (CVC5: 1 VC)
 pointers.adb:150:14: high: "A.Q.Z" is not initialized
-pointers.adb:150:14: warning: "A.Q" may be referenced before it has a value [enabled by default]
 pointers.adb:151:11: info: absence of memory leak proved (CVC5: 1 VC)
 pointers.adb:152:09: info: absence of memory leak proved (CVC5: 1 VC)
 pointers.adb:154:09: info: absence of memory leak proved (CVC5: 1 VC)

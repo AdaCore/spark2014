@@ -41,6 +41,9 @@ test_swap_lines.adb:41:71: info: index check proved (CVC5: 4 VC), in call inline
 test_swap_lines.adb:41:74: info: index check proved (CVC5: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:42:31: info: overflow check proved (CVC5: 2 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:46:04: info: initialization of "M" proved
+test_swap_lines.adb:51:04: info: analyzing call to "Swap_Lines" in context
 test_swap_lines.adb:52:19: info: assertion proved (CVC5: 3 VC)
+test_swap_lines.adb:60:04: info: analyzing call to "Swap_Lines_2" in context
 test_swap_lines.adb:61:19: info: assertion proved (CVC5: 3 VC)
+test_swap_lines.adb:67:04: info: analyzing call to "Incr_Diag" in context
 test_swap_lines.adb:68:19: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)

@@ -1,3 +1,331 @@
+generic_matrix_thing.ads:15:05: info: analyzing call to "Lt" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Lt" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Lt" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Lt" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Lt" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Lt" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Rotate" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Rotate" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Rotate" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Rotate" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Sift" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Sift" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Sum_Strict_Upper" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Swap" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Swap" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Swap" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Swap" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Swap" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "To_Index" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Xchg" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Xchg" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Xchg" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Xchg" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Xchg" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Xchg" in context
+generic_matrix_thing.ads:15:05: info: analyzing call to "Xchg" in context
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:104
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:104
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:104
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:104
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:105
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:105
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:71
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:71
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:71
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:90
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:90
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:90
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:90
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:97
+generic_matrix_thing.ads:15:05: info: in inlined body at a-cogeso.adb:97
+generic_matrix_thing.ads:15:05: info: in inlined body at a-ngrear.adb:750
+generic_matrix_thing.ads:15:05: info: in inlined body at a-ngrear.adb:750
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cgaaso.adb:40
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:104
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:104
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:105
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:117
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:117
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:117
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:117
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:117
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:117
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:117
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:121
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:123
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:123
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:123
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:123
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:123
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:123
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:123
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:62
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:71
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:71
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:71
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:90
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:90
+generic_matrix_thing.ads:15:05: info: in instantiation at a-cogeso.adb:97
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:641
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:688
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:692
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:696
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:700
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
+generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:750
+main_test.adb:10:05: info: analyzing call to "Lt" in context
+main_test.adb:10:05: info: analyzing call to "Lt" in context
+main_test.adb:10:05: info: analyzing call to "Lt" in context
+main_test.adb:10:05: info: analyzing call to "Lt" in context
+main_test.adb:10:05: info: analyzing call to "Lt" in context
+main_test.adb:10:05: info: analyzing call to "Lt" in context
+main_test.adb:10:05: info: analyzing call to "Rotate" in context
+main_test.adb:10:05: info: analyzing call to "Rotate" in context
+main_test.adb:10:05: info: analyzing call to "Rotate" in context
+main_test.adb:10:05: info: analyzing call to "Rotate" in context
+main_test.adb:10:05: info: analyzing call to "Sift" in context
+main_test.adb:10:05: info: analyzing call to "Sift" in context
+main_test.adb:10:05: info: analyzing call to "Sum_Strict_Upper" in context
+main_test.adb:10:05: info: analyzing call to "Swap" in context
+main_test.adb:10:05: info: analyzing call to "Swap" in context
+main_test.adb:10:05: info: analyzing call to "Swap" in context
+main_test.adb:10:05: info: analyzing call to "Swap" in context
+main_test.adb:10:05: info: analyzing call to "Swap" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "To_Index" in context
+main_test.adb:10:05: info: analyzing call to "Xchg" in context
+main_test.adb:10:05: info: analyzing call to "Xchg" in context
+main_test.adb:10:05: info: analyzing call to "Xchg" in context
+main_test.adb:10:05: info: analyzing call to "Xchg" in context
+main_test.adb:10:05: info: analyzing call to "Xchg" in context
+main_test.adb:10:05: info: analyzing call to "Xchg" in context
+main_test.adb:10:05: info: analyzing call to "Xchg" in context
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:104
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:104
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:104
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:104
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:105
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:105
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:62
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:62
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:62
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:62
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:62
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:62
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:71
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:71
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:71
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:90
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:90
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:90
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:90
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:97
+main_test.adb:10:05: info: in inlined body at a-cogeso.adb:97
+main_test.adb:10:05: info: in inlined body at a-ngrear.adb:750
+main_test.adb:10:05: info: in inlined body at a-ngrear.adb:750
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cgaaso.adb:40
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:104
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:104
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:105
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:117
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:117
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:117
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:117
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:117
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:117
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:117
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:121
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:123
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:123
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:123
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:123
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:123
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:123
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:123
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:62
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:62
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:62
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:62
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:71
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:71
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:71
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:90
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:90
+main_test.adb:10:05: info: in instantiation at a-cogeso.adb:97
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:641
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:688
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:692
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:696
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:700
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:745
+main_test.adb:10:05: info: in instantiation at a-ngrear.adb:750
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
+main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
 main_test.adb:10:05: warning: assuming "*" always returns
 main_test.adb:10:05: warning: assuming "*" has no effect on global items
 main_test.adb:10:05: warning: assuming "Transpose" always returns
@@ -16,3 +344,150 @@ specific_matrix_other.adb:13:39: warning: assuming "*" always returns
 specific_matrix_other.adb:13:39: warning: no returning annotation available for "*"
 specific_matrix_other.adb:13:50: warning: assuming "*" always returns
 specific_matrix_other.adb:13:50: warning: no returning annotation available for "*"
+specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Rotate" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Rotate" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Rotate" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Rotate" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Sift" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Sift" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Sum_Strict_Upper" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Swap" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Swap" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Swap" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Swap" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Swap" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "To_Index" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Xchg" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Xchg" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Xchg" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Xchg" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Xchg" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Xchg" in context
+specific_matrix_other.ads:11:05: info: analyzing call to "Xchg" in context
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:104
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:104
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:104
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:104
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:105
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:105
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:71
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:71
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:71
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:90
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:90
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:90
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:90
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:97
+specific_matrix_other.ads:11:05: info: in inlined body at a-cogeso.adb:97
+specific_matrix_other.ads:11:05: info: in inlined body at a-ngrear.adb:750
+specific_matrix_other.ads:11:05: info: in inlined body at a-ngrear.adb:750
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cgaaso.adb:40
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:104
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:104
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:105
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:117
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:117
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:117
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:117
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:117
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:117
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:117
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:121
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:123
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:123
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:123
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:123
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:123
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:123
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:123
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:62
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:71
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:71
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:71
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:90
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:90
+specific_matrix_other.ads:11:05: info: in instantiation at a-cogeso.adb:97
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:641
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:688
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:692
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:696
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:700
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
+specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:750

@@ -26,6 +26,12 @@ c74402a.adb:128:21: warning: subprogram "G5" has no effect
 c74402a.adb:134:21: info: add a contract to analyze it separately from calling contexts
 c74402a.adb:134:21: info: local subprogram "G6" only analyzed in the context of calls
 c74402a.adb:134:21: warning: subprogram "G6" has no effect
+c74402a.adb:142:11: info: analyzing call to "G4" in context
+c74402a.adb:143:11: info: analyzing call to "G5" in context
+c74402a.adb:144:11: info: analyzing call to "G6" in context
+c74402a.adb:146:11: info: analyzing call to "G4" in context
+c74402a.adb:147:11: info: analyzing call to "G5" in context
+c74402a.adb:148:11: info: analyzing call to "G6" in context
 c74402a.adb:152:06: warning: assuming "RESULT" always returns
 c74402a.adb:152:06: warning: assuming "RESULT" has no effect on global items
 c74402a.adb:152:06: warning: no Global contract available for "RESULT"

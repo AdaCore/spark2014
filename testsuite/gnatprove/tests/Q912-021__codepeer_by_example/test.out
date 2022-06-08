@@ -104,6 +104,7 @@ context.adb:3:04: info: initialization of "X" proved
 context.adb:4:14: info: add a contract to analyze it separately from calling contexts
 context.adb:4:14: info: local subprogram "Local" only analyzed in the context of calls
 context.adb:7:25: info: overflow check proved (CVC5: 20 VC), in call inlined at context.adb:12
+context.adb:12:04: info: analyzing call to "Local" in context
 context.adb:12:04: info: in inlined body at line 6
 context.adb:12:04: info: unrolling loop
 filter.adb:5:21: info: unrolling loop
@@ -136,5 +137,6 @@ self_assign.adb:3:11: high: overflow check might fail [CWE 190], cannot prove up
 sum_all_arr.adb:5:21: info: unrolling loop
 sum_all_arr.adb:6:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Sum + X (J) (e.g. when J = 2 and Sum = -1 and X = (2 => Integer'First, others => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 top_down.adb:2:21: info: initialization of "Y" proved
+top_down.adb:4:04: info: no contextual analysis of "Ident" (multiple returns)
 top_down.adb:6:13: high: array index check might fail [CWE 119] (e.g. when X = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (X in 1 .. 10) to subprogram at line 4]
 top_down.adb:13:12: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]

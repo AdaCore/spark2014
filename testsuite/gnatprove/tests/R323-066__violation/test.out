@@ -13,6 +13,7 @@ display_velocities.adb:51:07: medium: precondition might fail, in call inlined a
 display_velocities.adb:52:55: low: range check might fail, cannot prove lower bound for "[SPK] Satellite Velocity for RSA is " & DKFloat'image, in call inlined at display_velocities.adb:59 [possible fix: postcondition of call at line 51 should mention Known_Satellites.Satellitearray]
 display_velocities.adb:52:80: info: precondition proved (Z3: 1 VC), in call inlined at display_velocities.adb:59
 display_velocities.adb:52:113: low: range check might fail, cannot prove lower bound for "[SPK] Satellite Velocity for RSA is " & DKFloat'Image(Velocity(Dereferenced(SatRefArray(RSA)))) & " mph ", in call inlined at display_velocities.adb:59 [reason for check: input value must fit in parameter type] [possible fix: postcondition of call at line 51 should mention Known_Satellites.Satellitearray]
+display_velocities.adb:59:04: info: analyzing call to "Display_Velocities_SPARK" in context
 known_satellites.adb:10:79: info: precondition proved (Z3: 2 VC)
 known_satellites.adb:22:48: info: range check proved (Z3: 2 VC)
 known_satellites.adb:23:22: info: index check proved (Z3: 2 VC)

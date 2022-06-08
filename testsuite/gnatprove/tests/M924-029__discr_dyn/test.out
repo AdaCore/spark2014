@@ -2,4 +2,6 @@ discr_dyn.adb:3:13: info: add a contract to analyze it separately from calling c
 discr_dyn.adb:3:13: info: local subprogram "IDENT_INT" only analyzed in the context of calls
 discr_dyn.adb:5:07: info: range check proved (CVC5: 2 VC)
 discr_dyn.adb:12:10: info: range check proved (CVC5: 2 VC)
+discr_dyn.adb:15:12: info: analyzing call to "IDENT_INT" in context
 discr_dyn.adb:15:29: medium: discriminant check might fail
+discr_dyn.adb:15:30: info: analyzing call to "IDENT_INT" in context

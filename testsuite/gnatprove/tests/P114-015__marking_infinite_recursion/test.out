@@ -1,2 +1,5 @@
+q.ads:3:44: warning: predicate check includes a call to "Foo" that requires a predicate check
+q.ads:3:44: warning: this will result in infinite recursion
+q.ads:3:44: warning: use an explicit subtype of "T" to carry the predicate
 q.ads:3:49: high: infinite recursion might occur
 q.ads:5:18: warning: unused variable "X"

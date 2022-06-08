@@ -1,6 +1,7 @@
 assign_arr_out.adb:6:14: info: add a contract to analyze it separately from calling contexts
 assign_arr_out.adb:6:14: info: local subprogram "Assign_Array" only analyzed in the context of calls
 assign_arr_out.adb:6:28: info: initialization of "A" proved
+assign_arr_out.adb:13:04: info: analyzing call to "Assign_Array" in context
 c330002_0.adb:5:09: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at c330002_0.ads:7 should mention A'Length or A'First or A'Last in a precondition]
 c330002_0.adb:5:12: medium: range check might fail
 c330002_0.adb:10:09: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at c330002_0.ads:9 should mention A'Length or A'First or A'Last in a precondition]

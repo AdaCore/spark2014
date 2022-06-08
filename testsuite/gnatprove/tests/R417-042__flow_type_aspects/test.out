@@ -1,3 +1,4 @@
+p.adb:1:11: warning: file name does not match unit name, should be "wrapper.adb"
 p.adb:1:20: warning: unused variable "X"
 p.adb:1:23: warning: unused variable "Low"
 p.adb:1:28: warning: unused variable "High"
@@ -10,6 +11,7 @@ p.adb:16:11: info: data dependencies proved
 p.adb:17:35: low: unused global "Low"
 p.adb:17:40: low: unused global "High"
 p.adb:21:16: medium: predicate check might fail
+termination.adb:10:07: warning: unreachable code
 termination.ads:9:55: high: cannot call potentially nonreturning subprogram "Infinite_Loop" for type "Int1" in its own predicate (SPARK RM 3.2.4(4))
 termination.ads:11:51: high: cannot call potentially nonreturning subprogram "Rec_Func" for type "Int3" in its own predicate (SPARK RM 3.2.4(4))
 termination.ads:14:51: high: cannot call potentially nonreturning subprogram "Infinite_Loop" for type "Int5" in its own predicate (SPARK RM 3.2.4(4))
@@ -32,6 +34,7 @@ termination.ads:54:30: info: in default value of private type at termination.ads
 termination.ads:54:30: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 termination.ads:56:29: high: cannot call boundary subprogram "Infinite_Loop2" for type "Discr_Rec" in its own invariant (SPARK RM 7.3.2(5))
 termination.ads:56:29: high: cannot call potentially nonreturning subprogram "Infinite_Loop2" for type "Discr_Rec" in its own invariant (SPARK RM 7.3.2(11))
+visibility.adb:10:07: warning: unreachable code
 wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved
 wrapper.adb:3:49: low: unused global "Low"

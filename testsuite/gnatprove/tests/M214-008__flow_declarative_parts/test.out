@@ -1,6 +1,8 @@
 test.adb:4:13: info: add a contract to analyze it separately from calling contexts
 test.adb:4:13: info: local subprogram "Double" only analyzed in the context of calls
 test.adb:10:14: warning: subprogram "Tons_Of_Types" has no effect
+test.adb:14:43: info: analyzing call to "Double" in context
+test.adb:30:07: info: no contextual analysis of "Tons_Of_Types" (nested subprogram)
 test.adb:30:07: warning: analyzing unreferenced procedure "Nested"
 test.adb:30:17: warning: subprogram "Nested" has no effect
 test.adb:43:04: warning: analyzing unreferenced procedure "Test_01"

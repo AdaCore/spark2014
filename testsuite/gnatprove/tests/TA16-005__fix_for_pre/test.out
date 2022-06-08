@@ -1,3 +1,4 @@
+precond.adb:14:13: info: no contextual analysis of "Valid" (in assertion expression)
 precond.adb:16:14: warning: subprogram "P" has no effect
 precond.adb:16:56: medium: precondition might fail [possible fix: use "and then" instead of "and" in precondition]
 precond.adb:23:07: info: precondition proved (CVC5: 2 VC)

@@ -136,6 +136,7 @@ section_4_6.ads:106:06: medium: contract cases might not be disjoint
 section_4_6.ads:106:55: info: contract case proved (Trivial: 2 VC)
 section_4_6.ads:107:55: info: contract case proved (Trivial: 2 VC)
 section_4_6.ads:108:55: info: contract case proved (Trivial: 2 VC)
+section_4_6.ads:109:06: warning: neither postcondition nor contract cases mention function result
 section_4_6.ads:109:14: info: postcondition proved (Trivial: 1 VC)
 step_function.adb:30:33: info: loop invariant initialization proved (CVC5: 1 VC)
 step_function.adb:30:33: info: loop invariant preservation proved (CVC5: 1 VC)

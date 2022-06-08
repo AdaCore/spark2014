@@ -1,1 +1,4 @@
+unmod.adb:4:22: warning: pragma Unmodified already given for "X"
 unref.adb:1:11: warning: subprogram "Unref" has no effect
+unref.adb:4:25: warning: aspect Unreferenced specified for "X"
+unref.adb:4:25: warning: pragma Unreferenced already given for "X"

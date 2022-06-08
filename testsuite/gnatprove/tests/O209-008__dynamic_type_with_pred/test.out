@@ -1,4 +1,5 @@
 test_dynamic_property.adb:2:14: warning: subprogram "P" has no effect
+test_dynamic_property.adb:3:07: info: no contextual analysis of "P" (subtype declaration with predicate)
 test_dynamic_property.adb:3:15: info: range check proved (CVC5: 2 VC)
 test_dynamic_property.adb:5:35: info: predicate check proved (CVC5: 1 VC)
 test_dynamic_property.adb:5:35: info: range check proved (CVC5: 2 VC)

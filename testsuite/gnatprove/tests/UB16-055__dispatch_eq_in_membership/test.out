@@ -1,3 +1,4 @@
+repr.adb:29:07: info: no contextual analysis of "Rand" (body not seen yet)
 repr.adb:29:07: warning: assuming "Rand" always returns
 repr.adb:29:07: warning: assuming "Rand" has no effect on global items
 repr.adb:29:07: warning: no Global contract available for "Rand"

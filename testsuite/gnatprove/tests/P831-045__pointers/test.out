@@ -113,16 +113,13 @@ simple.adb:22:09: error: borrowed expression which does not have the left-hand s
 simple.adb:22:09: error: violation of aspect SPARK_Mode at line 5
 test.adb:13:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
 test.adb:13:04: error: violation of aspect SPARK_Mode at line 7
-test.adb:20:12: warning: variable "varPtr2" is read but never assigned [-gnatwv]
 test.adb:24:30: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:24:30: error: violation of aspect SPARK_Mode at line 7
-test.adb:64:09: warning: variable "X" is read but never assigned [-gnatwv]
 test.adb:78:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:78:03: error: violation of aspect SPARK_Mode at line 7
 test.adb:78:08: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(7))
 test.adb:78:08: error: violation of aspect SPARK_Mode at line 7
-test.adb:84:08: warning: "B" may be null [enabled by default]
-test.adb:86:11: warning: "x0" may be referenced before it has a value [enabled by default]
+test.adb:84:08: warning: "B" may be null
 test.adb:87:08: info: analyzing call to "g" in context
 test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:89:03: error: violation of aspect SPARK_Mode at line 7

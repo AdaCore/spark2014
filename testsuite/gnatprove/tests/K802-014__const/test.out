@@ -3,4 +3,5 @@ a.adb:18:07: warning: analyzing unreferenced function "Test"
 a.adb:26:19: info: unrolling loop
 a.adb:29:10: warning: analyzing unreferenced function "Test"
 a.adb:40:17: warning: subprogram "Outer" has no effect
+a.adb:41:10: info: no contextual analysis of "Outer" (nested subprogram)
 a.adb:41:10: warning: analyzing unreferenced function "Test"

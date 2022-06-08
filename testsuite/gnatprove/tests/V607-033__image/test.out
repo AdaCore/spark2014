@@ -1,3 +1,4 @@
+main.adb:14:07: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:14:07: warning: assuming "Rand" always returns
 main.adb:14:07: warning: assuming "Rand" has no effect on global items
 main.adb:14:07: warning: no Global contract available for "Rand"

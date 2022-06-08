@@ -1,2 +1,3 @@
 crash.adb:8:07: info: initialization of "X_New" proved
 crash.adb:10:18: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 5 should mention X in a precondition]
+crash.adb:16:08: info: no contextual analysis of "Func_1" (inside expression function)

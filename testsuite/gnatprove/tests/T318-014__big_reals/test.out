@@ -1,5 +1,3 @@
-big_reals_test.adb:1:30: warning: "Ada.Numerics.Big_Numbers.Big_Reals" is an Ada 2022 unit [-gnatwi]
-big_reals_test.adb:2:30: warning: "Ada.Numerics.Big_Numbers.Big_Integers" is an Ada 2022 unit [-gnatwi]
 big_reals_test.adb:11:04: warning: analyzing unreferenced procedure "Divide_Division_Check_Fail"
 big_reals_test.adb:11:14: warning: subprogram "Divide_Division_Check_Fail" has no effect
 big_reals_test.adb:16:22: info: assertion proved (CVC5: 1 VC)
@@ -105,4 +103,3 @@ big_reals_test.adb:76:32: info: predicate check proved (Trivial: 1 VC)
 big_reals_test.adb:78:04: info: precondition proved (Trivial: 1 VC)
 big_reals_test.adb:81:19: medium: assertion might fail, cannot prove Low <= Arg
 big_reals_test.adb:81:19: medium: in inlined expression function body at a-nbnbre.ads:80
-real_convs.ads:1:30: warning: "Ada.Numerics.Big_Numbers.Big_Reals" is an Ada 2022 unit [-gnatwi]

@@ -1,4 +1,3 @@
-my_test.adb:6:04: warning: "T2" is not modified, could be declared constant [-gnatwk]
 my_test.adb:8:04: info: initialization of "T3" proved
 my_test.adb:8:16: info: range check proved (CVC5: 2 VC)
 my_test.adb:11:22: info: precondition proved (CVC5: 1 VC)
@@ -84,7 +83,6 @@ simple_unc_arrays.adb:188:07: info: initialization of "Tmp" proved
 simple_unc_arrays.adb:197:25: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:199:19: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:200:10: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.adb:200:13: warning: useless assignment of object to itself [-gnatwr]
 simple_unc_arrays.adb:200:19: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:201:10: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:11:07: info: range check proved (CVC5: 2 VC)

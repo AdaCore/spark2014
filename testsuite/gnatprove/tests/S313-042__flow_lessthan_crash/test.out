@@ -38,7 +38,6 @@ moth-scheduler.adb:474:14: warning: assuming "space_switch" always returns
 moth-scheduler.adb:474:14: warning: no returning annotation available for "space_switch"
 moth.adb:54:14: warning: assuming "cons_init" always returns
 moth.adb:54:14: warning: no returning annotation available for "cons_init"
-moth.ads:29:30: warning: "Ada.Numerics.Big_Numbers.Big_Integers" is an Ada 2022 unit [-gnatwi]
 moth.ads:116:10: info: flow dependencies proved
 moth.ads:143:10: info: initialization of "Model" proved
 moth.ads:192:23: info: initialization of "task_id" proved

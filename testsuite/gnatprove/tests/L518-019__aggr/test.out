@@ -1,3 +1,4 @@
 aggr_repeat.adb:3:14: info: add a contract to analyze it separately from calling contexts
 aggr_repeat.adb:3:14: info: local subprogram "Q" only analyzed in the context of calls
 aggr_repeat.adb:3:14: warning: subprogram "Q" has no effect
+aggr_repeat.adb:9:04: info: analyzing call to "Q" in context

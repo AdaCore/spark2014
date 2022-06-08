@@ -10,17 +10,28 @@ foo.adb:11:14: medium: overflow check might fail, cannot prove upper bound for A
 foo.adb:11:14: medium: overflow check might fail, cannot prove upper bound for A + 1, in call inlined at foo.adb:37, in call inlined at foo.adb:46 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 41 should mention A in a precondition]
 foo.adb:16:09: info: data dependencies proved
 foo.adb:17:09: info: flow dependencies proved
+foo.adb:20:07: info: analyzing call to "Gen_1" in context
+foo.adb:28:07: info: analyzing call to "Gen_1" in context
 foo.adb:34:14: info: add a contract to analyze it separately from calling contexts
 foo.adb:34:14: info: local subprogram "Gen_2" only analyzed in the context of calls
+foo.adb:37:07: info: analyzing call to "Gen_1" in context
 foo.adb:42:09: info: data dependencies proved
 foo.adb:43:09: info: flow dependencies proved
+foo.adb:46:07: info: analyzing call to "Gen_2" in context
+foo.adb:54:07: info: analyzing call to "Gen_2" in context
+foo.adb:64:07: info: analyzing call to "Gen_1" in context
 foo.adb:68:14: info: add a contract to analyze it separately from calling contexts
 foo.adb:68:14: info: local subprogram "Gen_3" only analyzed in the context of calls
 foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_3_2" (SPARK RM 6.1.4(15)), in call inlined at foo.adb:88
 foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPARK RM 6.1.4(15)), in call inlined at foo.adb:97, in call inlined at foo.adb:114
 foo.adb:76:09: info: data dependencies proved
 foo.adb:77:09: info: flow dependencies proved
+foo.adb:80:07: info: analyzing call to "Gen_3" in context
+foo.adb:88:07: info: analyzing call to "Gen_3" in context
 foo.adb:94:14: info: add a contract to analyze it separately from calling contexts
 foo.adb:94:14: info: local subprogram "Gen_4" only analyzed in the context of calls
+foo.adb:97:07: info: analyzing call to "Gen_3" in context
 foo.adb:102:09: info: data dependencies proved
 foo.adb:103:09: info: flow dependencies proved
+foo.adb:106:07: info: analyzing call to "Gen_4" in context
+foo.adb:114:07: info: analyzing call to "Gen_4" in context

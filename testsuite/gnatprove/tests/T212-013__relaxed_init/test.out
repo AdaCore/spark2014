@@ -70,6 +70,7 @@ test_init_by_proof_mem.adb:14:28: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:21:16: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:22:16: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:22:23: info: discriminant check proved (CVC5: 1 VC)
+test_init_by_proof_mem.adb:28:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_mem.adb:28:07: warning: assuming "Branch" always returns
 test_init_by_proof_mem.adb:28:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_mem.adb:28:07: warning: no Global contract available for "Branch"
@@ -129,6 +130,7 @@ test_init_by_proof_out_params.adb:146:17: high: "X.C.X" is not initialized in "P
 test_init_by_proof_out_params.adb:146:17: high: "X.C.Z" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C.Z" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_init_by_proof_out_params.adb:153:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:167:17: warning: "X" is not modified, could be IN
+test_init_by_proof_out_params.adb:186:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:186:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:186:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:186:07: warning: no Global contract available for "Branch"

@@ -2,6 +2,7 @@ main.adb:20:16: medium: in default value at main.adb:47
 main.adb:20:16: medium: in inlined predicate at main.adb:12
 main.adb:20:16: medium: predicate check might fail, cannot prove T.G >= 0
 main.adb:27:04: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:29:07: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:29:07: warning: assuming "Rand" always returns
 main.adb:29:07: warning: assuming "Rand" has no effect on global items
 main.adb:29:07: warning: no Global contract available for "Rand"

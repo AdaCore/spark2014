@@ -1,2 +1,3 @@
 main.adb:12:14: warning: subprogram "Refl" has no effect
+main.adb:12:31: warning: postcondition does not check the outcome of calling "Refl"
 main.adb:12:39: info: postcondition proved (CVC5: 1 VC)

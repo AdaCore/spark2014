@@ -14,3 +14,7 @@ p.adb:28:14: info: add a contract to analyze it separately from calling contexts
 p.adb:28:14: info: local subprogram "Fourth" only analyzed in the context of calls
 p.adb:28:14: warning: subprogram "Fourth" has no effect
 p.adb:33:22: info: assertion proved (CVC5: 1 VC), in call inlined at p.adb:40
+p.adb:37:04: info: analyzing call to "First" in context
+p.adb:38:04: info: analyzing call to "Second" in context
+p.adb:39:04: info: analyzing call to "Third" in context
+p.adb:40:04: info: analyzing call to "Fourth" in context

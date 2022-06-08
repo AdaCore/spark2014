@@ -22,6 +22,7 @@ foo.adb:80:38: medium: array index check might fail [reason for check: value mus
 foo.adb:81:28: info: range check proved (CVC5: 4 VC)
 foo.adb:82:28: info: range check proved (CVC5: 4 VC)
 foo.adb:86:23: info: initialization of "B" proved
+foo.adb:90:07: info: no contextual analysis of "Test_07" (nested subprogram)
 foo.adb:91:12: info: data dependencies proved
 foo.adb:91:33: info: initialization of "B" proved
 foo.adb:98:16: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 85 should mention New_Str in a precondition]

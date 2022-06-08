@@ -1,2 +1,0 @@
-test_warn.adb:6:23: warning: attribute Update is an obsolescent feature [-gnatwj]
-test_warn.adb:6:23: warning: use a delta aggregate instead [-gnatwj]

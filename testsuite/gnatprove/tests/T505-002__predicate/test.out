@@ -1,4 +1,5 @@
 repro-b.ads:15:11: info: predicate check proved (CVC5: 2 VC)
+repro-c.ads:3:14: warning: file name does not match unit name, should be "repro-b.ads"
 repro-c.ads:7:11: info: predicate check proved (CVC5: 2 VC)
 repro-c.ads:12:11: info: predicate check proved (CVC5: 2 VC)
 unsound.adb:6:35: info: division check proved (CVC5: 1 VC)

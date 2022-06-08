@@ -1,4 +1,5 @@
 test_tagged_records.adb:19:04: medium: memory leak might occur at end of scope
+test_tagged_records.adb:21:07: info: no contextual analysis of "Rand" (body not seen yet)
 test_tagged_records.adb:21:07: warning: assuming "Rand" always returns
 test_tagged_records.adb:21:07: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:21:07: warning: no Global contract available for "Rand"

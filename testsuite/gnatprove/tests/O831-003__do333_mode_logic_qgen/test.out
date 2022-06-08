@@ -105,6 +105,8 @@ event_processing.adb:190:07: info: initialization of "Seen_14_Inhibit_Out" prove
 event_processing.adb:191:07: info: initialization of "Seen_2_Seen" proved
 event_processing.adb:192:07: info: initialization of "Seen_2_Inhibit_Out" proved
 event_processing.adb:193:07: info: initialization of "Seen_Seen" proved
+event_processing.adb:440:80: warning: aspect Unreferenced specified for "Seen_11_Inhibit_Out"
+event_processing.adb:464:79: warning: aspect Unreferenced specified for "Seen_Inhibit_Out"
 event_processing.ads:38:08: info: initialization of "When_Pilot_Fllying_Transfer_Seen" proved
 event_processing.ads:39:08: info: initialization of "When_AP_Engaged_Seen" proved
 event_processing.ads:40:08: info: initialization of "When_SYNC_Switch_Pressed_Seen" proved
@@ -147,10 +149,48 @@ flight_modes.adb:535:43: warning: unused assignment
 flight_modes.adb:536:43: warning: unused assignment
 flight_modes.adb:537:45: warning: unused assignment
 flight_modes.adb:538:43: warning: unused assignment
+flight_modes.adb:539:10: info: no contextual analysis of "LATERAL_Update_Activated_Modes" (body not seen yet)
 flight_modes.adb:578:43: warning: unused assignment
 flight_modes.adb:579:44: warning: unused assignment
 flight_modes.adb:582:46: warning: unused assignment
 flight_modes.adb:583:44: warning: unused assignment
+flight_modes.adb:584:10: info: no contextual analysis of "VERTICAL_Update_Activated_Modes" (body not seen yet)
+flight_modes.adb:642:16: info: no contextual analysis of "FD_Turn_FD_Off" (body not seen yet)
+flight_modes.adb:656:19: info: no contextual analysis of "FD_Turn_FD_On" (body not seen yet)
+flight_modes.adb:672:16: info: no contextual analysis of "ANNUNCIATIONS_Turn_Annunciations_Off" (body not seen yet)
+flight_modes.adb:686:19: info: no contextual analysis of "ANNUNCIATIONS_Turn_Annunciations_On" (body not seen yet)
+flight_modes.adb:702:22: info: no contextual analysis of "INDEPENDENT_In_Independent_Mode" (body not seen yet)
+flight_modes.adb:732:22: info: no contextual analysis of "ACTIVE_In_Active_Mode" (body not seen yet)
+flight_modes.adb:765:16: info: no contextual analysis of "LATERAL_HDG_Clear" (body not seen yet)
+flight_modes.adb:787:22: info: no contextual analysis of "LATERAL_New_Lateral_Mode_Activated" (body not seen yet)
+flight_modes.adb:809:19: info: no contextual analysis of "LATERAL_HDG_Select" (body not seen yet)
+flight_modes.adb:829:16: info: no contextual analysis of "LATERAL_NAV_Clear" (body not seen yet)
+flight_modes.adb:877:25: info: no contextual analysis of "LATERAL_NAV_Capture" (body not seen yet)
+flight_modes.adb:897:19: info: no contextual analysis of "LATERAL_NAV_Select" (body not seen yet)
+flight_modes.adb:916:16: info: no contextual analysis of "LATERAL_LAPPR_Clear" (body not seen yet)
+flight_modes.adb:964:25: info: no contextual analysis of "LATERAL_LAPPR_Capture" (body not seen yet)
+flight_modes.adb:984:19: info: no contextual analysis of "LATERAL_LAPPR_Select" (body not seen yet)
+flight_modes.adb:1003:16: info: no contextual analysis of "LATERAL_LGA_Clear" (body not seen yet)
+flight_modes.adb:1047:19: info: no contextual analysis of "LATERAL_LGA_Select" (body not seen yet)
+flight_modes.adb:1069:19: info: no contextual analysis of "LATERAL_Lateral_Mode_Active" (body not seen yet)
+flight_modes.adb:1112:16: info: no contextual analysis of "VERTICAL_VS_Clear" (body not seen yet)
+flight_modes.adb:1134:22: info: no contextual analysis of "VERTICAL_New_Vertical_Mode_Activated" (body not seen yet)
+flight_modes.adb:1156:19: info: no contextual analysis of "VERTICAL_VS_Select" (body not seen yet)
+flight_modes.adb:1176:16: info: no contextual analysis of "VERTICAL_FLC_Clear" (body not seen yet)
+flight_modes.adb:1220:19: info: no contextual analysis of "VERTICAL_FLC_Select" (body not seen yet)
+flight_modes.adb:1240:16: info: no contextual analysis of "VERTICAL_ALT_Clear" (body not seen yet)
+flight_modes.adb:1284:19: info: no contextual analysis of "VERTICAL_ALT_Select" (body not seen yet)
+flight_modes.adb:1304:16: info: no contextual analysis of "VERTICAL_VAPPR_Clear" (body not seen yet)
+flight_modes.adb:1352:25: info: no contextual analysis of "VERTICAL_VAPPR_Capture" (body not seen yet)
+flight_modes.adb:1372:19: info: no contextual analysis of "VERTICAL_VAPPR_Select" (body not seen yet)
+flight_modes.adb:1391:16: info: no contextual analysis of "VERTICAL_VGA_Clear" (body not seen yet)
+flight_modes.adb:1435:19: info: no contextual analysis of "VERTICAL_VGA_Select" (body not seen yet)
+flight_modes.adb:1455:16: info: no contextual analysis of "VERTICAL_ALTSEL_Clear" (body not seen yet)
+flight_modes.adb:1503:22: info: no contextual analysis of "VERTICAL_ALTSEL_Deactivate" (body not seen yet)
+flight_modes.adb:1533:28: info: no contextual analysis of "VERTICAL_ALTSEL_Track" (body not seen yet)
+flight_modes.adb:1551:25: info: no contextual analysis of "VERTICAL_ALTSEL_Capture" (body not seen yet)
+flight_modes.adb:1574:19: info: no contextual analysis of "VERTICAL_ALTSEL_Select" (body not seen yet)
+flight_modes.adb:1595:19: info: no contextual analysis of "VERTICAL_Vertical_Mode_Active" (body not seen yet)
 flight_modes.adb:1669:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1670:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1671:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -160,6 +200,8 @@ flight_modes.adb:1674:07: warning: initialization of "aVarTruthTableCondition_6"
 flight_modes.adb:1675:07: warning: initialization of "aVarTruthTableCondition_7" has no effect
 flight_modes.adb:1676:07: warning: initialization of "aVarTruthTableCondition_8" has no effect
 flight_modes.adb:1677:07: warning: initialization of "r" has no effect
+flight_modes.adb:1682:36: info: no contextual analysis of "FD_Lateral_Mode_Manually_Selected" (body not seen yet)
+flight_modes.adb:1683:36: info: no contextual analysis of "FD_Vertical_Mode_Manually_Selected" (body not seen yet)
 flight_modes.adb:1732:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1733:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1734:07: warning: initialization of "r" has no effect
@@ -260,6 +302,10 @@ flight_modes.adb:2327:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2327:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2328:07: warning: initialization of "r" has no effect
 flight_modes.adb:2328:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2349
+flight_modes.adb:2346:43: info: analyzing call to "LATERAL_HDG_Will_Be_Activated" in context
+flight_modes.adb:2347:43: info: analyzing call to "LATERAL_NAV_Will_Be_Activated" in context
+flight_modes.adb:2348:45: info: analyzing call to "LATERAL_LAPPR_Will_Be_Activated" in context
+flight_modes.adb:2349:43: info: analyzing call to "LATERAL_LGA_Will_Be_Activated" in context
 flight_modes.adb:2354:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2355:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2356:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -383,6 +429,12 @@ flight_modes.adb:3059:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:3059:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3060:07: warning: initialization of "r" has no effect
 flight_modes.adb:3060:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3083
+flight_modes.adb:3080:43: info: analyzing call to "VERTICAL_VS_Will_Be_Activated" in context
+flight_modes.adb:3081:44: info: analyzing call to "VERTICAL_FLC_Will_Be_Activated" in context
+flight_modes.adb:3082:44: info: analyzing call to "VERTICAL_ALT_Will_Be_Activated" in context
+flight_modes.adb:3083:47: info: analyzing call to "VERTICAL_ALTSEL_Will_Be_Activated" in context
+flight_modes.adb:3084:46: info: analyzing call to "VERTICAL_VAPPR_Will_Be_Activated" in context
+flight_modes.adb:3085:44: info: analyzing call to "VERTICAL_VGA_Will_Be_Activated" in context
 flight_modes.adb:3090:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:3091:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:3092:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -456,6 +508,8 @@ flight_modes.ads:101:08: info: initialization of "VAPPR_Active" proved
 flight_modes.ads:102:08: info: initialization of "VGA_Selected" proved
 flight_modes.ads:103:08: info: initialization of "VGA_Active" proved
 flight_modes.ads:106:10: medium: postcondition might fail
+mode_logic_props.adb:54:23: info: no contextual analysis of "initStates" (body not seen yet)
+mode_logic_props.adb:55:23: info: no contextual analysis of "initOutputs" (body not seen yet)
 mode_logic_props.adb:62:07: info: initialization of "Inputs_out1" proved
 mode_logic_props.adb:63:07: info: initialization of "Pilot_Flying_Side" proved
 mode_logic_props.adb:64:07: info: initialization of "Is_AP_Engaged" proved
@@ -606,6 +660,8 @@ no_higher_event_1.adb:150:07: info: initialization of "No_Higher_No_Higher_Below
 no_higher_event_1.adb:151:07: info: initialization of "No_Higher_Event_Than_ALTSEL_Capture_Cond_Met" proved
 no_higher_event_1.adb:309:72: warning: "No_Higher_No_Higher" is set by "comp" but not used after the call
 no_higher_event_1.adb:317:73: warning: "No_Higher_No_Higher_1" is set by "comp" but not used after the call
+no_higher_event_1.adb:343:117: warning: aspect Unreferenced specified for "No_Higher_No_Higher_Below_13"
+no_higher_event_1.adb:355:120: warning: aspect Unreferenced specified for "No_Higher_No_Higher_Below_16"
 no_higher_event_1.adb:378:26: info: unrolling loop
 no_higher_event_1.adb:379:21: medium: "Bus_Creator_out1" might not be initialized
 no_higher_event_1.ads:19:43: info: initialization of "O" proved

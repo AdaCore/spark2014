@@ -12,6 +12,7 @@ semantics.adb:25:17: info: local subprogram "Nested_Non_Ghost" only analyzed in 
 semantics.adb:35:14: warning: unused assignment, in call inlined at semantics.adb:41
 semantics.adb:35:21: medium: overflow check might fail, cannot prove lower bound for Var + (Ghost_Func), in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:35:34: medium: overflow check might fail, cannot prove lower bound for Var + Ghost_Func + (Ghost_Func), in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
+semantics.adb:41:07: info: analyzing call to "Nested_Non_Ghost" in context
 semantics.ads:12:19: info: postcondition proved (CVC5: 1 VC)
 semantics.ads:12:43: info: overflow check proved (CVC5: 2 VC)
 semantics.ads:13:41: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

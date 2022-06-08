@@ -1,3 +1,4 @@
 lemma.ads:4:06: info: data dependencies proved
+lemma.ads:6:06: warning: postcondition does not check the outcome of calling "Prove_Conversion"
 lemma.ads:6:16: info: postcondition proved (colibri: 1 VC)
 lemma.ads:6:23: info: range check proved (Trivial)

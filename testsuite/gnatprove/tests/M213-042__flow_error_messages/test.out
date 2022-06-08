@@ -1,3 +1,4 @@
+test.adb:5:04: info: no contextual analysis of "Output_Not_Set" (multiple returns)
 test.adb:6:30: medium: "X" might not be initialized in "Output_Not_Set" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
 test.adb:15:04: warning: analyzing unreferenced procedure "Use_Of_Uninitialised"
 test.adb:16:36: info: initialization of "X" proved

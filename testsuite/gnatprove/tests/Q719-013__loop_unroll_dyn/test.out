@@ -66,6 +66,7 @@ loops_static.adb:149:25: info: index check proved (CVC5: 4 VC)
 loops_static.adb:155:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (1 => 0, others => 1) and J = 0) [possible fix: subprogram at loops_static.ads:18 should mention A in a precondition]
 loops_static.adb:155:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:157:07: medium: assertion might fail
+loops_static.adb:160:04: info: no contextual analysis of "Loop9" (multiple returns)
 loops_static.adb:163:23: info: unrolling loop
 loops_static.adb:164:13: high: array index check might fail (e.g. when I = 1 and R'First = 2) [reason for check: value must be a valid index into the array]
 loops_static.adb:166:20: info: initialization of "Bad" proved

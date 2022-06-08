@@ -1,6 +1,8 @@
 complex_arrays.adb:25:11: info: flow dependencies proved
+complex_arrays.adb:26:11: warning: postcondition does not check the outcome of calling "AA_Element_Access"
 complex_arrays.adb:26:22: high: postcondition might fail (e.g. when A = (others => (others => 1)) and I = 0 and J = 0 and V = 0)
 complex_arrays.adb:34:11: info: flow dependencies proved
+complex_arrays.adb:35:11: warning: postcondition does not check the outcome of calling "AA_Array_Access"
 complex_arrays.adb:35:22: high: postcondition might fail (e.g. when A = (0 => (others => -1), others => (others => 0)) and I = 0 and J = 1)
 complex_arrays.adb:45:11: info: flow dependencies proved
 complex_arrays.adb:46:22: high: postcondition might fail (e.g. when A = (others => (others => 0)) and I = 0 and J = 0)

@@ -21,4 +21,5 @@ ghc_sort.adb:27:15: info: discriminant check proved (Trivial: 1 VC)
 ghc_sort.adb:28:28: info: pointer dereference check proved (CVC5: 1 VC)
 ghc_sort.adb:34:07: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
 ghc_sort.adb:34:07: info: initialization of "L" proved
+ghc_sort.adb:36:39: warning: "L" may be null
 ghc_sort.adb:36:40: info: pointer dereference check proved (CVC5: 1 VC)

@@ -4,4 +4,6 @@ broken.adb:7:14: medium: overflow check might fail, cannot prove lower bound for
 broken.adb:7:14: medium: overflow check might fail, cannot prove upper bound for I + N, in call inlined at broken.adb:14 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 10 should mention I in a precondition]
 broken.adb:10:04: warning: analyzing unreferenced procedure "Test_01"
 broken.adb:13:24: info: unrolling loop
+broken.adb:14:10: info: analyzing call to "Do_Stuff" in context
 broken.adb:18:04: warning: analyzing unreferenced procedure "Test_02"
+broken.adb:22:10: info: analyzing call to "Do_Stuff" in context

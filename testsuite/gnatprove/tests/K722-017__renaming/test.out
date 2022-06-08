@@ -1,2 +1,4 @@
+renam.adb:11:04: info: no contextual analysis of "K" (object renaming)
 renam.adb:38:07: warning: analyzing unreferenced function "F"
+renam.adb:57:04: info: no contextual analysis of "U" (object renaming)
 renam.ads:3:14: warning: subprogram "P" has no effect

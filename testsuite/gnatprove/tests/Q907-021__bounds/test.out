@@ -4,3 +4,4 @@ main.adb:12:07: medium: range check might fail, in call inlined at main.adb:18 [
 main.adb:12:29: info: index check proved (CVC5: 2 VC), in call inlined at main.adb:18
 main.adb:12:37: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:18
 main.adb:12:40: info: length check proved (CVC5: 2 VC; Trivial: 2 VC), in call inlined at main.adb:18
+main.adb:18:04: info: analyzing call to "Copy_To_Buffer" in context

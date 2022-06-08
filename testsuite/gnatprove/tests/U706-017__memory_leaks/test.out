@@ -3,6 +3,7 @@ main.adb:10:07: info: initialization of "V1" proved
 main.adb:10:07: medium: memory leak might occur at end of scope
 main.adb:11:07: info: initialization of "V2" proved
 main.adb:11:07: medium: memory leak might occur at end of scope
+main.adb:13:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:13:10: warning: assuming "Rand" always returns
 main.adb:13:10: warning: assuming "Rand" has no effect on global items
 main.adb:13:10: warning: no Global contract available for "Rand"

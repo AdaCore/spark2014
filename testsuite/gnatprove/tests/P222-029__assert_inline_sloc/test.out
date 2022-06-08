@@ -2,6 +2,8 @@ main1.adb:3:14: info: add a contract to analyze it separately from calling conte
 main1.adb:3:14: info: local subprogram "Dummy" only analyzed in the context of calls
 main1.adb:3:14: warning: subprogram "Dummy" has no effect
 main1.adb:6:22: medium: assertion might fail, in call inlined at main1.adb:12
+main1.adb:12:04: info: analyzing call to "Dummy" in context
+main2.adb:1:11: warning: file name does not match unit name, should be "main1.adb"
 main2.adb:3:04: warning: analyzing unreferenced procedure "Dummy"
 main2.adb:3:14: warning: subprogram "Dummy" has no effect
 main2.adb:6:22: high: assertion might fail (e.g. when X = 0) [possible fix: subprogram at line 3 should mention X in a precondition]

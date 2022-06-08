@@ -141,6 +141,7 @@ integer32_parsing.adb:176:48: medium: precondition might fail, cannot prove s (I
 integer32_parsing.adb:176:66: info: range check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:176:80: info: overflow check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:176:80: info: range check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
+integer32_parsing.adb:179:07: info: analyzing call to "Prove_Is_Integer" in context
 integer32_parsing.adb:182:21: medium: overflow check might fail, cannot prove lower bound for res * 10 (e.g. when res = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:182:26: medium: overflow check might fail, cannot prove lower bound for res * 10 + (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) (e.g. when First = 2 and I = 1 and res = -214748364 and s = "-9" and s'First = 1 and s'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:182:55: medium: overflow check might fail, cannot prove lower bound for (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of multiplication must fit in a 32-bits machine integer]
@@ -310,6 +311,7 @@ integer32_parsing.adb:286:20: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:289:22: medium: assertion might fail (e.g. when First = 1 and V = 1 and res = "88888888888") [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:289:40: medium: precondition might fail, cannot prove s'Last - First = 9 (e.g. when First = 1)
 integer32_parsing.adb:289:71: info: range check proved (CVC5: 2 VC)
+integer32_parsing.adb:291:07: info: analyzing call to "Prove_Is_Integer" in context
 integer32_parsing.adb:295:09: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:295:47: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 integer32_parsing.adb:295:47: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: loop at line 267 should mention res and top in a loop invariant]

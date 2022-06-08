@@ -1,3 +1,4 @@
+pack.adb:31:10: warning: "Y" may be null
 pack.ads:5:14: warning: subprogram "P0" has no effect
 pack.ads:5:48: high: postcondition might fail (e.g. when X = False)
 pack.ads:6:14: warning: subprogram "P1" has no effect

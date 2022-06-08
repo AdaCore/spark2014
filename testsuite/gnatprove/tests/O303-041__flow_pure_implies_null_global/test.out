@@ -1,7 +1,154 @@
 a.adb:5:04: info: add a contract to analyze it separately from calling contexts
 a.adb:5:04: info: add a contract to analyze it separately from calling contexts
+a.adb:5:04: info: analyzing call to "Lt" in context
+a.adb:5:04: info: analyzing call to "Lt" in context
+a.adb:5:04: info: analyzing call to "Lt" in context
+a.adb:5:04: info: analyzing call to "Lt" in context
+a.adb:5:04: info: analyzing call to "Lt" in context
+a.adb:5:04: info: analyzing call to "Lt" in context
+a.adb:5:04: info: analyzing call to "Rotate" in context
+a.adb:5:04: info: analyzing call to "Rotate" in context
+a.adb:5:04: info: analyzing call to "Rotate" in context
+a.adb:5:04: info: analyzing call to "Rotate" in context
+a.adb:5:04: info: analyzing call to "Sift" in context
+a.adb:5:04: info: analyzing call to "Sift" in context
+a.adb:5:04: info: analyzing call to "Sum_Strict_Upper" in context
+a.adb:5:04: info: analyzing call to "Swap" in context
+a.adb:5:04: info: analyzing call to "Swap" in context
+a.adb:5:04: info: analyzing call to "Swap" in context
+a.adb:5:04: info: analyzing call to "Swap" in context
+a.adb:5:04: info: analyzing call to "Swap" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "To_Index" in context
+a.adb:5:04: info: analyzing call to "Xchg" in context
+a.adb:5:04: info: analyzing call to "Xchg" in context
+a.adb:5:04: info: analyzing call to "Xchg" in context
+a.adb:5:04: info: analyzing call to "Xchg" in context
+a.adb:5:04: info: analyzing call to "Xchg" in context
+a.adb:5:04: info: analyzing call to "Xchg" in context
+a.adb:5:04: info: analyzing call to "Xchg" in context
+a.adb:5:04: info: in inlined body at a-cogeso.adb:104
+a.adb:5:04: info: in inlined body at a-cogeso.adb:104
+a.adb:5:04: info: in inlined body at a-cogeso.adb:104
+a.adb:5:04: info: in inlined body at a-cogeso.adb:104
+a.adb:5:04: info: in inlined body at a-cogeso.adb:105
+a.adb:5:04: info: in inlined body at a-cogeso.adb:105
+a.adb:5:04: info: in inlined body at a-cogeso.adb:62
+a.adb:5:04: info: in inlined body at a-cogeso.adb:62
+a.adb:5:04: info: in inlined body at a-cogeso.adb:62
+a.adb:5:04: info: in inlined body at a-cogeso.adb:62
+a.adb:5:04: info: in inlined body at a-cogeso.adb:62
+a.adb:5:04: info: in inlined body at a-cogeso.adb:62
+a.adb:5:04: info: in inlined body at a-cogeso.adb:71
+a.adb:5:04: info: in inlined body at a-cogeso.adb:71
+a.adb:5:04: info: in inlined body at a-cogeso.adb:71
+a.adb:5:04: info: in inlined body at a-cogeso.adb:90
+a.adb:5:04: info: in inlined body at a-cogeso.adb:90
+a.adb:5:04: info: in inlined body at a-cogeso.adb:90
+a.adb:5:04: info: in inlined body at a-cogeso.adb:90
+a.adb:5:04: info: in inlined body at a-cogeso.adb:97
+a.adb:5:04: info: in inlined body at a-cogeso.adb:97
+a.adb:5:04: info: in inlined body at a-ngrear.adb:750
+a.adb:5:04: info: in inlined body at a-ngrear.adb:750
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
+a.adb:5:04: info: in instantiation at a-cogeso.adb:104
+a.adb:5:04: info: in instantiation at a-cogeso.adb:104
+a.adb:5:04: info: in instantiation at a-cogeso.adb:105
+a.adb:5:04: info: in instantiation at a-cogeso.adb:117
+a.adb:5:04: info: in instantiation at a-cogeso.adb:117
+a.adb:5:04: info: in instantiation at a-cogeso.adb:117
+a.adb:5:04: info: in instantiation at a-cogeso.adb:117
+a.adb:5:04: info: in instantiation at a-cogeso.adb:117
+a.adb:5:04: info: in instantiation at a-cogeso.adb:117
+a.adb:5:04: info: in instantiation at a-cogeso.adb:117
+a.adb:5:04: info: in instantiation at a-cogeso.adb:121
+a.adb:5:04: info: in instantiation at a-cogeso.adb:123
+a.adb:5:04: info: in instantiation at a-cogeso.adb:123
+a.adb:5:04: info: in instantiation at a-cogeso.adb:123
+a.adb:5:04: info: in instantiation at a-cogeso.adb:123
+a.adb:5:04: info: in instantiation at a-cogeso.adb:123
+a.adb:5:04: info: in instantiation at a-cogeso.adb:123
+a.adb:5:04: info: in instantiation at a-cogeso.adb:123
+a.adb:5:04: info: in instantiation at a-cogeso.adb:62
+a.adb:5:04: info: in instantiation at a-cogeso.adb:62
+a.adb:5:04: info: in instantiation at a-cogeso.adb:62
+a.adb:5:04: info: in instantiation at a-cogeso.adb:62
+a.adb:5:04: info: in instantiation at a-cogeso.adb:71
+a.adb:5:04: info: in instantiation at a-cogeso.adb:71
+a.adb:5:04: info: in instantiation at a-cogeso.adb:71
+a.adb:5:04: info: in instantiation at a-cogeso.adb:90
+a.adb:5:04: info: in instantiation at a-cogeso.adb:90
+a.adb:5:04: info: in instantiation at a-cogeso.adb:97
 a.adb:5:04: info: in instantiation at a-ngrear.adb:106
 a.adb:5:04: info: in instantiation at a-ngrear.adb:114
+a.adb:5:04: info: in instantiation at a-ngrear.adb:641
+a.adb:5:04: info: in instantiation at a-ngrear.adb:688
+a.adb:5:04: info: in instantiation at a-ngrear.adb:692
+a.adb:5:04: info: in instantiation at a-ngrear.adb:696
+a.adb:5:04: info: in instantiation at a-ngrear.adb:700
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:745
+a.adb:5:04: info: in instantiation at a-ngrear.adb:750
 a.adb:5:04: info: local subprogram "Rotate" only analyzed in the context of calls
 a.adb:5:04: info: local subprogram "Swap" only analyzed in the context of calls
 a.adb:12:32: warning: assuming "Unit_Vector" always returns

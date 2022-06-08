@@ -26,6 +26,8 @@ subar.adb:50:11: info: range check proved (CVC5: 2 VC)
 subar.adb:50:32: info: cannot unroll loop (too many loop iterations)
 subar.adb:53:14: info: overflow check proved (CodePeer)
 subar.adb:54:11: info: range check proved (CVC5: 2 VC)
+subar.adb:54:24: warning: loop executes zero times or raises Constraint_Error
+subar.adb:54:24: warning: suspicious loop bound out of range of loop subtype
 subar.adb:54:32: info: cannot unroll loop (too many loop iterations)
 subar.adb:55:10: warning: unreachable code (CVC5: 1 VC)
 subar.adb:57:14: info: overflow check proved (CodePeer)

@@ -1,7 +1,9 @@
+instance-child.ads:2:10: warning: file name does not match unit name, should be "instance_child.ads"
 instance-child.ads:2:46: error: actual for formal object with mode in cannot depend on variable input "G3" (SPARK RM 4.4(2))
 instance-child.ads:2:46: error: use instead a constant initialized to the expression with variable input
 instance.ads:2:40: error: actual for formal object with mode in cannot depend on variable input "G3" (SPARK RM 4.4(2))
 instance.ads:2:40: error: use instead a constant initialized to the expression with variable input
+package_instance-child.ads:2:09: warning: file name does not match unit name, should be "package_instance_child.ads"
 package_instance-child.ads:2:53: error: actual for formal object with mode in cannot depend on variable input "G3" (SPARK RM 4.4(2))
 package_instance-child.ads:2:53: error: use instead a constant initialized to the expression with variable input
 package_instance.ads:2:47: error: actual for formal object with mode in cannot depend on variable input "G3" (SPARK RM 4.4(2))

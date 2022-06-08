@@ -1,4 +1,3 @@
-dimensions.ads:6:18: warning: unit "Ada.Numerics.Generic_Elementary_Functions" is not referenced [-gnatwu]
 steering.adb:10:29: warning: assuming "Normalize" always returns
 steering.adb:10:29: warning: no returning annotation available for "Normalize"
 steering.adb:11:53: info: division check proved (CodePeer)

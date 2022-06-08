@@ -1,4 +1,5 @@
 dates.adb:7:19: warning: unused variable "Days"
 dates.adb:9:13: info: initialization of "T" proved
+dates.adb:16:06: info: no contextual analysis of "Split" (inside expression function)
 dates.ads:8:11: info: division check proved (CVC5: 1 VC)
 dates.ads:8:31: info: division check proved (CVC5: 1 VC)

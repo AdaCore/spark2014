@@ -1,7 +1,9 @@
+test_bad_goto.adb:10:10: info: no contextual analysis of "B" (body not seen yet)
 test_bad_goto.adb:10:10: warning: assuming "B" always returns
 test_bad_goto.adb:10:10: warning: assuming "B" has no effect on global items
 test_bad_goto.adb:10:10: warning: no Global contract available for "B"
 test_bad_goto.adb:10:10: warning: no returning annotation available for "B"
+test_bad_goto.adb:12:15: info: no contextual analysis of "E" (body not seen yet)
 test_bad_goto.adb:12:15: warning: assuming "E" always returns
 test_bad_goto.adb:12:15: warning: assuming "E" has no effect on global items
 test_bad_goto.adb:12:15: warning: no Global contract available for "E"

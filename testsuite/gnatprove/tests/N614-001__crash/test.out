@@ -1,4 +1,6 @@
+main.adb:14:04: info: no contextual analysis of "Print_Set" (object renaming)
 main.adb:18:20: info: cannot unroll loop (too many loop iterations)
+main.adb:24:04: info: no contextual analysis of "Print_Part" (object renaming)
 main.adb:28:20: info: cannot unroll loop (too many loop iterations)
 main.adb:39:04: info: initialization of "NP" proved
 main.adb:40:04: info: initialization of "Count" proved

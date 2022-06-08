@@ -1,1 +1,2 @@
 eq_null_record.ads:14:12: info: postcondition proved (CVC5: 2 VC)
+eq_null_record.ads:14:37: warning: conjunct in postcondition does not check the outcome of calling "Always_True"

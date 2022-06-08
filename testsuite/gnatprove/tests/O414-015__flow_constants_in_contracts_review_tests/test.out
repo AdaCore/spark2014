@@ -31,6 +31,8 @@ info_flow_tests.adb:69:11: info: data dependencies proved
 info_flow_tests.adb:72:54: medium: overflow check might fail, cannot prove upper bound for A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 72 should mention A and X in a precondition]
 info_flow_tests.adb:74:14: info: data dependencies proved
 info_flow_tests.adb:76:14: info: flow dependencies proved
+info_flow_tests.adb:79:14: warning: postcondition does not check the outcome of calling "F4"
+info_flow_tests.adb:79:14: warning: postcondition does not mention function result
 info_flow_tests.adb:79:22: info: postcondition proved (CVC5: 1 VC)
 info_flow_tests.adb:84:32: info: precondition proved (CVC5: 1 VC)
 info_flow_tests.adb:86:32: info: precondition proved (CVC5: 1 VC)
@@ -51,6 +53,8 @@ info_flow_tests.adb:100:09: info: data dependencies proved
 info_flow_tests.adb:103:54: medium: overflow check might fail, cannot prove upper bound for A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 103 should mention A and X in a precondition]
 info_flow_tests.adb:105:14: info: data dependencies proved
 info_flow_tests.adb:107:14: info: flow dependencies proved
+info_flow_tests.adb:110:14: warning: postcondition does not check the outcome of calling "F4"
+info_flow_tests.adb:110:14: warning: postcondition does not mention function result
 info_flow_tests.adb:110:22: info: postcondition proved (CVC5: 1 VC)
 info_flow_tests.adb:115:32: info: precondition proved (CVC5: 1 VC)
 info_flow_tests.adb:117:32: info: precondition proved (CVC5: 1 VC)
@@ -64,11 +68,13 @@ info_flow_tests.adb:124:33: medium: overflow check might fail, cannot prove uppe
 info_flow_tests.adb:124:38: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 + C4 + C5 + C6 [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:124:43: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 + C4 + C5 + C6 + C7 [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:132:23: info: initialization of "C" proved
+info_flow_tests.adb:137:07: info: no contextual analysis of "Test_06" (nested subprogram)
 info_flow_tests.adb:137:25: info: initialization of "X" proved
 info_flow_tests.adb:138:12: info: data dependencies proved
 info_flow_tests.adb:140:18: medium: range check might fail
 info_flow_tests.adb:141:19: medium: range check might fail, cannot prove upper bound for C1 [reason for check: default component value must fit in the type]
 info_flow_tests.adb:153:23: info: initialization of "C" proved
+info_flow_tests.adb:158:07: info: no contextual analysis of "Test_07" (nested subprogram)
 info_flow_tests.adb:161:18: medium: range check might fail
 info_flow_tests.adb:164:19: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(15))
 info_flow_tests.adb:164:21: info: cannot unroll loop (too many loop iterations)
@@ -97,6 +103,7 @@ info_flow_tests.adb:228:23: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:229:23: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:235:23: warning: unused initial value of "B"
 info_flow_tests.adb:236:23: info: initialization of "C" proved
+info_flow_tests.adb:239:07: info: no contextual analysis of "Test_13" (nested package declaration)
 info_flow_tests.adb:241:12: info: flow dependencies proved
 info_flow_tests.adb:249:12: medium: constant without variable input "C3" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes

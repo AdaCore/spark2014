@@ -1,5 +1,6 @@
 test_default.adb:11:21: medium: in default value at test_default.adb:14
 test_default.adb:11:21: medium: initialization check might fail [possible fix: you should consider adding a postcondition to function C or turning it into an expression function in its unit spec]
+test_default.adb:11:29: info: no contextual analysis of "C" (in default expression)
 test_default.adb:11:29: warning: assuming "C" always returns
 test_default.adb:11:29: warning: assuming "C" has no effect on global items
 test_default.adb:11:29: warning: no Global contract available for "C"

@@ -2,6 +2,8 @@ foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
 foo.adb:4:14: warning: subprogram "Floats_And_Double" has no effect
 foo.adb:7:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention X and Y in a precondition]
 foo.adb:7:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 4 should mention Y in a precondition]
+foo.ads:10:04: info: in instantiation at generic_float_tests.adb:229
+foo.ads:10:04: info: no contextual analysis of "Exhaustive" (multiple returns)
 foo.ads:10:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
 foo.ads:10:04: warning: analyzing unreferenced procedure "Distributed_Fun"
 foo.ads:10:04: warning: analyzing unreferenced procedure "Equality"
@@ -24,6 +26,8 @@ foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:278
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:294
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:346
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:352
+foo.ads:15:04: info: in instantiation at generic_float_tests.adb:229
+foo.ads:15:04: info: no contextual analysis of "Exhaustive" (multiple returns)
 foo.ads:15:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
 foo.ads:15:04: warning: analyzing unreferenced procedure "Distributed_Fun"
 foo.ads:15:04: warning: analyzing unreferenced procedure "Equality"
@@ -426,10 +430,12 @@ generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, i
 generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:25:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded]
 generic_interval_tests.adb:25:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded]
+generic_interval_tests.adb:26:11: warning: postcondition does not check the outcome of calling "Test_03"
 generic_interval_tests.adb:26:19: medium: postcondition might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:26:19: medium: postcondition might fail, in instantiation at bar.ads:8
 generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:8
+generic_interval_tests.adb:34:11: warning: postcondition does not check the outcome of calling "Test_04"
 generic_interval_tests.adb:34:19: info: postcondition proved (CVC5: 2 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:34:19: info: postcondition proved (CVC5: 2 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:34:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
@@ -438,22 +444,26 @@ generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, i
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded]
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded]
+generic_interval_tests.adb:42:11: warning: postcondition does not check the outcome of calling "Test_05"
 generic_interval_tests.adb:42:19: medium: postcondition might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:42:19: medium: postcondition might fail, in instantiation at bar.ads:8
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:8
+generic_interval_tests.adb:50:11: warning: postcondition does not check the outcome of calling "Test_06"
 generic_interval_tests.adb:50:19: medium: postcondition might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:50:19: medium: postcondition might fail, in instantiation at bar.ads:8
 generic_interval_tests.adb:50:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 48 should mention X]
 generic_interval_tests.adb:50:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 48 should mention X]
 generic_interval_tests.adb:56:14: warning: subprogram "Test_07" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:56:14: warning: subprogram "Test_07" has no effect, in instantiation at bar.ads:8
+generic_interval_tests.adb:58:11: warning: postcondition does not check the outcome of calling "Test_07"
 generic_interval_tests.adb:58:19: medium: postcondition might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:58:19: medium: postcondition might fail, in instantiation at bar.ads:8
 generic_interval_tests.adb:58:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 56 should mention X]
 generic_interval_tests.adb:58:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 56 should mention X]
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:8
+generic_interval_tests.adb:66:11: warning: postcondition does not check the outcome of calling "Test_08"
 generic_interval_tests.adb:66:19: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:66:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:66:21: info: division check proved (CVC5: 1 VC), in instantiation at bar.ads:12

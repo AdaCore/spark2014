@@ -24,6 +24,7 @@ test.adb:145:04: warning: analyzing unreferenced procedure "Test_06"
 test.adb:148:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:151:04: warning: analyzing unreferenced procedure "Test_07"
 test.adb:155:17: warning: "Y" is set by "Op_R3" but not used after the call
+test.adb:158:04: info: no contextual analysis of "Test_08" (object renaming)
 test.adb:162:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:165:04: warning: analyzing unreferenced procedure "Test_09"
 test.adb:168:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
@@ -36,6 +37,7 @@ test.adb:186:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2
 test.adb:189:04: warning: analyzing unreferenced procedure "Test_13"
 test.adb:193:15: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:196:04: warning: analyzing unreferenced procedure "Test_14"
+test.adb:199:07: info: analyzing call to "Swap" in context
 test.adb:199:21: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:206:04: warning: analyzing unreferenced procedure "Slice_01"
 test.adb:209:23: info: non-aliasing of formal parameters "X" and "Y" proved
@@ -69,4 +71,6 @@ test.adb:301:09: info: flow dependencies proved
 test.adb:314:09: info: flow dependencies proved
 test.adb:317:15: info: non-aliasing of formal parameters "A" and "B" proved
 test.adb:332:04: warning: analyzing unreferenced procedure "Test_TC_1"
+test.adb:335:07: info: analyzing call to "Op_Foo" in context
 test.adb:338:04: warning: analyzing unreferenced procedure "Test_TC_2"
+test.adb:341:07: info: analyzing call to "Op_Foo" in context

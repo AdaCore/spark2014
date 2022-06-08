@@ -2,6 +2,7 @@ fb20a00.adb:9:07: info: initialization of "New_Str" proved
 fb20a00.adb:9:07: info: range check proved (CVC5: 2 VC)
 fb20a00.adb:10:07: info: initialization of "New_Sub" proved
 fb20a00.adb:10:07: info: range check proved (CVC5: 2 VC)
+fb20a00.adb:15:07: info: no contextual analysis of "Upper_Case" (unconstrained return type)
 fb20a00.adb:18:10: info: initialization of "Ret" proved
 fb20a00.adb:18:10: info: range check proved (CVC5: 2 VC)
 fb20a00.adb:19:10: info: initialization of "Pos" proved

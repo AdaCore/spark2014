@@ -11,4 +11,5 @@ aalias.adb:34:29: info: range check proved (CVC5: 4 VC)
 aconv.adb:22:04: error: conversion between array types with modular index types of different sizes is not yet supported
 aconv.adb:22:04: error: conversion between array types with modular index types of different sizes is not yet supported
 aconv.adb:22:04: error: error in inlined body at line 15
+aconv.adb:22:04: info: analyzing call to "Foo" in context
 gnatprove: error during flow analysis and proof

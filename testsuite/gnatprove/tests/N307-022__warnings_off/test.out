@@ -9,7 +9,5 @@ warns2.adb:9:08: warning: unused assignment
 warns2.adb:9:15: medium: overflow check might fail, cannot prove upper bound for XXX + 1 (e.g. when XXX = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 warns3.adb:4:04: info: initialization of "XXX" proved
 warns3.adb:6:13: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
-warns3.adb:9:04: warning: no warning suppressed by this pragma [-gnatw.w]
-warns3.adb:10:04: warning: possibly useless assignment to "XXX", value might not be referenced [-gnatwm]
 warns3.adb:10:08: warning: unused assignment
 warns3.adb:10:15: medium: overflow check might fail, cannot prove upper bound for XXX + 1 (e.g. when XXX = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]

@@ -1,3 +1,4 @@
+abstract_maps.ads:18:23: warning: unused variable "K"
 example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
 example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
 example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
@@ -226,6 +227,7 @@ pointers_with_aliasing.ads:44:16: info: subprogram "New_Memory" will terminate, 
 pointers_with_aliasing.ads:45:17: info: postcondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
 pointers_with_aliasing.ads:47:16: info: subprogram "Deref" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
 pointers_with_aliasing.ads:52:18: info: precondition proved (Trivial: 1 VC), in instantiation at example_recursive.adb:10
+pointers_with_aliasing.ads:52:26: warning: unused variable "K"
 pointers_with_aliasing.ads:52:31: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
 pointers_with_aliasing.ads:62:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
 pointers_with_aliasing.ads:65:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10

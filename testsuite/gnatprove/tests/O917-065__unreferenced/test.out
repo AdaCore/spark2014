@@ -4,4 +4,7 @@ unref.adb:11:14: info: add a contract to analyze it separately from calling cont
 unref.adb:11:14: info: local subprogram "Nested_Inlined" only analyzed in the context of calls
 unref.adb:11:30: info: initialization of "X" proved
 unref.adb:21:07: warning: statement has no effect
+unref.adb:21:21: warning: aspect Unreferenced specified for "Loc"
+unref.adb:22:07: info: analyzing call to "Nested_Inlined" in context
+unref.adb:22:23: warning: aspect Unreferenced specified for "Loc"
 unref.ads:4:21: info: initialization of "Y" proved

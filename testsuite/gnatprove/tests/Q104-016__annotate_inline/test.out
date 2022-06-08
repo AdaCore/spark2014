@@ -3,3 +3,4 @@ p.adb:5:14: info: local subprogram "Inner" only analyzed in the context of calls
 p.adb:5:14: warning: subprogram "Inner" has no effect
 p.adb:8:38: info: range check justified
 p.adb:11:22: info: assertion proved (CVC5: 2 VC), in call inlined at p.adb:17
+p.adb:17:04: info: analyzing call to "Inner" in context

@@ -22,10 +22,12 @@ pixel.adb:21:41: medium: divide by zero might fail
 pixel.adb:21:41: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:95
 pixel.adb:21:41: medium: precondition might fail
 pixel.adb:21:63: medium: divide by zero might fail
+pixel.adb:24:04: info: no contextual analysis of "Aspect" (body not seen yet)
 pixel.adb:24:04: warning: assuming "Aspect" always returns
 pixel.adb:24:04: warning: assuming "Aspect" has no effect on global items
 pixel.adb:24:04: warning: no Global contract available for "Aspect"
 pixel.adb:24:04: warning: no returning annotation available for "Aspect"
+pixel.adb:25:04: info: no contextual analysis of "Clause" (body not seen yet)
 pixel.adb:25:04: warning: assuming "Clause" always returns
 pixel.adb:25:04: warning: assuming "Clause" has no effect on global items
 pixel.adb:25:04: warning: no Global contract available for "Clause"

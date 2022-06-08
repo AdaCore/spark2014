@@ -1,5 +1,4 @@
 a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_search.adb:119
-binary_search.adb:4:30: warning: "Ada.Numerics.Big_Numbers.Big_Integers" is an Ada 2022 unit [-gnatwi]
 binary_search.adb:19:07: info: dynamic accessibility check proved (Trivial)
 binary_search.adb:23:13: info: function contract might not be available on recursive calls
 binary_search.adb:24:08: medium: "M_Contains" is recursive, terminating annotation could be incorrect

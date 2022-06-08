@@ -1,4 +1,5 @@
 signed.adb:1:11: high: all paths in "Signed" raise exceptions or do not terminate normally
+signed.adb:10:09: info: no contextual analysis of "Shift_Left" (body not seen yet)
 signed.adb:10:09: warning: assuming "Shift_Left" always returns
 signed.adb:10:09: warning: assuming "Shift_Left" has no effect on global items
 signed.adb:10:09: warning: no Global contract available for "Shift_Left"
@@ -23,6 +24,7 @@ signed.adb:19:09: warning: assuming "Shift_Left" has no effect on global items
 signed.adb:19:09: warning: no Global contract available for "Shift_Left"
 signed.adb:19:09: warning: no returning annotation available for "Shift_Left"
 signed.adb:20:19: info: assertion proved (colibri: 1 VC)
+signed.adb:24:09: info: no contextual analysis of "Shift_Right" (body not seen yet)
 signed.adb:24:09: warning: assuming "Shift_Right" always returns
 signed.adb:24:09: warning: assuming "Shift_Right" has no effect on global items
 signed.adb:24:09: warning: no Global contract available for "Shift_Right"
@@ -45,6 +47,7 @@ signed.adb:33:09: warning: assuming "Shift_Right" has no effect on global items
 signed.adb:33:09: warning: no Global contract available for "Shift_Right"
 signed.adb:33:09: warning: no returning annotation available for "Shift_Right"
 signed.adb:34:19: info: assertion proved (colibri: 1 VC)
+signed.adb:38:09: info: no contextual analysis of "Shift_Right_Arithmetic" (body not seen yet)
 signed.adb:38:09: warning: assuming "Shift_Right_Arithmetic" always returns
 signed.adb:38:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
 signed.adb:38:09: warning: no Global contract available for "Shift_Right_Arithmetic"
@@ -69,6 +72,7 @@ signed.adb:47:09: warning: assuming "Shift_Right_Arithmetic" has no effect on gl
 signed.adb:47:09: warning: no Global contract available for "Shift_Right_Arithmetic"
 signed.adb:47:09: warning: no returning annotation available for "Shift_Right_Arithmetic"
 signed.adb:48:19: info: assertion proved (CVC5: 1 VC)
+signed.adb:52:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
 signed.adb:52:09: warning: assuming "Rotate_Left" always returns
 signed.adb:52:09: warning: assuming "Rotate_Left" has no effect on global items
 signed.adb:52:09: warning: no Global contract available for "Rotate_Left"
@@ -96,6 +100,7 @@ signed.adb:61:09: warning: assuming "Rotate_Left" has no effect on global items
 signed.adb:61:09: warning: no Global contract available for "Rotate_Left"
 signed.adb:61:09: warning: no returning annotation available for "Rotate_Left"
 signed.adb:62:19: medium: assertion might fail
+signed.adb:66:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
 signed.adb:66:09: warning: assuming "Rotate_Right" always returns
 signed.adb:66:09: warning: assuming "Rotate_Right" has no effect on global items
 signed.adb:66:09: warning: no Global contract available for "Rotate_Right"

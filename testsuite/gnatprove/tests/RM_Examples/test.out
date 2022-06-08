@@ -6,6 +6,7 @@ anti_aliasing.adb:23:07: info: initialization of "Temp" proved
 anti_aliasing.adb:26:14: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition]
 anti_aliasing.adb:31:11: info: data dependencies proved
 anti_aliasing.adb:34:14: high: overflow check might fail, cannot prove lower bound for I + Local_1 (e.g. when I = -1 and Local_1 = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 30 should mention Local_1 and I in a precondition]
+anti_aliasing.adb:40:04: info: analyzing call to "One_In_One_Out" in context
 anti_aliasing.adb:44:21: info: non-aliasing of formal parameters "X" and "Y" proved
 anti_aliasing.adb:48:16: info: non-aliasing of formal parameters "X" and "Y" proved
 anti_aliasing.adb:51:20: high: formal parameter "I" and global "Local_1" are aliased (SPARK RM 6.4.2)

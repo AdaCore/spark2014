@@ -95,6 +95,7 @@ records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the co
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:448:07: info: initialization of "R" proved
 records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment]
+records.adb:458:18: info: analyzing call to "Swap_Fields" in context
 records.adb:465:11: info: flow dependencies proved
 records.adb:466:22: info: postcondition proved (CVC5: 1 VC)
 records.adb:474:30: info: assertion proved (CVC5: 1 VC)

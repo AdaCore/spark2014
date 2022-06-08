@@ -24,6 +24,7 @@ container.adb:30:16: medium: loop might be nonterminating, terminating annotatio
 container.adb:30:16: medium: loop might be nonterminating, terminating annotation on "Test4" could be incorrect, in call inlined at container.adb:45
 container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC5: 1 VC), in call inlined at container.adb:45
+container.adb:45:07: info: analyzing call to "Test3" in context
 container.adb:54:17: info: range check proved (CVC5: 2 VC)
 container.adb:59:17: warning: unreachable code (CVC5: 1 VC)
 container.adb:60:07: warning: unreachable code (CVC5: 1 VC)
@@ -97,6 +98,7 @@ functions.adb:16:07: warning: no Global contract available for "P"
 functions.adb:22:10: medium: call to nonreturning subprogram might be executed
 functions.adb:22:10: warning: assuming "P" has no effect on global items
 functions.adb:22:10: warning: no Global contract available for "P"
+functions.adb:29:04: info: analyzing call to "G" in context
 functions.ads:4:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: info: subprogram "Expr_Func" will terminate, terminating annotation has been proved
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
@@ -164,26 +166,36 @@ p.adb:7:14: warning: subprogram "Proc3" has no effect
 p.adb:9:14: info: add a contract to analyze it separately from calling contexts
 p.adb:9:14: info: local subprogram "Proc" only analyzed in the context of calls
 p.adb:9:14: warning: subprogram "Proc" has no effect
+p.adb:11:07: info: no contextual analysis of "Proc2" (body not seen yet)
 p.adb:11:07: medium: call to "Proc2" might be nonterminating, terminating annotation on "Proc" could be incorrect
+p.adb:16:07: info: no contextual analysis of "Proc3" (body not seen yet)
 p.adb:26:04: warning: analyzing unreferenced procedure "Proc4"
 p.adb:26:14: warning: subprogram "Proc4" has no effect
 p.adb:29:14: medium: call to "Proc3" might be nonterminating, terminating annotation on "Proc4" could be incorrect
 p.adb:32:14: warning: subprogram "Proc5" has no effect
+p.adb:35:10: info: analyzing call to "Proc5" in context
+p.adb:35:10: info: no contextual analysis of call to recursive subprogram
 p.adb:35:10: medium: "Proc5" is recursive, terminating annotation could be incorrect
 p.adb:39:14: warning: subprogram "Proc7" has no effect
 p.adb:41:14: info: add a contract to analyze it separately from calling contexts
 p.adb:41:14: info: local subprogram "Proc6" only analyzed in the context of calls
 p.adb:41:14: info: subprogram "Proc6" will terminate, terminating annotation has been proved
 p.adb:41:14: warning: subprogram "Proc6" has no effect
+p.adb:44:10: info: no contextual analysis of "Proc7" (body not seen yet)
 p.adb:44:10: medium: "Proc7" is recursive, terminating annotation could be incorrect, in call inlined at p.adb:51
+p.adb:51:10: info: analyzing call to "Proc6" in context
 p.adb:55:04: info: initialization of "B" proved
+p.adb:59:04: info: analyzing call to "Proc" in context
 preconditions.adb:6:18: medium: loop might be nonterminating, terminating annotation on "Nonreturning_Precondition" could be incorrect
 preconditions.adb:9:14: warning: unreachable code (CVC5: 1 VC)
 preconditions.ads:2:13: info: subprogram "Returning_Precondition" will terminate, terminating annotation has been proved
 r.adb:17:36: info: unrolling loop
 r.adb:18:13: high: potentially blocking entry call in protected operation "E"
+r.adb:18:13: warning: potentially blocking operation in protected operation
 r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect
+r.adb:34:10: info: analyzing call to "Proc1" in context
+r.adb:34:10: info: no contextual analysis of call to recursive subprogram
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:40:07: warning: no Global contract available for "OS_Exit"
 r.adb:48:07: warning: unreachable code (CVC5: 1 VC)
@@ -197,3 +209,4 @@ r.adb:58:04: medium: call to nonreturning subprogram might be executed
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: call to nonreturning procedure never executed (CVC5: 1 VC)
+r.adb:59:04: warning: unreachable code

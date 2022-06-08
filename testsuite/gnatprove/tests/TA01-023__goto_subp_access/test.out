@@ -1,3 +1,4 @@
+subptr.adb:15:04: warning: unreachable code
 subptr.adb:15:13: error: access to subprogram with global effects is not allowed in SPARK
 subptr.adb:15:13: error: violation of pragma SPARK_Mode at test.adc:1
 subptr.adb:17:13: error: access to subprogram with global effects is not allowed in SPARK

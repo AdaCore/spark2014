@@ -1,6 +1,7 @@
 semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 semaphores1.adb:26:14: info: add a contract to analyze it separately from calling contexts
 semaphores1.adb:26:14: info: local subprogram "Initialize_Shared_Data" only analyzed in the context of calls
+semaphores1.adb:33:07: info: analyzing call to "Initialize_Shared_Data" in context
 semaphores1.adb:34:07: warning: assuming "Set_True" always returns
 semaphores1.adb:34:07: warning: no returning annotation available for "Set_True"
 semaphores1.adb:42:07: warning: assuming "Suspend_Until_True" always returns

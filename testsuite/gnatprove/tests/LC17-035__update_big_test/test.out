@@ -259,6 +259,7 @@ ar.ads:263:11: info: flow dependencies proved
 ar.ads:264:22: info: postcondition proved (CVC5: 10 VC)
 ar.ads:271:11: info: flow dependencies proved
 ar.ads:272:22: info: postcondition proved (CVC5: 2 VC)
+ar.ads:272:31: warning: unused variable "M"
 ar.ads:276:11: info: flow dependencies proved
 ar.ads:277:22: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 ar.ads:281:11: info: flow dependencies proved
@@ -612,8 +613,10 @@ ar.ads:791:11: info: flow dependencies proved
 ar.ads:792:22: info: postcondition proved (CVC5: 1 VC)
 ar.ads:796:11: info: flow dependencies proved
 ar.ads:797:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:797:24: warning: suspicious equality test with modified version of same object
 ar.ads:801:11: info: flow dependencies proved
 ar.ads:802:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:802:24: warning: suspicious equality test with modified version of same object
 ar.ads:806:11: info: flow dependencies proved
 ar.ads:808:22: info: postcondition proved (CVC5: 1 VC)
 ar.ads:808:96: info: range check proved (CVC5: 2 VC)

@@ -1,1 +1,2 @@
+test.adb:21:13: warning: not dispatching (must be defined in a package spec)
 test.adb:26:12: high: private part of "G" is not initialized

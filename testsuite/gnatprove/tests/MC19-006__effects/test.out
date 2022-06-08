@@ -1,6 +1,8 @@
+b.adb:3:11: warning: file name does not match unit name, should be "main.adb"
 b.adb:4:31: medium: "A" might not be initialized after elaboration of main program "Main"
 b.adb:7:19: info: assertion proved (CVC5: 1 VC)
 b.adb:7:26: medium: "A" might not be initialized after elaboration of main program "Main"
+b.adb:3:11: warning: file name does not match unit name, should be "main.adb"
 b.adb:4:31: medium: "A" might not be initialized after elaboration of main program "Main"
 b.adb:6:05: medium: "A" might not be initialized after elaboration of main program "Main"
 b.adb:7:19: medium: assertion might fail (e.g. when A = 0 and Tmp = -1) [possible fix: call at line 6 should mention A in a postcondition]

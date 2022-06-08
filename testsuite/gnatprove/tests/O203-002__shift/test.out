@@ -1,4 +1,5 @@
 shift_range.adb:11:12: info: data dependencies proved
+shift_range.adb:16:18: info: no contextual analysis of "Shift_Right" (body not seen yet)
 shift_range.adb:16:18: info: range check proved (CVC5: 4 VC)
 shift_range.adb:16:18: warning: assuming "Shift_Right" always returns
 shift_range.adb:16:18: warning: assuming "Shift_Right" has no effect on global items

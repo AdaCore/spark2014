@@ -1,1 +1,2 @@
+refi.adb:7:07: info: no contextual analysis of "Recurse" (multiple returns)
 refi.adb:7:17: warning: subprogram "Recurse" has no effect
