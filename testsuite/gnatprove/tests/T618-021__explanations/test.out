@@ -21,3 +21,5 @@ nonterminating.adb:25:07: medium: "Nonterminating" is recursive, terminating ann
 nonterminating.adb:25:25: info: range check proved (CVC5: 2 VC)
 p.adb:3:11: high: all paths in "P" raise exceptions or do not terminate normally
 p.adb:5:04: medium: call to nonreturning subprogram might be executed
+p.adb:5:04: warning: assuming "Crash" has no effect on global items
+p.adb:5:04: warning: no Global contract available for "Crash"

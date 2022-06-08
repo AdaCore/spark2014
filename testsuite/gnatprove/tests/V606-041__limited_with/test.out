@@ -27,4 +27,8 @@ ext3.ads:19:09: error: "T1" is not allowed in SPARK (due to incomplete type from
 ext3.ads:19:09: error: violation of aspect SPARK_Mode at line 2
 ext3.ads:21:57: error: "T1_Acc" is not allowed in SPARK
 ext3.ads:21:57: error: violation of aspect SPARK_Mode at line 2
+ext3.ads:23:32: warning: assuming "Create" always returns
+ext3.ads:23:32: warning: assuming "Create" has no effect on global items
+ext3.ads:23:32: warning: no Global contract available for "Create"
+ext3.ads:23:32: warning: no returning annotation available for "Create"
 gnatprove: error during flow analysis and proof

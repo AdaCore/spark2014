@@ -1,6 +1,8 @@
 nuclear_reactors.ads:4:03: info: flow dependencies proved
 nuclear_reactors.ads:10:11: info: data dependencies proved
 nuclear_reactors.ads:16:11: info: data dependencies proved
+nuclear_system.adb:8:36: warning: assuming "Random_Wait" has no effect on global items
+nuclear_system.adb:8:36: warning: no Global contract available for "Random_Wait"
 nuclear_system.adb:14:07: info: initialization of "Deadline" proved
 nuclear_system.ads:11:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 nuclear_system.ads:11:09: info: nontermination of task proved (CVC5: 1 VC)

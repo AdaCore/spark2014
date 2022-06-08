@@ -1,6 +1,15 @@
-a-cofuse.ads:256:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
 call_proc_no_body.adb:4:07: medium: precondition might fail
+call_proc_no_body.adb:4:07: warning: assuming "P_02" always returns
+call_proc_no_body.adb:4:07: warning: assuming "P_02" has no effect on global items
+call_proc_no_body.adb:4:07: warning: no Global contract available for "P_02"
+call_proc_no_body.adb:4:07: warning: no returning annotation available for "P_02"
 call_proc_no_body.adb:9:07: info: precondition proved (CVC5: 1 VC)
+call_proc_no_body.adb:9:07: warning: assuming "P_03" always returns
+call_proc_no_body.adb:9:07: warning: assuming "P_03" has no effect on global items
+call_proc_no_body.adb:9:07: warning: no Global contract available for "P_03"
+call_proc_no_body.adb:9:07: warning: no returning annotation available for "P_03"
 call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate, terminating annotation has been proved
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
 call_proc_no_body.ads:6:14: info: subprogram "Nonreturning" will terminate, terminating annotation has been proved
@@ -71,85 +80,8 @@ file_io.ads:64:42: info: function contract not available for proof ("Index" migh
 file_io.ads:64:54: info: function contract not available for proof ("Index" might not return)
 formal_cont.adb:11:14: warning: unreachable code (CVC5: 1 VC)
 formal_cont.adb:15:07: info: initialization of "L" proved
-formal_cont.adb:15:07: medium: call to "Is_Empty" might be nonterminating, terminating annotation on "Test_01" could be incorrect
-formal_cont.adb:17:07: medium: call to "Is_Empty" might be nonterminating, terminating annotation on "Test_01" could be incorrect
 formal_cont.adb:26:07: info: initialization of "L" proved
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Included_Except" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Included_Except" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Included_In_Union" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Includes_Intersection" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Intersection" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Is_Empty" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Is_Empty" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("No_Overlap" might not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" might not return)
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:103
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:112
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:127
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:141
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:154
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:179
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:187
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:194
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:194
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:195
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:195
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:196
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:197
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:197
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:198
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:199
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:212
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:214
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:215
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:216
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:217
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:223
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:229
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:231
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:232
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:233
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:234
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:241
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:242
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:243
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:250
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:251
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:251
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:252
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:253
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:254
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:53
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:97
+formal_cont.ads:18:14: info: subprogram "Test_01" will terminate, terminating annotation has been proved
 formal_cont.ads:18:14: warning: subprogram "Test_01" has no effect
 formal_cont.ads:32:14: info: subprogram "Test_02" will terminate, terminating annotation has been proved
 formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
@@ -160,16 +92,24 @@ functions.adb:14:14: info: add a contract to analyze it separately from calling 
 functions.adb:14:14: info: local subprogram "G" only analyzed in the context of calls
 functions.adb:14:14: warning: subprogram "G" has no effect
 functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
+functions.adb:16:07: warning: assuming "P" has no effect on global items
+functions.adb:16:07: warning: no Global contract available for "P"
 functions.adb:22:10: medium: call to nonreturning subprogram might be executed
+functions.adb:22:10: warning: assuming "P" has no effect on global items
+functions.adb:22:10: warning: no Global contract available for "P"
 functions.ads:4:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: info: subprogram "Expr_Func" will terminate, terminating annotation has been proved
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
+imported.adb:5:07: warning: assuming "P_01" always returns
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
 imported.adb:5:07: warning: no Global contract available for "P_01"
+imported.adb:5:07: warning: no returning annotation available for "P_01"
 imported.adb:10:07: medium: precondition might fail
+imported.adb:10:07: warning: assuming "P_02" always returns
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
+imported.adb:10:07: warning: no returning annotation available for "P_02"
 imported.ads:9:14: info: subprogram "Q_01" will terminate, terminating annotation has been proved
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
 imported.ads:16:14: info: subprogram "Q_02" will terminate, terminating annotation has been proved
@@ -177,6 +117,10 @@ imported.ads:16:14: warning: subprogram "Q_02" has no effect
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:23: info: initialization of "F" proved
 modular_analysis.adb:8:14: medium: call to "Open_Read" might be nonterminating, terminating annotation on "Test_01" could be incorrect
+modular_analysis.adb:8:14: warning: assuming "Open_Read" always returns
+modular_analysis.adb:8:14: warning: assuming "Open_Read" has no effect on global items
+modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
+modular_analysis.adb:8:14: warning: no returning annotation available for "Open_Read"
 nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate, terminating annotation has been proved
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect

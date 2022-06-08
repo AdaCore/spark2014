@@ -1,4 +1,8 @@
+my_shift.adb:6:12: warning: assuming "Shift_Right" always returns
+my_shift.adb:6:12: warning: no returning annotation available for "Shift_Right"
 my_shift.adb:7:22: info: assertion proved (CVC5: 1 VC)
 my_shift.adb:7:32: info: division check proved (CVC5: 1 VC)
+my_shift.adb:8:12: warning: assuming "Shift_Right" always returns
+my_shift.adb:8:12: warning: no returning annotation available for "Shift_Right"
 my_shift.adb:9:22: info: assertion proved (CVC5: 1 VC)
 my_shift.adb:9:32: info: division check proved (CVC5: 1 VC)

@@ -1,3 +1,11 @@
 reals.ads:6:04: warning: External Axiomatizations are not supported anymore, ignored
 test_reals.adb:3:11: warning: subprogram "Test_Reals" has no effect
 test_reals.adb:7:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention R in a precondition]
+test_reals.adb:7:21: warning: assuming "*" always returns
+test_reals.adb:7:21: warning: assuming "*" has no effect on global items
+test_reals.adb:7:21: warning: no Global contract available for "*"
+test_reals.adb:7:21: warning: no returning annotation available for "*"
+test_reals.adb:7:25: warning: assuming ">=" always returns
+test_reals.adb:7:25: warning: assuming ">=" has no effect on global items
+test_reals.adb:7:25: warning: no Global contract available for ">="
+test_reals.adb:7:25: warning: no returning annotation available for ">="

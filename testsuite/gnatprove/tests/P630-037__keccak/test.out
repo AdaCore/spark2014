@@ -72,6 +72,18 @@ keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lane
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:79
 keccak-keccak_1600.ads:55:04: info: unrolling loop
 keccak-keccak_1600.ads:55:04: info: unrolling loop
+keccak-keccak_1600.ads:57:04: warning: assuming "Pad101_Multi_Blocks" always returns
+keccak-keccak_1600.ads:57:04: warning: in instantiation at keccak-sponge.adb:296
+keccak-keccak_1600.ads:57:04: warning: no returning annotation available for "Pad101_Multi_Blocks"
+keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always returns
+keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always returns
+keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always returns
+keccak-keccak_1600.ads:66:04: warning: in instantiation at keccak-duplex.adb:108
+keccak-keccak_1600.ads:66:04: warning: in instantiation at keccak-duplex.adb:60
+keccak-keccak_1600.ads:66:04: warning: in instantiation at keccak-duplex.adb:84
+keccak-keccak_1600.ads:66:04: warning: no returning annotation available for "Pad101_Single_Block"
+keccak-keccak_1600.ads:66:04: warning: no returning annotation available for "Pad101_Single_Block"
+keccak-keccak_1600.ads:66:04: warning: no returning annotation available for "Pad101_Single_Block"
 keccak-keccakf-byte_lanes.adb:42:46: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: division check proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55

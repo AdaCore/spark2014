@@ -14,10 +14,18 @@ test_declare.adb:34:38: info: overflow check proved (CVC5: 2 VC)
 test_declare.adb:35:18: info: overflow check proved (CVC5: 2 VC)
 test_declare_deep.adb:7:14: warning: subprogram "OK1" has no effect
 test_declare_deep.adb:9:07: medium: memory leak might occur at end of scope
+test_declare_deep.adb:9:31: warning: assuming "Create" always returns
+test_declare_deep.adb:9:31: warning: assuming "Create" has no effect on global items
+test_declare_deep.adb:9:31: warning: no Global contract available for "Create"
+test_declare_deep.adb:9:31: warning: no returning annotation available for "Create"
 test_declare_deep.adb:11:14: info: pointer dereference check proved (CVC5: 1 VC)
 test_declare_deep.adb:11:18: info: overflow check proved (CVC5: 2 VC)
 test_declare_deep.adb:14:14: warning: subprogram "OK2" has no effect
 test_declare_deep.adb:18:10: medium: memory leak might occur at end of scope
+test_declare_deep.adb:18:34: warning: assuming "Create" always returns
+test_declare_deep.adb:18:34: warning: assuming "Create" has no effect on global items
+test_declare_deep.adb:18:34: warning: no Global contract available for "Create"
+test_declare_deep.adb:18:34: warning: no returning annotation available for "Create"
 test_declare_deep.adb:20:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_declare_deep.adb:20:21: info: overflow check proved (CVC5: 2 VC)
 test_declare_illegal.adb:4:04: warning: analyzing unreferenced procedure "Bad1"

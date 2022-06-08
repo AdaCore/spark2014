@@ -1,1 +1,9 @@
 discr_rec.ads:5:09: info: range check proved (CVC5: 2 VC)
+integer_caller.adb:5:10: warning: assuming "Integer_Size" always returns
+integer_caller.adb:5:10: warning: assuming "Integer_Size" has no effect on global items
+integer_caller.adb:5:10: warning: no Global contract available for "Integer_Size"
+integer_caller.adb:5:10: warning: no returning annotation available for "Integer_Size"
+word_size_caller.adb:5:10: warning: assuming "Word_Size" always returns
+word_size_caller.adb:5:10: warning: assuming "Word_Size" has no effect on global items
+word_size_caller.adb:5:10: warning: no Global contract available for "Word_Size"
+word_size_caller.adb:5:10: warning: no returning annotation available for "Word_Size"

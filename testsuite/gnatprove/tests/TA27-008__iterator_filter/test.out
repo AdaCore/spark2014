@@ -3,30 +3,62 @@ test_fold.adb:12:42: info: index check proved (CVC5: 2 VC)
 test_fold.adb:12:60: info: index check proved (CVC5: 2 VC)
 test_fold.adb:14:16: info: index check proved (CVC5: 2 VC)
 test_fold.adb:14:36: info: index check proved (CVC5: 2 VC)
+test_fold.adb:14:50: warning: assuming "P" always returns
+test_fold.adb:14:50: warning: assuming "P" has no effect on global items
+test_fold.adb:14:50: warning: no Global contract available for "P"
+test_fold.adb:14:50: warning: no returning annotation available for "P"
 test_fold.adb:14:56: info: index check proved (CVC5: 2 VC)
+test_fold.adb:17:55: warning: assuming "P" always returns
+test_fold.adb:17:55: warning: assuming "P" has no effect on global items
+test_fold.adb:17:55: warning: no Global contract available for "P"
+test_fold.adb:17:55: warning: no returning annotation available for "P"
 test_fold.adb:20:13: info: loop invariant initialization proved (CVC5: 3 VC)
 test_fold.adb:20:13: info: loop invariant preservation proved (CVC5: 3 VC)
 test_fold.adb:21:18: info: index check proved (CVC5: 4 VC)
 test_fold.adb:21:45: info: index check proved (CVC5: 4 VC)
+test_fold.adb:21:59: warning: assuming "P" always returns
+test_fold.adb:21:59: warning: assuming "P" has no effect on global items
+test_fold.adb:21:59: warning: no Global contract available for "P"
+test_fold.adb:21:59: warning: no returning annotation available for "P"
 test_fold.adb:21:65: info: index check proved (CVC5: 4 VC)
 test_fold.adb:26:14: info: postcondition proved (CVC5: 4 VC)
 test_fold.adb:26:42: info: index check proved (CVC5: 2 VC)
 test_fold.adb:26:60: info: index check proved (CVC5: 2 VC)
 test_fold.adb:28:16: info: index check proved (CVC5: 2 VC)
 test_fold.adb:28:36: info: index check proved (CVC5: 2 VC)
+test_fold.adb:28:50: warning: assuming "P" always returns
+test_fold.adb:28:50: warning: assuming "P" has no effect on global items
+test_fold.adb:28:50: warning: no Global contract available for "P"
+test_fold.adb:28:50: warning: no returning annotation available for "P"
 test_fold.adb:28:56: info: index check proved (CVC5: 2 VC)
+test_fold.adb:31:63: warning: assuming "P" always returns
+test_fold.adb:31:63: warning: assuming "P" has no effect on global items
+test_fold.adb:31:63: warning: no Global contract available for "P"
+test_fold.adb:31:63: warning: no returning annotation available for "P"
 test_fold.adb:34:13: info: loop invariant initialization proved (CVC5: 3 VC)
 test_fold.adb:34:13: info: loop invariant preservation proved (CVC5: 3 VC)
 test_fold.adb:35:18: info: index check proved (CVC5: 4 VC)
 test_fold.adb:35:45: info: index check proved (CVC5: 4 VC)
+test_fold.adb:35:59: warning: assuming "P" always returns
+test_fold.adb:35:59: warning: assuming "P" has no effect on global items
+test_fold.adb:35:59: warning: no Global contract available for "P"
+test_fold.adb:35:59: warning: no returning annotation available for "P"
 test_fold.adb:35:65: info: index check proved (CVC5: 4 VC)
 test_fold.adb:41:14: info: postcondition proved (Z3: 4 VC)
 test_fold.adb:41:42: info: index check proved (CVC5: 2 VC)
 test_fold.adb:41:60: info: index check proved (CVC5: 2 VC)
 test_fold.adb:43:16: info: index check proved (CVC5: 2 VC)
 test_fold.adb:43:36: info: index check proved (CVC5: 2 VC)
+test_fold.adb:43:50: warning: assuming "P" always returns
+test_fold.adb:43:50: warning: assuming "P" has no effect on global items
+test_fold.adb:43:50: warning: no Global contract available for "P"
+test_fold.adb:43:50: warning: no returning annotation available for "P"
 test_fold.adb:43:56: info: index check proved (CVC5: 2 VC)
 test_fold.adb:46:31: info: index check proved (CVC5: 10 VC)
+test_fold.adb:46:54: warning: assuming "P" always returns
+test_fold.adb:46:54: warning: assuming "P" has no effect on global items
+test_fold.adb:46:54: warning: no Global contract available for "P"
+test_fold.adb:46:54: warning: no returning annotation available for "P"
 test_fold.adb:46:60: info: index check proved (CVC5: 10 VC)
 test_fold.adb:46:70: info: unrolling loop
 test_fold.adb:47:13: info: index check proved (CVC5: 10 VC)

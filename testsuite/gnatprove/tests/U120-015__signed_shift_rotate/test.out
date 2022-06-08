@@ -1,40 +1,120 @@
 signed.adb:1:11: high: all paths in "Signed" raise exceptions or do not terminate normally
+signed.adb:10:09: warning: assuming "Shift_Left" always returns
+signed.adb:10:09: warning: assuming "Shift_Left" has no effect on global items
+signed.adb:10:09: warning: no Global contract available for "Shift_Left"
+signed.adb:10:09: warning: no returning annotation available for "Shift_Left"
 signed.adb:11:19: info: assertion proved (altergo: 1 VC)
 signed.adb:11:25: info: overflow check proved (CVC5: 2 VC)
+signed.adb:13:09: warning: assuming "Shift_Left" always returns
+signed.adb:13:09: warning: assuming "Shift_Left" has no effect on global items
+signed.adb:13:09: warning: no Global contract available for "Shift_Left"
+signed.adb:13:09: warning: no returning annotation available for "Shift_Left"
 signed.adb:13:21: info: overflow check proved (CVC5: 2 VC)
 signed.adb:14:19: info: assertion proved (altergo: 1 VC)
 signed.adb:14:24: info: overflow check proved (CVC5: 2 VC)
 signed.adb:14:28: info: overflow check proved (CVC5: 2 VC)
+signed.adb:16:09: warning: assuming "Shift_Left" always returns
+signed.adb:16:09: warning: assuming "Shift_Left" has no effect on global items
+signed.adb:16:09: warning: no Global contract available for "Shift_Left"
+signed.adb:16:09: warning: no returning annotation available for "Shift_Left"
 signed.adb:17:19: info: assertion proved (colibri: 1 VC)
+signed.adb:19:09: warning: assuming "Shift_Left" always returns
+signed.adb:19:09: warning: assuming "Shift_Left" has no effect on global items
+signed.adb:19:09: warning: no Global contract available for "Shift_Left"
+signed.adb:19:09: warning: no returning annotation available for "Shift_Left"
 signed.adb:20:19: info: assertion proved (colibri: 1 VC)
-signed.adb:25:19: info: assertion proved (colibri: 1 VC)
+signed.adb:24:09: warning: assuming "Shift_Right" always returns
+signed.adb:24:09: warning: assuming "Shift_Right" has no effect on global items
+signed.adb:24:09: warning: no Global contract available for "Shift_Right"
+signed.adb:24:09: warning: no returning annotation available for "Shift_Right"
+signed.adb:25:19: info: assertion proved (CVC5: 1 VC)
 signed.adb:25:25: info: division check proved (CVC5: 1 VC)
+signed.adb:27:09: warning: assuming "Shift_Right" always returns
+signed.adb:27:09: warning: assuming "Shift_Right" has no effect on global items
+signed.adb:27:09: warning: no Global contract available for "Shift_Right"
+signed.adb:27:09: warning: no returning annotation available for "Shift_Right"
 signed.adb:27:22: info: overflow check proved (CVC5: 2 VC)
 signed.adb:28:19: info: assertion proved (colibri: 1 VC)
+signed.adb:30:09: warning: assuming "Shift_Right" always returns
+signed.adb:30:09: warning: assuming "Shift_Right" has no effect on global items
+signed.adb:30:09: warning: no Global contract available for "Shift_Right"
+signed.adb:30:09: warning: no returning annotation available for "Shift_Right"
 signed.adb:31:19: info: assertion proved (colibri: 1 VC)
+signed.adb:33:09: warning: assuming "Shift_Right" always returns
+signed.adb:33:09: warning: assuming "Shift_Right" has no effect on global items
+signed.adb:33:09: warning: no Global contract available for "Shift_Right"
+signed.adb:33:09: warning: no returning annotation available for "Shift_Right"
 signed.adb:34:19: info: assertion proved (colibri: 1 VC)
+signed.adb:38:09: warning: assuming "Shift_Right_Arithmetic" always returns
+signed.adb:38:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
+signed.adb:38:09: warning: no Global contract available for "Shift_Right_Arithmetic"
+signed.adb:38:09: warning: no returning annotation available for "Shift_Right_Arithmetic"
 signed.adb:39:19: info: assertion proved (CVC5: 1 VC)
 signed.adb:39:25: info: division check proved (CVC5: 1 VC)
+signed.adb:41:09: warning: assuming "Shift_Right_Arithmetic" always returns
+signed.adb:41:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
+signed.adb:41:09: warning: no Global contract available for "Shift_Right_Arithmetic"
+signed.adb:41:09: warning: no returning annotation available for "Shift_Right_Arithmetic"
 signed.adb:41:33: info: overflow check proved (CVC5: 2 VC)
 signed.adb:42:19: info: assertion proved (colibri: 1 VC)
 signed.adb:42:24: info: overflow check proved (CVC5: 2 VC)
 signed.adb:42:28: info: division check proved (CVC5: 1 VC)
+signed.adb:44:09: warning: assuming "Shift_Right_Arithmetic" always returns
+signed.adb:44:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
+signed.adb:44:09: warning: no Global contract available for "Shift_Right_Arithmetic"
+signed.adb:44:09: warning: no returning annotation available for "Shift_Right_Arithmetic"
 signed.adb:45:19: info: assertion proved (CVC5: 1 VC)
+signed.adb:47:09: warning: assuming "Shift_Right_Arithmetic" always returns
+signed.adb:47:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
+signed.adb:47:09: warning: no Global contract available for "Shift_Right_Arithmetic"
+signed.adb:47:09: warning: no returning annotation available for "Shift_Right_Arithmetic"
 signed.adb:48:19: info: assertion proved (CVC5: 1 VC)
+signed.adb:52:09: warning: assuming "Rotate_Left" always returns
+signed.adb:52:09: warning: assuming "Rotate_Left" has no effect on global items
+signed.adb:52:09: warning: no Global contract available for "Rotate_Left"
+signed.adb:52:09: warning: no returning annotation available for "Rotate_Left"
 signed.adb:53:19: medium: assertion might fail
 signed.adb:53:25: info: overflow check proved (CVC5: 2 VC)
+signed.adb:55:09: warning: assuming "Rotate_Left" always returns
+signed.adb:55:09: warning: assuming "Rotate_Left" has no effect on global items
+signed.adb:55:09: warning: no Global contract available for "Rotate_Left"
+signed.adb:55:09: warning: no returning annotation available for "Rotate_Left"
 signed.adb:55:22: info: overflow check proved (CVC5: 2 VC)
 signed.adb:56:19: medium: assertion might fail
 signed.adb:56:24: info: overflow check proved (CVC5: 2 VC)
 signed.adb:56:28: info: overflow check proved (CVC5: 2 VC)
 signed.adb:56:35: info: overflow check proved (CVC5: 2 VC)
+signed.adb:58:09: warning: assuming "Rotate_Left" always returns
+signed.adb:58:09: warning: assuming "Rotate_Left" has no effect on global items
+signed.adb:58:09: warning: no Global contract available for "Rotate_Left"
+signed.adb:58:09: warning: no returning annotation available for "Rotate_Left"
 signed.adb:59:19: medium: assertion might fail
 signed.adb:59:30: info: overflow check proved (CVC5: 2 VC)
 signed.adb:59:34: info: division check proved (CVC5: 1 VC)
+signed.adb:61:09: warning: assuming "Rotate_Left" always returns
+signed.adb:61:09: warning: assuming "Rotate_Left" has no effect on global items
+signed.adb:61:09: warning: no Global contract available for "Rotate_Left"
+signed.adb:61:09: warning: no returning annotation available for "Rotate_Left"
 signed.adb:62:19: medium: assertion might fail
+signed.adb:66:09: warning: assuming "Rotate_Right" always returns
+signed.adb:66:09: warning: assuming "Rotate_Right" has no effect on global items
+signed.adb:66:09: warning: no Global contract available for "Rotate_Right"
+signed.adb:66:09: warning: no returning annotation available for "Rotate_Right"
 signed.adb:67:19: medium: assertion might fail
+signed.adb:69:09: warning: assuming "Rotate_Right" always returns
+signed.adb:69:09: warning: assuming "Rotate_Right" has no effect on global items
+signed.adb:69:09: warning: no Global contract available for "Rotate_Right"
+signed.adb:69:09: warning: no returning annotation available for "Rotate_Right"
 signed.adb:69:23: info: overflow check proved (CVC5: 2 VC)
 signed.adb:70:19: medium: assertion might fail
+signed.adb:72:09: warning: assuming "Rotate_Right" always returns
+signed.adb:72:09: warning: assuming "Rotate_Right" has no effect on global items
+signed.adb:72:09: warning: no Global contract available for "Rotate_Right"
+signed.adb:72:09: warning: no returning annotation available for "Rotate_Right"
 signed.adb:73:19: medium: assertion might fail
+signed.adb:75:09: warning: assuming "Rotate_Right" always returns
+signed.adb:75:09: warning: assuming "Rotate_Right" has no effect on global items
+signed.adb:75:09: warning: no Global contract available for "Rotate_Right"
+signed.adb:75:09: warning: no returning annotation available for "Rotate_Right"
 signed.adb:76:19: medium: assertion might fail
 signed.adb:78:04: medium: assertion might fail

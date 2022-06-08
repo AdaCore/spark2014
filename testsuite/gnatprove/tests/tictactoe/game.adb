@@ -2,7 +2,8 @@ with Tictactoe; use Tictactoe;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Game
-  with SPARK_Mode => On
+  with SPARK_Mode => On,
+       Annotate   => (GNATprove, Might_Not_Return)
 is
    Player_Turn : Boolean := True;
 begin

@@ -1,8 +1,40 @@
 logical_eq.adb:14:07: info: range check proved (CVC5: 2 VC)
+logical_eq.adb:22:60: warning: assuming "My_Eq" always returns
+logical_eq.adb:22:60: warning: assuming "My_Eq" has no effect on global items
+logical_eq.adb:22:60: warning: no Global contract available for "My_Eq"
+logical_eq.adb:22:60: warning: no returning annotation available for "My_Eq"
 logical_eq.adb:25:06: info: data dependencies proved
+logical_eq.adb:26:13: warning: assuming "My_Eq_1" always returns
+logical_eq.adb:26:13: warning: assuming "My_Eq_1" has no effect on global items
+logical_eq.adb:26:13: warning: no Global contract available for "My_Eq_1"
+logical_eq.adb:26:13: warning: no returning annotation available for "My_Eq_1"
 logical_eq.adb:29:22: info: assertion proved (CVC5: 1 VC)
 logical_eq.adb:30:22: info: assertion proved (CVC5: 1 VC)
+logical_eq.adb:30:22: warning: assuming "F" always returns
+logical_eq.adb:30:22: warning: assuming "F" has no effect on global items
+logical_eq.adb:30:22: warning: no Global contract available for "F"
+logical_eq.adb:30:22: warning: no returning annotation available for "F"
+logical_eq.adb:30:30: warning: assuming "F" always returns
+logical_eq.adb:30:30: warning: assuming "F" has no effect on global items
+logical_eq.adb:30:30: warning: no Global contract available for "F"
+logical_eq.adb:30:30: warning: no returning annotation available for "F"
 logical_eq.adb:33:06: info: data dependencies proved
 logical_eq.adb:37:22: info: assertion proved (CVC5: 1 VC)
+logical_eq.adb:37:22: warning: assuming "F" always returns
+logical_eq.adb:37:22: warning: assuming "F" has no effect on global items
+logical_eq.adb:37:22: warning: no Global contract available for "F"
+logical_eq.adb:37:22: warning: no returning annotation available for "F"
+logical_eq.adb:37:30: warning: assuming "F" always returns
+logical_eq.adb:37:30: warning: assuming "F" has no effect on global items
+logical_eq.adb:37:30: warning: no Global contract available for "F"
+logical_eq.adb:37:30: warning: no returning annotation available for "F"
 logical_eq.adb:40:06: info: data dependencies proved
 logical_eq.adb:44:22: info: assertion proved (CVC5: 1 VC)
+logical_eq.adb:44:22: warning: assuming "F" always returns
+logical_eq.adb:44:22: warning: assuming "F" has no effect on global items
+logical_eq.adb:44:22: warning: no Global contract available for "F"
+logical_eq.adb:44:22: warning: no returning annotation available for "F"
+logical_eq.adb:44:30: warning: assuming "F" always returns
+logical_eq.adb:44:30: warning: assuming "F" has no effect on global items
+logical_eq.adb:44:30: warning: no Global contract available for "F"
+logical_eq.adb:44:30: warning: no returning annotation available for "F"

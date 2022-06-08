@@ -1,1 +1,3 @@
+main.adb:8:09: warning: assuming "Test" always returns
+main.adb:8:09: warning: no returning annotation available for "Test"
 state.ads:12:33: medium: constant without variable input "Val" not allowed as input to "Test" (SPARK RM 6.1.4(16))

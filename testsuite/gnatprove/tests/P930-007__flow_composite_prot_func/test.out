@@ -1,1 +1,9 @@
 main.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+main.adb:5:26: warning: assuming "F" always returns
+main.adb:5:26: warning: assuming "F" has no effect on global items
+main.adb:5:26: warning: no Global contract available for "F"
+main.adb:5:26: warning: no returning annotation available for "F"
+main.adb:6:31: warning: assuming "F" always returns
+main.adb:6:31: warning: assuming "F" has no effect on global items
+main.adb:6:31: warning: no Global contract available for "F"
+main.adb:6:31: warning: no returning annotation available for "F"

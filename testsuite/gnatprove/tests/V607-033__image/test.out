@@ -1,7 +1,19 @@
+main.adb:14:07: warning: assuming "Rand" always returns
+main.adb:14:07: warning: assuming "Rand" has no effect on global items
+main.adb:14:07: warning: no Global contract available for "Rand"
+main.adb:14:07: warning: no returning annotation available for "Rand"
 main.adb:15:23: error: attribute "Image" on non-scalar type is not yet supported
 main.adb:15:33: error: attribute "Image" on non-scalar type is not yet supported
+main.adb:16:10: warning: assuming "Rand" always returns
+main.adb:16:10: warning: assuming "Rand" has no effect on global items
+main.adb:16:10: warning: no Global contract available for "Rand"
+main.adb:16:10: warning: no returning annotation available for "Rand"
 main.adb:17:23: error: attribute "Img" on non-scalar type is not yet supported
 main.adb:17:31: error: attribute "Img" on non-scalar type is not yet supported
+main.adb:18:10: warning: assuming "Rand" always returns
+main.adb:18:10: warning: assuming "Rand" has no effect on global items
+main.adb:18:10: warning: no Global contract available for "Rand"
+main.adb:18:10: warning: no returning annotation available for "Rand"
 main.adb:19:23: error: attribute "Image" on non-scalar type is not yet supported
 main.adb:19:37: error: attribute "Image" on non-scalar type is not yet supported
 gnatprove: error during flow analysis and proof

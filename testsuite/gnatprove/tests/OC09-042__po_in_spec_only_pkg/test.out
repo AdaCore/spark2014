@@ -1,2 +1,6 @@
 main.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+main.adb:5:08: warning: assuming "Dummy" always returns
+main.adb:5:08: warning: assuming "Dummy" has no effect on global items
+main.adb:5:08: warning: no Global contract available for "Dummy"
+main.adb:5:08: warning: no returning annotation available for "Dummy"
 p.ads:6:59: info: range check proved (CVC5: 2 VC)

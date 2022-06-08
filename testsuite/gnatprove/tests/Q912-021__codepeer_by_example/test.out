@@ -61,9 +61,25 @@ bad_self_assign.adb:4:11: info: overflow check proved (CVC5: 2 VC)
 call_search.adb:3:52: info: initialization of "U" proved
 call_search.adb:3:55: info: initialization of "V" proved
 call_unknown.adb:2:25: info: initialization of "X" proved
+call_unknown.adb:4:04: warning: assuming "Unknown" always returns
+call_unknown.adb:4:04: warning: assuming "Unknown" has no effect on global items
+call_unknown.adb:4:04: warning: no Global contract available for "Unknown"
+call_unknown.adb:4:04: warning: no returning annotation available for "Unknown"
+call_unknown_arr.adb:7:04: warning: assuming "Unknown_Arr" always returns
+call_unknown_arr.adb:7:04: warning: assuming "Unknown_Arr" has no effect on global items
+call_unknown_arr.adb:7:04: warning: no Global contract available for "Unknown_Arr"
+call_unknown_arr.adb:7:04: warning: no returning annotation available for "Unknown_Arr"
 call_unknown_pos.adb:2:29: info: initialization of "X" proved
+call_unknown_pos.adb:4:04: warning: assuming "Unknown" always returns
+call_unknown_pos.adb:4:04: warning: assuming "Unknown" has no effect on global items
+call_unknown_pos.adb:4:04: warning: no Global contract available for "Unknown"
+call_unknown_pos.adb:4:04: warning: no returning annotation available for "Unknown"
 call_unknown_pos.adb:4:13: medium: range check might fail [CWE 682], cannot prove lower bound for X [reason for check: output value must fit in argument type] [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:2:29: info: initialization of "X" proved
+call_unknown_rel.adb:4:04: warning: assuming "Unknown" always returns
+call_unknown_rel.adb:4:04: warning: assuming "Unknown" has no effect on global items
+call_unknown_rel.adb:4:04: warning: no Global contract available for "Unknown"
+call_unknown_rel.adb:4:04: warning: no returning annotation available for "Unknown"
 call_unknown_rel.adb:5:19: medium: assertion might fail (e.g. when X = 1 and Y = 0) [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:5:25: medium: overflow check might fail [CWE 190], cannot prove lower bound for 2 * Y (e.g. when Y = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 call_unknown_rel.adb:5:29: info: overflow check proved (CVC5: 2 VC)

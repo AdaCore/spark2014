@@ -1,4 +1,12 @@
 main.adb:5:19: info: function contract not available for proof ("Rec" might not return)
 main.adb:5:19: info: precondition proved (CVC5: 1 VC)
 main.adb:5:19: medium: assertion might fail
+main.adb:5:19: warning: assuming "Rec" always returns
+main.adb:5:19: warning: assuming "Rec" has no effect on global items
+main.adb:5:19: warning: no Global contract available for "Rec"
+main.adb:5:19: warning: no returning annotation available for "Rec"
 rec.ads:4:34: info: function contract not available for proof ("Rec" might not return)
+rec.ads:4:34: warning: assuming "Rec" always returns
+rec.ads:4:34: warning: assuming "Rec" has no effect on global items
+rec.ads:4:34: warning: no Global contract available for "Rec"
+rec.ads:4:34: warning: no returning annotation available for "Rec"

@@ -1,2 +1,4 @@
 main.adb:13:07: info: data dependencies proved
+main.adb:16:07: warning: assuming "Run" has no effect on global items
+main.adb:16:07: warning: no Global contract available for "Run"
 main.adb:20:35: info: range check proved (CVC5: 2 VC)

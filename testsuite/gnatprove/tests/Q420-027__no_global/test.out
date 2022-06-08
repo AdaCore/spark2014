@@ -1,3 +1,11 @@
+main.adb:9:09: warning: assuming "Test" always returns
+main.adb:9:09: warning: assuming "Test" has no effect on global items
+main.adb:9:09: warning: no Global contract available for "Test"
+main.adb:9:09: warning: no returning annotation available for "Test"
 state.ads:5:03: info: flow dependencies proved
 state.ads:14:26: error: "State.State" is referenced in Pre but missing from the Global
+state.ads:14:49: warning: assuming "Test1" always returns
+state.ads:14:49: warning: no returning annotation available for "Test1"
+state.ads:14:57: warning: assuming "Test1" always returns
+state.ads:14:57: warning: no returning annotation available for "Test1"
 gnatprove: error during flow analysis and proof

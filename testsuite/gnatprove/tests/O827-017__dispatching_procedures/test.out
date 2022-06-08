@@ -1,15 +1,51 @@
 call_dispatch.adb:4:04: warning: initialization of "X2" has no effect
 call_dispatch.adb:7:04: warning: initialization of "V2" has no effect
+call_dispatch.adb:9:20: warning: assuming "Init" always returns
+call_dispatch.adb:9:20: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:9:20: warning: no Global contract available for "Init"
+call_dispatch.adb:9:20: warning: no returning annotation available for "Init"
+call_dispatch.adb:11:20: warning: assuming "Init" always returns
+call_dispatch.adb:11:20: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:11:20: warning: no Global contract available for "Init"
+call_dispatch.adb:11:20: warning: no returning annotation available for "Init"
+call_dispatch.adb:12:22: warning: assuming "Init" always returns
+call_dispatch.adb:12:22: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:12:22: warning: no Global contract available for "Init"
+call_dispatch.adb:12:22: warning: no returning annotation available for "Init"
+call_dispatch.adb:13:22: warning: assuming "Init" always returns
+call_dispatch.adb:13:22: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:13:22: warning: no Global contract available for "Init"
+call_dispatch.adb:13:22: warning: no returning annotation available for "Init"
+call_dispatch.adb:14:22: warning: assuming "Init" always returns
+call_dispatch.adb:14:22: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:14:22: warning: no Global contract available for "Init"
+call_dispatch.adb:14:22: warning: no returning annotation available for "Init"
+call_dispatch.adb:15:20: warning: assuming "Init" always returns
+call_dispatch.adb:15:20: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:15:20: warning: no Global contract available for "Init"
+call_dispatch.adb:15:20: warning: no returning annotation available for "Init"
+call_dispatch.adb:16:20: warning: assuming "Init" always returns
+call_dispatch.adb:16:20: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:16:20: warning: no Global contract available for "Init"
+call_dispatch.adb:16:20: warning: no returning annotation available for "Init"
+call_dispatch.adb:17:20: warning: assuming "Init" always returns
+call_dispatch.adb:17:20: warning: assuming "Init" has no effect on global items
+call_dispatch.adb:17:20: warning: no Global contract available for "Init"
+call_dispatch.adb:17:20: warning: no returning annotation available for "Init"
 call_dispatch.adb:19:04: info: precondition proved (CVC5: 1 VC)
 call_dispatch.adb:19:04: info: tag check proved (CVC5: 2 VC)
 call_dispatch.adb:19:04: warning: "A2" is set by "P" but not used after the call
 call_dispatch.adb:19:04: warning: "C2" is set by "P" but not used after the call
+call_dispatch.adb:19:04: warning: assuming "P" always returns
+call_dispatch.adb:19:04: warning: no returning annotation available for "P"
 call_dispatch.adb:19:23: warning: "Y2" is set by "P" but not used after the call
 call_dispatch.adb:19:35: warning: "Z2" is set by "P" but not used after the call
 call_dispatch.adb:20:19: info: assertion proved (CVC5: 1 VC)
 call_dispatch.adb:21:19: info: assertion proved (CVC5: 1 VC)
 call_dispatch.adb:22:04: info: precondition proved (CVC5: 1 VC)
 call_dispatch.adb:22:04: info: tag check proved (CVC5: 2 VC)
+call_dispatch.adb:22:04: warning: assuming "P" always returns
+call_dispatch.adb:22:04: warning: no returning annotation available for "P"
 call_dispatch.adb:22:23: warning: "Y2" is set by "P" but not used after the call
 call_dispatch.adb:22:27: warning: "Y3" is set by "P" but not used after the call
 call_dispatch.adb:22:35: warning: "Z2" is set by "P" but not used after the call

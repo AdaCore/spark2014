@@ -1,2 +1,6 @@
 prot.adb:8:25: medium: overflow check might fail, cannot prove upper bound for Count + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 prot.adb:9:13: high: call to potentially blocking subprogram "Proc" in protected operation "Read"
+prot.adb:9:13: warning: assuming "Proc" always returns
+prot.adb:9:13: warning: assuming "Proc" has no effect on global items
+prot.adb:9:13: warning: no Global contract available for "Proc"
+prot.adb:9:13: warning: no returning annotation available for "Proc"

@@ -10,8 +10,10 @@ package Perm.Lemma_Subprograms with SPARK_Mode, Ghost is
 
    procedure Occ_Set (A : Nat_Array; I : Index; V, E : Natural; R : Nat_Array)
    with
-     Pre     => I in A'Range and then Is_Set (A, I, V, R),
-     Post    =>
+     Global   => null,
+     Annotate => (GNATprove, Always_Return),
+     Pre      => I in A'Range and then Is_Set (A, I, V, R),
+     Post     =>
        (if V = A (I) then Occ (R, E) = Occ (A, E)
         elsif V = E then Occ (R, E) = Occ (A, E) + 1
         elsif A (I) = E then Occ (R, E) = Occ (A, E) - 1

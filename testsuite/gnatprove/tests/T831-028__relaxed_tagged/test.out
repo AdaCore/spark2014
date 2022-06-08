@@ -1,3 +1,7 @@
+foo_relaxed.ads:21:29: warning: assuming "F" always returns
+foo_relaxed.ads:21:29: warning: assuming "F" has no effect on global items
+foo_relaxed.ads:21:29: warning: no Global contract available for "F"
+foo_relaxed.ads:21:29: warning: no returning annotation available for "F"
 foo_relaxed.ads:22:35: medium: initialization check might fail
 foo_relaxed.ads:23:27: medium: initialization check might fail
 foo_relaxed.ads:24:37: medium: initialization check might fail

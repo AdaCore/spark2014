@@ -5,13 +5,13 @@ is
      (A, B : Int_Array;
       A_First1, A_First2, B_First, A_Length1, A_Length2 : Natural)
      return Boolean
-     with Ghost, Import, Global => Null;
+     with Ghost, Import, Global => null, Annotate => (GNATprove, Always_Return);
 
    function Le_Array
      (A, B : Int_Array;
       A_First, B_First, A_Length, B_Length : Natural)
      return Boolean
-     with Ghost, Import, Global => Null;
+     with Ghost, Import, Global => null, Annotate => (GNATprove, Always_Return);
 
   ------------------------------------------------------------------------------
 

@@ -33,12 +33,20 @@ a-cfinse.ads:274:28: info: predicate check proved (Trivial: 1 VC), in instantiat
 a-cfinse.ads:274:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:298:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
 a-cfinse.ads:298:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+infinite_sequence.adb:13:21: warning: assuming "Empty_Sequence" always returns
+infinite_sequence.adb:13:21: warning: no returning annotation available for "Empty_Sequence"
+infinite_sequence.adb:17:10: warning: assuming "Add" always returns
+infinite_sequence.adb:17:10: warning: no returning annotation available for "Add"
 infinite_sequence.adb:18:19: info: assertion proved (CVC5: 1 VC)
 infinite_sequence.adb:18:19: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:18:19: warning: assuming "Get" always returns
+infinite_sequence.adb:18:19: warning: no returning annotation available for "Get"
 infinite_sequence.adb:18:28: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequence.adb:20:08: info: precondition proved (CVC5: 1 VC)
 infinite_sequence.adb:20:08: info: precondition proved (Trivial: 1 VC)
 infinite_sequence.adb:22:22: info: assertion proved (CVC5: 1 VC)
 infinite_sequence.adb:22:22: info: precondition proved (CVC5: 1 VC)
+infinite_sequence.adb:22:22: warning: assuming "Get" always returns
+infinite_sequence.adb:22:22: warning: no returning annotation available for "Get"
 infinite_sequence.adb:22:36: info: range check proved (CVC5: 2 VC)
 infinite_sequence.adb:22:48: info: predicate check proved (Trivial: 2 VC)

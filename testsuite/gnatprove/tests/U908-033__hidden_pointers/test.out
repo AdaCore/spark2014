@@ -1,9 +1,70 @@
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: in instantiation at abstract_maps.ads:23
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:10
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:106
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:107
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:112
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:113
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:120
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:135
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:136
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:150
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:151
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:26
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:50
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:51
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:58
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:60
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:67
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:69
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:95
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
 example_recursive.adb:21:07: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:21:25: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:21:25: warning: assuming "Get" has no effect on global items
+example_recursive.adb:21:25: warning: no Global contract available for "Get"
+example_recursive.adb:34:18: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:34:18: warning: no Global contract available for "Has_Key"
 example_recursive.adb:35:18: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:18: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:35:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:47: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:35:47: warning: assuming "Get" has no effect on global items
+example_recursive.adb:35:47: warning: no Global contract available for "Get"
 example_recursive.adb:35:65: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:37:06: info: data dependencies proved
 example_recursive.adb:47:06: info: data dependencies proved
@@ -14,6 +75,8 @@ example_recursive.adb:55:10: info: precondition proved (CVC5: 9 VC)
 example_recursive.adb:55:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:55:53: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:55:53: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:55:53: warning: assuming "Get" has no effect on global items
+example_recursive.adb:55:53: warning: no Global contract available for "Get"
 example_recursive.adb:55:72: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:55:80: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:60:07: info: precondition proved (CVC5: 1 VC)
@@ -22,6 +85,8 @@ example_recursive.adb:68:18: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:68:18: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:68:46: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:68:46: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:68:46: warning: assuming "Get" has no effect on global items
+example_recursive.adb:68:46: warning: no Global contract available for "Get"
 example_recursive.adb:68:64: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:70:06: info: data dependencies proved
 example_recursive.adb:72:39: info: precondition proved (CVC5: 1 VC)
@@ -37,26 +102,42 @@ example_recursive.adb:93:10: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:93:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:93:51: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:93:51: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:93:51: warning: assuming "Get" has no effect on global items
+example_recursive.adb:93:51: warning: no Global contract available for "Get"
 example_recursive.adb:93:78: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:102:06: info: data dependencies proved
 example_recursive.adb:103:67: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:104:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:105:22: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:106:24: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:106:24: warning: no Global contract available for "Has_Key"
 example_recursive.adb:106:47: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:106:47: warning: assuming "Get" has no effect on global items
+example_recursive.adb:106:47: warning: no Global contract available for "Get"
 example_recursive.adb:106:61: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:106:61: warning: assuming "Get" has no effect on global items
+example_recursive.adb:106:61: warning: no Global contract available for "Get"
 example_recursive.adb:107:14: info: postcondition proved (CVC5: 4 VC)
 example_recursive.adb:107:14: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:113:10: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
 example_recursive.adb:113:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:113:50: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:113:50: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:113:50: warning: assuming "Get" has no effect on global items
+example_recursive.adb:113:50: warning: no Global contract available for "Get"
 example_recursive.adb:113:69: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:122:06: info: data dependencies proved
 example_recursive.adb:123:67: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:124:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:125:22: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:126:24: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:126:24: warning: no Global contract available for "Has_Key"
 example_recursive.adb:126:47: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:126:47: warning: assuming "Get" has no effect on global items
+example_recursive.adb:126:47: warning: no Global contract available for "Get"
 example_recursive.adb:126:61: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:126:61: warning: assuming "Get" has no effect on global items
+example_recursive.adb:126:61: warning: no Global contract available for "Get"
 example_recursive.adb:127:14: info: postcondition proved (CVC5: 2 VC)
 example_recursive.adb:127:44: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:127:70: info: precondition proved (CVC5: 5 VC)
@@ -64,6 +145,8 @@ example_recursive.adb:131:10: info: precondition proved (CVC5: 8 VC; Trivial: 1 
 example_recursive.adb:131:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:131:50: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:131:50: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:131:50: warning: assuming "Get" has no effect on global items
+example_recursive.adb:131:50: warning: no Global contract available for "Get"
 example_recursive.adb:131:69: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:133:07: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
 example_recursive.adb:141:06: info: data dependencies proved
@@ -73,8 +156,12 @@ example_recursive.adb:144:15: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:145:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:146:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:150:15: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:150:15: warning: assuming "Get" has no effect on global items
+example_recursive.adb:150:15: warning: no Global contract available for "Get"
 example_recursive.adb:151:32: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:151:32: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:151:32: warning: assuming "Get" has no effect on global items
+example_recursive.adb:151:32: warning: no Global contract available for "Get"
 example_recursive.adb:152:28: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:153:14: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:153:14: medium: in inlined expression function body at example_recursive.adb:34
@@ -85,6 +172,8 @@ example_recursive.adb:159:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:159:10: medium: precondition might fail, cannot prove Reachable (L1, N1, P, M1)
 example_recursive.adb:159:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:159:47: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:159:47: warning: assuming "Get" has no effect on global items
+example_recursive.adb:159:47: warning: no Global contract available for "Get"
 example_recursive.adb:159:75: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:160:25: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:160:25: medium: assertion might fail, cannot prove Valid (M, L)
@@ -97,8 +186,12 @@ example_recursive.adb:173:15: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:174:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:175:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:179:15: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:179:15: warning: assuming "Get" has no effect on global items
+example_recursive.adb:179:15: warning: no Global contract available for "Get"
 example_recursive.adb:180:32: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:180:32: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:180:32: warning: assuming "Get" has no effect on global items
+example_recursive.adb:180:32: warning: no Global contract available for "Get"
 example_recursive.adb:181:28: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:182:44: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:182:44: medium: postcondition might fail, cannot prove Reachable (L1, N1 + N2, A, M2) = (Reachable (L1, N1, A, M1) or Reachable (L2, N2, A, M1))
@@ -110,6 +203,8 @@ example_recursive.adb:189:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:189:10: medium: precondition might fail, cannot prove Reachable (L1, N1, P, M1)
 example_recursive.adb:189:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:189:47: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:189:47: warning: assuming "Get" has no effect on global items
+example_recursive.adb:189:47: warning: no Global contract available for "Get"
 example_recursive.adb:189:75: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:191:07: info: precondition proved (CVC5: 13 VC)
 example_recursive.adb:196:13: info: precondition proved (CVC5: 5 VC)
@@ -234,25 +329,96 @@ example_recursive.adb:341:04: medium: in inlined expression function body at exa
 example_recursive.adb:341:04: medium: precondition might fail, cannot prove N = 0
 example_recursive.adb:342:04: medium: in inlined expression function body at example_recursive.adb:32
 example_recursive.adb:342:04: medium: precondition might fail, cannot prove N = 0
+example_recursive.adb:344:07: warning: assuming "Rand" always returns
+example_recursive.adb:344:07: warning: assuming "Rand" has no effect on global items
+example_recursive.adb:344:07: warning: no Global contract available for "Rand"
+example_recursive.adb:344:07: warning: no returning annotation available for "Rand"
 example_recursive.adb:345:07: info: precondition proved (CVC5: 3 VC; Z3: 2 VC)
 example_recursive.adb:346:22: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:346:22: medium: assertion might fail
+example_recursive.adb:347:10: warning: assuming "Rand" always returns
+example_recursive.adb:347:10: warning: assuming "Rand" has no effect on global items
+example_recursive.adb:347:10: warning: no Global contract available for "Rand"
+example_recursive.adb:347:10: warning: no returning annotation available for "Rand"
 example_recursive.adb:349:07: info: precondition proved (CVC5: 3 VC; Z3: 2 VC)
 example_recursive.adb:350:07: medium: in inlined expression function body at example_recursive.adb:32
 example_recursive.adb:350:07: medium: precondition might fail, cannot prove N = 0
 example_recursive.adb:351:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:351:22: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:352:10: warning: assuming "Rand" always returns
+example_recursive.adb:352:10: warning: assuming "Rand" has no effect on global items
+example_recursive.adb:352:10: warning: no Global contract available for "Rand"
+example_recursive.adb:352:10: warning: no returning annotation available for "Rand"
 example_recursive.adb:353:07: medium: precondition might fail, cannot prove Disjoint (L1, L2)
 example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC)
 example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC), in inherited contract at example_tagged_obj.adb:32
 example_tagged_obj.adb:14:40: info: predicate check proved (Trivial: 1 VC)
 example_tagged_obj.adb:14:55: info: predicate check proved (Trivial: 1 VC)
+example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:18:04: warning: in instantiation at abstract_maps.ads:23
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:10
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:106
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:107
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:112
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:113
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:120
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:135
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:136
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:150
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:151
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:26
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:50
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:51
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:58
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:60
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:67
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:69
+example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:95
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:31:33: info: predicate check proved (Trivial: 1 VC)
 example_tagged_obj.adb:37:04: info: initialization of "X1" proved
 example_tagged_obj.adb:38:04: info: initialization of "X2" proved
 example_tagged_obj.adb:39:04: info: initialization of "X3" proved
 example_tagged_obj.adb:40:04: info: initialization of "X1_B" proved
 example_tagged_obj.adb:43:14: info: postcondition proved (CVC5: 2 VC)
+example_tagged_obj.adb:52:14: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:52:14: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:52:51: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:52:51: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:53:14: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:53:14: medium: postcondition might fail, cannot prove Deref (X) = Deref (Y)'old
 example_tagged_obj.adb:53:26: info: precondition proved (CVC5: 1 VC)
@@ -262,6 +428,8 @@ example_tagged_obj.adb:58:38: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:60:07: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:60:18: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:61:07: info: precondition proved (CVC5: 1 VC)
+example_tagged_obj.adb:67:13: warning: assuming "Has_Key" has no effect on global items
+example_tagged_obj.adb:67:13: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:67:50: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 1 VC; Z3: 4 VC)
 example_tagged_obj.adb:70:09: info: precondition proved (Z3: 1 VC)
@@ -296,11 +464,70 @@ example_tagged_obj.adb:94:26: medium: precondition might fail
 example_tagged_obj.adb:95:19: info: assertion proved (CVC5: 1 VC)
 example_tagged_obj.adb:95:26: info: tag check proved (CVC5: 1 VC)
 example_tagged_obj.adb:95:26: medium: precondition might fail
+example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:10:04: warning: in instantiation at abstract_maps.ads:23
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:10
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:106
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:107
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:112
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:113
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:120
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:135
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:136
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:150
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:151
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:26
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:50
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:51
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:58
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:60
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:67
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:69
+example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:95
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
 example_untagged_obj.adb:15:04: info: initialization of "X1" proved
 example_untagged_obj.adb:16:04: info: initialization of "X2" proved
 example_untagged_obj.adb:17:04: info: initialization of "X3" proved
 example_untagged_obj.adb:18:04: info: initialization of "X1_B" proved
 example_untagged_obj.adb:21:14: info: postcondition proved (CVC5: 2 VC)
+example_untagged_obj.adb:30:13: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:30:13: warning: no Global contract available for "Has_Key"
+example_untagged_obj.adb:30:45: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:30:45: warning: no Global contract available for "Has_Key"
 example_untagged_obj.adb:31:14: info: postcondition proved (CVC5: 5 VC)
 example_untagged_obj.adb:31:14: info: precondition proved (Z3: 1 VC)
 example_untagged_obj.adb:31:26: info: precondition proved (CVC5: 1 VC)
@@ -310,6 +537,8 @@ example_untagged_obj.adb:36:32: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:38:07: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:38:18: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:39:07: info: precondition proved (CVC5: 1 VC)
+example_untagged_obj.adb:43:13: warning: assuming "Has_Key" has no effect on global items
+example_untagged_obj.adb:43:13: warning: no Global contract available for "Has_Key"
 example_untagged_obj.adb:44:14: info: postcondition proved (Z3: 4 VC)
 example_untagged_obj.adb:44:14: info: precondition proved (Z3: 1 VC)
 example_untagged_obj.adb:44:27: info: precondition proved (CVC5: 1 VC)

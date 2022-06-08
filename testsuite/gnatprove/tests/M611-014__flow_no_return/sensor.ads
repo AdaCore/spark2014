@@ -4,7 +4,8 @@ package Sensor
 is
 
    procedure Read (V : out Boolean)
-     with Global => (Input => State),
-          Depends => (V => State);
+     with Global   => (Input => State),
+          Depends  => (V => State),
+          Annotate => (GNATprove, Always_Return);
 
 end Sensor;

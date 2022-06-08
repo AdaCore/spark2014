@@ -9,6 +9,10 @@ tests.adb:23:21: medium: missing dependency "Z => A"
 tests.adb:25:07: info: initialization of "Obj" proved
 tests.adb:26:07: info: initialization of "Tmp" proved
 tests.adb:27:07: info: initialization of "Tmp2" proved
+tests.adb:36:29: warning: assuming "Hash" always returns
+tests.adb:36:29: warning: assuming "Hash" has no effect on global items
+tests.adb:36:29: warning: no Global contract available for "Hash"
+tests.adb:36:29: warning: no returning annotation available for "Hash"
 tests.adb:42:23: info: initialization of "X" proved
 tests.adb:43:09: info: data dependencies proved
 tests.adb:56:13: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)

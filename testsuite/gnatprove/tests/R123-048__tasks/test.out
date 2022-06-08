@@ -14,9 +14,37 @@ psu_monitoring.adb:106:75: info: division check proved (Z3: 1 VC)
 psu_monitoring.adb:106:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:106:75: info: range check proved (Trivial)
 psu_monitoring.adb:122:22: medium: assertion might fail
+psu_monitoring.adb:128:17: warning: assuming "Set_Safety_State" always returns
+psu_monitoring.adb:128:17: warning: assuming "Set_Safety_State" has no effect on global items
+psu_monitoring.adb:128:17: warning: no Global contract available for "Set_Safety_State"
+psu_monitoring.adb:128:17: warning: no returning annotation available for "Set_Safety_State"
+psu_monitoring.adb:133:17: warning: assuming "Set_Safety_State" always returns
+psu_monitoring.adb:133:17: warning: assuming "Set_Safety_State" has no effect on global items
+psu_monitoring.adb:133:17: warning: no Global contract available for "Set_Safety_State"
+psu_monitoring.adb:133:17: warning: no returning annotation available for "Set_Safety_State"
 psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
 psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
 psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:179:17: warning: assuming "Set_Safety_State" always returns
+psu_monitoring.adb:179:17: warning: assuming "Set_Safety_State" has no effect on global items
+psu_monitoring.adb:179:17: warning: no Global contract available for "Set_Safety_State"
+psu_monitoring.adb:179:17: warning: no returning annotation available for "Set_Safety_State"
+psu_monitoring.adb:192:35: warning: assuming "Get_U_C1" always returns
+psu_monitoring.adb:192:35: warning: assuming "Get_U_C1" has no effect on global items
+psu_monitoring.adb:192:35: warning: no Global contract available for "Get_U_C1"
+psu_monitoring.adb:192:35: warning: no returning annotation available for "Get_U_C1"
+psu_monitoring.adb:193:35: warning: assuming "Get_I_L1" always returns
+psu_monitoring.adb:193:35: warning: assuming "Get_I_L1" has no effect on global items
+psu_monitoring.adb:193:35: warning: no Global contract available for "Get_I_L1"
+psu_monitoring.adb:193:35: warning: no returning annotation available for "Get_I_L1"
+psu_monitoring.adb:194:35: warning: assuming "Get_U_C2" always returns
+psu_monitoring.adb:194:35: warning: assuming "Get_U_C2" has no effect on global items
+psu_monitoring.adb:194:35: warning: no Global contract available for "Get_U_C2"
+psu_monitoring.adb:194:35: warning: no returning annotation available for "Get_U_C2"
+psu_monitoring.adb:195:35: warning: assuming "Get_I_L2" always returns
+psu_monitoring.adb:195:35: warning: assuming "Get_I_L2" has no effect on global items
+psu_monitoring.adb:195:35: warning: no Global contract available for "Get_I_L2"
+psu_monitoring.adb:195:35: warning: no returning annotation available for "Get_I_L2"
 psu_monitoring.adb:197:22: medium: assertion might fail
 psu_monitoring.adb:198:22: medium: assertion might fail
 psu_monitoring.adb:199:22: medium: assertion might fail

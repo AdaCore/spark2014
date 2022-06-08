@@ -1,9 +1,9 @@
 pixel.adb:10:43: medium: divide by zero might fail
-pixel.adb:10:43: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:93
+pixel.adb:10:43: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:95
 pixel.adb:10:43: medium: precondition might fail
 pixel.adb:10:65: medium: divide by zero might fail
 pixel.adb:14:44: medium: divide by zero might fail
-pixel.adb:14:44: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:93
+pixel.adb:14:44: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:95
 pixel.adb:14:44: medium: precondition might fail
 pixel.adb:14:66: medium: divide by zero might fail
 pixel.adb:17:15: warning: consider annotating "Asp" with Async_Writers
@@ -11,7 +11,7 @@ pixel.adb:17:15: warning: indirect writes to "Asp" through a potential alias are
 pixel.adb:17:15: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:17:15: warning: writing to "Asp" is assumed to have no effects on other non-volatile objects
 pixel.adb:17:43: medium: divide by zero might fail
-pixel.adb:17:43: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:93
+pixel.adb:17:43: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:95
 pixel.adb:17:43: medium: precondition might fail
 pixel.adb:17:65: medium: divide by zero might fail
 pixel.adb:21:04: warning: consider annotating "Cla" with Async_Writers
@@ -19,6 +19,14 @@ pixel.adb:21:04: warning: indirect writes to "Cla" through a potential alias are
 pixel.adb:21:04: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:21:04: warning: writing to "Cla" is assumed to have no effects on other non-volatile objects
 pixel.adb:21:41: medium: divide by zero might fail
-pixel.adb:21:41: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:93
+pixel.adb:21:41: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:95
 pixel.adb:21:41: medium: precondition might fail
 pixel.adb:21:63: medium: divide by zero might fail
+pixel.adb:24:04: warning: assuming "Aspect" always returns
+pixel.adb:24:04: warning: assuming "Aspect" has no effect on global items
+pixel.adb:24:04: warning: no Global contract available for "Aspect"
+pixel.adb:24:04: warning: no returning annotation available for "Aspect"
+pixel.adb:25:04: warning: assuming "Clause" always returns
+pixel.adb:25:04: warning: assuming "Clause" has no effect on global items
+pixel.adb:25:04: warning: no Global contract available for "Clause"
+pixel.adb:25:04: warning: no returning annotation available for "Clause"

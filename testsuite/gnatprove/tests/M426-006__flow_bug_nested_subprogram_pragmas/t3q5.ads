@@ -18,7 +18,9 @@ package T3Q5 is
 
    function Perm(A, B : Array_Type) return Boolean
       with Ghost,
-           Post       => (if A = B then Perm'Result),
+           Post     => (if A = B then Perm'Result),
+           Annotate => (GNATprove, Always_Return),
+           Global   => null,
            Import;
 
 

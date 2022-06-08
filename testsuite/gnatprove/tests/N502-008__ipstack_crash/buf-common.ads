@@ -6,5 +6,6 @@ package Buf.Common with
 is
    Buf_List : Integer;
    procedure Do_Some with
-     Global => (In_Out => (State, No_Data.State));
+     Global   => (In_Out => (State, No_Data.State)),
+     Annotate => (GNATprove, Always_Return);
 end Buf.Common;

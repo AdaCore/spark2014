@@ -1,1 +1,33 @@
 c34014g.adb:49:26: medium: range check might fail, cannot prove lower bound for IDENT_INT (1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: you should consider adding a postcondition to function IDENT_INT or turning it into an expression function in its unit spec]
+c34014g.adb:49:26: warning: assuming "IDENT_INT" always returns
+c34014g.adb:49:26: warning: assuming "IDENT_INT" has no effect on global items
+c34014g.adb:49:26: warning: no Global contract available for "IDENT_INT"
+c34014g.adb:49:26: warning: no returning annotation available for "IDENT_INT"
+c34014g.adb:54:06: warning: assuming "TEST" always returns
+c34014g.adb:54:06: warning: assuming "TEST" has no effect on global items
+c34014g.adb:54:06: warning: no Global contract available for "TEST"
+c34014g.adb:54:06: warning: no returning annotation available for "TEST"
+c34014g.adb:58:06: warning: assuming "COMMENT" always returns
+c34014g.adb:58:06: warning: assuming "COMMENT" has no effect on global items
+c34014g.adb:58:06: warning: no Global contract available for "COMMENT"
+c34014g.adb:58:06: warning: no returning annotation available for "COMMENT"
+c34014g.adb:74:21: warning: assuming "FAILED" always returns
+c34014g.adb:74:21: warning: assuming "FAILED" has no effect on global items
+c34014g.adb:74:21: warning: no Global contract available for "FAILED"
+c34014g.adb:74:21: warning: no returning annotation available for "FAILED"
+c34014g.adb:78:21: warning: assuming "FAILED" always returns
+c34014g.adb:78:21: warning: assuming "FAILED" has no effect on global items
+c34014g.adb:78:21: warning: no Global contract available for "FAILED"
+c34014g.adb:78:21: warning: no returning annotation available for "FAILED"
+c34014g.adb:91:16: warning: assuming "FAILED" always returns
+c34014g.adb:91:16: warning: assuming "FAILED" has no effect on global items
+c34014g.adb:91:16: warning: no Global contract available for "FAILED"
+c34014g.adb:91:16: warning: no returning annotation available for "FAILED"
+c34014g.adb:95:16: warning: assuming "FAILED" always returns
+c34014g.adb:95:16: warning: assuming "FAILED" has no effect on global items
+c34014g.adb:95:16: warning: no Global contract available for "FAILED"
+c34014g.adb:95:16: warning: no returning annotation available for "FAILED"
+c34014g.adb:101:06: warning: assuming "RESULT" always returns
+c34014g.adb:101:06: warning: assuming "RESULT" has no effect on global items
+c34014g.adb:101:06: warning: no Global contract available for "RESULT"
+c34014g.adb:101:06: warning: no returning annotation available for "RESULT"

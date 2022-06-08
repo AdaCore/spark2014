@@ -60,6 +60,8 @@ arrays.adb:245:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:249:11: info: flow dependencies proved
 arrays.adb:251:07: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
+arrays.adb:254:26: warning: assuming "Random_Array" always returns
+arrays.adb:254:26: warning: no returning annotation available for "Random_Array"
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> S = ('NUL' => False, 'a' => True, others => True)
   trace at arrays.adb:58 --> C = 'NUL'

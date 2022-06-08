@@ -5,21 +5,22 @@ package Externals
                           (Complex_Device with External => (Async_Readers,
                                                             Effective_Writes,
                                                             Async_Writers))),
-       Initializes    => Complex_Device
+       Initializes    => Complex_Device,
+       Annotate       => (GNATprove, Always_Return)
 is
    procedure Read (Combined_Value : out Integer)
-     with Global  => Combined_Inputs,  -- Combined_Inputs is an Input;
-                                       -- it does not have Effective_Reads and
-                                       -- may be an specified just as an
-                                       -- Input in Global and Depends aspects.
-          Depends => (Combined_Value => Combined_Inputs);
+     with Global   => Combined_Inputs,  -- Combined_Inputs is an Input;
+                                        -- it does not have Effective_Reads and
+                                        -- may be an specified just as an
+                                        -- Input in Global and Depends aspects.
+          Depends  => (Combined_Value => Combined_Inputs);
 
    procedure Display (D_Main, D_Secondary : in String)
-     with Global  => (Output => Displays), -- Displays is an Output and may
+     with Global   => (Output => Displays), -- Displays is an Output and may
                                            -- be specified just as an
                                            -- Output in Global and Depends
                                            -- aspects.
-          Depends => (Displays => (D_Main, D_Secondary));
+          Depends  => (Displays => (D_Main, D_Secondary));
 
    function Last_Value_Sent return Integer
      with Volatile_Function,

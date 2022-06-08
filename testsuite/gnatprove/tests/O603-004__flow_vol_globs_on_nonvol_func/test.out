@@ -3,4 +3,6 @@ p.adb:6:07: info: initialization of "Tmp" proved
 p.adb:8:12: error: volatile variable "other.hidden" cannot act as global item of nonvolatile function "Fun"
 p.adb:13:07: info: initialization of "Tmp" proved
 p.adb:15:13: error: volatile variable "Other2.State" cannot act as global item of nonvolatile function "Fun2"
+p.adb:15:13: warning: assuming "Vol_Proc" always returns
+p.adb:15:13: warning: no returning annotation available for "Vol_Proc"
 gnatprove: error during flow analysis and proof

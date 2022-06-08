@@ -8,6 +8,10 @@ main.adb:25:25: info: predicate check proved (Trivial: 1 VC)
 main.adb:26:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:35:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:37:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
+main.adb:38:16: warning: assuming "Rand" always returns
+main.adb:38:16: warning: assuming "Rand" has no effect on global items
+main.adb:38:16: warning: no Global contract available for "Rand"
+main.adb:38:16: warning: no returning annotation available for "Rand"
 main.adb:41:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:41:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:41:22: info: predicate check proved (Trivial: 1 VC)
@@ -15,6 +19,10 @@ main.adb:43:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:51:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:53:13: info: loop variant proved (Trivial)
 main.adb:54:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:55:16: warning: assuming "Rand" always returns
+main.adb:55:16: warning: assuming "Rand" has no effect on global items
+main.adb:55:16: warning: no Global contract available for "Rand"
+main.adb:55:16: warning: no returning annotation available for "Rand"
 main.adb:58:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:58:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:58:22: info: predicate check proved (Trivial: 1 VC)
@@ -23,6 +31,10 @@ main.adb:69:13: info: loop variant proved (Trivial)
 main.adb:70:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:70:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:70:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:71:18: warning: assuming "Rand" always returns
+main.adb:71:18: warning: assuming "Rand" has no effect on global items
+main.adb:71:18: warning: no Global contract available for "Rand"
+main.adb:71:18: warning: no returning annotation available for "Rand"
 main.adb:75:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:83:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:85:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
@@ -189,6 +201,10 @@ main_bad.adb:33:13: medium: loop variant might fail [possible explanation: a got
 main_bad.adb:34:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:34:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:34:22: info: predicate check proved (Trivial: 1 VC)
+main_bad.adb:35:16: warning: assuming "Rand" always returns
+main_bad.adb:35:16: warning: assuming "Rand" has no effect on global items
+main_bad.adb:35:16: warning: no Global contract available for "Rand"
+main_bad.adb:35:16: warning: no returning annotation available for "Rand"
 main_bad.adb:38:19: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:44:43: info: initialization of "R" proved
 main_bad.adb:47:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -220,8 +236,28 @@ main_bad.adb:89:13: medium: loop variant might fail [possible explanation: "C" m
 main_bad.adb:90:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:90:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:90:22: info: predicate check proved (Trivial: 1 VC)
+main_bad.adb:91:16: warning: assuming "Rand" always returns
+main_bad.adb:91:16: warning: assuming "Rand" has no effect on global items
+main_bad.adb:91:16: warning: no Global contract available for "Rand"
+main_bad.adb:91:16: warning: no returning annotation available for "Rand"
 main_bad.adb:92:22: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:94:19: warning: assuming "Rand" always returns
+main_bad.adb:94:19: warning: assuming "Rand" has no effect on global items
+main_bad.adb:94:19: warning: no Global contract available for "Rand"
+main_bad.adb:94:19: warning: no returning annotation available for "Rand"
+main_bad.adb:95:22: warning: assuming "Rand" always returns
+main_bad.adb:95:22: warning: assuming "Rand" has no effect on global items
+main_bad.adb:95:22: warning: no Global contract available for "Rand"
+main_bad.adb:95:22: warning: no returning annotation available for "Rand"
 main_bad.adb:96:28: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:97:25: warning: assuming "Rand" always returns
+main_bad.adb:97:25: warning: assuming "Rand" has no effect on global items
+main_bad.adb:97:25: warning: no Global contract available for "Rand"
+main_bad.adb:97:25: warning: no returning annotation available for "Rand"
+main_bad.adb:99:25: warning: assuming "Rand" always returns
+main_bad.adb:99:25: warning: assuming "Rand" has no effect on global items
+main_bad.adb:99:25: warning: no Global contract available for "Rand"
+main_bad.adb:99:25: warning: no returning annotation available for "Rand"
 main_bad.adb:102:28: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:105:25: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:115:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -229,6 +265,10 @@ main_bad.adb:117:13: medium: loop variant might fail [possible explanation: "C" 
 main_bad.adb:118:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:118:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:118:22: info: predicate check proved (Trivial: 1 VC)
+main_bad.adb:119:18: warning: assuming "Rand" always returns
+main_bad.adb:119:18: warning: assuming "Rand" has no effect on global items
+main_bad.adb:119:18: warning: no Global contract available for "Rand"
+main_bad.adb:119:18: warning: no returning annotation available for "Rand"
 main_bad.adb:120:35: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:130:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:132:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
@@ -237,6 +277,10 @@ main_bad.adb:133:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:133:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:134:29: info: unrolling loop
 main_bad.adb:134:29: warning: statement has no effect
+main_bad.adb:135:19: warning: assuming "Rand" always returns
+main_bad.adb:135:19: warning: assuming "Rand" has no effect on global items
+main_bad.adb:135:19: warning: no Global contract available for "Rand"
+main_bad.adb:135:19: warning: no returning annotation available for "Rand"
 main_bad.adb:139:19: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:145:43: info: initialization of "R" proved
 main_bad.adb:148:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)

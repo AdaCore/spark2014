@@ -1,4 +1,14 @@
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at borrow.adb:123
+a-cfdlli.ads:393:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at borrow.adb:123
+a-cfdlli.ads:398:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at borrow.adb:123
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at borrow.adb:123
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at borrow.adb:123
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at borrow.adb:123
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:77, in instantiation at borrow.adb:123
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at borrow.adb:123
+borrow.adb:33:04: warning: assuming "Free" always returns
+borrow.adb:33:04: warning: assuming "Free" has no effect on global items
+borrow.adb:33:04: warning: no Global contract available for "Free"
+borrow.adb:33:04: warning: no returning annotation available for "Free"
 borrow.adb:43:36: error: object was moved at line 42
 borrow.adb:43:36: error: part of "U" is not readable
 borrow.adb:44:20: error: object was moved at line 42

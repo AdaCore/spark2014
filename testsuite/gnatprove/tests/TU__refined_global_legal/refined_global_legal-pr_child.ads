@@ -5,5 +5,6 @@ private package Refined_Global_Legal.Pr_Child
        Initializes    => (Pr_State, Pr_State2)
 is
    function Priv_F return Boolean
-     with Global => Pr_State;
+     with Global   => Pr_State,
+          Annotate => (GNATprove, Always_Return);
 end Refined_Global_Legal.Pr_Child;

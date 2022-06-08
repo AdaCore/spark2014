@@ -1,6 +1,14 @@
 bad_gen_access.adb:9:14: error: instance of Unchecked_Deallocation with a general access type is not allowed in SPARK
 bad_gen_access.adb:9:14: error: violation of aspect SPARK_Mode at line 3
+bad_gen_access.adb:14:19: warning: assuming "F" always returns
+bad_gen_access.adb:14:19: warning: assuming "F" has no effect on global items
+bad_gen_access.adb:14:19: warning: no Global contract available for "F"
+bad_gen_access.adb:14:19: warning: no returning annotation available for "F"
 bad_gen_access.adb:15:19: error: move as part of a conversion to an access-to-constant type is not yet supported
+bad_gen_access.adb:16:19: warning: assuming "F" always returns
+bad_gen_access.adb:16:19: warning: assuming "F" has no effect on global items
+bad_gen_access.adb:16:19: warning: no Global contract available for "F"
+bad_gen_access.adb:16:19: warning: no returning annotation available for "F"
 bad_gen_access.adb:24:12: error: conversion from an anonymous access type to a named access type is not allowed in SPARK
 bad_gen_access.adb:24:12: error: violation of aspect SPARK_Mode at line 3
 ext.ads:10:20: medium: memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
@@ -28,21 +36,69 @@ ext.ads:70:42: medium: memory leak might occur [possible explanation: allocator 
 ext.ads:71:42: medium: memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:72:42: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 gen_access.adb:9:04: medium: memory leak might occur at end of scope
+gen_access.adb:10:19: warning: assuming "F" always returns
+gen_access.adb:10:19: warning: assuming "F" has no effect on global items
+gen_access.adb:10:19: warning: no Global contract available for "F"
+gen_access.adb:10:19: warning: no returning annotation available for "F"
 gen_access.adb:12:21: medium: memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+gen_access.adb:15:28: warning: assuming "Mk" always returns
+gen_access.adb:15:28: warning: assuming "Mk" has no effect on global items
+gen_access.adb:15:28: warning: no Global contract available for "Mk"
+gen_access.adb:15:28: warning: no returning annotation available for "Mk"
 gen_access.adb:16:19: info: assertion proved (CVC5: 1 VC)
+gen_access.adb:16:31: warning: assuming "Mk" always returns
+gen_access.adb:16:31: warning: assuming "Mk" has no effect on global items
+gen_access.adb:16:31: warning: no Global contract available for "Mk"
+gen_access.adb:16:31: warning: no returning annotation available for "Mk"
 gen_access.adb:24:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+gen_access.adb:24:24: warning: assuming "Mk" always returns
+gen_access.adb:24:24: warning: assuming "Mk" has no effect on global items
+gen_access.adb:24:24: warning: no Global contract available for "Mk"
+gen_access.adb:24:24: warning: no returning annotation available for "Mk"
 gen_access.adb:25:04: medium: memory leak might occur at end of scope
 gen_access.adb:26:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+gen_access.adb:26:24: warning: assuming "Mk" always returns
+gen_access.adb:26:24: warning: assuming "Mk" has no effect on global items
+gen_access.adb:26:24: warning: no Global contract available for "Mk"
+gen_access.adb:26:24: warning: no returning annotation available for "Mk"
 gen_access.adb:37:19: info: assertion proved (CVC5: 1 VC)
 gen_access.adb:37:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+gen_access.adb:37:22: warning: assuming "Mk_Arr_1" always returns
+gen_access.adb:37:22: warning: assuming "Mk_Arr_1" has no effect on global items
+gen_access.adb:37:22: warning: no Global contract available for "Mk_Arr_1"
+gen_access.adb:37:22: warning: no returning annotation available for "Mk_Arr_1"
 gen_access.adb:49:19: info: assertion proved (CVC5: 1 VC)
+gen_access.adb:49:22: warning: assuming "Mk_Arr_2" always returns
+gen_access.adb:49:22: warning: assuming "Mk_Arr_2" has no effect on global items
+gen_access.adb:49:22: warning: no Global contract available for "Mk_Arr_2"
+gen_access.adb:49:22: warning: no returning annotation available for "Mk_Arr_2"
 gen_access.adb:59:19: info: assertion proved (CVC5: 1 VC)
 gen_access.adb:59:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+gen_access.adb:59:22: warning: assuming "Mk_List" always returns
+gen_access.adb:59:22: warning: assuming "Mk_List" has no effect on global items
+gen_access.adb:59:22: warning: no Global contract available for "Mk_List"
+gen_access.adb:59:22: warning: no returning annotation available for "Mk_List"
 gen_access.adb:60:04: info: absence of memory leak at end of scope proved (Z3: 1 VC)
+gen_access.adb:60:17: warning: assuming "Mk_List" always returns
+gen_access.adb:60:17: warning: assuming "Mk_List" has no effect on global items
+gen_access.adb:60:17: warning: no Global contract available for "Mk_List"
+gen_access.adb:60:17: warning: no returning annotation available for "Mk_List"
 gen_access.adb:61:04: medium: memory leak might occur at end of scope
 gen_access.adb:62:04: info: absence of memory leak at end of scope proved (Z3: 1 VC)
+gen_access.adb:62:25: warning: assuming "Mk_List" always returns
+gen_access.adb:62:25: warning: assuming "Mk_List" has no effect on global items
+gen_access.adb:62:25: warning: no Global contract available for "Mk_List"
+gen_access.adb:62:25: warning: no returning annotation available for "Mk_List"
 gen_access.adb:63:04: medium: memory leak might occur at end of scope
+gen_access.adb:63:25: warning: assuming "Mk_List" always returns
+gen_access.adb:63:25: warning: assuming "Mk_List" has no effect on global items
+gen_access.adb:63:25: warning: no Global contract available for "Mk_List"
+gen_access.adb:63:25: warning: no returning annotation available for "Mk_List"
 gen_access.adb:65:04: info: absence of memory leak at end of scope proved (Z3: 1 VC)
+gen_access.adb:65:25: warning: assuming "Mk_List" always returns
+gen_access.adb:65:25: warning: assuming "Mk_List" has no effect on global items
+gen_access.adb:65:25: warning: no Global contract available for "Mk_List"
+gen_access.adb:65:25: warning: no returning annotation available for "Mk_List"
 gen_access.adb:67:79: info: dynamic accessibility check proved (Trivial)
 gen_access.adb:71:18: medium: "All_Null" is recursive, terminating annotation could be incorrect
 gen_access.adb:71:62: info: pointer dereference check proved (CVC5: 1 VC)
@@ -64,11 +120,27 @@ gen_access.adb:96:22: warning: "L.N" is set by "Delete" but not used after the c
 gen_access.adb:97:14: info: absence of memory leak proved (CVC5: 1 VC)
 gen_access.adb:111:19: info: assertion proved (CVC5: 1 VC)
 gen_access.adb:111:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+gen_access.adb:111:22: warning: assuming "Mk_List2" always returns
+gen_access.adb:111:22: warning: assuming "Mk_List2" has no effect on global items
+gen_access.adb:111:22: warning: no Global contract available for "Mk_List2"
+gen_access.adb:111:22: warning: no returning annotation available for "Mk_List2"
 gen_access.adb:112:04: info: absence of memory leak at end of scope proved (Z3: 1 VC)
+gen_access.adb:112:18: warning: assuming "Mk_List2" always returns
+gen_access.adb:112:18: warning: assuming "Mk_List2" has no effect on global items
+gen_access.adb:112:18: warning: no Global contract available for "Mk_List2"
+gen_access.adb:112:18: warning: no returning annotation available for "Mk_List2"
 gen_access.adb:113:04: medium: memory leak might occur at end of scope
 gen_access.adb:124:19: info: assertion proved (CVC5: 1 VC)
 gen_access.adb:124:22: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+gen_access.adb:124:22: warning: assuming "Mk_My_Acc" always returns
+gen_access.adb:124:22: warning: assuming "Mk_My_Acc" has no effect on global items
+gen_access.adb:124:22: warning: no Global contract available for "Mk_My_Acc"
+gen_access.adb:124:22: warning: no returning annotation available for "Mk_My_Acc"
 gen_access.adb:125:04: info: absence of memory leak at end of scope proved (Z3: 1 VC)
+gen_access.adb:125:19: warning: assuming "Mk_My_Acc" always returns
+gen_access.adb:125:19: warning: assuming "Mk_My_Acc" has no effect on global items
+gen_access.adb:125:19: warning: no Global contract available for "Mk_My_Acc"
+gen_access.adb:125:19: warning: no returning annotation available for "Mk_My_Acc"
 gen_access.adb:126:04: medium: memory leak might occur at end of scope
 gen_access.adb:129:07: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:129:16: medium: memory leak might occur

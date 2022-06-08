@@ -1,4 +1,8 @@
 array_types.ads:5:04: info: range check proved (CVC5: 2 VC)
 array_types.ads:5:26: info: overflow check proved (CVC5: 2 VC)
 array_types.ads:5:34: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
+array_types.ads:5:34: warning: assuming "New_M" always returns
+array_types.ads:5:34: warning: assuming "New_M" has no effect on global items
+array_types.ads:5:34: warning: no Global contract available for "New_M"
+array_types.ads:5:34: warning: no returning annotation available for "New_M"
 array_types.ads:6:19: medium: assertion might fail

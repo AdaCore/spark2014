@@ -14,7 +14,9 @@ is
    function Copy (L : access List_Cell) return List_Acc with
      Ghost,
      Import,
-     Post => For_All_List (L, Copy'Result, Equal'Access);
+     Global   => null,
+     Annotate => (GNATprove, Always_Return),
+     Post     => For_All_List (L, Copy'Result, Equal'Access);
 
    procedure Map_List_Incr (L : access List_Cell) with
      Pre  => For_All_List (L, Small_Enough'Access),

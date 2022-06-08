@@ -1,6 +1,6 @@
 with Interfaces.C_Streams;    use Interfaces.C_Streams;
 
-package Helpers with SPARK_Mode is
+package Helpers with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
    type File_Descr is private;
 
 #if TEST_GET_LINE
@@ -152,7 +152,7 @@ package Helpers with SPARK_Mode is
                   (Ferror (Stream) /= 0 or else
                   (Fpeek (Stream)'Old = EOF and then Cur_Position = Cur_Position'Old)));
 
-   function ferror (stream : File_Descr) return int;
+   function ferror (stream : File_Descr) return Int;
 
    procedure fgetc (stream : File_Descr; result : out int) with
      Global => (Proof_In => (The_File, EOF), In_Out => Cur_Position, Input => EOF_Ch),

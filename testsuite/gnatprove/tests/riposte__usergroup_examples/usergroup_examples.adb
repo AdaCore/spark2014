@@ -27,7 +27,9 @@ is
 
    function Is_Valid (V : Value_T) return Boolean
      with Ghost,
-          Import;
+          Import,
+          Global   => null,
+          Annotate => (GNATprove, Always_Return);
 
    procedure Example_2 (AR      : in out Array_Rec_T;
                         Current : in out Index_T)

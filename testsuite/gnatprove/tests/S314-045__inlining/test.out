@@ -1,3 +1,59 @@
+compiler.adb:29:05: warning: assuming "Put" always returns
+compiler.adb:29:05: warning: no returning annotation available for "Put"
+compiler.adb:29:19: warning: assuming "New_Line" always returns
+compiler.adb:29:19: warning: no returning annotation available for "New_Line"
+compiler.adb:30:05: warning: assuming "Put" always returns
+compiler.adb:30:05: warning: no returning annotation available for "Put"
+compiler.adb:31:05: warning: assuming "New_Line" always returns
+compiler.adb:31:05: warning: no returning annotation available for "New_Line"
+compiler.adb:50:05: warning: assuming "Put" always returns
+compiler.adb:50:05: warning: no returning annotation available for "Put"
+compiler.adb:50:26: warning: assuming "Put" always returns
+compiler.adb:50:26: warning: no returning annotation available for "Put"
+compiler.adb:52:05: warning: assuming "Put" always returns
+compiler.adb:52:05: warning: no returning annotation available for "Put"
+compiler.adb:52:37: warning: assuming "Put" always returns
+compiler.adb:52:37: warning: no returning annotation available for "Put"
+compiler.adb:53:05: warning: assuming "Put" always returns
+compiler.adb:53:05: warning: no returning annotation available for "Put"
+compiler.adb:54:05: warning: assuming "Put" always returns
+compiler.adb:54:05: warning: no returning annotation available for "Put"
+compiler.adb:55:05: warning: assuming "Put" always returns
+compiler.adb:55:05: warning: no returning annotation available for "Put"
+compiler.adb:56:05: warning: assuming "Put" always returns
+compiler.adb:56:05: warning: no returning annotation available for "Put"
+compiler.adb:57:05: warning: assuming "New_Line" always returns
+compiler.adb:57:05: warning: no returning annotation available for "New_Line"
+compiler.adb:164:07: warning: assuming "New_Line" always returns
+compiler.adb:164:07: warning: no returning annotation available for "New_Line"
+compiler.adb:308:08: warning: assuming "End_Of_File" always returns
+compiler.adb:308:08: warning: no returning annotation available for "End_Of_File"
+compiler.adb:310:33: warning: assuming "Get_Line" always returns
+compiler.adb:310:33: warning: no returning annotation available for "Get_Line"
+compiler.adb:314:32: warning: assuming "New_Line" always returns
+compiler.adb:314:32: warning: no returning annotation available for "New_Line"
+compiler.adb:315:14: warning: assuming "Put" always returns
+compiler.adb:315:14: warning: no returning annotation available for "Put"
+compiler.adb:319:05: warning: assuming "New_Line" always returns
+compiler.adb:319:05: warning: no returning annotation available for "New_Line"
+compiler.adb:1252:03: warning: assuming "New_Line" always returns
+compiler.adb:1252:03: warning: no returning annotation available for "New_Line"
+compiler.adb:1269:03: warning: assuming "New_Line" always returns
+compiler.adb:1269:03: warning: no returning annotation available for "New_Line"
+compiler.adb:1270:03: warning: assuming "Put" always returns
+compiler.adb:1270:03: warning: no returning annotation available for "Put"
+compiler.adb:1271:03: warning: assuming "New_Line" always returns
+compiler.adb:1271:03: warning: no returning annotation available for "New_Line"
+compiler.adb:1470:07: warning: assuming "Put" always returns
+compiler.adb:1470:07: warning: no returning annotation available for "Put"
+compiler.adb:1526:05: warning: assuming "New_Line" always returns
+compiler.adb:1526:05: warning: no returning annotation available for "New_Line"
+compiler.adb:1527:05: warning: assuming "Put" always returns
+compiler.adb:1527:05: warning: no returning annotation available for "Put"
+compiler.adb:1527:26: warning: assuming "Put" always returns
+compiler.adb:1527:26: warning: no returning annotation available for "Put"
+compiler.adb:1528:05: warning: assuming "New_Line" always returns
+compiler.adb:1528:05: warning: no returning annotation available for "New_Line"
 compiler.adb:1659:36: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1659:36: error: violation of aspect SPARK_Mode at line 23
 compiler.adb:1665:35: error: call to a volatile function in interfering context is not allowed in SPARK
@@ -42,10 +98,36 @@ compiler.adb:1761:34: error: call to a volatile function in interfering context 
 compiler.adb:1761:34: error: violation of aspect SPARK_Mode at line 23
 compiler.adb:1762:34: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1762:34: error: violation of aspect SPARK_Mode at line 23
+compiler.adb:1769:13: warning: assuming "Put" always returns
+compiler.adb:1769:13: warning: no returning annotation available for "Put"
+compiler.adb:1769:31: warning: assuming "Put" always returns
+compiler.adb:1769:31: warning: no returning annotation available for "Put"
+compiler.adb:1772:22: warning: assuming "New_Line" always returns
+compiler.adb:1772:22: warning: no returning annotation available for "New_Line"
 compiler.adb:1791:41: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1791:41: error: violation of aspect SPARK_Mode at line 23
 compiler.adb:1808:42: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1808:42: error: violation of aspect SPARK_Mode at line 23
+compiler.adb:1865:11: warning: assuming "Put" always returns
+compiler.adb:1865:11: warning: no returning annotation available for "Put"
+compiler.adb:1865:30: warning: assuming "Put" always returns
+compiler.adb:1865:30: warning: no returning annotation available for "Put"
+compiler.adb:1866:11: warning: assuming "New_Line" always returns
+compiler.adb:1866:11: warning: no returning annotation available for "New_Line"
 compiler.adb:1869:22: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1869:22: error: violation of aspect SPARK_Mode at line 23
+compiler.adb:1909:05: warning: assuming "New_Line" always returns
+compiler.adb:1909:05: warning: no returning annotation available for "New_Line"
+compiler.adb:1910:05: warning: assuming "Put" always returns
+compiler.adb:1910:05: warning: no returning annotation available for "Put"
+compiler.adb:1910:26: warning: assuming "Put" always returns
+compiler.adb:1910:26: warning: no returning annotation available for "Put"
+compiler.adb:1911:05: warning: assuming "New_Line" always returns
+compiler.adb:1911:05: warning: no returning annotation available for "New_Line"
+compiler.adb:1913:05: warning: assuming "Put" always returns
+compiler.adb:1913:05: warning: no returning annotation available for "Put"
+compiler.adb:1913:25: warning: assuming "Put" always returns
+compiler.adb:1913:25: warning: no returning annotation available for "Put"
+compiler.adb:1913:47: warning: assuming "New_Line" always returns
+compiler.adb:1913:47: warning: no returning annotation available for "New_Line"
 gnatprove: error during flow analysis and proof

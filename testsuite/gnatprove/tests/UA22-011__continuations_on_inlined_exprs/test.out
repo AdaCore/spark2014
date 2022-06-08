@@ -2,13 +2,41 @@ main.adb:20:16: medium: in default value at main.adb:47
 main.adb:20:16: medium: in inlined predicate at main.adb:12
 main.adb:20:16: medium: predicate check might fail, cannot prove T.G >= 0
 main.adb:27:04: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:29:07: warning: assuming "Rand" always returns
+main.adb:29:07: warning: assuming "Rand" has no effect on global items
+main.adb:29:07: warning: no Global contract available for "Rand"
+main.adb:29:07: warning: no returning annotation available for "Rand"
 main.adb:30:08: medium: in inlined predicate at main.adb:11
-main.adb:30:08: medium: predicate check might fail, cannot prove T.F >= 0 (e.g. when X = (F => 0, G => 0))
+main.adb:30:08: medium: predicate check might fail, cannot prove T.F >= 0
+main.adb:31:10: warning: assuming "Rand" always returns
+main.adb:31:10: warning: assuming "Rand" has no effect on global items
+main.adb:31:10: warning: no Global contract available for "Rand"
+main.adb:31:10: warning: no returning annotation available for "Rand"
 main.adb:32:08: medium: in inlined predicate at main.adb:12
-main.adb:32:08: medium: predicate check might fail, cannot prove T.G >= 0 (e.g. when X = (F => 0, G => 0))
+main.adb:32:08: medium: predicate check might fail, cannot prove T.G >= 0
+main.adb:33:10: warning: assuming "Rand" always returns
+main.adb:33:10: warning: assuming "Rand" has no effect on global items
+main.adb:33:10: warning: no Global contract available for "Rand"
+main.adb:33:10: warning: no returning annotation available for "Rand"
 main.adb:34:22: medium: assertion might fail
+main.adb:35:10: warning: assuming "Rand" always returns
+main.adb:35:10: warning: assuming "Rand" has no effect on global items
+main.adb:35:10: warning: no Global contract available for "Rand"
+main.adb:35:10: warning: no returning annotation available for "Rand"
 main.adb:36:22: medium: assertion might fail
+main.adb:37:10: warning: assuming "Rand" always returns
+main.adb:37:10: warning: assuming "Rand" has no effect on global items
+main.adb:37:10: warning: no Global contract available for "Rand"
+main.adb:37:10: warning: no returning annotation available for "Rand"
 main.adb:38:22: medium: assertion might fail, cannot prove T.G >= 0
 main.adb:38:22: medium: in inlined predicate at main.adb:12
+main.adb:39:10: warning: assuming "Rand" always returns
+main.adb:39:10: warning: assuming "Rand" has no effect on global items
+main.adb:39:10: warning: no Global contract available for "Rand"
+main.adb:39:10: warning: no returning annotation available for "Rand"
 main.adb:41:10: medium: in inlined predicate at main.adb:16
 main.adb:41:10: medium: predicate check might fail on default value, cannot prove T2.F > 0
+main.adb:45:10: warning: assuming "Rand" always returns
+main.adb:45:10: warning: assuming "Rand" has no effect on global items
+main.adb:45:10: warning: no Global contract available for "Rand"
+main.adb:45:10: warning: no returning annotation available for "Rand"

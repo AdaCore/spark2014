@@ -3,7 +3,8 @@ with Interfaces.C_Streams;    use Interfaces.C_Streams;
 
 package TextIO with
   SPARK_Mode,
-  Abstract_State => Current_Input_File
+  Abstract_State => Current_Input_File,
+  Annotate       => (GNATprove, Always_Return)
 is
 
    type File_Type is private;
@@ -108,7 +109,8 @@ is
    --  Used as page mark, except at end of file where it is implied
 
    function End_Of_File (File : File_Type) return Boolean with
-     Post => End_Of_File'Result = (Fpeek (File) = EOF)
+     Post   => End_Of_File'Result = (Fpeek (File) = EOF),
+     Global => null
 #if TEST_GET_LINE
      ;
 #else

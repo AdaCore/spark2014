@@ -7,14 +7,20 @@ is
 
    type Log_Type is tagged private;
 
-   function Log_Size (Log : Log_Type) return Log_Count;
+   function Log_Size (Log : Log_Type) return Log_Count with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    procedure Init_Log (Log : out Log_Type) with
-     Post'Class => Log.Log_Size = 0;
+     Post'Class => Log.Log_Size = 0,
+     Global     => null,
+     Annotate   => (GNATprove, Always_Return);
 
    procedure Append_To_Log (Log : in out Log_Type; Incr : in Integer) with
      Pre'Class  => Log.Log_Size < Max_Count,
-     Post'Class => Log.Log_Size = Log.Log_Size'Old + 1;
+     Post'Class => Log.Log_Size = Log.Log_Size'Old + 1,
+     Global     => null,
+     Annotate   => (GNATprove, Always_Return);
 
 private
 

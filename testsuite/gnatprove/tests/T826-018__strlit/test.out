@@ -1,3 +1,7 @@
+ada_main.adb:8:07: warning: assuming "Get_Host_By_Name" always returns
+ada_main.adb:8:07: warning: assuming "Get_Host_By_Name" has no effect on global items
+ada_main.adb:8:07: warning: no Global contract available for "Get_Host_By_Name"
+ada_main.adb:8:07: warning: no returning annotation available for "Get_Host_By_Name"
 ada_main.adb:9:07: medium: assertion might fail
 ada_main.ads:11:14: high: all paths in "HTTP_Client_Test" raise exceptions or do not terminate normally
 ada_main.ads:11:14: warning: subprogram "HTTP_Client_Test" has no effect

@@ -1,41 +1,53 @@
-a-cfhama.ads:400:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:400:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:425:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:463:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:776:39: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:785:17: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:815:20: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:830:20: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cofove.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:320:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:320:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:343:51: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:385:73: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:418:51: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:453:59: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:499:59: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:523:51: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:564:59: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:629:28: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:629:57: info: range check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at prim_eq_vect.adb:6
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at prim_eq_vect.adb:18
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at prim_eq_vect.adb:6
+a-cfhama.ads:400:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:402:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:402:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:406:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:408:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:427:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:465:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:778:39: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:787:17: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:817:20: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:832:20: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cofove.ads:296:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:297:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:301:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:303:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:322:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:322:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:345:51: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:387:73: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:420:51: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:455:59: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:501:59: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:525:51: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:566:59: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:631:28: info: overflow check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:631:57: info: range check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:759:23: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:795:14: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at prim_eq_vect.adb:18
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at prim_eq_vect.adb:18
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at prim_eq_vect.adb:18
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at prim_eq_vect.adb:6
 prim_eq_vect.adb:9:52: info: range check proved (CVC5: 2 VC)
 prim_eq_vect.adb:28:14: info: postcondition proved (Z3: 1 VC)
 prim_eq_vect.adb:28:26: info: precondition proved (CVC5: 1 VC)

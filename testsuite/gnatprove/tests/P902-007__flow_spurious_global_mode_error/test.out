@@ -1,3 +1,5 @@
 foo.adb:10:24: info: cannot unroll loop (too many loop iterations)
+foo.adb:11:13: warning: assuming "Write" always returns
+foo.adb:11:13: warning: no returning annotation available for "Write"
 foo.ads:5:14: medium: "Bar.State" constituent of "Foo.State" might not be initialized
 foo.ads:7:09: info: data dependencies proved

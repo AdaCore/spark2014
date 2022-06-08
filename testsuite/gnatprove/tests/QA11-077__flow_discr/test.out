@@ -1,5 +1,21 @@
 call.adb:3:17: info: initialization of "X" proved
+call.adb:5:05: warning: assuming "Proc" always returns
+call.adb:5:05: warning: assuming "Proc" has no effect on global items
+call.adb:5:05: warning: no Global contract available for "Proc"
+call.adb:5:05: warning: no returning annotation available for "Proc"
+call.adb:6:05: warning: assuming "Proc" always returns
+call.adb:6:05: warning: assuming "Proc" has no effect on global items
+call.adb:6:05: warning: no Global contract available for "Proc"
+call.adb:6:05: warning: no returning annotation available for "Proc"
 call1.adb:3:18: info: initialization of "X" proved
+call1.adb:5:05: warning: assuming "Proc1" always returns
+call1.adb:5:05: warning: assuming "Proc1" has no effect on global items
+call1.adb:5:05: warning: no Global contract available for "Proc1"
+call1.adb:5:05: warning: no returning annotation available for "Proc1"
 call1.adb:5:05: warning: statement has no effect
 call1.adb:5:13: warning: "X" is set by "Proc1" but not used after the call
+call1.adb:6:05: warning: assuming "Proc1" always returns
+call1.adb:6:05: warning: assuming "Proc1" has no effect on global items
+call1.adb:6:05: warning: no Global contract available for "Proc1"
+call1.adb:6:05: warning: no returning annotation available for "Proc1"
 p.ads:7:26: info: range check proved (CVC5: 2 VC)

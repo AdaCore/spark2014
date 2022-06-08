@@ -1,5 +1,9 @@
 arrays.ads:25:04: warning: make sure that all overlapping objects have Async_Writers set to True
 arrays.ads:25:04: warning: writing to "Arr_3" is assumed to have no effects on other non-volatile objects
+arrays.ads:25:26: warning: assuming "F" always returns
+arrays.ads:25:26: warning: assuming "F" has no effect on global items
+arrays.ads:25:26: warning: no Global contract available for "F"
+arrays.ads:25:26: warning: no returning annotation available for "F"
 arrays.ads:27:04: error: "Arr_4" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:27:04: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:28:79: error: attribute "Address" in unsupported context is not yet supported

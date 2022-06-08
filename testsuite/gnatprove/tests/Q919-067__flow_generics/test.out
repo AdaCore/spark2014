@@ -1,6 +1,18 @@
+main_test.adb:10:05: warning: assuming "*" always returns
 main_test.adb:10:05: warning: assuming "*" has no effect on global items
+main_test.adb:10:05: warning: assuming "Transpose" always returns
 main_test.adb:10:05: warning: assuming "Transpose" has no effect on global items
+main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
+main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: no Global contract available for "*"
 main_test.adb:10:05: warning: no Global contract available for "Transpose"
+main_test.adb:10:05: warning: no returning annotation available for "*"
+main_test.adb:10:05: warning: no returning annotation available for "Transpose"
+specific_matrix_other.adb:13:21: warning: assuming "Transpose" always returns
+specific_matrix_other.adb:13:21: warning: no returning annotation available for "Transpose"
+specific_matrix_other.adb:13:39: warning: assuming "*" always returns
+specific_matrix_other.adb:13:39: warning: no returning annotation available for "*"
+specific_matrix_other.adb:13:50: warning: assuming "*" always returns
+specific_matrix_other.adb:13:50: warning: no returning annotation available for "*"

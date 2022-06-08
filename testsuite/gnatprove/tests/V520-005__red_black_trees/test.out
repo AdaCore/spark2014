@@ -1,3 +1,5 @@
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
 big_intervals.ads:20:07: info: predicate check proved (Trivial: 1 VC)
 big_intervals.ads:20:11: info: predicate check proved (Trivial: 1 VC)
 big_intervals.ads:23:17: info: predicate check proved (Trivial: 1 VC)
@@ -62,8 +64,8 @@ infinite_sequences.adb:55:42: info: predicate check proved (CVC5: 2 VC; Trivial:
 infinite_sequences.adb:55:47: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:55:56: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:57:19: info: precondition proved (Trivial: 2 VC)
-infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:64
-infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:64
+infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:66
+infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:66
 infinite_sequences.adb:57:43: medium: loop invariant might fail in first iteration, cannot prove Low <= Arg
 infinite_sequences.adb:57:43: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Low <= Arg
 infinite_sequences.adb:57:53: info: predicate check proved (Trivial: 2 VC)
@@ -220,27 +222,27 @@ red_black_trees.adb:190:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:59: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:84: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:191:18: info: precondition proved (Trivial: 1 VC)
-red_black_trees.adb:192:20: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:192:20: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:192:20: medium: precondition might fail, cannot prove Low <= Arg
-red_black_trees.adb:192:42: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:192:42: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:192:42: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
-red_black_trees.adb:192:47: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:192:47: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:192:47: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:192:69: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:192:73: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:192:78: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:192:78: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:192:78: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:192:80: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:193:18: info: precondition proved (Trivial: 1 VC)
-red_black_trees.adb:194:20: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:194:20: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:194:20: medium: precondition might fail, cannot prove Low <= Arg
-red_black_trees.adb:194:42: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:194:42: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:194:42: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
-red_black_trees.adb:194:47: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:194:47: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:194:47: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:194:69: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:194:73: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:194:78: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:194:78: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:194:78: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:194:80: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:203:17: info: predicate check proved (CVC5: 1 VC)
@@ -271,26 +273,26 @@ red_black_trees.adb:216:84: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:218:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:218:56: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:219:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T.Left, Pos1), I) [possible fix: subprogram at line 186 should mention Pos1 and T in a precondition]
-red_black_trees.adb:219:17: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:219:17: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:219:17: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:219:39: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-red_black_trees.adb:219:44: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:219:44: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:219:44: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:219:57: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:219:71: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:219:71: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:219:71: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:221:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:221:56: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:222:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
-red_black_trees.adb:222:17: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:222:17: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:222:17: medium: precondition might fail, cannot prove Arg <= High
-red_black_trees.adb:222:39: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:222:39: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:222:39: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
-red_black_trees.adb:222:44: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:222:44: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:222:44: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:222:66: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:222:70: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:222:75: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:222:75: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:222:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
 red_black_trees.adb:222:77: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:224:13: info: precondition proved (Trivial: 1 VC)
@@ -305,10 +307,10 @@ red_black_trees.adb:224:98: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:224:105: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:224:107: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:225:15: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T.Right, Pos1 + Size (T.Left) + 1), I) [possible fix: subprogram at line 186 should mention Pos1 and T in a precondition]
-red_black_trees.adb:225:15: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:225:15: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:225:15: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:225:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-red_black_trees.adb:225:42: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:225:42: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:225:42: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:225:55: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:225:63: info: predicate check proved (Trivial: 1 VC)
@@ -316,7 +318,7 @@ red_black_trees.adb:225:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:225:77: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:225:84: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:225:86: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:225:90: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:225:90: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:225:90: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:227:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:227:36: info: predicate check proved (Trivial: 1 VC)
@@ -330,28 +332,28 @@ red_black_trees.adb:227:98: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:227:105: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:227:107: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:228:15: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
-red_black_trees.adb:228:15: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:228:15: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:228:15: medium: precondition might fail, cannot prove Low <= Arg
-red_black_trees.adb:228:37: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:228:37: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:228:37: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
-red_black_trees.adb:228:42: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:228:42: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:228:42: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:228:64: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:228:68: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:228:73: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:228:73: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:228:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
 red_black_trees.adb:228:75: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:230:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:231:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
-red_black_trees.adb:231:17: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:231:17: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:231:17: medium: precondition might fail, cannot prove Low <= Arg
-red_black_trees.adb:231:39: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:231:39: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:231:39: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
-red_black_trees.adb:231:44: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:231:44: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:231:44: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:231:66: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:231:70: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:231:75: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:231:75: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:231:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
 red_black_trees.adb:231:77: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:271:22: info: assertion proved (CVC5: 1 VC)
@@ -413,7 +415,7 @@ red_black_trees.adb:334:77: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:334:86: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:334:93: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:335:18: medium: assertion might fail, cannot prove Get (Model (C.Right, Pos + Size (C.Left) + 1), I) > C.Value [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
-red_black_trees.adb:335:18: medium: in inlined expression function body at a-nbnbin.ads:64
+red_black_trees.adb:335:18: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:335:18: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:335:31: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:335:39: info: predicate check proved (Trivial: 1 VC)
@@ -421,7 +423,7 @@ red_black_trees.adb:335:45: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:335:52: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:335:59: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:335:61: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:335:65: medium: in inlined predicate at a-nbnbin.ads:53
+red_black_trees.adb:335:65: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:335:65: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:335:71: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:336:28: medium: assertion might fail

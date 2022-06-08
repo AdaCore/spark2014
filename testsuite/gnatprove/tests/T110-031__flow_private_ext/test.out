@@ -1,1 +1,9 @@
 draw.adb:4:04: info: initialization of "Rec" proved
+draw.adb:6:07: warning: assuming "Set_Width" always returns
+draw.adb:6:07: warning: assuming "Set_Width" has no effect on global items
+draw.adb:6:07: warning: no Global contract available for "Set_Width"
+draw.adb:6:07: warning: no returning annotation available for "Set_Width"
+draw.adb:9:07: warning: assuming "Set_Height" always returns
+draw.adb:9:07: warning: assuming "Set_Height" has no effect on global items
+draw.adb:9:07: warning: no Global contract available for "Set_Height"
+draw.adb:9:07: warning: no returning annotation available for "Set_Height"

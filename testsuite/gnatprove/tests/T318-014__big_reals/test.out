@@ -104,5 +104,5 @@ big_reals_test.adb:76:27: info: predicate check proved (Trivial: 1 VC)
 big_reals_test.adb:76:32: info: predicate check proved (Trivial: 1 VC)
 big_reals_test.adb:78:04: info: precondition proved (Trivial: 1 VC)
 big_reals_test.adb:81:19: medium: assertion might fail, cannot prove Low <= Arg
-big_reals_test.adb:81:19: medium: in inlined expression function body at a-nbnbre.ads:78
+big_reals_test.adb:81:19: medium: in inlined expression function body at a-nbnbre.ads:80
 real_convs.ads:1:30: warning: "Ada.Numerics.Big_Numbers.Big_Reals" is an Ada 2022 unit [-gnatwi]

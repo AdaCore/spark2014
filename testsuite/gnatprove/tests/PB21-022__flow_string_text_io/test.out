@@ -1,9 +1,15 @@
 p.adb:15:39: high: call to potentially blocking predefined subprogram "Put" in protected operation "Put_Unbounded_String"
+p.adb:15:39: warning: assuming "Put" always returns
 p.adb:15:39: warning: assuming "Put" has no effect on global items
 p.adb:15:39: warning: no Global contract available for "Put"
+p.adb:15:39: warning: no returning annotation available for "Put"
 p.adb:20:49: high: call to potentially blocking predefined subprogram "Put" in protected operation "Put_Wide_Unbounded_String"
+p.adb:20:49: warning: assuming "Put" always returns
 p.adb:20:49: warning: assuming "Put" has no effect on global items
 p.adb:20:49: warning: no Global contract available for "Put"
+p.adb:20:49: warning: no returning annotation available for "Put"
 p.adb:25:59: high: call to potentially blocking predefined subprogram "Put" in protected operation "Put_Wide_Wide_Unbounded_String"
+p.adb:25:59: warning: assuming "Put" always returns
 p.adb:25:59: warning: assuming "Put" has no effect on global items
 p.adb:25:59: warning: no Global contract available for "Put"
+p.adb:25:59: warning: no returning annotation available for "Put"

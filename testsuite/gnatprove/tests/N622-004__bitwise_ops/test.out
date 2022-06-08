@@ -13,6 +13,8 @@ aco-math-very_longs.adb:49:29: info: length check proved (CVC5: 3 VC; Trivial: 1
 aco-math-very_longs.adb:51:36: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:52:52: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:53:52: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:55:44: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:55:44: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:56:29: medium: array index check might fail [reason for check: value must be a valid index into the array]
 aco-math-very_longs.adb:62:58: info: initialization of "Result" proved
 aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
@@ -78,6 +80,8 @@ aco-math-very_longs.adb:201:29: info: length check proved (CVC5: 3 VC; Trivial: 
 aco-math-very_longs.adb:203:36: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:204:52: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:205:52: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:207:44: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:207:44: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:208:29: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:215:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:215:31: info: range check proved (CVC5: 2 VC)
@@ -109,6 +113,8 @@ aco-math-very_longs.adb:259:65: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:259:69: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:261:37: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:261:41: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:262:50: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:262:50: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:271:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:271:42: info: in default value at aco-math-very_longs.adb:271
 aco-math-very_longs.adb:271:42: info: overflow check proved (CVC5: 2 VC)
@@ -129,6 +135,8 @@ aco-math-very_longs.adb:287:63: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:287:67: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:289:34: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:289:38: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:290:48: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:290:48: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:292:44: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
 aco-math-very_longs.adb:292:44: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:304:15: info: range check proved (CVC5: 2 VC)
@@ -163,6 +171,8 @@ aco-math-very_longs.adb:337:35: info: loop invariant preservation proved (CVC5: 
 aco-math-very_longs.adb:337:85: info: overflow check proved (CVC5: 4 VC)
 aco-math-very_longs.adb:337:116: info: index check proved (CVC5: 4 VC)
 aco-math-very_longs.adb:350:30: info: unrolling loop
+aco-math-very_longs.adb:351:43: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:351:43: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:359:56: info: initialization of "Result" proved
 aco-math-very_longs.adb:361:11: info: flow dependencies proved
 aco-math-very_longs.adb:362:60: medium: overflow check might fail, cannot prove upper bound for Number.Octet_Length + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
@@ -170,9 +180,15 @@ aco-math-very_longs.adb:365:10: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:366:10: info: initialization of "Overflow_Mask" proved
 aco-math-very_longs.adb:368:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 aco-math-very_longs.adb:368:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:369:43: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:369:43: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:370:44: info: cannot unroll loop (too many loop iterations)
+aco-math-very_longs.adb:371:45: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:371:45: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:371:77: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:372:32: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:372:54: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:372:54: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:372:85: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:373:32: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:373:57: info: index check proved (CVC5: 2 VC)
@@ -180,21 +196,33 @@ aco-math-very_longs.adb:376:47: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
 aco-math-very_longs.adb:382:11: info: flow dependencies proved
 aco-math-very_longs.adb:385:10: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:386:10: info: initialization of "Overflow_Mask" proved
+aco-math-very_longs.adb:388:43: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:388:43: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:389:44: info: cannot unroll loop (too many loop iterations)
+aco-math-very_longs.adb:390:45: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:390:45: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:390:77: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:391:32: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:391:54: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:391:54: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:391:85: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:392:32: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:392:57: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:400:11: info: flow dependencies proved
 aco-math-very_longs.adb:403:10: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:404:10: info: initialization of "Overflow_Mask" proved
+aco-math-very_longs.adb:406:43: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:406:43: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:407:52: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:408:48: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:409:32: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:409:54: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:409:54: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:409:86: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:410:32: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:410:57: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:410:79: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:410:79: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:417:11: info: data dependencies proved
 aco-math-very_longs.adb:417:55: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:418:11: info: flow dependencies proved
@@ -225,6 +253,8 @@ aco-math-very_longs.adb:452:10: info: initialization of "Future_Borrow" proved
 aco-math-very_longs.adb:456:14: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:456:61: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:457:63: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:458:45: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:458:45: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:461:49: medium: overflow check might fail, cannot prove upper bound for J + Divisor_Index [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 444 should mention J in a precondition]
 aco-math-very_longs.adb:461:65: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 444 should mention J in a precondition]
 aco-math-very_longs.adb:466:29: info: overflow check proved (CVC5: 2 VC)
@@ -254,6 +284,8 @@ aco-math-very_longs.adb:496:72: medium: array index check might fail [reason for
 aco-math-very_longs.adb:496:111: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:497:32: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:497:48: info: index check proved (CVC5: 2 VC)
+aco-math-very_longs.adb:498:48: warning: assuming "Shift_Right" always returns
+aco-math-very_longs.adb:498:48: warning: no returning annotation available for "Shift_Right"
 aco-math-very_longs.adb:500:29: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:500:33: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:500:57: info: overflow check proved (CVC5: 2 VC)
@@ -295,6 +327,8 @@ aco-math-very_longs.adb:580:07: info: initialization of "Digit" proved
 aco-math-very_longs.adb:581:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:583:55: info: division check proved (CVC5: 1 VC)
 aco-math-very_longs.adb:584:34: info: division check proved (CVC5: 1 VC)
+aco-math-very_longs.adb:585:39: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:585:39: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:586:42: medium: array index check might fail [reason for check: value must be a valid index into the array]
 aco-math-very_longs.adb:598:07: info: initialization of "Digit_Number" proved
 aco-math-very_longs.adb:599:07: info: initialization of "Bit_Position" proved
@@ -302,6 +336,10 @@ aco-math-very_longs.adb:600:07: info: initialization of "Digit" proved
 aco-math-very_longs.adb:602:55: info: division check proved (CVC5: 1 VC)
 aco-math-very_longs.adb:603:34: info: division check proved (CVC5: 1 VC)
 aco-math-very_longs.adb:604:42: medium: array index check might fail (e.g. when Digit_Number = 2 and Number = (Octet_Length => ?, Long_Digits => (1 => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1) [reason for check: value must be a valid index into the array]
+aco-math-very_longs.adb:607:44: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:607:44: warning: no returning annotation available for "Shift_Left"
+aco-math-very_longs.adb:609:49: warning: assuming "Shift_Left" always returns
+aco-math-very_longs.adb:609:49: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:611:26: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.ads:24:16: info: postcondition proved (CVC5: 1 VC)
 aco-math-very_longs.ads:26:55: info: initialization of "Result" proved

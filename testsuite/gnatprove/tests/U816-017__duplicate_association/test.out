@@ -1,3 +1,7 @@
+main.adb:30:36: warning: assuming "F" always returns
+main.adb:30:36: warning: assuming "F" has no effect on global items
+main.adb:30:36: warning: no Global contract available for "F"
+main.adb:30:36: warning: no returning annotation available for "F"
 main.adb:33:04: error: "B2" is not allowed in SPARK (due to duplicate value of a type with ownership)
 main.adb:33:04: error: violation of aspect SPARK_Mode at line 2
 main.adb:33:17: error: duplicate value of a type with ownership is not allowed in SPARK

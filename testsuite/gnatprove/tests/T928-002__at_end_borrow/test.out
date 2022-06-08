@@ -1,10 +1,12 @@
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at test_borrow.adb:34
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at test_borrow.adb:34
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
 test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls
@@ -157,7 +159,15 @@ test_borrow.adb:127:25: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:127:27: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:133:31: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:135:11: info: postcondition proved (CVC5: 5 VC)
+test_borrow.adb:135:11: warning: assuming "Model" always returns
+test_borrow.adb:135:11: warning: assuming "Model" has no effect on global items
+test_borrow.adb:135:11: warning: no Global contract available for "Model"
+test_borrow.adb:135:11: warning: no returning annotation available for "Model"
 test_borrow.adb:135:19: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:135:29: warning: assuming "Model" always returns
+test_borrow.adb:135:29: warning: assuming "Model" has no effect on global items
+test_borrow.adb:135:29: warning: no Global contract available for "Model"
+test_borrow.adb:135:29: warning: no returning annotation available for "Model"
 test_borrow.adb:136:28: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:136:35: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:136:48: info: predicate check proved (Trivial: 1 VC)
@@ -168,7 +178,15 @@ test_borrow.adb:137:52: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:138:18: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:138:51: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:138:80: info: predicate check proved (Trivial: 1 VC)
+test_borrow.adb:139:18: warning: assuming "Model" always returns
+test_borrow.adb:139:18: warning: assuming "Model" has no effect on global items
+test_borrow.adb:139:18: warning: no Global contract available for "Model"
+test_borrow.adb:139:18: warning: no returning annotation available for "Model"
 test_borrow.adb:139:46: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:139:52: warning: assuming "Model" always returns
+test_borrow.adb:139:52: warning: assuming "Model" has no effect on global items
+test_borrow.adb:139:52: warning: no Global contract available for "Model"
+test_borrow.adb:139:52: warning: no returning annotation available for "Model"
 test_borrow.adb:143:16: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:146:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_borrow.adb:148:10: info: null exclusion check proved (Z3: 1 VC)

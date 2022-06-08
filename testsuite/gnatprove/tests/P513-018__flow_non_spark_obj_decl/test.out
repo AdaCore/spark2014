@@ -1,1 +1,5 @@
+p.ads:7:19: warning: assuming "Id" always returns
+p.ads:7:19: warning: assuming "Id" has no effect on global items
+p.ads:7:19: warning: no Global contract available for "Id"
+p.ads:7:19: warning: no returning annotation available for "Id"
 p.ads:7:27: medium: pointer dereference check might fail

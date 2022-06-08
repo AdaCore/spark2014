@@ -12,6 +12,10 @@ test.adb:40:07: info: initialization of "I" proved
 test.adb:53:29: warning: unused initial value of "A"
 test.adb:70:07: info: initialization of "Tmp" proved
 test.adb:79:07: info: initialization of "Tmp" proved
+test.adb:95:12: warning: assuming "Swap_Without_Contract" always returns
+test.adb:95:12: warning: assuming "Swap_Without_Contract" has no effect on global items
+test.adb:95:12: warning: no Global contract available for "Swap_Without_Contract"
+test.adb:95:12: warning: no returning annotation available for "Swap_Without_Contract"
 test.adb:119:19: medium: overflow check might fail, cannot prove upper bound for N * Factorial (N - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (N * Factorial (N - 1) in Integer) to subprogram at line 114]
 test.adb:119:34: info: range check proved (CVC5: 2 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
@@ -66,22 +70,23 @@ test.ads:36:09: info: flow dependencies proved
 Trace files' contents:
 test.adb:160
 
-test.adb:95
-
-test.adb:95
-
-test.adb:101
-
-test.adb:101
-
 test.adb:185
 
 test.adb:189
 test.adb:190
 test.adb:178
 
+test.adb:95
+
+test.adb:95
+
 
 
 test.adb:166
 test.adb:167
 test.adb:167
+
+test.adb:101
+
+test.adb:101
+

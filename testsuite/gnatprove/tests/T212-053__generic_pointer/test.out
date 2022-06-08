@@ -10,3 +10,195 @@ rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.ad
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:275
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:422
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" has no effect on global items
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:159
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:159
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:159
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:159
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:160
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:160
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:160
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:160
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:167
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:167
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:167
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:167
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:168
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:168
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:168
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:168
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:169
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:169
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:169
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:169
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:180
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:180
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:180
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:180
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:181
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:181
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:181
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:181
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:188
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:188
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:188
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:188
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:207
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:207
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:207
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:207
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:209
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:209
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:209
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:209
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:67
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:67
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:67
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:67
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:68
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:68
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:68
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-generic_types.adb:68
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Left_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Ge_0"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Mult_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no returning annotation available for "Right_Shift_Limit"

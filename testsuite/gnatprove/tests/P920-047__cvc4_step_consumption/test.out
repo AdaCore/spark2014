@@ -1,7 +1,51 @@
+c_library.ads:42:58: warning: assuming "EDI" always returns
+c_library.ads:42:58: warning: no returning annotation available for "EDI"
 memcpy.adb:8:07: warning: initialization of "RDX_400586" has no effect
 memcpy.adb:8:37: info: range check proved (CVC5: 1 VC)
 memcpy.adb:9:07: warning: initialization of "RDI_400586" has no effect
 memcpy.adb:9:37: info: range check proved (CVC5: 1 VC)
+memcpy.adb:15:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:15:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:22:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:22:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:25:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:25:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:28:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:28:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:31:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:31:22: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:34:10: warning: assuming "Write_EAX" always returns
+memcpy.adb:34:10: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:34:26: warning: assuming "EAX" always returns
+memcpy.adb:34:26: warning: no returning annotation available for "EAX"
+memcpy.adb:43:50: warning: assuming "ReadMem64" always returns
+memcpy.adb:43:50: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:43:117: warning: assuming "ReadMem64" always returns
+memcpy.adb:43:117: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:46:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:46:25: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:49:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:49:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:52:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:52:25: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:55:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:55:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:58:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:58:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:66:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:66:25: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:69:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:69:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:72:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:72:25: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:75:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:75:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:78:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:78:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:84:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:84:22: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:87:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:87:22: warning: no returning annotation available for "ReadMem64"
 memcpy.ads:16:06: info: data dependencies proved
 memcpy.ads:16:43: low: unused global "Exit_Called"
 memcpy.ads:16:43: warning: "Exit_Called" is not modified, could be INPUT
@@ -36,4 +80,326 @@ memcpy.ads:21:61: warning: "R15" is not modified, could be INPUT
 memcpy.ads:22:30: low: unused global "StackAddressSize"
 memcpy.ads:22:52: low: unused global "FS"
 memcpy.ads:22:60: low: unused global "GS"
+memcpy.ads:24:43: warning: assuming "InMemoryRange" always returns
+memcpy.ads:24:43: warning: assuming "InMemoryRange" has no effect on global items
+memcpy.ads:24:43: warning: no Global contract available for "InMemoryRange"
+memcpy.ads:24:43: warning: no returning annotation available for "InMemoryRange"
+memcpy.ads:25:42: warning: assuming "InSafeRegion64" always returns
+memcpy.ads:25:42: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.ads:25:42: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:25:42: warning: no returning annotation available for "InSafeRegion64"
 memcpy.ads:31:08: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old + 3) = X86.Memory'Old(X86.RSP'Old + 3)
+memcpy.ads:37:45: warning: assuming "InMemoryRange" always returns
+memcpy.ads:37:45: warning: assuming "InMemoryRange" has no effect on global items
+memcpy.ads:37:45: warning: no Global contract available for "InMemoryRange"
+memcpy.ads:37:45: warning: no returning annotation available for "InMemoryRange"
+memcpy.ads:38:42: warning: assuming "InSafeRegion64" always returns
+memcpy.ads:38:42: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.ads:38:42: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:38:42: warning: no returning annotation available for "InSafeRegion64"
+x86.ads:87:40: warning: assuming "InRange64" always returns
+x86.ads:87:40: warning: assuming "InRange64" has no effect on global items
+x86.ads:87:40: warning: no Global contract available for "InRange64"
+x86.ads:87:40: warning: no returning annotation available for "InRange64"
+x86.ads:112:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:112:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:112:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:112:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:116:42: warning: assuming "readRegLow8" always returns
+x86.ads:116:42: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:116:42: warning: no Global contract available for "readRegLow8"
+x86.ads:116:42: warning: no returning annotation available for "readRegLow8"
+x86.ads:123:14: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:123:14: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:123:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:123:14: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:127:43: warning: assuming "readRegHigh8" always returns
+x86.ads:127:43: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:127:43: warning: no Global contract available for "readRegHigh8"
+x86.ads:127:43: warning: no returning annotation available for "readRegHigh8"
+x86.ads:134:15: warning: assuming "writeReg16Post" always returns
+x86.ads:134:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:134:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:134:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:138:40: warning: assuming "readReg16" always returns
+x86.ads:138:40: warning: assuming "readReg16" has no effect on global items
+x86.ads:138:40: warning: no Global contract available for "readReg16"
+x86.ads:138:40: warning: no returning annotation available for "readReg16"
+x86.ads:145:15: warning: assuming "writeReg32Post" always returns
+x86.ads:145:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:145:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:145:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:149:40: warning: assuming "readReg32" always returns
+x86.ads:149:40: warning: assuming "readReg32" has no effect on global items
+x86.ads:149:40: warning: no Global contract available for "readReg32"
+x86.ads:149:40: warning: no returning annotation available for "readReg32"
+x86.ads:159:27: warning: assuming "readRegLow8" always returns
+x86.ads:159:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:159:27: warning: no Global contract available for "readRegLow8"
+x86.ads:159:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:164:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:164:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:164:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:164:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:169:27: warning: assuming "readRegHigh8" always returns
+x86.ads:169:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:169:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:169:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:174:14: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:174:14: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:174:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:174:14: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:180:27: warning: assuming "readReg16" always returns
+x86.ads:180:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:180:27: warning: no Global contract available for "readReg16"
+x86.ads:180:27: warning: no returning annotation available for "readReg16"
+x86.ads:185:15: warning: assuming "writeReg16Post" always returns
+x86.ads:185:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:185:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:185:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:194:15: warning: assuming "writeReg32Post" always returns
+x86.ads:194:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:194:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:194:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:205:27: warning: assuming "readRegLow8" always returns
+x86.ads:205:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:205:27: warning: no Global contract available for "readRegLow8"
+x86.ads:205:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:210:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:210:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:210:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:210:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:215:27: warning: assuming "readRegHigh8" always returns
+x86.ads:215:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:215:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:215:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:220:15: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:220:15: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:220:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:220:15: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:226:27: warning: assuming "readReg16" always returns
+x86.ads:226:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:226:27: warning: no Global contract available for "readReg16"
+x86.ads:226:27: warning: no returning annotation available for "readReg16"
+x86.ads:231:15: warning: assuming "writeReg16Post" always returns
+x86.ads:231:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:231:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:231:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:236:28: warning: assuming "readReg32" always returns
+x86.ads:236:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:236:28: warning: no Global contract available for "readReg32"
+x86.ads:236:28: warning: no returning annotation available for "readReg32"
+x86.ads:241:15: warning: assuming "writeReg32Post" always returns
+x86.ads:241:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:241:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:241:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:252:27: warning: assuming "readRegLow8" always returns
+x86.ads:252:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:252:27: warning: no Global contract available for "readRegLow8"
+x86.ads:252:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:257:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:257:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:257:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:257:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:262:27: warning: assuming "readRegHigh8" always returns
+x86.ads:262:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:262:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:262:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:267:15: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:267:15: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:267:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:267:15: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:273:27: warning: assuming "readReg16" always returns
+x86.ads:273:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:273:27: warning: no Global contract available for "readReg16"
+x86.ads:273:27: warning: no returning annotation available for "readReg16"
+x86.ads:278:15: warning: assuming "writeReg16Post" always returns
+x86.ads:278:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:278:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:278:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:283:28: warning: assuming "readReg32" always returns
+x86.ads:283:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:283:28: warning: no Global contract available for "readReg32"
+x86.ads:283:28: warning: no returning annotation available for "readReg32"
+x86.ads:288:15: warning: assuming "writeReg32Post" always returns
+x86.ads:288:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:288:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:288:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:299:27: warning: assuming "readRegLow8" always returns
+x86.ads:299:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:299:27: warning: no Global contract available for "readRegLow8"
+x86.ads:299:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:304:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:304:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:304:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:304:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:309:27: warning: assuming "readRegHigh8" always returns
+x86.ads:309:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:309:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:309:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:314:15: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:314:15: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:314:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:314:15: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:320:27: warning: assuming "readReg16" always returns
+x86.ads:320:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:320:27: warning: no Global contract available for "readReg16"
+x86.ads:320:27: warning: no returning annotation available for "readReg16"
+x86.ads:325:15: warning: assuming "writeReg16Post" always returns
+x86.ads:325:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:325:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:325:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:330:28: warning: assuming "readReg32" always returns
+x86.ads:330:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:330:28: warning: no Global contract available for "readReg32"
+x86.ads:330:28: warning: no returning annotation available for "readReg32"
+x86.ads:335:15: warning: assuming "writeReg32Post" always returns
+x86.ads:335:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:335:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:335:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:347:27: warning: assuming "readReg16" always returns
+x86.ads:347:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:347:27: warning: no Global contract available for "readReg16"
+x86.ads:347:27: warning: no returning annotation available for "readReg16"
+x86.ads:352:15: warning: assuming "writeReg16Post" always returns
+x86.ads:352:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:352:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:352:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:357:28: warning: assuming "readReg32" always returns
+x86.ads:357:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:357:28: warning: no Global contract available for "readReg32"
+x86.ads:357:28: warning: no returning annotation available for "readReg32"
+x86.ads:362:15: warning: assuming "writeReg32Post" always returns
+x86.ads:362:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:362:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:362:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:374:27: warning: assuming "readReg16" always returns
+x86.ads:374:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:374:27: warning: no Global contract available for "readReg16"
+x86.ads:374:27: warning: no returning annotation available for "readReg16"
+x86.ads:379:15: warning: assuming "writeReg16Post" always returns
+x86.ads:379:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:379:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:379:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:384:28: warning: assuming "readReg32" always returns
+x86.ads:384:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:384:28: warning: no Global contract available for "readReg32"
+x86.ads:384:28: warning: no returning annotation available for "readReg32"
+x86.ads:389:15: warning: assuming "writeReg32Post" always returns
+x86.ads:389:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:389:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:389:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:401:27: warning: assuming "readReg16" always returns
+x86.ads:401:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:401:27: warning: no Global contract available for "readReg16"
+x86.ads:401:27: warning: no returning annotation available for "readReg16"
+x86.ads:406:15: warning: assuming "writeReg16Post" always returns
+x86.ads:406:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:406:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:406:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:411:28: warning: assuming "readReg32" always returns
+x86.ads:411:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:411:28: warning: no Global contract available for "readReg32"
+x86.ads:411:28: warning: no returning annotation available for "readReg32"
+x86.ads:416:15: warning: assuming "writeReg32Post" always returns
+x86.ads:416:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:416:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:416:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:428:27: warning: assuming "readReg16" always returns
+x86.ads:428:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:428:27: warning: no Global contract available for "readReg16"
+x86.ads:428:27: warning: no returning annotation available for "readReg16"
+x86.ads:433:15: warning: assuming "writeReg16Post" always returns
+x86.ads:433:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:433:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:433:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:438:28: warning: assuming "readReg32" always returns
+x86.ads:438:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:438:28: warning: no Global contract available for "readReg32"
+x86.ads:438:28: warning: no returning annotation available for "readReg32"
+x86.ads:443:15: warning: assuming "writeReg32Post" always returns
+x86.ads:443:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:443:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:443:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:455:28: warning: assuming "readRegLow8" always returns
+x86.ads:455:28: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:455:28: warning: no Global contract available for "readRegLow8"
+x86.ads:455:28: warning: no returning annotation available for "readRegLow8"
+x86.ads:460:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:460:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:460:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:460:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:472:28: warning: assuming "readRegLow8" always returns
+x86.ads:472:28: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:472:28: warning: no Global contract available for "readRegLow8"
+x86.ads:472:28: warning: no returning annotation available for "readRegLow8"
+x86.ads:477:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:477:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:477:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:477:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:489:29: warning: assuming "readRegLow8" always returns
+x86.ads:489:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:489:29: warning: no Global contract available for "readRegLow8"
+x86.ads:489:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:494:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:494:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:494:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:494:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:506:29: warning: assuming "readRegLow8" always returns
+x86.ads:506:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:506:29: warning: no Global contract available for "readRegLow8"
+x86.ads:506:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:511:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:511:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:511:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:511:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:523:29: warning: assuming "readRegLow8" always returns
+x86.ads:523:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:523:29: warning: no Global contract available for "readRegLow8"
+x86.ads:523:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:528:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:528:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:528:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:528:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:540:29: warning: assuming "readRegLow8" always returns
+x86.ads:540:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:540:29: warning: no Global contract available for "readRegLow8"
+x86.ads:540:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:545:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:545:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:545:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:545:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:557:29: warning: assuming "readRegLow8" always returns
+x86.ads:557:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:557:29: warning: no Global contract available for "readRegLow8"
+x86.ads:557:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:562:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:562:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:562:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:562:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:574:29: warning: assuming "readRegLow8" always returns
+x86.ads:574:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:574:29: warning: no Global contract available for "readRegLow8"
+x86.ads:574:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:579:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:579:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:579:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:579:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:685:55: warning: assuming "SignedLT_32" always returns
+x86.ads:685:55: warning: assuming "SignedLT_32" has no effect on global items
+x86.ads:685:55: warning: no Global contract available for "SignedLT_32"
+x86.ads:685:55: warning: no returning annotation available for "SignedLT_32"
+x86.ads:736:18: warning: assuming "InRange64" always returns
+x86.ads:736:18: warning: assuming "InRange64" has no effect on global items
+x86.ads:736:18: warning: no Global contract available for "InRange64"
+x86.ads:736:18: warning: no returning annotation available for "InRange64"
+x86.ads:740:14: warning: assuming "ReadMem64" always returns
+x86.ads:740:14: warning: no returning annotation available for "ReadMem64"
+x86.ads:748:36: warning: assuming "DL" always returns
+x86.ads:748:36: warning: no returning annotation available for "DL"
+x86.ads:749:20: warning: assuming "DL" always returns
+x86.ads:749:20: warning: no returning annotation available for "DL"
+x86.ads:753:61: warning: assuming "CL" always returns
+x86.ads:753:61: warning: no returning annotation available for "CL"
+x86.ads:754:20: warning: assuming "CL" always returns
+x86.ads:754:20: warning: no returning annotation available for "CL"

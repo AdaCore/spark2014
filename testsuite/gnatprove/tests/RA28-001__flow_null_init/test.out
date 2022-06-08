@@ -1,1 +1,5 @@
 main.adb:5:19: info: assertion proved (Trivial: 1 VC)
+main.adb:5:20: warning: assuming "Name" always returns
+main.adb:5:20: warning: assuming "Name" has no effect on global items
+main.adb:5:20: warning: no Global contract available for "Name"
+main.adb:5:20: warning: no returning annotation available for "Name"

@@ -1,1 +1,13 @@
 flip.adb:3:42: info: data dependencies proved
+flip.adb:7:05: warning: assuming "Dummy_With_Global" always returns
+flip.adb:7:05: warning: no returning annotation available for "Dummy_With_Global"
+flip.adb:8:05: warning: assuming "Dummy_With_Depends" always returns
+flip.adb:8:05: warning: no returning annotation available for "Dummy_With_Depends"
+flip.adb:9:05: warning: assuming "Dummy_With_Global_And_Depends" always returns
+flip.adb:9:05: warning: no returning annotation available for "Dummy_With_Global_And_Depends"
+flip.adb:11:05: warning: assuming "Dummy_With_Global_And_Imported" always returns
+flip.adb:11:05: warning: no returning annotation available for "Dummy_With_Global_And_Imported"
+flip.adb:12:05: warning: assuming "Dummy_With_Depends_And_Imported" always returns
+flip.adb:12:05: warning: no returning annotation available for "Dummy_With_Depends_And_Imported"
+flip.adb:13:05: warning: assuming "Dummy_With_Global_And_Depends_And_Imported" always returns
+flip.adb:13:05: warning: no returning annotation available for "Dummy_With_Global_And_Depends_And_Imported"

@@ -2,3 +2,7 @@ precond.adb:16:14: warning: subprogram "P" has no effect
 precond.adb:16:56: medium: precondition might fail [possible fix: use "and then" instead of "and" in precondition]
 precond.adb:23:07: info: precondition proved (CVC5: 2 VC)
 precond.adb:26:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Bla or turning it into an expression function in its unit spec]
+precond.adb:26:19: warning: assuming "Bla" always returns
+precond.adb:26:19: warning: assuming "Bla" has no effect on global items
+precond.adb:26:19: warning: no Global contract available for "Bla"
+precond.adb:26:19: warning: no returning annotation available for "Bla"

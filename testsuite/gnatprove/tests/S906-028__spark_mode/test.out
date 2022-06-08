@@ -1,2 +1,14 @@
 g.ads:5:19: medium: assertion might fail, in instantiation at spark_inst.ads:3 [possible fix: you should consider adding a postcondition to function Func or turning it into an expression function in its unit spec]
 spark_g.ads:5:19: medium: assertion might fail, in instantiation at spark_inst2.ads:3 [possible fix: you should consider adding a postcondition to function Func or turning it into an expression function in its unit spec]
+spark_inst.ads:3:01: warning: assuming "Func" always returns
+spark_inst.ads:3:01: warning: assuming "Func" has no effect on global items
+spark_inst.ads:3:01: warning: in instantiation at g.ads:5
+spark_inst.ads:3:01: warning: in instantiation at g.ads:5
+spark_inst.ads:3:01: warning: no Global contract available for "Func"
+spark_inst.ads:3:01: warning: no returning annotation available for "Func"
+spark_inst2.ads:3:01: warning: assuming "Func" always returns
+spark_inst2.ads:3:01: warning: assuming "Func" has no effect on global items
+spark_inst2.ads:3:01: warning: in instantiation at spark_g.ads:5
+spark_inst2.ads:3:01: warning: in instantiation at spark_g.ads:5
+spark_inst2.ads:3:01: warning: no Global contract available for "Func"
+spark_inst2.ads:3:01: warning: no returning annotation available for "Func"

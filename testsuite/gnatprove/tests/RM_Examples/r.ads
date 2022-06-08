@@ -7,6 +7,7 @@
              Depends => (R1 => null);
 
       procedure Op_1 (I : in Integer)
-        with Global  => (In_Out => R1),
-             Depends => (R1 =>+ I);
+        with Global   => (In_Out => R1),
+	     Depends  => (R1 =>+ I),
+	     Annotate => (GNATprove, Always_Return);
    end R;

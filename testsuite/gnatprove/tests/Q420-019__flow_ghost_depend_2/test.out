@@ -1,2 +1,4 @@
 main.adb:6:03: info: data dependencies proved
+main.adb:9:09: warning: assuming "Test" always returns
+main.adb:9:09: warning: no returning annotation available for "Test"
 state.ads:6:03: info: flow dependencies proved

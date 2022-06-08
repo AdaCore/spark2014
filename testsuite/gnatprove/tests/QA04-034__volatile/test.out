@@ -1,6 +1,14 @@
 hw-dbc-transfer_rings.adb:38:07: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-dbc-transfer_rings.adb:38:07: warning: writing to "Rings" is assumed to have no effects on other non-volatile objects
+hw-dbc-transfer_rings.adb:98:11: warning: assuming "Init_Cycle_Ring" always returns
+hw-dbc-transfer_rings.adb:98:11: warning: assuming "Init_Cycle_Ring" has no effect on global items
+hw-dbc-transfer_rings.adb:98:11: warning: no Global contract available for "Init_Cycle_Ring"
+hw-dbc-transfer_rings.adb:98:11: warning: no returning annotation available for "Init_Cycle_Ring"
 hw-dbc-transfer_rings.adb:116:07: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:120:14: warning: assuming "Set_Cycle" always returns
+hw-dbc-transfer_rings.adb:120:14: warning: assuming "Set_Cycle" has no effect on global items
+hw-dbc-transfer_rings.adb:120:14: warning: no Global contract available for "Set_Cycle"
+hw-dbc-transfer_rings.adb:120:14: warning: no returning annotation available for "Set_Cycle"
 hw-dbc-transfer_rings.adb:133:13: info: add a contract to analyze it separately from calling contexts
 hw-dbc-transfer_rings.adb:133:13: info: local subprogram "Prev" only analyzed in the context of calls
 hw-dbc-transfer_rings.adb:140:13: info: add a contract to analyze it separately from calling contexts
@@ -14,7 +22,47 @@ hw-dbc-transfer_rings.adb:178:07: info: initialization of "Invalid" proved
 hw-dbc-transfer_rings.adb:182:36: info: division check proved (CVC5: 1 VC)
 hw-dbc-transfer_rings.adb:185:39: info: division check proved (CVC5: 1 VC)
 hw-dbc-transfer_rings.adb:185:39: medium: range check might fail [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition ((Pointer - Physical (EP)) / TRBs.trb_size in Ring_Range) to subprogram at hw-dbc-transfer_rings.ads:38]
+hw-dbc-transfer_rings.adb:208:25: warning: assuming "Get_Parameter" always returns
+hw-dbc-transfer_rings.adb:208:25: warning: assuming "Get_Parameter" has no effect on global items
+hw-dbc-transfer_rings.adb:208:25: warning: no Global contract available for "Get_Parameter"
+hw-dbc-transfer_rings.adb:208:25: warning: no returning annotation available for "Get_Parameter"
+hw-dbc-transfer_rings.adb:210:29: warning: assuming "Finish" always returns
+hw-dbc-transfer_rings.adb:210:29: warning: assuming "Finish" has no effect on global items
+hw-dbc-transfer_rings.adb:210:29: warning: no Global contract available for "Finish"
+hw-dbc-transfer_rings.adb:210:29: warning: no returning annotation available for "Finish"
+hw-dbc-transfer_rings.adb:219:22: warning: assuming "Get_Parameter" always returns
+hw-dbc-transfer_rings.adb:219:22: warning: assuming "Get_Parameter" has no effect on global items
+hw-dbc-transfer_rings.adb:219:22: warning: no Global contract available for "Get_Parameter"
+hw-dbc-transfer_rings.adb:219:22: warning: no returning annotation available for "Get_Parameter"
+hw-dbc-transfer_rings.adb:221:26: warning: assuming "Finish" always returns
+hw-dbc-transfer_rings.adb:221:26: warning: assuming "Finish" has no effect on global items
+hw-dbc-transfer_rings.adb:221:26: warning: no Global contract available for "Finish"
+hw-dbc-transfer_rings.adb:221:26: warning: no returning annotation available for "Finish"
 hw-dbc-transfer_rings.adb:250:07: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:254:11: warning: assuming "Clear" always returns
+hw-dbc-transfer_rings.adb:254:11: warning: assuming "Clear" has no effect on global items
+hw-dbc-transfer_rings.adb:254:11: warning: no Global contract available for "Clear"
+hw-dbc-transfer_rings.adb:254:11: warning: no returning annotation available for "Clear"
+hw-dbc-transfer_rings.adb:255:11: warning: assuming "Set_Parameter" always returns
+hw-dbc-transfer_rings.adb:255:11: warning: assuming "Set_Parameter" has no effect on global items
+hw-dbc-transfer_rings.adb:255:11: warning: no Global contract available for "Set_Parameter"
+hw-dbc-transfer_rings.adb:255:11: warning: no returning annotation available for "Set_Parameter"
+hw-dbc-transfer_rings.adb:256:11: warning: assuming "Set_Length" always returns
+hw-dbc-transfer_rings.adb:256:11: warning: assuming "Set_Length" has no effect on global items
+hw-dbc-transfer_rings.adb:256:11: warning: no Global contract available for "Set_Length"
+hw-dbc-transfer_rings.adb:256:11: warning: no returning annotation available for "Set_Length"
+hw-dbc-transfer_rings.adb:258:11: warning: assuming "Set_Type" always returns
+hw-dbc-transfer_rings.adb:258:11: warning: assuming "Set_Type" has no effect on global items
+hw-dbc-transfer_rings.adb:258:11: warning: no Global contract available for "Set_Type"
+hw-dbc-transfer_rings.adb:258:11: warning: no returning annotation available for "Set_Type"
+hw-dbc-transfer_rings.adb:259:11: warning: assuming "Set_IOC" always returns
+hw-dbc-transfer_rings.adb:259:11: warning: assuming "Set_IOC" has no effect on global items
+hw-dbc-transfer_rings.adb:259:11: warning: no Global contract available for "Set_IOC"
+hw-dbc-transfer_rings.adb:259:11: warning: no returning annotation available for "Set_IOC"
+hw-dbc-transfer_rings.adb:260:11: warning: assuming "Set_ISP" always returns
+hw-dbc-transfer_rings.adb:260:11: warning: assuming "Set_ISP" has no effect on global items
+hw-dbc-transfer_rings.adb:260:11: warning: no Global contract available for "Set_ISP"
+hw-dbc-transfer_rings.adb:260:11: warning: no returning annotation available for "Set_ISP"
 hw-dbc-transfer_rings.adb:275:07: info: precondition proved (CVC5: 3 VC)
 hw-dbc-transfer_rings.ads:17:24: warning: no procedure exists that can initialize abstract state "Transfer_Rings.State" constituent of "DbC.State"
 hw-dbc-transfer_rings.ads:55:19: info: division check proved (CVC5: 1 VC)

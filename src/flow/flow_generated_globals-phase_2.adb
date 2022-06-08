@@ -1232,6 +1232,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   if V.Kind /= E_Task_Type then
                      Serialize (V.Has_Terminate);
                      Serialize (V.Has_Subp_Variant);
+                     Serialize (V.No_Body);
                      Serialize (V.Nonreturning);
                      Serialize (V.Nonblocking);
                   end if;
@@ -2789,6 +2790,18 @@ package body Flow_Generated_Globals.Phase_2 is
    function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean
    is
      (State_Comp_Map (To_Entity_Name (AS)).Contains (To_Entity_Name (C)));
+
+   -----------------
+   -- Has_No_Body --
+   -----------------
+
+   function Has_No_Body (E : Entity_Id) return Boolean is
+      C : constant Phase_1_Info_Maps.Cursor :=
+        Phase_1_Info.Find (To_Entity_Name (E));
+   begin
+      return Phase_1_Info_Maps.Has_Element (C)
+               and then Phase_1_Info (C).No_Body;
+   end Has_No_Body;
 
    ----------------------
    -- Part_Of_Constituents --

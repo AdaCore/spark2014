@@ -1,2 +1,10 @@
 f.adb:12:07: info: initialization of "Y" proved
+f.adb:14:16: warning: assuming "SF" always returns
+f.adb:14:16: warning: assuming "SF" has no effect on global items
+f.adb:14:16: warning: no Global contract available for "SF"
+f.adb:14:16: warning: no returning annotation available for "SF"
 f.ads:11:17: info: postcondition proved (CVC5: 2 VC)
+f.ads:11:33: warning: assuming "SF" always returns
+f.ads:11:33: warning: assuming "SF" has no effect on global items
+f.ads:11:33: warning: no Global contract available for "SF"
+f.ads:11:33: warning: no returning annotation available for "SF"

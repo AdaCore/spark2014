@@ -103,6 +103,10 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff constituent C is mentioned in the refinement of the
    --  abstract state AS.
 
+   function Has_No_Body (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   --  Returns True iff entity E was analyzed in phase 1 and has no body
+
    function GG_Has_Been_Generated return Boolean;
    --  Checks if the Globals Graph has been generated
    --  @return True iff the Globals Graph has been generated

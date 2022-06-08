@@ -10,15 +10,23 @@ very_longs-divide.adb:30:39: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:42:27: info: unrolling loop
+very_longs-divide.adb:43:24: warning: assuming "Shift_Left" always returns
+very_longs-divide.adb:43:24: warning: no returning annotation available for "Shift_Left"
 very_longs-divide.adb:52:30: info: initialization of "Result" proved
 very_longs-divide.adb:54:08: info: flow dependencies proved
 very_longs-divide.adb:58:07: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:59:07: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:61:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:61:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs-divide.adb:62:24: warning: assuming "Shift_Left" always returns
+very_longs-divide.adb:62:24: warning: no returning annotation available for "Shift_Left"
 very_longs-divide.adb:63:41: info: cannot unroll loop (too many loop iterations)
+very_longs-divide.adb:64:26: warning: assuming "Shift_Right" always returns
+very_longs-divide.adb:64:26: warning: no returning annotation available for "Shift_Right"
 very_longs-divide.adb:64:57: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:65:29: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:65:35: warning: assuming "Shift_Left" always returns
+very_longs-divide.adb:65:35: warning: no returning annotation available for "Shift_Left"
 very_longs-divide.adb:65:65: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:66:29: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:66:54: info: index check proved (CVC5: 2 VC)
@@ -26,21 +34,33 @@ very_longs-divide.adb:69:44: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
 very_longs-divide.adb:75:11: info: flow dependencies proved
 very_longs-divide.adb:78:07: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:79:07: info: initialization of "Overflow_Mask" proved
+very_longs-divide.adb:81:24: warning: assuming "Shift_Left" always returns
+very_longs-divide.adb:81:24: warning: no returning annotation available for "Shift_Left"
 very_longs-divide.adb:82:41: info: cannot unroll loop (too many loop iterations)
+very_longs-divide.adb:83:26: warning: assuming "Shift_Right" always returns
+very_longs-divide.adb:83:26: warning: no returning annotation available for "Shift_Right"
 very_longs-divide.adb:83:57: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:84:29: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:84:35: warning: assuming "Shift_Left" always returns
+very_longs-divide.adb:84:35: warning: no returning annotation available for "Shift_Left"
 very_longs-divide.adb:84:65: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:85:29: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:85:54: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:93:11: info: flow dependencies proved
 very_longs-divide.adb:96:07: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:97:07: info: initialization of "Overflow_Mask" proved
+very_longs-divide.adb:99:24: warning: assuming "Shift_Right" always returns
+very_longs-divide.adb:99:24: warning: no returning annotation available for "Shift_Right"
 very_longs-divide.adb:100:49: info: cannot unroll loop (too many loop iterations)
 very_longs-divide.adb:101:45: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:102:29: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:102:35: warning: assuming "Shift_Right" always returns
+very_longs-divide.adb:102:35: warning: no returning annotation available for "Shift_Right"
 very_longs-divide.adb:102:66: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:103:29: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:104:31: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:104:37: warning: assuming "Shift_Left" always returns
+very_longs-divide.adb:104:37: warning: no returning annotation available for "Shift_Left"
 very_longs-divide.adb:111:08: info: data dependencies proved
 very_longs-divide.adb:111:49: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:112:08: info: flow dependencies proved
@@ -72,6 +92,8 @@ very_longs-divide.adb:153:07: info: initialization of "Future_Borrow" proved
 very_longs-divide.adb:157:11: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:157:58: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:158:56: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:159:19: warning: assuming "Shift_Right" always returns
+very_longs-divide.adb:159:19: warning: no returning annotation available for "Shift_Right"
 very_longs-divide.adb:162:43: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:162:59: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 145 should mention J in a precondition]
 very_longs-divide.adb:169:26: info: overflow check proved (CVC5: 2 VC)
@@ -101,6 +123,8 @@ very_longs-divide.adb:201:65: medium: array index check might fail [reason for c
 very_longs-divide.adb:202:47: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:203:29: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:203:45: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:204:22: warning: assuming "Shift_Right" always returns
+very_longs-divide.adb:204:22: warning: no returning annotation available for "Shift_Right"
 very_longs-divide.adb:206:26: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:206:26: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:206:50: info: overflow check proved (CVC5: 2 VC)
@@ -140,6 +164,8 @@ very_longs.adb:59:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:61:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:62:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:63:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:65:21: warning: assuming "Shift_Right" always returns
+very_longs.adb:65:21: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:66:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:73:28: info: initialization of "Result" proved
 very_longs.adb:73:52: info: initialization of "Borrow" proved
@@ -213,6 +239,8 @@ very_longs.adb:232:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:234:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:235:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:236:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:238:21: warning: assuming "Shift_Right" always returns
+very_longs.adb:238:21: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:239:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:246:07: info: initialization of "Result" proved
 very_longs.adb:246:31: info: range check proved (CVC5: 2 VC)
@@ -244,6 +272,8 @@ very_longs.adb:291:61: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:291:65: info: index check proved (CVC5: 2 VC)
 very_longs.adb:293:37: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:293:41: info: index check proved (CVC5: 2 VC)
+very_longs.adb:294:27: warning: assuming "Shift_Right" always returns
+very_longs.adb:294:27: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:303:07: info: initialization of "Result" proved
 very_longs.adb:303:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length (e.g. when L = (Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and R = (Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 65536) [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
 very_longs.adb:304:07: info: initialization of "L_Digit" proved
@@ -261,6 +291,8 @@ very_longs.adb:319:59: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:319:63: info: index check proved (CVC5: 2 VC)
 very_longs.adb:321:34: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:321:38: info: index check proved (CVC5: 2 VC)
+very_longs.adb:322:25: warning: assuming "Shift_Right" always returns
+very_longs.adb:322:25: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:324:38: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
 very_longs.adb:324:38: info: overflow check proved (CVC5: 2 VC)
 very_longs.ads:14:20: info: postcondition proved (CVC5: 1 VC)

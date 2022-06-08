@@ -1,1 +1,9 @@
+call.adb:5:04: warning: assuming "put" always returns
+call.adb:5:04: warning: assuming "put" has no effect on global items
+call.adb:5:04: warning: no Global contract available for "put"
+call.adb:5:04: warning: no returning annotation available for "put"
+call.adb:6:09: warning: assuming "get" always returns
+call.adb:6:09: warning: assuming "get" has no effect on global items
+call.adb:6:09: warning: no Global contract available for "get"
+call.adb:6:09: warning: no returning annotation available for "get"
 imports.ads:3:21: warning: no procedure exists that can initialize abstract state "imports.imp_state"

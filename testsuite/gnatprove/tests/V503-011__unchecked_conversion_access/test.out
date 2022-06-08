@@ -1,11 +1,7 @@
 main.adb:9:13: error: unchecked conversion instance from a type with access subcomponents is not allowed in SPARK
 main.adb:9:13: error: violation of aspect SPARK_Mode at line 4
-main.adb:12:32: warning: call to "Uns_To_Int_Access" is assumed to return a valid access designating a valid value
-main.adb:12:32: warning: the value returned by a call to "Uns_To_Int_Access" is assumed to have no aliases
 main.adb:16:13: error: unchecked conversion instance from a type with access subcomponents is not allowed in SPARK
 main.adb:16:13: error: violation of aspect SPARK_Mode at line 4
-main.adb:20:32: warning: call to "Addr_To_Int_Access" is assumed to return a valid access designating a valid value
-main.adb:20:32: warning: the value returned by a call to "Addr_To_Int_Access" is assumed to have no aliases
 main.adb:27:13: error: unchecked conversion instance to an access-to-object type from a type which is neither System.Address nor an integer type is not allowed in SPARK
 main.adb:27:13: error: violation of aspect SPARK_Mode at line 4
 main.adb:29:13: error: unchecked conversion instance from a type with access subcomponents is not allowed in SPARK
@@ -16,12 +12,8 @@ main.adb:36:13: error: unchecked conversion instance from a type with access sub
 main.adb:36:13: error: violation of aspect SPARK_Mode at line 4
 main.adb:43:13: error: unchecked conversion instance from a type with access subcomponents is not allowed in SPARK
 main.adb:43:13: error: violation of aspect SPARK_Mode at line 4
-main.adb:46:32: warning: call to "Uns_To_Cst_Access" is assumed to return a valid access designating a valid value
-main.adb:46:32: warning: potential aliases of the value returned by a call to "Uns_To_Cst_Access" are assumed to be constant
 main.adb:50:13: error: unchecked conversion instance from a type with access subcomponents is not allowed in SPARK
 main.adb:50:13: error: violation of aspect SPARK_Mode at line 4
-main.adb:53:32: warning: call to "Addr_To_Cst_Access" is assumed to return a valid access designating a valid value
-main.adb:53:32: warning: potential aliases of the value returned by a call to "Addr_To_Cst_Access" are assumed to be constant
 main.adb:60:13: error: unchecked conversion instance to a composite type with access subcomponents is not allowed in SPARK
 main.adb:60:13: error: violation of aspect SPARK_Mode at line 4
 main.adb:62:13: error: unchecked conversion instance from a type with access subcomponents is not allowed in SPARK

@@ -1,6 +1,82 @@
+simple_private_type.ads:10:23: warning: assuming "Is_Zero" always returns
+simple_private_type.ads:10:23: warning: assuming "Is_Zero" has no effect on global items
+simple_private_type.ads:10:23: warning: no Global contract available for "Is_Zero"
+simple_private_type.ads:10:23: warning: no returning annotation available for "Is_Zero"
+simple_private_type.ads:10:39: warning: assuming "Is_Zero" always returns
+simple_private_type.ads:10:39: warning: assuming "Is_Zero" has no effect on global items
+simple_private_type.ads:10:39: warning: no Global contract available for "Is_Zero"
+simple_private_type.ads:10:39: warning: no returning annotation available for "Is_Zero"
+simple_private_type.ads:11:30: warning: assuming "P" always returns
+simple_private_type.ads:11:30: warning: assuming "P" has no effect on global items
+simple_private_type.ads:11:30: warning: no Global contract available for "P"
+simple_private_type.ads:11:30: warning: no returning annotation available for "P"
 simple_private_type.ads:11:36: info: function contract not available for proof ("=" might not return)
+simple_private_type.ads:11:36: warning: assuming "=" always returns
+simple_private_type.ads:11:36: warning: assuming "=" has no effect on global items
+simple_private_type.ads:11:36: warning: no Global contract available for "="
+simple_private_type.ads:11:36: warning: no returning annotation available for "="
+simple_private_type.ads:11:38: warning: assuming "P" always returns
+simple_private_type.ads:11:38: warning: assuming "P" has no effect on global items
+simple_private_type.ads:11:38: warning: no Global contract available for "P"
+simple_private_type.ads:11:38: warning: no returning annotation available for "P"
+simple_private_type.ads:14:18: warning: assuming "Is_Zero" always returns
+simple_private_type.ads:14:18: warning: assuming "Is_Zero" has no effect on global items
+simple_private_type.ads:14:18: warning: no Global contract available for "Is_Zero"
+simple_private_type.ads:14:18: warning: no returning annotation available for "Is_Zero"
+simple_private_type.ads:14:41: warning: assuming "P" always returns
+simple_private_type.ads:14:41: warning: assuming "P" has no effect on global items
+simple_private_type.ads:14:41: warning: no Global contract available for "P"
+simple_private_type.ads:14:41: warning: no returning annotation available for "P"
 simple_private_type.ads:14:54: info: function contract not available for proof ("=" might not return)
+simple_private_type.ads:14:54: warning: assuming "=" always returns
+simple_private_type.ads:14:54: warning: assuming "=" has no effect on global items
+simple_private_type.ads:14:54: warning: no Global contract available for "="
+simple_private_type.ads:14:54: warning: no returning annotation available for "="
+simple_private_type.ads:17:17: warning: assuming "Is_Zero" always returns
+simple_private_type.ads:17:17: warning: assuming "Is_Zero" has no effect on global items
+simple_private_type.ads:17:17: warning: no Global contract available for "Is_Zero"
+simple_private_type.ads:17:17: warning: no returning annotation available for "Is_Zero"
+use_simple_private_type.adb:5:10: warning: assuming "Is_Zero" always returns
+use_simple_private_type.adb:5:10: warning: assuming "Is_Zero" has no effect on global items
+use_simple_private_type.adb:5:10: warning: no Global contract available for "Is_Zero"
+use_simple_private_type.adb:5:10: warning: no returning annotation available for "Is_Zero"
+use_simple_private_type.adb:8:14: warning: assuming "N" always returns
+use_simple_private_type.adb:8:14: warning: assuming "N" has no effect on global items
+use_simple_private_type.adb:8:14: warning: no Global contract available for "N"
+use_simple_private_type.adb:8:14: warning: no returning annotation available for "N"
 use_simple_private_type.adb:8:22: info: precondition proved (CVC5: 1 VC)
+use_simple_private_type.adb:8:22: warning: assuming "P" always returns
+use_simple_private_type.adb:8:22: warning: assuming "P" has no effect on global items
+use_simple_private_type.adb:8:22: warning: no Global contract available for "P"
+use_simple_private_type.adb:8:22: warning: no returning annotation available for "P"
+use_simple_private_type.adb:13:10: warning: assuming "Is_Zero" always returns
+use_simple_private_type.adb:13:10: warning: assuming "Is_Zero" has no effect on global items
+use_simple_private_type.adb:13:10: warning: no Global contract available for "Is_Zero"
+use_simple_private_type.adb:13:10: warning: no returning annotation available for "Is_Zero"
+use_simple_private_type.adb:16:12: warning: assuming "N" always returns
+use_simple_private_type.adb:16:12: warning: assuming "N" has no effect on global items
+use_simple_private_type.adb:16:12: warning: no Global contract available for "N"
+use_simple_private_type.adb:16:12: warning: no returning annotation available for "N"
 use_simple_private_type.adb:17:15: info: precondition proved (CVC5: 1 VC)
+use_simple_private_type.adb:17:15: warning: assuming "P" always returns
+use_simple_private_type.adb:17:15: warning: assuming "P" has no effect on global items
+use_simple_private_type.adb:17:15: warning: no Global contract available for "P"
+use_simple_private_type.adb:17:15: warning: no returning annotation available for "P"
+use_simple_private_type.adb:22:10: warning: assuming "Is_Zero" always returns
+use_simple_private_type.adb:22:10: warning: assuming "Is_Zero" has no effect on global items
+use_simple_private_type.adb:22:10: warning: no Global contract available for "Is_Zero"
+use_simple_private_type.adb:22:10: warning: no returning annotation available for "Is_Zero"
 use_simple_private_type.adb:25:27: info: precondition proved (CVC5: 1 VC)
+use_simple_private_type.adb:25:27: warning: assuming "P" always returns
+use_simple_private_type.adb:25:27: warning: assuming "P" has no effect on global items
+use_simple_private_type.adb:25:27: warning: no Global contract available for "P"
+use_simple_private_type.adb:25:27: warning: no returning annotation available for "P"
+use_simple_private_type.adb:31:10: warning: assuming "Is_Zero" always returns
+use_simple_private_type.adb:31:10: warning: assuming "Is_Zero" has no effect on global items
+use_simple_private_type.adb:31:10: warning: no Global contract available for "Is_Zero"
+use_simple_private_type.adb:31:10: warning: no returning annotation available for "Is_Zero"
 use_simple_private_type.adb:35:15: info: precondition proved (CVC5: 1 VC)
+use_simple_private_type.adb:35:15: warning: assuming "P" always returns
+use_simple_private_type.adb:35:15: warning: assuming "P" has no effect on global items
+use_simple_private_type.adb:35:15: warning: no Global contract available for "P"
+use_simple_private_type.adb:35:15: warning: no returning annotation available for "P"

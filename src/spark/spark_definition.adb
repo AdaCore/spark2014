@@ -35,6 +35,7 @@ with Einfo.Utils;                     use Einfo.Utils;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
+with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Flow_Types;                      use Flow_Types;
@@ -4040,20 +4041,33 @@ package body SPARK_Definition is
       --  manually-written Global or Depends contracts. Exempt calls to pure
       --  subprograms (because Pure acts as "Global => null").
 
-      elsif Emit_Warning_Info_Messages
-        and then SPARK_Pragma_Is (Opt.On)
-        and then not Has_User_Supplied_Globals (E)
-        and then ((Is_Imported (E) and then
-                     Convention (E) not in Convention_Ada
-                                         | Convention_Intrinsic)
-                   or else (Is_Ignored_Internal (E)
-                              and then
-                            not Is_Ignored_Internal (N)))
-      then
-         Error_Msg_NE
-           ("?no Global contract available for &", N, E);
-         Error_Msg_NE
-           ("\\assuming & has no effect on global items", N, E);
+      elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
+
+         declare
+            Might_Have_Flow_Assumptions : constant Boolean :=
+              (Has_No_Body (E)
+                 or else (Is_Ignored_Internal (E)
+                            and then not Is_Ignored_Internal (N)))
+              and then not Is_Unchecked_Conversion_Instance (E)
+              and then not Is_Unchecked_Deallocation_Instance (E);
+
+         begin
+            if Might_Have_Flow_Assumptions then
+               if not Has_User_Supplied_Globals (E) then
+                  Error_Msg_NE
+                    ("?no Global contract available for &", N, E);
+                  Error_Msg_NE
+                    ("\\assuming & has no effect on global items", N, E);
+               end if;
+
+               if not Has_Any_Returning_Annotation (E) then
+                  Error_Msg_NE
+                    ("?no returning annotation available for &", N, E);
+                  Error_Msg_NE
+                    ("\\assuming & always returns", N, E);
+               end if;
+            end if;
+         end;
 
       --  On supported unchecked conversions to access types, emit warnings
       --  stating that we assume the returned value to be valid and with no

@@ -1,2 +1,16 @@
+client.adb:8:07: warning: assuming "Dummy" always returns
+client.adb:8:07: warning: assuming "Dummy" has no effect on global items
+client.adb:8:07: warning: no Global contract available for "Dummy"
+client.adb:8:07: warning: no returning annotation available for "Dummy"
+client.adb:9:09: warning: assuming "Dummy" always returns
 client.adb:9:09: warning: assuming "Dummy" has no effect on global items
 client.adb:9:09: warning: no Global contract available for "Dummy"
+client.adb:9:09: warning: no returning annotation available for "Dummy"
+client.adb:10:09: warning: assuming "Dummy" always returns
+client.adb:10:09: warning: assuming "Dummy" has no effect on global items
+client.adb:10:09: warning: no Global contract available for "Dummy"
+client.adb:10:09: warning: no returning annotation available for "Dummy"
+client.adb:11:09: warning: assuming "Dummy" always returns
+client.adb:11:09: warning: assuming "Dummy" has no effect on global items
+client.adb:11:09: warning: no Global contract available for "Dummy"
+client.adb:11:09: warning: no returning annotation available for "Dummy"

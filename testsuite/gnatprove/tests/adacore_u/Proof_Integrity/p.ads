@@ -3,10 +3,14 @@ package P with SPARK_Mode is
    type Int_Array is array (Integer) of Integer;
 
    function Is_Too_Coarse (Value : Integer) return Boolean with
-     Import;
+     Import,
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    procedure Treat_Value (Value : in out Integer) with
-     Import;
+     Import,
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    procedure Read_Record (From : Integer);
 

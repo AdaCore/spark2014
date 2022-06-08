@@ -39,5 +39,5 @@ is
 
    subtype Record_Subtype is Packet;
 
-   function F_Of_Pair (P : in Pair) return Boolean;
+   function F_Of_Pair (P : in Pair) return Boolean with Annotate => (GNATprove, Always_Return);
 end Records_ProofFuncs;

@@ -3,7 +3,9 @@ is
 
    type Root_T is tagged null record;
 
-   function Hash (Obj : Root_T) return Natural;
+   function Hash (Obj : Root_T) return Natural with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    --------------------------
 
@@ -12,7 +14,9 @@ is
    end record;
 
    overriding function Hash (Obj : Widget_T) return Natural;
-   procedure Zero_Widget (Obj : out Widget_T);
+   procedure Zero_Widget (Obj : out Widget_T) with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    --------------------------
 
@@ -39,7 +43,10 @@ is
    type Misc_Private_T (Valid : Boolean) is private;
 
    procedure Modify_It (X : in out Misc_Private_T;
-                        N : in     Integer);
+                        N : in     Integer)
+   with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
 private
 

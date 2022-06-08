@@ -7,7 +7,8 @@ is
      with Part_Of => S3;
 
    procedure Update_Pr_State
-     with Global  => (Input  => Pr_Var,
+     with Global   => (Input  => Pr_Var,
                       In_Out => Pr_State),
-          Depends => (Pr_State =>+ Pr_Var);
+          Depends  => (Pr_State =>+ Pr_Var),
+          Annotate => (GNATprove, Always_Return);
 end Refined_Depends_Legal.Pr_Child;

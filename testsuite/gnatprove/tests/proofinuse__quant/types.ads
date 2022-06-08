@@ -1,5 +1,6 @@
 package Types with
-  SPARK_Mode
+  SPARK_Mode,
+  Annotate => (GNATprove, Always_Return)
 is
    --  Same type definitions as in Ada.Interfaces
 
@@ -51,6 +52,6 @@ is
 
    --  Uninterpreted property over integers
 
-   function Property (X : Integer_32; Y : Index_10) return Boolean;
+   function Property (X : Integer_32; Y : Index_10) return Boolean with Global => null;
 
 end Types;

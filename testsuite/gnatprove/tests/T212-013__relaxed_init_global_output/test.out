@@ -23,6 +23,10 @@ test_global_out.adb:93:19: info: assertion proved (CVC5: 1 VC)
 test_global_out.adb:93:20: info: initialization check proved (CVC5: 1 VC)
 test_global_out.adb:95:19: medium: assertion might fail
 test_global_out.adb:95:20: medium: initialization check might fail
+test_global_out.adb:98:09: warning: assuming "Rand" always returns
+test_global_out.adb:98:09: warning: assuming "Rand" has no effect on global items
+test_global_out.adb:98:09: warning: no Global contract available for "Rand"
+test_global_out.adb:98:09: warning: no returning annotation available for "Rand"
 test_global_out.adb:103:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_global_out.adb:103:33: info: initialization check proved (CVC5: 1 VC)
 test_global_out.adb:105:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)

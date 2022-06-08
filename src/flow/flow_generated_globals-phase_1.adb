@@ -185,6 +185,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
       Has_Terminate    : Boolean;
       Has_Subp_Variant : Boolean;
+      No_Body          : Boolean;
       Nonreturning     : Boolean;
       Nonblocking      : Boolean)
    is
@@ -394,6 +395,7 @@ package body Flow_Generated_Globals.Phase_1 is
          if Ekind (E) /= E_Task_Type then
             Serialize (Has_Terminate);
             Serialize (Has_Subp_Variant);
+            Serialize (No_Body);
             Serialize (Nonreturning);
             Serialize (Nonblocking);
          end if;

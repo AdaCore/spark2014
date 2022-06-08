@@ -1,13 +1,80 @@
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:10:04: warning: in instantiation at abstract_maps.ads:26
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:129
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:141
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:142
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:148
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:150
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:158
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:176
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:194
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:195
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:210
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:212
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:24
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:73
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:74
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:81
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:83
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:90
+example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:92
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Get"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
+example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
 example_recursive.adb:21:07: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:21:25: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:21:25: warning: assuming "Get" has no effect on global items
+example_recursive.adb:21:25: warning: no Global contract available for "Get"
+example_recursive.adb:33:39: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:33:39: warning: no Global contract available for "Has_Key"
+example_recursive.adb:33:61: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:33:61: warning: no Global contract available for "Has_Key"
 example_recursive.adb:34:41: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:34:41: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:34:41: warning: assuming "Get" has no effect on global items
+example_recursive.adb:34:41: warning: no Global contract available for "Get"
 example_recursive.adb:35:32: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:32: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:35:32: warning: assuming "Get" has no effect on global items
+example_recursive.adb:35:32: warning: no Global contract available for "Get"
 example_recursive.adb:36:19: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:36:19: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:36:51: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:36:51: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:36:51: warning: assuming "Get" has no effect on global items
+example_recursive.adb:36:51: warning: no Global contract available for "Get"
 example_recursive.adb:36:69: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:38:06: info: data dependencies proved
 example_recursive.adb:43:55: info: precondition proved (CVC5: 1 VC)
@@ -17,15 +84,25 @@ example_recursive.adb:50:31: info: precondition proved (CVC5: 8 VC)
 example_recursive.adb:50:31: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:50:62: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:50:62: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:50:62: warning: assuming "Get" has no effect on global items
+example_recursive.adb:50:62: warning: no Global contract available for "Get"
 example_recursive.adb:50:81: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:52:06: info: data dependencies proved
 example_recursive.adb:54:39: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:62:06: info: data dependencies proved
 example_recursive.adb:63:67: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:64:15: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:64:15: warning: no Global contract available for "Has_Key"
 example_recursive.adb:65:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:66:22: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:67:24: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:67:24: warning: no Global contract available for "Has_Key"
 example_recursive.adb:67:48: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:67:48: warning: assuming "Get" has no effect on global items
+example_recursive.adb:67:48: warning: no Global contract available for "Get"
 example_recursive.adb:67:63: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:67:63: warning: assuming "Get" has no effect on global items
+example_recursive.adb:67:63: warning: no Global contract available for "Get"
 example_recursive.adb:68:14: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:68:14: medium: in inlined expression function body at example_recursive.adb:36
 example_recursive.adb:68:14: medium: postcondition might fail, cannot prove Valid_List (F, Address (L_Cell (Get (M, A)).N), L - 1, M)
@@ -33,16 +110,26 @@ example_recursive.adb:76:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 
 example_recursive.adb:76:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:76:53: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:76:53: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:76:53: warning: assuming "Get" has no effect on global items
+example_recursive.adb:76:53: warning: no Global contract available for "Get"
 example_recursive.adb:76:72: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:77:25: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:77:25: medium: assertion might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
 example_recursive.adb:77:25: medium: in inlined expression function body at example_recursive.adb:35
 example_recursive.adb:86:06: info: data dependencies proved
 example_recursive.adb:87:67: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:88:15: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:88:15: warning: no Global contract available for "Has_Key"
 example_recursive.adb:89:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:90:22: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:91:24: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:91:24: warning: no Global contract available for "Has_Key"
 example_recursive.adb:91:48: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:91:48: warning: assuming "Get" has no effect on global items
+example_recursive.adb:91:48: warning: no Global contract available for "Get"
 example_recursive.adb:91:63: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:91:63: warning: assuming "Get" has no effect on global items
+example_recursive.adb:91:63: warning: no Global contract available for "Get"
 example_recursive.adb:92:45: info: precondition proved (CVC5: 8 VC)
 example_recursive.adb:92:45: medium: postcondition might fail, cannot prove Reachable (F, A, L, A2, M1) = Reachable (F, A, L, A2, M2)
 example_recursive.adb:92:75: info: precondition proved (CVC5: 8 VC)
@@ -50,18 +137,26 @@ example_recursive.adb:98:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 
 example_recursive.adb:98:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:98:53: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:98:53: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:98:53: warning: assuming "Get" has no effect on global items
+example_recursive.adb:98:53: warning: no Global contract available for "Get"
 example_recursive.adb:98:72: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:100:07: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
 example_recursive.adb:103:13: info: implicit function contract might not be available on recursive calls
 example_recursive.adb:104:29: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:104:29: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:104:29: warning: assuming "Get" has no effect on global items
+example_recursive.adb:104:29: warning: no Global contract available for "Get"
 example_recursive.adb:105:12: info: precondition proved (CVC5: 10 VC)
 example_recursive.adb:105:12: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:105:37: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:105:37: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:105:37: warning: assuming "Get" has no effect on global items
+example_recursive.adb:105:37: warning: no Global contract available for "Get"
 example_recursive.adb:105:55: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:105:62: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:107:06: info: data dependencies proved
+example_recursive.adb:108:39: warning: assuming "Has_Key" has no effect on global items
+example_recursive.adb:108:39: warning: no Global contract available for "Has_Key"
 example_recursive.adb:109:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:113:07: info: precondition proved (CVC5: 10 VC)
 example_recursive.adb:113:50: info: precondition proved (CVC5: 1 VC)
@@ -80,6 +175,8 @@ example_recursive.adb:140:36: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:141:22: info: assertion proved (Z3: 1 VC)
 example_recursive.adb:141:30: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:141:30: info: tag check proved (Z3: 1 VC)
+example_recursive.adb:141:30: warning: assuming "Get" has no effect on global items
+example_recursive.adb:141:30: warning: no Global contract available for "Get"
 example_recursive.adb:141:35: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:148:14: medium: in inlined expression function body at example_recursive.adb:44
 example_recursive.adb:148:14: medium: postcondition might fail, cannot prove Valid_List (Address (L.F), Address (L.F), L.L, Deref (L.M))
@@ -100,10 +197,14 @@ example_recursive.adb:168:36: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:169:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 example_recursive.adb:169:30: info: tag check proved (Z3: 1 VC)
 example_recursive.adb:169:30: medium: precondition might fail
+example_recursive.adb:169:30: warning: assuming "Get" has no effect on global items
+example_recursive.adb:169:30: warning: no Global contract available for "Get"
 example_recursive.adb:169:35: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:170:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 example_recursive.adb:170:30: medium: precondition might fail
 example_recursive.adb:170:30: medium: tag check might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
+example_recursive.adb:170:30: warning: assuming "Get" has no effect on global items
+example_recursive.adb:170:30: warning: no Global contract available for "Get"
 example_recursive.adb:170:35: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:173:10: medium: in inlined expression function body at example_recursive.adb:33
 example_recursive.adb:173:10: medium: precondition might fail, cannot prove F /= 0

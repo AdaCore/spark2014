@@ -1,3 +1,5 @@
+p.adb:7:22: warning: assuming "Yield" always returns
+p.adb:7:22: warning: no returning annotation available for "Yield"
 p.ads:3:44: error: predicate cannot depend on variable input "Task_Identification.Tasking_State" (SPARK RM 4.4(2))
 p.ads:3:44: error: side effects of function "Blocking" are not modeled in SPARK
 p.ads:3:44: error: use instead a constant initialized to the expression with variable input

@@ -1,1 +1,3 @@
+main.adb:10:11: warning: assuming "Test" always returns
+main.adb:10:11: warning: no returning annotation available for "Test"
 test.ads:5:03: info: flow dependencies proved

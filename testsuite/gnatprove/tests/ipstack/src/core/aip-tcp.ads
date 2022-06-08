@@ -66,7 +66,8 @@ is
    --  Process TCP event EV, aimed at bound PCB, for which Cbid was registered.
    --  Expected to be provided by the applicative code.
    with
-     Global => (In_Out => Buffers.State);
+     Global   => (In_Out => Buffers.State),
+     Annotate => (GNATprove, Always_Return);
    pragma Import (Ada, TCP_Event, "AIP_tcp_event");
    pragma Weak_External (TCP_Event);
 

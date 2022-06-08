@@ -5,5 +5,6 @@ private package Switch.Val1
 is
    function Read return Switch.Reading
      with Volatile_Function,
-          Global => (Input => State);
+          Global   => (Input => State),
+          Annotate => (GNATprove, Always_Return);
 end Switch.Val1;

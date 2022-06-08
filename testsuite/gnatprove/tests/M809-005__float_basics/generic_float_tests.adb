@@ -7,8 +7,9 @@ is
    ----------------------------------------------------------------------
 
    function Magic (X : FT) return Integer
-     with Global => null,
+     with Global     => null,
           Convention => C,
+          Annotate   => (GNATprove, Always_Return),
           Import;
 
    procedure Equality_Matters (A, B : FT)

@@ -3,11 +3,95 @@ simple_flow.adb:2:36: info: postcondition proved (CVC5: 1 VC)
 simple_flow.adb:2:43: info: data dependencies proved
 simple_flow.adb:14:28: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 simple_flow.adb:20:06: warning: this statement is never reached
+test_goto.adb:9:10: warning: assuming "B" always returns
+test_goto.adb:9:10: warning: assuming "B" has no effect on global items
+test_goto.adb:9:10: warning: no Global contract available for "B"
+test_goto.adb:9:10: warning: no returning annotation available for "B"
+test_goto.adb:10:15: warning: assuming "E" always returns
+test_goto.adb:10:15: warning: assuming "E" has no effect on global items
+test_goto.adb:10:15: warning: no Global contract available for "E"
+test_goto.adb:10:15: warning: no returning annotation available for "E"
+test_goto.adb:12:16: warning: assuming "B" always returns
+test_goto.adb:12:16: warning: assuming "B" has no effect on global items
+test_goto.adb:12:16: warning: no Global contract available for "B"
+test_goto.adb:12:16: warning: no returning annotation available for "B"
 test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations)
 test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant]
+test_goto.adb:18:25: warning: assuming "B" always returns
+test_goto.adb:18:25: warning: assuming "B" has no effect on global items
+test_goto.adb:18:25: warning: no Global contract available for "B"
+test_goto.adb:18:25: warning: no returning annotation available for "B"
+test_goto.adb:20:28: warning: assuming "B" always returns
+test_goto.adb:20:28: warning: assuming "B" has no effect on global items
+test_goto.adb:20:28: warning: no Global contract available for "B"
+test_goto.adb:20:28: warning: no returning annotation available for "B"
+test_goto.adb:26:22: warning: assuming "B" always returns
+test_goto.adb:26:22: warning: assuming "B" has no effect on global items
+test_goto.adb:26:22: warning: no Global contract available for "B"
+test_goto.adb:26:22: warning: no returning annotation available for "B"
+test_goto.adb:28:25: warning: assuming "B" always returns
+test_goto.adb:28:25: warning: assuming "B" has no effect on global items
+test_goto.adb:28:25: warning: no Global contract available for "B"
+test_goto.adb:28:25: warning: no returning annotation available for "B"
+test_goto.adb:33:19: warning: assuming "B" always returns
+test_goto.adb:33:19: warning: assuming "B" has no effect on global items
+test_goto.adb:33:19: warning: no Global contract available for "B"
+test_goto.adb:33:19: warning: no returning annotation available for "B"
+test_goto.adb:40:16: warning: assuming "B" always returns
+test_goto.adb:40:16: warning: assuming "B" has no effect on global items
+test_goto.adb:40:16: warning: no Global contract available for "B"
+test_goto.adb:40:16: warning: no returning annotation available for "B"
+test_goto.adb:42:19: warning: assuming "B" always returns
+test_goto.adb:42:19: warning: assuming "B" has no effect on global items
+test_goto.adb:42:19: warning: no Global contract available for "B"
+test_goto.adb:42:19: warning: no returning annotation available for "B"
+test_goto.adb:49:13: warning: assuming "B" always returns
+test_goto.adb:49:13: warning: assuming "B" has no effect on global items
+test_goto.adb:49:13: warning: no Global contract available for "B"
+test_goto.adb:49:13: warning: no returning annotation available for "B"
+test_goto.adb:51:16: warning: assuming "B" always returns
+test_goto.adb:51:16: warning: assuming "B" has no effect on global items
+test_goto.adb:51:16: warning: no Global contract available for "B"
+test_goto.adb:51:16: warning: no returning annotation available for "B"
+test_goto.adb:56:13: warning: assuming "B" always returns
+test_goto.adb:56:13: warning: assuming "B" has no effect on global items
+test_goto.adb:56:13: warning: no Global contract available for "B"
+test_goto.adb:56:13: warning: no returning annotation available for "B"
+test_goto.adb:57:13: warning: assuming "B" always returns
+test_goto.adb:57:13: warning: assuming "B" has no effect on global items
+test_goto.adb:57:13: warning: no Global contract available for "B"
+test_goto.adb:57:13: warning: no returning annotation available for "B"
+test_goto.adb:59:16: warning: assuming "B" always returns
+test_goto.adb:59:16: warning: assuming "B" has no effect on global items
+test_goto.adb:59:16: warning: no Global contract available for "B"
+test_goto.adb:59:16: warning: no returning annotation available for "B"
+test_goto.adb:66:13: warning: assuming "B" always returns
+test_goto.adb:66:13: warning: assuming "B" has no effect on global items
+test_goto.adb:66:13: warning: no Global contract available for "B"
+test_goto.adb:66:13: warning: no returning annotation available for "B"
+test_goto.adb:68:16: warning: assuming "B" always returns
+test_goto.adb:68:16: warning: assuming "B" has no effect on global items
+test_goto.adb:68:16: warning: no Global contract available for "B"
+test_goto.adb:68:16: warning: no returning annotation available for "B"
+test_goto.adb:75:10: warning: assuming "B" always returns
+test_goto.adb:75:10: warning: assuming "B" has no effect on global items
+test_goto.adb:75:10: warning: no Global contract available for "B"
+test_goto.adb:75:10: warning: no returning annotation available for "B"
+test_goto.adb:77:13: warning: assuming "B" always returns
+test_goto.adb:77:13: warning: assuming "B" has no effect on global items
+test_goto.adb:77:13: warning: no Global contract available for "B"
+test_goto.adb:77:13: warning: no returning annotation available for "B"
 test_goto.adb:82:30: info: loop invariant initialization proved (Trivial: 1 VC)
 test_goto.adb:82:30: info: loop invariant preservation proved (Trivial: 1 VC)
+test_goto.adb:85:07: warning: assuming "B" always returns
+test_goto.adb:85:07: warning: assuming "B" has no effect on global items
+test_goto.adb:85:07: warning: no Global contract available for "B"
+test_goto.adb:85:07: warning: no returning annotation available for "B"
 test_goto.adb:90:19: medium: assertion might fail [possible fix: loop invariant at line 82 should mention X]
+test_goto.adb:90:19: warning: assuming "B" always returns
+test_goto.adb:90:19: warning: assuming "B" has no effect on global items
+test_goto.adb:90:19: warning: no Global contract available for "B"
+test_goto.adb:90:19: warning: no returning annotation available for "B"
 test_goto_borrow.adb:9:12: info: implicit function contract might not be available on recursive calls
 test_goto_borrow.adb:10:05: medium: "Length" is recursive, terminating annotation could be incorrect
 test_goto_borrow.adb:11:50: info: pointer dereference check proved (CVC5: 1 VC)

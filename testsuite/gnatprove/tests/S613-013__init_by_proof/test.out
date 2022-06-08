@@ -1,3 +1,11 @@
 safe_read.adb:3:59: info: initialization of "Has_Read" proved
+safe_read.adb:6:04: warning: assuming "Read" always returns
+safe_read.adb:6:04: warning: assuming "Read" has no effect on global items
+safe_read.adb:6:04: warning: no Global contract available for "Read"
+safe_read.adb:6:04: warning: no returning annotation available for "Read"
 safe_read_str.adb:3:40: info: initialization of "Buf" proved
 safe_read_str.adb:3:58: info: initialization of "Has_Read" proved
+safe_read_str.adb:6:04: warning: assuming "Read_Str" always returns
+safe_read_str.adb:6:04: warning: assuming "Read_Str" has no effect on global items
+safe_read_str.adb:6:04: warning: no Global contract available for "Read_Str"
+safe_read_str.adb:6:04: warning: no returning annotation available for "Read_Str"

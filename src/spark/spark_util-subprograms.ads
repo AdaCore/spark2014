@@ -388,6 +388,12 @@ package SPARK_Util.Subprograms is
    --  @param Inherited True when asking only for inherited contracts
    --  @return True iff there is at least one contract Name for E
 
+   function Has_Any_Returning_Annotation (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   --  @param E called entity
+   --  @return True iff E is annotated with Always_Return, Might_Not_Return
+   --  or has aspect No_Return.
+
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
    with Pre =>
        Ekind (E) in E_Function | E_Procedure | Entry_Kind | E_Subprogram_Type;

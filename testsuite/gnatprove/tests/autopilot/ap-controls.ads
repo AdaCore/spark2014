@@ -4,7 +4,8 @@ private package AP.Controls
                           (Altitude_Switch with Part_Of  => AP.State,
                                                 External => Async_Writers),
                           (Heading_Switch with Part_Of  => AP.State,
-                                               External => Async_Writers))
+                                               External => Async_Writers)),
+       Annotate       => (GNATprove, Always_Return)
 is
    type Switch is (On, Off);
 

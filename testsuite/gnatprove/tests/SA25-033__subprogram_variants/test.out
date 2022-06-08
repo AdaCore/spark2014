@@ -7,6 +7,10 @@ fibo_variant.adb:12:14: info: subprogram variant proved (CVC5: 1 VC)
 fibo_variant.adb:12:22: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:6:27: medium: precondition might fail
 test_bad_variant.adb:6:27: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a precondition]
+test_bad_variant.adb:6:27: warning: assuming "Bad_1" always returns
+test_bad_variant.adb:6:27: warning: assuming "Bad_1" has no effect on global items
+test_bad_variant.adb:6:27: warning: no Global contract available for "Bad_1"
+test_bad_variant.adb:6:27: warning: no returning annotation available for "Bad_1"
 test_bad_variant.adb:6:36: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:10:13: info: function contract might not be available on recursive calls
 test_bad_variant.adb:12:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)

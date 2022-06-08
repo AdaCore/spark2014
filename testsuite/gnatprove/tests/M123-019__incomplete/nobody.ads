@@ -1,5 +1,7 @@
 package Nobody is
    function Divide (X, Y : Integer) return Integer with
-     Pre  => Y /= 0,
-     Post => Divide'Result = X / Y;
+     Global   => null,
+     Annotate => (GNATprove, Always_Return),
+     Pre      => Y /= 0,
+     Post     => Divide'Result = X / Y;
 end Nobody;

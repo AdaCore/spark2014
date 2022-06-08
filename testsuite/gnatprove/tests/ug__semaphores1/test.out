@@ -4,6 +4,16 @@ semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bou
       |                     ~~~~~~~~~^~~
   reason for check: result of addition must fit in a 32-bits machine integer
 
+semaphores1.adb:34:07: warning: no returning annotation available for "Set_True"
+   34 |      Set_True (Semaphore);
+      |      ^~~~~~~~~~~~~~~~~~~
+  assuming "Set_True" always returns
+
+semaphores1.adb:42:07: warning: no returning annotation available for "Suspend_Until_True"
+   42 |      Suspend_Until_True (Semaphore);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  assuming "Suspend_Until_True" always returns
+
 semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected
     6 |   task T1;
       |        ^~

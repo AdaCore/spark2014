@@ -5,5 +5,6 @@ is
    Var : Integer;
 
    procedure Init_State
-     with Global => (Output => State);
+     with Global   => (Output => State),
+          Annotate => (GNATprove, Always_Return);
 end Remote;

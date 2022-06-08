@@ -26,7 +26,8 @@ private with Ada.Containers.Formal_Indefinite_Vectors;
 --  A helper package for dealing with variable-length char arrays.
 
 package Unbounded_Strings with
-   SPARK_Mode
+   SPARK_Mode,
+   Annotate => (GNATprove, Always_Return)
 is
 
    type Unbounded_String is limited private

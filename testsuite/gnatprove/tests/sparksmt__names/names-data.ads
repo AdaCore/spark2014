@@ -25,7 +25,8 @@ with Ada.Containers;                use Ada.Containers;
 with Ada.Containers.Formal_Indefinite_Vectors;
 
 private package Names.Data with
-   SPARK_Mode
+   SPARK_Mode,
+   Annotate => (GNATprove, Always_Return)
 is
 
    -------------
