@@ -3130,7 +3130,21 @@ package body SPARK_Definition is
          when Attribute_Img
             | Attribute_Image
          =>
-            if Emit_Warning_Info_Messages
+            --  We do not support 'Image on types which are not scalars. We
+            --  could theoretically encode the attribute as an uninterpreted
+            --  function for all types which do not contain subcomponents of
+            --  an access type. Indeed, as we do not encode the address of
+            --  access types, it would be incorrect.
+
+            if not Retysp_In_SPARK (Etype (P))
+              or else not Has_Scalar_Type (Etype (P))
+            then
+               Mark_Unsupported
+                 ("attribute """
+                  & Standard_Ada_Case (Get_Name_String (Aname))
+                  & """ on non-scalar type", N);
+
+            elsif Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
               and then Is_Enumeration_Type (Etype (P))

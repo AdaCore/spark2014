@@ -1,0 +1,7 @@
+main.adb:15:23: error: attribute "Image" on non-scalar type is not yet supported
+main.adb:15:33: error: attribute "Image" on non-scalar type is not yet supported
+main.adb:17:23: error: attribute "Img" on non-scalar type is not yet supported
+main.adb:17:31: error: attribute "Img" on non-scalar type is not yet supported
+main.adb:19:23: error: attribute "Image" on non-scalar type is not yet supported
+main.adb:19:37: error: attribute "Image" on non-scalar type is not yet supported
+gnatprove: error during flow analysis and proof
