@@ -42,7 +42,7 @@ package Why.Gen.Records is
      (Th : Theory_UC;
       E  : Entity_Id) with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Private_Kind  | Concurrent_Kind;
+                         Incomplete_Or_Private_Kind  | Concurrent_Kind;
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records, private types and concurrent types.
    --  @param P the Why section to insert the declaration
@@ -53,7 +53,7 @@ package Why.Gen.Records is
      (Th : Theory_UC;
       E  : Entity_Id) with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Private_Kind
+                         Incomplete_Or_Private_Kind
      and then Might_Contain_Relaxed_Init (E);
 
    procedure Complete_Tagged_Record_Type
@@ -72,7 +72,7 @@ package Why.Gen.Records is
    procedure Create_Rep_Record_Theory_If_Needed (E : Entity_Id)
    with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Private_Kind  | Concurrent_Kind;
+                         Incomplete_Or_Private_Kind  | Concurrent_Kind;
    --  Create a module for the representative type of a record if needed. It
    --  contains a why record type named WNE_Rec_Rep and all the needed
    --  functions and attributes except for the tag of tagged types.

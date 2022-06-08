@@ -4912,12 +4912,11 @@ package body SPARK_Util is
             end if;
 
          when N_Explicit_Dereference =>
-            pragma Assert (Is_Access_Type (Retysp (Etype (Prefix (Expr)))));
-
-            return (Is_Access_Constant (Retysp (Etype (Prefix (Expr))))
-                    and then not Is_Anonymous_Access_Type
-                      (Etype (Prefix (Expr))))
-              or else Traverse_Access_To_Constant (Prefix (Expr));
+            return Is_Access_Type (Retysp (Etype (Prefix (Expr))))
+              and then ((Is_Access_Constant (Retysp (Etype (Prefix (Expr))))
+                         and then not Is_Anonymous_Access_Type
+                           (Etype (Prefix (Expr))))
+                        or else Traverse_Access_To_Constant (Prefix (Expr)));
 
          when N_Indexed_Component
             | N_Selected_Component

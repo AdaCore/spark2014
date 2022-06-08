@@ -1,0 +1,30 @@
+ext2.adb:5:04: error: "T1" is not allowed in SPARK (due to incomplete type from limited with)
+ext2.adb:5:04: error: instantiation error at unchdeal.ads:18
+ext2.adb:5:04: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:9:14: error: "T1_Acc" is not allowed in SPARK
+ext2.adb:9:14: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:13:24: error: "T1_Acc" is not allowed in SPARK
+ext2.adb:13:24: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:15:07: error: "T1_Acc" is not allowed in SPARK
+ext2.adb:15:07: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:15:15: error: "T1_Acc" is not allowed in SPARK
+ext2.adb:15:15: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:16:07: error: "T1_Acc" is not allowed in SPARK
+ext2.adb:16:07: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:16:15: error: "Tmp" is not allowed in SPARK
+ext2.adb:16:15: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:21:14: error: "T1_Acc" is not allowed in SPARK
+ext2.adb:21:14: error: violation of aspect SPARK_Mode at line 3
+ext2.adb:24:07: error: "Free" is not allowed in SPARK (due to incomplete type from limited with)
+ext2.adb:24:07: error: violation of aspect SPARK_Mode at line 3
+ext2.ads:19:09: error: "T1" is not allowed in SPARK (due to incomplete type from limited with)
+ext2.ads:19:09: error: violation of aspect SPARK_Mode at line 2
+ext2.ads:21:57: error: "T1_Acc" is not allowed in SPARK
+ext2.ads:21:57: error: violation of aspect SPARK_Mode at line 2
+ext2_ext.ads:3:09: error: consider restructuring code to avoid "limited with"
+ext2_ext.ads:3:09: error: incomplete type from limited with is not yet supported
+ext3.ads:19:09: error: "T1" is not allowed in SPARK (due to incomplete type from limited with)
+ext3.ads:19:09: error: violation of aspect SPARK_Mode at line 2
+ext3.ads:21:57: error: "T1_Acc" is not allowed in SPARK
+ext3.ads:21:57: error: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof

@@ -72,7 +72,8 @@ package body Gnat2Why.Tables is
    --  of their descendants that are visible from the analyzed unit.
 
    function Find_Rec_Node_For_Variant (E : Entity_Id) return Entity_Id
-   with Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+   with Pre => Retysp_Kind (E) in
+       Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E record type
    --  @return the entity to be used to query the variant information for E
 
@@ -83,7 +84,7 @@ package body Gnat2Why.Tables is
    --  Comp.
 
    procedure Init_Component_Info (E : Entity_Id)
-   with Pre => Ekind (E) in Record_Kind | Private_Kind;
+   with Pre => Ekind (E) in Record_Kind | Incomplete_Or_Private_Kind;
    --  @param E record type
    --  For each subcomponent of E, create an entry in map Comp_Info
 
@@ -777,7 +778,8 @@ package body Gnat2Why.Tables is
 
       if Is_Type (E)
         and then Retysp (E) = E
-        and then Ekind (E) in Private_Kind | Record_Kind | Concurrent_Kind
+        and then Ekind (E) in
+          Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
         and then not Is_Class_Wide_Type (E)
       then
          if Is_Concurrent_Type (E) then

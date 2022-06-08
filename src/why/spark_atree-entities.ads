@@ -42,32 +42,32 @@ package SPARK_Atree.Entities is
 
    subtype Entity_Kind is EE.Entity_Kind;
 
-   subtype Access_Kind          is EE.Access_Kind;
-   subtype Array_Kind           is EE.Array_Kind;
-   subtype Class_Wide_Kind      is EE.Class_Wide_Kind;
+   subtype Access_Kind                is EE.Access_Kind;
+   subtype Array_Kind                 is EE.Array_Kind;
+   subtype Class_Wide_Kind            is EE.Class_Wide_Kind;
    subtype Constant_Or_Variable_Kind_Id is
      EE.Constant_Or_Variable_Kind_Id;
-   subtype Composite_Kind       is EE.Composite_Kind;
-   subtype Concurrent_Kind      is EE.Concurrent_Kind;
-   subtype Discrete_Kind        is EE.Discrete_Kind;
-   subtype Entry_Kind           is EE.Entry_Kind;
-   subtype Enumeration_Kind     is EE.Enumeration_Kind;
-   subtype Fixed_Point_Kind     is EE.Fixed_Point_Kind;
-   subtype Float_Kind           is EE.Float_Kind;
-   subtype Formal_Kind          is EE.Formal_Kind;
-   subtype Integer_Kind         is EE.Integer_Kind;
-   subtype Modular_Integer_Kind is EE.Modular_Integer_Kind;
-   subtype Named_Kind           is EE.Named_Kind;
-   subtype Object_Kind          is EE.Object_Kind;
-   subtype Private_Kind         is EE.Private_Kind;
-   subtype Protected_Kind       is EE.Protected_Kind;
-   subtype Real_Kind            is EE.Real_Kind;
-   subtype Record_Kind          is EE.Record_Kind;
-   subtype Record_Field_Kind    is EE.Record_Field_Kind;
-   subtype Scalar_Kind          is EE.Scalar_Kind;
-   subtype Subprogram_Kind      is EE.Subprogram_Kind;
-   subtype Task_Kind            is EE.Task_Kind;
-   subtype Type_Kind            is EE.Type_Kind;
+   subtype Composite_Kind             is EE.Composite_Kind;
+   subtype Concurrent_Kind            is EE.Concurrent_Kind;
+   subtype Discrete_Kind              is EE.Discrete_Kind;
+   subtype Entry_Kind                 is EE.Entry_Kind;
+   subtype Enumeration_Kind           is EE.Enumeration_Kind;
+   subtype Fixed_Point_Kind           is EE.Fixed_Point_Kind;
+   subtype Float_Kind                 is EE.Float_Kind;
+   subtype Formal_Kind                is EE.Formal_Kind;
+   subtype Incomplete_Or_Private_Kind is EE.Incomplete_Or_Private_Kind;
+   subtype Integer_Kind               is EE.Integer_Kind;
+   subtype Modular_Integer_Kind       is EE.Modular_Integer_Kind;
+   subtype Named_Kind                 is EE.Named_Kind;
+   subtype Object_Kind                is EE.Object_Kind;
+   subtype Protected_Kind             is EE.Protected_Kind;
+   subtype Real_Kind                  is EE.Real_Kind;
+   subtype Record_Kind                is EE.Record_Kind;
+   subtype Record_Field_Kind          is EE.Record_Field_Kind;
+   subtype Scalar_Kind                is EE.Scalar_Kind;
+   subtype Subprogram_Kind            is EE.Subprogram_Kind;
+   subtype Task_Kind                  is EE.Task_Kind;
+   subtype Type_Kind                  is EE.Type_Kind;
 
    subtype E_Constant_Id            is EE.E_Constant_Id;
    subtype E_Component_Id           is EE.E_Component_Id;
@@ -103,30 +103,30 @@ package SPARK_Atree.Entities is
      EE.Opt_E_String_Literal_Subtype_Id;
    subtype Opt_E_Subprogram_Type_Id is EE.Opt_E_Subprogram_Type_Id;
 
-   subtype Access_Kind_Id          is EE.Access_Kind_Id;
-   subtype Array_Kind_Id           is EE.Array_Kind_Id;
-   subtype Class_Wide_Kind_Id      is EE.Class_Wide_Kind_Id;
-   subtype Composite_Kind_Id       is EE.Composite_Kind_Id;
-   subtype Concurrent_Kind_Id      is EE.Concurrent_Kind_Id;
-   subtype Discrete_Kind_Id        is EE.Discrete_Kind_Id;
-   subtype Entry_Kind_Id           is EE.Entry_Kind_Id;
-   subtype Enumeration_Kind_Id     is EE.Enumeration_Kind_Id;
-   subtype Fixed_Point_Kind_Id     is EE.Fixed_Point_Kind_Id;
-   subtype Float_Kind_Id           is EE.Float_Kind_Id;
-   subtype Formal_Kind_Id          is EE.Formal_Kind_Id;
-   subtype Integer_Kind_Id         is EE.Integer_Kind_Id;
-   subtype Modular_Integer_Kind_Id is EE.Modular_Integer_Kind_Id;
-   subtype Named_Kind_Id           is EE.Named_Kind_Id;
-   subtype Object_Kind_Id          is EE.Object_Kind_Id;
-   subtype Private_Kind_Id         is EE.Private_Kind_Id;
-   subtype Protected_Kind_Id       is EE.Protected_Kind_Id;
-   subtype Real_Kind_Id            is EE.Real_Kind_Id;
-   subtype Record_Kind_Id          is EE.Record_Kind_Id;
-   subtype Record_Field_Kind_Id    is EE.Record_Field_Kind_Id;
-   subtype Scalar_Kind_Id          is EE.Scalar_Kind_Id;
-   subtype Subprogram_Kind_Id      is EE.Subprogram_Kind_Id;
-   subtype Task_Kind_Id            is EE.Task_Kind_Id;
-   subtype Type_Kind_Id            is EE.Type_Kind_Id;
+   subtype Access_Kind_Id                is EE.Access_Kind_Id;
+   subtype Array_Kind_Id                 is EE.Array_Kind_Id;
+   subtype Class_Wide_Kind_Id            is EE.Class_Wide_Kind_Id;
+   subtype Composite_Kind_Id             is EE.Composite_Kind_Id;
+   subtype Concurrent_Kind_Id            is EE.Concurrent_Kind_Id;
+   subtype Discrete_Kind_Id              is EE.Discrete_Kind_Id;
+   subtype Entry_Kind_Id                 is EE.Entry_Kind_Id;
+   subtype Enumeration_Kind_Id           is EE.Enumeration_Kind_Id;
+   subtype Fixed_Point_Kind_Id           is EE.Fixed_Point_Kind_Id;
+   subtype Float_Kind_Id                 is EE.Float_Kind_Id;
+   subtype Formal_Kind_Id                is EE.Formal_Kind_Id;
+   subtype Incomplete_Or_Private_Kind_Id is EE.Incomplete_Or_Private_Kind_Id;
+   subtype Integer_Kind_Id               is EE.Integer_Kind_Id;
+   subtype Modular_Integer_Kind_Id       is EE.Modular_Integer_Kind_Id;
+   subtype Named_Kind_Id                 is EE.Named_Kind_Id;
+   subtype Object_Kind_Id                is EE.Object_Kind_Id;
+   subtype Protected_Kind_Id             is EE.Protected_Kind_Id;
+   subtype Real_Kind_Id                  is EE.Real_Kind_Id;
+   subtype Record_Kind_Id                is EE.Record_Kind_Id;
+   subtype Record_Field_Kind_Id          is EE.Record_Field_Kind_Id;
+   subtype Scalar_Kind_Id                is EE.Scalar_Kind_Id;
+   subtype Subprogram_Kind_Id            is EE.Subprogram_Kind_Id;
+   subtype Task_Kind_Id                  is EE.Task_Kind_Id;
+   subtype Type_Kind_Id                  is EE.Type_Kind_Id;
 
    subtype Opt_Access_Kind_Id          is EE.Opt_Access_Kind_Id;
    subtype Opt_Array_Kind_Id           is EE.Opt_Array_Kind_Id;
@@ -352,8 +352,10 @@ package SPARK_Atree.Entities is
    function Is_Object (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Object;
 
-   function Is_Private_Type (E : Type_Kind_Id) return Boolean renames
-     Einfo.Utils.Is_Private_Type;
+   function Is_Incomplete_Or_Private_Type
+     (E : Type_Kind_Id)
+      return Boolean
+   renames Einfo.Utils.Is_Incomplete_Or_Private_Type;
 
    function Is_Protected_Type (E : Type_Kind_Id) return Boolean renames
      Einfo.Utils.Is_Protected_Type;
@@ -597,7 +599,7 @@ package SPARK_Atree.Entities is
    function Stored_Constraint (Typ : Type_Kind_Id) return Elist_Id
      with Pre => Ekind (Typ) in Record_Kind
                               | Concurrent_Kind
-                              | Private_Kind;
+                              | Incomplete_Or_Private_Kind;
 
    function Has_Discriminant_Dependent_Constraint
      (Comp : E_Component_Id) return Boolean
@@ -695,7 +697,7 @@ package SPARK_Atree.Entities is
        E_Discriminant | E_Component | E_Constant | E_In_Parameter
         or else SPARK_Util.Subprograms.Is_Protected_Operation (Obj),
      Post => Ekind (Enclosing_Type'Result) in
-       Record_Kind | Private_Kind | Concurrent_Kind;
+       Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind;
    --  Return the scope of a record component, discriminant, discriminal or
    --  protected operation.
 

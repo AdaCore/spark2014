@@ -402,7 +402,8 @@ package body Why.Inter is
          loop
             Typ := Retysp (Typ);
 
-            if (Is_Record_Type (Typ) or else Is_Private_Type (Typ))
+            if (Is_Record_Type (Typ)
+                or else Is_Incomplete_Or_Private_Type (Typ))
               and then not Is_Base_Type (Typ)
             then
                Typ := Etype (Typ);
@@ -900,7 +901,7 @@ package body Why.Inter is
                return EW_Int_Type;
             end if;
 
-         when Private_Kind =>
+         when Incomplete_Or_Private_Kind =>
             if Full_View_Not_In_SPARK (Ty) then
                return Why_Empty;
             else

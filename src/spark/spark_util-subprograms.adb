@@ -1183,7 +1183,7 @@ package body SPARK_Util.Subprograms is
          Etyp := Directly_Designated_Type (Etyp);
       end if;
 
-      return Is_Private_Type (Etyp)
+      return Is_Incomplete_Or_Private_Type (Etyp)
         and then not Is_Tagged_Type (Etyp)
         and then Present (Subprogram_Spec (E))
         and then In_Visible_Declarations (Subprogram_Spec (E));

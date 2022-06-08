@@ -82,7 +82,8 @@ package CE_Utils is
                                 Comp : Entity_Id)
                                 return Boolean
    with
-     Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
+     Pre => Retysp_Kind (Rec) in
+         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
      and Ekind (Comp) in
        E_Discriminant | E_Component | Type_Kind | E_Variable;
    --  True if Comp is a component of an ancestor of Rec which is visible in

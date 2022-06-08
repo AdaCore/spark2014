@@ -76,7 +76,8 @@ package Gnat2Why.Tables is
 
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    with
-     Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
+     Pre => Retysp_Kind (Rec) in
+         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
      and then Get_Component_Set (Rec).Contains (Comp);
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
@@ -86,7 +87,8 @@ package Gnat2Why.Tables is
 
    function Component_Is_Present_In_Type (Rec, Comp : Entity_Id) return Boolean
    with
-     Pre  => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
+     Pre  => Retysp_Kind (Rec) in
+         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
      and then Get_Component_Set (Rec).Contains (Comp),
      Post => Component_Is_Present_In_Type'Result =
        (Get_Component_Visibility_Map (Rec) (Comp) /= Removed);
@@ -97,7 +99,8 @@ package Gnat2Why.Tables is
 
    function Get_Variant_Info (E : Entity_Id) return Component_Info_Map
    with
-     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+     Pre => Retysp_Kind (E) in
+         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E's component info from map Comp_Info
 
@@ -120,7 +123,8 @@ package Gnat2Why.Tables is
       "="          => Eq_Components);
 
    function Get_Component_Set (E : Entity_Id) return Component_Sets.Set with
-     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+     Pre => Retysp_Kind (E) in
+       Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E the set of E's components. It also includes components which
    --  have been defined in E's ancestors but are hidden in E. Components that
@@ -132,7 +136,8 @@ package Gnat2Why.Tables is
      (E : Entity_Id)
       return Component_Visibility_Maps.Map
    with
-     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+     Pre => Retysp_Kind (E) in
+         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E a map from E's components to their visibility. A component has
    --      visibility Regular if it is visible, Hidden if it has been hidden by
@@ -151,13 +156,14 @@ package Gnat2Why.Tables is
    --  @return the set of the components declared in extensions of E
 
    function Has_Private_Part (E : Entity_Id) return Boolean with
-     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+     Pre => Retysp_Kind (E) in
+       Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return True if E contains a component for its own private part
 
    function Has_Variant_Info (Rec, Comp : Entity_Id) return Boolean
    with
-     Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind
+     Pre => Retysp_Kind (Rec) in Incomplete_Or_Private_Kind | Record_Kind
      and Ekind (Comp) = E_Component;
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
@@ -172,7 +178,8 @@ package Gnat2Why.Tables is
 
    function Search_Component_In_Type (Rec, Comp : Entity_Id) return Entity_Id
    with
-     Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
+     Pre => Retysp_Kind (Rec) in
+         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
      and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors

@@ -3962,7 +3962,7 @@ package body Why.Gen.Records is
    begin
       if Domain = EW_Prog
         and then Ekind (Field) = E_Component
-        and then Retysp_Kind (Rec) in Private_Kind | Record_Kind
+        and then Retysp_Kind (Rec) in Incomplete_Or_Private_Kind | Record_Kind
         and then Has_Variant_Info (Rec, Field)
       then
          return

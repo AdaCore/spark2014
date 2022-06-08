@@ -1174,7 +1174,9 @@ package body Gnat2Why.Borrow_Checker is
                   Des_Ty : Entity_Id := Directly_Designated_Type
                     (Retysp (Etype (Expr)));
                begin
-                  if Is_Incomplete_Type (Des_Ty) then
+                  if Is_Incomplete_Type (Des_Ty)
+                    and then Present (Full_View (Des_Ty))
+                  then
                      Des_Ty := Full_View (Des_Ty);
                   end if;
 
@@ -5172,7 +5174,9 @@ package body Gnat2Why.Borrow_Checker is
             begin
                --  If Des_Ty is an incomplete type, go to its full view
 
-               if Is_Incomplete_Type (Des_Ty) then
+               if Is_Incomplete_Type (Des_Ty)
+                 and then Present (Full_View (Des_Ty))
+               then
                   Des_Ty := Full_View (Des_Ty);
                end if;
 

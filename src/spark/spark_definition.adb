@@ -745,9 +745,10 @@ package body SPARK_Definition is
                V            : constant JSON_Value :=
                  To_JSON (Entity_To_Subp_Assumption (E));
                SPARK_Status : constant String :=
-                 (if (Has_Record_Type (E) or else Has_Private_Type (E))
-                       and then
-                     Has_Private_Fields (E)
+                 (if
+                    (Has_Record_Type (E)
+                     or else Has_Incomplete_Or_Private_Type (E))
+                    and then Has_Private_Fields (E)
                   then "no"
                   else "all");
             begin
@@ -5778,6 +5779,12 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Type_Entity
 
       begin
+         --  We should not mark incomplete types unless their full view is not
+         --  visible.
+
+         pragma Assert
+           (not Is_Incomplete_Type (E) or else No (Full_View (E)));
+
          --  Controlled types are not allowed in SPARK
 
          if Is_Controlled (E) then
@@ -5988,7 +5995,9 @@ package body SPARK_Definition is
                end;
             end if;
 
-         elsif Is_Private_Type (E) and then not Violation_Detected then
+         elsif Is_Incomplete_Or_Private_Type (E)
+           and then not Violation_Detected
+         then
 
             --  When a private type is defined in a package whose private part
             --  has SPARK_Mode => Off, we do not need to mark its underlying
@@ -6010,6 +6019,13 @@ package body SPARK_Definition is
             then
                Full_Views_Not_In_SPARK.Insert (E);
                Discard_Underlying_Type (E);
+
+            --  Incomplete types which are marked have no visible full view
+
+            elsif Is_Incomplete_Type (E) then
+               pragma Assert (No (Full_View (E)));
+               Full_Views_Not_In_SPARK.Insert (E);
+
             else
                declare
                   Utype : constant Type_Kind_Id :=
@@ -6367,7 +6383,22 @@ package body SPARK_Definition is
                end if;
             end;
 
-         elsif Is_Private_Type (E) then
+         elsif Is_Incomplete_Or_Private_Type (E) then
+
+            --  For now, reject incomplete types coming from limited with.
+            --  They need to be handled using their No_Limited_View if they
+            --  have one. Unlike other incomplete types, the frontend does
+            --  not replace them by their non-limited view when they occur as a
+            --  parameter subtype or the result type in a subprogram
+            --  declaration, so we cannot avoid marking them altogether as we
+            --  do for regular incomplete types with a full view.
+
+            if Is_Incomplete_Type (E) and then From_Limited_With (E) then
+               Mark_Unsupported
+                 ("incomplete type from limited with", E,
+                  Cont_Msg =>
+                    "consider restructuring code to avoid `LIMITED WITH`");
+            end if;
 
             --  If the type and its Retysp are different entities, aspects
             --  such has predicates, invariants, and DIC can be lost if they
@@ -6375,7 +6406,7 @@ package body SPARK_Definition is
 
             if Present (Full_View (E))
               and then Entity_In_SPARK (Full_View (E))
-              and then Is_Private_Type (Full_View (E))
+              and then Is_Incomplete_Or_Private_Type (Full_View (E))
               and then Unique_Entity (Retysp (E)) /= Unique_Entity (E)
             then
 
@@ -6721,13 +6752,6 @@ package body SPARK_Definition is
                     and then No (SPARK_Pragma_Of_Entity (Des_Ty))
                   then
                      Mark_Violation (E, From => Des_Ty);
-                  elsif not Is_Class_Wide_Type (Des_Ty)
-                    and then No (Full_View (Des_Ty))
-                  then
-                     Mark_Unsupported
-                       ("incomplete type with deferred full view",
-                        Directly_Designated_Type (E));
-                     Mark_Violation (E, From => Des_Ty);
                   else
                      Access_To_Incomplete_Types.Append (E);
                   end if;
@@ -6951,13 +6975,6 @@ package body SPARK_Definition is
             if Ekind (E) in E_Protected_Type | E_Task_Type then
                Current_Concurrent_Insert_Pos := Entity_List.Last;
             end if;
-
-         elsif Is_Incomplete_Type (E) then
-            pragma Assert (From_Limited_With (E));
-            Mark_Unsupported
-              ("incomplete type", E,
-               Cont_Msg =>
-                 "consider restructuring code to avoid `LIMITED WITH`");
 
          else
             raise Program_Error;
@@ -8887,7 +8904,7 @@ package body SPARK_Definition is
 
    function Most_Underlying_Type_In_SPARK (Id : Type_Kind_Id) return Boolean is
      (Retysp_In_SPARK (Id)
-      and then (Retysp_Kind (Id) not in Private_Kind
+      and then (Retysp_Kind (Id) not in Incomplete_Or_Private_Kind
                 or else Retysp_Kind (Id) in Record_Kind));
 
    -----------------------
@@ -9063,7 +9080,9 @@ package body SPARK_Definition is
          declare
             Typ : constant Entity_Id := Etype (E);
          begin
-            if Is_Private_Type (Typ) then
+            if Is_Incomplete_Or_Private_Type (Typ)
+              and then Present (Full_View (Typ))
+            then
                return SPARK_Pragma_Of_Entity (Full_View (Typ));
             else
                return SPARK_Pragma_Of_Entity (Typ);

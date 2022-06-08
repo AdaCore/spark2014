@@ -141,6 +141,11 @@ package body SPARK_Util.Types is
 
       pragma Assert (Entity_Marked (Typ));
 
+      --  Incomplete types are only marked if their full view is not visible
+
+      pragma Assert
+        (not Is_Incomplete_Type (Typ) or else No (Full_View (Typ)));
+
       --  If T is not in SPARK, go through the Partial_View chain to find its
       --  first view in SPARK if any.
 
@@ -191,20 +196,6 @@ package body SPARK_Util.Types is
             then
                if Entity_In_SPARK (Underlying_Full_View (Typ)) then
                   Typ := Underlying_Full_View (Typ);
-                  pragma Assert (Full_View_Not_In_SPARK (Typ));
-               else
-                  goto Returning;
-               end if;
-
-            --  If we have an incomplete entity that comes from the limited
-            --  view, either its non-limited view is in SPARK and we reach
-            --  it, or it is not in SPARK and we return at this point.
-
-            elsif From_Limited_With (Typ)
-              and then Present (Non_Limited_View (Typ))
-            then
-               if Entity_In_SPARK (Non_Limited_View (Typ)) then
-                  Typ := Non_Limited_View (Typ);
                   pragma Assert (Full_View_Not_In_SPARK (Typ));
                else
                   goto Returning;
@@ -421,7 +412,7 @@ package body SPARK_Util.Types is
    -----------------------------
 
    function Acts_As_Incomplete_Type (Ty : Type_Kind_Id) return Boolean is
-     (Is_Incomplete_Type (Ty)
+     ((Is_Incomplete_Type (Ty) and then Present (Full_View (Ty)))
       or else Is_Partial_View (Ty)
       or else
         (Is_Class_Wide_Type (Ty)
@@ -698,7 +689,8 @@ package body SPARK_Util.Types is
          return False;
       else
          pragma Assert
-           (Is_Private_Type (Rep_Ty) or else Is_Scalar_Type (Rep_Ty));
+           (Is_Incomplete_Or_Private_Type (Rep_Ty)
+            or else Is_Scalar_Type (Rep_Ty));
          return False;
       end if;
    end Contains_Relaxed_Init_Parts;
@@ -766,7 +758,8 @@ package body SPARK_Util.Types is
          end if;
       else
          pragma Assert
-           (Is_Private_Type (Rep_Ty) or else Is_Scalar_Type (Rep_Ty));
+           (Is_Incomplete_Or_Private_Type (Rep_Ty)
+            or else Is_Scalar_Type (Rep_Ty));
          return False;
       end if;
    end Contains_Only_Relaxed_Init;
@@ -990,7 +983,7 @@ package body SPARK_Util.Types is
 
       --  Return True if Ty is a private type
 
-      return Is_Private_Type (Ty);
+      return Is_Incomplete_Or_Private_Type (Ty);
    end Has_Private_Fields;
 
    ----------------------------
@@ -1020,7 +1013,7 @@ package body SPARK_Util.Types is
       if Is_Array_Type (Rep_Ty) then
          return Invariant_Check_Needed (Component_Type (Rep_Ty));
 
-      elsif Is_Private_Type (Rep_Ty)
+      elsif Is_Incomplete_Or_Private_Type (Rep_Ty)
         or else Is_Record_Type (Rep_Ty)
         or else Is_Concurrent_Type (Rep_Ty)
       then
@@ -1485,7 +1478,7 @@ package body SPARK_Util.Types is
             --  which are not in the parent type as the primitive equality of
             --  the parent type will be used for its components.
 
-            if not Is_Private_Type (Base) then
+            if not Is_Incomplete_Or_Private_Type (Base) then
                declare
                   Comp : Entity_Id := First_Component (Rep_Ty);
                begin
@@ -1524,7 +1517,8 @@ package body SPARK_Util.Types is
             end if;
          end;
       else
-         pragma Assert (Ekind (Rep_Ty) in Private_Kind | Scalar_Kind);
+         pragma Assert
+           (Ekind (Rep_Ty) in Incomplete_Or_Private_Kind | Scalar_Kind);
          return False;
       end if;
    end Predefined_Eq_Uses_Pointer_Eq;
@@ -1719,7 +1713,7 @@ package body SPARK_Util.Types is
             return;
          end if;
 
-         if Is_Private_Type (Typ) then
+         if Is_Incomplete_Or_Private_Type (Typ) then
             Result := False;
             Explanation :=
               To_Unbounded_String (Typ_Name & " is a private type");
@@ -1917,7 +1911,7 @@ package body SPARK_Util.Types is
             return;
          end if;
 
-         if Is_Private_Type (Typ) then
+         if Is_Incomplete_Or_Private_Type (Typ) then
             Result := False;
             Explanation :=
               To_Unbounded_String (Typ_Name & " is a private type");
@@ -2145,7 +2139,7 @@ package body SPARK_Util.Types is
             end case;
          else
             pragma Assert
-              (Is_Private_Type (Rep_Ty)
+              (Is_Incomplete_Or_Private_Type (Rep_Ty)
                or else Is_Scalar_Type (Rep_Ty)
                or else Is_Concurrent_Type (Rep_Ty));
             return False;
@@ -2273,11 +2267,11 @@ package body SPARK_Util.Types is
       function Use_Real_Eq_For_Type (E : Type_Kind_Id) return Boolean is
       begin
          case Ekind (E) is
-            when Private_Kind =>
+            when Incomplete_Or_Private_Kind =>
                declare
                   Full_Type : constant Entity_Id := Unchecked_Full_Type (E);
                begin
-                  return not Is_Private_Type (Full_Type)
+                  return not Is_Incomplete_Or_Private_Type (Full_Type)
                     and then Use_Real_Eq_For_Type (Full_Type);
                end;
 

@@ -86,8 +86,8 @@ package SPARK_Util.Types is
    function Has_Record_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Record_Kind);
 
-   function Has_Private_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Private_Kind);
+   function Has_Incomplete_Or_Private_Type (T : Type_Kind_Id) return Boolean is
+     (Retysp_Kind (T) in Incomplete_Or_Private_Kind);
 
    function Has_Scalar_Type (T : Type_Kind_Id) return Boolean is
      (Retysp_Kind (T) in Scalar_Kind);
@@ -133,8 +133,8 @@ package SPARK_Util.Types is
 
    function Can_Be_Default_Initialized (Typ : Type_Kind_Id) return Boolean is
      ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
-      and then (not (Retysp_Kind (Typ) in
-                         Record_Kind | Private_Kind | Concurrent_Kind)
+      and then (Retysp_Kind (Typ) not in
+                   Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind
                 or else not Has_Discriminants (Typ)
                 or else Is_Constrained (Typ)
                 or else Has_Defaulted_Discriminants (Typ))
@@ -166,7 +166,8 @@ package SPARK_Util.Types is
    --  not have a redefined equality).
 
    function Use_Real_Eq_For_Private_Type (E : Type_Kind_Id) return Boolean
-   with Pre => Is_Private_Type (E) or else Is_Concurrent_Type (E);
+   with Pre => Is_Incomplete_Or_Private_Type (E)
+     or else Is_Concurrent_Type (E);
    --  Return True if the predefined equality on a private type opaque for
    --  SPARK can be represented using Why3 equality.
 
@@ -409,7 +410,8 @@ package SPARK_Util.Types is
    --  renamings and ignores predefined equality of tagged types.
 
    function Has_Private_Fields (E : Type_Kind_Id) return Boolean
-     with Pre => Has_Private_Type (E) or else Has_Record_Type (E);
+     with Pre => Has_Incomplete_Or_Private_Type (E)
+        or else Has_Record_Type (E);
    --  @param E a private or record type
    --  @return True iff E's translation into Why3 requires the use of a main
    --     field to represent invisible fields that are not derived from an

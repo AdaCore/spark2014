@@ -3073,7 +3073,7 @@ package body CE_RAC is
       Check_Supported_Type (Ty);
       Check_Fuel_Decrease (Ctx.Fuel);
 
-      if Is_Private_Type (Ty) then
+      if Is_Incomplete_Or_Private_Type (Ty) then
          RAC_Incomplete ("expr with private type");
       end if;
 

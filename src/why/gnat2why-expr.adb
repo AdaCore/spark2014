@@ -4921,7 +4921,7 @@ package body Gnat2Why.Expr is
             Right  => Invariant_For_Array (Expr, Ty_Ext));
 
       elsif Is_Record_Type (Ty_Ext)
-        or else Is_Private_Type (Ty_Ext)
+        or else Is_Incomplete_Or_Private_Type (Ty_Ext)
         or else Is_Concurrent_Type (Ty_Ext)
       then
 
@@ -5775,7 +5775,7 @@ package body Gnat2Why.Expr is
          --  invariant (r.d1) /\ ...
          --      /\ (check_for_f1 (r) -> invariant (r.f1)) /\ ...
 
-         elsif Is_Private_Type (Rep_Ty)
+         elsif Is_Incomplete_Or_Private_Type (Rep_Ty)
            or else Is_Record_Type (Rep_Ty)
            or else Is_Concurrent_Type (Rep_Ty)
          then
@@ -15939,7 +15939,7 @@ package body Gnat2Why.Expr is
                   when E_Record_Type
                      | E_Record_Subtype
                      | Concurrent_Kind
-                     | Private_Kind
+                     | Incomplete_Or_Private_Kind
                   =>
                      --  For each component_definition that is a non-static
                      --  subtype_indication, we generate a check that the
@@ -22661,7 +22661,9 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+      elsif Is_Record_Type (Ty_Ext)
+        or else Is_Incomplete_Or_Private_Type (Ty_Ext)
+      then
 
          --  Generates:
          --  let tmp1 = <Expr>.rec__disc1 in
@@ -22716,7 +22718,9 @@ package body Gnat2Why.Expr is
             --   default_init (<Expr>.rec__field1, Etype (Field1))) <otherwise>
             --  /\ ..
 
-            if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+            if Is_Record_Type (Ty_Ext)
+              or else Is_Incomplete_Or_Private_Type (Ty_Ext)
+            then
 
                for Field of Get_Component_Set (Ty_Ext) loop
                   if not Is_Type (Field) then
@@ -22948,7 +22952,9 @@ package body Gnat2Why.Expr is
             Variables_In_Dynamic_Invariant
               (Component_Type (Ty_Ext), Variables, Incompl_Acc);
 
-         elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+         elsif Is_Record_Type (Ty_Ext)
+           or else Is_Incomplete_Or_Private_Type (Ty_Ext)
+         then
 
             for Field of Get_Component_Set (Ty_Ext) loop
                if not Is_Type (Field) then

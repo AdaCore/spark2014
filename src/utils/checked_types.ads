@@ -74,7 +74,7 @@ package Checked_Types is
 
    --  Entities which may contain components or discriminants, like record
    subtype Record_Like_Kind_Id is Entity_Id with
-     Predicate => Record_Like_Kind_Id in Private_Kind_Id
+     Predicate => Record_Like_Kind_Id in Incomplete_Or_Private_Kind_Id
                                        | Protected_Kind_Id
                                        | Record_Kind_Id
                                        | Task_Kind_Id;

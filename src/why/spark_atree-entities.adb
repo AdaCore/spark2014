@@ -119,7 +119,9 @@ package body SPARK_Atree.Entities is
       Des_Ty : constant Type_Kind_Id :=
         Einfo.Entities.Directly_Designated_Type (E);
    begin
-      if Einfo.Utils.Is_Incomplete_Type (Des_Ty) then
+      if Einfo.Utils.Is_Incomplete_Type (Des_Ty)
+        and then Present (Einfo.Entities.Full_View (Des_Ty))
+      then
          return Einfo.Entities.Full_View (Des_Ty);
       else
          return Des_Ty;
