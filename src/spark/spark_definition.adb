@@ -4887,7 +4887,7 @@ package body SPARK_Definition is
             --  moving a path.
 
             elsif Is_Deep (T) then
-               Check_Source_Of_Move (Expr, Is_Constant_In_SPARK (E));
+               Check_Source_Of_Move (Expr);
             end if;
 
             --  If T has an anonymous access type, it can happen that Expr and
