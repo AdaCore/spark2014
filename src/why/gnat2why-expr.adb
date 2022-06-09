@@ -7886,6 +7886,10 @@ package body Gnat2Why.Expr is
       begin
          return Contains_Allocated_Parts (Typ)
            and then not Is_Anonymous_Access_Type (Typ)
+           and then Nkind (Expr) /= N_Attribute_Reference
+           --  A reference to the Access attribute itself cannot be moved. We
+           --  move its prefix instead.
+
            and then Present (Root)
            and then not Is_Constant_In_SPARK (Root)
            and then not Traverse_Access_To_Constant (Expr);
@@ -7995,14 +7999,25 @@ package body Gnat2Why.Expr is
                Collect_Expressions (Expressions (Expr));
                Collect_Associations (Component_Associations (Expr));
 
-            --  Handle 'Update like delta aggregate
-
             when N_Attribute_Reference =>
-               if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
-               then
-                  Collect_Subobject (Prefix (Expr));
-                  Collect_Expressions (Expressions (Expr));
-               end if;
+               case Get_Attribute_Id (Attribute_Name (Expr)) is
+
+                  --  Handle 'Update like delta aggregate
+
+                  when Attribute_Update =>
+                     Collect_Subobject (Prefix (Expr));
+                     Collect_Expressions (Expressions (Expr));
+
+                  --  If 'Access is applied to an object, move the fields of
+                  --  the prefix.
+
+                  when Attribute_Access =>
+                     if not Is_Access_Subprogram_Type (Etype (Expr)) then
+                        Collect_Subobject (Prefix (Expr));
+                     end if;
+                  when others =>
+                     null;
+               end case;
 
             when others =>
                null;
