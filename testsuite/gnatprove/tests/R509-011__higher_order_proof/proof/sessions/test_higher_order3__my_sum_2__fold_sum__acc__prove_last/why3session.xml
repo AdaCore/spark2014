@@ -50,10 +50,10 @@
   <proof prover="0"><result status="valid" steps="3192"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="6411"/></proof>
+  <proof prover="0"><result status="valid" steps="6409"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="6409"/></proof>
+  <proof prover="0"><result status="valid" steps="6407"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -62,7 +62,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="0"><result status="valid" steps="16614"/></proof>
+  <proof prover="0"><result status="valid" steps="16609"/></proof>
   </goal>
  </transf>
  </goal>

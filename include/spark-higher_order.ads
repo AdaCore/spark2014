@@ -34,7 +34,8 @@ package SPARK.Higher_Order with SPARK_Mode is
       type Array_In is array (Index_Type range <>) of Element_In;
       type Element_Out is private;
       type Array_Out is array (Index_Type range <>) of Element_Out;
-      with function Init_Prop (A : Element_In) return Boolean;
+      with function Init_Prop (A : Element_In) return Boolean
+        with Ghost;
       --  Potential additional constraint on values of the array to allow Map
 
       with function F (X : Element_In) return Element_Out;
@@ -53,7 +54,8 @@ package SPARK.Higher_Order with SPARK_Mode is
       type Array_In is array (Index_Type range <>) of Element_In;
       type Element_Out is private;
       type Array_Out is array (Index_Type range <>) of Element_Out;
-      with function Init_Prop (I : Index_Type; A : Element_In) return Boolean;
+      with function Init_Prop (I : Index_Type; A : Element_In) return Boolean
+        with Ghost;
       --  Potential additional constraint on values of the array to allow Map
 
       with function F (I : Index_Type; X : Element_In) return Element_Out;
@@ -70,7 +72,8 @@ package SPARK.Higher_Order with SPARK_Mode is
       type Index_Type is range <>;
       type Element is private;
       type Array_Type is array (Index_Type range <>) of Element;
-      with function Init_Prop (A : Element) return Boolean;
+      with function Init_Prop (A : Element) return Boolean
+        with Ghost;
       --  Potential additional constraint on values of the array to allow Map
 
       with function F (X : Element) return Element;
@@ -84,7 +87,8 @@ package SPARK.Higher_Order with SPARK_Mode is
       type Index_Type is range <>;
       type Element is private;
       type Array_Type is array (Index_Type range <>) of Element;
-      with function Init_Prop (I : Index_Type; A : Element) return Boolean;
+      with function Init_Prop (I : Index_Type; A : Element) return Boolean
+        with Ghost;
       --  Potential additional constraint on values of the array to allow Map
 
       with function F (I : Index_Type; X : Element) return Element;

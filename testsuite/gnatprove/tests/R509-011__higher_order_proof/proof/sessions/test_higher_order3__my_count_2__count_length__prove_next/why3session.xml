@@ -65,7 +65,7 @@
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="35760"/></proof>
+  <proof prover="1"><result status="unknown" steps="35431"/></proof>
   <proof prover="2"><result status="valid" steps="25897688"/></proof>
   </goal>
  </transf>
