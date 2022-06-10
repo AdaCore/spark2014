@@ -88,12 +88,12 @@ norm-reals-errors.adb:143:39: info: range check proved (CVC5: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:146:60: info: float overflow check proved (Z3: 1 VC)
 norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when I = 2 and Values = (2 => -3.4583415E-4, others => 1.6191401E+0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:155:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:159:10: medium: precondition might fail, cannot prove Sum_F = V ** 2 + Pre_F [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:160:22: info: range check proved (colibri: 1 VC)
+norm-reals-errors.adb:160:22: medium: range check might fail (e.g. when I = 2 and Values = (2 => 1.3257926E+19, others => 1.7861736E+0)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:161:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:184:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:184:35: info: predicate check proved (Trivial: 1 VC)

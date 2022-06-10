@@ -23,7 +23,7 @@ random.adb:151:07: info: initialization of "X" proved
 random.adb:158:66: info: range check proved (CVC5: 1 VC)
 random.adb:159:61: info: division check proved (altergo: 1 VC)
 random.adb:166:20: info: division check proved (altergo: 1 VC)
-random.adb:167:28: info: assertion proved (CVC5: 1 VC; colibri: 1 VC)
+random.adb:167:28: medium: assertion might fail [possible fix: loop at line 161 should mention X in a loop invariant]
 random.adb:170:47: info: range check proved (altergo: 2 VC)
 random.ads:48:22: info: initialization of "Value" proved
 random.ads:52:30: info: initialization of "Value" proved

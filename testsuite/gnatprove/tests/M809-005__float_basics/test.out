@@ -151,7 +151,7 @@ generic_float_tests.adb:152:30: info: float overflow check proved (CVC5: 1 VC), 
 generic_float_tests.adb:155:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:155:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:159:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:159:22: info: assertion proved (colibri: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:159:22: medium: assertion might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:159:26: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:159:26: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:159:26: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
@@ -438,8 +438,8 @@ generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, i
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded]
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded]
-generic_interval_tests.adb:42:19: info: postcondition proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:42:19: info: postcondition proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:42:19: medium: postcondition might fail, in instantiation at bar.ads:12
+generic_interval_tests.adb:42:19: medium: postcondition might fail, in instantiation at bar.ads:8
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:50:19: medium: postcondition might fail, in instantiation at bar.ads:12
@@ -455,7 +455,7 @@ generic_interval_tests.adb:58:21: medium: float overflow check might fail, in in
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:66:19: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:66:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:66:19: medium: postcondition might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:66:21: info: division check proved (CVC5: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:66:21: info: division check proved (CVC5: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:66:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8

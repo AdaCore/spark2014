@@ -12,11 +12,11 @@ signed.adb:25:25: info: division check proved (CVC5: 1 VC)
 signed.adb:27:22: info: overflow check proved (CVC5: 2 VC)
 signed.adb:28:19: info: assertion proved (colibri: 1 VC)
 signed.adb:31:19: info: assertion proved (colibri: 1 VC)
-signed.adb:34:19: medium: assertion might fail
+signed.adb:34:19: info: assertion proved (colibri: 1 VC)
 signed.adb:39:19: info: assertion proved (CVC5: 1 VC)
 signed.adb:39:25: info: division check proved (CVC5: 1 VC)
 signed.adb:41:33: info: overflow check proved (CVC5: 2 VC)
-signed.adb:42:19: medium: assertion might fail
+signed.adb:42:19: info: assertion proved (colibri: 1 VC)
 signed.adb:42:24: info: overflow check proved (CVC5: 2 VC)
 signed.adb:42:28: info: division check proved (CVC5: 1 VC)
 signed.adb:45:19: info: assertion proved (CVC5: 1 VC)
