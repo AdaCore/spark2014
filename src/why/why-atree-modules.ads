@@ -245,6 +245,7 @@ package Why.Atree.Modules is
 
    type M_Floating_Type is record
       Module                : W_Module_Id;
+      Operations_Module     : W_Module_Id;
       Power_Module          : W_Module_Id;
       Next_Prev_Module      : W_Module_Id;
       T                     : W_Type_Id;
@@ -298,9 +299,40 @@ package Why.Atree.Modules is
       Range_Check           : W_Identifier_Id;
       Plus_Zero             : W_Identifier_Id;
       One                   : W_Identifier_Id;
-      Sqrt                  : W_Identifier_Id;
       To_Real               : W_Identifier_Id;
       Copy_Sign             : W_Identifier_Id;
+
+      --  Symbols form Ada.Numerics.Generic_Elementary_Functions
+
+      Ada_Power             : W_Identifier_Id;
+      Ada_Sqrt              : W_Identifier_Id;
+      Log                   : W_Identifier_Id;
+      Log_Base              : W_Identifier_Id;
+      Exp                   : W_Identifier_Id;
+      Sin                   : W_Identifier_Id;
+      Cos                   : W_Identifier_Id;
+      Tan                   : W_Identifier_Id;
+      Cot                   : W_Identifier_Id;
+      Arcsin                : W_Identifier_Id;
+      Arccos                : W_Identifier_Id;
+      Arctan                : W_Identifier_Id;
+      Arccot                : W_Identifier_Id;
+      Sin_2                 : W_Identifier_Id;
+      Cos_2                 : W_Identifier_Id;
+      Tan_2                 : W_Identifier_Id;
+      Cot_2                 : W_Identifier_Id;
+      Arcsin_2              : W_Identifier_Id;
+      Arccos_2              : W_Identifier_Id;
+      Arctan_2              : W_Identifier_Id;
+      Arccot_2              : W_Identifier_Id;
+      Sinh                  : W_Identifier_Id;
+      Cosh                  : W_Identifier_Id;
+      Tanh                  : W_Identifier_Id;
+      Coth                  : W_Identifier_Id;
+      Arcsinh               : W_Identifier_Id;
+      Arccosh               : W_Identifier_Id;
+      Arctanh               : W_Identifier_Id;
+      Arccoth               : W_Identifier_Id;
    end record;
 
    type M_Floating_Conv_Type is record

@@ -29,6 +29,7 @@ package SPARK_Util.Hardcoded is
      (Big_Integers,
       Big_Reals,
       Cut_Operations,
+      Elementary_Functions,
       System_Storage_Elements
      );
    --  Enum type of the hardcoded units
@@ -68,7 +69,7 @@ package SPARK_Util.Hardcoded is
    --  In_Range are translated using the normal mechanism.
    --  Conversions to a fixed or floating point type from a big real are also
    --  left uninterpreted. However, because they have a precondition featuring
-   --  a raise expression, they are not currently supported in SPARK.\
+   --  a raise expression, they are not currently supported in SPARK.
 
    package System_Storage_Elements_Names is
       To_Address : constant String := "to_address";
@@ -90,6 +91,28 @@ package SPARK_Util.Hardcoded is
    end Cut_Operations_Names;
    --  Names of entities that will be considered as hardcoded in the
    --  Cut_Operations unit.
+
+   package Elementary_Functions_Names is
+      Ada_Sqrt : constant String := "sqrt";
+      Log      : constant String := "log";
+      Exp      : constant String := "exp";
+      Sin      : constant String := "sin";
+      Cos      : constant String := "cos";
+      Tan      : constant String := "tan";
+      Cot      : constant String := "cot";
+      Arcsin   : constant String := "arcsin";
+      Arccos   : constant String := "arccos";
+      Arctan   : constant String := "arctan";
+      Arccot   : constant String := "arccot";
+      Sinh     : constant String := "sinh";
+      Cosh     : constant String := "cosh";
+      Tanh     : constant String := "tanh";
+      Coth     : constant String := "coth";
+      Arcsinh  : constant String := "arcsinh";
+      Arccosh  : constant String := "arccosh";
+      Arctanh  : constant String := "arctanh";
+      Arccoth  : constant String := "arccoth";
+   end Elementary_Functions_Names;
 
    function Is_From_Hardcoded_Unit
      (E    : Entity_Id;

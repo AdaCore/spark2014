@@ -26,7 +26,7 @@
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="45454"/></proof>
   <proof prover="2"><result status="unknown" steps="795108"/></proof>
-  <proof prover="4"><result status="unknown" steps="195"/></proof>
+  <proof prover="4"><result status="unknown" steps="243"/></proof>
   </goal>
  </transf>
  </goal>

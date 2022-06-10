@@ -31,7 +31,7 @@
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="1151265"/></proof>
   <proof prover="2"><result status="unknown" steps="8450139"/></proof>
-  <proof prover="4"><result status="unknown" steps="142"/></proof>
+  <proof prover="4"><result status="unknown" steps="151"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -40,7 +40,7 @@
   <proof prover="0"><result status="steplimitexceeded"/></proof>
   <proof prover="1"><result status="unknown" steps="1152404"/></proof>
   <proof prover="2"><result status="unknown" steps="4697665"/></proof>
-  <proof prover="4"><result status="unknown" steps="133"/></proof>
+  <proof prover="4"><result status="unknown" steps="160"/></proof>
   </goal>
  </transf>
  </goal>

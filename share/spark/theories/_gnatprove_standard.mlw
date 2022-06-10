@@ -510,6 +510,281 @@ module Floating_next_prev
       is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
 end
 
+module Floating_operations
+  (* Elementary functions on floating point types *)
+
+  type t
+  predicate is_zero t
+  predicate is_one t
+  predicate is_ge_zero t
+  predicate is_gt_zero t
+  predicate is_ge_one t
+  predicate abs_le_one t
+  predicate abs_ge_one t
+  predicate abs_lt_one t
+  predicate abs_gt_one t
+
+  val function ada_sqrt (x : t) : t
+  axiom ada_sqrt_pos:
+    forall x : t. is_ge_zero (ada_sqrt x)
+  axiom ada_sqrt_zero:
+    forall x : t. is_zero x -> is_zero (ada_sqrt x)
+  axiom ada_sqrt_non_zero:
+    forall x : t. is_gt_zero x -> is_gt_zero (ada_sqrt x)
+  axiom ada_sqrt_one:
+    forall x : t. is_one x -> is_one (ada_sqrt x)
+  val ada_sqrt_ (x : t) : t
+    requires { is_ge_zero x }
+    ensures  { result = ada_sqrt x }
+
+  val function ada_power (x : t) (y : t) : t
+  predicate ada_power_no_overflow (x : t) (y : t)
+  (* This predicate stands for the fact that abs x is not too big
+     if y is positive, not too close to 0 otherwise. *)
+  axiom ada_power_pos:
+    forall x y : t. is_ge_zero (ada_power x y)
+  axiom ada_power_right_zero:
+    forall x y : t. is_zero y -> not (is_zero x) -> is_one (ada_power x y)
+  axiom ada_power_right_one:
+    forall x y : t. is_one y -> is_ge_zero x -> ada_power x y = x
+  axiom ada_power_left_zero:
+    forall x y : t. is_zero x -> not (is_zero y) -> is_zero (ada_power x y)
+  axiom ada_power_left_one:
+    forall x y : t. is_one x -> is_one (ada_power x y)
+  val ada_power_ (x : t) (y : t) : t
+    requires { (not (is_zero x) \/ is_gt_zero y) /\ is_ge_zero x
+		/\ ada_power_no_overflow x y }
+    ensures  { result = ada_power x y }
+
+  val function log (x : t) : t
+  predicate log_no_overflow (x : t)
+  (* This predicate stands for the fact that x is not too close to 0 *)
+  axiom log_one:
+    forall x : t. is_one x -> is_zero (log x)
+  val log_ (x : t) : t
+    requires { is_gt_zero x /\ log_no_overflow x }
+    ensures  { result = log x }
+
+  val function log_base (x : t) (b : t) : t
+  predicate log_base_no_overflow (x : t) (b : t)
+  (* This predicate stands for the fact that x is not too close to 0 *)
+  axiom log_base_one:
+    forall x y : t. is_one x -> is_zero (log_base x y)
+  val log_base_ (x : t) (b : t) : t
+    requires { is_gt_zero x /\ is_gt_zero b /\ not (is_one b)
+               /\ log_base_no_overflow x b}
+    ensures  { result = log_base x b }
+
+  val function exp (x : t) : t
+  predicate exp_no_overflow (x : t)
+  (* This predicate stands for the fact that x is not too big *)
+  axiom exp_zero:
+    forall x : t. is_zero x -> is_one (exp x)
+  val exp_ (x : t) : t
+    requires { exp_no_overflow x }
+    ensures  { result = exp x }
+
+  val function sin (x : t) : t
+  axiom sin_range:
+    forall x : t. abs_le_one (sin x)
+  axiom sin_zero:
+    forall x : t. is_zero x -> is_zero (sin x)
+  val sin_ (x : t) : t
+    ensures  { result = sin x }
+
+  val function sin_2 (x : t) (c : t) : t
+  axiom sin_2_range:
+    forall x c : t. abs_le_one (sin_2 x c)
+  axiom sin_2_zero:
+    forall x c : t. is_zero x -> is_zero (sin_2 x c)
+  val sin_2_ (x : t) (c : t) : t
+    requires { is_gt_zero c }
+    ensures  { result = sin_2 x c }
+
+  val function cos (x : t) : t
+  axiom cos_range:
+    forall x : t. abs_le_one (cos x)
+  axiom cos_zero:
+    forall x : t. is_zero x -> is_one (cos x)
+  val cos_ (x : t) : t
+    ensures  { result = cos x }
+
+  function cos_2 (x : t) (c : t) : t
+  axiom cos_2_range:
+    forall x c : t. abs_le_one (cos_2 x c)
+  axiom cos_2_zero:
+    forall x c : t. is_zero x -> is_one (cos_2 x c)
+  val cos_2_ (x : t) (c : t) : t
+    requires { is_gt_zero c }
+    ensures  { result = cos_2 x c }
+
+  val function tan (x : t) : t
+  predicate tan_no_overflow (x : t)
+  (* This predicate stands for the fact that x is not to close to
+     Pi/2 + k * Pi *)
+  axiom tan_zero:
+    forall x : t. is_zero x -> is_zero (tan x)
+  val tan_ (x : t) : t
+    requires { tan_no_overflow x }
+    ensures  { result = tan x }
+
+  val function tan_2 (x : t) (c : t) : t
+  predicate tan_2_no_overflow (x : t) (c : t)
+  (* This predicate stands for the fact that x mod c is not too close to
+     c/4 or - c/4 *)
+  axiom tan_2_zero:
+    forall x c : t. is_zero x -> is_zero (tan_2 x c)
+  val tan_2_ (x : t) (c : t) : t
+    requires { is_gt_zero c /\ tan_2_no_overflow x c }
+    ensures  { result = tan_2 x c }
+
+  val function cot (x : t) : t
+  predicate cot_no_overflow (x : t)
+  (* This predicate stands for the fact that x is not too close to a
+     multiple of Pi *)
+  val cot_ (x : t) : t
+    requires { not (is_zero x) /\ cot_no_overflow x }
+    ensures  { result = cot x }
+
+  val function cot_2 (x : t) (c : t) : t
+  predicate cot_2_no_overflow (x : t) (c : t)
+  (* This predicate stands for the fact that x mod c is not too close to
+     0 or c/2 *)
+  val cot_2_ (x : t) (c : t) : t
+    requires { is_gt_zero c /\ not (is_zero x) /\ cot_2_no_overflow x c }
+    ensures  { result = cot_2 x c }
+
+  val function arcsin (x : t) : t
+  axiom arcsin_zero:
+    forall x : t. is_zero x -> is_zero (arcsin x)
+  val arcsin_ (x : t) : t
+    requires { abs_le_one x }
+    ensures  { result = arcsin x }
+
+  val function arcsin_2 (x : t) (c : t) : t
+  axiom arcsin_2_zero:
+    forall x c : t. is_zero x -> is_zero (arcsin_2 x c)
+  val arcsin_2_ (x : t) (c : t) : t
+    requires { is_gt_zero c /\ abs_le_one x }
+    ensures  { result = arcsin_2 x c }
+
+  val function arccos (x : t) : t
+  axiom arccos_zero:
+    forall x : t. is_one x -> is_zero (arccos x)
+  val arccos_ (x : t) : t
+    requires { abs_le_one x }
+    ensures  { result = arccos x }
+
+  val function arccos_2 (x : t) (c : t) : t
+  axiom arccos_2_zero:
+    forall x c : t. is_one x -> is_zero (arccos_2 x c)
+  val arccos_2_ (x : t) (c : t) : t
+    requires { is_gt_zero c /\ abs_le_one x }
+    ensures  { result = arccos_2 x c }
+
+  val function arctan (y : t) (x : t) : t
+  axiom arctan_zero:
+    forall x y : t. is_gt_zero x -> is_zero y -> is_zero (arctan y x)
+  val arctan_ (y : t) (x : t) : t
+    requires { not is_zero x \/ not is_zero y }
+    ensures  { result = arctan y x }
+
+  val function arctan_2 (y : t) (x : t) (c : t) : t
+  axiom arctan_2_zero:
+    forall x y c : t. is_gt_zero x -> is_zero y -> is_zero (arctan_2 y x c)
+  val arctan_2_ (y : t) (x : t) (c : t) : t
+    requires { is_gt_zero c /\ (not is_zero x \/ not is_zero y) }
+    ensures  { result = arctan_2 y x c }
+
+  val function arccot (x : t) (y : t) : t
+  axiom arccot_zero:
+    forall x y : t. is_gt_zero x -> is_zero y -> is_zero (arccot x y)
+  val arccot_ (x : t) (y : t) : t
+    requires { not is_zero x \/ not is_zero y }
+    ensures  { result = arccot x y }
+
+  val function arccot_2 (x : t) (y : t) (c : t) : t
+  axiom arccot_2_zero:
+    forall x y c : t. is_gt_zero x -> is_zero y -> is_zero (arccot_2 x y c)
+  val arccot_2_ (x : t) (y : t) (c : t) : t
+    requires { is_gt_zero c /\ (not is_zero x \/ not is_zero y) }
+    ensures  { result = arccot_2 x y c }
+
+  val function sinh (x : t) : t
+  predicate sinh_no_overflow (x : t)
+  (* This predicate stands for the fact that abs x is not too big. *)
+  axiom sinh_zero_no_overflow:
+    forall x : t. is_zero x -> sinh_no_overflow x
+  axiom sinh_zero:
+    forall x : t. is_zero x -> is_zero (sinh x)
+  val sinh_ (x : t) : t
+    requires { sinh_no_overflow x }
+    ensures  { result = sinh x }
+
+  val function cosh (x : t) : t
+  predicate cosh_no_overflow (x : t)
+  (* This predicate stands for the fact that abs x is not too big. *)
+  axiom cosh_zero_no_overflow:
+    forall x : t. is_zero x -> cosh_no_overflow x
+  axiom cosh_range:
+    forall x : t. is_ge_one (cosh x)
+  axiom cosh_zero:
+    forall x : t. is_zero x -> is_one (cosh x)
+  val cosh_ (x : t) : t
+    requires { cosh_no_overflow x }
+    ensures  { result = cosh x }
+
+  val function tanh (x : t) : t
+  axiom tanh_range:
+    forall x : t. abs_le_one (tanh x)
+  axiom tanh_zero:
+    forall x : t. is_zero x -> is_zero (tanh x)
+  val tanh_ (x : t) : t
+    ensures  { result = tanh x }
+
+  val function coth (x : t) : t
+  predicate coth_no_overflow (x : t)
+  (* This predicate stands for the fact that x is not too close to 0. *)
+  axiom coth_range:
+    forall x : t. abs_ge_one (coth x)
+  val coth_ (x : t) : t
+    requires { not (is_zero x) /\ coth_no_overflow x }
+    ensures  { result = coth x }
+
+  val function arcsinh (x : t) : t
+  axiom arcsinh_zero:
+    forall x : t. is_zero x -> is_zero (arcsinh x)
+  val arcsinh_ (x : t) : t
+    ensures  { result = arcsinh x }
+
+  val function arccosh (x : t) : t
+  axiom arccosh_pos:
+    forall x : t. is_ge_zero (arccosh (x))
+  axiom arccosh_one:
+    forall x : t. is_one x -> is_zero (arccosh x)
+  val arccosh_ (x : t) : t
+    requires { is_ge_one x }
+    ensures  { result = arccosh x }
+
+  val function arctanh (x : t) : t
+  predicate arctanh_no_overflow (x : t)
+  (* This predicate stands for the fact that x is not too close to 1 or -1. *)
+  axiom arctanh_zero_overflow:
+    forall x : t. is_zero x -> arctanh_no_overflow x
+  axiom arctanh_zero:
+    forall x : t. is_zero x -> is_zero (arctanh x)
+  val arctanh_ (x : t) : t
+    requires { abs_lt_one x /\ arctanh_no_overflow x }
+    ensures  { result = arctanh x }
+
+  val function arccoth (x : t) : t
+  predicate arccoth_no_overflow (x : t)
+  (* This predicate stands for the fact that x is not too close to 1 or -1. *)
+  val arccoth_ (x : t) : t
+    requires { abs_gt_one x /\ arccoth_no_overflow x }
+    ensures  { result = arccoth x }
+end
+
 module Floating
   clone export _gnatprove_standard_th.Floating_Func
 
@@ -878,6 +1153,138 @@ module Float80
   type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
+end
+
+module Float32_operations
+  use export Float32RNE
+
+  predicate is_one (x : t) =  x = (1.0:t)
+
+  predicate is_ge_zero (x : t) = le (0.0:t) x
+
+  predicate is_gt_zero (x : t) = lt (0.0:t) x
+
+  predicate is_ge_one (x : t) = le (1.0:t) x
+
+  predicate abs_le_one (x : t) = le (-1.0:t) x /\ le x (1.0:t)
+
+  predicate abs_ge_one (x : t) = le x (-1.0:t) \/ le (1.0:t) x
+
+  predicate abs_lt_one (x : t) = lt (-1.0:t) x /\ lt x (1.0:t)
+
+  predicate abs_gt_one (x : t) = lt x (-1.0:t) \/ lt (1.0:t) x
+
+  predicate log_no_overflow (x : t) = true
+  (* Log never overflows on 32 bits, ensured by review *)
+
+  predicate log_base_no_overflow (x : t) (b : t) = true
+  (* Log_Base never overflows on 32 bits, ensured by review *)
+
+  predicate tan_no_overflow (x : t) = true
+  (* Tan never overflows on 32 bits, ensured by review *)
+
+  clone export Floating_operations with
+    type t = t,
+    predicate is_zero = is_zero,
+    predicate is_one = is_one,
+    predicate is_ge_zero = is_ge_zero,
+    predicate is_gt_zero = is_gt_zero,
+    predicate is_ge_one = is_ge_one,
+    predicate abs_le_one = abs_le_one,
+    predicate abs_ge_one = abs_ge_one,
+    predicate abs_lt_one = abs_lt_one,
+    predicate abs_gt_one = abs_gt_one,
+    predicate log_no_overflow = log_no_overflow,
+    predicate log_base_no_overflow = log_base_no_overflow,
+    predicate tan_no_overflow = tan_no_overflow
+end
+
+module Float64_operations
+  use export Float64RNE
+
+  predicate is_one (x : t) =  x = (1.0:t)
+
+  predicate is_ge_zero (x : t) = le (0.0:t) x
+
+  predicate is_gt_zero (x : t) = lt (0.0:t) x
+
+  predicate is_ge_one (x : t) = le (1.0:t) x
+
+  predicate abs_le_one (x : t) = le (-1.0:t) x /\ le x (1.0:t)
+
+  predicate abs_ge_one (x : t) = le x (-1.0:t) \/ le (1.0:t) x
+
+  predicate abs_lt_one (x : t) = lt (-1.0:t) x /\ lt x (1.0:t)
+
+  predicate abs_gt_one (x : t) = lt x (-1.0:t) \/ lt (1.0:t) x
+
+  predicate log_no_overflow (x : t) = true
+  (* Log never overflows on 64 bits, ensured by review *)
+
+  predicate log_base_no_overflow (x : t) (b : t) = true
+  (* Log_Base never overflows on 64 bits, ensured by review *)
+
+  predicate tan_no_overflow (x : t) = true
+  (* Tan never overflows on 64 bits, ensured by review *)
+
+  clone export Floating_operations with
+    type t = t,
+    predicate is_zero = is_zero,
+    predicate is_one = is_one,
+    predicate is_ge_zero = is_ge_zero,
+    predicate is_gt_zero = is_gt_zero,
+    predicate is_ge_one = is_ge_one,
+    predicate abs_le_one = abs_le_one,
+    predicate abs_ge_one = abs_ge_one,
+    predicate abs_lt_one = abs_lt_one,
+    predicate abs_gt_one = abs_gt_one,
+    predicate log_no_overflow = log_no_overflow,
+    predicate log_base_no_overflow = log_base_no_overflow,
+    predicate tan_no_overflow = tan_no_overflow
+end
+
+module Float80_operations
+  use export Float80RNE
+
+  predicate is_one (x : t) =  x = (1.0:t)
+
+  predicate is_ge_zero (x : t) = le (0.0:t) x
+
+  predicate is_gt_zero (x : t) = lt (0.0:t) x
+
+  predicate is_ge_one (x : t) = le (1.0:t) x
+
+  predicate abs_le_one (x : t) = le (-1.0:t) x /\ le x (1.0:t)
+
+  predicate abs_ge_one (x : t) = le x (-1.0:t) \/ le (1.0:t) x
+
+  predicate abs_lt_one (x : t) = lt (-1.0:t) x /\ lt x (1.0:t)
+
+  predicate abs_gt_one (x : t) = lt x (-1.0:t) \/ lt (1.0:t) x
+
+  predicate log_no_overflow (x : t) = true
+  (* Log never overflows on 80 bits, ensured by review *)
+
+  predicate log_base_no_overflow (x : t) (b : t) = true
+  (* Log_Base never overflows on 80 bits, ensured by review *)
+
+  predicate tan_no_overflow (x : t) = true
+  (* Tan never overflows on 80 bits, ensured by review *)
+
+  clone export Floating_operations with
+    type t = t,
+    predicate is_zero = is_zero,
+    predicate is_one = is_one,
+    predicate is_ge_zero = is_ge_zero,
+    predicate is_gt_zero = is_gt_zero,
+    predicate is_ge_one = is_ge_one,
+    predicate abs_le_one = abs_le_one,
+    predicate abs_ge_one = abs_ge_one,
+    predicate abs_lt_one = abs_lt_one,
+    predicate abs_gt_one = abs_gt_one,
+    predicate log_no_overflow = log_no_overflow,
+    predicate log_base_no_overflow = log_base_no_overflow,
+    predicate tan_no_overflow = tan_no_overflow
 end
 
 module Float32_64_Converter

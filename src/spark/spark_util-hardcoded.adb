@@ -27,6 +27,12 @@ with Stand; use Stand;
 
 package body SPARK_Util.Hardcoded is
 
+   function Is_Hardcoded_Unit
+     (E    : Entity_Id;
+      Unit : Hardcoded_Enum)
+      return Boolean;
+   --  Return True if E is the package for the hardcoded unit Unit
+
    -------------------------
    --  Get_Hardcoded_Unit --
    -------------------------
@@ -68,14 +74,16 @@ package body SPARK_Util.Hardcoded is
       --  generic parent is defined in Unit.
 
       if Nkind (Par) not in N_Package_Specification
-           or else
-         No (Generic_Parent (Par))
-           or else
-         Nkind (Generic_Parent (Par)) not in N_Has_Chars
-           or else
-         not Is_From_Hardcoded_Unit
+        or else No (Generic_Parent (Par))
+        or else Nkind (Generic_Parent (Par)) not in N_Has_Chars
+        or else
+          (not Is_Hardcoded_Unit
                (E    => Generic_Parent (Par),
                 Unit => Unit)
+           and then
+             not Is_From_Hardcoded_Unit
+               (E    => Generic_Parent (Par),
+                Unit => Unit))
       then
          return False;
       end if;
@@ -98,6 +106,9 @@ package body SPARK_Util.Hardcoded is
          when Cut_Operations =>
             return False;
 
+         when Elementary_Functions =>
+            return True;
+
          when System_Storage_Elements =>
             return False;
       end case;
@@ -111,8 +122,84 @@ package body SPARK_Util.Hardcoded is
      (E    : Entity_Id;
       Unit : Hardcoded_Enum)
       return Boolean
+   is (Is_Hardcoded_Unit (Scope (E), Unit));
+
+   -------------------------
+   -- Is_Hardcoded_Entity --
+   -------------------------
+
+   function Is_Hardcoded_Entity (E : Entity_Id) return Boolean is
+      package BIN renames Big_Integers_Names; use BIN;
+      package BRN renames Big_Reals_Names; use BRN;
+      package COpN renames Cut_Operations_Names; use COpN;
+      package SSEN renames System_Storage_Elements_Names;
+   begin
+
+      if Is_From_Hardcoded_Unit (E, Big_Integers) then
+         return Chars (E) in Name_Op_Abs
+                           | Name_Op_Mod
+                           | Name_Op_Rem
+                           | Name_Op_Eq
+                           | Name_Op_Lt .. Name_Op_Subtract
+                           | Name_Op_Multiply .. Name_Op_Expon
+                  or else
+                Get_Name_String (Chars (E)) in BIN.Big_Integer
+                                             | BIN.Min
+                                             | BIN.Max
+                                             | BIN.To_Big_Integer
+                                             | BIN.Is_Valid
+                                             | BIN.To_Integer
+                                             | BIN.Gcd
+                                             | BIN.From_String;
+      elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
+         return Chars (E) in Name_Op_Abs
+                           | Name_Op_Eq
+                           | Name_Op_Lt .. Name_Op_Subtract
+                           | Name_Op_Multiply .. Name_Op_Expon
+                  or else
+                Get_Name_String (Chars (E)) in BRN.Big_Real
+                                             | BRN.Min
+                                             | BRN.Max
+                                             | BRN.Is_Valid
+                                             | BRN.From_String
+                                             | BRN.From_Universal_Image;
+
+      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
+         return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer
+                                             | BIN.Generic_From_Big_Integer;
+
+      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Reals) then
+         return Get_Name_String (Chars (E)) in BRN.Generic_To_Big_Real;
+
+      elsif Is_From_Hardcoded_Unit (E, Cut_Operations) then
+         return Get_Name_String (Chars (E)) in COpN.By | COpN.So;
+
+      --  All subprograms in elementary functions are hardcoded
+
+      elsif Is_From_Hardcoded_Generic_Unit (E, Elementary_Functions) then
+         return Is_Subprogram (E);
+
+      elsif Is_From_Hardcoded_Unit (E, System_Storage_Elements) then
+         return Get_Name_String (Chars (E)) in SSEN.To_Address
+                                             | SSEN.To_Integer
+                                             | SSEN.Add
+                                             | SSEN.Subtract
+                                             | SSEN.Modulus;
+      end if;
+
+      return False;
+   end Is_Hardcoded_Entity;
+
+   -----------------------
+   -- Is_Hardcoded_Unit --
+   -----------------------
+
+   function Is_Hardcoded_Unit
+     (E    : Entity_Id;
+      Unit : Hardcoded_Enum)
+      return Boolean
    is
-      S_Ptr : Entity_Id := Scope (E);
+      S_Ptr : Entity_Id := E;
       --  Scope pointer
    begin
 
@@ -187,6 +274,27 @@ package body SPARK_Util.Hardcoded is
 
             return S_Ptr = Standard_Standard;
 
+         when Elementary_Functions =>
+            if Get_Name_String (Chars (S_Ptr))
+              /= "generic_elementary_functions"
+            then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Get_Name_String (Chars (S_Ptr)) /= "numerics" then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Chars (S_Ptr) /= Name_Ada then
+               return False;
+            end if;
+
+            return Scope (S_Ptr) = Standard_Standard;
+
          when System_Storage_Elements =>
             if Get_Name_String (Chars (S_Ptr)) /= "storage_elements" then
                return False;
@@ -201,67 +309,11 @@ package body SPARK_Util.Hardcoded is
             return Scope (S_Ptr) = Standard_Standard;
       end case;
 
-   end Is_From_Hardcoded_Unit;
+   end Is_Hardcoded_Unit;
 
    -------------------------
-   -- Is_Hardcoded_Entity --
+   -- Is_Literal_Function --
    -------------------------
-
-   function Is_Hardcoded_Entity (E : Entity_Id) return Boolean is
-      package BIN renames Big_Integers_Names; use BIN;
-      package BRN renames Big_Reals_Names; use BRN;
-      package COpN renames Cut_Operations_Names; use COpN;
-      package SSEN renames System_Storage_Elements_Names;
-   begin
-
-      if Is_From_Hardcoded_Unit (E, Big_Integers) then
-         return Chars (E) in Name_Op_Abs
-                           | Name_Op_Mod
-                           | Name_Op_Rem
-                           | Name_Op_Eq
-                           | Name_Op_Lt .. Name_Op_Subtract
-                           | Name_Op_Multiply .. Name_Op_Expon
-                  or else
-                Get_Name_String (Chars (E)) in BIN.Big_Integer
-                                             | BIN.Min
-                                             | BIN.Max
-                                             | BIN.To_Big_Integer
-                                             | BIN.Is_Valid
-                                             | BIN.To_Integer
-                                             | BIN.Gcd
-                                             | BIN.From_String;
-      elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
-         return Chars (E) in Name_Op_Abs
-                           | Name_Op_Eq
-                           | Name_Op_Lt .. Name_Op_Subtract
-                           | Name_Op_Multiply .. Name_Op_Expon
-                  or else
-                Get_Name_String (Chars (E)) in BRN.Big_Real
-                                             | BRN.Min
-                                             | BRN.Max
-                                             | BRN.Is_Valid
-                                             | BRN.From_String
-                                             | BRN.From_Universal_Image;
-
-      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
-         return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer
-                                             | BIN.Generic_From_Big_Integer;
-
-      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Reals) then
-         return Get_Name_String (Chars (E)) in BRN.Generic_To_Big_Real;
-
-      elsif Is_From_Hardcoded_Unit (E, Cut_Operations) then
-         return Get_Name_String (Chars (E)) in COpN.By | COpN.So;
-      elsif Is_From_Hardcoded_Unit (E, System_Storage_Elements) then
-         return Get_Name_String (Chars (E)) in SSEN.To_Address
-                                             | SSEN.To_Integer
-                                             | SSEN.Add
-                                             | SSEN.Subtract
-                                             | SSEN.Modulus;
-      end if;
-
-      return False;
-   end Is_Hardcoded_Entity;
 
    function Is_Literal_Function (E : Entity_Id) return Boolean is
       package BIN renames Big_Integers_Names; use BIN;

@@ -45,8 +45,9 @@ with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
 package body Why.Gen.Hardcoded is
-   package BIN renames Big_Integers_Names; use BIN;
-   package BRN renames Big_Reals_Names;    use BRN;
+   package BIN  renames Big_Integers_Names;            use BIN;
+   package BRN  renames Big_Reals_Names;               use BRN;
+   package EFN  renames Elementary_Functions_Names;    use EFN;
    package SSEN renames System_Storage_Elements_Names; use SSEN;
 
    function Uint_From_String (Str_Value : String) return Uint;
@@ -68,9 +69,12 @@ package body Why.Gen.Hardcoded is
          when Big_Integers => Alias := EW_Int_Type;
          when Big_Reals    => Alias := EW_Real_Type;
 
-         --  No types are declared in Cut_Operations
+         --  No types are declared in the following units
 
-         when Cut_Operations | System_Storage_Elements  =>
+         when Cut_Operations
+            | System_Storage_Elements
+            | Elementary_Functions
+         =>
             raise Program_Error;
       end case;
 
@@ -120,9 +124,12 @@ package body Why.Gen.Hardcoded is
                return Real_Infix_Eq;
             end if;
 
-         --  No types are declared in Cut_Operations
+         --  No equal in the following units
 
-         when Cut_Operations | System_Storage_Elements =>
+         when Cut_Operations
+            | System_Storage_Elements
+            | Elementary_Functions
+         =>
             raise Program_Error;
 
       end case;
@@ -828,6 +835,86 @@ package body Why.Gen.Hardcoded is
                T := Binding_For_Temp (Empty, Domain, Arg_2, T);
             end;
          end if;
+
+      elsif Is_From_Hardcoded_Generic_Unit (Subp, Elementary_Functions) then
+         declare
+            Typ    : constant W_Type_Id := Base_Why_Type (Etype (Subp));
+            MF     : M_Floating_Type renames MF_Floats (Typ);
+            Nam    : constant String := Get_Name_String (Chars (Subp));
+            Symb   : constant W_Identifier_Id :=
+              (case Args'Length is
+                  when 1 =>
+                    (if Nam = EFN.Ada_Sqrt then MF.Ada_Sqrt
+                     elsif Nam = EFN.Log then MF.Log
+                     elsif Nam = EFN.Exp then MF.Exp
+                     elsif Nam = EFN.Sin then MF.Sin
+                     elsif Nam = EFN.Cos then MF.Cos
+                     elsif Nam = EFN.Tan then MF.Tan
+                     elsif Nam = EFN.Cot then MF.Cot
+                     elsif Nam = EFN.Arcsin then MF.Arcsin
+                     elsif Nam = EFN.Arccos then MF.Arccos
+                     elsif Nam = EFN.Sinh then MF.Sinh
+                     elsif Nam = EFN.Cosh then MF.Cosh
+                     elsif Nam = EFN.Tanh then MF.Tanh
+                     elsif Nam = EFN.Coth then MF.Coth
+                     elsif Nam = EFN.Arcsinh then MF.Arcsinh
+                     elsif Nam = EFN.Arccosh then MF.Arccosh
+                     elsif Nam = EFN.Arctanh then MF.Arctanh
+                     elsif Nam = EFN.Arccoth then MF.Arccoth
+                     else raise Program_Error),
+                  when 2 =>
+                    (if Chars (Subp) = Name_Op_Expon then MF.Ada_Power
+                     elsif Nam = EFN.Log then MF.Log_Base
+                     elsif Nam = EFN.Sin then MF.Sin_2
+                     elsif Nam = EFN.Cos then MF.Cos_2
+                     elsif Nam = EFN.Tan then MF.Tan_2
+                     elsif Nam = EFN.Cot then MF.Cot_2
+                     elsif Nam = EFN.Arcsin then MF.Arcsin_2
+                     elsif Nam = EFN.Arccos then MF.Arccos_2
+                     elsif Nam = EFN.Arctan then MF.Arctan
+                     elsif Nam = EFN.Arccot then MF.Arccot
+                     else raise Program_Error),
+                  when 3 =>
+                    (if Nam = EFN.Arctan then MF.Arctan_2
+                     elsif Nam = EFN.Arccot then MF.Arccot_2
+                     else raise Program_Error),
+                  when others =>
+                     raise Program_Error);
+            Reason : constant VC_Kind :=
+              (if Nam in EFN.Ada_Sqrt
+                       | EFN.Sin
+                       | EFN.Cos
+                       | EFN.Arcsin
+                       | EFN.Arccos
+                       | EFN.Arctan
+                       | EFN.Arccot
+                       | EFN.Arcsinh
+                       | EFN.Arccosh
+                       | EFN.Tanh
+                       | EFN.Log
+                       | EFN.Tan
+               then VC_Precondition
+               else VC_Overflow_Check);
+            --  The kind of check is imprecise here, as we cannot separate
+            --  the overflow check from the precondition on the Why3 side.
+
+         begin
+            if Domain = EW_Prog then
+               return +New_VC_Call
+                 (Ada_Node => Ada_Node,
+                  Name     => To_Program_Space (Symb),
+                  Progs    => Args,
+                  Reason   => Reason,
+                  Typ      => MF.T);
+            else
+               return New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Symb,
+                  Args     => Args,
+                  Typ      => MF.T);
+            end if;
+         end;
       else
          raise Program_Error;
       end if;
