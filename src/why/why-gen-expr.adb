@@ -5027,6 +5027,93 @@ package body Why.Gen.Expr is
         Insert_Scalar_Conversion (Domain => D, Expr => E, To => EW_Int_Type);
    end To_Int;
 
+   --------------------------
+   -- Transform_Compare_Op --
+   --------------------------
+
+   function Transform_Compare_Op
+     (Op     : N_Op_Compare;
+      Ty     : W_Type_Id;
+      Domain : EW_Domain)
+      return W_Identifier_Id is
+   begin
+      if Domain = EW_Term then
+         if Ty in EW_Int_Type | EW_Bool_Type
+           or else Why_Type_Is_Fixed (Ty)
+         then
+            case Op is
+               when N_Op_Gt => return M_Integer.Bool_Gt;
+               when N_Op_Lt => return M_Integer.Bool_Lt;
+               when N_Op_Eq => return M_Integer.Bool_Eq;
+               when N_Op_Ne => return M_Integer.Bool_Ne;
+               when N_Op_Ge => return M_Integer.Bool_Ge;
+               when N_Op_Le => return M_Integer.Bool_Le;
+            end case;
+         elsif Why_Type_Is_Float (Ty) then
+            case Op is
+               when N_Op_Gt => return MF_Floats (Ty).Bool_Gt;
+               when N_Op_Lt => return MF_Floats (Ty).Bool_Lt;
+               when N_Op_Eq => return MF_Floats (Ty).Bool_Eq;
+               when N_Op_Ne => return MF_Floats (Ty).Bool_Ne;
+               when N_Op_Ge => return MF_Floats (Ty).Bool_Ge;
+               when N_Op_Le => return MF_Floats (Ty).Bool_Le;
+            end case;
+         elsif Why_Type_Is_BitVector (Ty) then
+            case Op is
+               when N_Op_Gt => return MF_BVs (Ty).Bool_Gt;
+               when N_Op_Lt => return MF_BVs (Ty).Bool_Lt;
+               when N_Op_Eq => return MF_BVs (Ty).Bool_Eq;
+               when N_Op_Ne => return MF_BVs (Ty).Bool_Ne;
+               when N_Op_Ge => return MF_BVs (Ty).Bool_Ge;
+               when N_Op_Le => return MF_BVs (Ty).Bool_Le;
+            end case;
+         else
+            raise Program_Error;
+         end if;
+      elsif Ty in EW_Int_Type | EW_Bool_Type
+           or else Why_Type_Is_Fixed (Ty)
+      then
+         case Op is
+            when N_Op_Gt => return Int_Infix_Gt;
+            when N_Op_Lt => return Int_Infix_Lt;
+            when N_Op_Eq => return Why_Eq;
+            when N_Op_Ne => return Why_Neq;
+            when N_Op_Ge => return Int_Infix_Ge;
+            when N_Op_Le => return Int_Infix_Le;
+         end case;
+      elsif Why_Type_Is_Float (Ty) then
+         case Op is
+            when N_Op_Gt => return MF_Floats (Ty).Gt;
+            when N_Op_Lt => return MF_Floats (Ty).Lt;
+            when N_Op_Eq => return MF_Floats (Ty).Eq;
+            when N_Op_Ne => return MF_Floats (Ty).Neq;
+            when N_Op_Ge => return MF_Floats (Ty).Ge;
+            when N_Op_Le => return MF_Floats (Ty).Le;
+         end case;
+      elsif Why_Type_Is_BitVector (Ty) then
+         case Op is
+            when N_Op_Gt => return MF_BVs (Ty).Ugt;
+            when N_Op_Lt => return MF_BVs (Ty).Ult;
+            when N_Op_Eq =>
+               if Domain = EW_Pred then
+                  return Why_Eq;
+               else
+                  return MF_BVs (Ty).Prog_Eq;
+               end if;
+            when N_Op_Ne =>
+               if Domain = EW_Pred then
+                  return Why_Neq;
+               else
+                  return MF_BVs (Ty).Prog_Neq;
+               end if;
+            when N_Op_Ge => return MF_BVs (Ty).Uge;
+            when N_Op_Le => return MF_BVs (Ty).Ule;
+         end case;
+      else
+         raise Program_Error;
+      end if;
+   end Transform_Compare_Op;
+
    --------------------------------------------
    -- Transform_Non_Binary_Modular_Operation --
    --------------------------------------------

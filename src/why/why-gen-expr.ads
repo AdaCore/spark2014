@@ -761,6 +761,13 @@ package Why.Gen.Expr is
    --  Optimization: if E is a modular type, and Op is a division, do not add
    --  the modulus operation.
 
+   function Transform_Compare_Op
+     (Op     : N_Op_Compare;
+      Ty     : W_Type_Id;
+      Domain : EW_Domain)
+      return W_Identifier_Id;
+   --  Convert an Ada comparison operator to a Why relation symbol
+
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression
 
