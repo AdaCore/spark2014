@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;   use Common_Containers;
 with Errout;              use Errout;
 with Namet;               use Namet;
@@ -770,6 +771,8 @@ package body Why.Gen.Hardcoded is
                Arg_1_Ty : constant Type_Kind_Id := Retysp (Etype (Arg_1));
                Arg_2_Ty : constant Type_Kind_Id :=
                  Retysp (Etype (Next_Formal (Arg_1)));
+               Arg_2 : constant W_Expr_Id :=
+                 New_Temp_For_Expr (Args (Args'Last));
             begin
                pragma Assert (Args'Length = 2);
                T := New_Binary_Op_Expr
@@ -778,12 +781,51 @@ package body Why.Gen.Hardcoded is
                      elsif Name_String = SSEN.Subtract then N_Op_Subtract
                      else N_Op_Mod),
                   Left        => Args (Args'First),
-                  Right       => Args (Args'Last),
+                  Right       => Arg_2,
                   Left_Type   => Arg_1_Ty,
                   Right_Type  => Arg_2_Ty,
                   Return_Type => Retysp (Etype (Subp)),
                   Domain      => Domain,
                   Ada_Node    => Ada_Node);
+
+               --  The mod operator has a precondition that the second argument
+               --  is positive.
+
+               if Name_String = SSEN.Modulus and then Domain = EW_Prog then
+                  declare
+                     Ty         : constant W_Type_Id :=
+                       Base_Why_Type (Arg_2_Ty);
+                     Msg        : constant Unbounded_String :=
+                       To_Unbounded_String
+                         ("modulus operation on addresses requires "
+                          & "positive modulus");
+                     Check_Info : Check_Info_Type :=
+                       New_Check_Info;
+                     Check : W_Pred_Id;
+                  begin
+                     Check_Info.Continuation.Append
+                       (Continuation_Type'(
+                        Ada_Node => Subp,
+                        Message => Msg));
+                     Check :=
+                       New_VC_Pred
+                         (Ada_Node,
+                          New_Comparison (
+                            Transform_Compare_Op (N_Op_Gt, Ty, Domain),
+                            +Arg_2,
+                            New_Integer_Constant (Value => Uint_0)),
+                          VC_Precondition,
+                          Check_Info);
+                     T :=
+                       +Sequence
+                         (New_Assert
+                            (Ada_Node    => Ada_Node,
+                             Assert_Kind => EW_Check,
+                             Pred        => Check),
+                          +T);
+                  end;
+               end if;
+               T := Binding_For_Temp (Empty, Domain, Arg_2, T);
             end;
          end if;
       else
