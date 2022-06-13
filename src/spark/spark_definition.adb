@@ -8208,7 +8208,9 @@ package body SPARK_Definition is
                   Mark_Pragma_Annotate (Cur,
                                         Spec,
                                         Consider_Next => False);
-               elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                 and then Nkind (Cur) /= N_Pragma
+               then
                   exit;
                end if;
                Next (Cur);
@@ -8229,7 +8231,9 @@ package body SPARK_Definition is
                   Mark_Pragma_Annotate (Cur,
                                         Spec,
                                         Consider_Next => False);
-               elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                 and then Nkind (Cur) /= N_Pragma
+               then
                   exit;
                end if;
                Next (Cur);
