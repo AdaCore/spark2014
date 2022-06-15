@@ -45,9 +45,11 @@ package CE_RAC is
    --  If the fuzzer is used, the fuel must be shared and modified by each call
    --  to the small-step RAC.
 
-   procedure Check_Fuel_Decrease (Fuel : Fuel_Access);
-   --  Check fuel and decrease. Raise RAC_Incomplete when fuel becomes zero.
-   --  Do nothing for negative values of Fuel.
+   procedure Check_Fuel_Decrease
+     (Fuel   : Fuel_Access;
+      Amount : Fuel_Type := 1);
+   --  Check fuel and decrease by Amount. Raise RAC_Incomplete when fuel
+   --  becomes zero. Do nothing for negative values of Fuel.
 
    function Find_Binding (E : Entity_Id) return Value_Access;
    --  Find the binding of a variable in the context environment. If not found,

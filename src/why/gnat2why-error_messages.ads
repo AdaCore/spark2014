@@ -93,24 +93,25 @@ package Gnat2Why.Error_Messages is
    --  for justified checks
 
    procedure Emit_Proof_Result
-     (Node         : Node_Id;
-      Id           : VC_Id;
-      Kind         : VC_Kind;
-      Proved       : Boolean;
-      E            : Entity_Id;
-      SD_Id        : Session_Dir_Base_ID;
-      How_Proved   : Prover_Category;
-      Check_Info   : Check_Info_Type;
-      Extra_Msg    : String := "";
-      Explanation  : String := "";
-      Cntexmp      : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      Verdict      : Cntexmp_Verdict := (others => <>);
-      Check_Tree   : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File      : String := "";
-      VC_Loc       : Node_Id := Empty;
-      Stats        : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd   : String := "";
-      Fuzzing_Used : Boolean := False);
+     (Node          : Node_Id;
+      Id            : VC_Id;
+      Kind          : VC_Kind;
+      Proved        : Boolean;
+      E             : Entity_Id;
+      SD_Id         : Session_Dir_Base_ID;
+      How_Proved    : Prover_Category;
+      Check_Info    : Check_Info_Type;
+      Extra_Msg     : String := "";
+      Explanation   : String := "";
+      Cntexmp       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Verdict       : Cntexmp_Verdict := (others => <>);
+      Check_Tree    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File       : String := "";
+      VC_Loc        : Node_Id := Empty;
+      Stats         : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd    : String := "";
+      Fuzzing_Used  : Boolean := False;
+      Print_Fuzzing : Boolean := False);
    --  Register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output. @parameter
    --  How_Proved identifies the prover type (possible values currently are
@@ -119,6 +120,10 @@ package Gnat2Why.Error_Messages is
    --  @parameter VC_Loc is the location of the verification check as opposed
    --  to @parameter Node which contains the location of the first failing part
    --  of a VC (raised as location for messages).
+   --  @parameter Fuzzing_Used indicates wether the counterexample used to
+   --  reach Verdict comes for the fuzzer
+   --  @parameter Print_Fuzzing marks if the counterexample found by the fuzzer
+   --  should be printed
 
    procedure Emit_Static_Proof_Result
      (Node        : Node_Id;

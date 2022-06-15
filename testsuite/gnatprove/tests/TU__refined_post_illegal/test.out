@@ -19,7 +19,7 @@ refined_post_illegal_2.adb:5:27: info: refined post proved (CVC5: 1 VC)
 refined_post_illegal_2.adb:20:22: high: assertion might fail (e.g. when Temp = True)
 refined_post_illegal_2.adb:26:27: info: refined post proved (CVC5: 1 VC)
 refined_post_illegal_2.adb:33:23: high: overflow check might fail, cannot prove upper bound for Par1 * Par2 (e.g. when Par1 = 11 and Par2 = 195225787) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par2 in Integer) to subprogram at refined_post_illegal_2.ads:19]
-refined_post_illegal_2.adb:35:23: medium: overflow check might fail, cannot prove upper bound for Par1 * Par1 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par1 in Integer) to subprogram at refined_post_illegal_2.ads:19]
+refined_post_illegal_2.adb:35:23: high: overflow check might fail, cannot prove bounds for Par1 * Par1 (e.g. when Par1 = Integer'Last) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par1 in Integer) to subprogram at refined_post_illegal_2.ads:19]
 refined_post_illegal_2.ads:4:18: info: initialization of "Par" proved
 refined_post_illegal_2.ads:13:19: medium: postcondition might fail (e.g. when Par = 1) [possible fix: add or complete related loop invariants or postconditions]
 refined_post_illegal_2.ads:17:14: warning: subprogram "Calls_F1" has no effect

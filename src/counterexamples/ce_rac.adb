@@ -641,13 +641,15 @@ package body CE_RAC is
    -- Check_Fuel_Decrease --
    -------------------------
 
-   procedure Check_Fuel_Decrease (Fuel : Fuel_Access) is
+   procedure Check_Fuel_Decrease
+     (Fuel   : Fuel_Access;
+      Amount : Fuel_Type := 1) is
    begin
       if Fuel /= null then
          if Fuel.all = 0 then
             RAC_Incomplete ("out of fuel");
          elsif Fuel.all > 0 then
-            Fuel.all := Fuel.all - 1;
+            Fuel.all := Fuel.all - Amount;
          end if;
       end if;
    end Check_Fuel_Decrease;
@@ -2663,7 +2665,11 @@ package body CE_RAC is
                if not Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Length with argument", N);
+               elsif Etype (Prefix (N)) = Entity (Prefix (N)) then
+                  RAC_Unsupported
+                    ("RAC_Attribute_Reference 'Length on type", N);
                end if;
+
                declare
                   V : constant Value_Type := RAC_Expr (Prefix (N));
                begin

@@ -729,24 +729,25 @@ package body Flow_Error_Messages is
    ---------------------
 
    procedure Error_Msg_Proof
-     (N            : Node_Id;
-      Msg          : String;
-      Is_Proved    : Boolean;
-      Tag          : VC_Kind;
-      Cntexmp      : JSON_Value;
-      Verdict      : Cntexmp_Verdict;
-      Check_Tree   : JSON_Value;
-      VC_File      : String;
-      VC_Loc       : Node_Id;
-      Editor_Cmd   : String;
-      Explanation  : String;
-      E            : Entity_Id;
-      How_Proved   : Prover_Category;
-      SD_Id        : Session_Dir_Base_ID;
-      Stats        : Prover_Stat_Maps.Map;
-      Place_First  : Boolean;
-      Check_Info   : Check_Info_Type;
-      Fuzzing_Used : Boolean := False)
+     (N             : Node_Id;
+      Msg           : String;
+      Is_Proved     : Boolean;
+      Tag           : VC_Kind;
+      Cntexmp       : JSON_Value;
+      Verdict       : Cntexmp_Verdict;
+      Check_Tree    : JSON_Value;
+      VC_File       : String;
+      VC_Loc        : Node_Id;
+      Editor_Cmd    : String;
+      Explanation   : String;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      SD_Id         : Session_Dir_Base_ID;
+      Stats         : Prover_Stat_Maps.Map;
+      Place_First   : Boolean;
+      Check_Info    : Check_Info_Type;
+      Fuzzing_Used  : Boolean := False;
+      Print_Fuzzing : Boolean := False)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -859,7 +860,8 @@ package body Flow_Error_Messages is
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         (if Verdict.Verdict_Category in
-            Not_Checked | Cntexmp_Confirmed_Verdict_Category
+           Not_Checked | Cntexmp_Confirmed_Verdict_Category
+         and then not Fuzzing_Used
          then
             Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc)
          else
@@ -908,7 +910,9 @@ package body Flow_Error_Messages is
                   One_Liner : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
 
-                     elsif Pretty_Cntexmp.Is_Empty then ""
+                     elsif Pretty_Cntexmp.Is_Empty
+                     and then not Fuzzing_Used
+                     then ""
 
                      --  Do not include a one-liner in the message for resource
                      --  leak checks, as the exact values of variables seldom
@@ -921,7 +925,11 @@ package body Flow_Error_Messages is
 
                      else
                        (if Fuzzing_Used
-                        then Get_Environment_One_Liner (N)
+                        then
+                          (if Verdict.Verdict_Category /= Bad_Counterexample
+                           and then Print_Fuzzing
+                           then Get_Environment_One_Liner (N)
+                           else "")
                         else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc)));
 
                   Details : constant String :=

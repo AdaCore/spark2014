@@ -725,7 +725,7 @@ palindrome.adb:25:04: info: initialization of "Count" proved
 palindrome.adb:34:07: info: analyzing call to "Is_Palindrome" in context
 palindrome.adb:34:07: info: range check proved (CVC5: 4 VC)
 parent-public1.adb:7:07: info: initialization of "Temp" proved
-parent.adb:6:22: medium: overflow check might fail, cannot prove upper bound for Value ** 2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition]
+parent.adb:6:22: high: overflow check might fail, cannot prove bounds for Value ** 2 (e.g. when Value = 2147483647) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition]
 populate_tree.adb:7:05: info: data dependencies proved
 populate_tree.adb:8:05: info: flow dependencies proved
 populate_tree.adb:10:24: info: cannot unroll loop (too many loop iterations)

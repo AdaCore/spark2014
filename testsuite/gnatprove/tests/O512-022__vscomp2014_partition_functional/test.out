@@ -166,7 +166,7 @@ partition_refinement.adb:117:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:117:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:117:43: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:117:61: info: precondition proved (CVC5: 1 VC)
-partition_refinement.adb:119:36: medium: range check might fail, cannot prove lower bound for P_Elem.Count + 1 [reason for check: result of addition must fit in the target type of the assignment]
+partition_refinement.adb:119:36: medium: range check might fail, cannot prove lower bounds for P_Elem.Count + 1 [reason for check: result of addition must fit in the target type of the assignment]
 partition_refinement.adb:120:07: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:122:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:135:07: info: initialization of "P_Elem" proved
