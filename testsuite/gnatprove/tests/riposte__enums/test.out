@@ -43,6 +43,14 @@ counterexample expected for check at enums.adb:27
 counterexample expected for check at enums.adb:67
   trace at enums.adb:66 --> A = Elem_7
   trace at enums.adb:67 --> A = Elem_7
+  trace at enums.adb:72 --> A = Elem_7
+  trace at enums.adb:73 --> R = True
+  trace at enums.adb:74 --> A = Elem_7
+  trace at enums.adb:75 --> A = Elem_7 and R = True
+  trace at enums.adb:76 --> A = Elem_7
+  trace at enums.adb:77 --> A = Elem_7 and R = True
+  trace at enums.adb:78 --> A = Elem_7
+  trace at enums.adb:79 --> A = Elem_7 and R = True
   trace at enums.adb:80 --> A = Elem_7
   trace at enums.adb:81 --> R = True
   trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True and R = True

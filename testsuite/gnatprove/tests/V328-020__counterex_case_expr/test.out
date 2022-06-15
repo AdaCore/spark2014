@@ -1,7 +1,7 @@
 case_expr.adb:14:05: info: initialization of "I" proved
-case_expr.adb:22:20: high: assertion might fail (e.g. when I = 2)
+case_expr.adb:22:20: high: assertion might fail (e.g. when I = 5)
 case_expr.adb:31:05: info: initialization of "I" proved
-case_expr.adb:37:20: high: assertion might fail (e.g. when I = 1)
+case_expr.adb:37:20: high: assertion might fail (e.g. when I = 2)
 case_expr.adb:46:05: info: initialization of "I" proved
 case_expr.adb:53:20: high: assertion might fail (e.g. when I = 1)
 case_expr.adb:64:22: info: unrolling loop

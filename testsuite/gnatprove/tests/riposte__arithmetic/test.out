@@ -43,7 +43,7 @@ arithmetic.adb:101:07: info: initialization of "R" proved
 arithmetic.adb:103:22: info: assertion proved (Trivial)
 arithmetic.adb:107:33: info: loop invariant initialization proved (CVC5: 2 VC)
 arithmetic.adb:107:33: info: loop invariant preservation proved (CVC5: 2 VC)
-arithmetic.adb:113:19: medium: postcondition might fail
+arithmetic.adb:113:19: medium: postcondition might fail (e.g. when Halve_B'Result = 0 and N = 2) [possible fix: add or complete related loop invariants or postconditions]
 arithmetic.adb:117:07: info: initialization of "R" proved
 arithmetic.adb:119:22: info: assertion proved (Trivial)
 arithmetic.adb:124:13: info: loop invariant initialization proved (CVC5: 3 VC)

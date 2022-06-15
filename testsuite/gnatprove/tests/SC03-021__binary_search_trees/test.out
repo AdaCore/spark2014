@@ -75,8 +75,7 @@ binary_search.adb:143:46: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:144:31: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:145:18: info: precondition proved (CVC5: 1 VC)
 binary_search.adb:145:27: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search.adb:152:14: medium: in inlined expression function body at binary_search.adb:71
-binary_search.adb:152:14: medium: postcondition might fail, cannot prove T.Left < T.Data
+binary_search.adb:152:29: medium: postcondition might fail, cannot prove M_Contains (T, V)
 binary_search.adb:154:53: info: precondition proved (CVC5: 1 VC)
 binary_search.adb:159:25: info: assertion proved (CVC5: 4 VC; Trivial: 1 VC)
 binary_search.adb:160:12: info: absence of memory leak proved (CVC5: 1 VC)
