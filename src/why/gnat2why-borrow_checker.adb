@@ -868,15 +868,27 @@ package body Gnat2Why.Borrow_Checker is
    --  called with the node, the node of the returning function, and adds an
    --  error message with the appropriate values.
 
+   procedure Perm_Error_Reborrow
+     (E          : Entity_Id;
+      N          : Node_Id;
+      Found_Perm : Perm_Kind;
+      Expl       : Node_Id);
+   --  A procedure that is called when the permissions found contradict the
+   --  rules established by the RM at a reborrow. This function is called with
+   --  the borrower, the node for error location, and adds an error message
+   --  with the appropriate values.
+
    procedure Perm_Mismatch
-     (N              : Expr_Or_Ent;
+     (Loc            : Node_Id;
+      N              : Expr_Or_Ent;
       Exp_Perm       : Perm_Kind;
       Act_Perm       : Perm_Kind;
       Expl           : Node_Id;
       Forbidden_Perm : Boolean := False);
-   --  Issues a continuation error message about a mismatch between a
-   --  desired permission Exp_Perm and a permission obtained Act_Perm. N
-   --  is the node on which the error is reported.
+   --  Issues a continuation error message about a mismatch between a desired
+   --  permission Exp_Perm and a permission obtained Act_Perm. Loc is the node
+   --  on which the error is reported. N is the root of the path leading to the
+   --  error.
 
    procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode);
    pragma Precondition (Expr.Is_Ent or else Is_Path_Expression (Expr.Expr));
@@ -2925,9 +2937,10 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Error_Msg_NE ("loop iteration terminates with moved value for &",
                        Loop_Stmt, E);
-         Perm_Mismatch (Exp_Perm => Perm,
-                        Act_Perm => Found_Perm,
+         Perm_Mismatch (Loc      => Loop_Stmt,
                         N        => Ent,
+                        Exp_Perm => Perm,
+                        Act_Perm => Found_Perm,
                         Expl     => Expl);
          Permission_Error := True;
       end Perm_Error_Loop_Exit;
@@ -3660,6 +3673,25 @@ package body Gnat2Why.Borrow_Checker is
                      Root : constant Entity_Id := Entity (Target);
                   begin
                      Check_Not_Borrowed (+Target, Root);
+
+                     --  In the case of reborrow, check that the target object
+                     --  is unrestricted (SPARK RM 6.9(7)).
+
+                     if not Is_Access_Constant (Etype (Target)) then
+                        declare
+                           E_Root : constant Expr_Or_Ent :=
+                             (Is_Ent => True, Ent => Root, Loc => Stmt);
+                           Perm : constant Perm_Kind := Get_Perm (E_Root);
+                        begin
+                           if Perm /= Read_Write then
+                              Perm_Error_Reborrow
+                                (E          => Root,
+                                 N          => Stmt,
+                                 Found_Perm => Perm,
+                                 Expl       => Get_Expl (E_Root));
+                           end if;
+                        end;
+                     end if;
                   end;
                else
                   Check_Expression (Target, Assign);
@@ -5066,7 +5098,7 @@ package body Gnat2Why.Borrow_Checker is
               "writable"), Loc, Root);
 
       Permission_Error := True;
-      Perm_Mismatch (N, Perm, Found_Perm, Expl, Forbidden_Perm);
+      Perm_Mismatch (Loc, N, Perm, Found_Perm, Expl, Forbidden_Perm);
    end Perm_Error;
 
    ---------------------------
@@ -5084,7 +5116,7 @@ package body Gnat2Why.Borrow_Checker is
       Error_Msg_Node_2 := E;
       Error_Msg_NE ("borrower & exits its scope with moved value", N, E);
       Permission_Error := True;
-      Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl);
+      Perm_Mismatch (N, Ent, Read_Write, Found_Perm, Expl);
    end Perm_Error_Borrow_End;
 
    -------------------------------
@@ -5102,21 +5134,39 @@ package body Gnat2Why.Borrow_Checker is
       Error_Msg_Node_2 := E;
       Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
       Permission_Error := True;
-      Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl);
+      Perm_Mismatch (Subp, Ent, Read_Write, Found_Perm, Expl);
    end Perm_Error_Subprogram_End;
+
+   -------------------------
+   -- Perm_Error_Reborrow --
+   -------------------------
+
+   procedure Perm_Error_Reborrow
+     (E          : Entity_Id;
+      N          : Node_Id;
+      Found_Perm : Perm_Kind;
+      Expl       : Node_Id)
+   is
+      Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => E);
+   begin
+      Error_Msg_Node_2 := E;
+      Error_Msg_NE ("borrower & is reborrowed with moved value", N, E);
+      Permission_Error := True;
+      Perm_Mismatch (N, Ent, Read_Write, Found_Perm, Expl);
+   end Perm_Error_Reborrow;
 
    -------------------
    -- Perm_Mismatch --
    -------------------
 
    procedure Perm_Mismatch
-     (N              : Expr_Or_Ent;
+     (Loc            : Node_Id;
+      N              : Expr_Or_Ent;
       Exp_Perm       : Perm_Kind;
       Act_Perm       : Perm_Kind;
       Expl           : Node_Id;
       Forbidden_Perm : Boolean := False)
    is
-      Loc      : constant Node_Id := (if N.Is_Ent then N.Loc else N.Expr);
       Borrowed : constant Node_Id := Check_On_Borrowed (N);
       Observed : constant Node_Id := Check_On_Observed (N);
       Reason   : constant String :=
