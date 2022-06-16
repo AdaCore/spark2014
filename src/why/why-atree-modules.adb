@@ -3598,7 +3598,7 @@ package body Why.Atree.Modules is
                     (Symb   => NID ("__null_pointer"),
                      Module => M_C,
                      Domain => EW_Term,
-                     Typ    => Root_Ty));
+                     Typ    => Ty));
 
                Insert_Symbol
                  (E, WNE_Is_Null_Pointer,
