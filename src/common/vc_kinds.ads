@@ -387,6 +387,24 @@ package VC_Kinds is
    --  checked expression. For example, this is not true for VC_Precondition,
    --  which should be positioned on the location of the call.
 
+   type Analysis_Progress is
+     (Progress_None,
+      Progress_Marking,
+      Progress_Borrow,
+      Progress_Flow,
+      Progress_Proof);
+   pragma Ordered (Analysis_Progress);
+   --  Indicates the last phase that was completed during analysis
+
+   type Stop_Reason_Type is
+     (Stop_Reason_None,
+      Stop_Reason_Check_Mode,      --  Only check mode was requested
+      Stop_Reason_Flow_Mode,       --  Only flow analysis was requested
+      Stop_Reason_Error_Marking,   --  Error during marking
+      Stop_Reason_Error_Flow,      --  Error during flow
+      Stop_Reason_Error_Borrow);   --  Error during borrow checking
+   --  Indicates why the analysis did not progress to the next phase
+
    SPARK_Suffix : constant String := "spark";
    --  Extension of the files where spark_report expects gnat2why results
 

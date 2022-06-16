@@ -29,7 +29,6 @@ with Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Assumptions;                      use Assumptions;
 with Atree;                            use Atree;
-with Errout;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;
@@ -51,7 +50,6 @@ with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
 with Namet;                            use Namet;
-with Osint;                            use Osint;
 with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
@@ -1575,7 +1573,9 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
+   procedure Flow_Analyse_CUnit (GNAT_Root   : Node_Id;
+                                 Found_Error : out Boolean)
+   is
       FA_Graphs : Analysis_Maps.Map := Analysis_Maps.Empty_Map;
       --  All analysis results are stashed here in case we need them later
       --  (e.g. for inter-procedural flow analysis).
@@ -1583,6 +1583,8 @@ package body Flow is
       Success : Boolean;
 
    begin
+      Found_Error := False;
+
       Check_Specification_Contracts;
 
       --  Process entities and construct graphs if necessary
@@ -1786,9 +1788,7 @@ package body Flow is
       --  with an error status.
 
       if Found_Flow_Error then
-         Errout.Finalize (Last_Call => True);
-         Errout.Output_Messages;
-         Exit_Program (E_Errors);
+         Found_Error := True;
       end if;
 
       --  Finalize extra loop info available from Flow_Utility

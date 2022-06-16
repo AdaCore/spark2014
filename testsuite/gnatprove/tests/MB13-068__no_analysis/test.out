@@ -4,3 +4,4 @@ client.adb:2:11: info: SPARK_Mode not applied to this compilation unit
   only enclosed declarations with SPARK_Mode will be analyzed
 warning: no bodies have been analyzed by GNATprove
 enable analysis of a non-generic body using SPARK_Mode
+Summary logged in gnatprove/gnatprove.out
