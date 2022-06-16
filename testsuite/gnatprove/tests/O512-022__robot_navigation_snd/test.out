@@ -120,7 +120,7 @@ algorithm.adb:316:10: info: initialization of "riterR" proved
 algorithm.adb:316:18: info: initialization of "riterL" proved
 algorithm.adb:320:10: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:324:35: info: loop invariant initialization proved (CVC5: 4 VC)
-algorithm.adb:324:35: info: loop invariant preservation proved (CVC5: 3 VC; Z3: 1 VC)
+algorithm.adb:326:35: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove riterL = Next (This.gapVec, riterR)
 algorithm.adb:326:44: info: precondition proved (CVC5: 2 VC)
 algorithm.adb:330:25: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:330:64: info: precondition proved (CVC5: 1 VC)
