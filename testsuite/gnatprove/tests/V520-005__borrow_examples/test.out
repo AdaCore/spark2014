@@ -489,8 +489,6 @@ test_route.adb:38:27: info: function contract not available for proof ("Nth_Poin
 test_route.adb:38:27: info: precondition proved (CVC5: 1 VC)
 test_route.adb:40:07: info: precondition proved (CVC5: 2 VC)
 test_route.adb:40:16: info: null exclusion check proved (CVC5: 1 VC)
-test_route.ads:16:06: warning: "Ada.Containers.Functional_Infinite_Sequences" is an internal GNAT unit [-gnatwi]
-test_route.ads:16:06: warning: use of this unit is non-portable and version-dependent [-gnatwi]
 test_route.ads:28:30: info: pointer dereference check proved (CVC5: 1 VC)
 test_route.ads:28:49: info: overflow check proved (CVC5: 2 VC)
 test_route.ads:29:21: info: pointer dereference check proved (CVC5: 1 VC)
