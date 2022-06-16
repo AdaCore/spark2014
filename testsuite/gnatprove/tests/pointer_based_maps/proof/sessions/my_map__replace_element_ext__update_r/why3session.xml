@@ -60,7 +60,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="5"><result status="unknown" steps="2492"/></proof>
+  <proof prover="5"><result status="unknown" steps="2421"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.14.0">
    <proof prover="4"><result status="timeout"/></proof>
@@ -92,7 +92,7 @@
   <proof prover="1"><result status="valid" steps="3814"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="1"><result status="valid" steps="11684"/></proof>
+  <proof prover="1"><result status="valid" steps="11444"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <proof prover="1"><result status="valid" steps="3877"/></proof>
@@ -149,22 +149,22 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.42" proved="true">
-  <proof prover="1"><result status="valid" steps="472820"/></proof>
+  <proof prover="1"><result status="valid" steps="395837"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
-  <proof prover="1"><result status="valid" steps="136390"/></proof>
+  <proof prover="1"><result status="valid" steps="129760"/></proof>
   </goal>
   <goal name="def&#39;vc.44" proved="true">
-  <proof prover="1"><result status="valid" steps="63697"/></proof>
+  <proof prover="1"><result status="valid" steps="63115"/></proof>
   </goal>
   <goal name="def&#39;vc.45" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.46" proved="true">
-  <proof prover="1"><result status="valid" steps="170407"/></proof>
+  <proof prover="1"><result status="valid" steps="154067"/></proof>
   </goal>
   <goal name="def&#39;vc.47" proved="true">
-  <proof prover="1"><result status="valid" steps="59483"/></proof>
+  <proof prover="1"><result status="valid" steps="56454"/></proof>
   </goal>
   <goal name="def&#39;vc.48" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
