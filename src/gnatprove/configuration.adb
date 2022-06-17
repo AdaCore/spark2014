@@ -702,10 +702,6 @@ package body Configuration is
             "-d", Long_Switch => "--debug");
          Define_Switch
            (Config,
-            CL_Switches.Dbg_Proof_Only'Access,
-            Long_Switch => "--dbg-proof-only");
-         Define_Switch
-           (Config,
             CL_Switches.Debug_Save_VCs'Access,
             Long_Switch => "--debug-save-vcs");
          Define_Switch
