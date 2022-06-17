@@ -42,7 +42,7 @@
   <proof prover="1"><result status="valid" steps="11455"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="1"><result status="valid" steps="20908"/></proof>
+  <proof prover="1"><result status="valid" steps="20894"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="2"><result status="valid" steps="1"/></proof>

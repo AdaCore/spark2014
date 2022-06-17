@@ -29,7 +29,7 @@
   <proof prover="0"><result status="valid" steps="6005"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="12871"/></proof>
+  <proof prover="0"><result status="valid" steps="12865"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -38,7 +38,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="18257"/></proof>
+  <proof prover="0"><result status="valid" steps="18247"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="5488"/></proof>
@@ -65,7 +65,7 @@
   <proof prover="0"><result status="valid" steps="6614"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="16992"/></proof>
+  <proof prover="0"><result status="valid" steps="16979"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -74,7 +74,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="82804"/></proof>
+  <proof prover="0"><result status="valid" steps="82035"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -92,10 +92,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.27" proved="true">
-  <proof prover="0"><result status="valid" steps="379547"/></proof>
+  <proof prover="0"><result status="valid" steps="292119"/></proof>
   </goal>
   <goal name="def&#39;vc.28" proved="true">
-  <proof prover="0"><result status="valid" steps="39824"/></proof>
+  <proof prover="0"><result status="valid" steps="39809"/></proof>
   </goal>
  </transf>
  </goal>

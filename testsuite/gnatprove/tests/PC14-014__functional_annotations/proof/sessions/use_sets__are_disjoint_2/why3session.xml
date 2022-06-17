@@ -29,7 +29,7 @@
   <proof prover="0"><result status="valid" steps="7882"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="24192"/></proof>
+  <proof prover="0"><result status="valid" steps="24176"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -38,7 +38,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="32142"/></proof>
+  <proof prover="0"><result status="valid" steps="32122"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="7517"/></proof>
@@ -65,7 +65,7 @@
   <proof prover="0"><result status="valid" steps="8491"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="28006"/></proof>
+  <proof prover="0"><result status="valid" steps="27983"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -74,7 +74,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="111145"/></proof>
+  <proof prover="0"><result status="valid" steps="110545"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -95,10 +95,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.28" proved="true">
-  <proof prover="0"><result status="valid" steps="163551"/></proof>
+  <proof prover="0"><result status="valid" steps="162585"/></proof>
   </goal>
   <goal name="def&#39;vc.29" proved="true">
-  <proof prover="0"><result status="valid" steps="26471"/></proof>
+  <proof prover="0"><result status="valid" steps="26450"/></proof>
   </goal>
  </transf>
  </goal>
