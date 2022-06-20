@@ -24,15 +24,15 @@ mod_lemmas.adb:16:49: info: initialization of "Res" proved
 mod_lemmas.adb:17:14: info: postcondition proved (CVC5: 1 VC)
 mod_lemmas.adb:20:16: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:23:61: info: initialization of "Res" proved
-mod_lemmas.adb:26:14: medium: postcondition might fail
+mod_lemmas.adb:26:14: high: postcondition might fail (e.g. when Res = -3 and X = -5)
 mod_lemmas.adb:29:16: info: overflow check proved (CVC5: 2 VC)
 mod_lemmas.adb:29:21: info: division check proved (CVC5: 1 VC)
-mod_lemmas.adb:29:21: info: overflow check proved (CVC5: 2 VC)
-mod_lemmas.adb:29:26: medium: overflow check might fail, cannot prove lower bound for D * (X / D) + (X mod D) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X mod D >= 0 then D * (X / D) <= Integer'Last - X mod D else D * (X / D) >= Integer'First - X mod D) to subprogram at line 23]
+mod_lemmas.adb:29:21: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+mod_lemmas.adb:29:26: info: overflow check proved (CVC5: 2 VC)
 mod_lemmas.adb:29:31: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:32:42: info: initialization of "Res1" proved
 mod_lemmas.adb:32:48: info: initialization of "Res2" proved
-mod_lemmas.adb:33:14: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC)
+mod_lemmas.adb:33:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 mod_lemmas.adb:36:17: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:37:20: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:40:52: info: initialization of "Res" proved

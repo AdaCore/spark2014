@@ -79,7 +79,7 @@ keccak-keccakf-byte_lanes.adb:47:30: info: loop variant proved (CVC5: 1 VC), in 
 keccak-keccakf-byte_lanes.adb:49:33: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:49:33: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:49:40: info: division check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:50:44: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:50:44: info: overflow check proved (CVC5: 4 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:50:63: info: overflow check proved (CVC5: 4 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:50:68: info: division check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:56:69: info: overflow check proved (CVC5: 16 VC), in instantiation at keccak-keccak_1600.ads:55
@@ -89,12 +89,12 @@ keccak-keccakf-byte_lanes.adb:68:45: info: overflow check proved (CVC5: 2 VC), i
 keccak-keccakf-byte_lanes.adb:69:45: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:76:60: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:76:65: info: division check proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:76:65: info: range check proved (altergo: 2 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:76:65: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:79:17: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:69: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:78: info: index check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:78: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:80:86: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:80:86: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:98:40: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:101:07: info: initialization of "Lane" proved, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:103:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at keccak-keccak_1600.ads:55
@@ -111,19 +111,19 @@ keccak-keccakf-byte_lanes.adb:118:59: info: range check proved (CVC5: 16 VC), in
 keccak-keccakf-byte_lanes.adb:126:45: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:127:36: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:139:36: info: loop variant proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:142:38: info: loop invariant initialization proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:142:38: info: loop invariant initialization proved (CVC5: 3 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:142:38: info: loop invariant preservation proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:142:45: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:142:45: info: overflow check proved (CVC5: 4 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:142:69: info: range check proved (CVC5: 4 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:143:48: info: division check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:144:58: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:144:58: info: overflow check proved (CVC5: 4 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:144:76: info: overflow check proved (CVC5: 4 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:146:32: info: index check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:146:32: info: overflow check proved (Z3: 2 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:147:64: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:149:41: info: overflow check proved (Z3: 2 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:150:42: info: overflow check proved (Z3: 1 VC; altergo: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:151:51: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:146:32: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:146:32: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:147:64: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:149:41: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:150:42: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:151:51: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:165:07: info: precondition proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:169:34: info: division check proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:170:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:55
@@ -378,8 +378,8 @@ keccak-sponge.adb:410:32: info: overflow check proved (CVC5: 2 VC), in instantia
 keccak-sponge.adb:410:43: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:411:14: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:411:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:411:20: info: range check proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:413:32: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:411:20: info: range check proved (CVC5: 4 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:413:32: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:92:19: info: initialization of "Ctx" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:94:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:95:39: info: division check proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:57
@@ -404,7 +404,7 @@ keccak-sponge.ads:188:67: info: overflow check proved (CVC5: 2 VC), in instantia
 keccak-sponge.ads:188:81: info: division check proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:223:22: info: initialization of "Digest" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:224:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:225:15: info: postcondition proved (Z3: 2 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.ads:225:15: info: postcondition proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:243:19: info: postcondition proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-types.ads:101:62: info: range check proved (CVC5: 2 VC)
 keccak-types.ads:105:62: info: range check proved (CVC5: 2 VC)

@@ -23,7 +23,7 @@ is
    procedure Fundamental_Div_Mod (X : Integer; D : Integer; Res : out Integer) with
      Pre  => D /= 0 and then
              (if D = -1 then X /= Integer'First),
-     Post => X = Res
+     Post => X = Res  --  @POSTCONDITION:FAIL
    is
    begin
       Res := D * (X / D) + (X mod D);

@@ -85,7 +85,7 @@ arithmetic.adb:226:38: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:234:19: high: postcondition might fail (e.g. when A = -1 and Test_Rem_A'Result = 0)
 arithmetic.adb:237:16: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:244:19: info: postcondition proved (CVC5: 1 VC)
-arithmetic.adb:244:39: high: overflow check might fail, cannot prove upper bound for - ((A / B) * B) (e.g. when A = Byte'First and B = -2) [reason for check: result of negation must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+arithmetic.adb:244:39: high: overflow check might fail, cannot prove upper bound for - ((A / B) * B) (e.g. when A = Byte'First and B = -4) [reason for check: result of negation must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 arithmetic.adb:244:45: high: overflow check might fail, cannot prove upper bound for A / B (e.g. when A = Byte'First and B = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 arithmetic.adb:244:45: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:244:50: info: overflow check proved (CVC5: 2 VC)
@@ -93,9 +93,9 @@ arithmetic.adb:244:55: info: overflow check proved (CVC5: 2 VC)
 arithmetic.adb:247:16: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:254:41: high: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = Byte'First and B = -1) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 arithmetic.adb:257:17: info: overflow check proved (CVC5: 2 VC)
-arithmetic.adb:257:22: high: divide by zero might fail (e.g. when A = -1 and B = -2 and C = 1) [possible fix: add precondition ((A rem B) + C /= 0) to subprogram at line 250]
+arithmetic.adb:257:22: high: divide by zero might fail (e.g. when A = -1 and B = -1 and C = 0) [possible fix: add precondition ((A rem B) + C /= 0) to subprogram at line 250]
 arithmetic.adb:257:30: info: division check proved (CVC5: 1 VC)
-arithmetic.adb:257:37: high: overflow check might fail, cannot prove lower bound for (A rem B) + C (e.g. when A = Byte'First+2 and B = Byte'Last and C = -3) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: add precondition (if C >= 0 then A rem B <= 127 - C else A rem B >= -128 - C) to subprogram at line 250]
+arithmetic.adb:257:37: high: overflow check might fail, cannot prove lower bound for (A rem B) + C (e.g. when A = Byte'First+2 and B = Byte'Last and C = Byte'First+3) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: add precondition (if C >= 0 then A rem B <= 127 - C else A rem B >= -128 - C) to subprogram at line 250]
 arithmetic.adb:262:11: info: flow dependencies proved
 arithmetic.adb:266:22: info: assertion proved (Z3: 1 VC)
 arithmetic.adb:266:26: info: division check proved (CVC5: 1 VC)

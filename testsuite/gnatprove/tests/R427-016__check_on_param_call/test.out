@@ -21,9 +21,9 @@ formals.adb:53:14: info: local subprogram "P5" only analyzed in the context of c
 formals.adb:56:10: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:120
 formals.adb:56:10: medium: predicate check might fail, in call inlined at formals.adb:120 [possible fix: call at line 119 should mention A (for argument U) in a postcondition]
 formals.adb:64:15: info: division check proved (CVC5: 1 VC)
-formals.adb:64:15: info: predicate check proved (altergo: 1 VC)
+formals.adb:64:15: info: predicate check proved (CVC5: 1 VC)
 formals.adb:71:15: info: division check proved (CVC5: 1 VC)
-formals.adb:71:15: info: predicate check proved (altergo: 1 VC)
+formals.adb:71:15: info: predicate check proved (CVC5: 1 VC)
 formals.adb:74:18: info: initialization of "A" proved
 formals.adb:82:22: info: predicate check proved (CVC5: 1 VC)
 formals.adb:83:24: info: predicate check proved (CVC5: 1 VC)
