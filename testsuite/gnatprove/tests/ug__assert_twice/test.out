@@ -2,6 +2,7 @@
 assert_twice.adb:5:19: high: assertion might fail
     5 |   pragma Assert (X > 0);
       |                  ^~~~~
+  e.g. when X = 0
   possible fix: subprogram at line 1 should mention X in a precondition
     1 |procedure Assert_Twice (X : Integer) with
       |^ here

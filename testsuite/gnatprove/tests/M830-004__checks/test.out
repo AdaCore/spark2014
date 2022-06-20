@@ -73,7 +73,7 @@ do_checks.adb:306:25: info: range check proved (CVC5: 2 VC)
 do_checks.adb:312:32: warning: "Y" is not modified, could be IN
 do_checks.adb:314:20: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention X]
 do_checks.adb:314:25: medium: array index check might fail [reason for check: value must be a valid index into the array]
-do_checks.adb:314:32: high: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention Y]
+do_checks.adb:314:32: high: discriminant check might fail (e.g. when Y = (J => 0) and Y.Arr'Last = 0) [possible fix: precondition of subprogram at line 312 should mention Y]
 do_checks.adb:314:37: medium: array index check might fail [reason for check: value must be a valid index into the array]
 do_checks.adb:316:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:316:30: info: discriminant check proved (CVC5: 1 VC)
@@ -89,7 +89,7 @@ do_checks.adb:329:26: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:330:26: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:332:16: info: precondition proved (CVC5: 2 VC)
 do_checks.adb:343:40: info: initialization of "Y" proved
-do_checks.adb:345:27: medium: discriminant check might fail [possible fix: precondition of subprogram at line 343 should mention X]
+do_checks.adb:345:27: medium: discriminant check might fail (e.g. when X = (J => 0) and X.Arr'Last = 0) [possible fix: precondition of subprogram at line 343 should mention X]
 do_checks.adb:347:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:347:29: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:348:29: info: discriminant check proved (CVC5: 1 VC)
@@ -101,7 +101,7 @@ do_checks.adb:360:30: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:361:30: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:363:16: info: precondition proved (CVC5: 1 VC)
 do_checks.adb:369:40: info: initialization of "Y" proved
-do_checks.adb:371:24: medium: discriminant check might fail [possible fix: precondition of subprogram at line 369 should mention X]
+do_checks.adb:371:24: medium: discriminant check might fail (e.g. when X = (J => 0) and X.Arr'Last = 0) [possible fix: precondition of subprogram at line 369 should mention X]
 do_checks.adb:373:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:373:29: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:374:29: info: discriminant check proved (CVC5: 1 VC)
@@ -129,7 +129,7 @@ do_checks.adb:420:30: warning: "X" is not modified, could be IN
 do_checks.adb:420:45: info: initialization of "Y" proved
 do_checks.adb:424:45: info: initialization of "Y" proved
 do_checks.adb:426:19: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:426:23: medium: discriminant check might fail [possible fix: precondition of subprogram at line 424 should mention X]
+do_checks.adb:426:23: medium: discriminant check might fail (e.g. when X = (J => 0)) [possible fix: precondition of subprogram at line 424 should mention X]
 do_checks.adb:429:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:429:29: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:430:29: info: discriminant check proved (CVC5: 1 VC)

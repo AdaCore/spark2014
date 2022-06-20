@@ -3,7 +3,7 @@ dynamic_in_post.adb:2:14: info: local subprogram "Test_1" only analyzed in the c
 dynamic_in_post.adb:2:14: warning: subprogram "Test_1" has no effect
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC)
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC), in call inlined at dynamic_in_post.adb:35
-dynamic_in_post.adb:7:22: high: assertion might fail, in call inlined at dynamic_in_post.adb:35
+dynamic_in_post.adb:7:22: high: assertion might fail, in call inlined at dynamic_in_post.adb:35 (e.g. when X = (others => 'NUL') and Y = (others => 'NUL'))
 dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
 dynamic_in_post.adb:12:22: info: postcondition proved (CVC5: 1 VC)
 dynamic_in_post.adb:12:40: info: range check proved (CVC5: 4 VC)

@@ -1,10 +1,10 @@
 pack.ads:5:14: warning: subprogram "P0" has no effect
-pack.ads:5:48: high: postcondition might fail
+pack.ads:5:48: high: postcondition might fail (e.g. when X = False)
 pack.ads:6:14: warning: subprogram "P1" has no effect
-pack.ads:6:48: high: postcondition might fail
+pack.ads:6:48: high: postcondition might fail (e.g. when X = False)
 pack.ads:7:14: warning: subprogram "P2" has no effect
-pack.ads:7:48: high: postcondition might fail
+pack.ads:7:48: high: postcondition might fail (e.g. when X = False)
 pack.ads:9:14: warning: subprogram "P4" has no effect
-pack.ads:9:48: high: postcondition might fail
+pack.ads:9:48: high: postcondition might fail (e.g. when X = False)
 pack.ads:10:14: warning: subprogram "P5" has no effect
-pack.ads:10:48: high: postcondition might fail
+pack.ads:10:48: high: postcondition might fail (e.g. when X = False)

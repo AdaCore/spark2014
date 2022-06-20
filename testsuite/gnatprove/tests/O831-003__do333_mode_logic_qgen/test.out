@@ -11,7 +11,7 @@ at_least_one_lateral_mode_active.adb:25:07: info: initialization of "LGA_Active_
 at_least_one_lateral_mode_active.adb:26:07: info: initialization of "NAV_Active_out1" proved
 at_least_one_lateral_mode_active.adb:27:07: info: initialization of "ROLL_Active_out1" proved
 at_least_one_lateral_mode_active.adb:28:07: info: initialization of "OR_out1" proved
-at_least_one_lateral_mode_active.adb:59:22: high: assertion might fail
+at_least_one_lateral_mode_active.adb:59:22: high: assertion might fail (e.g. when OR_out1 = False)
 at_least_one_lateral_mode_active.ads:15:14: warning: subprogram "comp" has no effect
 at_most_one_lateral_mode_active.adb:23:07: info: initialization of "HDG_Active_out1" proved
 at_most_one_lateral_mode_active.adb:24:07: info: initialization of "LAPPR_Active_out1" proved

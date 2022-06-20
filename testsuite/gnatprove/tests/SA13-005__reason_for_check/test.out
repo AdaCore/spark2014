@@ -43,7 +43,7 @@ reason_for_check.adb:76:32: medium: divide by zero might fail (e.g. when Op = Di
 reason_for_check.adb:76:32: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when Op = Div and X = 1/128 and Y = 0) [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
 reason_for_check.adb:92:04: warning: analyzing unreferenced procedure "Convert_Enum"
 reason_for_check.adb:92:38: info: initialization of "U" proved
-reason_for_check.adb:94:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 92 should mention X in a precondition]
+reason_for_check.adb:94:12: medium: range check might fail, cannot prove lower bound for X (e.g. when X = A) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 92 should mention X in a precondition]
 reason_for_check.adb:97:04: warning: analyzing unreferenced procedure "Convert_Integer"
 reason_for_check.adb:97:44: info: initialization of "U" proved
 reason_for_check.adb:99:12: high: range check might fail, cannot prove lower bound for X (e.g. when X = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X in Natural) to subprogram at line 97]

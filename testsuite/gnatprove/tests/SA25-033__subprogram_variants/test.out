@@ -11,7 +11,7 @@ test_bad_variant.adb:6:36: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:10:13: info: function contract might not be available on recursive calls
 test_bad_variant.adb:12:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test_bad_variant.adb:40:37: medium: subprogram variant might fail [possible explanation: mutually recursive call should be located directly inside a subprogram]
-test_bad_variant.adb:40:46: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: input value must fit in parameter type] [possible fix: add precondition (X >= Natural'First + 1) to subprogram at line 29]
+test_bad_variant.adb:40:46: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when B = False and X = 0) [reason for check: input value must fit in parameter type] [possible fix: add precondition (X >= Natural'First + 1) to subprogram at line 29]
 test_bad_variant.adb:52:59: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:52:65: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:72:17: info: subprogram variant proved (CVC5: 1 VC)

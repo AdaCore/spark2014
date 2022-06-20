@@ -1,5 +1,5 @@
 protected_sequence.adb:22:26: medium: overflow check might fail, cannot prove upper bound for Local + 1 (e.g. when Local = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 21 should mention Local in a loop invariant]
 protected_sequence.adb:22:31: info: division check proved (CVC5: 1 VC)
-protected_sequence.ads:11:17: medium: ceiling priority protocol might not be respected
+protected_sequence.ads:11:17: medium: ceiling priority protocol might not be respected (e.g. when Value = 0)
 protected_sequence.ads:14:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 protected_sequence.ads:14:14: info: nontermination of task proved (CVC5: 1 VC)

@@ -1,2 +1,2 @@
 proc.adb:1:30: warning: "X" is not modified, could be IN
-proc.adb:2:11: high: postcondition might fail
+proc.adb:2:11: high: postcondition might fail (e.g. when X = 0)

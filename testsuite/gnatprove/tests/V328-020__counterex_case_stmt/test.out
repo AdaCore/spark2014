@@ -8,13 +8,13 @@ case_stmt.adb:26:54: high: assertion might fail (e.g. when J = 2)
 case_stmt.adb:27:54: high: assertion might fail (e.g. when J = 3)
 case_stmt.adb:28:54: high: assertion might fail (e.g. when J = 4)
 case_stmt.adb:37:05: info: initialization of "A" proved
-case_stmt.adb:40:53: high: assertion might fail
+case_stmt.adb:40:53: high: assertion might fail (e.g. when A = Work)
 case_stmt.adb:41:53: high: assertion might fail (e.g. when A = Party)
 case_stmt.adb:42:53: high: assertion might fail (e.g. when A = Sleep)
 case_stmt.adb:51:05: info: initialization of "A" proved
 case_stmt.adb:54:52: high: assertion might fail (e.g. when A = Sleep)
 case_stmt.adb:55:52: high: assertion might fail (e.g. when A = Work)
-case_stmt.adb:56:52: high: assertion might fail
+case_stmt.adb:56:52: high: assertion might fail (e.g. when A = Work)
 case_stmt.ads:37:13: warning: subprogram "Index_Range" has no effect
 case_stmt.ads:40:13: warning: subprogram "Index_Subtype" has no effect
 case_stmt.ads:43:13: warning: subprogram "Week_Range" has no effect

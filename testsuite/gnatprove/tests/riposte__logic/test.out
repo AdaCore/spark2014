@@ -48,4 +48,4 @@ logic.adb:119:11: info: flow dependencies proved
 logic.adb:121:22: info: postcondition proved (CVC5: 2 VC)
 logic.adb:128:19: info: postcondition proved (CVC5: 4 VC)
 logic.adb:135:04: warning: analyzing unreferenced procedure "Implies_Test_1"
-logic.adb:138:22: high: assertion might fail [possible fix: subprogram at line 135 should mention A and B and C in a precondition]
+logic.adb:138:22: high: assertion might fail (e.g. when C = False) [possible fix: subprogram at line 135 should mention A and B and C in a precondition]
