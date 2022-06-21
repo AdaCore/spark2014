@@ -1712,8 +1712,6 @@ package body Configuration is
             when others =>
                Abort_Msg ("error: wrong argument for --level",
                           With_Help => False);
-
-               raise Program_Error;
          end case;
 
          FS.Check_Counterexamples := True;
