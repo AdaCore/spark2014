@@ -16,6 +16,14 @@ procedure Main with SPARK_Mode is
       pragma Assert (False); -- @ASSERT:FAIL
    end Test;
 
+   procedure Test_2 (X : in out Arr_Holder) with
+     Global => null,
+     Pre => X.Content = null
+   is
+   begin
+      X.Content := new My_Arr'([1 .. 2 => 15]); --@RANGE_CHECK:FAIL
+   end Test_2;
+
    type My_Rec (First : Positive; Last : Natural) is record
       Content : My_Arr (First .. Last);
    end record;
@@ -37,6 +45,14 @@ procedure Main with SPARK_Mode is
             and X.Content.Content'Last = X.Last));
       pragma Assert (False); -- @ASSERT:FAIL
    end Test;
+
+   procedure Test_2 (X : in out Rec_Holder) with
+     Global => null,
+     Pre => X.Content = null
+   is
+   begin
+      X.Content := new My_Rec'(1, 2, [1 .. 2 => 15]); --@DISCRIMINANT_CHECK:FAIL
+   end Test_2;
 begin
    null;
 end Main;

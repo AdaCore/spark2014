@@ -1925,23 +1925,25 @@ package body Gnat2Why.Expr is
             Val      : constant W_Expr_Id :=
               Transform_Expr_Or_Identifier (N, EW_Pterm, Body_Params);
             Tmp      : constant W_Term_Id := New_Temp_For_Expr (Val);
+            Ptr_Typ  : constant Type_Kind_Id :=
+              Get_Ada_Node (+Get_Type (Val));
             Is_Moved : constant W_Pred_Id :=
               (if Is_Uncheck_Dealloc then
                  New_Conditional
                    (Condition =>
                       New_Not (Right =>
                         Pred_Of_Boolean_Term
-                          (New_Pointer_Is_Null_Access (Init_Typ, Tmp))),
+                          (New_Pointer_Is_Null_Access (Ptr_Typ, Tmp))),
                     Then_Part =>
                       Compute_Is_Moved_Property
                         (New_Pointer_Value_Access
                            (Ada_Node => Empty,
-                            E        => Init_Typ,
+                            E        => Ptr_Typ,
                             Name     => +Tmp),
                          Typ),
                     Typ       => EW_Bool_Type)
                else
-                 Compute_Is_Moved_Property (+Tmp, Typ));
+                 Compute_Is_Moved_Property (+Tmp, Ptr_Typ));
 
             --  As memory leaks do not lead to runtime errors, it is possible
             --  that these messages get ignored or even justified by users
