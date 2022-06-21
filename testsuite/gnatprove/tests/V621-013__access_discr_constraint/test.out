@@ -1,0 +1,15 @@
+main.adb:9:14: high: all paths in "Test" raise exceptions or do not terminate normally
+main.adb:10:06: info: data dependencies proved
+main.adb:14:10: info: assertion proved (CVC5: 1 VC)
+main.adb:15:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:15:44: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:16:07: medium: assertion might fail
+main.adb:20:07: info: range check proved (CVC5: 2 VC)
+main.adb:29:14: high: all paths in "Test" raise exceptions or do not terminate normally
+main.adb:30:06: info: data dependencies proved
+main.adb:34:10: info: assertion proved (CVC5: 1 VC)
+main.adb:35:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:35:52: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:36:26: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:37:26: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:38:07: medium: assertion might fail
