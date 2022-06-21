@@ -1300,7 +1300,10 @@ package body Gnat2Why.Error_Messages is
                  ("Counterexample checking not requested"));
          end if;
 
-         if CE_RAC.Do_RAC_Info then
+         --  Do not print verdict and RAC results if the VC is proved
+         if not Rec.Result
+           and then CE_RAC.Do_RAC_Info
+         then
             Write_Str
               ("----------"
                & LF & "VERDICT: "
