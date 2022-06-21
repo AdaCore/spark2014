@@ -7,11 +7,19 @@ Require int.Abs.
 Require int.EuclideanDivision.
 Require int.ComputerDivision.
 
+(* separated with a blank line in order to be kept when regenerating
+   the file *)
+Require Import Coq.Bool.Bool.
+Require Import Coq.ZArith.BinInt.
+Require Import Coq.ZArith.Zbool.
+
 (* Why3 goal *)
 Definition mod1 :
   Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
 Proof.
-  exact (fun (x y : Z) => let r := EuclideanDivision.mod1 x y in if (Zge_bool y 0%Z) then r else if (Zeq_bool 0%Z r) then 0%Z else (r + y)%Z).
+  exact (fun (x y : Z) => if (Zlt_bool 0%Z x && Zlt_bool 0%Z y) || (Zlt_bool x 0%Z && Zlt_bool y 0%Z) then ZArith.BinInt.Z.rem x y
+  else if Zeq_bool 0%Z (ZArith.BinInt.Z.rem x y) then 0%Z
+  else ((ZArith.BinInt.Z.rem x y) + y)%Z).
 Defined.
 
 Ltac des_lt x y := pose proof (Zlt_cases x y); destruct (x <? y)%Z.
@@ -22,13 +30,43 @@ Ltac des_eq x y := pose proof (Zeq_bool_if x y); destruct (Zeq_bool x y).
 (* Why3 goal *)
 Lemma mod'def :
   forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
-  let r := int.EuclideanDivision.mod1 x y in
-  ((0%Z <= y)%Z -> ((mod1 x y) = r)) /\
-  (~ (0%Z <= y)%Z ->
-   ((r = 0%Z) -> ((mod1 x y) = 0%Z)) /\
-   (~ (r = 0%Z) -> ((mod1 x y) = (r + y)%Z))).
+  ((0%Z < x)%Z /\ (0%Z < y)%Z \/ (x < 0%Z)%Z /\ (y < 0%Z)%Z ->
+   ((mod1 x y) = (ZArith.BinInt.Z.rem x y))) /\
+  (~ ((0%Z < x)%Z /\ (0%Z < y)%Z \/ (x < 0%Z)%Z /\ (y < 0%Z)%Z) ->
+   (((ZArith.BinInt.Z.rem x y) = 0%Z) -> ((mod1 x y) = 0%Z)) /\
+   (~ ((ZArith.BinInt.Z.rem x y) = 0%Z) ->
+    ((mod1 x y) = ((ZArith.BinInt.Z.rem x y) + y)%Z))).
 Proof.
-  intros x y r; split; unfold mod1; intros;
+  intros x y. unfold mod1.
+  des_lt 0%Z x; des_lt 0%Z y; des_lt x 0%Z; des_lt y 0%Z; des_eq 0%Z (Z.rem x y);
+  split; intro Hyp; try (split; intro Hyp2); try omega; simpl; try contradiction; trivial.
+Qed.
+
+(* Why3 goal *)
+Definition mod2 :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
+Proof.
+  exact (fun (x y : Z) => let r := EuclideanDivision.mod1 x y in if (Zge_bool y 0%Z) then r else if (Zeq_bool 0%Z r) then 0%Z else (r + y)%Z).
+Defined.
+
+(* Why3 goal *)
+Lemma mod2'def :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  let r := int.EuclideanDivision.mod1 x y in
+  ((0%Z <= y)%Z -> ((mod2 x y) = r)) /\
+  (~ (0%Z <= y)%Z ->
+   ((r = 0%Z) -> ((mod2 x y) = 0%Z)) /\
+   (~ (r = 0%Z) -> ((mod2 x y) = (r + y)%Z))).
+Proof.
+  intros x y r; split; unfold mod2; intros;
   des_ge y 0%Z; auto; try omega.
   split; intros; fold r; des_eq 0%Z r; omega.
 Qed.
+
+(* Why3 goal *)
+Lemma Mod_Unique :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  ((mod1 x y) = (mod2 x y)).
+Proof.
+admit. (* To be completed *)
+Admitted.
