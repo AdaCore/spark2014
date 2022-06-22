@@ -1,9 +1,9 @@
-norm-reals-errors.adb:11:14: medium: postcondition might fail (e.g. when X = 1.0000031E+0 and Y = 1.0000031E+0)
+norm-reals-errors.adb:11:14: medium: postcondition might fail
 norm-reals-errors.adb:11:34: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:12:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:13:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:14:22: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:17:14: medium: postcondition might fail (e.g. when X = -1.0000027E+0 and Y = -1.0000027E+0)
+norm-reals-errors.adb:17:14: medium: postcondition might fail
 norm-reals-errors.adb:17:34: info: float overflow check proved (Trivial)
 norm-reals-errors.adb:18:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:19:22: info: predicate check proved (Trivial: 1 VC)
@@ -88,7 +88,7 @@ norm-reals-errors.adb:143:39: info: range check proved (CVC5: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:146:60: info: float overflow check proved (Z3: 1 VC)
 norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when I = 2 and Values = (2 => -3.0492237E-4, others => 1.6187048E+0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:155:22: info: range check proved (CVC5: 1 VC)
@@ -147,7 +147,7 @@ norm-reals-errors.adb:200:64: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:17: info: postcondition proved (altergo: 1 VC)
 norm-reals-errors.adb:201:42: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:52: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F (e.g. when Values = (others => 1.6180341E+0))
+norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F
 norm-reals-errors.adb:210:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:211:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC5: 1 VC)

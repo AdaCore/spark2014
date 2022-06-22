@@ -21,8 +21,8 @@ test_init_by_proof.adb:61:24: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:62:25: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:66:04: warning: analyzing unreferenced procedure "P2"
 test_init_by_proof.adb:66:14: warning: subprogram "P2" has no effect
-test_init_by_proof.adb:68:25: medium: initialization check might fail (e.g. when X2 = (Y => 0, others => ?) and X2.X'Initialized = False and X2.Y'Initialized = True and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
-test_init_by_proof.adb:69:24: medium: initialization check might fail (e.g. when X2 = (X => 0, others => ?) and X2.X'Initialized = True and X2.Y'Initialized = False and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:68:25: medium: initialization check might fail (e.g. when X2 = (X => ?, Y => 0, Z => True) and X2.X'Initialized = False and X2.Y'Initialized = True and X2.Z'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:69:24: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => ?, Z => True) and X2.X'Initialized = True and X2.Y'Initialized = False and X2.Z'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:70:25: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => 0, Z => ?) and X2.X'Initialized = True and X2.Y'Initialized = True and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:74:04: warning: analyzing unreferenced procedure "P3"
 test_init_by_proof.adb:74:14: warning: subprogram "P3" has no effect
@@ -30,18 +30,18 @@ test_init_by_proof.adb:77:24: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:81:04: warning: analyzing unreferenced procedure "P4"
 test_init_by_proof.adb:81:14: warning: subprogram "P4" has no effect
 test_init_by_proof.adb:83:23: high: "X2.X" is not initialized
-test_init_by_proof.adb:84:24: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => ?, Z => False) and X2.Y'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:84:24: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => ?, Z => True) and X2.Y'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:88:04: warning: analyzing unreferenced procedure "P5"
 test_init_by_proof.adb:88:14: warning: subprogram "P5" has no effect
 test_init_by_proof.adb:94:15: info: initialization check proved (CVC5: 1 VC)
-test_init_by_proof.adb:95:15: medium: initialization check might fail (e.g. when X2 = (X => 1, others => ?) and X2.X'Initialized = True and X2.Y'Initialized = False and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:95:15: medium: initialization check might fail (e.g. when X2 = (X => 1, Y => ?, Z => True) and X2.X'Initialized = True and X2.Y'Initialized = False and X2.Z'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:97:04: warning: analyzing unreferenced procedure "P6"
 test_init_by_proof.adb:97:14: warning: subprogram "P6" has no effect
 test_init_by_proof.adb:98:07: info: initialization of parts of "X2" without Relaxed_Initialization proved
-test_init_by_proof.adb:104:15: medium: initialization check might fail (e.g. when X2 = (X => 1, Y => ?, Z => False) and X2.Y'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:104:15: medium: initialization check might fail (e.g. when X2 = (X => 1, Y => ?, Z => True) and X2.Y'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:106:04: warning: analyzing unreferenced procedure "P7"
 test_init_by_proof.adb:106:14: warning: subprogram "P7" has no effect
-test_init_by_proof.adb:112:15: medium: initialization check might fail (e.g. when X2 = (Y => 1, others => ?) and X2.X'Initialized = False and X2.Y'Initialized = True and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:112:15: medium: initialization check might fail (e.g. when X2 = (X => ?, Y => 1, Z => True) and X2.X'Initialized = False and X2.Y'Initialized = True and X2.Z'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:113:15: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:115:04: warning: analyzing unreferenced procedure "P8"
 test_init_by_proof.adb:115:14: warning: subprogram "P8" has no effect
@@ -49,14 +49,14 @@ test_init_by_proof.adb:121:13: high: "X2.X" is not initialized
 test_init_by_proof.adb:122:15: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:124:04: warning: analyzing unreferenced procedure "P9"
 test_init_by_proof.adb:124:14: warning: subprogram "P9" has no effect
-test_init_by_proof.adb:126:19: medium: initialization check might fail (e.g. when X = (Y => 0, others => ?) and X.X'Initialized = False and X.Y'Initialized = True and X.Z'Initialized = False)
+test_init_by_proof.adb:126:19: medium: initialization check might fail (e.g. when X = (X => ?, Y => 0, Z => True) and X.X'Initialized = False and X.Y'Initialized = True and X.Z'Initialized = True)
 test_init_by_proof.adb:130:04: warning: analyzing unreferenced procedure "P10"
 test_init_by_proof.adb:130:14: warning: subprogram "P10" has no effect
 test_init_by_proof.adb:136:13: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
 test_init_by_proof.adb:138:04: warning: analyzing unreferenced procedure "Q"
 test_init_by_proof.adb:138:14: warning: subprogram "Q" has no effect
 test_init_by_proof.adb:139:07: info: initialization of parts of "X" without Relaxed_Initialization proved
-test_init_by_proof.adb:143:14: medium: initialization check might fail (e.g. when X.I.Z = True and X.G.Y = 15 and X.G.Z = True and X.I.Y'Initialized = False and X.F.Y'Initialized = False and X.G.X'Initialized = False and X.G.Y'Initialized = True and X.G.Z'Initialized = True)
+test_init_by_proof.adb:143:14: medium: initialization check might fail (e.g. when X.I.Y = 15 and X.I.Z = True and X.F.Y = 15 and X.F.Z = True and X.G.Y = 15 and X.I.Y'Initialized = True and X.F.Y'Initialized = True and X.G.X'Initialized = False and X.G.Y'Initialized = True and X.G.Z'Initialized = True)
 test_init_by_proof.adb:145:04: warning: analyzing unreferenced procedure "Q1"
 test_init_by_proof.adb:145:14: warning: subprogram "Q1" has no effect
 test_init_by_proof.adb:146:07: info: initialization of parts of "X" without Relaxed_Initialization proved

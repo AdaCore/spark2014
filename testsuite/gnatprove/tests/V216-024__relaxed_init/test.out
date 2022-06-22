@@ -1,2 +1,2 @@
-main.adb:9:19: high: assertion might fail (e.g. when X.B'Initialized = False)
+main.adb:9:19: high: assertion might fail (e.g. when X = (B => False) and X.B'Initialized = True)
 main.adb:9:20: medium: initialization check might fail

@@ -24,7 +24,7 @@ mod_lemmas.adb:16:49: info: initialization of "Res" proved
 mod_lemmas.adb:17:14: info: postcondition proved (CVC5: 1 VC)
 mod_lemmas.adb:20:16: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:23:61: info: initialization of "Res" proved
-mod_lemmas.adb:26:14: high: postcondition might fail (e.g. when Res = -3 and X = -5)
+mod_lemmas.adb:26:14: medium: postcondition might fail
 mod_lemmas.adb:29:16: info: overflow check proved (CVC5: 2 VC)
 mod_lemmas.adb:29:21: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:29:21: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)

@@ -10,7 +10,7 @@ search_array.adb:12:07: medium: exception might be raised
 stack.ads:7:13: error: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: error: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'first) (e.g. when First_Letter = 'NUL' and W = (1 => 'NUL') and W'First = 1 and W'Last = 1) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
-use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 'NUL' and W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array]
+use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 'NUL' and W'Last = -1) [reason for check: value must be a valid index into the array]
 gnatprove: error during flow analysis and proof
 p.adb:8:09: info: data dependencies proved
 p.adb:13:41: info: index check proved (CVC5: 2 VC)
@@ -190,15 +190,13 @@ use_stack.adb:11:04: medium: "Stack.P_Stack" might not be initialized after elab
 use_stack.adb:12:19: info: assertion proved (CVC5: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC5: 1 VC)
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
 p_max_array.adb:4:07: info: initialization of "R" proved
 p_max_array.adb:4:07: info: range check proved (CVC5: 2 VC)
 p_max_array.adb:8:33: info: loop invariant initialization proved (CVC5: 2 VC)
@@ -383,7 +381,7 @@ distributed_file_system.ads:14:20: info: class-wide precondition is weaker than 
 distributed_file_system.ads:15:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:20:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC5: 2 VC)
-distributed_file_system.ads:26:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed, In_Synch => False)) [possible fix: you should consider adding a postcondition to function Is_Open and function Is_Synchronized or turning them into expression functions in their unit spec]
+distributed_file_system.ads:26:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed, In_Synch => True)) [possible fix: you should consider adding a postcondition to function Is_Open and function Is_Synchronized or turning them into expression functions in their unit spec]
 distributed_file_system.ads:27:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 ints.adb:12:30: info: overflow check proved (CVC5: 2 VC)
 ints.adb:29:10: info: precondition proved (CVC5: 1 VC)
@@ -432,15 +430,13 @@ use_file_system.adb:11:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed))
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
+a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
 fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts

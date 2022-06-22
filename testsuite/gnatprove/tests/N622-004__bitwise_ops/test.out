@@ -230,8 +230,8 @@ aco-math-very_longs.adb:420:10: info: initialization of "Temporary_Digit" proved
 aco-math-very_longs.adb:421:10: info: initialization of "R_Hat" proved
 aco-math-very_longs.adb:423:68: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:423:72: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention J and N in a precondition]
-aco-math-very_longs.adb:423:114: medium: overflow check might fail, cannot prove upper bound for J + N (e.g. when J = Digit_Index_Type'Last and N = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 415 should mention J and N in a precondition]
-aco-math-very_longs.adb:423:119: medium: array index check might fail (e.g. when J = 1 and N = 1 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:423:114: medium: overflow check might fail, cannot prove upper bound for J + N [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:423:119: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention J and N in a precondition]
 aco-math-very_longs.adb:424:35: medium: divide by zero might fail [possible fix: subprogram at line 415 should mention N and V in a precondition]
 aco-math-very_longs.adb:424:70: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention N in a precondition]
 aco-math-very_longs.adb:425:35: medium: divide by zero might fail [possible fix: subprogram at line 415 should mention N and V in a precondition]
@@ -335,7 +335,7 @@ aco-math-very_longs.adb:599:07: info: initialization of "Bit_Position" proved
 aco-math-very_longs.adb:600:07: info: initialization of "Digit" proved
 aco-math-very_longs.adb:602:55: info: division check proved (CVC5: 1 VC)
 aco-math-very_longs.adb:603:34: info: division check proved (CVC5: 1 VC)
-aco-math-very_longs.adb:604:42: medium: array index check might fail (e.g. when Digit_Number = 2 and Number = (Octet_Length => ?, Long_Digits => (1 => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1) [reason for check: value must be a valid index into the array]
+aco-math-very_longs.adb:604:42: medium: array index check might fail [reason for check: value must be a valid index into the array]
 aco-math-very_longs.adb:607:44: warning: assuming "Shift_Left" always returns
 aco-math-very_longs.adb:607:44: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:609:49: warning: assuming "Shift_Left" always returns

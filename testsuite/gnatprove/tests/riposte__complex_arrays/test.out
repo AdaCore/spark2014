@@ -9,11 +9,11 @@ complex_arrays.adb:55:22: high: postcondition might fail (e.g. when A = (23 => (
 complex_arrays.adb:64:11: info: flow dependencies proved
 complex_arrays.adb:65:22: high: postcondition might fail (e.g. when A(0)(1) = -1 and A(0)(2) = -1 and A(2) = (0 => 0, others => -1) and I = 0 and J = 2)
 complex_arrays.adb:74:11: info: flow dependencies proved
-complex_arrays.adb:75:22: high: postcondition might fail (e.g. when A(0)(0) = -1 and A(1)(0) = -1 and A(2) = (0 => 0, others => -1) and I = 1 and J = 2)
+complex_arrays.adb:75:22: high: postcondition might fail (e.g. when A(0) = (0 => 0, others => -1) and A(1) = (0 => 0, others => -1) and A(2)(0) = -1 and I = 1 and J = 2)
 complex_arrays.adb:85:11: info: flow dependencies proved
 complex_arrays.adb:87:22: high: postcondition might fail (e.g. when A = (1 => (others => 42), others => (others => 23)) and I = 0 and J = 1)
 complex_arrays.adb:97:11: info: flow dependencies proved
-complex_arrays.adb:99:22: high: postcondition might fail (e.g. when A = (42 => (others => 0), others => (others => 0)) and I = 43)
+complex_arrays.adb:99:22: high: postcondition might fail (e.g. when A = (others => (others => 0)) and I = 42)
 complex_arrays.adb:110:11: info: flow dependencies proved
 complex_arrays.adb:112:22: high: postcondition might fail (e.g. when A = (others => (others => 0)) and A'Old = (others => (others => 0)))
 complex_arrays.adb:114:07: info: initialization of "Tmp" proved

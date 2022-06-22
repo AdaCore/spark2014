@@ -290,7 +290,7 @@ is
 
    function IsPositive_Wrong (X : in Integer) return Integer
      with Post =>
-     (if X >= 0 then IsPositive_Wrong'Result = 0) and --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+     (if X >= 0 then IsPositive_Wrong'Result = 0) and --  @POSTCONDITION:FAIL
         (if X < 0 then IsPositive_Wrong'Result = 1)
    is
       type T is range Integer'First * 2 - 1 .. Integer'Last * 2;
