@@ -28,6 +28,7 @@ private with Ada.Streams.Stream_IO;
 
 package File_IO with
   SPARK_Mode,
+  Pure,
   Annotate => (GNATprove, Always_Return)
 is
 

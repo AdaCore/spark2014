@@ -1,13 +1,3 @@
-a-ngelfu.ads:120:36: info: division check proved (Z3: 1 VC), in instantiation at dimensions.ads:387
-a-ngelfu.ads:120:36: info: division check proved (Z3: 1 VC), in instantiation at dimensions.ads:388
-a-ngelfu.ads:120:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:387
-a-ngelfu.ads:120:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:388
-a-ngelfu.ads:129:32: info: division check proved (Z3: 1 VC), in instantiation at dimensions.ads:387
-a-ngelfu.ads:129:32: info: division check proved (Z3: 1 VC), in instantiation at dimensions.ads:388
-a-ngelfu.ads:130:36: info: division check proved (Z3: 1 VC), in instantiation at dimensions.ads:387
-a-ngelfu.ads:130:36: info: division check proved (Z3: 1 VC), in instantiation at dimensions.ads:388
-a-ngelfu.ads:130:65: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:387
-a-ngelfu.ads:130:65: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:388
 dimensions.ads:385:07: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]
 dimensions.ads:385:11: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 dimensions.ads:385:14: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]

@@ -1,6 +1,6 @@
 with Interfaces.C_Streams;    use Interfaces.C_Streams;
 
-package Helpers with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+package Helpers with SPARK_Mode is
    type File_Descr is private;
 
 #if TEST_GET_LINE

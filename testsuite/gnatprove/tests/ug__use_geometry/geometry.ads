@@ -1,5 +1,6 @@
 package Geometry with
   SPARK_Mode,
+  Pure,
   Annotate => (GNATprove, Always_Return)
 is
    type Shape is tagged record

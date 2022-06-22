@@ -1,0 +1,4 @@
+p.ads:3:44: warning: assuming "Foo" always returns
+p.ads:3:44: warning: assuming "Foo" has no effect on global items
+p.ads:3:44: warning: no Global contract available for "Foo"
+p.ads:3:44: warning: no returning annotation available for "Foo"

@@ -1,0 +1,4 @@
+other.adb:5:04: warning: assuming "P" always returns
+other.adb:5:04: warning: assuming "P" has no effect on global items
+other.adb:5:04: warning: no Global contract available for "P"
+other.adb:5:04: warning: no returning annotation available for "P"

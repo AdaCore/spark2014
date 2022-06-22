@@ -1,5 +1,6 @@
 package Stack with
   SPARK_Mode,
+  Pure,
   Annotate => (GNATprove, Always_Return)
 is
 

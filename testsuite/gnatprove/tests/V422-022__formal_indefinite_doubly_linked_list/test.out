@@ -37,20 +37,28 @@ a-cfidll.ads:1509:14: info: precondition proved (CVC5: 1 VC), in instantiation a
 a-cfidll.ads:1516:23: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
 a-cfidll.ads:1516:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
 a-cfidll.ads:1614:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:9
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:161, in instantiation at test.adb:11
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:161, in instantiation at test_list.ads:6
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:161, in instantiation at test.adb:11
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:161, in instantiation at test_list.ads:6
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:76, in instantiation at test.adb:11
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfidll.ads:76, in instantiation at test_list.ads:6
 test.adb:13:04: info: initialization of "L" proved
 test.adb:13:07: info: initialization of "K" proved
 test.adb:13:10: info: initialization of "M" proved
@@ -58,93 +66,265 @@ test.adb:14:04: info: initialization of "C" proved
 test.adb:14:07: info: initialization of "D" proved
 test.adb:15:04: info: initialization of "N" proved
 test.adb:22:19: info: assertion proved (CVC5: 1 VC)
+test.adb:22:19: warning: assuming "Is_Empty" always returns
+test.adb:22:19: warning: no returning annotation available for "Is_Empty"
 test.adb:26:20: info: unrolling loop
 test.adb:27:07: info: precondition proved (CVC5: 5 VC)
+test.adb:27:07: warning: assuming "Append" always returns
+test.adb:27:07: warning: no returning annotation available for "Append"
 test.adb:28:07: info: precondition proved (CVC5: 5 VC)
+test.adb:28:07: warning: assuming "Append" always returns
+test.adb:28:07: warning: no returning annotation available for "Append"
+test.adb:31:09: warning: assuming "First" always returns
+test.adb:31:09: warning: no returning annotation available for "First"
+test.adb:32:18: warning: assuming "Length" always returns
+test.adb:32:18: warning: no returning annotation available for "Length"
 test.adb:32:29: info: cannot unroll loop (too many loop iterations)
 test.adb:33:22: medium: assertion might fail [possible fix: loop at line 32 should mention C in a loop invariant]
 test.adb:33:22: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
+test.adb:33:22: warning: assuming "Element" always returns
+test.adb:33:22: warning: no returning annotation available for "Element"
 test.adb:34:07: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
+test.adb:34:07: warning: assuming "Next" always returns
+test.adb:34:07: warning: no returning annotation available for "Next"
 test.adb:37:19: info: assertion proved (CVC5: 1 VC)
+test.adb:37:23: warning: assuming "Is_Empty" always returns
+test.adb:37:23: warning: no returning annotation available for "Is_Empty"
 test.adb:38:19: info: assertion proved (Z3: 1 VC)
+test.adb:38:19: warning: assuming "Length" always returns
+test.adb:38:19: warning: no returning annotation available for "Length"
 test.adb:40:19: medium: assertion might fail
+test.adb:40:21: warning: assuming "=" always returns
+test.adb:40:21: warning: no returning annotation available for "="
 test.adb:42:19: medium: assertion might fail
 test.adb:42:24: info: precondition proved (Trivial: 1 VC)
 test.adb:43:27: info: precondition proved (Trivial: 1 VC)
 test.adb:44:30: info: precondition proved (CVC5: 1 VC)
+test.adb:44:30: warning: assuming "Element" always returns
+test.adb:44:30: warning: no returning annotation available for "Element"
 test.adb:44:48: info: precondition proved (CVC5: 1 VC)
+test.adb:44:48: warning: assuming "Element" always returns
+test.adb:44:48: warning: no returning annotation available for "Element"
+test.adb:48:09: warning: assuming "First" always returns
+test.adb:48:09: warning: no returning annotation available for "First"
 test.adb:49:09: info: precondition proved (CVC5: 1 VC)
+test.adb:49:09: warning: assuming "Next" always returns
+test.adb:49:09: warning: no returning annotation available for "Next"
 test.adb:54:04: info: precondition proved (Z3: 1 VC)
+test.adb:54:04: warning: assuming "Delete" always returns
+test.adb:54:04: warning: no returning annotation available for "Delete"
 test.adb:56:09: info: precondition proved (CVC5: 1 VC)
+test.adb:56:09: warning: assuming "Find" always returns
+test.adb:56:09: warning: no returning annotation available for "Find"
 test.adb:57:04: info: precondition proved (Z3: 1 VC)
+test.adb:57:04: warning: assuming "Delete" always returns
+test.adb:57:04: warning: no returning annotation available for "Delete"
 test.adb:59:19: info: assertion proved (Z3: 1 VC)
+test.adb:59:19: warning: assuming "Length" always returns
+test.adb:59:19: warning: no returning annotation available for "Length"
+test.adb:61:09: warning: assuming "First" always returns
+test.adb:61:09: warning: no returning annotation available for "First"
 test.adb:62:19: info: assertion proved (Z3: 1 VC)
 test.adb:62:19: info: precondition proved (Z3: 1 VC)
+test.adb:62:19: warning: assuming "Element" always returns
+test.adb:62:19: warning: no returning annotation available for "Element"
 test.adb:64:04: info: precondition proved (Z3: 1 VC)
+test.adb:64:04: warning: assuming "Next" always returns
+test.adb:64:04: warning: no returning annotation available for "Next"
 test.adb:66:22: medium: assertion might fail [possible fix: loop at line 65 should mention N in a loop invariant]
 test.adb:66:22: medium: precondition might fail
+test.adb:66:22: warning: assuming "Element" always returns
+test.adb:66:22: warning: no returning annotation available for "Element"
 test.adb:67:14: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 65 should mention N in a loop invariant]
 test.adb:68:07: medium: precondition might fail
+test.adb:68:07: warning: assuming "Next" always returns
+test.adb:68:07: warning: no returning annotation available for "Next"
 test.adb:71:09: info: precondition proved (CVC5: 1 VC)
+test.adb:71:09: warning: assuming "Find" always returns
+test.adb:71:09: warning: no returning annotation available for "Find"
 test.adb:76:04: info: precondition proved (Z3: 2 VC)
+test.adb:76:04: warning: assuming "Insert" always returns
+test.adb:76:04: warning: no returning annotation available for "Insert"
 test.adb:77:04: medium: precondition might fail, cannot prove Has_Element (Container, Before) or else Before = No_Element
+test.adb:77:04: warning: assuming "Insert" always returns
+test.adb:77:04: warning: no returning annotation available for "Insert"
 test.adb:79:19: medium: assertion might fail
+test.adb:79:21: warning: assuming "=" always returns
+test.adb:79:21: warning: no returning annotation available for "="
 test.adb:81:19: info: precondition proved (Trivial: 1 VC)
 test.adb:81:19: medium: assertion might fail
 test.adb:82:23: info: precondition proved (Trivial: 1 VC)
 test.adb:83:25: info: precondition proved (CVC5: 1 VC)
+test.adb:83:25: warning: assuming "Element" always returns
+test.adb:83:25: warning: no returning annotation available for "Element"
 test.adb:83:43: info: precondition proved (CVC5: 1 VC)
+test.adb:83:43: warning: assuming "Element" always returns
+test.adb:83:43: warning: no returning annotation available for "Element"
+test.adb:85:09: warning: assuming "Copy" always returns
+test.adb:85:09: warning: no returning annotation available for "Copy"
 test.adb:89:19: info: assertion proved (Z3: 1 VC)
+test.adb:89:19: warning: assuming "Length" always returns
+test.adb:89:19: warning: no returning annotation available for "Length"
+test.adb:89:32: warning: assuming "Length" always returns
+test.adb:89:32: warning: no returning annotation available for "Length"
 test.adb:90:19: info: assertion proved (Z3: 1 VC)
+test.adb:90:21: warning: assuming "=" always returns
+test.adb:90:21: warning: no returning annotation available for "="
+test.adb:91:09: warning: assuming "First" always returns
+test.adb:91:09: warning: no returning annotation available for "First"
+test.adb:92:09: warning: assuming "First" always returns
+test.adb:92:09: warning: no returning annotation available for "First"
 test.adb:94:22: medium: assertion might fail
 test.adb:95:22: medium: assertion might fail
 test.adb:95:22: medium: precondition might fail
+test.adb:95:22: warning: assuming "Element" always returns
+test.adb:95:22: warning: no returning annotation available for "Element"
 test.adb:95:39: medium: precondition might fail
+test.adb:95:39: warning: assuming "Element" always returns
+test.adb:95:39: warning: no returning annotation available for "Element"
 test.adb:96:07: medium: precondition might fail
+test.adb:96:07: warning: assuming "Next" always returns
+test.adb:96:07: warning: no returning annotation available for "Next"
 test.adb:97:07: medium: precondition might fail
+test.adb:97:07: warning: assuming "Next" always returns
+test.adb:97:07: warning: no returning annotation available for "Next"
+test.adb:102:04: warning: assuming "Clear" always returns
+test.adb:102:04: warning: no returning annotation available for "Clear"
 test.adb:103:19: info: assertion proved (CVC5: 1 VC)
+test.adb:103:19: warning: assuming "Length" always returns
+test.adb:103:19: warning: no returning annotation available for "Length"
 test.adb:104:19: info: assertion proved (Z3: 1 VC)
+test.adb:104:19: warning: assuming "Is_Empty" always returns
+test.adb:104:19: warning: no returning annotation available for "Is_Empty"
+test.adb:106:04: warning: assuming "Assign" always returns
+test.adb:106:04: warning: no returning annotation available for "Assign"
 test.adb:108:19: info: assertion proved (Z3: 1 VC)
+test.adb:108:21: warning: assuming "=" always returns
+test.adb:108:21: warning: no returning annotation available for "="
 test.adb:109:19: info: precondition proved (Trivial: 1 VC)
 test.adb:109:19: medium: assertion might fail
 test.adb:110:23: info: precondition proved (Trivial: 1 VC)
 test.adb:111:25: info: precondition proved (CVC5: 1 VC)
+test.adb:111:25: warning: assuming "Element" always returns
+test.adb:111:25: warning: no returning annotation available for "Element"
 test.adb:111:43: info: precondition proved (CVC5: 1 VC)
+test.adb:111:43: warning: assuming "Element" always returns
+test.adb:111:43: warning: no returning annotation available for "Element"
+test.adb:118:04: warning: assuming "Clear" always returns
+test.adb:118:04: warning: no returning annotation available for "Clear"
 test.adb:119:04: info: precondition proved (CVC5: 1 VC)
+test.adb:119:04: warning: assuming "Append" always returns
+test.adb:119:04: warning: no returning annotation available for "Append"
 test.adb:120:04: info: precondition proved (Z3: 1 VC)
+test.adb:120:04: warning: assuming "Append" always returns
+test.adb:120:04: warning: no returning annotation available for "Append"
 test.adb:121:04: info: precondition proved (Z3: 1 VC)
+test.adb:121:04: warning: assuming "Append" always returns
+test.adb:121:04: warning: no returning annotation available for "Append"
+test.adb:123:04: warning: assuming "Clear" always returns
+test.adb:123:04: warning: no returning annotation available for "Clear"
 test.adb:124:04: info: precondition proved (Z3: 1 VC)
+test.adb:124:04: warning: assuming "Append" always returns
+test.adb:124:04: warning: no returning annotation available for "Append"
 test.adb:125:04: info: precondition proved (Z3: 1 VC)
+test.adb:125:04: warning: assuming "Append" always returns
+test.adb:125:04: warning: no returning annotation available for "Append"
 test.adb:126:04: info: precondition proved (Z3: 1 VC)
+test.adb:126:04: warning: assuming "Append" always returns
+test.adb:126:04: warning: no returning annotation available for "Append"
 test.adb:127:04: info: precondition proved (Z3: 1 VC)
+test.adb:127:04: warning: assuming "Append" always returns
+test.adb:127:04: warning: no returning annotation available for "Append"
 test.adb:128:04: info: precondition proved (Z3: 1 VC)
+test.adb:128:04: warning: assuming "Append" always returns
+test.adb:128:04: warning: no returning annotation available for "Append"
+test.adb:130:09: warning: assuming "Last" always returns
+test.adb:130:09: warning: no returning annotation available for "Last"
+test.adb:131:09: warning: assuming "First" always returns
+test.adb:131:09: warning: no returning annotation available for "First"
 test.adb:133:04: info: precondition proved (Z3: 2 VC)
+test.adb:133:04: warning: assuming "Swap" always returns
+test.adb:133:04: warning: no returning annotation available for "Swap"
+test.adb:138:09: warning: assuming "Last" always returns
+test.adb:138:09: warning: no returning annotation available for "Last"
 test.adb:139:09: info: precondition proved (CVC5: 1 VC)
+test.adb:139:09: warning: assuming "Find" always returns
+test.adb:139:09: warning: no returning annotation available for "Find"
 test.adb:141:04: info: precondition proved (Z3: 3 VC)
+test.adb:141:04: warning: assuming "Splice" always returns
+test.adb:141:04: warning: no returning annotation available for "Splice"
+test.adb:146:09: warning: assuming "First" always returns
+test.adb:146:09: warning: no returning annotation available for "First"
 test.adb:147:09: info: precondition proved (CVC5: 1 VC)
+test.adb:147:09: warning: assuming "Find" always returns
+test.adb:147:09: warning: no returning annotation available for "Find"
 test.adb:153:04: medium: precondition might fail, cannot prove Has_Element (Container, J)
+test.adb:153:04: warning: assuming "Swap_Links" always returns
+test.adb:153:04: warning: no returning annotation available for "Swap_Links"
 test.adb:159:04: medium: precondition might fail
+test.adb:159:04: warning: assuming "Next" always returns
+test.adb:159:04: warning: no returning annotation available for "Next"
 test.adb:160:04: info: precondition proved (Z3: 1 VC)
+test.adb:160:04: warning: assuming "Next" always returns
+test.adb:160:04: warning: no returning annotation available for "Next"
 test.adb:162:04: medium: precondition might fail, cannot prove Has_Element (Container, Before) or else Before = No_Element [possible fix: call at line 160 should mention Position (for argument C) in a postcondition]
+test.adb:162:04: warning: assuming "Splice" always returns
+test.adb:162:04: warning: no returning annotation available for "Splice"
+test.adb:163:09: warning: assuming "Last" always returns
+test.adb:163:09: warning: no returning annotation available for "Last"
 test.adb:164:04: medium: precondition might fail
+test.adb:164:04: warning: assuming "Previous" always returns
+test.adb:164:04: warning: no returning annotation available for "Previous"
 test.adb:165:04: info: precondition proved (Z3: 2 VC)
+test.adb:165:04: warning: assuming "Splice" always returns
+test.adb:165:04: warning: no returning annotation available for "Splice"
+test.adb:170:04: warning: assuming "Reverse_Elements" always returns
+test.adb:170:04: warning: no returning annotation available for "Reverse_Elements"
 test.adb:172:04: info: precondition proved (Z3: 2 VC)
+test.adb:172:04: warning: assuming "Splice" always returns
+test.adb:172:04: warning: no returning annotation available for "Splice"
+test.adb:172:15: warning: assuming "First" always returns
+test.adb:172:15: warning: no returning annotation available for "First"
+test.adb:175:09: warning: assuming "First" always returns
+test.adb:175:09: warning: no returning annotation available for "First"
 test.adb:177:22: medium: assertion might fail [possible fix: loop at line 176 should mention N in a loop invariant]
 test.adb:177:22: medium: precondition might fail
+test.adb:177:22: warning: assuming "Element" always returns
+test.adb:177:22: warning: no returning annotation available for "Element"
 test.adb:178:14: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 176 should mention N in a loop invariant]
 test.adb:179:07: medium: precondition might fail
+test.adb:179:07: warning: assuming "Next" always returns
+test.adb:179:07: warning: no returning annotation available for "Next"
 test.adb:182:19: info: precondition proved (Z3: 1 VC)
 test.adb:182:19: medium: assertion might fail
+test.adb:182:19: warning: assuming "Last_Element" always returns
+test.adb:182:19: warning: no returning annotation available for "Last_Element"
 test.adb:183:19: info: precondition proved (Z3: 1 VC)
 test.adb:183:19: medium: assertion might fail
+test.adb:183:19: warning: assuming "First_Element" always returns
+test.adb:183:19: warning: no returning annotation available for "First_Element"
+test.adb:185:09: warning: assuming "Last" always returns
+test.adb:185:09: warning: no returning annotation available for "Last"
 test.adb:186:04: info: precondition proved (Z3: 1 VC)
+test.adb:186:04: warning: assuming "Previous" always returns
+test.adb:186:04: warning: no returning annotation available for "Previous"
 test.adb:187:09: info: precondition proved (Z3: 1 VC)
+test.adb:187:09: warning: assuming "Reverse_Find" always returns
+test.adb:187:09: warning: no returning annotation available for "Reverse_Find"
 test.adb:189:19: medium: assertion might fail
 test.adb:191:09: info: precondition proved (Z3: 1 VC)
+test.adb:191:09: warning: assuming "Reverse_Find" always returns
+test.adb:191:09: warning: no returning annotation available for "Reverse_Find"
 test.adb:193:19: medium: assertion might fail
 test.adb:193:19: medium: precondition might fail
+test.adb:193:19: warning: assuming "Element" always returns
+test.adb:193:19: warning: no returning annotation available for "Element"
 test.adb:195:19: medium: assertion might fail
+test.adb:195:19: warning: assuming "Contains" always returns
+test.adb:195:19: warning: no returning annotation available for "Contains"
 test.adb:196:19: medium: assertion might fail
+test.adb:196:23: warning: assuming "Contains" always returns
+test.adb:196:23: warning: no returning annotation available for "Contains"
 test_list.adb:13:07: info: initialization of "L" proved
 test_list.adb:13:10: info: initialization of "K" proved
 test_list.adb:14:07: info: initialization of "C" proved

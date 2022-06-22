@@ -1,0 +1,4 @@
+p-c.adb:3:05: warning: assuming "Proc" always returns
+p-c.adb:3:05: warning: assuming "Proc" has no effect on global items
+p-c.adb:3:05: warning: no Global contract available for "Proc"
+p-c.adb:3:05: warning: no returning annotation available for "Proc"

@@ -27,8 +27,9 @@ private with Ada.Streams.Stream_IO;
 --  are instead encoded in the read result).
 
 package File_IO with
-   SPARK_Mode,
-   Annotate => (GNATprove, Always_Return)
+  SPARK_Mode,
+  Pure,
+  Annotate => (GNATprove, Always_Return)
 is
 
    type File is limited private;

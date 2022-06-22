@@ -1,0 +1,2 @@
+p2.adb:4:52: warning: assuming "Clock" always returns
+p2.adb:4:52: warning: no returning annotation available for "Clock"

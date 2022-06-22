@@ -1,0 +1,2 @@
+dummy.adb:5:19: warning: assuming "Yield" always returns
+dummy.adb:5:19: warning: no returning annotation available for "Yield"
