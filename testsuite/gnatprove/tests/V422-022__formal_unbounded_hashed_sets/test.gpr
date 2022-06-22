@@ -1,0 +1,14 @@
+with "sparklib";
+
+project Test is
+
+   for Object_Dir use "obj";
+   for Main use ("test.adb");
+
+   package Builder is
+      for Switches ("ada") use ("-gnata");
+      for Global_Configuration_Pragmas use "pragmas.adc";
+   end Builder;
+
+end Test;
+
