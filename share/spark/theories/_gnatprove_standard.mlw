@@ -281,7 +281,8 @@ module Int_Division
     else r + y
 
   (* The two definitions of mod are equivalent *)
-  axiom Mod_Unique : forall x, y : int. mod x y = mod2 x y
+  axiom Mod_Unique :
+    forall x, y : int. y <> 0 -> mod x y = mod2 x y
 
   val mod (x:int) (y:int) : int
      ensures { result = mod x y }

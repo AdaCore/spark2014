@@ -62,6 +62,7 @@ test_fold.adb:46:54: warning: no returning annotation available for "P"
 test_fold.adb:46:60: info: index check proved (CVC5: 10 VC)
 test_fold.adb:46:70: info: unrolling loop
 test_fold.adb:47:13: info: index check proved (CVC5: 10 VC)
+test_fold.adb:53:31: info: division check proved (Z3: 1 VC; colibri: 1 VC)
 test_fold.adb:53:31: medium: divide by zero might fail
 test_fold.adb:53:46: info: cannot unroll loop (too many loop iterations)
 test_fold.adb:61:33: info: loop invariant initialization proved (CVC5: 1 VC)
