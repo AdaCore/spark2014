@@ -27,7 +27,7 @@ signed.adb:24:09: warning: assuming "Shift_Right" always returns
 signed.adb:24:09: warning: assuming "Shift_Right" has no effect on global items
 signed.adb:24:09: warning: no Global contract available for "Shift_Right"
 signed.adb:24:09: warning: no returning annotation available for "Shift_Right"
-signed.adb:25:19: info: assertion proved (CVC5: 1 VC)
+signed.adb:25:19: info: assertion proved (colibri: 1 VC)
 signed.adb:25:25: info: division check proved (CVC5: 1 VC)
 signed.adb:27:09: warning: assuming "Shift_Right" always returns
 signed.adb:27:09: warning: assuming "Shift_Right" has no effect on global items

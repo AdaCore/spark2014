@@ -71,7 +71,7 @@ x86.adb:722:25: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC
 x86.adb:725:10: info: precondition proved (CVC5: 12 VC; Trivial: 4 VC)
 x86.adb:726:10: medium: precondition might fail, cannot prove ReadMem64(RDI) = RAX
 x86.adb:728:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-x86.adb:728:32: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+x86.adb:730:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:731:32: info: loop invariant initialization proved (CVC5: 1 VC)
 x86.adb:731:32: info: loop invariant preservation proved (CVC5: 1 VC)
 x86.adb:732:32: info: loop invariant initialization proved (CVC5: 1 VC)

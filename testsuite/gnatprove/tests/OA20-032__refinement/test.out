@@ -79,7 +79,7 @@ patris.adb:408:07: info: initialization of "Success" proved
 patris.adb:419:13: info: precondition proved (CVC5: 2 VC)
 patris.adb:421:57: info: overflow check proved (CVC5: 2 VC)
 patris.adb:432:56: info: division check proved (CVC5: 1 VC)
-patris.adb:432:64: info: range check proved (CVC5: 2 VC)
+patris.adb:432:64: info: range check proved (altergo: 2 VC)
 patris.adb:434:41: info: division check proved (CVC5: 1 VC)
 patris.ads:33:03: info: flow dependencies proved
 patris.ads:59:11: info: data dependencies proved

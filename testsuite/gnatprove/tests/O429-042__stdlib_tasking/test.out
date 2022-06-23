@@ -77,7 +77,7 @@ ada_real_time.ads:133:58: info: division check proved (CVC5: 1 VC)
 ada_real_time.ads:133:58: info: overflow check proved (CVC5: 2 VC)
 ada_real_time.ads:133:58: info: range check proved (CVC5: 2 VC)
 ada_real_time.ads:134:56: info: division check proved (CVC5: 1 VC)
-ada_real_time.ads:134:56: info: overflow check proved (CVC5: 2 VC)
+ada_real_time.ads:134:56: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 ada_real_time.ads:136:22: warning: assuming "<" always returns
 ada_real_time.ads:136:22: warning: no returning annotation available for "<"
 ada_real_time.ads:137:27: info: implicit function contract not available for proof ("To_Duration" might not return)
@@ -89,7 +89,7 @@ ada_real_time.ads:138:59: info: division check proved (CVC5: 1 VC)
 ada_real_time.ads:138:59: info: overflow check proved (CVC5: 2 VC)
 ada_real_time.ads:138:59: info: range check proved (CVC5: 2 VC)
 ada_real_time.ads:139:56: info: division check proved (CVC5: 1 VC)
-ada_real_time.ads:139:56: info: overflow check proved (CVC5: 2 VC)
+ada_real_time.ads:139:56: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 ada_real_time.ads:142:19: warning: assuming ">" always returns
 ada_real_time.ads:142:19: warning: no returning annotation available for ">"
 ada_real_time.ads:144:16: medium: precondition might fail
@@ -104,7 +104,7 @@ ada_real_time.ads:147:61: info: division check proved (CVC5: 1 VC)
 ada_real_time.ads:147:61: info: overflow check proved (CVC5: 2 VC)
 ada_real_time.ads:147:61: info: range check proved (CVC5: 2 VC)
 ada_real_time.ads:148:58: info: division check proved (CVC5: 1 VC)
-ada_real_time.ads:148:58: info: overflow check proved (CVC5: 2 VC)
+ada_real_time.ads:148:58: info: overflow check proved (altergo: 2 VC)
 ada_real_time.ads:150:22: warning: assuming "<" always returns
 ada_real_time.ads:150:22: warning: no returning annotation available for "<"
 ada_real_time.ads:151:27: info: implicit function contract not available for proof ("To_Duration" might not return)

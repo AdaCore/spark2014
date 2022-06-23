@@ -7,13 +7,13 @@ main.adb:29:07: warning: assuming "Rand" has no effect on global items
 main.adb:29:07: warning: no Global contract available for "Rand"
 main.adb:29:07: warning: no returning annotation available for "Rand"
 main.adb:30:08: medium: in inlined predicate at main.adb:11
-main.adb:30:08: medium: predicate check might fail, cannot prove T.F >= 0
+main.adb:30:08: medium: predicate check might fail, cannot prove T.F >= 0 (e.g. when X = (F => 0, G => 0))
 main.adb:31:10: warning: assuming "Rand" always returns
 main.adb:31:10: warning: assuming "Rand" has no effect on global items
 main.adb:31:10: warning: no Global contract available for "Rand"
 main.adb:31:10: warning: no returning annotation available for "Rand"
 main.adb:32:08: medium: in inlined predicate at main.adb:12
-main.adb:32:08: medium: predicate check might fail, cannot prove T.G >= 0
+main.adb:32:08: medium: predicate check might fail, cannot prove T.G >= 0 (e.g. when X = (F => 0, G => 0))
 main.adb:33:10: warning: assuming "Rand" always returns
 main.adb:33:10: warning: assuming "Rand" has no effect on global items
 main.adb:33:10: warning: no Global contract available for "Rand"
