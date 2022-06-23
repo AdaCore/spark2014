@@ -1,6 +1,8 @@
 with Ada.Text_IO;
 with Ada.Integer_Text_IO;
-procedure Example is
+procedure Example with
+  Annotate => (GNATprove, Might_Not_Return)
+is
 
    Limit : constant Integer := 1_000;
 

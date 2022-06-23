@@ -7,3 +7,7 @@ use_geometry.adb:14:05: medium: precondition might fail
   possible fix: call at line 13 should mention S (for argument S) in a postcondition
    13 |   S.Set_Default_No_Post;
       |    ^ here
+geometry.ads:10:13: info: subprogram "Valid" will terminate, terminating annotation has been proved
+geometry.ads:28:13: info: subprogram "Valid" will terminate, terminating annotation has been proved
+geometry.ads:37:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:41:20: info: class-wide postcondition is stronger than overridden one

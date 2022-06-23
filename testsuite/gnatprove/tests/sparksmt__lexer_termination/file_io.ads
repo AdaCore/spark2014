@@ -28,7 +28,6 @@ private with Ada.Streams.Stream_IO;
 
 package File_IO with
   SPARK_Mode,
-  Pure,
   Annotate => (GNATprove, Always_Return)
 is
 
@@ -45,16 +44,19 @@ is
       end case;
    end record;
 
-   function Size (F : File) return Natural;
+   function Size (F : File) return Natural
+   with Global => null;
    --  The size of the file.
 
    function Index (F : File) return Natural
-   with Post => Index'Result <= Size (F);
+   with Post => Index'Result <= Size (F),
+        Global => null;
    --  The position of the last character read.
 
    procedure Open_Read (Filename : String;
                         F        : out File)
-   with Post => Index (F) = 0;
+   with Post => Index (F) = 0,
+        Global => null;
    --  Open the given file for reading.
 
    procedure Read (F : in out File;
@@ -63,12 +65,14 @@ is
         Post => Size (F) = Size (F)'Old and
                 Index (F) <= Size (F) and
                 (R.Status /= Success or (Index (F) = Index (F)'Old + 1)) and
-                (R.Status  = Success or (Index (F) = Index (F)'Old));
+                (R.Status  = Success or (Index (F) = Index (F)'Old)),
+        Global => null;
    --  Attempt to read a single character. If we were successful, index
    --  increases by 1, otherwise it stays the same. This is written a bit
    --  awkwardly as we can use an if expression here.
 
-   procedure Close (F : in out File);
+   procedure Close (F : in out File)
+   with Global => null;
    --  Close the file.
 
 private

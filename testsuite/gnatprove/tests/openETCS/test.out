@@ -1,16 +1,24 @@
-a-cfhama.ads:400:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
-a-cfhama.ads:400:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:406:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
-a-cfhama.ads:425:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:463:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:776:39: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:785:17: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:815:20: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:830:20: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at com_map.ads:30
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at com_map.ads:30
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:113, in instantiation at com_map.ads:30
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:113, in instantiation at com_map.ads:30
+a-cfhama.ads:400:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at com_map.ads:30
+a-cfhama.ads:402:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
+a-cfhama.ads:402:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:406:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at com_map.ads:30
+a-cfhama.ads:408:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
+a-cfhama.ads:427:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:465:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:778:39: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:787:17: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:817:20: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:832:20: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at com_map.ads:30
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at com_map.ads:30
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at com_map.ads:30
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at com_map.ads:30
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at com_map.ads:30
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfhama.ads:115, in instantiation at com_map.ads:30
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:115, in instantiation at com_map.ads:30
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhama.ads:115, in instantiation at com_map.ads:30
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhama.ads:115, in instantiation at com_map.ads:30
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at com_map.ads:30
 com_map.ads:39:22: info: precondition proved (CVC5: 1 VC)
 deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
 deceleration_curve.adb:37:25: info: assertion proved (CVC5: 4 VC)
@@ -48,16 +56,24 @@ deceleration_curve.adb:90:46: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
 deceleration_curve.adb:105:09: medium: precondition might fail [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
+deceleration_curve.adb:106:10: warning: assuming "Put" always returns
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:106:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:106:10: warning: no returning annotation available for "Put"
+deceleration_curve.adb:107:10: warning: assuming "Put" always returns
 deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:107:10: warning: no returning annotation available for "Put"
+deceleration_curve.adb:108:10: warning: assuming "Put" always returns
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:108:10: warning: no returning annotation available for "Put"
 deceleration_curve.adb:109:12: medium: in inlined expression function body at units.ads:42
 deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:110:10: warning: assuming "New_Line" always returns
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
+deceleration_curve.adb:110:10: warning: no returning annotation available for "New_Line"
 deceleration_curve.ads:28:06: info: precondition proved (CVC5: 2 VC)
 deceleration_curve.ads:81:32: medium: "Braking_Curve.curve" might not be initialized in "Curve_From_Target" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Braking_Curve.curve" on all paths, make "Braking_Curve" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect

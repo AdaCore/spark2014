@@ -1,6 +1,8 @@
 with Ada.Integer_Text_IO;
 with Ada.Text_IO;
-procedure Generic_Examples is
+procedure Generic_Examples with
+  Annotate => (GNATprove, Might_Not_Return)
+is
 
    function Count (Source  : in String;
                    Pattern : in Character) return Natural with Global => null is

@@ -1,5 +1,7 @@
 with Ada.Text_IO;
-procedure Good_Types is
+procedure Good_Types with
+  Annotate => (GNATprove, Might_Not_Return)
+is
    -- Declarations of two floating point types
    type Feet   is digits 4 range 0.0 .. 100.0;
    type Inches is digits 3 range 0.0 .. 12.0;

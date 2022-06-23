@@ -1,10 +1,14 @@
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at tree_model.ads:22
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_trees.adb:10
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:78
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:22
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at tree_model.ads:22
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:22
 binary_trees.adb:19:08: info: postcondition proved (CVC5: 2 VC)
 binary_trees.adb:20:20: info: predicate check proved (Trivial: 1 VC)
 binary_trees.adb:23:07: info: initialization of "S" proved

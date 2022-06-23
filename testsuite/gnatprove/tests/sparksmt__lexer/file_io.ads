@@ -28,7 +28,6 @@ private with Ada.Streams.Stream_IO;
 
 package File_IO with
   SPARK_Mode,
-  Pure,
   Annotate => (GNATprove, Always_Return)
 is
 
@@ -46,15 +45,18 @@ is
    end record;
 
    procedure Open_Read (Filename : String;
-                        F        : out File);
+                        F        : out File)
+   with Global => null;
    --  Open the given file for reading.
 
    procedure Read (F : in out File;
                    R :    out Read_Result)
-   with Pre => not R'Constrained;
+   with Pre    => not R'Constrained,
+        Global => null;
    --  Attempt to read a single character.
 
-   procedure Close (F : in out File);
+   procedure Close (F : in out File)
+   with Global => null;
    --  Close the file.
 
 private

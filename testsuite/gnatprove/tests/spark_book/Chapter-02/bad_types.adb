@@ -1,5 +1,7 @@
 with Ada.Float_Text_IO;
-procedure Bad_Types is
+procedure Bad_Types with
+  Annotate => (GNATprove, Might_Not_Return)
+is
    Room_Length    : Float;   -- length of room in feet
    Wall_Thickness : Float;   -- thickness of wall in inches
    Total          : Float;   -- in feet

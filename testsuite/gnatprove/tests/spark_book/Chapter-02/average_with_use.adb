@@ -1,8 +1,10 @@
 with Ada.Text_IO;          use Ada.Text_IO;
 with Ada.Integer_Text_IO;  use Ada.Integer_Text_IO;
 with Ada.Float_Text_IO;    use Ada.Float_Text_IO;
-procedure Average is  -- Shorter version with "use clauses"
-   -- Display the average of two integers entered by the user
+procedure Average with                      -- Shorter version with "use clauses"
+  Annotate => (GNATprove, Might_Not_Return) -- Display the average of two integers entered
+is                                          -- by the user.
+
    A : Integer;   -- The first integer
    B : Integer;   -- The second integer
    M : Float;     -- The average of the two integers

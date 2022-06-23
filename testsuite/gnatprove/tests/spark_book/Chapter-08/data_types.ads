@@ -1,7 +1,10 @@
 
 package Data_Types is
    type Time_Type is private;
-   function Time_Initializer return Time_Type;
+   function Time_Initializer return Time_Type
+     with
+       Global => null,
+       Annotate => (GNATprove, Always_Return);
 
    type Temperature_Type is range 0 .. 2**12 - 1;  -- 12 bit ADC output.
 

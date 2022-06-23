@@ -1,6 +1,8 @@
 with Ada.Text_IO;          use Ada.Text_IO;
 with Ada.Integer_Text_IO;  use Ada.Integer_Text_IO;
-procedure Enum_Example is
+procedure Enum_Example with
+  Annotate => (GNATprove, Might_Not_Return)
+is
    --Declaration of three enumeration types
    type Day_Type is (Monday, Tuesday, Wednesday, Thursday,
                      Friday, Saturday, Sunday);
