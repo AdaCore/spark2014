@@ -393,9 +393,6 @@ class SPARKTestFinder(TestFinder):
         if self.pattern and not self.test_contains_pattern(dirpath, self.pattern):
             return None
 
-        if testname.startswith("ug__"):
-            return ParsedTest(testname, UGTestDriver, {}, dirpath)
-
         # We read the test.yaml file if present and load it into the
         # environment
         test_env = None
@@ -410,9 +407,6 @@ class SPARKTestFinder(TestFinder):
         if test_env is None:
             test_env = {}
 
-        if "__rac" in testname:
-            return ParsedTest(testname, RACTestDriver, {}, dirpath)
-
         # If this is not a large test, but only large was requested, skip
         # test. The "always_fail" test is exempted from this check to include
         # it in both large and non-large testsuites.
@@ -423,6 +417,12 @@ class SPARKTestFinder(TestFinder):
         ):
 
             return None
+
+        if testname.startswith("ug__"):
+            return ParsedTest(testname, UGTestDriver, {}, dirpath)
+
+        if "__rac" in testname:
+            return ParsedTest(testname, RACTestDriver, {}, dirpath)
 
         # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
         # otherwise we use the proof/flow driver
