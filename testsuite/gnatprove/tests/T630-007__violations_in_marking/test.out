@@ -41,6 +41,7 @@ bad_inheritance.ads:17:13: error: subprogram inherited from root and interface i
 bad_inheritance.ads:27:13: error: subprogram inherited from root and interface is not yet supported
 bad_inheritance.ads:29:09: error: "Bad_Inter" is not allowed in SPARK
 bad_inheritance.ads:29:09: error: violation of aspect SPARK_Mode at line 2
+bad_inheritance.ads:34:28: warning: "X" may be referenced before it has a value [enabled by default]
 bad_inv_placement.adb:6:10: error: nested packages before loop-invariant is not yet supported
 bad_inv_placement.adb:9:10: error: nested subprogram before loop-invariant is not yet supported
 bad_iterators.adb:30:27: error: iterator specification is not allowed in SPARK (SPARK RM 5.5.2)
