@@ -1,34 +1,244 @@
 basicmath_small.adb:28:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:28:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:31:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:31:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:34:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:34:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:37:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:37:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:40:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:40:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:40:27: warning: assuming "EBX" always returns
+basicmath_small.adb:40:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:51:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:51:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:51:74: warning: assuming "EBX" always returns
+basicmath_small.adb:51:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:52:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:52:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:52:74: warning: assuming "EBX" always returns
+basicmath_small.adb:52:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:53:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:53:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:53:74: warning: assuming "EBX" always returns
+basicmath_small.adb:53:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:55:37: warning: assuming "EBX" always returns
+basicmath_small.adb:55:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:56:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:56:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:57:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:57:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:58:41: warning: assuming "EBX" always returns
+basicmath_small.adb:58:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:67:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:67:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:70:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:70:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:73:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:73:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:76:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:76:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:79:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:79:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:79:27: warning: assuming "EBX" always returns
+basicmath_small.adb:79:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:90:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:90:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:90:74: warning: assuming "EBX" always returns
+basicmath_small.adb:90:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:91:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:91:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:91:74: warning: assuming "EBX" always returns
+basicmath_small.adb:91:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:92:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:92:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:92:74: warning: assuming "EBX" always returns
+basicmath_small.adb:92:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:94:37: warning: assuming "EBX" always returns
+basicmath_small.adb:94:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:95:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:95:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:96:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:96:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:97:41: warning: assuming "EBX" always returns
+basicmath_small.adb:97:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:106:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:106:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:109:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:109:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:112:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:112:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:115:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:115:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:118:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:118:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:118:27: warning: assuming "EBX" always returns
+basicmath_small.adb:118:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:129:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:129:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:129:74: warning: assuming "EBX" always returns
+basicmath_small.adb:129:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:130:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:130:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:130:74: warning: assuming "EBX" always returns
+basicmath_small.adb:130:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:131:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:131:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:131:74: warning: assuming "EBX" always returns
+basicmath_small.adb:131:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:133:37: warning: assuming "EBX" always returns
+basicmath_small.adb:133:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:134:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:134:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:135:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:135:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:136:41: warning: assuming "EBX" always returns
+basicmath_small.adb:136:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:145:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:145:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:149:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:149:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:152:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:152:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:155:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:155:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:158:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:158:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:158:27: warning: assuming "EBX" always returns
+basicmath_small.adb:158:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:169:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:169:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:169:74: warning: assuming "EBX" always returns
+basicmath_small.adb:169:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:170:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:170:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:170:74: warning: assuming "EBX" always returns
+basicmath_small.adb:170:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:171:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:171:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:171:74: warning: assuming "EBX" always returns
+basicmath_small.adb:171:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:173:37: warning: assuming "EBX" always returns
+basicmath_small.adb:173:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:174:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:174:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:175:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:175:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:176:41: warning: assuming "EBX" always returns
+basicmath_small.adb:176:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:185:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:185:32: info: loop invariant preservation proved (CVC5: 1 VC)
+basicmath_small.adb:188:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:188:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:191:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:191:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:194:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:194:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:197:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:197:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:197:27: warning: assuming "EBX" always returns
+basicmath_small.adb:197:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:208:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:208:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:208:74: warning: assuming "EBX" always returns
+basicmath_small.adb:208:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:209:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:209:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:209:74: warning: assuming "EBX" always returns
+basicmath_small.adb:209:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:210:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:210:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:210:74: warning: assuming "EBX" always returns
+basicmath_small.adb:210:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:212:37: warning: assuming "EBX" always returns
+basicmath_small.adb:212:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:213:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:213:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:214:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:214:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:215:41: warning: assuming "EBX" always returns
+basicmath_small.adb:215:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:224:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:224:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:225:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:230:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:238:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:238:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:241:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:241:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:247:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:247:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:250:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:250:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:253:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:253:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:261:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:261:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:264:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:264:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:272:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:272:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:272:27: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:272:27: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:275:30: warning: assuming "EAX" always returns
+basicmath_small.adb:275:30: warning: no returning annotation available for "EAX"
+basicmath_small.adb:276:30: warning: assuming "EAX" always returns
+basicmath_small.adb:276:30: warning: no returning annotation available for "EAX"
 basicmath_small.adb:281:10: warning: "ZeroFlag" is set by "loop_5d" but not used after the call
+basicmath_small.adb:284:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:284:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:292:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:292:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:301:37: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:301:37: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:304:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:304:13: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:314:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:314:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:315:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:324:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:326:25: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:326:25: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:332:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:332:13: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:334:10: warning: "ZeroFlag" is set by "loop_5c" but not used after the call
+basicmath_small.adb:337:25: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:337:25: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:346:37: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:346:37: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:349:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:349:13: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:359:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:359:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:360:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:373:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:375:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:375:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:381:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:381:13: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:383:10: warning: "ZeroFlag" is set by "loop_5b" but not used after the call
+basicmath_small.adb:386:25: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:386:25: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:395:37: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:395:37: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:398:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:398:13: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:408:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:408:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:409:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:426:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:428:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:428:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:434:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:434:13: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:436:10: warning: "XMM7" is set by "loop_5a" but not used after the call
 basicmath_small.adb:436:10: warning: "ZeroFlag" is set by "loop_5a" but not used after the call
+basicmath_small.adb:439:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:439:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:448:37: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:448:37: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:451:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:451:13: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:461:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:461:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:462:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -38,14 +248,74 @@ basicmath_small.adb:482:10: warning: "CarryFlag" is set by "usqrt" but not used 
 basicmath_small.adb:482:10: warning: "OverflowFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:482:10: warning: "SignFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:482:10: warning: "ZeroFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:485:13: warning: assuming "Write_EDX" always returns
+basicmath_small.adb:485:13: warning: no returning annotation available for "Write_EDX"
+basicmath_small.adb:485:27: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:485:27: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:488:13: warning: assuming "Write_ESI" always returns
+basicmath_small.adb:488:13: warning: no returning annotation available for "Write_ESI"
+basicmath_small.adb:488:27: warning: assuming "EBX" always returns
+basicmath_small.adb:488:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:491:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:491:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:494:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:494:13: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:522:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:522:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:523:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:528:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:531:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:531:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:537:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:537:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:540:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:540:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:543:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:543:13: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:549:25: warning: assuming "SafeDivision64" always returns
+basicmath_small.adb:549:25: warning: assuming "SafeDivision64" has no effect on global items
+basicmath_small.adb:549:25: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:549:25: warning: no returning annotation available for "SafeDivision64"
+basicmath_small.adb:549:54: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:549:54: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:557:25: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:557:25: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:560:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:560:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:560:27: warning: assuming "EBX" always returns
+basicmath_small.adb:560:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:563:29: warning: assuming "EBX" always returns
+basicmath_small.adb:563:29: warning: no returning annotation available for "EBX"
+basicmath_small.adb:566:37: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:566:37: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:576:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:576:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:577:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:582:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:584:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:584:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:590:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:590:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:593:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:593:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:596:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:596:13: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:602:25: warning: assuming "SafeDivision64" always returns
+basicmath_small.adb:602:25: warning: assuming "SafeDivision64" has no effect on global items
+basicmath_small.adb:602:25: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:602:25: warning: no returning annotation available for "SafeDivision64"
+basicmath_small.adb:602:54: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:602:54: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:610:25: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:610:25: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:613:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:613:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:613:27: warning: assuming "EBX" always returns
+basicmath_small.adb:613:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:616:29: warning: assuming "EBX" always returns
+basicmath_small.adb:616:29: warning: no returning annotation available for "EBX"
+basicmath_small.adb:619:36: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:619:36: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:628:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:628:39: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:629:07: warning: initialization of "ra0" has no effect

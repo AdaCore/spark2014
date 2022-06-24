@@ -7,32 +7,108 @@ basicmath_small.adb:49:10: warning: "CarryFlag" is set by "usqrt" but not used a
 basicmath_small.adb:49:10: warning: "OverflowFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:49:10: warning: "SignFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:49:10: warning: "ZeroFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:52:13: warning: assuming "Write_EDX" always returns
+basicmath_small.adb:52:13: warning: no returning annotation available for "Write_EDX"
+basicmath_small.adb:52:27: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:52:27: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:55:13: warning: assuming "Write_ESI" always returns
+basicmath_small.adb:55:13: warning: no returning annotation available for "Write_ESI"
+basicmath_small.adb:55:27: warning: assuming "EBX" always returns
+basicmath_small.adb:55:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:58:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:58:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:61:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:61:13: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:89:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:89:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:90:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:95:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:98:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:98:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:104:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:104:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:107:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:107:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:110:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:110:13: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:116:25: warning: assuming "SafeDivision64" always returns
+basicmath_small.adb:116:25: warning: assuming "SafeDivision64" has no effect on global items
+basicmath_small.adb:116:25: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:116:25: warning: no returning annotation available for "SafeDivision64"
+basicmath_small.adb:116:54: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:116:54: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:124:25: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:124:25: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:127:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:127:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:127:27: warning: assuming "EBX" always returns
+basicmath_small.adb:127:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:130:29: warning: assuming "EBX" always returns
+basicmath_small.adb:130:29: warning: no returning annotation available for "EBX"
+basicmath_small.adb:133:37: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:133:37: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:143:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:143:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:144:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:149:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:151:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:151:26: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:157:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:157:13: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:160:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:160:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:163:13: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:163:13: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:169:25: warning: assuming "SafeDivision64" always returns
+basicmath_small.adb:169:25: warning: assuming "SafeDivision64" has no effect on global items
+basicmath_small.adb:169:25: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:169:25: warning: no returning annotation available for "SafeDivision64"
+basicmath_small.adb:169:54: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:169:54: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:177:25: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:177:25: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:180:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:180:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:180:27: warning: assuming "EBX" always returns
+basicmath_small.adb:180:27: warning: no returning annotation available for "EBX"
+basicmath_small.adb:183:29: warning: assuming "EBX" always returns
+basicmath_small.adb:183:29: warning: no returning annotation available for "EBX"
+basicmath_small.adb:186:36: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:186:36: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:195:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:195:39: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:196:07: warning: initialization of "ra0" has no effect
 basicmath_small.adb:196:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:196:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:196:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:197:07: warning: initialization of "ra1" has no effect
 basicmath_small.adb:197:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:197:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:197:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:198:07: warning: initialization of "ra2" has no effect
 basicmath_small.adb:198:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:198:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:198:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:199:07: warning: initialization of "ra3" has no effect
 basicmath_small.adb:199:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:199:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:199:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:200:07: warning: initialization of "ra4" has no effect
 basicmath_small.adb:200:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:200:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:200:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:201:07: warning: initialization of "ra5" has no effect
 basicmath_small.adb:201:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:201:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:201:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:202:07: warning: initialization of "ra6" has no effect
 basicmath_small.adb:202:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:202:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:202:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:203:07: warning: initialization of "ra7" has no effect
 basicmath_small.adb:203:29: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:203:29: warning: assuming "ReadMem8" always returns
+basicmath_small.adb:203:29: warning: no returning annotation available for "ReadMem8"
 basicmath_small.adb:204:07: warning: initialization of "SaveRBX" has no effect
 basicmath_small.adb:204:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:205:07: warning: initialization of "SaveRBP" has no effect
@@ -45,63 +121,261 @@ basicmath_small.adb:208:07: warning: initialization of "SaveR14" has no effect
 basicmath_small.adb:208:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:209:07: warning: initialization of "SaveR15" has no effect
 basicmath_small.adb:209:34: info: range check proved (CVC5: 1 VC)
+basicmath_small.adb:215:10: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:215:10: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:219:10: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:219:10: warning: no returning annotation available for "WriteMem64"
 basicmath_small.adb:223:10: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:223:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:223:10: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:223:10: warning: statement has no effect
+basicmath_small.adb:226:10: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:226:10: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:230:10: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:230:10: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:234:10: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:234:10: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:238:10: warning: assuming "WriteMem64" always returns
+basicmath_small.adb:238:10: warning: no returning annotation available for "WriteMem64"
+basicmath_small.adb:242:10: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:242:10: warning: no returning annotation available for "Write_EBX"
 basicmath_small.adb:253:15: warning: unused assignment
 basicmath_small.adb:259:15: warning: unused assignment
 basicmath_small.adb:262:16: warning: unused assignment
+basicmath_small.adb:262:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:262:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:265:16: warning: unused assignment
+basicmath_small.adb:265:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:265:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:268:16: warning: unused assignment
+basicmath_small.adb:268:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:268:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:271:16: warning: unused assignment
+basicmath_small.adb:271:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:271:23: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:280:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:280:10: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:283:10: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:283:10: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:291:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:291:10: warning: no returning annotation available for "Write_EDI"
+basicmath_small.adb:291:25: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:291:25: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:291:53: warning: assuming "ESP" always returns
+basicmath_small.adb:291:53: warning: no returning annotation available for "ESP"
+basicmath_small.adb:294:29: warning: assuming "EDI" always returns
+basicmath_small.adb:294:29: warning: no returning annotation available for "EDI"
+basicmath_small.adb:294:43: warning: assuming "EDI" always returns
+basicmath_small.adb:294:43: warning: no returning annotation available for "EDI"
+basicmath_small.adb:295:29: warning: assuming "EDI" always returns
+basicmath_small.adb:295:29: warning: no returning annotation available for "EDI"
+basicmath_small.adb:295:43: warning: assuming "EDI" always returns
+basicmath_small.adb:295:43: warning: no returning annotation available for "EDI"
 basicmath_small.adb:296:21: warning: unused assignment
 basicmath_small.adb:302:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:302:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:305:19: warning: unused assignment
+basicmath_small.adb:305:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:305:26: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:308:13: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:308:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:308:13: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:308:13: warning: statement has no effect
+basicmath_small.adb:311:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:311:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:314:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:314:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:314:27: warning: assuming "EBX" always returns
+basicmath_small.adb:314:27: warning: no returning annotation available for "EBX"
 basicmath_small.adb:317:18: warning: unused assignment
+basicmath_small.adb:325:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:325:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:325:74: warning: assuming "EBX" always returns
+basicmath_small.adb:325:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:326:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:326:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:326:74: warning: assuming "EBX" always returns
+basicmath_small.adb:326:74: warning: no returning annotation available for "EBX"
 basicmath_small.adb:327:24: warning: unused assignment
+basicmath_small.adb:327:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:327:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:327:74: warning: assuming "EBX" always returns
+basicmath_small.adb:327:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:329:37: warning: assuming "EBX" always returns
+basicmath_small.adb:329:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:330:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:330:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:331:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:331:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:332:41: warning: assuming "EBX" always returns
+basicmath_small.adb:332:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:338:10: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:338:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:338:10: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:338:10: warning: statement has no effect
+basicmath_small.adb:341:10: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:341:10: warning: no returning annotation available for "Write_EBX"
 basicmath_small.adb:344:15: warning: unused assignment
 basicmath_small.adb:355:15: warning: unused assignment
 basicmath_small.adb:358:16: warning: unused assignment
+basicmath_small.adb:358:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:358:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:361:16: warning: unused assignment
+basicmath_small.adb:361:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:361:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:364:16: warning: unused assignment
+basicmath_small.adb:364:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:364:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:367:16: warning: unused assignment
+basicmath_small.adb:367:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:367:23: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:375:10: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:375:10: warning: no returning annotation available for "Write_EAX"
 basicmath_small.adb:378:10: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:378:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:378:10: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:378:10: warning: statement has no effect
+basicmath_small.adb:386:10: warning: assuming "Write_ESI" always returns
+basicmath_small.adb:386:10: warning: no returning annotation available for "Write_ESI"
+basicmath_small.adb:386:25: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:386:25: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:386:53: warning: assuming "ESP" always returns
+basicmath_small.adb:386:53: warning: no returning annotation available for "ESP"
+basicmath_small.adb:389:29: warning: assuming "ESI" always returns
+basicmath_small.adb:389:29: warning: no returning annotation available for "ESI"
+basicmath_small.adb:389:43: warning: assuming "ESI" always returns
+basicmath_small.adb:389:43: warning: no returning annotation available for "ESI"
+basicmath_small.adb:390:29: warning: assuming "ESI" always returns
+basicmath_small.adb:390:29: warning: no returning annotation available for "ESI"
+basicmath_small.adb:390:43: warning: assuming "ESI" always returns
+basicmath_small.adb:390:43: warning: no returning annotation available for "ESI"
 basicmath_small.adb:391:21: warning: unused assignment
 basicmath_small.adb:397:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:397:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:400:19: warning: unused assignment
+basicmath_small.adb:400:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:400:26: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:403:13: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:403:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:403:13: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:403:13: warning: statement has no effect
+basicmath_small.adb:406:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:406:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:409:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:409:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:409:27: warning: assuming "EBX" always returns
+basicmath_small.adb:409:27: warning: no returning annotation available for "EBX"
 basicmath_small.adb:412:18: warning: unused assignment
+basicmath_small.adb:420:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:420:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:420:74: warning: assuming "EBX" always returns
+basicmath_small.adb:420:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:421:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:421:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:421:74: warning: assuming "EBX" always returns
+basicmath_small.adb:421:74: warning: no returning annotation available for "EBX"
 basicmath_small.adb:422:24: warning: unused assignment
+basicmath_small.adb:422:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:422:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:422:74: warning: assuming "EBX" always returns
+basicmath_small.adb:422:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:424:37: warning: assuming "EBX" always returns
+basicmath_small.adb:424:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:425:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:425:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:426:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:426:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:427:41: warning: assuming "EBX" always returns
+basicmath_small.adb:427:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:433:10: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:433:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:433:10: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:433:10: warning: statement has no effect
+basicmath_small.adb:436:10: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:436:10: warning: no returning annotation available for "Write_EBX"
 basicmath_small.adb:439:15: warning: unused assignment
 basicmath_small.adb:447:15: warning: unused assignment
 basicmath_small.adb:450:15: warning: unused assignment
 basicmath_small.adb:453:16: warning: unused assignment
+basicmath_small.adb:453:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:453:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:456:16: warning: unused assignment
+basicmath_small.adb:456:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:456:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:459:16: warning: unused assignment
+basicmath_small.adb:459:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:459:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:462:16: warning: unused assignment
+basicmath_small.adb:462:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:462:23: warning: no returning annotation available for "ReadMem64"
+basicmath_small.adb:470:10: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:470:10: warning: no returning annotation available for "Write_EAX"
 basicmath_small.adb:473:10: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:473:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:473:10: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:473:10: warning: statement has no effect
+basicmath_small.adb:481:10: warning: assuming "Write_ECX" always returns
+basicmath_small.adb:481:10: warning: no returning annotation available for "Write_ECX"
+basicmath_small.adb:481:25: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:481:25: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:481:53: warning: assuming "ESP" always returns
+basicmath_small.adb:481:53: warning: no returning annotation available for "ESP"
+basicmath_small.adb:484:29: warning: assuming "ECX" always returns
+basicmath_small.adb:484:29: warning: no returning annotation available for "ECX"
+basicmath_small.adb:484:43: warning: assuming "ECX" always returns
+basicmath_small.adb:484:43: warning: no returning annotation available for "ECX"
+basicmath_small.adb:485:29: warning: assuming "ECX" always returns
+basicmath_small.adb:485:29: warning: no returning annotation available for "ECX"
+basicmath_small.adb:485:43: warning: assuming "ECX" always returns
+basicmath_small.adb:485:43: warning: no returning annotation available for "ECX"
 basicmath_small.adb:486:21: warning: unused assignment
 basicmath_small.adb:492:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:492:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:495:19: warning: unused assignment
+basicmath_small.adb:495:26: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:495:26: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:498:13: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:498:13: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:498:13: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:498:13: warning: statement has no effect
+basicmath_small.adb:501:13: warning: assuming "Write_EAX" always returns
+basicmath_small.adb:501:13: warning: no returning annotation available for "Write_EAX"
+basicmath_small.adb:504:13: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:504:13: warning: no returning annotation available for "Write_EBX"
+basicmath_small.adb:504:27: warning: assuming "EBX" always returns
+basicmath_small.adb:504:27: warning: no returning annotation available for "EBX"
 basicmath_small.adb:507:18: warning: unused assignment
+basicmath_small.adb:515:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:515:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:515:74: warning: assuming "EBX" always returns
+basicmath_small.adb:515:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:516:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:516:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:516:74: warning: assuming "EBX" always returns
+basicmath_small.adb:516:74: warning: no returning annotation available for "EBX"
 basicmath_small.adb:517:24: warning: unused assignment
+basicmath_small.adb:517:31: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:517:31: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:517:74: warning: assuming "EBX" always returns
+basicmath_small.adb:517:74: warning: no returning annotation available for "EBX"
+basicmath_small.adb:519:37: warning: assuming "EBX" always returns
+basicmath_small.adb:519:37: warning: no returning annotation available for "EBX"
+basicmath_small.adb:520:37: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:520:37: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:521:43: warning: assuming "ReadMem32" always returns
+basicmath_small.adb:521:43: warning: no returning annotation available for "ReadMem32"
+basicmath_small.adb:522:41: warning: assuming "EBX" always returns
+basicmath_small.adb:522:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:528:10: warning: "RDI" is set by "Write_EDI" but not used after the call
+basicmath_small.adb:528:10: warning: assuming "Write_EDI" always returns
+basicmath_small.adb:528:10: warning: no returning annotation available for "Write_EDI"
 basicmath_small.adb:528:10: warning: statement has no effect
+basicmath_small.adb:531:10: warning: assuming "Write_EBX" always returns
+basicmath_small.adb:531:10: warning: no returning annotation available for "Write_EBX"
 basicmath_small.adb:534:15: warning: unused assignment
 basicmath_small.adb:542:16: warning: unused assignment
+basicmath_small.adb:542:23: warning: assuming "ReadMem64" always returns
+basicmath_small.adb:542:23: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:545:15: warning: unused assignment
 basicmath_small.adb:548:15: warning: unused assignment
 basicmath_small.adb:551:16: warning: unused assignment

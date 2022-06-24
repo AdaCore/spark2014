@@ -99,9 +99,135 @@ hw-gfx-gma-connector_info.ads:21:07: info: initialization of "Success" proved
 hw-gfx-gma-connector_info.ads:29:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-edp.adb:151:07: info: initialization of "VSwing_Emph" proved
 hw-gfx-gma-connectors-edp.adb:185:07: info: initialization of "DP_CTL_Set" proved
+hw-gfx-gma-connectors-edp.adb:221:11: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:221:11: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:194
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:194
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:195
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:195
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:200
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:200
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:201
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:201
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:202
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:202
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:204
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:204
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:206
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:206
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:208
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:208
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:212
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:212
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:218
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:218
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:219
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:219
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:220
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:220
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:222
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:222
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:223
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:223
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:225
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:225
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:226
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:226
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:227
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:227
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:229
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:229
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:232
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:232
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:343
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:373
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-edp.adb:270:07: info: initialization of "Enabled" proved
+hw-gfx-gma-connectors-edp.adb:296:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:296:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-edp.ads:22:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:73:07: info: initialization of "Success" proved
+hw-gfx-gma-connectors-fdi.adb:103:17: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-fdi.adb:103:17: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-fdi.adb:135:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:210:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:273:07: warning: statement has no effect

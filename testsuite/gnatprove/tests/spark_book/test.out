@@ -64,14 +64,6 @@ bingo_basket.adb:37:30: info: range check proved (CVC5: 2 VC)
 bingo_basket.ads:8:18: info: postcondition proved (CVC5: 1 VC)
 bingo_basket.ads:10:20: info: initialization of "Letter" proved
 bingo_basket.ads:11:20: info: initialization of "Number" proved
-bingo_basket_original.ads:8:22: warning: assuming "Empty" always returns
-bingo_basket_original.ads:8:22: warning: assuming "Empty" has no effect on global items
-bingo_basket_original.ads:8:22: warning: no Global contract available for "Empty"
-bingo_basket_original.ads:8:22: warning: no returning annotation available for "Empty"
-bingo_basket_original.ads:14:21: warning: assuming "Empty" always returns
-bingo_basket_original.ads:14:21: warning: assuming "Empty" has no effect on global items
-bingo_basket_original.ads:14:21: warning: no Global contract available for "Empty"
-bingo_basket_original.ads:14:21: warning: no returning annotation available for "Empty"
 bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue.ads:15]
 bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue.ads:19]
 bounded_queue.adb:38:32: info: division check proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7

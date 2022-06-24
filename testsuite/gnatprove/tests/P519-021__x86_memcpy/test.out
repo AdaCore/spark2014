@@ -1,65 +1,197 @@
+c_library.ads:46:58: warning: assuming "EDI" always returns
+c_library.ads:46:58: warning: no returning annotation available for "EDI"
 memcpy.adb:17:39: info: range check proved (CVC5: 1 VC)
 memcpy.adb:19:07: warning: initialization of "saved_ra" has no effect
 memcpy.adb:19:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:19:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:19:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:20:07: warning: initialization of "ra0" has no effect
 memcpy.adb:20:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:20:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:20:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:21:07: warning: initialization of "ra1" has no effect
 memcpy.adb:21:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:21:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:21:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:22:07: warning: initialization of "ra2" has no effect
 memcpy.adb:22:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:22:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:22:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:23:07: warning: initialization of "ra3" has no effect
 memcpy.adb:23:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:23:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:23:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:24:07: warning: initialization of "ra4" has no effect
 memcpy.adb:24:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:24:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:24:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:25:07: warning: initialization of "ra5" has no effect
 memcpy.adb:25:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:25:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:25:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:26:07: warning: initialization of "ra6" has no effect
 memcpy.adb:26:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:26:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:26:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:27:07: warning: initialization of "ra7" has no effect
 memcpy.adb:27:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:27:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:27:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:28:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:29:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:30:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:35:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:35:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:42:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:42:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:45:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:45:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:48:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:48:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:51:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:51:22: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:54:10: warning: assuming "Write_EAX" always returns
+memcpy.adb:54:10: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:54:26: warning: assuming "EAX" always returns
+memcpy.adb:54:26: warning: no returning annotation available for "EAX"
+memcpy.adb:66:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:66:25: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:69:13: warning: assuming "Write_EAX" always returns
+memcpy.adb:69:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:69:29: warning: assuming "EAX" always returns
+memcpy.adb:69:29: warning: no returning annotation available for "EAX"
+memcpy.adb:81:28: warning: assuming "ReadMem64" always returns
+memcpy.adb:81:28: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:84:16: warning: assuming "Write_EAX" always returns
+memcpy.adb:84:16: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:84:32: warning: assuming "EAX" always returns
+memcpy.adb:84:32: warning: no returning annotation available for "EAX"
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
+memcpy.adb:96:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:96:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:99:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:99:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:102:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:102:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:105:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:105:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:108:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:108:19: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
+memcpy.adb:116:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:116:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:119:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:119:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:122:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:122:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:125:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:125:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:128:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:128:19: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
+memcpy.adb:142:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:142:22: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:145:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:145:22: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:151:21: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
 memcpy.adb:160:21: medium: assertion might fail [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:162:21: warning: assuming "InRange64" always returns
+memcpy.adb:162:21: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:162:21: warning: no Global contract available for "InRange64"
+memcpy.adb:162:21: warning: no returning annotation available for "InRange64"
+memcpy.adb:162:66: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:162:66: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:162:66: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:162:66: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:164:12: medium: assertion might fail, cannot prove X86.Memory(i) = SaveMem(i)
 memcpy.adb:171:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:171:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:171:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:172:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:172:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:172:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:173:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:173:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:173:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:175:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:175:36: warning: assuming "ReadMem64" always returns
+memcpy.adb:175:36: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:176:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:176:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:176:35: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:184:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:184:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:189:28: info: division check proved (CVC5: 2 VC)
 memcpy.adb:207:32: info: loop invariant preservation proved (CVC5: 1 VC)
 memcpy.adb:208:34: medium: loop invariant might fail in first iteration, cannot prove X86.InSafeRegion64(i,X86.RSP+8)
+memcpy.adb:208:37: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:208:37: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:208:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:208:37: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:210:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:211:46: warning: assuming "InRange64" always returns
+memcpy.adb:211:46: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:211:46: warning: no Global contract available for "InRange64"
+memcpy.adb:211:46: warning: no returning annotation available for "InRange64"
+memcpy.adb:212:45: warning: assuming "InRange64" always returns
+memcpy.adb:212:45: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:212:45: warning: no Global contract available for "InRange64"
+memcpy.adb:212:45: warning: no returning annotation available for "InRange64"
 memcpy.adb:213:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:216:50: warning: assuming "ReadMem64" always returns
+memcpy.adb:216:50: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:217:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:217:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:217:50: warning: assuming "ReadMem64" always returns
+memcpy.adb:217:50: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:219:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:219:32: medium: loop invariant might not be preserved by an arbitrary iteration
 memcpy.adb:219:59: info: division check proved (CVC5: 2 VC)
 memcpy.adb:222:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:222:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:222:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:222:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:223:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:223:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:223:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:223:35: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:238:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:238:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:242:23: warning: unused assignment
 memcpy.adb:243:23: warning: unused assignment
+memcpy.adb:258:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:258:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:262:23: warning: unused assignment
 memcpy.adb:263:23: warning: unused assignment
+memcpy.adb:268:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:268:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:271:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:272:37: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:272:37: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:272:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:272:37: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:274:24: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:275:46: warning: assuming "InRange64" always returns
+memcpy.adb:275:46: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:275:46: warning: no Global contract available for "InRange64"
+memcpy.adb:275:46: warning: no returning annotation available for "InRange64"
+memcpy.adb:276:45: warning: assuming "InRange64" always returns
+memcpy.adb:276:45: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:276:45: warning: no Global contract available for "InRange64"
+memcpy.adb:276:45: warning: no returning annotation available for "InRange64"
 memcpy.adb:280:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:280:42: warning: assuming "ReadMem64" always returns
+memcpy.adb:280:42: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:281:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:281:42: warning: assuming "ReadMem64" always returns
+memcpy.adb:281:42: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:283:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:283:51: info: division check proved (CVC5: 1 VC)
 memcpy.adb:285:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
