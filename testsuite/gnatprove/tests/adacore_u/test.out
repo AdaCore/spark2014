@@ -190,13 +190,15 @@ use_stack.adb:11:04: medium: "Stack.P_Stack" might not be initialized after elab
 use_stack.adb:12:19: info: assertion proved (CVC5: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC5: 1 VC)
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
 p_max_array.adb:4:07: info: initialization of "R" proved
 p_max_array.adb:4:07: info: range check proved (CVC5: 2 VC)
 p_max_array.adb:8:33: info: loop invariant initialization proved (CVC5: 2 VC)
@@ -430,13 +432,15 @@ use_file_system.adb:11:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed))
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
 fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
