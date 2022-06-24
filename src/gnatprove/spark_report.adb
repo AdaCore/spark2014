@@ -33,6 +33,35 @@
 --  is in JSON format. The format of these files is documented in the
 --  user's guide.
 
+--  This program reads its configuration via a JSON file on the command line.
+--  The format of this JSON file is as follows:
+
+--  configuration_file = {
+--     "obj_dirs" : list string,
+--     "cmd_line" : list string,
+--     "switches" : list string,
+--     "proof_switches" : proof_switches_entry,
+--     "assumptions" : bool,
+--     "limit_subp" : string,
+--     "output_header" : bool
+--  }
+
+--  proof_switches_entry = {
+--    key : list string
+--  }
+
+--  The meaning of the various fields is as follows:
+--  obj_dirs: list of directories to scan for .spark files
+--  cmd_line: the commandline of gnatprove to record in the gnatprove.out file
+--  switches: the list of switches provided via the Switches attribute
+--  proof_switches: a mapping of keys to lists of strings, as provided via the
+--     Proof_Switches attribute
+--  assumptions: if true, spark_report should generate assumption information
+--  output_header: if true, spark_report should generate a header which
+--    contains information such as switches, gnatprove version, and more.
+--  limit_subp: assumption info should be generated only for this subprogram.
+--    ??? Currently unused
+
 with Ada.Calendar;
 with Ada.Containers;
 with Ada.Command_Line;
@@ -776,39 +805,15 @@ procedure SPARK_Report is
    ------------------------
 
    function Parse_Command_Line return String is
-
       use Ada.Command_Line;
-
-      type String_Ptr is access String;
-      Source_Dirs : String_Ptr;
-
    begin
-      for Index in 1 .. Argument_Count loop
-         declare
-            S : String renames Argument (Index);
-         begin
-            if S = "--assumptions" then
-               Assumptions := True;
-            elsif S = "--output-header" then
-               Output_Header := True;
-            elsif GNATCOLL.Utils.Starts_With (S, "--limit-subp=") then
-
-               --  ??? FIXME --limit-subp currently ignored
-
-               null;
-            elsif GNATCOLL.Utils.Starts_With (S, "--") then
-               Abort_With_Message ("unknown option: " & S);
-            elsif Source_Dirs = null then
-               Source_Dirs := new String'(S);
-            else
-               Abort_With_Message ("more than one file given, aborting");
-            end if;
-         end;
-      end loop;
-      if Source_Dirs = null then
+      if Argument_Count > 1 then
+         Abort_With_Message ("more than one file or option given, aborting");
+      end if;
+      if Argument_Count < 1 then
          Abort_With_Message ("No source directory file given, aborting");
       end if;
-      return Source_Dirs.all;
+      return Argument (1);
    end Parse_Command_Line;
 
    ---------------------------
@@ -1211,6 +1216,17 @@ procedure SPARK_Report is
 --  Start of processing for SPARK_Report
 
 begin
+
+   --  Processing of config options
+
+   Assumptions :=
+     Has_Field (Info, "assumptions")
+     and then (Get (Info, "assumptions") = True);
+   Output_Header :=
+     Has_Field (Info, "output_header")
+     and then (Get (Info, "output_header") = True);
+
+   --  ??? FIXME we are not reading the "limit_subp" field
 
    if Has_Field (Info, "obj_dirs") then
       declare

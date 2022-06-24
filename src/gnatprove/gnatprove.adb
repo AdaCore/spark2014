@@ -645,6 +645,17 @@ procedure Gnatprove with SPARK_Mode is
          end;
       end if;
 
+      if CL_Switches.Assumptions then
+         Set_Field (JSON_Rec, "assumptions", True);
+         if CL_Switches.Limit_Subp.all /= "" then
+            Set_Field (JSON_Rec, "limit_subp", CL_Switches.Limit_Subp.all);
+         end if;
+      end if;
+
+      if CL_Switches.Output_Header then
+         Set_Field (JSON_Rec, "output_header", True);
+      end if;
+
       declare
          Report_Info_File : File_Type;
          Write_Cont       : constant String := Write (JSON_Rec);
@@ -655,16 +666,6 @@ procedure Gnatprove with SPARK_Mode is
       end;
 
       Args.Append (Obj_Dir_Fn);
-      if CL_Switches.Assumptions then
-         Args.Append ("--assumptions");
-         if CL_Switches.Limit_Subp.all /= "" then
-            Args.Append ("--limit-subp=" & CL_Switches.Limit_Subp.all);
-         end if;
-      end if;
-
-      if CL_Switches.Output_Header then
-         Args.Append ("--output-header");
-      end if;
 
       Call_With_Status (Command   => "spark_report",
                         Arguments => Args,
