@@ -6274,6 +6274,13 @@ package body SPARK_Definition is
                      E);
                end if;
 
+               --  Check that the component is not of an anonymous access type
+
+               if Is_Anonymous_Access_Object_Type (Component_Typ) then
+                  Mark_Violation
+                    ("component of anonymous access type", Component_Typ);
+               end if;
+
                --  Check that all index types are in SPARK
 
                while Present (Index) loop
@@ -6650,9 +6657,7 @@ package body SPARK_Definition is
                            --  Check that the component is not of an anonymous
                            --  access type.
 
-                           if Is_Anonymous_Access_Object_Type
-                             (Retysp (Comp_Type))
-                           then
+                           if Is_Anonymous_Access_Object_Type (Comp_Type) then
                               Mark_Violation
                                 ("component of anonymous access type", Comp);
                            end if;

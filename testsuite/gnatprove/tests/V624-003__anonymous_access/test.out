@@ -1,0 +1,7 @@
+pointers.ads:6:05: error: component of anonymous access type is not allowed in SPARK
+pointers.ads:6:05: error: violation of aspect SPARK_Mode at line 2
+pointers.ads:6:10: error: "Object_Ptr_Arr" is not allowed in SPARK (due to component of anonymous access type)
+pointers.ads:6:10: error: violation of aspect SPARK_Mode at line 2
+pointers.ads:9:08: error: component of anonymous access type is not allowed in SPARK
+pointers.ads:9:08: error: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof
