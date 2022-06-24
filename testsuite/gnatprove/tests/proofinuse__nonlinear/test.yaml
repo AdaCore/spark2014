@@ -2,4 +2,3 @@ comment: "Do not use Z3, as the step limit fluctuates too much between platforms
 prove_all:
   prover: ["cvc5", "altergo", "colibri"]
   steps: 800
-  counterexample: False

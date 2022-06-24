@@ -1,4 +1,2 @@
-comment: No counter-examples as there are platform issues in biasdivide
 prove_all:
-  counterexample: False
   codepeer: True

@@ -2,4 +2,3 @@ prove_all:
   codepeer: True
   steps: 10000
   prover: ["cvc5"]
-  counterexample: False

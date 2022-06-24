@@ -1,3 +1,2 @@
 prove_all:
   steps: 4000
-  counterexample: False

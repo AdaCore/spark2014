@@ -1,3 +1,2 @@
 prove_all:
-  counterexample: False
   opt: ["--no-inlining"]

@@ -1,7 +1,7 @@
 pack.adb:25:14: info: add a contract to analyze it separately from calling contexts
 pack.adb:25:14: info: local subprogram "P4" only analyzed in the context of calls
 pack.adb:32:07: info: analyzing call to "P4" in context
-pack.ads:8:19: medium: postcondition might fail [possible fix: call at pack.adb:10 should mention X (for argument X) in a postcondition]
-pack.ads:11:19: medium: postcondition might fail [possible fix: call at pack.adb:15 should mention X (for argument X) in a postcondition]
+pack.ads:8:19: high: postcondition might fail (e.g. when X'Old = False) [possible fix: call at pack.adb:10 should mention X (for argument X) in a postcondition]
+pack.ads:11:19: high: postcondition might fail (e.g. when X'Old = False) [possible fix: call at pack.adb:15 should mention X (for argument X) in a postcondition]
 pack.ads:13:14: warning: subprogram "P3" has no effect
-pack.ads:16:19: medium: postcondition might fail
+pack.ads:16:19: medium: postcondition might fail (e.g. when X'Old = False)

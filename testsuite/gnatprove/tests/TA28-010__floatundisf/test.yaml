@@ -1,3 +1,2 @@
 prove_all:
   prover: ["z3", "cvc5", "altergo", "colibri"]
-  counterexample: False

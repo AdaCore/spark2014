@@ -5,7 +5,6 @@ comment: "The original ticket mentioned an issue in only Mont_Exp_Window, and
 
 prove_all:
   steps: 1
-  counterexample: False
   prover: ["z3"]
   opt: ["--no-axiom-guard"]
 large: True

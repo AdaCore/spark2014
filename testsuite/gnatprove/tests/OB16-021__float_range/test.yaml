@@ -1,3 +1,0 @@
-comment: disable counterexamples which issue irrelevant unreadable values on floats
-prove_all:
-  counterexample: False

@@ -1,5 +1,0 @@
-comment: Do not use alt-ergo which seems to be unsound on this test
-
-prove_all:
-  prover: ["cvc5", "z3"]
-  counterexample: False

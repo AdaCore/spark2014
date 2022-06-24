@@ -536,7 +536,7 @@ parser_utilities.ads:122:09: info: flow dependencies proved
 parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
-process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
+process_dns_request.ads:130:50: high: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
 process_dns_request.ads:223:50: medium: range check might fail, cannot prove lower bound for Nameserver_Name_Length+Mailbox_Name_Length [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: use "and then" instead of "and" in precondition]
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved
@@ -589,7 +589,7 @@ rr_type.adb:100:25: info: range check proved (CVC5: 2 VC)
 rr_type.adb:111:11: info: range check proved (CVC5: 2 VC)
 rr_type.adb:111:36: info: range check proved (CVC5: 2 VC)
 rr_type.adb:112:25: info: index check proved (CVC5: 2 VC)
-rr_type.adb:112:34: medium: array index check might fail [reason for check: value must be a valid index into the array]
+rr_type.adb:112:34: high: array index check might fail (e.g. when I = 1 and S = (2 => 'NUL') and S'First = 2 and S'Last = 2) [reason for check: value must be a valid index into the array]
 rr_type.adb:126:07: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:127:07: info: initialization of "WireVersion" proved
 rr_type.adb:134:10: info: initialization of "Result" proved
@@ -613,7 +613,7 @@ rr_type.ads:81:06: info: postcondition proved (CVC5: 1 VC)
 rr_type.ads:83:18: info: range check proved (CVC5: 2 VC)
 rr_type.ads:85:18: info: index check proved (CVC5: 2 VC)
 rr_type.ads:91:06: info: postcondition proved (CVC5: 1 VC)
-rr_type.ads:93:37: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+rr_type.ads:93:37: high: array index check might fail (e.g. when DomainNameLength'Result = DomainNameStringTypeIndex'Last) [reason for check: result of addition must be a valid index into the array]
 rr_type.ads:94:18: info: range check proved (CVC5: 2 VC)
 rr_type.ads:96:18: info: index check proved (CVC5: 2 VC)
 rr_type.ads:102:06: info: postcondition proved (CVC5: 2 VC)

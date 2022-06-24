@@ -4,5 +4,4 @@ prove_all:
   prover: ["cvc5"]
   opt: ["--no-axiom-guard"]
   steps: 1000
-  counterexample: False
 large: True

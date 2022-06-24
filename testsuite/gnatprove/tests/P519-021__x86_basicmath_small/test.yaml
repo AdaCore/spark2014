@@ -3,5 +3,4 @@ comment: "All VCs here are provable in theory, but there are various encoding is
 prove_all:
   prover: ["cvc5"]
   opt: ["--no-axiom-guard"]
-  counterexample: False
 large: True
