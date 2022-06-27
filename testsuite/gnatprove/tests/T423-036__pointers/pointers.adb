@@ -7,10 +7,10 @@ package body Pointers is
    end Just_Read;
 
    procedure Test is
-      R : Rec;  -- @MEMORY_LEAK:FAIL
-      S : Rec;  -- @MEMORY_LEAK:FAIL
-      T : Rec;  -- @MEMORY_LEAK:FAIL
-      U : Rec;  -- @MEMORY_LEAK:FAIL
+      R : Rec;  -- @RESOURCE_LEAK:FAIL
+      S : Rec;  -- @RESOURCE_LEAK:FAIL
+      T : Rec;  -- @RESOURCE_LEAK:FAIL
+      U : Rec;  -- @RESOURCE_LEAK:FAIL
       A : Int_Acc;
    begin
       R.X := new Integer'(0);
@@ -21,23 +21,23 @@ package body Pointers is
 
       A := new Integer'(0);
       T :=
-        (R with delta X => A);  -- @MEMORY_LEAK:FAIL
+        (R with delta X => A);  -- @RESOURCE_LEAK:FAIL
       T :=
-        (T with delta Y => 0);  -- @MEMORY_LEAK:NONE
+        (T with delta Y => 0);  -- @RESOURCE_LEAK:NONE
       R.X := new Integer'(0);
       A := new Integer'(0);
       U :=
-        R'Update (X => A);  -- @MEMORY_LEAK:FAIL
+        R'Update (X => A);  -- @RESOURCE_LEAK:FAIL
       U :=
-        U'Update (Y => 0);  -- @MEMORY_LEAK:NONE
+        U'Update (Y => 0);  -- @RESOURCE_LEAK:NONE
       T :=
-        ((T with delta Y => 0) with delta Y => 0);  -- @MEMORY_LEAK:NONE
+        ((T with delta Y => 0) with delta Y => 0);  -- @RESOURCE_LEAK:NONE
       A := new Integer'(0);
       T :=
-        ((T with delta Y => 0) with delta X => A);  -- @MEMORY_LEAK:FAIL
+        ((T with delta Y => 0) with delta X => A);  -- @RESOURCE_LEAK:FAIL
       A := new Integer'(0);
       T :=
-        ((T with delta X => A) with delta Y => 0);  -- @MEMORY_LEAK:FAIL
+        ((T with delta X => A) with delta Y => 0);  -- @RESOURCE_LEAK:FAIL
 
       R.X := new Integer'(0);
       Just_Read (R);

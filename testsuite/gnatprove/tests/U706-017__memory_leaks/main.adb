@@ -7,14 +7,14 @@ procedure Main with SPARK_Mode is
    function Rand (X : Integer) return Boolean with Import;
 
    function F return Integer with Global => null is
-      V1 : Int_Acc; --@MEMORY_LEAK:FAIL
-      V2 : Int_Acc; --@MEMORY_LEAK:FAIL
+      V1 : Int_Acc; --@RESOURCE_LEAK:FAIL
+      V2 : Int_Acc; --@RESOURCE_LEAK:FAIL
    begin
       if Rand (0) then
          declare
-            X : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-            Y : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-            Z : Int_Acc;                    --@MEMORY_LEAK:FAIL
+            X : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+            Y : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+            Z : Int_Acc;                    --@RESOURCE_LEAK:FAIL
          begin
             return C : Integer := 13 do
                V1 := X;
@@ -23,9 +23,9 @@ procedure Main with SPARK_Mode is
                   return;
                end if;
                declare
-                  X : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-                  Y : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-                  Z : Int_Acc;                    --@MEMORY_LEAK:FAIL
+                  X : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+                  Y : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+                  Z : Int_Acc;                    --@RESOURCE_LEAK:FAIL
                begin
                   V2 := X;
                   Z := Y;
@@ -41,16 +41,16 @@ procedure Main with SPARK_Mode is
       return 1;
    end;
 
-   V1 : Int_Acc; --@MEMORY_LEAK:FAIL
-   V2 : Int_Acc; --@MEMORY_LEAK:FAIL
-   V3 : Int_Acc; --@MEMORY_LEAK:PASS
-   V4 : Int_Acc; --@MEMORY_LEAK:PASS
+   V1 : Int_Acc; --@RESOURCE_LEAK:FAIL
+   V2 : Int_Acc; --@RESOURCE_LEAK:FAIL
+   V3 : Int_Acc; --@RESOURCE_LEAK:PASS
+   V4 : Int_Acc; --@RESOURCE_LEAK:PASS
 begin
    if Rand (1) then
       declare
-         X : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-         Y : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-         Z : Int_Acc;                    --@MEMORY_LEAK:FAIL
+         X : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+         Y : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+         Z : Int_Acc;                    --@RESOURCE_LEAK:FAIL
       begin
          V1 := X;
          Z := Y;
@@ -58,9 +58,9 @@ begin
       end;
    elsif Rand (2) then
       declare
-         X : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-         Y : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-         Z : Int_Acc;                    --@MEMORY_LEAK:FAIL
+         X : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+         Y : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+         Z : Int_Acc;                    --@RESOURCE_LEAK:FAIL
       begin
          V2 := X;
          Z := Y;
@@ -69,9 +69,9 @@ begin
    elsif Rand (3) then
       for I in 1 .. 1 loop
          declare
-            X : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-            Y : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-            Z : Int_Acc;                    --@MEMORY_LEAK:FAIL
+            X : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+            Y : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+            Z : Int_Acc;                    --@RESOURCE_LEAK:FAIL
          begin
             V3 := X;
             Z := Y;
@@ -81,18 +81,18 @@ begin
    elsif Rand (7) then
       L: for I in 1 .. 1 loop
          declare
-            X : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-            Y : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-            Z : Int_Acc;                    --@MEMORY_LEAK:FAIL
+            X : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+            Y : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+            Z : Int_Acc;                    --@RESOURCE_LEAK:FAIL
          begin
             V3 := X;
             Z := Y;
 
             for I in 1 .. 1 loop
                declare
-                  X : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-                  Y : Int_Acc := new Integer'(1); --@MEMORY_LEAK:PASS
-                  Z : Int_Acc;                    --@MEMORY_LEAK:FAIL
+                  X : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+                  Y : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+                  Z : Int_Acc;                    --@RESOURCE_LEAK:FAIL
                begin
                   V4 := X;
                   Z := Y;

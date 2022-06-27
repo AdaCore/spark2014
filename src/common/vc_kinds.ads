@@ -64,8 +64,8 @@ package VC_Kinds is
 
       VC_Null_Exclusion,
       VC_Dynamic_Accessibility_Check,
-      VC_Memory_Leak,
-      VC_Memory_Leak_At_End_Of_Scope,
+      VC_Resource_Leak,
+      VC_Resource_Leak_At_End_Of_Scope,
 
       VC_Unchecked_Union_Restriction, --  Specific restrictions for types
                                       --  with Unchecked_Union occuring in

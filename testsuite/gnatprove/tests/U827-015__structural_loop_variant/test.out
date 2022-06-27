@@ -221,7 +221,7 @@ main_bad.adb:51:17: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:51:19: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:52:14: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:55:14: info: pointer dereference check proved (CVC5: 1 VC)
-main_bad.adb:55:17: medium: memory leak might occur
+main_bad.adb:55:17: medium: resource or memory leak might occur
 main_bad.adb:55:21: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:55:23: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:63:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -296,13 +296,13 @@ main_bad.adb:152:15: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:152:17: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:152:19: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:153:11: info: pointer dereference check proved (CVC5: 1 VC)
-main_bad.adb:153:14: info: absence of memory leak proved (CVC5: 1 VC)
+main_bad.adb:153:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main_bad.adb:153:33: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:154:16: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:158:45: info: initialization of "R" proved
 main_bad.adb:160:09: info: data dependencies proved
 main_bad.adb:163:11: medium: pointer dereference check might fail [possible fix: subprogram at line 159 should mention L in a precondition]
-main_bad.adb:163:14: info: absence of memory leak proved (CVC5: 1 VC)
+main_bad.adb:163:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main_bad.adb:163:33: medium: pointer dereference check might fail [possible fix: subprogram at line 159 should mention L in a precondition]
 main_bad.adb:167:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:169:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -318,7 +318,7 @@ main_bad.adb:177:44: info: initialization of "R" proved
 main_bad.adb:180:09: info: data dependencies proved
 main_bad.adb:182:17: info: postcondition proved (CVC5: 1 VC)
 main_bad.adb:185:11: info: pointer dereference check proved (CVC5: 1 VC)
-main_bad.adb:185:14: info: absence of memory leak proved (CVC5: 1 VC)
+main_bad.adb:185:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main_bad.adb:185:33: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:188:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:190:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -342,7 +342,7 @@ main_bad.adb:205:15: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:205:17: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:205:19: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:209:14: info: pointer dereference check proved (CVC5: 1 VC)
-main_bad.adb:209:17: info: absence of memory leak proved (CVC5: 1 VC)
+main_bad.adb:209:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main_bad.adb:209:36: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:211:16: info: pointer dereference check proved (CVC5: 1 VC)
 main_illegal.adb:18:45: error: structural loop variant which is not a variable of an anonymous access-to-object type is not allowed in SPARK

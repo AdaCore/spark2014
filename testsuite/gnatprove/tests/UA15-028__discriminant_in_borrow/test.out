@@ -57,10 +57,10 @@ test.adb:27:14: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:32:79: info: dynamic accessibility check proved (Trivial)
 test.adb:36:14: info: dynamic accessibility check proved (Trivial)
 test.adb:36:14: info: null exclusion check proved (CVC5: 1 VC)
-test.adb:39:04: medium: memory leak might occur at end of scope
-test.adb:40:04: medium: memory leak might occur at end of scope
-test.adb:41:04: medium: memory leak might occur at end of scope
-test.adb:42:04: medium: memory leak might occur at end of scope
+test.adb:39:04: medium: resource or memory leak might occur at end of scope
+test.adb:40:04: medium: resource or memory leak might occur at end of scope
+test.adb:41:04: medium: resource or memory leak might occur at end of scope
+test.adb:42:04: medium: resource or memory leak might occur at end of scope
 test.adb:42:41: info: index check proved (CVC5: 2 VC)
 test.adb:42:42: info: range check proved (CVC5: 2 VC)
 test.adb:50:22: info: assertion proved (CVC5: 1 VC)

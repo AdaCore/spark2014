@@ -1,4 +1,4 @@
-loop_borrow.adb:3:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+loop_borrow.adb:3:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 loop_borrow.adb:6:30: info: loop invariant initialization proved (CVC5: 2 VC)
 loop_borrow.adb:6:30: info: loop invariant preservation proved (CVC5: 2 VC)
 loop_borrow.adb:6:51: info: pointer dereference check proved (CVC5: 2 VC)

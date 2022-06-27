@@ -38,6 +38,7 @@ with Namet;                         use Namet;
 with Sinput;                        use Sinput;
 with SPARK_Atree;                   use SPARK_Atree;
 with SPARK_Definition;              use SPARK_Definition;
+with SPARK_Definition.Annotate;     use SPARK_Definition.Annotate;
 with SPARK_Util;                    use SPARK_Util;
 with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
 with SPARK_Util.Types;              use SPARK_Util.Types;
@@ -74,7 +75,8 @@ package body Gnat2Why.Types is
    with Pre => Contains_Allocated_Parts (E)
      and then (Is_Record_Type (E)
                or else Is_Array_Type (E)
-               or else Is_General_Access_Type (E));
+               or else Is_General_Access_Type (E)
+               or else Has_Ownership_Annotation (E));
    --  Create a function to express that all pointers in E are null or moved
    --  and a relation stating that all non pointer parts are preserved.
    --  If Predeclare is True, only emit a declaration and use a local name for
@@ -195,7 +197,8 @@ package body Gnat2Why.Types is
       with Pre => Contains_Allocated_Parts (E)
         and then (Is_Record_Type (E)
                   or else Is_Array_Type (E)
-                  or else Is_General_Access_Type (E));
+                  or else Is_General_Access_Type (E)
+                  or else Has_Ownership_Annotation (E));
       --  Create a function to express the relation between a value of type E
       --  and a previous value of the same object, when moving all pointers
       --  in the object:

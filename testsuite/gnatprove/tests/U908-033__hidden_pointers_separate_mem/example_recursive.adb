@@ -40,8 +40,8 @@ procedure Example_Recursive with SPARK_Mode is
      Ghost;
 
    function Valid_List (L : List) return Boolean is
-     (not Is_Null_Memory (L.M) and then Valid_Memory (Deref (L.M))
-      and then Valid_List (Address (L.F), Address (L.F), L.L, Deref (L.M)))
+     (Valid_Memory (+L.M)
+      and then Valid_List (Address (L.F), Address (L.F), L.L, +L.M))
    with Ghost;
    -- L is a cyclic list
 
@@ -110,7 +110,7 @@ procedure Example_Recursive with SPARK_Mode is
      Ghost;
 
    function Get (L : List; P : Positive) return Natural is
-     (Get (Address (L.F), Address (L.F), P, L.L, Deref (L.M)))
+     (Get (Address (L.F), Address (L.F), P, L.L, +L.M))
    with
      Global => null,
      Pre => Valid_List (L) and then P <= L.L,
@@ -122,7 +122,7 @@ procedure Example_Recursive with SPARK_Mode is
      and then Get (Create'Result, 1) = V;
 
    function Create (V : Natural) return List is
-      M : aliased Memory_Type := New_Memory;
+      M : aliased Memory_Type := Empty_Map;
       F : Pointer;
    begin
       Create (M, L_Cell'(V, Null_Pointer), F);
@@ -132,13 +132,16 @@ procedure Example_Recursive with SPARK_Mode is
 
       declare
          Mem_Access : access Memory_Type := M'Access;
-         F_Ptr      : access Object'Class := Reference (Mem_Access, F);
       begin
-         L_Cell (F_Ptr.all).N := F;
+         declare
+            F_Ptr      : access Object'Class := Reference (Mem_Access, F);
+         begin
+            L_Cell (F_Ptr.all).N := F;
+         end;
       end;
 
-      pragma Assert (Valid_Memory (Deref (M)));
-      pragma Assert (L_Cell (Get (Deref (M), Address (F))).N = F);
+      pragma Assert (Valid_Memory (+M));
+      pragma Assert (L_Cell (Get (+M, Address (F))).N = F);
 
       return (M => M, F => F, L => 1);
    end Create;
@@ -150,10 +153,10 @@ procedure Example_Recursive with SPARK_Mode is
    procedure Add (L : in out List; V : Natural) is
       F_Next : Pointer := L_Cell (Deref (L.M, L.F)).N;
       New_P  : Pointer;
-      M_Old  : constant Memory_Map := Deref (L.M) with Ghost;
+      M_Old  : constant Memory_Map := +L.M with Ghost;
    begin
       Create (L.M, L_Cell'(V, F_Next), New_P);
-      pragma Assert (Valid_Memory (Deref (L.M)));
+      pragma Assert (Valid_Memory (+L.M));
 
       --  Use Reference to convert L.F into an ownership pointer so
       --  its designated value can be updated in place.
@@ -165,20 +168,20 @@ procedure Example_Recursive with SPARK_Mode is
          L_Cell (F_Ptr.all).N := New_P;
       end;
 
-      pragma Assert (Valid_Memory (Deref (L.M)));
-      pragma Assert (L_Cell (Get (Deref (L.M), Address (L.F))).N = New_P);
-      pragma Assert (L_Cell (Get (Deref (L.M), Address (New_P))).N = F_Next);
+      pragma Assert (Valid_Memory (+L.M));
+      pragma Assert (L_Cell (Get (+L.M, Address (L.F))).N = New_P);
+      pragma Assert (L_Cell (Get (+L.M, Address (New_P))).N = F_Next);
 
       if L.L > 1 then
-         Prove_Valid_Preserved (Address (L.F), Address (F_Next), L.L - 1, M_Old, Deref (L.M));
+         Prove_Valid_Preserved (Address (L.F), Address (F_Next), L.L - 1, M_Old, +L.M);
       end if;
 
       L.L := L.L + 1;
    end Add;
 
-   X : List := Create (1);
-   Y : List := Create (1); --@MEMORY_LEAK:FAIL
-   --  No attempt is made to deallocate Y, we have a memory leak
+   X : List := Create (1); --@RESOURCE_LEAK:FAIL
+   Y : List := Create (1); --@RESOURCE_LEAK:FAIL
+   --  No attempt is made to deallocate X and Y, we have a memory leak
 begin
    Add (X, 2);
    Add (X, 3);
@@ -186,7 +189,4 @@ begin
    Add (Y, 3);
    pragma Assert (X.L = 3);
    pragma Assert (Y.L = 3);
-   Free_Memory (X.M); --@PRECONDITION:FAIL
-   --  We try to deallocate the memory without deallocating the pointers, we
-   --  have a failed precondition.
 end Example_Recursive;

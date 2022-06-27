@@ -275,6 +275,21 @@ package Why.Gen.Records is
    --  Generate a Why3 expression that corresponds to an update of the
    --  top-level field for fields.
 
+   function New_Record_Is_Moved_Access
+     (E    : Entity_Id;
+      Name : W_Expr_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an access to the
+   --  is_moved flag of types annotated with ownership.
+
+   function New_Record_Is_Moved_Update
+     (E     : Entity_Id;
+      Name  : W_Prog_Id;
+      Value : W_Prog_Id)
+      return W_Prog_Id;
+   --  Generate a Why3 expression that corresponds to an update to the
+   --  is_moved flag of types annotated with ownership.
+
    function New_Tag_Access
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;

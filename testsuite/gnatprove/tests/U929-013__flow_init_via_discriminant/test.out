@@ -23,7 +23,7 @@ m2.adb:8:22: info: range check proved (CVC5: 2 VC)
 m2.adb:8:22: medium: in default value at m2.adb:14
 m2.adb:8:22: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 1]
 m2.adb:12:11: info: data dependencies proved
-m2.adb:14:16: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+m2.adb:14:16: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 main.adb:3:17: info: initialization of "Y" proved
 main.adb:4:17: info: initialization of "Z" proved
 main.adb:6:03: info: flow dependencies proved
@@ -65,12 +65,12 @@ n.adb:6:24: info: in default value at n.adb:13
 n.adb:6:24: info: in default value at n.adb:16
 n.adb:6:24: info: overflow check proved (CVC5: 2 VC)
 n.adb:6:24: info: overflow check proved (CVC5: 2 VC)
-n.adb:13:04: medium: memory leak might occur at end of scope
+n.adb:13:04: medium: resource or memory leak might occur at end of scope
 n.adb:13:22: info: in default value at n.adb:13
 n.adb:13:22: info: overflow check proved (CVC5: 2 VC)
 n.adb:13:22: info: range check proved (CVC5: 2 VC)
 n.adb:16:19: info: assertion proved (CVC5: 1 VC)
-n.adb:16:22: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+n.adb:16:22: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 n.adb:16:36: info: in default value at n.adb:16
 n.adb:16:36: info: overflow check proved (CVC5: 2 VC)
 n.adb:16:36: info: range check proved (CVC5: 2 VC)

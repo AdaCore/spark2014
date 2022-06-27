@@ -1,9 +1,9 @@
 relaxed.adb:6:33: info: data dependencies proved
-relaxed.adb:13:07: medium: memory leak might occur at end of scope
+relaxed.adb:13:07: medium: resource or memory leak might occur at end of scope
 relaxed.adb:15:22: medium: assertion might fail
 relaxed.adb:15:23: info: pointer dereference check proved (CVC5: 1 VC)
 relaxed.adb:20:33: info: data dependencies proved
-relaxed.adb:27:07: medium: memory leak might occur at end of scope
+relaxed.adb:27:07: medium: resource or memory leak might occur at end of scope
 relaxed.adb:29:22: info: assertion proved (CVC5: 1 VC)
 relaxed.adb:29:23: info: pointer dereference check proved (CVC5: 1 VC)
 relaxed.adb:36:36: info: data dependencies proved

@@ -4574,7 +4574,7 @@ package body SPARK_Util is
             --  If we have reached Param without decreasing, stop the
             --  search. We do not search for assignments to substructures
             --  for Param. It is unlikely to occur in practice as it
-            --  would result in a memory leak.
+            --  would result in a resource leak.
 
             if Var = Param then
                Explanation := To_Unbounded_String

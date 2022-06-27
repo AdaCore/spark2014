@@ -39,10 +39,10 @@ begin
 
       Dealloc (A);
       Dealloc (B.all);
-      Dealloc (B);  -- @MEMORY_LEAK:PASS
+      Dealloc (B);  -- @RESOURCE_LEAK:PASS
       Dealloc (C.all.all);
-      Dealloc (C.all);  -- @MEMORY_LEAK:PASS
-      Dealloc (C);  -- @MEMORY_LEAK:PASS
+      Dealloc (C.all);  -- @RESOURCE_LEAK:PASS
+      Dealloc (C);  -- @RESOURCE_LEAK:PASS
    end;
 
    --  incorrect deallocation
@@ -56,9 +56,9 @@ begin
       B := new T1'(A);
       A := new Integer'(40);
 
-      Dealloc (B);  -- @MEMORY_LEAK:FAIL
+      Dealloc (B);  -- @RESOURCE_LEAK:FAIL
       Dealloc (C.all.all);
-      Dealloc (C);  -- @MEMORY_LEAK:FAIL
+      Dealloc (C);  -- @RESOURCE_LEAK:FAIL
    end;
 
    --  correct deallocation
@@ -82,13 +82,13 @@ begin
 
       Dealloc (G.all.all.X);
       Dealloc (G.all.all.Y.all);
-      Dealloc (G.all.all.Y);  -- @MEMORY_LEAK:PASS
+      Dealloc (G.all.all.Y);  -- @RESOURCE_LEAK:PASS
       Dealloc (G.all.all.Z.all.all);
-      Dealloc (G.all.all.Z.all);  -- @MEMORY_LEAK:PASS
-      Dealloc (G.all.all.Z);  -- @MEMORY_LEAK:PASS
-      Dealloc (G.all.all);  -- @MEMORY_LEAK:PASS
-      Dealloc (G.all);  -- @MEMORY_LEAK:PASS
-      Dealloc (G);  -- @MEMORY_LEAK:PASS
+      Dealloc (G.all.all.Z.all);  -- @RESOURCE_LEAK:PASS
+      Dealloc (G.all.all.Z);  -- @RESOURCE_LEAK:PASS
+      Dealloc (G.all.all);  -- @RESOURCE_LEAK:PASS
+      Dealloc (G.all);  -- @RESOURCE_LEAK:PASS
+      Dealloc (G);  -- @RESOURCE_LEAK:PASS
    end;
 
    --  incorrect deallocation
@@ -113,10 +113,10 @@ begin
       Dealloc (G.all.all.X);
       Dealloc (G.all.all.Y.all);
       Dealloc (G.all.all.Z.all.all);
-      Dealloc (G.all.all.Z.all);  -- @MEMORY_LEAK:PASS
-      Dealloc (G.all.all.Z);  -- @MEMORY_LEAK:PASS
-      Dealloc (G.all.all);  -- @MEMORY_LEAK:FAIL
-      Dealloc (G);  -- @MEMORY_LEAK:FAIL
+      Dealloc (G.all.all.Z.all);  -- @RESOURCE_LEAK:PASS
+      Dealloc (G.all.all.Z);  -- @RESOURCE_LEAK:PASS
+      Dealloc (G.all.all);  -- @RESOURCE_LEAK:FAIL
+      Dealloc (G);  -- @RESOURCE_LEAK:FAIL
    end;
 
 end Dealloc;

@@ -1,9 +1,9 @@
 main.adb:1:11: warning: subprogram "Main" has no effect
-main.adb:18:04: medium: memory leak might occur at end of scope
+main.adb:18:04: medium: resource or memory leak might occur at end of scope
 main.adb:18:12: info: range check proved (CVC5: 2 VC)
 main.adb:19:06: info: discriminant check proved (CVC5: 1 VC)
 main.adb:20:10: info: discriminant check proved (CVC5: 1 VC)
-main.adb:40:04: medium: memory leak might occur at end of scope
+main.adb:40:04: medium: resource or memory leak might occur at end of scope
 main.adb:40:12: info: range check proved (CVC5: 2 VC)
 main.adb:41:06: info: discriminant check proved (CVC5: 1 VC)
 main.adb:42:10: info: discriminant check proved (CVC5: 1 VC)

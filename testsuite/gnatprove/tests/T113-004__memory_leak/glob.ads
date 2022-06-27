@@ -2,9 +2,9 @@ package Glob with SPARK_Mode is
 
    type T is access Integer;
 
-   X : T;  -- @MEMORY_LEAK:NONE
-   Y : T;  -- @MEMORY_LEAK:NONE
-   Z : T;  -- @MEMORY_LEAK:NONE
+   X : T;  -- @RESOURCE_LEAK:NONE
+   Y : T;  -- @RESOURCE_LEAK:NONE
+   Z : T;  -- @RESOURCE_LEAK:NONE
 
    procedure Proc with
      Global => (Input => X, Output => Y, In_Out => Z);

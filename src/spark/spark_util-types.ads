@@ -262,7 +262,9 @@ package SPARK_Util.Types is
    --     expression at declaration.
 
    function Is_Deep (Typ : Type_Kind_Id) return Boolean;
-   --  Returns True if the type passed as argument is deep
+   --  Returns True if the type passed as argument is deep (ie. it has
+   --  subcomponents of an access-to-variable type or a private type annotated
+   --  with ownership).
 
    procedure Find_Predicate_Item
      (Ty       :        Type_Kind_Id;
@@ -304,7 +306,8 @@ package SPARK_Util.Types is
    function Contains_Allocated_Parts (Typ : Type_Kind_Id) return Boolean
      with Post => (if Contains_Allocated_Parts'Result then Is_Deep (Typ));
    --  Returns True if Typ has subcomponents whose type is a pool specific
-   --  access type (and these subcomponents are not in a constant part of Typ).
+   --  access type or a private type annotated with ownership which needs
+   --  reclamation (and these subcomponents are not in a constant part of Typ).
 
    function Contains_Relaxed_Init_Parts
      (Typ        : Type_Kind_Id;

@@ -1,0 +1,25 @@
+test_ownership_illegal.adb:2:04: error: wrong number of arguments in pragma Annotate (GNATprove, Ownership, ...), expected 3
+test_ownership_illegal.adb:3:04: error: wrong number of arguments in pragma Annotate (GNATprove, Ownership, ...), expected 4
+test_ownership_illegal.adb:4:48: error: last argument of pragma Annotate Ownership must be an entity
+test_ownership_illegal.adb:8:41: error: third argument of aspect Annotate Ownership must be a string
+test_ownership_illegal.adb:10:14: error: the entity of a pragma Annotate Ownership shall be either a type or a function
+test_ownership_illegal.adb:14:09: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:18:12: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:29:16: error: function annotated with Ownership on a tagged type expects a classwide type
+test_ownership_illegal.adb:46:15: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:49:44: error: third argument of aspect Annotate Ownership on a type must be "Needs_Reclamation"
+test_ownership_illegal.adb:50:12: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:54:12: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:64:06: error: third argument of aspect Annotate Ownership on a function must be either "Needs_Reclamation" or "Is_Reclaimed"
+test_ownership_illegal.adb:68:41: error: third argument of aspect Annotate Ownership on a function must be either "Needs_Reclamation" or "Is_Reclaimed"
+test_ownership_illegal.adb:74:13: error: a single ownership function shall be supplied for a given type annotated with Ownership
+test_ownership_illegal.adb:74:13: error: the function "F3" conflicts with the current annotation
+test_ownership_illegal.adb:78:13: error: a function annotated with Ownership must return a boolean
+test_ownership_illegal.adb:82:13: error: a function annotated with Ownership must have exactly one formal parameter
+test_ownership_illegal.adb:86:13: error: a function annotated with Ownership must have exactly one formal parameter
+test_ownership_illegal.adb:90:13: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
+test_ownership_illegal.adb:90:13: error: the type of the first parameter of a function annotated with Ownership must be annotated with Ownership
+test_ownership_illegal.adb:94:13: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
+test_ownership_illegal.adb:94:13: error: the type of the first parameter of a function annotated with Ownership shall need reclamation
+test_ownership_illegal.adb:100:13: error: a function annotated with Ownership shall not access any global data
+gnatprove: error during generation of Global contracts

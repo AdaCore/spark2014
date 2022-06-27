@@ -435,7 +435,7 @@ package Why.Gen.Names is
       --  Names related to the pointer type
       WNE_Null_Pointer,           --  "__null_pointer"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
-      WNE_Is_Moved_Pointer,       --  "__is_moved_pointer"
+      WNE_Is_Moved_Field,         --  "rec__is_moved__"
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Assign_Null_Check,      --  "__assign_null_check"
       WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"

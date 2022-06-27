@@ -613,7 +613,7 @@ package body Why.Gen.Names is
       return
         Append_Num
           (S        =>
-             Img (Get_Symb (Name)) & To_String (WNE_Is_Moved_Pointer),
+             Img (Get_Symb (Name)) & "__" & To_String (WNE_Is_Moved_Field),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -973,7 +973,7 @@ package body Why.Gen.Names is
          when WNE_Rec_Split_Fields   => "__split_fields",
          when WNE_Null_Pointer       => "__null_pointer",
          when WNE_Is_Null_Pointer    => "__is_null_pointer",
-         when WNE_Is_Moved_Pointer   => "__is_moved_pointer",
+         when WNE_Is_Moved_Field     => "rec__is_moved__",
          when WNE_Pointer_Value      => "__pointer_value",
          when WNE_Is_Moved           => "__is_moved",
          when WNE_Move               => "__move",

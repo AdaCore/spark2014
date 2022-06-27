@@ -1,4 +1,4 @@
-test_loop_acc.adb:10:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+test_loop_acc.adb:10:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_loop_acc.adb:13:08: info: pointer dereference check proved (CVC5: 2 VC)
 test_loop_acc.adb:13:16: info: pointer dereference check proved (CVC5: 2 VC)
 test_loop_acc.adb:13:22: info: overflow check proved (CVC5: 4 VC)

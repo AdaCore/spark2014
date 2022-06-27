@@ -1,8 +1,8 @@
 test_annotate.adb:18:43: info: initialization of "Y" proved
-test_annotate.adb:22:09: info: absence of memory leak proved (CVC5: 1 VC)
+test_annotate.adb:22:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_annotate.adb:22:13: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:23:08: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:23:11: info: absence of memory leak proved (CVC5: 1 VC)
+test_annotate.adb:23:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_annotate.adb:29:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:34:37: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:34:52: info: pointer dereference check proved (CVC5: 1 VC)
@@ -14,14 +14,14 @@ test_annotate.adb:35:70: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:38:14: info: postcondition proved (CVC5: 1 VC)
 test_annotate.adb:40:07: info: initialization of "Res" proved
 test_annotate.adb:44:14: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:46:13: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-test_annotate.adb:47:13: medium: memory leak might occur at end of scope
-test_annotate.adb:53:13: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+test_annotate.adb:46:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_annotate.adb:47:13: medium: resource or memory leak might occur at end of scope
+test_annotate.adb:53:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_annotate.adb:53:53: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:53:56: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:54:13: medium: memory leak might occur at end of scope
-test_annotate.adb:56:13: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-test_annotate.adb:57:13: medium: memory leak might occur at end of scope
+test_annotate.adb:54:13: medium: resource or memory leak might occur at end of scope
+test_annotate.adb:56:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_annotate.adb:57:13: medium: resource or memory leak might occur at end of scope
 test_annotate.adb:77:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_annotate.adb:77:58: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:77:71: info: pointer dereference check proved (CVC5: 1 VC)
@@ -44,7 +44,7 @@ test_annotate.adb:86:62: info: pointer dereference check proved (CVC5: 2 VC)
 test_annotate.adb:86:65: info: index check proved (CVC5: 4 VC)
 test_annotate.adb:86:72: info: pointer dereference check proved (CVC5: 2 VC)
 test_annotate.adb:94:04: info: initialization of "X" proved
-test_annotate.adb:94:04: medium: memory leak might occur at end of scope
+test_annotate.adb:94:04: medium: resource or memory leak might occur at end of scope
 test_annotate.adb:97:04: warning: assuming "Do_Something" always returns
 test_annotate.adb:97:04: warning: assuming "Do_Something" has no effect on global items
 test_annotate.adb:97:04: warning: no Global contract available for "Do_Something"

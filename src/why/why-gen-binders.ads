@@ -140,15 +140,17 @@ package Why.Gen.Binders is
             Mutable   : Boolean;
 
          --  Case of records where we can have up to four objects, a set of
-         --  fields, a set of discriminants, a 'Constrained attribute, and a
-         --  'Tag attribute.
+         --  fields, a set of discriminants, a 'Constrained attribute, a
+         --  'Tag attribute, and an is_moved component if the type has an
+         --  ownership annotation.
 
          when DRecord =>
-            Typ       : Entity_Id;
-            Fields    : Opt_Binder;
-            Discrs    : Opt_Binder;
-            Constr    : Opt_Id;
-            Tag       : Opt_Id;
+            Typ        : Entity_Id;
+            Fields     : Opt_Binder;
+            Discrs     : Opt_Binder;
+            Constr     : Opt_Id;
+            Tag        : Opt_Id;
+            Is_Moved_R : Opt_Id;
 
          --  Case of functions where we need different translations when used
          --  in programs or in assertions.

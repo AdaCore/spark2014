@@ -5784,6 +5784,21 @@ package body Gnat2Why.Borrow_Checker is
                         Next_Component_Or_Discriminant (Comp);
                      end loop;
 
+                     --  If the type has an ownership annotation, add a fake
+                     --  deep component for its hidden part.
+
+                     if Has_Ownership_Annotation (Check_Ty) then
+                        C := new Perm_Tree_Wrapper'
+                          (Tree =>
+                             (Kind                => Entire_Object,
+                              Is_Node_Deep        => True,
+                              Explanation         => Expl,
+                              Permission          => No_Access,
+                              Children_Permission => No_Access));
+
+                        Perm_Tree_Maps.Set (Hashtbl, Check_Ty, C);
+                     end if;
+
                      T.all.Tree :=
                        (Kind             => Record_Component,
                         Is_Node_Deep     => Is_Node_Deep (T),
@@ -5831,6 +5846,14 @@ package body Gnat2Why.Borrow_Checker is
 
                   Next_Component_Or_Discriminant (Comp);
                end loop;
+
+               --  If the type has an ownership annotation, also update the
+               --  fake deep component for its hidden part.
+
+               if Has_Ownership_Annotation (Check_Ty) then
+                  C := Perm_Tree_Maps.Get (Component (T), Check_Ty);
+                  C.Tree.Permission := No_Access;
+               end if;
             end;
       end case;
    end Set_Perm_Extensions_Move;
@@ -6030,6 +6053,26 @@ package body Gnat2Why.Borrow_Checker is
 
                         Next_Component_Or_Discriminant (Comp);
                      end loop;
+
+                     --  If the type has an ownership annotation, add a fake
+                     --  deep component for its hidden part.
+
+                     if Has_Ownership_Annotation (Pref_Ty) then
+                        if Perm /= None then
+                           P := Perm;
+                        else
+                           P := Child_P;
+                        end if;
+
+                        D := new Perm_Tree_Wrapper'
+                          (Tree =>
+                             (Kind                => Entire_Object,
+                              Is_Node_Deep        => True,
+                              Explanation         => Expl,
+                              Permission          => P,
+                              Children_Permission => Child_P));
+                        Perm_Tree_Maps.Set (Hashtbl, Pref_Ty, D);
+                     end if;
 
                      C.all.Tree := (Kind         => Record_Component,
                                     Is_Node_Deep => Is_Node_Deep (C),

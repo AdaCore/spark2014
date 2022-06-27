@@ -21,7 +21,7 @@ procedure Constant_Access with SPARK_Mode is
       if X = null then
          return null;
       else
-         return new C_List'(D => X.D.all, --@MEMORY_LEAK:FAIL
+         return new C_List'(D => X.D.all, --@RESOURCE_LEAK:FAIL
                             N => Deep_Copy (X.N));
       end if;
    end Deep_Copy;
@@ -44,9 +44,9 @@ procedure Constant_Access with SPARK_Mode is
          end if;
       end Deep_Copy_Ann;
    begin
-      pragma Assert ((Deep_Copy_Ann (X) = null) = (X = null)); --@MEMORY_LEAK:FAIL
-      pragma Assert ((C_List_Acc_2 (Deep_Copy_Ann (X)) = null) = (X = null)); --@MEMORY_LEAK:FAIL
-      return C_List_Acc_2 (Deep_Copy_Ann (X)); --@MEMORY_LEAK:FAIL
+      pragma Assert ((Deep_Copy_Ann (X) = null) = (X = null)); --@RESOURCE_LEAK:FAIL
+      pragma Assert ((C_List_Acc_2 (Deep_Copy_Ann (X)) = null) = (X = null)); --@RESOURCE_LEAK:FAIL
+      return C_List_Acc_2 (Deep_Copy_Ann (X)); --@RESOURCE_LEAK:FAIL
    end Deep_Copy_2;
 begin
    null;

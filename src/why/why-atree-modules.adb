@@ -33,6 +33,7 @@ with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
+with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
@@ -3389,6 +3390,16 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Typ    => EW_Bool_Type));
                end if;
+
+               if Has_Ownership_Annotation (E) then
+                  Insert_Symbol
+                    (E, WNE_Is_Moved_Field,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Is_Moved_Field)),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+               end if;
             end;
 
          --  Symbols for array types
@@ -3610,10 +3621,10 @@ package body Why.Atree.Modules is
                      Typ    => EW_Bool_Type));
 
                Insert_Symbol
-                 (E, WNE_Is_Moved_Pointer,
+                 (E, WNE_Is_Moved_Field,
                   New_Identifier
                     (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
-                       Full_Name_Node & To_String (WNE_Is_Moved_Pointer)),
+                       Full_Name_Node & To_String (WNE_Is_Moved)),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));

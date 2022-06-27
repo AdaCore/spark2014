@@ -286,7 +286,7 @@ def is_rte_tag(tag):
         "TAG_CHECK",
         "NULL_EXCLUSION",
         "ACCESSIBILITY_CHECK",
-        "MEMORY_LEAK",
+        "RESOURCE_LEAK",
         "DEREFERENCE_CHECK",
         "UU_RESTRICTION",
     )
@@ -450,8 +450,8 @@ def check_marks(strlist):
             return "NULL_EXCLUSION"
         elif "accessibility check" in text:
             return "ACCESSIBILITY_CHECK"
-        elif "memory leak" in text:
-            return "MEMORY_LEAK"
+        elif "resource or memory leak" in text:
+            return "RESOURCE_LEAK"
         elif "dereference check" in text:
             return "DEREFERENCE_CHECK"
         elif "operation on unchecked union type" in text:

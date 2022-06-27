@@ -19,6 +19,6 @@ begin
    pragma Assert (X not in S2);
    pragma Assert ("hello" in S3);
    pragma Assert ("hello" not in S4);
-   pragma Assert (Acc'(new Integer'(0)) not in S5); --@MEMORY_LEAK:FAIL
+   pragma Assert (Acc'(new Integer'(0)) not in S5); --@RESOURCE_LEAK:FAIL
    pragma Assert (Id'Access in S6);
 end Test_Membership;

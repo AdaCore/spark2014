@@ -1,4 +1,4 @@
 storage.adb:22:23: info: discriminant check proved
 storage.adb:23:12: info: discriminant check proved
-storage.adb:23:12: info: absence of memory leak proved
+storage.adb:23:12: info: absence of resource or memory leak proved
 storage.ads:18:16: info: postcondition proved

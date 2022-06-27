@@ -839,6 +839,9 @@ package body SPARK_Definition is
                end if;
             end;
 
+         when E_Private_Type | E_Private_Subtype =>
+            return False;
+
          when others =>
             raise Program_Error;
          end case;
@@ -900,7 +903,7 @@ package body SPARK_Definition is
       Context    : Node_Id := Parent (Subcontext);
    begin
       --  The allocating expression appears in an assertion. This is allowed,
-      --  even though a memory leak is certain to occur in that case if
+      --  even though a resource leak is certain to occur in that case if
       --  assertions are enabled, and will be reported by GNATprove.
 
       if In_Assertion_Expression_Pragma (Alloc) then
@@ -6503,11 +6506,10 @@ package body SPARK_Definition is
             if Is_Base_Type (E)
               and then Present (Full_View (E))
               and then Has_Predicates (E)
+              and then Ekind (Scope (E)) = E_Package
             then
                declare
-                  Scop : constant Entity_Id := Scope (E);
-                  pragma Assert (Ekind (Scop) = E_Package);
-
+                  Scop     : constant Entity_Id := Scope (E);
                   Prag     : constant Node_Id := SPARK_Pragma (Scop);
                   Aux_Prag : constant Node_Id := SPARK_Aux_Pragma (Scop);
                   Rep      : Node_Id := First_Rep_Item (Full_View (E));

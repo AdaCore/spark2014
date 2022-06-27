@@ -1149,8 +1149,8 @@ procedure SPARK_Report is
             | VC_Null_Pointer_Dereference
             | VC_Null_Exclusion
             | VC_Dynamic_Accessibility_Check
-            | VC_Memory_Leak
-            | VC_Memory_Leak_At_End_Of_Scope
+            | VC_Resource_Leak
+            | VC_Resource_Leak_At_End_Of_Scope
             | VC_Length_Check
             | VC_Discriminant_Check
             | VC_Tag_Check

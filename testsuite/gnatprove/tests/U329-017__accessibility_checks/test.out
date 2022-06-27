@@ -65,6 +65,6 @@ test_accessibility.adb:87:47: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:89:22: info: assertion proved (CVC5: 1 VC)
 test_accessibility.adb:89:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:89:38: info: pointer dereference check proved (CVC5: 1 VC)
-test_accessibility.adb:94:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-test_accessibility.adb:95:04: medium: memory leak might occur at end of scope
+test_accessibility.adb:94:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_accessibility.adb:95:04: medium: resource or memory leak might occur at end of scope
 test_accessibility.adb:97:10: info: null exclusion check proved (CVC5: 1 VC)

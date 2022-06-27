@@ -13,7 +13,7 @@ is
    A : P := new T (X + 1);
 
 begin
-   pragma Assert (P'(new T (D => X + 1)) /= null);--@MEMORY_LEAK:FAIL
+   pragma Assert (P'(new T (D => X + 1)) /= null);--@RESOURCE_LEAK:FAIL
    return A.C;
    --  Memory leak may happen, for this test we don't care.
 end N;

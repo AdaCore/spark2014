@@ -313,8 +313,8 @@ package body Gnat2Why.Error_Messages is
                | VC_UC_Same_Size
                | VC_UC_Alignment
                | VC_UC_Volatile
-               | VC_Memory_Leak
-               | VC_Memory_Leak_At_End_Of_Scope
+               | VC_Resource_Leak
+               | VC_Resource_Leak_At_End_Of_Scope
                | VC_Dynamic_Accessibility_Check
                | VC_Unchecked_Union_Restriction
                | VC_Assert_Premise
@@ -855,10 +855,10 @@ package body Gnat2Why.Error_Messages is
             return "null exclusion check might fail";
          when VC_Dynamic_Accessibility_Check =>
             return "dynamic accessibility check might fail";
-         when VC_Memory_Leak =>
-            return "memory leak might occur";
-         when VC_Memory_Leak_At_End_Of_Scope =>
-            return "memory leak might occur at end of scope";
+         when VC_Resource_Leak =>
+            return "resource or memory leak might occur";
+         when VC_Resource_Leak_At_End_Of_Scope =>
+            return "resource or memory leak might occur at end of scope";
          when VC_Invariant_Check           =>
             return "invariant check might fail";
          when VC_Invariant_Check_On_Default_Value =>
@@ -1656,10 +1656,11 @@ package body Gnat2Why.Error_Messages is
             return "null exclusion check " & Verb;
          when VC_Dynamic_Accessibility_Check =>
             return "dynamic accessibility check " & Verb;
-         when VC_Memory_Leak =>
-            return "absence of memory leak " & Verb;
-         when VC_Memory_Leak_At_End_Of_Scope =>
-            return "absence of memory leak at end of scope " & Verb;
+         when VC_Resource_Leak =>
+            return "absence of resource or memory leak " & Verb;
+         when VC_Resource_Leak_At_End_Of_Scope =>
+            return "absence of resource or memory leak at end of scope "
+              & Verb;
          when VC_Invariant_Check           =>
             return "invariant check " & Verb;
          when VC_Invariant_Check_On_Default_Value =>

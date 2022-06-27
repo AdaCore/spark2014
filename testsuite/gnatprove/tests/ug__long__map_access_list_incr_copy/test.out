@@ -1,4 +1,4 @@
-p.adb:7:07: info: absence of memory leak at end of scope justified
+p.adb:7:07: info: absence of resource or memory leak at end of scope justified
 p.adb:14:33: info: loop invariant preservation proved
 p.adb:14:33: info: loop invariant initialization proved
 p.adb:14:62: info: null exclusion check proved
@@ -20,8 +20,8 @@ p.ads:12:28: info: overflow check proved
 p.ads:22:43: info: null exclusion check proved
 p.ads:23:14: info: postcondition proved
 
-p.ads:23:28: medium: memory leak might occur
+p.ads:23:28: medium: resource or memory leak might occur
    23 |     Post => For_All_List (Copy (L)'Old, L, Is_Incr'Access);
       |                           ^~~~~~~
-  possible explanation: call to allocating function inside an assertion leaks memory
+  possible explanation: call to allocating function inside an assertion leaks some resource or memory
 p.ads:23:52: info: null exclusion check proved

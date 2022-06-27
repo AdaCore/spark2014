@@ -6,7 +6,7 @@ procedure Test_Declare_Deep with SPARK_Mode is
 
    procedure OK1 with Pre => True is
       X : Integer := 1;
-      Y : constant Int_Ptr := Create; --@MEMORY_LEAK:FAIL
+      Y : constant Int_Ptr := Create; --@RESOURCE_LEAK:FAIL
    begin
       X := Y.all + X;
    end OK1;
@@ -15,7 +15,7 @@ procedure Test_Declare_Deep with SPARK_Mode is
       X : Integer := 1;
    begin
       declare
-         Y : constant Int_Ptr := Create; --@MEMORY_LEAK:FAIL
+         Y : constant Int_Ptr := Create; --@RESOURCE_LEAK:FAIL
       begin
          X := Y.all + X;
       end;

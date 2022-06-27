@@ -1,4 +1,4 @@
-constant_access.adb:24:17: medium: memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
+constant_access.adb:24:17: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 constant_access.adb:24:35: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:24:38: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:25:46: info: pointer dereference check proved (CVC5: 1 VC)
@@ -10,7 +10,7 @@ constant_access.adb:42:49: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:42:52: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:43:51: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:47:22: info: assertion proved (CVC5: 2 VC)
-constant_access.adb:47:23: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+constant_access.adb:47:23: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 constant_access.adb:48:22: info: assertion proved (CVC5: 2 VC)
-constant_access.adb:48:37: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
-constant_access.adb:49:14: medium: memory leak might occur [possible explanation: conversion to access-to-constant type leaks memory]
+constant_access.adb:48:37: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+constant_access.adb:49:14: medium: resource or memory leak might occur [possible explanation: conversion to access-to-constant type leaks memory]

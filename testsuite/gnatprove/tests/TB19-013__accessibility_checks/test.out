@@ -170,8 +170,8 @@ test_accessibility_2.adb:202:22: info: assertion proved (CVC5: 1 VC)
 test_accessibility_2.adb:202:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:203:22: info: assertion proved (CVC5: 1 VC)
 test_accessibility_2.adb:203:26: info: pointer dereference check proved (CVC5: 1 VC)
-test_accessibility_2.adb:206:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-test_accessibility_2.adb:207:04: medium: memory leak might occur at end of scope
+test_accessibility_2.adb:206:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_accessibility_2.adb:207:04: medium: resource or memory leak might occur at end of scope
 test_accessibility_2.adb:209:04: info: precondition proved (CVC5: 2 VC)
 test_accessibility_list.adb:12:13: info: implicit function contract might not be available on recursive calls
 test_accessibility_list.adb:13:07: medium: "Length" is recursive, terminating annotation could be incorrect

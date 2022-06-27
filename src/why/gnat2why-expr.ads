@@ -108,7 +108,7 @@ package Gnat2Why.Expr is
      (Decls : List_Id)
       return W_Prog_Id;
    --  Go through the list of declarations Decls and generate checks that no
-   --  variable leads to a memory leak at the end of its scope. This function
+   --  variable leads to a resource leak at the end of its scope. This function
    --  follows the same traversal structure as Check_No_Owning_Decl in
    --  SPARK_Definition.
 

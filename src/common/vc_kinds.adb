@@ -83,10 +83,10 @@ package body VC_Kinds is
 
          when VC_Loop_Variant              => "835",
 
-         --  CWE-401: Missing Release of Memory after Effective Lifetime
+         --  CWE-772: Missing Release of Resource after Effective Lifetime
 
-         when VC_Memory_Leak
-            | VC_Memory_Leak_At_End_Of_Scope => "401",
+         when VC_Resource_Leak
+            | VC_Resource_Leak_At_End_Of_Scope => "772",
 
          --  CWE-476: NULL Pointer Dereference
 
@@ -265,10 +265,12 @@ package body VC_Kinds is
             return "Check that the accessibility level of the result of a " &
               "traversal function call is not deeper than the accessibility " &
               "level of its traversed parameter.";
-         when VC_Memory_Leak                      =>
-            return "Check that the assignment does not lead to a memory leak";
-         when VC_Memory_Leak_At_End_Of_Scope      =>
-            return "Check that the declaration does not lead to a memory leak";
+         when VC_Resource_Leak                    =>
+            return "Check that the assignment does not lead to a resource"
+              & " or memory leak";
+         when VC_Resource_Leak_At_End_Of_Scope    =>
+            return "Check that the declaration does not lead to a resource"
+              & " or memory leak";
          when VC_Invariant_Check                  =>
             return "Check that the given value respects the applicable type " &
               "invariant.";
@@ -901,9 +903,9 @@ package body VC_Kinds is
              when VC_Null_Exclusion => "null exclusion",
              when VC_Dynamic_Accessibility_Check =>
                "dynamic accessibility check",
-             when VC_Memory_Leak => "memory leak",
-             when VC_Memory_Leak_At_End_Of_Scope =>
-               "memory leak at end of scope",
+             when VC_Resource_Leak => "resource or memory leak",
+             when VC_Resource_Leak_At_End_Of_Scope =>
+               "resource or memory leak at end of scope",
              when VC_Invariant_Check => "invariant check",
              when VC_Invariant_Check_On_Default_Value =>
                "invariant check on default value",

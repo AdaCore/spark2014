@@ -5,7 +5,7 @@ main.adb:15:14: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:15:44: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:16:07: medium: assertion might fail
 main.adb:20:06: info: data dependencies proved
-main.adb:24:17: info: absence of memory leak proved (CVC5: 1 VC)
+main.adb:24:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main.adb:24:20: medium: range check might fail [reason for check: value must fit in the designated type of the allocator]
 main.adb:28:07: info: range check proved (CVC5: 2 VC)
 main.adb:37:14: high: all paths in "Test" raise exceptions or do not terminate normally
@@ -17,5 +17,5 @@ main.adb:44:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:45:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:46:07: medium: assertion might fail
 main.adb:50:06: info: data dependencies proved
-main.adb:54:17: info: absence of memory leak proved (CVC5: 1 VC)
+main.adb:54:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main.adb:54:20: medium: discriminant check might fail

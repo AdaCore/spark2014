@@ -5,7 +5,7 @@ p.adb:12:26: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:17:28: info: initialization of "MyOut" proved
 p.adb:21:18: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:21:26: info: pointer dereference check proved (CVC5: 1 VC)
-p.adb:24:04: medium: memory leak might occur at end of scope
+p.adb:24:04: medium: resource or memory leak might occur at end of scope
 p.adb:28:28: info: initialization of "MyOut" proved
 p.adb:29:11: info: data dependencies proved
 p.adb:32:09: medium: pointer dereference check might fail [possible fix: subprogram at line 27 should mention X in a precondition]

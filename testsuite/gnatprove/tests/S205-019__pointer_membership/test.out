@@ -1,5 +1,5 @@
-membership.adb:8:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+membership.adb:8:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 membership.adb:8:16: info: range check proved (CVC5: 1 VC)
-membership.adb:9:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+membership.adb:9:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 membership.adb:11:19: info: assertion proved (Trivial: 1 VC)
 membership.adb:12:19: medium: assertion might fail

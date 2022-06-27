@@ -6,7 +6,7 @@
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
-<prover id="4" name="CVC4_CE" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="4" name="CVC5_CE" version="0.0.7-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="5" name="colibri" version="2137" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
@@ -452,15 +452,7 @@
   <proof prover="1"><result status="valid" steps="41651"/></proof>
   </goal>
   <goal name="def&#39;vc.145" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1" timelimit="5"><result status="valid" steps="173639"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="5"><result status="timeout"/></proof>
-  <transf name="introduce_premises" >
-   <goal name="def&#39;vc.145.0">
-   <proof prover="4"><result status="timeout"/></proof>
-   </goal>
-  </transf>
+  <proof prover="1"><result status="valid" steps="173639"/></proof>
   </goal>
   <goal name="def&#39;vc.146" proved="true">
   <proof prover="1"><result status="valid" steps="77851"/></proof>
@@ -572,22 +564,19 @@
   <proof prover="1" timelimit="5"><result status="valid" steps="218059"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="5"><result status="timeout"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="def&#39;vc.180.0">
+   <proof prover="4"><result status="timeout"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="def&#39;vc.181" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="2371692"/></proof>
+  <proof prover="2"><result status="valid" steps="1408047"/></proof>
   </goal>
   <goal name="def&#39;vc.182" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1" timelimit="5"><result status="valid" steps="161787"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="5"><result status="timeout"/></proof>
-  <transf name="introduce_premises" >
-   <goal name="def&#39;vc.182.0">
-   <proof prover="4"><result status="timeout" steps="16363"/></proof>
-   </goal>
-  </transf>
+  <proof prover="1"><result status="valid" steps="161787"/></proof>
   </goal>
   <goal name="def&#39;vc.183" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>

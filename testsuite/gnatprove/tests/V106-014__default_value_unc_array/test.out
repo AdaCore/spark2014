@@ -1,7 +1,7 @@
 uninit_alloc.adb:1:11: warning: subprogram "Uninit_Alloc" has no effect
 uninit_alloc.adb:7:19: info: assertion proved (CVC5: 1 VC)
 uninit_alloc.adb:7:19: info: range check proved (CVC5: 2 VC)
-uninit_alloc.adb:7:19: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+uninit_alloc.adb:7:19: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 uninit_alloc.adb:13:19: info: assertion proved (CVC5: 1 VC)
-uninit_alloc.adb:13:19: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+uninit_alloc.adb:13:19: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 uninit_alloc.adb:13:26: info: range check proved (CVC5: 2 VC)

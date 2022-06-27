@@ -366,7 +366,7 @@ package body Gnat2Why.Expr.Loops is
       return W_Prog_Id
    is
       function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id;
-      --  Havoc the local borrowers and check for memory leaks for objects
+      --  Havoc the local borrowers and check for resource leaks for objects
       --  declared in blocks traversed by an exit statement.
 
       -----------------------------------------------
@@ -436,7 +436,7 @@ package body Gnat2Why.Expr.Loops is
          pragma Assert (not Is_Pragma (Instr, Pragma_Loop_Variant));
 
          --  Block statements were inserted as markers for the end of the
-         --  corresponding scopes. Check the absence of memory leaks and
+         --  corresponding scopes. Check the absence of resource leaks and
          --  havoc all entities borrowed in the block.
 
          if Nkind (Instr) = N_Block_Statement then

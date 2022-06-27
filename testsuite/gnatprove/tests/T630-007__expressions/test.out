@@ -2,7 +2,7 @@ ext.ads:4:35: warning: Constraint_Error will be raised at run time
 ext.ads:4:35: warning: value not in range of type "My_Char" defined at line 2
 ext.ads:9:38: warning: Constraint_Error will be raised at run time
 ext.ads:9:38: warning: value not in range of type "Small_Enum" defined at line 7
-test_access_conv.adb:11:04: medium: memory leak might occur at end of scope
+test_access_conv.adb:11:04: medium: resource or memory leak might occur at end of scope
 test_access_conv.adb:13:04: warning: assuming "Incr" always returns
 test_access_conv.adb:13:04: warning: assuming "Incr" has no effect on global items
 test_access_conv.adb:13:04: warning: no Global contract available for "Incr"
@@ -38,11 +38,11 @@ test_membership.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:21:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:22:19: info: assertion proved (CVC5: 1 VC)
-test_membership.adb:22:24: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+test_membership.adb:22:24: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 test_membership.adb:23:19: info: assertion proved (CVC5: 1 VC)
 test_new.adb:5:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_new.adb:7:19: info: assertion proved (CVC5: 1 VC)
-test_new.adb:7:31: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+test_new.adb:7:31: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 test_or_mod.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_or_mod.adb:8:19: info: assertion proved (CVC5: 1 VC)
 test_string.adb:4:19: medium: assertion might fail
