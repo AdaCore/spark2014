@@ -35,7 +35,6 @@ with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with GNAT.Strings;              use GNAT.Strings;
-with Interfaces.C_Streams;
 with Platform;                  use Platform;
 with SPARK2014VSN;              use SPARK2014VSN;
 with System.Multiprocessors;
@@ -1877,10 +1876,11 @@ package body Configuration is
 
          if Output = GPO_Pretty_Simple then
             declare
-               use Interfaces.C_Streams;
-               TTY_Output : constant Boolean := isatty (fileno (stdout)) /= 0;
+               function Stdout_Set_Colors return Integer;
+               pragma Import (C, Stdout_Set_Colors, "stdout_set_colors");
+               Colors_Supported : constant Boolean := Stdout_Set_Colors /= 0;
             begin
-               if TTY_Output then
+               if Colors_Supported then
                   Output := GPO_Pretty_Color;
                end if;
             end;

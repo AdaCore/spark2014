@@ -148,11 +148,9 @@ package body Back_End is
       end if;
 
       --  For the colored output mode, we set the corresponding flag in
-      --  Erroutc. Currently only do this on Linux, as not all terminals
-      --  support SGR on Windows.
+      --  Erroutc.
 
       if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty_Color
-        and then not Osint.On_Windows
       then
          Erroutc.Use_SGR_Control := True;
       end if;
