@@ -832,7 +832,7 @@ red_black_trees.adb:599:95: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:599:97: info: predicate check proved (Trivial: 1 VC; Z3: 1 VC)
 red_black_trees.adb:599:99: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:599:106: medium: pointer dereference check might fail
-red_black_trees.adb:602:13: medium: precondition might fail, cannot prove T.Right /= null
+red_black_trees.adb:602:13: info: precondition proved (Z3: 2 VC)
 red_black_trees.adb:606:56: info: pointer dereference check proved (Z3: 1 VC)
 red_black_trees.adb:606:64: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:606:70: info: predicate check proved (Trivial: 1 VC)
