@@ -4,8 +4,8 @@ log_pack.ads:140:22: error: "Log_Variable" is not allowed in SPARK (due to compo
 log_pack.ads:140:22: error: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:146:04: error: "Log_Variable" is not allowed in SPARK (due to component of anonymous access type)
 log_pack.ads:146:04: error: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.ads:152:04: error: "Log_Variable" is not allowed in SPARK (due to component of anonymous access type)
 log_pack.ads:152:04: error: access to "Log_Variable" is not allowed in SPARK (due to component of anonymous access type)
+log_pack.ads:152:04: error: component of anonymous access type is not allowed in SPARK
 log_pack.ads:152:04: error: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:152:04: error: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:163:04: error: "Log_Group" is not allowed in SPARK (due to component of anonymous access type)
