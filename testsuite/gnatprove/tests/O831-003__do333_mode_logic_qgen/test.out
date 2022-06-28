@@ -507,7 +507,7 @@ flight_modes.ads:100:08: info: initialization of "VAPPR_Selected" proved
 flight_modes.ads:101:08: info: initialization of "VAPPR_Active" proved
 flight_modes.ads:102:08: info: initialization of "VGA_Selected" proved
 flight_modes.ads:103:08: info: initialization of "VGA_Active" proved
-flight_modes.ads:106:10: medium: postcondition might fail
+flight_modes.ads:106:10: medium: postcondition might fail (e.g. when HDG_Active = False and LAPPR_Active = False and LGA_Active = False and NAV_Active = False and ROLL_Active = False)
 mode_logic_props.adb:54:23: info: no contextual analysis of "initStates" (body not seen yet)
 mode_logic_props.adb:55:23: info: no contextual analysis of "initOutputs" (body not seen yet)
 mode_logic_props.adb:62:07: info: initialization of "Inputs_out1" proved

@@ -147,7 +147,7 @@ norm-reals-errors.adb:200:64: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:17: info: postcondition proved (altergo: 1 VC)
 norm-reals-errors.adb:201:42: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:52: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F
+norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F (e.g. when Values = (others => 1.0))
 norm-reals-errors.adb:210:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:211:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC5: 1 VC)
@@ -155,7 +155,7 @@ norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always return
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
 norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt"
 norm-reals-errors.adb:212:07: warning: no returning annotation available for "Bound_Error_Sqrt"
-norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0
+norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 (e.g. when Values = (others => -1.7123742E-22))
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:215:20: info: precondition proved (colibri: 1 VC)
 norm-reals-errors.adb:215:20: info: predicate check proved (Trivial: 1 VC)

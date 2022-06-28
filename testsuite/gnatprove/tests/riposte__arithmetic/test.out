@@ -18,7 +18,7 @@ arithmetic.adb:45:14: info: overflow check proved (CVC5: 2 VC)
 arithmetic.adb:45:14: info: range check proved (CVC5: 2 VC)
 arithmetic.adb:53:11: info: flow dependencies proved
 arithmetic.adb:56:07: info: initialization of "C" proved
-arithmetic.adb:59:22: medium: assertion might fail
+arithmetic.adb:59:22: high: assertion might fail (e.g. when C = 323 and Double_A = 17 and Double_B = 19)
 arithmetic.adb:59:31: high: overflow check might fail, cannot prove upper bound for Double_A * Double_B (e.g. when Double_A = 2 and Double_B = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 arithmetic.adb:65:11: info: flow dependencies proved
 arithmetic.adb:68:07: info: initialization of "C" proved

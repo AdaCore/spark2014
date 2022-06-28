@@ -54,7 +54,7 @@ instr.adb:40:07: warning: assuming "Put" always returns
 instr.adb:40:07: warning: assuming "Put" has no effect on global items
 instr.adb:40:07: warning: no Global contract available for "Put"
 instr.adb:40:07: warning: no returning annotation available for "Put"
-instr.adb:54:39: medium: overflow check might fail, cannot prove lower bound for X.Size * X.Value [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X.Size * X.Value in Integer) to subprogram at instr.ads:54]
+instr.adb:54:39: high: overflow check might fail, cannot prove lower bound for X.Size * X.Value (e.g. when Lg = 0 and X = (Name => (others => 'NUL'), Value => 3, Size => -715827883, Fill => 'NUL', Empty => 'NUL')) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X.Size * X.Value in Integer) to subprogram at instr.ads:54]
 instr.adb:54:49: info: division check proved (CodePeer)
 instr.adb:55:07: info: range check proved (CVC5: 2 VC)
 instr.adb:55:41: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

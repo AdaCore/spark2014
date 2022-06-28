@@ -306,15 +306,7 @@ class UGTestDriver(DiffTestDriver):
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
         gprfiles = glob.glob(pattern)
         assert len(gprfiles) == 1
-        cmd = [
-            "gnatprove",
-            "-P",
-            gprfiles[0],
-            "-f",
-            "-q",
-            "--level=2",
-            "--timeout=60",
-        ]
+        cmd = ["gnatprove", "-P", gprfiles[0], "-f", "-q", "--level=2", "--timeout=30"]
 
         # tests prefixed by ug__long__ require more steps to prove
         if self.test_env["test_name"].startswith("ug__long__"):
