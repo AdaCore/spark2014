@@ -1,44 +1,21 @@
-Summary of SPARK analysis
-=========================
-
--
-SPARK Analysis results Total Flow CodePeer Provers Justified Unproved
--
-Data Dependencies . . . . . .
-Flow Dependencies . . . . . .
-Initialization . . . . . .
-Non-Aliasing . . . . . .
-Run-time Checks . . . . . .
-Assertions . . . . . .
-Functional Contracts . . . . . .
-LSP Verification . . . . . .
-Termination . . . . . .
-Concurrency . . . . . .
--
-Total . . . . . .
-
-
 Analyzed 6 units
 in unit main, 1 subprograms and packages out of 1 analyzed
 flow analysis and proof skipped for this unit (only SPARK_Mode checking was requested)
- Main at main.adb:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
-effects on parameters and Global variables of Main fully established
+ Main at main.adb:7 not analyzed
 in unit u1, 1 subprograms and packages out of 1 analyzed
 flow analysis and proof skipped for this unit (only SPARK_Mode checking was requested)
- U1 at u1.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
+ U1 at u1.ads:1 not analyzed
 in unit u2, 1 subprograms and packages out of 1 analyzed
 flow analysis and proof skipped for this unit (only SPARK_Mode checking was requested)
- U2 at u2.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
+ U2 at u2.ads:3 not analyzed
 in unit u3, 1 subprograms and packages out of 1 analyzed
 flow analysis and proof skipped for this unit (only SPARK_Mode checking was requested)
- U3 at u3.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
+ U3 at u3.ads:1 not analyzed
 in unit u4, 1 subprograms and packages out of 1 analyzed
 flow analysis and proof skipped for this unit (only SPARK_Mode checking was requested)
- U4 at u4.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
+ U4 at u4.ads:1 not analyzed
 in unit u5, 3 subprograms and packages out of 3 analyzed
 flow analysis and proof skipped for this unit (only SPARK_Mode checking was requested)
- u5 at u5.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
- u5.s5_1 at u5.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
-effects on parameters and Global variables of u5.s5_1 fully established
- u5.s5_2 at u5.ads:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements)
-effects on parameters and Global variables of u5.s5_2 fully established
+ u5 at u5.ads:1 not analyzed
+ u5.s5_1 at u5.ads:3 not analyzed
+ u5.s5_2 at u5.ads:5 not analyzed
