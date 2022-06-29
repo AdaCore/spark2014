@@ -978,14 +978,13 @@ procedure SPARK_Report is
          end if;
          if Unit_Progress (Unit) < Progress_Proof then
             Put (Handle, "proof skipped for this unit");
-         end if;
-
-         if Unit_Stop_Reason (Unit) = Stop_Reason_None then
-            New_Line (Handle);
-         else
-            Put (Handle, " (");
-            Put (Handle, To_String (Unit_Stop_Reason (Unit)));
-            Put_Line (Handle, ")");
+            if Unit_Stop_Reason (Unit) = Stop_Reason_None then
+               New_Line (Handle);
+            else
+               Put (Handle, " (");
+               Put (Handle, To_String (Unit_Stop_Reason (Unit)));
+               Put_Line (Handle, ")");
+            end if;
          end if;
 
          Iter_Unit_Subps (Unit, For_Each_Subp'Access, Ordered => True);
