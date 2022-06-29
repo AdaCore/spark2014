@@ -548,6 +548,10 @@ of a program:
   same between compilation and analysis. This is in particular the case for
   :ref:`Overflow Modes`.
 
+* The list of :ref:`Tool Limitations that Impact Soundness` should be reviewed to
+  check that each is either not applicable to the project, or its effects are
+  understood and cannot lead to unsound analysis.
+
 
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:

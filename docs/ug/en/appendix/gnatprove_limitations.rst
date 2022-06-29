@@ -3,8 +3,41 @@
 GNATprove Limitations
 =====================
 
-Tool Limitations
-----------------
+Tool Limitations that Impact Soundness
+--------------------------------------
+
+.. index:: Valid; limitation
+
+#. Address clauses (overlays) are supported, but |GNATprove| is unable to
+   detect or follow aliases that may be caused by such address clauses.
+
+#. Attribute 'Valid is currently assumed to always return True, as no invalid
+   value can be constructed in SPARK (see :ref:`Data Validity`).
+
+.. index:: validity; limitation
+
+#. Values read from an external source are assumed to be valid values.
+   Currently there is no model of invalidity or undefinedness. The onus
+   is on the user to ensure that all values read from an external source are
+   valid. The use of an invalid value invalidates any proofs associated with
+   the value.
+
+#. Preconditions on subprograms in most standard units are not
+   specified. That's the case in particular for:
+
+   * arithmetic and conversion operators (including Time_Of) in
+     Ada.Execution_Time and Ada.Real_Time packages described in |SPARK|
+     Reference Manual 9.19; and
+
+   * arithmetic and conversion operators (including Time_Of) in Ada.Calendar
+     package.
+
+   See :ref:`SPARK Libraries` for a list of standard units where preconditions
+   have been specified.
+
+
+Other Tool Limitations
+----------------------
 
 #. The Global contracts generated automatically by |GNATprove| for subprograms
    without an explicit one do not take into account indirect calls (through
@@ -74,14 +107,8 @@ Tool Limitations
    formal subprogram parameter are not supported. Similarly, suspension on
    suspension objects given as formal subprogram parameters is not supported.
 
-#. Address clauses (overlays) are supported, but |GNATprove| is unable to
-   detect or follow aliases that may be caused by such address clauses.
-
 Legality Rules
 --------------
-
-#. |SPARK| Reference Manual rule 4.3(1), concerning use of the box
-   symbol "<>" in aggregates, is not currently checked.
 
 #. The rule concerned with asserting that all child packages which
    have state denoted as being Part_Of a more visible state
@@ -122,25 +149,14 @@ Proof Limitations
 
 .. index:: recursion; limitation
 
-1. Postconditions of recursive functions called in contracts and assertion
-   pragmas are not available, possibly leading to unproved checks. The current
-   workaround is to use a non-recursive wrapper around those functions. Using
-   the switch ``--info`` reveals where the information about postcondition may
-   be lost.
+#. Postconditions of possibly non-returning functions called in contracts and
+   assertion pragmas are not available, which may lead to unproved
+   checks. Using the switch ``--info`` reveals where the information about
+   postcondition may be lost. The solution is to annotate the subprogram with
+   the ``Always_Return`` annotation (see :ref:`Subprogram Termination`) which
+   will be checked by GNATprove.
 
-.. index:: Valid; limitation
-
-2. Attribute 'Valid is currently assumed to always return True.
-
-.. index:: validity; limitation
-
-3. Values read from an external source are assumed to be valid values.
-   Currently there is no model of invalidity or undefinedness. The onus
-   is on the user to ensure that all values read from an external source are
-   valid. The use of an invalid value invalidates any proofs associated with
-   the value.
-
-4. The following attributes are not yet supported in proof: Adjacent, Aft,
+#. The following attributes are not yet supported in proof: Adjacent, Aft,
    Bit_Order, Body_Version, Copy_Sign, Definite, Denorm, First_Valid, Fore,
    Last_Valid, Machine, all Machine_* attributes, Model, all Model_* attributes,
    Partition_Id, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling, Small,
@@ -151,24 +167,14 @@ Proof Limitations
    no record representation clause then we assume that their value is
    nonnegative.
 
-5. The 'Update attribute on multidimensional unconstrained arrays is not
+#. The 'Update attribute on multidimensional unconstrained arrays is not
    yet fully supported in proof. Checks might be missing so currently an
    error is emitted for any use of the 'Update attribute on
    multidimensional unconstrained arrays.
 
-6. |GNATprove| does not follow the value of tags for tagged objects. As a
-   consequence, tag checks are currently unprovable in most cases.
-
 .. index:: Loop_Invariant; limitation
 
-7. Constants declared in loops before the loop invariant are handled as
+#. Constants declared in loops before the loop invariant are handled as
    variables by the tool. This means in particular that any information
    about their values needed after the loop invariant must be stated explicitly
    in the loop invariant.
-
-8. Preconditions on arithmetic and conversion operators (including Time_Of) in
-   Ada.Execution_Time and Ada.Real_Time packages described in |SPARK| Reference
-   Manual 9.19 are not yet implemented.
-
-9. Preconditions on arithmetic and conversion operators (including Time_Of) in
-   Ada.Calendar package are not yet implemented.
