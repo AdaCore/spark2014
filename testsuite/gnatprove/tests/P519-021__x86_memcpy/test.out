@@ -445,6 +445,9 @@ memcpy.adb:493:13: warning: assuming "WriteMem64" always returns
 memcpy.adb:493:13: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:496:13: warning: assuming "WriteMem64" always returns
 memcpy.adb:496:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:499:36: warning: do you really mean 18446744073709551560 when writing -56 ?
+memcpy.adb:499:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:499:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:502:13: warning: assuming "Write_EAX" always returns
 memcpy.adb:502:13: warning: no returning annotation available for "Write_EAX"
 memcpy.adb:505:13: warning: "RCX" is set by "Write_ECX" but not used after the call
@@ -459,6 +462,9 @@ memcpy.adb:518:63: warning: assuming "AX" always returns
 memcpy.adb:518:63: warning: no returning annotation available for "AX"
 memcpy.adb:523:18: warning: unused assignment
 memcpy.adb:526:18: warning: unused assignment
+memcpy.adb:526:36: warning: do you really mean 18446744073709551488 when writing -128 ?
+memcpy.adb:526:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:526:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:529:18: warning: unused assignment
 memcpy.adb:532:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 memcpy.adb:532:13: warning: assuming "Write_EDI" always returns
@@ -469,11 +475,23 @@ memcpy.adb:535:13: warning: assuming "Write_EAX" always returns
 memcpy.adb:535:13: warning: no returning annotation available for "Write_EAX"
 memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:543:18: warning: unused assignment
+memcpy.adb:543:36: warning: do you really mean 18446744073709551552 when writing -64 ?
+memcpy.adb:543:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:543:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:546:18: warning: unused assignment
+memcpy.adb:559:36: warning: do you really mean 18446744073709551552 when writing -64 ?
+memcpy.adb:559:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:559:36: warning: negative literal of modular type is in fact positive
+memcpy.adb:562:36: warning: do you really mean 18446744073709551488 when writing -128 ?
+memcpy.adb:562:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:562:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:574:10: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.rsp) [possible fix: subprogram at memcpy.ads:168 should mention RDX in a precondition]
 memcpy.adb:574:10: warning: "RAX" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSI" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSP" is set by "memcpy2" but not used after the call
+memcpy.adb:577:36: warning: do you really mean 18446744073709551488 when writing -128 ?
+memcpy.adb:577:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:577:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:583:13: warning: assuming "Write_EDI" always returns
 memcpy.adb:583:13: warning: no returning annotation available for "Write_EDI"
 memcpy.adb:586:13: warning: assuming "Write_EAX" always returns

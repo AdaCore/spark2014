@@ -619,6 +619,7 @@ rr_type.ads:96:18: info: index check proved (CVC5: 2 VC)
 rr_type.ads:102:06: info: postcondition proved (CVC5: 2 VC)
 rr_type.ads:109:17: info: range check proved (CVC5: 2 VC)
 rr_type.ads:112:17: info: range check proved (CVC5: 2 VC)
+socket_timeout_linux.adb:27:14: warning: file name does not match unit name, should be "socket_timeout.adb"
 spark-text_io.ads:28:08: info: flow dependencies proved
 spark-text_io.ads:30:42: high: "Standard_Output" is not initialized
 spark-text_io.ads:31:42: high: "Standard_Error" is not initialized
@@ -1112,8 +1113,12 @@ spark_dns_main.adb:39:20: info: range check proved (CVC5: 2 VC)
 spark_dns_main.adb:40:04: info: initialization of "ZoneFile" proved
 spark_dns_main.adb:43:34: warning: "ZoneFile" is set by "ProcessZoneFile" but not used after the call
 task_limit.adb:42:16: info: refined post proved (CVC5: 6 VC; Trivial: 2 VC)
+task_limit.adb:42:27: warning: conjunct in refined postcondition does not check the outcome of calling "Increment"
 task_limit.adb:50:38: info: range check proved (CVC5: 2 VC)
 task_limit.adb:64:16: info: refined post proved (CVC5: 4 VC; Trivial: 2 VC)
+task_limit.adb:64:27: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement"
+task_limit.adb:65:17: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement"
+task_limit.adb:67:17: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement"
 task_limit.adb:71:38: info: range check proved (CVC5: 2 VC)
 task_limit.ads:25:23: info: range check proved (CVC5: 2 VC)
 task_limit.ads:29:28: info: initialization of "Success" proved

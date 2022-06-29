@@ -86,6 +86,7 @@ stable_marriage.adb:292:10: info: initialization of "G1" proved
 stable_marriage.adb:293:10: info: initialization of "G2" proved
 stable_marriage.adb:294:10: info: initialization of "Accepted" proved
 stable_marriage.adb:296:10: info: initialization of "Already_Asked" proved
+stable_marriage.adb:299:10: info: analyzing call to "Select_And_Remove_An_Unmatched_G1" in context
 stable_marriage.adb:300:25: medium: assertion might fail
 stable_marriage.adb:304:30: info: range check proved (CodePeer)
 stable_marriage.adb:304:45: info: range check proved (CodePeer)
@@ -94,8 +95,10 @@ stable_marriage.adb:306:21: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:306:70: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:307:48: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:311:53: info: range check proved (CodePeer)
+stable_marriage.adb:321:13: info: analyzing call to "Add_An_Unmatched" in context
 stable_marriage.adb:322:28: info: assertion proved (Z3: 1 VC)
 stable_marriage.adb:322:28: info: precondition proved (CVC5: 1 VC)
+stable_marriage.adb:326:13: info: analyzing call to "Add_An_Unmatched" in context
 stable_marriage.adb:333:25: medium: assertion might fail
 stable_marriage.adb:336:13: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:346:29: info: range check proved (CVC5: 2 VC)
@@ -124,6 +127,7 @@ stable_marriage.adb:383:13: info: loop invariant preservation proved (CVC5: 1 VC
 stable_marriage.adb:383:21: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:384:45: info: index check proved (CVC5: 4 VC)
 stable_marriage.adb:384:64: info: range check proved (CVC5: 4 VC)
+stable_marriage.adb:385:10: info: analyzing call to "Add_An_Unmatched" in context
 stable_marriage.adb:388:22: info: assertion proved (CVC5: 1 VC)
 stable_marriage.adb:390:22: info: assertion proved (CVC5: 2 VC)
 stable_marriage.adb:395:33: info: loop invariant initialization proved (CVC5: 9 VC; Trivial: 5 VC)
@@ -131,13 +135,16 @@ stable_marriage.adb:395:33: info: loop invariant preservation proved (CVC5: 7 VC
 stable_marriage.adb:396:10: info: precondition proved (CVC5: 10 VC; Trivial: 5 VC; altergo: 2 VC)
 stable_marriage.ads:21:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:26:06: info: flow dependencies proved
+stable_marriage.ads:28:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_1"
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)
 stable_marriage.ads:33:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:38:06: info: flow dependencies proved
+stable_marriage.ads:40:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_2"
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2)
 stable_marriage.ads:50:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:56:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:60:06: info: flow dependencies proved
+stable_marriage.ads:63:06: warning: postcondition does not check the outcome of calling "Invert_Ranking_Of_Group_1"
 stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22)
 stable_marriage.ads:71:07: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:77:14: info: postcondition proved (CVC5: 2 VC)
