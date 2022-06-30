@@ -1071,7 +1071,9 @@ package body SPARK_Definition.Annotate is
             --  Check that the entity is a private type whose whose full view
             --  has SPARK_Mode => Off.
 
-            if Ekind (Ent) not in E_Private_Type | E_Record_Type_With_Private
+            if Ekind (Ent) not in E_Private_Type
+                                | E_Record_Type_With_Private
+                                | E_Limited_Private_Type
               or else Retysp (Ent) /= Ent
               or else Parent_Type (Ent) /= Ent
             then

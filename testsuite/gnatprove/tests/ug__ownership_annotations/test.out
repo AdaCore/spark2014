@@ -1,0 +1,9 @@
+simple_ownership.adb:15:04: info: initialization of "X" proved
+
+simple_ownership.adb:23:25: error: "X" is not readable
+   23 |   pragma Assert (Read (X)); -- Error, X has been moved
+      |                        ^ here
+  object was moved at line 21
+   21 |   Y := X;
+      |        ^ here
+gnatprove: error during flow analysis and proof
