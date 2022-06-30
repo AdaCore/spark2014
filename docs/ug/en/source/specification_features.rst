@@ -1246,6 +1246,8 @@ Various kinds of ghost code are useful in different situations:
   a specific kind of ghost code.
 * `Imported ghost subprograms` are used to provide placeholders for properties
   that are defined in a logical language, when using manual proof.
+* `Ghost generic formal parameters` are used to pass on ghost entities (types,
+  objects, subprograms, packages) as parameters in a generic instantiation.
 
 When the program is compiled with assertions (for example with switch
 ``-gnata`` in |GNAT Pro|), ghost code is executed like normal code. Ghost code
@@ -1583,6 +1585,44 @@ A ghost imported subprogram cannot be executed, so calls to ``Append_To_Log``
 above should not be enabled during compilation, otherwise a compilation error
 is issued. Note also that |GNATprove| will not attempt proving the contract of
 a ghost imported subprogram, as it does not have its body.
+
+Ghost Generic Formal Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Non-ghost generic units may depend on ghost entities for the specification and
+proof of their instantiations. In such a case, the ghost entities can be passed
+on as ghost generic formal parameters:
+
+.. code-block:: ada
+
+   generic
+      type T is private with Ghost;
+      Var_Input  : T with Ghost;
+      Var_Output : in out T with Ghost;
+      with function F return T with Ghost;
+      with procedure P (X : in out T) with Ghost;
+      with package Pack is new Gen with Ghost;
+   package My_Generic with
+     SPARK_Mode
+   is
+      ...
+
+At the point of instantiation of ``My_Generic``, actual parameters for ghost
+generic formal parameters may be ghost, and in three cases, they must actually
+be ghost: the actual for a mutable ghost generic formal object, a ghost generic
+formal procedure, or a ghost generic formal package, must be ghost. Otherwise,
+writing to a ghost variable or calling a ghost procedure could have an effect
+on non-ghost variables.
+
+.. code-block:: ada
+
+   package My_Instantiation is
+     new My_Generic (T          => ... -- ghost or not
+                     Var_Input  => ... -- ghost or not
+                     Var_Output => ... -- must be ghost
+                     F          => ... -- ghost or not
+                     P          => ... -- must be ghost
+                     Pack       => ... -- must be ghost
 
 Ghost Models
 ^^^^^^^^^^^^
