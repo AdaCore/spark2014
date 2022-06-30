@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Maps;
 with Ada.Containers; use Ada.Containers;
 package P is pragma SPARK_Mode (On);
 
@@ -10,7 +10,7 @@ package P is pragma SPARK_Mode (On);
 
    function Hash (Id : Key_Type) return Hash_Type is (Hash_Type (Id));
 
-   package My_Maps is new Ada.Containers.Formal_Hashed_Maps
+   package My_Maps is new SPARK.Containers.Formal.Hashed_Maps
      (Key_Type, Element_Type, Hash, My_Eq);
    use My_Maps; use My_Maps.Formal_Model;
 

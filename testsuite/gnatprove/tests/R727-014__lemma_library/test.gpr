@@ -1,8 +1,8 @@
-with "spark_lemmas";
+with "sparklib";
 
 project Test is
    for Main use ("test_lemmas.adb");
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnata");
+      for Default_Switches ("Ada") use ("-gnata", "-gnat2022");
    end Compiler;
 end Test;

@@ -6,8 +6,8 @@ import shutil
 
 
 def copy_project_file():
-    lemma_gpr = os.path.join(spark_install_path(), "lib", "gnat", "spark_lemmas.gpr")
-    shutil.copyfile(lemma_gpr, "spark_lemmas.gpr")
+    libraries_gpr = os.path.join(spark_install_path(), "lib", "gnat", "sparklib.gpr")
+    shutil.copyfile(libraries_gpr, "sparklib.gpr")
 
 
 def copy_lemma_files():
@@ -28,9 +28,9 @@ def copy_proof_files():
 copy_project_file()
 copy_lemma_files()
 copy_proof_files()
-os.environ["SPARK_LEMMAS_OBJECT_DIR"] = "obj"
-os.environ["SPARK_LEMMAS_BODY_MODE"] = "On"
-os.environ["SPARK_LEMMAS_INSTALLED"] = "False"
+os.environ["SPARKLIB_OBJECT_DIR"] = "obj"
+os.environ["SPARKLIB_BODY_MODE"] = "On"
+os.environ["SPARKLIB_INSTALLED"] = "False"
 
 prove_all(
     replay=True,

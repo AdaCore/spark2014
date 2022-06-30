@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 
 package body Database with SPARK_Mode is
 
@@ -12,7 +12,7 @@ package body Database with SPARK_Mode is
       and then (X.Email = null) = (Y.Email = null)
       and then (if X.Email /= null then X.Email.all = Y.Email.all));
 
-   package DB_Pack is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package DB_Pack is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type => DB_Entry_Type,
       "="          => "=");
 

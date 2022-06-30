@@ -1,5 +1,8 @@
+with "sparklib";
+
 project Test is
   package Compiler is
     for Local_Configuration_Pragmas use "test.adc";
+    for Switches ("Ada") use ("-gnat2022");
   end Compiler;
 end Test;

@@ -1,7 +1,7 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 
 package body Test_List with SPARK_Mode => On is
 

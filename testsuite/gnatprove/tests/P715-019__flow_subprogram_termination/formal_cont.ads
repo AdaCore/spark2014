@@ -1,4 +1,4 @@
-with Ada.Containers.Functional_Sets; use Ada.Containers;
+with SPARK.Containers.Functional.Sets;
 
 package Formal_Cont with
   SPARK_Mode
@@ -9,7 +9,7 @@ is
    function My_Equal_01 (A, B : Integer) return Boolean;
 
    -- Package instantiation with nonreturning subprogram
-   package New_Set_01 is new Ada.Containers.Functional_Sets
+   package New_Set_01 is new SPARK.Containers.Functional.Sets
      (Element_Type       => Integer,
       Equivalent_Elements => My_Equal_01);
    use New_Set_01;
@@ -23,7 +23,7 @@ is
    function My_Equal_02 (A, B : Integer) return Boolean;
 
    -- Package instantiation with returning subprogram
-   package New_Set_02 is new Ada.Containers.Functional_Sets
+   package New_Set_02 is new SPARK.Containers.Functional.Sets
      (Element_Type        => Integer,
       Equivalent_Elements => My_Equal_02) with Annotate => (GNATprove, Always_Return);
    use New_Set_02;

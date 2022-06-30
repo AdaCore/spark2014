@@ -1,13 +1,20 @@
 search_list_max.adb:4:40: info: initialization of "Pos" proved
 search_list_max.adb:4:58: info: initialization of "Max" proved
-search_list_max.adb:7:11: info: postcondition proved
 search_list_max.adb:7:12: info: precondition proved
+
+search_list_max.adb:7:30: medium: postcondition might fail, cannot prove E <= Max
+    7 |  Post => (for all E of L => E <= Max) and then
+      |                             ^~~~~~~~
 search_list_max.adb:8:12: info: precondition proved
 search_list_max.adb:10:11: info: precondition proved
-search_list_max.adb:18:30: info: loop invariant preservation proved
 search_list_max.adb:18:30: info: loop invariant initialization proved
 search_list_max.adb:18:49: info: precondition proved
 search_list_max.adb:19:32: info: precondition proved
+
+search_list_max.adb:19:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Element (Model (L), I) <= Max
+   19 |                               Element (Model (L), I) <= Max);
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec
 search_list_max.adb:20:30: info: loop invariant initialization proved
 search_list_max.adb:20:30: info: loop invariant preservation proved
 search_list_max.adb:21:30: info: loop invariant initialization proved

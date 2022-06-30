@@ -1,4 +1,4 @@
-with SPARK.Mod32_Arithmetic_Lemmas; use SPARK.Mod32_Arithmetic_Lemmas;
+with SPARK.Lemmas.Mod32_Arithmetic; use SPARK.Lemmas.Mod32_Arithmetic;
 with Interfaces; use Interfaces;
 
 procedure Test_Arith with

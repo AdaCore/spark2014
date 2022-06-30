@@ -188,15 +188,6 @@ use_stack.adb:11:04: medium: "Stack.P_Stack" might not be initialized after elab
 use_stack.adb:12:19: info: assertion proved (CVC5: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC5: 1 VC)
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
 p_max_array.adb:4:07: info: initialization of "R" proved
 p_max_array.adb:4:07: info: range check proved (CVC5: 2 VC)
 p_max_array.adb:8:33: info: loop invariant initialization proved (CVC5: 2 VC)
@@ -348,7 +339,7 @@ ring_buffer.ads:21:57: info: precondition proved (CVC5: 2 VC)
 ring_buffer.ads:21:68: info: overflow check proved (CVC5: 2 VC)
 ring_buffer.ads:21:68: info: range check proved (CVC5: 2 VC)
 ring_buffer.ads:25:04: info: initialization of "Model" proved
-ring_buffer.ads:31:14: info: postcondition proved (CVC5: 1 VC)
+ring_buffer.ads:31:14: medium: postcondition might fail
 ring_buffer.ads:34:28: info: range check proved (CVC5: 2 VC)
 ring_buffer.ads:35:14: info: postcondition proved (CVC5: 3 VC)
 ring_buffer.ads:38:44: info: range check proved (CVC5: 2 VC)
@@ -358,6 +349,122 @@ ring_buffer.ads:43:14: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
 ring_buffer.ads:49:24: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
 ring_buffer.ads:51:26: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
 ring_buffer.ads:52:26: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+spark-big_intervals.ads:48:07: info: predicate check proved (Trivial: 1 VC)
+spark-big_intervals.ads:48:11: info: predicate check proved (Trivial: 1 VC)
+spark-big_intervals.ads:51:17: info: predicate check proved (Trivial: 1 VC)
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
+spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
+spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
+spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256
+spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:264
+spark-conversions-long_float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
+spark-conversions-long_float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
+spark-conversions-long_float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256
+spark-conversions-long_float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:264
+spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37
+spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_integer_arithmetic.ads:37
+spark-lemmas-arithmetic.ads:127:56: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37
+spark-lemmas-arithmetic.ads:127:56: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_integer_arithmetic.ads:37
+spark-lemmas-float_arithmetic.ads:44:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-float_arithmetic.ads:45:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-float_arithmetic.ads:46:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-floating_point_arithmetic.ads:228:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:228:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:21: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:21: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:236:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:236:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:254:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:254:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:262:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:262:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:31: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:31: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:288:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:288:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:289:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:289:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:290:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:290:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:291:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:291:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:292:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:292:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:299:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:299:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:300:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:300:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:301:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:301:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:302:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:302:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:303:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:303:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:310:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:310:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:311:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:311:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:312:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:312:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:313:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:313:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:314:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:314:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-long_float_arithmetic.ads:44:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-long_float_arithmetic.ads:45:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-long_float_arithmetic.ads:46:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-mod_arithmetic.ads:69:26: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:69:26: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:80:52: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:80:52: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:90:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:90:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:99:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:99:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:110:54: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:110:54: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:111:38: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:111:38: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:119:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:119:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:127:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:127:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-tests-array_lemmas.ads:64:41: info: index check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:64:41: info: overflow check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:64:53: info: index check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:73:41: info: index check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:73:41: info: overflow check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:73:53: info: index check proved (CVC5: 2 VC)
 protected_complex.adb:7:24: error: from profile "Jorvik" at Concurrency/spark.adc:1
 protected_complex.adb:7:24: error: violation of restriction "Pure_Barriers"
 rendezvous.adb:3:04: error: from profile "Jorvik" at Concurrency/spark.adc:1
@@ -430,15 +537,6 @@ use_file_system.adb:11:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed))
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
 fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
@@ -467,6 +565,122 @@ resources.ads:10:46: info: range check proved (CVC5: 2 VC)
 resources.ads:14:22: info: initialization of "D" proved
 resources.ads:15:14: medium: postcondition might fail (e.g. when D(1) = 1 and D(2) = 2 and D(3) = 3 and D(4) = 4 and D(5) = 5)
 resources.ads:19:14: medium: postcondition might fail
+spark-big_intervals.ads:48:07: info: predicate check proved (Trivial: 1 VC)
+spark-big_intervals.ads:48:11: info: predicate check proved (Trivial: 1 VC)
+spark-big_intervals.ads:51:17: info: predicate check proved (Trivial: 1 VC)
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
+spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
+spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
+spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256
+spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:264
+spark-conversions-long_float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
+spark-conversions-long_float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
+spark-conversions-long_float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256
+spark-conversions-long_float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:264
+spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37
+spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_integer_arithmetic.ads:37
+spark-lemmas-arithmetic.ads:127:56: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37
+spark-lemmas-arithmetic.ads:127:56: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_integer_arithmetic.ads:37
+spark-lemmas-float_arithmetic.ads:44:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-float_arithmetic.ads:45:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-float_arithmetic.ads:46:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-floating_point_arithmetic.ads:228:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:228:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:21: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:21: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:232:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:236:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:236:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:254:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:254:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:262:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:262:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:31: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:269:31: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:288:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:288:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:289:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:289:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:290:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:290:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:291:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:291:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:292:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:292:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:299:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:299:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:300:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:300:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:301:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:301:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:302:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:302:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:303:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:303:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:310:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:310:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:311:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:311:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:312:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:312:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:313:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:313:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:314:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:314:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-long_float_arithmetic.ads:44:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-long_float_arithmetic.ads:45:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-long_float_arithmetic.ads:46:22: info: predicate check proved (Trivial: 1 VC)
+spark-lemmas-mod_arithmetic.ads:69:26: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:69:26: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:80:52: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:80:52: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:90:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:90:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:99:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:99:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:110:54: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:110:54: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:111:38: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:111:38: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:119:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:119:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:127:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod32_arithmetic.ads:33
+spark-lemmas-mod_arithmetic.ads:127:32: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-mod64_arithmetic.ads:33
+spark-tests-array_lemmas.ads:64:41: info: index check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:64:41: info: overflow check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:64:53: info: index check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:73:41: info: index check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:73:41: info: overflow check proved (CVC5: 2 VC)
+spark-tests-array_lemmas.ads:73:53: info: index check proved (CVC5: 2 VC)
 use_vectors.adb:5:07: info: initialization of "S" proved
 use_vectors.adb:8:15: info: precondition proved (CVC5: 4 VC)
 use_vectors.adb:9:33: info: loop invariant initialization proved (CVC5: 1 VC)

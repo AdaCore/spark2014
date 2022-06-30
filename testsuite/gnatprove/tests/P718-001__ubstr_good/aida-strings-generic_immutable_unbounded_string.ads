@@ -1,4 +1,5 @@
-with Ada.Containers.Formal_Indefinite_Vectors;
+with SPARK.Containers.Formal.Indefinite_Vectors;
+with Ada.Containers;
 
 generic
    Capacity : Ada.Containers.Count_Type;
@@ -22,7 +23,7 @@ package Aida.Strings.Generic_Immutable_Unbounded_String with SPARK_Mode is
 
 private
 
-   package Char_Vectors is new Ada.Containers.Formal_Indefinite_Vectors
+   package Char_Vectors is new SPARK.Containers.Formal.Indefinite_Vectors
      (Index_Type                   => Positive,
       Element_Type                 => Character,
       Bounded                      => False,

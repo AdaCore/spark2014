@@ -1,6 +1,8 @@
-from test_support import prove_all
+from test_support import prove_all, TESTDIR
 from glob import glob
-import os.path
+import os
+
+os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
 # List of all ada units (picking .adb in most cases, except when we only
 # have a spec file).
@@ -16,4 +18,5 @@ for f in sorted(files):
         steps=3000,
         counterexample=False,
         opt=["-u", f],
+        sparklib=True,
     )

@@ -1,5 +1,5 @@
-with Ada.Containers.Formal_Indefinite_Vectors;
-
+with SPARK.Containers.Formal.Indefinite_Vectors;
+with Ada.Containers;
 generic
    type Index_Type is range <>;
    type Element_Type is private;
@@ -175,7 +175,7 @@ package Aida.Containers.Formal_Vectors is
 
 private
 
-   package Vector_Type_Owner is new Ada.Containers.Formal_Indefinite_Vectors (Index_Type   => Index_Type,
+   package Vector_Type_Owner is new SPARK.Containers.Formal.Indefinite_Vectors (Index_Type   => Index_Type,
                                                                               Element_Type => Element_Type,
                                                                               Bounded      => Bounded,
                                                                               Max_Size_In_Storage_Elements => Element_Type'Size);

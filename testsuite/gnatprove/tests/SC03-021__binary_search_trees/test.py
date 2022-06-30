@@ -1,12 +1,13 @@
-from test_support import prove_all
+from test_support import prove_all, TESTDIR
+import os
 
 contains_manual_proof = False
-
+os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
 def replay():
-    prove_all(procs=0, level=1, opt=["--no-axiom-guard"], check_counterexamples=False)
-    prove_all(procs=0, level=4, opt=["--no-axiom-guard"], check_counterexamples=False)
+    prove_all(procs=0, level=1, opt=["--no-axiom-guard"], check_counterexamples=False, sparklib=True)
+    prove_all(procs=0, level=4, opt=["--no-axiom-guard"], check_counterexamples=False, sparklib=True)
 
 
 if __name__ == "__main__":
-    prove_all(replay=True, opt=["--no-axiom-guard"], check_counterexamples=False)
+    prove_all(replay=True, opt=["--no-axiom-guard"], check_counterexamples=False, sparklib=True)

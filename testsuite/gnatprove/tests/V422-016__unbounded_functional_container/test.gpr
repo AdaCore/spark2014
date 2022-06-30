@@ -1,3 +1,5 @@
+with "sparklib";
+
 project Test is
 
    for Main use ("infinite_sequence.adb");

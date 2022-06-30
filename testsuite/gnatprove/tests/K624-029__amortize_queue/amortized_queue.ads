@@ -1,5 +1,5 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Vectors;
 
 package Amortized_Queue is pragma SPARK_Mode (On);
 
@@ -7,7 +7,7 @@ package Amortized_Queue is pragma SPARK_Mode (On);
 
    subtype Val is Integer range -2 ** 31 .. 2 ** 31 - 1;
 
-   package My_Vectors is new Ada.Containers.Formal_Vectors
+   package My_Vectors is new SPARK.Containers.Formal.Vectors
      (Index, Val);
    use My_Vectors;
 

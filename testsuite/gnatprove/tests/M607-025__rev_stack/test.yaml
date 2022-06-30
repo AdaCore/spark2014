@@ -1,4 +1,5 @@
 prove_all:
+  sparklib: True
   no_fail: True
   prover: ["z3", "cvc5"]
 comment: "Alt-ergo consumes gigabytes of memory, but doesn't prove any VC here"

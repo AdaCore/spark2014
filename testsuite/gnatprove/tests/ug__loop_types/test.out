@@ -11,55 +11,55 @@ loop_types.ads:54:20: info: pointer dereference check proved
 loop_types.ads:54:30: info: pointer dereference check proved
 loop_types.ads:55:35: info: pointer dereference check proved
 loop_types.ads:55:44: info: pointer dereference check proved
-a-cfdlli.ads:393:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:394:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:398:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:400:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:419:39: info: pointer dereference check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:524:49: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:657:49: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:747:57: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:813:57: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:900:28: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:900:39: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1076:43: info: overflow check proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1257:06: info: disjoint contract cases proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1396:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1411:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1426:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1441:20: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1463:14: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1469:23: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1518:14: info: precondition proved, in instantiation at loop_types.ads:16
-a-cfdlli.ads:1525:23: info: precondition proved, in instantiation at loop_types.ads:16
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:235:54: info: overflow check proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:235:54: info: overflow check proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:240:63: info: range check proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:240:63: info: range check proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:241:59: info: overflow check proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:241:59: info: overflow check proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:241:76: info: overflow check proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:241:76: info: overflow check proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:242:30: info: range check proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:242:30: info: range check proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:303:52: info: overflow check proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuve.ads:303:52: info: overflow check proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at loop_types.ads:16
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at loop_types.ads:13
-a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at loop_types.ads:16
-a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at loop_types.ads:16
-a-cofove.ads:296:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:13
-a-cofove.ads:297:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:301:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:13
-a-cofove.ads:303:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:322:39: info: pointer dereference check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:322:69: info: pointer dereference check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:631:57: info: range check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:759:23: info: precondition proved, in instantiation at loop_types.ads:13
-a-cofove.ads:762:38: info: range check proved, in instantiation at loop_types.ads:13
-a-cofove.ads:795:14: info: precondition proved, in instantiation at loop_types.ads:13
-a-cofove.ads:799:35: info: range check proved, in instantiation at loop_types.ads:13
+spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:391:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:397:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:416:39: info: pointer dereference check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:521:49: info: overflow check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:654:49: info: overflow check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:744:57: info: overflow check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:810:57: info: overflow check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:897:28: info: overflow check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:897:39: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1073:43: info: overflow check proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1254:06: info: disjoint contract cases proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1393:20: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1408:20: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1423:20: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1438:20: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:238:63: info: range check proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:238:63: info: range check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:240:30: info: range check proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:240:30: info: range check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at loop_types.ads:16
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at loop_types.ads:13
+spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at loop_types.ads:16
+spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at loop_types.ads:16
+spark-containers-formal-vectors.ads:294:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:295:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:299:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:301:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:320:39: info: pointer dereference check proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:320:69: info: pointer dereference check proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:629:57: info: range check proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:757:23: info: precondition proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:760:38: info: range check proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:793:14: info: precondition proved, in instantiation at loop_types.ads:13
+spark-containers-formal-vectors.ads:797:35: info: range check proved, in instantiation at loop_types.ads:13

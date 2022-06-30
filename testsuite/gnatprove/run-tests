@@ -308,10 +308,16 @@ class UGTestDriver(DiffTestDriver):
         return [message]
 
     def run(self):
+        # Some tests require this environment variable to be set
+        os.environ["SPARKLIB_OBJECT_DIR"] = self.test_env["working_dir"]
+
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
         gprfiles = glob.glob(pattern)
         assert len(gprfiles) == 1
         cmd = ["gnatprove", "-P", gprfiles[0], "-f", "-q", "--level=2", "--timeout=30"]
+
+        # Tests withing SPARK libraries need this switch
+        cmd += ["--no-subprojects"]
 
         # tests prefixed by ug__long__ require more steps to prove
         if self.test_env["test_name"].startswith("ug__long__"):

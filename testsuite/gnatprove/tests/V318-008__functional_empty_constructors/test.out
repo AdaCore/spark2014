@@ -1,15 +1,3 @@
-a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at map.adb:9
-a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at map.adb:9
-a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at set.adb:10
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at sequence.adb:7
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at sequence.adb:7
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at sequence.adb:7
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at sequence.adb:7
 map.adb:17:19: info: assertion proved (CVC5: 1 VC)
 map.adb:17:29: info: predicate check proved (Trivial: 1 VC)
 map.adb:17:54: info: predicate check proved (Trivial: 1 VC)
@@ -24,3 +12,15 @@ set.adb:23:19: info: assertion proved (CVC5: 1 VC)
 set.adb:24:19: info: assertion proved (CVC5: 1 VC)
 set.adb:24:29: info: predicate check proved (Trivial: 1 VC)
 set.adb:24:43: info: predicate check proved (Trivial: 1 VC)
+spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at map.adb:9
+spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at map.adb:9
+spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at set.adb:10
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at sequence.adb:7
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at sequence.adb:7

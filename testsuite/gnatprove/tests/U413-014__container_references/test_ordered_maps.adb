@@ -1,8 +1,8 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Ordered_Maps;
+with SPARK.Containers.Formal.Ordered_Maps;
 
 procedure Test_Ordered_Maps with SPARK_Mode is
-   package Int_Maps is new Ada.Containers.Formal_Ordered_Maps (Integer, Integer);
+   package Int_Maps is new SPARK.Containers.Formal.Ordered_Maps (Integer, Integer);
    use Int_Maps;
 
    procedure Test (M : aliased in out Map) with

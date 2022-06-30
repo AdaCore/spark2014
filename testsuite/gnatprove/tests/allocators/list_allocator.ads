@@ -1,6 +1,6 @@
 pragma Unevaluated_Use_Of_Old (Allow);
-with Ada.Containers.Functional_Vectors;
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Vectors;
+with SPARK.Containers.Functional.Sets;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 with Ada.Numerics.Big_Numbers.Big_Integers;
@@ -40,11 +40,11 @@ is
            and then
              (for all RR in 1 .. Capacity => Get (Avail, RR) = Resource (RR))))
    is
-      package S1 is new Ada.Containers.Functional_Vectors (Index_Type => Positive,
+      package S1 is new SPARK.Containers.Functional.Vectors (Index_Type => Positive,
                                                            Element_Type => Resource);
       use S1;
 
-      package S2 is new Ada.Containers.Functional_Sets
+      package S2 is new SPARK.Containers.Functional.Sets
         (Element_Type => Resource, Equivalent_Elements => "=");
       use S2;
 

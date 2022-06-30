@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Maps;
 with Ada.Containers; use Ada.Containers;
 package Find_Map with SPARK_Mode is
    Max : constant Positive := 100;
@@ -12,7 +12,7 @@ package Find_Map with SPARK_Mode is
    --  in the program.
    function Equivalent_Keys (E1, E2 : Natural) return Boolean is (E1 = E2);
 
-   package Index_Maps is new Ada.Containers.Formal_Hashed_Maps
+   package Index_Maps is new SPARK.Containers.Formal.Hashed_Maps
         (Key_Type        => Natural,
          Element_Type    => Index,
          Hash            => Hash,

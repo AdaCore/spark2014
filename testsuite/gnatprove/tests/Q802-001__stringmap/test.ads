@@ -1,6 +1,6 @@
 with Ada.Strings.Bounded;
 with Ada.Strings.Bounded.Hash;
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Maps;
 
 package Test with SPARK_Mode is
    package SB
@@ -10,7 +10,7 @@ package Test with SPARK_Mode is
 
    type Scale is new Integer;
    package Scales_Map is
-	new Ada.Containers.Formal_Hashed_Maps(Key_Type =>
+	new SPARK.Containers.Formal.Hashed_Maps(Key_Type =>
 		SB.Bounded_String,
 		Element_Type => Scale,
 		Hash => SBHash,

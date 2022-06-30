@@ -1,8 +1,3 @@
-a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
-a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
-big_intervals.ads:20:07: info: predicate check proved (Trivial: 1 VC)
-big_intervals.ads:20:11: info: predicate check proved (Trivial: 1 VC)
-big_intervals.ads:23:17: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:13:07: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:13:14: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:13:20: info: predicate check proved (Trivial: 1 VC)
@@ -42,21 +37,21 @@ infinite_sequences.adb:48:39: info: loop invariant initialization proved (CVC5: 
 infinite_sequences.adb:48:39: info: loop invariant preservation proved (CVC5: 1 VC)
 infinite_sequences.adb:48:39: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:48:46: info: predicate check proved (Trivial: 2 VC)
-infinite_sequences.adb:49:39: info: loop invariant initialization proved (CVC5: 1 VC)
+infinite_sequences.adb:49:39: medium: loop invariant might fail in first iteration
 infinite_sequences.adb:49:39: medium: loop invariant might not be preserved by an arbitrary iteration
-infinite_sequences.adb:50:39: info: loop invariant initialization proved (CVC5: 1 VC)
+infinite_sequences.adb:50:39: medium: loop invariant might fail in first iteration
 infinite_sequences.adb:50:39: medium: loop invariant might not be preserved by an arbitrary iteration
 infinite_sequences.adb:50:59: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:50:65: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:50:67: info: predicate check proved (Trivial: 2 VC)
-infinite_sequences.adb:51:39: info: loop invariant initialization proved (CVC5: 1 VC)
+infinite_sequences.adb:51:39: medium: loop invariant might fail in first iteration
 infinite_sequences.adb:51:39: medium: loop invariant might not be preserved by an arbitrary iteration
 infinite_sequences.adb:51:39: medium: precondition might fail
 infinite_sequences.adb:51:55: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:61: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:51:63: info: predicate check proved (Trivial: 2 VC)
-infinite_sequences.adb:53:19: info: loop invariant initialization proved (CVC5: 2 VC)
 infinite_sequences.adb:53:19: info: precondition proved (Trivial: 2 VC)
+infinite_sequences.adb:54:23: medium: loop invariant might fail in first iteration, cannot prove Has_Key (Content, K)
 infinite_sequences.adb:54:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Key (Content, K)
 infinite_sequences.adb:54:41: medium: in inlined predicate at a-nbnbin.ads:55
 infinite_sequences.adb:54:41: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
@@ -73,8 +68,8 @@ infinite_sequences.adb:57:53: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:58:21: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:58:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequences.adb:58:25: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:14
-infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove Has_Key (M, I)
+infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:13
+infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove Lst >= Fst - 1
 infinite_sequences.ads:7:09: info: predicate check proved on default value (CVC5: 3 VC)
 infinite_sequences.ads:10:14: info: postcondition proved (CVC5: 1 VC)
 infinite_sequences.ads:10:18: info: predicate check proved (Trivial: 1 VC)
@@ -466,14 +461,15 @@ red_black_trees.adb:368:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:368:76: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:368:78: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:369:18: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:369:24: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:369:24: medium: pointer dereference check might fail
 red_black_trees.adb:369:31: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:369:38: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:369:47: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:369:51: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+red_black_trees.adb:369:51: medium: in inlined predicate at a-nbnbin.ads:55
+red_black_trees.adb:369:51: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 343 should mention Pos]
 red_black_trees.adb:369:53: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:369:58: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:369:64: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:369:64: medium: pointer dereference check might fail
 red_black_trees.adb:369:80: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:369:86: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:369:94: info: predicate check proved (Trivial: 1 VC)
@@ -565,7 +561,7 @@ red_black_trees.adb:422:59: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:64: medium: pointer dereference check might fail
 red_black_trees.adb:422:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:422:79: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:422:84: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:422:84: medium: pointer dereference check might fail
 red_black_trees.adb:422:93: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:422:97: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:422:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 397 should mention Pos]
@@ -1119,3 +1115,5 @@ red_black_trees.ads:147:14: medium: postcondition might fail, cannot prove RBT_I
 red_black_trees.ads:148:20: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:52: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:59: info: predicate check proved (Trivial: 1 VC)
+spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44

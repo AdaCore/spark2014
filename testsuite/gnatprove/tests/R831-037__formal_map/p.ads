@@ -1,4 +1,5 @@
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Maps;
+with Ada.Containers;
 with Ada.Strings.Hash;
 
 package P
@@ -16,7 +17,7 @@ is
 
 private
 
-   package My_Hash is new Ada.Containers.Formal_Hashed_Maps
+   package My_Hash is new SPARK.Containers.Formal.Hashed_Maps
      (Key_Type        => My_String,
       Element_Type    => My_Id,
       Hash            => Ada.Strings.Hash,

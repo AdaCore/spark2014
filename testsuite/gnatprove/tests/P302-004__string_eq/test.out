@@ -1,6 +1,241 @@
+a-strbou.ads:59:06: medium: initial condition might fail, in instantiation at general_strings.ads:3
+a-strbou.ads:76:12: info: predicate check proved on default value (CVC5: 2 VC; Trivial: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:99:37: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:100:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:101:18: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:105:18: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:138:37: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:139:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:140:18: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:144:18: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:171:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:214:20: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:216:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:217:47: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:228:46: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:267:19: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:269:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:270:16: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:280:16: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:318:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:345:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:379:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:423:23: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:425:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:426:52: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:437:51: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:480:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:521:22: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:533:21: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:747:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:760:62: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:761:25: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at general_strings.ads:3
+a-strbou.ads:800:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:813:62: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:814:25: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at general_strings.ads:3
+a-strbou.ads:900:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:916:20: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:916:30: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:917:24: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at general_strings.ads:3
+a-strbou.ads:964:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:980:20: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:980:30: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:981:24: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at general_strings.ads:3
+a-strbou.ads:1036:53: info: precondition proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1130:22: info: precondition proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1207:50: info: precondition proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1207:67: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1261:50: info: precondition proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1386:46: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1387:29: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1388:65: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1389:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1390:38: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1391:14: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1414:37: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1415:14: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1518:46: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1519:29: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1520:65: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1521:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1522:38: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1523:14: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1543:37: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1544:14: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1637:34: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1639:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1640:52: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1657:51: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1751:34: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1753:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1754:52: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1770:51: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1864:34: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1866:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1867:49: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1892:48: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1950:34: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1952:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1953:49: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:1978:48: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2191:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2220:18: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2246:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2277:18: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2304:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2340:18: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2365:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2402:18: info: overflow check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2436:41: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2436:63: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2449:65: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2474:39: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2474:60: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2476:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2477:34: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2477:56: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2486:27: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2486:48: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2508:62: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2510:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2511:60: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2520:50: info: division check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2553:61: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2560:25: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2567:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
+a-strbou.ads:2567:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at general_strings.ads:3
+general_strings.ads:3:04: warning: in instantiation at a-strbou.ads:2563
+general_strings.ads:3:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 loggers.adb:9:29: warning: assuming "To_String" always returns
 loggers.adb:9:29: warning: no returning annotation available for "To_String"
-loggers.ads:16:16: error: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))
-loggers.ads:16:16: error: use classwide precondition Pre'Class instead of Pre
-loggers.ads:16:16: error: violation of aspect SPARK_Mode at line 4
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: assuming "=" always returns
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:101
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:103
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:122
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:1233
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:1282
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:1342
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:135
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:1368
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:138
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:1385
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:1481
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:1536
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:154
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:155
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:263
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:312
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:359
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:381
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:408
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:426
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:474
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:504
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:636
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:729
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:74
+loggers.ads:10:07: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:798
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:112
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:123
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:134
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:149
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:165
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:181
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:199
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:215
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:244
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:250
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:272
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:286
+loggers.ads:10:07: warning: in instantiation at spark-containers-functional-vectors.ads:304
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:10:07: warning: no returning annotation available for "="
+loggers.ads:17:16: error: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))
+loggers.ads:17:16: error: use classwide precondition Pre'Class instead of Pre
+loggers.ads:17:16: error: violation of aspect SPARK_Mode at line 5
 gnatprove: error during flow analysis and proof

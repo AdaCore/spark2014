@@ -1,0 +1,12 @@
+--  This project file is intended for use with reduced runtimes without
+--  Ada.Numerics.Big_Numbers unit.
+
+project SPARKlib_ZFP extends "sparklib" is
+
+   for Excluded_Source_Files use ("spark-conversions-long_integer.ads",
+                                  "spark-lemmas-long_integer.ads",
+                                  "spark-lemmas-integer_arithmetic.ads",
+                                  "spark-lemmas-arithmetic.adb",
+                                  "spark-lemmas-arithmetic.ads");
+
+end SPARKlib_ZFP;

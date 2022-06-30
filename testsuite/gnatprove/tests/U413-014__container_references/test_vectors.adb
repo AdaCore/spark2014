@@ -1,8 +1,8 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Vectors;
 
 procedure Test_Vectors with SPARK_Mode is
-   package Int_Vectors is new Ada.Containers.Formal_Vectors (Positive, Integer);
+   package Int_Vectors is new SPARK.Containers.Formal.Vectors (Positive, Integer);
    use Int_Vectors;
 
    procedure Test (V : aliased in out Vector) with

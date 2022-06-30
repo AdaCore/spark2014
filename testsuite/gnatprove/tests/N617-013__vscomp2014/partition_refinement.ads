@@ -1,7 +1,7 @@
-with Ada.Containers.Formal_Ordered_Maps;
-with Ada.Containers.Formal_Vectors;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
-use Ada.Containers;
+with SPARK.Containers.Formal.Ordered_Maps;
+with SPARK.Containers.Formal.Vectors;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with Ada.Containers; use Ada.Containers;
 
 package Partition_Refinement with
   SPARK_Mode
@@ -18,8 +18,8 @@ is
    end record;
    type Partition_Index is range 0 .. 10_000;
    package Partitions is new
-     Formal_Vectors (Index_Type   => Partition_Index,
-                     Element_Type => Interval);
+     SPARK.Containers.Formal.Vectors (Index_Type   => Partition_Index,
+                                      Element_Type => Interval);
    subtype Partition is Partitions.Vector;
    use Partitions;
 

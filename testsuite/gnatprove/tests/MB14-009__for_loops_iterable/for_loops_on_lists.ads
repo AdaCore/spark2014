@@ -1,8 +1,8 @@
 pragma Unevaluated_Use_Of_Old (Allow);
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 package For_Loops_On_Lists with SPARK_Mode is
-   package My_Lists is new Formal_Doubly_Linked_Lists
+   package My_Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type => Natural);
    use My_Lists; use My_Lists.Formal_Model;
 

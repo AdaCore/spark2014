@@ -1,9 +1,9 @@
 pragma SPARK_Mode;
-with SPARK.Fixed_Point_Arithmetic_Lemmas;
+with SPARK.Lemmas.Fixed_Point_Arithmetic;
 
 package body Test_Fixed_Points is
 
-   package Lemmas is new SPARK.Fixed_Point_Arithmetic_Lemmas (Fix);
+   package Lemmas is new SPARK.Lemmas.Fixed_Point_Arithmetic (Fix);
 
    procedure Test_Div_Is_Monotonic
      (Val1  : Fix;

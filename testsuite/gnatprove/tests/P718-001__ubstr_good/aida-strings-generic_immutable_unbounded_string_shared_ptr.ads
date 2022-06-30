@@ -1,6 +1,7 @@
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Vectors;
 with Aida.Strings.Generic_Immutable_Unbounded_String;
 with Aida.Generic_Shared_Ptr;
+with Ada.Containers;
 
 generic
    Capacity : Ada.Containers.Count_Type;

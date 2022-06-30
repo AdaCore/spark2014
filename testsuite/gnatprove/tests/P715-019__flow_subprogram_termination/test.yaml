@@ -1,2 +1,3 @@
 do_flow:
+  sparklib: True
   opt: ["--proof-warnings"]

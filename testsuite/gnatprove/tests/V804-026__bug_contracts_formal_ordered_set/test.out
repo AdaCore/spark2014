@@ -1,38 +1,38 @@
-a-cforse.ads:528:18: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:897:39: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:906:17: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:941:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:949:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:976:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:984:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:1001:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-a-cforse.ads:1002:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-a-cforse.ads:1050:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-a-cforse.ads:1220:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-a-cforse.ads:1221:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-a-cforse.ads:1221:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-a-cforse.ads:1260:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-a-cforse.ads:1364:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:1379:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:1394:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:1409:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:1443:47: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:1458:40: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
-a-cforse.ads:1726:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:9
-a-cforse.ads:1747:46: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:9
-a-cforse.ads:1765:40: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:9
-a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at test.adb:7
-a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at test.adb:7
-a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:112, in instantiation at test.adb:7
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:525:18: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:894:39: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:903:17: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:938:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:946:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:973:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:981:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:998:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:999:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1047:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1217:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1218:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1218:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1257:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1361:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1376:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1391:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1406:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1440:47: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1455:40: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-formal-ordered_sets.ads:1723:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:9
+spark-containers-formal-ordered_sets.ads:1744:46: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:9
+spark-containers-formal-ordered_sets.ads:1762:40: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:9
+spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test.adb:7
+spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test.adb:7
 test.adb:12:04: info: initialization of "S" proved
 test.adb:12:13: info: range check proved (CVC5: 2 VC)
 test.adb:14:04: info: precondition proved (CVC5: 2 VC)

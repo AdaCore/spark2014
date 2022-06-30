@@ -1,4 +1,4 @@
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Sets;
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
@@ -17,7 +17,7 @@ package body Binary_Trees with SPARK_Mode is
    function To_Big_Int (J : Integer) return Big_Integer renames
      To_Big_Integer;
 
-   package I_Set is new Ada.Containers.Functional_Sets (Index_Type, "=");
+   package I_Set is new SPARK.Containers.Functional.Sets (Index_Type, "=");
 
    function All_Indexes return I_Set.Set with
    --  To ensure termination of the Model function, we need to keep track of

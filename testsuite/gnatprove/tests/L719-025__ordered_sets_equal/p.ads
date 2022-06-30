@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Ordered_Sets;
+with SPARK.Containers.Formal.Ordered_Sets;
 with Ada.Containers; use Ada.Containers;
 package P is pragma SPARK_Mode (On);
    pragma Unevaluated_Use_Of_Old (Allow);
@@ -8,7 +8,7 @@ package P is pragma SPARK_Mode (On);
    function My_Lt (I1 : Element_Type; I2 : Element_Type) return Boolean is
      (I1 < I2) with Annotate => (GNATprove, Inline_For_Proof);
 
-   package My_Sets is new Ada.Containers.Formal_Ordered_Sets
+   package My_Sets is new SPARK.Containers.Formal.Ordered_Sets
      (Element_Type, "<" => My_Lt);
    use My_Sets; use My_Sets.Formal_Model;
 

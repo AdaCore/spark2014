@@ -1,7 +1,8 @@
-from test_support import prove_all
+from test_support import prove_all, TESTDIR
+import os
 
+os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 contains_manual_proof = False
-
 
 def replay():
     prove_all(
@@ -10,8 +11,9 @@ def replay():
         vc_timeout=20,
         opt=["--no-axiom-guard"],
         check_counterexamples=False,
+        sparklib=True,
     )
 
 
 if __name__ == "__main__":
-    prove_all(replay=True, opt=["--no-axiom-guard"], check_counterexamples=False)
+    prove_all(replay=True, opt=["--no-axiom-guard"], check_counterexamples=False, sparklib=True)

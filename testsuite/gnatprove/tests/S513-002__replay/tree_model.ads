@@ -1,6 +1,6 @@
-with Ada.Containers.Functional_Vectors;
-with Ada.Containers.Functional_Sets;
-use Ada.Containers;
+with SPARK.Containers.Functional.Vectors;
+with SPARK.Containers.Functional.Sets;
+with Ada.Containers; use Ada.Containers;
 
 package Tree_Model with SPARK_Mode is
 
@@ -19,7 +19,7 @@ package Tree_Model with SPARK_Mode is
    subtype Direction is Position_Type range Left .. Right;
 
    subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
-   package D_Seq is new Ada.Containers.Functional_Vectors
+   package D_Seq is new SPARK.Containers.Functional.Vectors
      (Positive_Count_Type, Direction);
    use D_Seq;
    --  Sequence of directions modelling a path from the root of the tree to a

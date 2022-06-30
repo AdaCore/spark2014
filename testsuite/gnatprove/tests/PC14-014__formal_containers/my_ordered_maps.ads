@@ -1,9 +1,9 @@
-with Ada.Containers.Formal_Ordered_Maps;
+with SPARK.Containers.Formal.Ordered_Maps;
 with Ada.Containers; use Ada.Containers;
 
 package My_Ordered_Maps with SPARK_Mode is
 
-   package M is new Ada.Containers.Formal_Ordered_Maps
+   package M is new SPARK.Containers.Formal.Ordered_Maps
      (Element_Type    => Integer,
       Key_Type        => Natural,
       "<"             => "<");
@@ -17,7 +17,7 @@ package My_Ordered_Maps with SPARK_Mode is
    Post => My_Lt'Result = (X.F < Y.F);
    pragma Annotate (GNATprove, Inline_For_Proof, My_Lt);
 
-   package N is new Ada.Containers.Formal_Ordered_Maps
+   package N is new SPARK.Containers.Formal.Ordered_Maps
      (Element_Type    => Integer,
       Key_Type        => My_Rec,
       "<"             => My_Lt);

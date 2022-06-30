@@ -1,13 +1,13 @@
 with Interfaces; use Interfaces;
 with Ada.Numerics.Big_Numbers.Big_Integers; use Ada.Numerics.Big_Numbers.Big_Integers;
-with Pointers_With_Aliasing;
+with SPARK.Pointers.Pointers_With_Aliasing;
 
 procedure Example_Recursive with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    type Object is tagged null record;
 
-   package Pointers_To_Obj is new Pointers_With_Aliasing (Object'Class);
+   package Pointers_To_Obj is new SPARK.Pointers.Pointers_With_Aliasing (Object'Class);
 
    use Pointers_To_Obj;
    use Memory_Model;

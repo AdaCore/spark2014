@@ -1,24 +1,3 @@
-a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:47
-a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:32
-a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at simple_allocator.ads:26
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:43
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at list_allocator.ads:43
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:43
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:28
 list_allocator.adb:27:39: info: index check proved (CVC5: 2 VC)
 list_allocator.adb:29:39: info: index check proved (CVC5: 2 VC)
 list_allocator.adb:41:11: info: predicate check proved (Trivial: 1 VC)
@@ -211,8 +190,8 @@ list_mod_allocator.adb:196:15: info: precondition proved (CVC5: 4 VC), in call i
 list_mod_allocator.adb:196:15: info: precondition proved (CVC5: 4 VC), in call inlined at list_mod_allocator.adb:229
 list_mod_allocator.adb:196:33: info: precondition proved (CVC5: 4 VC), in call inlined at list_mod_allocator.adb:216
 list_mod_allocator.adb:196:33: info: precondition proved (CVC5: 4 VC), in call inlined at list_mod_allocator.adb:229
-list_mod_allocator.adb:197:25: info: assertion proved (altergo: 1 VC), in call inlined at list_mod_allocator.adb:216
-list_mod_allocator.adb:197:25: info: assertion proved (altergo: 1 VC), in call inlined at list_mod_allocator.adb:229
+list_mod_allocator.adb:197:25: info: assertion proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:216
+list_mod_allocator.adb:197:25: info: assertion proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:229
 list_mod_allocator.adb:197:45: info: overflow check proved (CVC5: 2 VC), in call inlined at list_mod_allocator.adb:216
 list_mod_allocator.adb:197:45: info: overflow check proved (CVC5: 2 VC), in call inlined at list_mod_allocator.adb:229
 list_mod_allocator.adb:198:27: info: precondition proved (CVC5: 2 VC), in call inlined at list_mod_allocator.adb:216
@@ -225,7 +204,7 @@ list_mod_allocator.adb:203:07: info: initialization of "Next_Avail" proved
 list_mod_allocator.adb:204:33: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.adb:208:30: info: index check proved (CVC5: 2 VC)
 list_mod_allocator.adb:209:16: info: index check proved (CVC5: 2 VC)
-list_mod_allocator.adb:213:13: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+list_mod_allocator.adb:215:21: medium: assertion might fail, cannot prove Data (Data (R).Next).Stat = Available
 list_mod_allocator.adb:215:35: info: index check proved (CVC5: 2 VC)
 list_mod_allocator.adb:216:10: info: analyzing call to "Prove_Is_Preprend" in context
 list_mod_allocator.adb:216:29: info: precondition proved (altergo: 1 VC)
@@ -272,7 +251,7 @@ list_mod_allocator.ads:91:38: info: contract case proved (CVC5: 3 VC; Trivial: 1
 list_mod_allocator.ads:94:11: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:94:19: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:98:16: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
-list_mod_allocator.ads:99:25: info: precondition proved (CVC5: 1 VC)
+list_mod_allocator.ads:99:25: info: precondition proved (altergo: 1 VC)
 list_mod_allocator.ads:99:57: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:101:19: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:101:55: info: precondition proved (CVC5: 1 VC)
@@ -316,3 +295,24 @@ simple_allocator.ads:64:36: info: contract case proved (CVC5: 3 VC; Trivial: 1 V
 simple_allocator.ads:71:16: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 simple_allocator.ads:81:41: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 simple_allocator.ads:88:16: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:47
+spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:32
+spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at simple_allocator.ads:26
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_mod_allocator.ads:28
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:43
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:28

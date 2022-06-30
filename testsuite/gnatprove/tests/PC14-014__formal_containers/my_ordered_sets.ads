@@ -1,9 +1,9 @@
-with Ada.Containers.Formal_Ordered_Sets;
+with SPARK.Containers.Formal.Ordered_Sets;
 with Ada.Containers; use Ada.Containers;
 
 package My_Ordered_Sets with SPARK_Mode is
 
-   package M is new Ada.Containers.Formal_Ordered_Sets
+   package M is new SPARK.Containers.Formal.Ordered_Sets
      (Element_Type => Natural);
 
    type My_Rec is record
@@ -15,7 +15,7 @@ package My_Ordered_Sets with SPARK_Mode is
    Post => My_Lt'Result = (X.F < Y.F);
    pragma Annotate (GNATprove, Inline_For_Proof, My_Lt);
 
-   package N is new Ada.Containers.Formal_Ordered_Sets
+   package N is new SPARK.Containers.Formal.Ordered_Sets
      (Element_Type => My_Rec,
       "<"          => My_Lt);
 

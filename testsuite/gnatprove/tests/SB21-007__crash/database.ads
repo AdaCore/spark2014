@@ -1,5 +1,5 @@
 with Email; use Email;
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Sets;
 
 --  Interface to the database. It can be implemented using local datastructures
 --  (like here) or a persistent mechanism (file system, sql database...).
@@ -20,7 +20,7 @@ package Database with SPARK_Mode,
       and then (X.Email = null) = (Y.Email = null)
       and then (if X.Email /= null then X.Email.all = Y.Email.all));
 
-   package DB_Entry_Sets is new Ada.Containers.Functional_Sets
+   package DB_Entry_Sets is new SPARK.Containers.Functional.Sets
      (Element_Type => DB_Entry_Type,
       Equivalent_Elements => "=");
    use DB_Entry_Sets;

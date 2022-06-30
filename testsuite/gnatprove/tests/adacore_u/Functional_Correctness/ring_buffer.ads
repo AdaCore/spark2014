@@ -1,11 +1,11 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 
 package Ring_Buffer with SPARK_Mode is
    Max_Size : constant Natural := 100;
    subtype Length_Range is Integer range 0 .. Max_Size;
    subtype Index_Type is Integer range 1 .. Max_Size;
-   package My_Seq is new Ada.Containers.Functional_Vectors
+   package My_Seq is new SPARK.Containers.Functional.Vectors
      (Index_Type   => Index_Type,
       Element_Type => Natural);
    use My_Seq;

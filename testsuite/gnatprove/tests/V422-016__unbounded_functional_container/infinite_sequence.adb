@@ -1,9 +1,9 @@
-with Ada.Containers.Functional_Infinite_Sequences;
+with SPARK.Containers.Functional.Infinite_Sequences;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use ada.Numerics.Big_Numbers.Big_Integers;
 
 procedure Infinite_Sequence with SPARK_Mode is
-   package Sequences is new Ada.Containers.Functional_Infinite_Sequences
+   package Sequences is new SPARK.Containers.Functional.Infinite_Sequences
      (Element_Type => Natural);
    use Sequences;
 

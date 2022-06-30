@@ -1,5 +1,4 @@
-with Ada.Containers.Formal_Vectors;
-use Ada.Containers;
+with SPARK.Containers.Formal.Vectors;
 
 package Sum_Elem with
   SPARK_Mode
@@ -15,8 +14,8 @@ is
    end record;
    type Partition_Index is range 0 .. 10_000;
    package Partitions is new
-     Formal_Vectors (Index_Type   => Partition_Index,
-                     Element_Type => Interval);
+     SPARK.Containers.Formal.Vectors (Index_Type   => Partition_Index,
+                                      Element_Type => Interval);
    subtype Partition is Partitions.Vector;
    use Partitions;
 

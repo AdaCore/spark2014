@@ -1,8 +1,8 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Ordered_Sets;
+with SPARK.Containers.Formal.Ordered_Sets;
 
 procedure Test_Ordered_Sets with SPARK_Mode is
-   package Int_Sets is new Ada.Containers.Formal_Ordered_Sets (Integer);
+   package Int_Sets is new SPARK.Containers.Formal.Ordered_Sets (Integer);
    use Int_Sets;
 
    procedure Test (S : aliased in out Set) with

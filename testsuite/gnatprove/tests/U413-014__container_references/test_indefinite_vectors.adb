@@ -1,8 +1,8 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Indefinite_Vectors;
+with SPARK.Containers.Formal.Indefinite_Vectors;
 
 procedure Test_Indefinite_Vectors with SPARK_Mode is
-   package Int_Vectors is new Ada.Containers.Formal_Indefinite_Vectors (Positive, Integer, Max_Size_In_Storage_Elements => Integer'Size, Bounded => False);
+   package Int_Vectors is new SPARK.Containers.Formal.Indefinite_Vectors (Positive, Integer, Max_Size_In_Storage_Elements => Integer'Size, Bounded => False);
    use Int_Vectors;
 
    procedure Test (V : aliased in out Vector) with

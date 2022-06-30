@@ -1,12 +1,12 @@
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at test_borrow.adb:34
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
 test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls
@@ -59,22 +59,22 @@ test_borrow.adb:67:43: info: predicate check proved (Trivial: 4 VC)
 test_borrow.adb:67:58: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
 test_borrow.adb:67:71: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
 test_borrow.adb:67:81: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
-test_borrow.adb:69:33: info: loop invariant initialization proved (Z3: 1 VC)
+test_borrow.adb:69:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_borrow.adb:69:33: info: loop invariant preservation proved (Z3: 1 VC)
 test_borrow.adb:69:33: info: predicate check proved (Trivial: 2 VC)
 test_borrow.adb:69:83: info: predicate check proved (Trivial: 2 VC)
-test_borrow.adb:71:13: info: loop invariant initialization proved (Trivial: 1 VC; Z3: 1 VC)
+test_borrow.adb:71:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:71:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 test_borrow.adb:71:16: info: predicate check proved (Trivial: 2 VC)
 test_borrow.adb:72:41: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
 test_borrow.adb:72:70: info: precondition proved (CVC5: 4 VC)
 test_borrow.adb:74:13: info: loop invariant initialization proved (Trivial: 1 VC; Z3: 1 VC)
+test_borrow.adb:74:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 test_borrow.adb:74:16: info: predicate check proved (Trivial: 2 VC)
 test_borrow.adb:75:33: info: overflow check proved (CVC5: 4 VC)
 test_borrow.adb:75:40: info: range check proved (CVC5: 4 VC)
 test_borrow.adb:75:52: info: predicate check proved (Trivial: 4 VC)
 test_borrow.adb:75:83: info: precondition proved (CVC5: 4 VC)
-test_borrow.adb:75:83: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get (At_End_Borrow (X), K) = Get (At_End_Borrow (Y), K - I) (e.g. when I = 2 and K = 3)
 test_borrow.adb:75:107: info: range check proved (CVC5: 4 VC)
 test_borrow.adb:75:112: info: precondition proved (CVC5: 2 VC; Z3: 2 VC)
 test_borrow.adb:75:138: info: overflow check proved (CVC5: 4 VC)

@@ -1,6 +1,6 @@
 with Interfaces; use Interfaces;
 with Ada.Numerics.Big_Numbers.Big_Integers; use Ada.Numerics.Big_Numbers.Big_Integers;
-with Pointers_With_Aliasing;
+with SPARK.Pointers.Pointers_With_Aliasing;
 
 procedure Example_Tagged_Obj with SPARK_Mode is
    package P1 is
@@ -15,7 +15,7 @@ procedure Example_Tagged_Obj with SPARK_Mode is
    end P1;
    use P1;
 
-   package Pointers_To_Obj is new Pointers_With_Aliasing (Object'Class);
+   package Pointers_To_Obj is new SPARK.Pointers.Pointers_With_Aliasing (Object'Class);
 
    use Pointers_To_Obj;
    use Memory_Model;

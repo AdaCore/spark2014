@@ -1,70 +1,9 @@
-example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Get" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:10:04: warning: in instantiation at abstract_maps.ads:23
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:10
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:106
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:107
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:112
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:113
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:120
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:135
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:136
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:150
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:151
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:26
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:50
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:51
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:58
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:60
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:67
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:69
-example_recursive.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:95
-example_recursive.adb:10:04: warning: no Global contract available for "Get"
-example_recursive.adb:10:04: warning: no Global contract available for "Get"
-example_recursive.adb:10:04: warning: no Global contract available for "Get"
-example_recursive.adb:10:04: warning: no Global contract available for "Get"
-example_recursive.adb:10:04: warning: no Global contract available for "Get"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
-example_recursive.adb:10:04: warning: no Global contract available for "Has_Key"
 example_recursive.adb:21:07: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:21:25: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:21:25: warning: assuming "Get" has no effect on global items
-example_recursive.adb:21:25: warning: no Global contract available for "Get"
-example_recursive.adb:34:18: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:34:18: warning: no Global contract available for "Has_Key"
 example_recursive.adb:35:18: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:18: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:35:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:47: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:35:47: warning: assuming "Get" has no effect on global items
-example_recursive.adb:35:47: warning: no Global contract available for "Get"
 example_recursive.adb:35:65: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:37:06: info: data dependencies proved
 example_recursive.adb:47:06: info: data dependencies proved
@@ -75,8 +14,6 @@ example_recursive.adb:55:10: info: precondition proved (CVC5: 9 VC)
 example_recursive.adb:55:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:55:53: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:55:53: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:55:53: warning: assuming "Get" has no effect on global items
-example_recursive.adb:55:53: warning: no Global contract available for "Get"
 example_recursive.adb:55:72: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:55:80: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:60:07: info: precondition proved (CVC5: 1 VC)
@@ -85,8 +22,6 @@ example_recursive.adb:68:18: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:68:18: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:68:46: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:68:46: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:68:46: warning: assuming "Get" has no effect on global items
-example_recursive.adb:68:46: warning: no Global contract available for "Get"
 example_recursive.adb:68:64: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:70:06: info: data dependencies proved
 example_recursive.adb:72:39: info: precondition proved (CVC5: 1 VC)
@@ -102,42 +37,26 @@ example_recursive.adb:93:10: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:93:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:93:51: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:93:51: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:93:51: warning: assuming "Get" has no effect on global items
-example_recursive.adb:93:51: warning: no Global contract available for "Get"
 example_recursive.adb:93:78: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:102:06: info: data dependencies proved
 example_recursive.adb:103:67: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:104:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:105:22: info: precondition proved (CVC5: 5 VC)
-example_recursive.adb:106:24: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:106:24: warning: no Global contract available for "Has_Key"
 example_recursive.adb:106:47: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:106:47: warning: assuming "Get" has no effect on global items
-example_recursive.adb:106:47: warning: no Global contract available for "Get"
 example_recursive.adb:106:61: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:106:61: warning: assuming "Get" has no effect on global items
-example_recursive.adb:106:61: warning: no Global contract available for "Get"
 example_recursive.adb:107:14: info: postcondition proved (CVC5: 4 VC)
 example_recursive.adb:107:14: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:113:10: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
 example_recursive.adb:113:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:113:50: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:113:50: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:113:50: warning: assuming "Get" has no effect on global items
-example_recursive.adb:113:50: warning: no Global contract available for "Get"
 example_recursive.adb:113:69: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:122:06: info: data dependencies proved
 example_recursive.adb:123:67: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:124:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:125:22: info: precondition proved (CVC5: 5 VC)
-example_recursive.adb:126:24: warning: assuming "Has_Key" has no effect on global items
-example_recursive.adb:126:24: warning: no Global contract available for "Has_Key"
 example_recursive.adb:126:47: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:126:47: warning: assuming "Get" has no effect on global items
-example_recursive.adb:126:47: warning: no Global contract available for "Get"
 example_recursive.adb:126:61: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:126:61: warning: assuming "Get" has no effect on global items
-example_recursive.adb:126:61: warning: no Global contract available for "Get"
 example_recursive.adb:127:14: info: postcondition proved (CVC5: 2 VC)
 example_recursive.adb:127:44: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:127:70: info: precondition proved (CVC5: 5 VC)
@@ -145,8 +64,6 @@ example_recursive.adb:131:10: info: precondition proved (CVC5: 8 VC; Trivial: 1 
 example_recursive.adb:131:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:131:50: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:131:50: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:131:50: warning: assuming "Get" has no effect on global items
-example_recursive.adb:131:50: warning: no Global contract available for "Get"
 example_recursive.adb:131:69: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:133:07: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
 example_recursive.adb:141:06: info: data dependencies proved
@@ -156,12 +73,8 @@ example_recursive.adb:144:15: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:145:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:146:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:150:15: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:150:15: warning: assuming "Get" has no effect on global items
-example_recursive.adb:150:15: warning: no Global contract available for "Get"
 example_recursive.adb:151:32: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:151:32: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:151:32: warning: assuming "Get" has no effect on global items
-example_recursive.adb:151:32: warning: no Global contract available for "Get"
 example_recursive.adb:152:28: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:153:14: info: postcondition proved (CVC5: 4 VC)
 example_recursive.adb:153:14: info: precondition proved (CVC5: 1 VC)
@@ -171,8 +84,6 @@ example_recursive.adb:159:10: info: precondition proved (CVC5: 13 VC)
 example_recursive.adb:159:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:159:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:159:47: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:159:47: warning: assuming "Get" has no effect on global items
-example_recursive.adb:159:47: warning: no Global contract available for "Get"
 example_recursive.adb:159:75: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:160:25: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:160:25: medium: assertion might fail, cannot prove Valid_List (Address (L_Cell (Get (M, L)).N), N - 1, M)
@@ -185,12 +96,8 @@ example_recursive.adb:173:15: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:174:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:175:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:179:15: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:179:15: warning: assuming "Get" has no effect on global items
-example_recursive.adb:179:15: warning: no Global contract available for "Get"
 example_recursive.adb:180:32: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:180:32: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:180:32: warning: assuming "Get" has no effect on global items
-example_recursive.adb:180:32: warning: no Global contract available for "Get"
 example_recursive.adb:181:28: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:182:44: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:182:44: medium: postcondition might fail, cannot prove Reachable (L1, N1 + N2, A, M2) = (Reachable (L1, N1, A, M1) or Reachable (L2, N2, A, M1))
@@ -202,8 +109,6 @@ example_recursive.adb:189:10: info: precondition proved (CVC5: 13 VC)
 example_recursive.adb:189:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:189:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:189:47: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:189:47: warning: assuming "Get" has no effect on global items
-example_recursive.adb:189:47: warning: no Global contract available for "Get"
 example_recursive.adb:189:75: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:191:07: info: precondition proved (CVC5: 13 VC)
 example_recursive.adb:196:13: info: precondition proved (CVC5: 5 VC)
@@ -224,8 +129,7 @@ example_recursive.adb:228:14: medium: postcondition might fail, cannot prove Val
 example_recursive.adb:230:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:232:41: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:234:45: info: precondition proved (CVC5: 5 VC)
-example_recursive.adb:235:19: medium: in inlined expression function body at example_recursive.adb:33
-example_recursive.adb:235:19: medium: precondition might fail, cannot prove N /= 0
+example_recursive.adb:235:19: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
 example_recursive.adb:236:22: medium: in inlined expression function body at example_recursive.adb:32
 example_recursive.adb:236:22: medium: precondition might fail, cannot prove N = 0
 example_recursive.adb:241:43: info: precondition proved (CVC5: 2 VC)
@@ -236,7 +140,7 @@ example_recursive.adb:256:39: info: loop invariant preservation proved (CVC5: 1 
 example_recursive.adb:256:39: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:257:39: info: loop invariant initialization proved (CVC5: 1 VC)
 example_recursive.adb:257:39: info: loop invariant preservation proved (CVC5: 1 VC)
-example_recursive.adb:257:39: info: precondition proved (CVC5: 9 VC; Z3: 1 VC)
+example_recursive.adb:257:39: info: precondition proved (CVC5: 10 VC)
 example_recursive.adb:262:27: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:262:58: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:262:58: info: tag check proved (CVC5: 1 VC)
@@ -265,8 +169,7 @@ example_recursive.adb:303:30: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:303:30: info: tag check proved (CVC5: 2 VC)
 example_recursive.adb:303:64: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:303:64: info: range check proved (CVC5: 4 VC)
-example_recursive.adb:304:10: medium: in inlined expression function body at example_recursive.adb:35
-example_recursive.adb:304:10: medium: precondition might fail, cannot prove Valid_List (Address (L_Cell (Get (M, L)).N), N - 1, M) [possible fix: loop invariant at line 306 should mention M]
+example_recursive.adb:304:10: info: precondition proved (CVC5: 16 VC; Trivial: 2 VC)
 example_recursive.adb:305:30: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:305:30: info: tag check proved (CVC5: 2 VC)
 example_recursive.adb:305:64: info: overflow check proved (CVC5: 4 VC)
@@ -286,7 +189,7 @@ example_recursive.adb:311:66: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:311:70: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:311:70: info: range check proved (CVC5: 4 VC)
 example_recursive.adb:313:13: info: loop invariant initialization proved (CVC5: 1 VC)
-example_recursive.adb:313:13: medium: loop invariant might not be preserved by an arbitrary iteration
+example_recursive.adb:313:13: info: loop invariant preservation proved (CVC5: 1 VC)
 example_recursive.adb:315:13: info: loop invariant initialization proved (CVC5: 1 VC)
 example_recursive.adb:315:13: medium: loop invariant might not be preserved by an arbitrary iteration
 example_recursive.adb:317:25: info: range check proved (CVC5: 2 VC)
@@ -314,8 +217,8 @@ example_recursive.adb:335:19: medium: assertion might fail, cannot prove not Rea
 example_recursive.adb:335:19: medium: in inlined expression function body at example_recursive.adb:197
 example_recursive.adb:338:04: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:339:04: info: precondition proved (CVC5: 7 VC; Trivial: 1 VC; Z3: 1 VC)
-example_recursive.adb:340:04: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
-example_recursive.adb:341:04: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
+example_recursive.adb:340:04: info: precondition proved (CVC5: 7 VC; Trivial: 1 VC; Z3: 1 VC)
+example_recursive.adb:341:04: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
 example_recursive.adb:342:04: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
 example_recursive.adb:344:07: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:344:07: warning: assuming "Rand" always returns
@@ -342,71 +245,12 @@ example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC)
 example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC), in inherited contract at example_tagged_obj.adb:32
 example_tagged_obj.adb:14:40: info: predicate check proved (Trivial: 1 VC)
 example_tagged_obj.adb:14:55: info: predicate check proved (Trivial: 1 VC)
-example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Get" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:18:04: warning: in instantiation at abstract_maps.ads:23
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:10
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:106
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:107
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:112
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:113
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:120
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:135
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:136
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:150
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:151
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:26
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:50
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:51
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:58
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:60
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:67
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:69
-example_tagged_obj.adb:18:04: warning: in instantiation at pointers_with_aliasing.ads:95
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Get"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:18:04: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:31:33: info: predicate check proved (Trivial: 1 VC)
 example_tagged_obj.adb:37:04: info: initialization of "X1" proved
 example_tagged_obj.adb:38:04: info: initialization of "X2" proved
 example_tagged_obj.adb:39:04: info: initialization of "X3" proved
 example_tagged_obj.adb:40:04: info: initialization of "X1_B" proved
 example_tagged_obj.adb:43:14: info: postcondition proved (CVC5: 2 VC)
-example_tagged_obj.adb:52:14: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:52:14: warning: no Global contract available for "Has_Key"
-example_tagged_obj.adb:52:51: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:52:51: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:53:14: info: postcondition proved (CVC5: 5 VC)
 example_tagged_obj.adb:53:14: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:53:26: info: precondition proved (CVC5: 1 VC)
@@ -416,10 +260,8 @@ example_tagged_obj.adb:58:38: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:60:07: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:60:18: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:61:07: info: precondition proved (CVC5: 1 VC)
-example_tagged_obj.adb:67:13: warning: assuming "Has_Key" has no effect on global items
-example_tagged_obj.adb:67:13: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:67:50: info: precondition proved (CVC5: 1 VC)
-example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 5 VC)
+example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 4 VC; Z3: 1 VC)
 example_tagged_obj.adb:70:09: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:70:39: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:70:39: info: tag check proved (CVC5: 1 VC)
@@ -437,85 +279,26 @@ example_tagged_obj.adb:89:19: medium: assertion might fail
 example_tagged_obj.adb:89:26: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:89:26: medium: tag check might fail
 example_tagged_obj.adb:90:19: medium: assertion might fail
+example_tagged_obj.adb:90:26: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:90:26: info: tag check proved (CVC5: 1 VC)
-example_tagged_obj.adb:90:26: medium: precondition might fail
 example_tagged_obj.adb:91:19: medium: assertion might fail
 example_tagged_obj.adb:91:26: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:91:26: medium: tag check might fail
 example_tagged_obj.adb:92:19: info: assertion proved (CVC5: 1 VC)
+example_tagged_obj.adb:92:26: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:92:26: info: tag check proved (CVC5: 1 VC)
-example_tagged_obj.adb:92:26: medium: precondition might fail
-example_tagged_obj.adb:93:04: medium: precondition might fail, cannot prove Valid (Memory, Address (X))
+example_tagged_obj.adb:93:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 example_tagged_obj.adb:94:19: info: assertion proved (CVC5: 1 VC)
+example_tagged_obj.adb:94:26: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:94:26: info: tag check proved (CVC5: 1 VC)
-example_tagged_obj.adb:94:26: medium: precondition might fail
 example_tagged_obj.adb:95:19: info: assertion proved (CVC5: 1 VC)
+example_tagged_obj.adb:95:26: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:95:26: info: tag check proved (CVC5: 1 VC)
-example_tagged_obj.adb:95:26: medium: precondition might fail
-example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Get" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:10:04: warning: in instantiation at abstract_maps.ads:23
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:10
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:106
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:107
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:112
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:113
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:120
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:135
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:136
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:150
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:151
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:26
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:50
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:51
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:58
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:60
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:67
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:69
-example_untagged_obj.adb:10:04: warning: in instantiation at pointers_with_aliasing.ads:95
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Get"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:10:04: warning: no Global contract available for "Has_Key"
 example_untagged_obj.adb:15:04: info: initialization of "X1" proved
 example_untagged_obj.adb:16:04: info: initialization of "X2" proved
 example_untagged_obj.adb:17:04: info: initialization of "X3" proved
 example_untagged_obj.adb:18:04: info: initialization of "X1_B" proved
 example_untagged_obj.adb:21:14: info: postcondition proved (CVC5: 2 VC)
-example_untagged_obj.adb:30:13: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:30:13: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:30:45: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:30:45: warning: no Global contract available for "Has_Key"
 example_untagged_obj.adb:31:14: info: postcondition proved (CVC5: 5 VC)
 example_untagged_obj.adb:31:14: info: precondition proved (Z3: 1 VC)
 example_untagged_obj.adb:31:26: info: precondition proved (CVC5: 1 VC)
@@ -525,8 +308,6 @@ example_untagged_obj.adb:36:32: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:38:07: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:38:18: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:39:07: info: precondition proved (CVC5: 1 VC)
-example_untagged_obj.adb:43:13: warning: assuming "Has_Key" has no effect on global items
-example_untagged_obj.adb:43:13: warning: no Global contract available for "Has_Key"
 example_untagged_obj.adb:44:14: info: postcondition proved (CVC5: 4 VC)
 example_untagged_obj.adb:44:14: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:44:27: info: precondition proved (CVC5: 1 VC)
@@ -543,51 +324,69 @@ example_untagged_obj.adb:63:19: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:64:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:64:19: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:65:19: info: assertion proved (CVC5: 1 VC)
-example_untagged_obj.adb:65:19: medium: precondition might fail
-example_untagged_obj.adb:66:04: medium: precondition might fail
+example_untagged_obj.adb:65:19: info: precondition proved (CVC5: 1 VC)
+example_untagged_obj.adb:66:04: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:67:19: info: assertion proved (CVC5: 1 VC)
-example_untagged_obj.adb:67:19: medium: precondition might fail
+example_untagged_obj.adb:67:19: info: precondition proved (Z3: 1 VC)
 example_untagged_obj.adb:68:19: info: assertion proved (CVC5: 1 VC)
-example_untagged_obj.adb:68:19: medium: precondition might fail
-pointers_with_aliasing.ads:18:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:18:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:18:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:39:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:39:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:39:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:42:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:42:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:42:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:46:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:46:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:46:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:51:18: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:51:18: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:51:18: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:51:32: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:51:32: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:51:32: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:54:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:54:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:54:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:63:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:63:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:63:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:75:04: info: initialization of "Memory" proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:75:04: info: initialization of "Memory" proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:75:04: info: initialization of "Memory" proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:138:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:138:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:138:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:139:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:139:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:139:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:143:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:143:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:143:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:144:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:144:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:144:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
-pointers_with_aliasing.ads:150:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-pointers_with_aliasing.ads:150:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
-pointers_with_aliasing.ads:150:28: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
+example_untagged_obj.adb:68:19: info: precondition proved (Z3: 1 VC)
+spark-pointers-abstract_maps.ads:71:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:71:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:71:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:72:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:72:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:72:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:74:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:74:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:74:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:83:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:83:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:83:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:84:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:84:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:84:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:86:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:86:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:86:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:47:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:47:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:47:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:68:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:68:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:68:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:71:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:71:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:71:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:75:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:75:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:75:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:80:18: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:80:18: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:80:18: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:80:32: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:80:32: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:80:32: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:83:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:83:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:83:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:92:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:92:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:92:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:104:04: info: initialization of "Memory" proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:104:04: info: initialization of "Memory" proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:104:04: info: initialization of "Memory" proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:172:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:172:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:172:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:175:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:175:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:175:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:180:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:180:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:180:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:183:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:183:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:183:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:192:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:192:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:192:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10

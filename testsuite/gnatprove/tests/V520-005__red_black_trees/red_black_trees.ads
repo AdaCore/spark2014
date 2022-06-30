@@ -1,6 +1,6 @@
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Big_Intervals; use Big_Intervals;
+with SPARK.Big_Intervals; use SPARK.Big_Intervals;
 with Infinite_Sequences;
 
 package Red_Black_Trees with SPARK_Mode is

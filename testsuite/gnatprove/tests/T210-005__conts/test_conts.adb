@@ -1,22 +1,22 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
-with Ada.Containers.Formal_Ordered_Maps;
-with Ada.Containers.Formal_Ordered_Sets;
-with Ada.Containers.Formal_Hashed_Maps;
-with Ada.Containers.Formal_Hashed_Sets;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Ordered_Maps;
+with SPARK.Containers.Formal.Ordered_Sets;
+with SPARK.Containers.Formal.Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Sets;
 
 procedure Test_Conts (X : out Integer) with SPARK_Mode is
-   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package My_Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Integer);
-   package My_OrMaps is new Ada.Containers.Formal_Ordered_Maps
+   package My_OrMaps is new SPARK.Containers.Formal.Ordered_Maps
      (Integer, Integer);
-   package My_OrSets is new Ada.Containers.Formal_Ordered_Sets
+   package My_OrSets is new SPARK.Containers.Formal.Ordered_Sets
      (Integer);
    function Int_Hash (I : Positive) return Hash_Type is
      (Hash_Type (I));
-   package My_HaMaps is new Ada.Containers.Formal_Hashed_Maps
+   package My_HaMaps is new SPARK.Containers.Formal.Hashed_Maps
      (Positive, Integer, Int_Hash);
-   package My_HaSets is new Ada.Containers.Formal_Hashed_Sets
+   package My_HaSets is new SPARK.Containers.Formal.Hashed_Sets
      (Positive, Int_Hash);
 
 begin

@@ -1,4 +1,4 @@
-with SPARK.Integer_Arithmetic_Lemmas; use SPARK.Integer_Arithmetic_Lemmas;
+with SPARK.Lemmas.Integer_Arithmetic; use SPARK.Lemmas.Integer_Arithmetic;
 
 procedure Test_Arith with
   SPARK_Mode

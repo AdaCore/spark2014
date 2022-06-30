@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with Ada.Containers; use Ada.Containers;
 
 package Sorted_Lists is pragma SPARK_Mode (On);
@@ -11,7 +11,7 @@ package Sorted_Lists is pragma SPARK_Mode (On);
    function My_Lt (I1 : Element_Type; I2 : Element_Type) return Boolean is
      (I1 < I2);
 
-   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package My_Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type);
    use My_Lists; use Formal_Model;
 

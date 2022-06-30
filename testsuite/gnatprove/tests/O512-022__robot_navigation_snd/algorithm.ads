@@ -5,7 +5,7 @@ with Spaces.Positions;
 with Gaps;
 with Valleys;
 
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 
 with Formal.Numerics;
 
@@ -38,7 +38,7 @@ is
    subtype Gap_ID is Integer range 1 .. Max_Gaps;
 
    package Gap_Vectors is new
-     Ada.Containers.Formal_Doubly_Linked_Lists (Gaps.Gap);
+     SPARK.Containers.Formal.Doubly_Linked_Lists (Gaps.Gap);
 
    subtype List is Gap_Vectors.List (Max_Gaps);
 

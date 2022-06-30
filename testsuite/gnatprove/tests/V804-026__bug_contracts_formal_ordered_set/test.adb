@@ -1,10 +1,10 @@
-with Ada.Containers.Formal_Ordered_Sets;
+with SPARK.Containers.Formal.Ordered_Sets;
 
 procedure Test with SPARK_Mode is
    function Key (X : Natural) return Natural is
       (X);
 
-   package Sets is new Ada.Containers.Formal_Ordered_Sets (Natural);
+   package Sets is new SPARK.Containers.Formal.Ordered_Sets (Natural);
    use Sets;
    package Keys is new Sets.Generic_Keys (Natural, Key);
    use Keys;

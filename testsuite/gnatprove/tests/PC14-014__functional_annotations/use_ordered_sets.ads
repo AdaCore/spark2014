@@ -1,10 +1,10 @@
 pragma Ada_2012;
 with Ada.Containers;       use Ada.Containers;
-with Ada.Containers.Formal_Ordered_Sets;
+with SPARK.Containers.Formal.Ordered_Sets;
 
 package Use_Ordered_Sets with SPARK_Mode is
    type Element_Type is new Integer;
-   package My_Sets is new Ada.Containers.Formal_Ordered_Sets
+   package My_Sets is new SPARK.Containers.Formal.Ordered_Sets
      (Element_Type => Element_Type);
    use My_Sets;
    use My_Sets.Formal_Model;

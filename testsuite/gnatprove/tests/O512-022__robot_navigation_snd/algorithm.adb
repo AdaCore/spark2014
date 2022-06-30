@@ -1,6 +1,8 @@
 with Debug_IO;
 
 with Ada.Numerics;
+with Ada.Containers;
+use Ada.Containers;
 
 with Formal.Numerics.Elementary_Functions;
 use Formal.Numerics.Elementary_Functions;

@@ -1,5 +1,6 @@
 with General_Strings;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+
 package Loggers with
   SPARK_Mode
 is
@@ -7,7 +8,7 @@ is
    type Cursor is private;
 
       package String_Lists is
-     new Ada.Containers.Formal_Doubly_Linked_Lists
+     new SPARK.Containers.Formal.Doubly_Linked_Lists
 	(Element_Type => General_Strings.Bounded_String,
 	 "="          => General_Strings."=");
 

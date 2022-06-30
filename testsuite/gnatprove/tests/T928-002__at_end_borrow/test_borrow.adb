@@ -1,5 +1,5 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 with Ada.Numerics.Big_Numbers.Big_Integers; use Ada.Numerics.Big_Numbers.Big_Integers;
 
 procedure Test_Borrow with SPARK_Mode is
@@ -31,7 +31,7 @@ procedure Test_Borrow with SPARK_Mode is
        and then To_Big_Integer (Pos) <= Length (X),
        Subprogram_Variant => (Decreases => Pos);
 
-   package Sequences is new Ada.Containers.Functional_Vectors
+   package Sequences is new SPARK.Containers.Functional.Vectors
      (Positive, Integer);
    type Model_Type is new Sequences.Sequence with Ghost;
 

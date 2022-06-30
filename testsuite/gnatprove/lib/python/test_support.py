@@ -677,6 +677,7 @@ def gnatprove(
     sort_output=True,
     exit_status=None,
     ada=default_ada,
+    sparklib=False
 ):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -693,6 +694,8 @@ def gnatprove(
     # generate an empty project file if not present already
     if not os.path.isfile(default_project):
         with open(default_project, "w") as f_prj:
+            if sparklib:
+                f_prj.write('with "sparklib";\n')
             f_prj.write("project Test is\n")
             f_prj.write("  package Compiler is\n")
             f_prj.write(
@@ -718,6 +721,12 @@ def gnatprove(
     cmd += ["-k"]
     # Issue all information messages for tests
     cmd += ["--info"]
+    # If the tests uses SPARKlib, do not prove them again
+    # The --no-axiom-guard option is a temporary fix to avoid
+    # generating axioms when translating from the SPARKlib, as it
+    # can reduce proof performance
+    if sparklib:
+        cmd += ["--no-subprojects", "--no-axiom-guard"]
     if benchmark_mode() is not None:
         cmd += ["--benchmark", "--debug-save-vcs"]
     if cache_allowed and cache_mode():
@@ -784,6 +793,7 @@ def prove_all(
     ada=default_ada,
     replay=False,
     warnings="continue",
+    sparklib=False
 ):
     """Call gnatprove with standard options.
 
@@ -851,6 +861,8 @@ def prove_all(
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
+    if sparklib:
+        os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
     gnatprove(
         fullopt,
         no_fail=no_fail,
@@ -860,6 +872,7 @@ def prove_all(
         exit_status=exit_status,
         ada=ada,
         filter_output=filter_output,
+        sparklib=sparklib,
     )
 
 
@@ -871,6 +884,7 @@ def do_flow(
     gg=True,
     sort_output=True,
     ada=default_ada,
+    sparklib=False
 ):
     """
     Call gnatprove with standard options for flow. We do generate
@@ -893,6 +907,7 @@ def do_flow(
         mode=mode,
         sort_output=sort_output,
         ada=ada,
+        sparklib=sparklib,
     )
 
 

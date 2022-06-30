@@ -1,13 +1,13 @@
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Sets;
 
 package body Binary_Trees with SPARK_Mode is
 
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
 
-   package I_Set is new Ada.Containers.Functional_Sets (Index_Type, "=");
+   package I_Set is new SPARK.Containers.Functional.Sets (Index_Type, "=");
 
    function All_Indexes return I_Set.Set with
    --  To ensure termination of the Model function, we need to keep track of

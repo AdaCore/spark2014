@@ -1,4 +1,4 @@
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 procedure Test_Route with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
@@ -35,7 +35,7 @@ procedure Test_Route with SPARK_Mode is
    with Annotate => (GNATprove, Always_Return),
      Pre => N <= Length (R);
 
-   package Int_Seqs is new Ada.Containers.Functional_Vectors
+   package Int_Seqs is new SPARK.Containers.Functional.Vectors
      (Index_Type   => Positive,
       Element_Type => Integer);
    type Int_Seq is new Int_Seqs.Sequence;

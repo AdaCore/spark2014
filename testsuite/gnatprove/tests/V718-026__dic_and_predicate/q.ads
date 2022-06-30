@@ -1,10 +1,10 @@
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Vectors;
 
 package Q with SPARK_Mode is
 
     subtype Contained_Element is Character; -- for the moment
 
-    package Element_Vectors is new Ada.Containers.Formal_Vectors
+    package Element_Vectors is new SPARK.Containers.Formal.Vectors
       (Index_Type => Positive, Element_Type => Contained_Element);
     use Element_Vectors;
 

@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with Ada.Containers; use Ada.Containers;
 
 package Queue
@@ -16,7 +16,7 @@ is
 
    subtype Val is Integer range -2 ** 31 .. 2 ** 31 - 1;
 
-   package MyLists is new Ada.Containers.Formal_Doubly_Linked_Lists (Val);
+   package MyLists is new SPARK.Containers.Formal.Doubly_Linked_Lists (Val);
    use MyLists; use MyLists.Formal_Model;
 
    function Front (Q : in List) return Val

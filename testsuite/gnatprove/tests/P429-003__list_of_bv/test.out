@@ -1,35 +1,3 @@
-a-cfdlli.ads:393:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at foo.adb:10
-a-cfdlli.ads:394:08: info: dynamic accessibility check proved (Trivial), in instantiation at foo.adb:10
-a-cfdlli.ads:398:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at foo.adb:10
-a-cfdlli.ads:400:08: info: dynamic accessibility check proved (Trivial), in instantiation at foo.adb:10
-a-cfdlli.ads:419:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:524:49: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:657:49: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:747:57: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:813:57: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:900:28: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:900:39: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1076:43: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1257:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1396:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1411:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1426:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1441:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1463:14: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1469:23: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1518:14: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1525:23: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at foo.adb:10
-a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at foo.adb:10
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at foo.adb:10
 foo.adb:15:04: warning: analyzing unreferenced procedure "Test_01"
 foo.adb:15:23: info: initialization of "X" proved
 foo.adb:17:07: info: initialization of "L" proved
@@ -37,3 +5,35 @@ foo.adb:17:17: info: range check proved (CVC5: 2 VC)
 foo.adb:20:07: info: precondition proved (CVC5: 1 VC)
 foo.adb:20:07: warning: statement has no effect
 foo.adb:20:15: warning: "L" is set by "Append" but not used after the call
+spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:416:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:521:49: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:654:49: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:744:57: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:810:57: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:897:28: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:897:39: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1073:43: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1254:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1393:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1408:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1423:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1438:20: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
+spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at foo.adb:10
+spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at foo.adb:10
