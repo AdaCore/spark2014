@@ -784,6 +784,7 @@ def prove_all(
     codepeer=False,
     ada=default_ada,
     replay=False,
+    warnings="continue",
 ):
     """Call gnatprove with standard options.
 
@@ -793,7 +794,9 @@ def prove_all(
     no_fail and filter_output are passed directly to
     gnatprove().
     """
-    fullopt = ["--warnings=continue", "--output=oneline"]
+    fullopt = ["--output=oneline"]
+    if warnings is not None:
+        fullopt += ["--warnings=%s" % (warnings)]
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
