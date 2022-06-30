@@ -6,175 +6,146 @@ GNATprove Limitations
 Tool Limitations that Impact Soundness
 --------------------------------------
 
-.. index:: Valid; limitation
+As these limitations may lead to soundness issues, users should review them to
+ensure that their programs are not impacted.
 
-#. Address clauses (overlays) are supported, but |GNATprove| is unable to
-   detect or follow aliases that may be caused by such address clauses.
+* Checks related to tasking do not take into account dispatching calls.
 
-#. Attribute 'Valid is currently assumed to always return True, as no invalid
-   value can be constructed in SPARK (see :ref:`Data Validity`).
-
-.. index:: validity; limitation
-
-#. Values read from an external source are assumed to be valid values.
-   Currently there is no model of invalidity or undefinedness. The onus
-   is on the user to ensure that all values read from an external source are
-   valid. The use of an invalid value invalidates any proofs associated with
-   the value.
-
-#. Preconditions on subprograms in most standard units are not
-   specified. That's the case in particular for:
-
-   * arithmetic and conversion operators (including Time_Of) in
-     Ada.Execution_Time and Ada.Real_Time packages described in |SPARK|
-     Reference Manual 9.19; and
-
-   * arithmetic and conversion operators (including Time_Of) in Ada.Calendar
-     package.
-
-   See :ref:`SPARK Libraries` for a list of standard units where preconditions
-   have been specified.
-
+* Checks related to subprogram termination do not take into account dispatching
+  calls.
 
 Other Tool Limitations
 ----------------------
 
-#. The Global contracts generated automatically by |GNATprove| for subprograms
-   without an explicit one do not take into account indirect calls (through
-   access-to-subprogram and dynamic binding) and indirect reads/writes to
-   global variables (through access variables).
+These limitations correspond to limitations of the analysis that do not cause
+soundness issues. When a construct is not supported, GNATprove issues an error
+when analyzing the program.
 
-#. Checks related to tasking, subprogram termination, or recursive calls do not
-   take into account dispatching calls.
+* The Global contracts generated automatically by |GNATprove| for subprograms
+  without an explicit one, whose body is not in SPARK, do not take into account
+  indirect calls (through access-to-subprogram and dynamic binding) and
+  indirect reads/writes to global variables (through access variables). See
+  :ref:`Coarse Generation for non-SPARK Subprograms`.
 
-#. A subset of all Ada conversions between array types is supported:
+* A subset of all Ada conversions between array types is supported:
 
-   * element types must be exactly the same
-   * matching index types must either be both modular with a base type of the
-     same size, or both non modular
+  * element types must be exactly the same
+  * matching index types must either be both modular with a base type of the
+    same size, or both non modular
 
-#. A subset of all Ada fixed-point types and fixed-point operations is
-   supported:
+* A subset of all Ada fixed-point types and fixed-point operations is
+  supported:
 
-   * multiplication and division between different fixed-point types and
-     floating-point types are rejected
-   * multiplication and division between a fixed-point type and a real literal
-     are rejected, the fix is to qualify the real literal with a fixed-point
-     type as in ``Fp_Type'(0.25)``
-   * multiplication and division between different fixed-point types are
-     rejected if their smalls are not *compatible* as defined in Ada RM
-     G.2.3(21)
-   * conversions from fixed-point types to floating-point types are rejected
+  * multiplication and division between different fixed-point types and
+    floating-point types are rejected
+  * multiplication and division between a fixed-point type and a real literal
+    are rejected, the fix is to qualify the real literal with a fixed-point
+    type as in ``Fp_Type'(0.25)``
+  * multiplication and division between different fixed-point types are
+    rejected if their smalls are not *compatible* as defined in Ada RM
+    G.2.3(21)
+  * conversions from fixed-point types to floating-point types are rejected
 
-   These restrictions ensure that the result of fixed-point operations always
-   belongs to the *perfect result set* as defined in Ada RM G.2.3.
+  These restrictions ensure that the result of fixed-point operations always
+  belongs to the *perfect result set* as defined in Ada RM G.2.3.
 
-#. Multidimensional array types are supported up to 4 dimensions.
+* Multidimensional array types are supported up to 4 dimensions.
 
-#. Loop_Invariant and Loop_Variant pragmas must appear before any non-scalar
-   object declaration.
+* Loop_Invariant and Loop_Variant pragmas must appear before any non-scalar
+  object declaration.
 
-#. Inheriting the same subprogram from multiple interfaces is not supported.
+* Inheriting the same subprogram from multiple interfaces is not supported.
 
-#. Formal object parameters of generics of an unconstrained record type with
-   per-object constrained fields are badly supported by the tool and may
-   result in crashes in some cases.
+* Quantified expressions with an iterator over a multi dimensional array (for
+  example ``for all Elem of Arr`` where ``Arr`` is a multi dimensional array)
+  are not supported.
 
-#. Quantified expressions with an iterator over a multi dimensional array (for
-   example ``for all Elem of Arr`` where ``Arr`` is a multi dimensional array)
-   are not supported.
+* Constrained subtypes of class-wide types and 'Class attributes of
+  constrained record types are not supported.
 
-#. Constrained subtypes of class-wide types and 'Class attributes of
-   constrained record types are not supported.
+* Abstract states cannot be marked ``Part_Of`` a single concurrent object (see
+  |SPARK| RM 9(3)).
 
-#. Abstract states cannot be marked ``Part_Of`` a single concurrent object (see
-   |SPARK| RM 9(3)). An error is raised instead in such cases.
+* Classwide Global and Depends contracts as defined in SPARK RM 6.1.6 are not
+  supported.
 
-#. Classwide Global and Depends contracts as defined in SPARK RM 6.1.6 are not
-   supported.
+* Task attributes Identity and Storage_Size are not supported.
 
-#. Task attributes Identity and Storage_Size are not supported.
+* Type_Invariant and Invariant aspects are not supported:
 
-#. Type_Invariant and Invariant aspects are not supported:
+  * on private types declared in nested packages
+  * on protected types
+  * on tagged types
+  * on components of tagged types if the tagged type is visible from inside the
+    scope of the invariant bearing type.
 
-   * on private types declared in nested packages
-   * on protected types
-   * on tagged types
-   * on components of tagged types if the tagged type is visible from inside the
-     scope of the invariant bearing type.
+* Calls to protected subprograms and protected entries whose prefix denotes a
+  formal subprogram parameter are not supported. Similarly, suspension on
+  suspension objects given as formal subprogram parameters is not supported.
 
-#. Calls to protected subprograms and protected entries whose prefix denotes a
-   formal subprogram parameter are not supported. Similarly, suspension on
-   suspension objects given as formal subprogram parameters is not supported.
+* The case of a state abstraction whose Part_Of aspect denotes a task or
+  protected unit is not currently supported.
 
-Legality Rules
---------------
+* The case of a Refined_Post specification for a (protected) entry is not
+  currently supported.
 
-#. The rule concerned with asserting that all child packages which
-   have state denoted as being Part_Of a more visible state
-   abstraction are given as constituents in the refinement of the more
-   visible state is not checked (|SPARK| Reference Manual rule
-   7.2.6(6)).
+* The use of Ada.Synchronous_Barriers.Synchronous_Barrier type is not currently
+  supported.
 
-#. The case of a state abstraction whose Part_Of aspect denotes a
-   task or protected unit is not currently supported.
+* Entry families are not currently supported.
 
-#. The case of a Refined_Post specification for a (protected) entry
-   is not currently supported.
-
-#. The use of Ada.Synchronous_Barriers.Synchronous_Barrier type is not currently
-   allowed in |SPARK|.
-
-#. Entry families are not currently allowed in |SPARK|.
+* The 'Update attribute on multidimensional unconstrained arrays is not
+  supported.
 
 Flow Analysis Limitations
 -------------------------
 
+These limitations in the flow analysis part of GNATprove may result in a less
+precise (but sound) analysis.
+
 .. index:: Depends; limitation
 
-1. Flow dependencies caused by record assignments is not captured with perfect
-   accuracy. This means that the value of one field might incorrectly be
-   considered to participate in the derivation of another field that it does
-   not really participate in.
+* Flow dependencies caused by record assignments is not captured with perfect
+  accuracy. This means that the value of one field might incorrectly be
+  considered to participate in the derivation of another field that it does
+  not really participate in.
 
 .. index:: initialization; limitation
 
-2. Initialization of multi-dimensional arrays with nested FOR loops can be only
-   detected if the array bounds are given by static expressions. A possible
-   solution is to use :ref:`Aspect Relaxed_Initialization` instead in such a
-   case and to prove that only initialized data is read.
+* Initialization of multi-dimensional arrays with nested FOR loops can be only
+  detected if the array bounds are given by static expressions. A possible
+  solution is to use :ref:`Aspect Relaxed_Initialization` instead in such a
+  case and to prove that only initialized data is read.
 
 Proof Limitations
 -----------------
 
+These limitations in the proof part of GNATprove may result in a less precise
+(but sound) analysis.
+
 .. index:: recursion; limitation
 
-#. Postconditions of possibly non-returning functions called in contracts and
-   assertion pragmas are not available, which may lead to unproved
-   checks. Using the switch ``--info`` reveals where the information about
-   postcondition may be lost. The solution is to annotate the subprogram with
-   the ``Always_Return`` annotation (see :ref:`Subprogram Termination`) which
-   will be checked by GNATprove.
+* Postconditions of possibly non-returning functions called in contracts and
+  assertion pragmas are not available, which may lead to unproved
+  checks. Using the switch ``--info`` reveals where the information about
+  postcondition may be lost. The solution is to annotate the subprogram with
+  the ``Always_Return`` annotation (see :ref:`Subprogram Termination`) which
+  will be checked by GNATprove.
 
-#. The following attributes are not yet supported in proof: Adjacent, Aft,
-   Bit_Order, Body_Version, Copy_Sign, Definite, Denorm, First_Valid, Fore,
-   Last_Valid, Machine, all Machine_* attributes, Model, all Model_* attributes,
-   Partition_Id, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling, Small,
-   Unbiased_Rounding, Version, Wide_Image, Wide_Value, Wide_Width,
-   Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width, Width.
+* The following attributes are not yet supported in proof: Adjacent, Aft,
+  Bit_Order, Body_Version, Copy_Sign, Definite, Denorm, First_Valid, Fore,
+  Last_Valid, Machine, all Machine_* attributes, Model, all Model_* attributes,
+  Partition_Id, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling, Small,
+  Unbiased_Rounding, Version, Wide_Image, Wide_Value, Wide_Width,
+  Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width, Width.
 
-   The attributes First_Bit, Last_Bit and Position are supported but if there is
-   no record representation clause then we assume that their value is
-   nonnegative.
-
-#. The 'Update attribute on multidimensional unconstrained arrays is not
-   yet fully supported in proof. Checks might be missing so currently an
-   error is emitted for any use of the 'Update attribute on
-   multidimensional unconstrained arrays.
+  The attributes First_Bit, Last_Bit and Position are supported but if there is
+  no record representation clause then we assume that their value is
+  nonnegative.
 
 .. index:: Loop_Invariant; limitation
 
-#. Constants declared in loops before the loop invariant are handled as
-   variables by the tool. This means in particular that any information
-   about their values needed after the loop invariant must be stated explicitly
-   in the loop invariant.
+* Constants declared in loops before the loop invariant are handled as
+  variables by the tool. This means in particular that any information about
+  their values needed after the loop invariant must be stated explicitly in the
+  loop invariant.

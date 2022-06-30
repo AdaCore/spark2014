@@ -523,6 +523,19 @@ of a program:
   warning to alert the user about possible unsoundness if these policies are
   violated.
 
+.. index:: Valid; limitation
+
+* Attribute 'Valid is currently assumed to always return True, as no invalid
+  value can be constructed in SPARK (see :ref:`Data Validity`).
+
+.. index:: validity; limitation
+
+* Values read from an external source are assumed to be valid values.
+  Currently there is no model of invalidity or undefinedness. The onus is on
+  the user to ensure that all values read from an external source are
+  valid. The use of an invalid value invalidates any proofs associated with the
+  value.
+
 * When a warning is issued by GNATprove to alert about a possible soundness
   issue, as it is the case when using instances of ``Unchecked_Conversion`` or
   address clauses, supression of warnings should be reviewed (see
@@ -539,6 +552,20 @@ of a program:
   Implementation-Defined Behavior`) and runtime library (see :ref:`Using the
   GNAT Target Runtime Directory`) should be set, so that GNATprove correctly
   interprets the behavior of the program at runtime.
+
+* Preconditions on subprograms in most standard units are not
+  specified. That's the case in particular for:
+
+  * arithmetic and conversion operators (including Time_Of) in
+    Ada.Execution_Time and Ada.Real_Time packages described in |SPARK|
+    Reference Manual 9.19; and
+
+  * arithmetic and conversion operators (including Time_Of) in Ada.Calendar
+    package.
+
+  See :ref:`SPARK Libraries` for a list of standard units where preconditions
+  have been specified. For others, the correctness of calls to standard
+  subprograms should be checked separately, by review or testing.
 
 * When using floating-point numbers, GNATprove relies on the :ref:`Semantics of
   Floating Point Operations` as defined in IEEE-754. The compiler, OS, and
