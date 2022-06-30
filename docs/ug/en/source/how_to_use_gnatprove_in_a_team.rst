@@ -575,6 +575,40 @@ of a program:
   same between compilation and analysis. This is in particular the case for
   :ref:`Overflow Modes`.
 
+* When a type is annotated with an ``Iterable`` aspect:
+
+  * the function ``Has_Element`` shall be such that,
+    for any container object ``Container`` and cursor object ``Cursor``,
+    ``Has_Element (Container, Cursor)`` only evaluates to True if ``Cursor``
+    is accessible from ``First (Container)`` using the function ``Next``, and
+
+  * for any container object ``Container``, the iteration from
+    ``First (Container)`` through the function ``Next`` shall reach a cursor
+    ``Cursor`` for which ``Has_Element (Container, Cursor)`` evaluates to
+    False in a finite number of steps.
+
+* When a type as an ``Iterable_For_Proof`` annotation,
+
+  * the function ``Contains``
+    shall be such that, for any container object ``Container`` and any element
+    ``E``, ``Contains (Container, E)`` evaluates to True if and only
+    if there is a cursor object ``Cursor`` such that
+    ``Has_Element (Container, Cursor)`` evaluates to True and ``E`` is the
+    result of ``Element (Container, Cursor)``, or
+
+  * the function ``Model``
+    shall be such that, for any container object ``Container`` and any element
+    ``E``, there is a cursor  object ``Cursor`` such that
+    ``Has_Element (Container, Cursor)`` evaluates to True and ``E`` is the
+    result of ``Element (Container, Cursor)`` if and only if
+    there is a cursor object ``M_Cursor`` for the model type such that
+    ``Has_Element (Model (Container), M_Cursor)`` evaluates to True and ``E`` is
+    the result of ``Element (Model (Container), M_Cursor)``.
+
+* When a function with a postcondition has an ``Inline_For_Proof``
+  annotation, the value given in its postcondition shall be logically
+  equal to the value returned by the function.
+
 * The list of :ref:`Tool Limitations that Impact Soundness` should be reviewed to
   check that each is either not applicable to the project, or its effects are
   understood and cannot lead to unsound analysis.
@@ -582,6 +616,24 @@ of a program:
 
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
+
+* Private types whose full view is not analyzed, yet are used in
+  SPARK code, need to comply with the implicit or explicit contracts used by
+  GNATprove to analyze references to these types. This concerns private types
+  and private type extensions declared in a package with a
+  ``pragma SPARK_Mode (Off);`` in its private type.
+
+  The (explicit or implicit) type contract to check is made up of:
+
+  * :ref:`Default Initial Condition` (explicit or implicit, no runtime error
+    shall occur during default initialization of an object of this type unless
+    its default initial condition does not refer to the current type instance
+    or only refers to its discriminants and it evaluates to False)
+
+  * Ownership annotations (implicit, if a type is not annotated with Ownership,
+    copying it around shall not create visible aliasing and if it is not
+    annotated with Needs_Reclamation, its finalization shall not leak
+    resources or memory).
 
 * Subprograms that are not analyzed, yet are called from SPARK code, need to
   comply with the implicit or explicit contracts used by GNATprove to analyze
@@ -597,7 +649,8 @@ only part of a program:
   * :ref:`Type Contracts` of both parameters and global objects taken as input
     of the subprogram
 
-  * :ref:`Preconditions` (only explicit)
+  * :ref:`Preconditions` (explicit and implicit, no runtime error shall occur
+    in the body of the subprogram when the precondition evaluates to True)
 
   * :ref:`Postconditions` (only explicit)
 
@@ -609,6 +662,10 @@ only part of a program:
 
   * :ref:`Subprogram Termination` (only explicit except for functions which
     should always return in SPARK)
+
+  Note that this also applies to subprograms which are called indirectly
+  from SPARK code, either through a dispatching call or through a call to
+  an access-to-subprogram.
 
 * Units whose body is not analyzed, yet are used from SPARK code, need to
   declare suitable :ref:`State Abstraction`, and subprograms defining the API

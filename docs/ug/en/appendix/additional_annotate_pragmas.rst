@@ -115,7 +115,7 @@ cannot lead to overflow. Unary negation is checked for possible non-nullity of
 its argument, which leads to overflow. The predecessor attribute ``'Pred`` and
 successor attribute ``'Succ`` are also checked for possible overflows.
 
-.. index:: Annotate; Iterable
+.. index:: Annotate; Iterable; Iterable_For_Proof
 
 Customize Quantification over Types with the Iterable Aspect
 ------------------------------------------------------------
