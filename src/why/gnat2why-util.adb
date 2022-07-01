@@ -806,7 +806,7 @@ package body Gnat2Why.Util is
 
       --  For private types annotated with ownership, we need a is_moved field
 
-      if Has_Ownership_Annotation (E) then
+      if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
          Count := Count + 1;
       end if;
 
@@ -1208,7 +1208,8 @@ package body Gnat2Why.Util is
       return Is_Incomplete_Or_Private_Type (Ty)
         and then Count_Discriminants (Ty) = 0
         and then not Is_Tagged_Type (Ty)
-        and then not Has_Ownership_Annotation (Ty);
+        and then (not Has_Ownership_Annotation (Ty)
+                  or else not Needs_Reclamation (Ty));
    end Is_Simple_Private_Type;
 
    --------------------------

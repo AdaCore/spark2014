@@ -852,7 +852,8 @@ package body Why.Gen.Binders is
                                  Typ   => EW_Int_Type));
             end if;
 
-            if Has_Ownership_Annotation (Ty) then
+            if Has_Ownership_Annotation (Ty) and then Needs_Reclamation (Ty)
+            then
                Result.Is_Moved_R :=
                  (Present => True,
                   Id      => Is_Moved_Append

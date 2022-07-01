@@ -1879,7 +1879,7 @@ package body Why.Gen.Records is
 
       --  Step 4. Copy the is_moved field if the type has ownership
 
-      if Has_Ownership_Annotation (E) then
+      if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
          From_Index := From_Index + 1;
          From_Root_Aggr (From_Index) :=
            New_Field_Association
@@ -2756,7 +2756,7 @@ package body Why.Gen.Records is
 
          --  For private types with ownership, add a boolean is_moved flag
 
-         if Has_Ownership_Annotation (E) then
+         if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
             Binders_A (Index_All) :=
               (B_Name => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
                others => <>);
@@ -4620,7 +4620,7 @@ package body Why.Gen.Records is
 
       --  Store association for the is_moved flag
 
-      if Has_Ownership_Annotation (Ty) then
+      if Has_Ownership_Annotation (Ty) and then Needs_Reclamation (Ty) then
          Associations (Index) := New_Field_Association
            (Domain => EW_Term,
             Field  => E_Symb (Ty, WNE_Is_Moved_Field, Init_Wrapper),
