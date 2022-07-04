@@ -1,0 +1,6 @@
+main.adb:35:04: info: initialization of "X" proved
+main.adb:42:28: error: "X" is not readable
+main.adb:42:28: error: object was moved at line 41
+main.adb:46:28: error: "X" is not readable
+main.adb:46:28: error: object was moved at unknown location
+gnatprove: error during flow analysis and proof
