@@ -517,7 +517,7 @@ binary_trees.adb:755:26: medium: loop invariant might fail in first iteration, c
 binary_trees.adb:755:26: medium: precondition might fail
 binary_trees.adb:761:21: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:761:21: medium: precondition might fail
-binary_trees.adb:761:64: info: invariant check proved (CVC5: 2 VC)
+binary_trees.adb:761:64: medium: invariant check might fail
 binary_trees.adb:761:64: medium: precondition might fail
 binary_trees.adb:762:23: medium: invariant check might fail
 binary_trees.adb:762:23: medium: loop invariant might fail in first iteration, cannot prove Model (F, Root) (I).K
@@ -526,7 +526,7 @@ binary_trees.adb:762:23: medium: precondition might fail
 binary_trees.adb:769:21: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:769:21: medium: precondition might fail
 binary_trees.adb:769:35: info: range check proved (CVC5: 4 VC)
-binary_trees.adb:770:37: info: invariant check proved (CVC5: 2 VC)
+binary_trees.adb:770:37: medium: invariant check might fail
 binary_trees.adb:770:37: medium: precondition might fail
 binary_trees.adb:770:51: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:771:29: medium: invariant check might fail

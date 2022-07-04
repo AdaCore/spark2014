@@ -251,9 +251,9 @@ formal_vectors.ads:20:19: info: precondition proved (CVC5: 2 VC), in instantiati
 formal_vectors.ads:20:19: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11 [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 formal_vectors.ads:20:31: info: range check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:23:41: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.ads:24:15: info: postcondition proved (CVC5: 2 VC; Z3: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:24:43: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:27:19: info: precondition proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.ads:27:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'old)), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:29:71: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:45:14: info: postcondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:45:39: info: precondition proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
