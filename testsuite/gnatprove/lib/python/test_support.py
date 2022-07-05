@@ -841,7 +841,7 @@ def prove_all(
         if not counterexample or benchmark_mode():
             fullopt += ["--counterexamples=off"]
         else:
-            fullopt += ["--counterexamples=on", "--ce-steps=10000"]
+            fullopt += ["--counterexamples=on", "--ce-steps=5000"]
     if check_counterexamples is not None:
         if check_counterexamples:
             fullopt += ["--check-counterexamples=on"]
