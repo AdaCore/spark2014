@@ -270,10 +270,6 @@ package body CE_RAC is
    --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
    --  not complete due to technical or theoretical limitations.
 
-   procedure RAC_Unsupported (Str : String; N : Node_Id) with No_Return;
-   --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
-   --  not complete due to unsupported or unimplemented features.
-
    procedure RAC_Unsupported (Str : String; Str1 : String) with No_Return;
    --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
    --  not complete due to unsupported or unimplemented features.
@@ -1251,8 +1247,10 @@ package body CE_RAC is
    begin
       if Is_Integer_Type (Rep_Ty) then
          return Fuzz_Integer_Value (Rep_Ty);
+      elsif Is_Record_Type (Rep_Ty) then
+         return Fuzz_Record_Value (Rep_Ty);
       else
-         RAC_Unsupported ("Fuzzed_Value", Ty);
+         RAC_Unsupported ("Fuzz_Value", Ty);
       end if;
    end Fuzz_Value;
 

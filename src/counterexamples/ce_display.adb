@@ -467,40 +467,6 @@ package body CE_Display is
 
    function Get_Environment_One_Liner (N : Node_Id) return String
    is
-      function Value_To_String
-        (V         : Value_Type;
-         Max_Elems : Natural := 5) return String;
-      --  Get the string representation of V. For arrays, multidimentional
-      --  arrays and records limit the number of elements included to
-      --  Max_Elems.
-
-      ---------------------
-      -- Value_To_String --
-      ---------------------
-
-      function Value_To_String
-        (V         : Value_Type;
-         Max_Elems : Natural := 5) return String
-      is
-         pragma Unreferenced (Max_Elems);
-      begin
-         --  If the value has several components include a limited number
-         --  in the string representation. Otherwise use the normal string
-         --  representation.
-
-         return (case V.K is
-                    when Record_K =>
-                      "TODO : Get_Environment_One_Liner for record type",
-                    when Array_K =>
-                      "TODO : Get_Environment_One_Liner for array type",
-                    when Multidim_K =>
-                      "TODO : Get_Environment_One_Liner for multidim type",
-                    when others =>
-                      To_String (Print_Value (V).Str));
-      end Value_To_String;
-
-      --  Local variables
-
       Flow_Variables : constant Flow_Id_Sets.Set :=
         (if Nkind (N) in N_Subexpr
          then Get_Filtered_Variables_For_Proof (N, N)
@@ -525,7 +491,7 @@ package body CE_Display is
          declare
             V        : constant Value_Type := CE_RAC.Find_Binding (E).all;
             Elt_Name : constant String     := Source_Name (E);
-            Elt_Val  : constant String     := Value_To_String (V);
+            Elt_Val  : constant String     := To_String (Print_Value (V).Str);
          begin
             Before_Next_Element (Env_Line_Str);
             Append (Env_Line_Str, Elt_Name);

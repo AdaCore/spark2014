@@ -29,6 +29,9 @@ with Ada.Containers.Vectors;
 with Ada.Numerics.Discrete_Random;
 with CE_RAC;                       use CE_RAC;
 with Common_Containers;            use Common_Containers;
+with Einfo.Entities;               use Einfo.Entities;
+with SPARK_Atree;                  use SPARK_Atree;
+with SPARK_Util.Types;             use SPARK_Util.Types;
 
 package body CE_Fuzzer is
 
@@ -128,5 +131,42 @@ package body CE_Fuzzer is
       end;
 
    end Fuzz_Integer_Value;
+
+   -----------------------
+   -- Fuzz_Record_Value --
+   -----------------------
+
+   function Fuzz_Record_Value (Ty : Entity_Id) return Value_Type
+   is
+      Constrained  : constant Boolean := Has_Discriminants (Ty);
+      Field        :          Entity_Id :=
+        First_Component_Or_Discriminant (Ty);
+      Field_Values :          Entity_To_Value_Maps.Map;
+   begin
+      while Present (Field) loop
+         declare
+            Field_Ty : constant Entity_Id := Etype (Field);
+         begin
+            if Is_Integer_Type (Field_Ty) then
+               Field_Values.Insert
+                 (Field,
+                  new Value_Type'(Fuzz_Integer_Value (Retysp (Field_Ty))));
+            elsif Is_Record_Type (Field_Ty) then
+               Field_Values.Insert
+                 (Field,
+                  new Value_Type'(Fuzz_Record_Value (Retysp (Field_Ty))));
+            else
+               RAC_Unsupported ("record field not integer or record", Field);
+            end if;
+            Next_Component_Or_Discriminant (Field);
+         end;
+      end loop;
+
+      return Value_Type'(K                => Record_K,
+                         AST_Ty           => Ty,
+                         Record_Fields    => Field_Values,
+                         Constrained_Attr => (Present => True,
+                                              Content => Constrained));
+   end Fuzz_Record_Value;
 
 end CE_Fuzzer;

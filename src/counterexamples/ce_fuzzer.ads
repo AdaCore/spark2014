@@ -25,13 +25,20 @@
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with CE_Values; use CE_Values;
-with Types; use Types;
+with CE_Values;   use CE_Values;
+with Einfo.Utils; use Einfo.Utils;
+with Types;       use Types;
 
 package CE_Fuzzer is
 
-   function Fuzz_Integer_Value (Ty : Entity_Id) return Value_Type;
+   function Fuzz_Integer_Value (Ty : Entity_Id) return Value_Type
+     with Pre => Is_Integer_Type (Ty);
    --  Return a Value_Type in the range of the Rep_Ty type randomly chosen
    --  among a set of values known to often lead to errors.
+
+   function Fuzz_Record_Value (Ty : Entity_Id) return Value_Type
+     with Pre => Is_Record_Type (Ty);
+   --  Return a Value_Type of record kind with fields filled with fuzzed
+   --  values.
 
 end CE_Fuzzer;
