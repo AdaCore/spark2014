@@ -3716,9 +3716,6 @@ package body Flow_Utility is
 
                         if Box_Present (P) then
                            Any_Boxes := True;
-
-                           pragma Assert (Default_Initialization (Aggr_Type)
-                                          /= No_Default_Initialization);
                            exit;
                         end if;
                         Next (P);

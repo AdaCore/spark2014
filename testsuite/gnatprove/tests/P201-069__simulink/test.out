@@ -82,10 +82,12 @@ simulink_functions.adb:53:67: info: type is suitable for unchecked conversion (T
 simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Integer_8 differ]
 simulink_functions.adb:54:66: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:55:67: info: type is suitable for unchecked conversion (Trivial)
+simulink_functions.adb:171:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:55 should mention F in a precondition]
+simulink_functions.adb:180:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:56 should mention F in a precondition]
 simulink_functions.adb:189:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:58 should mention F in a precondition]
 simulink_functions.adb:199:14: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:59 should mention F in a precondition]
-simulink_functions.adb:208:47: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at simulink_functions.ads:61 should mention F in a precondition]
-simulink_functions.adb:219:14: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at simulink_functions.ads:62 should mention F in a precondition]
+simulink_functions.adb:208:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:61 should mention F in a precondition]
+simulink_functions.adb:219:14: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:62 should mention F in a precondition]
 simulink_functions.adb:234:40: medium: overflow check might fail, cannot prove upper bound for abs (Left) [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible fix: add precondition (abs (Left) in -128 .. 127) to subprogram at simulink_functions.ads:64]
 simulink_functions.adb:234:51: info: division check proved (CodePeer)
 simulink_functions.adb:234:51: info: range check proved (CVC5: 2 VC)
@@ -205,27 +207,33 @@ simulink_functions.adb:597:27: info: precondition proved (CVC5: 1 VC)
 simulink_functions.adb:597:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:100 should mention I in a precondition]
 simulink_functions.adb:597:40: info: range check proved (Trivial)
 simulink_functions.adb:607:25: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:102 should mention I in a precondition]
-simulink_functions.adb:607:25: medium: range check might fail, cannot prove upper bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:102 should mention I in a precondition]
+simulink_functions.adb:607:25: medium: range check might fail, cannot prove lower bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:102 should mention I in a precondition]
 simulink_functions.adb:607:38: info: range check proved (Trivial)
 simulink_functions.adb:617:26: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:103 should mention I in a precondition]
-simulink_functions.adb:617:26: medium: range check might fail, cannot prove upper bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:103 should mention I in a precondition]
+simulink_functions.adb:617:26: medium: range check might fail, cannot prove lower bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:103 should mention I in a precondition]
 simulink_functions.adb:617:39: info: range check proved (Trivial)
 simulink_functions.adb:627:26: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:104 should mention I in a precondition]
-simulink_functions.adb:627:26: medium: range check might fail, cannot prove upper bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:104 should mention I in a precondition]
+simulink_functions.adb:627:26: medium: range check might fail, cannot prove lower bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:104 should mention I in a precondition]
 simulink_functions.adb:627:39: info: range check proved (Trivial)
 simulink_functions.adb:637:21: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:106 should mention F in a precondition]
 simulink_functions.adb:637:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:106 should mention F in a precondition]
 simulink_functions.adb:647:14: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:107 should mention F in a precondition]
+simulink_functions.adb:1014:47: info: precondition proved (CVC5: 1 VC)
+simulink_functions.adb:1023:52: info: precondition proved (CVC5: 1 VC)
 simulink_functions.adb:1032:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:151 should mention F in a precondition]
 simulink_functions.adb:1041:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:152 should mention LF in a precondition]
 simulink_functions.adb:1050:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:154 should mention F in a precondition]
 simulink_functions.adb:1059:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:155 should mention LF in a precondition]
 simulink_functions.adb:1068:47: info: precondition proved (CVC5: 1 VC)
 simulink_functions.adb:1077:52: info: precondition proved (CVC5: 1 VC)
+simulink_functions.adb:1086:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:160 should mention F in a precondition]
+simulink_functions.adb:1095:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:161 should mention LF in a precondition]
+simulink_functions.adb:1104:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:163 should mention F in a precondition]
+simulink_functions.adb:1113:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:164 should mention LF in a precondition]
 simulink_functions.adb:1158:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:172 should mention F in a precondition]
 simulink_functions.adb:1167:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:173 should mention LF in a precondition]
-simulink_functions.adb:1176:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:175 should mention F in a precondition]
-simulink_functions.adb:1185:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:176 should mention LF in a precondition]
+simulink_functions.adb:1176:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:175 should mention F in a precondition]
+simulink_functions.adb:1185:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:176 should mention LF in a precondition]
 simulink_functions.adb:1194:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:178 should mention Left and Right in a precondition]
 simulink_functions.adb:1202:07: info: initialization of "Result" proved
 simulink_functions.adb:1209:31: info: division check proved (Z3: 1 VC)
@@ -245,8 +253,8 @@ simulink_functions.adb:1407:07: info: initialization of "Res" proved
 simulink_functions.adb:1423:07: info: initialization of "Res" proved
 simulink_functions.adb:1439:07: info: initialization of "Res" proved
 simulink_functions.adb:1455:07: info: initialization of "Res" proved
-simulink_functions.adb:1473:19: medium: precondition might fail, cannot prove Right > 0.0 [possible fix: subprogram at simulink_functions.ads:205 should mention Left and Right in a precondition]
-simulink_functions.adb:1484:19: medium: precondition might fail, cannot prove Right > 0.0 [possible fix: subprogram at simulink_functions.ads:206 should mention Left and Right in a precondition]
+simulink_functions.adb:1473:19: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:205 should mention Left and Right in a precondition]
+simulink_functions.adb:1484:19: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:206 should mention Left and Right in a precondition]
 simulink_functions.adb:1494:19: medium: overflow check might fail, cannot prove lower bound for Left ** Natural (Right) [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: add precondition (Left ** Natural (Right) in -128 .. 127) to subprogram at simulink_functions.ads:207]
 simulink_functions.adb:1494:31: medium: range check might fail, cannot prove lower bound for Right [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:207]
 simulink_functions.adb:1504:19: medium: overflow check might fail, cannot prove lower bound for Left ** Natural (Right) [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: add precondition (Left ** Natural (Right) in -32768 .. 32767) to subprogram at simulink_functions.ads:208]

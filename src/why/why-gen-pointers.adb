@@ -876,7 +876,7 @@ package body Why.Gen.Pointers is
          Ty_Name   : constant W_Name_Id := To_Name (WNE_Rec_Rep);
 
       begin
-         pragma Assert (not Has_Private_Type (E));
+         pragma Assert (not Has_Incomplete_Or_Private_Type (E));
          Binders_F (1) :=
            (B_Name => To_Local (E_Symb (E, WNE_Is_Null_Pointer)),
             Labels => Get_Model_Trace_Label ("'" & Is_Null_Label),

@@ -39,8 +39,8 @@ hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC5: 1 
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
 hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 3 VC)
 hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 3 VC)
-hermes-der-decode.adb:135:99: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
-hermes-der-decode.adb:135:103: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
+hermes-der-decode.adb:135:99: medium: overflow check might fail, cannot prove upper bound for 128*256**(I - 2) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+hermes-der-decode.adb:135:103: medium: overflow check might fail, cannot prove upper bound for 256**(I - 2) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 hermes-der-decode.adb:135:108: info: range check proved (CVC5: 4 VC)
 hermes-der-decode.adb:137:31: medium: overflow check might fail, cannot prove upper bound for Result * 256 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 hermes-der-decode.adb:137:38: info: overflow check proved (CVC5: 2 VC)

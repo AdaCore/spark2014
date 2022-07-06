@@ -56,5 +56,6 @@ counterexample expected for check at basic.adb:88
   trace at basic.adb:87 --> A = 0 and B = 1
   trace at basic.adb:88 --> A = 0 and B = 1 and Int_Min_B'Result = 1
   trace at basic.adb:92 --> A = 0
+  trace at basic.adb:93 --> A = 0 and R = 1
   trace at basic.adb:95 --> B = 1 and R = 1
   trace at basic.adb:97 --> Int_Min_B'Result = 1 and R = 1

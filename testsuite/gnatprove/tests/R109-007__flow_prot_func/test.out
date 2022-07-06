@@ -1,2 +1,2 @@
 q.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
-q.adb:4:20: high: "PO" must be listed in the Global aspect of "Q" (SPARK RM 6.1.4(14))
+q.adb:4:20: high: "PO" must be listed in the Global aspect of "Q" (SPARK RM 6.1.4(15))

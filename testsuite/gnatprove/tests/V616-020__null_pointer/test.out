@@ -1,0 +1,17 @@
+carver.ads:25:27: info: predicate check proved (CVC5: 2 VC), in instantiation at carver_test.adb:9
+carver.ads:25:28: info: predicate check proved (CVC5: 2 VC), in instantiation at carver_test.adb:9
+carver.ads:25:38: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
+carver.ads:25:39: info: range check proved (CVC5: 2 VC), in instantiation at carver_test.adb:9
+carver.ads:25:55: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
+carver.ads:25:56: info: range check proved (CVC5: 2 VC), in instantiation at carver_test.adb:9
+carver.ads:25:71: info: range check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
+carver.ads:27:16: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
+carver.ads:27:49: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
+carver.ads:30:27: info: predicate check proved (CVC5: 2 VC), in instantiation at carver_test.adb:9
+carver.ads:30:28: info: predicate check proved (CVC5: 2 VC), in instantiation at carver_test.adb:9
+carver.ads:33:21: info: range check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
+carver_test.adb:14:09: info: predicate check proved on default value (CVC5: 2 VC)
+carver_test.adb:16:11: info: discriminant check proved (CVC5: 2 VC; Trivial: 1 VC)
+carver_test.adb:16:15: info: precondition proved (CVC5: 3 VC)
+carver_test.adb:16:34: info: null exclusion check proved (CVC5: 1 VC)
+carver_test.ads:9:09: info: data dependencies proved

@@ -4,4 +4,6 @@ counterex.adb:13:17: high: overflow check might fail, cannot prove upper bound f
 counterexample expected for check at counterex.adb:3
   trace at counterex.adb:1 --> V = -301
   trace at counterex.adb:3 --> V = -291
+  trace at counterex.adb:8 --> V = -301
+  trace at counterex.adb:9 --> V = -291
   trace at counterex.adb:13 --> V = -291

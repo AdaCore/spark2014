@@ -1,7 +1,7 @@
 bounded_stacks.adb:30:12: info: discriminant check proved (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:30:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.adb:40:28: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.adb:41:24: info: index check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.adb:40:28: info: overflow check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.adb:41:24: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:50:32: medium: array index check might fail, in instantiation at integer_stacks.ads:4 (e.g. when This = (Capacity => ?, Values => (1 => 0), Top => 2) and This.Values'First = 1 and This.Values'Last = 1) [reason for check: value must be a valid index into the array]
 bounded_stacks.adb:51:28: info: range check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:59:24: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4

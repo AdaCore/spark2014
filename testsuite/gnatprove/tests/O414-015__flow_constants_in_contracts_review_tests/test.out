@@ -13,9 +13,9 @@ info_flow_tests.adb:23:23: medium: incorrect dependency "A => B"
 info_flow_tests.adb:24:23: medium: incorrect dependency "B => A"
 info_flow_tests.adb:28:12: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:29:12: info: range check proved (CVC5: 2 VC)
-info_flow_tests.adb:35:24: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
+info_flow_tests.adb:35:24: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(15))
 info_flow_tests.adb:35:26: medium: range check might fail, cannot prove lower bound for T2'Last [reason for check: value must be convertible to the target type of the conversion]
-info_flow_tests.adb:36:24: high: constant with variable input "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
+info_flow_tests.adb:36:24: high: constant with variable input "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(15))
 info_flow_tests.adb:36:26: medium: range check might fail, cannot prove lower bound for T1'Last [reason for check: value must be convertible to the target type of the conversion]
 info_flow_tests.adb:44:09: info: data dependencies proved
 info_flow_tests.adb:45:09: info: flow dependencies proved
@@ -70,7 +70,7 @@ info_flow_tests.adb:140:18: medium: range check might fail
 info_flow_tests.adb:141:19: medium: range check might fail, cannot prove upper bound for C1 [reason for check: default component value must fit in the type]
 info_flow_tests.adb:153:23: info: initialization of "C" proved
 info_flow_tests.adb:161:18: medium: range check might fail
-info_flow_tests.adb:164:19: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
+info_flow_tests.adb:164:19: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(15))
 info_flow_tests.adb:164:21: info: cannot unroll loop (too many loop iterations)
 info_flow_tests.adb:175:23: info: initialization of "C" proved
 info_flow_tests.adb:176:09: info: data dependencies proved

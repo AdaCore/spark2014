@@ -1263,7 +1263,8 @@ package body Gnat2Why.Expr.Loops.Inv is
             when Entire_Object =>
                return new Write_Status'(Kind => Entire_Object);
             when Record_Components =>
-               if Retysp_Kind (Etype (New_Write)) in Record_Kind | Private_Kind
+               if Retysp_Kind (Etype (New_Write)) in
+                 Record_Kind | Incomplete_Or_Private_Kind
                then
                   return new
                     Write_Status'(Kind             => Record_Components,

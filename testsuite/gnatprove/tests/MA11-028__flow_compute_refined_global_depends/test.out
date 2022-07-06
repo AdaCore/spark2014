@@ -1,10 +1,10 @@
-bad_refinement.adb:9:12: high: "Y" constituent of "State2" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(14))
-bad_refinement.adb:20:09: high: "X" constituent of "State" must be a global output of "Liar3" (SPARK RM 6.1.4(17))
-bad_refinement.adb:25:14: high: "Y" constituent of "State2" must be listed in the Depends aspect of "Liar4" (SPARK RM 6.1.4(14))
+bad_refinement.adb:9:12: high: "Y" constituent of "State2" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(15))
+bad_refinement.adb:20:09: high: "X" constituent of "State" must be a global output of "Liar3" (SPARK RM 6.1.4(18))
+bad_refinement.adb:25:14: high: "Y" constituent of "State2" must be listed in the Depends aspect of "Liar4" (SPARK RM 6.1.4(15))
 bad_refinement.adb:31:16: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Liar5" at bad_refinement.ads:17
 bad_refinement.adb:31:16: high: "Y" constituent of "State2" is not initialized
 bad_refinement.adb:31:16: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
-bad_refinement.adb:50:12: high: "Z" constituent of "State2" must be listed in the Refined_Depends aspect of "Liar8" (SPARK RM 6.1.4(14))
+bad_refinement.adb:50:12: high: "Z" constituent of "State2" must be listed in the Refined_Depends aspect of "Liar8" (SPARK RM 6.1.4(15))
 bad_refinement.ads:3:08: info: flow dependencies proved
 bad_refinement.ads:9:11: medium: "Bad_Refinement.State" must be a global Input of "Liar2"
 bad_refinement.ads:15:11: info: flow dependencies proved
@@ -24,16 +24,16 @@ bad_refinement.ads:34:11: high: "Bad_Refinement.State" must be a global Output o
 bad_refinement.ads:34:11: info: flow dependencies proved
 lots_of_tests.adb:10:15: medium: overflow check might fail, cannot prove lower bound for G1 + A [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at lots_of_tests.ads:7 should mention A and G1 in a precondition]
 lots_of_tests.adb:10:19: medium: overflow check might fail, cannot prove lower bound for G1 + A - C [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at lots_of_tests.ads:7 should mention A and C and G1 in a precondition]
-lots_of_tests.adb:20:07: high: "A" constituent of "State" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(14))
-lots_of_tests.adb:20:07: high: "C" constituent of "State2" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(14))
-lots_of_tests.adb:20:07: high: "G1" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:20:07: high: "A" constituent of "State" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(15))
+lots_of_tests.adb:20:07: high: "C" constituent of "State2" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(15))
+lots_of_tests.adb:20:07: high: "G1" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(15))
 lots_of_tests.adb:25:14: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at lots_of_tests.ads:15 should mention X and Y in a precondition]
 lots_of_tests.adb:26:15: medium: overflow check might fail, cannot prove lower bound for G1 + A [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at lots_of_tests.ads:15 should mention A and G1 in a precondition]
-lots_of_tests.adb:40:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_G_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:40:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_G_BAD" (SPARK RM 6.1.4(15))
 lots_of_tests.adb:45:15: medium: overflow check might fail, cannot prove lower bound for X + C [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at lots_of_tests.ads:25 should mention C and X in a precondition]
 lots_of_tests.adb:51:40: info: initialization of "G2" proved
 lots_of_tests.adb:70:41: info: initialization of "G2" proved
-lots_of_tests.adb:83:07: high: "A" constituent of "State" must be listed in the Refined_Depends aspect of "Internal_User_Of_G_D_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:83:07: high: "A" constituent of "State" must be listed in the Refined_Depends aspect of "Internal_User_Of_G_D_BAD" (SPARK RM 6.1.4(15))
 lots_of_tests.adb:88:41: info: initialization of "C" constituent of "State2" proved
 lots_of_tests.adb:88:44: info: initialization of "D" constituent of "State2" proved
 lots_of_tests.adb:103:49: low: unused global "B" constituent of "State"
@@ -41,7 +41,7 @@ lots_of_tests.adb:104:42: info: initialization of "C" constituent of "State2" pr
 lots_of_tests.adb:104:45: info: initialization of "D" constituent of "State2" proved
 lots_of_tests.adb:113:42: info: initialization of "G1" proved
 lots_of_tests.adb:116:22: medium: assertion might fail [possible fix: subprogram at lots_of_tests.ads:64 should mention A in a precondition]
-lots_of_tests.adb:132:07: high: "C" constituent of "State2" must be listed in the Refined_Depends aspect of "Internal_User_Of_RG_D_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:132:07: high: "C" constituent of "State2" must be listed in the Refined_Depends aspect of "Internal_User_Of_RG_D_BAD" (SPARK RM 6.1.4(15))
 lots_of_tests.adb:147:40: info: initialization of "G1" proved
 lots_of_tests.adb:154:44: warning: "C" constituent of "State2" is not modified, could be INPUT
 lots_of_tests.adb:155:40: info: initialization of "G1" proved
@@ -51,7 +51,7 @@ lots_of_tests.adb:183:07: high: "A" constituent of "State" is not an input in th
 lots_of_tests.adb:183:07: high: "A" constituent of "State" is not initialized
 lots_of_tests.adb:183:07: high: either make "A" constituent of "State" an input in the Global contract or initialize it before use
 lots_of_tests.adb:192:15: medium: overflow check might fail, cannot prove lower bound for A + G1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at lots_of_tests.ads:108 should mention A and G1 in a precondition]
-lots_of_tests.adb:207:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_RG_RD_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:207:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_RG_RD_BAD" (SPARK RM 6.1.4(15))
 lots_of_tests.ads:3:08: info: flow dependencies proved
 lots_of_tests.ads:7:28: info: initialization of "X" proved
 lots_of_tests.ads:9:48: info: initialization of "X" proved

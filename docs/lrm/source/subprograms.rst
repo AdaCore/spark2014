@@ -31,14 +31,6 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. In particular, a component of a protected unit is not
 an *entire object*.
 
-.. index:: reachable element
-
-An object O1 is said to be a *reachable element* of an object O2 if
-
-- O1 is a part of O2; or
-- O1 is a reachable element of the object designated by
-  (the value of) an access-valued part of O2.
-
 .. container:: heading
 
    Static Semantics
@@ -52,7 +44,8 @@ An object O1 is said to be a *reachable element* of an object O2 if
 .. index:: subprogram output
 
 3. An *output* of a subprogram is a global item or parameter whose final value,
-   or the final value of any of its reachable elements, may be updated by a
+   or the final value of any of its reachable parts (see :ref:`Access Types`),
+   may be updated by a
    successful call to the subprogram. The result of a
    function is also an output.  A global item or parameter which is an external
    state with the property Async_Readers => True, and for which intermediate
@@ -66,8 +59,8 @@ An object O1 is said to be a *reachable element* of an object O2 if
 .. index:: subprogram input
 
 4. An *input* of a subprogram is a global item or parameter whose
-   initial value (or that of any of its reachable elements)
-   may be used in determining the exit value of an
+   initial value (or that of any of its reachable parts -
+   see :ref:`Access Types`) may be used in determining the exit value of an
    output of the subprogram.  For a global item or parameter which is
    an external state with Async_Writers => True, each successive value
    read from the external state is also an input of the subprogram
@@ -1718,23 +1711,24 @@ Expression Functions
 Ghost Entities
 --------------
 
-Ghost entities are intended for use in discharging verification conditions
-and in making it easier to express assertions about a program. The essential
+Ghost entities are intended for use in discharging verification conditions and
+in making it easier to express assertions about a program. The essential
 property of ghost entities is that they have no effect on the dynamic behavior
-of a valid SPARK program. More specifically, if one
-were to take a valid SPARK program and remove all ghost entity declarations
-from it and all "innermost" statements, declarations, and pragmas which
+of a valid SPARK program. More specifically, if one were to take a valid SPARK
+program and remove all ghost entity declarations from it (considering the
+association of a ghost formal parameter in a generic instantiation as a
+declaration) and all "innermost" statements, declarations, and pragmas which
 refer to those declarations (replacing removed statements with null statements
-when syntactically required), then the resulting  program might no longer be
-a valid SPARK program (e.g., it might no longer be possible to discharge all
-of the program's verification conditions) but its dynamic semantics (when
-viewed as an Ada program) should be unaffected by this transformation. [This
+when syntactically required), then the resulting program might no longer be a
+valid SPARK program (e.g., it might no longer be possible to discharge all of
+the program's verification conditions) but its dynamic semantics (when viewed
+as an Ada program) should be unaffected by this transformation. [This
 transformation might affect the performance characteristics of the program
-(e.g., due to no longer evaluating provably true assertions), but that
-is not what we are talking about here. In rare cases, it might be necessary
-to make a small additional change after the removals
-(e.g., adding an Elaborate_Body pragma) in order to avoid producing a
-library package that no longer needs a body (see Ada RM 7.2(4))].
+(e.g., due to no longer evaluating provably true assertions), but that is not
+what we are talking about here. In rare cases, it might be necessary to make a
+small additional change after the removals (e.g., adding an Elaborate_Body
+pragma) in order to avoid producing a library package that no longer needs a
+body (see Ada RM 7.2(4))].
 
 .. container:: heading
 
@@ -1798,7 +1792,7 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    generic subprogram, a type (including a partial view thereof),
    an object (or list of objects, in the case of an ``aspect_specification``
    for an ``object_declaration`` having more than one ``defining_identifier``),
-   a package, or a generic package.
+   a package, a generic package, or a generic formal parameter.
    The Ghost aspect may be specified via either an ``aspect_specification``
    or via a pragma. The representation pragma Ghost takes a single
    argument, a name denoting one or more entities whose Ghost aspect is
@@ -1860,7 +1854,10 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     * within a ``with_clause`` or ``use_clause``; or
 
     * within a renaming_declaration which either renames a ghost entity
-      or occurs within a ghost subprogram or package.
+      or occurs within a ghost subprogram or package; or
+
+    * within an actual parameter in a generic instantiation when the
+      corresponding generic formal parameter is ghost.
 
 
 11. A ghost entity shall not be referenced within an aspect specification
@@ -1886,7 +1883,37 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     subprogram shall be a ghost variable.
 
 
-13. If the Ghost assertion policy in effect at the point of the declaration
+13. In a generic declaration:
+
+    * the default expression (if any) for a ghost generic formal object [both
+      of mode **in** and] of access-to-variable type shall be a ghost object
+      [otherwise writing to a reachable part (see :ref:`Access Types`) of the
+      ghost formal object would have an effect on a non-ghost variable]; and
+
+    * the default subprogram (if any) for a ghost generic formal procedure
+      shall be a ghost procedure [otherwise a call to the ghost formal
+      procedure could have effects on non-ghost variables, if the default
+      non-ghost procedure is writing to non-ghost variables].
+
+
+14. In a generic instantiation:
+
+    * the actual parameter for a ghost generic formal object of mode **in out**
+      or both of mode **in** and of access-to-variable type, shall be a ghost
+      object [otherwise writing to a reachable part (see :ref:`Access Types`)
+      of the ghost formal object would have an effect on a non-ghost variable];
+
+    * the actual parameter for a ghost generic formal procedure shall be a
+      ghost procedure [otherwise a call to the ghost formal procedure could
+      have effects on non-ghost variables, if the actual non-ghost procedure is
+      writing to non-ghost variables]; and
+
+    * the actual parameter for a ghost generic formal package shall be a ghost
+      package [otherwise an object or a procedure in the package could lead to
+      the problems mentions in the two previous cases].
+
+
+15. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost entity is Ignore, then the Ghost assertion policy in effect
     at the point of any reference to that entity shall be Ignore.
     If the Ghost assertion policy in effect at the point of the declaration
@@ -1896,7 +1923,7 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     as an **out** or **in out** mode actual parameter.]
 
 
-14. An Assertion_Policy pragma specifying a Ghost assertion policy
+16. An Assertion_Policy pragma specifying a Ghost assertion policy
     shall not occur within a ghost subprogram or package.
     If a ghost entity has a completion then the Ghost assertion policies in
     effect at the declaration and at the completion of the entity shall
@@ -1908,31 +1935,31 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     which applies to that entity shall be the same.
 
 
-15. The Ghost assertion policies in effect at the declaration of a
+17. The Ghost assertion policies in effect at the declaration of a
     state abstraction and at the declaration of each constituent of that
     abstraction shall be the same.
 
 
-16. The Ghost assertion policies in effect at the declaration of a
+18. The Ghost assertion policies in effect at the declaration of a
     primitive subprogram of a ghost tagged type and at
     the declaration of the ghost tagged type shall be the same.
 
 
-17. If a tagged type is not a disabled ghost type, and if a
+19. If a tagged type is not a disabled ghost type, and if a
     primitive operation of the tagged type overrides an inherited operation,
     then the corresponding operation of the ancestor type shall be
     a disabled ghost subprogram if and only if the overriding subprogram
     is a disabled ghost subprogram.
 
 
-18. If the Ghost assertion policy in effect at the point of an
+20. If the Ghost assertion policy in effect at the point of an
     a reference to a Ghost entity which occurs within an assertion expression
     is Ignore, then the assertion policy which governs the assertion
     expression (e.g., Pre for a precondition expression, Assert for the
     argument of an Assert pragma) shall [also] be Ignore.
 
 
-19. A ghost type shall not have a task or protected part.
+21. A ghost type shall not have a task or protected part.
     A ghost object shall not be of a type which yields synchronized objects
     (see section :ref:`Tasks and Synchronization`).
     A ghost object shall not have a volatile part.
@@ -1945,10 +1972,10 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    Verification Rules
 
 
-20. A ghost procedure shall not have a non-ghost [global] output.
+22. A ghost procedure shall not have a non-ghost [global] output.
 
 
-21. An output of a non-ghost subprogram other than a state abstraction
+23. An output of a non-ghost subprogram other than a state abstraction
     or a ghost global shall not depend on a ghost input. [It is intended
     that this follows as a consequence of other rules. Although a
     non-ghost state abstraction output which depends on a ghost input may
@@ -1956,7 +1983,7 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     constituent from depending on the ghost input.]
 
 
-22. A global input of a ghost procedure shall not be effectively volatile for reading.
+24. A global input of a ghost procedure shall not be effectively volatile for reading.
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost nonvolatile
     functions with respect to reading volatile objects.]
@@ -1965,7 +1992,7 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     subject to effectively the same restrictions as a ghost procedure.]
 
 
-23. If the Ghost assertion policy in effect at the point of the declaration
+25. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedure
     for which that variable or state abstraction is a global output shall
@@ -2096,10 +2123,11 @@ The prefix of an Initialized attribute reference shall denote an object.
 
       X'Initialized
 
-   X'Initialized is True if and only if every scalar reachable element of X
+   X'Initialized is True if and only if every scalar reachable part
+   (see :ref:`Access Types`) of X
    has been initialized. [It typicallly follows as a consequence of this
    definition and the other rules of |SPARK| that if X'Initialized is True,
-   then for every reachable element Y of X (scalar or not), Y belongs to its
+   then for every reachable part Y of X (scalar or not), Y belongs to its
    subtype. There are pathological counterexamples, such as a componentless
    record declared with "Dynamic_Predicate => False".] An Initialized attribute
    reference is never a static expression.
@@ -2173,9 +2201,10 @@ The prefix of an Initialized attribute reference shall denote an object.
     This includes the case where X is a subcomponent of a composite object
     that is passed as an argument in a call to a predefined relational
     operator (e.g., "=" or "<"). Such a verification condition is also
-    introduced in the case where X is a reachable element of the [source]
+    introduced in the case where X is a reachable part
+    (see :ref:`Access Types`) of the [source]
     expression of an assignment operation and the target of the assignment
-    does not have relaxed initialization, where X is a reachable element of
+    does not have relaxed initialization, where X is a reachable part of
     an actual parameter in a call where the corresponding formal parameter is
     of mode **in** or **in out** and does not have relaxed initialization,
     upon a call whose precondition implies X'Initialized, and upon return
@@ -2206,7 +2235,8 @@ The prefix of an Initialized attribute reference shall denote an object.
     initialized whenever it is read.]
 
 13. For any object X, evaluation of X'Initialized includes the evaluation
-    of Y'Initialized for every scalar reachable element Y of X (excluding
+    of Y'Initialized for every scalar reachable part
+    (see :ref:`Access Types`) Y of X (excluding
     "hidden" components of tagged objects - see :ref:`Type Invariants`).
     Evaluation of X'Initialized for a scalar object X is considered to be a
     read of X if and only if X does not have relaxed initialization. If X has

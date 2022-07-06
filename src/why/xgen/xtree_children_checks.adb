@@ -240,6 +240,8 @@ package body Xtree_Children_Checks is
       Kind : constant Why_Node_Kind :=
                Why_Node_Kind'Value (Prefix);
 
+      Field_Printed : Boolean;
+
       procedure Print_Field_Check (Position : Cursor);
 
       -----------------------
@@ -248,27 +250,28 @@ package body Xtree_Children_Checks is
 
       procedure Print_Field_Check (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
+         Has_Previous_Field : constant Boolean :=
+           Has_Element (Previous (Position));
       begin
-         if Previous (Position) /= No_Element then
+         if Has_Previous_Field then
             Relative_Indent (O, 2);
          end if;
 
          if Is_Why_Id (FI) then
+            if Field_Printed then
+               NL (O);
+               PL (O, "and then");
+            end if;
+
             PL (O, Cache_Check (Multiplicity (FI)));
             P (O, "  (Get_Node"
                & " (" & Node_Id_Param & ")"
                & "."  & Field_Name (FI) & ")");
-         else
-            P (O, "True");
+            Field_Printed := True;
          end if;
 
-         if Previous (Position) /= No_Element then
+         if Has_Previous_Field then
             Relative_Indent (O, -2);
-         end if;
-
-         if Next (Position) /= No_Element then
-            NL (O);
-            PL (O, "and then");
          end if;
       end Print_Field_Check;
 
@@ -276,7 +279,11 @@ package body Xtree_Children_Checks is
       P (O, "(");
 
       if Has_Variant_Part (Kind) then
+         Field_Printed := False;
          Why_Tree_Info (Kind).Fields.Iterate (Print_Field_Check'Access);
+         if not Field_Printed then
+            P (O, "True");
+         end if;
       else
          P (O, "True");
       end if;

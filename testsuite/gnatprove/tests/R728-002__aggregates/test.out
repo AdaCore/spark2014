@@ -11,7 +11,7 @@ pragmarc-b_strings.adb:44:10: medium: exception might be raised
 pragmarc-b_strings.adb:50:19: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:50:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:50:26: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
-pragmarc-b_strings.adb:50:43: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+pragmarc-b_strings.adb:50:43: info: overflow check proved (CVC5: 2 VC)
 pragmarc-b_strings.adb:50:52: medium: overflow check might fail, cannot prove upper bound for From.Len - To.Len + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 pragmarc-b_strings.adb:57:16: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:57:23: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

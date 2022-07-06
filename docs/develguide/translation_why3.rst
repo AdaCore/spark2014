@@ -1590,12 +1590,36 @@ well as a way to store an unknown number of unknown components which
 may arise from future derivations.
 
 The tag is represented by an additional top-level field of
-mathematical integer type named attr__tag. The concrete value of this
-field is never specified. However, each time a record type is
-introduced, an abstract logic constant is introduced to represent the
-specific tag of objects of this type. This allows to specify the value
-of the tag of an object when it is known, so that the object can be
-handled more precisely.
+mathematical integer type named attr__tag. Each time a record type is
+introduced, a logic constant of type ``int`` is introduced to represent
+the specific tag of objects of this type. A fresh integer value is
+given for this constant on each derived type so it can be deduced that
+different types have different tags. These constants are used to
+specify the value of the tag of an object when it is known, so that the
+object can be handled more precisely.
+
+The notion of derivation class is represented through an abstract
+``__compatible_tags`` predicate symbol. It is declared in the
+``Compatible_Tags`` module of ``_gnatprove_standard``:
+
+.. code-block:: whyml
+
+   module Compatible_Tags
+     (* A predicate to check compatibility between tags:
+        __compatible_tags tag1 tag2 means objects of type T1'Class also
+       have type T2'Class. *)
+
+      val predicate __compatible_tags (from_tag : int) (to_tag : int)
+   end
+
+This module also contains axioms which give useful properties of the
+derivation classes (``__compatible_tags`` is reflexive and transitive
+etc.). In addition to this general module, a specific
+``Compatible_Tags`` module is generated for the root of each
+tagged derivation tree. It contains axioms giving the value of the
+``__compatible_tags`` predicate on each specific tag in the derivation
+tree which is visible from the current unit (see
+``Why.Gen.Records.Create_Compatible_Tags_Theory``).
 
 In addition to the attr__tag top-level field, tagged types also have a
 special regular field named rec__ext__ of the abstract __private type.

@@ -1,8 +1,8 @@
 foo.adb:8:14: info: add a contract to analyze it separately from calling contexts
 foo.adb:8:14: info: local subprogram "Gen_1" only analyzed in the context of calls
-foo.adb:11:12: high: "A" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:64
-foo.adb:11:12: high: "A" must be listed in the Global aspect of "Verify_Gen_1_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:28
-foo.adb:11:12: high: "A" must be listed in the Global aspect of "Verify_Gen_2_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:37, in call inlined at foo.adb:54
+foo.adb:11:12: high: "A" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(15)), in call inlined at foo.adb:64
+foo.adb:11:12: high: "A" must be listed in the Global aspect of "Verify_Gen_1_2" (SPARK RM 6.1.4(15)), in call inlined at foo.adb:28
+foo.adb:11:12: high: "A" must be listed in the Global aspect of "Verify_Gen_2_2" (SPARK RM 6.1.4(15)), in call inlined at foo.adb:37, in call inlined at foo.adb:54
 foo.adb:11:14: medium: overflow check might fail, cannot prove lower bound for A + 1, in call inlined at foo.adb:28 [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:11:14: medium: overflow check might fail, cannot prove lower bound for A + 1, in call inlined at foo.adb:37, in call inlined at foo.adb:54 [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:11:14: medium: overflow check might fail, cannot prove lower bound for A + 1, in call inlined at foo.adb:64 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -16,8 +16,8 @@ foo.adb:42:09: info: data dependencies proved
 foo.adb:43:09: info: flow dependencies proved
 foo.adb:68:14: info: add a contract to analyze it separately from calling contexts
 foo.adb:68:14: info: local subprogram "Gen_3" only analyzed in the context of calls
-foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_3_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:88
-foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:97, in call inlined at foo.adb:114
+foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_3_2" (SPARK RM 6.1.4(15)), in call inlined at foo.adb:88
+foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPARK RM 6.1.4(15)), in call inlined at foo.adb:97, in call inlined at foo.adb:114
 foo.adb:76:09: info: data dependencies proved
 foo.adb:77:09: info: flow dependencies proved
 foo.adb:94:14: info: add a contract to analyze it separately from calling contexts

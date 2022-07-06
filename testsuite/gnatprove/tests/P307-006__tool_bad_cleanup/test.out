@@ -1,1 +1,1 @@
-bar.adb:9:10: high: "G" must be listed in the Global aspect of "Test_01" (SPARK RM 6.1.4(14))
+bar.adb:9:10: high: "G" must be listed in the Global aspect of "Test_01" (SPARK RM 6.1.4(15))

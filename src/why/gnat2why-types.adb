@@ -996,7 +996,16 @@ package body Gnat2Why.Types is
 
             Add_With_Clause (Th, Rep_Module, EW_Export);
          end;
+
       elsif Is_Tagged_Type (E) then
+
+         --  If E is a root of a tagged hierarchy, generate axioms for the
+         --  compatibility of the concrete tags of its visible descendants.
+
+         if E = Root_Retysp (E) and then not Is_Concurrent_Type (E) then
+            Create_Compatible_Tags_Theory (E);
+         end if;
+
          Complete_Tagged_Record_Type (Th, E);
       end if;
 
@@ -1168,7 +1177,8 @@ package body Gnat2Why.Types is
          --  Classwide types are a special case as they are clones of their
          --  specific types but do not have the same short name.
 
-         if (not (Has_Record_Type (E) or else Has_Private_Type (E))
+         if (not (Has_Record_Type (E)
+                  or else Has_Incomplete_Or_Private_Type (E))
              or else not Record_Type_Is_Clone (Retysp (E))
              or else Short_Name (Retysp (E)) /=
                Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
@@ -1219,7 +1229,7 @@ package body Gnat2Why.Types is
                Add_Use_For_Entity (Th, Specific_Tagged (E),
                                    EW_Export, With_Completion => False);
 
-            when Private_Kind =>
+            when Incomplete_Or_Private_Kind =>
                pragma Assert (Full_View_Not_In_SPARK (E));
                Declare_Ada_Record (Th, E);
 
@@ -1248,8 +1258,10 @@ package body Gnat2Why.Types is
       else
          if Has_Array_Type (E) then
             Create_Rep_Array_Theory_If_Needed (E);
-         elsif Retysp_Kind (E) in
-           Private_Kind | E_Record_Type | E_Record_Subtype | Concurrent_Kind
+         elsif Retysp_Kind (E) in Incomplete_Or_Private_Kind
+                                | E_Record_Type
+                                | E_Record_Subtype
+                                | Concurrent_Kind
          then
             Create_Rep_Record_Theory_If_Needed (Retysp (E));
          elsif Is_Access_Subprogram_Type (Retysp (E)) then
@@ -1279,7 +1291,7 @@ package body Gnat2Why.Types is
          --  Cloned subtypes are a special case, they do not need such a
          --  definition.
 
-         if (Has_Record_Type (E) or else Has_Private_Type (E))
+         if (Has_Record_Type (E) or else Has_Incomplete_Or_Private_Type (E))
              and then not Record_Type_Is_Clone (Retysp (E))
          then
             Emit

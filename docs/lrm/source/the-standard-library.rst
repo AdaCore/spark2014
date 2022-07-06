@@ -551,8 +551,7 @@ Real-Time Systems (Annex D)
 ---------------------------
 
 |SPARK| supports the parts of the real-time systems annex that comply with the
-Ravenscar profile (see Ada RM D.13) or the Extended Ravenscar profile
-(see docs.adacore.com/gnathie_ug-docs/html/gnathie_ug/gnathie_ug/the_predefined_profiles.html#the-extended-ravenscar-profiles). See section
+Ravenscar or Jorvik profiles (see Ada RM D.13). See section
 :ref:`Tasks and Synchronization`.
 
 Distributed Systems (Annex E)

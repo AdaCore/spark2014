@@ -16,7 +16,7 @@ use_private_attributes.adb:24:07: info: initialization of "F" proved
 use_private_attributes.adb:26:07: info: initialization of "P" proved
 use_private_attributes.adb:32:22: medium: assertion might fail
 use_private_attributes.adb:33:22: medium: assertion might fail
-use_private_attributes.adb:34:22: medium: assertion might fail
+use_private_attributes.adb:34:22: info: assertion proved (CVC5: 1 VC)
 use_private_attributes.adb:35:22: info: assertion proved (CVC5: 1 VC)
 use_private_attributes.adb:36:22: info: assertion proved (CVC5: 1 VC)
 use_private_attributes.ads:5:32: warning: "U" is not modified, could be IN

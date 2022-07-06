@@ -1,2 +1,2 @@
-fake_input.adb:5:45: medium: "S" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+fake_input.adb:5:45: medium: "S" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 fake_input.adb:7:22: info: assertion proved (CVC5: 1 VC)

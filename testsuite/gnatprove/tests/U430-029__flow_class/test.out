@@ -1,2 +1,2 @@
-test.adb:9:04: high: "X" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(14))
+test.adb:9:04: high: "X" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(15))
 test.adb:12:12: info: tag check proved (CVC5: 1 VC)

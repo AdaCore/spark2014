@@ -1,9 +1,9 @@
-norm-reals-errors.adb:11:14: medium: postcondition might fail (e.g. when X = 1.0000029E+0 and Y = 1.0000029E+0)
+norm-reals-errors.adb:11:14: medium: postcondition might fail (e.g. when X = 1.0000031E+0 and Y = 1.0000031E+0)
 norm-reals-errors.adb:11:34: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:12:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:13:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:14:22: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:17:14: medium: postcondition might fail (e.g. when X = -1.0000021E+0 and Y = -1.0000021E+0)
+norm-reals-errors.adb:17:14: medium: postcondition might fail (e.g. when X = -1.0000027E+0 and Y = -1.0000027E+0)
 norm-reals-errors.adb:17:34: info: float overflow check proved (Trivial)
 norm-reals-errors.adb:18:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:19:22: info: predicate check proved (Trivial: 1 VC)
@@ -70,7 +70,7 @@ norm-reals-errors.adb:103:39: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:103:48: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:117:27: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:117:32: info: float overflow check proved (CVC5: 1 VC)
-norm-reals-errors.adb:118:33: info: float overflow check proved (colibri: 1 VC)
+norm-reals-errors.adb:118:33: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:118:38: info: float overflow check proved (colibri: 1 VC)
 norm-reals-errors.adb:119:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:119:39: info: predicate check proved (Trivial: 1 VC)
@@ -88,11 +88,11 @@ norm-reals-errors.adb:143:39: info: range check proved (CVC5: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:146:60: info: float overflow check proved (Z3: 1 VC)
 norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when I = 2 and Values = (2 => -3.0492237E-4, others => 1.6187048E+0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:155:22: info: range check proved (CVC5: 1 VC)
-norm-reals-errors.adb:159:10: medium: precondition might fail, cannot prove Sum_F = V ** 2 + Pre_F [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:159:10: info: precondition proved (CVC5: 3 VC)
 norm-reals-errors.adb:160:22: info: range check proved (colibri: 1 VC)
 norm-reals-errors.adb:161:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:184:22: info: predicate check proved (Trivial: 1 VC)
@@ -127,11 +127,11 @@ norm-reals-errors.adb:200:64: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:17: info: postcondition proved (altergo: 1 VC)
 norm-reals-errors.adb:201:42: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:52: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F (e.g. when Values = (others => 1.6180340E+0))
+norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F (e.g. when Values = (others => 1.6180341E+0))
 norm-reals-errors.adb:210:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:211:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC5: 1 VC)
-norm-reals-errors.adb:213:07: info: precondition proved (CVC5: 4 VC; colibri: 1 VC)
+norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:215:20: info: precondition proved (colibri: 1 VC)
 norm-reals-errors.adb:215:20: info: predicate check proved (Trivial: 1 VC)
@@ -158,14 +158,14 @@ norm-reals.ads:24:32: info: index check proved (CVC5: 2 VC)
 norm-reals.ads:24:59: info: index check proved (CVC5: 2 VC)
 norm-reals.ads:27:07: info: precondition proved (CVC5: 1 VC)
 norm-reals.ads:27:07: info: predicate check proved (Trivial: 1 VC)
-norm.adb:16:23: info: float overflow check proved (Z3: 1 VC)
+norm.adb:16:23: info: float overflow check proved (CVC5: 1 VC)
 norm.adb:19:17: info: postcondition proved (Z3: 1 VC; colibri: 1 VC)
 norm.adb:19:22: info: float overflow check proved (CVC5: 1 VC)
-norm.adb:19:27: info: float overflow check proved (colibri: 1 VC)
+norm.adb:19:27: info: float overflow check proved (Z3: 1 VC)
 norm.adb:19:49: info: float overflow check proved (CVC5: 1 VC)
-norm.adb:19:54: info: float overflow check proved (colibri: 1 VC)
-norm.adb:26:10: info: precondition proved (CVC5: 1 VC; Z3: 1 VC; altergo: 5 VC)
-norm.adb:27:10: info: precondition proved (CVC5: 2 VC; Z3: 3 VC; altergo: 2 VC)
+norm.adb:19:54: info: float overflow check proved (Z3: 1 VC)
+norm.adb:26:10: info: precondition proved (CVC5: 7 VC)
+norm.adb:27:10: info: precondition proved (CVC5: 2 VC; Z3: 1 VC; altergo: 4 VC)
 norm.adb:28:10: info: precondition proved (CVC5: 1 VC; Z3: 3 VC; altergo: 2 VC; colibri: 1 VC)
 norm.adb:28:39: info: float overflow check proved (Z3: 1 VC)
 norm.adb:28:50: info: float overflow check proved (Z3: 1 VC)
@@ -213,14 +213,14 @@ norm.adb:64:65: info: float overflow check proved (colibri: 1 VC)
 norm.adb:69:34: info: precondition proved (CVC5: 1 VC)
 norm.adb:71:16: info: precondition proved (CVC5: 2 VC)
 norm.adb:74:16: info: precondition proved (CVC5: 2 VC)
-norm.adb:75:14: info: range check proved (CVC5: 1 VC)
+norm.adb:75:14: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
 norm.ads:27:13: info: function contract might not be available on recursive calls
-norm.ads:32:14: info: postcondition proved (Z3: 1 VC; altergo: 1 VC; colibri: 1 VC)
+norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; colibri: 2 VC)
 norm.ads:34:16: info: subprogram variant proved (CVC5: 1 VC)
 norm.ads:34:46: info: range check proved (CVC5: 2 VC)
-norm.ads:34:51: info: float overflow check proved (altergo: 1 VC)
+norm.ads:34:51: info: float overflow check proved (CVC5: 1 VC)
 norm.ads:34:61: info: index check proved (CVC5: 4 VC)
 norm.ads:34:64: info: float overflow check proved (CVC5: 1 VC)
 norm.ads:36:34: info: float overflow check proved (Trivial)
@@ -249,8 +249,8 @@ spark-floating_point_arithmetic_lemmas.ads:236:13: info: subprogram "Is_Integer_
 spark-floating_point_arithmetic_lemmas.ads:236:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:240:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:240:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
-spark-floating_point_arithmetic_lemmas.ads:240:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:240:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
+spark-floating_point_arithmetic_lemmas.ads:240:33: info: range check proved (CVC5: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38

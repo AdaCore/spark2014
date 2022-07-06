@@ -408,7 +408,7 @@ package Gnat2Why.Util is
    function Is_Record_Type_In_Why (E : Entity_Id) return Boolean is
      (Is_Type (E)
       and then Retysp_Kind (E) in
-          Record_Kind | Private_Kind | Concurrent_Kind);
+          Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind);
 
    function Count_Why_Regular_Fields (E : Type_Kind_Id) return Natural with
      Pre => Is_Record_Type_In_Why (E);
@@ -438,7 +438,7 @@ package Gnat2Why.Util is
 
    function Is_Simple_Private_Type (E : Type_Kind_Id) return Boolean with
      Post => Is_Simple_Private_Type'Result =
-       (Has_Private_Type (E)
+       (Has_Incomplete_Or_Private_Type (E)
         and then Count_Why_Top_Level_Fields (Retysp (E)) = 1
         and then Count_Why_Regular_Fields (Retysp (E)) = 1
         and then Is_Type (Get_Component_Set (E).First_Element));

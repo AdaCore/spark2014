@@ -937,6 +937,8 @@ package body Gnat2Why.Error_Messages is
                      return Not_Proved_Message (Node, VC_Index_Check);
                   when CE_Divide_By_Zero =>
                      return Not_Proved_Message (Node, VC_Division_Check);
+                  when CE_Access_Check_Failed =>
+                     return Not_Proved_Message (Node, VC_Null_Exclusion);
                   when SE_Infinite_Recursion =>
 
                      --  ??? This message should be reflected in the "Messages

@@ -1206,7 +1206,7 @@ package body Gnat2Why.Util is
    function Is_Simple_Private_Type (E : Type_Kind_Id) return Boolean is
       Ty : constant Type_Kind_Id := Retysp (E);
    begin
-      return Is_Private_Type (Ty)
+      return Is_Incomplete_Or_Private_Type (Ty)
         and then Count_Discriminants (Ty) = 0
         and then not Is_Tagged_Type (Ty);
    end Is_Simple_Private_Type;
@@ -1467,7 +1467,7 @@ package body Gnat2Why.Util is
         --  SPARK.
 
         and then
-          (not Is_Private_Type (E)
+          (not Is_Incomplete_Or_Private_Type (E)
            or else
            Nkind (Enclosing_Declaration (E)) not in
              N_Private_Type_Declaration | N_Private_Extension_Declaration)
@@ -1653,7 +1653,7 @@ package body Gnat2Why.Util is
               Type_Needs_Dynamic_Invariant (Component_Type (Ty_Ext), False);
 
          elsif Is_Record_Type (Ty_Ext)
-           or else Is_Private_Type (Ty_Ext)
+           or else Is_Incomplete_Or_Private_Type (Ty_Ext)
            or else Is_Concurrent_Type (Ty_Ext)
          then
             if Count_Discriminants (Ty_Ext) > 0 then

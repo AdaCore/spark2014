@@ -784,7 +784,7 @@ capable of synthesizing at least a basic, conservative :ref:`Global Aspects`,
 :ref:`Depends Aspects`, :ref:`Refined_Global Aspects`,
 :ref:`Refined_Depends Aspects`, :ref:`Abstract_State Aspects`,
 :ref:`Refined_State Aspects`, :ref:`Initializes Aspects` and
-:ref:`Default_Initial_Condition Aspects` from either the
+:ref:`Default Initial Conditions` from either the
 implementation code or from other |SPARK| aspects as follows:
 
   * if a subprogram has no Depends aspect but has a Global aspect, an

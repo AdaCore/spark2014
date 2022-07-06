@@ -121,7 +121,7 @@ package body Templates is
                   Indent   : constant Natural :=
                                Matches (1).Last - Matches (1).First + 1;
                begin
-                  if Position = No_Element then
+                  if not Has_Element (Position) then
                      Put_Line ("warning: pattern " & Key & " not found");
                   else
                      declare

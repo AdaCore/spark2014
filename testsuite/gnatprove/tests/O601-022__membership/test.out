@@ -25,11 +25,11 @@ membership_discr.adb:17:14: warning: subprogram "Bad_2" has no effect
 membership_discr.adb:20:22: info: assertion proved (CVC5: 2 VC)
 membership_discr.adb:21:22: medium: assertion might fail
 membership_discr.adb:24:14: warning: subprogram "Bad_3" has no effect
-membership_discr.adb:27:22: medium: assertion might fail
+membership_discr.adb:27:22: info: assertion proved (CVC5: 1 VC)
 membership_discr.adb:28:22: medium: assertion might fail
 membership_discr.adb:31:16: info: range check proved (CVC5: 2 VC)
 membership_discr.adb:32:17: info: range check proved (CVC5: 2 VC)
-membership_discr.adb:37:19: medium: assertion might fail
-membership_discr.adb:38:19: medium: assertion might fail
-membership_discr.adb:39:19: medium: assertion might fail
-membership_discr.adb:40:19: medium: assertion might fail
+membership_discr.adb:37:19: info: assertion proved (CVC5: 1 VC)
+membership_discr.adb:38:19: info: assertion proved (CVC5: 2 VC)
+membership_discr.adb:39:19: info: assertion proved (CVC5: 1 VC)
+membership_discr.adb:40:19: info: assertion proved (CVC5: 2 VC)

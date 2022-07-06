@@ -82,7 +82,7 @@ procedure Table_Generator is
       Put_Line (File, "The following table shows all flow analysis " &
                   "messages, (E)rrors, (W)arnings and (C)hecks.");
       New_Line (File);
-      Put_Line (File, ".. tabularcolumns:: |p{3in}|l|l|p{3in}|");
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|l|l|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
       Put_Line (File, "   :header: ""Message Kind"", ""Class"", ""CWE"", " &
@@ -139,7 +139,7 @@ procedure Table_Generator is
       Put_Line (File, "Messages reported by Proof");
       Put_Line (File, "--------------------------");
       New_Line (File);
-      Put_Line (File, ".. tabularcolumns:: |l|l|p{3in}|");
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|l|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
       Put_Line (File, "   :header: ""Message Kind"", ""CWE"", " &

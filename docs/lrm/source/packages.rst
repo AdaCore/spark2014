@@ -7,7 +7,8 @@ Packages
 
 
 1. The elaboration of a package shall not update, directly or
-   indirectly, a reachable element of a variable that is not declared
+   indirectly, a reachable part (see :ref:`Access Types`) of a
+   variable that is not declared
    immediately within the package. [Roughly speaking, this means that
    the outputs of the notional spec and body elaboration subprograms
    shall all be objects declared immediately within the package.]
@@ -116,19 +117,21 @@ whether a read or write is always significant.
 
 A type is said to be *effectively volatile* if it is either a volatile type, an
 array type whose Volatile_Components aspect is True, an array type whose
-component type is effectively volatile, a protected type, or a descendant of
+component type is effectively volatile, a record type for which all components
+have an effectively volatile type, a protected type, or a descendant of
 the type Ada.Synchronous_Task_Control.Suspension_Object.
 
 .. index:: effectively volatile for reading; type
 
-A type is said to be *effectively volatile for reading* if it is either a
-volatile type with the properties Async_Writers or Effective_Reads set to True
-(as described below), an array type whose Volatile_Components aspect is True
-unless the array type has the properties Async_Writers and Effective_Reads set
-to False (as described below), an array type whose component type is
-effectively volatile for reading, a protected type, or a descendant of the type
-Ada.Synchronous_Task_Control.Suspension_Object. [An effectively volatile type
-for reading is also an effectively volatile type.]
+An *effectively volatile* type is said to be *effectively volatile for reading*
+if it is either a volatile type with the properties Async_Writers or
+Effective_Reads set to True (as described below), an array type whose
+Volatile_Components aspect is True unless the array type has the properties
+Async_Writers and Effective_Reads set to False (as described below), an array
+type whose component type is effectively volatile for reading, a record type
+for which at least one component has an effectively volatile type for reading,
+a protected type, or a descendant of the type
+Ada.Synchronous_Task_Control.Suspension_Object.
 
 A nonvolatile protected type is said to be *nonvolatile during a protected
 action* if none of its subcomponent types are effectively volatile. [In other
@@ -401,11 +404,10 @@ there is no notion of inheritance in that case.]
 The value of a given volatility refinement aspect of an effectively
 volatile object is determined as follows:
 
-  * if the object is a reachable element of a stand-alone object or
+  * if the object is a reachable part (see :ref:`Access Types`) of a
+    stand-alone object or
     of a formal parameter but is not itself such an object, then it is
-    the value of the given aspect of that enclosing or owning object
-    (see section :ref:`Subprogram Declarations` for definitions of
-    "reachable element" and "owning object").
+    the value of the given aspect of that object.
 
   * otherwise, if the object is declared by an object declaration and the
     given aspect is explicitly specified for the object declaration then
@@ -1190,12 +1192,17 @@ where
     a synchronized state abstraction, or an external state abstraction.
 
 
+14. Each ``constituent`` of a state abstraction shall be declared before the
+    first subprogram, package, task, or protected body, or
+    expression_function_declaration, in the same ``declarative_part``.
+
+
 .. container:: heading
 
    Static Semantics
 
 
-14. A Refined_State aspect of a ``package_body`` completes the
+15. A Refined_State aspect of a ``package_body`` completes the
     declaration of the state abstractions occurring in the
     corresponding ``package_specification`` and defines the objects
     and each subordinate state abstraction that are the
@@ -1203,7 +1210,7 @@ where
     the ``package_specification``.
 
 
-15. A **null** ``constituent_list`` indicates that the named abstract
+16. A **null** ``constituent_list`` indicates that the named abstract
     state has no constituents and termed a *null_refinement*. The
     state abstraction does not represent any actual state at
     all. [This feature may be useful to minimize changes to Global and
@@ -1222,11 +1229,11 @@ There are no dynamic semantics associated with Refined_State aspect.
    Verification Rules
 
 
-16. Each ``constituent`` that is a constant shall be a constant *with
+17. Each ``constituent`` that is a constant shall be a constant *with
     variable inputs*.
 
 
-17. If the Async_Writers aspect of a state abstraction is True and the
+18. If the Async_Writers aspect of a state abstraction is True and the
     Async_Writers aspect of a constituent of that state abstraction is
     False, then after the elaboration of the (possibly implicit) body
     of the package which declares the abstraction, the constituent
@@ -2147,15 +2154,13 @@ otherwise arise in the treatment of these hidden components.
 
 .. index:: Default_Initial_Condition
 
-Default_Initial_Condition Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Default Initial Conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Default_Initial_Condition aspect is introduced by an aspect_specification
-where the aspect_mark is Default_Initial_Condition. The aspect may be
-specified only as part of the aspect_specification of a
-``private_type_declaration``.
-The ``aspect_definition``, if any, of such an aspect specification
-shall be either a null literal or a *Boolean_*\ ``expression``.
+The Default_Initial_Condition aspect may be specified only as part of the
+aspect_specification of a ``private_type_declaration``.  The
+``aspect_definition``, if any, of such an aspect specification shall be either
+a null literal or a *Boolean_*\ ``expression``.
 
 The ``aspect_definition`` may be omitted; this is semantically
 equivalent to specifying a static *Boolean_*\ ``expression`` having the
@@ -2164,44 +2169,12 @@ value True.
 An aspect specification of "null" indicates that the partial view of the
 type does not define full default initialization (see :ref:`Declarations`).
 [The full view of the type might or might not define full default
-initialization.]
+initialization.] This case has no associated dynamic semantics.
 
 Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
 that, in the partial view of the type, every part whose type is not
 annotated with the Relaxed_Initialization aspect defines full default
-initialization.
-
-Unlike the null literal case, this case has associated dynamic semantics.
-The *Boolean_*\ ``expression`` (which might typically mention the current
-instance of the type, although this is not required) is an assertion
-which is checked (at run time) after any object of the given type (or of
-any descendant of the given type for which the specified aspect is
-inherited and not overridden), is "initialized by
-default" (see Ada RM 3.3.1). [Note that an imported object is not
-"initialized by default" (see Ada RM B.3).]
-
-The *Boolean_*\ ``expression``, if any, causes freezing in the
-same way as the ``default_expression`` of a ``component_declaration``.
-[If the expresion is non-static, this means that the expression does not
-cause freezing where it occurs, but instead when an object of the type
-is initialized by default.]
-
-Default_Initial_Condition assertion is an assertion aspect, which means
-that it may be used in an Assertion_Policy pragma.
-
-Within the Boolean expression of the Default_Initial_Condition aspect of
-a tagged type T, a name that denotes the current instance of the
-tagged type is interpreted as though it had a (notional) type NT
-that is a formal derived type whose ancestor type is T, with
-directly visible primitive operations. [This name resolution rule
-is similar to the "notional formal derived type" name resolution
-rule introduced in Ada RM 6.1.1 for certain subexpressions of
-class-wide precondition and postcondition expressions.]
-Any operations within a Default_Initial_Condition expression that
-were resolved in this way (i.e., as primitive operations of the (notional)
-formal derived type NT), are in the evaluation of the expression
-(i.e., at run-time) bound to the corresponding operations of the type of the
-object being "initialized by default" (see Ada RM 3.3.1).
+initialization. This case also has dynamic semantics.
 
 Deferred Constants
 ------------------

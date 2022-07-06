@@ -38,7 +38,7 @@
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <proof prover="1" timelimit="5"><result status="unknown" steps="24417"/></proof>
-  <proof prover="2"><result status="unknown" steps="27989710"/></proof>
+  <proof prover="2"><result status="unknown" steps="27989428"/></proof>
   <proof prover="3"><result status="valid" steps="21575"/></proof>
   </goal>
  </transf>

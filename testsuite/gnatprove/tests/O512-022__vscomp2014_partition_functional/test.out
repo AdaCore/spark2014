@@ -220,7 +220,7 @@ partition_refinement.adb:197:39: info: range check proved (CVC5: 2 VC)
 partition_refinement.adb:197:90: medium: assertion might fail, cannot prove K in Element (P, F(K)).First .. Element (P, F(K)).Last
 partition_refinement.adb:197:95: medium: precondition might fail
 partition_refinement.adb:197:109: info: index check proved (CVC5: 2 VC)
-partition_refinement.adb:197:122: medium: precondition might fail
+partition_refinement.adb:197:122: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:197:136: info: index check proved (CVC5: 2 VC)
 partition_refinement.adb:199:67: medium: range check might fail
 partition_refinement.adb:199:84: medium: precondition might fail

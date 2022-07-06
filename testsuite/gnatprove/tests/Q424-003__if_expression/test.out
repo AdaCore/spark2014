@@ -23,7 +23,7 @@ string_utilities.adb:41:53: medium: "Lengths" might not be initialized
 string_utilities.adb:41:72: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:41:72: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:47:10: medium: "Lengths" might not be initialized
-string_utilities.adb:47:33: medium: range check might fail, cannot prove lower bound for S2'Last [reason for check: input value must fit in parameter type]
+string_utilities.adb:47:33: medium: range check might fail, cannot prove lower bound for S2'Last (e.g. when S2'Last = -1) [reason for check: input value must fit in parameter type]
 string_utilities.adb:52:48: medium: "Lengths" might not be initialized
 string_utilities.adb:52:71: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:53:10: info: range check proved (CVC5: 2 VC)

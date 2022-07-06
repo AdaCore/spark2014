@@ -10,8 +10,8 @@ n02.adb:27:47: error: part of dereference from "X" is not readable
 n04.adb:18:18: high: "var1" is not initialized
 n04.adb:20:13: error: object was moved at line 28
 n04.adb:20:13: error: return from "Z_In" with moved value for "YY"
-n04.adb:24:12: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(17))
-n04.adb:28:07: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(17))
+n04.adb:24:12: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(18))
+n04.adb:28:07: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(18))
 n04.adb:36:03: info: initialization of "X" proved
 n04.adb:37:03: info: initialization of "Y" proved
 n04.adb:40:08: high: "var0" is not initialized

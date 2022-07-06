@@ -1,0 +1,26 @@
+hole.adb:18:07: error: borrower "Y" exits its scope with moved value
+hole.adb:18:07: error: object was moved at line 19
+top.adb:2:11: warning: subprogram "Top" has no effect
+top.adb:9:04: info: initialization of "V" proved
+top.adb:10:04: error: borrower "W" exits its scope with moved value
+top.adb:10:04: error: object was moved at line 11
+top.adb:14:07: info: initialization of "V" proved
+top.adb:15:07: error: borrower "W" exits its scope with moved value
+top.adb:15:07: error: object was moved at line 16
+top.adb:21:07: info: initialization of "V" proved
+top.adb:25:10: warning: initialization of "U" has no effect
+top.adb:27:10: error: borrower "W" exits its scope with moved value
+top.adb:27:10: error: object was moved at line 25
+top.adb:35:13: error: borrower "W" exits its scope with moved value
+top.adb:35:13: error: object was moved at line 33
+top.adb:40:10: error: borrower "W" exits its scope with moved value
+top.adb:40:10: error: object was moved at line 41
+top.adb:44:13: error: borrower "W" exits its scope with moved value
+top.adb:44:13: error: object was moved at line 41
+top.adb:49:10: error: borrower "W" exits its scope with moved value
+top.adb:49:10: error: object was moved at line 52
+top.adb:55:16: error: borrower "W" exits its scope with moved value
+top.adb:55:16: error: object was moved at line 52
+top.adb:63:13: error: borrower "W" exits its scope with moved value
+top.adb:63:13: error: object was moved at line 11
+gnatprove: error during flow analysis and proof

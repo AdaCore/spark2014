@@ -1,2 +1,2 @@
-init.adb:5:10: high: "logger.queue" must be listed in the Global aspect of "Init" (SPARK RM 6.1.4(14))
+init.adb:5:10: high: "logger.queue" must be listed in the Global aspect of "Init" (SPARK RM 6.1.4(15))
 init.ads:2:11: info: ceiling priority protocol is respected (CVC5: 1 VC)

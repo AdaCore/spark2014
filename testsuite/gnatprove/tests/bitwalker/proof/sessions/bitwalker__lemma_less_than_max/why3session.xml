@@ -43,9 +43,9 @@
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1" timelimit="20" memlimit="2000"><result status="valid" steps="2041810"/></proof>
+  <proof prover="1" timelimit="20" memlimit="2000"><result status="valid" steps="2004823"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="5"><result status="unknown" steps="46"/></proof>
+  <proof prover="5"><result status="unknown" steps="47"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.9.0">
    <proof prover="4"><result status="timeout"/></proof>

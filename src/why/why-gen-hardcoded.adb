@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;   use Common_Containers;
 with Errout;              use Errout;
 with Namet;               use Namet;
@@ -44,8 +45,10 @@ with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
 package body Why.Gen.Hardcoded is
-   package BIN renames Big_Integers_Names; use BIN;
-   package BRN renames Big_Reals_Names;    use BRN;
+   package BIN  renames Big_Integers_Names;            use BIN;
+   package BRN  renames Big_Reals_Names;               use BRN;
+   package EFN  renames Elementary_Functions_Names;    use EFN;
+   package SSEN renames System_Storage_Elements_Names; use SSEN;
 
    function Uint_From_String (Str_Value : String) return Uint;
    --  Read an integer value from a string. Might raise Constraint_Error.
@@ -66,9 +69,12 @@ package body Why.Gen.Hardcoded is
          when Big_Integers => Alias := EW_Int_Type;
          when Big_Reals    => Alias := EW_Real_Type;
 
-         --  No types are declared in Cut_Operations
+         --  No types are declared in the following units
 
-         when Cut_Operations =>
+         when Cut_Operations
+            | System_Storage_Elements
+            | Elementary_Functions
+         =>
             raise Program_Error;
       end case;
 
@@ -118,10 +124,14 @@ package body Why.Gen.Hardcoded is
                return Real_Infix_Eq;
             end if;
 
-         --  No types are declared in Cut_Operations
+         --  No equal in the following units
 
-         when Cut_Operations =>
+         when Cut_Operations
+            | System_Storage_Elements
+            | Elementary_Functions
+         =>
             raise Program_Error;
+
       end case;
    end Hardcoded_Equality_Symbol;
 
@@ -750,6 +760,159 @@ package body Why.Gen.Hardcoded is
                   Name     => MF_Floats (Base_Why_Type (From_Ty)).To_Real,
                   Args     => (1 => Args (1)),
                   Typ      => Type_Of_Node (Etype (Subp)));
+            end if;
+         end;
+
+      elsif Is_From_Hardcoded_Unit (Subp, System_Storage_Elements) then
+         if Name_String = SSEN.To_Integer
+           or else Name_String = SSEN.To_Address
+         then
+            T := Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                           Domain   => Domain,
+                                           Expr     => Args (1),
+                                           To       =>
+                                             Type_Of_Node (Etype (Subp)));
+         else
+            declare
+               Arg_1 : constant Node_Id := First_Formal (Subp);
+               Arg_1_Ty : constant Type_Kind_Id := Retysp (Etype (Arg_1));
+               Arg_2_Ty : constant Type_Kind_Id :=
+                 Retysp (Etype (Next_Formal (Arg_1)));
+               Arg_2 : constant W_Expr_Id :=
+                 New_Temp_For_Expr (Args (Args'Last));
+            begin
+               pragma Assert (Args'Length = 2);
+               T := New_Binary_Op_Expr
+                 (Op          =>
+                    (if Name_String = SSEN.Add then N_Op_Add
+                     elsif Name_String = SSEN.Subtract then N_Op_Subtract
+                     else N_Op_Mod),
+                  Left        => Args (Args'First),
+                  Right       => Arg_2,
+                  Left_Type   => Arg_1_Ty,
+                  Right_Type  => Arg_2_Ty,
+                  Return_Type => Retysp (Etype (Subp)),
+                  Domain      => Domain,
+                  Ada_Node    => Ada_Node);
+
+               --  The mod operator has a precondition that the second argument
+               --  is positive.
+
+               if Name_String = SSEN.Modulus and then Domain = EW_Prog then
+                  declare
+                     Ty         : constant W_Type_Id :=
+                       Base_Why_Type (Arg_2_Ty);
+                     Msg        : constant Unbounded_String :=
+                       To_Unbounded_String
+                         ("modulus operation on addresses requires "
+                          & "positive modulus");
+                     Check_Info : Check_Info_Type :=
+                       New_Check_Info;
+                     Check : W_Pred_Id;
+                  begin
+                     Check_Info.Continuation.Append
+                       (Continuation_Type'(
+                        Ada_Node => Subp,
+                        Message => Msg));
+                     Check :=
+                       New_VC_Pred
+                         (Ada_Node,
+                          New_Comparison (
+                            Transform_Compare_Op (N_Op_Gt, Ty, Domain),
+                            +Arg_2,
+                            New_Integer_Constant (Value => Uint_0)),
+                          VC_Precondition,
+                          Check_Info);
+                     T :=
+                       +Sequence
+                         (New_Assert
+                            (Ada_Node    => Ada_Node,
+                             Assert_Kind => EW_Check,
+                             Pred        => Check),
+                          +T);
+                  end;
+               end if;
+               T := Binding_For_Temp (Empty, Domain, Arg_2, T);
+            end;
+         end if;
+
+      elsif Is_From_Hardcoded_Generic_Unit (Subp, Elementary_Functions) then
+         declare
+            Typ    : constant W_Type_Id := Base_Why_Type (Etype (Subp));
+            MF     : M_Floating_Type renames MF_Floats (Typ);
+            Nam    : constant String := Get_Name_String (Chars (Subp));
+            Symb   : constant W_Identifier_Id :=
+              (case Args'Length is
+                  when 1 =>
+                    (if Nam = EFN.Ada_Sqrt then MF.Ada_Sqrt
+                     elsif Nam = EFN.Log then MF.Log
+                     elsif Nam = EFN.Exp then MF.Exp
+                     elsif Nam = EFN.Sin then MF.Sin
+                     elsif Nam = EFN.Cos then MF.Cos
+                     elsif Nam = EFN.Tan then MF.Tan
+                     elsif Nam = EFN.Cot then MF.Cot
+                     elsif Nam = EFN.Arcsin then MF.Arcsin
+                     elsif Nam = EFN.Arccos then MF.Arccos
+                     elsif Nam = EFN.Sinh then MF.Sinh
+                     elsif Nam = EFN.Cosh then MF.Cosh
+                     elsif Nam = EFN.Tanh then MF.Tanh
+                     elsif Nam = EFN.Coth then MF.Coth
+                     elsif Nam = EFN.Arcsinh then MF.Arcsinh
+                     elsif Nam = EFN.Arccosh then MF.Arccosh
+                     elsif Nam = EFN.Arctanh then MF.Arctanh
+                     elsif Nam = EFN.Arccoth then MF.Arccoth
+                     else raise Program_Error),
+                  when 2 =>
+                    (if Chars (Subp) = Name_Op_Expon then MF.Ada_Power
+                     elsif Nam = EFN.Log then MF.Log_Base
+                     elsif Nam = EFN.Sin then MF.Sin_2
+                     elsif Nam = EFN.Cos then MF.Cos_2
+                     elsif Nam = EFN.Tan then MF.Tan_2
+                     elsif Nam = EFN.Cot then MF.Cot_2
+                     elsif Nam = EFN.Arcsin then MF.Arcsin_2
+                     elsif Nam = EFN.Arccos then MF.Arccos_2
+                     elsif Nam = EFN.Arctan then MF.Arctan
+                     elsif Nam = EFN.Arccot then MF.Arccot
+                     else raise Program_Error),
+                  when 3 =>
+                    (if Nam = EFN.Arctan then MF.Arctan_2
+                     elsif Nam = EFN.Arccot then MF.Arccot_2
+                     else raise Program_Error),
+                  when others =>
+                     raise Program_Error);
+            Reason : constant VC_Kind :=
+              (if Nam in EFN.Ada_Sqrt
+                       | EFN.Sin
+                       | EFN.Cos
+                       | EFN.Arcsin
+                       | EFN.Arccos
+                       | EFN.Arctan
+                       | EFN.Arccot
+                       | EFN.Arcsinh
+                       | EFN.Arccosh
+                       | EFN.Tanh
+                       | EFN.Log
+                       | EFN.Tan
+               then VC_Precondition
+               else VC_Overflow_Check);
+            --  The kind of check is imprecise here, as we cannot separate
+            --  the overflow check from the precondition on the Why3 side.
+
+         begin
+            if Domain = EW_Prog then
+               return +New_VC_Call
+                 (Ada_Node => Ada_Node,
+                  Name     => To_Program_Space (Symb),
+                  Progs    => Args,
+                  Reason   => Reason,
+                  Typ      => MF.T);
+            else
+               return New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Symb,
+                  Args     => Args,
+                  Typ      => MF.T);
             end if;
          end;
       else

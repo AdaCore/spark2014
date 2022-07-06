@@ -36,12 +36,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Ind_Prop
         (A : Array_Type;
          X : Element_Out;
-         I : Index_Type) return Boolean;
+         I : Index_Type) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F (X : Element_In; I : Element_Out) return Element_Out;
@@ -87,12 +89,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Ind_Prop
         (A : Array_Type;
          X : Element_Out;
-         I : Index_Type) return Boolean;
+         I : Index_Type) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F (X : Element_In; I : Element_Out) return Element_Out;
@@ -126,12 +130,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Ind_Prop
         (A : Array_Type;
          X : Element_Out;
-         I : Index_Type) return Boolean;
+         I : Index_Type) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F
@@ -180,12 +186,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Ind_Prop
         (A : Array_Type;
          X : Element_Out;
-         I : Index_Type) return Boolean;
+         I : Index_Type) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F
@@ -222,12 +230,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Ind_Prop
         (A : Array_Type;
          X : Element_Out;
-         I : Index_Type) return Boolean;
+         I : Index_Type) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F (X : Element_In; I : Element_Out) return Element_Out;
@@ -273,12 +283,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       with function Ind_Prop
         (A : Array_Type;
          X : Element_Out;
-         I : Index_Type) return Boolean;
+         I : Index_Type) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F (X : Element_In; I : Element_Out) return Element_Out;
@@ -439,12 +451,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
         (A : Array_Type;
          X : Element_Out;
          I : Index_1;
-         J : Index_2) return Boolean;
+         J : Index_2) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F (X : Element_In; I : Element_Out) return Element_Out;
@@ -518,12 +532,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
         (A : Array_Type;
          X : Element_Out;
          I : Index_1;
-         J : Index_2) return Boolean;
+         J : Index_2) return Boolean
+        with Ghost;
       --  Potential inductive property that should be maintained during fold
 
       with function Final_Prop
         (A : Array_Type;
-         X : Element_Out) return Boolean;
+         X : Element_Out) return Boolean
+        with Ghost;
       --  Potential inductive property at the last iteration
 
       with function F (X : Element_In; I : Element_Out) return Element_Out;

@@ -18,21 +18,21 @@
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="steplimitexceeded"/></proof>
-  <proof prover="1"><result status="unknown" steps="58709"/></proof>
-  <proof prover="2"><result status="unknown" steps="111738"/></proof>
-  <proof prover="4"><result status="unknown" steps="178"/></proof>
+  <proof prover="1"><result status="unknown" steps="58743"/></proof>
+  <proof prover="2"><result status="unknown" steps="111510"/></proof>
+  <proof prover="4"><result status="unknown" steps="204"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="1"><result status="valid" steps="94557"/></proof>
+  <proof prover="1"><result status="valid" steps="94584"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.4">
   <proof prover="0"><result status="steplimitexceeded"/></proof>
-  <proof prover="1"><result status="unknown" steps="94839"/></proof>
-  <proof prover="2"><result status="unknown" steps="545345"/></proof>
-  <proof prover="4"><result status="unknown" steps="225"/></proof>
+  <proof prover="1"><result status="unknown" steps="95540"/></proof>
+  <proof prover="2"><result status="unknown" steps="545117"/></proof>
+  <proof prover="4"><result status="unknown" steps="278"/></proof>
   </goal>
  </transf>
  </goal>

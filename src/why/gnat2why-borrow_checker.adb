@@ -677,6 +677,18 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Declaration (Decl : Node_Id);
 
+   procedure Check_End_Of_Scope (Decls : List_Id; N : Node_Id := Empty);
+   --  Check that local borrowers are in the Unrestricted state before
+   --  releasing ownership back to the borrowed object. If present, N is the
+   --  node used for error location, otherwise the error is reported on the
+   --  borrower's declaration.
+
+   procedure Check_End_Of_Scopes (From : Node_Id; Stop : Node_Id);
+   --  Check that local borrowers in all scopes between From (a return, exit or
+   --  goto statement) and Stop (an enclosing block, loop or subprogram body)
+   --  are in the Unrestricted state before releasing ownership back to the
+   --  borrowed object.
+
    procedure Check_Expression (Expr : Node_Id; Mode : Extended_Checking_Mode)
      with Pre =>
        Nkind (Expr) in N_Index_Or_Discriminant_Constraint
@@ -814,7 +826,11 @@ package body Gnat2Why.Borrow_Checker is
    --  a prefix, in the sense that they could still refer to overlapping memory
    --  locations.
 
-   function Loop_Of_Exit (N : Node_Id) return Entity_Id;
+   function Loop_Statement_Of_Exit (Stmt : Node_Id) return Node_Id;
+   --  A function that takes an exit statement node and returns the loop
+   --  statement of the loop that this statement is exiting from.
+
+   function Loop_Of_Exit (Stmt : Node_Id) return Entity_Id;
    --  A function that takes an exit statement node and returns the entity of
    --  the loop that this statement is exiting from.
 
@@ -832,6 +848,16 @@ package body Gnat2Why.Borrow_Checker is
    --  the permission that was expected, and issues an error message with the
    --  appropriate values.
 
+   procedure Perm_Error_Borrow_End
+     (E          : Entity_Id;
+      N          : Node_Id;
+      Found_Perm : Perm_Kind;
+      Expl       : Node_Id);
+   --  A procedure that is called when the permissions found contradict the
+   --  rules established by the RM at the end of a borrow. This function is
+   --  called with the borrower, the node for error location, and adds an
+   --  error message with the appropriate values.
+
    procedure Perm_Error_Subprogram_End
      (E          : Entity_Id;
       Subp       : Entity_Id;
@@ -842,15 +868,27 @@ package body Gnat2Why.Borrow_Checker is
    --  called with the node, the node of the returning function, and adds an
    --  error message with the appropriate values.
 
+   procedure Perm_Error_Reborrow
+     (E          : Entity_Id;
+      N          : Node_Id;
+      Found_Perm : Perm_Kind;
+      Expl       : Node_Id);
+   --  A procedure that is called when the permissions found contradict the
+   --  rules established by the RM at a reborrow. This function is called with
+   --  the borrower, the node for error location, and adds an error message
+   --  with the appropriate values.
+
    procedure Perm_Mismatch
-     (N              : Expr_Or_Ent;
+     (Loc            : Node_Id;
+      N              : Expr_Or_Ent;
       Exp_Perm       : Perm_Kind;
       Act_Perm       : Perm_Kind;
       Expl           : Node_Id;
       Forbidden_Perm : Boolean := False);
-   --  Issues a continuation error message about a mismatch between a
-   --  desired permission Exp_Perm and a permission obtained Act_Perm. N
-   --  is the node on which the error is reported.
+   --  Issues a continuation error message about a mismatch between a desired
+   --  permission Exp_Perm and a permission obtained Act_Perm. Loc is the node
+   --  on which the error is reported. N is the root of the path leading to the
+   --  error.
 
    procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode);
    pragma Precondition (Expr.Is_Ent or else Is_Path_Expression (Expr.Expr));
@@ -1174,7 +1212,9 @@ package body Gnat2Why.Borrow_Checker is
                   Des_Ty : Entity_Id := Directly_Designated_Type
                     (Retysp (Etype (Expr)));
                begin
-                  if Is_Incomplete_Type (Des_Ty) then
+                  if Is_Incomplete_Type (Des_Ty)
+                    and then Present (Full_View (Des_Ty))
+                  then
                      Des_Ty := Full_View (Des_Ty);
                   end if;
 
@@ -1458,6 +1498,8 @@ package body Gnat2Why.Borrow_Checker is
          Check_Node (Handled_Statement_Sequence (Body_N));
       end if;
 
+      Check_End_Of_Scope (Declarations (Body_N));
+
       --  Check the read-write permissions of borrowed parameters/globals
 
       if Ekind (Id) in E_Procedure | E_Entry
@@ -1556,6 +1598,64 @@ package body Gnat2Why.Borrow_Checker is
             raise Program_Error;
       end case;
    end Check_Declaration;
+
+   ------------------------
+   -- Check_End_Of_Scope --
+   ------------------------
+
+   procedure Check_End_Of_Scope (Decls : List_Id; N : Node_Id := Empty) is
+      Decl      : Node_Id;
+      Obj, Typ  : Entity_Id;
+   begin
+      Decl := First (Decls);
+      while Present (Decl) loop
+
+         if Nkind (Decl) = N_Object_Declaration then
+            Obj := Defining_Identifier (Decl);
+            Typ := Etype (Obj);
+
+            --  Check that local borrowers are in the Unrestricted state
+
+            if Is_Anonymous_Access_Object_Type (Typ)
+              and then not Is_Access_Constant (Typ)
+            then
+               declare
+                  E_Obj : constant Expr_Or_Ent :=
+                    (Is_Ent => True, Ent => Obj, Loc => Decl);
+                  Perm : constant Perm_Kind := Get_Perm (E_Obj);
+               begin
+                  if Perm /= Read_Write then
+                     Perm_Error_Borrow_End
+                       (E          => Obj,
+                        N          => (if Present (N) then N else Obj),
+                        Found_Perm => Perm,
+                        Expl       => Get_Expl (E_Obj));
+                  end if;
+               end;
+            end if;
+         end if;
+
+         Next (Decl);
+      end loop;
+   end Check_End_Of_Scope;
+
+   -------------------------
+   -- Check_End_Of_Scopes --
+   -------------------------
+
+   procedure Check_End_Of_Scopes (From : Node_Id; Stop : Node_Id) is
+      Cur : Node_Id := From;
+   begin
+      while Present (Cur) loop
+         if Nkind (Cur) in N_Block_Statement | N_Subprogram_Body then
+            Check_End_Of_Scope (Declarations (Cur), From);
+         end if;
+
+         exit when Cur = Stop;
+
+         Cur := Parent (Cur);
+      end loop;
+   end Check_End_Of_Scopes;
 
    ------------------
    -- Check_Entity --
@@ -2837,9 +2937,10 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Error_Msg_NE ("loop iteration terminates with moved value for &",
                        Loop_Stmt, E);
-         Perm_Mismatch (Exp_Perm => Perm,
-                        Act_Perm => Found_Perm,
+         Perm_Mismatch (Loc      => Loop_Stmt,
                         N        => Ent,
+                        Exp_Perm => Perm,
+                        Act_Perm => Found_Perm,
                         Expl     => Expl);
          Permission_Error := True;
       end Perm_Error_Loop_Exit;
@@ -3572,6 +3673,25 @@ package body Gnat2Why.Borrow_Checker is
                      Root : constant Entity_Id := Entity (Target);
                   begin
                      Check_Not_Borrowed (+Target, Root);
+
+                     --  In the case of reborrow, check that the target object
+                     --  is unrestricted (SPARK RM 6.9(7)).
+
+                     if not Is_Access_Constant (Etype (Target)) then
+                        declare
+                           E_Root : constant Expr_Or_Ent :=
+                             (Is_Ent => True, Ent => Root, Loc => Stmt);
+                           Perm : constant Perm_Kind := Get_Perm (E_Root);
+                        begin
+                           if Perm /= Read_Write then
+                              Perm_Error_Reborrow
+                                (E          => Root,
+                                 N          => Stmt,
+                                 Found_Perm => Perm,
+                                 Expl       => Get_Expl (E_Root));
+                           end if;
+                        end;
+                     end if;
                   end;
                else
                   Check_Expression (Target, Assign);
@@ -3581,6 +3701,7 @@ package body Gnat2Why.Borrow_Checker is
          when N_Block_Statement =>
             Check_List (Declarations (Stmt));
             Check_Node (Handled_Statement_Sequence (Stmt));
+            Check_End_Of_Scope (Declarations (Stmt));
 
             --  Remove local borrowers and observers
 
@@ -3728,6 +3849,9 @@ package body Gnat2Why.Borrow_Checker is
                   end;
                end if;
 
+               Check_End_Of_Scopes
+                 (From => Stmt, Stop => Subprogram_Body (Subp));
+
                if Ekind (Subp) in E_Procedure | E_Entry
                  and then not No_Return (Subp)
                then
@@ -3770,6 +3894,9 @@ package body Gnat2Why.Borrow_Checker is
                   end;
                end if;
 
+               Check_End_Of_Scopes
+                 (From => Stmt, Stop => Subprogram_Body (Subp));
+
                if Ekind (Subp) in E_Procedure | E_Entry
                  and then not No_Return (Subp)
                then
@@ -3803,6 +3930,9 @@ package body Gnat2Why.Borrow_Checker is
                   --  of loop accumulators to directly store permission
                   --  environments.
                end if;
+
+               Check_End_Of_Scopes
+                 (From => Stmt, Stop => Loop_Statement_Of_Exit (Stmt));
 
                Reset_Env (Current_Perm_Env);
             end;
@@ -3895,6 +4025,14 @@ package body Gnat2Why.Borrow_Checker is
                else
                   Merge_Env (Environment_Copy.all, Label_Env.all);
                end if;
+
+               --  Check that all borrowers in the enclosing scopes, up to the
+               --  one with the target label, are in the Unrestricted state
+               --  before jumping to the label.
+
+               Check_End_Of_Scopes
+                 (From => Stmt,
+                  Stop => Statement_Enclosing_Label (Label_Entity));
 
                Reset_Env (Current_Perm_Env);
             end;
@@ -4539,21 +4677,25 @@ package body Gnat2Why.Borrow_Checker is
    -- Loop_Of_Exit --
    ------------------
 
-   function Loop_Of_Exit (N : Node_Id) return Entity_Id is
-      Nam : Node_Id := Name (N);
-      Stmt : Node_Id := N;
+   function Loop_Of_Exit (Stmt : Node_Id) return Entity_Id is
+     (Entity (Identifier (Loop_Statement_Of_Exit (Stmt))));
+
+   ----------------------------
+   -- Loop_Statement_Of_Exit --
+   ----------------------------
+
+   function Loop_Statement_Of_Exit (Stmt : Node_Id) return Node_Id is
+      Loop_Id : constant E_Loop_Id := Loop_Entity_Of_Exit_Statement (Stmt);
+
+      function Is_Target_Loop (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Loop_Statement
+          and then Entity (Identifier (N)) = Loop_Id);
+
+      function Enclosing_Loop_Stmt is new
+        First_Parent_With_Property (Is_Target_Loop);
    begin
-      if No (Nam) then
-         while Present (Stmt) loop
-            Stmt := Parent (Stmt);
-            if Nkind (Stmt) = N_Loop_Statement then
-               Nam := Identifier (Stmt);
-               exit;
-            end if;
-         end loop;
-      end if;
-      return Entity (Nam);
-   end Loop_Of_Exit;
+      return Enclosing_Loop_Stmt (Stmt);
+   end Loop_Statement_Of_Exit;
 
    ---------
    -- Lub --
@@ -4956,8 +5098,26 @@ package body Gnat2Why.Borrow_Checker is
               "writable"), Loc, Root);
 
       Permission_Error := True;
-      Perm_Mismatch (N, Perm, Found_Perm, Expl, Forbidden_Perm);
+      Perm_Mismatch (Loc, N, Perm, Found_Perm, Expl, Forbidden_Perm);
    end Perm_Error;
+
+   ---------------------------
+   -- Perm_Error_Borrow_End --
+   ---------------------------
+
+   procedure Perm_Error_Borrow_End
+     (E          : Entity_Id;
+      N          : Node_Id;
+      Found_Perm : Perm_Kind;
+      Expl       : Node_Id)
+   is
+      Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => E);
+   begin
+      Error_Msg_Node_2 := E;
+      Error_Msg_NE ("borrower & exits its scope with moved value", N, E);
+      Permission_Error := True;
+      Perm_Mismatch (N, Ent, Read_Write, Found_Perm, Expl);
+   end Perm_Error_Borrow_End;
 
    -------------------------------
    -- Perm_Error_Subprogram_End --
@@ -4974,21 +5134,39 @@ package body Gnat2Why.Borrow_Checker is
       Error_Msg_Node_2 := E;
       Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
       Permission_Error := True;
-      Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl);
+      Perm_Mismatch (Subp, Ent, Read_Write, Found_Perm, Expl);
    end Perm_Error_Subprogram_End;
+
+   -------------------------
+   -- Perm_Error_Reborrow --
+   -------------------------
+
+   procedure Perm_Error_Reborrow
+     (E          : Entity_Id;
+      N          : Node_Id;
+      Found_Perm : Perm_Kind;
+      Expl       : Node_Id)
+   is
+      Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => E);
+   begin
+      Error_Msg_Node_2 := E;
+      Error_Msg_NE ("borrower & is reborrowed with moved value", N, E);
+      Permission_Error := True;
+      Perm_Mismatch (N, Ent, Read_Write, Found_Perm, Expl);
+   end Perm_Error_Reborrow;
 
    -------------------
    -- Perm_Mismatch --
    -------------------
 
    procedure Perm_Mismatch
-     (N              : Expr_Or_Ent;
+     (Loc            : Node_Id;
+      N              : Expr_Or_Ent;
       Exp_Perm       : Perm_Kind;
       Act_Perm       : Perm_Kind;
       Expl           : Node_Id;
       Forbidden_Perm : Boolean := False)
    is
-      Loc      : constant Node_Id := (if N.Is_Ent then N.Loc else N.Expr);
       Borrowed : constant Node_Id := Check_On_Borrowed (N);
       Observed : constant Node_Id := Check_On_Observed (N);
       Reason   : constant String :=
@@ -5172,7 +5350,9 @@ package body Gnat2Why.Borrow_Checker is
             begin
                --  If Des_Ty is an incomplete type, go to its full view
 
-               if Is_Incomplete_Type (Des_Ty) then
+               if Is_Incomplete_Type (Des_Ty)
+                 and then Present (Full_View (Des_Ty))
+               then
                   Des_Ty := Full_View (Des_Ty);
                end if;
 

@@ -2,7 +2,7 @@ foo.ads:13:08: info: division check proved (CVC5: 1 VC), in instantiation at use
 foo.ads:13:08: info: overflow check proved (CVC5: 2 VC), in instantiation at usefoo.adb:9
 foo.ads:13:08: info: range check proved (CVC5: 2 VC), in instantiation at usefoo.adb:9
 foo.ads:13:08: info: range check proved (CVC5: 4 VC), in instantiation at usefoo.adb:9
-foo.ads:13:17: medium: array index check might fail, in instantiation at usefoo.adb:9 [reason for check: value must be a valid index into the array] [possible fix: add precondition (if Pos in B (B'First..B'First + B'Length / 2 - 1)'First..B (........)'Last then ... else ... in B'First .. B'First + B'Length / 2 - 1) to subprogram at line 7]
+foo.ads:13:17: high: array index check might fail, in instantiation at usefoo.adb:9 (e.g. when B'First = Integer'Last and B'Last = Integer'First) [reason for check: value must be a valid index into the array] [possible fix: add precondition (if Pos in B (B'First..B'First + B'Length / 2 - 1)'First..B (........)'Last then ... else ... in B'First .. B'First + B'Length / 2 - 1) to subprogram at line 7]
 foo.ads:13:27: info: division check proved (CVC5: 1 VC), in instantiation at usefoo.adb:9
 foo.ads:13:27: info: overflow check proved (CVC5: 2 VC), in instantiation at usefoo.adb:9
 foo.ads:13:27: info: range check proved (CVC5: 2 VC), in instantiation at usefoo.adb:9

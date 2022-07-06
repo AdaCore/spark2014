@@ -149,9 +149,15 @@ Aggregates
    Legality Rules
 
 
-1. The box symbol, <>, shall not be used in an aggregate unless the type(s)
-   of the corresponding component(s) define full default initialization.
+1. The box symbol, <>, shall not be used in an aggregate unless each of the
+   corresponding components satisfies one the following conditions:
 
+   - the type of the component defines full default initialization, or
+
+   - the type of the component has relaxed initialization (see :ref:`Relaxed
+     Initialization`), or
+
+   - the type of one of the enclosing aggregates has relaxed initialization.
 
 2. If the ``ancestor_part`` of an ``extension_aggregate``
    is a ``subtype_mark``, then the type of the denoted subtype
@@ -276,9 +282,11 @@ Allocators
 .. index:: allocating function
 
 A function is said to be an *allocating function* if the result type of the
-function is a named access-to-variable type or a composite owning type (see
-section :ref:`Access Types`). [Redundant: The only functions with a result of
-an owning type in SPARK are allocating functions and borrowing traversal
+function is a named access-to-variable type or a composite type with
+subcomponents of a [named] access-to-variable type.
+[Redundant: The only functions with a result of a type with
+subcomponents of an access-to-variable type
+in SPARK are allocating functions and borrowing traversal
 functions defined in section :ref:`Access Types`; a function cannot be both an
 allocating function and a traversal function.]
 
@@ -319,7 +327,7 @@ allocating function and a traversal function.]
    * inside an assertion.
 
    [This restriction is meant to prevent storage leaks, together with the rules
-   on owning access objects, see section :ref:`Access Types`. Note that
+   on access objects, see section :ref:`Access Types`. Note that
    allocators or calls to allocating functions inside assertions are allowed,
    but should be reported by the analysis tool as leading to a memory leak. In
    practice, such memory leaks cannot happen if the corresponding assertions

@@ -745,9 +745,10 @@ package body SPARK_Definition is
                V            : constant JSON_Value :=
                  To_JSON (Entity_To_Subp_Assumption (E));
                SPARK_Status : constant String :=
-                 (if (Has_Record_Type (E) or else Has_Private_Type (E))
-                       and then
-                     Has_Private_Fields (E)
+                 (if
+                    (Has_Record_Type (E)
+                     or else Has_Incomplete_Or_Private_Type (E))
+                    and then Has_Private_Fields (E)
                   then "no"
                   else "all");
             begin
@@ -2696,126 +2697,6 @@ package body SPARK_Definition is
          =>
             raise Program_Error;
       end case;
-
-      --  SPARK RM 3.10(6): If a prefix of a name is of an owning type, then
-      --  the prefix shall denote neither a non-traversal function call, an
-      --  aggregate, an allocator, nor any other expression whose associated
-      --  object is (or, as in the case of a conditional expression, might be)
-      --  the same as that of such a forbidden expression (e.g., a qualified
-      --  expression or type conversion whose operand would be forbidden as a
-      --  prefix by this rule).
-
-      if Nkind (N) in N_Attribute_Reference
-                    | N_Explicit_Dereference
-                    | N_Indexed_Component
-                    | N_Selected_Component
-                    | N_Slice
-      then
-         declare
-            procedure Validate_Owning_Prefix (Expr : Node_Id) with
-              Pre => Is_Deep (Etype (Expr));
-            --  Check that Expr is a valid owning prefix
-
-            ----------------------------
-            -- Validate_Owning_Prefix --
-            ----------------------------
-
-            procedure Validate_Owning_Prefix (Expr : Node_Id) is
-            begin
-               case Nkind (Expr) is
-                  when N_Qualified_Expression
-                     | N_Type_Conversion
-                     | N_Unchecked_Type_Conversion
-                  =>
-                     Validate_Owning_Prefix (Expression (Expr));
-
-                  when N_Allocator =>
-                     Mark_Violation
-                       ("allocator as the prefix of an expression",
-                        Expr,
-                        SRM_Reference => "SPARK RM 3.10(6)");
-
-                  when N_Aggregate
-                     | N_Delta_Aggregate
-                     | N_Extension_Aggregate
-                  =>
-                     Mark_Violation
-                       ("aggregate of owning type as the prefix of"
-                        & " an expression",
-                        Expr,
-                        SRM_Reference => "SPARK RM 3.10(6)");
-
-                  when N_Attribute_Reference =>
-                     if not Is_Attribute_Result (Expr) then
-                        Mark_Violation
-                          ("attribute reference of owning type as the prefix"
-                           & " of an expression",
-                           Expr,
-                           SRM_Reference => "SPARK RM 3.10(6)");
-                     end if;
-
-                  when N_Function_Call =>
-                     if not Is_Traversal_Function_Call (Expr) then
-                        Mark_Violation
-                          ("non-traversal function call of owning type as"
-                           & " the prefix of an expression",
-                           Expr,
-                           SRM_Reference => "SPARK RM 3.10(6)");
-                     end if;
-
-                  when N_If_Expression =>
-                     declare
-                        Condition : constant Node_Id :=
-                          First (Expressions (Expr));
-                        Then_Expr : constant Node_Id := Next (Condition);
-                        Else_Expr : constant Node_Id := Next (Then_Expr);
-                     begin
-                        Validate_Owning_Prefix (Then_Expr);
-                        Validate_Owning_Prefix (Else_Expr);
-                     end;
-
-                  when N_Case_Expression =>
-                     declare
-                        Cases    : constant List_Id := Alternatives (Expr);
-                        Cur_Case : Node_Id := First (Cases);
-                     begin
-                        while Present (Cur_Case) loop
-                           Validate_Owning_Prefix (Expression (Cur_Case));
-                           Next (Cur_Case);
-                        end loop;
-                     end;
-
-                  when others =>
-                     null;
-               end case;
-            end Validate_Owning_Prefix;
-
-            --  Local variables
-
-            Pref : constant Node_Id := Prefix (N);
-
-         begin
-            --  Check whether type is deep only if it has previously been
-            --  marked in SPARK. Otherwise there was already a violation, and
-            --  we should not call Is_Deep on a type possibly not marked.
-
-            if Etype (Pref) /= Standard_Void_Type
-              and then Entity_In_SPARK (Etype (Pref))
-              and then Is_Deep (Etype (Pref))
-
-              --  Special case for attributes 'Old and 'Loop_Entry which should
-              --  be applicable to a call to a volatile function of owning type
-              --  in order to be able to compare a modified variable of owning
-              --  type with a previous value of the same variable. ??? This
-              --  should be expressed as a rule in SPARK RM.
-
-              and then not Is_Attribute_Old (N)
-              and then not Is_Attribute_Loop_Entry (N)
-            then
-               Validate_Owning_Prefix (Pref);
-            end if;
-         end;
-      end if;
    end Mark;
 
    ------------------
@@ -3249,7 +3130,21 @@ package body SPARK_Definition is
          when Attribute_Img
             | Attribute_Image
          =>
-            if Emit_Warning_Info_Messages
+            --  We do not support 'Image on types which are not scalars. We
+            --  could theoretically encode the attribute as an uninterpreted
+            --  function for all types which do not contain subcomponents of
+            --  an access type. Indeed, as we do not encode the address of
+            --  access types, it would be incorrect.
+
+            if not Retysp_In_SPARK (Etype (P))
+              or else not Has_Scalar_Type (Etype (P))
+            then
+               Mark_Unsupported
+                 ("attribute """
+                  & Standard_Ada_Case (Get_Name_String (Aname))
+                  & """ on non-scalar type", N);
+
+            elsif Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
               and then Is_Enumeration_Type (Etype (P))
@@ -4697,12 +4592,42 @@ package body SPARK_Definition is
    --------------------------------
 
    procedure Mark_Component_Association (N : N_Component_Association_Id) is
-   begin
-      --  We enforce SPARK RM 4.3(1) for which the box symbol, <>, shall not be
-      --  used in an aggregate unless the type(s) of the corresponding
-      --  component(s) define full default initialization.
 
-      if Box_Present (N) then
+      function Component_Inherits_Relaxed_Initialization
+        (N : N_Component_Association_Id)
+         return Boolean;
+      --  Return True if the component inherits relaxed initialization
+      --  from an enclosing composite type in the aggregate.
+
+      function Component_Inherits_Relaxed_Initialization
+        (N : N_Component_Association_Id)
+         return Boolean
+      is
+         Par : constant N_Subexpr_Id := Parent (N);
+         Typ : constant Type_Kind_Id := Retysp (Etype (Par));
+      begin
+         pragma Assert (Nkind (Par) in N_Aggregate | N_Extension_Aggregate);
+
+         if Has_Relaxed_Init (Typ) then
+            return True;
+         elsif Nkind (Parent (Par)) = N_Component_Association then
+            return Component_Inherits_Relaxed_Initialization (Parent (Par));
+         else
+            return False;
+         end if;
+      end Component_Inherits_Relaxed_Initialization;
+
+   --  Start of processing for Mark_Component_Association
+
+   begin
+      --  We enforce SPARK RM 4.3(1) for which the box symbol, <>, shall not
+      --  be used in an aggregate unless the type(s) of the corresponding
+      --  component(s) define full default initialization, or have relaxed
+      --  initialization.
+
+      if Box_Present (N)
+        and then not Component_Inherits_Relaxed_Initialization (N)
+      then
          pragma Assert (Nkind (Parent (N)) in N_Aggregate
                                             | N_Extension_Aggregate);
 
@@ -4717,30 +4642,25 @@ package body SPARK_Definition is
             case Ekind (Typ) is
                when Record_Kind =>
                   declare
-                     Choice : Node_Id := First (Choices (N));
-                     --  Iterator for the non-empty list of choices
+                     Choice     : constant Node_Id := First (Choices (N));
+                     Choice_Typ : constant Type_Kind_Id := Etype (Choice);
 
                   begin
-                     loop
-                        pragma Assert (Nkind (Choice) = N_Identifier);
-                        --  In the source code Choice can be either an
-                        --  N_Identifier or N_Others_Choice, but the latter
-                        --  is expanded by the frontend.
+                     pragma Assert (Nkind (Choice) = N_Identifier);
+                     --  In the source code Choice can be either an
+                     --  N_Identifier or N_Others_Choice, but the latter
+                     --  is expanded by the frontend.
 
-                        if Default_Initialization (Etype (Choice)) =
-                          Full_Default_Initialization
-                        then
-                           Mark (Choice);
-                        else
-                           Mark_Violation
-                             ("box notation without default initialization",
-                              Choice,
-                              SRM_Reference => "SPARK RM 4.3(1)");
-                        end if;
-
-                        Next (Choice);
-                        exit when No (Choice);
-                     end loop;
+                     if Default_Initialization (Choice_Typ) /=
+                         Full_Default_Initialization
+                       and then not Has_Relaxed_Init (Choice_Typ)
+                     then
+                        Mark_Violation
+                          ("box notation without default or relaxed "
+                           & "initialization",
+                           Choice,
+                           SRM_Reference => "SPARK RM 4.3(1)");
+                     end if;
                   end;
 
                --  Arrays can be default-initialized either because each
@@ -4752,10 +4672,12 @@ package body SPARK_Definition is
 
                when Array_Kind =>
                   if Default_Initialization (Typ) /=
-                       Full_Default_Initialization
+                      Full_Default_Initialization
+                    and then not Has_Relaxed_Init (Typ)
                   then
                      Mark_Violation
-                       ("box notation without default initialization",
+                       ("box notation without default or relaxed "
+                        & "initialization",
                         N,
                         SRM_Reference => "SPARK RM 4.3(1)");
                   end if;
@@ -4764,8 +4686,11 @@ package body SPARK_Definition is
                   raise Program_Error;
             end case;
          end;
-      else
-         Mark_List (Choices (N));
+      end if;
+
+      Mark_List (Choices (N));
+
+      if not Box_Present (N) then
          Mark (Expression (N));
       end if;
    end Mark_Component_Association;
@@ -4992,7 +4917,7 @@ package body SPARK_Definition is
             --  moving a path.
 
             elsif Is_Deep (T) then
-               Check_Source_Of_Move (Expr, Is_Constant_In_SPARK (E));
+               Check_Source_Of_Move (Expr);
             end if;
 
             --  If T has an anonymous access type, it can happen that Expr and
@@ -5898,6 +5823,12 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Type_Entity
 
       begin
+         --  We should not mark incomplete types unless their full view is not
+         --  visible.
+
+         pragma Assert
+           (not Is_Incomplete_Type (E) or else No (Full_View (E)));
+
          --  Controlled types are not allowed in SPARK
 
          if Is_Controlled (E) then
@@ -6108,7 +6039,9 @@ package body SPARK_Definition is
                end;
             end if;
 
-         elsif Is_Private_Type (E) and then not Violation_Detected then
+         elsif Is_Incomplete_Or_Private_Type (E)
+           and then not Violation_Detected
+         then
 
             --  When a private type is defined in a package whose private part
             --  has SPARK_Mode => Off, we do not need to mark its underlying
@@ -6130,6 +6063,13 @@ package body SPARK_Definition is
             then
                Full_Views_Not_In_SPARK.Insert (E);
                Discard_Underlying_Type (E);
+
+            --  Incomplete types which are marked have no visible full view
+
+            elsif Is_Incomplete_Type (E) then
+               pragma Assert (No (Full_View (E)));
+               Full_Views_Not_In_SPARK.Insert (E);
+
             else
                declare
                   Utype : constant Type_Kind_Id :=
@@ -6487,7 +6427,22 @@ package body SPARK_Definition is
                end if;
             end;
 
-         elsif Is_Private_Type (E) then
+         elsif Is_Incomplete_Or_Private_Type (E) then
+
+            --  For now, reject incomplete types coming from limited with.
+            --  They need to be handled using their No_Limited_View if they
+            --  have one. Unlike other incomplete types, the frontend does
+            --  not replace them by their non-limited view when they occur as a
+            --  parameter subtype or the result type in a subprogram
+            --  declaration, so we cannot avoid marking them altogether as we
+            --  do for regular incomplete types with a full view.
+
+            if Is_Incomplete_Type (E) and then From_Limited_With (E) then
+               Mark_Unsupported
+                 ("incomplete type from limited with", E,
+                  Cont_Msg =>
+                    "consider restructuring code to avoid `LIMITED WITH`");
+            end if;
 
             --  If the type and its Retysp are different entities, aspects
             --  such has predicates, invariants, and DIC can be lost if they
@@ -6495,7 +6450,7 @@ package body SPARK_Definition is
 
             if Present (Full_View (E))
               and then Entity_In_SPARK (Full_View (E))
-              and then Is_Private_Type (Full_View (E))
+              and then Is_Incomplete_Or_Private_Type (Full_View (E))
               and then Unique_Entity (Retysp (E)) /= Unique_Entity (E)
             then
 
@@ -6841,13 +6796,6 @@ package body SPARK_Definition is
                     and then No (SPARK_Pragma_Of_Entity (Des_Ty))
                   then
                      Mark_Violation (E, From => Des_Ty);
-                  elsif not Is_Class_Wide_Type (Des_Ty)
-                    and then No (Full_View (Des_Ty))
-                  then
-                     Mark_Unsupported
-                       ("incomplete type with deferred full view",
-                        Directly_Designated_Type (E));
-                     Mark_Violation (E, From => Des_Ty);
                   else
                      Access_To_Incomplete_Types.Append (E);
                   end if;
@@ -7071,13 +7019,6 @@ package body SPARK_Definition is
             if Ekind (E) in E_Protected_Type | E_Task_Type then
                Current_Concurrent_Insert_Pos := Entity_List.Last;
             end if;
-
-         elsif Is_Incomplete_Type (E) then
-            pragma Assert (From_Limited_With (E));
-            Mark_Unsupported
-              ("incomplete type", E,
-               Cont_Msg =>
-                 "consider restructuring code to avoid `LIMITED WITH`");
 
          else
             raise Program_Error;
@@ -8297,7 +8238,9 @@ package body SPARK_Definition is
                   Mark_Pragma_Annotate (Cur,
                                         Spec,
                                         Consider_Next => False);
-               elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                 and then Nkind (Cur) /= N_Pragma
+               then
                   exit;
                end if;
                Next (Cur);
@@ -8318,7 +8261,9 @@ package body SPARK_Definition is
                   Mark_Pragma_Annotate (Cur,
                                         Spec,
                                         Consider_Next => False);
-               elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                 and then Nkind (Cur) /= N_Pragma
+               then
                   exit;
                end if;
                Next (Cur);
@@ -9007,7 +8952,7 @@ package body SPARK_Definition is
 
    function Most_Underlying_Type_In_SPARK (Id : Type_Kind_Id) return Boolean is
      (Retysp_In_SPARK (Id)
-      and then (Retysp_Kind (Id) not in Private_Kind
+      and then (Retysp_Kind (Id) not in Incomplete_Or_Private_Kind
                 or else Retysp_Kind (Id) in Record_Kind));
 
    -----------------------
@@ -9183,7 +9128,9 @@ package body SPARK_Definition is
          declare
             Typ : constant Entity_Id := Etype (E);
          begin
-            if Is_Private_Type (Typ) then
+            if Is_Incomplete_Or_Private_Type (Typ)
+              and then Present (Full_View (Typ))
+            then
                return SPARK_Pragma_Of_Entity (Full_View (Typ));
             else
                return SPARK_Pragma_Of_Entity (Typ);

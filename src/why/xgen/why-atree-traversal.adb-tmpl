@@ -63,7 +63,7 @@ package body Why.Atree.Traversal is
          return;
       end if;
 
-      while Position /= No_Element loop
+      while Has_Element (Position) loop
          pragma Assert (Has_Element (Position)
                         and then State.Control /= Abandon_Siblings
                         and then State.Control /= Terminate_Immediately);

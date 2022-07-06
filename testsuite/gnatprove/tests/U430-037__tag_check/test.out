@@ -3,6 +3,6 @@ test_tagged_records.adb:22:07: medium: tag check might fail
 test_tagged_records.adb:24:07: medium: tag check might fail
 test_tagged_records.adb:24:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_tagged_records.adb:26:07: medium: tag check might fail
-test_tagged_records.adb:28:07: medium: tag check might fail
-test_tagged_records.adb:30:12: medium: tag check might fail
+test_tagged_records.adb:28:07: info: tag check proved (CVC5: 1 VC)
+test_tagged_records.adb:30:12: info: tag check proved (CVC5: 1 VC)
 test_tagged_records.adb:32:17: info: tag check proved (CVC5: 1 VC)

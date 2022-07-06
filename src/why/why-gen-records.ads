@@ -42,7 +42,7 @@ package Why.Gen.Records is
      (Th : Theory_UC;
       E  : Entity_Id) with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Private_Kind  | Concurrent_Kind;
+                         Incomplete_Or_Private_Kind  | Concurrent_Kind;
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records, private types and concurrent types.
    --  @param P the Why section to insert the declaration
@@ -53,7 +53,7 @@ package Why.Gen.Records is
      (Th : Theory_UC;
       E  : Entity_Id) with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Private_Kind
+                         Incomplete_Or_Private_Kind
      and then Might_Contain_Relaxed_Init (E);
 
    procedure Complete_Tagged_Record_Type
@@ -63,10 +63,16 @@ package Why.Gen.Records is
    --  Emit a type concrete declaration for the extension part of a tagged type
    --  and axioms for its extract__ and hide__ functions.
 
+   procedure Create_Compatible_Tags_Theory (E : Entity_Id) with
+     Pre => Is_Tagged_Type (E) and then E = Root_Retysp (E);
+   --  Create a module with axioms giving values to the __compatible_tag
+   --  predicate for all types visible from the current unit which are
+   --  descendants of E.
+
    procedure Create_Rep_Record_Theory_If_Needed (E : Entity_Id)
    with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Private_Kind  | Concurrent_Kind;
+                         Incomplete_Or_Private_Kind  | Concurrent_Kind;
    --  Create a module for the representative type of a record if needed. It
    --  contains a why record type named WNE_Rec_Rep and all the needed
    --  functions and attributes except for the tag of tagged types.
@@ -208,6 +214,12 @@ package Why.Gen.Records is
       Field_Assocs : out W_Field_Association_Array);
    --  Generate a record aggregate of Ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
+
+   function Get_Compatible_Tags_Predicate
+     (E : Entity_Id) return W_Identifier_Id
+   with Pre => Is_Tagged_Type (Root_Retysp (E));
+   --  Return the name of the predicate checking compatibility between tags for
+   --  a tagged type E.
 
    function New_Discriminants_Access
      (Ada_Node : Node_Id := Empty;
