@@ -1,2 +1,5 @@
+comment: "deactivate counterexamples due to diffs on Windows"
+
 prove_all:
   opt: ["--no-inlining"]
+  counterexample: False
