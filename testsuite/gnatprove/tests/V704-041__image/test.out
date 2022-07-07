@@ -1,4 +1,2 @@
 test.adb:11:19: error: attribute "Image" on non-scalar type is not yet supported
-test.adb:11:26: warning: assuming "From_String" always returns
-test.adb:11:26: warning: no returning annotation available for "From_String"
 gnatprove: error during flow analysis and proof
