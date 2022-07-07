@@ -12,6 +12,7 @@ Require int.ComputerDivision.
 Require Import Coq.Bool.Bool.
 Require Import Coq.ZArith.BinInt.
 Require Import Coq.ZArith.Zbool.
+Require Import Psatz.
 
 (* Why3 goal *)
 Definition mod1 :
@@ -39,7 +40,7 @@ Lemma mod'def :
 Proof.
   intros x y. unfold mod1.
   des_lt 0%Z x; des_lt 0%Z y; des_lt x 0%Z; des_lt y 0%Z; des_eq 0%Z (Z.rem x y);
-  split; intro Hyp; try (split; intro Hyp2); try omega; simpl; try contradiction; trivial.
+  split; intro Hyp; try (split; intro Hyp2); try lia; simpl; try contradiction; trivial.
 Qed.
 
 (* Why3 goal *)
@@ -59,8 +60,8 @@ Lemma mod2'def :
    (~ (r = 0%Z) -> ((mod2 x y) = (r + y)%Z))).
 Proof.
   intros x y r; split; unfold mod2; intros;
-  des_ge y 0%Z; auto; try omega.
-  split; intros; fold r; des_eq 0%Z r; omega.
+  des_ge y 0%Z; auto; try lia.
+  split; intros; fold r; des_eq 0%Z r; lia.
 Qed.
 
 (* Why3 goal *)
@@ -75,28 +76,28 @@ Proof.
     EuclideanDivision.div u v = q)%Z as div_uniq. {
     intros u v q NZ BOUNDS.
     destruct (Z.lt_trichotomy 0 v) as [POS|[?|NEG]]; [|congruence|].
-    - rewrite Z.abs_eq in BOUNDS by omega.
+    - rewrite Z.abs_eq in BOUNDS by lia.
       apply EuclideanDivision.Div_unique; assumption.
     - destruct BOUNDS as [LE LT].
       pose proof (EuclideanDivision.Div_mod u v NZ) as MAIN.
       pose proof (EuclideanDivision.Mod_bound u v NZ) as [BMIN BMAX].
-      rewrite Z.abs_neq in LT, BMAX by omega.
+      rewrite Z.abs_neq in LT, BMAX by lia.
       apply Z.le_antisymm; apply Z.lt_succ_r;
         eapply Z.mul_lt_mono_neg_l; try exact NEG.
       + eapply Z.add_lt_mono_r; rewrite <- ? MAIN.
-        rewrite Z.mul_comm. rewrite Z.mul_succ_l. omega.
+        rewrite Z.mul_comm. rewrite Z.mul_succ_l. lia.
       + rewrite Z.mul_succ_r. rewrite Z.add_comm.
        eapply Z.add_lt_mono_r. rewrite <- Z.add_assoc.
-       rewrite <- MAIN. rewrite Z.mul_comm. omega.
+       rewrite <- MAIN. rewrite Z.mul_comm. lia.
   }
   (* Unicity of modulo (entirely new, not so usable for SMT). *)
   assert (forall u v q r,
     v <> 0 -> 0 <= r < Z.abs v -> u = q * v + r ->
      EuclideanDivision.mod1 u v = r)%Z as mod_uniq. {
     intros u v q r NZ [LE LT] EQ.
-    assert (EuclideanDivision.div u v = q) as <- by (apply div_uniq; omega).
+    assert (EuclideanDivision.div u v = q) as <- by (apply div_uniq; lia).
     pose proof (EuclideanDivision.Div_mod u v NZ) as MAIN.
-    rewrite EQ in MAIN at 1. rewrite (Z.mul_comm v) in MAIN. omega.
+    rewrite EQ in MAIN at 1. rewrite (Z.mul_comm v) in MAIN. lia.
   }
   (* Utility: connect zero-modulo with divisibility (from Coq). *)
   assert (forall u v, v <> 0 ->
@@ -107,7 +108,7 @@ Proof.
       rewrite (Z.mul_comm v). rewrite MZ. rewrite Z.add_0_r. reflexivity.
     - intros [q EQ]. unshelve eapply mod_uniq.
       + exact q.
-      + omega.
+      + lia.
       + split;[reflexivity|].
         apply Z.lt_nge. intros LE. apply NZ.
         apply Z.abs_0_iff. apply Z.le_antisymm; try assumption.
@@ -122,7 +123,7 @@ Proof.
     unshelve eapply mod_uniq.
     (* Under the hood: (u/(-v)) = -(u/v) for euclidean division. *)
     - exact (-EuclideanDivision.div u v)%Z.
-    - omega.
+    - lia.
     - rewrite Z.abs_opp. apply EuclideanDivision.Mod_bound. assumption.
     - rewrite Z.mul_opp_opp. rewrite Z.mul_comm.
       apply EuclideanDivision.Div_mod. assumption.
@@ -143,19 +144,19 @@ Proof.
       - congruence.
       - assert (exists w, -w = v)%Z as [w <-]
           by (eexists; apply Z.opp_involutive).
-        rewrite ! mod_symmetry_2 in * by omega.
-        rewrite Z.abs_opp. apply ENGH; omega.
+        rewrite ! mod_symmetry_2 in * by lia.
+        rewrite Z.abs_opp. apply ENGH; lia.
     }
     intros u v POS NZ.
     unshelve eapply mod_uniq.
     - exact (- Z.succ (EuclideanDivision.div u v))%Z.
-    - omega.
+    - lia.
     - unshelve epose proof (EuclideanDivision.Mod_bound u v _);
-        rewrite ? Z.abs_eq in *; omega.
+        rewrite ? Z.abs_eq in *; lia.
     - rewrite Z.mul_opp_l. rewrite Z.mul_succ_l.
-      pose proof (EuclideanDivision.Div_mod u v ltac:(omega)) as MAIN.
+      pose proof (EuclideanDivision.Div_mod u v ltac:(lia)) as MAIN.
       rewrite Z.mul_comm in MAIN.
-      rewrite Z.abs_eq; omega.
+      rewrite Z.abs_eq; lia.
   }
   (* Other symmetry in first argument. *)
   assert (forall u v, v <> 0 ->
@@ -178,7 +179,7 @@ Proof.
     Z.quot u v = EuclideanDivision.div u v)%Z as same_div_pos. {
     intros u v PU PV. symmetry.
     apply EuclideanDivision.Div_unique; try assumption.
-    rewrite Z.quot_div_nonneg by omega.
+    rewrite Z.quot_div_nonneg by lia.
     split; rewrite Z.mul_comm.
     - apply Z.mul_div_le; assumption.
     - eapply Z.lt_le_trans; [eapply Z.mul_succ_div_gt|]. 2: {
@@ -191,10 +192,10 @@ Proof.
     intros u v LEU LTV. symmetry.
     unshelve eapply mod_uniq.
     - exact (Z.quot u v).
-    - omega.
-    - rewrite Z.abs_eq by omega.
-      apply Z.rem_bound_pos; omega.
-    - rewrite Z.mul_comm. apply Z.quot_rem. omega.
+    - lia.
+    - rewrite Z.abs_eq by lia.
+      apply Z.rem_bound_pos; lia.
+    - rewrite Z.mul_comm. apply Z.quot_rem. lia.
   }
   (* Main proof starts here. *)
   intros x y NZ.
@@ -207,7 +208,7 @@ Proof.
        for final cases that it can destructure the content of
        mod1/mod2 specification, slow down the generation way too much
        for mundane obligations. *)
-  let epsilon := (clear H1 H2; omega) in
+  let epsilon := (clear H1 H2; lia) in
   (* Split on divisibility. *)
   destruct (Z.eq_dec (Z.rem x y) 0)%Z as [MZ|MZ];
     (* Make sure we have copies of the zero/non-zero hypothesis in
@@ -215,7 +216,7 @@ Proof.
     pose proof MZ as MZC; rewrite same_zeros in MZC by epsilon;
     (* Clear divisibility out of the way, as reducing both to zero
          suffices. *)
-    [rewrite MZ in *; rewrite MZC in *; clear MZ MZC; omega|];
+    [rewrite MZ in *; rewrite MZC in *; clear MZ MZC; lia|];
   (* Decompose as positive/negative case (0 trivially ruled out),
        and apply relevant
        second argument symmetry to modular operators. *)
@@ -243,5 +244,5 @@ Proof.
   rewrite ? Z.abs_eq in * by epsilon;
   (* Finisher. Most of the time is spent here as it tries cases
        by going through H1/H2. *)
-  omega.
+  lia.
 Qed.

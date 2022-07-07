@@ -4,6 +4,7 @@ Require Import BuiltIn.
 Require BuiltIn.
 
 Require map.Map.
+Require Import Psatz.
 
 (* Why3 goal *)
 Definition t : Type.
@@ -125,7 +126,7 @@ intros a b a_first a_last.
 unfold concat_singleton_right; unfold le;
 unfold add; unfold one; simpl.
 split; unfold get.
- - assert ((a_last + 1 <=? a_last)%Z = false) by (rewrite Z.leb_nle; omega).
+ - assert ((a_last + 1 <=? a_last)%Z = false) by (rewrite Z.leb_nle; lia).
    rewrite H; simpl; auto.
  - intros i [_ Hi].
    apply Zle_imp_le_bool in Hi; rewrite Hi; auto.
@@ -146,7 +147,7 @@ intros a b a_first.
 unfold concat_singletons; unfold add; unfold one; simpl.
 split; unfold get.
  - rewrite Z.leb_refl; auto.
- - assert ((a_first + 1 <=? a_first)%Z = false) by (rewrite Z.leb_nle; omega).
+ - assert ((a_first + 1 <=? a_first)%Z = false) by (rewrite Z.leb_nle; lia).
    rewrite H; simpl; auto.
 Qed.
 
