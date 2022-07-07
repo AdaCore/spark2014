@@ -44,20 +44,44 @@ lsc-bignum.adb:94:68: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:95:22: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:95:41: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:103:08: medium: postcondition might fail
+lsc-bignum.adb:103:16: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:103:16: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:103:54: warning: assuming "=" always returns
+lsc-bignum.adb:103:54: warning: no returning annotation available for "="
+lsc-bignum.adb:103:56: warning: assuming "Num_Of_Boolean" always returns
+lsc-bignum.adb:103:56: warning: no returning annotation available for "Num_Of_Boolean"
 lsc-bignum.adb:105:07: info: initialization of "Result" proved
 lsc-bignum.adb:126:07: info: initialization of "J" proved
 lsc-bignum.adb:127:07: info: initialization of "New_Carry" proved
 lsc-bignum.adb:131:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:134:13: info: loop invariant preservation proved (Z3: 2 VC)
 lsc-bignum.adb:134:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, I - A_First) - Num_Of_Big_Int (B, B_First, I - A_First) = Num_Of_Big_Int (A, A_First, I - A_First) - Base ** (I - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.adb:134:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:134:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:134:54: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:134:54: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:134:65: warning: assuming "-" always returns
+lsc-bignum.adb:134:65: warning: no returning annotation available for "-"
+lsc-bignum.adb:135:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:135:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:135:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:135:43: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:135:54: warning: assuming "=" always returns
+lsc-bignum.adb:135:54: warning: no returning annotation available for "="
+lsc-bignum.adb:136:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:136:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:136:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:136:43: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:136:54: warning: assuming "-" always returns
+lsc-bignum.adb:136:54: warning: no returning annotation available for "-"
+lsc-bignum.adb:137:18: warning: assuming "**" always returns
+lsc-bignum.adb:137:18: warning: no returning annotation available for "**"
 lsc-bignum.adb:137:24: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:137:24: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:137:35: warning: assuming "*" always returns
+lsc-bignum.adb:137:35: warning: no returning annotation available for "*"
+lsc-bignum.adb:137:37: warning: assuming "Num_Of_Boolean" always returns
+lsc-bignum.adb:137:37: warning: no returning annotation available for "Num_Of_Boolean"
 lsc-bignum.adb:138:22: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:139:20: info: index check proved (Z3: 4 VC)
 lsc-bignum.adb:139:39: info: index check proved (Z3: 4 VC)
@@ -72,18 +96,36 @@ lsc-bignum.adb:143:13: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:23: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:31: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:147:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, (I + 1) - A_First) - Num_Of_Big_Int (B, B_First, (I + 1) - A_First) = Num_Of_Big_Int (A, A_First, (I + 1) - A_First) - Base ** ((I + 1) - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.adb:147:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:147:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:147:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:147:60: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:147:60: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:147:71: warning: assuming "-" always returns
+lsc-bignum.adb:147:71: warning: no returning annotation available for "-"
+lsc-bignum.adb:148:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:148:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:148:44: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:148:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:148:49: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:148:60: warning: assuming "=" always returns
+lsc-bignum.adb:148:60: warning: no returning annotation available for "="
+lsc-bignum.adb:149:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:149:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:149:44: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:149:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:149:49: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:149:60: warning: assuming "-" always returns
+lsc-bignum.adb:149:60: warning: no returning annotation available for "-"
+lsc-bignum.adb:150:18: warning: assuming "**" always returns
+lsc-bignum.adb:150:18: warning: no returning annotation available for "**"
 lsc-bignum.adb:150:25: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:150:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:150:30: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:150:41: warning: assuming "*" always returns
+lsc-bignum.adb:150:41: warning: no returning annotation available for "*"
+lsc-bignum.adb:150:43: warning: assuming "Num_Of_Boolean" always returns
+lsc-bignum.adb:150:43: warning: no returning annotation available for "Num_Of_Boolean"
 lsc-bignum.adb:151:22: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:151:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:152:20: info: index check proved (Z3: 2 VC)
@@ -93,10 +135,16 @@ lsc-bignum.adb:167:07: info: initialization of "Result" proved
 lsc-bignum.adb:171:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:174:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible fix: precondition of subprogram at lsc-bignum.ads:120 should mention A and B]
 lsc-bignum.adb:174:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible fix: precondition of subprogram at lsc-bignum.ads:120 should mention A and B]
+lsc-bignum.adb:174:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:174:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:174:34: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:174:34: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:174:46: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:174:46: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:174:51: warning: assuming "=" always returns
+lsc-bignum.adb:174:51: warning: no returning annotation available for "="
+lsc-bignum.adb:175:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:175:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:175:40: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:175:45: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:175:56: info: overflow check proved (Z3: 4 VC)
@@ -112,6 +160,50 @@ lsc-bignum.adb:185:23: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:185:31: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:202:08: info: flow dependencies proved
 lsc-bignum.adb:206:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to operator "+" and operator "*" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:206:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:206:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:206:39: warning: assuming "+" always returns
+lsc-bignum.adb:206:39: warning: no returning annotation available for "+"
+lsc-bignum.adb:207:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:207:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:207:35: warning: assuming "*" always returns
+lsc-bignum.adb:207:35: warning: no returning annotation available for "*"
+lsc-bignum.adb:207:45: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:207:45: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:207:62: warning: assuming "+" always returns
+lsc-bignum.adb:207:62: warning: no returning annotation available for "+"
+lsc-bignum.adb:208:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:208:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:208:35: warning: assuming "*" always returns
+lsc-bignum.adb:208:35: warning: no returning annotation available for "*"
+lsc-bignum.adb:208:45: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:208:45: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:208:62: warning: assuming "+" always returns
+lsc-bignum.adb:208:62: warning: no returning annotation available for "+"
+lsc-bignum.adb:209:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:209:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:209:44: warning: assuming "+" always returns
+lsc-bignum.adb:209:44: warning: no returning annotation available for "+"
+lsc-bignum.adb:210:15: warning: assuming "*" always returns
+lsc-bignum.adb:210:15: warning: no returning annotation available for "*"
+lsc-bignum.adb:210:25: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:210:25: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:210:51: warning: assuming "=" always returns
+lsc-bignum.adb:210:51: warning: no returning annotation available for "="
+lsc-bignum.adb:211:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:211:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:211:35: warning: assuming "+" always returns
+lsc-bignum.adb:211:35: warning: no returning annotation available for "+"
+lsc-bignum.adb:212:15: warning: assuming "*" always returns
+lsc-bignum.adb:212:15: warning: no returning annotation available for "*"
+lsc-bignum.adb:212:26: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:212:26: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:212:48: warning: assuming "+" always returns
+lsc-bignum.adb:212:48: warning: no returning annotation available for "+"
+lsc-bignum.adb:213:17: warning: assuming "*" always returns
+lsc-bignum.adb:213:17: warning: no returning annotation available for "*"
+lsc-bignum.adb:213:27: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:213:27: warning: no returning annotation available for "From_Word32"
 lsc-bignum.adb:215:07: info: initialization of "Mult1" proved
 lsc-bignum.adb:215:14: info: initialization of "Mult2" proved
 lsc-bignum.adb:215:21: info: initialization of "Temp" proved
@@ -119,43 +211,135 @@ lsc-bignum.adb:224:31: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:230:36: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:231:41: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:249:08: info: flow dependencies proved
-lsc-bignum.adb:254:17: medium: overflow check might fail, cannot prove upper bound for A_Last + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-lsc-bignum.adb:257:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.adb:254:17: high: overflow check might fail, cannot prove upper bound for A_Last + 1 (e.g. when A_Last = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.adb:257:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.adb:257:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:259:18: medium: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.adb:259:18: high: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and C_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.adb:259:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:261:10: info: postcondition proved (Z3: 1 VC)
+lsc-bignum.adb:261:10: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:261:10: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:261:41: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:261:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:261:63: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:261:63: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:261:68: warning: assuming "+" always returns
+lsc-bignum.adb:261:68: warning: no returning annotation available for "+"
+lsc-bignum.adb:262:10: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:262:10: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:262:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:262:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:262:55: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:262:60: warning: assuming "*" always returns
+lsc-bignum.adb:262:60: warning: no returning annotation available for "*"
+lsc-bignum.adb:263:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:263:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:263:35: warning: assuming "+" always returns
+lsc-bignum.adb:263:35: warning: no returning annotation available for "+"
+lsc-bignum.adb:264:10: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:264:10: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:264:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:264:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:264:55: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:264:60: warning: assuming "*" always returns
+lsc-bignum.adb:264:60: warning: no returning annotation available for "*"
+lsc-bignum.adb:265:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:265:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:265:35: warning: assuming "+" always returns
+lsc-bignum.adb:265:35: warning: no returning annotation available for "+"
+lsc-bignum.adb:266:18: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:266:18: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:266:44: warning: assuming "+" always returns
+lsc-bignum.adb:266:44: warning: no returning annotation available for "+"
+lsc-bignum.adb:267:15: warning: assuming "*" always returns
+lsc-bignum.adb:267:15: warning: no returning annotation available for "*"
+lsc-bignum.adb:267:25: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:267:25: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:267:51: warning: assuming "=" always returns
+lsc-bignum.adb:267:51: warning: no returning annotation available for "="
+lsc-bignum.adb:268:10: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:268:10: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:268:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:268:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:268:55: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:268:60: warning: assuming "+" always returns
+lsc-bignum.adb:268:60: warning: no returning annotation available for "+"
+lsc-bignum.adb:269:15: warning: assuming "**" always returns
+lsc-bignum.adb:269:15: warning: no returning annotation available for "**"
 lsc-bignum.adb:269:26: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:269:36: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:269:36: info: range check proved (Z3: 2 VC)
+lsc-bignum.adb:269:41: warning: assuming "*" always returns
+lsc-bignum.adb:269:41: warning: no returning annotation available for "*"
+lsc-bignum.adb:269:52: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:269:52: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:269:74: warning: assuming "+" always returns
+lsc-bignum.adb:269:74: warning: no returning annotation available for "+"
+lsc-bignum.adb:270:17: warning: assuming "*" always returns
+lsc-bignum.adb:270:17: warning: no returning annotation available for "*"
+lsc-bignum.adb:270:27: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:270:27: warning: no returning annotation available for "From_Word32"
 lsc-bignum.adb:272:07: info: initialization of "Temp" proved
 lsc-bignum.adb:274:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:277:13: info: loop invariant preservation proved (Z3: 2 VC)
 lsc-bignum.adb:277:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, I - A_First) + Num_Of_Big_Int (B, B_First, I - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, I - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry) + Base * Math_Int... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:277:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:277:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:277:51: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:277:58: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:277:58: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:277:69: warning: assuming "+" always returns
+lsc-bignum.adb:277:69: warning: no returning annotation available for "+"
+lsc-bignum.adb:278:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:278:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:278:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:278:43: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:278:54: warning: assuming "*" always returns
+lsc-bignum.adb:278:54: warning: no returning annotation available for "*"
+lsc-bignum.adb:279:21: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:279:21: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:279:38: warning: assuming "+" always returns
+lsc-bignum.adb:279:38: warning: no returning annotation available for "+"
+lsc-bignum.adb:280:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:280:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:280:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:280:43: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:280:54: warning: assuming "*" always returns
+lsc-bignum.adb:280:54: warning: no returning annotation available for "*"
+lsc-bignum.adb:281:21: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:281:21: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:281:38: warning: assuming "+" always returns
+lsc-bignum.adb:281:38: warning: no returning annotation available for "+"
+lsc-bignum.adb:282:21: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:282:21: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:282:54: warning: assuming "+" always returns
+lsc-bignum.adb:282:54: warning: no returning annotation available for "+"
+lsc-bignum.adb:283:18: warning: assuming "*" always returns
+lsc-bignum.adb:283:18: warning: no returning annotation available for "*"
+lsc-bignum.adb:283:28: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:283:28: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:283:61: warning: assuming "=" always returns
+lsc-bignum.adb:283:61: warning: no returning annotation available for "="
+lsc-bignum.adb:284:13: warning: assuming "Num_Of_Big_Int" always returns
+lsc-bignum.adb:284:13: warning: no returning annotation available for "Num_Of_Big_Int"
 lsc-bignum.adb:284:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:284:43: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:284:54: warning: assuming "+" always returns
+lsc-bignum.adb:284:54: warning: no returning annotation available for "+"
+lsc-bignum.adb:285:18: warning: assuming "**" always returns
+lsc-bignum.adb:285:18: warning: no returning annotation available for "**"
 lsc-bignum.adb:285:24: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:285:24: info: range check proved (Z3: 4 VC)
+lsc-bignum.adb:285:35: warning: assuming "*" always returns
+lsc-bignum.adb:285:35: warning: no returning annotation available for "*"
+lsc-bignum.adb:285:46: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:285:46: warning: no returning annotation available for "From_Word32"
+lsc-bignum.adb:285:68: warning: assuming "+" always returns
+lsc-bignum.adb:285:68: warning: no returning annotation available for "+"
+lsc-bignum.adb:286:20: warning: assuming "*" always returns
+lsc-bignum.adb:286:20: warning: no returning annotation available for "*"
+lsc-bignum.adb:286:30: warning: assuming "From_Word32" always returns
+lsc-bignum.adb:286:30: warning: no returning annotation available for "From_Word32"
 lsc-bignum.adb:287:22: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:287:53: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:288:20: info: index check proved (Z3: 4 VC)
@@ -1382,7 +1566,7 @@ lsc-bignum.ads:74:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:74:60: info: justified that "A" might not be initialized
 lsc-bignum.ads:74:63: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:83:08: info: flow dependencies proved
-lsc-bignum.ads:90:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:90:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:90:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:92:10: info: postcondition proved (Trivial: 2 VC; Z3: 2 VC)
 lsc-bignum.ads:92:19: info: range check proved (Z3: 2 VC)
@@ -1398,7 +1582,7 @@ lsc-bignum.ads:96:20: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:96:32: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:104:07: info: initialization of "Carry" proved
 lsc-bignum.ads:106:08: info: flow dependencies proved
-lsc-bignum.ads:112:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:112:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:112:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:115:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.ads:115:10: warning: assuming "Num_Of_Big_Int" always returns
@@ -1431,7 +1615,7 @@ lsc-bignum.ads:118:41: warning: assuming "*" always returns
 lsc-bignum.ads:118:41: warning: no returning annotation available for "*"
 lsc-bignum.ads:118:43: warning: assuming "Num_Of_Boolean" always returns
 lsc-bignum.ads:118:43: warning: no returning annotation available for "Num_Of_Boolean"
-lsc-bignum.ads:132:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:132:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:132:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:135:10: medium: postcondition might fail
 lsc-bignum.ads:136:11: warning: assuming "Num_Of_Big_Int" always returns
@@ -1448,11 +1632,11 @@ lsc-bignum.ads:137:56: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:137:56: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:140:07: info: initialization of "A" proved
 lsc-bignum.ads:151:08: info: flow dependencies proved
-lsc-bignum.ads:158:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:158:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and B_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:158:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:160:18: medium: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:160:18: high: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and C_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:160:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:162:18: medium: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:162:18: high: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and M_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:162:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:163:10: warning: assuming "Num_Of_Big_Int" always returns
 lsc-bignum.ads:163:10: warning: no returning annotation available for "Num_Of_Big_Int"
@@ -1523,15 +1707,15 @@ lsc-bignum.ads:190:07: info: initialization of "Aux2" proved
 lsc-bignum.ads:192:07: info: initialization of "Aux3" proved
 lsc-bignum.ads:194:07: info: initialization of "Aux4" proved
 lsc-bignum.ads:200:08: info: flow dependencies proved
-lsc-bignum.ads:224:18: medium: overflow check might fail, cannot prove upper bound for X_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:224:18: high: overflow check might fail, cannot prove upper bound for X_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and X_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:224:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:229:18: medium: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:229:18: high: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and M_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:229:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:231:21: medium: overflow check might fail, cannot prove upper bound for Aux1_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:231:21: high: overflow check might fail, cannot prove upper bound for Aux1_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and Aux1_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:231:31: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:233:21: medium: overflow check might fail, cannot prove upper bound for Aux2_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:233:21: high: overflow check might fail, cannot prove upper bound for Aux2_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and Aux2_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:233:31: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:235:21: medium: overflow check might fail, cannot prove upper bound for Aux3_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:235:21: high: overflow check might fail, cannot prove upper bound for Aux3_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and Aux3_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:235:31: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:237:21: medium: overflow check might fail, cannot prove upper bound for Aux4_First + (2 ** K * (A_Last - A_First + 1) - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:237:26: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
