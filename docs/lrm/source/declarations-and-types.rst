@@ -798,7 +798,14 @@ X.Link is poisoned by the assignment to Y.]
    attribute, the known extracted path of it prefix is marked as Moved
    after the move operation.
 
-2. A name whose type has subcomponents of a [named] access-to-variable type
+2. A name which is used as an actual parameter of an anonymous access-to-object
+   type shall either be syntactically null, or shall have a root object which
+   is either a stand-alone object or a formal parameter. In addition, if the
+   parameter type is an access-to-variable type and the name is not
+   syntactically null, it shall not involve any traversal function calls from
+   its root object and the path extracted from the name shall be unrestricted.
+
+3. A name whose type has subcomponents of a [named] access-to-variable type
    which is used as the target of an assignment or as an actual
    parameter of mode **out** or **in out** shall have a root object which
    is either a stand-alone object or a formal parameter, and it shall not
@@ -821,7 +828,7 @@ X.Link is poisoned by the assignment to Y.]
    actual parameter of mode **out** becomes unrestricted.]
 
 
-3. If the target of an assignment operation is an object of an anonymous
+4. If the target of an assignment operation is an object of an anonymous
    access-to-object type (including copy-in for a parameter), then the source
    shall be a markable expression.
 
@@ -829,7 +836,7 @@ X.Link is poisoned by the assignment to Y.]
    named access type.]
 
 
-4. A declaration of a stand-alone object of an anonymous access type shall have
+5. A declaration of a stand-alone object of an anonymous access type shall have
    an explicit initial value and shall occur immediately within a subprogram
    body, an entry body, or a block statement.
 
@@ -840,7 +847,7 @@ X.Link is poisoned by the assignment to Y.]
    declarations.]
 
 
-5. A return statement that applies to a traversal function that has an
+6. A return statement that applies to a traversal function that has an
    anonymous access-to-constant (respectively, access-to-variable) result type,
    shall return either the literal null or a markable expression whose root
    object is a direct or indirect observer (respectively, borrower) of the
@@ -849,7 +856,7 @@ X.Link is poisoned by the assignment to Y.]
    or a result which is reachable from the traversed parameter.]
 
 
-6. If a name whose type has subcomponents of a named access-to-variable type
+7. If a name whose type has subcomponents of a named access-to-variable type
    is a non-traversal function call or an allocator, it shall only occur
    in an acceptable context, namely:
 
@@ -874,7 +881,7 @@ X.Link is poisoned by the assignment to Y.]
      such contracts and assertions are executed at runtime.]
 
 
-7. For an assignment statement where the target is a stand-alone object of an
+8. For an assignment statement where the target is a stand-alone object of an
    anonymous access-to-object type, the source shall be a markable expression
    whose root object is the target object itself. In addition:
 
@@ -888,53 +895,53 @@ X.Link is poisoned by the assignment to Y.]
      unrestricted.
 
 
-8. At the point of a read of an object, or of passing an object as an actual
+9. At the point of a read of an object, or of passing an object as an actual
    parameter of mode **in** or **in out**, or of a call where the object is a
    global input of the callee, if the object is a markable expression, then its
    known extracted path shall be observable.
 
-9. At the point of a return statement, or at any other point where a call
-   completes normally (e.g., the end of a procedure body), there shall be
-   no paths marked as Moved with any inputs or outputs of the callee being
-   returned from as a root. In the case
-   of an input of the callee which is not also an output, this rule may be
-   enforced at the point of the move operation (because there is no way for the
-   Moved marker to be removed from the input), even in the case of a
-   subprogram which never returns.
+10. At the point of a return statement, or at any other point where a call
+    completes normally (e.g., the end of a procedure body), there shall be
+    no paths marked as Moved with any inputs or outputs of the callee being
+    returned from as a root. In the case
+    of an input of the callee which is not also an output, this rule may be
+    enforced at the point of the move operation (because there is no way for the
+    Moved marker to be removed from the input), even in the case of a
+    subprogram which never returns.
 
-   Similarly, at the end of the elaboration of both the declaration and of the
-   body of a package, there shall be no paths marked as Moved whose root
-   is denoted by the name of
-   an initialization_item of the package's Initializes aspect or by an input
-   occuring in the input_list of such an initialization_item.
+    Similarly, at the end of the elaboration of both the declaration and of the
+    body of a package, there shall be no paths marked as Moved whose root
+    is denoted by the name of
+    an initialization_item of the package's Initializes aspect or by an input
+    occuring in the input_list of such an initialization_item.
 
-   At the end of the scope of an object of an anonymous access-to-variable
-   type, or at any other point where the scope of an object of an anonymous
-   access-to-variable type is exited normally, there shall be no paths marked
-   as Moved with the object as a root.
-
-
-10. For a borrowing operation, the borrowed path shall be unrestricted.
+    At the end of the scope of an object of an anonymous access-to-variable
+    type, or at any other point where the scope of an object of an anonymous
+    access-to-variable type is exited normally, there shall be no paths marked
+    as Moved with the object as a root.
 
 
-11. At the point of a call, no paths with any global output of the callee
+11. For a borrowing operation, the borrowed path shall be unrestricted.
+
+
+12. At the point of a call, no paths with any global output of the callee
     (i.e., an output other than a parameter of the
     callee or a function result) as a root shall be marked as
     Borrowed or Observed, and all such paths which are marked as Moved shall
     contain dereferences.
 
 
-12. The prefix of an Old or Loop_Entry attribute reference shall not be of an
+13. The prefix of an Old or Loop_Entry attribute reference shall not be of an
     anonymous access-to-object type nor of a type with subcomponents of a named
     access-to-variable type unless the prefix is a call to a non-traversal
     function.
 
 
-13. A derived tagged type shall not have a component of a named
+14. A derived tagged type shall not have a component of a named
     access-to-variable type.
 
 
-14. If the designated type of a named nonderived access type is incomplete
+15. If the designated type of a named nonderived access type is incomplete
     at the point of the access type's declaration then the incomplete
     type declaration and its completion shall occur in the same
     declaration list. [This implies that the incomplete type shall not be
@@ -943,22 +950,22 @@ X.Link is poisoned by the assignment to Y.]
     in that private part.]
 
 
-15. A path rooted at an effectively volatile object shall not be
+16. A path rooted at an effectively volatile object shall not be
     moved, borrowed, or observed.
     [This rule is meant to avoid introducing aliases
     between volatile variables used by another task or thread. Borrowers can
     also break the invariant on the borrowed object for the time of the
     borrow.]
 
-16. Objects of an anonymous access-to-object types shall not be converted
+17. Objects of an anonymous access-to-object types shall not be converted
     (implicitly or explicitly) to a named access type.
 
-17. Evaluation of equality operators, and membership tests where one or more of
+18. Evaluation of equality operators, and membership tests where one or more of
     the choices are expressions, shall not include directly or indirectly calls
     to the primitive equality on access types, unless one of the operands is
     syntactically null.
 
-18. Instances of Unchecked_Deallocation shall not have a general access type
+19. Instances of Unchecked_Deallocation shall not have a general access type
     as a parameter.
 
 .. container:: heading
@@ -968,7 +975,7 @@ X.Link is poisoned by the assignment to Y.]
 .. index:: memory leak; for objects
            deallocation, Unchecked_Deallocation
 
-19. When an object R which does not have an anonymous access-to-object type
+20. When an object R which does not have an anonymous access-to-object type
     is finalized or when it is passed as an actual parameter
     of mode **out**, all extensions of the path extracted from R which denote
     an object of a pool-specific access type and
@@ -988,7 +995,7 @@ X.Link is poisoned by the assignment to Y.]
     [Redundant:This rule effectively forbids the use of allocators and
     calls to allocating functions inside contracts or assertions.]
 
-20. Allocators and conversions from a pool-specific access type to a named
+21. Allocators and conversions from a pool-specific access type to a named
     access-to-constant type or a general access-to-variable type shall only
     occur at library level.
 
@@ -1001,7 +1008,7 @@ X.Link is poisoned by the assignment to Y.]
     reference to an allocated object.]
 
 
-21. When converting from a [named or anonymous] access-to-subprogram type
+22. When converting from a [named or anonymous] access-to-subprogram type
     to another, if the converted expression is not null,
     a verification condition is introduced to ensure that the
     precondition of the source of the conversion is implied by the

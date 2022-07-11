@@ -2946,7 +2946,10 @@ package body Gnat2Why.Expr is
                     (if Is_Self and then Is_External_Call (Call)
                      then Prefix (SPARK_Atree.Name (Call))
                      else Actual),
-                  Need_Store     => Need_Store,
+                  Need_Store     =>
+                    Need_Store and then not Is_Null_Owning_Access (Actual),
+                    --  If the actual is NULL, do not attempt to store the
+                    --  value back after the call.
                   No_Pred_Checks =>
                     Is_Self or else Eq_Base
                       (Type_Of_Node (Actual), Type_Of_Node (Formal)),

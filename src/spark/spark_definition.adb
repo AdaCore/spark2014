@@ -574,7 +574,7 @@ package body SPARK_Definition is
    --  Start of processing for Check_Source_Of_Borrow_Or_Observe
 
    begin
-      --  SPARK RM 3.10(3): If the target of an assignment operation is an
+      --  SPARK RM 3.10(4): If the target of an assignment operation is an
       --  object of an anonymous access-to-object type (including copy-in for
       --  a parameter), then the source shall be a name denoting a part of a
       --  stand-alone object, a part of a parameter, or a call to a traversal
@@ -587,7 +587,7 @@ package body SPARK_Definition is
              else "borrow or observe of an expression which is not part of "
                   & "stand-alone object or parameter"),
             Expr,
-            SRM_Reference => "SPARK RM 3.10(3))");
+            SRM_Reference => "SPARK RM 3.10(4))");
 
       --  The root object should not be effectively volatile
 
@@ -1553,7 +1553,7 @@ package body SPARK_Definition is
                   Mark_Violation ("assignment into an access-to-constant part"
                                   & " of an object", Var);
 
-               --  SPARK RM 3.10(7): If the type of the target is an anonymous
+               --  SPARK RM 3.10(8): If the type of the target is an anonymous
                --  access-to-variable type (an owning access type), the source
                --  shall be an owning access object [..] whose root object is
                --  the target object itself.
@@ -1582,7 +1582,7 @@ package body SPARK_Definition is
                         & " expression which does not have the left-hand side"
                         & " as a root",
                         Expr,
-                        SRM_Reference => "SPARK RM 3.10(7)");
+                        SRM_Reference => "SPARK RM 3.10(8)");
                   end if;
 
                --  If we are performing a move operation, check that we are
@@ -3777,8 +3777,10 @@ package body SPARK_Definition is
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then not Is_Function_Or_Function_Type (E)
          then
-            Check_Source_Of_Borrow_Or_Observe
-              (Actual, Is_Access_Constant (Etype (Formal)));
+            if not Is_Null_Owning_Access (Actual) then
+               Check_Source_Of_Borrow_Or_Observe
+                 (Actual, Is_Access_Constant (Etype (Formal)));
+            end if;
 
          --  OUT and IN OUT parameters of an access type are considered to be
          --  moved.
@@ -3823,8 +3825,10 @@ package body SPARK_Definition is
                  or else
                    No (Get_Root_Object (Actual, Through_Traversal => False))
                then
-                  Mark_Violation
-                    ("expression as " & Mode, Actual);
+                  if not Is_Null_Owning_Access (Actual) then
+                     Mark_Violation
+                       ("expression as " & Mode, Actual);
+                  end if;
 
                --  The root object of Actual should not be a constant objects
 
@@ -4874,7 +4878,7 @@ package body SPARK_Definition is
          --  A declaration of a stand-alone object of an anonymous access
          --  type shall have an explicit initial value and shall occur
          --  immediately within a subprogram body, an entry body, or a
-         --  block statement (SPARK RM 3.10(4)).
+         --  block statement (SPARK RM 3.10(5)).
 
          if Nkind (N) = N_Object_Declaration
            and then Is_Anonymous_Access_Object_Type (T)
@@ -4886,14 +4890,14 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("object of anonymous access not declared "
                      & "immediately within a subprogram, entry or block",
-                     N, SRM_Reference => "SPARK RM 3.10(4)");
+                     N, SRM_Reference => "SPARK RM 3.10(5)");
                end if;
             end;
 
             if No (Expr) then
                Mark_Violation
                  ("uninitialized object of anonymous access type",
-                  N, SRM_Reference => "SPARK RM 3.10(4)");
+                  N, SRM_Reference => "SPARK RM 3.10(5)");
             end if;
          end if;
 
@@ -7386,13 +7390,13 @@ package body SPARK_Definition is
       Ret_Obj : constant Constant_Or_Variable_Kind_Id := Get_Return_Object (N);
 
    begin
-      --  SPARK RM 3.10(5): return statement of traversal function
+      --  SPARK RM 3.10(6): return statement of traversal function
 
       if Is_Traversal_Function (Subp) then
          Mark_Violation
            ("extended return applying to a traversal function",
             N,
-            SRM_Reference => "SPARK RM 3.10(5)");
+            SRM_Reference => "SPARK RM 3.10(6)");
       end if;
 
       Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));

@@ -1,4 +1,4 @@
-sub.adb:5:07: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+sub.adb:5:07: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 sub.adb:5:07: error: violation of pragma SPARK_Mode at line 1
 sub.adb:7:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 sub.adb:7:07: error: violation of pragma SPARK_Mode at line 1
@@ -8,7 +8,7 @@ sub.adb:8:07: error: "B" is not allowed in SPARK (due to uninitialized object of
 sub.adb:8:07: error: violation of pragma SPARK_Mode at line 1
 sub.adb:9:14: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 sub.adb:9:14: error: violation of pragma SPARK_Mode at line 1
-sub.adb:16:10: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+sub.adb:16:10: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 sub.adb:16:10: error: violation of pragma SPARK_Mode at line 1
 sub.adb:18:10: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 sub.adb:18:10: error: violation of pragma SPARK_Mode at line 1

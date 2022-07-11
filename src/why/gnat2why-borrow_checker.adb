@@ -1274,7 +1274,7 @@ package body Gnat2Why.Borrow_Checker is
             Target_Root := Get_Root_Object (Target);
          end if;
 
-         --  SPARK RM 3.10(7): For an assignment statement where the target is
+         --  SPARK RM 3.10(8): For an assignment statement where the target is
          --  a stand-alone object of an anonymous access-to-object type.
 
          pragma Assert (Present (Target_Root));
@@ -3795,7 +3795,7 @@ package body Gnat2Why.Borrow_Checker is
                        Etype (Expr);
 
                   begin
-                     --  SPARK RM 3.10(5): A return statement that applies
+                     --  SPARK RM 3.10(6): A return statement that applies
                      --  to a traversal function that has an anonymous
                      --  access-to-constant (respectively, access-to-variable)
                      --  result type, shall return either the literal null

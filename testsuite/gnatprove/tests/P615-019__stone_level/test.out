@@ -1,4 +1,4 @@
-violations.adb:12:04: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+violations.adb:12:04: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(5))
 violations.adb:12:04: error: violation of pragma SPARK_Mode at test.adc:1
 violations.adb:18:07: error: "Data3" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 violations.adb:18:07: error: violation of pragma SPARK_Mode at test.adc:1

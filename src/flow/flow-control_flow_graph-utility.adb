@@ -403,7 +403,13 @@ package body Flow.Control_Flow_Graph.Utility is
 
             A.Variables_Explicitly_Used := A.Variables_Used;
          end;
-      else
+
+      --  For a "null" appearing as actual parameter of mode IN where the
+      --  formal parameter is of an owning access type do nothing. Such a
+      --  parameter doesn't define nor use any variables.
+
+      elsif not Is_Null_Owning_Access (Actual) then
+
          declare
             Partial    : Boolean;
             Unused_Vc  : Boolean;

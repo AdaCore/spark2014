@@ -1,9 +1,9 @@
-acc.adb:3:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+acc.adb:3:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 acc.adb:3:04: error: violation of pragma SPARK_Mode at line 1
 acc.adb:5:28: error: uninitialized allocator without default initialization is not allowed in SPARK
 acc.adb:5:28: error: violation of pragma SPARK_Mode at line 1
 acc.adb:6:04: warning: analyzing unreferenced procedure "Foo"
-acc.adb:7:06: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+acc.adb:7:06: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 acc.adb:7:06: error: violation of pragma SPARK_Mode at line 1
 acc.adb:9:35: error: uninitialized allocator without default initialization is not allowed in SPARK
 acc.adb:9:35: error: violation of pragma SPARK_Mode at line 1
