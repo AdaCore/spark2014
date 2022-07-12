@@ -631,6 +631,17 @@ of a program:
   check that each is either not applicable to the project, or its effects are
   understood and cannot lead to unsound analysis.
 
+* If there are overriding operations called using a dispatching call, then
+  GNATprove assumes that the overriding operation does not have any adverse
+  tasking-related effects. In particular, GNATprove assumes that the overriding
+  operation:
+
+  * is not potentially blocking,
+  * does not call protected entries,
+  * does not suspend on suspection objects,
+  * does not access unsynchronised global objects,
+  * does not lock protected objects with calls to protected procedures.
+
 
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
