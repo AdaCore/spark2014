@@ -1,0 +1,4 @@
+prove_all:
+  steps: 1
+  counterexample: False
+  prover: ["cvc5"]

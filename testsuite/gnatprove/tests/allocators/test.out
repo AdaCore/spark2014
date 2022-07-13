@@ -1,17 +1,24 @@
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_allocator.ads:43
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_allocator.ads:43
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:47
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:32
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at simple_allocator.ads:26
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:43
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at list_allocator.ads:43
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at list_allocator.ads:43
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_allocator.ads:43
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_allocator.ads:43
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at list_mod_allocator.ads:28
 list_allocator.adb:27:39: info: index check proved (CVC5: 2 VC)
 list_allocator.adb:29:39: info: index check proved (CVC5: 2 VC)
 list_allocator.adb:41:11: info: predicate check proved (Trivial: 1 VC)

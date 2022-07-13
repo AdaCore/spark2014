@@ -7,9 +7,6 @@ Require Import ClassicalEpsilon.
 Require Import ZArith.
 Require Import BV_Gen.
 
-(* Why3 assumption *)
-Definition unit := unit.
-
 (* range_pred and modulus can have arbitrary values in this realization,
    provided the range is inhabited *)
 
@@ -53,12 +50,12 @@ exact BV_Gen.t.
 Defined.
 
 (* Why3 goal *)
-Definition to_rep: t -> rep_type.
+Definition to_rep : t -> rep_type.
 intros [r _]; exact r.
 Defined.
 
 (* Why3 goal *)
-Definition of_rep: rep_type -> t.
+Definition of_rep : rep_type -> t.
 intros r.
 destruct (range_pred_dec (urem r modulus)) as [P | P].
 apply (exist (fun x => range_pred x /\ (ult x modulus))
@@ -71,7 +68,7 @@ apply range_inhabited.
 Defined.
 
 (* Why3 goal *)
-Definition in_range: rep_type -> Prop.
+Definition in_range : rep_type -> Prop.
 exact range_pred.
 Defined.
 
@@ -101,35 +98,36 @@ auto.
 Qed.
 
 (* Why3 goal *)
-Lemma range_axiom : forall (x:t), (in_range (to_rep x)).
+Lemma range_axiom : forall (x:t), in_range (to_rep x).
 intros [r [P H]]; unfold to_rep; auto.
 Qed.
 
 (* Why3 goal *)
-Definition urem: rep_type -> rep_type -> rep_type.
+Definition urem : rep_type -> rep_type -> rep_type.
 exact BV_Gen.urem.
 Defined.
 
 (* Why3 goal *)
-Definition attr__ATTRIBUTE_MODULUS: rep_type.
+Definition attr__ATTRIBUTE_MODULUS : rep_type.
 exact modulus.
 Defined.
 
 (* Why3 goal *)
-Definition rep_to_int: rep_type -> Z.
+Definition rep_to_int : rep_type -> Numbers.BinNums.Z.
 exact to_uint.
 Defined.
 
 (* Why3 goal *)
-Definition in_range_int: Z -> Prop.
+Definition in_range_int : Numbers.BinNums.Z -> Prop.
 intros r.
 exact (in_range (of_int (r))).
 Defined.
 
 (* Why3 goal *)
-Lemma coerce_axiom : forall (x:rep_type),
-                      let y := (urem x attr__ATTRIBUTE_MODULUS) in
-                      ((in_range y) -> ((to_rep (of_rep x)) = y)).
+Lemma coerce_axiom :
+  forall (x:rep_type),
+  let y := urem x attr__ATTRIBUTE_MODULUS in
+  in_range y -> ((to_rep (of_rep x)) = y).
 unfold urem, attr__ATTRIBUTE_MODULUS, BV_Gen.urem; intros r.
 rewrite (mod1_is_mod _ _ modulus_pos).
 intros H.
@@ -140,10 +138,10 @@ unfold BV_Gen.urem; rewrite (mod1_is_mod _ _ modulus_pos); auto.
 Qed.
 
 (* Why3 assumption *)
-Definition to_int (x:t): Z := (rep_to_int (to_rep x)).
+Definition to_int (x:t) : Numbers.BinNums.Z := rep_to_int (to_rep x).
 
 (* Why3 goal *)
-Lemma range_int_axiom : forall (x:t), (in_range_int (to_int x)).
+Lemma range_int_axiom : forall (x:t), in_range_int (to_int x).
 intros [r [P H]]; unfold in_range_int, to_int, rep_to_int, to_rep.
 rewrite of_int_to_uint; auto.
 Qed.

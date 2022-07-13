@@ -4,6 +4,9 @@ simple1_zstspark.adb:42:21: warning: unused assignment
 simple1_zstspark.adb:103:22: info: assertion proved (CVC5: 1 VC)
 simple1_zstspark.adb:106:22: info: assertion proved (CVC5: 1 VC)
 simple1_zstspark.adb:107:22: info: assertion proved (CVC5: 1 VC)
+simple1_zstspark.adb:107:43: warning: do you really mean 18446744073709551608 when writing -8 ?
+simple1_zstspark.adb:107:43: warning: if you do, use qualification to avoid this warning
+simple1_zstspark.adb:107:43: warning: negative literal of modular type is in fact positive
 simple1_zstspark.adb:108:22: info: assertion proved (CVC5: 1 VC)
 simple1_zstspark.ads:13:06: info: data dependencies proved
 simple1_zstspark.ads:14:40: warning: "RDI" is not modified, could be INPUT

@@ -5,7 +5,9 @@ is
    function Shift_Right (Value : in Double_Octet;
                          Count : in Natural) return Double_Octet
       with Import     => True,
-           Convention => Intrinsic;
+           Convention => Intrinsic,
+           Global     => null,
+           Annotate   => (GNATprove, Always_Return);
 
    procedure Split16 (Value : in  Double_Octet;
                       MSB   : out Octet;

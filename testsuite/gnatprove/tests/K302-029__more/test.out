@@ -1,3 +1,4 @@
+pack.adb:4:07: info: no contextual analysis of "P3" (multiple returns)
 pack.adb:4:17: warning: subprogram "P3" has no effect
 pack.adb:6:15: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: subprogram at line 4 should mention Y in a precondition]
 pack.adb:10:07: warning: analyzing unreferenced procedure "P0_Ok"

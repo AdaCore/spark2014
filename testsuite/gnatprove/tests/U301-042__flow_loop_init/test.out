@@ -1,2 +1,7 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:13:27: info: unrolling loop
+p.adb:17:10: info: no contextual analysis of "Set" (body not seen yet)
+p.adb:17:10: warning: assuming "Set" always returns
+p.adb:17:10: warning: assuming "Set" has no effect on global items
+p.adb:17:10: warning: no Global contract available for "Set"
+p.adb:17:10: warning: no returning annotation available for "Set"

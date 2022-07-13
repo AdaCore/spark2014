@@ -8,6 +8,7 @@ outer.adb:18:17: info: add a contract to analyze it separately from calling cont
 outer.adb:18:17: info: local subprogram "Init" only analyzed in the context of calls
 outer.adb:21:10: info: initialization of "Tmp" proved
 outer.adb:21:10: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
+outer.adb:29:07: info: analyzing call to "Init" in context
 outer.ads:2:14: warning: subprogram "P" has no effect
 p.adb:1:14: info: initialization of "X" proved
 p.adb:3:29: info: initialization of "Nested.State" proved

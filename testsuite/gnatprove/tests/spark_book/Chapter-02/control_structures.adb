@@ -4,7 +4,9 @@ with Ada.Text_IO;
 with Ada.Integer_Text_IO;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 
-procedure Control_Structures is
+procedure Control_Structures with
+  Annotate => (GNATprove, Might_Not_Return)
+is
 
    subtype Uppercase is Character range 'A' .. 'Z';
 

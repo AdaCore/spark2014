@@ -7,6 +7,8 @@ call_sample2.adb:16:14: info: add a contract to analyze it separately from calli
 call_sample2.adb:16:14: info: local subprogram "Test_New" only analyzed in the context of calls
 call_sample2.adb:16:14: warning: subprogram "Test_New" has no effect
 call_sample2.adb:23:07: info: precondition proved (CVC5: 4 VC), in call inlined at call_sample2.adb:27
+call_sample2.adb:27:04: info: analyzing call to "Test_New" in context
+call_sample2.adb:28:04: info: analyzing call to "Test_Original" in context
 original_sample.adb:9:07: info: initialization of "D" proved
 original_sample.adb:10:07: info: initialization of "T_Fp" proved
 original_sample.adb:11:07: info: initialization of "T_Pp" proved

@@ -115,7 +115,7 @@ cannot lead to overflow. Unary negation is checked for possible non-nullity of
 its argument, which leads to overflow. The predecessor attribute ``'Pred`` and
 successor attribute ``'Succ`` are also checked for possible overflows.
 
-.. index:: Annotate; Iterable
+.. index:: Annotate; Iterable; Iterable_For_Proof
 
 Customize Quantification over Types with the Iterable Aspect
 ------------------------------------------------------------
@@ -783,3 +783,53 @@ proved correct (no assumption is used).
       pragma Assert (S1 (1 .. 3) = S2 (1 .. 3));
       pragma Assert (not Real_Eq (S1 (1 .. 3), S2 (1 .. 3)));
    end Test;
+
+Annotating a Private Type with Ownership
+----------------------------------------
+
+Private types whose full view is not in |SPARK| can be annotated with a
+``pragma Annotate (GNATprove, Ownership, ...)``. Such a type is handled by
+|GNATprove| in accordance to the :ref:`Memory Ownership Policy` of |SPARK|.
+For example, the type ``T`` declared in the procedure ``Simple_Ownership``
+below has an ownership annotation. As a result, |GNATprove| will reject the
+second call to ``Read`` in the body of ``Simple_Ownership``, because the value
+designated by ``X`` has been moved by the assignment to ``Y``.
+
+.. literalinclude:: /examples/ug__ownership_annotations/simple_ownership.adb
+   :language: ada
+   :linenos:
+
+In addition, it is possible to state that a type needs reclamation with a
+``pragma Annotate (GNATprove, Onwership, "Needs_Reclamation", ...)``. In
+this case, |GNATprove| emits checks to ensure that the resource is not leaked.
+For these checks to be handled precisely, the user should annotate a function
+taking a value of this type as a parameter and returning a boolean
+with a ``pragma Annotate (GNATprove, Onwership, "Needs_Reclamation", ...)`` or
+``pragma Annotate (GNATprove, Onwership, "Is_Reclaimed", ...)``. This
+function will be used to check that the resource cannot be leaked. A function
+annotated with ``"Needs_Reclamation"`` shall return True when its input holds
+some resource while a function annotated with ``"Is_Reclaimed"`` shall return
+True when its input has already been reclaimed. Only one such function shall
+be provided for a given type. Two examples of use are given below.
+
+.. literalinclude:: /examples/ug__ownership_annotations/hidden_pointers.ads
+   :language: ada
+   :linenos:
+
+The package ``Hidden_Pointers`` defines a type ``Pool_Specific_Access`` which
+is really a pool specific access type. The ownership annotation on
+``Pool_Specific_Access`` instructs |GNATprove| that objects of this type
+should abide by the :ref:`Memory Ownership Policy` of SPARK. It also states
+that the type needs reclamation when a value is finalized. Because of the
+annotation on the ``Is_Null`` function, |GNATprove| will attempt to prove that
+``Is_Null`` returns True when an object of type ``Pool_Specific_Access`` is
+finalized unless it was moved.
+
+The mechanism can also be used for resources which are not linked to memory
+management. For example, the package ``Text_IO`` defines a limited type
+``File_Descriptor`` and uses ownership annotations to force |GNATprove| to
+verify that all file descriptors are closed before being finalized.
+
+.. literalinclude:: /examples/ug__ownership_annotations/text_io.ads
+   :language: ada
+   :linenos:

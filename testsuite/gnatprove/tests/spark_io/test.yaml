@@ -1,4 +1,2 @@
-prove_all:
-  counterexample: False
 large: True
 timeout: 1000

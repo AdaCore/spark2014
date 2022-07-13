@@ -1,6 +1,30 @@
 bad_access.adb:4:07: error: local borrow of an expression with predicates on subcomponents of deep type is not yet supported
 bad_access.adb:12:04: info: no contextual analysis of "Do_Something" (multiple returns)
 bad_access.adb:14:10: info: no contextual analysis of "Rand" (body not seen yet)
+bad_access.adb:14:10: warning: assuming "Rand" always returns
+bad_access.adb:14:10: warning: assuming "Rand" has no effect on global items
+bad_access.adb:14:10: warning: no Global contract available for "Rand"
+bad_access.adb:14:10: warning: no returning annotation available for "Rand"
+bad_access.adb:20:13: warning: assuming "Rand" always returns
+bad_access.adb:20:13: warning: assuming "Rand" has no effect on global items
+bad_access.adb:20:13: warning: no Global contract available for "Rand"
+bad_access.adb:20:13: warning: no returning annotation available for "Rand"
+bad_access.adb:28:13: warning: assuming "Rand" always returns
+bad_access.adb:28:13: warning: assuming "Rand" has no effect on global items
+bad_access.adb:28:13: warning: no Global contract available for "Rand"
+bad_access.adb:28:13: warning: no returning annotation available for "Rand"
+bad_access.adb:39:13: warning: assuming "Rand" always returns
+bad_access.adb:39:13: warning: assuming "Rand" has no effect on global items
+bad_access.adb:39:13: warning: no Global contract available for "Rand"
+bad_access.adb:39:13: warning: no returning annotation available for "Rand"
+bad_access.adb:51:13: warning: assuming "Rand" always returns
+bad_access.adb:51:13: warning: assuming "Rand" has no effect on global items
+bad_access.adb:51:13: warning: no Global contract available for "Rand"
+bad_access.adb:51:13: warning: no returning annotation available for "Rand"
+bad_access.adb:69:13: warning: assuming "Rand" always returns
+bad_access.adb:69:13: warning: assuming "Rand" has no effect on global items
+bad_access.adb:69:13: warning: no Global contract available for "Rand"
+bad_access.adb:69:13: warning: no returning annotation available for "Rand"
 bad_access.adb:95:18: error: "Id" is not allowed in SPARK
 bad_access.adb:95:18: error: violation of aspect SPARK_Mode at line 2
 bad_array_conv.adb:7:19: error: conversion between array types with modular and non-modular index types is not yet supported
@@ -35,16 +59,16 @@ bad_relaxed_init.ads:23:07: error: component "F" of tagged type "Root" with rela
 bad_relaxed_init.ads:23:07: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:26:09: error: tagged type with initialization by proof is not yet supported
 bad_relaxed_init.ads:32:09: error: access type with initialization by proof is not yet supported
-case_prefix.adb:5:04: medium: memory leak might occur at end of scope
+case_prefix.adb:5:04: medium: resource or memory leak might occur at end of scope
 case_prefix.adb:5:29: info: null exclusion check proved (CVC5: 1 VC)
-case_prefix.adb:6:04: medium: memory leak might occur at end of scope
+case_prefix.adb:6:04: medium: resource or memory leak might occur at end of scope
 case_prefix.adb:6:29: info: null exclusion check proved (CVC5: 1 VC)
-case_prefix.adb:7:04: medium: memory leak might occur at end of scope
+case_prefix.adb:7:04: medium: resource or memory leak might occur at end of scope
 case_prefix.adb:7:29: info: null exclusion check proved (CVC5: 1 VC)
 case_prefix.adb:13:28: info: pointer dereference check proved (CVC5: 1 VC)
 case_prefix.adb:15:19: info: assertion proved (CVC5: 1 VC)
 case_prefix.adb:16:19: info: assertion proved (CVC5: 1 VC)
-case_prefix.adb:16:28: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+case_prefix.adb:16:28: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 case_prefix.adb:16:45: info: pointer dereference check proved (CVC5: 1 VC)
 ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous access type)
 ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous access type)

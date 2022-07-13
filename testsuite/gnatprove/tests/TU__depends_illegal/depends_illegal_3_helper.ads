@@ -6,9 +6,10 @@ is
    procedure Implicit_Depends (Par1 :        Integer;
                                Par2 :    out Integer;
                                Par3 : in out Integer)
-     with Global => (Input  => G_Var1,
-                     Output => G_Var2,
-                     In_Out => G_Var3);
+     with Global   => (Input  => G_Var1,
+                       Output => G_Var2,
+                       In_Out => G_Var3),
+          Annotate => (GNATprove, Always_Return);
    --  Since the body of Implicit_Depends will not be provided, callers of
    --  this function will access an implicit depends which will be as follows:
    --     Depends => ((Par2,

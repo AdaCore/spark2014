@@ -1,1 +1,2 @@
 complex_elsif.adb:1:11: warning: subprogram "Complex_Elsif" has no effect
+complex_elsif.adb:12:10: info: no contextual analysis of "F" (in while loop condition)

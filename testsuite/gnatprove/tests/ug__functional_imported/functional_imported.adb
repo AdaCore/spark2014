@@ -25,6 +25,7 @@ is
      Import,
      Convention => C,
      Global => (In_Out => (Max, Snd)),
+     Annotate => (GNATprove, Always_Return),
      Pre  => X > Snd and then      --  support of maintenance
              Invariant,            --  invariant checking
      Post => Invariant and then    --  invariant checking

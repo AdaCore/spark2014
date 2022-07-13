@@ -5,9 +5,6 @@ Require BuiltIn.
 
 Require Import ClassicalEpsilon.
 
-(* Why3 assumption *)
-Definition unit := unit.
-
 (* base_type and range_pred can have arbitrary values in this realization,
    provided the range is inhabited *)
 
@@ -37,13 +34,13 @@ exact base_type.
 Defined.
 
 (* Why3 goal *)
-Definition to_rep: t -> rep_type.
+Definition to_rep : t -> rep_type.
 intros [r P].
 exact r.
 Defined.
 
 (* Why3 goal *)
-Definition of_rep: rep_type -> t.
+Definition of_rep : rep_type -> t.
 intro r.
 destruct (range_pred_dec r) as [P | P].
 exact (exist range_pred r P).
@@ -51,7 +48,7 @@ apply range_inhabited.
 Defined.
 
 (* Why3 goal *)
-Definition in_range: rep_type -> Prop.
+Definition in_range : rep_type -> Prop.
 exact range_pred.
 Defined.
 
@@ -66,6 +63,6 @@ contradict Q; auto.
 Qed.
 
 (* Why3 goal *)
-Lemma range_axiom : forall (x:t), (in_range (to_rep x)).
+Lemma range_axiom : forall (x:t), in_range (to_rep x).
 intros [r P]; unfold to_rep; auto.
 Qed.

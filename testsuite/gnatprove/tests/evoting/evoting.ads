@@ -52,11 +52,12 @@ package eVoting is
      (program_phase  :     Program_Phase_t;
       candidates     : out Candidate_Name_Array_t;
       last_candidate : out Candidate_Number_t)
-   with Pre  => program_phase = Setup_Phase,
-        Post => -- untouched entries should contain only spaces
+   with Pre      => program_phase = Setup_Phase,
+        Post     => -- untouched entries should contain only spaces
                 (for all i in last_candidate + 1 .. Candidate_Number_t'Last =>
                    (for all j in Candidate_Name_t'Range =>
-                      candidates(i)(j) = ' '));
+                      candidates(i)(j) = ' ')),
+        Annotate => (GNATprove, Might_Not_Return);
 
    procedure Print_A_Candidate
      (candidates   : Candidate_Name_Array_t;
@@ -70,7 +71,8 @@ package eVoting is
      (program_phase  :     Program_Phase_t;
       candidates     : out Candidate_Name_Array_t;
       last_candidate : out Candidate_Number_t)
-   with Pre => program_phase = Setup_Phase;
+   with Pre      => program_phase = Setup_Phase,
+        Annotate => (GNATprove, Might_Not_Return);
 
    procedure Get_Vote
      (program_phase  :     Program_Phase_t;
@@ -89,12 +91,12 @@ package eVoting is
       counters        : in out Counters_t;
       number_of_votes : in out Natural)
    -- FIXME: How to specify that input is only voter input from Get_Vote?
-   with
-     Pre => program_phase = Voting_Phase and then
-            (for all i in Candidate_Number_t'Range => counters(i) = 0) and then
-            number_of_votes = 0,
-     Post => (for all i in last_candidate + 1 .. Candidate_Number_t'Last =>
-                counters(i) = 0);
+   with Pre      => program_phase = Voting_Phase and then
+          (for all i in Candidate_Number_t'Range => counters(i) = 0) and then
+          number_of_votes = 0,
+        Post     => (for all i in last_candidate + 1 .. Candidate_Number_t'Last =>
+                       counters(i) = 0),
+        Annotate => (GNATprove, Might_Not_Return);
 
    procedure Compute_Winner
      (program_phase  :     Program_Phase_t;
@@ -120,5 +122,6 @@ package eVoting is
       counters       : Counters_t)
    with Pre => program_phase = Counting_Phase;
 
-   procedure Do_Vote;
+   procedure Do_Vote
+     with Annotate => (GNATprove, Might_Not_Return);
 end;

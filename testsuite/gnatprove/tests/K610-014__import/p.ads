@@ -1,6 +1,8 @@
 package P is
    type T is new Integer;
-   function "<"  (Left, Right : T) return Boolean;
+   function "<"  (Left, Right : T) return Boolean with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
    pragma Import (Ada, "<");
 
    function Compare (Left, Right : T) return Boolean

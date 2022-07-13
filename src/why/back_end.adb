@@ -60,12 +60,6 @@ package body Back_End is
 
    procedure Call_Back_End (Mode : Back_End_Mode_Type) is
       pragma Unreferenced (Mode);
-
-      Save_Warning_Mode : constant Opt.Warning_Mode_Type := Opt.Warning_Mode;
-      --  Save original frontend warning mode for restoration before returning
-      --  from Call_Back_End, as various checks which may issue warnings are
-      --  performed after that.
-
    begin
       --  Since the back end is called with all tables locked, first unlock any
       --  tables that we need to change.
@@ -73,24 +67,9 @@ package body Back_End is
       Namet.Unlock;
       Elists.Unlock;
 
-      --  gnat2why is run in two main modes:
-      --    Global_Gen_Mode = True for generating ALI files with effects.
-      --    Global_Gen_Mode = False for flow analysis and proof.
-
-      --  Frontend warnings are issued when running in the second mode, and
-      --  suppressed in the first mode to avoid issuing twice the same
-      --  warnings. Change that setting in the second mode to the expected
-      --  warning mode for flow analysis and proof.
-
       Errout.Finalize (Last_Call => False);
       if Errout.Compilation_Errors then
          goto Unlock;
-      end if;
-      Errout.Reset_Warnings;
-
-      if not Gnat2Why_Args.Global_Gen_Mode then
-         Opt.Warning_Mode :=
-           To_Front_End_Warning_Mode (Gnat2Why_Args.Warning_Mode);
       end if;
 
       GNAT2Why_BE.Call_Back_End;
@@ -98,13 +77,6 @@ package body Back_End is
       Errout.Finalize (Last_Call => False);
       if Errout.Compilation_Errors then
          goto Unlock;
-      end if;
-      Errout.Reset_Warnings;
-
-      --  Restore the original frontend warning mode
-
-      if not Gnat2Why_Args.Global_Gen_Mode then
-         Opt.Warning_Mode := Save_Warning_Mode;
       end if;
 
    <<Unlock>>
@@ -176,11 +148,9 @@ package body Back_End is
       end if;
 
       --  For the colored output mode, we set the corresponding flag in
-      --  Erroutc. Currently only do this on Linux, as not all terminals
-      --  support SGR on Windows.
+      --  Erroutc.
 
       if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty_Color
-        and then not Osint.On_Windows
       then
          Erroutc.Use_SGR_Control := True;
       end if;
@@ -190,17 +160,23 @@ package body Back_End is
       --    Global_Gen_Mode = False for flow analysis and proof.
 
       if Gnat2Why_Args.Global_Gen_Mode then
-         --  In this mode, we should run the compiler with warnings as required
-         --  by the user through switches -gnatw?
-
-         SPARK_Definition.Inhibit_Messages;
-
          --  In this mode, we should run the frontend with no warnings. They
          --  will be issued in the second run.
 
          Opt.Warning_Mode := Opt.Suppress;
 
+         --  In this mode, we should avoid issuing errors in marking. They will
+         --  be issued in the second run.
+
+         SPARK_Definition.Inhibit_Messages;
+
       else
+         --  In this mode, we should run the frontend and gnat2why with warning
+         --  mode specified through --warnings switch.
+
+         Opt.Warning_Mode :=
+           To_Front_End_Warning_Mode (Gnat2Why_Args.Warning_Mode);
+
          --  An ALI file should be generated only when generating globals.
          --  Otherwise, when translating the program to Why, ALI file
          --  generation should be disabled.

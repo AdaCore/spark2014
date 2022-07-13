@@ -6,6 +6,7 @@ unconstr.adb:40:13: info: add a contract to analyze it separately from calling c
 unconstr.adb:40:13: info: local subprogram "Constr_Return" only analyzed in the context of calls
 unconstr.adb:47:04: warning: analyzing unreferenced procedure "Constr_Return_Call"
 unconstr.adb:47:14: warning: subprogram "Constr_Return_Call" has no effect
+unconstr.adb:49:21: info: analyzing call to "Constr_Return" in context
 unconstr.adb:51:24: info: cannot unroll loop (too many loop iterations)
 unconstr.adb:52:13: info: index check proved (CVC5: 2 VC)
 unconstr.adb:57:20: info: postcondition proved (CVC5: 2 VC)

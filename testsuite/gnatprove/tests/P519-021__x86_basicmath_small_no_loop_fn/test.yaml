@@ -3,6 +3,5 @@ comment: All VCs here are provable in theory (probably), but there are various e
 prove_all:
   prover: ["cvc5"]
   opt: ["--no-axiom-guard"]
-  counterexample: False
 large: True
 timeout: 1500

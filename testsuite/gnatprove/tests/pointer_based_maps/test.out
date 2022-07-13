@@ -4,16 +4,16 @@ my_map.adb:15:35: info: null exclusion check proved (CVC5: 1 VC)
 my_map.adb:15:49: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:15:56: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:16:47: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.adb:26:13: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-my_map.adb:28:15: info: absence of memory leak proved (CVC5: 1 VC)
-my_map.adb:31:19: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-my_map.adb:32:19: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+my_map.adb:26:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+my_map.adb:28:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
+my_map.adb:31:19: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+my_map.adb:32:19: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 my_map.adb:32:44: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.adb:34:21: info: absence of memory leak proved (CVC5: 1 VC)
+my_map.adb:34:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
 my_map.adb:34:25: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:35:20: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.adb:35:26: info: absence of memory leak proved (CVC5: 1 VC)
-my_map.adb:37:19: info: absence of memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
+my_map.adb:35:26: info: absence of resource or memory leak proved (CVC5: 1 VC)
+my_map.adb:37:19: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
 my_map.adb:48:33: info: loop invariant initialization proved (CVC5: 2 VC)
 my_map.adb:48:33: info: loop invariant preservation proved (CVC5: 2 VC)
 my_map.adb:49:14: info: pointer dereference check proved (CVC5: 1 VC)
@@ -30,8 +30,8 @@ my_map.adb:68:21: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:71:16: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:81:17: info: postcondition proved (CVC5: 5 VC; Trivial: 2 VC)
 my_map.adb:81:37: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.adb:84:14: medium: memory leak might occur at end of scope
-my_map.adb:84:42: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+my_map.adb:84:14: medium: resource or memory leak might occur at end of scope
+my_map.adb:84:42: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 my_map.adb:87:25: info: precondition proved (Trivial: 1 VC)
 my_map.adb:87:44: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:87:70: info: range check proved (CVC5: 2 VC)
@@ -49,15 +49,15 @@ my_map.adb:92:41: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:92:50: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:92:57: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:95:37: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.adb:97:16: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
+my_map.adb:97:16: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 my_map.adb:97:40: info: null exclusion check proved (CVC5: 1 VC)
 my_map.adb:97:54: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.adb:97:61: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.adb:99:18: info: absence of memory leak proved (CVC5: 1 VC)
+my_map.adb:99:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
 my_map.adb:99:40: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.adb:106:07: medium: memory leak might occur at end of scope
+my_map.adb:106:07: medium: resource or memory leak might occur at end of scope
 my_map.adb:107:07: info: initialization of "R" proved
-my_map.adb:107:07: medium: memory leak might occur at end of scope
+my_map.adb:107:07: medium: resource or memory leak might occur at end of scope
 my_map.adb:111:33: info: loop invariant initialization proved (CVC5: 1 VC)
 my_map.adb:111:33: info: loop invariant preservation proved (CVC5: 1 VC)
 my_map.adb:112:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -162,13 +162,13 @@ my_map.ads:39:14: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC)
 my_map.ads:39:45: info: precondition proved (CVC5: 1 VC)
 my_map.ads:43:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 4 VC)
 my_map.ads:43:45: info: precondition proved (CVC5: 1 VC)
-my_map.ads:46:14: medium: memory leak might occur at end of scope
-my_map.ads:46:42: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+my_map.ads:46:14: medium: resource or memory leak might occur at end of scope
+my_map.ads:46:42: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 my_map.ads:48:15: info: precondition proved (Trivial: 1 VC)
 my_map.ads:48:44: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.ads:48:70: info: range check proved (CVC5: 2 VC)
-my_map.ads:51:14: medium: memory leak might occur at end of scope
-my_map.ads:51:42: medium: memory leak might occur [possible explanation: call to allocating function inside an assertion leaks memory]
+my_map.ads:51:14: medium: resource or memory leak might occur at end of scope
+my_map.ads:51:42: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 my_map.ads:53:15: info: precondition proved (Trivial: 1 VC)
 my_map.ads:53:30: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.ads:53:60: info: range check proved (CVC5: 2 VC)

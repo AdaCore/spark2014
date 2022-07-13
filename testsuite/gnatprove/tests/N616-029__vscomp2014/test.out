@@ -1,18 +1,22 @@
-a-cofove.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at sum_elem.ads:17
-a-cofove.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at sum_elem.ads:17
-a-cofove.ads:320:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
-a-cofove.ads:320:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
-a-cofove.ads:629:57: info: range check proved (CVC5: 2 VC), in instantiation at sum_elem.ads:17
-a-cofove.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
-a-cofove.ads:760:38: info: range check proved (CVC5: 2 VC), in instantiation at sum_elem.ads:17
-a-cofove.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
-a-cofove.ads:797:35: info: range check proved (CVC5: 2 VC), in instantiation at sum_elem.ads:17
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at sum_elem.ads:17
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at sum_elem.ads:17
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at sum_elem.ads:17
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at sum_elem.ads:17
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:93, in instantiation at sum_elem.ads:17
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at sum_elem.ads:17
+a-cofove.ads:296:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at sum_elem.ads:17
+a-cofove.ads:297:08: info: dynamic accessibility check proved (Trivial), in instantiation at sum_elem.ads:17
+a-cofove.ads:301:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at sum_elem.ads:17
+a-cofove.ads:303:08: info: dynamic accessibility check proved (Trivial), in instantiation at sum_elem.ads:17
+a-cofove.ads:322:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:322:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:631:57: info: range check proved (CVC5: 2 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:759:23: info: precondition proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:762:38: info: range check proved (CVC5: 2 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:795:14: info: precondition proved (CVC5: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:799:35: info: range check proved (CVC5: 2 VC), in instantiation at sum_elem.ads:17
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at sum_elem.ads:17
 sum_elem.adb:6:22: info: assertion proved (CVC5: 2 VC)
 sum_elem.adb:6:22: info: precondition proved (CVC5: 2 VC)
 sum_elem.adb:6:45: info: precondition proved (CVC5: 2 VC)

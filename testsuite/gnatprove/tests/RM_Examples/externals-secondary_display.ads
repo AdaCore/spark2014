@@ -1,7 +1,8 @@
 private package Externals.Secondary_Display
   with SPARK_Mode,
        Abstract_State => (State with External => Async_Readers,
-                                     Part_Of  => Externals.Displays)
+                                     Part_Of  => Externals.Displays),
+       Annotate       => (GNATprove, Always_Return)
 is
    procedure Display (Text: in String)
      with Global => (Output => State),

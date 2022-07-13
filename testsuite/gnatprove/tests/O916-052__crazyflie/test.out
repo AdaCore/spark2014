@@ -1,3 +1,9 @@
+console_pack.adb:9:07: warning: assuming "Set_True" always returns
+console_pack.adb:9:07: warning: no returning annotation available for "Set_True"
+console_pack.adb:31:07: warning: assuming "Suspend_Until_True" always returns
+console_pack.adb:31:07: warning: no returning annotation available for "Suspend_Until_True"
+console_pack.adb:33:07: warning: assuming "Set_True" always returns
+console_pack.adb:33:07: warning: no returning annotation available for "Set_True"
 console_pack.adb:39:07: warning: initialization of "Free_Bytes_In_Packet" has no effect
 console_pack.adb:42:24: info: cannot unroll loop (too many loop iterations)
 console_pack.adb:47:35: warning: "Has_Succeed" is set by "Console_Send_Message" but not used after the call

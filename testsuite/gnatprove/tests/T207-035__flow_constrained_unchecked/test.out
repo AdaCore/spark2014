@@ -1,7 +1,7 @@
 INLINING ENABLED:
 r.adb:1:53: info: initialization of "Result" proved
 r.adb:2:04: info: flow dependencies proved
-
+r.adb:13:04: info: analyzing call to "Op_Foo" in context
 INLINING DISABLED:
 r.adb:1:53: info: initialization of "Result" proved
 r.adb:2:04: info: flow dependencies proved

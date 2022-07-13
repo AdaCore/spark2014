@@ -335,14 +335,6 @@ package body CE_Display is
          end;
       end loop;
 
-      --  Do not display a counterexample where all values are "nul", as this
-      --  is characteritic of spurious counterexamples returned by CVC4 when
-      --  it was stopped before reaching a correct counterexample.
-
-      if Is_Nul_Counterexample (Pretty_Cntexmp) then
-         Pretty_Cntexmp.Clear;
-      end if;
-
       Remove_Vars.Remove_Extra_Vars (Pretty_Cntexmp);
 
       return Pretty_Cntexmp;

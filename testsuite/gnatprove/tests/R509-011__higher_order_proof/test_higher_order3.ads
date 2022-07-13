@@ -3,11 +3,15 @@ with SPARK.Higher_Order.Fold;
 with Test_Types; use Test_Types;
 package Test_Higher_Order3 with SPARK_Mode is
 
-   function Value (X : Integer) return My_Small;
+   function Value (X : Integer) return My_Small
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return);
    --  Value cannot have a pre as it is called from Add_Value without any
    --  constraint.
 
-   function Choose (X : Integer) return Boolean;
+   function Choose (X : Integer) return Boolean
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return);
    --  Value cannot have a pre as it is called from Add_One without any
    --  constraint.
 

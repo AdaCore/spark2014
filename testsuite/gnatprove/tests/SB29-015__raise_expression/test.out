@@ -1,4 +1,8 @@
 test_raise.adb:2:11: warning: subprogram "Test_Raise" has no effect
+test_raise.adb:3:04: info: analyzing call to "Log2_Estimate" in context
+test_raise.adb:3:04: info: analyzing call to "Minus_Log2_Estimate" in context
+test_raise.adb:3:04: info: in instantiation at a-nbnbre.adb:256
+test_raise.adb:3:04: info: in instantiation at a-nbnbre.adb:264
 test_raise.adb:7:14: warning: subprogram "OK" has no effect
 test_raise.adb:19:22: info: assertion proved (CVC5: 1 VC; Trivial: 7 VC)
 test_raise.adb:19:41: info: raise statement or expression proved unreachable (CVC5: 1 VC)
@@ -14,21 +18,58 @@ test_raise.adb:37:29: medium: exception might be raised
 test_raise.adb:40:56: medium: exception might be raised
 test_raise.adb:42:56: medium: exception might be raised
 test_raise.adb:45:14: warning: subprogram "KO2" has no effect
+test_raise.adb:49:10: info: no contextual analysis of "Rand" (body not seen yet)
+test_raise.adb:49:10: warning: assuming "Rand" always returns
+test_raise.adb:49:10: warning: assuming "Rand" has no effect on global items
+test_raise.adb:49:10: warning: no Global contract available for "Rand"
+test_raise.adb:49:10: warning: no returning annotation available for "Rand"
 test_raise.adb:50:25: info: assertion proved (CVC5: 1 VC)
 test_raise.adb:50:25: medium: exception might be raised
+test_raise.adb:51:13: warning: assuming "Rand" always returns
+test_raise.adb:51:13: warning: assuming "Rand" has no effect on global items
+test_raise.adb:51:13: warning: no Global contract available for "Rand"
+test_raise.adb:51:13: warning: no returning annotation available for "Rand"
 test_raise.adb:52:34: medium: exception might be raised
-test_raise.adb:54:25: medium: assertion might fail [possible fix: precondition of subprogram at line 45 should mention X and Y]
-test_raise.adb:54:47: medium: exception might be raised
+test_raise.adb:53:13: warning: assuming "Rand" always returns
+test_raise.adb:53:13: warning: assuming "Rand" has no effect on global items
+test_raise.adb:53:13: warning: no Global contract available for "Rand"
+test_raise.adb:53:13: warning: no returning annotation available for "Rand"
+test_raise.adb:54:25: medium: assertion might fail (e.g. when X = 0 and Y = 0) [possible fix: precondition of subprogram at line 45 should mention X and Y]
+test_raise.adb:54:47: medium: exception might be raised (e.g. when Y = 0)
+test_raise.adb:55:13: warning: assuming "Rand" always returns
+test_raise.adb:55:13: warning: assuming "Rand" has no effect on global items
+test_raise.adb:55:13: warning: no Global contract available for "Rand"
+test_raise.adb:55:13: warning: no returning annotation available for "Rand"
 test_raise.adb:56:25: info: assertion proved (Trivial: 2 VC)
 test_raise.adb:56:52: medium: exception might be raised
+test_raise.adb:58:13: warning: assuming "Rand" always returns
+test_raise.adb:58:13: warning: assuming "Rand" has no effect on global items
+test_raise.adb:58:13: warning: no Global contract available for "Rand"
+test_raise.adb:58:13: warning: no returning annotation available for "Rand"
 test_raise.adb:59:48: medium: exception might be raised
-test_raise.adb:60:30: medium: assertion might fail, cannot prove Y = Integer'(...) [possible fix: precondition of subprogram at line 45 should mention Y]
+test_raise.adb:60:30: medium: assertion might fail, cannot prove Y = Integer'(...) (e.g. when Y = 0) [possible fix: precondition of subprogram at line 45 should mention Y]
 test_raise.adb:60:43: medium: exception might be raised
-test_raise.adb:62:25: medium: assertion might fail [possible fix: precondition of subprogram at line 45 should mention X and Y]
+test_raise.adb:62:25: medium: assertion might fail (e.g. when X = 0 and Y = 0) [possible fix: precondition of subprogram at line 45 should mention X and Y]
 test_raise.adb:62:44: medium: exception might be raised
+test_raise.adb:68:07: warning: assuming "Rand" always returns
+test_raise.adb:68:07: warning: assuming "Rand" has no effect on global items
+test_raise.adb:68:07: warning: no Global contract available for "Rand"
+test_raise.adb:68:07: warning: no returning annotation available for "Rand"
 test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else ... [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:70:10: warning: assuming "Rand" always returns
+test_raise.adb:70:10: warning: assuming "Rand" has no effect on global items
+test_raise.adb:70:10: warning: no Global contract available for "Rand"
+test_raise.adb:70:10: warning: no returning annotation available for "Rand"
 test_raise.adb:71:07: medium: precondition might fail [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:72:10: warning: assuming "Rand" always returns
+test_raise.adb:72:10: warning: assuming "Rand" has no effect on global items
+test_raise.adb:72:10: warning: no Global contract available for "Rand"
+test_raise.adb:72:10: warning: no returning annotation available for "Rand"
 test_raise.adb:73:07: medium: precondition might fail [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:74:10: warning: assuming "Rand" always returns
+test_raise.adb:74:10: warning: assuming "Rand" has no effect on global items
+test_raise.adb:74:10: warning: no Global contract available for "Rand"
+test_raise.adb:74:10: warning: no returning annotation available for "Rand"
 test_raise.adb:75:07: info: precondition proved (CVC5: 5 VC; Trivial: 3 VC)
 test_raise.adb:78:19: medium: assertion might fail
 test_raise.adb:78:29: info: precondition proved (CVC5: 1 VC)

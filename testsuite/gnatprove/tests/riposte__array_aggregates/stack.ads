@@ -1,4 +1,8 @@
-package Stack is
+package Stack with
+  SPARK_Mode,
+  Pure,
+  Annotate => (GNATprove, Always_Return)
+is
 
    type Length_T is range 0..100;
 
@@ -6,10 +10,11 @@ package Stack is
 
    Null_Stack : constant T;
 
-   function Get_Length (The_Stack : in T) return Length_T;
+   function Get_Length (The_Stack : in T) return Length_T with Global => null;
 
    function Create_Stack return T
-     with Post => Get_Length (Create_Stack'Result) = 0 ;
+     with Global => null,
+          Post => Get_Length (Create_Stack'Result) = 0 ;
 
    function Top (The_Stack : in T) return Integer
      with Pre => Get_Length (The_Stack) > 0;

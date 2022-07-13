@@ -16,6 +16,7 @@ linted-controls.adb:40:07: info: initialization of "X" proved, in call inlined a
 linted-controls.adb:41:07: info: initialization of "Y" proved
 linted-controls.adb:41:07: info: initialization of "Y" proved, in call inlined at linted-controls.adb:54
 linted-controls.adb:41:07: info: initialization of "Y" proved, in call inlined at linted-controls.adb:55
+linted-controls.adb:43:12: info: analyzing call to "From_Bytes" in context
 linted-controls.adb:43:24: info: range check proved (CVC5: 4 VC), in call inlined at linted-controls.adb:54
 linted-controls.adb:43:24: info: range check proved (CVC5: 4 VC), in call inlined at linted-controls.adb:55
 linted-controls.adb:45:20: info: range check proved (Z3: 2 VC), in call inlined at linted-controls.adb:54
@@ -24,7 +25,9 @@ linted-controls.adb:47:21: info: range check proved (Z3: 2 VC), in call inlined 
 linted-controls.adb:47:21: info: range check proved (Z3: 2 VC), in call inlined at linted-controls.adb:55
 linted-controls.adb:47:28: info: overflow check proved (CVC5: 2 VC), in call inlined at linted-controls.adb:54
 linted-controls.adb:47:28: info: overflow check proved (CVC5: 2 VC), in call inlined at linted-controls.adb:55
+linted-controls.adb:54:19: info: analyzing call to "To_Int" in context
 linted-controls.adb:54:27: info: range check proved (CVC5: 4 VC)
+linted-controls.adb:55:19: info: analyzing call to "To_Int" in context
 linted-controls.adb:55:27: info: range check proved (CVC5: 4 VC)
 linted-controls.ads:37:41: info: initialization of "C" proved
 linted-controls.ads:38:07: info: data dependencies proved
@@ -171,6 +174,7 @@ linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at 
 linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at linted-update.adb:83
 linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at linted-update.adb:84
 linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at linted-update.adb:85
+linted-update.adb:58:12: info: analyzing call to "From_Bytes" in context
 linted-update.adb:58:24: info: range check proved (CVC5: 4 VC), in call inlined at linted-update.adb:80
 linted-update.adb:58:24: info: range check proved (CVC5: 4 VC), in call inlined at linted-update.adb:81
 linted-update.adb:58:24: info: range check proved (CVC5: 4 VC), in call inlined at linted-update.adb:82
@@ -220,22 +224,44 @@ linted-update.adb:73:20: info: range check proved (CVC5: 1 VC), in call inlined 
 linted-update.adb:73:20: info: range check proved (CVC5: 1 VC), in call inlined at linted-update.adb:97
 linted-update.adb:73:20: info: range check proved (CVC5: 1 VC), in call inlined at linted-update.adb:98
 linted-update.adb:73:20: info: range check proved (CVC5: 1 VC), in call inlined at linted-update.adb:99
+linted-update.adb:80:23: info: analyzing call to "To_Int" in context
 linted-update.adb:80:31: info: range check proved (CVC5: 4 VC)
+linted-update.adb:81:23: info: analyzing call to "To_Int" in context
 linted-update.adb:81:31: info: range check proved (CVC5: 4 VC)
+linted-update.adb:82:23: info: analyzing call to "To_Int" in context
 linted-update.adb:82:31: info: range check proved (CVC5: 4 VC)
+linted-update.adb:83:24: info: analyzing call to "To_Int" in context
 linted-update.adb:83:32: info: range check proved (CVC5: 4 VC)
+linted-update.adb:84:24: info: analyzing call to "To_Int" in context
 linted-update.adb:84:32: info: range check proved (CVC5: 4 VC)
+linted-update.adb:85:24: info: analyzing call to "To_Int" in context
 linted-update.adb:85:32: info: range check proved (CVC5: 4 VC)
+linted-update.adb:86:23: info: analyzing call to "From_Bytes" in context
 linted-update.adb:86:35: info: range check proved (CVC5: 4 VC)
+linted-update.adb:87:23: info: analyzing call to "From_Bytes" in context
 linted-update.adb:87:35: info: range check proved (CVC5: 4 VC)
+linted-update.adb:94:09: info: analyzing call to "To_Bytes" in context
+linted-update.adb:94:19: info: analyzing call to "To_Nat" in context
 linted-update.adb:94:42: info: range check proved (CVC5: 2 VC)
+linted-update.adb:95:09: info: analyzing call to "To_Bytes" in context
+linted-update.adb:95:19: info: analyzing call to "To_Nat" in context
 linted-update.adb:95:42: info: range check proved (CVC5: 2 VC)
+linted-update.adb:96:09: info: analyzing call to "To_Bytes" in context
+linted-update.adb:96:19: info: analyzing call to "To_Nat" in context
 linted-update.adb:96:42: info: range check proved (Z3: 2 VC)
+linted-update.adb:97:09: info: analyzing call to "To_Bytes" in context
+linted-update.adb:97:19: info: analyzing call to "To_Nat" in context
 linted-update.adb:97:43: info: range check proved (Z3: 2 VC)
+linted-update.adb:98:09: info: analyzing call to "To_Bytes" in context
+linted-update.adb:98:19: info: analyzing call to "To_Nat" in context
 linted-update.adb:98:43: info: range check proved (Z3: 2 VC)
+linted-update.adb:99:09: info: analyzing call to "To_Bytes" in context
+linted-update.adb:99:19: info: analyzing call to "To_Nat" in context
 linted-update.adb:99:43: info: range check proved (Z3: 2 VC)
+linted-update.adb:100:09: info: analyzing call to "To_Bytes" in context
 linted-update.adb:100:33: info: length check proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 2 VC)
 linted-update.adb:100:33: info: range check proved (Z3: 2 VC)
+linted-update.adb:101:09: info: analyzing call to "To_Bytes" in context
 linted-update.ads:40:38: info: initialization of "S" proved
 linted-update.ads:41:41: info: initialization of "U" proved
 linted-windows.ads:26:41: info: initialization of "W" proved

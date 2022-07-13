@@ -1,21 +1,21 @@
-a-tienio.ads:32:40: info: precondition proved (CVC5: 1 VC), in instantiation at enum_example.adb:11
-a-tienio.ads:46:40: info: precondition proved (CVC5: 1 VC), in instantiation at enum_example.adb:11
-a-tienio.ads:48:08: info: precondition proved (CVC5: 2 VC), in instantiation at enum_example.adb:11
-a-tienio.ads:49:12: info: precondition proved (CVC5: 2 VC), in instantiation at enum_example.adb:11
-a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:8
-a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:9
-a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:8
-a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:9
-a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:8
-a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:9
-a-tiflio.ads:57:40: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:8
-a-tiflio.ads:57:40: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:9
-a-tiflio.ads:76:40: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:8
-a-tiflio.ads:76:40: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:9
-a-tiflio.ads:78:08: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:8
-a-tiflio.ads:78:08: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:9
-a-tiflio.ads:79:12: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:8
-a-tiflio.ads:79:12: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:9
+a-tienio.ads:32:42: info: precondition proved (CVC5: 1 VC), in instantiation at enum_example.adb:13
+a-tienio.ads:48:42: info: precondition proved (CVC5: 1 VC), in instantiation at enum_example.adb:13
+a-tienio.ads:50:08: info: precondition proved (CVC5: 2 VC), in instantiation at enum_example.adb:13
+a-tienio.ads:51:12: info: precondition proved (CVC5: 2 VC), in instantiation at enum_example.adb:13
+a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:10
+a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:11
+a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:10
+a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:11
+a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:10
+a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:11
+a-tiflio.ads:57:42: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:10
+a-tiflio.ads:57:42: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:11
+a-tiflio.ads:78:42: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:10
+a-tiflio.ads:78:42: info: precondition proved (CVC5: 1 VC), in instantiation at good_types.adb:11
+a-tiflio.ads:80:08: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:10
+a-tiflio.ads:80:08: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:11
+a-tiflio.ads:81:12: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:10
+a-tiflio.ads:81:12: info: precondition proved (CVC5: 2 VC), in instantiation at good_types.adb:11
 aggregates.adb:9:13: info: add a contract to analyze it separately from calling contexts
 aggregates.adb:9:13: info: local subprogram "Sqrt" only analyzed in the context of calls
 aggregates.adb:10:07: info: initialization of "Approx" proved
@@ -31,26 +31,26 @@ aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggr
 aggregates.adb:15:38: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point division must be bounded]
 aggregates.adb:29:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 aggregates.adb:29:28: info: analyzing call to "Sqrt" in context
-average.adb:6:04: info: initialization of "A" proved
-average.adb:7:04: info: initialization of "B" proved
-average.adb:8:04: info: initialization of "M" proved
-average.adb:15:18: info: range check proved (Trivial)
-average.adb:15:18: medium: overflow check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 12 should mention Item (for argument B)]
-average.adb:15:23: info: division check proved (CVC5: 1 VC)
-average.adb:15:23: info: float overflow check proved (Trivial)
-average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb" [enabled by default]
-average_with_use.adb:6:04: info: initialization of "A" proved
-average_with_use.adb:7:04: info: initialization of "B" proved
-average_with_use.adb:8:04: info: initialization of "M" proved
-average_with_use.adb:15:18: info: range check proved (Trivial)
-average_with_use.adb:15:18: medium: overflow check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 12 should mention Item (for argument B)]
-average_with_use.adb:15:23: info: division check proved (CVC5: 1 VC)
-average_with_use.adb:15:23: info: float overflow check proved (Trivial)
-bad_types.adb:3:04: info: initialization of "Room_Length" proved
-bad_types.adb:4:04: info: initialization of "Wall_Thickness" proved
-bad_types.adb:5:04: info: initialization of "Total" proved
-bad_types.adb:9:25: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
-bad_types.adb:9:31: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
+average.adb:8:04: info: initialization of "A" proved
+average.adb:9:04: info: initialization of "B" proved
+average.adb:10:04: info: initialization of "M" proved
+average.adb:17:18: info: range check proved (Trivial)
+average.adb:17:18: medium: overflow check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 14 should mention Item (for argument B)]
+average.adb:17:23: info: division check proved (CVC5: 1 VC)
+average.adb:17:23: info: float overflow check proved (Trivial)
+average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb"
+average_with_use.adb:8:04: info: initialization of "A" proved
+average_with_use.adb:9:04: info: initialization of "B" proved
+average_with_use.adb:10:04: info: initialization of "M" proved
+average_with_use.adb:17:18: info: range check proved (Trivial)
+average_with_use.adb:17:18: medium: overflow check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 14 should mention Item (for argument B)]
+average_with_use.adb:17:23: info: division check proved (CVC5: 1 VC)
+average_with_use.adb:17:23: info: float overflow check proved (Trivial)
+bad_types.adb:5:04: info: initialization of "Room_Length" proved
+bad_types.adb:6:04: info: initialization of "Wall_Thickness" proved
+bad_types.adb:7:04: info: initialization of "Total" proved
+bad_types.adb:11:25: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: postcondition of call at line 10 should mention Item (for argument Wall_Thickness)]
+bad_types.adb:11:31: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: postcondition of call at line 10 should mention Item (for argument Wall_Thickness)]
 bingo_basket.adb:8:14: info: add a contract to analyze it separately from calling contexts
 bingo_basket.adb:8:14: info: local subprogram "Swap" only analyzed in the context of calls
 bingo_basket.adb:10:07: info: initialization of "Temp" proved
@@ -212,13 +212,13 @@ calculate.adb:3:21: info: initialization of "A" proved
 calculate.adb:6:05: info: data dependencies proved
 calculate.adb:7:05: info: flow dependencies proved
 calculate.adb:7:26: info: justified that incorrect dependency "A => C"
-calculate.adb:12:11: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention C in a precondition]
+calculate.adb:12:11: high: overflow check might fail, cannot prove upper bound for C + 1 (e.g. when C = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention C in a precondition]
 circle_demo.adb:10:04: info: initialization of "My_Circle" proved
 circle_demo.adb:14:14: info: precondition proved (CVC5: 1 VC)
 console_io.ads:15:03: info: flow dependencies proved
 contains.adb:7:04: info: initialization of "Result_Index" proved
 contains.adb:9:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
-contains.adb:11:57: medium: range check might fail, cannot prove lower bound for S'First [reason for check: input value must fit in parameter type]
+contains.adb:11:57: high: range check might fail, cannot prove lower bound for S'First (e.g. when S'Last = -1) [reason for check: input value must fit in parameter type]
 contains2.adb:9:04: info: initialization of "Result_Index" proved
 contains2.adb:11:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
 contains2.adb:13:57: info: range check proved (CVC5: 2 VC)
@@ -230,120 +230,120 @@ contains3.adb:15:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
 contains3.adb:17:57: info: range check proved (CVC5: 2 VC)
 contains3.adb:22:37: info: index check proved (CVC5: 2 VC)
 contains3.adb:24:46: info: index check proved (CVC5: 2 VC)
-control_structures.adb:11:04: info: initialization of "A" proved
-control_structures.adb:11:07: info: initialization of "B" proved
-control_structures.adb:11:10: info: initialization of "C" proved
-control_structures.adb:12:04: info: initialization of "D" proved
-control_structures.adb:12:07: info: initialization of "E" proved
-control_structures.adb:12:10: info: initialization of "F" proved
-control_structures.adb:13:04: info: initialization of "Ch" proved
-control_structures.adb:14:04: info: initialization of "Temperature" proved
-control_structures.adb:15:04: info: initialization of "Valve_Setting" proved
-control_structures.adb:16:04: info: initialization of "Value" proved
-control_structures.adb:17:04: info: initialization of "Sum" proved
-control_structures.adb:19:04: info: initialization of "Approx" proved
-control_structures.adb:19:12: info: initialization of "X" proved
-control_structures.adb:21:04: warning: initialization of "Letter" has no effect
-control_structures.adb:23:14: info: add a contract to analyze it separately from calling contexts
-control_structures.adb:23:14: info: local subprogram "Calculate_Valve" only analyzed in the context of calls
-control_structures.adb:24:31: info: initialization of "New_Setting" proved
-control_structures.adb:26:24: medium: overflow check might fail, cannot prove lower bound for 2 * Current_Temp, in call inlined at control_structures.adb:184 [reason for check: result of multiplication must fit in a 32-bits machine integer]
-control_structures.adb:31:08: medium: overflow check might fail, cannot prove upper bound for abs Second [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second in Integer) to subprogram at line 29]
-control_structures.adb:31:23: medium: overflow check might fail, cannot prove upper bound for 2 * abs First [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First in Integer) to subprogram at line 29]
-control_structures.adb:31:25: medium: overflow check might fail, cannot prove upper bound for abs First [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First in Integer) to subprogram at line 29]
-control_structures.adb:35:06: warning: unused assignment
-control_structures.adb:36:06: warning: unused assignment
+control_structures.adb:13:04: info: initialization of "A" proved
+control_structures.adb:13:07: info: initialization of "B" proved
+control_structures.adb:13:10: info: initialization of "C" proved
+control_structures.adb:14:04: info: initialization of "D" proved
+control_structures.adb:14:07: info: initialization of "E" proved
+control_structures.adb:14:10: info: initialization of "F" proved
+control_structures.adb:15:04: info: initialization of "Ch" proved
+control_structures.adb:16:04: info: initialization of "Temperature" proved
+control_structures.adb:17:04: info: initialization of "Valve_Setting" proved
+control_structures.adb:18:04: info: initialization of "Value" proved
+control_structures.adb:19:04: info: initialization of "Sum" proved
+control_structures.adb:21:04: info: initialization of "Approx" proved
+control_structures.adb:21:12: info: initialization of "X" proved
+control_structures.adb:23:04: warning: initialization of "Letter" has no effect
+control_structures.adb:25:14: info: add a contract to analyze it separately from calling contexts
+control_structures.adb:25:14: info: local subprogram "Calculate_Valve" only analyzed in the context of calls
+control_structures.adb:26:31: info: initialization of "New_Setting" proved
+control_structures.adb:28:24: medium: overflow check might fail, cannot prove lower bound for 2 * Current_Temp, in call inlined at control_structures.adb:186 [reason for check: result of multiplication must fit in a 32-bits machine integer]
+control_structures.adb:33:08: high: overflow check might fail, cannot prove upper bound for abs Second (e.g. when Second = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second in Integer) to subprogram at line 31]
+control_structures.adb:33:23: high: overflow check might fail, cannot prove upper bound for 2 * abs First (e.g. when First = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First in Integer) to subprogram at line 31]
+control_structures.adb:33:25: high: overflow check might fail, cannot prove upper bound for abs First (e.g. when First = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First in Integer) to subprogram at line 31]
 control_structures.adb:37:06: warning: unused assignment
 control_structures.adb:38:06: warning: unused assignment
 control_structures.adb:39:06: warning: unused assignment
-control_structures.adb:40:07: warning: unused assignment
+control_structures.adb:40:06: warning: unused assignment
 control_structures.adb:41:06: warning: unused assignment
-control_structures.adb:44:04: warning: statement has no effect
-control_structures.adb:45:09: warning: unused assignment
-control_structures.adb:45:12: info: overflow check proved (CVC5: 2 VC)
-control_structures.adb:46:09: warning: unused assignment
-control_structures.adb:49:04: warning: statement has no effect
-control_structures.adb:50:09: warning: unused assignment
-control_structures.adb:53:04: warning: statement has no effect
-control_structures.adb:54:09: warning: unused assignment
-control_structures.adb:55:09: warning: unused assignment
+control_structures.adb:42:07: warning: unused assignment
+control_structures.adb:43:06: warning: unused assignment
+control_structures.adb:46:04: warning: statement has no effect
+control_structures.adb:47:09: warning: unused assignment
+control_structures.adb:47:12: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:48:09: warning: unused assignment
+control_structures.adb:51:04: warning: statement has no effect
+control_structures.adb:52:09: warning: unused assignment
+control_structures.adb:55:04: warning: statement has no effect
+control_structures.adb:56:09: warning: unused assignment
 control_structures.adb:57:09: warning: unused assignment
-control_structures.adb:58:09: warning: unused assignment
-control_structures.adb:62:04: warning: statement has no effect
-control_structures.adb:63:09: warning: unused assignment
+control_structures.adb:59:09: warning: unused assignment
+control_structures.adb:60:09: warning: unused assignment
 control_structures.adb:64:04: warning: statement has no effect
 control_structures.adb:65:09: warning: unused assignment
+control_structures.adb:66:04: warning: statement has no effect
 control_structures.adb:67:09: warning: unused assignment
-control_structures.adb:71:04: warning: statement has no effect
-control_structures.adb:72:09: warning: unused assignment
+control_structures.adb:69:09: warning: unused assignment
 control_structures.adb:73:04: warning: statement has no effect
 control_structures.adb:74:09: warning: unused assignment
 control_structures.adb:75:04: warning: statement has no effect
 control_structures.adb:76:09: warning: unused assignment
-control_structures.adb:79:12: warning: unused assignment
-control_structures.adb:80:04: warning: statement has no effect
-control_structures.adb:82:12: warning: unused assignment
+control_structures.adb:77:04: warning: statement has no effect
+control_structures.adb:78:09: warning: unused assignment
+control_structures.adb:81:12: warning: unused assignment
+control_structures.adb:82:04: warning: statement has no effect
 control_structures.adb:84:12: warning: unused assignment
 control_structures.adb:86:12: warning: unused assignment
 control_structures.adb:88:12: warning: unused assignment
 control_structures.adb:90:12: warning: unused assignment
-control_structures.adb:91:18: warning: unused assignment
-control_structures.adb:95:04: warning: statement has no effect
-control_structures.adb:96:09: warning: unused assignment
-control_structures.adb:96:14: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:92:12: warning: unused assignment
+control_structures.adb:93:18: warning: unused assignment
+control_structures.adb:97:04: warning: statement has no effect
 control_structures.adb:98:09: warning: unused assignment
-control_structures.adb:98:14: info: division check proved (CVC5: 1 VC)
-control_structures.adb:101:06: warning: unused assignment
-control_structures.adb:101:26: info: overflow check proved (CVC5: 2 VC)
-control_structures.adb:101:37: info: division check proved (CVC5: 1 VC)
-control_structures.adb:103:04: warning: statement has no effect
-control_structures.adb:104:09: warning: unused assignment
-control_structures.adb:104:14: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:98:14: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:100:09: warning: unused assignment
+control_structures.adb:100:14: info: division check proved (CVC5: 1 VC)
+control_structures.adb:103:06: warning: unused assignment
+control_structures.adb:103:26: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:103:37: info: division check proved (CVC5: 1 VC)
 control_structures.adb:105:04: warning: statement has no effect
 control_structures.adb:106:09: warning: unused assignment
 control_structures.adb:106:14: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:107:04: warning: statement has no effect
 control_structures.adb:108:09: warning: unused assignment
-control_structures.adb:108:14: info: division check proved (CVC5: 1 VC)
-control_structures.adb:111:06: warning: unused assignment
-control_structures.adb:111:26: info: overflow check proved (CVC5: 2 VC)
-control_structures.adb:111:49: info: overflow check proved (CVC5: 2 VC)
-control_structures.adb:111:60: info: division check proved (CVC5: 1 VC)
-control_structures.adb:113:04: warning: statement has no effect
-control_structures.adb:114:09: warning: unused assignment
-control_structures.adb:114:12: info: precondition proved (CVC5: 1 VC)
+control_structures.adb:108:14: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:110:09: warning: unused assignment
+control_structures.adb:110:14: info: division check proved (CVC5: 1 VC)
+control_structures.adb:113:06: warning: unused assignment
+control_structures.adb:113:26: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:113:49: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:113:60: info: division check proved (CVC5: 1 VC)
+control_structures.adb:115:04: warning: statement has no effect
 control_structures.adb:116:09: warning: unused assignment
 control_structures.adb:116:12: info: precondition proved (CVC5: 1 VC)
-control_structures.adb:116:23: info: float overflow check proved (CVC5: 1 VC)
-control_structures.adb:119:06: warning: unused assignment
-control_structures.adb:119:09: info: precondition proved (CVC5: 1 VC)
-control_structures.adb:119:44: info: float overflow check proved (CVC5: 1 VC)
-control_structures.adb:123:04: warning: statement has no effect
-control_structures.adb:123:13: medium: overflow check might fail, cannot prove lower bound for C - D [reason for check: result of subtraction must fit in a 32-bits machine integer]
-control_structures.adb:127:04: warning: statement has no effect
-control_structures.adb:127:13: info: overflow check proved (CVC5: 2 VC)
-control_structures.adb:131:04: warning: statement has no effect
-control_structures.adb:137:10: warning: unused assignment
-control_structures.adb:150:08: warning: unused assignment
-control_structures.adb:154:11: warning: unused assignment
-control_structures.adb:154:18: medium: overflow check might fail, cannot prove upper bound for Sum + Value [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 152 should mention Item (for argument Value)]
-control_structures.adb:158:11: warning: unused assignment
-control_structures.adb:158:16: info: division check proved (CVC5: 1 VC)
-control_structures.adb:158:16: info: float overflow check proved (Trivial)
-control_structures.adb:159:17: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
-control_structures.adb:159:26: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]
-control_structures.adb:159:44: warning: statement has no effect
-control_structures.adb:160:14: warning: unused assignment
-control_structures.adb:160:21: info: float overflow check proved (Trivial)
-control_structures.adb:160:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
-control_structures.adb:160:35: medium: divide by zero might fail
-control_structures.adb:160:35: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-control_structures.adb:163:38: info: unrolling loop
-control_structures.adb:167:46: info: unrolling loop
-control_structures.adb:174:08: info: range check proved (CVC5: 2 VC)
-control_structures.adb:174:38: info: cannot unroll loop (too many loop iterations)
-control_structures.adb:178:08: info: range check proved (CVC5: 2 VC)
-control_structures.adb:178:46: info: cannot unroll loop (too many loop iterations)
-control_structures.adb:184:07: info: analyzing call to "Calculate_Valve" in context
+control_structures.adb:118:09: warning: unused assignment
+control_structures.adb:118:12: info: precondition proved (CVC5: 1 VC)
+control_structures.adb:118:23: info: float overflow check proved (CVC5: 1 VC)
+control_structures.adb:121:06: warning: unused assignment
+control_structures.adb:121:09: info: precondition proved (CVC5: 1 VC)
+control_structures.adb:121:44: info: float overflow check proved (CVC5: 1 VC)
+control_structures.adb:125:04: warning: statement has no effect
+control_structures.adb:125:13: medium: overflow check might fail, cannot prove lower bound for C - D [reason for check: result of subtraction must fit in a 32-bits machine integer]
+control_structures.adb:129:04: warning: statement has no effect
+control_structures.adb:129:13: info: overflow check proved (CVC5: 2 VC)
+control_structures.adb:133:04: warning: statement has no effect
+control_structures.adb:139:10: warning: unused assignment
+control_structures.adb:152:08: warning: unused assignment
+control_structures.adb:156:11: warning: unused assignment
+control_structures.adb:156:18: medium: overflow check might fail, cannot prove upper bound for Sum + Value [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 154 should mention Item (for argument Value)]
+control_structures.adb:160:11: warning: unused assignment
+control_structures.adb:160:16: info: division check proved (CVC5: 1 VC)
+control_structures.adb:160:16: info: float overflow check proved (Trivial)
+control_structures.adb:161:17: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+control_structures.adb:161:26: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]
+control_structures.adb:161:44: warning: statement has no effect
+control_structures.adb:162:14: warning: unused assignment
+control_structures.adb:162:21: info: float overflow check proved (Trivial)
+control_structures.adb:162:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+control_structures.adb:162:35: medium: divide by zero might fail
+control_structures.adb:162:35: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+control_structures.adb:165:38: info: unrolling loop
+control_structures.adb:169:46: info: unrolling loop
+control_structures.adb:176:08: info: range check proved (CVC5: 2 VC)
+control_structures.adb:176:38: info: cannot unroll loop (too many loop iterations)
+control_structures.adb:180:08: info: range check proved (CVC5: 2 VC)
+control_structures.adb:180:46: info: cannot unroll loop (too many loop iterations)
+control_structures.adb:186:07: info: analyzing call to "Calculate_Valve" in context
 datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State" proved
 datebook.adb:63:07: info: initialization of "Found" proved
 datebook.adb:72:40: info: cannot unroll loop (too many loop iterations)
@@ -505,44 +505,44 @@ elaboration_demo.adb:4:04: info: range check proved (CVC5: 2 VC)
 elaboration_demo.adb:4:04: warning: initialization of "Line" has no effect
 elaboration_demo.adb:4:34: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 elaboration_demo.adb:5:04: warning: initialization of "Guess" has no effect
-elaboration_demo.adb:5:26: info: float overflow check proved (CVC5: 1 VC)
+elaboration_demo.adb:5:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 elaboration_demo.adb:5:61: info: precondition proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: division check proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Trivial)
-enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
-enum_example.adb:18:32: info: range check proved (CVC5: 1 VC)
-enum_example.adb:22:04: info: initialization of "Today" proved
-enum_example.adb:23:04: info: initialization of "Tomorrow" proved
-enum_example.adb:24:04: info: initialization of "Count" proved
-enum_example.adb:41:47: info: unrolling loop
-enum_example.adb:47:37: info: unrolling loop
-enum_example.adb:53:49: info: unrolling loop
-enum_example.adb:54:22: info: overflow check proved (CVC5: 12 VC)
-example.adb:7:14: info: add a contract to analyze it separately from calling contexts
-example.adb:7:14: info: local subprogram "Bounded_Increment" only analyzed in the context of calls
-example.adb:10:07: info: initialization of "Changed" proved
-example.adb:14:27: info: overflow check proved (CVC5: 2 VC), in call inlined at example.adb:27
-example.adb:21:04: info: initialization of "Value" proved
-example.adb:22:04: info: initialization of "Modified" proved
-example.adb:27:04: info: analyzing call to "Bounded_Increment" in context
+enum_example.adb:15:04: info: no contextual analysis of "Next_Day" (multiple returns)
+enum_example.adb:20:32: info: range check proved (CVC5: 1 VC)
+enum_example.adb:24:04: info: initialization of "Today" proved
+enum_example.adb:25:04: info: initialization of "Tomorrow" proved
+enum_example.adb:26:04: info: initialization of "Count" proved
+enum_example.adb:43:47: info: unrolling loop
+enum_example.adb:49:37: info: unrolling loop
+enum_example.adb:55:49: info: unrolling loop
+enum_example.adb:56:22: info: overflow check proved (CVC5: 12 VC)
+example.adb:9:14: info: add a contract to analyze it separately from calling contexts
+example.adb:9:14: info: local subprogram "Bounded_Increment" only analyzed in the context of calls
+example.adb:12:07: info: initialization of "Changed" proved
+example.adb:16:27: info: overflow check proved (CVC5: 2 VC), in call inlined at example.adb:29
+example.adb:23:04: info: initialization of "Value" proved
+example.adb:24:04: info: initialization of "Modified" proved
+example.adb:29:04: info: analyzing call to "Bounded_Increment" in context
 external_test.adb:11:08: warning: make sure that all overlapping objects have Async_Writers set to True
 external_test.adb:11:08: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
-generic_examples.adb:6:64: info: data dependencies proved
-generic_examples.adb:10:33: info: cannot unroll loop (too many loop iterations)
-generic_examples.adb:12:30: medium: overflow check might fail, cannot prove upper bound for Result + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 10 should mention Result in a loop invariant]
-generic_examples.adb:33:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:39 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 31 should mention Result in a loop invariant]
-generic_examples.adb:33:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:46 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 31 should mention Result in a loop invariant]
-generic_examples.adb:39:04: info: cannot unroll loop (too many loop iterations)
-generic_examples.adb:39:04: info: in instantiation at line 31
-generic_examples.adb:46:04: info: cannot unroll loop (too many loop iterations)
-generic_examples.adb:46:04: info: in instantiation at line 31
-generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
-generic_examples.adb:70:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 68 should mention Result in a loop invariant]
-generic_examples.adb:77:04: info: cannot unroll loop (too many loop iterations)
-generic_examples.adb:77:04: info: in instantiation at line 68
-generic_examples.adb:84:04: info: initialization of "The_Count" proved
+generic_examples.adb:8:64: info: data dependencies proved
+generic_examples.adb:12:33: info: cannot unroll loop (too many loop iterations)
+generic_examples.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Result + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 12 should mention Result in a loop invariant]
+generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
+generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:48 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
+generic_examples.adb:41:04: info: cannot unroll loop (too many loop iterations)
+generic_examples.adb:41:04: info: in instantiation at line 33
+generic_examples.adb:48:04: info: cannot unroll loop (too many loop iterations)
+generic_examples.adb:48:04: info: in instantiation at line 33
+generic_examples.adb:61:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:79
+generic_examples.adb:72:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:79 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 70 should mention Result in a loop invariant]
+generic_examples.adb:79:04: info: cannot unroll loop (too many loop iterations)
+generic_examples.adb:79:04: info: in instantiation at line 70
+generic_examples.adb:86:04: info: initialization of "The_Count" proved
 generic_searchers.adb:9:07: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:9:07: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:21:48: info: division check proved (CVC5: 2 VC), in instantiation at prime_search.adb:15
@@ -577,18 +577,18 @@ generic_searchers.ads:15:74: info: index check proved (CVC5: 2 VC), in instantia
 generic_searchers.ads:15:74: info: index check proved (CVC5: 2 VC), in instantiation at search_demo.adb:12
 generic_searchers.ads:19:49: medium: postcondition might fail, cannot prove Items (J) /= Search_Item, in instantiation at prime_search.adb:15
 generic_searchers.ads:19:49: medium: postcondition might fail, cannot prove Items (J) /= Search_Item, in instantiation at search_demo.adb:12
-good_types.adb:11:13: info: add a contract to analyze it separately from calling contexts
-good_types.adb:11:13: info: local subprogram "To_Feet" only analyzed in the context of calls
-good_types.adb:13:26: info: division check proved (CVC5: 1 VC), in call inlined at good_types.adb:22
-good_types.adb:13:26: info: float overflow check proved (Trivial), in call inlined at good_types.adb:22
-good_types.adb:13:26: info: range check proved (Trivial), in call inlined at good_types.adb:22
-good_types.adb:16:04: info: initialization of "Room_Length" proved
-good_types.adb:17:04: info: initialization of "Wall_Thickness" proved
-good_types.adb:18:04: info: initialization of "Total" proved
-good_types.adb:22:25: info: float overflow check proved (Trivial)
-good_types.adb:22:25: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: postcondition of call at line 20 should mention Item (for argument Room_Length)]
-good_types.adb:22:31: info: float overflow check proved (Trivial)
-good_types.adb:22:33: info: analyzing call to "To_Feet" in context
+good_types.adb:13:13: info: add a contract to analyze it separately from calling contexts
+good_types.adb:13:13: info: local subprogram "To_Feet" only analyzed in the context of calls
+good_types.adb:15:26: info: division check proved (CVC5: 1 VC), in call inlined at good_types.adb:24
+good_types.adb:15:26: info: float overflow check proved (Trivial), in call inlined at good_types.adb:24
+good_types.adb:15:26: info: range check proved (Trivial), in call inlined at good_types.adb:24
+good_types.adb:18:04: info: initialization of "Room_Length" proved
+good_types.adb:19:04: info: initialization of "Wall_Thickness" proved
+good_types.adb:20:04: info: initialization of "Total" proved
+good_types.adb:24:25: info: float overflow check proved (Trivial)
+good_types.adb:24:25: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: postcondition of call at line 22 should mention Item (for argument Room_Length)]
+good_types.adb:24:31: info: float overflow check proved (Trivial)
+good_types.adb:24:33: info: analyzing call to "To_Feet" in context
 hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved (CVC5: 2 VC)
 hierarchical_state_demo-a_pack.adb:13:30: info: overflow check proved (CVC5: 2 VC)
 hierarchical_state_demo-a_pack.adb:15:25: info: overflow check proved (CVC5: 2 VC)
@@ -631,13 +631,13 @@ hierarchical_state_demo_nested.ads:9:09: info: flow dependencies proved
 indexed_datebook_v2.ads:6:05: info: flow dependencies proved
 initializer_demo.adb:6:07: warning: initialization of "Sum" has no effect
 initializer_demo.adb:9:28: info: unrolling loop
-initializer_demo.adb:10:21: medium: overflow check might fail, cannot prove lower bound for Sum + A (Index) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:8 should mention A in a precondition]
+initializer_demo.adb:10:21: high: overflow check might fail, cannot prove lower bound for Sum + A (Index) (e.g. when A = (2 => Integer'First, others => -1) and Index = 2 and Sum = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:8 should mention A in a precondition]
 initializer_demo.adb:17:07: info: initialization of "Sum" proved
 initializer_demo.adb:22:28: info: unrolling loop
-initializer_demo.adb:23:21: medium: overflow check might fail, cannot prove upper bound for Sum + Accumulator (A (Index)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:14 should mention A in a precondition]
+initializer_demo.adb:23:21: high: overflow check might fail, cannot prove upper bound for Sum + Accumulator (A (Index)) (e.g. when A = (others => Integer'Last) and Index = 1 and Sum = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:14 should mention A in a precondition]
 initializer_demo.adb:30:07: info: initialization of "Offset" proved
 initializer_demo.adb:35:19: info: overflow check proved (CVC5: 2 VC)
-initializer_demo.adb:35:35: medium: overflow check might fail, cannot prove upper bound for P.Y + Offset.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:22 should mention P in a precondition]
+initializer_demo.adb:35:35: high: overflow check might fail, cannot prove upper bound for P.Y + Offset.Y (e.g. when Offset = (X => 0, Y => 1) and P = (X => Integer'Last, Y => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:22 should mention P in a precondition]
 initializer_demo.ads:12:28: info: in default value at initializer_demo.adb:17
 initializer_demo.ads:12:28: info: range check proved (CVC5: 2 VC)
 interval.ads:6:13: medium: invariant check might fail
@@ -668,9 +668,8 @@ network-helpers.ads:5:23: info: initialization of "MSB" proved
 network-helpers.ads:6:23: info: initialization of "LSB" proved
 network-helpers.ads:8:08: info: data dependencies proved
 network-helpers.ads:9:08: info: flow dependencies proved
-network-helpers0.adb:14:27: info: range check proved (CVC5: 2 VC)
-network-helpers0.adb:15:21: info: no contextual analysis of "Shift_Right" (body not seen yet)
-network-helpers0.adb:15:21: info: range check proved (CVC5: 2 VC)
+network-helpers0.adb:16:27: info: range check proved (CVC5: 2 VC)
+network-helpers0.adb:17:21: info: range check proved (CVC5: 2 VC)
 network-helpers0.ads:5:23: info: initialization of "MSB" proved
 network-helpers0.ads:6:23: info: initialization of "LSB" proved
 no_overflow.adb:7:14: info: overflow check proved (CVC5: 2 VC)
@@ -704,27 +703,27 @@ operator_overload.adb:21:04: info: initialization of "P1" proved
 operator_overload.adb:22:04: info: initialization of "P2" proved
 operator_overload.adb:30:10: info: analyzing call to "<=" in context
 operator_overload.adb:37:07: info: analyzing call to "<=" in context
-overflow.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + B [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - B) to subprogram at overflow.ads:3]
+overflow.adb:7:15: high: overflow check might fail, cannot prove upper bound for A + B (e.g. when A = Natural'Last and B = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - B) to subprogram at overflow.ads:3]
 overflow.adb:7:20: info: division check proved (CVC5: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
-palindrome.adb:4:13: info: add a contract to analyze it separately from calling contexts
-palindrome.adb:4:13: info: local subprogram "Is_Palindrome" only analyzed in the context of calls
-palindrome.adb:5:07: info: initialization of "Left_Index" proved
-palindrome.adb:5:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
-palindrome.adb:6:07: info: initialization of "Right_Index" proved
-palindrome.adb:6:07: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
-palindrome.adb:9:22: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:32
-palindrome.adb:9:26: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:32
-palindrome.adb:12:20: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:32
-palindrome.adb:12:26: medium: array index check might fail, in call inlined at palindrome.adb:32 [reason for check: value must be a valid index into the array]
-palindrome.adb:12:42: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:32
-palindrome.adb:12:48: medium: array index check might fail, in call inlined at palindrome.adb:32 [reason for check: value must be a valid index into the array]
-palindrome.adb:13:36: info: overflow check proved (CVC5: 2 VC), in call inlined at palindrome.adb:32
-palindrome.adb:14:37: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:32
-palindrome.adb:22:04: info: initialization of "Line" proved
-palindrome.adb:23:04: info: initialization of "Count" proved
-palindrome.adb:32:07: info: analyzing call to "Is_Palindrome" in context
-palindrome.adb:32:07: info: range check proved (CVC5: 4 VC)
+palindrome.adb:6:13: info: add a contract to analyze it separately from calling contexts
+palindrome.adb:6:13: info: local subprogram "Is_Palindrome" only analyzed in the context of calls
+palindrome.adb:7:07: info: initialization of "Left_Index" proved
+palindrome.adb:7:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:34
+palindrome.adb:8:07: info: initialization of "Right_Index" proved
+palindrome.adb:8:07: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:34
+palindrome.adb:11:22: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:34
+palindrome.adb:11:26: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:34
+palindrome.adb:14:20: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:34
+palindrome.adb:14:26: medium: array index check might fail, in call inlined at palindrome.adb:34 [reason for check: value must be a valid index into the array]
+palindrome.adb:14:42: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:34
+palindrome.adb:14:48: medium: array index check might fail, in call inlined at palindrome.adb:34 [reason for check: value must be a valid index into the array]
+palindrome.adb:15:36: info: overflow check proved (CVC5: 2 VC), in call inlined at palindrome.adb:34
+palindrome.adb:16:37: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:34
+palindrome.adb:24:04: info: initialization of "Line" proved
+palindrome.adb:25:04: info: initialization of "Count" proved
+palindrome.adb:34:07: info: analyzing call to "Is_Palindrome" in context
+palindrome.adb:34:07: info: range check proved (CVC5: 4 VC)
 parent-public1.adb:7:07: info: initialization of "Temp" proved
 parent.adb:6:22: medium: overflow check might fail, cannot prove upper bound for Value ** 2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition]
 populate_tree.adb:7:05: info: data dependencies proved
@@ -852,9 +851,9 @@ searches.ads:28:49: info: index check proved (CVC5: 2 VC)
 searches.ads:29:21: info: postcondition proved (CVC5: 3 VC)
 searches.ads:30:45: info: index check proved (CVC5: 2 VC)
 searches.ads:33:57: info: index check proved (CVC5: 2 VC)
-serial_numbers.adb:8:34: medium: overflow check might fail, cannot prove upper bound for Next_Number + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at serial_numbers.ads:3 should mention Next_Number in a precondition]
+serial_numbers.adb:8:34: high: overflow check might fail, cannot prove upper bound for Next_Number + 1 (e.g. when Next_Number = Serial_Number'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at serial_numbers.ads:3 should mention Next_Number in a precondition]
 serial_numbers.ads:3:24: info: initialization of "Number" proved
-serial_numbers2.adb:8:34: medium: overflow check might fail, cannot prove upper bound for Next_Number + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at serial_numbers2.ads:3 should mention Next_Number in a precondition]
+serial_numbers2.adb:8:34: high: overflow check might fail, cannot prove upper bound for Next_Number + 1 (e.g. when Next_Number = Serial_Number'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at serial_numbers2.ads:3 should mention Next_Number in a precondition]
 serial_numbers2.ads:3:24: info: initialization of "Number" proved
 serial_port.ads:6:07: info: flow dependencies proved
 shapes.adb:9:07: info: initialization of "Delta_X" proved
@@ -885,71 +884,71 @@ shapes5.adb:29:17: info: range check proved (CVC5: 2 VC)
 shapes5.adb:39:07: info: initialization of "Delta_X" proved
 shapes5.adb:40:07: info: initialization of "Delta_Y" proved
 shapes5.ads:4:08: info: flow dependencies proved
-shapes5.ads:14:18: medium: postcondition might fail
+shapes5.ads:14:18: high: postcondition might fail (e.g. when Make_Circle'Result = (Center_X => 0, Center_Y => 0, Radius => 0) and Wild_Man = 0)
 shapes5.ads:25:11: info: data dependencies proved
 silly.adb:3:21: info: initialization of "Result" proved
-silly.adb:6:21: medium: overflow check might fail, cannot prove upper bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+silly.adb:6:21: high: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 silly.adb:6:26: info: division check proved (CVC5: 1 VC)
 silly.adb:12:22: info: division check proved (CVC5: 1 VC)
 simple_math.adb:6:07: info: initialization of "Q" proved
 simple_math.adb:7:07: info: initialization of "R" proved
-simple_math.adb:12:19: medium: divide by zero might fail [possible fix: loop at line 11 should mention Q in a loop invariant]
+simple_math.adb:12:19: medium: divide by zero might fail (e.g. when Q = 0) [possible fix: loop at line 11 should mention Q in a loop invariant]
 simple_math.adb:14:25: info: division check proved (CVC5: 1 VC)
 simple_math.adb:17:14: info: range check proved (CVC5: 2 VC)
 sorted_arrays2.ads:13:21: info: function contract not available for proof ("Is_Sorted" might not return)
 sorted_arrays2.ads:18:18: info: function contract not available for proof ("Is_Sorted" might not return)
-sorters.adb:17:11: info: flow dependencies proved
-sorters.adb:21:19: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
-sorters.adb:22:28: info: index check proved (CVC5: 2 VC)
-sorters.adb:22:45: info: index check proved (CVC5: 2 VC)
+sorters.adb:18:11: info: flow dependencies proved
+sorters.adb:22:19: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 sorters.adb:23:28: info: index check proved (CVC5: 2 VC)
 sorters.adb:23:45: info: index check proved (CVC5: 2 VC)
-sorters.adb:25:58: info: index check proved (CVC5: 2 VC)
-sorters.adb:25:75: info: index check proved (CVC5: 2 VC)
-sorters.adb:29:07: info: initialization of "Temp" proved
-sorters.adb:31:29: info: index check proved (CVC5: 2 VC)
-sorters.adb:32:15: info: index check proved (CVC5: 2 VC)
+sorters.adb:24:28: info: index check proved (CVC5: 2 VC)
+sorters.adb:24:45: info: index check proved (CVC5: 2 VC)
+sorters.adb:26:58: info: index check proved (CVC5: 2 VC)
+sorters.adb:26:75: info: index check proved (CVC5: 2 VC)
+sorters.adb:30:07: info: initialization of "Temp" proved
 sorters.adb:32:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:33:15: info: index check proved (CVC5: 2 VC)
-sorters.adb:41:19: info: postcondition proved (CVC5: 3 VC)
-sorters.adb:43:45: info: index check proved (CVC5: 2 VC)
-sorters.adb:43:67: info: index check proved (CVC5: 2 VC)
-sorters.adb:45:07: info: initialization of "Min" proved
-sorters.adb:47:22: info: range check proved (CVC5: 2 VC)
-sorters.adb:50:13: info: loop invariant initialization proved (CVC5: 3 VC)
-sorters.adb:50:13: info: loop invariant preservation proved (CVC5: 3 VC)
-sorters.adb:51:50: info: overflow check proved (CVC5: 4 VC)
-sorters.adb:52:25: info: index check proved (CVC5: 4 VC)
-sorters.adb:52:43: info: index check proved (CVC5: 4 VC)
-sorters.adb:54:42: info: index check proved (CVC5: 2 VC)
-sorters.adb:55:20: info: range check proved (CVC5: 2 VC)
-sorters.adb:63:07: info: initialization of "Values_Last" proved
-sorters.adb:63:07: info: range check proved (CVC5: 2 VC)
-sorters.adb:65:07: info: initialization of "Smallest" proved
-sorters.adb:68:50: info: overflow check proved (CVC5: 2 VC)
-sorters.adb:69:22: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
-sorters.adb:69:25: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
-sorters.adb:70:22: info: precondition proved (CVC5: 2 VC)
-sorters.adb:70:40: info: range check proved (CVC5: 8 VC)
-sorters.adb:73:13: info: precondition proved (CVC5: 10 VC)
-sorters.adb:74:29: info: range check proved (CVC5: 4 VC)
-sorters.adb:80:33: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:80:33: info: loop invariant preservation proved (CVC5: 1 VC)
-sorters.adb:82:13: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:83:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (Current) <= Values (J)
-sorters.adb:83:26: info: index check proved (CVC5: 4 VC)
-sorters.adb:83:46: info: index check proved (CVC5: 4 VC)
-sorters.adb:85:13: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:86:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) <= Values (J + 1)
-sorters.adb:86:24: info: index check proved (CVC5: 4 VC)
-sorters.adb:86:40: info: index check proved (CVC5: 4 VC)
-sorters.adb:86:40: info: overflow check proved (CVC5: 4 VC)
-sorters.ads:15:11: info: flow dependencies proved
-sorters.ads:18:22: info: postcondition proved (CVC5: 2 VC)
-sorters.ads:18:64: info: overflow check proved (CVC5: 2 VC)
-sorters.ads:19:33: info: index check proved (CVC5: 2 VC)
-sorters.ads:19:49: info: index check proved (CVC5: 2 VC)
-sorters.ads:19:49: info: overflow check proved (CVC5: 2 VC)
+sorters.adb:33:29: info: index check proved (CVC5: 2 VC)
+sorters.adb:34:15: info: index check proved (CVC5: 2 VC)
+sorters.adb:42:19: info: postcondition proved (CVC5: 3 VC)
+sorters.adb:44:45: info: index check proved (CVC5: 2 VC)
+sorters.adb:44:67: info: index check proved (CVC5: 2 VC)
+sorters.adb:46:07: info: initialization of "Min" proved
+sorters.adb:48:22: info: range check proved (CVC5: 2 VC)
+sorters.adb:51:13: info: loop invariant initialization proved (CVC5: 3 VC)
+sorters.adb:51:13: info: loop invariant preservation proved (CVC5: 3 VC)
+sorters.adb:52:50: info: overflow check proved (CVC5: 4 VC)
+sorters.adb:53:25: info: index check proved (CVC5: 4 VC)
+sorters.adb:53:43: info: index check proved (CVC5: 4 VC)
+sorters.adb:55:42: info: index check proved (CVC5: 2 VC)
+sorters.adb:56:20: info: range check proved (CVC5: 2 VC)
+sorters.adb:64:07: info: initialization of "Values_Last" proved
+sorters.adb:64:07: info: range check proved (CVC5: 2 VC)
+sorters.adb:66:07: info: initialization of "Smallest" proved
+sorters.adb:69:50: info: overflow check proved (CVC5: 2 VC)
+sorters.adb:70:22: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+sorters.adb:70:25: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+sorters.adb:71:22: info: precondition proved (CVC5: 2 VC)
+sorters.adb:71:40: info: range check proved (CVC5: 8 VC)
+sorters.adb:74:13: info: precondition proved (CVC5: 10 VC)
+sorters.adb:75:29: info: range check proved (CVC5: 4 VC)
+sorters.adb:81:33: info: loop invariant initialization proved (CVC5: 1 VC)
+sorters.adb:81:33: info: loop invariant preservation proved (CVC5: 1 VC)
+sorters.adb:83:13: info: loop invariant initialization proved (CVC5: 1 VC)
+sorters.adb:84:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (Current) <= Values (J)
+sorters.adb:84:26: info: index check proved (CVC5: 4 VC)
+sorters.adb:84:46: info: index check proved (CVC5: 4 VC)
+sorters.adb:86:13: info: loop invariant initialization proved (CVC5: 1 VC)
+sorters.adb:87:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) <= Values (J + 1)
+sorters.adb:87:24: info: index check proved (CVC5: 4 VC)
+sorters.adb:87:40: info: index check proved (CVC5: 4 VC)
+sorters.adb:87:40: info: overflow check proved (CVC5: 4 VC)
+sorters.ads:16:11: info: flow dependencies proved
+sorters.ads:19:22: info: postcondition proved (CVC5: 2 VC)
+sorters.ads:19:64: info: overflow check proved (CVC5: 2 VC)
+sorters.ads:20:33: info: index check proved (CVC5: 2 VC)
+sorters.ads:20:49: info: index check proved (CVC5: 2 VC)
+sorters.ads:20:49: info: overflow check proved (CVC5: 2 VC)
 sqrt.adb:2:04: info: initialization of "Approx" proved
 sqrt.adb:4:16: info: division check proved (CVC5: 1 VC)
 sqrt.adb:4:16: info: float overflow check proved (Trivial)
@@ -959,10 +958,10 @@ sqrt.adb:6:21: info: float overflow check proved (Trivial)
 sqrt.adb:6:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-stacks-more.adb:4:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Stack.Top in 1 .. Max_Size) to subprogram at stacks-more.ads:2]
-stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Stack.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
-stacks.adb:15:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
-stacks.adb:21:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:10 should mention Stack in a precondition]
+stacks-more.adb:4:32: medium: array index check might fail (e.g. when Stack = (Max_Size => 1, Top => 0, Items => (1 => 1)) and Stack.Items'First = 1 and Stack.Items'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: add precondition (Stack.Top in 1 .. Max_Size) to subprogram at stacks-more.ads:2]
+stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Stack.Top + 1 (e.g. when Stack = (Max_Size => ?, Top => Natural'Last, Items => (1 => 1)) and Stack.Items'First = 1 and Stack.Items'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:15:25: medium: array index check might fail (e.g. when Stack = (Max_Size => ?, Top => 2, Items => (1 => 0)) and Stack.Items'First = 1 and Stack.Items'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:21:33: medium: array index check might fail (e.g. when Stack = (Max_Size => ?, Top => 0, Items => (1 => 1)) and Stack.Items'First = 1 and Stack.Items'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:10 should mention Stack in a precondition]
 stacks.adb:22:30: info: range check proved (CVC5: 2 VC)
 stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Stack.Items" on all paths, make "Stack" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 stacks.ads:10:19: info: initialization of "Item" proved
@@ -994,7 +993,7 @@ strings.adb:20:21: info: index check proved (CVC5: 2 VC)
 strings.adb:33:07: info: initialization of "Equals_Found" proved
 strings.adb:34:07: info: initialization of "Equals_Position" proved
 strings.adb:39:34: info: range check proved (CVC5: 2 VC)
-strings.adb:44:23: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:44:23: medium: range check might fail (e.g. when Equals_Position = 3 and Text = (1 => 'NUL') and Text'First = 1 and Text'Last = 1) [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:32: medium: precondition might fail [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:62: medium: overflow check might fail, cannot prove upper bound for Equals_Position + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
@@ -1125,18 +1124,18 @@ terminal.ads:8:24: info: initialization of "Count" proved
 terminal.ads:9:24: info: initialization of "Status" proved
 terminal.ads:11:10: info: data dependencies proved
 terminal.ads:13:10: info: flow dependencies proved
-ticktock.adb:14:34: medium: overflow check might fail, cannot prove upper bound for Clock_Value + 1 [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: subprogram at ticktock.ads:7 should mention Clock_Value in a precondition]
+ticktock.adb:14:34: high: overflow check might fail, cannot prove upper bound for Clock_Value + 1 (e.g. when Clock_Value = Clock_Type'Last) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: subprogram at ticktock.ads:7 should mention Clock_Value in a precondition]
 ticktock.ads:5:05: info: flow dependencies proved
 ticktock.ads:9:08: info: data dependencies proved
 ticktock.ads:10:08: info: flow dependencies proved
-transitive.adb:16:19: info: postcondition proved (CVC5: 1 VC)
-transitive.adb:20:37: info: division check proved (CVC5: 1 VC)
-transitive.adb:21:14: info: division check proved (CVC5: 1 VC)
-transitive.adb:25:07: info: initialization of "X_Last" proved
-transitive.adb:31:33: info: loop invariant initialization proved (CVC5: 1 VC)
-transitive.adb:31:33: info: loop invariant preservation proved (CVC5: 1 VC)
-transitive.ads:10:19: info: postcondition proved (CVC5: 1 VC)
-unused_parameter.adb:7:15: medium: overflow check might fail, cannot prove upper bound for A + A [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - A) to subprogram at unused_parameter.ads:3]
+transitive.adb:17:19: info: postcondition proved (CVC5: 1 VC)
+transitive.adb:21:37: info: division check proved (CVC5: 1 VC)
+transitive.adb:22:14: info: division check proved (CVC5: 1 VC)
+transitive.adb:26:07: info: initialization of "X_Last" proved
+transitive.adb:32:33: info: loop invariant initialization proved (CVC5: 1 VC)
+transitive.adb:32:33: info: loop invariant preservation proved (CVC5: 1 VC)
+transitive.ads:11:19: info: postcondition proved (CVC5: 1 VC)
+unused_parameter.adb:7:15: high: overflow check might fail, cannot prove upper bound for A + A (e.g. when A = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - A) to subprogram at unused_parameter.ads:3]
 unused_parameter.adb:7:20: info: division check proved (CVC5: 1 VC)
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
@@ -1148,7 +1147,7 @@ utility.ads:12:16: info: postcondition proved (CVC5: 1 VC)
 various.adb:7:27: info: unrolling loop
 various.adb:12:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 various.adb:20:21: info: assertion proved (CVC5: 2 VC)
-various.adb:20:23: medium: overflow check might fail, cannot prove upper bound for X+Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+various.adb:20:23: high: overflow check might fail, cannot prove upper bound for X+Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 various.adb:20:26: info: division check proved (CVC5: 1 VC)
 various.adb:21:13: info: division check proved (CVC5: 1 VC)
 very_longs-divide.adb:15:12: info: range check proved (CVC5: 2 VC)
@@ -1279,148 +1278,148 @@ very_longs-divide.adb:239:08: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:239:55: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:240:29: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:240:61: info: index check proved (CVC5: 2 VC)
-very_longs.adb:33:54: info: initialization of "Digit" proved
-very_longs.adb:33:73: info: initialization of "Valid" proved
-very_longs.adb:34:11: info: flow dependencies proved
-very_longs.adb:50:28: info: initialization of "Result" proved
-very_longs.adb:50:52: info: initialization of "Carry" proved
-very_longs.adb:52:08: info: flow dependencies proved
-very_longs.adb:55:07: info: initialization of "L_Digit" proved
-very_longs.adb:56:07: info: initialization of "R_Digit" proved
-very_longs.adb:57:07: info: initialization of "Sum" proved
-very_longs.adb:59:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:59:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:61:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:62:48: info: index check proved (CVC5: 2 VC)
-very_longs.adb:63:48: info: index check proved (CVC5: 2 VC)
-very_longs.adb:66:29: info: index check proved (CVC5: 2 VC)
-very_longs.adb:73:28: info: initialization of "Result" proved
-very_longs.adb:73:52: info: initialization of "Borrow" proved
-very_longs.adb:75:08: info: flow dependencies proved
-very_longs.adb:78:07: info: initialization of "L_Digit" proved
-very_longs.adb:79:07: info: initialization of "R_Digit" proved
-very_longs.adb:80:07: info: initialization of "Difference" proved
-very_longs.adb:82:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:82:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:84:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:85:51: info: index check proved (CVC5: 2 VC)
-very_longs.adb:86:51: info: index check proved (CVC5: 2 VC)
-very_longs.adb:93:29: info: index check proved (CVC5: 2 VC)
-very_longs.adb:109:07: info: initialization of "Result" proved
-very_longs.adb:109:26: info: range check proved (CVC5: 2 VC)
-very_longs.adb:110:07: info: initialization of "Temp" proved
-very_longs.adb:112:21: info: assertion proved (CVC5: 1 VC)
-very_longs.adb:113:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:113:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:115:45: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:116:29: info: index check proved (CVC5: 2 VC)
-very_longs.adb:116:50: info: division check proved (CVC5: 1 VC)
-very_longs.adb:116:50: info: range check proved (CVC5: 1 VC)
-very_longs.adb:117:23: info: division check proved (CVC5: 1 VC)
-very_longs.adb:126:07: info: initialization of "Index" proved
-very_longs.adb:127:07: info: initialization of "String_Index" proved
-very_longs.adb:128:07: info: initialization of "H_Digit" proved
-very_longs.adb:129:07: info: initialization of "L_Digit" proved
-very_longs.adb:130:07: info: initialization of "H_Okay" proved
-very_longs.adb:131:07: info: initialization of "L_Okay" proved
-very_longs.adb:133:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:133:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:136:34: info: range check proved (CVC5: 2 VC)
-very_longs.adb:137:29: info: range check proved (CVC5: 2 VC)
-very_longs.adb:141:13: info: loop invariant initialization proved (CVC5: 1 VC)
-very_longs.adb:141:13: info: loop invariant preservation proved (CVC5: 1 VC)
-very_longs.adb:141:26: info: overflow check proved (CVC5: 4 VC)
-very_longs.adb:141:41: info: overflow check proved (CVC5: 4 VC)
-very_longs.adb:141:45: info: division check proved (CVC5: 2 VC)
-very_longs.adb:142:32: info: loop invariant initialization proved (CVC5: 2 VC)
-very_longs.adb:142:32: info: loop invariant preservation proved (CVC5: 2 VC)
-very_longs.adb:143:32: info: loop invariant initialization proved (CVC5: 2 VC)
-very_longs.adb:143:32: info: loop invariant preservation proved (CVC5: 2 VC)
-very_longs.adb:145:31: info: index check proved (CVC5: 2 VC)
-very_longs.adb:146:44: info: index check proved (CVC5: 2 VC)
-very_longs.adb:146:44: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:151:24: info: assertion proved (CVC5: 2 VC)
-very_longs.adb:152:29: info: index check proved (CVC5: 2 VC)
-very_longs.adb:154:25: info: range check proved (CVC5: 2 VC)
-very_longs.adb:155:39: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:167:44: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:168:27: info: index check proved (CVC5: 2 VC)
-very_longs.adb:168:46: info: index check proved (CVC5: 2 VC)
-very_longs.adb:172:27: info: index check proved (CVC5: 2 VC)
-very_longs.adb:172:46: info: index check proved (CVC5: 2 VC)
-very_longs.adb:184:17: info: precondition proved (CVC5: 1 VC)
-very_longs.adb:190:21: info: precondition proved (CVC5: 1 VC)
-very_longs.adb:196:21: info: precondition proved (CVC5: 1 VC)
-very_longs.adb:203:07: info: refined post proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:205:46: info: index check proved (CVC5: 2 VC)
-very_longs.adb:207:33: info: index check proved (CVC5: 2 VC)
-very_longs.adb:213:33: info: index check proved (CVC5: 4 VC)
-very_longs.adb:214:28: info: range check proved (CVC5: 4 VC)
-very_longs.adb:218:13: info: loop invariant initialization proved (CVC5: 4 VC; Trivial: 2 VC)
-very_longs.adb:219:37: info: index check proved (CVC5: 4 VC)
-very_longs.adb:223:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Number.Long_Digits (J) = 0 [possible fix: subprogram at very_longs.ads:40 should mention Number in a precondition]
-very_longs.adb:223:39: info: index check proved (CVC5: 4 VC)
-very_longs.adb:235:07: info: initialization of "Result" proved
-very_longs.adb:235:28: info: range check proved (CVC5: 2 VC)
-very_longs.adb:236:07: info: initialization of "L_Digit" proved
-very_longs.adb:237:07: info: initialization of "R_Digit" proved
-very_longs.adb:238:07: info: initialization of "Sum" proved
-very_longs.adb:239:07: info: initialization of "Carry" proved
-very_longs.adb:241:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:241:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:243:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:244:48: info: index check proved (CVC5: 2 VC)
-very_longs.adb:245:48: info: index check proved (CVC5: 2 VC)
-very_longs.adb:248:29: info: index check proved (CVC5: 2 VC)
-very_longs.adb:255:07: info: initialization of "Result" proved
-very_longs.adb:255:31: info: range check proved (CVC5: 2 VC)
-very_longs.adb:256:07: info: initialization of "L_Digit" proved
-very_longs.adb:257:07: info: initialization of "R_Digit" proved
-very_longs.adb:258:07: info: initialization of "Difference" proved
-very_longs.adb:259:07: info: initialization of "Borrow" proved
-very_longs.adb:261:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:261:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:263:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:264:51: info: index check proved (CVC5: 2 VC)
-very_longs.adb:265:51: info: index check proved (CVC5: 2 VC)
-very_longs.adb:272:29: info: index check proved (CVC5: 2 VC)
-very_longs.adb:283:07: info: initialization of "Result" proved
-very_longs.adb:283:27: info: range check proved (CVC5: 2 VC)
-very_longs.adb:284:07: info: initialization of "L_Digit" proved
-very_longs.adb:285:07: info: initialization of "R_Digit" proved
-very_longs.adb:286:07: info: initialization of "T_Digit" proved
-very_longs.adb:287:07: info: initialization of "Temp" proved
-very_longs.adb:288:07: info: initialization of "Carry" proved
-very_longs.adb:291:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:291:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:294:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:296:39: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:297:51: info: index check proved (CVC5: 2 VC)
-very_longs.adb:298:51: info: index check proved (CVC5: 2 VC)
-very_longs.adb:299:18: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:300:61: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:300:65: info: index check proved (CVC5: 2 VC)
-very_longs.adb:302:37: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:302:41: info: index check proved (CVC5: 2 VC)
-very_longs.adb:312:07: info: initialization of "Result" proved
-very_longs.adb:312:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
-very_longs.adb:313:07: info: initialization of "L_Digit" proved
-very_longs.adb:314:07: info: initialization of "R_Digit" proved
-very_longs.adb:315:07: info: initialization of "T_Digit" proved
-very_longs.adb:316:07: info: initialization of "Temp" proved
-very_longs.adb:317:07: info: initialization of "Carry" proved
-very_longs.adb:320:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:320:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:323:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:325:39: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:326:52: info: index check proved (CVC5: 2 VC)
-very_longs.adb:327:52: info: index check proved (CVC5: 2 VC)
-very_longs.adb:328:59: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:328:63: info: index check proved (CVC5: 2 VC)
-very_longs.adb:330:34: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:330:38: info: index check proved (CVC5: 2 VC)
+very_longs.adb:36:54: info: initialization of "Digit" proved
+very_longs.adb:36:73: info: initialization of "Valid" proved
+very_longs.adb:37:11: info: flow dependencies proved
+very_longs.adb:53:28: info: initialization of "Result" proved
+very_longs.adb:53:52: info: initialization of "Carry" proved
+very_longs.adb:55:08: info: flow dependencies proved
+very_longs.adb:58:07: info: initialization of "L_Digit" proved
+very_longs.adb:59:07: info: initialization of "R_Digit" proved
+very_longs.adb:60:07: info: initialization of "Sum" proved
+very_longs.adb:62:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:62:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:64:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:65:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:66:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:69:29: info: index check proved (CVC5: 2 VC)
+very_longs.adb:76:28: info: initialization of "Result" proved
+very_longs.adb:76:52: info: initialization of "Borrow" proved
+very_longs.adb:78:08: info: flow dependencies proved
+very_longs.adb:81:07: info: initialization of "L_Digit" proved
+very_longs.adb:82:07: info: initialization of "R_Digit" proved
+very_longs.adb:83:07: info: initialization of "Difference" proved
+very_longs.adb:85:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:85:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:87:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:88:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:89:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:96:29: info: index check proved (CVC5: 2 VC)
+very_longs.adb:112:07: info: initialization of "Result" proved
+very_longs.adb:112:26: info: range check proved (CVC5: 2 VC)
+very_longs.adb:113:07: info: initialization of "Temp" proved
+very_longs.adb:115:21: info: assertion proved (CVC5: 1 VC)
+very_longs.adb:116:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:116:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:118:45: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:119:29: info: index check proved (CVC5: 2 VC)
+very_longs.adb:119:50: info: division check proved (CVC5: 1 VC)
+very_longs.adb:119:50: info: range check proved (CVC5: 1 VC)
+very_longs.adb:120:23: info: division check proved (CVC5: 1 VC)
+very_longs.adb:129:07: info: initialization of "Index" proved
+very_longs.adb:130:07: info: initialization of "String_Index" proved
+very_longs.adb:131:07: info: initialization of "H_Digit" proved
+very_longs.adb:132:07: info: initialization of "L_Digit" proved
+very_longs.adb:133:07: info: initialization of "H_Okay" proved
+very_longs.adb:134:07: info: initialization of "L_Okay" proved
+very_longs.adb:136:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:136:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:139:34: info: range check proved (CVC5: 2 VC)
+very_longs.adb:140:29: info: range check proved (CVC5: 2 VC)
+very_longs.adb:144:13: info: loop invariant initialization proved (CVC5: 1 VC)
+very_longs.adb:144:13: info: loop invariant preservation proved (CVC5: 1 VC)
+very_longs.adb:144:26: info: overflow check proved (CVC5: 4 VC)
+very_longs.adb:144:41: info: overflow check proved (CVC5: 4 VC)
+very_longs.adb:144:45: info: division check proved (CVC5: 2 VC)
+very_longs.adb:145:32: info: loop invariant initialization proved (CVC5: 2 VC)
+very_longs.adb:145:32: info: loop invariant preservation proved (CVC5: 2 VC)
+very_longs.adb:146:32: info: loop invariant initialization proved (CVC5: 2 VC)
+very_longs.adb:146:32: info: loop invariant preservation proved (CVC5: 2 VC)
+very_longs.adb:148:31: info: index check proved (CVC5: 2 VC)
+very_longs.adb:149:44: info: index check proved (CVC5: 2 VC)
+very_longs.adb:149:44: info: overflow check proved (CVC5: 2 VC)
+very_longs.adb:154:24: info: assertion proved (CVC5: 2 VC)
+very_longs.adb:155:29: info: index check proved (CVC5: 2 VC)
+very_longs.adb:157:25: info: range check proved (CVC5: 2 VC)
+very_longs.adb:158:39: info: overflow check proved (CVC5: 2 VC)
+very_longs.adb:170:44: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:171:27: info: index check proved (CVC5: 2 VC)
+very_longs.adb:171:46: info: index check proved (CVC5: 2 VC)
+very_longs.adb:175:27: info: index check proved (CVC5: 2 VC)
+very_longs.adb:175:46: info: index check proved (CVC5: 2 VC)
+very_longs.adb:187:17: info: precondition proved (CVC5: 1 VC)
+very_longs.adb:193:21: info: precondition proved (CVC5: 1 VC)
+very_longs.adb:199:21: info: precondition proved (CVC5: 1 VC)
+very_longs.adb:206:07: info: refined post proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:208:46: info: index check proved (CVC5: 2 VC)
+very_longs.adb:210:33: info: index check proved (CVC5: 2 VC)
+very_longs.adb:216:33: info: index check proved (CVC5: 4 VC)
+very_longs.adb:217:28: info: range check proved (CVC5: 4 VC)
+very_longs.adb:221:13: info: loop invariant initialization proved (CVC5: 4 VC; Trivial: 2 VC)
+very_longs.adb:222:37: info: index check proved (CVC5: 4 VC)
+very_longs.adb:226:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Number.Long_Digits (J) = 0 [possible fix: subprogram at very_longs.ads:40 should mention Number in a precondition]
+very_longs.adb:226:39: info: index check proved (CVC5: 4 VC)
+very_longs.adb:238:07: info: initialization of "Result" proved
+very_longs.adb:238:28: info: range check proved (CVC5: 2 VC)
+very_longs.adb:239:07: info: initialization of "L_Digit" proved
+very_longs.adb:240:07: info: initialization of "R_Digit" proved
+very_longs.adb:241:07: info: initialization of "Sum" proved
+very_longs.adb:242:07: info: initialization of "Carry" proved
+very_longs.adb:244:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:244:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:246:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:247:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:248:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:251:29: info: index check proved (CVC5: 2 VC)
+very_longs.adb:258:07: info: initialization of "Result" proved
+very_longs.adb:258:31: info: range check proved (CVC5: 2 VC)
+very_longs.adb:259:07: info: initialization of "L_Digit" proved
+very_longs.adb:260:07: info: initialization of "R_Digit" proved
+very_longs.adb:261:07: info: initialization of "Difference" proved
+very_longs.adb:262:07: info: initialization of "Borrow" proved
+very_longs.adb:264:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:264:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:266:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:267:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:268:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:275:29: info: index check proved (CVC5: 2 VC)
+very_longs.adb:286:07: info: initialization of "Result" proved
+very_longs.adb:286:27: info: range check proved (CVC5: 2 VC)
+very_longs.adb:287:07: info: initialization of "L_Digit" proved
+very_longs.adb:288:07: info: initialization of "R_Digit" proved
+very_longs.adb:289:07: info: initialization of "T_Digit" proved
+very_longs.adb:290:07: info: initialization of "Temp" proved
+very_longs.adb:291:07: info: initialization of "Carry" proved
+very_longs.adb:294:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:294:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:297:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:299:39: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:300:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:301:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:302:18: info: overflow check proved (CVC5: 2 VC)
+very_longs.adb:303:61: info: overflow check proved (CVC5: 2 VC)
+very_longs.adb:303:65: info: index check proved (CVC5: 2 VC)
+very_longs.adb:305:37: info: overflow check proved (CVC5: 2 VC)
+very_longs.adb:305:41: info: index check proved (CVC5: 2 VC)
+very_longs.adb:315:07: info: initialization of "Result" proved
+very_longs.adb:315:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length (e.g. when L = (Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and R = (Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 65536) [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
+very_longs.adb:316:07: info: initialization of "L_Digit" proved
+very_longs.adb:317:07: info: initialization of "R_Digit" proved
+very_longs.adb:318:07: info: initialization of "T_Digit" proved
+very_longs.adb:319:07: info: initialization of "Temp" proved
+very_longs.adb:320:07: info: initialization of "Carry" proved
+very_longs.adb:323:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:323:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:326:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:328:39: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:329:52: info: index check proved (CVC5: 2 VC)
+very_longs.adb:330:52: info: index check proved (CVC5: 2 VC)
+very_longs.adb:331:59: info: overflow check proved (CVC5: 2 VC)
+very_longs.adb:331:63: info: index check proved (CVC5: 2 VC)
+very_longs.adb:333:34: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:333:38: info: index check proved (CVC5: 2 VC)
-very_longs.adb:333:38: info: overflow check proved (CVC5: 2 VC)
+very_longs.adb:336:38: info: index check proved (CVC5: 2 VC)
+very_longs.adb:336:38: info: overflow check proved (CVC5: 2 VC)
 very_longs.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
@@ -1440,5 +1439,5 @@ workspaces.adb:5:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC5: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
-workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for Size + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
+workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for Size + 1 (e.g. when Size = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)

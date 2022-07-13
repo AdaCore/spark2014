@@ -1,3 +1,5 @@
+logging.ads:10:13: info: subprogram "Log_Size" will terminate, terminating annotation has been proved
+logging.ads:11:06: info: data dependencies proved
 use_logging.adb:3:24: info: initialization of "Log" proved
 use_logging.adb:8:04: info: precondition proved (CVC5: 1 VC)
 use_logging_classwide.adb:4:34: high: extension of "Log" is not initialized in "Use_Logging_Classwide" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "Log" on all paths or make "Log" an IN OUT parameter]

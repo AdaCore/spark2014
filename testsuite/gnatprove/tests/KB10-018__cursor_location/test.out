@@ -1,12 +1,12 @@
 cursor_location.adb:8:07: info: initialization of "Other_Side" proved
-cursor_location.adb:16:07: warning: postcondition does not mention function result [-gnatw.t]
+cursor_location.adb:16:07: warning: postcondition does not mention function result
 cursor_location.adb:17:11: info: postcondition proved (CVC5: 2 VC)
 cursor_location.adb:17:11: medium: assertion might fail, cannot prove not DU_Available (Left) [possible fix: subprogram at line 15 should mention DU_Available in a precondition]
-cursor_location.adb:17:11: warning: conjunct in postcondition does not check the outcome of calling "None_Available" [-gnatw.t]
-cursor_location.adb:17:39: warning: conjunct in postcondition does not check the outcome of calling "None_Available" [-gnatw.t]
+cursor_location.adb:17:11: warning: conjunct in postcondition does not check the outcome of calling "None_Available"
+cursor_location.adb:17:39: warning: conjunct in postcondition does not check the outcome of calling "None_Available"
 cursor_location.adb:33:10: warning: unreachable code (CVC5: 1 VC)
-cursor_location.ads:17:12: warning: postcondition does not mention function result [-gnatw.t]
+cursor_location.ads:17:12: warning: postcondition does not mention function result
 cursor_location.ads:18:10: high: postcondition might fail, cannot prove DU_Available (Side) (e.g. when DU_Available = (others => False) and Side = Left)
-cursor_location.ads:18:10: warning: conjunct in postcondition does not check the outcome of calling "Fulfill_Condition" [-gnatw.t]
+cursor_location.ads:18:10: warning: conjunct in postcondition does not check the outcome of calling "Fulfill_Condition"
 cursor_location.ads:27:09: info: postcondition proved (CVC5: 2 VC; Trivial: 2 VC)
 cursor_location.ads:27:43: warning: unreachable branch (CVC5: 1 VC)

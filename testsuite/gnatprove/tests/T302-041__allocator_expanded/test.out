@@ -1,4 +1,4 @@
-alloc.adb:4:04: medium: memory leak might occur at end of scope
+alloc.adb:4:04: medium: resource or memory leak might occur at end of scope
 alloc.adb:8:19: info: assertion proved (CVC5: 1 VC)
 alloc.adb:8:21: info: pointer dereference check proved (CVC5: 1 VC)
 types.ads:2:57: info: in default value at alloc.adb:4

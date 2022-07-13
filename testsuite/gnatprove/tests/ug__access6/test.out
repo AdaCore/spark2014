@@ -2,6 +2,6 @@ test.adb:10:06: info: flow dependencies proved
 test.adb:12:14: info: postcondition proved
 test.adb:17:31: info: pointer dereference check proved
 test.adb:18:18: info: pointer dereference check proved
-test.adb:20:07: info: absence of memory leak proved
-test.adb:23:04: info: absence of memory leak at end of scope proved
-test.adb:24:04: info: absence of memory leak at end of scope proved
+test.adb:20:07: info: absence of resource or memory leak proved
+test.adb:23:04: info: absence of resource or memory leak at end of scope proved
+test.adb:24:04: info: absence of resource or memory leak at end of scope proved

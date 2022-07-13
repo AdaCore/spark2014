@@ -107,11 +107,11 @@ sequences.adb:118:36: info: precondition proved (CVC5: 1 VC), in instantiation a
 sequences.adb:118:58: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:126:10: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:126:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:127:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:127:17: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:127:32: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:127:32: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:127:32: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:127:70: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:129:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:129:17: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:130:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:130:30: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:130:30: info: subprogram variant proved (CVC5: 1 VC), in instantiation at use_list.adb:3
@@ -130,10 +130,10 @@ sequences.adb:144:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), 
 sequences.adb:146:11: info: precondition proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:147:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:147:35: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:153:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:153:17: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:153:32: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:153:32: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
-sequences.adb:155:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:153:32: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:155:17: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:156:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:156:30: info: subprogram variant proved (Trivial), in instantiation at use_list.adb:3
 sequences.adb:156:44: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
@@ -162,10 +162,10 @@ sequences.adb:177:57: info: predicate check proved (Trivial: 1 VC), in instantia
 sequences.adb:177:62: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:185:10: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:185:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:186:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:186:17: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:186:32: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:186:32: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
-sequences.adb:188:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:186:32: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:188:17: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:189:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:189:30: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:189:30: info: subprogram variant proved (CVC5: 1 VC), in instantiation at use_list.adb:3
@@ -198,7 +198,7 @@ sequences.adb:211:64: info: precondition proved (CVC5: 1 VC), in instantiation a
 sequences.adb:218:09: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:218:20: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:219:26: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:221:17: medium: memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
+sequences.adb:221:17: medium: resource or memory leak might occur, in instantiation at use_list.adb:3 [possible explanation: allocator for an access-to-constant type leaks memory]
 sequences.adb:222:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:222:30: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:222:30: info: subprogram variant proved (CVC5: 1 VC), in instantiation at use_list.adb:3

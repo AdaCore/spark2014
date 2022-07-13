@@ -11,7 +11,7 @@ input.adb:71:28: info: range check proved (CVC5: 2 VC)
 input.adb:71:35: info: division check proved (CVC5: 1 VC)
 input.adb:84:14: info: range check proved (CVC5: 4 VC)
 input.adb:93:37: high: overflow check might fail, cannot prove upper bound for First_Char + (N - 1) (e.g. when First_Char = 1025 and N = 2147482624) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 34 should mention N and First_Char in a precondition]
-input.adb:144:18: medium: array index check might fail [reason for check: value must be a valid index into the array]
+input.adb:144:18: medium: array index check might fail (e.g. when First_Char = 1025) [reason for check: value must be a valid index into the array]
 input.adb:145:32: info: range check proved (CVC5: 2 VC)
 input.adb:220:35: info: range check proved (CVC5: 2 VC), in call inlined at input.adb:242, in call inlined at input.adb:254
 input.adb:232:07: info: initialization of "Current_Char" proved

@@ -1,3 +1,15 @@
+test_at_end_in_lemma.adb:37:07: warning: assuming "Lemma_OK" always returns
+test_at_end_in_lemma.adb:37:07: warning: no returning annotation available for "Lemma_OK"
+test_at_end_in_lemma.adb:38:07: warning: assuming "Lemma_No_Glob" always returns
+test_at_end_in_lemma.adb:38:07: warning: assuming "Lemma_No_Glob" has no effect on global items
+test_at_end_in_lemma.adb:38:07: warning: no Global contract available for "Lemma_No_Glob"
+test_at_end_in_lemma.adb:38:07: warning: no returning annotation available for "Lemma_No_Glob"
+test_at_end_in_lemma.adb:39:07: warning: assuming "Lemma_Bad_1" always returns
+test_at_end_in_lemma.adb:39:07: warning: no returning annotation available for "Lemma_Bad_1"
+test_at_end_in_lemma.adb:40:07: warning: assuming "Lemma_Bad_2" always returns
+test_at_end_in_lemma.adb:40:07: warning: no returning annotation available for "Lemma_Bad_2"
+test_at_end_in_lemma.adb:41:07: warning: assuming "Lemma_OK" always returns
+test_at_end_in_lemma.adb:41:07: warning: no returning annotation available for "Lemma_OK"
 test_at_end_in_lemma.adb:42:22: error: call to a function annotated with At_End_Borrow occurring inside a procedure call which is not known to be free of side-effects is not allowed in SPARK
 test_at_end_in_lemma.adb:42:22: error: violation of aspect SPARK_Mode at line 1
 test_at_end_in_lemma.adb:43:20: error: call to a function annotated with At_End_Borrow occurring inside a procedure call which is not known to be free of side-effects is not allowed in SPARK

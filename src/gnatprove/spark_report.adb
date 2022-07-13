@@ -33,6 +33,40 @@
 --  is in JSON format. The format of these files is documented in the
 --  user's guide.
 
+--  This program reads its configuration via a JSON file on the command line.
+--  The format of this JSON file is as follows:
+
+--  configuration_file = {
+--     "obj_dirs" : list string,
+--     "cmd_line" : list string,
+--     "switches" : list string,
+--     "proof_switches" : proof_switches_entry,
+--     "assumptions" : bool,
+--     "limit_subp" : string,
+--     "output_header" : bool,
+--     "quiet" : bool,
+--  }
+--  Note that all fields are optional and absence of a value indicates default
+--  values for the corresponding fields: the empty list for lists, "false" for
+--  booleans. For the field "limit_subp", absence of the field means no such
+--  limit was requested.
+
+--  proof_switches_entry = {
+--    key : list string
+--  }
+
+--  The meaning of the various fields is as follows:
+--  obj_dirs: list of directories to scan for .spark files
+--  cmd_line: the commandline of gnatprove to record in the gnatprove.out file
+--  switches: the list of switches provided via the Switches attribute
+--  proof_switches: a mapping of keys to lists of strings, as provided via the
+--     Proof_Switches attribute
+--  assumptions: if true, spark_report should generate assumption information
+--  output_header: if true, spark_report should generate a header which
+--    contains information such as switches, gnatprove version, and more.
+--  limit_subp: assumption info should be generated only for this subprogram.
+--    ??? Currently unused
+
 with Ada.Calendar;
 with Ada.Containers;
 with Ada.Command_Line;
@@ -58,9 +92,11 @@ with VC_Kinds;                            use VC_Kinds;
 
 procedure SPARK_Report is
 
-   No_Analysis_Done : Boolean := True;
-   Assumptions      : Boolean := False;
-   Output_Header    : Boolean := False;
+   SPARK_Mode_OK : Boolean := False;
+   Max_Progress  : Analysis_Progress := Progress_None;
+   Assumptions   : Boolean := False;
+   Output_Header : Boolean := False;
+   Quiet         : Boolean := False;
 
    function Parse_Command_Line return String;
    --  Parse the command line and set the variables Assumptions and Limit_Subp.
@@ -719,11 +755,10 @@ procedure SPARK_Report is
       --  in SPARK. Also, we do not currently take into account the fact that
       --  possibly a single subprogram/line in the unit was analyzed.
 
-      Analysis : constant Analysis_Status :=
-        (if Has_Flow and Has_Proof then Flow_And_Proof
-         elsif Has_Flow then Flow_Analysis
-         elsif Has_Proof then Proof_Only
-         else No_Analysis);
+      Analysis    : constant Analysis_Progress :=
+        Analysis_Progress'Value (String'(Get (Dict, "progress")));
+      Stop_Reason : constant Stop_Reason_Type :=
+        Stop_Reason_Type'Value (String'(Get (Dict, "stop_reason")));
 
       Entries : constant JSON_Array := Get (Get (Dict, "spark"));
    begin
@@ -736,16 +771,19 @@ procedure SPARK_Report is
             Add_SPARK_Status
               (Unit         => Unit,
                Subp         => From_JSON (Result),
-               SPARK_Status => SPARK_Status,
-               Analysis     => Analysis);
+               SPARK_Status => SPARK_Status);
 
-            --  If at least one subprogram or package was analyzed (either
-            --  flow analysis or proof), then record that the analysis was
-            --  effective.
+            Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
 
-            if SPARK_Status = All_In_SPARK and Analysis /= No_Analysis then
-               No_Analysis_Done := False;
+            --  If at least one subprogram or package is fully in SPARK, then
+            --  record that SPARK_Mode is likely set at least somewhere.
+
+            if SPARK_Status = All_In_SPARK then
+               SPARK_Mode_OK := True;
             end if;
+
+            Max_Progress := Analysis_Progress'Max (Max_Progress, Analysis);
+
          end;
       end loop;
       if Has_Flow then
@@ -776,39 +814,15 @@ procedure SPARK_Report is
    ------------------------
 
    function Parse_Command_Line return String is
-
       use Ada.Command_Line;
-
-      type String_Ptr is access String;
-      Source_Dirs : String_Ptr;
-
    begin
-      for Index in 1 .. Argument_Count loop
-         declare
-            S : String renames Argument (Index);
-         begin
-            if S = "--assumptions" then
-               Assumptions := True;
-            elsif S = "--output-header" then
-               Output_Header := True;
-            elsif GNATCOLL.Utils.Starts_With (S, "--limit-subp=") then
-
-               --  ??? FIXME --limit-subp currently ignored
-
-               null;
-            elsif GNATCOLL.Utils.Starts_With (S, "--") then
-               Abort_With_Message ("unknown option: " & S);
-            elsif Source_Dirs = null then
-               Source_Dirs := new String'(S);
-            else
-               Abort_With_Message ("more than one file given, aborting");
-            end if;
-         end;
-      end loop;
-      if Source_Dirs = null then
+      if Argument_Count > 1 then
+         Abort_With_Message ("more than one file or option given, aborting");
+      end if;
+      if Argument_Count < 1 then
          Abort_With_Message ("No source directory file given, aborting");
       end if;
-      return Source_Dirs.all;
+      return Argument (1);
    end Parse_Command_Line;
 
    ---------------------------
@@ -817,6 +831,10 @@ procedure SPARK_Report is
 
    procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type) is
       use Ada.Text_IO;
+
+      function To_String (Reason : Stop_Reason_Type) return String;
+      --  Produce human readable string for the reason the analysis did not
+      --  progress further.
 
       procedure For_Each_Unit (Unit : Unit_Type);
       --  print proof results for the given unit
@@ -827,37 +845,37 @@ procedure SPARK_Report is
 
       procedure For_Each_Unit (Unit : Unit_Type) is
 
-         procedure For_Each_Subp (Subp : Subp_Type; Stat : Stat_Rec);
+         procedure For_Each_Subp (Subp     : Subp_Type;
+                                  Stat     : Stat_Rec;
+                                  Analysis : Analysis_Progress);
 
          -------------------
          -- For_Each_Subp --
          -------------------
 
-         procedure For_Each_Subp (Subp : Subp_Type; Stat : Stat_Rec) is
+         procedure For_Each_Subp (Subp     : Subp_Type;
+                                  Stat     : Stat_Rec;
+                                  Analysis : Analysis_Progress) is
+
          begin
             Put (Handle,
                  "  " & Subp_Name (Subp) & " at " &
                    To_String (Subp_Sloc (Subp)));
 
             if Stat.SPARK = All_In_SPARK then
-               if Stat.Analysis = No_Analysis then
+               if Analysis < Progress_Flow then
                   Put_Line (Handle, " not analyzed");
                else
-                  if Stat.Analysis in Flow_Analysis | Flow_And_Proof then
-                     Put (Handle,
-                          " flow analyzed ("
-                          & Image (Stat.Flow_Errors, 1) & " errors, "
-                          & Image (Stat.Flow_Checks, 1) & " checks, "
-                          & Image (Stat.Flow_Warnings, 1) & " warnings and "
-                          & Image (Natural (Stat.Pragma_Assumes.Length), 1)
-                          & " pragma Assume " & "statements)");
-                  end if;
+                  Put (Handle,
+                       " flow analyzed ("
+                       & Image (Stat.Flow_Errors, 1) & " errors, "
+                       & Image (Stat.Flow_Checks, 1) & " checks, "
+                       & Image (Stat.Flow_Warnings, 1) & " warnings and "
+                       & Image (Natural (Stat.Pragma_Assumes.Length), 1)
+                       & " pragma Assume " & "statements)");
 
-                  if Stat.Analysis = Flow_And_Proof then
+                  if Analysis = Progress_Proof then
                      Put (Handle, " and");
-                  end if;
-
-                  if Stat.Analysis in Proof_Only | Flow_And_Proof then
                      if Stat.Proof_Checks = Stat.Proof_Checks_OK then
                         Put (Handle,
                              " proved ("
@@ -954,9 +972,45 @@ procedure SPARK_Report is
                    & Image (Num_Subps_SPARK (Unit), 1)
                    & " subprograms and packages out of "
                    & Image (Num_Subps (Unit), 1) & " analyzed");
+
+         if Unit_Progress (Unit) < Progress_Flow then
+            Put (Handle, "flow analysis and ");
+         end if;
+         if Unit_Progress (Unit) < Progress_Proof then
+            Put (Handle, "proof skipped for this unit");
+            if Unit_Stop_Reason (Unit) = Stop_Reason_None then
+               New_Line (Handle);
+            else
+               Put (Handle, " (");
+               Put (Handle, To_String (Unit_Stop_Reason (Unit)));
+               Put_Line (Handle, ")");
+            end if;
+         end if;
+
          Iter_Unit_Subps (Unit, For_Each_Subp'Access, Ordered => True);
 
       end For_Each_Unit;
+
+      ---------------
+      -- To_String --
+      ---------------
+
+      function To_String (Reason : Stop_Reason_Type) return String is
+      begin
+         case Reason is
+            when Stop_Reason_None         => return "";
+            when Stop_Reason_Check_Mode   =>
+               return "only SPARK_Mode checking was requested";
+            when Stop_Reason_Flow_Mode =>
+               return "only flow analysis was requested";
+            when Stop_Reason_Error_Marking =>
+               return "error during checking of SPARK_Mode";
+            when Stop_Reason_Error_Flow =>
+               return "error during flow analysis";
+            when Stop_Reason_Error_Borrow =>
+               return "error during ownership checking";
+         end case;
+      end To_String;
 
       N_Un : constant Natural := Num_Units;
 
@@ -1095,8 +1149,8 @@ procedure SPARK_Report is
             | VC_Null_Pointer_Dereference
             | VC_Null_Exclusion
             | VC_Dynamic_Accessibility_Check
-            | VC_Memory_Leak
-            | VC_Memory_Leak_At_End_Of_Scope
+            | VC_Resource_Leak
+            | VC_Resource_Leak_At_End_Of_Scope
             | VC_Length_Check
             | VC_Discriminant_Check
             | VC_Tag_Check
@@ -1212,6 +1266,20 @@ procedure SPARK_Report is
 
 begin
 
+   --  Processing of config options
+
+   Assumptions :=
+     Has_Field (Info, "assumptions")
+     and then (Get (Info, "assumptions") = True);
+   Output_Header :=
+     Has_Field (Info, "output_header")
+     and then (Get (Info, "output_header") = True);
+   Quiet :=
+     Has_Field (Info, "quiet")
+     and then (Get (Info, "quiet") = True);
+
+   --  ??? FIXME we are not reading the "limit_subp" field
+
    if Has_Field (Info, "obj_dirs") then
       declare
          Ar : constant JSON_Array := Get (Info, "obj_dirs");
@@ -1220,10 +1288,6 @@ begin
             Handle_Source_Dir (Get (Get (Ar, Var_Index)));
          end loop;
       end;
-   end if;
-
-   if No_Analysis_Done then
-      Reset_All_Results;
    end if;
 
    Create (Handle,
@@ -1241,14 +1305,24 @@ begin
       Ada.Text_IO.New_Line (Handle);
    end if;
 
-   if not No_Analysis_Done then
-      Dump_Summary_Table (Handle);
-      Ada.Text_IO.New_Line (Handle);
-      Ada.Text_IO.New_Line (Handle);
+   if SPARK_Mode_OK then
+      if Max_Progress >= Progress_Flow then
+         Dump_Summary_Table (Handle);
+         Ada.Text_IO.New_Line (Handle);
+         Ada.Text_IO.New_Line (Handle);
+      end if;
+      if Max_Progress >= Progress_Proof then
+         Print_Max_Steps (Handle);
+      end if;
+   elsif not Quiet then
+      Put_Line
+        (Standard_Error,
+         "warning: no bodies have been analyzed by GNATprove");
+      Put_Line
+        (Standard_Error,
+         "enable analysis of a non-generic body using SPARK_Mode");
    end if;
-   if not No_Analysis_Done then
-      Print_Max_Steps (Handle);
-   end if;
+
    Print_Analysis_Report (Handle);
    Close (Handle);
 

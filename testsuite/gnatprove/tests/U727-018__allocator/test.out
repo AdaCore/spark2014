@@ -3,7 +3,7 @@ main.adb:8:70: info: in default value at main.adb:9
 main.adb:8:70: info: range check proved (CVC5: 2 VC)
 main.adb:8:70: medium: in default value at main.adb:9
 main.adb:8:70: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
-main.adb:9:20: medium: memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+main.adb:9:20: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 main.adb:16:12: info: range check proved (CVC5: 2 VC)
-main.adb:17:20: medium: memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+main.adb:17:20: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 main.adb:17:27: medium: range check might fail, cannot prove lower bound for 0 [reason for check: value must fit in the type of the qualification]

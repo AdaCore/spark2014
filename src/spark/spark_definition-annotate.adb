@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;      use Ada.Characters.Handling;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
 with Aspects;                      use Aspects;
@@ -45,6 +46,7 @@ with Snames;                       use Snames;
 with SPARK_Definition.Violations;  use SPARK_Definition.Violations;
 with SPARK_Util.Subprograms;       use SPARK_Util.Subprograms;
 with SPARK_Util.Types;             use SPARK_Util.Types;
+with Stand;                        use Stand;
 with Stringt;                      use Stringt;
 with String_Utils;                 use String_Utils;
 
@@ -126,6 +128,33 @@ package body SPARK_Definition.Annotate is
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, No_Wrap_Around, E).
 
+   type Ownership_Annotation (Needs_Reclamation : Boolean := False) is record
+      case Needs_Reclamation is
+         when True =>
+            Check_Function : Entity_Id := Empty;
+            Reclaimed      : Boolean := False;
+         when False =>
+            null;
+      end case;
+   end record;
+
+   package Node_To_Ownership_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Ownership_Annotation,
+      Hash            => Common_Containers.Node_Hash,
+      Equivalent_Keys => "=");
+
+   Ownership_Annotations : Node_To_Ownership_Maps.Map :=
+     Node_To_Ownership_Maps.Empty_Map;
+   --  Maps all type entities E with a pragma Annotate
+   --  (GNATprove, Ownership, [Needs_Reclamation,] E) to a record holding a
+   --  boolean Needs_Reclamation set to True iff the type needs memory
+   --  reclamation, a function entity Check_Function if a function was supplied
+   --  to check whether or not objects of type E own a resource, and a boolean
+   --  Reclaimed which is the value returned by the check function when called
+   --  on an object which was reclaimed (to accomodate both Is_Reclaimed and
+   --  Needs_Reclamation functions).
+
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
@@ -179,37 +208,44 @@ package body SPARK_Definition.Annotate is
      (Arg3_Exp : Node_Id;
       Prag     : Node_Id)
    with Pre => Present (Arg3_Exp);
-   --  Check validity of a pragma Annotate (Gnatprove, Always_Return, E) and
+   --  Check validity of a pragma Annotate (GNATprove, Always_Return, E) and
    --  insert it in the Always_Return_Annotations map.
 
    procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) with
      Pre => Present (Arg3_Exp);
-   --  Check validity of a pragma Annotate (Gnatprove, At_End_Borrow, E) and
+   --  Check validity of a pragma Annotate (GNATprove, At_End_Borrow, E) and
    --  insert it in the At_End_Borrow_Annotations map.
 
    procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, E)
+   --  Check validity of a pragma Annotate (GNATprove, Inline_For_Proof, E)
    --  and insert it in the Inline_Annotations map.
 
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id;
       Arg4_Exp : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, E)
+   --  Check validity of a pragma Annotate (GNATprove, Iterate_For_Proof, E)
    --  and insert it in the Iterable_Annotations map.
 
    procedure Check_Logical_Equal_Annotation (Arg3_Exp : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Logical_Equal, E)
+   --  Check validity of a pragma Annotate (GNATprove, Logical_Equal, E)
    --  and insert it in the Logical_Eq_Annotations set.
 
    procedure Check_Might_Not_Return_Annotation
      (Arg3_Exp : Node_Id;
       Prag     : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Might_Not_Return, E)
+   --  Check validity of a pragma Annotate (GNATprove, Might_Not_Return, E)
    --  and insert it in the Might_Not_Return_Annotations map.
 
    procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, No_Wrap_Around, E)
    --  and insert it in the No_Wrap_Around_Annotations map.
+
+   procedure Check_Ownership_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id);
+   --  Check validity of a pragma Annotate (GNATprove, Ownership, ???, E)
+   --  and update the Ownership_Annotations map.
 
    ---------
    -- "<" --
@@ -219,6 +255,68 @@ package body SPARK_Definition.Annotate is
    begin
       return L.First < R.First;
    end "<";
+
+   ------------------------------------
+   -- Check_Always_Return_Annotation --
+   ------------------------------------
+
+   procedure Check_Always_Return_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
+      E : Entity_Id;
+
+   begin
+      --  The third argument must be an entity
+
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate Always_Return must be "
+            & "an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+      pragma Assert (Present (E));
+
+      --  This entity must be a subprogram or a package
+
+      if Ekind (E) not in
+        Subprogram_Kind | E_Package | Generic_Unit_Kind
+      then
+         Error_Msg_N
+           ("Entity parameter of a pragma Always_Return must be a subprogram "
+            & "or a package",
+            Arg3_Exp);
+         return;
+
+      --  It must not be a procedure with No_Return
+
+      elsif No_Return (E) then
+         Error_Msg_N
+           ("procedure with " & Aspect_Or_Pragma & " Annotate "
+            & "Always_Return must not also be marked with No_Return",
+            Arg3_Exp);
+
+      --  It must not be a procedure with Might_Not_Return
+
+      elsif Ekind (E) in E_Procedure | E_Generic_Procedure
+        and then Has_Might_Not_Return_Annotation (E)
+      then
+         Error_Msg_N
+           ("procedure with " & Aspect_Or_Pragma & " Annotate "
+            & "Always_Return must not also be marked with Might_Not_Return",
+            Arg3_Exp);
+      end if;
+
+      --  Go through renamings to find the appropriate entity
+
+      Always_Return_Annotations.Include (Get_Renamed_Entity (E));
+   end Check_Always_Return_Annotation;
 
    ------------------------------------
    -- Check_At_End_Borrow_Annotation --
@@ -669,10 +767,10 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      if To_String (Args_Str) = "Model" then
+      if To_Lower (To_String (Args_Str)) = "model" then
          Kind := Model;
          Check_Model_Entity (New_Prim, Ok);
-      elsif To_String (Args_Str) = "Contains" then
+      elsif To_Lower (To_String (Args_Str)) = "contains" then
          Kind := Contains;
          Check_Contains_Entity (New_Prim, Ok);
       else
@@ -925,67 +1023,222 @@ package body SPARK_Definition.Annotate is
       Set_Has_No_Wrap_Around_Annotation (Base);
    end Check_No_Wrap_Around_Annotation;
 
-   ------------------------------------
-   -- Check_Always_Return_Annotation --
-   ------------------------------------
+   --------------------------------
+   -- Check_Ownership_Annotation --
+   --------------------------------
 
-   procedure Check_Always_Return_Annotation
-     (Arg3_Exp : Node_Id;
-      Prag     : Node_Id)
+   procedure Check_Ownership_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id)
    is
-      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
-      Aspect_Or_Pragma : constant String :=
-        (if From_Aspect then "aspect" else "pragma");
-      E : Entity_Id;
+      Last_Exp  : constant Node_Id :=
+        (if No (Arg4_Exp) then Arg3_Exp else Arg4_Exp);
+      Extra_Exp : constant Node_Id :=
+        (if No (Arg4_Exp) then Empty else Arg3_Exp);
 
    begin
-      --  The third argument must be an entity
+      --  The last argument must be an entity
 
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
+      if Nkind (Last_Exp) not in N_Has_Entity then
          Error_Msg_N
-           ("third argument of pragma Annotate Always_Return must be "
-            & "an entity",
-            Arg3_Exp);
+           ("last argument of " & Aspect_Or_Pragma
+            & " Annotate Ownership must be an entity",
+            Last_Exp);
          return;
       end if;
 
-      E := Entity (Arg3_Exp);
-      pragma Assert (Present (E));
+      --  The extra argument if any must be a string literal
 
-      --  This entity must be a subprogram or a package
-
-      if Ekind (E) not in
-        Subprogram_Kind | E_Package | Generic_Unit_Kind
+      if Present (Extra_Exp) and then Nkind (Extra_Exp) not in N_String_Literal
       then
          Error_Msg_N
-           ("Entity parameter of a pragma Always_Return must be a subprogram "
-            & "or a package",
-            Arg3_Exp);
+           ("third argument of " & Aspect_Or_Pragma
+            & " Annotate Ownership must be a string",
+            Extra_Exp);
          return;
-
-      --  It must not be a procedure with No_Return
-
-      elsif No_Return (E) then
-         Error_Msg_N
-           ("procedure with " & Aspect_Or_Pragma & " Annotate "
-            & "Always_Return must not also be marked with No_Return",
-            Arg3_Exp);
-
-      --  It must not be a procedure with Might_Not_Return
-
-      elsif Ekind (E) in E_Procedure | E_Generic_Procedure
-        and then Has_Might_Not_Return_Annotation (E)
-      then
-         Error_Msg_N
-           ("procedure with " & Aspect_Or_Pragma & " Annotate "
-            & "Always_Return must not also be marked with Might_Not_Return",
-            Arg3_Exp);
       end if;
 
-      --  Go through renamings to find the appropriate entity
+      declare
+         Ent  : constant Entity_Id := Entity (Last_Exp);
+         Kind : constant String :=
+           (if No (Extra_Exp) then ""
+            else To_Lower (To_String (Strval (Extra_Exp))));
 
-      Always_Return_Annotations.Include (Get_Renamed_Entity (E));
-   end Check_Always_Return_Annotation;
+      begin
+         if Ekind (Ent) in Type_Kind then
+
+            --  Check that the entity is a private type whose whose full view
+            --  has SPARK_Mode => Off.
+
+            if Ekind (Ent) not in E_Private_Type
+                                | E_Record_Type_With_Private
+                                | E_Limited_Private_Type
+              or else Retysp (Ent) /= Ent
+              or else Parent_Type (Ent) /= Ent
+            then
+               Error_Msg_N
+                 ("a type annotated with Ownership must be"
+                  & " a private type whose full view is not in SPARK",
+                  Ent);
+
+            --  pragma Annotate (GNATprove, Ownership, Ent);
+
+            elsif No (Extra_Exp) then
+               Ownership_Annotations.Insert
+                 (Ent, (Needs_Reclamation => False));
+
+            --  pragma Annotate (GNATprove, Ownership, Needs_Reclamation, Ent);
+
+            elsif Kind = "needs_reclamation" then
+               Ownership_Annotations.Insert
+                 (Ent, (Needs_Reclamation => True, others => <>));
+
+            --  Nothing else is allowed
+
+            else
+               Error_Msg_N
+                 ("third argument of " & Aspect_Or_Pragma
+                  & " Annotate Ownership on a type must be"
+                  & " ""Needs_Reclamation""",
+                  Extra_Exp);
+            end if;
+
+         elsif Ekind (Ent) = E_Function then
+
+            --  Check that an extra parameter is provided
+
+            if No (Extra_Exp) then
+               Error_Msg_N
+                 ("third argument of " & Aspect_Or_Pragma
+                  & " Annotate Ownership on a"
+                  & " function must be either ""Needs_Reclamation"""
+                  & " or ""Is_Reclaimed""",
+                  Last_Exp);
+
+            --  Check that the function returns a boolean
+
+            elsif Etype (Ent) /= Standard_Boolean then
+               Error_Msg_N
+                 ("a function annotated with Ownership must return a boolean",
+                  Ent);
+
+            --  Check that the function has only one parameter
+
+            elsif No (First_Formal (Ent))
+              or else Number_Formals (Ent) /= 1
+            then
+               Error_Msg_N
+                 ("a function annotated with Ownership must "
+                  & "have exactly one formal parameter",
+                  Ent);
+
+            else
+               declare
+                  G_Typ   : constant Entity_Id :=
+                    Retysp (Etype (First_Formal (Ent)));
+                  Typ     : constant Entity_Id :=
+                    (if Is_Class_Wide_Type (G_Typ)
+                     then Retysp (Get_Specific_Type_From_Classwide (G_Typ))
+                     else G_Typ);
+                  Globals : Global_Flow_Ids;
+
+               begin
+                  --  The function shall not access any global data
+
+                  Get_Globals
+                    (Subprogram          => Ent,
+                     Scope               => (Ent => Ent, Part => Visible_Part),
+                     Classwide           => False,
+                     Globals             => Globals,
+                     Use_Deduced_Globals =>
+                        not Gnat2Why_Args.Global_Gen_Mode,
+                     Ignore_Depends      => False);
+
+                  if not Globals.Proof_Ins.Is_Empty
+                    or else not Globals.Inputs.Is_Empty
+                    or else not Globals.Outputs.Is_Empty
+                  then
+                     Error_Msg_N
+                       ("a function annotated with Ownership shall"
+                        & " not access any global data", Ent);
+
+                  elsif Is_Tagged_Type (Typ)
+                    and then not Is_Class_Wide_Type (G_Typ)
+                  then
+                     Error_Msg_N
+                       ("function annotated with Ownership on a tagged type "
+                        & "expects a classwide type", Ent);
+
+                  elsif not Ownership_Annotations.Contains (Typ)
+                  then
+                     Error_Msg_N
+                       ("the type of the first parameter of a function "
+                        & "annotated with Ownership must be annotated with"
+                        & " Ownership",
+                        Ent);
+                     Error_Msg_N
+                       ("\consider annotating it with a pragma Annotate "
+                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
+                        & ", ...)",
+                        Ent);
+
+                  elsif not Ownership_Annotations (Typ).Needs_Reclamation then
+                     Error_Msg_N
+                       ("the type of the first parameter of a function "
+                        & "annotated with Ownership shall need reclamation",
+                        Ent);
+                     Error_Msg_N
+                       ("\consider annotating it with a pragma Annotate "
+                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
+                        & ", ...)",
+                        Ent);
+
+                  elsif Present (Ownership_Annotations (Typ).Check_Function)
+                  then
+                     Error_Msg_N
+                       ("a single ownership function shall be supplied for a "
+                        & "given type annotated with Ownership",
+                        Ent);
+                     Error_Msg_NE
+                       ("\the function & conflicts with the current"
+                        & " annotation",
+                        Ent, Ownership_Annotations (Typ).Check_Function);
+
+                  --  pragma Annotate
+                  --   (GNATprove, Ownership, Needs_Reclamation, Ent);
+
+                  elsif Kind = "needs_reclamation" then
+                     Ownership_Annotations (Typ).Check_Function := Ent;
+                     Ownership_Annotations (Typ).Reclaimed := False;
+
+                  --  pragma Annotate
+                  --   (GNATprove, Ownership, Is_Reclaimed, Ent);
+
+                  elsif Kind = "is_reclaimed" then
+                     Ownership_Annotations (Typ).Check_Function := Ent;
+                     Ownership_Annotations (Typ).Reclaimed := True;
+
+                  --  Nothing else is allowed
+
+                  else
+                     Error_Msg_N
+                       ("third argument of " & Aspect_Or_Pragma
+                        & " Annotate Ownership on a"
+                        & " function must be either ""Needs_Reclamation"""
+                        & " or ""Is_Reclaimed""",
+                        Extra_Exp);
+                  end if;
+               end;
+            end if;
+         else
+            Error_Msg_N
+              ("the entity of a pragma Annotate Ownership "
+               & "shall be either a type or a function",
+               Ent);
+         end if;
+      end;
+   end Check_Ownership_Annotation;
 
    ------------------------
    -- Find_Inline_Pragma --
@@ -1019,6 +1272,52 @@ package body SPARK_Definition.Annotate is
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
 
+   ------------------------------------
+   -- Get_Reclamation_Check_Function --
+   ------------------------------------
+
+   procedure Get_Reclamation_Check_Function
+     (E              : Entity_Id;
+      Check_Function : out Entity_Id;
+      Reclaimed      : out Boolean)
+   is
+      use Node_To_Ownership_Maps;
+      R : constant Entity_Id := Root_Retysp (E);
+   begin
+      Check_Function := Ownership_Annotations (R).Check_Function;
+      Reclaimed := Ownership_Annotations (R).Reclaimed;
+   end Get_Reclamation_Check_Function;
+
+   ----------------------------------
+   -- Has_Always_Return_Annotation --
+   ----------------------------------
+
+   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean is
+      Unit     : constant Opt_Unit_Kind_Id :=
+        (if not Is_Child_Unit (E) and then Present (Scope (E))
+         then Enclosing_Unit (E) else Empty);
+      --  Do not look at the enclosing package for child units
+
+      Spec     : constant Node_Id :=
+        (if not Is_Generic_Instance (E) then Empty
+         elsif Is_Package_Or_Generic_Package (E) then Package_Specification (E)
+         else Subprogram_Specification (E));
+      Gen_Unit : constant Opt_Generic_Unit_Kind_Id :=
+        (if Present (Spec) and then Present (Generic_Parent (Spec))
+         then Generic_Parent (Spec)
+         else Empty);
+      --  If E is a generic instance, also look for Always_Return annotation on
+      --  the enclosing scopes of the generic unit.
+
+   begin
+      return Always_Return_Annotations.Contains (E)
+        or else (Present (Unit)
+                 and then Ekind (Unit) = E_Package
+                 and then Has_Always_Return_Annotation (Unit))
+        or else (Present (Gen_Unit)
+                 and then Has_Always_Return_Annotation (Gen_Unit));
+   end Has_Always_Return_Annotation;
+
    ----------------------------------
    -- Has_At_End_Borrow_Annotation --
    ----------------------------------
@@ -1050,35 +1349,12 @@ package body SPARK_Definition.Annotate is
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean is
      (No_Wrap_Around_Annotations.Contains (E));
 
-   ----------------------------------
-   -- Has_Always_Return_Annotation --
-   ----------------------------------
+   ------------------------------
+   -- Has_Ownership_Annotation --
+   ------------------------------
 
-   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean is
-      Unit     : constant Opt_Unit_Kind_Id :=
-        (if not Is_Child_Unit (E) and then Present (Scope (E))
-         then Enclosing_Unit (E) else Empty);
-      --  Do not look at the enclosing package for child units
-
-      Spec     : constant Node_Id :=
-        (if not Is_Generic_Instance (E) then Empty
-         elsif Is_Package_Or_Generic_Package (E) then Package_Specification (E)
-         else Subprogram_Specification (E));
-      Gen_Unit : constant Opt_Generic_Unit_Kind_Id :=
-        (if Present (Spec) and then Present (Generic_Parent (Spec))
-         then Generic_Parent (Spec)
-         else Empty);
-      --  If E is a generic instance, also look for Always_Return annotation on
-      --  the enclosing scopes of the generic unit.
-
-   begin
-      return Always_Return_Annotations.Contains (E)
-        or else (Present (Unit)
-                 and then Ekind (Unit) = E_Package
-                 and then Has_Always_Return_Annotation (Unit))
-        or else (Present (Gen_Unit)
-                 and then Has_Always_Return_Annotation (Gen_Unit));
-   end Has_Always_Return_Annotation;
+   function Has_Ownership_Annotation (E : Entity_Id) return Boolean is
+     (Ownership_Annotations.Contains (Root_Retysp (E)));
 
    -----------------------------
    -- Infer_Inline_Annotation --
@@ -1278,6 +1554,13 @@ package body SPARK_Definition.Annotate is
       end case;
    end Mark_Pragma_Annotate;
 
+   -----------------------
+   -- Needs_Reclamation --
+   -----------------------
+
+   function Needs_Reclamation (E : Entity_Id) return Boolean is
+     (Ownership_Annotations (Root_Retysp (E)).Needs_Reclamation);
+
    --------------------------------
    -- Retrieve_Inline_Annotation --
    --------------------------------
@@ -1434,6 +1717,15 @@ package body SPARK_Definition.Annotate is
       then
          Check_Argument_Number (Name, 4, Ok);
 
+      --  Ownership annotations can have 3 or 4 arguments
+
+      elsif Name = "ownership" then
+         if Number_Of_Pragma_Args <= 3 then
+            Check_Argument_Number (Name, 3, Ok);
+         else
+            Check_Argument_Number (Name, 4, Ok);
+         end if;
+
       --  Annotations for justifying check messages may be attached to an
       --  entity through an aspect notation, in which case a fifth generated
       --  argument denotes the entity to which the aspect applies.
@@ -1485,6 +1777,9 @@ package body SPARK_Definition.Annotate is
          Check_Always_Return_Annotation (Arg3_Exp, Prag);
 
       --  Annotations with 4 arguments
+
+      elsif Name = "ownership" then
+         Check_Ownership_Annotation (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp);
 
       elsif Name = "iterable_for_proof" then
          Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp);

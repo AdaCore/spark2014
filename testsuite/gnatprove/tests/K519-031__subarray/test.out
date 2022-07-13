@@ -26,6 +26,8 @@ subar.adb:50:11: info: range check proved (CVC5: 2 VC)
 subar.adb:50:32: info: cannot unroll loop (too many loop iterations)
 subar.adb:53:14: info: overflow check proved (CodePeer)
 subar.adb:54:11: info: range check proved (CVC5: 2 VC)
+subar.adb:54:24: warning: loop executes zero times or raises Constraint_Error
+subar.adb:54:24: warning: suspicious loop bound out of range of loop subtype
 subar.adb:54:32: info: cannot unroll loop (too many loop iterations)
 subar.adb:55:10: warning: unreachable code (CVC5: 1 VC)
 subar.adb:57:14: info: overflow check proved (CodePeer)
@@ -33,5 +35,5 @@ subar.adb:59:11: medium: range check might fail
 subar.adb:59:32: info: cannot unroll loop (too many loop iterations)
 subar.ads:21:14: warning: subprogram "F" has no effect
 subar.ads:24:14: warning: subprogram "G" has no effect
-subar.ads:25:23: high: array index check might fail (e.g. when X'First = 1 and X'Last = 0) [reason for check: value must be a valid index into the array]
+subar.ads:25:23: high: array index check might fail (e.g. when X'First = 0 and X'Last = -1) [reason for check: value must be a valid index into the array]
 subar.ads:27:14: warning: subprogram "Local" has no effect

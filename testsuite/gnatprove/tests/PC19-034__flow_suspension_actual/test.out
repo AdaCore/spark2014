@@ -1,3 +1,5 @@
 p.adb:9:35: error: suspension on a formal parameter is not yet supported
 q.adb:9:35: error: suspension on a formal parameter is not yet supported
+q.adb:22:38: warning: assuming "Suspend_Until_True" always returns
+q.adb:22:38: warning: no returning annotation available for "Suspend_Until_True"
 gnatprove: error during flow analysis and proof

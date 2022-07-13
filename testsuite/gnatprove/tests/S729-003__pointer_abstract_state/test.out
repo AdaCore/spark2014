@@ -1,13 +1,21 @@
+insrc.adb:70:17: warning: assuming "Read" always returns
 insrc.adb:70:17: warning: assuming "Read" has no effect on global items
 insrc.adb:70:17: warning: no Global contract available for "Read"
+insrc.adb:70:17: warning: no returning annotation available for "Read"
 insrc.adb:74:07: error: handler is not allowed in SPARK
 insrc.adb:74:07: error: violation of aspect SPARK_Mode at line 28
+insrc.adb:85:14: warning: assuming "Open" always returns
 insrc.adb:85:14: warning: assuming "Open" has no effect on global items
 insrc.adb:85:14: warning: no Global contract available for "Open"
+insrc.adb:85:14: warning: no returning annotation available for "Open"
+insrc.adb:86:29: warning: assuming "Size" always returns
 insrc.adb:86:29: warning: assuming "Size" has no effect on global items
 insrc.adb:86:29: warning: no Global contract available for "Size"
+insrc.adb:86:29: warning: no returning annotation available for "Size"
+insrc.adb:89:14: warning: assuming "Close" always returns
 insrc.adb:89:14: warning: assuming "Close" has no effect on global items
 insrc.adb:89:14: warning: no Global contract available for "Close"
+insrc.adb:89:14: warning: no returning annotation available for "Close"
 insrc.adb:93:07: error: handler is not allowed in SPARK
 insrc.adb:93:07: error: violation of aspect SPARK_Mode at line 28
 insrc.adb:164:16: info: analyzing call to "AffGenericErr" in context

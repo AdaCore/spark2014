@@ -2,5 +2,4 @@ comment: "CVC4 consumes >5GB of memory for this test"
 memlimit: 100
 prove_all:
   prover: ["z3"]
-  counterexample: False
   steps: 1000

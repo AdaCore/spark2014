@@ -1,3 +1,2 @@
 prove_all:
   prover: ["cvc5"]
-  counterexample: False

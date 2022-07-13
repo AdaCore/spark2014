@@ -1,5 +1,11 @@
 arrays.ads:25:04: warning: make sure that all overlapping objects have Async_Writers set to True
 arrays.ads:25:04: warning: writing to "Arr_3" is assumed to have no effects on other non-volatile objects
+arrays.ads:25:26: warning: Program_Error will be raised at run time
+arrays.ads:25:26: warning: assuming "F" always returns
+arrays.ads:25:26: warning: assuming "F" has no effect on global items
+arrays.ads:25:26: warning: cannot call "F" before body seen
+arrays.ads:25:26: warning: no Global contract available for "F"
+arrays.ads:25:26: warning: no returning annotation available for "F"
 arrays.ads:27:04: error: "Arr_4" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:27:04: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:28:79: error: attribute "Address" in unsupported context is not yet supported
@@ -7,9 +13,13 @@ arrays.ads:31:04: error: "Arr_5" is not allowed in SPARK (due to attribute "Addr
 arrays.ads:31:04: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:32:27: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:32:27: error: violation of aspect SPARK_Mode at line 2
+arrays.ads:32:37: warning: Program_Error will be raised at run time
+arrays.ads:32:37: warning: cannot call "G" before body seen
 arrays.ads:32:45: error: attribute "Address" in unsupported context is not yet supported
 arrays.ads:34:04: error: "Arr_6" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:34:04: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:35:27: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:35:27: error: violation of aspect SPARK_Mode at line 2
+arrays.ads:35:44: warning: Program_Error will be raised at run time
+arrays.ads:35:44: warning: cannot call "G" before body seen
 gnatprove: error during flow analysis and proof

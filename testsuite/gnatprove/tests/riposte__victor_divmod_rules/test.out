@@ -1,75 +1,94 @@
 victor_divmod_rules.adb:9:11: info: flow dependencies proved
+victor_divmod_rules.adb:11:11: warning: postcondition does not check the outcome of calling "DivMod_01"
 victor_divmod_rules.adb:11:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:11:29: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:19:11: info: flow dependencies proved
+victor_divmod_rules.adb:21:11: warning: postcondition does not check the outcome of calling "DivMod_02"
 victor_divmod_rules.adb:21:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:21:24: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:29:11: info: flow dependencies proved
+victor_divmod_rules.adb:31:11: warning: postcondition does not check the outcome of calling "DivMod_03"
 victor_divmod_rules.adb:31:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:31:24: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:39:11: info: flow dependencies proved
+victor_divmod_rules.adb:41:11: warning: postcondition does not check the outcome of calling "DivMod_04"
 victor_divmod_rules.adb:41:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:41:28: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:53:11: info: flow dependencies proved
+victor_divmod_rules.adb:55:11: warning: postcondition does not check the outcome of calling "DivMod_05"
 victor_divmod_rules.adb:55:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:55:32: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:55:37: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:63:11: info: flow dependencies proved
+victor_divmod_rules.adb:65:11: warning: postcondition does not check the outcome of calling "DivMod_06"
 victor_divmod_rules.adb:65:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:65:24: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:65:29: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:79:11: info: flow dependencies proved
+victor_divmod_rules.adb:81:11: warning: postcondition does not check the outcome of calling "DivMod_07"
 victor_divmod_rules.adb:81:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:81:29: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:81:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:90:11: info: flow dependencies proved
+victor_divmod_rules.adb:92:11: warning: postcondition does not check the outcome of calling "DivMod_08"
 victor_divmod_rules.adb:92:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:92:24: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:92:29: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:105:11: info: flow dependencies proved
+victor_divmod_rules.adb:107:11: warning: postcondition does not check the outcome of calling "DivMod_09"
 victor_divmod_rules.adb:107:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:107:29: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:107:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:115:11: info: flow dependencies proved
+victor_divmod_rules.adb:117:11: warning: postcondition does not check the outcome of calling "DivMod_10"
 victor_divmod_rules.adb:117:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:117:24: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:117:29: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:129:11: info: flow dependencies proved
+victor_divmod_rules.adb:131:11: warning: postcondition does not check the outcome of calling "DivMod_11"
 victor_divmod_rules.adb:131:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:131:32: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:131:37: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:139:11: info: flow dependencies proved
+victor_divmod_rules.adb:141:11: warning: postcondition does not check the outcome of calling "DivMod_12"
 victor_divmod_rules.adb:141:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:141:24: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:141:29: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:153:11: info: flow dependencies proved
+victor_divmod_rules.adb:155:11: warning: postcondition does not check the outcome of calling "DivMod_13"
 victor_divmod_rules.adb:155:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:155:24: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:155:29: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:155:34: info: overflow check proved (CVC5: 2 VC)
 victor_divmod_rules.adb:155:39: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:163:11: info: flow dependencies proved
-victor_divmod_rules.adb:164:24: high: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 162]
-victor_divmod_rules.adb:165:22: medium: postcondition might fail
+victor_divmod_rules.adb:164:24: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 162]
+victor_divmod_rules.adb:165:11: warning: postcondition does not check the outcome of calling "DivMod_14"
+victor_divmod_rules.adb:165:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:165:24: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 162]
 victor_divmod_rules.adb:173:11: info: flow dependencies proved
-victor_divmod_rules.adb:175:22: info: postcondition proved (altergo: 1 VC)
+victor_divmod_rules.adb:175:11: warning: postcondition does not check the outcome of calling "DivMod_15"
+victor_divmod_rules.adb:175:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:175:24: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:175:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:183:11: info: flow dependencies proved
-victor_divmod_rules.adb:184:45: high: divide by zero might fail [possible fix: use "and then" instead of "and" in precondition]
-victor_divmod_rules.adb:185:22: medium: postcondition might fail
+victor_divmod_rules.adb:184:45: high: divide by zero might fail (e.g. when Y = 0) [possible fix: use "and then" instead of "and" in precondition]
+victor_divmod_rules.adb:185:11: warning: postcondition does not check the outcome of calling "DivMod_16"
+victor_divmod_rules.adb:185:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:185:24: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:185:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:193:11: info: flow dependencies proved
-victor_divmod_rules.adb:194:45: high: divide by zero might fail [possible fix: use "and then" instead of "and" in precondition]
-victor_divmod_rules.adb:195:22: info: postcondition proved (altergo: 1 VC)
+victor_divmod_rules.adb:194:45: high: divide by zero might fail (e.g. when Y = 0) [possible fix: use "and then" instead of "and" in precondition]
+victor_divmod_rules.adb:195:11: warning: postcondition does not check the outcome of calling "DivMod_17"
+victor_divmod_rules.adb:195:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:195:24: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:195:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:203:11: info: flow dependencies proved
-victor_divmod_rules.adb:205:22: medium: postcondition might fail
+victor_divmod_rules.adb:205:11: warning: postcondition does not check the outcome of calling "DivMod_18"
+victor_divmod_rules.adb:205:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:205:24: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:205:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:218:11: info: flow dependencies proved
+victor_divmod_rules.adb:220:11: warning: postcondition does not check the outcome of calling "DivMod_20"
 victor_divmod_rules.adb:220:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:220:24: info: division check proved (CVC5: 1 VC)

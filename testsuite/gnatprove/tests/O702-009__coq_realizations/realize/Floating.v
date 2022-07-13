@@ -19,6 +19,7 @@ Require floating_point.Single.
 Require floating_point.Double.
 
 Require Import Fourier.
+Require Import Psatz.
 
 (* Why3 assumption *)
 Definition unit := unit.
@@ -76,7 +77,7 @@ revert H2; rewrite ?Hx1; rewrite Rminus_0_r;
 intro H2.
 change 0%R with (IZR 0) at 2; apply IZR_le.
 change 1%R with (IZR 1) in H2; apply lt_IZR in H2.
-omega.
+lia.
 split; [rewrite minus_IZR | rewrite Z.sub_simpl_r];
 simpl; fourier.
 split; [rewrite minus_IZR | rewrite Z.sub_simpl_r];
@@ -121,13 +122,13 @@ pose proof (Truncate_up_neg y Hy) as [_ Hty].
 pose proof (Truncate_up_neg x (Rle_trans _ _ _ Hxy Hy)) as [Htx _].
 apply (Rle_trans _ _ _ Hxy) in Hty.
 apply (Rlt_le_trans _ _ _ Htx) in Hty.
-apply lt_IZR in Hty; omega.
+apply lt_IZR in Hty; lia.
 case (Rle_dec 0 x); intro Hx.
 pose proof (Truncate_down_pos x Hx) as [Htx _].
 pose proof (Truncate_down_pos y (Rle_trans _ _ _ Hx Hxy)) as [_ Hty].
 apply (Rle_trans _ _ _ Htx) in Hxy.
 apply (Rle_lt_trans _ _ _ Hxy) in Hty.
-apply lt_IZR in Hty; omega.
+apply lt_IZR in Hty; lia.
 apply Rnot_le_lt in Hy.
 apply Rnot_le_lt in Hx.
 pose proof (Truncate_up_neg x (Rlt_le _ _ Hx)) as [Htx _].
@@ -135,7 +136,7 @@ pose proof (Truncate_down_pos y (Rlt_le _ _ Hy)) as [_ Hty].
 apply (Rlt_trans _ _ _ Htx) in Hx.
 apply (Rlt_trans _ _ _ Hy) in Hty.
 change 0 with (IZR 0) in Hx; apply lt_IZR in Hx;
-change 0 with (IZR 0) in Hty; apply lt_IZR in Hty; omega.
+change 0 with (IZR 0) in Hty; apply lt_IZR in Hty; lia.
 Qed.
 
 (* Why3 goal *)
@@ -175,7 +176,7 @@ intros i.
 unfold floor; case (archimed (IZR i)); intros H1 H2.
 rewrite <- minus_IZR in H2; change 1 with (IZR 1) in H2.
 apply lt_IZR in H1; apply le_IZR in H2.
-omega.
+lia.
 Qed.
 
 (* Why3 goal *)
@@ -187,10 +188,10 @@ case (Rle_lt_or_eq_dec (IZR (up (IZR i)) - IZR i) 1 H2);
 clear H2.
 intro Wrong; contradict Wrong; apply Rle_not_gt.
 rewrite <- minus_IZR; change 1 with (IZR 1); apply IZR_le.
-apply lt_IZR in H1; omega.
+apply lt_IZR in H1; lia.
 rewrite <- minus_IZR; change 1 with (IZR 1).
 clear H1; intro H; apply eq_IZR in H.
-omega.
+lia.
 Qed.
 
 (* Why3 goal *)
@@ -223,7 +224,7 @@ intros x y Hxy.
 pose proof (Floor_down x) as [Hfx _].
 pose proof (Floor_down y) as [_ Hfy].
 apply (Rle_trans _ _ _ Hfx) in Hxy; apply (Rle_lt_trans _ _ _ Hxy) in Hfy.
-apply lt_IZR in Hfy; omega.
+apply lt_IZR in Hfy; lia.
 Qed.
 
 (* Why3 goal *)
@@ -233,7 +234,7 @@ intros x y Hxy.
 pose proof (Ceil_up x) as [Hfx _].
 pose proof (Ceil_up y) as [_ Hfy].
 apply (Rlt_le_trans _ _ _ Hfx) in Hxy; apply (Rlt_le_trans _ _ _ Hxy) in Hfy.
-apply lt_IZR in Hfy; omega.
+apply lt_IZR in Hfy; lia.
 Qed.
 
 (* Why3 goal *)

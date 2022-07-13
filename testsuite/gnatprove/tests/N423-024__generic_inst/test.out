@@ -1,6 +1,6 @@
 context.adb:1:11: warning: subprogram "Context" has no effect
 context.adb:6:23: info: data dependencies proved, in instantiation at context.adb:13
-context.adb:10:22: high: assertion might fail, in instantiation at context.adb:13
+context.adb:10:22: high: assertion might fail, in instantiation at context.adb:13 (e.g. when V = 0)
 context.adb:15:25: info: data dependencies proved
 context_b.adb:1:11: warning: subprogram "Context_B" has no effect
 context_b.adb:10:17: warning: subprogram "Check_Cond" has no effect, in instantiation at context_b.adb:24
@@ -8,3 +8,4 @@ context_b.adb:18:25: info: assertion proved (CVC5: 1 VC), in instantiation at co
 context_b.adb:26:14: info: add a contract to analyze it separately from calling contexts
 context_b.adb:26:14: info: local subprogram "Local" only analyzed in the context of calls
 context_b.adb:26:14: warning: subprogram "Local" has no effect
+context_b.adb:31:04: info: analyzing call to "Local" in context

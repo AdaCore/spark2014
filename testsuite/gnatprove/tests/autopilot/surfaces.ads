@@ -2,7 +2,8 @@ package Surfaces
   with Abstract_State => ((Elevators with External => Async_Readers),
                           (Ailerons  with External => Async_Readers),
                           (Rudder    with External => Async_Readers)),
-       Initializes    => (Elevators, Ailerons, Rudder)
+       Initializes    => (Elevators, Ailerons, Rudder),
+       Annotate       => (GNATprove, Always_Return)
 is
    type Controlangle is new Short_Short_Integer range -45 .. 45;
 

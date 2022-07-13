@@ -1,7 +1,7 @@
 global_access_in.adb:5:04: info: initialization of "My_Int_Ptr" proved
-global_access_in.adb:5:04: medium: memory leak might occur at end of scope
-global_access_in.adb:8:04: medium: memory leak might occur at end of scope
-global_access_in.adb:11:04: medium: memory leak might occur at end of scope
+global_access_in.adb:5:04: medium: resource or memory leak might occur at end of scope
+global_access_in.adb:8:04: medium: resource or memory leak might occur at end of scope
+global_access_in.adb:11:04: medium: resource or memory leak might occur at end of scope
 global_access_in.adb:19:11: info: data dependencies proved
 global_access_in.adb:22:17: medium: pointer dereference check might fail [possible fix: subprogram at line 18 should mention My_Global in a precondition]
 global_access_in.adb:26:11: info: data dependencies proved
@@ -23,7 +23,7 @@ global_access_in.adb:61:29: info: range check proved (CVC5: 2 VC)
 global_access_in.adb:61:41: info: pointer dereference check proved (CVC5: 1 VC)
 global_access_in.adb:64:25: low: range check might fail, cannot prove upper bound for "Copied Const_Global into My_Global which is now" & My_Global.all'img [reason for check: input value must fit in parameter type] [possible fix: call at line 62 should mention My_Global in a postcondition]
 global_access_in.adb:64:37: info: pointer dereference check proved (CVC5: 1 VC)
-global_access_in.adb:66:15: info: absence of memory leak proved (CVC5: 1 VC)
+global_access_in.adb:66:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
 global_access_in.adb:69:04: info: precondition proved (CVC5: 1 VC)
 global_access_in.adb:70:29: low: range check might fail, cannot prove upper bound for "My_Global is " & My_Global.all'img [reason for check: input value must fit in parameter type] [possible fix: call at line 69 should mention My_Global in a postcondition]
 global_access_in.adb:70:41: info: pointer dereference check proved (CVC5: 1 VC)

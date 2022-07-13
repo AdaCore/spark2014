@@ -34,12 +34,6 @@ with VC_Kinds;              use VC_Kinds;
 
 package Report_Database is
 
-   type Analysis_Status is
-     (No_Analysis,      --  No analysis was performed on the unit
-      Flow_Analysis,    --  Only flow analysis was performed on the unit
-      Proof_Only,       --  Only proof was performed on the unit
-      Flow_And_Proof);  --  Flow analysis and proof were performed on the unit
-
    type SPARK_Mode_Status is
      (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK
       Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK
@@ -70,7 +64,6 @@ package Report_Database is
    --  Record of results obtained for a given subprogram or package
    type Stat_Rec is record
       SPARK           : SPARK_Mode_Status;  --  SPARK On, only Spec, or Off
-      Analysis        : Analysis_Status;    --  Status of analysis performed
       Suppr_Checks    : Check_Lists.List;   --  List of suppressed checks
       Pragma_Assumes  : Pragma_Assume_Lists.List; -- List of pragma Assumes
       Flow_Warnings   : Natural;            --  Number of flow analysis warning
@@ -149,10 +142,13 @@ package Report_Database is
    procedure Add_SPARK_Status
      (Unit         : Unit_Type;
       Subp         : Subp_Type;
-      SPARK_Status : SPARK_Mode_Status;
-      Analysis     : Analysis_Status);
-   --  Register the SPARK status as well as the level of analysis performed
-   --  for the given unit.
+      SPARK_Status : SPARK_Mode_Status);
+   --  Register the SPARK status for the given subprogram
+
+   procedure Add_Analysis_Progress
+     (Unit        : Unit_Type;
+      Progress    : Analysis_Progress;
+      Stop_Reason : Stop_Reason_Type);
 
    procedure Add_Suppressed_Check
      (Unit       : Unit_Type;
@@ -192,6 +188,12 @@ package Report_Database is
    function Num_Subps_SPARK (Unit : Unit_Type) return Natural;
    --  Return the number of subprograms in SPARK in the unit
 
+   function Unit_Progress (Unit : Unit_Type) return Analysis_Progress;
+   --  Return the progress status for the unit
+
+   function Unit_Stop_Reason (Unit : Unit_Type) return Stop_Reason_Type;
+   --  Return the reason the analysis stopped for this unit
+
    procedure Iter_Units
      (Process : not null access procedure (U : Unit_Type);
       Ordered : Boolean := False);
@@ -200,7 +202,9 @@ package Report_Database is
 
    procedure Iter_Unit_Subps
      (Unit    : Unit_Type;
-      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec);
+      Process : not null access procedure (Subp : Subp_Type;
+                                           Stat : Stat_Rec;
+                                           Progress : Analysis_Progress);
       Ordered : Boolean := False);
    --  Iterate over all subprograms of a given Unit. If Ordered is True,
    --  iterate in a fixed order defined by the lexicographic order on

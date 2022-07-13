@@ -59,6 +59,8 @@ gnatprove advanced switches:
  --check-counterexamples=c
                       Enable or disable checking of counterexample (c=on*,off)
  --checks-as-errors   Treat unproved check messages as errors
+ --ce-steps=nnn       Set the maximum number of proof steps for counterexamples.
+                      This replaces the use of timeout for counterexamples.
  --counterexamples=c  Enable or disable counterexamples (c=on,off*)
  -d, --debug          Debug mode
  --debug-save-vcs     Do not delete intermediate files for provers

@@ -15,5 +15,6 @@ p.adb:36:22: info: assertion proved (CVC5: 1 VC), in call inlined at p.adb:43
 p.adb:38:22: info: assertion proved (CVC5: 1 VC), in call inlined at p.adb:43
 p.adb:41:04: warning: analyzing unreferenced procedure "Dummy"
 p.adb:41:14: warning: subprogram "Dummy" has no effect
+p.adb:43:07: info: analyzing call to "Sub" in context
 p.ads:9:19: info: postcondition proved (CVC5: 1 VC)
 p.ads:14:19: info: postcondition proved (CVC5: 2 VC)

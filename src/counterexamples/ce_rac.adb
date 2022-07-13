@@ -1648,6 +1648,10 @@ package body CE_RAC is
             end case;
          end if;
 
+         if Is_Integer_Type (Etype (Formal)) then
+            Check_Integer (Val.all, Etype (Formal), Actual);
+         end if;
+
          Res.Bindings.Insert (Formal, Val);
       end Process_Param;
 
@@ -1975,6 +1979,39 @@ package body CE_RAC is
                   new Value_Type'(V));
             end;
 
+         when N_Package_Declaration =>
+            declare
+               Unique_E : constant Entity_Id :=
+                 Unique_Defining_Entity (Decl);
+            begin
+               RAC_Decls (Visible_Declarations_Of_Package (Unique_E));
+               RAC_Decls (Private_Declarations_Of_Package (Unique_E));
+            end;
+
+         when N_Package_Body =>
+            if not Is_Generic_Unit (Unique_Defining_Entity (Decl)) then
+               RAC_Decls (Declarations (Decl));
+               RAC_Node (Handled_Statement_Sequence (Decl));
+            end if;
+
+         when N_Defining_Identifier =>
+            case Ekind (Decl) is
+               when E_Package =>
+                     RAC_Decls (Visible_Declarations_Of_Package (Decl));
+                     RAC_Decls (Private_Declarations_Of_Package (Decl));
+
+               when E_Package_Body =>
+                  if not Is_Generic_Unit (Decl) then
+                     RAC_Decls (Declarations (Decl));
+                     RAC_Node (Handled_Statement_Sequence (Decl));
+                  end if;
+
+               when others =>
+                  RAC_Unsupported
+                    ("RAC_Decl",
+                     "N_Defining_Identifier not package or package body");
+            end case;
+
          when N_Pragma
             | N_Full_Type_Declaration
             | N_Subtype_Declaration
@@ -2071,8 +2108,10 @@ package body CE_RAC is
          Fuel             => Fuel,
          Rem_Stack_Height => Stack_Height,
          Do_Sideeffects   => Do_Sideeffects);
+
       RAC_Trace ("cntexmp: " & Write (To_JSON (Cntexmp), False));
       RAC_Trace ("entry: " & Full_Name (E));
+
       case Ekind (E) is
          when E_Function
             | E_Procedure
@@ -2081,9 +2120,16 @@ package body CE_RAC is
             return
               (Res_Kind  => Res_Normal,
                Res_Value => RAC_Call (Empty, E, Is_Main => True));
+
          when E_Package
             | E_Package_Body
-            | E_Task_Type
+            =>
+               RAC_Decl (E);
+
+               return (Res_Kind  => Res_Normal,
+                       Res_Value => (Present => False));
+
+         when E_Task_Type
             | E_Entry
             | E_Private_Type
             | E_Protected_Type

@@ -1,1 +1,5 @@
 main.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+main.adb:4:23: warning: assuming "Get" always returns
+main.adb:4:23: warning: assuming "Get" has no effect on global items
+main.adb:4:23: warning: no Global contract available for "Get"
+main.adb:4:23: warning: no returning annotation available for "Get"

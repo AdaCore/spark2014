@@ -17,9 +17,12 @@ pack.adb:11:10: high: precondition might fail, in instantiation at pack.adb:15
 pack.adb:27:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:36:10: medium: precondition might fail, in instantiation at pack.adb:43
 pack.ads:8:06: info: data dependencies proved, in instantiation at pack.adb:15
+pack.ads:9:06: warning: postcondition does not check the outcome of calling "Call_Jump_Gen"
 pack.ads:9:14: info: postcondition proved (CVC5: 1 VC), in instantiation at pack.adb:15
 pack.ads:13:06: info: data dependencies proved
+pack.ads:14:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 pack.ads:14:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:18:06: info: data dependencies proved
+pack.ads:22:06: warning: postcondition does not check the outcome of calling "Call_Jump2"
 pack.ads:22:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:30:06: info: data dependencies proved, in instantiation at pack.adb:43

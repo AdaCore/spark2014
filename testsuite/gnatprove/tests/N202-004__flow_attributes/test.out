@@ -36,6 +36,7 @@ foo.adb:94:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call in
 foo.adb:95:11: medium: array index check might fail, in call inlined at foo.adb:102 [reason for check: value must be a valid index into the array]
 foo.adb:98:26: info: initialization of "A" proved
 foo.adb:99:09: info: flow dependencies proved
+foo.adb:102:07: info: analyzing call to "Test_09_Ok" in context
 foo.adb:105:14: info: add a contract to analyze it separately from calling contexts
 foo.adb:105:14: info: local subprogram "Test_11_Ok" only analyzed in the context of calls
 foo.adb:105:26: info: initialization of "A" proved
@@ -43,6 +44,7 @@ foo.adb:109:25: info: discriminant check proved (CVC5: 1 VC), in call inlined at
 foo.adb:111:26: info: discriminant check proved (CVC5: 1 VC), in call inlined at foo.adb:119
 foo.adb:115:26: info: initialization of "A" proved
 foo.adb:116:09: info: flow dependencies proved
+foo.adb:119:07: info: analyzing call to "Test_11_Ok" in context
 foo.adb:128:30: info: initialization of "Data" proved
 foo.adb:129:30: info: initialization of "Octet_Count" proved
 foo.adb:130:09: info: flow dependencies proved

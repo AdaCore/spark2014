@@ -34,7 +34,7 @@ records.adb:153:49: info: justified that "Dst.The_Pair.B" might not be initializ
 records.adb:164:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_B"
 records.adb:164:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_B"
 records.adb:165:11: info: flow dependencies proved
-records.adb:166:22: high: postcondition might fail (e.g. when Dst = (Exists => False, The_Pair => (A => 0, B => 0)) and Src = (Exists => False, The_Pair => (A => 1, B => 0)))
+records.adb:166:22: high: postcondition might fail (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0)))
 records.adb:166:22: info: justified that "Dst.The_Pair.A" might not be initialized
 records.adb:166:22: info: justified that "Dst.The_Pair.B" might not be initialized
 records.adb:177:11: info: flow dependencies proved
@@ -55,7 +55,7 @@ records.adb:242:11: info: flow dependencies proved
 records.adb:243:22: info: postcondition proved (CVC5: 1 VC)
 records.adb:247:07: info: initialization of "Tmp" proved
 records.adb:255:11: info: flow dependencies proved
-records.adb:256:22: medium: postcondition might fail (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))) [possible fix: add or complete related loop invariants or postconditions]
+records.adb:256:22: medium: postcondition might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0))) [possible fix: add or complete related loop invariants or postconditions]
 records.adb:261:07: info: initialization of "Tmp" proved
 records.adb:269:11: info: flow dependencies proved
 records.adb:270:22: high: postcondition might fail (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)))
@@ -82,11 +82,11 @@ records.adb:384:07: info: initialization of "R" proved
 records.adb:394:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:398:07: info: initialization of "R" proved
 records.adb:406:11: info: flow dependencies proved
-records.adb:410:22: high: assertion might fail (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 1))) [possible fix: subprogram at line 405 should mention X in a precondition]
+records.adb:410:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 1))) [possible fix: subprogram at line 405 should mention X in a precondition]
 records.adb:414:11: info: flow dependencies proved
-records.adb:418:22: high: assertion might fail (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1))) [possible fix: subprogram at line 413 should mention X in a precondition]
+records.adb:418:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 0))) [possible fix: subprogram at line 413 should mention X in a precondition]
 records.adb:422:11: info: flow dependencies proved
-records.adb:426:22: high: assertion might fail [possible fix: subprogram at line 421 should mention X in a precondition]
+records.adb:426:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0))) [possible fix: subprogram at line 421 should mention X in a precondition]
 records.adb:429:22: info: initialization of "X" proved
 records.adb:430:11: info: flow dependencies proved
 records.adb:436:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 10)))
@@ -95,6 +95,7 @@ records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the co
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:448:07: info: initialization of "R" proved
 records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment]
+records.adb:458:18: info: analyzing call to "Swap_Fields" in context
 records.adb:465:11: info: flow dependencies proved
 records.adb:466:22: info: postcondition proved (CVC5: 1 VC)
 records.adb:474:30: info: assertion proved (CVC5: 1 VC)
@@ -102,7 +103,7 @@ records.adb:482:11: info: flow dependencies proved
 records.adb:483:22: high: postcondition might fail (e.g. when R = (Exists => True, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = 1)
 records.adb:491:30: info: assertion proved (CVC5: 1 VC)
 records.adb:501:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-records.adb:504:22: high: assertion might fail [possible fix: subprogram at line 498 should mention R in a precondition]
+records.adb:504:22: high: assertion might fail (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0))) [possible fix: subprogram at line 498 should mention R in a precondition]
 records.adb:513:11: info: flow dependencies proved
 records.adb:514:22: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 records.adb:523:19: info: postcondition proved (CVC5: 2 VC)
@@ -124,9 +125,9 @@ counterexample expected for check at records.adb:380
   trace at records.adb:389 --> R = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
   trace at records.adb:390 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and R = (Exists => True, The_Pair => (A => 0, B => 0))
 counterexample expected for check at records.adb:410
-  trace at records.adb:405 --> X = (Exists => False, The_Pair => (A => 1, B => 1))
-  trace at records.adb:409 --> X = (Exists => False, The_Pair => (A => 1, B => 1))
-  trace at records.adb:410 --> X = (Exists => False, The_Pair => (A => 1, B => 1))
+  trace at records.adb:405 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
+  trace at records.adb:409 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
+  trace at records.adb:410 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:436
   trace at records.adb:433 --> X = (Exists => True, The_Pair => (A => 5, B => 10))
   trace at records.adb:436 --> X = (Exists => True, The_Pair => (A => 5, B => 10))

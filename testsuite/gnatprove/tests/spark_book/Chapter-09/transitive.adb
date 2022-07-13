@@ -4,13 +4,14 @@ is
 
    function Prop_Transitive (A, B, C : in Natural) return Boolean
    -- Define the transitivity of Property
-     with Global => null,
-          Post   => (if Prop_Transitive'Result
-                        and then Property (A, B)
-                        and then Property (B, C)
-                    then Property (A, C)),
-          Ghost  => True,
-          Import => True;
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return),
+          Post     => (if Prop_Transitive'Result
+                          and then Property (A, B)
+                          and then Property (B, C)
+                      then Property (A, C)),
+          Ghost    => True,
+          Import   => True;
 
    procedure Shift (X : in out Natural)
      with Post => Property (X'Old, X)

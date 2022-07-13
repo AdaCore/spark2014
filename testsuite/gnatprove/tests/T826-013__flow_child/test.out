@@ -1,0 +1,2 @@
+x-y.adb:11:08: warning: assuming "init_z" always returns
+x-y.adb:11:08: warning: no returning annotation available for "init_z"

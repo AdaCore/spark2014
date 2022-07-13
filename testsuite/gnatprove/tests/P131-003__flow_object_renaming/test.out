@@ -1,1 +1,0 @@
-p.adb:7:04: warning: possibly useless assignment to "X", value might not be referenced [-gnatwm]

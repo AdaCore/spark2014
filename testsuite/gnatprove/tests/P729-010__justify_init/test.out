@@ -1,8 +1,16 @@
+justify_once.adb:6:07: warning: assuming "Check_Init" always returns
+justify_once.adb:6:07: warning: assuming "Check_Init" has no effect on global items
+justify_once.adb:6:07: warning: no Global contract available for "Check_Init"
+justify_once.adb:6:07: warning: no returning annotation available for "Check_Init"
 justify_once.adb:6:19: info: justified that "A" is not initialized
 justify_once.adb:11:21: high: "A" is not initialized
 justify_once.adb:13:21: high: "A" is not initialized
 justify_once.adb:15:21: high: "A" is not initialized
 justify_once.adb:17:21: high: "A" is not initialized
 justify_once.adb:19:14: medium: "A" might not be initialized
+justify_once.adb:25:07: warning: assuming "Check_Init" always returns
+justify_once.adb:25:07: warning: assuming "Check_Init" has no effect on global items
+justify_once.adb:25:07: warning: no Global contract available for "Check_Init"
+justify_once.adb:25:07: warning: no returning annotation available for "Check_Init"
 justify_once.adb:25:19: info: justified that "P" is not initialized
 justify_once.adb:28:15: high: "P" is not initialized

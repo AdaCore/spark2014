@@ -14,6 +14,7 @@ arrays_multidim.adb:67:11: info: flow dependencies proved
 arrays_multidim.adb:68:22: info: postcondition proved (CVC5: 2 VC)
 arrays_multidim.adb:80:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays_multidim.adb:93:11: info: flow dependencies proved
+arrays_multidim.adb:94:11: warning: postcondition does not check the outcome of calling "D2_Element_Access"
 arrays_multidim.adb:94:22: medium: postcondition might fail
 arrays_multidim.adb:103:11: info: flow dependencies proved
 arrays_multidim.adb:104:22: medium: postcondition might fail
@@ -25,6 +26,7 @@ arrays_multidim.adb:133:11: info: flow dependencies proved
 arrays_multidim.adb:135:22: medium: postcondition might fail
 arrays_multidim.adb:137:07: info: initialization of "Tmp" proved
 arrays_multidim.adb:150:11: info: flow dependencies proved
+arrays_multidim.adb:151:11: warning: postcondition does not check the outcome of calling "D3_Element_Access"
 arrays_multidim.adb:151:22: medium: postcondition might fail
 arrays_multidim.adb:161:11: info: flow dependencies proved
 arrays_multidim.adb:162:22: medium: postcondition might fail

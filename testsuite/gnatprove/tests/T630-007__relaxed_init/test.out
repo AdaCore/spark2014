@@ -37,4 +37,6 @@ relaxed_init_default.adb:42:19: info: assertion proved (Trivial: 3 VC; altergo: 
 relaxed_init_default.adb:43:10: info: range check proved (CVC5: 1 VC; Trivial: 1 VC)
 relaxed_init_default.adb:43:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 relaxed_init_default.adb:44:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+relaxed_init_default.adb:45:04: warning: assuming "Do_Something" always returns
+relaxed_init_default.adb:45:04: warning: no returning annotation available for "Do_Something"
 relaxed_init_default.adb:46:19: medium: assertion might fail [possible fix: call at line 45 should mention A in a postcondition]

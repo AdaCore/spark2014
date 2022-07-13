@@ -870,7 +870,7 @@ package SPARK_Util is
    --  all inner declarations and statements that appear in block statements.
    --  Block statements are kept to mark the end of the corresponding scope,
    --  in order to apply some treatments at the end of local scopes, like
-   --  checking the absence of memory leaks at the end of scope.
+   --  checking the absence of resource leaks at the end of scope.
 
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element

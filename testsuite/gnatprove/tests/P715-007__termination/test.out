@@ -8,4 +8,5 @@ term.ads:7:14: high: postcondition might fail
 term.ads:11:12: info: range check proved (CVC5: 2 VC)
 term.ads:13:13: medium: function "Loop_If_C_Is_Neg" does not return on some paths
 term.ads:15:14: warning: subprogram "Still_Do_Not_Loop" has no effect
+term.ads:16:06: warning: postcondition does not check the outcome of calling "Still_Do_Not_Loop"
 term.ads:16:14: high: postcondition might fail (e.g. when C = -1)

@@ -1,3 +1,9 @@
 hw-gfx-dp_aux_ch.ads:4:14: warning: subprogram "Dummy" has no effect, in instantiation at hw-gfx-gma-dp_aux_ch.ads:4
 hw-gfx-dp_training.ads:10:14: warning: subprogram "Train_DP" has no effect, in instantiation at hw-gfx-gma-pch-dp.adb:9
+hw-gfx-gma-dp_aux_ch.ads:4:09: warning: assuming "Do_Aux_Request" always returns
+hw-gfx-gma-dp_aux_ch.ads:4:09: warning: assuming "Do_Aux_Request" has no effect on global items
+hw-gfx-gma-dp_aux_ch.ads:4:09: warning: in instantiation at hw-gfx-dp_aux_ch.adb:4
+hw-gfx-gma-dp_aux_ch.ads:4:09: warning: in instantiation at hw-gfx-dp_aux_ch.adb:4
+hw-gfx-gma-dp_aux_ch.ads:4:09: warning: no Global contract available for "Do_Aux_Request"
+hw-gfx-gma-dp_aux_ch.ads:4:09: warning: no returning annotation available for "Do_Aux_Request"
 hw-gfx-gma-pch-dp.ads:4:22: info: data dependencies proved

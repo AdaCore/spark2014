@@ -131,9 +131,6 @@ procedure Gnatprove with SPARK_Mode is
       Obj_Path : File_Array);
    --  Generate the SPARK report
 
-   function Report_File_Is_Empty (Filename : String) return Boolean;
-   --  Check if the given file is empty
-
    procedure Flow_Analysis_And_Proof
      (Project_File : String;
       Proj         : Project_Tree;
@@ -486,8 +483,18 @@ procedure Gnatprove with SPARK_Mode is
       end case;
 
       if Status /= 0 then
-         Fail ("gnatprove: error during " & Text_Of_Step (Plan (Step)));
+         declare
+            Msg : constant String :=
+              "gnatprove: error during " & Text_Of_Step (Plan (Step));
+         begin
+            if Plan (Step) = GS_Gnat2Why then
+               Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
+            else
+               Fail (Msg);
+            end if;
+         end;
       end if;
+
    end Execute_Step;
 
    -----------------------------
@@ -645,6 +652,21 @@ procedure Gnatprove with SPARK_Mode is
          end;
       end if;
 
+      if CL_Switches.Assumptions then
+         Set_Field (JSON_Rec, "assumptions", True);
+         if CL_Switches.Limit_Subp.all /= "" then
+            Set_Field (JSON_Rec, "limit_subp", CL_Switches.Limit_Subp.all);
+         end if;
+      end if;
+
+      if Quiet then
+         Set_Field (JSON_Rec, "quiet", True);
+      end if;
+
+      if CL_Switches.Output_Header then
+         Set_Field (JSON_Rec, "output_header", True);
+      end if;
+
       declare
          Report_Info_File : File_Type;
          Write_Cont       : constant String := Write (JSON_Rec);
@@ -655,16 +677,6 @@ procedure Gnatprove with SPARK_Mode is
       end;
 
       Args.Append (Obj_Dir_Fn);
-      if CL_Switches.Assumptions then
-         Args.Append ("--assumptions");
-         if CL_Switches.Limit_Subp.all /= "" then
-            Args.Append ("--limit-subp=" & CL_Switches.Limit_Subp.all);
-         end if;
-      end if;
-
-      if CL_Switches.Output_Header then
-         Args.Append ("--output-header");
-      end if;
 
       Call_With_Status (Command   => "spark_report",
                         Arguments => Args,
@@ -675,29 +687,8 @@ procedure Gnatprove with SPARK_Mode is
          GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
       end if;
 
-      if not Quiet then
-         declare
-            File : constant String := SPARK_Report_File (Obj_Dir);
-         begin
-            --  Unless the mode is only checking SPARK legality rules, code in
-            --  SPARK will result in either flow or proof results. Otherwise,
-            --  the user has probably forgotten to put a SPARK_Mode pragma
-            --  somewhere.
-
-            if Configuration.Mode /= GPM_Check then
-               if Report_File_Is_Empty (File) then
-                  Put_Line
-                    (Standard_Error,
-                     "warning: no bodies have been analyzed by GNATprove");
-                  Put_Line
-                    (Standard_Error,
-                     "enable analysis of a non-generic body using SPARK_Mode");
-               else
-                  Put_Line
-                    ("Summary logged in " & SPARK_Report_File (Obj_Dir));
-               end if;
-            end if;
-         end;
+      if not Quiet and then Configuration.Mode /= GPM_Check then
+         Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
       end if;
 
       --  There were unproved checks. If unproved check messages are considered
@@ -750,18 +741,6 @@ procedure Gnatprove with SPARK_Mode is
       Free (Executable);
       return Proc;
    end Non_Blocking_Spawn;
-
-   --------------------------
-   -- Report_File_Is_Empty --
-   --------------------------
-
-   function Report_File_Is_Empty (Filename : String) return Boolean is
-   begin
-      --  ??? This is a bit of a hack; we assume that the report file is
-      --  basically empty when the character count is very low (but not zero).
-
-      return Ada.Directories.Size (Filename) <= 3;
-   end Report_File_Is_Empty;
 
    ------------------
    -- Run_CodePeer --

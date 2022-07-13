@@ -1,3 +1,5 @@
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
 recursive_mergesort.adb:14:14: info: postcondition proved (CVC5: 6 VC)
 recursive_mergesort.adb:14:24: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.adb:15:24: info: precondition proved (CVC5: 1 VC)

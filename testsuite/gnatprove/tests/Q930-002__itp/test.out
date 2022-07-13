@@ -163,9 +163,8 @@ bounded_dynamic_arrays.ads:162:28: info: range check proved (CVC5: 2 VC), in ins
 bounded_dynamic_arrays.ads:163:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:170:14: info: postcondition proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:170:28: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Location'Result = 1)
+bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:194:14: info: postcondition proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:195:36: warning: equality should be parenthesized here [-gnatwq]
 bounded_dynamic_arrays.ads:212:07: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: in default value at bounded_dynamic_arrays.adb:18, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: in default value at bounded_dynamic_arrays.adb:30, in instantiation at bounded_dynamic_strings.ads:5

@@ -10,6 +10,8 @@ package Object is
    function Is_Valid (X : T) return Boolean is (X.B);
 
    procedure Do_Stuff (X : in out T) with
-     Pre'Class => Is_Valid (X);
+     Pre'Class => Is_Valid (X),
+     Global    => null,
+     Annotate  => (GNATprove, Always_Return);
 
 end Object;

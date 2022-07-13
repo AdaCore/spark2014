@@ -264,12 +264,25 @@ module Int_Division
   val rem (x:int) (y:int) : int
      ensures { result = rem x y }
 
+  (* rem is always of the sign of the dividend. mod is always of the sign of
+  the divisor. Thus they are equal when the dividend and the divisor have the
+  same sign. rem and mod are equal to zero on the same arguments. Otherwise,
+  mod can be obtained from rem by adding the divisor. *)
+  function mod (x y : int) : int =
+    if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then rem x y
+    else if rem x y = 0 then 0
+    else rem x y + y
+
   (* We express mod via Euclidean mod, as this is what is used in SMT *)
-   function mod (x y : int) : int =
+  function mod2 (x y : int) : int =
     let r = EuclideanDivision.mod x y in
     if y >= 0 then r
     else if r = 0 then 0
     else r + y
+
+  (* The two definitions of mod are equivalent *)
+  axiom Mod_Unique :
+    forall x, y : int. y <> 0 -> mod x y = mod2 x y
 
   val mod (x:int) (y:int) : int
      ensures { result = mod x y }

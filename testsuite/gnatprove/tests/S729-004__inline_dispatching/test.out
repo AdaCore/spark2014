@@ -1,3 +1,7 @@
 p.adb:4:14: warning: subprogram "Proc" has no effect
-p.adb:6:22: high: assertion might fail [possible fix: subprogram at line 4 should mention X in a precondition]
+p.adb:6:22: high: assertion might fail (e.g. when X = False) [possible fix: subprogram at line 4 should mention X in a precondition]
+p.adb:14:07: warning: assuming "Proc" always returns
+p.adb:14:07: warning: assuming "Proc" has no effect on global items
+p.adb:14:07: warning: no Global contract available for "Proc"
+p.adb:14:07: warning: no returning annotation available for "Proc"
 p.ads:6:14: warning: subprogram "Test" has no effect

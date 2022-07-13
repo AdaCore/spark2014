@@ -1,1 +1,2 @@
 pack.adb:11:10: high: potentially blocking delay statement in protected operation "Dummy"
+pack.adb:11:10: warning: potentially blocking operation in protected operation

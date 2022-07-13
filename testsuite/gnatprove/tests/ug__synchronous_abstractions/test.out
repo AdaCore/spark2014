@@ -1,6 +1,11 @@
 synchronous_abstractions.adb:6:09: info: ceiling priority protocol is respected
 synchronous_abstractions.adb:6:09: info: nontermination of task proved
 
+synchronous_abstractions.adb:22:07: warning: no returning annotation available for "Suspend_Until_True"
+   22 |      Suspend_Until_True (S);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+  assuming "Suspend_Until_True" always returns
+
 synchronous_abstractions.adb:27:07: warning: initialization of "VV" has no effect
    27 |      VV : Natural := V;
       |      ^~~~~~~~~~~~~~~~~

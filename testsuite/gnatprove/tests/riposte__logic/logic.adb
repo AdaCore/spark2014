@@ -4,7 +4,8 @@ is
    function Ok (V: in Integer) return Boolean
      with Ghost,
           Import,
-          Global => null;
+          Global   => null,
+          Annotate => (GNATprove, Always_Return);
 
    pragma Warnings (Off, "unused initial value of *");
    pragma Warnings (Off, "subprogram * has no effect");

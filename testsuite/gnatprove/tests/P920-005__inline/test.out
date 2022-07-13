@@ -5,4 +5,5 @@ access_inline.adb:18:16: info: range check proved (Trivial), in call inlined at 
 access_inline.adb:18:22: info: float overflow check proved (CVC5: 1 VC), in call inlined at access_inline.adb:22
 access_inline.adb:18:22: info: range check proved (CVC5: 1 VC), in call inlined at access_inline.adb:22
 access_inline.adb:18:24: info: range check proved (Trivial), in call inlined at access_inline.adb:22
+access_inline.adb:22:04: info: analyzing call to "S_COMPUTE" in context
 access_inline.adb:22:15: info: range check proved (Trivial)

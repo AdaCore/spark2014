@@ -1,3 +1,4 @@
 protected_objects.ads:8:14: medium: ceiling priority might not be in Interrupt_Priority
+protected_objects.ads:9:07: warning: pragma Interrupt_Priority is preferred in presence of handlers
 protected_objects.ads:9:24: info: range check proved (CVC5: 2 VC)
 protected_objects.ads:10:47: medium: this interrupt might be reserved

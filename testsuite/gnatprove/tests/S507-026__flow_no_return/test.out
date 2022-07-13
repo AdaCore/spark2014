@@ -1,3 +1,11 @@
 test_func.adb:5:04: info: initialization of "b" proved
 test_func.adb:8:10: medium: overflow check might fail, cannot prove upper bound for b+10 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 7 should mention a (for argument b) in a postcondition]
+utility_test.adb:12:07: warning: assuming "test_func_imported_read" always returns
+utility_test.adb:12:07: warning: no returning annotation available for "test_func_imported_read"
+utility_test.adb:13:29: warning: assuming "state_change" always returns
+utility_test.adb:13:29: warning: no returning annotation available for "state_change"
+utility_test.adb:19:07: warning: assuming "test_func_imported_write" always returns
+utility_test.adb:19:07: warning: no returning annotation available for "test_func_imported_write"
+utility_test.adb:20:29: warning: assuming "state_change" always returns
+utility_test.adb:20:29: warning: no returning annotation available for "state_change"
 utility_test.ads:26:26: info: initialization of "a" proved

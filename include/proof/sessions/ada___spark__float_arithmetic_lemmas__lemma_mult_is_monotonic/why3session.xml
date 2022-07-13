@@ -29,7 +29,7 @@
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
-  <proof prover="4"><result status="valid" steps="226"/></proof>
+  <proof prover="4"><result status="valid" steps="327"/></proof>
   </goal>
  </transf>
  </goal>

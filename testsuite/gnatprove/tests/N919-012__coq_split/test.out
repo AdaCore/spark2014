@@ -3,10 +3,22 @@ greatest_common_divisor.adb:6:10: info: initialization of "D" proved
 greatest_common_divisor.adb:6:13: info: initialization of "R" proved
 greatest_common_divisor.adb:10:33: info: loop invariant initialization proved (CVC5: 1 VC)
 greatest_common_divisor.adb:10:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Gcd or turning it into an expression function in its unit spec]
+greatest_common_divisor.adb:10:33: warning: assuming "Gcd" always returns
+greatest_common_divisor.adb:10:33: warning: no returning annotation available for "Gcd"
+greatest_common_divisor.adb:10:46: warning: assuming "Gcd" always returns
+greatest_common_divisor.adb:10:46: warning: no returning annotation available for "Gcd"
 greatest_common_divisor.adb:15:17: info: division check proved (CVC5: 1 VC)
 greatest_common_divisor.ads:7:40: info: initialization of "G" proved
 greatest_common_divisor.ads:9:06: info: flow dependencies proved
 greatest_common_divisor.ads:10:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Gcd or turning it into an expression function in its unit spec]
+greatest_common_divisor.ads:10:18: warning: assuming "Gcd" always returns
+greatest_common_divisor.ads:10:18: warning: no returning annotation available for "Gcd"
 =======================================
+greatest_common_divisor.adb:10:33: warning: assuming "Gcd" always returns
+greatest_common_divisor.adb:10:33: warning: no returning annotation available for "Gcd"
+greatest_common_divisor.adb:10:46: warning: assuming "Gcd" always returns
+greatest_common_divisor.adb:10:46: warning: no returning annotation available for "Gcd"
 greatest_common_divisor.ads:10:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/greatest_common_divisor__g_c_d/../../Coq/Greatest_common_divisor__g_c_d__pragargs__cmp.v [possible fix: you should consider adding a postcondition to function Gcd or turning it into an expression function in its unit spec]
+greatest_common_divisor.ads:10:18: warning: assuming "Gcd" always returns
+greatest_common_divisor.ads:10:18: warning: no returning annotation available for "Gcd"
 =======================================

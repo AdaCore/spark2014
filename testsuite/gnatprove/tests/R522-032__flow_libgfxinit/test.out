@@ -99,9 +99,135 @@ hw-gfx-gma-connector_info.ads:21:07: info: initialization of "Success" proved
 hw-gfx-gma-connector_info.ads:29:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-edp.adb:151:07: info: initialization of "VSwing_Emph" proved
 hw-gfx-gma-connectors-edp.adb:185:07: info: initialization of "DP_CTL_Set" proved
+hw-gfx-gma-connectors-edp.adb:221:11: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:221:11: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:194
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:194
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:195
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:195
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:200
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:200
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:201
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:201
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:202
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:202
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:204
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:204
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:206
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:206
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:208
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:208
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:212
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:212
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:218
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:218
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:219
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:219
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:220
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:220
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:222
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:222
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:223
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:223
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:225
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:225
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:226
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:226
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:227
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:227
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:229
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:229
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:232
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:232
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:343
+hw-gfx-gma-connectors-edp.adb:238:07: warning: in instantiation at hw-gfx-dp_training.adb:373
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-connectors-edp.adb:238:07: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-edp.adb:270:07: info: initialization of "Enabled" proved
+hw-gfx-gma-connectors-edp.adb:296:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-edp.adb:296:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-edp.ads:22:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:73:07: info: initialization of "Success" proved
+hw-gfx-gma-connectors-fdi.adb:103:17: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-fdi.adb:103:17: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-fdi.adb:135:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:210:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:273:07: warning: statement has no effect
@@ -109,6 +235,8 @@ hw-gfx-gma-connectors-fdi.adb:274:10: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.adb:278:22: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.adb:281:10: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.adb:282:22: warning: this statement is never reached
+hw-gfx-gma-connectors-fdi.adb:298:11: warning: assuming "U_Delay" always returns
+hw-gfx-gma-connectors-fdi.adb:298:11: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-fdi.adb:311:40: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.adb:313:40: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.ads:38:07: info: initialization of "Success" proved
@@ -116,10 +244,27 @@ hw-gfx-gma-connectors.ads:29:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors.ads:35:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:56:07: info: initialization of "Raw_EDID" proved
 hw-gfx-gma-display_probing.adb:58:07: info: initialization of "Success" proved
+hw-gfx-gma-display_probing.adb:73:32: warning: assuming "Power_Up" always returns
+hw-gfx-gma-display_probing.adb:73:32: warning: assuming "Power_Up" has no effect on global items
+hw-gfx-gma-display_probing.adb:73:32: warning: no Global contract available for "Power_Up"
+hw-gfx-gma-display_probing.adb:73:32: warning: no returning annotation available for "Power_Up"
 hw-gfx-gma-display_probing.adb:113:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:144:16: info: initialization of "Have_Sibling_EDID" proved
 hw-gfx-gma-display_probing.adb:168:07: info: initialization of "Success" proved
+hw-gfx-gma-display_probing.adb:208:26: warning: assuming "Power_Set_To" always returns
+hw-gfx-gma-display_probing.adb:208:26: warning: assuming "Power_Set_To" has no effect on global items
+hw-gfx-gma-display_probing.adb:208:26: warning: no Global contract available for "Power_Set_To"
+hw-gfx-gma-display_probing.adb:208:26: warning: no returning annotation available for "Power_Set_To"
 hw-gfx-gma-display_probing.ads:24:07: info: initialization of "Configs" proved
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: assuming "U_Delay" always returns
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: assuming "U_Delay" always returns
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: assuming "U_Delay" always returns
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: in instantiation at hw-gfx-dp_aux_ch.adb:213
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: in instantiation at hw-gfx-dp_aux_ch.adb:244
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: in instantiation at hw-gfx-dp_aux_ch.adb:98
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-dp_aux_ch.ads:19:09: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-dp_aux_request.adb:161:07: info: initialization of "Response" proved
 hw-gfx-gma-dp_aux_request.adb:162:07: info: initialization of "Response_Length" proved
 hw-gfx-gma-dp_aux_request.adb:163:07: info: initialization of "Success" proved
@@ -139,6 +284,42 @@ hw-gfx-gma-dp_aux_request.adb:318:19: warning: this statement is never reached
 hw-gfx-gma-dp_aux_request.ads:23:07: info: initialization of "Response" proved
 hw-gfx-gma-dp_aux_request.ads:24:07: info: initialization of "Response_Length" proved
 hw-gfx-gma-dp_aux_request.ads:25:07: info: initialization of "Success" proved
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "New_Line" always returns
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "New_Line" always returns
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put" always returns
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put" always returns
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put_Int32" always returns
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put_Int32" always returns
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma-dp_info.ads:19:09: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:166
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:166
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:167
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:167
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:168
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:168
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:169
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:169
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:170
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:170
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:171
+hw-gfx-gma-dp_info.ads:19:09: warning: in instantiation at hw-gfx-dp_info.adb:171
+hw-gfx-gma-dp_info.ads:19:09: warning: no Global contract available for "New_Line"
+hw-gfx-gma-dp_info.ads:19:09: warning: no Global contract available for "New_Line"
+hw-gfx-gma-dp_info.ads:19:09: warning: no Global contract available for "Put"
+hw-gfx-gma-dp_info.ads:19:09: warning: no Global contract available for "Put"
+hw-gfx-gma-dp_info.ads:19:09: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma-dp_info.ads:19:09: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Put"
+hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Put"
+hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Put_Int32"
 hw-gfx-gma-i2c.adb:124:27: info: initialization of "Result" proved
 hw-gfx-gma-i2c.adb:126:07: info: initialization of "GMBUS2" proved
 hw-gfx-gma-i2c.adb:135:27: info: initialization of "Success" proved
@@ -155,6 +336,8 @@ hw-gfx-gma-i2c.ads:24:07: info: initialization of "Success" proved
 hw-gfx-gma-panel.adb:160:21: info: initialization of "Power_Cycle_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.adb:160:40: info: initialization of "Power_Up_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.adb:160:56: info: initialization of "Delays_US" constituent of "Panel_State" proved
+hw-gfx-gma-panel.adb:164:32: warning: assuming "Now" always returns
+hw-gfx-gma-panel.adb:164:32: warning: no returning annotation available for "Now"
 hw-gfx-gma-panel.adb:186:07: info: initialization of "Power_Delay" proved
 hw-gfx-gma-panel.adb:186:20: info: initialization of "Port_Select" proved
 hw-gfx-gma-panel.adb:219:10: warning: statement has no effect
@@ -164,7 +347,17 @@ hw-gfx-gma-panel.adb:226:25: warning: this statement is never reached
 hw-gfx-gma-panel.adb:255:07: warning: statement has no effect
 hw-gfx-gma-panel.adb:262:19: warning: this statement is never reached
 hw-gfx-gma-panel.adb:283:07: info: initialization of "Was_On" proved
+hw-gfx-gma-panel.adb:289:14: warning: assuming "Delay_Until" always returns
+hw-gfx-gma-panel.adb:289:14: warning: no returning annotation available for "Delay_Until"
+hw-gfx-gma-panel.adb:294:32: warning: assuming "US_From_Now" always returns
+hw-gfx-gma-panel.adb:294:32: warning: no returning annotation available for "US_From_Now"
+hw-gfx-gma-panel.adb:305:11: warning: assuming "Delay_Until" always returns
+hw-gfx-gma-panel.adb:305:11: warning: no returning annotation available for "Delay_Until"
 hw-gfx-gma-panel.adb:316:07: info: initialization of "Was_On" proved
+hw-gfx-gma-panel.adb:326:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-panel.adb:326:14: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-panel.adb:333:35: warning: assuming "US_From_Now" always returns
+hw-gfx-gma-panel.adb:333:35: warning: no returning annotation available for "US_From_Now"
 hw-gfx-gma-panel.adb:369:07: info: initialization of "Reg" proved
 hw-gfx-gma-panel.ads:25:07: info: data dependencies proved
 hw-gfx-gma-panel.ads:29:14: info: initialization of "Delays_US" constituent of "Panel_State" proved
@@ -173,11 +366,143 @@ hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Up_Timer" constituent
 hw-gfx-gma-panel.ads:31:07: info: data dependencies proved
 hw-gfx-gma-panel.ads:35:07: info: flow dependencies proved
 hw-gfx-gma-panel.ads:59:33: info: initialization of "Level" proved
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Int8" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:194
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:194
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:195
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:195
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:200
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:200
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:201
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:201
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:202
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:202
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:204
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:204
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:206
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:206
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:208
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:208
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:212
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:212
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:218
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:218
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:219
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:219
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:220
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:220
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:222
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:222
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:223
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:223
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:225
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:225
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:226
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:226
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:227
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:227
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:229
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:229
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:232
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:232
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:343
+hw-gfx-gma-pch-dp.adb:167:07: warning: in instantiation at hw-gfx-dp_training.adb:373
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no Global contract available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "New_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Int8"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pch-dp.ads:20:07: info: initialization of "Success" proved
+hw-gfx-gma-pch-fdi.adb:173:11: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-fdi.adb:173:11: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-pch-fdi.adb:203:17: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-fdi.adb:203:17: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-pch-fdi.adb:215:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-fdi.adb:215:14: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-pch-fdi.adb:225:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-fdi.adb:225:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pch-fdi.adb:239:07: warning: statement has no effect
+hw-gfx-gma-pch-fdi.adb:240:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-fdi.adb:240:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pch-fdi.adb:240:14: warning: this statement is never reached
 hw-gfx-gma-pch-fdi.adb:241:19: warning: this statement is never reached
 hw-gfx-gma-pch-fdi.adb:247:19: warning: this statement is never reached
+hw-gfx-gma-pch-fdi.adb:250:11: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pch-fdi.adb:250:11: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pch-fdi.ads:23:07: info: initialization of "Success" proved
 hw-gfx-gma-pch-sideband.adb:109:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.adb:120:07: info: initialization of "Value" proved
@@ -274,6 +599,8 @@ hw-gfx-gma-pipe_setup.adb:713:10: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:714:19: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:715:19: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:735:07: info: initialization of "Reg8" proved
+hw-gfx-gma-pipe_setup.adb:740:11: warning: assuming "U_Delay" always returns
+hw-gfx-gma-pipe_setup.adb:740:11: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pipe_setup.ads:60:32: info: initialization of "Available" proved
 hw-gfx-gma-pipe_setup.ads:60:57: warning: unused variable "Pipe"
 hw-gfx-gma-plls.adb:183:08: info: initialization of "Result" proved
@@ -296,6 +623,8 @@ hw-gfx-gma-plls.adb:360:11: info: initialization of "Encoded_P1" proved
 hw-gfx-gma-plls.adb:360:23: info: initialization of "Encoded_P2" proved
 hw-gfx-gma-plls.adb:392:07: info: initialization of "Success" proved
 hw-gfx-gma-plls.adb:399:07: info: initialization of "Clk" proved
+hw-gfx-gma-plls.adb:450:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-plls.adb:450:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-plls.adb:479:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.adb:480:07: info: initialization of "Success" proved
 hw-gfx-gma-plls.ads:25:14: info: initialization of "PLLs" constituent of "State" proved
@@ -309,9 +638,13 @@ hw-gfx-gma-port_detect.adb:81:22: warning: this statement is never reached
 hw-gfx-gma-port_detect.adb:86:31: warning: this statement is never reached
 hw-gfx-gma-port_detect.adb:122:07: info: initialization of "Ctl32" proved
 hw-gfx-gma-port_detect.ads:21:07: info: initialization of "Detected" proved
+hw-gfx-gma-power_and_clocks_ironlake.adb:44:11: warning: assuming "U_Delay" always returns
+hw-gfx-gma-power_and_clocks_ironlake.adb:44:11: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-power_and_clocks_ironlake.adb:45:07: warning: statement has no effect
 hw-gfx-gma-power_and_clocks_ironlake.adb:47:19: warning: this statement is never reached
 hw-gfx-gma-power_and_clocks_ironlake.adb:50:19: warning: this statement is never reached
+hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: assuming "U_Delay" always returns
+hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: this statement is never reached
 hw-gfx-gma-registers.adb:41:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma-registers.adb:41:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -328,6 +661,10 @@ hw-gfx-gma-registers.adb:240:07: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:261:07: info: initialization of "Current" proved
 hw-gfx-gma-registers.adb:262:07: info: initialization of "Timeout" proved
 hw-gfx-gma-registers.adb:263:07: info: initialization of "Timed_Out" proved
+hw-gfx-gma-registers.adb:274:22: warning: assuming "MS_From_Now" always returns
+hw-gfx-gma-registers.adb:274:22: warning: no returning annotation available for "MS_From_Now"
+hw-gfx-gma-registers.adb:276:27: warning: assuming "Timed_Out" always returns
+hw-gfx-gma-registers.adb:276:27: warning: no returning annotation available for "Timed_Out"
 hw-gfx-gma-registers.adb:322:07: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:341:07: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:361:07: info: initialization of "Value" proved
@@ -392,10 +729,22 @@ hw-gfx-gma.adb:104:07: info: initialization of "Scaler_Available" proved
 hw-gfx-gma.adb:193:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma.adb:194:07: info: initialization of "Success" proved
 hw-gfx-gma.adb:214:56: info: initialization of "Detected" proved
+hw-gfx-gma.adb:216:51: warning: assuming "Timed_Out" always returns
+hw-gfx-gma.adb:216:51: warning: no returning annotation available for "Timed_Out"
+hw-gfx-gma.adb:220:37: warning: assuming "MS_From_Now" always returns
+hw-gfx-gma.adb:220:37: warning: no returning annotation available for "MS_From_Now"
 hw-gfx-gma.adb:227:07: info: initialization of "Old_Configs" proved
+hw-gfx-gma.adb:235:29: warning: assuming "Power_Up" always returns
+hw-gfx-gma.adb:235:29: warning: assuming "Power_Up" has no effect on global items
+hw-gfx-gma.adb:235:29: warning: no Global contract available for "Power_Up"
+hw-gfx-gma.adb:235:29: warning: no returning annotation available for "Power_Up"
 hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
 hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
 hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
+hw-gfx-gma.adb:325:26: warning: assuming "Power_Down" always returns
+hw-gfx-gma.adb:325:26: warning: assuming "Power_Down" has no effect on global items
+hw-gfx-gma.adb:325:26: warning: no Global contract available for "Power_Down"
+hw-gfx-gma.adb:325:26: warning: no returning annotation available for "Power_Down"
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
 hw-gfx-gma.adb:382:16: low: unused global "Dev.Address_State" constituent of "GMA.State"
 hw-gfx-gma.adb:383:22: info: initialization of "Registers.Address_State" constituent of "GMA.State" proved
@@ -409,6 +758,8 @@ hw-gfx-gma.adb:387:13: info: initialization of "Linear_FB_Base" constituent of "
 hw-gfx-gma.adb:387:29: info: initialization of "Initialized" constituent of "Init_State" proved
 hw-gfx-gma.adb:391:07: info: initialization of "PCI_MMIO_Base" proved
 hw-gfx-gma.adb:391:22: info: initialization of "PCI_GTT_Base" proved
+hw-gfx-gma.adb:393:36: warning: assuming "Now" always returns
+hw-gfx-gma.adb:393:36: warning: no returning annotation available for "Now"
 hw-gfx-gma.adb:395:33: info: initialization of "Success" proved
 hw-gfx-gma.adb:397:10: info: initialization of "Audio_VID_DID" proved
 hw-gfx-gma.adb:401:25: warning: this statement is never reached
@@ -416,7 +767,19 @@ hw-gfx-gma.adb:403:25: warning: this statement is never reached
 hw-gfx-gma.adb:422:37: info: initialization of "Success" proved
 hw-gfx-gma.adb:425:10: info: initialization of "Vendor" proved
 hw-gfx-gma.adb:425:18: info: initialization of "Device" proved
+hw-gfx-gma.adb:491:26: warning: assuming "Pre_All_Off" always returns
+hw-gfx-gma.adb:491:26: warning: assuming "Pre_All_Off" has no effect on global items
+hw-gfx-gma.adb:491:26: warning: no Global contract available for "Pre_All_Off"
+hw-gfx-gma.adb:491:26: warning: no returning annotation available for "Pre_All_Off"
+hw-gfx-gma.adb:496:26: warning: assuming "Post_All_Off" always returns
+hw-gfx-gma.adb:496:26: warning: assuming "Post_All_Off" has no effect on global items
+hw-gfx-gma.adb:496:26: warning: no Global contract available for "Post_All_Off"
+hw-gfx-gma.adb:496:26: warning: no returning annotation available for "Post_All_Off"
 hw-gfx-gma.adb:509:07: warning: statement has no effect
+hw-gfx-gma.adb:544:23: warning: assuming "Power_Up" always returns
+hw-gfx-gma.adb:544:23: warning: assuming "Power_Up" has no effect on global items
+hw-gfx-gma.adb:544:23: warning: no Global contract available for "Power_Up"
+hw-gfx-gma.adb:544:23: warning: no returning annotation available for "Power_Up"
 hw-gfx-gma.adb:667:07: info: initialization of "GTT_Size" proved
 hw-gfx-gma.adb:668:07: info: initialization of "Stolen_Size" proved
 hw-gfx-gma.adb:676:07: info: initialization of "GGC" proved
@@ -433,6 +796,282 @@ hw-gfx-gma.adb:702:07: info: initialization of "Stolen_Size" proved
 hw-gfx-gma.adb:726:07: info: initialization of "Phys_Base" proved
 hw-gfx-gma.adb:758:13: info: initialization of "Linear_FB" proved
 hw-gfx-gma.adb:772:07: info: initialization of "Valid" proved
+hw-gfx-gma.adb:816:12: warning: assuming "New_Line" always returns
+hw-gfx-gma.adb:816:12: warning: assuming "New_Line" has no effect on global items
+hw-gfx-gma.adb:816:12: warning: no Global contract available for "New_Line"
+hw-gfx-gma.adb:816:12: warning: no returning annotation available for "New_Line"
+hw-gfx-gma.adb:817:12: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:817:12: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:817:12: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:817:12: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:820:18: warning: assuming "Put" always returns
+hw-gfx-gma.adb:820:18: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:820:18: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:820:18: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:822:18: warning: assuming "Put" always returns
+hw-gfx-gma.adb:822:18: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:822:18: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:822:18: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:824:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:824:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:824:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:824:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:825:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:825:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:825:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:825:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:827:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:827:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:827:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:827:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:828:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:828:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:828:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:828:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:829:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:829:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:829:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:829:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:830:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:830:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:830:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:830:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:831:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:831:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:831:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:831:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:832:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:832:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:832:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:832:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:833:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:833:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:833:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:833:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:834:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:834:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:834:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:834:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:835:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:835:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:835:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:835:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:836:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:836:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:836:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:836:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:837:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:837:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:837:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:837:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:838:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:838:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:838:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:838:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:839:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:839:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:839:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:839:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:840:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:840:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:840:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:840:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:841:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:841:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:841:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:841:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:842:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:842:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:842:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:842:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:843:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:843:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:843:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:843:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:844:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:844:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:844:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:844:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:845:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:845:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:845:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:845:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:846:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:846:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:846:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:846:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:847:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:847:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:847:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:847:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:848:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:848:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:848:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:848:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:849:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:849:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:849:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:849:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:850:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:850:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:850:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:850:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:851:15: warning: assuming "Put_Word32" always returns
+hw-gfx-gma.adb:851:15: warning: assuming "Put_Word32" has no effect on global items
+hw-gfx-gma.adb:851:15: warning: no Global contract available for "Put_Word32"
+hw-gfx-gma.adb:851:15: warning: no returning annotation available for "Put_Word32"
+hw-gfx-gma.adb:852:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:852:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:852:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:852:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:853:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:853:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:853:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:853:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:854:15: warning: assuming "Put_Int64" always returns
+hw-gfx-gma.adb:854:15: warning: assuming "Put_Int64" has no effect on global items
+hw-gfx-gma.adb:854:15: warning: no Global contract available for "Put_Int64"
+hw-gfx-gma.adb:854:15: warning: no returning annotation available for "Put_Int64"
+hw-gfx-gma.adb:855:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:855:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:855:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:855:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:856:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:856:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:856:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:856:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:857:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:857:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:857:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:857:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:858:15: warning: assuming "Put_Int64" always returns
+hw-gfx-gma.adb:858:15: warning: assuming "Put_Int64" has no effect on global items
+hw-gfx-gma.adb:858:15: warning: no Global contract available for "Put_Int64"
+hw-gfx-gma.adb:858:15: warning: no returning annotation available for "Put_Int64"
+hw-gfx-gma.adb:859:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:859:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:859:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:859:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:860:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:860:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:860:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:860:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:861:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:861:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:861:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:861:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:862:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:862:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:862:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:862:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:863:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:863:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:863:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:863:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:864:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:864:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:864:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:864:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:865:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:865:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:865:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:865:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:866:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:866:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:866:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:866:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:867:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:867:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:867:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:867:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:868:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:868:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:868:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:868:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:869:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:869:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:869:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:869:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:870:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:870:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:870:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:870:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:871:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:871:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:871:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:871:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:872:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:872:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:872:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:872:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:873:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:873:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:873:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:873:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:874:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:874:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:874:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:874:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:875:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:875:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:875:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:875:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:876:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:876:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:876:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:876:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:877:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:877:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:877:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:877:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:878:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:878:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:878:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:878:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:879:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:879:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:879:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:879:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:880:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:880:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:880:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:880:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:881:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:881:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:881:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:881:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:882:15: warning: assuming "Put_Int32" always returns
+hw-gfx-gma.adb:882:15: warning: assuming "Put_Int32" has no effect on global items
+hw-gfx-gma.adb:882:15: warning: no Global contract available for "Put_Int32"
+hw-gfx-gma.adb:882:15: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma.adb:883:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:883:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:883:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:883:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:884:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:884:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:884:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:884:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:888:15: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:888:15: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:888:15: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:888:15: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:892:15: warning: assuming "Put" always returns
+hw-gfx-gma.adb:892:15: warning: assuming "Put" has no effect on global items
+hw-gfx-gma.adb:892:15: warning: no Global contract available for "Put"
+hw-gfx-gma.adb:892:15: warning: no returning annotation available for "Put"
+hw-gfx-gma.adb:893:15: warning: assuming "Put_Int64" always returns
+hw-gfx-gma.adb:893:15: warning: assuming "Put_Int64" has no effect on global items
+hw-gfx-gma.adb:893:15: warning: no Global contract available for "Put_Int64"
+hw-gfx-gma.adb:893:15: warning: no returning annotation available for "Put_Int64"
+hw-gfx-gma.adb:895:18: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:895:18: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:895:18: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:895:18: warning: no returning annotation available for "Put_Line"
+hw-gfx-gma.adb:897:18: warning: assuming "Put_Line" always returns
+hw-gfx-gma.adb:897:18: warning: assuming "Put_Line" has no effect on global items
+hw-gfx-gma.adb:897:18: warning: no Global contract available for "Put_Line"
+hw-gfx-gma.adb:897:18: warning: no returning annotation available for "Put_Line"
 hw-gfx-gma.ads:27:04: info: flow dependencies proved
 hw-gfx-gma.ads:98:07: info: initialization of "Success" proved
 hw-gfx-gma.ads:100:07: info: data dependencies proved

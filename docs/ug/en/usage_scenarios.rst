@@ -1217,7 +1217,7 @@ floating-point values:
   below the perfect mathematical result), which means that two compilers may
   give two different results for multiplication and division. Users should thus
   avoid multiplication and division of fixed-point values for maximal
-  portability. See :ref:`Tool Limitations`.
+  portability. See :ref:`GNATprove Limitations`.
 
 * |GNATprove| assumes IEEE 754 standard semantics for basic operations of
   floating-point types (addition, subtraction, multiplication, division). With

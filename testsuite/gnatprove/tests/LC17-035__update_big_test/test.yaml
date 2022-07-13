@@ -1,5 +1,4 @@
 prove_all:
   prover: ["cvc5"]
-  counterexample: False
   steps: 6000
 large: True

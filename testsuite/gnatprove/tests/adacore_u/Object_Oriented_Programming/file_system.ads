@@ -4,23 +4,37 @@ is
    type File is tagged private;
 
    procedure Create (F : out File) with
-     Post'Class => F.Closed;
+     Post'Class => F.Closed,
+     Global     => null,
+     Annotate   => (GNATprove, Always_Return);
 
    procedure Open_Read (F : in out File) with
      Pre'Class  => F.Closed,
-     Post'Class => F.Is_Open;
+     Post'Class => F.Is_Open,
+     Global     => null,
+     Annotate   => (GNATprove, Always_Return);
 
    procedure Open_Read_Write (F : in out File) with
      Pre'Class  => F.Closed,
-     Post'Class => F.Is_Open and F.Is_Writable;
+     Post'Class => F.Is_Open and F.Is_Writable,
+     Global     => null,
+     Annotate   => (GNATprove, Always_Return);
 
    procedure Close (F : in out File) with
      Pre'Class  => F.Is_Open,
-     Post'Class => F.Closed;
+     Post'Class => F.Closed,
+     Global     => null,
+     Annotate   => (GNATprove, Always_Return);
 
-   function Closed (F : File) return Boolean;
-   function Is_Open (F : File) return Boolean;
-   function Is_Writable (F : File) return Boolean;
+   function Closed (F : File) return Boolean with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
+   function Is_Open (F : File) return Boolean with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
+   function Is_Writable (F : File) return Boolean with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
 private
    type State is (Closed, Open_Read, Open_Read_Write);

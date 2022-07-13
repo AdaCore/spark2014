@@ -1,6 +1,11 @@
 c57004a.adb:7:20: info: unrolling loop
 c57004a.adb:9:38: info: unrolling loop
+c57004a.adb:13:16: warning: assuming "FAILED" always returns
+c57004a.adb:13:16: warning: no returning annotation available for "FAILED"
 c57004a.adb:13:16: warning: this statement is never reached
+c57004a.adb:13:16: warning: unreachable code
+c57004a.adb:15:10: warning: assuming "FAILED" always returns
+c57004a.adb:15:10: warning: no returning annotation available for "FAILED"
 p.ads:3:48: info: initialization of "Y" proved
 p.ads:3:70: info: data dependencies proved
 p.ads:4:48: info: initialization of "Y" proved

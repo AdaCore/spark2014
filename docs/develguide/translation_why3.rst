@@ -1824,6 +1824,44 @@ stand for the dispatching equality in the hierarchy (see
 The abstract function is axiomatized in the completion module for the
 type.
 
+Ownership Annotations
+"""""""""""""""""""""
+
+Private types whose full view is not in SPARK can be annotated with
+Ownership to state that copying them might create aliases. In addition, it
+is possible to state that they need some kind of reclamation when they
+are finalized. In this case, it is necessary to generate WhyMl code to
+track whether a value of this type has been moved to another object
+before the finalization. This is done by adding a ``rec__is_moved__``
+field to objects of these type. For example, let us consider the
+following package:
+
+.. code-block:: ada
+
+   package P is
+      type T is private with
+        Default_Initial_Condition,
+        Annotate => (GNATprove, Ownership, "Needs_Reclamation");
+
+      ...
+   private
+      pragma SPARK_Mode (Off);
+      ...
+   end P;
+
+Since ``T`` needs reclamation, an additional ``rec__is_moved__`` flag
+is added to its representative type. It is used when checking for
+leaks when an object of this type is finalized.
+
+.. code-block:: whyml
+
+  type __main_type
+
+  type __split_fields = { rec__p__t: __main_type }
+
+  type __rep = { __split_fields  : __split_fields;
+                 rec__is_moved__ : bool }
+
 Record Attributes and Component Attributes
 """"""""""""""""""""""""""""""""""""""""""
 

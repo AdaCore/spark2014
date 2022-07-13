@@ -35,6 +35,7 @@ with Einfo.Utils;                     use Einfo.Utils;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
+with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Flow_Types;                      use Flow_Types;
@@ -838,6 +839,9 @@ package body SPARK_Definition is
                end if;
             end;
 
+         when E_Private_Type | E_Private_Subtype =>
+            return False;
+
          when others =>
             raise Program_Error;
          end case;
@@ -899,7 +903,7 @@ package body SPARK_Definition is
       Context    : Node_Id := Parent (Subcontext);
    begin
       --  The allocating expression appears in an assertion. This is allowed,
-      --  even though a memory leak is certain to occur in that case if
+      --  even though a resource leak is certain to occur in that case if
       --  assertions are enabled, and will be reported by GNATprove.
 
       if In_Assertion_Expression_Pragma (Alloc) then
@@ -4040,20 +4044,33 @@ package body SPARK_Definition is
       --  manually-written Global or Depends contracts. Exempt calls to pure
       --  subprograms (because Pure acts as "Global => null").
 
-      elsif Emit_Warning_Info_Messages
-        and then SPARK_Pragma_Is (Opt.On)
-        and then not Has_User_Supplied_Globals (E)
-        and then ((Is_Imported (E) and then
-                     Convention (E) not in Convention_Ada
-                                         | Convention_Intrinsic)
-                   or else (Is_Ignored_Internal (E)
-                              and then
-                            not Is_Ignored_Internal (N)))
-      then
-         Error_Msg_NE
-           ("?no Global contract available for &", N, E);
-         Error_Msg_NE
-           ("\\assuming & has no effect on global items", N, E);
+      elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
+
+         declare
+            Might_Have_Flow_Assumptions : constant Boolean :=
+              (Has_No_Body (E)
+                 or else (Is_Ignored_Internal (E)
+                            and then not Is_Ignored_Internal (N)))
+              and then not Is_Unchecked_Conversion_Instance (E)
+              and then not Is_Unchecked_Deallocation_Instance (E);
+
+         begin
+            if Might_Have_Flow_Assumptions then
+               if not Has_User_Supplied_Globals (E) then
+                  Error_Msg_NE
+                    ("?no Global contract available for &", N, E);
+                  Error_Msg_NE
+                    ("\\assuming & has no effect on global items", N, E);
+               end if;
+
+               if not Has_Any_Returning_Annotation (E) then
+                  Error_Msg_NE
+                    ("?no returning annotation available for &", N, E);
+                  Error_Msg_NE
+                    ("\\assuming & always returns", N, E);
+               end if;
+            end if;
+         end;
 
       --  On supported unchecked conversions to access types, emit warnings
       --  stating that we assume the returned value to be valid and with no
@@ -6260,6 +6277,13 @@ package body SPARK_Definition is
                      E);
                end if;
 
+               --  Check that the component is not of an anonymous access type
+
+               if Is_Anonymous_Access_Object_Type (Component_Typ) then
+                  Mark_Violation
+                    ("component of anonymous access type", Component_Typ);
+               end if;
+
                --  Check that all index types are in SPARK
 
                while Present (Index) loop
@@ -6482,11 +6506,10 @@ package body SPARK_Definition is
             if Is_Base_Type (E)
               and then Present (Full_View (E))
               and then Has_Predicates (E)
+              and then Ekind (Scope (E)) = E_Package
             then
                declare
-                  Scop : constant Entity_Id := Scope (E);
-                  pragma Assert (Ekind (Scop) = E_Package);
-
+                  Scop     : constant Entity_Id := Scope (E);
                   Prag     : constant Node_Id := SPARK_Pragma (Scop);
                   Aux_Prag : constant Node_Id := SPARK_Aux_Pragma (Scop);
                   Rep      : Node_Id := First_Rep_Item (Full_View (E));
@@ -6636,9 +6659,7 @@ package body SPARK_Definition is
                            --  Check that the component is not of an anonymous
                            --  access type.
 
-                           if Is_Anonymous_Access_Object_Type
-                             (Retysp (Comp_Type))
-                           then
+                           if Is_Anonymous_Access_Object_Type (Comp_Type) then
                               Mark_Violation
                                 ("component of anonymous access type", Comp);
                            end if;

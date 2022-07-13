@@ -29,7 +29,7 @@
   <proof prover="0"><result status="valid" steps="7949"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="23090"/></proof>
+  <proof prover="0"><result status="valid" steps="23074"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -41,7 +41,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="30663"/></proof>
+  <proof prover="0"><result status="valid" steps="30645"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0"><result status="valid" steps="7583"/></proof>
@@ -68,7 +68,7 @@
   <proof prover="0"><result status="valid" steps="8557"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="0"><result status="valid" steps="26790"/></proof>
+  <proof prover="0"><result status="valid" steps="26767"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -80,7 +80,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0"><result status="valid" steps="106692"/></proof>
+  <proof prover="0"><result status="valid" steps="106091"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -107,10 +107,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.32" proved="true">
-  <proof prover="0"><result status="valid" steps="148039"/></proof>
+  <proof prover="0"><result status="valid" steps="144926"/></proof>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
-  <proof prover="0"><result status="valid" steps="32516"/></proof>
+  <proof prover="0"><result status="valid" steps="32495"/></proof>
   </goal>
  </transf>
  </goal>

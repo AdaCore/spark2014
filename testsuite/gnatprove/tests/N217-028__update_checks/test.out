@@ -49,7 +49,7 @@ ar.adb:128:33: medium: range check might fail, cannot prove upper bound for J + 
 ar.adb:128:42: medium: range check might fail, cannot prove lower bound for E - 1 (e.g. when E = 0) [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (E >= ET1'First + 1) to subprogram at line 125]
 ar.adb:134:04: warning: analyzing unreferenced procedure "Test13"
 ar.adb:137:27: info: index check proved (CVC5: 2 VC)
-ar.adb:137:39: medium: range check might fail, cannot prove lower bound for E - 1 [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (E >= ET1'First + 1) to subprogram at line 134]
+ar.adb:137:39: medium: range check might fail, cannot prove lower bound for E - 1 (e.g. when E = 0) [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (E >= ET1'First + 1) to subprogram at line 134]
 ar.ads:17:10: info: flow dependencies proved
 ar.ads:19:05: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 ar.ads:19:25: info: range check proved (CVC5: 2 VC)

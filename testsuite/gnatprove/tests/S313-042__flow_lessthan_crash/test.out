@@ -1,11 +1,17 @@
-a-cforse.ads:81:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-a-cforse.ads:144:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-a-cforse.ads:157:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-a-cforse.ads:1439:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-a-cforse.ads:1439:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
-a-cforse.ads:1454:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-a-cforse.ads:1454:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:122, in instantiation at moth.ads:126
+a-cforse.ads:83:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:146:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:159:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1441:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1441:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1456:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+a-cforse.ads:1456:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at moth.ads:126
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at moth.ads:126
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:112, in instantiation at moth.ads:126
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at moth.ads:130
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at moth.ads:126
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cforse.ads:124, in instantiation at moth.ads:126
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at moth.ads:126
 moth-config.ads:37:08: info: data dependencies proved
 moth-config.ads:45:07: info: data dependencies proved
 moth-mailbox.adb:192:07: info: initialization of "status" proved
@@ -13,8 +19,25 @@ moth-mailbox.adb:229:07: info: initialization of "status" proved
 moth-mailbox.adb:237:07: info: initialization of "ret" proved
 moth-mailbox.adb:354:07: info: initialization of "mbx_index" proved
 moth-scheduler.adb:304:24: info: initialization of "task_id" proved
+moth-scheduler.adb:313:17: warning: assuming "interrupt_is_pending" always returns
+moth-scheduler.adb:313:17: warning: no returning annotation available for "interrupt_is_pending"
+moth-scheduler.adb:324:17: warning: assuming "idle" always returns
+moth-scheduler.adb:324:17: warning: no returning annotation available for "idle"
+moth-scheduler.adb:327:20: warning: assuming "interrupt_is_pending" always returns
+moth-scheduler.adb:327:20: warning: no returning annotation available for "interrupt_is_pending"
 moth-scheduler.adb:368:07: info: initialization of "tmp_mask" proved
-moth.ads:29:30: warning: "Ada.Numerics.Big_Numbers.Big_Integers" is an Ada 2022 unit [-gnatwi]
+moth-scheduler.adb:442:14: warning: assuming "space_init" always returns
+moth-scheduler.adb:442:14: warning: no returning annotation available for "space_init"
+moth-scheduler.adb:456:17: warning: assuming "space_switch" always returns
+moth-scheduler.adb:456:17: warning: no returning annotation available for "space_switch"
+moth-scheduler.adb:459:17: warning: assuming "context_create" always returns
+moth-scheduler.adb:459:17: warning: no returning annotation available for "context_create"
+moth-scheduler.adb:471:14: warning: assuming "context_set" always returns
+moth-scheduler.adb:471:14: warning: no returning annotation available for "context_set"
+moth-scheduler.adb:474:14: warning: assuming "space_switch" always returns
+moth-scheduler.adb:474:14: warning: no returning annotation available for "space_switch"
+moth.adb:54:14: warning: assuming "cons_init" always returns
+moth.adb:54:14: warning: no returning annotation available for "cons_init"
 moth.ads:116:10: info: flow dependencies proved
 moth.ads:143:10: info: initialization of "Model" proved
 moth.ads:192:23: info: initialization of "task_id" proved

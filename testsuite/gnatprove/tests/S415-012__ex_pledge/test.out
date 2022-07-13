@@ -26,10 +26,15 @@ in_out_pledge.adb:38:46: info: precondition proved (CVC5: 2 VC)
 in_out_pledge.adb:40:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 in_out_pledge.adb:40:14: info: range check proved (CVC5: 1 VC)
 in_out_pledge.adb:43:96: info: dynamic accessibility check proved (Trivial)
-in_out_pledge.adb:49:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-in_out_pledge.adb:50:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-in_out_pledge.adb:51:04: info: absence of memory leak at end of scope proved (CVC5: 1 VC)
-in_out_pledge.adb:52:04: medium: memory leak might occur at end of scope
+in_out_pledge.adb:49:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+in_out_pledge.adb:50:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+in_out_pledge.adb:51:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+in_out_pledge.adb:52:04: medium: resource or memory leak might occur at end of scope
+in_out_pledge.adb:56:07: info: no contextual analysis of "Rand" (body not seen yet)
+in_out_pledge.adb:56:07: warning: assuming "Rand" always returns
+in_out_pledge.adb:56:07: warning: assuming "Rand" has no effect on global items
+in_out_pledge.adb:56:07: warning: no Global contract available for "Rand"
+in_out_pledge.adb:56:07: warning: no returning annotation available for "Rand"
 in_out_pledge.adb:61:12: info: data dependencies proved
 in_out_pledge.adb:63:20: info: postcondition proved (CVC5: 4 VC)
 in_out_pledge.adb:63:40: info: pointer dereference check proved (CVC5: 1 VC)

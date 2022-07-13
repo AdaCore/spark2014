@@ -2,5 +2,12 @@ test_inline.adb:22:14: info: add a contract to analyze it separately from callin
 test_inline.adb:22:14: info: local subprogram "Set_A_And_B" only analyzed in the context of calls
 test_inline.adb:28:14: info: add a contract to analyze it separately from calling contexts
 test_inline.adb:28:14: info: local subprogram "Print" only analyzed in the context of calls
+test_inline.adb:35:07: info: analyzing call to "Set_A_And_B" in context
+test_inline.adb:36:07: info: analyzing call to "Print" in context
+test_inline.adb:41:07: info: analyzing call to "Set_A_And_B" in context
+test_inline.adb:42:07: info: analyzing call to "Print" in context
 test_inline.adb:47:07: warning: "A" is set by "Do_Test_A" but not used after the call
 test_inline.adb:47:07: warning: "B" is set by "Do_Test_A" but not used after the call
+test_inline.adb:51:07: info: analyzing call to "Set_A_And_B" in context
+test_inline.adb:52:07: info: analyzing call to "Print" in context
+test_inline.adb:53:07: info: analyzing call to "Print" in context

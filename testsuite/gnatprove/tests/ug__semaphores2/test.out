@@ -1,2 +1,27 @@
+
+semaphores2.adb:13:10: warning: no returning annotation available for "Suspend_Until_True"
+   13 |         Suspend_Until_True (Semaphore1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  assuming "Suspend_Until_True" always returns
+
+semaphores2.adb:15:10: warning: no returning annotation available for "Set_True"
+   15 |         Set_True (Semaphore2);
+      |         ^~~~~~~~~~~~~~~~~~~~
+  assuming "Set_True" always returns
+
+semaphores2.adb:22:10: warning: no returning annotation available for "Suspend_Until_True"
+   22 |         Suspend_Until_True (Semaphore2);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  assuming "Suspend_Until_True" always returns
+
+semaphores2.adb:24:10: warning: no returning annotation available for "Set_True"
+   24 |         Set_True (Semaphore1);
+      |         ^~~~~~~~~~~~~~~~~~~~
+  assuming "Set_True" always returns
 semaphores2.ads:6:09: info: nontermination of task proved
 semaphores2.ads:7:09: info: nontermination of task proved
+
+semaphores2_main.adb:7:04: warning: no returning annotation available for "Set_True"
+    7 |   Set_True (Semaphore1);
+      |   ^~~~~~~~~~~~~~~~~~~~
+  assuming "Set_True" always returns

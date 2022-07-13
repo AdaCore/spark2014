@@ -1,8 +1,12 @@
-ext.ads:4:35: warning: Constraint_Error will be raised at run time [enabled by default]
-ext.ads:4:35: warning: value not in range of type "My_Char" defined at line 2 [enabled by default]
-ext.ads:9:38: warning: Constraint_Error will be raised at run time [enabled by default]
-ext.ads:9:38: warning: value not in range of type "Small_Enum" defined at line 7 [enabled by default]
-test_access_conv.adb:11:04: medium: memory leak might occur at end of scope
+ext.ads:4:35: warning: Constraint_Error will be raised at run time
+ext.ads:4:35: warning: value not in range of type "My_Char" defined at line 2
+ext.ads:9:38: warning: Constraint_Error will be raised at run time
+ext.ads:9:38: warning: value not in range of type "Small_Enum" defined at line 7
+test_access_conv.adb:11:04: medium: resource or memory leak might occur at end of scope
+test_access_conv.adb:13:04: warning: assuming "Incr" always returns
+test_access_conv.adb:13:04: warning: assuming "Incr" has no effect on global items
+test_access_conv.adb:13:04: warning: no Global contract available for "Incr"
+test_access_conv.adb:13:04: warning: no returning annotation available for "Incr"
 test_access_conv.adb:13:10: info: discriminant check proved (CVC5: 1 VC)
 test_attributes.adb:16:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:17:19: info: assertion proved (CVC5: 1 VC)
@@ -11,6 +15,14 @@ test_attributes.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:20:51: info: division check proved (CVC5: 1 VC)
 test_bv_compare.adb:7:13: info: no contextual analysis of "Rand" (body not seen yet)
+test_bv_compare.adb:7:13: warning: assuming "Rand" always returns
+test_bv_compare.adb:7:13: warning: assuming "Rand" has no effect on global items
+test_bv_compare.adb:7:13: warning: no Global contract available for "Rand"
+test_bv_compare.adb:7:13: warning: no returning annotation available for "Rand"
+test_bv_compare.adb:8:13: warning: assuming "Rand" always returns
+test_bv_compare.adb:8:13: warning: assuming "Rand" has no effect on global items
+test_bv_compare.adb:8:13: warning: no Global contract available for "Rand"
+test_bv_compare.adb:8:13: warning: no returning annotation available for "Rand"
 test_bv_compare.adb:10:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_bv_compare.adb:11:19: info: assertion proved (CVC5: 1 VC)
 test_enum.adb:11:19: info: assertion proved (CVC5: 1 VC)
@@ -26,16 +38,20 @@ test_membership.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:21:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:22:19: info: assertion proved (CVC5: 1 VC)
-test_membership.adb:22:24: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+test_membership.adb:22:24: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 test_membership.adb:23:19: info: assertion proved (CVC5: 1 VC)
 test_new.adb:5:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_new.adb:7:19: info: assertion proved (CVC5: 1 VC)
-test_new.adb:7:31: medium: memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+test_new.adb:7:31: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 test_or_mod.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_or_mod.adb:8:19: info: assertion proved (CVC5: 1 VC)
 test_string.adb:4:19: medium: assertion might fail
 test_string.adb:4:26: medium: precondition might fail
 test_tagged_records.adb:12:07: info: no contextual analysis of "Rand" (body not seen yet)
+test_tagged_records.adb:12:07: warning: assuming "Rand" always returns
+test_tagged_records.adb:12:07: warning: assuming "Rand" has no effect on global items
+test_tagged_records.adb:12:07: warning: no Global contract available for "Rand"
+test_tagged_records.adb:12:07: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:13:23: info: predicate check proved (CVC5: 1 VC)
 test_tagged_records.adb:15:17: medium: predicate check might fail
 test_tagged_records.adb:15:23: info: predicate check proved (CVC5: 1 VC)

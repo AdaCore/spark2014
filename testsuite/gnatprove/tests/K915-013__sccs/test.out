@@ -4,10 +4,13 @@ sccs.adb:9:14: info: add a contract to analyze it separately from calling contex
 sccs.adb:9:14: info: local subprogram "G2" only analyzed in the context of calls
 sccs.adb:9:26: warning: statement has no effect
 sccs.adb:9:26: warning: statement has no effect, in call inlined at sccs.adb:10
+sccs.adb:9:36: info: no contextual analysis of "F2" (body not seen yet)
 sccs.adb:9:36: warning: "B" is set by "F2" but not used after the call
 sccs.adb:9:36: warning: "B" is set by "F2" but not used after the call, in call inlined at sccs.adb:10
 sccs.adb:9:36: warning: statement has no effect
 sccs.adb:9:36: warning: statement has no effect, in call inlined at sccs.adb:10
+sccs.adb:9:48: info: analyzing call to "Set_True" in context
+sccs.adb:10:40: info: analyzing call to "G2" in context
 sccs.adb:13:14: info: add a contract to analyze it separately from calling contexts
 sccs.adb:13:14: info: local subprogram "G5" only analyzed in the context of calls
 sccs.adb:13:26: warning: statement has no effect
@@ -15,6 +18,7 @@ sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
+sccs.adb:13:36: info: no contextual analysis of "F5" (body not seen yet)
 sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call
 sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call, in call inlined at sccs.adb:14
 sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
@@ -25,12 +29,17 @@ sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
+sccs.adb:13:48: info: analyzing call to "Set_True" in context
 sccs.adb:14:14: info: add a contract to analyze it separately from calling contexts
 sccs.adb:14:14: info: local subprogram "H5" only analyzed in the context of calls
+sccs.adb:14:40: info: analyzing call to "G5" in context
 sccs.adb:15:14: info: add a contract to analyze it separately from calling contexts
 sccs.adb:15:14: info: local subprogram "I5" only analyzed in the context of calls
+sccs.adb:15:36: info: analyzing call to "H5" in context
 sccs.adb:16:14: info: add a contract to analyze it separately from calling contexts
 sccs.adb:16:14: info: local subprogram "J5" only analyzed in the context of calls
-sccs.adb:21:19: high: assertion might fail [possible fix: subprogram at line 1 should mention B in a precondition]
+sccs.adb:16:40: info: analyzing call to "I5" in context
+sccs.adb:17:40: info: analyzing call to "J5" in context
+sccs.adb:21:19: high: assertion might fail (e.g. when B = False) [possible fix: subprogram at line 1 should mention B in a precondition]
 sccs.adb:23:19: medium: assertion might fail (e.g. when B = False) [possible fix: call at line 22 should mention B in a postcondition]
 sccs.adb:25:19: medium: assertion might fail (e.g. when B = False) [possible fix: call at line 24 should mention B in a postcondition]

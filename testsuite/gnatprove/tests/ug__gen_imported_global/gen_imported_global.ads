@@ -9,7 +9,8 @@ is
    procedure Set_Global with
      Import,
      Convention => C,
-     Global => (Output => State);
+     Global => (Output => State),
+     Annotate => (GNATprove, Always_Return);
 
    procedure Set_Global_Twice;
 

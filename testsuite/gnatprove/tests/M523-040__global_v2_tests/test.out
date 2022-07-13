@@ -1,5 +1,5 @@
 main.adb:3:17: info: initialization of "Sum" proved
-misc.adb:17:22: high: assertion might fail [possible fix: subprogram at misc.ads:5 should mention G2 in a precondition]
+misc.adb:17:22: high: assertion might fail (e.g. when G2 = False) [possible fix: subprogram at misc.ads:5 should mention G2 in a precondition]
 p.adb:21:19: high: overflow check might fail, cannot prove lower bound for 2 * (GN + 1) (e.g. when GN = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention GN in a precondition]
 p.adb:21:25: high: overflow check might fail, cannot prove upper bound for GN + 1 (e.g. when GN = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention GN in a precondition]
 p.adb:21:30: high: overflow check might fail, cannot prove lower bound for 2 * (GN + 1) - 2 (e.g. when GN = -1073741825) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention GN in a precondition]

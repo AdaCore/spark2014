@@ -12,16 +12,22 @@ with Test_Types; use Test_Types;
 package Test_Higher_Order with SPARK_Mode is
 
    function Ind_Prop (A : My_Array; X : Integer; I : My_Index) return Boolean
-     with Pre => I in A'Range;
+     with Pre      => I in A'Range,
+          Global   => null,
+          Annotate => (GNATprove, Always_Return);
    --  Ind_Prop cannot have another precondition, or Prove_Ind and Prove_Last
    --  would not be self guarded.
 
    function Final_Prop (A : My_Array; X : Integer) return Boolean
-     with Pre => A'Length > 0;
+     with Pre => A'Length > 0,
+          Global   => null,
+          Annotate => (GNATprove, Always_Return);
    --  Final_Prop is always called after Prove_Last, which has the same
    --  application of Final_Prop as a post. There can be no error.
 
-   function F (X : Integer; I : Integer) return Integer;
+   function F (X : Integer; I : Integer) return Integer
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return);
    --  F is always called on A (I), X when Ind_Prop (A, X, I) is True.
    --  It is called in the same conditions in Prove_Ind and Prove_Last.
 

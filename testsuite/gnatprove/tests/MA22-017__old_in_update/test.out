@@ -1,2 +1,3 @@
 upd.adb:4:14: info: postcondition proved (CVC5: 1 VC)
+upd.adb:4:16: warning: suspicious equality test with modified version of same object
 upd.adb:4:28: info: index check proved (CVC5: 2 VC)

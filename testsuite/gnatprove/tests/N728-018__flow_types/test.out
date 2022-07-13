@@ -4,3 +4,4 @@ repro.adb:153:04: warning: analyzing unreferenced procedure "CreateObject"
 repro.adb:153:27: warning: unused initial value of "Template"
 repro.adb:154:27: info: initialization of "ReturnValue" proved
 repro.adb:167:22: high: "LocalReturnValue" is not initialized
+repro.adb:167:22: info: analyzing call to "GetKeystoreReturn" in context

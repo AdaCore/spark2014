@@ -25,7 +25,8 @@
 --  annotations.
 
 package Con_IO with
-   SPARK_Mode
+   SPARK_Mode,
+   Annotate => (GNATprove, Always_Return)
 is
 
    procedure New_Line

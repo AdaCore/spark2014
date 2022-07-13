@@ -4,6 +4,6 @@ n.adb:4:19: info: postcondition proved (CVC5: 1 VC)
 n.adb:7:50: medium: in default value at n.adb:17
 n.adb:7:50: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 n.adb:11:12: info: range check proved (CVC5: 2 VC)
-n.adb:17:04: medium: memory leak might occur at end of scope
+n.adb:17:04: medium: resource or memory leak might occur at end of scope
 n.adb:17:15: info: range check proved (CVC5: 2 VC)
 n.adb:22:25: info: pointer dereference check proved (CVC5: 1 VC)

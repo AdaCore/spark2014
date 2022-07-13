@@ -65,6 +65,7 @@ procedure Test_Fold with SPARK_Mode is
 
 begin
    pragma Assert (for all I in 1 .. 20 when I mod 4 = 0 => I mod 2 = 0);
+   pragma Assert (for all I in 12 .. 12 => I mod 3 = 0 and I mod 4 = 0);
    pragma Assert (for some I in 1 .. 20 when I mod 3 = 0 => I mod 4 = 0);
 
    for I in 1 .. 30 when I mod 2 = 0 loop

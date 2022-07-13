@@ -3,5 +3,4 @@ prove_all:
   opt: ["--no-axiom-guard", "--proof-warnings"]
   prover: ["cvc5"]
   steps: 3000
-  counterexample: False
 timeout: 1500

@@ -1,3 +1,3 @@
-exprfun.ads:3:55: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 3]
-exprfun.ads:3:55: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when X = -1 and Y = 0) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y in Integer) to subprogram at line 3]
+exprfun.ads:3:55: medium: divide by zero might fail (e.g. when X = 0 and Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 3]
+exprfun.ads:3:55: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when X = 0 and Y = 0) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y in Integer) to subprogram at line 3]
 exprfun.ads:5:14: warning: subprogram "P" has no effect

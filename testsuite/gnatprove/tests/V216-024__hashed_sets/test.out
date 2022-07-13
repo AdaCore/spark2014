@@ -1,20 +1,25 @@
-a-cfhase.ads:512:18: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:838:39: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:847:17: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:868:24: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:869:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:917:49: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:1094:24: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:1095:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:1095:44: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:1135:49: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:1227:20: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
-a-cfhase.ads:1248:20: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:117, in instantiation at usecont.ads:13
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at usecont.ads:13
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at usecont.ads:13
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at usecont.ads:13
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at usecont.ads:13
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:117, in instantiation at usecont.ads:13
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhase.ads:117, in instantiation at usecont.ads:13
+a-cfhase.ads:514:18: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:840:39: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:849:17: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:870:24: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:871:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:919:49: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:1096:24: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:1097:26: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:1097:44: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:1137:49: info: overflow check proved (CVC5: 2 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:1229:20: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
+a-cfhase.ads:1250:20: info: precondition proved (CVC5: 1 VC), in instantiation at usecont.ads:13
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:204, in instantiation at usecont.ads:13
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:204, in instantiation at usecont.ads:13
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:107, in instantiation at usecont.ads:13
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:119, in instantiation at usecont.ads:13
 usecont.ads:12:64: medium: range check might fail (e.g. when X = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X in Hash_Type) to subprogram at line 12]

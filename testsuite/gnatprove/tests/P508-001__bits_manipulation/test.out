@@ -294,21 +294,213 @@ bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulatio
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Axiom" always returns
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Axiom" has no effect on global items
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma1_Goal" always returns
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma1_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma2_Goal" always returns
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma2_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma6" always returns
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma6" has no effect on global items
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Axiom"
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma6"
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Axiom"
+bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma6"
+bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma8"
+bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Axiom" always returns
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Axiom" has no effect on global items
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma1_Goal" always returns
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma1_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma2_Goal" always returns
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma2_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma6" always returns
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma6" has no effect on global items
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Axiom"
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma6"
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Axiom"
+bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma6"
+bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma8"
+bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Axiom" always returns
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Axiom" has no effect on global items
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma1_Goal" always returns
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma1_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma2_Goal" always returns
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma2_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma6" always returns
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma6" has no effect on global items
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Axiom"
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma6"
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Axiom"
+bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma6"
+bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma8"
+bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Axiom" always returns
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Axiom" has no effect on global items
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma1_Goal" always returns
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma1_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma2_Goal" always returns
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma2_Goal" has no effect on global items
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma6" always returns
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma6" has no effect on global items
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" always returns
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" has no effect on global items
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:122
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:179
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:182
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:204
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:213
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:222
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Axiom"
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma6"
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Axiom"
+bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma1_Goal"
+bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma2_Goal"
+bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma6"
+bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma8"
+bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma8"

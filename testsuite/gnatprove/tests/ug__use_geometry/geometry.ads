@@ -1,5 +1,7 @@
 package Geometry with
-  SPARK_Mode
+  SPARK_Mode,
+  Pure,
+  Annotate => (GNATprove, Always_Return)
 is
    type Shape is tagged record
       Pos_X, Pos_Y : Float;
@@ -26,14 +28,16 @@ is
    function Valid (S : Rectangle) return Boolean is
      (Valid (Shape (S)) and S.Len_X in 0.0 .. 10.0 and S.Len_Y in 0.0 .. 10.0);
 
-   procedure Operate (S : in out Rectangle);
+   procedure Operate (S : in out Rectangle) with Global => null;
 
-   procedure Set_Default (S : in out Rectangle);
+   procedure Set_Default (S : in out Rectangle) with Global => null;
 
    procedure Set_Default_Repeat (S : in out Rectangle) with
+     Global     => null,
      Post'Class => Valid (S);
 
    procedure Set_Default_No_Post (S : in out Rectangle) with
+     Global     => null,
      Post'Class => Valid (S);
 
 end Geometry;

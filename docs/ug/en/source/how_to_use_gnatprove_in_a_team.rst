@@ -459,6 +459,9 @@ languages. Thus, assumptions on parts of the program that cannot be analyzed
 with |GNATprove| need to be recorded for verification by other means, like
 testing, manual analysis or reviews.
 
+Partial Listing of Detailed Assumptions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 When switch ``--assumptions`` is used, |GNATprove| generates information about
 remaining assumptions in its result file ``gnatprove.out``. These remaining
 assumptions need to be justified to ensure that the desired verification
@@ -486,3 +489,271 @@ gnatprove may output:
     "effects on parameters and global variables", "The subprogram does not read or write any other parameters or global variables than what is described in its spec (signature + data dependencies)."
     "absence of run-time errors", "The subprogram is free from run-time errors."
     "the postcondition", "The postconditon of the subprogram holds after each call of the subprogram."
+
+Complete List of Assumptions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following assumptions need to be addressed when using SPARK on all or part
+of a program:
+
+* If entry points for concurrent tasks (either OS tasks or units of
+  computations scheduled by a runtime component) are not identified as tasks in
+  SPARK, then GNATprove assumes that concurrency does not have any adverse
+  effect compared to sequential execution. In particular, interleaving of the
+  tasks by the OS or scheduler should not lead to a different behavior
+  depending on the order in which tasks are executed.
+
+* All justifications of check messages should be reviewed (see :ref:`Justifying
+  Check Messages`), both when using :ref:`Direct Justification with Pragma
+  Annotate` and when using :ref:`Indirect Justification with Pragma Assume`.
+
+* The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed:
+
+  * All objects whose value may be modified concurrently should be
+    `synchronized` in SPARK (see SPARK RM 9), so that GNATprove takes into
+    account possible concurrent changes in the object's value.
+
+  * All synchronized objects which are :ref:`Volatile Variables` and all
+    :ref:`External State Abstraction` should have specified the correct
+    :ref:`Properties of Volatile Variables` corresponding to their usage.
+
+* The use of instances of ``Unchecked_Conversion`` and address clauses should
+  not violate the data initialization and the non-aliasing policies of
+  SPARK. See section :ref:`Data Validity` for cases where GNATprove issues a
+  warning to alert the user about possible unsoundness if these policies are
+  violated.
+
+.. index:: Valid; limitation
+
+* Attribute 'Valid is currently assumed to always return True, as no invalid
+  value can be constructed in SPARK (see :ref:`Data Validity`).
+
+.. index:: validity; limitation
+
+* Values read from an external source are assumed to be valid values.
+  Currently there is no model of invalidity or undefinedness. The onus is on
+  the user to ensure that all values read from an external source are
+  valid. The use of an invalid value invalidates any proofs associated with the
+  value.
+
+* When a warning is issued by GNATprove to alert about a possible soundness
+  issue, as it is the case when using instances of ``Unchecked_Conversion`` or
+  address clauses, supression of warnings should be reviewed (see
+  :ref:`Suppressing Warnings`).
+
+* As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not
+  issue messages about possible memory exhaustion, which leads to raising
+  exception ``Storage_Error`` at runtime. The computation of suitable stack and
+  heap sizes should be performed independently.
+
+* When the target configuration and runtime library for running the program are
+  different from those on the host when GNATprove is run, the target
+  configuration (see :ref:`Specifying the Target Architecture and
+  Implementation-Defined Behavior`) and runtime library (see :ref:`Using the
+  GNAT Target Runtime Directory`) should be set, so that GNATprove correctly
+  interprets the behavior of the program at runtime.
+
+* Preconditions on subprograms in most standard units are not
+  specified. That's the case in particular for:
+
+  * arithmetic and conversion operators (including Time_Of) in
+    Ada.Execution_Time and Ada.Real_Time packages described in |SPARK|
+    Reference Manual 9.19; and
+
+  * arithmetic and conversion operators (including Time_Of) in Ada.Calendar
+    package.
+
+  See :ref:`SPARK Libraries` for a list of standard units where preconditions
+  have been specified. For others, the correctness of calls to standard
+  subprograms should be checked separately, by review or testing.
+
+* Actual parameters in instances of the :ref:`Formal Containers Library` or
+  :ref:`Functional Containers Library` are subjected to some assumptions:
+
+  * No function parameter shall access global data, nor be a volatile function.
+
+  * The ``"="`` parameter of both functional and formal container libraries
+    shall be an equivalence relation - it shall be reflexive, symmetric, and
+    transitive. The same holds for the ``Equivalent_Keys`` or
+    ``Equivalent_Elements`` parameter of sets and maps.
+
+  * The ``"<"`` parameter of ordered sets and maps shall define a strict weak
+    ordering relationship - it shall be irreflexive, asymmetric, transitive,
+    and in addition, if x < y for any values x and y, then for all other
+    values z, either (x < z) or (z < y) or both.
+
+  * The ``Hash`` parameter of hashed sets and maps shall return the same value
+    for any two equivalent keys or elements.
+
+* When using floating-point numbers, GNATprove relies on the :ref:`Semantics of
+  Floating Point Operations` as defined in IEEE-754. The compiler, OS, and
+  hardware should all be configured so that IEEE-754 semantics are respected.
+
+* Compilation switches that change the behavior of the program should be the
+  same between compilation and analysis. This is in particular the case for
+  :ref:`Overflow Modes`.
+
+* When a type is annotated with an ``Iterable`` aspect:
+
+  * the function ``Has_Element`` shall be such that,
+    for any container object ``Container`` and cursor object ``Cursor``,
+    ``Has_Element (Container, Cursor)`` only evaluates to True if ``Cursor``
+    is accessible from ``First (Container)`` using the function ``Next``, and
+
+  * for any container object ``Container``, the iteration from
+    ``First (Container)`` through the function ``Next`` shall reach a cursor
+    ``Cursor`` for which ``Has_Element (Container, Cursor)`` evaluates to
+    False in a finite number of steps.
+
+* When a type as an ``Iterable_For_Proof`` annotation,
+
+  * the function ``Contains``
+    shall be such that, for any container object ``Container`` and any element
+    ``E``, ``Contains (Container, E)`` evaluates to True if and only
+    if there is a cursor object ``Cursor`` such that
+    ``Has_Element (Container, Cursor)`` evaluates to True and ``E`` is the
+    result of ``Element (Container, Cursor)``, or
+
+  * the function ``Model``
+    shall be such that, for any container object ``Container`` and any element
+    ``E``, there is a cursor  object ``Cursor`` such that
+    ``Has_Element (Container, Cursor)`` evaluates to True and ``E`` is the
+    result of ``Element (Container, Cursor)`` if and only if
+    there is a cursor object ``M_Cursor`` for the model type such that
+    ``Has_Element (Model (Container), M_Cursor)`` evaluates to True and ``E`` is
+    the result of ``Element (Model (Container), M_Cursor)``.
+
+* When a function with a postcondition has an ``Inline_For_Proof``
+  annotation, the value given in its postcondition shall be logically
+  equal to the value returned by the function.
+
+* The list of :ref:`Tool Limitations that Impact Soundness` should be reviewed to
+  check that each is either not applicable to the project, or its effects are
+  understood and cannot lead to unsound analysis.
+
+
+In addition, the following assumptions need to be addressed when using SPARK on
+only part of a program:
+
+* Private types whose full view is not analyzed, yet are used in
+  SPARK code, need to comply with the implicit or explicit contracts used by
+  GNATprove to analyze references to these types. This concerns private types
+  and private type extensions declared in a package with a
+  ``pragma SPARK_Mode (Off);`` in its private type.
+
+  The (explicit or implicit) type contract to check is made up of:
+
+  * :ref:`Default Initial Condition` (explicit or implicit, no runtime error
+    shall occur during default initialization of an object of this type unless
+    its default initial condition does not refer to the current type instance
+    or only refers to its discriminants and it evaluates to False)
+
+  * Ownership annotations (implicit, if a type is not annotated with Ownership,
+    copying it around shall not create visible aliasing and if it is not
+    annotated with Needs_Reclamation, its finalization shall not leak
+    resources or memory).
+
+  In addition, the default initialization of values of the type and the
+  evaluation of its potential type invariant or subtype predicate shall not
+  access any mutable state.
+
+* When a tagged type ``T`` visible in SPARK is extended outside of SPARK code,
+  extensions of ``T`` whose full view is not analyzed by |GNATprove| shall not
+  break the assumptions on values of type ``T'Class``. In particular, they
+  should abide by its :ref:`Default Initial Condition`, and should not add
+  components which require a specific handling with respect to ownership.
+
+* Recursive data-structures accessed by SPARK code but created out of SPARK
+  should not be cyclic even if they are constant (but sharing is OK).
+
+* If a package is not analyzed but is part of the application code, its
+  elaboration shall not modify any global state visible from SPARK unless
+  it is part of the package's own state. In addition, if the package
+  specification is referenced, directly or indirectly, from a SPARK unit, it
+  needs to comply with the implicit or explicit contracts used by
+  GNATprove to analyze these user packages.
+
+  The (explicit or implicit) package contract to check is made up of:
+
+  * ``Initializes`` contracts (explicit or implicitly generated by GNATprove)
+
+  * ``Initial_Condition`` (only explicit)
+
+  * the aliases constraints of |SPARK| (implicit - there shall not be any
+    aliases in the global state visible from SPARK after the package
+    elaboration)
+
+* Subprograms that are not analyzed, yet are called from SPARK code, need to
+  comply with the implicit or explicit contracts used by GNATprove to analyze
+  calls to these subprograms. This concerns:
+
+  * subprograms whose body is not given for analysis; and
+
+  * subprograms whose body is marked ``SPARK_Mode => Off``, either explicitly
+    or implicitly (inherited from the enclosing scope).
+
+  The (explicit or implicit) subprogram contract to check is made up of:
+
+  * :ref:`Type Contracts` of both parameters and global objects taken as input
+    of the subprogram
+
+  * :ref:`Preconditions` (explicit and implicit, no runtime error shall occur
+    in the body of the subprogram when the precondition evaluates to True)
+
+  * :ref:`Postconditions` (only explicit)
+
+  * :ref:`Contract Cases` (only explicit)
+
+  * :ref:`Data Dependencies` (explicit or implicitly generated by GNATprove)
+
+  * :ref:`Flow Dependencies` (only explicit)
+
+  * :ref:`Subprogram Termination` (only explicit except for functions which
+    should always return in SPARK)
+
+  * the aliases constraints of |SPARK| (implicit - the subprogram shall not
+    introduce any visible aliases between its parameters, accessed global
+    objects, and return value if any, unless it is a traversal function, in
+    which case its return value shall be a part of its traversed parameter)
+
+  Note that this also applies to subprograms which are called indirectly
+  from SPARK code, either through a dispatching call or through a call to
+  an access-to-subprogram, and to (predefined) operators like ``"="``.
+
+* When the body of a function is not analyzed by GNATprove, its result should
+  not depend on the address of parts of its parameters or global inputs unless
+  it is annotated with ``Volatile_Function``.
+
+* Units whose body is not analyzed, yet are used from SPARK code, need to
+  declare suitable :ref:`State Abstraction`, and subprograms defining the API
+  of such a unit should have correct :ref:`Data Dependencies` describing how a
+  subprogram reads or writes parts of the state abstraction. The state
+  abstraction may represent program variables, but also states of the OS,
+  aspects of the file system, attributes of the underlying hardware, etc.
+
+  All entities that are part of the SPARK-compatible spec of the unit need to
+  comply with the implicit or explicit contracts used by GNATprove to analyze
+  use of these entities. This concerns:
+
+  * the package itself (see :ref:`Package Contracts`); and
+
+  * the API of the package.
+
+
+In addition, the following assumptions need to be addressed when compiling the
+program with another compiler than GNAT:
+
+* When using lemmas from the :ref:`SPARK Lemma Library`, GNAT-specific lemmas
+  (e.g. on fixed-point arithmetic) should be reviewed to ensure that the same
+  semantics is used in the compiler. The name of such lemmas starts with "GNAT"
+  and the associated comment explains how it is specific to GNAT.
+
+* The switch ``--pedantic`` should be used as explained in section
+  :ref:`Specifying the Target Architecture and Implementation-Defined Behavior`
+  to warn about possible implementation-defined behavior, and the resulting
+  warnings if any should be reviewed.
+
+* The section :ref:`Ensure Portability of Programs` should be reviewed for
+  possible differences in implementation defined behavior between
+  GNAT/GNATprove and the chosen compiler (e.g. regarding choice of base type
+  for scalars).

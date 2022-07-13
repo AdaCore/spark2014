@@ -3,4 +3,8 @@ foo.adb:24:19: info: range check proved (CVC5: 2 VC)
 foo.adb:30:04: info: initialization of "Structure" proved
 foo.adb:30:43: info: range check proved (CVC5: 2 VC)
 foo.adb:35:04: info: precondition proved (CVC5: 1 VC)
+foo.adb:35:04: warning: assuming "Get" always returns
+foo.adb:35:04: warning: assuming "Get" has no effect on global items
+foo.adb:35:04: warning: no Global contract available for "Get"
+foo.adb:35:04: warning: no returning annotation available for "Get"
 foo.adb:35:40: info: range check proved (CVC5: 1 VC)

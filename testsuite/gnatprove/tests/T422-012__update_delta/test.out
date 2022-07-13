@@ -1,4 +1,4 @@
-aggr.ads:9:22: high: range check might fail, cannot prove lower bound for Z [reason for check: value must fit in component type] [possible fix: add precondition (Z in Positive) to subprogram at line 8]
+aggr.ads:9:22: high: range check might fail, cannot prove lower bound for Z (e.g. when Z = 0) [reason for check: value must fit in component type] [possible fix: add precondition (Z in Positive) to subprogram at line 8]
 aggr.ads:11:17: warning: unused variable "R"
 aggr.ads:12:27: medium: range check might fail, cannot prove lower bound for Z [reason for check: value must fit in component type] [possible fix: add precondition (Z in Positive) to subprogram at line 11]
 aggr.ads:14:18: warning: unused variable "R"

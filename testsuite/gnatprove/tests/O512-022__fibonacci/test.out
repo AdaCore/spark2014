@@ -12,8 +12,8 @@ fib.adb:17:19: info: initialization of "b2" proved
 fib.adb:17:23: info: initialization of "i" proved
 fib.adb:18:07: info: initialization of "copy_n1" proved
 fib.adb:18:16: info: initialization of "copy_n2" proved
-fib.adb:28:33: medium: loop invariant might fail in first iteration, cannot prove a1 = Fibonacci(i) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
-fib.adb:28:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove a1 = Fibonacci(i) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
+fib.adb:28:33: high: loop invariant might fail in first iteration, cannot prove a1 = Fibonacci(i) (e.g. when a1 = 1 and i = 2) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
+fib.adb:28:33: high: loop invariant might not be preserved by an arbitrary iteration, cannot prove a1 = Fibonacci(i) (e.g. when a1 = 0 and i = 1) [possible fix: you should consider adding a postcondition to function Fibonacci or turning it into an expression function]
 fib.adb:28:38: info: precondition proved (CVC5: 2 VC)
 fib.adb:29:30: info: precondition proved (CVC5: 2 VC)
 fib.adb:29:42: info: range check proved (CVC5: 4 VC)
@@ -37,14 +37,14 @@ fib.adb:48:17: info: overflow check proved (CVC5: 2 VC)
 fib.adb:63:07: info: initialization of "p" proved
 fib.adb:66:11: info: range check proved (CVC5: 2 VC)
 fib.adb:66:35: info: cannot unroll loop (too many loop iterations)
-fib.adb:67:17: medium: overflow check might fail, cannot prove upper bound for i * p [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 66 should mention p in a loop invariant]
+fib.adb:67:17: medium: overflow check might fail, cannot prove upper bound for i * p (e.g. when i = 2 and p = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 66 should mention p in a loop invariant]
 fib.adb:75:11: info: range check proved (CVC5: 2 VC)
-fib.adb:76:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
+fib.adb:76:33: medium: loop invariant might fail in first iteration (e.g. when i = 2 and p1 = 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:76:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:76:38: info: precondition proved (CVC5: 2 VC)
-fib.adb:77:18: medium: overflow check might fail, cannot prove upper bound for i * p1 [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fib.adb:77:18: medium: overflow check might fail, cannot prove upper bound for i * p1 (e.g. when i = 2 and p1 = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add or complete related loop invariants or postconditions]
 fib.adb:80:11: info: range check proved (CVC5: 2 VC)
-fib.adb:81:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
+fib.adb:81:33: medium: loop invariant might fail in first iteration (e.g. when i = 2 and p2 = 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:81:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:81:38: info: precondition proved (CVC5: 2 VC)
 fib.adb:82:18: medium: overflow check might fail, cannot prove upper bound for i * p2 [reason for check: result of multiplication must fit in a 32-bits machine integer]

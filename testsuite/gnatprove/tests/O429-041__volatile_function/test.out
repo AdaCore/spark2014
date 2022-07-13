@@ -1,1 +1,9 @@
+main.adb:3:26: warning: assuming "F" always returns
+main.adb:3:26: warning: assuming "F" has no effect on global items
+main.adb:3:26: warning: no Global contract available for "F"
+main.adb:3:26: warning: no returning annotation available for "F"
+main.adb:4:26: warning: assuming "F" always returns
+main.adb:4:26: warning: assuming "F" has no effect on global items
+main.adb:4:26: warning: no Global contract available for "F"
+main.adb:4:26: warning: no returning annotation available for "F"
 main.adb:6:19: medium: assertion might fail (e.g. when X = -1 and Y = 0)

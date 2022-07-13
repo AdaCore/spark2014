@@ -12,6 +12,7 @@ package body Very_Longs is
        Import,
        Convention => Intrinsic,
        Global     => null,
+       Annotate   => (GNATprove, Always_Return),
        Post       => Shift_Right'Result = Value / (2**Count);
 
 
@@ -19,7 +20,8 @@ package body Very_Longs is
      with
        Import,
        Convention => Intrinsic,
-       Global     => null;
+       Global     => null,
+       Annotate   => (GNATprove, Always_Return);
 
 
    function Shift_Right(Value : Octet; Count : Natural) return Octet
@@ -27,6 +29,7 @@ package body Very_Longs is
        Import,
        Convention => Intrinsic,
        Global     => null,
+       Annotate   => (GNATprove, Always_Return),
        Post       => Shift_Right'Result = Value / (2**Count);
 
 

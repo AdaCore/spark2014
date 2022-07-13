@@ -2,6 +2,8 @@ challenges.adb:6:13: info: add a contract to analyze it separately from calling 
 challenges.adb:6:13: info: local subprogram "Get_Distance" only analyzed in the context of calls
 challenges.adb:8:37: info: precondition proved (colibri: 1 VC), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:37: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38 [reason for check: value must fit in the target type of the assignment]
+challenges.adb:8:37: warning: assuming "Sqrt" always returns
+challenges.adb:8:37: warning: no returning annotation available for "Sqrt"
 challenges.adb:8:54: medium: float overflow check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38 [reason for check: result of floating-point exponentiation must be bounded]
 challenges.adb:8:54: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38 [reason for check: result of exponentiation must fit in the type of the qualification]
 challenges.adb:8:59: info: float overflow check proved (Trivial), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
@@ -13,13 +15,17 @@ challenges.adb:12:48: info: float overflow check proved (Trivial), in call inlin
 challenges.adb:12:48: info: range check proved (Z3: 1 VC), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:13:48: info: float overflow check proved (Trivial), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:13:48: info: range check proved (Z3: 1 VC), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:15:14: info: analyzing call to "Get_Distance" in context
 challenges.adb:20:13: info: add a contract to analyze it separately from calling contexts
 challenges.adb:20:13: info: local subprogram "Get_Remaining_Distance" only analyzed in the context of calls
+challenges.adb:24:14: info: analyzing call to "Get_Distance" in context
 challenges.adb:24:61: info: float overflow check proved (Trivial), in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:24:61: medium: range check might fail, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38 [reason for check: result of subtraction must fit in the target type of the assignment]
 challenges.adb:27:14: info: add a contract to analyze it separately from calling contexts
 challenges.adb:27:14: info: local subprogram "Go_To_Position_Distance" only analyzed in the context of calls
 challenges.adb:27:14: warning: subprogram "Go_To_Position_Distance" has no effect
+challenges.adb:33:29: info: analyzing call to "Get_Remaining_Distance" in context
+challenges.adb:38:10: info: analyzing call to "Go_To_Position_Distance" in context
 challenges.ads:5:14: warning: subprogram "Calibrate_At_Junction_Or_Line_End" has no effect
 dimensions.ads:377:07: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]
 dimensions.ads:377:11: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]

@@ -1,3 +1,146 @@
+compiler.adb:29:05: warning: assuming "Put" always returns
+compiler.adb:29:05: warning: no returning annotation available for "Put"
+compiler.adb:29:19: warning: assuming "New_Line" always returns
+compiler.adb:29:19: warning: no returning annotation available for "New_Line"
+compiler.adb:30:05: warning: assuming "Put" always returns
+compiler.adb:30:05: warning: no returning annotation available for "Put"
+compiler.adb:31:05: warning: assuming "New_Line" always returns
+compiler.adb:31:05: warning: no returning annotation available for "New_Line"
+compiler.adb:50:05: warning: assuming "Put" always returns
+compiler.adb:50:05: warning: no returning annotation available for "Put"
+compiler.adb:50:26: warning: assuming "Put" always returns
+compiler.adb:50:26: warning: no returning annotation available for "Put"
+compiler.adb:52:05: warning: assuming "Put" always returns
+compiler.adb:52:05: warning: no returning annotation available for "Put"
+compiler.adb:52:37: warning: assuming "Put" always returns
+compiler.adb:52:37: warning: no returning annotation available for "Put"
+compiler.adb:53:05: warning: assuming "Put" always returns
+compiler.adb:53:05: warning: no returning annotation available for "Put"
+compiler.adb:54:05: warning: assuming "Put" always returns
+compiler.adb:54:05: warning: no returning annotation available for "Put"
+compiler.adb:55:05: warning: assuming "Put" always returns
+compiler.adb:55:05: warning: no returning annotation available for "Put"
+compiler.adb:56:05: warning: assuming "Put" always returns
+compiler.adb:56:05: warning: no returning annotation available for "Put"
+compiler.adb:57:05: warning: assuming "New_Line" always returns
+compiler.adb:57:05: warning: no returning annotation available for "New_Line"
+compiler.adb:118:15: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:164:07: warning: assuming "New_Line" always returns
+compiler.adb:164:07: warning: no returning annotation available for "New_Line"
+compiler.adb:308:08: warning: assuming "End_Of_File" always returns
+compiler.adb:308:08: warning: no returning annotation available for "End_Of_File"
+compiler.adb:308:25: info: analyzing call to "Error" in context
+compiler.adb:310:33: warning: assuming "Get_Line" always returns
+compiler.adb:310:33: warning: no returning annotation available for "Get_Line"
+compiler.adb:314:32: warning: assuming "New_Line" always returns
+compiler.adb:314:32: warning: no returning annotation available for "New_Line"
+compiler.adb:315:14: warning: assuming "Put" always returns
+compiler.adb:315:14: warning: no returning annotation available for "Put"
+compiler.adb:319:05: warning: assuming "New_Line" always returns
+compiler.adb:319:05: warning: no returning annotation available for "New_Line"
+compiler.adb:427:16: info: analyzing call to "Char_Type" in context
+compiler.adb:431:06: info: analyzing call to "Char_Type" in context
+compiler.adb:437:18: info: analyzing call to "Char_Type" in context
+compiler.adb:437:45: info: analyzing call to "Char_Type" in context
+compiler.adb:443:12: info: analyzing call to "Identify_Symbol" in context
+compiler.adb:443:28: info: no contextual analysis of "Get_Symbol" (call returns unconstrained type)
+compiler.adb:448:09: info: no contextual analysis of "Char_Type" (in while loop condition)
+compiler.adb:452:31: info: analyzing call to "Ordinal" in context
+compiler.adb:479:12: info: analyzing call to "Identify_Punctuation" in context
+compiler.adb:480:30: info: analyzing call to "Error" in context
+compiler.adb:522:26: info: analyzing call to "Error" in context
+compiler.adb:524:24: info: analyzing call to "Error" in context
+compiler.adb:526:24: info: analyzing call to "Error" in context
+compiler.adb:529:26: info: analyzing call to "Error" in context
+compiler.adb:585:39: info: analyzing call to "Error" in context
+compiler.adb:638:05: info: no contextual analysis of "Expression" (body not seen yet)
+compiler.adb:690:07: info: analyzing call to "General_Expression" in context
+compiler.adb:691:29: info: analyzing call to "Error" in context
+compiler.adb:697:07: info: analyzing call to "Factor" in context
+compiler.adb:697:07: info: no contextual analysis of call to recursive subprogram
+compiler.adb:703:12: info: analyzing call to "Position" in context
+compiler.adb:704:21: info: analyzing call to "Error" in context
+compiler.adb:705:43: info: analyzing call to "Error" in context
+compiler.adb:726:35: info: analyzing call to "Error" in context
+compiler.adb:729:35: info: analyzing call to "Error" in context
+compiler.adb:738:24: info: analyzing call to "Error" in context
+compiler.adb:744:20: info: analyzing call to "Error" in context
+compiler.adb:786:05: info: analyzing call to "Term" in context
+compiler.adb:791:05: info: analyzing call to "Term" in context
+compiler.adb:796:05: info: analyzing call to "Term" in context
+compiler.adb:819:03: info: analyzing call to "General_Expression" in context
+compiler.adb:822:26: info: analyzing call to "Error" in context
+compiler.adb:824:03: info: no contextual analysis of "Statement" (body not seen yet)
+compiler.adb:855:27: info: analyzing call to "Error" in context
+compiler.adb:858:03: info: analyzing call to "General_Expression" in context
+compiler.adb:879:24: info: analyzing call to "Error" in context
+compiler.adb:880:08: info: analyzing call to "Position" in context
+compiler.adb:881:39: info: analyzing call to "Error" in context
+compiler.adb:883:25: info: analyzing call to "Error" in context
+compiler.adb:893:45: info: analyzing call to "Error" in context
+compiler.adb:912:24: info: analyzing call to "Error" in context
+compiler.adb:957:24: info: analyzing call to "Error" in context
+compiler.adb:962:41: info: analyzing call to "Error" in context
+compiler.adb:964:12: info: analyzing call to "Position" in context
+compiler.adb:965:45: info: analyzing call to "Error" in context
+compiler.adb:984:26: info: analyzing call to "Error" in context
+compiler.adb:990:30: info: analyzing call to "Error" in context
+compiler.adb:1034:30: info: analyzing call to "Error" in context
+compiler.adb:1055:12: info: analyzing call to "Position" in context
+compiler.adb:1056:21: info: analyzing call to "Error" in context
+compiler.adb:1063:33: info: analyzing call to "Error" in context
+compiler.adb:1077:35: info: analyzing call to "Error" in context
+compiler.adb:1080:35: info: analyzing call to "Error" in context
+compiler.adb:1082:33: info: analyzing call to "Error" in context
+compiler.adb:1093:24: info: analyzing call to "Error" in context
+compiler.adb:1100:28: info: analyzing call to "Error" in context
+compiler.adb:1101:12: info: analyzing call to "Position" in context
+compiler.adb:1102:21: info: analyzing call to "Error" in context
+compiler.adb:1103:44: info: analyzing call to "Error" in context
+compiler.adb:1121:29: info: analyzing call to "Error" in context
+compiler.adb:1129:07: info: analyzing call to "General_Expression" in context
+compiler.adb:1132:28: info: analyzing call to "Error" in context
+compiler.adb:1138:19: info: analyzing call to "Process_If" in context
+compiler.adb:1145:31: info: analyzing call to "Error" in context
+compiler.adb:1152:31: info: analyzing call to "Error" in context
+compiler.adb:1157:24: info: analyzing call to "Process_Repeat" in context
+compiler.adb:1159:24: info: analyzing call to "Process_For" in context
+compiler.adb:1161:24: info: analyzing call to "Process_Case" in context
+compiler.adb:1163:24: info: analyzing call to "Process_Cobegin" in context
+compiler.adb:1202:32: info: analyzing call to "Error" in context
+compiler.adb:1207:07: info: analyzing call to "Enter" in context
+compiler.adb:1210:09: info: analyzing call to "Enter" in context
+compiler.adb:1212:32: info: analyzing call to "Error" in context
+compiler.adb:1218:28: info: analyzing call to "Error" in context
+compiler.adb:1219:07: info: analyzing call to "Enter" in context
+compiler.adb:1221:07: info: analyzing call to "Block" in context
+compiler.adb:1221:07: info: no contextual analysis of call to recursive subprogram
+compiler.adb:1222:32: info: analyzing call to "Error" in context
+compiler.adb:1229:30: info: analyzing call to "Error" in context
+compiler.adb:1231:33: info: analyzing call to "Error" in context
+compiler.adb:1233:28: info: analyzing call to "Error" in context
+compiler.adb:1236:33: info: analyzing call to "Error" in context
+compiler.adb:1237:09: info: analyzing call to "Enter" in context
+compiler.adb:1240:32: info: analyzing call to "Error" in context
+compiler.adb:1252:03: warning: assuming "New_Line" always returns
+compiler.adb:1252:03: warning: no returning annotation available for "New_Line"
+compiler.adb:1269:03: warning: assuming "New_Line" always returns
+compiler.adb:1269:03: warning: no returning annotation available for "New_Line"
+compiler.adb:1270:03: warning: assuming "Put" always returns
+compiler.adb:1270:03: warning: no returning annotation available for "Put"
+compiler.adb:1271:03: warning: assuming "New_Line" always returns
+compiler.adb:1271:03: warning: no returning annotation available for "New_Line"
+compiler.adb:1442:11: info: no contextual analysis of "Run_Stack" (body not seen yet)
+compiler.adb:1470:07: warning: assuming "Put" always returns
+compiler.adb:1470:07: warning: no returning annotation available for "Put"
+compiler.adb:1526:05: warning: assuming "New_Line" always returns
+compiler.adb:1526:05: warning: no returning annotation available for "New_Line"
+compiler.adb:1527:05: warning: assuming "Put" always returns
+compiler.adb:1527:05: warning: no returning annotation available for "Put"
+compiler.adb:1527:26: warning: assuming "Put" always returns
+compiler.adb:1527:26: warning: no returning annotation available for "Put"
+compiler.adb:1528:05: warning: assuming "New_Line" always returns
+compiler.adb:1528:05: warning: no returning annotation available for "New_Line"
 compiler.adb:1659:36: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1659:36: error: violation of aspect SPARK_Mode at line 23
 compiler.adb:1665:35: error: call to a volatile function in interfering context is not allowed in SPARK
@@ -42,10 +185,44 @@ compiler.adb:1761:34: error: call to a volatile function in interfering context 
 compiler.adb:1761:34: error: violation of aspect SPARK_Mode at line 23
 compiler.adb:1762:34: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1762:34: error: violation of aspect SPARK_Mode at line 23
+compiler.adb:1769:13: warning: assuming "Put" always returns
+compiler.adb:1769:13: warning: no returning annotation available for "Put"
+compiler.adb:1769:31: warning: assuming "Put" always returns
+compiler.adb:1769:31: warning: no returning annotation available for "Put"
+compiler.adb:1772:22: warning: assuming "New_Line" always returns
+compiler.adb:1772:22: warning: no returning annotation available for "New_Line"
+compiler.adb:1781:11: info: analyzing call to "Base" in context
+compiler.adb:1788:11: info: analyzing call to "Base" in context
 compiler.adb:1791:41: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1791:41: error: violation of aspect SPARK_Mode at line 23
+compiler.adb:1796:11: info: analyzing call to "Base" in context
+compiler.adb:1804:11: info: analyzing call to "Base" in context
 compiler.adb:1808:42: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1808:42: error: violation of aspect SPARK_Mode at line 23
+compiler.adb:1815:11: info: analyzing call to "Base" in context
+compiler.adb:1853:11: info: analyzing call to "Base" in context
+compiler.adb:1861:11: info: analyzing call to "Dispatch" in context
+compiler.adb:1865:11: warning: assuming "Put" always returns
+compiler.adb:1865:11: warning: no returning annotation available for "Put"
+compiler.adb:1865:30: warning: assuming "Put" always returns
+compiler.adb:1865:30: warning: no returning annotation available for "Put"
+compiler.adb:1866:11: warning: assuming "New_Line" always returns
+compiler.adb:1866:11: warning: no returning annotation available for "New_Line"
 compiler.adb:1869:22: error: call to a volatile function in interfering context is not allowed in SPARK
 compiler.adb:1869:22: error: violation of aspect SPARK_Mode at line 23
+compiler.adb:1883:15: info: no contextual analysis of "Run_Stack" (non-allowed statement)
+compiler.adb:1909:05: warning: assuming "New_Line" always returns
+compiler.adb:1909:05: warning: no returning annotation available for "New_Line"
+compiler.adb:1910:05: warning: assuming "Put" always returns
+compiler.adb:1910:05: warning: no returning annotation available for "Put"
+compiler.adb:1910:26: warning: assuming "Put" always returns
+compiler.adb:1910:26: warning: no returning annotation available for "Put"
+compiler.adb:1911:05: warning: assuming "New_Line" always returns
+compiler.adb:1911:05: warning: no returning annotation available for "New_Line"
+compiler.adb:1913:05: warning: assuming "Put" always returns
+compiler.adb:1913:05: warning: no returning annotation available for "Put"
+compiler.adb:1913:25: warning: assuming "Put" always returns
+compiler.adb:1913:25: warning: no returning annotation available for "Put"
+compiler.adb:1913:47: warning: assuming "New_Line" always returns
+compiler.adb:1913:47: warning: no returning annotation available for "New_Line"
 gnatprove: error during flow analysis and proof

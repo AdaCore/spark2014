@@ -1,5 +1,7 @@
 package Logging with
-  SPARK_Mode
+  SPARK_Mode,
+  Pure,
+  Annotate => (GNATprove, Always_Return)
 is
    Max_Count : constant := 10_000;
 

@@ -2,13 +2,14 @@ pragma Spark_Mode (On);
 package body Sorters is
 
    function Perm_Transitive (A, B, C : Array_Type) return Boolean
-     with Global => null,
-          Post   => (if Perm_Transitive'Result
-                        and then Perm (A, B)
-                        and then Perm (B, C)
-                     then Perm (A, C)),
-          Ghost   => True,
-          Import  => True;
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return),
+          Post     => (if Perm_Transitive'Result
+                          and then Perm (A, B)
+                          and then Perm (B, C)
+                       then Perm (A, C)),
+          Ghost     => True,
+          Import    => True;
 
 
    procedure Swap (Values : in out Array_Type;

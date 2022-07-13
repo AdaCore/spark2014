@@ -36,7 +36,7 @@ with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Definition.Annotate;
+with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with String_Utils;               use String_Utils;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Atree.Modules;          use Why.Atree.Modules;
@@ -759,13 +759,6 @@ package body Gnat2Why.Util is
       Count : Natural;
 
    begin
-      --  If it is an access type then its Why representation is a record
-      --  with 3 fields: is_null_pointer, pointer_address and pointer_value.
-
-      if Is_Access_Type (E) then
-         return 3;
-      end if;
-
       --  Add one field for tagged types to represent the unknown extension
       --  components. The field for the tag itself is stored directly in the
       --  Why3 record.
@@ -808,6 +801,12 @@ package body Gnat2Why.Util is
       --  modified after object creation.
 
       if Is_Tagged_Type (E) then
+         Count := Count + 1;
+      end if;
+
+      --  For private types annotated with ownership, we need a is_moved field
+
+      if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
          Count := Count + 1;
       end if;
 
@@ -1208,7 +1207,9 @@ package body Gnat2Why.Util is
    begin
       return Is_Incomplete_Or_Private_Type (Ty)
         and then Count_Discriminants (Ty) = 0
-        and then not Is_Tagged_Type (Ty);
+        and then not Is_Tagged_Type (Ty)
+        and then (not Has_Ownership_Annotation (Ty)
+                  or else not Needs_Reclamation (Ty));
    end Is_Simple_Private_Type;
 
    --------------------------

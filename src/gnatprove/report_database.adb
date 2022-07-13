@@ -39,7 +39,6 @@ package body Report_Database is
 
    Default_Stat : constant Stat_Rec :=
      Stat_Rec'(SPARK           => Not_In_SPARK,
-               Analysis        => No_Analysis,
                Suppr_Checks    => Check_Lists.Empty_List,
                Pragma_Assumes  => Pragma_Assume_Lists.Empty_List,
                Flow_Warnings   => 0,
@@ -54,13 +53,32 @@ package body Report_Database is
      Ada.Containers.Ordered_Sets (Element_Type => Subp_Type,
                                   "<"          => "<");
 
+   type Unit_Rec is record
+      Analysis    : Analysis_Progress;
+      Stop_Reason : Stop_Reason_Type;
+      Subps       : Subp_Maps.Map;
+   end record;
+
+   function "=" (A, B : Unit_Rec) return Boolean;
+   --  Equality for objects of type Unit_Rec
+
+   ---------
+   -- "=" --
+   ---------
+
+   function "=" (A, B : Unit_Rec) return Boolean is
+      use Subp_Maps;
+   begin
+      return A.Analysis = B.Analysis and then A.Subps = B.Subps;
+   end "=";
+
    package Unit_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Unit_Type,
-        Element_Type    => Subp_Maps.Map,
+        Element_Type    => Unit_Rec,
         Hash            => Hash,
         Equivalent_Keys => "=",
-        "="             => Subp_Maps."=");
+        "="             => "=");
 
    package Subp_Unit_Maps is new
      Ada.Containers.Hashed_Maps
@@ -86,6 +104,30 @@ package body Report_Database is
       Process : not null access procedure (Stat : in out Stat_Rec));
    --  Update the stat record of the given subp using the callback. If the
    --  unit/subp do not exist yet, add them and initialize to default Stat_Rec.
+
+   ---------------------------
+   -- Add_Analysis_Progress --
+   ---------------------------
+
+   procedure Add_Analysis_Progress
+     (Unit        : Unit_Type;
+      Progress    : Analysis_Progress;
+      Stop_Reason : Stop_Reason_Type)
+   is
+      C : Unit_Maps.Cursor;
+      Inserted : Boolean;
+   begin
+      Unit_Map.Insert (Unit,
+                       Unit_Rec'(Analysis    => Progress,
+                                 Stop_Reason => Stop_Reason,
+                                 Subps       => Subp_Maps.Empty_Map),
+                       C,
+                       Inserted);
+      if not Inserted then
+         Unit_Map (C).Analysis := Progress;
+         Unit_Map (C).Stop_Reason := Stop_Reason;
+      end if;
+   end Add_Analysis_Progress;
 
    --------------------------------
    -- Add_Claim_With_Assumptions --
@@ -215,8 +257,7 @@ package body Report_Database is
    procedure Add_SPARK_Status
      (Unit         : Unit_Type;
       Subp         : Subp_Type;
-      SPARK_Status : SPARK_Mode_Status;
-      Analysis     : Analysis_Status) is
+      SPARK_Status : SPARK_Mode_Status) is
 
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
@@ -228,7 +269,6 @@ package body Report_Database is
       procedure Process (Stat : in out Stat_Rec) is
       begin
          Stat.SPARK := SPARK_Status;
-         Stat.Analysis := Analysis;
       end Process;
 
    --  Start of processing for Add_SPARK_Status
@@ -291,10 +331,10 @@ package body Report_Database is
    is
    begin
       for Unit_C in Unit_Map.Iterate loop
-         for Subp_C in Unit_Map (Unit_C).Iterate loop
+         for Subp_C in Unit_Map (Unit_C).Subps.Iterate loop
             Process (Unit_Maps.Key (Unit_C),
                      Subp_Maps.Key (Subp_C),
-                     Unit_Map (Unit_C) (Subp_C));
+                     Unit_Map (Unit_C).Subps (Subp_C));
          end loop;
       end loop;
    end Iter_All_Subps;
@@ -340,7 +380,9 @@ package body Report_Database is
 
    procedure Iter_Unit_Subps
      (Unit    : Unit_Type;
-      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec);
+      Process : not null access procedure (Subp : Subp_Type;
+                                           Stat : Stat_Rec;
+                                           Progress : Analysis_Progress);
       Ordered : Boolean := False)
    is
       C : constant Unit_Maps.Cursor := Unit_Map.Find (Unit);
@@ -356,20 +398,24 @@ package body Report_Database is
                use Ordered_Subp_Sets;
                Names : Set;
             begin
-               for Subp_C in Unit_Map (C).Iterate loop
+               for Subp_C in Unit_Map (C).Subps.Iterate loop
                   Names.Insert (Subp_Maps.Key (Subp_C));
                end loop;
 
                for Subp of Names loop
-                  Process (Subp, Unit_Map (C) (Subp));
+                  Process (Subp,
+                           Unit_Map (C).Subps (Subp),
+                           Unit_Map (C).Analysis);
                end loop;
             end;
 
          --  Otherwise, directly iterate over map of units
 
          else
-            for Subp_C in Unit_Map (C).Iterate loop
-               Process (Subp_Maps.Key (Subp_C), Unit_Map (C) (Subp_C));
+            for Subp_C in Unit_Map (C).Subps.Iterate loop
+               Process (Subp_Maps.Key (Subp_C),
+                        Unit_Map (C).Subps (Subp_C),
+                        Unit_Map (C).Analysis);
             end loop;
          end if;
       end if;
@@ -423,7 +469,7 @@ package body Report_Database is
    ---------------
 
    function Num_Subps (Unit : Unit_Type) return Natural is
-     (Natural (Unit_Map (Unit).Length));
+     (Natural (Unit_Map (Unit).Subps.Length));
 
    ---------------------
    -- Num_Subps_SPARK --
@@ -433,14 +479,19 @@ package body Report_Database is
    is
       Count : Natural := 0;
 
-      procedure Update (Subp : Subp_Type; Stat : Stat_Rec);
+      procedure Update (Subp : Subp_Type;
+                        Stat : Stat_Rec;
+                        Progress : Analysis_Progress);
 
       ------------
       -- Update --
       ------------
 
-      procedure Update (Subp : Subp_Type; Stat : Stat_Rec) is
+      procedure Update (Subp : Subp_Type;
+                        Stat : Stat_Rec;
+                        Progress : Analysis_Progress) is
          pragma Unreferenced (Subp);
+         pragma Unreferenced (Progress);
       begin
          if Stat.SPARK = All_In_SPARK then
             Count := Count + 1;
@@ -470,6 +521,24 @@ package body Report_Database is
       Unit_Map.Clear;
    end Reset_All_Results;
 
+   -------------------
+   -- Unit_Progress --
+   -------------------
+
+   function Unit_Progress (Unit : Unit_Type) return Analysis_Progress is
+   begin
+      return Unit_Map (Unit).Analysis;
+   end Unit_Progress;
+
+   ----------------------
+   -- Unit_Stop_Reason --
+   ----------------------
+
+   function Unit_Stop_Reason (Unit : Unit_Type) return Stop_Reason_Type is
+   begin
+      return Unit_Map (Unit).Stop_Reason;
+   end Unit_Stop_Reason;
+
    -----------------------
    -- Update_Subp_Entry --
    -----------------------
@@ -479,13 +548,13 @@ package body Report_Database is
       Subp    : Subp_Type;
       Process : not null access procedure (Stat : in out Stat_Rec))
    is
-      procedure Update_Unit_Entry (U : Unit_Type; Map : in out Subp_Maps.Map);
+      procedure Update_Unit_Entry (U : Unit_Type; R : in out Unit_Rec);
 
       -----------------------
       -- Update_Unit_Entry --
       -----------------------
 
-      procedure Update_Unit_Entry (U : Unit_Type; Map : in out Subp_Maps.Map)
+      procedure Update_Unit_Entry (U : Unit_Type; R : in out Unit_Rec)
       is
          pragma Unreferenced (U);
          use Subp_Maps;
@@ -493,8 +562,8 @@ package body Report_Database is
          C        : Cursor;
          Inserted : Boolean;
       begin
-         Map.Insert (Subp, Default_Stat, C, Inserted);
-         Process (Map (C));
+         R.Subps.Insert (Subp, Default_Stat, C, Inserted);
+         Process (R.Subps (C));
       end Update_Unit_Entry;
 
       use Unit_Maps;
@@ -504,7 +573,12 @@ package body Report_Database is
    --  Start of processing for Update_Subp_Entry
 
    begin
-      Unit_Map.Insert (Unit, Subp_Maps.Empty_Map, C, Inserted);
+      Unit_Map.Insert (Unit,
+                       Unit_Rec'(Analysis    => Progress_None,
+                                 Stop_Reason => Stop_Reason_None,
+                                 Subps       => Subp_Maps.Empty_Map),
+                       C,
+                       Inserted);
       Unit_Map.Update_Element (C, Update_Unit_Entry'Access);
    end Update_Subp_Entry;
 

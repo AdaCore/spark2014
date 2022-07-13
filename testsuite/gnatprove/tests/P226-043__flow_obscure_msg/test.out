@@ -1,6 +1,12 @@
 use_ghost.adb:4:07: info: initialization of "Success" proved
+use_ghost.adb:6:07: warning: assuming "Do_Stuff" always returns
+use_ghost.adb:6:07: warning: no returning annotation available for "Do_Stuff"
 use_ghost.ads:10:20: info: initialization of "X" proved
 use_ghost2.adb:4:07: info: initialization of "Success" proved
+use_ghost2.adb:6:07: warning: assuming "Do_Stuff" always returns
+use_ghost2.adb:6:07: warning: no returning annotation available for "Do_Stuff"
 use_ghost2.ads:10:20: info: initialization of "X" proved
 use_ghost3.adb:4:07: info: initialization of "Success" proved
+use_ghost3.adb:6:07: warning: assuming "Do_Stuff" always returns
+use_ghost3.adb:6:07: warning: no returning annotation available for "Do_Stuff"
 use_ghost3.ads:10:20: info: initialization of "X" proved

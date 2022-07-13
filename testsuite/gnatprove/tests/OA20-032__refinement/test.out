@@ -9,12 +9,16 @@ patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "G
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:59:13: info: add a contract to analyze it separately from calling contexts
 patris.adb:59:13: info: local subprogram "Get_New_Piece" only analyzed in the context of calls
+patris.adb:67:49: warning: assuming "Rand" always returns
 patris.adb:67:49: warning: assuming "Rand" has no effect on global items
 patris.adb:67:49: warning: no Global contract available for "Rand"
+patris.adb:67:49: warning: no returning annotation available for "Rand"
 patris.adb:67:56: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:306
 patris.adb:67:56: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:323
+patris.adb:68:50: warning: assuming "Rand" always returns
 patris.adb:68:50: warning: assuming "Rand" has no effect on global items
 patris.adb:68:50: warning: no Global contract available for "Rand"
+patris.adb:68:50: warning: no returning annotation available for "Rand"
 patris.adb:68:57: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:306
 patris.adb:68:57: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:323
 patris.adb:105:33: info: index check proved (CVC5: 2 VC)
@@ -75,7 +79,7 @@ patris.adb:408:07: info: initialization of "Success" proved
 patris.adb:419:13: info: precondition proved (CVC5: 2 VC)
 patris.adb:421:57: info: overflow check proved (CVC5: 2 VC)
 patris.adb:432:56: info: division check proved (CVC5: 1 VC)
-patris.adb:432:64: info: range check proved (CVC5: 2 VC)
+patris.adb:432:64: info: range check proved (altergo: 2 VC)
 patris.adb:434:41: info: division check proved (CVC5: 1 VC)
 patris.ads:33:03: info: flow dependencies proved
 patris.ads:59:11: info: data dependencies proved
@@ -121,5 +125,3 @@ patris.ads:300:06: info: data dependencies proved
 patris.ads:303:11: info: data dependencies proved
 patris.ads:306:06: info: data dependencies proved
 patris.ads:309:11: info: data dependencies proved
-pebble.ads:108:48: warning: return type of "Equal" is an 8-bit Ada Boolean [-gnatwx]
-pebble.ads:108:48: warning: use appropriate corresponding type in C (e.g. char) [-gnatwx]

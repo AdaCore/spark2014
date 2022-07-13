@@ -95,6 +95,10 @@ frame_condition.adb:111:16: info: index check proved (CVC5: 4 VC), in call inlin
 frame_condition.adb:115:16: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:119:40: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:119:58: info: index check proved (CVC5: 2 VC)
+frame_condition.adb:122:10: info: analyzing call to "Increment_Left" in context
+frame_condition.adb:122:10: info: analyzing call to "Set_Max_Left" in context
+frame_condition.adb:122:10: info: in instantiation at line 100
+frame_condition.adb:122:10: info: in instantiation at line 85
 frame_condition.adb:130:20: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:130:20: info: local subprogram "Increment_Right" only analyzed in the context of calls
 frame_condition.adb:132:28: info: range check proved (CVC5: 2 VC), in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:150
@@ -106,6 +110,10 @@ frame_condition.adb:146:19: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:146:37: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:147:19: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:147:40: info: index check proved (CVC5: 2 VC)
+frame_condition.adb:150:10: info: analyzing call to "Increment_Right" in context
+frame_condition.adb:150:10: info: analyzing call to "Set_Max_Right" in context
+frame_condition.adb:150:10: info: in instantiation at line 100
+frame_condition.adb:150:10: info: in instantiation at line 85
 frame_condition.adb:159:10: info: precondition proved (CVC5: 1 VC)
 frame_condition.adb:160:10: info: precondition proved (CVC5: 1 VC)
 frame_condition.adb:167:17: info: add a contract to analyze it separately from calling contexts
@@ -134,6 +142,7 @@ frame_condition.adb:201:19: info: index check proved (CVC5: 4 VC), in call inlin
 frame_condition.adb:201:19: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:202:26: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:202:26: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:204:13: info: analyzing call to "Set_Max" in context
 frame_condition.adb:205:36: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:205:36: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:205:36: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
@@ -170,6 +179,9 @@ frame_condition.adb:222:26: info: index check proved (CVC5: 4 VC), in call inlin
 frame_condition.adb:222:26: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:222:54: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:222:54: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:224:13: info: analyzing call to "Increment" in context
+frame_condition.adb:233:07: info: analyzing call to "Update_One_Max" in context
+frame_condition.adb:234:07: info: analyzing call to "Update_One_Max" in context
 frame_condition.ads:11:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
 frame_condition.ads:12:20: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:12:38: info: index check proved (CVC5: 2 VC)

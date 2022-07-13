@@ -26,33 +26,16 @@ is
       --  Use an abstract map rather than a functional map to avoid taking up
       --  memory space as the memory model cannot be ghost.
 
-      type Memory_Map is new Address_To_Object_Maps.Map;
+      subtype Memory_Map is Address_To_Object_Maps.Map;
+
+      type Memory_Type is new Address_To_Object_Maps.Ownership_Map;
 
       --  Whether an address designates some valid data in the memory
       function Valid (M : Memory_Map; A : Address_Type) return Boolean renames
-        Has_Key;
+        Address_To_Object_Maps.Has_Key;
 
-      --  The memory type should be handled as an ownership type. Currently,
-      --  we need to introduce an access type to achieve that. We make it
-      --  private so it is not possible to initialize a new Memory_Type from
-      --  the content of an existing type.
-
-      type Memory_Type is private;
-
-      function Is_Null_Memory (M : Memory_Type) return Boolean;
-
-      function New_Memory return Memory_Type with
-        Post => not Is_Null_Memory (New_Memory'Result);
-
-      function Deref (M : Memory_Type) return Memory_Map with
-        Pre => not Is_Null_Memory (M);
-
-      procedure Free_Memory (M : in out Memory_Type) with
-        Pre  => Is_Null_Memory (M)
-        or else (for all K in Deref (M) => False),
-        Post => Is_Null_Memory (M);
-      --  To avoid memory leaks, it is not correct to deallocate a memory
-      --  containing allocated cells.
+      function Get (M : Memory_Map; A : Address_Type) return Object renames
+        Address_To_Object_Maps.Get;
 
       --  Functions to make it easier to specify the frame of subprograms
       --  modifying a memory.
@@ -91,20 +74,6 @@ is
          and (for all A in Address_Type =>
                   (if Target (A) then not Valid (M2, A) and Valid (M1, A))))
             with Ghost;
-
-   private
-      type Memory_Type is access Memory_Map;
-
-      function New_Memory return Memory_Type is (new Memory_Map'(Empty_Map));
-
-      function Deref (M : Memory_Type) return Memory_Map is (M.all);
-
-      procedure Dealloc_Memory is new
-        Unchecked_Deallocation (Memory_Map, Memory_Type);
-
-      procedure Free_Memory (M : in out Memory_Type) renames Dealloc_Memory;
-
-      function Is_Null_Memory (M : Memory_Type) return Boolean is (M = null);
    end Memory_Model;
 
    use Memory_Model;
@@ -124,12 +93,10 @@ is
 
    procedure Create (Memory : in out Memory_Type; O : Object; P : out Pointer) with
      Global => null,
-     Pre  => not Is_Null_Memory (Memory),
-     Post => not Is_Null_Memory (Memory)
-     and then Valid (Deref (Memory), Address (P))
-     and then Allocates (Deref (Memory)'Old, Deref (Memory), Only (Address (P)))
-     and then Deallocates (Deref (Memory)'Old, Deref (Memory), None)
-     and then Writes (Deref (Memory)'Old, Deref (Memory), None)
+     Post => Valid (+Memory, Address (P))
+     and then Allocates (Memory_Map'(+Memory)'Old, +Memory, Only (Address (P)))
+     and then Deallocates (Memory_Map'(+Memory)'Old, +Memory, None)
+     and then Writes (Memory_Map'(+Memory)'Old, +Memory, None)
      and then Deref (Memory, P) = O;
 
    --  Primitives for classical pointer functionalities. Deref will copy the
@@ -137,33 +104,28 @@ is
 
    function Deref (Memory : Memory_Type; P : Pointer) return Object with
      Global => null,
-     Pre  => not Is_Null_Memory (Memory)
-     and then Valid (Deref (Memory), Address (P)),
-     Post => Deref'Result = Get (Deref (Memory), Address (P)),
+     Pre  => Valid (+Memory, Address (P)),
+     Post => Deref'Result = Get (+Memory, Address (P)),
      Annotate => (GNATprove, Inline_For_Proof);
 
    procedure Assign (Memory : in out Memory_Type; P : Pointer; O : Object) with
      Global => null,
-     Pre  => not Is_Null_Memory (Memory)
-     and then Valid (Deref (Memory), Address (P)),
-     Post => not Is_Null_Memory (Memory)
-     and then Get (Deref (Memory), Address (P)) = O
-     and then Allocates (Deref (Memory)'Old, Deref (Memory), None)
-     and then Deallocates (Deref (Memory)'Old, Deref (Memory), None)
-     and then Writes (Deref (Memory)'Old, Deref (Memory), Only (Address (P)));
+     Pre  => Valid (+Memory, Address (P)),
+     Post => Get (+Memory, Address (P)) = O
+     and then Allocates (Memory_Map'(+Memory)'Old, +Memory, None)
+     and then Deallocates (Memory_Map'(+Memory)'Old, +Memory, None)
+     and then Writes (Memory_Map'(+Memory)'Old, +Memory, Only (Address (P)));
 
    procedure Dealloc (Memory : in out Memory_Type; P : in out Pointer) with
      Global => null,
-     Pre  => not Is_Null_Memory (Memory)
-     and then (Valid (Deref (Memory), Address (P)) or P = Null_Pointer),
-     Post => not Is_Null_Memory (Memory)
-     and then P = Null_Pointer
-     and then Allocates (Deref (Memory)'Old, Deref (Memory), None)
+     Pre  => Valid (+Memory, Address (P)) or P = Null_Pointer,
+     Post => P = Null_Pointer
+     and then Allocates (Memory_Map'(+Memory)'Old, +Memory, None)
      and then
        (if P'Old = Null_Pointer
-        then Deallocates (Deref (Memory)'Old, Deref (Memory), None)
-        else Deallocates (Deref (Memory)'Old, Deref (Memory), Only (Address (P)'Old)))
-     and then Writes (Deref (Memory)'Old, Deref (Memory), None);
+        then Deallocates (Memory_Map'(+Memory)'Old, +Memory, None)
+        else Deallocates (Memory_Map'(+Memory)'Old, +Memory, Only (Address (P)'Old)))
+     and then Writes (Memory_Map'(+Memory)'Old, +Memory, None);
 
    procedure Move_Memory (Source, Target : in out Memory_Type; P : Pointer) with
    --  Move a pointer from a memory to another.
@@ -171,17 +133,13 @@ is
    --  memory objects are necessarily disjoint.
      Inline,
      Global => null,
-     Pre => not Is_Null_Memory (Source)
-     and then not Is_Null_Memory (Target)
-     and then Valid (Deref (Source), Address (P)),
-     Post => not Is_Null_Memory (Source)
-     and then not Is_Null_Memory (Target)
-     and then Allocates (Deref (Source)'Old, Deref (Source), None)
-     and then Deallocates (Deref (Source)'Old, Deref (Source), Only (Address (P)))
-     and then Writes (Deref (Source)'Old, Deref (Source), None)
-     and then Allocates (Deref (Target)'Old, Deref (Target), Only (Address (P)))
-     and then Deallocates (Deref (Target)'Old, Deref (Target), None)
-     and then Writes (Deref (Target)'Old, Deref (Target), None)
+     Pre => Valid (+Source, Address (P)),
+     Post => Allocates (Memory_Map'(+Source)'Old, +Source, None)
+     and then Deallocates (Memory_Map'(+Source)'Old, +Source, Only (Address (P)))
+     and then Writes (Memory_Map'(+Source)'Old, +Source, None)
+     and then Allocates (Memory_Map'(+Target)'Old, +Target, Only (Address (P)))
+     and then Deallocates (Memory_Map'(+Target)'Old, +Target, None)
+     and then Writes (Memory_Map'(+Target)'Old, +Target, None)
      and then Deref (Target, P) = Deref (Source, P)'Old;
 
    --  Primitives to access the content of a memory cell directly. Ownership is
@@ -190,9 +148,8 @@ is
 
    function Constant_Reference (Memory : Memory_Type; P : Pointer) return not null access constant Object with
      Global => null,
-     Pre  => not Is_Null_Memory (Memory)
-     and then Valid (Deref (Memory), Address (P)),
-     Post => Constant_Reference'Result.all = Get (Deref (Memory), Address (P));
+     Pre  => Valid (+Memory, Address (P)),
+     Post => Constant_Reference'Result.all = Get (+Memory, Address (P));
 
    function At_End (X : access constant Object) return access constant Object is
      (X)
@@ -206,13 +163,11 @@ is
 
    function Reference (Memory : not null access Memory_Type; P : Pointer) return not null access Object with
      Global => null,
-     Pre  => not Is_Null_Memory (Memory.all)
-     and then Valid (Deref (Memory.all), Address (P)),
-     Post => not Is_Null_Memory (At_End (Memory).all)
-     and then At_End (Reference'Result).all = Get (Deref (At_End (Memory).all), Address (P))
-     and then Allocates (Deref (Memory.all), Deref (At_End (Memory).all), None)
-     and then Deallocates (Deref (Memory.all), Deref (At_End (Memory).all), None)
-     and then Writes (Deref (Memory.all), Deref (At_End (Memory).all), Only (Address (P)));
+     Pre  => Valid (+Memory.all, Address (P)),
+     Post => At_End (Reference'Result).all = Get (+At_End (Memory).all, Address (P))
+     and then Allocates (+Memory.all, +At_End (Memory).all, None)
+     and then Deallocates (+Memory.all, +At_End (Memory).all, None)
+     and then Writes (+Memory.all, +At_End (Memory).all, Only (Address (P)));
 
 private
    pragma SPARK_Mode (Off);

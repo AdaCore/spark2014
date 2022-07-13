@@ -34,7 +34,7 @@ global_illegal_3.adb:82:32: low: unused global "Z"
 global_illegal_3.adb:82:32: warning: "Z" is not modified, could be INPUT
 global_illegal_3.adb:105:09: high: "X" must be a global output of "P6" (SPARK RM 6.1.4(18))
 global_illegal_3.adb:115:34: info: initialization of "Y" proved
-global_illegal_3.adb:119:22: high: assertion might fail [possible fix: subprogram at line 110 should mention X in a precondition]
+global_illegal_3.adb:119:22: high: assertion might fail (e.g. when X = 0) [possible fix: subprogram at line 110 should mention X in a precondition]
 global_illegal_3.adb:120:12: medium: Proof_In global "X" can only be used in assertions (SPARK RM 6.1.4(19))
 global_illegal_3.adb:125:11: info: data dependencies proved
 global_illegal_3.adb:125:34: low: unused global "X"

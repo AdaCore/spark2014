@@ -3,8 +3,9 @@ dynamic_in_post.adb:2:14: info: local subprogram "Test_1" only analyzed in the c
 dynamic_in_post.adb:2:14: warning: subprogram "Test_1" has no effect
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC)
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC), in call inlined at dynamic_in_post.adb:35
-dynamic_in_post.adb:7:22: high: assertion might fail, in call inlined at dynamic_in_post.adb:35
+dynamic_in_post.adb:7:22: high: assertion might fail, in call inlined at dynamic_in_post.adb:35 (e.g. when X = (others => 'NUL') and Y = (others => 'NUL'))
 dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
+dynamic_in_post.adb:11:07: info: no contextual analysis of "Test_2" (nested subprogram)
 dynamic_in_post.adb:12:22: info: postcondition proved (CVC5: 1 VC)
 dynamic_in_post.adb:12:40: info: range check proved (CVC5: 4 VC)
 dynamic_in_post.adb:22:22: high: assertion might fail (e.g. when A = 5 and B = 3)
@@ -12,3 +13,5 @@ dynamic_in_post.adb:25:14: info: add a contract to analyze it separately from ca
 dynamic_in_post.adb:25:14: info: local subprogram "Test_3" only analyzed in the context of calls
 dynamic_in_post.adb:25:14: warning: subprogram "Test_3" has no effect
 dynamic_in_post.adb:30:25: info: assertion proved (CVC5: 1 VC), in call inlined at dynamic_in_post.adb:37
+dynamic_in_post.adb:35:04: info: analyzing call to "Test_1" in context
+dynamic_in_post.adb:37:04: info: analyzing call to "Test_3" in context

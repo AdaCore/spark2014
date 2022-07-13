@@ -1,2 +1,3 @@
 old_val.adb:6:14: warning: subprogram "Local" has no effect
+old_val.adb:7:06: warning: postcondition does not check the outcome of calling "Local"
 old_val.adb:7:25: high: range check might fail, cannot prove lower bound for X - Y (e.g. when X = 1 and Y = 2) [reason for check: result of subtraction must fit in the type of the qualification] [possible fix: add precondition (X >= Natural'First + Y) to subprogram at line 6]

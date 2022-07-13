@@ -6,9 +6,6 @@ Require int.Int.
 
 Require Import ClassicalEpsilon.
 
-(* Why3 assumption *)
-Definition unit := unit.
-
 (* range_pred can have an arbitrary value in this realization,
    provided the range is inhabited *)
 
@@ -30,13 +27,13 @@ exact (sig range_pred).
 Defined.
 
 (* Why3 goal *)
-Definition to_rep: t -> Z.
+Definition to_rep : t -> Numbers.BinNums.Z.
 intros [r P].
 exact r.
 Defined.
 
 (* Why3 goal *)
-Definition of_rep: Z -> t.
+Definition of_rep : Numbers.BinNums.Z -> t.
 intro r.
 destruct (range_pred_dec r) as [P | P].
 exact (exist range_pred r P).
@@ -44,7 +41,7 @@ apply range_inhabited.
 Defined.
 
 (* Why3 goal *)
-Definition in_range: Z -> Prop.
+Definition in_range : Numbers.BinNums.Z -> Prop.
 exact range_pred.
 Defined.
 
@@ -59,12 +56,13 @@ contradict Q; auto.
 Qed.
 
 (* Why3 goal *)
-Lemma range_axiom : forall (x:t), (in_range (to_rep x)).
+Lemma range_axiom : forall (x:t), in_range (to_rep x).
 intros [r P]; unfold to_rep; auto.
 Qed.
 
 (* Why3 goal *)
-Lemma coerce_axiom : forall (x:Z), (in_range x) -> ((to_rep (of_rep x)) = x).
+Lemma coerce_axiom :
+  forall (x:Numbers.BinNums.Z), in_range x -> ((to_rep (of_rep x)) = x).
 intros r P.
 unfold to_rep, of_rep.
 destruct (range_pred_dec r) as [Q | Q]; auto.

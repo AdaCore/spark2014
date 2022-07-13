@@ -1,3 +1,0 @@
-comment: avoid platform differences in CE
-prove_all:
-  counterexample: False

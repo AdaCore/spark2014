@@ -1,158 +1,508 @@
+c_library.ads:46:58: warning: assuming "EDI" always returns
+c_library.ads:46:58: warning: no returning annotation available for "EDI"
 memcpy.adb:17:39: info: range check proved (CVC5: 1 VC)
 memcpy.adb:19:07: warning: initialization of "saved_ra" has no effect
 memcpy.adb:19:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:19:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:19:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:20:07: warning: initialization of "ra0" has no effect
 memcpy.adb:20:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:20:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:20:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:21:07: warning: initialization of "ra1" has no effect
 memcpy.adb:21:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:21:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:21:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:22:07: warning: initialization of "ra2" has no effect
 memcpy.adb:22:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:22:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:22:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:23:07: warning: initialization of "ra3" has no effect
 memcpy.adb:23:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:23:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:23:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:24:07: warning: initialization of "ra4" has no effect
 memcpy.adb:24:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:24:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:24:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:25:07: warning: initialization of "ra5" has no effect
 memcpy.adb:25:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:25:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:25:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:26:07: warning: initialization of "ra6" has no effect
 memcpy.adb:26:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:26:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:26:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:27:07: warning: initialization of "ra7" has no effect
 memcpy.adb:27:29: info: range check proved (CVC5: 1 VC)
+memcpy.adb:27:29: warning: assuming "ReadMem8" always returns
+memcpy.adb:27:29: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:28:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:29:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:30:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:35:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:35:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:42:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:42:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:45:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:45:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:48:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:48:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:51:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:51:22: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:54:10: warning: assuming "Write_EAX" always returns
+memcpy.adb:54:10: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:54:26: warning: assuming "EAX" always returns
+memcpy.adb:54:26: warning: no returning annotation available for "EAX"
+memcpy.adb:66:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:66:25: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:69:13: warning: assuming "Write_EAX" always returns
+memcpy.adb:69:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:69:29: warning: assuming "EAX" always returns
+memcpy.adb:69:29: warning: no returning annotation available for "EAX"
+memcpy.adb:81:28: warning: assuming "ReadMem64" always returns
+memcpy.adb:81:28: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:84:16: warning: assuming "Write_EAX" always returns
+memcpy.adb:84:16: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:84:32: warning: assuming "EAX" always returns
+memcpy.adb:84:32: warning: no returning annotation available for "EAX"
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
+memcpy.adb:96:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:96:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:99:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:99:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:102:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:102:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:105:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:105:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:108:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:108:19: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
+memcpy.adb:116:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:116:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:119:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:119:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:122:31: warning: assuming "ReadMem64" always returns
+memcpy.adb:122:31: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:125:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:125:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:128:19: warning: assuming "WriteMem64" always returns
+memcpy.adb:128:19: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
+memcpy.adb:142:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:142:22: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:145:22: warning: assuming "ReadMem64" always returns
+memcpy.adb:145:22: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:151:21: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
 memcpy.adb:160:21: medium: assertion might fail [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:162:21: warning: assuming "InRange64" always returns
+memcpy.adb:162:21: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:162:21: warning: no Global contract available for "InRange64"
+memcpy.adb:162:21: warning: no returning annotation available for "InRange64"
+memcpy.adb:162:66: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:162:66: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:162:66: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:162:66: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:164:12: medium: assertion might fail, cannot prove X86.Memory(i) = SaveMem(i)
 memcpy.adb:171:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:171:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:171:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:172:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:172:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:172:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:173:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:173:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:173:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:175:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:175:36: warning: assuming "ReadMem64" always returns
+memcpy.adb:175:36: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:176:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:176:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:176:35: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:184:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:184:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:189:28: info: division check proved (CVC5: 2 VC)
 memcpy.adb:207:32: info: loop invariant preservation proved (CVC5: 1 VC)
 memcpy.adb:208:34: medium: loop invariant might fail in first iteration, cannot prove X86.InSafeRegion64(i,X86.RSP+8)
+memcpy.adb:208:37: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:208:37: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:208:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:208:37: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:210:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:211:46: warning: assuming "InRange64" always returns
+memcpy.adb:211:46: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:211:46: warning: no Global contract available for "InRange64"
+memcpy.adb:211:46: warning: no returning annotation available for "InRange64"
+memcpy.adb:212:45: warning: assuming "InRange64" always returns
+memcpy.adb:212:45: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:212:45: warning: no Global contract available for "InRange64"
+memcpy.adb:212:45: warning: no returning annotation available for "InRange64"
 memcpy.adb:213:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:216:50: warning: assuming "ReadMem64" always returns
+memcpy.adb:216:50: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:217:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:217:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:217:50: warning: assuming "ReadMem64" always returns
+memcpy.adb:217:50: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:219:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:219:32: medium: loop invariant might not be preserved by an arbitrary iteration
 memcpy.adb:219:59: info: division check proved (CVC5: 2 VC)
 memcpy.adb:222:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:222:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:222:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:222:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:223:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:223:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:223:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:223:35: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:238:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:238:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:242:23: warning: unused assignment
 memcpy.adb:243:23: warning: unused assignment
+memcpy.adb:258:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:258:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:262:23: warning: unused assignment
 memcpy.adb:263:23: warning: unused assignment
+memcpy.adb:268:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:268:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:271:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:272:37: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:272:37: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:272:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:272:37: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:274:24: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:275:46: warning: assuming "InRange64" always returns
+memcpy.adb:275:46: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:275:46: warning: no Global contract available for "InRange64"
+memcpy.adb:275:46: warning: no returning annotation available for "InRange64"
+memcpy.adb:276:45: warning: assuming "InRange64" always returns
+memcpy.adb:276:45: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:276:45: warning: no Global contract available for "InRange64"
+memcpy.adb:276:45: warning: no returning annotation available for "InRange64"
 memcpy.adb:280:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:280:42: warning: assuming "ReadMem64" always returns
+memcpy.adb:280:42: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:281:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:281:42: warning: assuming "ReadMem64" always returns
+memcpy.adb:281:42: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:283:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:283:51: info: division check proved (CVC5: 1 VC)
 memcpy.adb:285:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:285:27: warning: assuming "InRange64" always returns
+memcpy.adb:285:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:285:27: warning: no Global contract available for "InRange64"
+memcpy.adb:285:27: warning: no returning annotation available for "InRange64"
 memcpy.adb:286:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:286:27: warning: assuming "InRange64" always returns
+memcpy.adb:286:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:286:27: warning: no Global contract available for "InRange64"
+memcpy.adb:286:27: warning: no returning annotation available for "InRange64"
 memcpy.adb:287:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:287:27: warning: assuming "InRange64" always returns
+memcpy.adb:287:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:287:27: warning: no Global contract available for "InRange64"
+memcpy.adb:287:27: warning: no returning annotation available for "InRange64"
 memcpy.adb:288:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:288:27: warning: assuming "InRange64" always returns
+memcpy.adb:288:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:288:27: warning: no Global contract available for "InRange64"
+memcpy.adb:288:27: warning: no returning annotation available for "InRange64"
 memcpy.adb:289:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:289:27: warning: assuming "InRange64" always returns
+memcpy.adb:289:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:289:27: warning: no Global contract available for "InRange64"
+memcpy.adb:289:27: warning: no returning annotation available for "InRange64"
 memcpy.adb:290:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:290:27: warning: assuming "InRange64" always returns
+memcpy.adb:290:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:290:27: warning: no Global contract available for "InRange64"
+memcpy.adb:290:27: warning: no returning annotation available for "InRange64"
 memcpy.adb:291:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:291:27: warning: assuming "InRange64" always returns
+memcpy.adb:291:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:291:27: warning: no Global contract available for "InRange64"
+memcpy.adb:291:27: warning: no returning annotation available for "InRange64"
 memcpy.adb:292:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:292:27: warning: assuming "InRange64" always returns
+memcpy.adb:292:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:292:27: warning: no Global contract available for "InRange64"
+memcpy.adb:292:27: warning: no returning annotation available for "InRange64"
+memcpy.adb:297:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:297:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:307:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:307:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:310:43: warning: assuming "InRange64" always returns
+memcpy.adb:310:43: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:310:43: warning: no Global contract available for "InRange64"
+memcpy.adb:310:43: warning: no returning annotation available for "InRange64"
+memcpy.adb:311:42: warning: assuming "InRange64" always returns
+memcpy.adb:311:42: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:311:42: warning: no Global contract available for "InRange64"
+memcpy.adb:311:42: warning: no returning annotation available for "InRange64"
 memcpy.adb:312:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
 memcpy.adb:314:21: medium: assertion might fail
+memcpy.adb:314:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:314:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:315:21: medium: assertion might fail
+memcpy.adb:315:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:315:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:317:21: medium: assertion might fail
+memcpy.adb:317:24: warning: assuming "ReadMem64" always returns
+memcpy.adb:317:24: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:317:52: warning: assuming "ReadMem64" always returns
+memcpy.adb:317:52: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:317:76: info: division check proved (CVC5: 1 VC)
 memcpy.adb:319:21: medium: assertion might fail
+memcpy.adb:319:24: warning: assuming "ReadMem64" always returns
+memcpy.adb:319:24: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:320:21: medium: assertion might fail
+memcpy.adb:320:24: warning: assuming "ReadMem64" always returns
+memcpy.adb:320:24: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:326:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:326:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:326:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:327:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:327:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:327:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:328:39: info: range check proved (CVC5: 1 VC)
+memcpy.adb:328:39: warning: assuming "ReadMem64" always returns
+memcpy.adb:328:39: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:330:36: info: range check proved (CVC5: 1 VC)
+memcpy.adb:330:36: warning: assuming "ReadMem64" always returns
+memcpy.adb:330:36: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:331:35: info: range check proved (CVC5: 1 VC)
+memcpy.adb:331:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:331:35: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:344:44: warning: assuming "ReadMem64" always returns
+memcpy.adb:344:44: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:345:44: warning: assuming "ReadMem64" always returns
+memcpy.adb:345:44: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:346:44: warning: assuming "ReadMem64" always returns
+memcpy.adb:346:44: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:347:59: warning: assuming "ReadMem64" always returns
+memcpy.adb:347:59: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:347:233: warning: assuming "ReadMem64" always returns
+memcpy.adb:347:233: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:353:32: info: loop invariant preservation proved (CVC5: 1 VC)
 memcpy.adb:354:34: medium: loop invariant might fail in first iteration, cannot prove X86.InSafeRegion64(i,X86.RSP+8)
+memcpy.adb:354:37: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:354:37: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:354:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:354:37: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:356:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:357:46: warning: assuming "InRange64" always returns
+memcpy.adb:357:46: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:357:46: warning: no Global contract available for "InRange64"
+memcpy.adb:357:46: warning: no returning annotation available for "InRange64"
+memcpy.adb:358:45: warning: assuming "InRange64" always returns
+memcpy.adb:358:45: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:358:45: warning: no Global contract available for "InRange64"
+memcpy.adb:358:45: warning: no returning annotation available for "InRange64"
 memcpy.adb:359:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 memcpy.adb:362:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:362:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:362:46: warning: assuming "ReadMem64" always returns
+memcpy.adb:362:46: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:363:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:363:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:363:46: warning: assuming "ReadMem64" always returns
+memcpy.adb:363:46: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:365:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:365:32: medium: loop invariant might not be preserved by an arbitrary iteration
 memcpy.adb:369:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:369:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:369:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:369:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:371:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:371:32: medium: loop invariant might not be preserved by an arbitrary iteration
+memcpy.adb:371:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:371:35: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:376:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:376:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:385:23: warning: unused assignment
 memcpy.adb:386:23: warning: unused assignment
+memcpy.adb:392:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:392:25: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:401:23: warning: unused assignment
 memcpy.adb:402:23: warning: unused assignment
+memcpy.adb:407:13: warning: assuming "Write_EAX" always returns
+memcpy.adb:407:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:407:40: warning: assuming "ReadMem8" always returns
+memcpy.adb:407:40: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:411:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:412:29: warning: assuming "InSafeRegion64" always returns
+memcpy.adb:412:29: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.adb:412:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:412:29: warning: no returning annotation available for "InSafeRegion64"
 memcpy.adb:414:24: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+memcpy.adb:415:38: warning: assuming "InRange64" always returns
+memcpy.adb:415:38: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:415:38: warning: no Global contract available for "InRange64"
+memcpy.adb:415:38: warning: no returning annotation available for "InRange64"
+memcpy.adb:416:37: warning: assuming "InRange64" always returns
+memcpy.adb:416:37: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:416:37: warning: no Global contract available for "InRange64"
+memcpy.adb:416:37: warning: no returning annotation available for "InRange64"
 memcpy.adb:420:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:420:38: warning: assuming "ReadMem64" always returns
+memcpy.adb:420:38: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:421:24: info: assertion proved (CVC5: 1 VC)
+memcpy.adb:421:38: warning: assuming "ReadMem64" always returns
+memcpy.adb:421:38: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:423:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:426:24: medium: assertion might fail [possible fix: loop invariant at line 353 should mention RDX]
+memcpy.adb:426:27: warning: assuming "InRange64" always returns
+memcpy.adb:426:27: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:426:27: warning: no Global contract available for "InRange64"
+memcpy.adb:426:27: warning: no returning annotation available for "InRange64"
+memcpy.adb:430:13: warning: assuming "WriteMem8" always returns
+memcpy.adb:430:13: warning: no returning annotation available for "WriteMem8"
+memcpy.adb:430:61: warning: assuming "AL" always returns
+memcpy.adb:430:61: warning: no returning annotation available for "AL"
+memcpy.adb:441:10: warning: assuming "WriteMem64" always returns
+memcpy.adb:441:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:445:43: warning: assuming "InRange64" always returns
+memcpy.adb:445:43: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:445:43: warning: no Global contract available for "InRange64"
+memcpy.adb:445:43: warning: no returning annotation available for "InRange64"
+memcpy.adb:446:42: warning: assuming "InRange64" always returns
+memcpy.adb:446:42: warning: assuming "InRange64" has no effect on global items
+memcpy.adb:446:42: warning: no Global contract available for "InRange64"
+memcpy.adb:446:42: warning: no returning annotation available for "InRange64"
 memcpy.adb:447:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
 memcpy.adb:449:21: medium: assertion might fail
+memcpy.adb:449:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:449:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:450:21: medium: assertion might fail
+memcpy.adb:450:35: warning: assuming "ReadMem64" always returns
+memcpy.adb:450:35: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:452:21: medium: assertion might fail
+memcpy.adb:452:24: warning: assuming "ReadMem64" always returns
+memcpy.adb:452:24: warning: no returning annotation available for "ReadMem64"
+memcpy.adb:452:52: warning: assuming "ReadMem64" always returns
+memcpy.adb:452:52: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:452:76: info: division check proved (CVC5: 1 VC)
 memcpy.adb:454:21: medium: assertion might fail
+memcpy.adb:454:24: warning: assuming "ReadMem64" always returns
+memcpy.adb:454:24: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:455:21: medium: assertion might fail
+memcpy.adb:455:24: warning: assuming "ReadMem64" always returns
+memcpy.adb:455:24: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:463:10: warning: initialization of "saved_ra" has no effect
 memcpy.adb:463:38: info: range check proved (CVC5: 1 VC)
+memcpy.adb:463:38: warning: assuming "ReadMem64" always returns
+memcpy.adb:463:38: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:464:10: warning: initialization of "SaveStackPtr" has no effect
 memcpy.adb:464:42: info: range check proved (CVC5: 1 VC)
 memcpy.adb:465:10: warning: initialization of "ra0" has no effect
 memcpy.adb:465:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:465:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:465:32: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:466:10: warning: initialization of "ra1" has no effect
 memcpy.adb:466:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:466:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:466:32: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:467:10: warning: initialization of "ra2" has no effect
 memcpy.adb:467:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:467:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:467:32: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:468:10: warning: initialization of "ra3" has no effect
 memcpy.adb:468:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:468:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:468:32: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:469:10: warning: initialization of "ra4" has no effect
 memcpy.adb:469:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:469:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:469:32: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:470:10: warning: initialization of "ra5" has no effect
 memcpy.adb:470:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:470:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:470:32: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:471:10: warning: initialization of "ra6" has no effect
 memcpy.adb:471:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:471:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:471:32: warning: no returning annotation available for "ReadMem8"
 memcpy.adb:472:10: warning: initialization of "ra7" has no effect
 memcpy.adb:472:32: info: range check proved (CVC5: 1 VC)
+memcpy.adb:472:32: warning: assuming "ReadMem8" always returns
+memcpy.adb:472:32: warning: no returning annotation available for "ReadMem8"
+memcpy.adb:478:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:478:13: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:485:23: warning: unused assignment
 memcpy.adb:486:23: warning: unused assignment
+memcpy.adb:490:13: warning: assuming "WriteMem32" always returns
+memcpy.adb:490:13: warning: no returning annotation available for "WriteMem32"
+memcpy.adb:490:68: warning: assuming "EDI" always returns
+memcpy.adb:490:68: warning: no returning annotation available for "EDI"
+memcpy.adb:493:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:493:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:496:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:496:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:499:36: warning: do you really mean 18446744073709551560 when writing -56 ?
+memcpy.adb:499:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:499:36: warning: negative literal of modular type is in fact positive
+memcpy.adb:502:13: warning: assuming "Write_EAX" always returns
+memcpy.adb:502:13: warning: no returning annotation available for "Write_EAX"
 memcpy.adb:505:13: warning: "RCX" is set by "Write_ECX" but not used after the call
+memcpy.adb:505:13: warning: assuming "Write_ECX" always returns
+memcpy.adb:505:13: warning: no returning annotation available for "Write_ECX"
 memcpy.adb:505:13: warning: statement has no effect
+memcpy.adb:511:13: warning: assuming "WriteMem64" always returns
+memcpy.adb:511:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:518:13: warning: assuming "WriteMem16" always returns
+memcpy.adb:518:13: warning: no returning annotation available for "WriteMem16"
+memcpy.adb:518:63: warning: assuming "AX" always returns
+memcpy.adb:518:63: warning: no returning annotation available for "AX"
 memcpy.adb:523:18: warning: unused assignment
 memcpy.adb:526:18: warning: unused assignment
+memcpy.adb:526:36: warning: do you really mean 18446744073709551488 when writing -128 ?
+memcpy.adb:526:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:526:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:529:18: warning: unused assignment
 memcpy.adb:532:13: warning: "RDI" is set by "Write_EDI" but not used after the call
+memcpy.adb:532:13: warning: assuming "Write_EDI" always returns
+memcpy.adb:532:13: warning: no returning annotation available for "Write_EDI"
 memcpy.adb:532:13: warning: statement has no effect
 memcpy.adb:535:13: warning: "RAX" is set by "Write_EAX" but not used after the call
+memcpy.adb:535:13: warning: assuming "Write_EAX" always returns
+memcpy.adb:535:13: warning: no returning annotation available for "Write_EAX"
 memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:543:18: warning: unused assignment
+memcpy.adb:543:36: warning: do you really mean 18446744073709551552 when writing -64 ?
+memcpy.adb:543:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:543:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:546:18: warning: unused assignment
+memcpy.adb:559:36: warning: do you really mean 18446744073709551552 when writing -64 ?
+memcpy.adb:559:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:559:36: warning: negative literal of modular type is in fact positive
+memcpy.adb:562:36: warning: do you really mean 18446744073709551488 when writing -128 ?
+memcpy.adb:562:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:562:36: warning: negative literal of modular type is in fact positive
 memcpy.adb:574:10: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.rsp) [possible fix: subprogram at memcpy.ads:168 should mention RDX in a precondition]
 memcpy.adb:574:10: warning: "RAX" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSI" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSP" is set by "memcpy2" but not used after the call
+memcpy.adb:577:36: warning: do you really mean 18446744073709551488 when writing -128 ?
+memcpy.adb:577:36: warning: if you do, use qualification to avoid this warning
+memcpy.adb:577:36: warning: negative literal of modular type is in fact positive
+memcpy.adb:583:13: warning: assuming "Write_EDI" always returns
+memcpy.adb:583:13: warning: no returning annotation available for "Write_EDI"
+memcpy.adb:586:13: warning: assuming "Write_EAX" always returns
+memcpy.adb:586:13: warning: no returning annotation available for "Write_EAX"
 memcpy.adb:590:18: warning: unused assignment
 memcpy.adb:591:10: warning: "RSP" is set by "printf" but not used after the call
 memcpy.adb:591:10: warning: statement has no effect
+memcpy.adb:594:13: warning: assuming "Write_EAX" always returns
+memcpy.adb:594:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:598:25: warning: assuming "ReadMem64" always returns
+memcpy.adb:598:25: warning: no returning annotation available for "ReadMem64"
 memcpy.ads:17:06: info: data dependencies proved
 memcpy.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 memcpy.ads:21:06: info: data dependencies proved
@@ -190,6 +540,22 @@ memcpy.ads:30:61: warning: "R15" is not modified, could be INPUT
 memcpy.ads:31:31: low: unused global "StackAddressSize"
 memcpy.ads:31:53: low: unused global "FS"
 memcpy.ads:31:61: low: unused global "GS"
+memcpy.ads:32:48: warning: assuming "InRange64" always returns
+memcpy.ads:32:48: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:32:48: warning: no Global contract available for "InRange64"
+memcpy.ads:32:48: warning: no returning annotation available for "InRange64"
+memcpy.ads:33:47: warning: assuming "InSafeRegion64" always returns
+memcpy.ads:33:47: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.ads:33:47: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:33:47: warning: no returning annotation available for "InSafeRegion64"
+memcpy.ads:46:21: warning: assuming "InRange64" always returns
+memcpy.ads:46:21: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:46:21: warning: no Global contract available for "InRange64"
+memcpy.ads:46:21: warning: no returning annotation available for "InRange64"
+memcpy.ads:46:70: warning: assuming "InSafeRegion64" always returns
+memcpy.ads:46:70: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.ads:46:70: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:46:70: warning: no returning annotation available for "InSafeRegion64"
 memcpy.ads:48:12: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
 memcpy.ads:52:06: info: data dependencies proved
 memcpy.ads:53:31: info: initialization of "RAX" proved
@@ -197,7 +563,37 @@ memcpy.ads:53:40: info: initialization of "CarryFlag" proved
 memcpy.ads:53:55: info: initialization of "SignFlag" proved
 memcpy.ads:53:69: info: initialization of "OverflowFlag" proved
 memcpy.ads:53:87: info: initialization of "ZeroFlag" proved
+memcpy.ads:56:22: warning: assuming "ReadMem64" always returns
+memcpy.ads:56:22: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:58:28: warning: assuming "InRange64" always returns
+memcpy.ads:58:28: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:58:28: warning: no Global contract available for "InRange64"
+memcpy.ads:58:28: warning: no returning annotation available for "InRange64"
+memcpy.ads:58:45: warning: assuming "ReadMem64" always returns
+memcpy.ads:58:45: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:58:75: warning: assuming "ReadMem64" always returns
+memcpy.ads:58:75: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:59:29: warning: assuming "InSafeRegion64" always returns
+memcpy.ads:59:29: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.ads:59:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:59:29: warning: no returning annotation available for "InSafeRegion64"
+memcpy.ads:61:31: warning: assuming "InRange64" always returns
+memcpy.ads:61:31: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:61:31: warning: no Global contract available for "InRange64"
+memcpy.ads:61:31: warning: no returning annotation available for "InRange64"
+memcpy.ads:61:48: warning: assuming "ReadMem64" always returns
+memcpy.ads:61:48: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:61:77: warning: assuming "ReadMem64" always returns
+memcpy.ads:61:77: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:62:32: warning: assuming "InRange64" always returns
+memcpy.ads:62:32: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:62:32: warning: no Global contract available for "InRange64"
+memcpy.ads:62:32: warning: no returning annotation available for "InRange64"
 memcpy.ads:63:22: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+memcpy.ads:86:09: warning: assuming "ReadMem64Ghost" always returns
+memcpy.ads:86:09: warning: no returning annotation available for "ReadMem64Ghost"
+memcpy.ads:86:54: warning: assuming "ReadMem64Ghost" always returns
+memcpy.ads:86:54: warning: no returning annotation available for "ReadMem64Ghost"
 memcpy.ads:86:92: info: division check proved (CVC5: 1 VC)
 memcpy.ads:111:06: info: data dependencies proved
 memcpy.ads:112:31: info: initialization of "ZeroFlag" proved
@@ -205,10 +601,346 @@ memcpy.ads:112:45: info: initialization of "SignFlag" proved
 memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:113:61: warning: unused initial value of "RAX"
+memcpy.ads:115:22: warning: assuming "ReadMem64" always returns
+memcpy.ads:115:22: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:118:28: warning: assuming "InRange64" always returns
+memcpy.ads:118:28: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:118:28: warning: no Global contract available for "InRange64"
+memcpy.ads:118:28: warning: no returning annotation available for "InRange64"
+memcpy.ads:118:45: warning: assuming "ReadMem64" always returns
+memcpy.ads:118:45: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:118:75: warning: assuming "ReadMem64" always returns
+memcpy.ads:118:75: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:119:29: warning: assuming "InSafeRegion64" always returns
+memcpy.ads:119:29: warning: assuming "InSafeRegion64" has no effect on global items
+memcpy.ads:119:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:119:29: warning: no returning annotation available for "InSafeRegion64"
+memcpy.ads:121:31: warning: assuming "InRange64" always returns
+memcpy.ads:121:31: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:121:31: warning: no Global contract available for "InRange64"
+memcpy.ads:121:31: warning: no returning annotation available for "InRange64"
+memcpy.ads:121:48: warning: assuming "ReadMem64" always returns
+memcpy.ads:121:48: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:121:77: warning: assuming "ReadMem64" always returns
+memcpy.ads:121:77: warning: no returning annotation available for "ReadMem64"
+memcpy.ads:122:32: warning: assuming "InRange64" always returns
+memcpy.ads:122:32: warning: assuming "InRange64" has no effect on global items
+memcpy.ads:122:32: warning: no Global contract available for "InRange64"
+memcpy.ads:122:32: warning: no returning annotation available for "InRange64"
 memcpy.ads:123:22: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+memcpy.ads:144:09: warning: assuming "ReadMem64Ghost" always returns
+memcpy.ads:144:09: warning: no returning annotation available for "ReadMem64Ghost"
+memcpy.ads:144:54: warning: assuming "ReadMem64Ghost" always returns
+memcpy.ads:144:54: warning: no returning annotation available for "ReadMem64Ghost"
 memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"
 memcpy.ads:171:44: warning: unused initial value of "RCX"
 memcpy.ads:171:54: warning: unused initial value of "RDX"
 memcpy.ads:178:09: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'old)
+x86.ads:79:40: warning: assuming "InRange64" always returns
+x86.ads:79:40: warning: assuming "InRange64" has no effect on global items
+x86.ads:79:40: warning: no Global contract available for "InRange64"
+x86.ads:79:40: warning: no returning annotation available for "InRange64"
+x86.ads:104:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:104:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:104:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:104:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:108:42: warning: assuming "readRegLow8" always returns
+x86.ads:108:42: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:108:42: warning: no Global contract available for "readRegLow8"
+x86.ads:108:42: warning: no returning annotation available for "readRegLow8"
+x86.ads:115:14: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:115:14: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:115:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:115:14: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:119:43: warning: assuming "readRegHigh8" always returns
+x86.ads:119:43: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:119:43: warning: no Global contract available for "readRegHigh8"
+x86.ads:119:43: warning: no returning annotation available for "readRegHigh8"
+x86.ads:126:15: warning: assuming "writeReg16Post" always returns
+x86.ads:126:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:126:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:126:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:130:40: warning: assuming "readReg16" always returns
+x86.ads:130:40: warning: assuming "readReg16" has no effect on global items
+x86.ads:130:40: warning: no Global contract available for "readReg16"
+x86.ads:130:40: warning: no returning annotation available for "readReg16"
+x86.ads:137:15: warning: assuming "writeReg32Post" always returns
+x86.ads:137:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:137:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:137:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:141:40: warning: assuming "readReg32" always returns
+x86.ads:141:40: warning: assuming "readReg32" has no effect on global items
+x86.ads:141:40: warning: no Global contract available for "readReg32"
+x86.ads:141:40: warning: no returning annotation available for "readReg32"
+x86.ads:151:27: warning: assuming "readRegLow8" always returns
+x86.ads:151:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:151:27: warning: no Global contract available for "readRegLow8"
+x86.ads:151:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:156:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:156:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:156:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:156:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:161:27: warning: assuming "readRegHigh8" always returns
+x86.ads:161:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:161:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:161:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:166:14: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:166:14: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:166:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:166:14: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:172:27: warning: assuming "readReg16" always returns
+x86.ads:172:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:172:27: warning: no Global contract available for "readReg16"
+x86.ads:172:27: warning: no returning annotation available for "readReg16"
+x86.ads:177:15: warning: assuming "writeReg16Post" always returns
+x86.ads:177:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:177:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:177:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:186:15: warning: assuming "writeReg32Post" always returns
+x86.ads:186:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:186:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:186:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:197:27: warning: assuming "readRegLow8" always returns
+x86.ads:197:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:197:27: warning: no Global contract available for "readRegLow8"
+x86.ads:197:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:202:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:202:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:202:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:202:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:207:27: warning: assuming "readRegHigh8" always returns
+x86.ads:207:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:207:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:207:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:212:15: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:212:15: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:212:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:212:15: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:218:27: warning: assuming "readReg16" always returns
+x86.ads:218:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:218:27: warning: no Global contract available for "readReg16"
+x86.ads:218:27: warning: no returning annotation available for "readReg16"
+x86.ads:223:15: warning: assuming "writeReg16Post" always returns
+x86.ads:223:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:223:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:223:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:228:28: warning: assuming "readReg32" always returns
+x86.ads:228:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:228:28: warning: no Global contract available for "readReg32"
+x86.ads:228:28: warning: no returning annotation available for "readReg32"
+x86.ads:233:15: warning: assuming "writeReg32Post" always returns
+x86.ads:233:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:233:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:233:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:244:27: warning: assuming "readRegLow8" always returns
+x86.ads:244:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:244:27: warning: no Global contract available for "readRegLow8"
+x86.ads:244:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:249:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:249:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:249:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:249:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:254:27: warning: assuming "readRegHigh8" always returns
+x86.ads:254:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:254:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:254:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:259:15: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:259:15: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:259:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:259:15: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:265:27: warning: assuming "readReg16" always returns
+x86.ads:265:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:265:27: warning: no Global contract available for "readReg16"
+x86.ads:265:27: warning: no returning annotation available for "readReg16"
+x86.ads:270:15: warning: assuming "writeReg16Post" always returns
+x86.ads:270:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:270:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:270:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:275:28: warning: assuming "readReg32" always returns
+x86.ads:275:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:275:28: warning: no Global contract available for "readReg32"
+x86.ads:275:28: warning: no returning annotation available for "readReg32"
+x86.ads:280:15: warning: assuming "writeReg32Post" always returns
+x86.ads:280:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:280:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:280:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:291:27: warning: assuming "readRegLow8" always returns
+x86.ads:291:27: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:291:27: warning: no Global contract available for "readRegLow8"
+x86.ads:291:27: warning: no returning annotation available for "readRegLow8"
+x86.ads:296:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:296:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:296:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:296:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:301:27: warning: assuming "readRegHigh8" always returns
+x86.ads:301:27: warning: assuming "readRegHigh8" has no effect on global items
+x86.ads:301:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:301:27: warning: no returning annotation available for "readRegHigh8"
+x86.ads:306:15: warning: assuming "writeRegHigh8Post" always returns
+x86.ads:306:15: warning: assuming "writeRegHigh8Post" has no effect on global items
+x86.ads:306:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:306:15: warning: no returning annotation available for "writeRegHigh8Post"
+x86.ads:312:27: warning: assuming "readReg16" always returns
+x86.ads:312:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:312:27: warning: no Global contract available for "readReg16"
+x86.ads:312:27: warning: no returning annotation available for "readReg16"
+x86.ads:317:15: warning: assuming "writeReg16Post" always returns
+x86.ads:317:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:317:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:317:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:322:28: warning: assuming "readReg32" always returns
+x86.ads:322:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:322:28: warning: no Global contract available for "readReg32"
+x86.ads:322:28: warning: no returning annotation available for "readReg32"
+x86.ads:327:15: warning: assuming "writeReg32Post" always returns
+x86.ads:327:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:327:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:327:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:339:27: warning: assuming "readReg16" always returns
+x86.ads:339:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:339:27: warning: no Global contract available for "readReg16"
+x86.ads:339:27: warning: no returning annotation available for "readReg16"
+x86.ads:344:15: warning: assuming "writeReg16Post" always returns
+x86.ads:344:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:344:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:344:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:349:28: warning: assuming "readReg32" always returns
+x86.ads:349:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:349:28: warning: no Global contract available for "readReg32"
+x86.ads:349:28: warning: no returning annotation available for "readReg32"
+x86.ads:354:15: warning: assuming "writeReg32Post" always returns
+x86.ads:354:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:354:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:354:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:366:27: warning: assuming "readReg16" always returns
+x86.ads:366:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:366:27: warning: no Global contract available for "readReg16"
+x86.ads:366:27: warning: no returning annotation available for "readReg16"
+x86.ads:371:15: warning: assuming "writeReg16Post" always returns
+x86.ads:371:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:371:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:371:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:376:28: warning: assuming "readReg32" always returns
+x86.ads:376:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:376:28: warning: no Global contract available for "readReg32"
+x86.ads:376:28: warning: no returning annotation available for "readReg32"
+x86.ads:381:15: warning: assuming "writeReg32Post" always returns
+x86.ads:381:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:381:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:381:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:393:27: warning: assuming "readReg16" always returns
+x86.ads:393:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:393:27: warning: no Global contract available for "readReg16"
+x86.ads:393:27: warning: no returning annotation available for "readReg16"
+x86.ads:398:15: warning: assuming "writeReg16Post" always returns
+x86.ads:398:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:398:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:398:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:403:28: warning: assuming "readReg32" always returns
+x86.ads:403:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:403:28: warning: no Global contract available for "readReg32"
+x86.ads:403:28: warning: no returning annotation available for "readReg32"
+x86.ads:408:15: warning: assuming "writeReg32Post" always returns
+x86.ads:408:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:408:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:408:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:420:27: warning: assuming "readReg16" always returns
+x86.ads:420:27: warning: assuming "readReg16" has no effect on global items
+x86.ads:420:27: warning: no Global contract available for "readReg16"
+x86.ads:420:27: warning: no returning annotation available for "readReg16"
+x86.ads:425:15: warning: assuming "writeReg16Post" always returns
+x86.ads:425:15: warning: assuming "writeReg16Post" has no effect on global items
+x86.ads:425:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:425:15: warning: no returning annotation available for "writeReg16Post"
+x86.ads:430:28: warning: assuming "readReg32" always returns
+x86.ads:430:28: warning: assuming "readReg32" has no effect on global items
+x86.ads:430:28: warning: no Global contract available for "readReg32"
+x86.ads:430:28: warning: no returning annotation available for "readReg32"
+x86.ads:435:15: warning: assuming "writeReg32Post" always returns
+x86.ads:435:15: warning: assuming "writeReg32Post" has no effect on global items
+x86.ads:435:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:435:15: warning: no returning annotation available for "writeReg32Post"
+x86.ads:447:28: warning: assuming "readRegLow8" always returns
+x86.ads:447:28: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:447:28: warning: no Global contract available for "readRegLow8"
+x86.ads:447:28: warning: no returning annotation available for "readRegLow8"
+x86.ads:452:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:452:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:452:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:452:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:464:28: warning: assuming "readRegLow8" always returns
+x86.ads:464:28: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:464:28: warning: no Global contract available for "readRegLow8"
+x86.ads:464:28: warning: no returning annotation available for "readRegLow8"
+x86.ads:469:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:469:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:469:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:469:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:481:29: warning: assuming "readRegLow8" always returns
+x86.ads:481:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:481:29: warning: no Global contract available for "readRegLow8"
+x86.ads:481:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:486:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:486:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:486:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:486:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:498:29: warning: assuming "readRegLow8" always returns
+x86.ads:498:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:498:29: warning: no Global contract available for "readRegLow8"
+x86.ads:498:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:503:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:503:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:503:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:503:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:515:29: warning: assuming "readRegLow8" always returns
+x86.ads:515:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:515:29: warning: no Global contract available for "readRegLow8"
+x86.ads:515:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:520:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:520:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:520:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:520:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:532:29: warning: assuming "readRegLow8" always returns
+x86.ads:532:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:532:29: warning: no Global contract available for "readRegLow8"
+x86.ads:532:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:537:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:537:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:537:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:537:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:549:29: warning: assuming "readRegLow8" always returns
+x86.ads:549:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:549:29: warning: no Global contract available for "readRegLow8"
+x86.ads:549:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:554:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:554:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:554:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:554:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:566:29: warning: assuming "readRegLow8" always returns
+x86.ads:566:29: warning: assuming "readRegLow8" has no effect on global items
+x86.ads:566:29: warning: no Global contract available for "readRegLow8"
+x86.ads:566:29: warning: no returning annotation available for "readRegLow8"
+x86.ads:571:15: warning: assuming "writeRegLow8Post" always returns
+x86.ads:571:15: warning: assuming "writeRegLow8Post" has no effect on global items
+x86.ads:571:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:571:15: warning: no returning annotation available for "writeRegLow8Post"
+x86.ads:677:55: warning: assuming "SignedLT_32" always returns
+x86.ads:677:55: warning: assuming "SignedLT_32" has no effect on global items
+x86.ads:677:55: warning: no Global contract available for "SignedLT_32"
+x86.ads:677:55: warning: no returning annotation available for "SignedLT_32"
+x86.ads:728:18: warning: assuming "InRange64" always returns
+x86.ads:728:18: warning: assuming "InRange64" has no effect on global items
+x86.ads:728:18: warning: no Global contract available for "InRange64"
+x86.ads:728:18: warning: no returning annotation available for "InRange64"
+x86.ads:732:14: warning: assuming "ReadMem64" always returns
+x86.ads:732:14: warning: no returning annotation available for "ReadMem64"
+x86.ads:740:36: warning: assuming "DL" always returns
+x86.ads:740:36: warning: no returning annotation available for "DL"
+x86.ads:741:20: warning: assuming "DL" always returns
+x86.ads:741:20: warning: no returning annotation available for "DL"
+x86.ads:745:61: warning: assuming "CL" always returns
+x86.ads:745:61: warning: no returning annotation available for "CL"
+x86.ads:746:20: warning: assuming "CL" always returns
+x86.ads:746:20: warning: no returning annotation available for "CL"

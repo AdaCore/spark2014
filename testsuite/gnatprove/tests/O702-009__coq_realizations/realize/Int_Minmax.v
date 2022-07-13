@@ -4,11 +4,3 @@ Require Import BuiltIn.
 Require BuiltIn.
 Require int.Int.
 Require int.MinMax.
-
-(* Why3 assumption *)
-Definition unit := unit.
-
-(* Why3 goal *)
-Definition qtmark : Type.
-exact unit.
-Defined.

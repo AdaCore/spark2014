@@ -916,13 +916,13 @@ package body Flow_Error_Messages is
 
                      elsif Pretty_Cntexmp.Is_Empty then ""
 
-                     --  Do not include a one-liner in the message for memory
+                     --  Do not include a one-liner in the message for resource
                      --  leak checks, as the exact values of variables seldom
                      --  plays a role in that case. Keep the counterexample
                      --  though as the path is relevant.
 
-                     elsif Tag in VC_Memory_Leak
-                                | VC_Memory_Leak_At_End_Of_Scope
+                     elsif Tag in VC_Resource_Leak
+                                | VC_Resource_Leak_At_End_Of_Scope
                      then ""
 
                      else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
@@ -2422,11 +2422,11 @@ package body Flow_Error_Messages is
       elsif Tag = VC_Subprogram_Variant and then How_Proved = PC_Trivial then
          return "";
 
-      --  Do not try to generate a fix message for memory leaks statically
-      --  known to leak memory, as the value of variables involved in the
+      --  Do not try to generate a fix message for resource leaks statically
+      --  known, as the value of variables involved in the
       --  allocating or assignment expression are not responsible for the leak.
 
-      elsif Tag in VC_Memory_Leak | VC_Memory_Leak_At_End_Of_Scope
+      elsif Tag in VC_Resource_Leak | VC_Resource_Leak_At_End_Of_Scope
         and then How_Proved = PC_Trivial
       then
          return "";
@@ -2923,7 +2923,7 @@ package body Flow_Error_Messages is
             --  If N is the actual parameter in a call corresponding to an
             --  OUT formal parameter, the check likely occurs after the call
             --  (unless this is a length check, discriminant check, or a check
-            --  for a memory leak). Otherwise, the check likely occurs before
+            --  for a resource leak). Otherwise, the check likely occurs before
             --  the call.
 
             if Nkind (Stmt) in N_Procedure_Call_Statement then
@@ -2934,7 +2934,7 @@ package body Flow_Error_Messages is
                     and then Ekind (Formal) = E_Out_Parameter
                     and then Tag not in VC_Length_Check
                                       | VC_Discriminant_Check
-                                      | VC_Memory_Leak
+                                      | VC_Resource_Leak
                   then
                      null;
                   else

@@ -7,11 +7,20 @@ Require int.Abs.
 Require int.EuclideanDivision.
 Require int.ComputerDivision.
 
+(* separated with a blank line in order to be kept when regenerating
+   the file *)
+Require Import Coq.Bool.Bool.
+Require Import Coq.ZArith.BinInt.
+Require Import Coq.ZArith.Zbool.
+Require Import Psatz.
+
 (* Why3 goal *)
 Definition mod1 :
   Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
 Proof.
-  exact (fun (x y : Z) => let r := EuclideanDivision.mod1 x y in if (Zge_bool y 0%Z) then r else if (Zeq_bool 0%Z r) then 0%Z else (r + y)%Z).
+  exact (fun (x y : Z) => if (Zlt_bool 0%Z x && Zlt_bool 0%Z y) || (Zlt_bool x 0%Z && Zlt_bool y 0%Z) then ZArith.BinInt.Z.rem x y
+  else if Zeq_bool 0%Z (ZArith.BinInt.Z.rem x y) then 0%Z
+  else ((ZArith.BinInt.Z.rem x y) + y)%Z).
 Defined.
 
 Ltac des_lt x y := pose proof (Zlt_cases x y); destruct (x <? y)%Z.
@@ -22,13 +31,218 @@ Ltac des_eq x y := pose proof (Zeq_bool_if x y); destruct (Zeq_bool x y).
 (* Why3 goal *)
 Lemma mod'def :
   forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
-  let r := int.EuclideanDivision.mod1 x y in
-  ((0%Z <= y)%Z -> ((mod1 x y) = r)) /\
-  (~ (0%Z <= y)%Z ->
-   ((r = 0%Z) -> ((mod1 x y) = 0%Z)) /\
-   (~ (r = 0%Z) -> ((mod1 x y) = (r + y)%Z))).
+  ((0%Z < x)%Z /\ (0%Z < y)%Z \/ (x < 0%Z)%Z /\ (y < 0%Z)%Z ->
+   ((mod1 x y) = (ZArith.BinInt.Z.rem x y))) /\
+  (~ ((0%Z < x)%Z /\ (0%Z < y)%Z \/ (x < 0%Z)%Z /\ (y < 0%Z)%Z) ->
+   (((ZArith.BinInt.Z.rem x y) = 0%Z) -> ((mod1 x y) = 0%Z)) /\
+   (~ ((ZArith.BinInt.Z.rem x y) = 0%Z) ->
+    ((mod1 x y) = ((ZArith.BinInt.Z.rem x y) + y)%Z))).
 Proof.
-  intros x y r; split; unfold mod1; intros;
-  des_ge y 0%Z; auto; try omega.
-  split; intros; fold r; des_eq 0%Z r; omega.
+  intros x y. unfold mod1.
+  des_lt 0%Z x; des_lt 0%Z y; des_lt x 0%Z; des_lt y 0%Z; des_eq 0%Z (Z.rem x y);
+  split; intro Hyp; try (split; intro Hyp2); try lia; simpl; try contradiction; trivial.
+Qed.
+
+(* Why3 goal *)
+Definition mod2 :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
+Proof.
+  exact (fun (x y : Z) => let r := EuclideanDivision.mod1 x y in if (Zge_bool y 0%Z) then r else if (Zeq_bool 0%Z r) then 0%Z else (r + y)%Z).
+Defined.
+
+(* Why3 goal *)
+Lemma mod2'def :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  let r := int.EuclideanDivision.mod1 x y in
+  ((0%Z <= y)%Z -> ((mod2 x y) = r)) /\
+  (~ (0%Z <= y)%Z ->
+   ((r = 0%Z) -> ((mod2 x y) = 0%Z)) /\
+   (~ (r = 0%Z) -> ((mod2 x y) = (r + y)%Z))).
+Proof.
+  intros x y r; split; unfold mod2; intros;
+  des_ge y 0%Z; auto; try lia.
+  split; intros; fold r; des_eq 0%Z r; lia.
+Qed.
+
+(* Why3 goal *)
+Lemma Mod_Unique :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z), ~ (y = 0%Z) ->
+  ((mod1 x y) = (mod2 x y)).
+Proof.
+  (* Unicity of division (extends div_unique to negative v). Should this
+       be fused-in div_unique ? *)
+  assert (forall u v q,
+    v <> 0 -> q * v <= u < q * v + Z.abs v ->
+    EuclideanDivision.div u v = q)%Z as div_uniq. {
+    intros u v q NZ BOUNDS.
+    destruct (Z.lt_trichotomy 0 v) as [POS|[?|NEG]]; [|congruence|].
+    - rewrite Z.abs_eq in BOUNDS by lia.
+      apply EuclideanDivision.Div_unique; assumption.
+    - destruct BOUNDS as [LE LT].
+      pose proof (EuclideanDivision.Div_mod u v NZ) as MAIN.
+      pose proof (EuclideanDivision.Mod_bound u v NZ) as [BMIN BMAX].
+      rewrite Z.abs_neq in LT, BMAX by lia.
+      apply Z.le_antisymm; apply Z.lt_succ_r;
+        eapply Z.mul_lt_mono_neg_l; try exact NEG.
+      + eapply Z.add_lt_mono_r; rewrite <- ? MAIN.
+        rewrite Z.mul_comm. rewrite Z.mul_succ_l. lia.
+      + rewrite Z.mul_succ_r. rewrite Z.add_comm.
+       eapply Z.add_lt_mono_r. rewrite <- Z.add_assoc.
+       rewrite <- MAIN. rewrite Z.mul_comm. lia.
+  }
+  (* Unicity of modulo (entirely new, not so usable for SMT). *)
+  assert (forall u v q r,
+    v <> 0 -> 0 <= r < Z.abs v -> u = q * v + r ->
+     EuclideanDivision.mod1 u v = r)%Z as mod_uniq. {
+    intros u v q r NZ [LE LT] EQ.
+    assert (EuclideanDivision.div u v = q) as <- by (apply div_uniq; lia).
+    pose proof (EuclideanDivision.Div_mod u v NZ) as MAIN.
+    rewrite EQ in MAIN at 1. rewrite (Z.mul_comm v) in MAIN. lia.
+  }
+  (* Utility: connect zero-modulo with divisibility (from Coq). *)
+  assert (forall u v, v <> 0 ->
+    EuclideanDivision.mod1 u v = 0 <-> (v | u))%Z as mod_0_divide. {
+    intros u v NZ. split.
+    - intros MZ. exists (EuclideanDivision.div u v).
+      erewrite EuclideanDivision.Div_mod at 1; try exact NZ.
+      rewrite (Z.mul_comm v). rewrite MZ. rewrite Z.add_0_r. reflexivity.
+    - intros [q EQ]. unshelve eapply mod_uniq.
+      + exact q.
+      + lia.
+      + split;[reflexivity|].
+        apply Z.lt_nge. intros LE. apply NZ.
+        apply Z.abs_0_iff. apply Z.le_antisymm; try assumption.
+        apply Z.abs_nonneg.
+      + rewrite Z.add_0_r. assumption.
+  }
+  (* Symmetry on second argument for euclidean modulo. *)
+  assert (forall u v, v <> 0 ->
+    EuclideanDivision.mod1 u (-v) = EuclideanDivision.mod1 u v)%Z
+    as mod_symmetry_2. {
+    intros u v NZ.
+    unshelve eapply mod_uniq.
+    (* Under the hood: (u/(-v)) = -(u/v) for euclidean division. *)
+    - exact (-EuclideanDivision.div u v)%Z.
+    - lia.
+    - rewrite Z.abs_opp. apply EuclideanDivision.Mod_bound. assumption.
+    - rewrite Z.mul_opp_opp. rewrite Z.mul_comm.
+      apply EuclideanDivision.Div_mod. assumption.
+  }
+  (* Symmetry on first argument for euclidean modulo, when non-zero. *)
+  assert (forall u v, v <> 0 ->
+    EuclideanDivision.mod1 u v <> 0 ->
+    EuclideanDivision.mod1 (-u) v = Z.abs v - EuclideanDivision.mod1 u v)%Z
+    as mod_symmetry_1_nz. {
+    (* Break symmetry on v so that we do not have to deal with cases of divisions. *)
+    lazymatch goal with
+    | |- forall u v, _ -> ?G =>
+      enough (forall u v:int, 0 < v -> G)%Z as ENGH
+    end. {
+      intros u v NZ MNZ.
+      destruct (Z.lt_trichotomy 0 v) as [POS|[EQ|NEG]].
+      - apply ENGH; assumption.
+      - congruence.
+      - assert (exists w, -w = v)%Z as [w <-]
+          by (eexists; apply Z.opp_involutive).
+        rewrite ! mod_symmetry_2 in * by lia.
+        rewrite Z.abs_opp. apply ENGH; lia.
+    }
+    intros u v POS NZ.
+    unshelve eapply mod_uniq.
+    - exact (- Z.succ (EuclideanDivision.div u v))%Z.
+    - lia.
+    - unshelve epose proof (EuclideanDivision.Mod_bound u v _);
+        rewrite ? Z.abs_eq in *; lia.
+    - rewrite Z.mul_opp_l. rewrite Z.mul_succ_l.
+      pose proof (EuclideanDivision.Div_mod u v ltac:(lia)) as MAIN.
+      rewrite Z.mul_comm in MAIN.
+      rewrite Z.abs_eq; lia.
+  }
+  (* Other symmetry in first argument. *)
+  assert (forall u v, v <> 0 ->
+    EuclideanDivision.mod1 u v = 0 <->
+    EuclideanDivision.mod1 (-u) v = 0)%Z as mod_symmetry_1_z. {
+    intros u v NZ. rewrite ! mod_0_divide by assumption.
+    rewrite Z.divide_opp_r. reflexivity.
+  }
+  (* Connect zero-conditions of the two underlying modulo operators. *)
+  assert (forall u v, v <> 0 ->
+    Z.rem u v = 0 <-> EuclideanDivision.mod1 u v = 0)%Z as same_zeros. {
+    intros u v NZ.
+    rewrite Z.rem_divide by assumption.
+    rewrite mod_0_divide by assumption.
+    reflexivity.
+  }
+  (* Connect values of two underlying division/modulo processes
+       over non-conflictual range. *)
+  assert (forall u v, 0 <= u -> 0 < v ->
+    Z.quot u v = EuclideanDivision.div u v)%Z as same_div_pos. {
+    intros u v PU PV. symmetry.
+    apply EuclideanDivision.Div_unique; try assumption.
+    rewrite Z.quot_div_nonneg by lia.
+    split; rewrite Z.mul_comm.
+    - apply Z.mul_div_le; assumption.
+    - eapply Z.lt_le_trans; [eapply Z.mul_succ_div_gt|]. 2: {
+        rewrite Z.mul_succ_r. reflexivity.
+      }
+      assumption.
+  }
+  assert (forall u v, 0 <= u -> 0 < v ->
+    Z.rem u v = EuclideanDivision.mod1 u v)%Z as same_mod_pos. {
+    intros u v LEU LTV. symmetry.
+    unshelve eapply mod_uniq.
+    - exact (Z.quot u v).
+    - lia.
+    - rewrite Z.abs_eq by lia.
+      apply Z.rem_bound_pos; lia.
+    - rewrite Z.mul_comm. apply Z.quot_rem. lia.
+  }
+  (* Main proof starts here. *)
+  intros x y NZ.
+  (* Instantiate specification lemmas. *)
+  pose proof (mod'def x y) as H1.
+  pose proof (mod2'def x y) as H2.
+  (* Eliminate let-bindings. *)
+  lazy zeta in *.
+  (* Omega use too much stuff in common cases. While practical
+       for final cases that it can destructure the content of
+       mod1/mod2 specification, slow down the generation way too much
+       for mundane obligations. *)
+  let epsilon := (clear H1 H2; lia) in
+  (* Split on divisibility. *)
+  destruct (Z.eq_dec (Z.rem x y) 0)%Z as [MZ|MZ];
+    (* Make sure we have copies of the zero/non-zero hypothesis in
+       both format. *)
+    pose proof MZ as MZC; rewrite same_zeros in MZC by epsilon;
+    (* Clear divisibility out of the way, as reducing both to zero
+         suffices. *)
+    [rewrite MZ in *; rewrite MZC in *; clear MZ MZC; lia|];
+  (* Decompose as positive/negative case (0 trivially ruled out),
+       and apply relevant
+       second argument symmetry to modular operators. *)
+  destruct (Z.lt_trichotomy 0 y) as [YPOS|[<-|YNEG]];[|congruence|];
+   [|assert (exists u, -u = y)%Z as [u <-]
+    by (eexists; apply Z.opp_involutive);
+     rename u into y; rewrite Z.rem_opp_r in * by epsilon;
+      rewrite mod_symmetry_2 in * by epsilon];
+    (* Same split for x. *)
+    (destruct (Z.lt_trichotomy 0 x) as [XPOS|[<-|XNEG]];
+      (* Cannot be zero as modulo would be zero. *)
+      [|rewrite Z.rem_0_l in MZ; epsilon|];
+      (* Symmetry. *)
+      [..|assert (exists u, -u = x)%Z as [u <-]
+        by (eexists; apply Z.opp_involutive);
+        rename u into x;
+        rewrite Z.rem_opp_l in * by epsilon;
+        rewrite <- mod_symmetry_1_z in * by epsilon;
+        rewrite mod_symmetry_1_nz in * by epsilon]);
+  (* Arguments of Z.rem/EuclideanDivision.mod1 have been switched
+       to the 'nice' range. *)
+  assert (Z.rem x y = EuclideanDivision.mod1 x y) as SAME by
+    (apply same_mod_pos; epsilon);
+  (* Omega does not do absolute value. *)
+  rewrite ? Z.abs_eq in * by epsilon;
+  (* Finisher. Most of the time is spent here as it tries cases
+       by going through H1/H2. *)
+  lia.
 Qed.

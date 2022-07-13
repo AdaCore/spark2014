@@ -5,51 +5,56 @@ Require BuiltIn.
 Require bool.Bool.
 Require int.Int.
 
-(* Why3 assumption *)
-Definition unit := unit.
-
 (* Why3 goal *)
-Definition bool_eq: Z -> Z -> bool.
+Definition bool_eq :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 exact Z.eqb.
 Defined.
 
 (* Why3 goal *)
-Definition bool_ne: Z -> Z -> bool.
+Definition bool_ne :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 intros a b.
 exact (negb (Z.eqb a b)).
 Defined.
 
 (* Why3 goal *)
-Definition bool_lt: Z -> Z -> bool.
+Definition bool_lt :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 exact Z.ltb.
 
 Defined.
 
 (* Why3 goal *)
-Definition bool_le: Z -> Z -> bool.
+Definition bool_le :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 exact Z.leb.
 Defined.
 
 (* Why3 goal *)
-Definition bool_gt: Z -> Z -> bool.
+Definition bool_gt :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 exact Z.gtb.
 
 Defined.
 
 (* Why3 goal *)
-Definition bool_ge: Z -> Z -> bool.
+Definition bool_ge :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 exact Z.geb.
 Defined.
 
 (* Why3 goal *)
 Lemma bool_eq_axiom :
-forall (x:Z), forall (y:Z), ((bool_eq x y) = true) <-> (x = y).
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_eq x y) = Init.Datatypes.true) <-> (x = y).
 exact Z.eqb_eq.
 Qed.
 
 (* Why3 goal *)
 Lemma bool_ne_axiom :
-forall (x:Z), forall (y:Z), ((bool_ne x y) = true) <-> ~ (x = y).
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_ne x y) = Init.Datatypes.true) <-> ~ (x = y).
 intros x y.
 rewrite <- bool_eq_axiom.
 unfold bool_ne, bool_eq, negb. case ((x =? y)%Z); split; intro H; auto.
@@ -58,48 +63,47 @@ Qed.
 
 (* Why3 goal *)
 Lemma bool_lt_axiom :
-forall (x:Z), forall (y:Z), ((bool_lt x y) = true) <-> (x < y)%Z.
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_lt x y) = Init.Datatypes.true) <-> (x < y)%Z.
 unfold bool_lt; exact Z.ltb_lt.
 Qed.
 
 (* Why3 goal *)
 Lemma bool_int__le_axiom :
-forall (x:Z), forall (y:Z), ((bool_le x y) = true) <-> (x <= y)%Z.
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_le x y) = Init.Datatypes.true) <-> (x <= y)%Z.
 unfold bool_le; exact Z.leb_le.
 
 Qed.
 
 (* Why3 goal *)
 Lemma bool_gt_axiom :
-forall (x:Z), forall (y:Z), ((bool_gt x y) = true) <-> (y < x)%Z.
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_gt x y) = Init.Datatypes.true) <-> (y < x)%Z.
 unfold bool_gt; exact Z.gtb_lt.
 
 Qed.
 
 (* Why3 goal *)
 Lemma bool_ge_axiom :
-forall (x:Z), forall (y:Z), ((bool_ge x y) = true) <-> (y <= x)%Z.
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_ge x y) = Init.Datatypes.true) <-> (y <= x)%Z.
 unfold bool_ge; exact Z.geb_le.
 
 Qed.
 
 (* Why3 goal *)
-Definition length: Z -> Z -> Z.
+Definition length :
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
 intros x y.
 exact (if Z_le_dec x y then ((y - x) + 1)%Z else 0%Z).
 Defined.
 
 (* Why3 goal *)
 Lemma length'def :
-forall (x:Z) (y:Z),
- ((x <= y)%Z -> ((length x y) = ((y - x)%Z + 1%Z)%Z))
- /\ ((~ (x <= y)%Z) -> ((length x y) = 0%Z)).
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  ((x <= y)%Z -> ((length x y) = ((y - x)%Z + 1%Z)%Z)) /\
+  (~ (x <= y)%Z -> ((length x y) = 0%Z)).
 intros x y.
 unfold length. destruct Z_le_dec; intuition.
 Qed.
-
-(* Unused content named qtmark
-exact unit.
-
-Defined.
- *)

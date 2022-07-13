@@ -1,2 +1,10 @@
+test.adb:8:08: warning: assuming "Put" always returns
+test.adb:8:08: warning: assuming "Put" has no effect on global items
+test.adb:8:08: warning: no Global contract available for "Put"
+test.adb:8:08: warning: no returning annotation available for "Put"
 test.adb:8:22: info: range check proved (CVC5: 2 VC)
+test.adb:9:08: warning: assuming "Put" always returns
+test.adb:9:08: warning: assuming "Put" has no effect on global items
+test.adb:9:08: warning: no Global contract available for "Put"
+test.adb:9:08: warning: no returning annotation available for "Put"
 test.adb:9:22: info: range check proved (CVC5: 2 VC)

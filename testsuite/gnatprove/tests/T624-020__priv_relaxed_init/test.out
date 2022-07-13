@@ -4,6 +4,22 @@ init_wrapper_simple.adb:25:15: info: range check proved (CVC5: 2 VC)
 init_wrapper_simple.adb:29:22: medium: assertion might fail
 init_wrapper_simple.adb:30:22: medium: assertion might fail
 init_wrapper_simple.adb:31:22: medium: assertion might fail
+init_wrapper_simple.adb:33:07: warning: assuming "Init" always returns
+init_wrapper_simple.adb:33:07: warning: assuming "Init" has no effect on global items
+init_wrapper_simple.adb:33:07: warning: no Global contract available for "Init"
+init_wrapper_simple.adb:33:07: warning: no returning annotation available for "Init"
+init_wrapper_simple.adb:34:07: warning: assuming "Init" always returns
+init_wrapper_simple.adb:34:07: warning: assuming "Init" has no effect on global items
+init_wrapper_simple.adb:34:07: warning: no Global contract available for "Init"
+init_wrapper_simple.adb:34:07: warning: no returning annotation available for "Init"
 init_wrapper_simple.adb:35:22: info: assertion proved (CVC5: 2 VC; Trivial: 7 VC)
+init_wrapper_simple.adb:36:07: warning: assuming "Init" always returns
+init_wrapper_simple.adb:36:07: warning: assuming "Init" has no effect on global items
+init_wrapper_simple.adb:36:07: warning: no Global contract available for "Init"
+init_wrapper_simple.adb:36:07: warning: no returning annotation available for "Init"
 init_wrapper_simple.adb:37:22: info: assertion proved (CVC5: 1 VC)
+init_wrapper_simple.adb:38:07: warning: assuming "Init" always returns
+init_wrapper_simple.adb:38:07: warning: assuming "Init" has no effect on global items
+init_wrapper_simple.adb:38:07: warning: no Global contract available for "Init"
+init_wrapper_simple.adb:38:07: warning: no returning annotation available for "Init"
 init_wrapper_simple.adb:39:22: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC)

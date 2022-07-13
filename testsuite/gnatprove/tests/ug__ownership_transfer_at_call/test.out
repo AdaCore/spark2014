@@ -1,5 +1,5 @@
 
-ownership_transfer_at_call.adb:5:04: medium: memory leak might occur at end of scope
+ownership_transfer_at_call.adb:5:04: medium: resource or memory leak might occur at end of scope
     5 |   X : Int_Ptr;
       |   ^~~~~~~~~~~
 

@@ -12,8 +12,11 @@ main.adb:58:35: warning: "Kenny" is set by "Another_One_Bites_The_Dust" but not 
 main.adb:61:14: info: add a contract to analyze it separately from calling contexts
 main.adb:61:14: info: local subprogram "Print_Everyone" only analyzed in the context of calls
 main.adb:61:14: warning: subprogram "Print_Everyone" has no effect
+main.adb:70:04: info: analyzing call to "Train_Everyone" in context
 main.adb:70:04: info: in inlined body at line 31
 main.adb:70:04: info: unrolling loop
+main.adb:71:04: info: analyzing call to "OMG" in context
+main.adb:72:04: info: analyzing call to "Print_Everyone" in context
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
 people.ads:8:08: info: flow dependencies proved

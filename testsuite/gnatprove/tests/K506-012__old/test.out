@@ -1,4 +1,5 @@
 old.ads:9:14: warning: subprogram "Nothing" has no effect
 old.ads:10:20: info: postcondition proved (Trivial: 1 VC)
 old.ads:12:14: warning: subprogram "Range_Expr" has no effect
-old.ads:13:20: high: postcondition might fail
+old.ads:13:12: warning: postcondition does not check the outcome of calling "Range_Expr"
+old.ads:13:20: high: postcondition might fail (e.g. when X = 0)

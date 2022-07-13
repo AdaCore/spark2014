@@ -267,7 +267,8 @@ package Flow is
    --  Main entry to flo analysis
    ----------------------------------------------------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id);
+   procedure Flow_Analyse_CUnit (GNAT_Root   : Node_Id;
+                                 Found_Error : out Boolean);
    --  Flow analyses the current compilation unit
 
    procedure Generate_Globals (GNAT_Root : Node_Id);

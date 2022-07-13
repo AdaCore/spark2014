@@ -23,29 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;      use Ada.Containers;
+with Ada.Containers;              use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Common_Containers;   use Common_Containers;
+with Common_Containers;           use Common_Containers;
 with GNAT.Source_Info;
-with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
-with Namet;               use Namet;
-with Sinput;              use Sinput;
-with Snames;              use Snames;
-with SPARK_Definition;    use SPARK_Definition;
-with VC_Kinds;            use VC_Kinds;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Gen.Arrays;      use Why.Gen.Arrays;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Progs;       use Why.Gen.Progs;
-with Why.Gen.Records;     use Why.Gen.Records;
-with Why.Gen.Terms;       use Why.Gen.Terms;
-with Why.Images;          use Why.Images;
-with Why.Inter;           use Why.Inter;
-with Why.Types;           use Why.Types;
+with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
+with Namet;                       use Namet;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
+with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
+with VC_Kinds;                    use VC_Kinds;
+with Why.Atree.Accessors;         use Why.Atree.Accessors;
+with Why.Atree.Builders;          use Why.Atree.Builders;
+with Why.Atree.Modules;           use Why.Atree.Modules;
+with Why.Gen.Arrays;              use Why.Gen.Arrays;
+with Why.Gen.Decl;                use Why.Gen.Decl;
+with Why.Gen.Expr;                use Why.Gen.Expr;
+with Why.Gen.Names;               use Why.Gen.Names;
+with Why.Gen.Progs;               use Why.Gen.Progs;
+with Why.Gen.Records;             use Why.Gen.Records;
+with Why.Gen.Terms;               use Why.Gen.Terms;
+with Why.Images;                  use Why.Images;
+with Why.Inter;                   use Why.Inter;
+with Why.Types;                   use Why.Types;
 
 package body Why.Gen.Pointers is
 
@@ -883,7 +884,7 @@ package body Why.Gen.Pointers is
             others => <>);
 
          Binders_F (2) :=
-           (B_Name => To_Local (E_Symb (E, WNE_Is_Moved_Pointer)),
+           (B_Name => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
             others => <>);
 
          Binders_F (3) :=
@@ -1117,6 +1118,8 @@ package body Why.Gen.Pointers is
       --  __move expr.fields_ref expr.discr expr.tag
 
       elsif Is_Record_Type_In_Why (Typ) then
+         pragma Assert (not Is_Simple_Private_Type (Typ));
+
          declare
             P_Fields : constant Opt_Binder :=
               (Present => True,
@@ -1142,16 +1145,23 @@ package body Why.Gen.Pointers is
                     Id      => New_Temp_Identifier (Base_Name => "tag",
                                                     Typ       => EW_Int_Type))
                else (Present => False));
+            P_Is_Moved : constant Opt_Id :=
+              (if Has_Ownership_Annotation (Typ) then
+                   (Present => True,
+                    Id      => New_Temp_Identifier (Base_Name => "is_moved",
+                                                    Typ       => EW_Bool_Type))
+               else (Present => False));
          begin
             return
-              Item_Type'(Kind   => DRecord,
-                         Local  => True,
-                         Init   => (Present => False),
-                         Typ    => Typ,
-                         Fields => P_Fields,
-                         Discrs => P_Discrs,
-                         Constr => (Present => False),
-                         Tag    => P_Tag);
+              Item_Type'(Kind       => DRecord,
+                         Local      => True,
+                         Init       => (Present => False),
+                         Typ        => Typ,
+                         Fields     => P_Fields,
+                         Discrs     => P_Discrs,
+                         Constr     => (Present => False),
+                         Tag        => P_Tag,
+                         Is_Moved_R => P_Is_Moved);
          end;
 
       --  For an array, the __move function takes the underlying map as a
@@ -1305,8 +1315,8 @@ package body Why.Gen.Pointers is
    is
       Field : constant W_Identifier_Id :=
         (if Local
-         then To_Local (E_Symb (E, WNE_Is_Moved_Pointer))
-         else E_Symb (E, WNE_Is_Moved_Pointer));
+         then To_Local (E_Symb (E, WNE_Is_Moved_Field))
+         else E_Symb (E, WNE_Is_Moved_Field));
 
    begin
       return New_Record_Access (Name  => +Name,
@@ -1327,8 +1337,8 @@ package body Why.Gen.Pointers is
    is
       Field : constant W_Identifier_Id :=
         (if Local
-         then To_Local (E_Symb (E, WNE_Is_Moved_Pointer))
-         else E_Symb (E, WNE_Is_Moved_Pointer));
+         then To_Local (E_Symb (E, WNE_Is_Moved_Field))
+         else E_Symb (E, WNE_Is_Moved_Field));
    begin
       return New_Record_Update
         (Name    => Name,
@@ -1480,7 +1490,7 @@ package body Why.Gen.Pointers is
          then E_Symb (Ty_Ext, WNE_Pointer_Value_Abstr)
          else E_Symb (Ty_Ext, WNE_Pointer_Value));
       S_Is_Null  : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Null_Pointer);
-      S_Is_Moved : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Moved_Pointer);
+      S_Is_Moved : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Moved_Field);
 
    begin
       --  If Local use local names for fields of Ty

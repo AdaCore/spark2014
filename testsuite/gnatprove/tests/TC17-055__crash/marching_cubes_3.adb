@@ -8,7 +8,7 @@ is
    procedure Q (A : in out Int_Ptr; B : Integer; C: out Integer)
    is
    begin
-      A := null;--@MEMORY_LEAK:FAIL
+      A := null;--@RESOURCE_LEAK:FAIL
       C := B;
    end Q;
 

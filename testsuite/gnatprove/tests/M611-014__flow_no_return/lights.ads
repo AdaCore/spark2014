@@ -3,12 +3,14 @@ package Lights
 is
 
    procedure Init
-     with Global => (Output => State),
-          Depends => (State => null);
+     with Global   => (Output => State),
+          Depends  => (State => null),
+          Annotate => (GNATprove, Always_Return);
 
    procedure Toggle
-     with Global => (In_Out => State),
-          Depends => (State => State);
+     with Global   => (In_Out => State),
+          Depends  => (State => State),
+          Annotate => (GNATprove, Always_Return);
 
    procedure Explode
      with Global => (Output => State),

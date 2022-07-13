@@ -5,6 +5,7 @@ raise_statements.adb:25:10: warning: this statement is never reached
 raise_statements.adb:28:10: warning: unreachable code (CVC5: 1 VC)
 raise_statements.adb:29:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 raise_statements.adb:30:10: warning: this statement is never reached
+raise_statements.adb:30:10: warning: unreachable code
 raise_statements.adb:32:23: medium: overflow check might fail, cannot prove upper bound for Par1 + Par2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at raise_statements.ads:14 should mention Par1]
 raise_statements.adb:32:30: info: overflow check proved (CVC5: 2 VC)
 raise_statements.adb:55:13: warning: unreachable code (CVC5: 1 VC)

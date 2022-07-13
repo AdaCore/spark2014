@@ -2,7 +2,6 @@ p.adb:16:21: info: overflow check proved (CVC5: 2 VC)
 p.adb:18:21: info: overflow check proved (CVC5: 2 VC)
 p.adb:31:22: info: assertion proved (CVC5: 1 VC)
 p.adb:32:14: info: precondition proved (CVC5: 2 VC)
-p.adb:37:07: warning: variable "Z" is read but never assigned [-gnatwv]
 p.adb:42:10: info: justified that "X" might not be initialized
 p.adb:43:28: info: justified that "Z" is not initialized
 p.ads:7:20: info: postcondition proved (CVC5: 2 VC)

@@ -1,0 +1,4 @@
+a73001i.adb:5:04: warning: assuming "RESULT" always returns
+a73001i.adb:5:04: warning: assuming "RESULT" has no effect on global items
+a73001i.adb:5:04: warning: no Global contract available for "RESULT"
+a73001i.adb:5:04: warning: no returning annotation available for "RESULT"

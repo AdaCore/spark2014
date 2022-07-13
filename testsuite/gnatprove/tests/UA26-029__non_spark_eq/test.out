@@ -6,10 +6,27 @@ main.adb:27:04: error: "Holder" is not allowed in SPARK (due to record component
 main.adb:27:04: error: violation of aspect SPARK_Mode at line 1
 main.adb:28:04: error: "Holder" is not allowed in SPARK (due to record component type whose primitive equality is not in SPARK)
 main.adb:28:04: error: violation of aspect SPARK_Mode at line 1
+main.adb:32:07: info: no contextual analysis of "Rand" (body not seen yet)
+main.adb:32:07: warning: assuming "Rand" always returns
+main.adb:32:07: warning: assuming "Rand" has no effect on global items
+main.adb:32:07: warning: no Global contract available for "Rand"
+main.adb:32:07: warning: no returning annotation available for "Rand"
+main.adb:34:10: warning: assuming "Rand" always returns
+main.adb:34:10: warning: assuming "Rand" has no effect on global items
+main.adb:34:10: warning: no Global contract available for "Rand"
+main.adb:34:10: warning: no returning annotation available for "Rand"
+main.adb:36:10: warning: assuming "Rand" always returns
+main.adb:36:10: warning: assuming "Rand" has no effect on global items
+main.adb:36:10: warning: no Global contract available for "Rand"
+main.adb:36:10: warning: no returning annotation available for "Rand"
 main.adb:37:22: error: "CC1" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)
 main.adb:37:22: error: violation of aspect SPARK_Mode at line 1
 main.adb:37:28: error: "CC2" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)
 main.adb:37:28: error: violation of aspect SPARK_Mode at line 1
+main.adb:38:10: warning: assuming "Rand" always returns
+main.adb:38:10: warning: assuming "Rand" has no effect on global items
+main.adb:38:10: warning: no Global contract available for "Rand"
+main.adb:38:10: warning: no returning annotation available for "Rand"
 main.adb:39:22: error: "CC1" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)
 main.adb:39:22: error: violation of aspect SPARK_Mode at line 1
 main.adb:39:29: error: "CC2" is not allowed in SPARK (due to tagged type whose primitive equality is not in SPARK)

@@ -149,14 +149,17 @@ package body Gnat2Why.Driver is
    --  Generates VCs for entity E. This is currently a noop for E other than
    --  subprogram, entry, task or package.
 
-   procedure Do_Ownership_Checking;
+   procedure Do_Ownership_Checking (Error_Found : out Boolean);
    --  Perform SPARK access legality checking
 
    procedure Print_GNAT_Json_File (Filename : String);
    --  Print the GNAT AST as Json into file
 
-   procedure Create_JSON_File (Proof_Done : Boolean);
-   --  At the very end, write the analysis results into file
+   procedure Create_JSON_File (Progress    : Analysis_Progress;
+                               Stop_Reason : Stop_Reason_Type);
+   --  At the very end, write the analysis results into file. Progress
+   --  describes the last analysis done. Stop_Reason indicates why the
+   --  analysis did not progress to the next phase.
 
    procedure Generate_Assumptions;
    --  For all calls from a SPARK subprogram to another, register assumptions
@@ -320,7 +323,8 @@ package body Gnat2Why.Driver is
    -- Create_JSON_File --
    ----------------------
 
-   procedure Create_JSON_File (Proof_Done : Boolean) is
+   procedure Create_JSON_File (Progress    : Analysis_Progress;
+                               Stop_Reason : Stop_Reason_Type) is
       FD : Ada.Text_IO.File_Type;
       File_Name : constant String :=
         Ada.Directories.Compose
@@ -329,9 +333,15 @@ package body Gnat2Why.Driver is
       Full : constant JSON_Value := Create_Object;
    begin
       Set_Field (Full, "spark", Create (Get_SPARK_JSON));
-      Set_Field (Full, "flow", Create (Get_Flow_JSON));
-      Set_Field (Full, "pragma_assume", Create (Get_Pragma_Assume_JSON));
-      if Proof_Done then
+      Set_Field
+        (Full, "progress", Create (Analysis_Progress'Image (Progress)));
+      Set_Field
+        (Full, "stop_reason", Create (Stop_Reason_Type'Image (Stop_Reason)));
+      if Progress >= Progress_Flow then
+         Set_Field (Full, "flow", Create (Get_Flow_JSON));
+      end if;
+      if Progress >= Progress_Proof then
+         Set_Field (Full, "pragma_assume", Create (Get_Pragma_Assume_JSON));
          Set_Field (Full, "session_map", Get_Session_Map_JSON);
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
@@ -482,7 +492,7 @@ package body Gnat2Why.Driver is
    -- Do_Ownership_Checking --
    ---------------------------
 
-   procedure Do_Ownership_Checking is
+   procedure Do_Ownership_Checking (Error_Found : out Boolean) is
    begin
       for E of Entities_To_Translate loop
          --  Set error node so that bugbox information will be correct
@@ -494,11 +504,7 @@ package body Gnat2Why.Driver is
       --  If an error was found then print all errors/warnings and return
       --  with an error status.
 
-      if Found_Permission_Error then
-         Errout.Finalize (Last_Call => True);
-         Errout.Output_Messages;
-         Exit_Program (E_Errors);
-      end if;
+      Error_Found := Found_Permission_Error;
    end Do_Ownership_Checking;
 
    -----------------
@@ -584,8 +590,10 @@ package body Gnat2Why.Driver is
       E : constant Entity_Id := Unique_Defining_Entity (Unit (GNAT_Root));
       --  Unique entity of the current compilation unit
 
-      Proof_Done : Boolean := False;
+      Progress : Analysis_Progress := Progress_None;
       --  Indicates whether proof have been attempted anywhere in the unit
+
+      Stop_Reason : Stop_Reason_Type := Stop_Reason_None;
 
    --  Start of processing for GNAT_To_Why
 
@@ -733,6 +741,7 @@ package body Gnat2Why.Driver is
          Mark_Current_Unit;
 
          Timing_Phase_Completed (Timing, "marking");
+         Progress := Progress_Marking;
 
          --  Finalize has to be called before we call Compilation_Errors
          Finalize (Last_Call => False);
@@ -740,7 +749,10 @@ package body Gnat2Why.Driver is
          if Compilation_Errors
            or else Gnat2Why_Args.Check_Mode
          then
-            goto Leave;
+            Stop_Reason :=
+              (if Compilation_Errors then Stop_Reason_Error_Marking
+               else Stop_Reason_Check_Mode);
+            goto Leave_With_JSON;
          end if;
 
          GG_Complete (GNAT_Root);
@@ -748,14 +760,33 @@ package body Gnat2Why.Driver is
 
          --  Do some flow analysis
 
-         Flow_Analyse_CUnit (GNAT_Root);
+         declare
+            Errors : Boolean;
+         begin
+            Flow_Analyse_CUnit (GNAT_Root, Errors);
+            Progress := Progress_Flow;
+            if Errors then
+               Stop_Reason := Stop_Reason_Error_Flow;
+               goto Leave_With_JSON;
+            end if;
+         end;
+
          Generate_Assumptions;
          Timing_Phase_Completed (Timing, "flow analysis");
 
          --  Check SPARK rules for pointer aliasing. This is only activated on
          --  SPARK code.
 
-         Do_Ownership_Checking;
+         declare
+            Errors : Boolean;
+         begin
+            Do_Ownership_Checking (Errors);
+            Progress := Progress_Borrow;
+            if Errors then
+               Stop_Reason := Stop_Reason_Error_Borrow;
+               goto Leave_With_JSON;
+            end if;
+         end;
 
          if Gnat2Why_Args.Debug_Exec_RAC then
 
@@ -811,7 +842,6 @@ package body Gnat2Why.Driver is
          if not Gnat2Why_Args.Check_All_Mode
            and then not Gnat2Why_Args.Flow_Analysis_Mode
          then
-            Proof_Done := True;
             Load_Codepeer_Results;
             Timing_Phase_Completed (Timing, "codepeer results");
 
@@ -837,8 +867,25 @@ package body Gnat2Why.Driver is
                Generate_Useless_Pragma_Annotate_Warnings;
             end if;
 
+            Progress := Progress_Proof;
+
+         else
+            Stop_Reason := (if Gnat2Why_Args.Check_All_Mode
+                            then Stop_Reason_Check_Mode
+                            else Stop_Reason_Flow_Mode);
          end if;
-         Create_JSON_File (Proof_Done);
+      end if;
+
+      <<Leave_With_JSON>>
+
+      --  Flow analysis is run during check all mode, but we should not mark it
+      --  as complete. So we downgrade the progress here in this case.
+
+      if not Gnat2Why_Args.Global_Gen_Mode then
+         if Gnat2Why_Args.Check_All_Mode and then Progress = Progress_Flow then
+            Progress := Progress_Marking;
+         end if;
+         Create_JSON_File (Progress, Stop_Reason);
       end if;
 
       <<Leave>>

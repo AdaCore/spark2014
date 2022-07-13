@@ -268,7 +268,7 @@ A Concrete Example: a Sort Algorithm
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We show how to prove the correctness of a sorting procedure on arrays using
-ghost code. In particular, we want to show that the sorted array is a permuation
+ghost code. In particular, we want to show that the sorted array is a permutation
 of the input array.
 A common way to define permutations is to use the number of occurrences of
 elements in the array, defined inductively over the size of its array parameter

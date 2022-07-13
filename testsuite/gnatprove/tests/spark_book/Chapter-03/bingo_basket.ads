@@ -1,7 +1,10 @@
 with Bingo_Numbers; use Bingo_Numbers;
 package Bingo_Basket is
 
-   function Empty return Boolean;
+   function Empty return Boolean
+     with
+       Global => null,
+       Annotate => (GNATprove, Always_Return);
 
    procedure Load   -- Load all the Bingo numbers into the basket
       with

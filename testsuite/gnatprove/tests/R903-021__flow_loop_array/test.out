@@ -3,6 +3,7 @@ dynamic_1d.adb:4:14: info: add a contract to analyze it separately from calling 
 dynamic_1d.adb:4:14: info: local subprogram "Flush" only analyzed in the context of calls
 dynamic_1d.adb:4:21: info: initialization of "S" proved
 dynamic_1d.adb:11:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+dynamic_1d.adb:14:04: info: analyzing call to "Flush" in context
 dynamic_1d.adb:14:04: info: cannot unroll loop (too many loop iterations)
 dynamic_1d.adb:14:04: info: in inlined body at line 6
 dynamic_2d.adb:1:11: warning: subprogram "Dynamic_2D" has no effect
@@ -12,6 +13,7 @@ dynamic_2d.adb:4:21: medium: "S" might not be initialized in "Flush" [reason for
 dynamic_2d.adb:13:26: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
 dynamic_2d.adb:13:26: info: range check proved (CVC5: 2 VC)
 dynamic_2d.adb:13:37: info: range check proved (CVC5: 2 VC)
+dynamic_2d.adb:16:04: info: analyzing call to "Flush" in context
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)
 dynamic_2d.adb:16:04: info: in inlined body at line 6
@@ -19,11 +21,13 @@ dynamic_2d.adb:16:04: info: in inlined body at line 7
 static_1d.adb:4:14: info: add a contract to analyze it separately from calling contexts
 static_1d.adb:4:14: info: local subprogram "Flush" only analyzed in the context of calls
 static_1d.adb:4:21: info: initialization of "S" proved
+static_1d.adb:14:04: info: analyzing call to "Flush" in context
 static_1d.adb:14:04: info: in inlined body at line 6
 static_1d.adb:14:04: info: unrolling loop
 static_2d.adb:4:14: info: add a contract to analyze it separately from calling contexts
 static_2d.adb:4:14: info: local subprogram "Flush" only analyzed in the context of calls
 static_2d.adb:4:21: info: initialization of "S" proved
+static_2d.adb:16:04: info: analyzing call to "Flush" in context
 static_2d.adb:16:04: info: in inlined body at line 6
 static_2d.adb:16:04: info: in inlined body at line 7
 static_2d.adb:16:04: info: unrolling loop

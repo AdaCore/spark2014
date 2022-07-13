@@ -1,3 +1,7 @@
 p.ads:3:33: high: divide by zero might fail
+p.ads:3:38: warning: Constraint_Error will be raised at run time
+p.ads:3:38: warning: division by zero
 p.ads:6:37: high: divide by zero might fail
+p.ads:6:38: warning: Constraint_Error will be raised at run time
+p.ads:6:38: warning: division by zero
 p.ads:6:46: info: division check proved (CVC5: 1 VC)

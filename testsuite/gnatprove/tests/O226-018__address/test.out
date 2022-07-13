@@ -1,10 +1,19 @@
+worker_pack.adb:13:26: info: no contextual analysis of "XQueue_Create" (body not seen yet)
+worker_pack.adb:13:26: warning: assuming "XQueue_Create" always returns
 worker_pack.adb:13:26: warning: assuming "XQueue_Create" has no effect on global items
 worker_pack.adb:13:26: warning: no Global contract available for "XQueue_Create"
+worker_pack.adb:13:26: warning: no returning annotation available for "XQueue_Create"
 worker_pack.adb:13:85: medium: range check might fail, cannot prove upper bound for Worker_Work'Size
 worker_pack.adb:13:91: info: division check proved (CVC5: 1 VC)
+worker_pack.adb:89:07: info: no contextual analysis of "Worker_Function" (body not seen yet)
+worker_pack.adb:89:07: warning: assuming "Worker_Function" always returns
 worker_pack.adb:89:07: warning: assuming "Worker_Function" has no effect on global items
 worker_pack.adb:89:07: warning: no Global contract available for "Worker_Function"
+worker_pack.adb:89:07: warning: no returning annotation available for "Worker_Function"
+worker_pack.adb:96:07: info: no contextual analysis of "Worker_Function" (body not seen yet)
+worker_pack.adb:96:07: warning: assuming "Worker_Function" always returns
 worker_pack.adb:96:07: warning: assuming "Worker_Function" has no effect on global items
 worker_pack.adb:96:07: warning: no Global contract available for "Worker_Function"
+worker_pack.adb:96:07: warning: no returning annotation available for "Worker_Function"
 worker_pack.ads:35:14: warning: subprogram "Log_Run_Worker" has no effect
 worker_pack.ads:37:14: warning: subprogram "Neo_Pixel_Ring_Worker" has no effect

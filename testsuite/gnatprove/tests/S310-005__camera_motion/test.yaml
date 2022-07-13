@@ -1,6 +1,5 @@
 prove_all:
   steps: 1000
   prover: ["cvc5"]
-  counterexample: False
 large: True
 timeout: 1500

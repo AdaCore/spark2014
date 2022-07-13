@@ -338,6 +338,19 @@ package body Gnat2Why.Decls is
                      Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
+            if Var.Is_Moved_R.Present then
+
+               --  Generate a variable for Is_Moved flag
+
+               Emit
+                 (Th,
+                  New_Global_Ref_Declaration
+                    (Name     => To_Local (Var.Is_Moved_R.Id),
+                     Location => Safe_First_Sloc (E),
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Ref_Type => Get_Typ (Var.Is_Moved_R.Id)));
+            end if;
+
          when UCArray =>
 
             --  Generate a global ref for the content

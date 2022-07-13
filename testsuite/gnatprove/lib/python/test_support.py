@@ -286,7 +286,7 @@ def is_rte_tag(tag):
         "TAG_CHECK",
         "NULL_EXCLUSION",
         "ACCESSIBILITY_CHECK",
-        "MEMORY_LEAK",
+        "RESOURCE_LEAK",
         "DEREFERENCE_CHECK",
         "UU_RESTRICTION",
     )
@@ -450,8 +450,8 @@ def check_marks(strlist):
             return "NULL_EXCLUSION"
         elif "accessibility check" in text:
             return "ACCESSIBILITY_CHECK"
-        elif "memory leak" in text:
-            return "MEMORY_LEAK"
+        elif "resource or memory leak" in text:
+            return "RESOURCE_LEAK"
         elif "dereference check" in text:
             return "DEREFERENCE_CHECK"
         elif "operation on unchecked union type" in text:
@@ -784,6 +784,7 @@ def prove_all(
     codepeer=False,
     ada=default_ada,
     replay=False,
+    warnings="continue",
 ):
     """Call gnatprove with standard options.
 
@@ -793,7 +794,9 @@ def prove_all(
     no_fail and filter_output are passed directly to
     gnatprove().
     """
-    fullopt = ["--warnings=continue", "--output=oneline"]
+    fullopt = ["--output=oneline"]
+    if warnings is not None:
+        fullopt += ["--warnings=%s" % (warnings)]
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
@@ -838,7 +841,7 @@ def prove_all(
         if not counterexample or benchmark_mode():
             fullopt += ["--counterexamples=off"]
         else:
-            fullopt += ["--counterexamples=on"]
+            fullopt += ["--counterexamples=on", "--ce-steps=5000"]
     if check_counterexamples is not None:
         if check_counterexamples:
             fullopt += ["--check-counterexamples=on"]

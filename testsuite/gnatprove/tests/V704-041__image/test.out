@@ -1,0 +1,2 @@
+test.adb:11:19: error: attribute "Image" on non-scalar type is not yet supported
+gnatprove: error during flow analysis and proof

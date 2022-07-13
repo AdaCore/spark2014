@@ -35,6 +35,7 @@ with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 with SPARK_Definition;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
 with Uintp;                       use Uintp;
@@ -1876,6 +1877,30 @@ package body Why.Gen.Records is
                    Typ   => EW_Int_Type));
       end if;
 
+      --  Step 4. Copy the is_moved field if the type has ownership
+
+      if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
+         From_Index := From_Index + 1;
+         From_Root_Aggr (From_Index) :=
+           New_Field_Association
+             (Domain => EW_Term,
+              Field  => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
+              Value  => New_Record_Access
+                (Name  => +R_Ident,
+                 Field => +E_Symb (Root, WNE_Is_Moved_Field),
+                 Typ   => EW_Bool_Type));
+
+         To_Index := To_Index + 1;
+         To_Root_Aggr (To_Index) :=
+           New_Field_Association
+             (Domain => EW_Term,
+              Field  => +E_Symb (Root, WNE_Is_Moved_Field),
+              Value  => New_Record_Access
+                (Name  => +A_Ident,
+                 Field => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
+                 Typ   => EW_Bool_Type));
+      end if;
+
       pragma Assert (To_Root_Aggr'Last = To_Index);
       pragma Assert (From_Root_Aggr'Last = From_Index);
 
@@ -2725,6 +2750,15 @@ package body Why.Gen.Records is
          if Is_Tagged_Type (E) then
             Binders_A (Index_All) :=
               (B_Name => To_Local (E_Symb (E, WNE_Attr_Tag)),
+               others => <>);
+            Index_All := Index_All + 1;
+         end if;
+
+         --  For private types with ownership, add a boolean is_moved flag
+
+         if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
+            Binders_A (Index_All) :=
+              (B_Name => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
                others => <>);
             Index_All := Index_All + 1;
          end if;
@@ -4140,7 +4174,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use a the init wrapper type if needed
+      --  Use the init wrapper type if needed
    begin
       --  Do not emit checks for part of variables or discriminants
 
@@ -4260,7 +4294,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use a the init wrapper type if needed
+      --  Use the init wrapper type if needed
    begin
       return New_Record_Access
         (Ada_Node => Ada_Node,
@@ -4279,7 +4313,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use a the init wrapper type if needed
+      --  Use the init wrapper type if needed
    begin
       return New_Record_Access
         (Ada_Node => Ada_Node,
@@ -4300,7 +4334,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use a the init wrapper type if needed
+      --  Use the init wrapper type if needed
    begin
       return New_Record_Update
         (Ada_Node => Ada_Node,
@@ -4312,6 +4346,47 @@ package body Why.Gen.Records is
                  Value  => Value)),
          Typ      => Get_Type (+Name));
    end New_Fields_Update;
+
+   --------------------------------
+   -- New_Record_Is_Moved_Access --
+   --------------------------------
+
+   function New_Record_Is_Moved_Access
+     (E    : Entity_Id;
+      Name : W_Expr_Id)
+      return W_Expr_Id
+   is
+      Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
+      --  Use the init wrapper type if needed
+   begin
+      return New_Record_Access
+        (Name  => +Name,
+         Field => E_Symb (E, WNE_Is_Moved_Field, Init_Wrapper),
+         Typ   => EW_Bool_Type);
+   end New_Record_Is_Moved_Access;
+
+   --------------------------------
+   -- New_Record_Is_Moved_Update --
+   --------------------------------
+
+   function New_Record_Is_Moved_Update
+     (E     : Entity_Id;
+      Name  : W_Prog_Id;
+      Value : W_Prog_Id)
+      return W_Prog_Id
+   is
+      Init_Wrapper : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
+      --  Use the init wrapper type if needed
+   begin
+      return New_Record_Update
+        (Name    => Name,
+         Updates =>
+           (1 => New_Field_Association
+                (Domain => EW_Prog,
+                 Field  => E_Symb (E, WNE_Is_Moved_Field, Init_Wrapper),
+                 Value  => +Value)),
+         Typ     => Get_Type (+Name));
+   end New_Record_Is_Moved_Update;
 
    --------------------
    -- New_Tag_Access --
@@ -4543,6 +4618,16 @@ package body Why.Gen.Records is
          Index := Index + 1;
       end if;
 
+      --  Store association for the is_moved flag
+
+      if Has_Ownership_Annotation (Ty) and then Needs_Reclamation (Ty) then
+         Associations (Index) := New_Field_Association
+           (Domain => EW_Term,
+            Field  => E_Symb (Ty, WNE_Is_Moved_Field, Init_Wrapper),
+            Value  => A (Index));
+         Index := Index + 1;
+      end if;
+
       return New_Record_Aggregate
         (Ada_Node     => Ada_Node,
          Associations => Associations,
@@ -4595,6 +4680,17 @@ package body Why.Gen.Records is
 
       if I.Tag.Present then
          Values (Index) := +I.Tag.Id;
+         Index := Index + 1;
+      end if;
+
+      --  Store association for the Is_Moved flag
+
+      if I.Is_Moved_R.Present then
+         if Ref_Allowed then
+            Values (Index) := New_Deref (E, +I.Is_Moved_R.Id, EW_Bool_Type);
+         else
+            Values (Index) := +I.Is_Moved_R.Id;
+         end if;
          Index := Index + 1;
       end if;
 

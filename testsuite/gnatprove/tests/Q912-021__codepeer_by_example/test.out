@@ -7,7 +7,7 @@ assign_all_arr.adb:5:22: high: overflow check might fail [CWE 190], cannot prove
 assign_all_arr_incr.adb:4:21: info: unrolling loop
 assign_all_arr_incr.adb:5:22: high: overflow check might fail [CWE 190], cannot prove upper bound for X (J) + J (e.g. when J = 1 and X = (others => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 assign_all_arr_incr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-assign_all_arr_incr_unk.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + J (e.g. when J = -1 and X = (-1 => Integer'First, others => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 4 should mention X in a loop invariant]
+assign_all_arr_incr_unk.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + J (e.g. when J = -1 and X = (others => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 4 should mention X in a loop invariant]
 assign_arr.adb:4:18: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_arr.ads:3]
 assign_arr.adb:5:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_arr.ads:3]
 assign_arr.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
@@ -30,10 +30,10 @@ bad_assign.adb:3:11: high: overflow check might fail [CWE 190], cannot prove upp
 bad_assign_all_arr.adb:4:21: info: unrolling loop
 bad_assign_all_arr.adb:5:21: high: array index check might fail [CWE 119] (e.g. when J = 10 and X = (others => 0)) [reason for check: result of addition must be a valid index into the array]
 bad_assign_all_arr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-bad_assign_all_arr_unk.adb:5:21: high: array index check might fail [CWE 119] [reason for check: result of addition must be a valid index into the array]
+bad_assign_all_arr_unk.adb:5:21: high: array index check might fail [CWE 119] (e.g. when J = 0 and X'Last = 0) [reason for check: result of addition must be a valid index into the array]
 bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190], cannot prove upper bound for J + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 bad_assign_arr.adb:2:27: medium: "X" might not be initialized in "Bad_Assign_Arr" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-bad_assign_arr.adb:4:07: high: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: add precondition (Y in 1 .. 10) to subprogram at line 2]
+bad_assign_arr.adb:4:07: high: array index check might fail [CWE 119] (e.g. when Y = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (Y in 1 .. 10) to subprogram at line 2]
 bad_assign_arr.adb:5:09: high: array index check might fail [CWE 119] (e.g. when Y = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y <= 10 - 10) to subprogram at line 2]
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC5: 2 VC)
 bad_assign_rec.adb:2:27: high: "X.D.A" is not initialized in "Bad_Assign_Rec" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.D.A" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
@@ -61,9 +61,25 @@ bad_self_assign.adb:4:11: info: overflow check proved (CVC5: 2 VC)
 call_search.adb:3:52: info: initialization of "U" proved
 call_search.adb:3:55: info: initialization of "V" proved
 call_unknown.adb:2:25: info: initialization of "X" proved
+call_unknown.adb:4:04: warning: assuming "Unknown" always returns
+call_unknown.adb:4:04: warning: assuming "Unknown" has no effect on global items
+call_unknown.adb:4:04: warning: no Global contract available for "Unknown"
+call_unknown.adb:4:04: warning: no returning annotation available for "Unknown"
+call_unknown_arr.adb:7:04: warning: assuming "Unknown_Arr" always returns
+call_unknown_arr.adb:7:04: warning: assuming "Unknown_Arr" has no effect on global items
+call_unknown_arr.adb:7:04: warning: no Global contract available for "Unknown_Arr"
+call_unknown_arr.adb:7:04: warning: no returning annotation available for "Unknown_Arr"
 call_unknown_pos.adb:2:29: info: initialization of "X" proved
+call_unknown_pos.adb:4:04: warning: assuming "Unknown" always returns
+call_unknown_pos.adb:4:04: warning: assuming "Unknown" has no effect on global items
+call_unknown_pos.adb:4:04: warning: no Global contract available for "Unknown"
+call_unknown_pos.adb:4:04: warning: no returning annotation available for "Unknown"
 call_unknown_pos.adb:4:13: medium: range check might fail [CWE 682], cannot prove lower bound for X [reason for check: output value must fit in argument type] [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:2:29: info: initialization of "X" proved
+call_unknown_rel.adb:4:04: warning: assuming "Unknown" always returns
+call_unknown_rel.adb:4:04: warning: assuming "Unknown" has no effect on global items
+call_unknown_rel.adb:4:04: warning: no Global contract available for "Unknown"
+call_unknown_rel.adb:4:04: warning: no returning annotation available for "Unknown"
 call_unknown_rel.adb:5:19: medium: assertion might fail (e.g. when X = 1 and Y = 0) [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:5:25: medium: overflow check might fail [CWE 190], cannot prove lower bound for 2 * Y (e.g. when Y = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 call_unknown_rel.adb:5:29: info: overflow check proved (CVC5: 2 VC)
@@ -80,7 +96,7 @@ concat.adb:10:10: high: array index check might fail [CWE 119] (e.g. when K = -1
 concat.adb:11:14: medium: overflow check might fail [CWE 190], cannot prove upper bound for K + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 9 should mention K in a loop invariant]
 concat_op.adb:2:37: info: initialization of "Z" proved
 concat_op.adb:4:06: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at line 2 should mention Z'Length or Z'First or Z'Last in a precondition]
-concat_op.adb:4:11: medium: range check might fail [CWE 682], cannot prove upper bound for X & Y (e.g. when X = (Integer'Last => 1) and X'First = Integer'Last and X'Last = Integer'Last and Y = (0 => 1) and Y'First = 0 and Y'Last = 0) [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+concat_op.adb:4:11: medium: range check might fail [CWE 682], cannot prove upper bound for X & Y (e.g. when X = (0 => 1) and X'First = 0 and X'Last = 0 and Y = (0 => 0, others => 1) and Y'First = 0 and Y'Last = Integer'Last) [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 cond_assign.adb:1:24: info: initialization of "X" proved
 cond_assign.adb:4:14: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 1]
 cond_assign.adb:6:14: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at line 1]
@@ -88,6 +104,7 @@ context.adb:3:04: info: initialization of "X" proved
 context.adb:4:14: info: add a contract to analyze it separately from calling contexts
 context.adb:4:14: info: local subprogram "Local" only analyzed in the context of calls
 context.adb:7:25: info: overflow check proved (CVC5: 20 VC), in call inlined at context.adb:12
+context.adb:12:04: info: analyzing call to "Local" in context
 context.adb:12:04: info: in inlined body at line 6
 context.adb:12:04: info: unrolling loop
 filter.adb:5:21: info: unrolling loop
@@ -120,5 +137,6 @@ self_assign.adb:3:11: high: overflow check might fail [CWE 190], cannot prove up
 sum_all_arr.adb:5:21: info: unrolling loop
 sum_all_arr.adb:6:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Sum + X (J) (e.g. when J = 2 and Sum = -1 and X = (2 => Integer'First, others => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 top_down.adb:2:21: info: initialization of "Y" proved
-top_down.adb:6:13: high: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: add precondition (X in 1 .. 10) to subprogram at line 4]
+top_down.adb:4:04: info: no contextual analysis of "Ident" (multiple returns)
+top_down.adb:6:13: high: array index check might fail [CWE 119] (e.g. when X = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (X in 1 .. 10) to subprogram at line 4]
 top_down.adb:13:12: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]

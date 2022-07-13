@@ -23,19 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Utility;        use Flow_Utility;
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with Namet;               use Namet;
-with SPARK_Util.Types;    use SPARK_Util.Types;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Gen.Arrays;      use Why.Gen.Arrays;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Init;        use Why.Gen.Init;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Pointers;    use Why.Gen.Pointers;
-with Why.Gen.Records;     use Why.Gen.Records;
-with Why.Images;          use Why.Images;
-with Why.Inter;           use Why.Inter;
+with Flow_Utility;                use Flow_Utility;
+with Gnat2Why.Util;               use Gnat2Why.Util;
+with Namet;                       use Namet;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
+with SPARK_Util.Types;            use SPARK_Util.Types;
+with Why.Atree.Modules;           use Why.Atree.Modules;
+with Why.Gen.Arrays;              use Why.Gen.Arrays;
+with Why.Gen.Expr;                use Why.Gen.Expr;
+with Why.Gen.Init;                use Why.Gen.Init;
+with Why.Gen.Names;               use Why.Gen.Names;
+with Why.Gen.Pointers;            use Why.Gen.Pointers;
+with Why.Gen.Records;             use Why.Gen.Records;
+with Why.Images;                  use Why.Images;
+with Why.Inter;                   use Why.Inter;
 
 package body Why.Gen.Binders is
 
@@ -475,6 +476,10 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
+                  if B.Is_Moved_R.Present then
+                     Count := Count + 1;
+                  end if;
+
                when Func => raise Program_Error;
             end case;
          end;
@@ -615,6 +620,10 @@ package body Why.Gen.Binders is
 
                if not Only_Variables and then B.Tag.Present then
                   B.Tag.Id := Local_Name (B.Tag.Id);
+               end if;
+
+               if B.Is_Moved_R.Present then
+                  B.Is_Moved_R.Id := Local_Name (B.Is_Moved_R.Id);
                end if;
 
                when Func => raise Program_Error;
@@ -841,6 +850,15 @@ package body Why.Gen.Binders is
                                  A     => Attribute_Tag,
                                  Count => 1,
                                  Typ   => EW_Int_Type));
+            end if;
+
+            if Has_Ownership_Annotation (Ty) and then Needs_Reclamation (Ty)
+            then
+               Result.Is_Moved_R :=
+                 (Present => True,
+                  Id      => Is_Moved_Append
+                    (Base => Name,
+                     Typ  => EW_Bool_Type));
             end if;
 
             return Result;
@@ -1471,6 +1489,13 @@ package body Why.Gen.Binders is
                      Result (Count) :=
                        (B_Name => Cur.Tag.Id,
                         others => <>);
+                     Count := Count + 1;
+                  end if;
+                  if Cur.Is_Moved_R.Present then
+                     Result (Count) :=
+                       (B_Name  => Cur.Is_Moved_R.Id,
+                        Mutable => True,
+                        others  => <>);
                      Count := Count + 1;
                   end if;
 

@@ -22,16 +22,40 @@ p.adb:34:27: error: default initialization cannot depend on variable input "S" (
 p.adb:34:27: error: use instead a constant initialized to the expression with variable input
 p.adb:35:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:35:27: error: use instead a constant initialized to the expression with variable input
+p.adb:43:27: warning: assuming "F5" always returns
+p.adb:43:27: warning: assuming "F5" has no effect on global items
+p.adb:43:27: warning: no Global contract available for "F5"
+p.adb:43:27: warning: no returning annotation available for "F5"
+p.adb:44:27: warning: assuming "F5" always returns
+p.adb:44:27: warning: assuming "F5" has no effect on global items
+p.adb:44:27: warning: no Global contract available for "F5"
+p.adb:44:27: warning: no returning annotation available for "F5"
 p.adb:45:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:45:27: error: use instead a constant initialized to the expression with variable input
+p.adb:45:27: warning: assuming "F5" always returns
+p.adb:45:27: warning: assuming "F5" has no effect on global items
+p.adb:45:27: warning: no Global contract available for "F5"
+p.adb:45:27: warning: no returning annotation available for "F5"
+p.adb:49:27: warning: assuming "F6" always returns
+p.adb:49:27: warning: no returning annotation available for "F6"
+p.adb:50:27: warning: assuming "F6" always returns
+p.adb:50:27: warning: no returning annotation available for "F6"
 p.adb:51:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:51:27: error: use instead a constant initialized to the expression with variable input
+p.adb:51:27: warning: assuming "F6" always returns
+p.adb:51:27: warning: no returning annotation available for "F6"
 p.adb:56:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:56:27: error: use instead a constant initialized to the expression with variable input
+p.adb:56:27: warning: assuming "F7" always returns
+p.adb:56:27: warning: no returning annotation available for "F7"
 p.adb:57:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:57:27: error: use instead a constant initialized to the expression with variable input
+p.adb:57:27: warning: assuming "F7" always returns
+p.adb:57:27: warning: no returning annotation available for "F7"
 p.adb:58:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:58:27: error: use instead a constant initialized to the expression with variable input
+p.adb:58:27: warning: assuming "F7" always returns
+p.adb:58:27: warning: no returning annotation available for "F7"
 p.adb:99:07: info: initialization of "X" proved
 p.adb:122:13: info: initialization of "Q" proved
 p.ads:25:25: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))

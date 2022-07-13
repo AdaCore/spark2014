@@ -2,6 +2,7 @@ init_inline.adb:1:24: info: initialization of "Y" proved
 init_inline.adb:8:14: info: add a contract to analyze it separately from calling contexts
 init_inline.adb:8:14: info: local subprogram "Local" only analyzed in the context of calls
 init_inline.adb:13:04: high: "X.C" is not initialized
+init_inline.adb:13:04: info: analyzing call to "Local" in context
 test.adb:6:14: info: add a contract to analyze it separately from calling contexts
 test.adb:6:14: info: local subprogram "May_Fail" only analyzed in the context of calls
 test.adb:6:37: info: initialization of "Success" proved
@@ -11,4 +12,7 @@ test.adb:16:14: info: add a contract to analyze it separately from calling conte
 test.adb:16:14: info: local subprogram "Test2" only analyzed in the context of calls
 test.adb:18:07: medium: "Done" might not be initialized in "Test2" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Done" on all paths or make "Done" an IN OUT parameter]
 test.adb:19:07: info: initialization of "Success" proved
+test.adb:22:07: info: analyzing call to "May_Fail" in context
+test.adb:25:18: info: analyzing call to "Test_Smthng" in context
+test.adb:33:07: info: analyzing call to "Test2" in context
 test.ads:6:34: info: initialization of "Success" proved

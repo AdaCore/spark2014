@@ -21,9 +21,15 @@ test.adb:59:14: info: add a contract to analyze it separately from calling conte
 test.adb:59:14: info: local subprogram "Stuff4" only analyzed in the context of calls
 test.adb:60:22: info: initialization of "Y" proved
 test.adb:76:16: high: formal parameter "C" and global "Glob1" are aliased (SPARK RM 6.4.2)
+test.adb:78:04: info: analyzing call to "Stuff2" in context
 test.adb:79:31: high: formal parameters "B" and "C" are aliased (SPARK RM 6.4.2)
+test.adb:82:04: info: analyzing call to "Stuff3" in context
 test.adb:82:17: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
+test.adb:85:04: info: analyzing call to "Stuff3" in context
 test.adb:85:18: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
+test.adb:88:04: info: analyzing call to "Stuff4" in context
 test.adb:88:25: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
+test.adb:91:04: info: analyzing call to "Stuff3" in context
 test.adb:91:25: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
+test.adb:94:04: info: analyzing call to "Stuff2" in context
 types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Right.Field >= 0 then Left.Field >= Integer'First + Right.Field else Left.Field <= Integer'Last + Right.Field) to subprogram at line 12]

@@ -10,20 +10,26 @@ test_alias.adb:33:14: error: borrow of an access-to-constant part of an object i
 test_alias.adb:33:14: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:44:14: error: access-to-constant part of an object as source of move is not allowed in SPARK
 test_alias.adb:44:14: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:63:04: warning: assuming "Init" always returns
+test_alias.adb:63:04: warning: no returning annotation available for "Init"
 test_alias.adb:65:04: error: assignment into an access-to-constant part of an object is not allowed in SPARK
 test_alias.adb:65:04: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:67:04: info: no contextual analysis of "Do_Something_1" (body not seen yet)
 test_alias.adb:67:20: error: access-to-constant part of an object as "in out" parameter is not allowed in SPARK
 test_alias.adb:67:20: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:67:20: warning: "Y" may be null
 test_alias.adb:69:20: error: access-to-constant part of an object as "in" parameter of an access-to-variable type is not allowed in SPARK
 test_alias.adb:69:20: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:71:20: error: access-to-constant part of an object as source of move is not allowed in SPARK
 test_alias.adb:71:20: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:71:20: warning: "H_2" may be null
 test_alias.adb:75:30: error: borrow of an access-to-constant part of an object is not allowed in SPARK
 test_alias.adb:75:30: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:77:30: error: borrow of an access-to-constant part of an object is not allowed in SPARK
 test_alias.adb:77:30: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:79:30: error: borrow of an access-to-constant part of an object is not allowed in SPARK
 test_alias.adb:79:30: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:79:52: warning: "H" may be null
 test_alias.adb:82:07: error: "B1" is not allowed in SPARK (due to borrow of an access-to-constant part of an object)
 test_alias.adb:82:07: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:85:12: error: borrow of an access-to-constant part of an object is not allowed in SPARK

@@ -3,4 +3,3 @@ prove_all:
   opt: ["-u", "binary_search.adb"]
   prover: ["altergo"]
   steps: 6000
-  counterexample: False

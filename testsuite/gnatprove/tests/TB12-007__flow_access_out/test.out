@@ -1,2 +1,8 @@
 connect.adb:4:09: info: flow dependencies proved
+connect.adb:7:04: warning: assuming "Send_Segment" always returns
+connect.adb:7:04: warning: no returning annotation available for "Send_Segment"
 connect2.adb:4:09: info: flow dependencies proved
+connect2.adb:7:04: warning: assuming "Send_Segment2" always returns
+connect2.adb:7:04: warning: assuming "Send_Segment2" has no effect on global items
+connect2.adb:7:04: warning: no Global contract available for "Send_Segment2"
+connect2.adb:7:04: warning: no returning annotation available for "Send_Segment2"

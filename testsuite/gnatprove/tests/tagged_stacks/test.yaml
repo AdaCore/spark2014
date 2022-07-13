@@ -1,5 +1,4 @@
 prove_all:
   no_fail: True
-  counterexample: False
   steps: 6000
 large: True

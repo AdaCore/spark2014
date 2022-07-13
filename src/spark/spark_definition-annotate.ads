@@ -148,6 +148,47 @@ package SPARK_Definition.Annotate is
    --  then all the subprograms declared in this package are assumed to
    --  terminate.
 
+   --  A pragma Annotate for ownership can be applied either on a type or a
+   --  function. On a type, it has the following form:
+   --    pragma Annotate
+   --        (GNATprove, Ownership, ["Needs_Reclamation",] Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Ownership           is a fixed identifier
+   --    Needs_Reclamation   is a fixed string
+   --    E                   is a type entity
+
+   --  and E shall be a private type (tagged or not, but not a private
+   --  extension) whose full view is in a part annotated with
+   --  SPARK_Mode => Off.
+
+   --  When such an annotation is provided for a type E, it is treated by the
+   --  SPARK tool as if it contained a subcomponent of an access-to-variable
+   --  type. If Needs_Reclamation is supplied, a check will be emitted to make
+   --  sure that no values are left unreclaimed.
+   --
+   --  On a function, it has one of the following forms:
+   --    pragma Annotate
+   --        (GNATprove, Ownership, "Is_Reclaimed", Entity => E);
+   --    pragma Annotate
+   --        (GNATprove, Ownership, "Needs_Reclamation", Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Ownership           is a fixed identifier
+   --    Is_Reclaimed        is a string
+   --    Needs_Reclamation   is a string
+   --    E                   is a function entity
+
+   --  and E shall have a single parameter of a type annotated with ownership
+   --  that needs reclamation and shall return a boolean.
+
+   --  When such an annotation is provided for a function E, this function is
+   --  used when checking reclamation of objects of E's formal parameter type.
+   --  For a given type, there shall not be more than one such function
+   --  provided. If there is none, the reclamation checks will be unprovable.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -254,5 +295,22 @@ package SPARK_Definition.Annotate is
 
    procedure Infer_Inline_Annotation (E : E_Function_Id);
    --  Decide whether pragma Inline_For_Proof can be inferred for E
+
+   function Has_Ownership_Annotation (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return True if E is annotated with ownership
+
+   function Needs_Reclamation (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);
+   --  Return True if E needs checks to ensure that the memory is reclaimed
+
+   procedure Get_Reclamation_Check_Function
+     (E              : Entity_Id;
+      Check_Function : out Entity_Id;
+      Reclaimed      : out Boolean)
+   with Pre => Is_Type (E)
+     and then Has_Ownership_Annotation (E)
+     and then Needs_Reclamation (E);
+   --  Retrieve the check function for a type which needs reclamation if any
 
 end SPARK_Definition.Annotate;

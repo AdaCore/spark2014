@@ -1,5 +1,7 @@
 with Ada.Text_IO;
-procedure Palindrome is
+procedure Palindrome with
+  Annotate => (GNATprove, Might_Not_Return)
+is
 
    function Is_Palindrome (Item : in String) return Boolean is
       Left_Index  : Natural;  -- Two indices mark the beginning and

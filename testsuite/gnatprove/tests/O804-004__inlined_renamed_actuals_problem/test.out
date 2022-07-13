@@ -1,4 +1,5 @@
 inl.adb:15:49: error: subtype constraint cannot depend on variable input "Min" (SPARK RM 4.4(2))
 inl.adb:15:49: error: use instead a constant initialized to the expression with variable input
 inl.adb:22:04: warning: analyzing unreferenced procedure "Call_Clear"
+inl.adb:25:07: info: analyzing call to "Clear_X" in context
 gnatprove: error during flow analysis and proof

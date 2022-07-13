@@ -1,5 +1,11 @@
 add_field.ads:7:07: info: range check proved (CVC5: 2 VC)
 add_field.ads:10:04: info: range check proved (CVC5: 2 VC)
+add_field.ads:14:20: warning: Program_Error will be raised at run time
+add_field.ads:14:20: warning: assuming "Init_Array" always returns
+add_field.ads:14:20: warning: assuming "Init_Array" has no effect on global items
+add_field.ads:14:20: warning: cannot call "Init_Array" before body seen
+add_field.ads:14:20: warning: no Global contract available for "Init_Array"
+add_field.ads:14:20: warning: no returning annotation available for "Init_Array"
 add_field.ads:16:19: info: assertion proved (CVC5: 1 VC)
 add_field.ads:16:46: info: index check proved (CVC5: 2 VC)
 use_var.ads:1:34: info: initial condition proved (CVC5: 1 VC)

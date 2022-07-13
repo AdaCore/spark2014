@@ -3,7 +3,8 @@ vectors.adb:5:14: info: local subprogram "Set_Id" only analyzed in the context o
 vectors.adb:13:14: info: add a contract to analyze it separately from calling contexts
 vectors.adb:13:14: info: local subprogram "Bump_Sig" only analyzed in the context of calls
 vectors.adb:17:38: medium: overflow check might fail, cannot prove upper bound for Container.Sig + 1, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 103 should mention Container in a loop invariant]
-vectors.adb:17:38: medium: overflow check might fail, cannot prove upper bound for Container.Sig + 1, in call inlined at vectors.adb:120 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 116 should mention Container in a loop invariant]
+vectors.adb:17:38: medium: overflow check might fail, cannot prove upper bound for Container.Sig + 1, in call inlined at vectors.adb:120 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => Extended_Index'Last-2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 116 should mention Container in a loop invariant]
+vectors.adb:23:07: info: analyzing call to "Set_Id" in context
 vectors.adb:32:07: info: initialization of "Position" proved
 vectors.adb:37:56: medium: range check might fail, cannot prove lower bound for Container.Last_Index [reason for check: value must fit in component type] [possible fix: add precondition (Container.Last_Index in Index_Type) to subprogram at vectors.ads:21]
 vectors.adb:46:07: info: initialization of "Position" proved
@@ -15,9 +16,11 @@ vectors.adb:103:07: info: cannot unroll loop (too many loop iterations)
 vectors.adb:104:32: info: overflow check proved (CVC5: 2 VC)
 vectors.adb:104:32: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 vectors.adb:107:52: medium: range check might fail, cannot prove upper bound for Container.Last_Index + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 103 should mention Container in a loop invariant]
+vectors.adb:108:07: info: analyzing call to "Bump_Sig" in context
 vectors.adb:115:11: info: range check proved (CVC5: 2 VC)
 vectors.adb:116:07: info: cannot unroll loop (too many loop iterations)
 vectors.adb:117:58: info: overflow check proved (CVC5: 2 VC)
 vectors.adb:117:58: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 vectors.adb:119:52: medium: range check might fail, cannot prove lower bound for Container.Last_Index - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 116 should mention Container in a loop invariant]
+vectors.adb:120:07: info: analyzing call to "Bump_Sig" in context
 vectors.ads:16:27: info: initialization of "Container" proved

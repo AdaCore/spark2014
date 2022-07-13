@@ -35,7 +35,6 @@ with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with GNAT.Strings;              use GNAT.Strings;
-with Interfaces.C_Streams;
 with Platform;                  use Platform;
 with SPARK2014VSN;              use SPARK2014VSN;
 with System.Multiprocessors;
@@ -896,6 +895,10 @@ package body Configuration is
             Long_Switch => "--steps=",
             Initial => Invalid_Steps);
          Define_Switch
+           (Config, CL_Switches.CE_Steps'Access,
+            Long_Switch => "--ce-steps=",
+            Initial => Invalid_Steps);
+         Define_Switch
            (Config,
             CL_Switches.Timeout'Access,
             Long_Switch => "--timeout=");
@@ -1299,7 +1302,7 @@ package body Configuration is
       procedure Set_Report_Mode;
 
       procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
-      --  Using the --level, --timeout, --steps, --provers and
+      --  Using the --level, --timeout, --steps, --provers, --ce-steps and
       --  --counterexamples switches, set the corresponding variables.
 
       procedure Set_Proof_Mode (FS : in out File_Specific);
@@ -1712,11 +1715,10 @@ package body Configuration is
             when others =>
                Abort_Msg ("error: wrong argument for --level",
                           With_Help => False);
-
-               raise Program_Error;
          end case;
 
          FS.Check_Counterexamples := True;
+         FS.CE_Steps := 0;
 
          --  If option --timeout was not provided, keep timeout corresponding
          --  to level switch/default value. Otherwise, take the user-provided
@@ -1758,11 +1760,23 @@ package body Configuration is
             FS.Steps := CL_Switches.Steps;
          end if;
 
-         --  Timeout is fully set now, we can set CE_Timeout. Basically we cap
-         --  the CE_Timeout at Constants.Max_CE_Timeout seconds.
+         if CL_Switches.CE_Steps = Invalid_Steps then
+            null;
+         elsif CL_Switches.CE_Steps < 0 then
+            Abort_Msg ("error: wrong argument for --ce-steps",
+                       With_Help => False);
+         else
+            FS.CE_Steps := CL_Switches.CE_Steps;
+         end if;
+
+         --  Timeout and CE_Steps are fully set now, we can set CE_Timeout.
+         --  When steps are used, set timeout for counterexamples to 0.
+         --  Otherwise, we cap the CE_Timeout at Constants.Max_CE_Timeout
+         --  seconds.
 
          FS.CE_Timeout :=
-           (if FS.Timeout = 0 then Constants.Max_CE_Timeout
+           (if FS.CE_Steps > 0 then 0
+            elsif FS.Timeout = 0 then Constants.Max_CE_Timeout
             else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
 
          Set_Provers (CL_Switches.Prover, FS);
@@ -1862,10 +1876,11 @@ package body Configuration is
 
          if Output = GPO_Pretty_Simple then
             declare
-               use Interfaces.C_Streams;
-               TTY_Output : constant Boolean := isatty (fileno (stdout)) /= 0;
+               function Stdout_Set_Colors return Integer;
+               pragma Import (C, Stdout_Set_Colors, "stdout_set_colors");
+               Colors_Supported : constant Boolean := Stdout_Set_Colors /= 0;
             begin
-               if TTY_Output then
+               if Colors_Supported then
                   Output := GPO_Pretty_Color;
                end if;
             end;
@@ -2238,6 +2253,7 @@ package body Configuration is
          procedure Reset_File_Specific_Switches is
          begin
             CL_Switches.Steps := Invalid_Steps;
+            CL_Switches.CE_Steps := Invalid_Steps;
             CL_Switches.Timeout := null;
             CL_Switches.Memlimit := 0;
             CL_Switches.Proof := null;
@@ -2584,6 +2600,9 @@ package body Configuration is
 
       Args.Append ("--steps");
       Args.Append (Image (FS.Steps, 1));
+
+      Args.Append ("--ce-steps");
+      Args.Append (Image (FS.CE_Steps, 1));
 
       Args.Append ("--memlimit");
       Args.Append (Image (FS.Memlimit, 1));

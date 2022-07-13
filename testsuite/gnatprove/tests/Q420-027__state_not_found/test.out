@@ -1,1 +1,5 @@
 main.adb:8:09: info: precondition proved (Trivial: 1 VC)
+main.adb:8:09: warning: assuming "Test" always returns
+main.adb:8:09: warning: assuming "Test" has no effect on global items
+main.adb:8:09: warning: no Global contract available for "Test"
+main.adb:8:09: warning: no returning annotation available for "Test"

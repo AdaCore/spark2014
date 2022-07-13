@@ -82,18 +82,30 @@ heatingsystem_dfa.adb:93:07: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:93:07: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:94:07: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:94:07: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:101:13: info: analyzing call to "AddOffset" in context
+heatingsystem_dfa.adb:105:13: info: analyzing call to "CheckAdvanceButton" in context
+heatingsystem_dfa.adb:106:13: info: analyzing call to "AddOffset" in context
 heatingsystem_dfa.adb:109:32: info: index check proved (CVC5: 2 VC), in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:110:13: info: analyzing call to "CheckAdvanceButton" in context
 heatingsystem_dfa.adb:111:23: info: index check proved (CVC5: 2 VC), in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:114:07: info: analyzing call to "UpdateDisplay" in context
 heatingsystem_dfa.adb:119:07: info: initialization of "MayOperate" proved
 heatingsystem_dfa.adb:120:07: info: initialization of "AboveTemp" proved
 heatingsystem_dfa.adb:121:07: info: initialization of "CurrentTime" proved
 heatingsystem_dfa.adb:122:07: info: initialization of "ModeSetting" proved
+heatingsystem_dfa.adb:124:07: info: no contextual analysis of "CheckModeSwitch" (nested subprogram)
 heatingsystem_dfa.adb:124:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:124:17: info: local subprogram "TurnOn" only analyzed in the context of calls
 heatingsystem_dfa.adb:133:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:133:17: info: local subprogram "TurnOff" only analyzed in the context of calls
 heatingsystem_dfa.adb:150:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:150:17: info: local subprogram "OperateIfNeeded" only analyzed in the context of calls
+heatingsystem_dfa.adb:156:16: info: analyzing call to "TurnOff" in context
+heatingsystem_dfa.adb:158:16: info: analyzing call to "TurnOn" in context
+heatingsystem_dfa.adb:162:13: info: analyzing call to "TurnOff" in context
+heatingsystem_dfa.adb:169:07: info: analyzing call to "AddOffset" in context
+heatingsystem_dfa.adb:185:07: info: analyzing call to "OperateIfNeeded" in context
+heatingsystem_dfa.adb:200:07: info: analyzing call to "CheckProgramSwitch" in context
 indicator.adb:10:11: warning: make sure that all overlapping objects have Async_Writers set to True
 indicator.adb:10:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
 modeswitch.ads:5:20: info: initialization of "Value" proved

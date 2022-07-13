@@ -1,0 +1,219 @@
+private_tagged.ads:18:59: info: precondition proved (CVC5: 1 VC)
+test_borrow.adb:7:06: info: data dependencies proved
+test_borrow.adb:10:07: info: initialization of "B" proved
+test_borrow.adb:11:07: info: initialization of "C" proved
+test_borrow.adb:16:29: error: "B" is not readable
+test_borrow.adb:16:29: error: object was moved at line 15
+test_borrow.adb:19:06: info: data dependencies proved
+test_borrow.adb:27:07: info: initialization of "B" proved
+test_borrow.adb:33:30: error: object was moved at line 32
+test_borrow.adb:33:30: error: part of "B" is not readable
+test_borrow.adb:36:06: info: data dependencies proved
+test_borrow.adb:39:07: info: initialization of "B" proved
+test_borrow.adb:40:07: info: initialization of "C" proved
+test_borrow.adb:45:29: error: "B" is not readable
+test_borrow.adb:45:29: error: object was moved at line 44
+test_borrow.adb:48:06: info: data dependencies proved
+test_borrow.adb:51:07: info: initialization of "B" proved
+test_borrow.adb:52:07: info: initialization of "C" proved
+test_borrow.adb:57:29: error: "B" is not readable
+test_borrow.adb:57:29: error: object was moved at line 56
+test_borrow.adb:60:06: info: data dependencies proved
+test_borrow.adb:63:07: info: initialization of "B" proved
+test_borrow.adb:64:07: info: initialization of "C" proved
+test_borrow.adb:69:29: error: "B" is not readable
+test_borrow.adb:69:29: error: object was moved at line 68
+test_borrow.adb:72:06: info: data dependencies proved
+test_borrow.adb:79:07: info: initialization of "B" proved
+test_borrow.adb:85:30: error: object was moved at line 84
+test_borrow.adb:85:30: error: part of "B" is not readable
+test_move.adb:30:06: info: data dependencies proved
+test_move.adb:41:07: info: initialization of "X" proved
+test_move.adb:46:31: error: "X" is not readable
+test_move.adb:46:31: error: object was moved at line 42
+test_move.adb:54:31: error: "X" is not readable
+test_move.adb:54:31: error: object was moved at line 42
+test_move.adb:56:31: error: "Y" is not readable
+test_move.adb:56:31: error: object was moved at line 51
+test_move.adb:64:31: error: "Y" is not readable
+test_move.adb:64:31: error: object was moved at line 51
+test_move.adb:69:06: info: data dependencies proved
+test_move.adb:80:07: info: initialization of "X" proved
+test_move.adb:85:31: error: "X" is not readable
+test_move.adb:85:31: error: object was moved at line 81
+test_move.adb:93:31: error: "X" is not readable
+test_move.adb:93:31: error: object was moved at line 81
+test_move.adb:95:31: error: "Y" is not readable
+test_move.adb:95:31: error: object was moved at line 90
+test_move.adb:103:31: error: "Y" is not readable
+test_move.adb:103:31: error: object was moved at line 90
+test_move.adb:108:06: info: data dependencies proved
+test_move.adb:124:07: info: initialization of "X" proved
+test_move.adb:136:31: error: "X" is not readable
+test_move.adb:136:31: error: object was moved at line 125
+test_move.adb:146:31: error: "X" is not readable
+test_move.adb:146:31: error: object was moved at line 125
+test_move.adb:150:31: error: "Y" is not readable
+test_move.adb:150:31: error: object was moved at line 141
+test_move.adb:160:31: error: "Y" is not readable
+test_move.adb:160:31: error: object was moved at line 141
+test_ownership_annotation.adb:11:06: info: data dependencies proved
+test_ownership_annotation.adb:31:07: info: initialization of "A" proved
+test_ownership_annotation.adb:32:07: info: initialization of "B" proved
+test_ownership_annotation.adb:33:07: info: initialization of "C" proved
+test_ownership_annotation.adb:34:07: info: initialization of "D" proved
+test_ownership_annotation.adb:35:07: info: initialization of "E" proved
+test_ownership_annotation.adb:50:06: info: data dependencies proved
+test_ownership_annotation.adb:53:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:70:07: info: initialization of "A" proved
+test_ownership_annotation.adb:70:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:71:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:71:07: info: initialization of "B" proved
+test_ownership_annotation.adb:72:07: info: initialization of "C" proved
+test_ownership_annotation.adb:72:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:73:07: info: initialization of "D" proved
+test_ownership_annotation.adb:73:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:74:07: info: initialization of "E" proved
+test_ownership_annotation.adb:74:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:76:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:77:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:78:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:79:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:81:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:83:11: medium: resource or memory leak might occur [possible fix: call at line 82 should mention X (for argument D) in a postcondition]
+test_ownership_annotation.adb:85:07: medium: resource or memory leak might occur
+test_ownership_annotation.adb:89:06: info: data dependencies proved
+test_ownership_annotation.adb:92:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:109:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:109:07: info: initialization of "A" proved
+test_ownership_annotation.adb:110:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:110:07: info: initialization of "B" proved
+test_ownership_annotation.adb:111:07: info: initialization of "C" proved
+test_ownership_annotation.adb:111:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:112:07: info: initialization of "D" proved
+test_ownership_annotation.adb:112:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:113:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:113:07: info: initialization of "E" proved
+test_ownership_annotation.adb:115:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:116:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:117:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:118:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:120:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:122:11: medium: resource or memory leak might occur [possible fix: call at line 121 should mention X (for argument D) in a postcondition]
+test_ownership_annotation.adb:124:07: medium: resource or memory leak might occur
+test_ownership_annotation.adb:128:06: info: data dependencies proved
+test_ownership_annotation.adb:134:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:151:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:151:07: info: initialization of "A" proved
+test_ownership_annotation.adb:152:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:152:07: info: initialization of "B" proved
+test_ownership_annotation.adb:153:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:154:07: info: initialization of "D" proved
+test_ownership_annotation.adb:154:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:155:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:157:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:158:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:159:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:160:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:162:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:164:11: medium: resource or memory leak might occur [possible fix: call at line 163 should mention X (for argument D) in a postcondition]
+test_ownership_annotation.adb:166:07: medium: resource or memory leak might occur
+test_ownership_annotation.adb:170:06: info: data dependencies proved
+test_ownership_annotation.adb:173:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:190:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:190:07: info: initialization of "A" proved
+test_ownership_annotation.adb:191:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:191:07: info: initialization of "B" proved
+test_ownership_annotation.adb:192:07: info: initialization of "C" proved
+test_ownership_annotation.adb:192:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:193:07: info: initialization of "D" proved
+test_ownership_annotation.adb:193:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:194:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:194:07: info: initialization of "E" proved
+test_ownership_annotation.adb:196:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:196:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_ownership_annotation.adb:197:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:197:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_ownership_annotation.adb:198:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:198:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_ownership_annotation.adb:199:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:199:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_ownership_annotation.adb:201:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_ownership_annotation.adb:201:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:203:11: medium: resource or memory leak might occur [possible fix: call at line 202 should mention X (for argument D) in a postcondition]
+test_ownership_annotation.adb:205:07: medium: resource or memory leak might occur
+test_ownership_annotation.adb:209:06: info: data dependencies proved
+test_ownership_annotation.adb:212:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:229:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:229:07: info: initialization of "A" proved
+test_ownership_annotation.adb:230:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:230:07: info: initialization of "B" proved
+test_ownership_annotation.adb:231:07: info: initialization of "C" proved
+test_ownership_annotation.adb:231:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:232:07: info: initialization of "D" proved
+test_ownership_annotation.adb:232:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:233:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:233:07: info: initialization of "E" proved
+test_ownership_annotation.adb:235:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:236:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:237:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:238:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:240:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:242:11: medium: resource or memory leak might occur [possible fix: call at line 241 should mention X (for argument D) in a postcondition]
+test_ownership_annotation.adb:244:07: medium: resource or memory leak might occur
+test_ownership_annotation.adb:248:06: info: data dependencies proved
+test_ownership_annotation.adb:252:65: info: precondition proved (CVC5: 1 VC)
+test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:273
+test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:274
+test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:275
+test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:276
+test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:277
+test_ownership_annotation.adb:254:10: info: predicate check proved on default value (CVC5: 1 VC)
+test_ownership_annotation.adb:254:10: info: predicate check proved on default value (CVC5: 1 VC)
+test_ownership_annotation.adb:254:10: info: predicate check proved on default value (CVC5: 1 VC)
+test_ownership_annotation.adb:254:10: info: predicate check proved on default value (CVC5: 1 VC)
+test_ownership_annotation.adb:254:10: info: predicate check proved on default value (CVC5: 1 VC)
+test_ownership_annotation.adb:256:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:256:27: info: predicate check proved (CVC5: 1 VC)
+test_ownership_annotation.adb:273:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:273:07: info: initialization of "A" proved
+test_ownership_annotation.adb:274:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:274:07: info: initialization of "B" proved
+test_ownership_annotation.adb:275:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:276:07: info: initialization of "D" proved
+test_ownership_annotation.adb:276:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:277:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:279:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:279:14: info: predicate check proved (CVC5: 1 VC)
+test_ownership_annotation.adb:280:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:280:14: info: predicate check proved (CVC5: 1 VC)
+test_ownership_annotation.adb:281:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:281:14: info: predicate check proved (CVC5: 1 VC)
+test_ownership_annotation.adb:282:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:282:14: info: predicate check proved (CVC5: 1 VC)
+test_ownership_annotation.adb:283:20: info: predicate check proved (CVC5: 1 VC)
+test_ownership_annotation.adb:284:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:286:11: medium: resource or memory leak might occur [possible fix: call at line 285 should mention X (for argument D) in a postcondition]
+test_ownership_annotation.adb:288:07: medium: resource or memory leak might occur
+test_ownership_annotation.adb:292:06: info: data dependencies proved
+test_ownership_annotation.adb:299:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:306:06: info: data dependencies proved
+test_ownership_annotation.adb:308:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:325:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:325:07: info: initialization of "A" proved
+test_ownership_annotation.adb:326:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:326:07: info: initialization of "B" proved
+test_ownership_annotation.adb:327:07: info: initialization of "C" proved
+test_ownership_annotation.adb:327:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:328:07: info: initialization of "D" proved
+test_ownership_annotation.adb:328:07: medium: resource or memory leak might occur at end of scope
+test_ownership_annotation.adb:329:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:329:07: info: initialization of "E" proved
+test_ownership_annotation.adb:331:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:332:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:333:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:334:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ownership_annotation.adb:336:09: medium: resource or memory leak might occur
+test_ownership_annotation.adb:338:11: medium: resource or memory leak might occur [possible fix: call at line 337 should mention X (for argument D) in a postcondition]
+test_ownership_annotation.adb:340:07: medium: resource or memory leak might occur
+gnatprove: error during flow analysis and proof

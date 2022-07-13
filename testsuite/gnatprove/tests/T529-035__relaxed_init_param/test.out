@@ -1,3 +1,7 @@
 a.adb:13:07: info: precondition proved (CVC5: 1 VC)
+a.adb:13:07: warning: assuming "Tcp_Read_Rx_Buffer" always returns
+a.adb:13:07: warning: assuming "Tcp_Read_Rx_Buffer" has no effect on global items
+a.adb:13:07: warning: no Global contract available for "Tcp_Read_Rx_Buffer"
+a.adb:13:07: warning: no returning annotation available for "Tcp_Read_Rx_Buffer"
 a.adb:13:26: info: initialization check proved (Trivial: 1 VC; Z3: 1 VC)
 a.ads:5:27: info: initialization of "Data" proved

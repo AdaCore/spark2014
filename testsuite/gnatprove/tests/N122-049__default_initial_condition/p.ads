@@ -55,17 +55,23 @@ is
    --  Case 10 - visible:predicate, completion: none
    type T10 is private
      with Default_Initial_Condition => P10 (T10);
-   function P10 (X : in T10) return Boolean;
+   function P10 (X : in T10) return Boolean with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    --  Case 11 - visible:predicate, completion: partial
    type T11 is private
      with Default_Initial_Condition => P11 (T11);
-   function P11 (X : in T11) return Boolean;
+   function P11 (X : in T11) return Boolean with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    --  Case 12 - visible:predicate, completion: full
    type T12 is private
      with Default_Initial_Condition => P12 (T12);
-   function P12 (X : in T12) return Boolean;
+   function P12 (X : in T12) return Boolean with
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
 
 

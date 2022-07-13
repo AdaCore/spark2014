@@ -1,4 +1,4 @@
-indirect.adb:10:19: medium: assertion might fail
+indirect.adb:10:19: medium: assertion might fail (e.g. when X = False) [possible fix: add or complete related loop invariants or postconditions]
 indirect.ads:4:04: info: initialization of "X" proved
 indirect.ads:5:14: warning: subprogram "Proc" has no effect
 p.ads:7:20: info: postcondition proved (CVC5: 2 VC)

@@ -34,6 +34,7 @@ test_loops.adb:71:35: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:71:35: warning: statement has no effect
 test_loops.adb:72:16: info: index check proved (CVC5: 2 VC)
 test_loops.adb:72:22: warning: unused assignment
+test_loops.adb:74:07: info: analyzing call to "Init_First" in context
 test_loops.adb:74:39: info: index check proved (CVC5: 2 VC)
 test_loops.adb:75:27: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:76:10: info: precondition proved (CVC5: 2 VC)
@@ -49,6 +50,7 @@ test_loops.adb:87:24: info: initialization of "X" proved
 test_loops.adb:91:41: info: range check proved (CVC5: 2 VC)
 test_loops.adb:94:17: info: postcondition proved (CVC5: 3 VC; Trivial: 12 VC; Z3: 3 VC)
 test_loops.adb:99:10: info: precondition proved (CVC5: 2 VC)
+test_loops.adb:101:10: info: analyzing call to "Init_First" in context
 test_loops.adb:101:42: info: index check proved (CVC5: 2 VC)
 test_loops.adb:103:13: info: precondition proved (CVC5: 4 VC)
 test_loops.adb:103:37: info: range check proved (CVC5: 2 VC)
@@ -126,7 +128,7 @@ test_loops_2.adb:120:69: info: index check proved (CVC5: 4 VC)
 test_loops_2.adb:123:13: info: precondition proved (CVC5: 4 VC)
 test_loops_2.adb:123:28: info: index check proved (CVC5: 4 VC)
 test_loops_2.adb:124:36: info: loop invariant initialization proved (CVC5: 2 VC)
-test_loops_2.adb:124:36: info: loop invariant preservation proved (Z3: 2 VC)
+test_loops_2.adb:124:36: info: loop invariant preservation proved (CVC5: 2 VC)
 test_loops_2.adb:124:69: info: index check proved (CVC5: 4 VC)
 test_loops_2.adb:124:97: info: index check proved (CVC5: 4 VC)
 test_loops_2.adb:125:36: info: loop invariant initialization proved (CVC5: 1 VC)

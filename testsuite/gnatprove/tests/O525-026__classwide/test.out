@@ -1,16 +1,21 @@
-a-cfinve.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:781:38: info: range check proved (CVC5: 2 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:818:35: info: range check proved (CVC5: 2 VC), in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:108, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:108, in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:41:18: info: subprogram "Oeqr" will terminate, terminating annotation has been proved, in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:317:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:318:08: info: dynamic accessibility check proved (Trivial), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:322:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:324:08: info: dynamic accessibility check proved (Trivial), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:343:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:343:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:652:57: info: range check proved (CVC5: 2 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:780:23: info: precondition proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:783:38: info: range check proved (CVC5: 2 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:816:14: info: precondition proved (CVC5: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:820:35: info: range check proved (CVC5: 2 VC), in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfinve.ads:110, in instantiation at objt_types_jauge.ads:20

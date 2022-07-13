@@ -73,11 +73,6 @@ package CE_Utils is
    --  4554. Otherwise, convert a string of the form "4554".
    --  Return the empty entity if not of the given form.
 
-   function Is_Nul_Counterexample
-     (Cntexmp : Cntexample_File_Maps.Map) return Boolean;
-   --  Determine whether Cntexmp is a "nul" counterexample, where all values
-   --  are nul, which is characterisic of a spurious counterexample.
-
    function Is_Visible_In_Type (Rec  : Entity_Id;
                                 Comp : Entity_Id)
                                 return Boolean

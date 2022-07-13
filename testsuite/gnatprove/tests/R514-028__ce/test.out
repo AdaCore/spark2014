@@ -1,1 +1,1 @@
-saturation.adb:11:23: high: postcondition might fail (e.g. when Val = (Value => 49152, Upper_Bound => 49152) and Val'Old = (Value => 8191, Upper_Bound => 49152))
+saturation.adb:11:23: high: postcondition might fail (e.g. when Val = (Value => 32769, Upper_Bound => 32769) and Val'Old = (Value => 32767, Upper_Bound => 32769))

@@ -3,7 +3,8 @@ package Simple_Abstract_State
                                        -- representing internal state of the package.
 is
    function Is_Ready return Boolean    -- Function checking some property of the State.
-     with Global => State;             -- State may be used in a Global aspect.
+     with Global   => State,           -- State may be used in a Global aspect.
+          Annotate => (GNATprove, Always_Return);
 
    procedure Init                      -- Procedure to initialize the internal state of the package.
      with Global => (Output => State), -- State may be used in a Global aspect.

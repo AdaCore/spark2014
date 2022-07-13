@@ -1,21 +1,65 @@
 test_callback.adb:9:18: info: cannot unroll loop (too many loop iterations)
 test_callback.adb:10:10: info: pointer dereference check proved (CVC5: 1 VC)
+test_callback.adb:19:14: warning: assuming "Relation" always returns
+test_callback.adb:19:14: warning: assuming "Relation" has no effect on global items
+test_callback.adb:19:14: warning: no Global contract available for "Relation"
+test_callback.adb:19:14: warning: no returning annotation available for "Relation"
 test_callback.adb:23:34: info: null exclusion check proved (Trivial: 1 VC)
+test_callback.adb:27:14: warning: assuming "In_Range" always returns
+test_callback.adb:27:14: warning: assuming "In_Range" has no effect on global items
+test_callback.adb:27:14: warning: no Global contract available for "In_Range"
+test_callback.adb:27:14: warning: no returning annotation available for "In_Range"
+test_callback.adb:28:14: warning: assuming "Relation" always returns
+test_callback.adb:28:14: warning: assuming "Relation" has no effect on global items
+test_callback.adb:28:14: warning: no Global contract available for "Relation"
+test_callback.adb:28:14: warning: no returning annotation available for "Relation"
 test_callback.adb:32:22: medium: precondition of target might not be strong enough to imply precondition of source
 test_callback.adb:32:34: info: null exclusion check proved (Trivial: 1 VC)
+test_callback.adb:36:14: warning: assuming "In_Range" always returns
+test_callback.adb:36:14: warning: assuming "In_Range" has no effect on global items
+test_callback.adb:36:14: warning: no Global contract available for "In_Range"
+test_callback.adb:36:14: warning: no returning annotation available for "In_Range"
+test_callback.adb:37:14: warning: assuming "Relation" always returns
+test_callback.adb:37:14: warning: assuming "Relation" has no effect on global items
+test_callback.adb:37:14: warning: no Global contract available for "Relation"
+test_callback.adb:37:14: warning: no returning annotation available for "Relation"
+test_callback.adb:42:36: warning: assuming "In_Range" always returns
+test_callback.adb:42:36: warning: assuming "In_Range" has no effect on global items
+test_callback.adb:42:36: warning: no Global contract available for "In_Range"
+test_callback.adb:42:36: warning: no returning annotation available for "In_Range"
 test_callback.adb:43:17: info: postcondition proved (CVC5: 1 VC)
+test_callback.adb:43:42: warning: assuming "Relation" always returns
+test_callback.adb:43:42: warning: assuming "Relation" has no effect on global items
+test_callback.adb:43:42: warning: no Global contract available for "Relation"
+test_callback.adb:43:42: warning: no returning annotation available for "Relation"
 test_callback.adb:43:59: info: index check proved (CVC5: 2 VC)
 test_callback.adb:43:66: info: index check proved (CVC5: 2 VC)
 test_callback.adb:47:10: info: pointer dereference check proved (CVC5: 2 VC)
 test_callback.adb:47:10: info: precondition proved (CVC5: 2 VC)
 test_callback.adb:49:13: info: loop invariant initialization proved (CVC5: 1 VC)
 test_callback.adb:49:13: info: loop invariant preservation proved (CVC5: 1 VC)
+test_callback.adb:49:42: warning: assuming "Relation" always returns
+test_callback.adb:49:42: warning: assuming "Relation" has no effect on global items
+test_callback.adb:49:42: warning: no Global contract available for "Relation"
+test_callback.adb:49:42: warning: no returning annotation available for "Relation"
 test_callback.adb:49:66: info: index check proved (CVC5: 4 VC)
 test_callback.adb:49:73: info: index check proved (CVC5: 4 VC)
+test_callback.adb:53:75: warning: assuming "In_Range" always returns
+test_callback.adb:53:75: warning: assuming "In_Range" has no effect on global items
+test_callback.adb:53:75: warning: no Global contract available for "In_Range"
+test_callback.adb:53:75: warning: no returning annotation available for "In_Range"
 test_callback.adb:55:07: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:55:24: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
 test_callback.adb:55:24: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:55:36: info: null exclusion check proved (Trivial: 1 VC)
+test_callback.adb:59:14: warning: assuming "In_Range" always returns
+test_callback.adb:59:14: warning: assuming "In_Range" has no effect on global items
+test_callback.adb:59:14: warning: no Global contract available for "In_Range"
+test_callback.adb:59:14: warning: no returning annotation available for "In_Range"
+test_callback.adb:61:75: warning: assuming "In_Range" always returns
+test_callback.adb:61:75: warning: assuming "In_Range" has no effect on global items
+test_callback.adb:61:75: warning: no Global contract available for "In_Range"
+test_callback.adb:61:75: warning: no returning annotation available for "In_Range"
 test_callback.adb:63:07: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:63:24: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:63:24: medium: postcondition of source might not be strong enough to imply postcondition of target

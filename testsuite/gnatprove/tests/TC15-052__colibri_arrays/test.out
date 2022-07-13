@@ -1,5 +1,9 @@
 p_colibri.ads:11:31: info: division check proved (colibri: 1 VC)
 p_colibri.ads:11:31: info: float overflow check proved (colibri: 1 VC)
+p_colibri.ads:13:04: info: analyzing call to "Log2_Estimate" in context
+p_colibri.ads:13:04: info: analyzing call to "Minus_Log2_Estimate" in context
+p_colibri.ads:13:04: info: in instantiation at a-nbnbre.adb:256
+p_colibri.ads:13:04: info: in instantiation at a-nbnbre.adb:264
 p_colibri.ads:17:27: info: predicate check proved (Trivial: 1 VC)
 p_colibri.ads:17:31: medium: divide by zero might fail [possible fix: subprogram at line 16 should mention n and v in a precondition]
 p_colibri.ads:17:57: info: predicate check proved (Trivial: 1 VC)

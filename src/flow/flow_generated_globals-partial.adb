@@ -166,6 +166,7 @@ package body Flow_Generated_Globals.Partial is
 
       Has_Terminate    : Boolean;
       Has_Subp_Variant : Boolean;
+      No_Body          : Boolean;
       --  Only meaningful for subprograms and entries
 
       Nonreturning       : Boolean;
@@ -545,6 +546,8 @@ package body Flow_Generated_Globals.Partial is
                or else
              (Is_Ignored_Internal (Callee) and then No_Return (Callee))));
 
+      Contr.No_Body := False;
+
       --  Check for potentially blocking statements in bodies of callable
       --  entities, i.e. entries and subprograms. Specs never contain any
       --  statements.
@@ -779,6 +782,8 @@ package body Flow_Generated_Globals.Partial is
          Contr.Nonreturning := Meaningless;
          Contr.Nonblocking  := Meaningless;
       end if;
+
+      Contr.No_Body := Has_No_Body_Yet (E);
 
       return Contr;
    end Preanalyze_Spec;
@@ -2670,6 +2675,7 @@ package body Flow_Generated_Globals.Partial is
 
             Has_Terminate    => Contr.Has_Terminate,
             Has_Subp_Variant => Contr.Has_Subp_Variant,
+            No_Body          => Contr.No_Body,
             Nonreturning     => Contr.Nonreturning,
             Nonblocking      => Contr.Nonblocking,
 

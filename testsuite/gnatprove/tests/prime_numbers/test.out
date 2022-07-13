@@ -18,7 +18,7 @@ prime_and_coprime_numbers.adb:68:18: info: range check proved (CVC5: 2 VC), in i
 prime_and_coprime_numbers.adb:71:25: info: assertion proved (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:79:28: info: precondition proved (CVC5: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:81:13: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:81:13: info: loop invariant preservation proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:81:13: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:82:15: info: justified that "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:82:23: info: index check proved (CVC5: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:87:14: medium: "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -63,7 +63,7 @@ prime_and_coprime_numbers.adb:209:39: medium: range check might fail, cannot pro
 prime_and_coprime_numbers.adb:211:33: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:211:33: medium: loop invariant might not be preserved by an arbitrary iteration, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:13: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:213:13: info: loop invariant preservation proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:213:13: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:56: medium: array index check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6 [reason for check: value must be a valid index into the array]
 prime_and_coprime_numbers.adb:215:13: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:216:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Set.Is_Prime (V) = (for all Div in 2 .. Index_2 - 1 => V mod Div /= 0), in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -76,7 +76,7 @@ prime_and_coprime_numbers.adb:229:19: info: loop invariant initialization proved
 prime_and_coprime_numbers.adb:229:19: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:229:62: info: index check proved (CVC5: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:231:19: info: loop invariant initialization proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:232:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Set.Is_Prime (V) = ((for all Div in 2 .. Index_2 - 1 => V mod Div /= 0) and (if V in Index_2 + 1..Index_3 then V mod Index_2 /= 0 else True)), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:231:19: info: loop invariant preservation proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:232:35: info: index check proved (CVC5: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:233:62: info: division check proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:235:41: info: overflow check proved (CVC5: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -84,9 +84,13 @@ prime_and_coprime_numbers.adb:235:63: info: division check proved (CVC5: 2 VC), 
 prime_and_coprime_numbers.adb:236:39: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:236:39: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:237:39: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:237:39: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:237:39: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:237:47: info: division check proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:239:35: info: overflow check proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:240:31: info: assertion proved (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:240:39: info: division check proved (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:240:62: info: overflow check proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:240:73: info: division check proved (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:8:24: info: initialization of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:9:03: info: flow dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:10:03: info: initial condition proved (CVC5: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -142,5 +146,6 @@ test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" prov
 test_prime_and_coprime_numbers.adb:12:15: info: precondition proved (CVC5: 6 VC; altergo: 1 VC)
 test_prime_and_coprime_numbers.adb:12:15: info: range check proved (CVC5: 2 VC)
 test_prime_and_coprime_numbers.adb:13:17: info: precondition proved (CVC5: 1 VC)
-test_prime_and_coprime_numbers.adb:14:15: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
-test_prime_and_coprime_numbers.adb:14:15: info: range check proved (CVC5: 2 VC)
+test_prime_and_coprime_numbers.adb:14:19: info: assertion proved (CVC5: 1 VC)
+test_prime_and_coprime_numbers.adb:15:15: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
+test_prime_and_coprime_numbers.adb:15:15: info: range check proved (CVC5: 2 VC)

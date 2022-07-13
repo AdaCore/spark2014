@@ -147,12 +147,12 @@ package body Gnat2Why.Expr is
    with Pre => (if Nkind (N) = N_Defining_Identifier then Is_Object (N));
    --  @param Ada_Node location for the generated check
    --  @param N either entity for a local object on which to check absence of
-   --    memory leak at the end of scope, or lvalue of an assignment (which
+   --    resource leak at the end of scope, or lvalue of an assignment (which
    --    includes OUT parameters and actuals of calls to instances of
    --    Ada.Unchecked_Deallocation)
    --  @param Is_Uncheck_Dealloc whether this is a call to an instance of
    --    Ada.Unchecked_Deallocation
-   --  @return program checking the absence of memory leak
+   --  @return program checking the absence of resource leak
 
    function Check_Subprogram_Variants
      (Call   : Node_Id;
@@ -1047,6 +1047,7 @@ package body Gnat2Why.Expr is
                --   assume (<v__constrained>= Is_Constrained (Etype (Lvalue)));
                --   assume (<v__tag> = <v_name>__assume.tag); if classwide
                --   assume (<v__tag> = Ty.__tag); otherwise
+               --   <v__is_moved> := <v_name>__assume.is_moved;
 
                declare
                   Tmp_Var : constant W_Identifier_Id :=
@@ -1133,6 +1134,19 @@ package body Gnat2Why.Expr is
                                          Name   => +Tmp_Var,
                                          Ty     => Binder.Typ)
                                       else +E_Symb (Binder.Typ, WNE_Tag))))));
+                  end if;
+
+                  if Binder.Is_Moved_R.Present then
+                     Append
+                       (Res,
+                        New_Assignment
+                          (Ada_Node => N,
+                           Name     => Binder.Is_Moved_R.Id,
+                           Labels   => Symbol_Sets.Empty_Set,
+                           Value    => +New_Record_Is_Moved_Access
+                             (E    => Etype (Lvalue),
+                              Name => +Tmp_Var),
+                           Typ      => EW_Bool_Type));
                   end if;
 
                   Res := New_Typed_Binding
@@ -1911,9 +1925,9 @@ package body Gnat2Why.Expr is
       Result   : W_Prog_Id := +Void;
       Kind     : constant VC_Kind :=
         (if At_End_Of_Scope then
-            VC_Memory_Leak_At_End_Of_Scope
+            VC_Resource_Leak_At_End_Of_Scope
          else
-            VC_Memory_Leak);
+            VC_Resource_Leak);
 
    begin
       --  Nothing to check on borrow/observe of anonymous access type
@@ -1925,25 +1939,27 @@ package body Gnat2Why.Expr is
             Val      : constant W_Expr_Id :=
               Transform_Expr_Or_Identifier (N, EW_Pterm, Body_Params);
             Tmp      : constant W_Term_Id := New_Temp_For_Expr (Val);
+            Ptr_Typ  : constant Type_Kind_Id :=
+              Get_Ada_Node (+Get_Type (Val));
             Is_Moved : constant W_Pred_Id :=
               (if Is_Uncheck_Dealloc then
                  New_Conditional
                    (Condition =>
                       New_Not (Right =>
                         Pred_Of_Boolean_Term
-                          (New_Pointer_Is_Null_Access (Init_Typ, Tmp))),
+                          (New_Pointer_Is_Null_Access (Ptr_Typ, Tmp))),
                     Then_Part =>
                       Compute_Is_Moved_Property
                         (New_Pointer_Value_Access
                            (Ada_Node => Empty,
-                            E        => Init_Typ,
+                            E        => Ptr_Typ,
                             Name     => +Tmp),
                          Typ),
                     Typ       => EW_Bool_Type)
                else
-                 Compute_Is_Moved_Property (+Tmp, Typ));
+                 Compute_Is_Moved_Property (+Tmp, Ptr_Typ));
 
-            --  As memory leaks do not lead to runtime errors, it is possible
+            --  As resource leaks do not lead to runtime errors, it is possible
             --  that these messages get ignored or even justified by users
             --  in some cases. Thus, it is particularly important that the
             --  corresponding checks have no effect on the rest of analysis,
@@ -5401,8 +5417,66 @@ package body Gnat2Why.Expr is
               (New_Pointer_Value_Access (Empty, Ty, Expr),
                Directly_Designated_Type (Ty)));
 
-      elsif Has_Record_Type (Ty) then
-         return Is_Moved_For_Record (Expr, Ty);
+      elsif Is_Record_Type_In_Why (Ty) then
+
+         --  Check the is_moved flag and the reclamation on the type if it is
+         --  annotated with ownership.
+
+         if Has_Ownership_Annotation (Ty) then
+            pragma Assert (Needs_Reclamation (Ty));
+
+            --  Get the check function for Ty if any
+
+            declare
+               Check_Function : Entity_Id;
+               Check_Param    : Item_Type;
+               Is_Reclaimed   : Boolean;
+
+            begin
+               Get_Reclamation_Check_Function
+                 (Retysp (Ty), Check_Function, Is_Reclaimed);
+
+               --  If no check functions are supplied, consider the value is
+               --  never reclaimed. It can still have been moved.
+
+               if No (Check_Function) then
+                  return Pred_Of_Boolean_Term
+                    (+New_Record_Is_Moved_Access (Ty, +Expr));
+               else
+                  declare
+                     Check_Params : constant Item_Array :=
+                       Compute_Subprogram_Parameters
+                         (Check_Function, EW_Term);
+                  begin
+                     pragma Assert (Check_Params'Length = 1);
+                     Check_Param := Check_Params (Check_Params'First);
+                  end;
+
+                  return New_Or_Pred
+                    (Left   => Pred_Of_Boolean_Term
+                       (+New_Record_Is_Moved_Access (Ty, +Expr)),
+                     Right  => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   =>
+                          (if Is_Reclaimed then True_Term else False_Term),
+                        Right  => New_Call
+                          (Name => +Transform_Identifier
+                               (Params => Logic_Params,
+                                Expr   => Check_Function,
+                                Ent    => Check_Function,
+                                Domain => EW_Term),
+                           Args =>
+                             (1 => Insert_Simple_Conversion
+                                  (Expr   => +Expr,
+                                   Domain => EW_Term,
+                                   To     => Get_Why_Type_From_Item
+                                     (Check_Param))),
+                           Typ  => EW_Bool_Type)));
+               end if;
+            end;
+         else
+            return Is_Moved_For_Record (Expr, Ty);
+         end if;
 
       else
          pragma Assert (Has_Array_Type (Ty));
@@ -5519,8 +5593,14 @@ package body Gnat2Why.Expr is
                   New_Pointer_Value_Access (Empty, Ty, Expr2),
                   Directly_Designated_Type (Ty))));
 
-      elsif Has_Record_Type (Ty) then
-         return Set_Moved_For_Record (Expr1, Expr2, Ty);
+      elsif Is_Record_Type_In_Why (Ty) then
+         if Has_Ownership_Annotation (Ty) then
+            pragma Assert (Needs_Reclamation (Ty));
+            return Pred_Of_Boolean_Term
+              (+New_Record_Is_Moved_Access (Ty, +Expr1));
+         else
+            return Set_Moved_For_Record (Expr1, Expr2, Ty);
+         end if;
 
       else
          pragma Assert (Has_Array_Type (Ty));
@@ -6272,7 +6352,7 @@ package body Gnat2Why.Expr is
          Result : W_Expr_Id := Generate_Expr (Expr, Domain, Params);
       begin
 
-         --  Add check for absence of memory leaks at end of scope
+         --  Add check for absence of resource leaks at end of scope
 
          if Domain = EW_Prog then
             Prepend
@@ -7154,6 +7234,20 @@ package body Gnat2Why.Expr is
                Count := Count + 1;
             end if;
 
+            --  We need a new reference for is_moved if it is present
+
+            if Pattern.Is_Moved_R.Present then
+               Context.Append
+                 (Ref_Type'
+                    (Mutable => True,
+                     Name    => Pattern.Is_Moved_R.Id,
+                     Value   => New_Record_Is_Moved_Access
+                       (E    => Pattern.Typ,
+                        Name => Expr)));
+               Args (Count) := +Pattern.Is_Moved_R.Id;
+               Count := Count + 1;
+            end if;
+
          when UCArray =>
 
             --  The Content component of the pattern is necessarily mutable so
@@ -7433,6 +7527,11 @@ package body Gnat2Why.Expr is
                pragma Assert (Var.Tag.Present);
                Args (Count) := +Var.Tag.Id;
 
+               Count := Count + 1;
+            end if;
+
+            if Pattern.Is_Moved_R.Present then
+               Args (Count) := +Var.Is_Moved_R.Id;
                Count := Count + 1;
             end if;
 
@@ -8366,6 +8465,46 @@ package body Gnat2Why.Expr is
                Do_Check => No_Checks);
          end if;
 
+      --  Same for private types with ownership
+
+      elsif Has_Ownership_Annotation (Typ) then
+         pragma Assert (Needs_Reclamation (Typ));
+
+         --  For whole objects, we simply assign the is_moved field.
+         --
+         --  is_moved := true
+
+         if Is_Simple_Actual (Expr) then
+            declare
+               Binder : constant Item_Type :=
+                 Ada_Ent_To_Why.Element (Symbol_Table, Entity (Expr));
+            begin
+               pragma Assert
+                 (Binder.Kind = DRecord and then Binder.Is_Moved_R.Present);
+
+               return New_Assignment
+                    (Name   => Binder.Is_Moved_R.Id,
+                     Value  => True_Prog,
+                     Typ    => EW_Bool_Type,
+                     Labels => Symbol_Sets.Empty_Set);
+            end;
+
+         --  Reconstruct the new record value before storing it in Expr
+         --
+         --  expr := { expr with is_moved => true }
+
+         else
+            return Gnat2Why.Expr.New_Assignment
+              (Lvalue   => Expr,
+               Expr     => New_Record_Is_Moved_Update
+                 (E      => Typ,
+                  Name   => Insert_Simple_Conversion
+                    (Expr => +Tmp,
+                     To   => Type_Of_Node (Expr)),
+                  Value  => True_Prog),
+               Do_Check => No_Checks);
+         end if;
+
       --  We need to call the __move function on Tmp
 
       else
@@ -8647,6 +8786,21 @@ package body Gnat2Why.Expr is
                                    (Name => +Tmp,
                                     Ty   => Binder.Typ))));
                      end if;
+                  end if;
+
+                  --  Update the Is_Moved field if any
+
+                  if Binder.Is_Moved_R.Present and then No (Last_Access) then
+                     Append
+                       (Result,
+                        New_Assignment
+                          (Ada_Node => Ada_Node,
+                           Name     => Binder.Is_Moved_R.Id,
+                           Labels   => Symbol_Sets.Empty_Set,
+                           Value    => +New_Record_Is_Moved_Access
+                             (Name => +Tmp,
+                              E    => Binder.Typ),
+                           Typ      => Get_Typ (Binder.Is_Moved_R.Id)));
                   end if;
 
                   Result := Binding_For_Temp (Ada_Node => Ada_Node,
@@ -9911,6 +10065,15 @@ package body Gnat2Why.Expr is
                       (Domain => EW_Prog,
                        Name   => Pre_Expr,
                        Ty     => Pattern.Typ);
+
+                  Index := Index + 1;
+               end if;
+
+               --  Always use is_moved from Pre_Expr
+
+               if Pattern.Is_Moved_R.Present then
+                  Arg_Array (Index) := New_Record_Is_Moved_Access
+                    (Pattern.Typ, Pre_Expr);
 
                   Index := Index + 1;
                end if;
@@ -13240,7 +13403,7 @@ package body Gnat2Why.Expr is
 
             Tmp := New_Temp_For_Expr (+T);
 
-            --  Check that the assignment does not cause a memory leak. This
+            --  Check that the assignment does not cause a resource leak. This
             --  is done after moves, so that we properly handle the case where
             --  the target of the assignment is moved by the expression of the
             --  assignment, e.g. an aggregate with the target as element. This
@@ -16395,7 +16558,7 @@ package body Gnat2Why.Expr is
             Relaxed_Init  => Expr_Has_Relaxed_Init (Ada_Node));
       end if;
 
-      --  Detect possible memory leaks in the assignment of component
+      --  Detect possible resource leaks in the assignment of component
       --  associations.
 
       declare
@@ -16425,7 +16588,7 @@ package body Gnat2Why.Expr is
 
       begin
          --  If all associations in the delta aggregate are not deep, then
-         --  there is no possibility of a memory leak when moving the prefix
+         --  there is no possibility of a resource leak when moving the prefix
          --  and assigning component associations in turn. There is also no
          --  possibility of move unless the delta aggregate appears directly
          --  or indirectly on the rhs of an assignment, due to SPARK RM 3.10(6)
@@ -17768,7 +17931,7 @@ package body Gnat2Why.Expr is
                                     Local_Params);
             end if;
 
-            --  Insert static memory leak if the conversion is a move of a
+            --  Insert static resource leak if the conversion is a move of a
             --  pool specific access type.
 
             if Domain = EW_Prog
@@ -17778,7 +17941,7 @@ package body Gnat2Why.Expr is
               and then not Value_Is_Never_Leaked (Expr)
             then
                Emit_Static_Proof_Result
-                 (Expr, VC_Memory_Leak, False, Current_Subp,
+                 (Expr, VC_Resource_Leak, False, Current_Subp,
                   Explanation =>
                     "conversion to access-to-constant type leaks memory");
             end if;
@@ -18009,7 +18172,7 @@ package body Gnat2Why.Expr is
                  Directly_Designated_Type (Exp_Ty);
 
             begin
-               --  Insert static memory leak if needed
+               --  Insert static resource leak if needed
 
                if Domain = EW_Prog
                  and then (if To_Gen or else To_Const
@@ -18017,7 +18180,7 @@ package body Gnat2Why.Expr is
                            else In_Assertion_Expression_Pragma (Expr))
                then
                   Emit_Static_Proof_Result
-                    (Expr, VC_Memory_Leak, False, Current_Subp,
+                    (Expr, VC_Resource_Leak, False, Current_Subp,
                      Explanation => "allocator "
                      & (if To_Const
                         then "for an access-to-constant type"
@@ -19236,7 +19399,7 @@ package body Gnat2Why.Expr is
 
       if Domain = EW_Prog then
 
-         --  Insert static memory leak on calls to allocating functions
+         --  Insert static resource leak on calls to allocating functions
          --  occuring inside assertions, but only if they contain parts of a
          --  pool specific access type.
 
@@ -19245,9 +19408,9 @@ package body Gnat2Why.Expr is
            and then In_Assertion_Expression_Pragma (Expr)
          then
             Emit_Static_Proof_Result
-              (Expr, VC_Memory_Leak, False, Current_Subp,
+              (Expr, VC_Resource_Leak, False, Current_Subp,
                Explanation => "call to allocating function inside "
-                 & "an assertion leaks memory");
+                 & "an assertion leaks some resource or memory");
          end if;
 
          --  Insert invariant check if needed
@@ -21404,11 +21567,11 @@ package body Gnat2Why.Expr is
    is
 
       function Havoc_Borrowed_And_Check_No_Leaks_On_Goto return W_Prog_Id;
-      --  Havoc the local borrowers and check for memory leaks for objects
+      --  Havoc the local borrowers and check for resource leaks for objects
       --  declared in blocks traversed by a goto statement.
 
       function Havoc_Borrowed_And_Check_No_Leaks_On_Return return W_Prog_Id;
-      --  Havoc the local borrowers and check for memory leaks for objects
+      --  Havoc the local borrowers and check for resource leaks for objects
       --  declared in blocks traversed by a return statement.
 
       -----------------------------------------------
@@ -21543,8 +21706,8 @@ package body Gnat2Why.Expr is
                Result_Stmt : W_Prog_Id;
 
             begin
-               --  Havoc borrowed objects and check for memory leaks on scopes
-               --  traversed by the return statement.
+               --  Havoc borrowed objects and check for resource leaks on
+               --  scopes traversed by the return statement.
 
                Prepend
                  (Havoc_Borrowed_And_Check_No_Leaks_On_Return, Raise_Stmt);
@@ -21713,8 +21876,8 @@ package body Gnat2Why.Expr is
                     Typ      => EW_Unit_Type);
 
             begin
-               --  Havoc borrowed objects and check for memory leaks on scopes
-               --  traversed by the goto statement.
+               --  Havoc borrowed objects and check for resource leaks on
+               --  scopes traversed by the goto statement.
 
                return Sequence
                  (Havoc_Borrowed_And_Check_No_Leaks_On_Goto, Raise_Stmt);
@@ -21847,10 +22010,10 @@ package body Gnat2Why.Expr is
                            Call);
                end if;
 
-               --  Check that the call does not cause a memory leak. Every
+               --  Check that the call does not cause a resource leak. Every
                --  output of the call which is not also an input should be
                --  moved prior to the call. Otherwise assigning it in the
-               --  callee will produce a memory leak.
+               --  callee will produce a resource leak.
 
                Check_For_Memory_Leak : declare
 

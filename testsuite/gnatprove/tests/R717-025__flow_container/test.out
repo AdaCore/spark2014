@@ -1,30 +1,35 @@
-a-cforse.ads:526:18: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:895:39: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:904:17: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:939:42: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:947:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:974:42: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:982:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:999:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-cforse.ads:1000:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-cforse.ads:1048:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-cforse.ads:1218:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-cforse.ads:1219:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-cforse.ads:1219:44: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-cforse.ads:1258:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-cforse.ads:1362:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:1377:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:1392:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:1407:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:1441:47: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cforse.ads:1456:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:122, in instantiation at p.adb:9
-a-cofuve.ads:232:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at p.adb:9
-a-cofuve.ads:237:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at p.adb:9
-a-cofuve.ads:238:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at p.adb:9
-a-cofuve.ads:238:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at p.adb:9
-a-cofuve.ads:239:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:122, in instantiation at p.adb:9
-a-cofuve.ads:300:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:122, in instantiation at p.adb:9
+a-cforse.ads:528:18: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:897:39: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:906:17: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:941:42: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:949:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:976:42: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:984:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:1001:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-cforse.ads:1002:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-cforse.ads:1050:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-cforse.ads:1220:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-cforse.ads:1221:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-cforse.ads:1221:44: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-cforse.ads:1260:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-cforse.ads:1364:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:1379:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:1394:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:1409:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:1443:47: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cforse.ads:1458:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at p.adb:9
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at p.adb:9
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:112, in instantiation at p.adb:9
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at p.adb:9
 p.adb:7:09: info: data dependencies proved
 p.adb:13:04: info: initialization of "Set" constituent of "S" proved
 p.adb:13:32: info: range check proved (CVC5: 2 VC)

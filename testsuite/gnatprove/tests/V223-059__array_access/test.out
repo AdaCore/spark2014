@@ -1,2 +1,1 @@
-p.adb:4:18: info: dynamic accessibility check proved (Trivial)
 p.adb:4:18: medium: pointer dereference check might fail [possible fix: subprogram at p.ads:3 should mention M in a precondition]

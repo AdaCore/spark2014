@@ -1,1 +1,5 @@
+tracker_interface.adb:7:13: warning: assuming "Cancel" always returns
+tracker_interface.adb:7:13: warning: assuming "Cancel" has no effect on global items
+tracker_interface.adb:7:13: warning: no Global contract available for "Cancel"
+tracker_interface.adb:7:13: warning: no returning annotation available for "Cancel"
 tracker_interface.ads:8:25: info: data dependencies proved

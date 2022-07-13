@@ -52,7 +52,7 @@ procedure Main_Bad with SPARK_Mode is
          if C.N = null then
             exit;
          else
-            C.N := C.N.N; -- @MEMORY_LEAK:FAIL
+            C.N := C.N.N; -- @RESOURCE_LEAK:FAIL
          end if;
       end loop;
    end Length_3;

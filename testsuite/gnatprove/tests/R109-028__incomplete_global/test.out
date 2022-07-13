@@ -1,2 +1,6 @@
+main.adb:5:20: warning: assuming "F" always returns
+main.adb:5:20: warning: no returning annotation available for "F"
+main.adb:5:32: warning: assuming "F" always returns
+main.adb:5:32: warning: no returning annotation available for "F"
 p.ads:5:63: error: "q.x" is referenced in Pre but missing from the Global
 gnatprove: error during flow analysis and proof

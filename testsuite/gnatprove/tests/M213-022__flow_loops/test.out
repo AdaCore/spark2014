@@ -1,6 +1,7 @@
 test.adb:3:04: warning: analyzing unreferenced procedure "Basic_Loop"
 test.adb:7:17: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention X in a loop invariant]
 test.adb:8:17: info: division check proved (CVC5: 1 VC)
+test.adb:12:04: info: no contextual analysis of "Is_Prime" (multiple returns)
 test.adb:13:24: info: initialization of "P" proved
 test.adb:16:11: info: range check proved (CVC5: 2 VC)
 test.adb:16:38: info: division check proved (CVC5: 1 VC)
@@ -53,6 +54,7 @@ test.adb:96:04: warning: analyzing unreferenced procedure "Stable_Test_02"
 test.adb:96:30: info: initialization of "X" proved
 test.adb:99:39: info: cannot unroll loop (too many loop iterations)
 test.adb:100:41: info: unrolling loop
+test.adb:107:40: warning: null range
 test.adb:109:04: warning: analyzing unreferenced procedure "For_Test_01"
 test.adb:109:27: high: "X" is not initialized in "For_Test_01" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
 test.adb:109:27: warning: unused variable "X"
@@ -63,6 +65,7 @@ test.adb:113:12: warning: this statement is never reached
 test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02"
 test.adb:117:27: info: initialization of "X" proved
 test.adb:120:38: info: unrolling loop
+test.adb:126:04: info: no contextual analysis of "Basic_With_Exit" (multiple returns)
 test.adb:130:17: medium: overflow check might fail, cannot prove upper bound for X * 2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 129 should mention X in a loop invariant]
 test.adb:134:17: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 129 should mention X in a loop invariant]
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"

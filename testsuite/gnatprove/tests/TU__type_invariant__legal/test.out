@@ -3,8 +3,8 @@ external_6.ads:7:21: info: initialization of "X" proved
 type_invariant_legal.adb:3:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal.adb:4:24: info: initialization of "X" proved
 type_invariant_legal.adb:41:14: info: range check proved (CVC5: 2 VC)
-type_invariant_legal.adb:47:14: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
-type_invariant_legal.ads:7:13: medium: invariant check might fail [possible fix: add or complete related loop invariants or postconditions]
+type_invariant_legal.adb:47:14: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
+type_invariant_legal.ads:7:13: medium: invariant check might fail (e.g. when Pub'Result = 0) [possible fix: add or complete related loop invariants or postconditions]
 type_invariant_legal.ads:8:13: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal.ads:10:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal.ads:11:14: info: invariant check proved (CVC5: 1 VC)
@@ -17,7 +17,7 @@ type_invariant_legal_2.adb:5:27: warning: unused initial value of "X"
 type_invariant_legal_2.adb:20:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.adb:21:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:22:14: info: invariant check proved (CVC5: 1 VC)
-type_invariant_legal_2.adb:30:14: medium: invariant check might fail [possible fix: precondition of subprogram at line 3 should mention X]
+type_invariant_legal_2.adb:30:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 3 should mention X]
 type_invariant_legal_2.adb:31:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:32:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.adb:41:14: info: invariant check proved (CVC5: 1 VC)
@@ -33,12 +33,12 @@ type_invariant_legal_2.adb:64:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:65:07: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:66:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: call at line 65 should mention X (for argument X) in a postcondition]
 type_invariant_legal_2.adb:74:09: warning: unused assignment
-type_invariant_legal_2.adb:74:14: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
+type_invariant_legal_2.adb:74:14: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_2.adb:75:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_2.adb:76:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:78:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test"
-type_invariant_legal_2.adb:85:07: medium: invariant check might fail
+type_invariant_legal_2.adb:85:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_2.adb:86:07: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.ads:12:18: warning: unused variable "X"
 type_invariant_legal_2.ads:13:20: warning: unused variable "X"
@@ -173,9 +173,9 @@ type_invariant_legal_6.adb:6:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal_6.adb:7:24: info: initialization of "X" proved
 type_invariant_legal_6.adb:8:27: warning: unused initial value of "X"
 type_invariant_legal_6.adb:12:14: info: invariant check proved (CVC5: 1 VC)
-type_invariant_legal_6.adb:17:14: medium: invariant check might fail [possible fix: precondition of subprogram at line 5 should mention X]
+type_invariant_legal_6.adb:17:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_6.adb:22:07: info: invariant check proved (CVC5: 1 VC)
-type_invariant_legal_6.adb:27:07: medium: invariant check might fail
+type_invariant_legal_6.adb:27:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_6.adb:32:07: warning: statement has no effect
 type_invariant_legal_6.adb:32:14: warning: "X" is set by "Write" but not used after the call
 type_invariant_legal_6.adb:33:07: info: invariant check proved (CVC5: 1 VC)
@@ -192,7 +192,7 @@ type_invariant_legal_6.adb:48:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:48:07: warning: statement has no effect
 type_invariant_legal_6.adb:48:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:50:07: medium: invariant check might fail (e.g. when X = 0)
-type_invariant_legal_6.adb:55:07: medium: invariant check might fail
+type_invariant_legal_6.adb:55:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_6.adb:55:07: warning: statement has no effect
 type_invariant_legal_6.adb:55:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:57:07: medium: invariant check might fail (e.g. when X = 0)

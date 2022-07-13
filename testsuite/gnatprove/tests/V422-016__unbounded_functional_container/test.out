@@ -1,36 +1,38 @@
-a-cfinse.ads:82:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:85:06: info: data dependencies proved, in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:130:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:130:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:147:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:147:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:162:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:162:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:180:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:180:21: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:180:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:180:42: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:199:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:199:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:199:39: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:199:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:218:08: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:218:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:220:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:220:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:85:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:85:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:88:06: info: data dependencies proved, in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:133:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:133:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:150:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:150:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:165:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:165:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:183:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:183:21: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:183:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:183:42: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:202:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:202:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:202:39: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:202:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:221:08: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
 a-cfinse.ads:221:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:221:24: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:221:31: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:221:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:221:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:221:53: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:249:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:249:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:274:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:274:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:274:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:298:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-a-cfinse.ads:298:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:223:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:223:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:224:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:224:24: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:224:31: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:224:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:224:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:224:53: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:252:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:252:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:277:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:277:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:277:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:301:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:301:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
+a-cfinse.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequence.adb:6
 infinite_sequence.adb:17:19: info: assertion proved (CVC5: 1 VC)
 infinite_sequence.adb:17:19: info: predicate check proved (Trivial: 1 VC)
 infinite_sequence.adb:17:33: info: predicate check proved (Trivial: 1 VC)

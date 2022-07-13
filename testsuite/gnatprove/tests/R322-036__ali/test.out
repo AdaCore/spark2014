@@ -1,5 +1,9 @@
 ------------------
 ------------------
 a~main.adb:8:07: info: initialization of "X" proved
+a~main.adb:10:07: warning: assuming "Set" always returns
+a~main.adb:10:07: warning: assuming "Set" has no effect on global items
+a~main.adb:10:07: warning: no Global contract available for "Set"
+a~main.adb:10:07: warning: no returning annotation available for "Set"
 a~main.adb:11:14: info: division check proved (CVC5: 1 VC)
 a~main.ads:5:17: info: initialization of "Y" proved

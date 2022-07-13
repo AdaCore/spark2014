@@ -11,5 +11,6 @@ is
 begin
    Result := P.Nearest_Prime_Number (555, P.Down);
    Coprimes := P.Initialize_Coprime_List (2000);
+   pragma Assert (P.Are_Coprime (1, 2000));
    Result := P.Nearest_Number (Coprimes, P.Down, 555);
 end Test_Prime_And_Coprime_Numbers;

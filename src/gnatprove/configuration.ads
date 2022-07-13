@@ -83,6 +83,7 @@ package Configuration is
       Benchmark             : aliased Boolean;
       Memcached_Server      : aliased GNAT.Strings.String_Access;
       Cargs_List            : String_Lists.List;
+      CE_Steps              : aliased Integer;
       Check_Counterexamples : aliased GNAT.Strings.String_Access;
       Checks_As_Errors      : aliased Boolean;
       CodePeer              : aliased GNAT.Strings.String_Access;
@@ -221,6 +222,7 @@ package Configuration is
       Timeout               : Integer;
       Steps                 : Integer;
       Memlimit              : Integer;
+      CE_Steps              : Integer;
       CE_Timeout            : Integer;
       No_Inlining           : Boolean;
       Info                  : Boolean;

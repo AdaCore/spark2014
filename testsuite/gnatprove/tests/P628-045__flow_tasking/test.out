@@ -1,6 +1,12 @@
 hello.ads:36:14: warning: subprogram "Hello_Spg_1" has no effect
 hello.ads:37:14: warning: subprogram "Hello_Spg_2" has no effect
 node_a.adb:21:20: info: range check proved (CVC5: 2 VC)
+node_a.adb:24:24: warning: assuming "Unblock_All_Tasks" always returns
+node_a.adb:24:24: warning: no returning annotation available for "Unblock_All_Tasks"
+node_a.adb:27:24: warning: assuming "Suspend_Forever" always returns
+node_a.adb:27:24: warning: assuming "Suspend_Forever" has no effect on global items
+node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever"
+node_a.adb:27:24: warning: no returning annotation available for "Suspend_Forever"
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
 polyorb_hi-epoch.ads:44:11: info: data dependencies proved
@@ -21,9 +27,21 @@ polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:38
 polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
+polyorb_hi_generated-activity.ads:22:03: warning: assuming "Block_Task" always returns
+polyorb_hi_generated-activity.ads:22:03: warning: assuming "Block_Task" has no effect on global items
+polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
+polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.ads:73
+polyorb_hi_generated-activity.ads:22:03: warning: no Global contract available for "Block_Task"
+polyorb_hi_generated-activity.ads:22:03: warning: no returning annotation available for "Block_Task"
 polyorb_hi_generated-activity.ads:22:03: warning: pragma "Storage_Size" ignored (not yet supported)
+polyorb_hi_generated-activity.ads:38:03: warning: assuming "Block_Task" always returns
+polyorb_hi_generated-activity.ads:38:03: warning: assuming "Block_Task" has no effect on global items
+polyorb_hi_generated-activity.ads:38:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
+polyorb_hi_generated-activity.ads:38:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:38:03: warning: in instantiation at polyorb_hi-periodic_task.ads:73
+polyorb_hi_generated-activity.ads:38:03: warning: no Global contract available for "Block_Task"
+polyorb_hi_generated-activity.ads:38:03: warning: no returning annotation available for "Block_Task"
 polyorb_hi_generated-activity.ads:38:03: warning: pragma "Storage_Size" ignored (not yet supported)
 polyorb_hi_generated-subprograms.ads:12:13: warning: subprogram "RMAAadl_Hello_Spg_1" has no effect
 polyorb_hi_generated-subprograms.ads:14:13: warning: subprogram "RMAAadl_Hello_Spg_2" has no effect

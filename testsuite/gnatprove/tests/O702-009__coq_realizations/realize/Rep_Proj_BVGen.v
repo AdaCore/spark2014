@@ -7,9 +7,6 @@ Require Import ClassicalEpsilon.
 Require Import ZArith.
 Require Import BV_Gen.
 
-(* Why3 assumption *)
-Definition unit := unit.
-
 (* range_pred can have an arbitrary value in this realization,
    provided the range is inhabited *)
 
@@ -43,12 +40,12 @@ exact BV_Gen.t.
 Defined.
 
 (* Why3 goal *)
-Definition to_rep: t -> rep_type.
+Definition to_rep : t -> rep_type.
 intros [r _]; exact r.
 Defined.
 
 (* Why3 goal *)
-Definition of_rep: rep_type -> t.
+Definition of_rep : rep_type -> t.
 intros r.
 destruct (range_pred_dec r) as [P | P].
 apply (exist _ _ P).
@@ -56,7 +53,7 @@ apply range_inhabited.
 Defined.
 
 (* Why3 goal *)
-Definition in_range: rep_type -> Prop.
+Definition in_range : rep_type -> Prop.
 exact range_pred.
 Defined.
 
@@ -71,24 +68,24 @@ contradict Q; auto.
 Qed.
 
 (* Why3 goal *)
-Lemma range_axiom : forall (x:t), (in_range (to_rep x)).
+Lemma range_axiom : forall (x:t), in_range (to_rep x).
 intros [r P]; unfold to_rep; auto.
 Qed.
 
 (* Why3 goal *)
-Definition rep_to_int: rep_type -> Z.
+Definition rep_to_int : rep_type -> Numbers.BinNums.Z.
 exact to_uint.
 Defined.
 
 (* Why3 goal *)
-Definition in_range_int: Z -> Prop.
+Definition in_range_int : Numbers.BinNums.Z -> Prop.
 intros r.
 exact (in_range (of_int (r))).
 Defined.
 
 (* Why3 goal *)
-Lemma coerce_axiom : forall (x:rep_type),
-                      (in_range x) -> ((to_rep (of_rep x)) = x).
+Lemma coerce_axiom :
+  forall (x:rep_type), in_range x -> ((to_rep (of_rep x)) = x).
 intros r P.
 unfold to_rep, of_rep.
 destruct (range_pred_dec r) as [Q | Q]; auto.
@@ -96,10 +93,10 @@ contradict Q; auto.
 Qed.
 
 (* Why3 assumption *)
-Definition to_int (x:t): Z := (rep_to_int (to_rep x)).
+Definition to_int (x:t) : Numbers.BinNums.Z := rep_to_int (to_rep x).
 
 (* Why3 goal *)
-Lemma range_int_axiom : forall (x:t), (in_range_int (to_int x)).
+Lemma range_int_axiom : forall (x:t), in_range_int (to_int x).
 intros [r P ]; unfold in_range_int, to_int, rep_to_int, to_rep.
 rewrite of_int_to_uint; auto.
 Qed.

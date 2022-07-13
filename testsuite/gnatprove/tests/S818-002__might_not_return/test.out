@@ -21,7 +21,9 @@ pack.adb:11:10: high: precondition might fail
 pack.adb:20:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:29:10: medium: precondition might fail
 pack.ads:7:06: info: data dependencies proved
+pack.ads:8:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 pack.ads:8:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:12:06: info: data dependencies proved
+pack.ads:16:06: warning: postcondition does not check the outcome of calling "Call_Jump2"
 pack.ads:16:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:23:06: info: data dependencies proved

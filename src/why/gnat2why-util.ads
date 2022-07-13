@@ -435,6 +435,7 @@ package Gnat2Why.Util is
    --     - A field __split_fields for regular fields if E has at least one
    --       (use Count_Why_Regular_Fields)
    --     - A field __tag if E is tagged
+   --     - A field __is_moved if E needs reclamation
 
    function Is_Simple_Private_Type (E : Type_Kind_Id) return Boolean with
      Post => Is_Simple_Private_Type'Result =

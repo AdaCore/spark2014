@@ -1,6 +1,3 @@
-lexer.adb:60:23: info: implicit function contract not available for proof ("Size" might not return)
-lexer.adb:61:20: info: implicit function contract not available for proof ("Size" might not return)
-lexer.adb:62:19: info: function contract not available for proof ("Index" might not return)
 lexer.adb:74:09: info: data dependencies proved
 lexer.adb:83:27: info: discriminant check proved (CVC5: 1 VC)
 lexer.adb:85:45: info: overflow check proved (CVC5: 2 VC)

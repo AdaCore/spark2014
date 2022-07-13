@@ -1,4 +1,6 @@
 invariant_test.adb:23:11: error: type invariant in a nested package is not yet supported
+invariant_test.adb:27:09: info: analyzing call to "Swap_T1" in context
+invariant_test.adb:27:09: info: in instantiation at line 17
 invariant_test.adb:35:24: error: "T2" is not allowed in SPARK
 invariant_test.adb:35:24: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

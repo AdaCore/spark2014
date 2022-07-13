@@ -5,6 +5,8 @@ async_globals.adb:10:21: info: initialization of "X" proved
 async_globals.adb:11:09: info: data dependencies proved
 async_globals.adb:17:22: info: initialization of "X" proved
 async_globals.adb:18:22: info: initialization of "Y" proved
+async_globals.adb:22:07: info: analyzing call to "Get_1" in context
+async_globals.adb:23:07: info: analyzing call to "Get_1" in context
 async_globals.adb:24:22: medium: assertion might fail
 async_globals.adb:27:22: info: initialization of "X" proved
 async_globals.adb:28:22: info: initialization of "Y" proved

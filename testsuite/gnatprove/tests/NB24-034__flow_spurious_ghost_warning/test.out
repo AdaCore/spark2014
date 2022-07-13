@@ -1,52 +1,52 @@
-sorters.adb:16:11: info: flow dependencies proved
-sorters.adb:20:19: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
-sorters.adb:21:28: info: index check proved (CVC5: 2 VC)
-sorters.adb:21:45: info: index check proved (CVC5: 2 VC)
+sorters.adb:17:11: info: flow dependencies proved
+sorters.adb:21:19: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 sorters.adb:22:28: info: index check proved (CVC5: 2 VC)
 sorters.adb:22:45: info: index check proved (CVC5: 2 VC)
-sorters.adb:24:58: info: index check proved (CVC5: 2 VC)
-sorters.adb:24:75: info: index check proved (CVC5: 2 VC)
-sorters.adb:28:07: info: initialization of "Temp" proved
-sorters.adb:30:29: info: index check proved (CVC5: 2 VC)
-sorters.adb:31:15: info: index check proved (CVC5: 2 VC)
+sorters.adb:23:28: info: index check proved (CVC5: 2 VC)
+sorters.adb:23:45: info: index check proved (CVC5: 2 VC)
+sorters.adb:25:58: info: index check proved (CVC5: 2 VC)
+sorters.adb:25:75: info: index check proved (CVC5: 2 VC)
+sorters.adb:29:07: info: initialization of "Temp" proved
 sorters.adb:31:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:32:15: info: index check proved (CVC5: 2 VC)
-sorters.adb:40:19: info: postcondition proved (CVC5: 3 VC)
-sorters.adb:42:45: info: index check proved (CVC5: 2 VC)
-sorters.adb:42:67: info: index check proved (CVC5: 2 VC)
-sorters.adb:44:07: info: initialization of "Min" proved
-sorters.adb:46:22: info: range check proved (CVC5: 2 VC)
-sorters.adb:49:13: info: loop invariant initialization proved (CVC5: 3 VC)
-sorters.adb:49:13: info: loop invariant preservation proved (CVC5: 3 VC)
-sorters.adb:50:50: info: overflow check proved (CVC5: 4 VC)
-sorters.adb:51:25: info: index check proved (CVC5: 4 VC)
-sorters.adb:51:43: info: index check proved (CVC5: 4 VC)
-sorters.adb:53:42: info: index check proved (CVC5: 2 VC)
-sorters.adb:54:20: info: range check proved (CVC5: 2 VC)
-sorters.adb:62:07: info: initialization of "Values_Last" proved
-sorters.adb:62:07: info: range check proved (CVC5: 2 VC)
-sorters.adb:64:07: info: initialization of "Smallest" proved
-sorters.adb:67:50: info: overflow check proved (CVC5: 2 VC)
-sorters.adb:68:22: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
-sorters.adb:68:25: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
-sorters.adb:69:22: info: precondition proved (CVC5: 2 VC)
-sorters.adb:69:40: info: range check proved (CVC5: 8 VC)
-sorters.adb:72:13: info: precondition proved (CVC5: 10 VC)
-sorters.adb:73:29: info: range check proved (CVC5: 4 VC)
-sorters.adb:79:33: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:79:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Perm or turning it into an expression function in its unit spec]
-sorters.adb:81:13: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:82:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (Current) <= Values (J)
-sorters.adb:82:26: medium: array index check might fail [reason for check: value must be a valid index into the array]
-sorters.adb:82:46: medium: array index check might fail [reason for check: value must be a valid index into the array]
-sorters.adb:84:13: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:85:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) <= Values (J + 1)
-sorters.adb:85:24: medium: array index check might fail [reason for check: value must be a valid index into the array]
-sorters.adb:85:40: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
-sorters.adb:85:40: medium: overflow check might fail, cannot prove lower bound for J + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-sorters.ads:15:11: info: flow dependencies proved
-sorters.ads:18:22: info: postcondition proved (CVC5: 2 VC)
-sorters.ads:19:64: info: overflow check proved (CVC5: 2 VC)
-sorters.ads:20:34: info: index check proved (CVC5: 2 VC)
-sorters.ads:20:50: info: index check proved (CVC5: 2 VC)
-sorters.ads:20:50: info: overflow check proved (CVC5: 2 VC)
+sorters.adb:32:29: info: index check proved (CVC5: 2 VC)
+sorters.adb:33:15: info: index check proved (CVC5: 2 VC)
+sorters.adb:41:19: info: postcondition proved (CVC5: 3 VC)
+sorters.adb:43:45: info: index check proved (CVC5: 2 VC)
+sorters.adb:43:67: info: index check proved (CVC5: 2 VC)
+sorters.adb:45:07: info: initialization of "Min" proved
+sorters.adb:47:22: info: range check proved (CVC5: 2 VC)
+sorters.adb:50:13: info: loop invariant initialization proved (CVC5: 3 VC)
+sorters.adb:50:13: info: loop invariant preservation proved (CVC5: 3 VC)
+sorters.adb:51:50: info: overflow check proved (CVC5: 4 VC)
+sorters.adb:52:25: info: index check proved (CVC5: 4 VC)
+sorters.adb:52:43: info: index check proved (CVC5: 4 VC)
+sorters.adb:54:42: info: index check proved (CVC5: 2 VC)
+sorters.adb:55:20: info: range check proved (CVC5: 2 VC)
+sorters.adb:63:07: info: initialization of "Values_Last" proved
+sorters.adb:63:07: info: range check proved (CVC5: 2 VC)
+sorters.adb:65:07: info: initialization of "Smallest" proved
+sorters.adb:68:50: info: overflow check proved (CVC5: 2 VC)
+sorters.adb:69:22: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+sorters.adb:69:25: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+sorters.adb:70:22: info: precondition proved (CVC5: 2 VC)
+sorters.adb:70:40: info: range check proved (CVC5: 8 VC)
+sorters.adb:73:13: info: precondition proved (CVC5: 10 VC)
+sorters.adb:74:29: info: range check proved (CVC5: 4 VC)
+sorters.adb:80:33: info: loop invariant initialization proved (CVC5: 1 VC)
+sorters.adb:80:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Perm or turning it into an expression function in its unit spec]
+sorters.adb:82:13: info: loop invariant initialization proved (CVC5: 1 VC)
+sorters.adb:83:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (Current) <= Values (J)
+sorters.adb:83:26: medium: array index check might fail [reason for check: value must be a valid index into the array]
+sorters.adb:83:46: medium: array index check might fail [reason for check: value must be a valid index into the array]
+sorters.adb:85:13: info: loop invariant initialization proved (CVC5: 1 VC)
+sorters.adb:86:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) <= Values (J + 1)
+sorters.adb:86:24: medium: array index check might fail [reason for check: value must be a valid index into the array]
+sorters.adb:86:40: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+sorters.adb:86:40: medium: overflow check might fail, cannot prove lower bound for J + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+sorters.ads:16:11: info: flow dependencies proved
+sorters.ads:19:22: info: postcondition proved (CVC5: 2 VC)
+sorters.ads:20:64: info: overflow check proved (CVC5: 2 VC)
+sorters.ads:21:34: info: index check proved (CVC5: 2 VC)
+sorters.ads:21:50: info: index check proved (CVC5: 2 VC)
+sorters.ads:21:50: info: overflow check proved (CVC5: 2 VC)

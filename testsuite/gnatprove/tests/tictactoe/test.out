@@ -1,5 +1,5 @@
-game.adb:16:10: info: precondition proved (CVC5: 2 VC)
-game.adb:19:10: info: precondition proved (CVC5: 2 VC)
+game.adb:17:10: info: precondition proved (CVC5: 2 VC)
+game.adb:20:10: info: precondition proved (CVC5: 2 VC)
 tictactoe.adb:13:14: info: postcondition proved (Z3: 1 VC)
 tictactoe.adb:21:07: info: initialization of "P" proved
 tictactoe.adb:25:13: info: initialization of "S" proved
@@ -37,4 +37,4 @@ tictactoe.ads:26:53: info: overflow check proved (CVC5: 2 VC)
 tictactoe.ads:31:07: info: range check proved (CVC5: 2 VC)
 tictactoe.ads:36:19: info: postcondition proved (CVC5: 1 VC)
 tictactoe.ads:40:14: info: postcondition proved (CVC5: 1 VC)
-tictactoe.ads:44:14: info: postcondition proved (Z3: 1 VC)
+tictactoe.ads:45:14: info: postcondition proved (Z3: 1 VC)

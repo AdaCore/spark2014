@@ -3,5 +3,6 @@ package P with SPARK_Mode => on is
     function f(M : access T)
     return access Integer;
 private
-    type T is array(0 .. 5) of access Integer;
+    type Integer_Acc is access Integer;
+    type T is array(0 .. 5) of Integer_Acc;
 end P;

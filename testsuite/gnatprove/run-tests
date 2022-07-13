@@ -124,6 +124,11 @@ end Test;
         self.output = Log("")
 
     @property
+    def test_control_creator(self):
+        assert isinstance(self.env.discs, list)
+        return SPARKControlCreator(self.env.discs, self.test_env)
+
+    @property
     def baseline(self):
         return None, self._baseline, False
 
@@ -306,15 +311,7 @@ class UGTestDriver(DiffTestDriver):
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
         gprfiles = glob.glob(pattern)
         assert len(gprfiles) == 1
-        cmd = [
-            "gnatprove",
-            "-P",
-            gprfiles[0],
-            "-f",
-            "-q",
-            "--level=2",
-            "--timeout=60",
-        ]
+        cmd = ["gnatprove", "-P", gprfiles[0], "-f", "-q", "--level=2", "--timeout=30"]
 
         # tests prefixed by ug__long__ require more steps to prove
         if self.test_env["test_name"].startswith("ug__long__"):
@@ -393,9 +390,6 @@ class SPARKTestFinder(TestFinder):
         if self.pattern and not self.test_contains_pattern(dirpath, self.pattern):
             return None
 
-        if testname.startswith("ug__"):
-            return ParsedTest(testname, UGTestDriver, {}, dirpath)
-
         # We read the test.yaml file if present and load it into the
         # environment
         test_env = None
@@ -410,9 +404,6 @@ class SPARKTestFinder(TestFinder):
         if test_env is None:
             test_env = {}
 
-        if "__rac" in testname:
-            return ParsedTest(testname, RACTestDriver, {}, dirpath)
-
         # If this is not a large test, but only large was requested, skip
         # test. The "always_fail" test is exempted from this check to include
         # it in both large and non-large testsuites.
@@ -423,6 +414,12 @@ class SPARKTestFinder(TestFinder):
         ):
 
             return None
+
+        if testname.startswith("ug__"):
+            return ParsedTest(testname, UGTestDriver, {}, dirpath)
+
+        if "__rac" in testname:
+            return ParsedTest(testname, RACTestDriver, {}, dirpath)
 
         # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
         # otherwise we use the proof/flow driver

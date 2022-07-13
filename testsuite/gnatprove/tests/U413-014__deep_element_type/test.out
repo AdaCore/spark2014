@@ -1,75 +1,138 @@
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:75, in instantiation at test_deep_element_type.adb:35
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at test_deep_element_type.adb:42
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:113, in instantiation at test_deep_element_type.adb:45
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:117, in instantiation at test_deep_element_type.adb:39
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:108, in instantiation at test_deep_element_type.adb:38
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at test_deep_element_type.adb:43
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:118, in instantiation at test_deep_element_type.adb:46
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:122, in instantiation at test_deep_element_type.adb:40
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:93, in instantiation at test_deep_element_type.adb:37
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:36
+a-cfdlli.ads:393:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
+a-cfdlli.ads:398:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
+a-cfhama.ads:400:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
+a-cfhama.ads:400:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
+a-cfhama.ads:406:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
+a-cfhama.ads:406:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
+a-cfinve.ads:317:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
+a-cfinve.ads:322:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
+a-cforma.ads:406:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
+a-cforma.ads:406:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
+a-cforma.ads:412:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
+a-cforma.ads:412:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
+a-cofove.ads:296:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
+a-cofove.ads:301:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at test_deep_element_type.adb:35
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at test_deep_element_type.adb:42
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at test_deep_element_type.adb:45
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at test_deep_element_type.adb:42
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at test_deep_element_type.adb:45
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:204, in instantiation at test_deep_element_type.adb:39
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:107, in instantiation at test_deep_element_type.adb:43
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:107, in instantiation at test_deep_element_type.adb:46
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:193, in instantiation at test_deep_element_type.adb:43
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:193, in instantiation at test_deep_element_type.adb:46
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at test_deep_element_type.adb:40
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:44
+a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:47
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at test_deep_element_type.adb:35
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at test_deep_element_type.adb:42
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:102, in instantiation at test_deep_element_type.adb:45
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at test_deep_element_type.adb:42
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:155, in instantiation at test_deep_element_type.adb:45
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:204, in instantiation at test_deep_element_type.adb:39
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:107, in instantiation at test_deep_element_type.adb:43
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:107, in instantiation at test_deep_element_type.adb:46
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:193, in instantiation at test_deep_element_type.adb:43
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:193, in instantiation at test_deep_element_type.adb:46
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:254, in instantiation at test_deep_element_type.adb:40
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:44
+a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:47
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:107, in instantiation at test_deep_element_type.adb:39
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:112, in instantiation at test_deep_element_type.adb:40
+a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:41
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at test_deep_element_type.adb:35
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at test_deep_element_type.adb:42
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at test_deep_element_type.adb:45
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:119, in instantiation at test_deep_element_type.adb:39
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfinve.ads:110, in instantiation at test_deep_element_type.adb:38
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:120, in instantiation at test_deep_element_type.adb:43
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:120, in instantiation at test_deep_element_type.adb:46
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at test_deep_element_type.adb:40
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at test_deep_element_type.adb:37
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:36
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:77, in instantiation at test_deep_element_type.adb:35
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfhama.ads:115, in instantiation at test_deep_element_type.adb:42
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfhama.ads:115, in instantiation at test_deep_element_type.adb:45
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfhase.ads:119, in instantiation at test_deep_element_type.adb:39
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfinve.ads:110, in instantiation at test_deep_element_type.adb:38
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cforma.ads:120, in instantiation at test_deep_element_type.adb:43
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cforma.ads:120, in instantiation at test_deep_element_type.adb:46
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cforse.ads:124, in instantiation at test_deep_element_type.adb:40
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cofove.ads:95, in instantiation at test_deep_element_type.adb:37
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:36
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at test_deep_element_type.adb:35
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at test_deep_element_type.adb:42
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhama.ads:115, in instantiation at test_deep_element_type.adb:45
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:119, in instantiation at test_deep_element_type.adb:39
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfinve.ads:110, in instantiation at test_deep_element_type.adb:38
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:120, in instantiation at test_deep_element_type.adb:43
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforma.ads:120, in instantiation at test_deep_element_type.adb:46
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cforse.ads:124, in instantiation at test_deep_element_type.adb:40
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at test_deep_element_type.adb:37
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:36
 test_deep_element_type.adb:35:04: error: "Item" is not writable
-test_deep_element_type.adb:35:04: error: instantiation error at a-cfdlli.ads:75
-test_deep_element_type.adb:35:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:35:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfdlli.ads:75, instance at line 35
+test_deep_element_type.adb:35:04: error: instantiation error at a-cfdlli.ads:77
+test_deep_element_type.adb:35:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:35:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cfdlli.ads:77, instance at line 35
 test_deep_element_type.adb:36:04: error: "Item" is not writable
-test_deep_element_type.adb:36:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:36:04: error: object was declared as not writable at a-cofuve.ads:339, instance at line 36
+test_deep_element_type.adb:36:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:36:04: error: object was declared as not writable at a-cofuve.ads:342, instance at line 36
 test_deep_element_type.adb:37:04: error: "Item" is not writable
-test_deep_element_type.adb:37:04: error: instantiation error at a-cofove.ads:93
-test_deep_element_type.adb:37:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:37:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cofove.ads:93, instance at line 37
+test_deep_element_type.adb:37:04: error: instantiation error at a-cofove.ads:95
+test_deep_element_type.adb:37:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:37:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cofove.ads:95, instance at line 37
 test_deep_element_type.adb:38:04: error: "Item" is not writable
-test_deep_element_type.adb:38:04: error: instantiation error at a-cfinve.ads:108
-test_deep_element_type.adb:38:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:38:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfinve.ads:108, instance at line 38
+test_deep_element_type.adb:38:04: error: instantiation error at a-cfinve.ads:110
+test_deep_element_type.adb:38:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:38:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cfinve.ads:110, instance at line 38
 test_deep_element_type.adb:39:04: error: "Item" is not writable
 test_deep_element_type.adb:39:04: error: "Item" is not writable
-test_deep_element_type.adb:39:04: error: instantiation error at a-cfhase.ads:105
-test_deep_element_type.adb:39:04: error: instantiation error at a-cfhase.ads:117
-test_deep_element_type.adb:39:04: error: instantiation error at a-cofuse.ads:256
-test_deep_element_type.adb:39:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:39:04: error: object was declared as not writable at a-cofuse.ads:256, instance at a-cfhase.ads:105, instance at line 39
-test_deep_element_type.adb:39:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfhase.ads:117, instance at line 39
+test_deep_element_type.adb:39:04: error: instantiation error at a-cfhase.ads:107
+test_deep_element_type.adb:39:04: error: instantiation error at a-cfhase.ads:119
+test_deep_element_type.adb:39:04: error: instantiation error at a-cofuse.ads:259
+test_deep_element_type.adb:39:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:39:04: error: object was declared as not writable at a-cofuse.ads:259, instance at a-cfhase.ads:107, instance at line 39
+test_deep_element_type.adb:39:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cfhase.ads:119, instance at line 39
 test_deep_element_type.adb:40:04: error: "Item" is not writable
 test_deep_element_type.adb:40:04: error: "Item" is not writable
-test_deep_element_type.adb:40:04: error: instantiation error at a-cforse.ads:110
-test_deep_element_type.adb:40:04: error: instantiation error at a-cforse.ads:122
-test_deep_element_type.adb:40:04: error: instantiation error at a-cofuse.ads:256
-test_deep_element_type.adb:40:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:40:04: error: object was declared as not writable at a-cofuse.ads:256, instance at a-cforse.ads:110, instance at line 40
-test_deep_element_type.adb:40:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cforse.ads:122, instance at line 40
+test_deep_element_type.adb:40:04: error: instantiation error at a-cforse.ads:112
+test_deep_element_type.adb:40:04: error: instantiation error at a-cforse.ads:124
+test_deep_element_type.adb:40:04: error: instantiation error at a-cofuse.ads:259
+test_deep_element_type.adb:40:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:40:04: error: object was declared as not writable at a-cofuse.ads:259, instance at a-cforse.ads:112, instance at line 40
+test_deep_element_type.adb:40:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cforse.ads:124, instance at line 40
 test_deep_element_type.adb:41:04: error: "Item" is not writable
-test_deep_element_type.adb:41:04: error: instantiation error at a-cofuse.ads:256
-test_deep_element_type.adb:41:04: error: object was declared as not writable at a-cofuse.ads:256, instance at line 41
+test_deep_element_type.adb:41:04: error: instantiation error at a-cofuse.ads:259
+test_deep_element_type.adb:41:04: error: object was declared as not writable at a-cofuse.ads:259, instance at line 41
 test_deep_element_type.adb:42:04: error: "Item" is not writable
-test_deep_element_type.adb:42:04: error: instantiation error at a-cfhama.ads:100
-test_deep_element_type.adb:42:04: error: instantiation error at a-cofuma.ads:315
-test_deep_element_type.adb:42:04: error: object was declared as not writable at a-cofuma.ads:315, instance at a-cfhama.ads:100, instance at line 42
+test_deep_element_type.adb:42:04: error: instantiation error at a-cfhama.ads:102
+test_deep_element_type.adb:42:04: error: instantiation error at a-cofuma.ads:318
+test_deep_element_type.adb:42:04: error: object was declared as not writable at a-cofuma.ads:318, instance at a-cfhama.ads:102, instance at line 42
 test_deep_element_type.adb:43:04: error: "Item" is not writable
-test_deep_element_type.adb:43:04: error: instantiation error at a-cforma.ads:105
-test_deep_element_type.adb:43:04: error: instantiation error at a-cofuma.ads:315
-test_deep_element_type.adb:43:04: error: object was declared as not writable at a-cofuma.ads:315, instance at a-cforma.ads:105, instance at line 43
+test_deep_element_type.adb:43:04: error: instantiation error at a-cforma.ads:107
+test_deep_element_type.adb:43:04: error: instantiation error at a-cofuma.ads:318
+test_deep_element_type.adb:43:04: error: object was declared as not writable at a-cofuma.ads:318, instance at a-cforma.ads:107, instance at line 43
 test_deep_element_type.adb:44:04: error: "Item" is not writable
-test_deep_element_type.adb:44:04: error: instantiation error at a-cofuma.ads:315
-test_deep_element_type.adb:44:04: error: object was declared as not writable at a-cofuma.ads:315, instance at line 44
+test_deep_element_type.adb:44:04: error: instantiation error at a-cofuma.ads:318
+test_deep_element_type.adb:44:04: error: object was declared as not writable at a-cofuma.ads:318, instance at line 44
 test_deep_element_type.adb:45:04: error: "Item" is not writable
 test_deep_element_type.adb:45:04: error: "Key" is not writable
-test_deep_element_type.adb:45:04: error: instantiation error at a-cfhama.ads:100
-test_deep_element_type.adb:45:04: error: instantiation error at a-cfhama.ads:113
-test_deep_element_type.adb:45:04: error: instantiation error at a-cofuma.ads:314
-test_deep_element_type.adb:45:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:45:04: error: object was declared as not writable at a-cofuma.ads:314, instance at a-cfhama.ads:100, instance at line 45
-test_deep_element_type.adb:45:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfhama.ads:113, instance at line 45
+test_deep_element_type.adb:45:04: error: instantiation error at a-cfhama.ads:102
+test_deep_element_type.adb:45:04: error: instantiation error at a-cfhama.ads:115
+test_deep_element_type.adb:45:04: error: instantiation error at a-cofuma.ads:317
+test_deep_element_type.adb:45:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:45:04: error: object was declared as not writable at a-cofuma.ads:317, instance at a-cfhama.ads:102, instance at line 45
+test_deep_element_type.adb:45:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cfhama.ads:115, instance at line 45
 test_deep_element_type.adb:46:04: error: "Item" is not writable
 test_deep_element_type.adb:46:04: error: "Key" is not writable
-test_deep_element_type.adb:46:04: error: instantiation error at a-cforma.ads:105
-test_deep_element_type.adb:46:04: error: instantiation error at a-cforma.ads:118
-test_deep_element_type.adb:46:04: error: instantiation error at a-cofuma.ads:314
-test_deep_element_type.adb:46:04: error: instantiation error at a-cofuve.ads:339
-test_deep_element_type.adb:46:04: error: object was declared as not writable at a-cofuma.ads:314, instance at a-cforma.ads:105, instance at line 46
-test_deep_element_type.adb:46:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cforma.ads:118, instance at line 46
+test_deep_element_type.adb:46:04: error: instantiation error at a-cforma.ads:107
+test_deep_element_type.adb:46:04: error: instantiation error at a-cforma.ads:120
+test_deep_element_type.adb:46:04: error: instantiation error at a-cofuma.ads:317
+test_deep_element_type.adb:46:04: error: instantiation error at a-cofuve.ads:342
+test_deep_element_type.adb:46:04: error: object was declared as not writable at a-cofuma.ads:317, instance at a-cforma.ads:107, instance at line 46
+test_deep_element_type.adb:46:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cforma.ads:120, instance at line 46
 test_deep_element_type.adb:47:04: error: "Key" is not writable
-test_deep_element_type.adb:47:04: error: instantiation error at a-cofuma.ads:314
-test_deep_element_type.adb:47:04: error: object was declared as not writable at a-cofuma.ads:314, instance at line 47
+test_deep_element_type.adb:47:04: error: instantiation error at a-cofuma.ads:317
+test_deep_element_type.adb:47:04: error: object was declared as not writable at a-cofuma.ads:317, instance at line 47
 gnatprove: error during flow analysis and proof

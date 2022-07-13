@@ -1,84 +1,84 @@
-arrays.adb:51:18: info: postcondition proved (CVC5: 2 VC)
-arrays.adb:60:11: info: flow dependencies proved
-arrays.adb:62:22: high: postcondition might fail (e.g. when C = 'NUL' and S = ('a' => True, others => False))
-arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
-arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'NUL' and M = (others => 'a'))
-arrays.adb:88:11: info: flow dependencies proved
-arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
-arrays.adb:99:11: info: flow dependencies proved
-arrays.adb:104:22: medium: assertion might fail [possible fix: precondition of subprogram at line 97 should mention C]
-arrays.adb:108:11: info: flow dependencies proved
-arrays.adb:112:22: high: assertion might fail (e.g. when M = (others => 'A')) [possible fix: subprogram at line 107 should mention M in a precondition]
-arrays.adb:116:11: info: flow dependencies proved
-arrays.adb:120:22: high: assertion might fail (e.g. when M = (others => Elem_2)) [possible fix: subprogram at line 115 should mention M in a precondition]
-arrays.adb:124:11: info: flow dependencies proved
-arrays.adb:128:22: high: assertion might fail [possible fix: subprogram at line 123 should mention MM in a precondition]
-arrays.adb:131:22: info: initialization of "M" proved
-arrays.adb:132:11: info: flow dependencies proved
-arrays.adb:136:22: info: assertion proved (altergo: 1 VC)
-arrays.adb:140:11: info: flow dependencies proved
-arrays.adb:144:22: high: assertion might fail (e.g. when R = (A => (others => 5), Exists => False)) [possible fix: subprogram at line 139 should mention R in a precondition]
-arrays.adb:146:22: info: assertion proved (CVC5: 1 VC)
-arrays.adb:148:22: high: assertion might fail (e.g. when R = (A => (1 => 0, others => 5), Exists => True)) [possible fix: subprogram at line 139 should mention R in a precondition]
-arrays.adb:152:11: info: flow dependencies proved
-arrays.adb:153:31: info: range check proved (CVC5: 2 VC)
-arrays.adb:154:33: info: index check proved (CVC5: 2 VC)
-arrays.adb:156:22: info: postcondition proved (CVC5: 1 VC)
-arrays.adb:156:31: info: range check proved (CVC5: 2 VC)
-arrays.adb:157:33: info: index check proved (CVC5: 2 VC)
-arrays.adb:160:22: info: range check proved (CVC5: 2 VC)
-arrays.adb:161:16: info: index check proved (CVC5: 2 VC)
-arrays.adb:165:12: info: flow dependencies proved
-arrays.adb:170:22: info: assertion proved (CVC5: 1 VC)
-arrays.adb:170:31: info: index check proved (CVC5: 2 VC)
-arrays.adb:175:11: info: flow dependencies proved
-arrays.adb:178:22: high: assertion might fail [possible fix: subprogram at line 174 should mention A in a precondition]
-arrays.adb:183:19: info: postcondition proved (CVC5: 2 VC)
-arrays.adb:191:33: info: loop invariant initialization proved (CVC5: 2 VC)
-arrays.adb:191:33: info: loop invariant preservation proved (CVC5: 2 VC)
-arrays.adb:191:41: info: range check proved (CVC5: 4 VC)
-arrays.adb:192:57: medium: "R" might not be initialized
-arrays.adb:194:14: medium: "R" might not be initialized
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C)
-arrays.adb:206:33: info: loop invariant initialization proved (CVC5: 2 VC)
-arrays.adb:206:33: info: loop invariant preservation proved (CVC5: 2 VC)
-arrays.adb:206:41: info: range check proved (CVC5: 4 VC)
-arrays.adb:207:57: medium: "R" might not be initialized
-arrays.adb:209:14: medium: "R" might not be initialized
-arrays.adb:213:11: info: flow dependencies proved
-arrays.adb:215:07: info: initialization of "A" proved
-arrays.adb:218:22: medium: assertion might fail
-arrays.adb:222:11: info: flow dependencies proved
-arrays.adb:224:07: info: initialization of "A" proved
-arrays.adb:227:22: info: assertion proved (CVC5: 1 VC)
-arrays.adb:231:11: info: flow dependencies proved
-arrays.adb:233:07: info: initialization of "A" proved
-arrays.adb:236:22: medium: assertion might fail
-arrays.adb:240:11: info: flow dependencies proved
-arrays.adb:242:07: info: initialization of "A" proved
-arrays.adb:245:22: info: assertion proved (CVC5: 1 VC)
-arrays.adb:249:11: info: flow dependencies proved
-arrays.adb:251:07: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
-counterexample expected for check at arrays.adb:62
-  trace at arrays.adb:57 --> S = ('a' => True, others => False)
-  trace at arrays.adb:58 --> C = 'NUL'
-  trace at arrays.adb:62 --> C = 'NUL' and S = ('a' => True, others => False)
-  trace at arrays.adb:65 --> Contains_B'Result = True and S = ('a' => True, others => False)
-counterexample expected for check at arrays.adb:80
-  trace at arrays.adb:77 --> M = (others => 'a')
-  trace at arrays.adb:78 --> C = 'NUL'
-  trace at arrays.adb:80 --> C = 'NUL' and M = (others => 'a')
-  trace at arrays.adb:83 --> C = 'NUL' and Is_Id_2'Result = True
-counterexample expected for check at arrays.adb:112
-  trace at arrays.adb:107 --> M = (others => 'A')
-  trace at arrays.adb:111 --> M = (others => 'A')
+arrays.adb:52:18: info: postcondition proved (CVC5: 2 VC)
+arrays.adb:61:11: info: flow dependencies proved
+arrays.adb:63:22: high: postcondition might fail (e.g. when C = 'NUL' and S = ('a' => True, others => False))
+arrays.adb:72:19: info: postcondition proved (CVC5: 2 VC)
+arrays.adb:81:19: high: postcondition might fail (e.g. when C = 'NUL' and M = (others => 'a'))
+arrays.adb:89:11: info: flow dependencies proved
+arrays.adb:95:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:100:11: info: flow dependencies proved
+arrays.adb:105:22: medium: assertion might fail [possible fix: precondition of subprogram at line 98 should mention C]
+arrays.adb:109:11: info: flow dependencies proved
+arrays.adb:113:22: high: assertion might fail (e.g. when M = (others => 'A')) [possible fix: subprogram at line 108 should mention M in a precondition]
+arrays.adb:117:11: info: flow dependencies proved
+arrays.adb:121:22: high: assertion might fail (e.g. when M = (others => Elem_2)) [possible fix: subprogram at line 116 should mention M in a precondition]
+arrays.adb:125:11: info: flow dependencies proved
+arrays.adb:129:22: high: assertion might fail (e.g. when MM = (others => (others => Elem_0))) [possible fix: subprogram at line 124 should mention MM in a precondition]
+arrays.adb:132:22: info: initialization of "M" proved
+arrays.adb:133:11: info: flow dependencies proved
+arrays.adb:137:22: info: assertion proved (altergo: 1 VC)
+arrays.adb:141:11: info: flow dependencies proved
+arrays.adb:145:22: high: assertion might fail (e.g. when R = (A => (others => 5), Exists => False)) [possible fix: subprogram at line 140 should mention R in a precondition]
+arrays.adb:147:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:149:22: high: assertion might fail (e.g. when R = (A => (1 => 0, others => 5), Exists => True)) [possible fix: subprogram at line 140 should mention R in a precondition]
+arrays.adb:153:11: info: flow dependencies proved
+arrays.adb:154:31: info: range check proved (CVC5: 2 VC)
+arrays.adb:155:33: info: index check proved (CVC5: 2 VC)
+arrays.adb:157:22: info: postcondition proved (CVC5: 1 VC)
+arrays.adb:157:31: info: range check proved (CVC5: 2 VC)
+arrays.adb:158:33: info: index check proved (CVC5: 2 VC)
+arrays.adb:161:22: info: range check proved (CVC5: 2 VC)
+arrays.adb:162:16: info: index check proved (CVC5: 2 VC)
+arrays.adb:166:12: info: flow dependencies proved
+arrays.adb:171:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:171:31: info: index check proved (CVC5: 2 VC)
+arrays.adb:176:11: info: flow dependencies proved
+arrays.adb:179:22: high: assertion might fail (e.g. when A = (others => 0)) [possible fix: subprogram at line 175 should mention A in a precondition]
+arrays.adb:184:19: info: postcondition proved (CVC5: 2 VC)
+arrays.adb:192:33: info: loop invariant initialization proved (CVC5: 2 VC)
+arrays.adb:192:33: info: loop invariant preservation proved (CVC5: 2 VC)
+arrays.adb:192:41: info: range check proved (CVC5: 4 VC)
+arrays.adb:193:57: medium: "R" might not be initialized
+arrays.adb:195:14: medium: "R" might not be initialized
+arrays.adb:200:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C)
+arrays.adb:207:33: info: loop invariant initialization proved (CVC5: 2 VC)
+arrays.adb:207:33: info: loop invariant preservation proved (CVC5: 2 VC)
+arrays.adb:207:41: info: range check proved (CVC5: 4 VC)
+arrays.adb:208:57: medium: "R" might not be initialized
+arrays.adb:210:14: medium: "R" might not be initialized
+arrays.adb:214:11: info: flow dependencies proved
+arrays.adb:216:07: info: initialization of "A" proved
+arrays.adb:219:22: medium: assertion might fail (e.g. when A = (others => False))
+arrays.adb:223:11: info: flow dependencies proved
+arrays.adb:225:07: info: initialization of "A" proved
+arrays.adb:228:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:232:11: info: flow dependencies proved
+arrays.adb:234:07: info: initialization of "A" proved
+arrays.adb:237:22: medium: assertion might fail (e.g. when A = (others => False))
+arrays.adb:241:11: info: flow dependencies proved
+arrays.adb:243:07: info: initialization of "A" proved
+arrays.adb:246:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:250:11: info: flow dependencies proved
+arrays.adb:252:07: info: initialization of "A" proved
+arrays.adb:255:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
+counterexample expected for check at arrays.adb:63
+  trace at arrays.adb:58 --> S = ('a' => True, others => False)
+  trace at arrays.adb:59 --> C = 'NUL'
+  trace at arrays.adb:63 --> C = 'NUL' and S = ('a' => True, others => False)
+  trace at arrays.adb:66 --> Contains_B'Result = True and S = ('a' => True, others => False)
+counterexample expected for check at arrays.adb:81
+  trace at arrays.adb:78 --> M = (others => 'a')
+  trace at arrays.adb:79 --> C = 'NUL'
+  trace at arrays.adb:81 --> C = 'NUL' and M = (others => 'a')
+  trace at arrays.adb:84 --> C = 'NUL' and Is_Id_2'Result = True
+counterexample expected for check at arrays.adb:113
+  trace at arrays.adb:108 --> M = (others => 'A')
   trace at arrays.adb:112 --> M = (others => 'A')
-counterexample expected for check at arrays.adb:120
-  trace at arrays.adb:115 --> M = (others => Elem_2)
-  trace at arrays.adb:119 --> M = (others => Elem_2)
+  trace at arrays.adb:113 --> M = (others => 'A')
+counterexample expected for check at arrays.adb:121
+  trace at arrays.adb:116 --> M = (others => Elem_2)
   trace at arrays.adb:120 --> M = (others => Elem_2)
-counterexample expected for check at arrays.adb:144
-  trace at arrays.adb:139 --> R = (A => (others => 5), Exists => False)
-  trace at arrays.adb:143 --> R = (A => (others => 5), Exists => False)
+  trace at arrays.adb:121 --> M = (others => Elem_2)
+counterexample expected for check at arrays.adb:145
+  trace at arrays.adb:140 --> R = (A => (others => 5), Exists => False)
   trace at arrays.adb:144 --> R = (A => (others => 5), Exists => False)
+  trace at arrays.adb:145 --> R = (A => (others => 5), Exists => False)

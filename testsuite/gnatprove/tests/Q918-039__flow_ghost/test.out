@@ -4,3 +4,4 @@ mem.adb:6:14: medium: ghost procedure "Assign" cannot have non-ghost global outp
 mem.adb:6:41: info: initialization of "To" proved
 mem.adb:9:10: warning: unused assignment, in call inlined at mem.adb:15
 mem.adb:13:07: warning: initialization of "Y" has no effect
+mem.adb:15:07: info: analyzing call to "Assign" in context

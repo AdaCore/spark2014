@@ -3,5 +3,7 @@ p-priv_proc.ads:1:21: high: task "p.priv_proc" accesses "p.state"
 p-priv_proc.ads:1:21: high: task "q.to" accesses "p.state"
 p-priv_proc.ads:1:36: info: data dependencies proved
 p.ads:1:41: info: flow dependencies proved
+q.adb:5:11: warning: assuming "Flip" always returns
+q.adb:5:11: warning: no returning annotation available for "Flip"
 q.ads:4:14: info: nontermination of task proved (CVC5: 1 VC)
 q.ads:4:22: info: data dependencies proved

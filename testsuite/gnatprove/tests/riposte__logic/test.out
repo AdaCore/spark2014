@@ -1,51 +1,51 @@
-logic.adb:17:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-logic.adb:17:33: warning: unreachable branch (CVC5: 1 VC)
 logic.adb:18:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 logic.adb:18:33: warning: unreachable branch (CVC5: 1 VC)
-logic.adb:19:22: info: assertion proved (CVC5: 1 VC)
-logic.adb:20:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-logic.adb:24:22: high: assertion might fail
-logic.adb:24:37: warning: unreachable branch (CVC5: 1 VC)
-logic.adb:26:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:27:22: medium: assertion might fail
-logic.adb:27:37: warning: unreachable branch (CVC5: 1 VC)
-logic.adb:29:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:30:33: medium: assertion might fail, cannot prove F
-logic.adb:32:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:33:22: medium: assertion might fail
-logic.adb:43:22: info: assertion proved (Trivial)
-logic.adb:44:22: info: assertion proved (CVC5: 1 VC)
+logic.adb:19:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+logic.adb:19:33: warning: unreachable branch (CVC5: 1 VC)
+logic.adb:20:22: info: assertion proved (CVC5: 1 VC)
+logic.adb:21:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+logic.adb:25:22: high: assertion might fail
+logic.adb:25:37: warning: unreachable branch (CVC5: 1 VC)
+logic.adb:27:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:28:22: medium: assertion might fail
+logic.adb:28:37: warning: unreachable branch (CVC5: 1 VC)
+logic.adb:30:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:31:33: medium: assertion might fail, cannot prove F
+logic.adb:33:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:34:22: medium: assertion might fail
+logic.adb:44:22: info: assertion proved (Trivial)
 logic.adb:45:22: info: assertion proved (CVC5: 1 VC)
-logic.adb:46:22: info: assertion proved (Trivial)
-logic.adb:50:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:51:22: high: assertion might fail (e.g. when F = False)
-logic.adb:53:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:54:22: medium: assertion might fail
-logic.adb:59:04: warning: analyzing unreferenced procedure "De_Morgan"
-logic.adb:62:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:63:22: info: assertion proved (CVC5: 3 VC)
-logic.adb:65:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:66:22: info: assertion proved (CVC5: 2 VC)
-logic.adb:70:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:71:22: high: assertion might fail (e.g. when A = True) [possible fix: subprogram at line 59 should mention A and B in a precondition]
-logic.adb:73:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:74:22: medium: assertion might fail [possible fix: subprogram at line 59 should mention A and B in a precondition]
-logic.adb:76:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:77:22: medium: assertion might fail [possible fix: subprogram at line 59 should mention A and B in a precondition]
-logic.adb:79:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:80:22: medium: assertion might fail [possible fix: subprogram at line 59 should mention A and B in a precondition]
-logic.adb:83:04: warning: analyzing unreferenced procedure "Contraposition"
-logic.adb:86:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:87:22: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC)
-logic.adb:92:19: info: postcondition proved (CVC5: 1 VC)
-logic.adb:94:07: info: initialization of "R" proved
-logic.adb:108:04: warning: analyzing unreferenced procedure "XOR_Test_B"
-logic.adb:111:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:112:22: info: assertion proved (CVC5: 3 VC)
-logic.adb:114:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:115:22: info: assertion proved (CVC5: 2 VC)
-logic.adb:119:11: info: flow dependencies proved
-logic.adb:121:22: info: postcondition proved (CVC5: 2 VC)
-logic.adb:128:19: info: postcondition proved (CVC5: 4 VC)
-logic.adb:135:04: warning: analyzing unreferenced procedure "Implies_Test_1"
-logic.adb:138:22: high: assertion might fail [possible fix: subprogram at line 135 should mention A and B and C in a precondition]
+logic.adb:46:22: info: assertion proved (CVC5: 1 VC)
+logic.adb:47:22: info: assertion proved (Trivial)
+logic.adb:51:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:52:22: high: assertion might fail (e.g. when F = False)
+logic.adb:54:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:55:22: medium: assertion might fail
+logic.adb:60:04: warning: analyzing unreferenced procedure "De_Morgan"
+logic.adb:63:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:64:22: info: assertion proved (CVC5: 3 VC)
+logic.adb:66:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:67:22: info: assertion proved (CVC5: 2 VC)
+logic.adb:71:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:72:22: high: assertion might fail (e.g. when A = True) [possible fix: subprogram at line 60 should mention A and B in a precondition]
+logic.adb:74:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:75:22: medium: assertion might fail [possible fix: subprogram at line 60 should mention A and B in a precondition]
+logic.adb:77:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:78:22: medium: assertion might fail [possible fix: subprogram at line 60 should mention A and B in a precondition]
+logic.adb:80:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:81:22: medium: assertion might fail [possible fix: subprogram at line 60 should mention A and B in a precondition]
+logic.adb:84:04: warning: analyzing unreferenced procedure "Contraposition"
+logic.adb:87:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:88:22: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC)
+logic.adb:93:19: info: postcondition proved (CVC5: 1 VC)
+logic.adb:95:07: info: initialization of "R" proved
+logic.adb:109:04: warning: analyzing unreferenced procedure "XOR_Test_B"
+logic.adb:112:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:113:22: info: assertion proved (CVC5: 3 VC)
+logic.adb:115:30: info: assertion proved (Trivial: 1 VC)
+logic.adb:116:22: info: assertion proved (CVC5: 2 VC)
+logic.adb:120:11: info: flow dependencies proved
+logic.adb:122:22: info: postcondition proved (CVC5: 2 VC)
+logic.adb:129:19: info: postcondition proved (CVC5: 4 VC)
+logic.adb:136:04: warning: analyzing unreferenced procedure "Implies_Test_1"
+logic.adb:139:22: high: assertion might fail (e.g. when C = False) [possible fix: subprogram at line 136 should mention A and B and C in a precondition]

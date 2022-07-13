@@ -1,9 +1,9 @@
-norm-reals-errors.adb:11:14: medium: postcondition might fail (e.g. when X = 1.0000031E+0 and Y = 1.0000031E+0)
+norm-reals-errors.adb:11:14: medium: postcondition might fail
 norm-reals-errors.adb:11:34: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:12:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:13:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:14:22: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:17:14: medium: postcondition might fail (e.g. when X = -1.0000027E+0 and Y = -1.0000027E+0)
+norm-reals-errors.adb:17:14: medium: postcondition might fail
 norm-reals-errors.adb:17:34: info: float overflow check proved (Trivial)
 norm-reals-errors.adb:18:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:19:22: info: predicate check proved (Trivial: 1 VC)
@@ -87,8 +87,8 @@ norm-reals-errors.adb:143:10: info: subprogram variant proved (CVC5: 1 VC)
 norm-reals-errors.adb:143:39: info: range check proved (CVC5: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:146:60: info: float overflow check proved (Z3: 1 VC)
-norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when I = 2 and Values = (2 => -3.0492237E-4, others => 1.6187048E+0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: medium: range check might fail (e.g. when I = 2 and Values = (2 => 1.8368765E+19, others => 0.0)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:155:22: info: range check proved (CVC5: 1 VC)
@@ -104,17 +104,33 @@ norm-reals-errors.adb:186:31: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:188:17: info: postcondition proved (Z3: 1 VC)
 norm-reals-errors.adb:188:22: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:188:22: info: predicate check proved (Trivial: 1 VC)
+norm-reals-errors.adb:188:22: warning: assuming "Sqrt" always returns
+norm-reals-errors.adb:188:22: warning: assuming "Sqrt" has no effect on global items
+norm-reals-errors.adb:188:22: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:188:22: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.adb:188:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:188:33: info: predicate check proved (Trivial: 1 VC)
+norm-reals-errors.adb:188:33: warning: assuming "Sqrt" always returns
+norm-reals-errors.adb:188:33: warning: assuming "Sqrt" has no effect on global items
+norm-reals-errors.adb:188:33: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:188:33: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.adb:189:12: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:32: info: division check proved (CVC5: 1 VC)
 norm-reals-errors.adb:189:34: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:42: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:189:42: info: predicate check proved (Trivial: 1 VC)
+norm-reals-errors.adb:189:42: warning: assuming "Sqrt" always returns
+norm-reals-errors.adb:189:42: warning: assuming "Sqrt" has no effect on global items
+norm-reals-errors.adb:189:42: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:189:42: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.adb:189:53: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:60: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:189:60: info: predicate check proved (Trivial: 1 VC)
+norm-reals-errors.adb:189:60: warning: assuming "Sqrt" always returns
+norm-reals-errors.adb:189:60: warning: assuming "Sqrt" has no effect on global items
+norm-reals-errors.adb:189:60: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:189:60: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.adb:198:27: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:198:45: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:198:63: info: predicate check proved (Trivial: 1 VC)
@@ -123,20 +139,36 @@ norm-reals-errors.adb:199:50: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:200:40: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:200:47: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:200:47: info: predicate check proved (Trivial: 1 VC)
+norm-reals-errors.adb:200:47: warning: assuming "Sqrt" always returns
+norm-reals-errors.adb:200:47: warning: assuming "Sqrt" has no effect on global items
+norm-reals-errors.adb:200:47: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:200:47: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.adb:200:64: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:17: info: postcondition proved (altergo: 1 VC)
 norm-reals-errors.adb:201:42: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:52: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F (e.g. when Values = (others => 1.6180341E+0))
+norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F (e.g. when Values = (others => 1.0))
 norm-reals-errors.adb:210:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:211:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC5: 1 VC)
-norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0
+norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always returns
+norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
+norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt"
+norm-reals-errors.adb:212:07: warning: no returning annotation available for "Bound_Error_Sqrt"
+norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 (e.g. when Values = (others => -1.7123742E-22))
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:215:20: info: precondition proved (colibri: 1 VC)
 norm-reals-errors.adb:215:20: info: predicate check proved (Trivial: 1 VC)
+norm-reals-errors.adb:215:20: warning: assuming "Sqrt" always returns
+norm-reals-errors.adb:215:20: warning: assuming "Sqrt" has no effect on global items
+norm-reals-errors.adb:215:20: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:215:20: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.adb:216:20: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:216:20: info: predicate check proved (Trivial: 1 VC)
+norm-reals-errors.adb:216:20: warning: assuming "Sqrt" always returns
+norm-reals-errors.adb:216:20: warning: assuming "Sqrt" has no effect on global items
+norm-reals-errors.adb:216:20: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:216:20: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.ads:8:08: info: postcondition proved (CVC5: 1 VC)
 norm-reals-errors.ads:10:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.ads:10:39: info: predicate check proved (Trivial: 1 VC)
@@ -158,6 +190,10 @@ norm-reals.ads:24:32: info: index check proved (CVC5: 2 VC)
 norm-reals.ads:24:59: info: index check proved (CVC5: 2 VC)
 norm-reals.ads:27:07: info: precondition proved (CVC5: 1 VC)
 norm-reals.ads:27:07: info: predicate check proved (Trivial: 1 VC)
+norm-reals.ads:27:07: warning: assuming "Sqrt" always returns
+norm-reals.ads:27:07: warning: assuming "Sqrt" has no effect on global items
+norm-reals.ads:27:07: warning: no Global contract available for "Sqrt"
+norm-reals.ads:27:07: warning: no returning annotation available for "Sqrt"
 norm.adb:16:23: info: float overflow check proved (CVC5: 1 VC)
 norm.adb:19:17: info: postcondition proved (Z3: 1 VC; colibri: 1 VC)
 norm.adb:19:22: info: float overflow check proved (CVC5: 1 VC)
@@ -212,7 +248,15 @@ norm.adb:64:62: info: index check proved (CVC5: 4 VC)
 norm.adb:64:65: info: float overflow check proved (colibri: 1 VC)
 norm.adb:69:34: info: precondition proved (CVC5: 1 VC)
 norm.adb:71:16: info: precondition proved (CVC5: 2 VC)
+norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" always returns
+norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" has no effect on global items
+norm.adb:71:16: warning: no Global contract available for "Sqrt_Is_Monotonic"
+norm.adb:71:16: warning: no returning annotation available for "Sqrt_Is_Monotonic"
 norm.adb:74:16: info: precondition proved (CVC5: 2 VC)
+norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" always returns
+norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" has no effect on global items
+norm.adb:74:16: warning: no Global contract available for "Sqrt_Exact_Integer"
+norm.adb:74:16: warning: no returning annotation available for "Sqrt_Exact_Integer"
 norm.adb:75:14: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
@@ -348,3 +392,15 @@ sqrt_spec.ads:37:14: info: predicate check proved (Trivial: 1 VC)
 sqrt_spec.ads:37:19: info: predicate check proved (Trivial: 1 VC)
 sqrt_spec.ads:46:19: info: assertion proved (Trivial)
 sqrt_spec.ads:47:19: info: assertion proved (Trivial)
+sqrt_spec.ads:53:44: warning: assuming "Sqrt" always returns
+sqrt_spec.ads:53:44: warning: assuming "Sqrt" has no effect on global items
+sqrt_spec.ads:53:44: warning: no Global contract available for "Sqrt"
+sqrt_spec.ads:53:44: warning: no returning annotation available for "Sqrt"
+sqrt_spec.ads:54:12: warning: assuming "Sqrt" always returns
+sqrt_spec.ads:54:12: warning: assuming "Sqrt" has no effect on global items
+sqrt_spec.ads:54:12: warning: no Global contract available for "Sqrt"
+sqrt_spec.ads:54:12: warning: no returning annotation available for "Sqrt"
+sqrt_spec.ads:55:35: warning: assuming "Sqrt" always returns
+sqrt_spec.ads:55:35: warning: assuming "Sqrt" has no effect on global items
+sqrt_spec.ads:55:35: warning: no Global contract available for "Sqrt"
+sqrt_spec.ads:55:35: warning: no returning annotation available for "Sqrt"

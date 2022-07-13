@@ -22,6 +22,9 @@ ng.adb:65:23: medium: overflow check might fail, cannot prove lower bound for D1
 ng.adb:65:29: medium: overflow check might fail, cannot prove lower bound for (D1 + D2) * 3600 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 ng.adb:65:37: medium: divide by zero might fail
 ng.adb:65:43: info: overflow check proved (altergo: 2 VC)
+ng.adb:69:31: info: analyzing call to "Millisecs" in context
+ng.adb:70:31: info: analyzing call to "NGClickTime" in context
+ng.adb:71:32: info: analyzing call to "NGRotations" in context
 ng.adb:78:07: medium: precondition might fail, cannot prove ThisCount /= PrevCount [possible fix: subprogram at ng.ads:26 should mention PrevCount and PrevTime in a precondition]
 ng_v1.adb:20:07: info: initialization of "T1" proved
 ng_v1.adb:20:11: info: initialization of "T2" proved

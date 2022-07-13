@@ -6,6 +6,7 @@ anti_aliasing.adb:23:07: info: initialization of "Temp" proved
 anti_aliasing.adb:26:14: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition]
 anti_aliasing.adb:31:11: info: data dependencies proved
 anti_aliasing.adb:34:14: high: overflow check might fail, cannot prove lower bound for I + Local_1 (e.g. when I = -1 and Local_1 = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 30 should mention Local_1 and I in a precondition]
+anti_aliasing.adb:40:04: info: analyzing call to "One_In_One_Out" in context
 anti_aliasing.adb:44:21: info: non-aliasing of formal parameters "X" and "Y" proved
 anti_aliasing.adb:48:16: info: non-aliasing of formal parameters "X" and "Y" proved
 anti_aliasing.adb:51:20: high: formal parameter "I" and global "Local_1" are aliased (SPARK RM 6.4.2)
@@ -21,17 +22,21 @@ externals.adb:53:54: info: initialization of "Main_Display.State" constituent of
 externals.adb:54:59: info: initialization of "Secondary_Display.State" constituent of "Externals.Displays" proved
 externals.adb:74:41: medium: "Out_Reg" constituent of "Complex_Device" might not be written
 externals.adb:85:07: info: initialization of "Status" proved
+externals.adb:88:10: medium: loop might be nonterminating, terminating annotation on "Output_Value" could be incorrect
 externals.adb:89:20: warning: unused assignment
 externals.adb:92:13: warning: statement has no effect
 externals.ads:8:08: info: flow dependencies proved
-externals.ads:10:20: info: initialization of "Combined_Value" proved
-externals.ads:11:11: info: data dependencies proved
-externals.ads:15:11: info: flow dependencies proved
-externals.ads:18:11: info: data dependencies proved
-externals.ads:22:11: info: flow dependencies proved
-externals.ads:26:11: info: data dependencies proved
-externals.ads:32:11: info: data dependencies proved
-externals.ads:33:11: info: flow dependencies proved
+externals.ads:11:14: info: subprogram "Read" will terminate, terminating annotation has been proved
+externals.ads:11:20: info: initialization of "Combined_Value" proved
+externals.ads:12:11: info: data dependencies proved
+externals.ads:16:11: info: flow dependencies proved
+externals.ads:18:14: info: subprogram "Display" will terminate, terminating annotation has been proved
+externals.ads:19:11: info: data dependencies proved
+externals.ads:23:11: info: flow dependencies proved
+externals.ads:25:13: info: subprogram "Last_Value_Sent" will terminate, terminating annotation has been proved
+externals.ads:27:11: info: data dependencies proved
+externals.ads:33:11: info: data dependencies proved
+externals.ads:34:11: info: flow dependencies proved
 f.adb:3:16: info: postcondition proved (CVC5: 2 VC)
 f.adb:10:16: info: range check proved (CVC5: 4 VC)
 f.adb:10:38: info: overflow check proved (CVC5: 2 VC)

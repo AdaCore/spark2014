@@ -8,7 +8,9 @@ is
    function Copy (L : access List_Cell) return List_Acc with
      Ghost,
      Import,
-     Post => For_All_List (L, Copy'Result, Equal'Access);
+     Global   => null,
+     Annotate => (GNATprove, Always_Return),
+     Post     => For_All_List (L, Copy'Result, Equal'Access);
 
    function Updated_If_Less_Than_Threshold
      (L1, L2    : access constant List_Cell;

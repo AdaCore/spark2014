@@ -1,4 +1,6 @@
 bar.adb:6:19: warning: "Wibble" is not modified, could be IN
 bar.adb:7:09: info: data dependencies proved
 bar.adb:10:07: warning: initialization of "Wobble" has no effect
+bar.adb:12:07: warning: assuming "Fnark" always returns
+bar.adb:12:07: warning: no returning annotation available for "Fnark"
 bar.adb:12:14: warning: "Wobble" is set by "Fnark" but not used after the call

@@ -29,6 +29,7 @@ with Rtsfind;                    use Rtsfind;
 with Sem_Eval;                   use Sem_Eval;
 with Sinfo.Utils;                use Sinfo.Utils;
 with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
 package body SPARK_Util.Types is
@@ -75,9 +76,10 @@ package body SPARK_Util.Types is
    type Test_Result is (Pass, Fail, Continue);
 
    generic
-      with function Test (Typ : Access_Kind_Id) return Test_Result;
+      with function Test (Typ : Type_Kind_Id) return Test_Result;
    function Traverse_Access_Parts (Typ : Type_Kind_Id) return Boolean;
-   --  Generic function which applies test to all access subcomponents of Typ,
+   --  Generic function which applies test to all access subcomponents and
+   --  subcomponents annotated with ownership of Typ,
    --  until one is found on which Test returns Pass. If Test returns
    --  Continue on an access subcomponent, the designated type is also searched
    --  for access subcomponents with the given property.
@@ -609,11 +611,11 @@ package body SPARK_Util.Types is
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean
    is
 
-      function Always_Pass (Unused : Type_Kind_Id) return Test_Result is
-        (Pass);
+      function Is_Access (Typ : Type_Kind_Id) return Test_Result is
+        (if Is_Access_Type (Typ) then Pass else Fail);
 
       function Contains_Access_Subcomponents is new
-        Traverse_Access_Parts (Always_Pass);
+        Traverse_Access_Parts (Is_Access);
 
    begin
       return Contains_Access_Subcomponents (Typ);
@@ -631,10 +633,14 @@ package body SPARK_Util.Types is
         (if Is_General_Access_Type (Typ) then Continue
 
          --  Otherwise, the type contains allocated parts if it is a pool
-         --  specific access type or an anonymous access-to-object type.
-         elsif Is_Access_Object_Type (Typ)
-         and then (not Is_Access_Constant (Typ)
-           or else Is_Anonymous_Access_Type (Typ))
+         --  specific access type, an anonymous access-to-object type, or
+         --  if it has an ownership annotation and it needs reclamation.
+
+         elsif (Is_Access_Object_Type (Typ)
+            and then (not Is_Access_Constant (Typ)
+              or else Is_Anonymous_Access_Type (Typ)))
+         or else (Has_Ownership_Annotation (Typ)
+           and then Needs_Reclamation (Typ))
          then Pass else Fail);
 
       function Contains_Allocated_Parts is new
@@ -1054,14 +1060,17 @@ package body SPARK_Util.Types is
 
    function Is_Deep (Typ : Type_Kind_Id) return Boolean is
       function Test_Access_Type (Typ : Type_Kind_Id) return Test_Result is
-        (if Ekind (Directly_Designated_Type (Typ)) /=
-           E_Subprogram_Type
+        (if Is_Access_Object_Type (Typ)
          and then (not Is_Access_Constant (Typ)
            or else Is_Anonymous_Access_Type (Typ))
-         then Pass else Fail);
+         then Pass
+         elsif Has_Ownership_Annotation (Typ)
+         then Pass
+         else Fail);
       --  Access to subprograms are not subjected to ownership rules, nor
       --  are access-to-constant types, unless they are observers
-      --  (anonymous access-to-constant types).
+      --  (anonymous access-to-constant types). Private type might be subjected
+      --  to ownership rules if they have an ownership annotation.
 
       function Is_Deep is new Traverse_Access_Parts (Test_Access_Type);
    begin
@@ -2091,7 +2100,9 @@ package body SPARK_Util.Types is
          if Is_Array_Type (Rep_Ty) then
             return Traverse_Access_Parts_Ann (Component_Type (Rep_Ty));
 
-         elsif Is_Record_Type (Rep_Ty) then
+         elsif Is_Record_Type (Rep_Ty)
+           or else Is_Incomplete_Or_Private_Type (Rep_Ty)
+         then
 
             --  For tagged records, search only in the root type, extensions
             --  are not allowed to introduce deep components.
@@ -2100,18 +2111,26 @@ package body SPARK_Util.Types is
                return Traverse_Access_Parts_Ann (Root_Retysp (Typ));
             end if;
 
-            declare
-               Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
-            begin
-               while Present (Comp) loop
-                  if Component_Is_Visible_In_SPARK (Comp)
-                    and then Traverse_Access_Parts_Ann (Etype (Comp))
-                  then
-                     return True;
-                  end if;
-                  Next_Component (Comp);
-               end loop;
-            end;
+            if Has_Ownership_Annotation (Rep_Ty) then
+               if Test (Rep_Ty) = Pass then
+                  return True;
+               end if;
+            end if;
+
+            if Is_Record_Type (Rep_Ty) then
+               declare
+                  Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
+               begin
+                  while Present (Comp) loop
+                     if Component_Is_Visible_In_SPARK (Comp)
+                       and then Traverse_Access_Parts_Ann (Etype (Comp))
+                     then
+                        return True;
+                     end if;
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
 
             return False;
 
@@ -2139,8 +2158,7 @@ package body SPARK_Util.Types is
             end case;
          else
             pragma Assert
-              (Is_Incomplete_Or_Private_Type (Rep_Ty)
-               or else Is_Scalar_Type (Rep_Ty)
+              (Is_Scalar_Type (Rep_Ty)
                or else Is_Concurrent_Type (Rep_Ty));
             return False;
          end if;

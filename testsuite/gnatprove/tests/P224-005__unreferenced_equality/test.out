@@ -1,2 +1,3 @@
 regpat.adb:23:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "=" or turning it into an expression function]
+regpat.adb:23:32: info: no contextual analysis of "=" (in assertion expression)
 regpat.ads:3:25: info: data dependencies proved
