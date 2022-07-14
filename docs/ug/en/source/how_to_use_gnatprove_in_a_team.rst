@@ -641,6 +641,7 @@ of a program:
   * does not suspend on suspection objects,
   * does not access unsynchronised global objects,
   * does not lock protected objects with calls to protected procedures.
+  * does not call Ada.Task_Identification.Current_Task
 
 
 In addition, the following assumptions need to be addressed when using SPARK on
