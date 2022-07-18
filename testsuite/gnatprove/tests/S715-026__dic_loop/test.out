@@ -41,7 +41,7 @@ ordering_buffers.ads:47:58: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.ads:47:83: info: range check proved (CVC5: 2 VC)
 ordering_buffers.ads:51:06: info: initialization of "Message" proved
 ordering_buffers.ads:53:17: info: precondition proved (CVC5: 2 VC)
-ordering_buffers.ads:54:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC; altergo: 1 VC)
+ordering_buffers.ads:54:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; altergo: 2 VC)
 ordering_buffers.ads:55:18: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.ads:58:14: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.ads:58:35: info: range check proved (CVC5: 2 VC)

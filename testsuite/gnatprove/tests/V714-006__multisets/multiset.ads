@@ -90,6 +90,12 @@ private
       Element_Type => Big_Positive);
    use Maps;
 
+   function Choose (M : Map) return Element_Type with
+     Import,
+     Global => null,
+     Pre => not Is_Empty (M),
+     Post => Has_Key (M, Choose'Result);
+
    ------------
    -- Lemmas --
    ------------

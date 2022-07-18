@@ -90,7 +90,7 @@ test.adb:34:07: warning: no returning annotation available for "Next"
 test.adb:37:19: info: assertion proved (CVC5: 1 VC)
 test.adb:37:23: warning: assuming "Is_Empty" always returns
 test.adb:37:23: warning: no returning annotation available for "Is_Empty"
-test.adb:38:19: info: assertion proved (Z3: 1 VC)
+test.adb:38:19: info: assertion proved (CVC5: 1 VC)
 test.adb:38:19: warning: assuming "Length" always returns
 test.adb:38:19: warning: no returning annotation available for "Length"
 test.adb:40:19: medium: assertion might fail
@@ -730,7 +730,7 @@ test_list.adb:237:24: warning: assuming "=" always returns
 test_list.adb:237:24: warning: no returning annotation available for "="
 test_list.adb:238:07: warning: assuming "Assign" always returns
 test_list.adb:238:07: warning: no returning annotation available for "Assign"
-test_list.adb:240:07: info: precondition proved (Z3: 1 VC)
+test_list.adb:240:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:240:07: warning: assuming "Replace_Element" always returns
 test_list.adb:240:07: warning: no returning annotation available for "Replace_Element"
 test_list.adb:240:27: warning: assuming "First" always returns
@@ -800,7 +800,7 @@ test_list.adb:303:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:303:22: medium: assertion might fail
 test_list.adb:303:22: warning: assuming "Find" always returns
 test_list.adb:303:22: warning: no returning annotation available for "Find"
-test_list.adb:307:07: info: precondition proved (Z3: 1 VC)
+test_list.adb:307:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:307:07: warning: assuming "Append" always returns
 test_list.adb:307:07: warning: no returning annotation available for "Append"
 test_list.adb:308:07: info: precondition proved (Z3: 1 VC)
@@ -891,8 +891,8 @@ test_list.adb:360:22: info: precondition proved (Z3: 1 VC)
 test_list.adb:360:22: medium: assertion might fail
 test_list.adb:360:22: warning: assuming "Last_Element" always returns
 test_list.adb:360:22: warning: no returning annotation available for "Last_Element"
+test_list.adb:361:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:361:22: info: precondition proved (Z3: 1 VC)
-test_list.adb:361:22: medium: assertion might fail
 test_list.adb:361:22: warning: assuming "First_Element" always returns
 test_list.adb:361:22: warning: no returning annotation available for "First_Element"
 test_list.adb:363:07: warning: assuming "Clear" always returns

@@ -1023,17 +1023,6 @@ package body Gnat2Why.Types is
 
       if not Is_Itype (E) then
          Create_Dynamic_Invariant (Th, E, E_Axiom_Module (E));
-
-         --  Generate a predicate for E's default initialization.
-         --  We do not generate default initialization for unconstrained types.
-
-         if Can_Be_Default_Initialized (E) then
-            Create_Default_Init_Assumption (Th, E);
-         end if;
-      end if;
-
-      if Has_Invariants_In_SPARK (E) then
-         Create_Type_Invariant (Th, E);
       end if;
 
       if Contains_Allocated_Parts (E)
@@ -1059,6 +1048,41 @@ package body Gnat2Why.Types is
       Close_Theory (Th,
                     Kind => Axiom_Theory,
                     Defined_Entity => E);
+
+      --  Generate a predicate for E's default initialization.
+      --  We do not generate default initialization for unconstrained types.
+
+      if not Is_Itype (E) and then Can_Be_Default_Initialized (E) then
+         Th :=
+           Open_Theory
+             (WF_Context, E_DIC_Module (E),
+              Comment =>
+                "Module giving a predicate for the default initial assumption"
+              & " of type """ & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Create_Default_Init_Assumption (Th, E);
+         Close_Theory (Th,
+                       Kind => Definition_Theory);
+      end if;
+
+      if Has_Invariants_In_SPARK (E) then
+         Th :=
+           Open_Theory
+             (WF_Context, E_Invariant_Module (E),
+              Comment =>
+                "Module giving a predicate for the type invariant of"
+              & " type """ & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Create_Type_Invariant (Th, E);
+         Close_Theory (Th,
+                       Kind => Definition_Theory);
+      end if;
    end Generate_Type_Completion;
 
    ---------------------------

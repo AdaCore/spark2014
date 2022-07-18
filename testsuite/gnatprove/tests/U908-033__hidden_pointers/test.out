@@ -279,8 +279,8 @@ example_recursive.adb:306:33: medium: in inlined expression function body at exa
 example_recursive.adb:306:33: medium: in inlined expression function body at example_recursive.adb:21
 example_recursive.adb:306:33: medium: loop invariant might fail in first iteration, cannot prove Get (M, A) in L_Cell
 example_recursive.adb:306:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:308:13: info: loop invariant initialization proved (Z3: 1 VC)
 example_recursive.adb:308:13: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:308:13: medium: loop invariant might fail in first iteration
 example_recursive.adb:308:13: medium: loop invariant might not be preserved by an arbitrary iteration
 example_recursive.adb:308:13: medium: precondition might fail, cannot prove Get (M, A) in L_Cell
 example_recursive.adb:308:57: info: overflow check proved (CVC5: 4 VC)

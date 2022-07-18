@@ -31,6 +31,7 @@ with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
 with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
 with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Util.Types;               use SPARK_Util.Types;
 with Why.Ids;                        use Why.Ids;
 with Why.Gen.Names;                  use Why.Gen.Names;
 
@@ -764,6 +765,14 @@ package Why.Atree.Modules is
    --  Return the module for the completion of the representative type of a
    --  record type E.
 
+   function E_DIC_Module (Ty : Type_Kind_Id) return W_Module_Id with
+     Pre => not Is_Itype (Ty) and then Can_Be_Default_Initialized (Ty);
+   --  Function returning the extra module for the default assumption of Ty
+
+   function E_Invariant_Module (Ty : Type_Kind_Id) return W_Module_Id with
+     Pre => Has_Invariants_In_SPARK (Ty);
+   --  Function returning the extra module for the type invariant of Ty
+
    function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the logic function __call associated with the profile of a
    --  function or function type.
@@ -789,6 +798,8 @@ package Why.Atree.Modules is
    --  @param N the Ada Node
    --  @param M Why3 module associated to N
    --  @param Is_Axiom True if M is an axiom module
+
+   --  Functions returning array module types from the array theory module
 
    function Init_Array_Module (Module : W_Module_Id) return M_Array_Type;
    function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type;

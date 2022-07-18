@@ -34,7 +34,6 @@ with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
 with String_Utils;               use String_Utils;
 with VC_Kinds;                   use VC_Kinds;
@@ -120,6 +119,8 @@ package body Why.Atree.Modules is
    Record_Rep_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Record_Compl_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Rep_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   DIC_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Invariant_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------------
    -- E_Axiom_Module --
@@ -145,6 +146,18 @@ package body Why.Atree.Modules is
       return Hashconsed_Entity_Module (E, Name, Compl_Modules);
    end E_Compl_Module;
 
+   ------------------
+   -- E_DIC_Module --
+   ------------------
+
+   function E_DIC_Module
+     (Ty : Type_Kind_Id) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___dic";
+   begin
+      return Hashconsed_Entity_Module (Ty, Name, DIC_Modules);
+   end E_DIC_Module;
+
    -------------------
    -- E_Init_Module --
    -------------------
@@ -168,6 +181,18 @@ package body Why.Atree.Modules is
    begin
       return Hashconsed_Entity_Module (E, Name, Entity_Modules);
    end E_Module;
+
+   ------------------------
+   -- E_Invariant_Module --
+   ------------------------
+
+   function E_Invariant_Module
+     (Ty : Type_Kind_Id) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___invariant";
+   begin
+      return Hashconsed_Entity_Module (Ty, Name, Invariant_Modules);
+   end E_Invariant_Module;
 
    ------------------------
    -- E_Rec_Axiom_Module --
@@ -2871,7 +2896,7 @@ package body Why.Atree.Modules is
               (E, WNE_Type_Invariant,
                New_Identifier
                  (Symb   => NID ("type_invariant"),
-                  Module => AM,
+                  Module => E_Invariant_Module (E),
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
          end if;
@@ -2888,7 +2913,7 @@ package body Why.Atree.Modules is
               (E, WNE_Default_Init,
                New_Identifier
                  (Symb   => NID ("default_initial_assumption"),
-                  Module => AM,
+                  Module => E_DIC_Module (E),
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
          end if;
