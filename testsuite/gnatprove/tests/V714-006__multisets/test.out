@@ -1,0 +1,68 @@
+SOUNDNESS BUG at multiset.ads:31: mark @POSTCONDITION:FAIL not found
+a-cofuma.ads:323:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
+a-cofuma.ads:324:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
+multiset.adb:12:09: info: predicate check proved (Trivial: 1 VC)
+multiset.adb:12:30: info: predicate check proved (Trivial: 1 VC)
+multiset.adb:12:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+multiset.adb:13:11: info: precondition proved (CVC5: 1 VC)
+multiset.adb:13:11: info: predicate check proved (Trivial: 1 VC)
+multiset.adb:13:27: info: precondition proved (CVC5: 1 VC)
+multiset.adb:14:13: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+multiset.adb:14:15: info: predicate check proved (Trivial: 1 VC)
+multiset.adb:14:15: info: subprogram variant proved (CVC5: 1 VC)
+multiset.adb:14:32: info: precondition proved (CVC5: 1 VC)
+multiset.adb:14:51: info: precondition proved (CVC5: 1 VC)
+multiset.adb:32:08: info: precondition proved (CVC5: 1 VC)
+multiset.adb:34:04: info: no contextual analysis of "Empty_Multiset" (controlled return type)
+multiset.adb:34:13: info: subprogram "Empty_Multiset" will terminate, terminating annotation has been proved
+multiset.adb:36:14: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+multiset.adb:40:17: info: predicate check proved (Trivial: 1 VC)
+multiset.adb:40:25: info: predicate check proved (Trivial: 1 VC)
+multiset.adb:60:14: info: precondition proved (CVC5: 1 VC)
+multiset.adb:60:14: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+multiset.adb:61:13: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+multiset.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
+multiset.ads:18:35: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:25:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved
+multiset.ads:29:06: info: data dependencies proved
+multiset.ads:30:16: info: postcondition proved (CVC5: 2 VC; Z3: 2 VC)
+multiset.ads:30:35: info: precondition proved (Trivial: 1 VC)
+multiset.ads:30:43: warning: unused variable "Element"
+multiset.ads:31:46: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:31:46: info: predicate check proved (Trivial: 1 VC)
+multiset.ads:31:72: info: predicate check proved (Trivial: 1 VC)
+multiset.ads:33:13: info: subprogram "Cardinality" will terminate, terminating annotation has been proved
+multiset.ads:37:06: info: data dependencies proved
+multiset.ads:40:13: info: subprogram "Nb_Occurence" will terminate, terminating annotation has been proved
+multiset.ads:45:06: info: data dependencies proved
+multiset.ads:47:13: info: subprogram "Contains" will terminate, terminating annotation has been proved
+multiset.ads:52:06: info: data dependencies proved
+multiset.ads:53:16: info: postcondition proved (CVC5: 2 VC)
+multiset.ads:53:35: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:53:35: info: predicate check proved (Trivial: 1 VC)
+multiset.ads:53:71: info: predicate check proved (Trivial: 1 VC)
+multiset.ads:54:06: info: Inline_For_Proof annotation proved (CVC5: 1 VC)
+multiset.ads:56:13: info: subprogram "Choose" will terminate, terminating annotation has been proved
+multiset.ads:57:06: info: data dependencies proved
+multiset.ads:58:20: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:59:16: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:59:16: info: postcondition proved (CVC5: 1 VC)
+multiset.ads:63:13: info: subprogram "Iter_First" will terminate, terminating annotation has been proved
+multiset.ads:64:06: info: data dependencies proved
+multiset.ads:66:13: info: subprogram "Iter_Has_Element" will terminate, terminating annotation has been proved
+multiset.ads:70:06: info: data dependencies proved
+multiset.ads:72:13: info: subprogram "Iter_Next" will terminate, terminating annotation has been proved
+multiset.ads:75:06: info: data dependencies proved
+multiset.ads:76:16: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:78:13: info: subprogram "Iter_Element" will terminate, terminating annotation has been proved
+multiset.ads:82:06: info: data dependencies proved
+multiset.ads:83:16: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:97:13: info: implicit function contract might not be available on recursive calls
+multiset.ads:97:13: info: subprogram "Cardinality_Rec" will terminate, terminating annotation has been proved
+multiset.ads:99:46: info: range check proved (CVC5: 1 VC)
+multiset.ads:101:09: info: invariant check proved on default value (CVC5: 1 VC)
+multiset.ads:103:29: info: in default value of private type at multiset.ads:17
+multiset.ads:103:29: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+multiset.ads:107:13: info: subprogram "Invariant" will terminate, terminating annotation has been proved
+multiset.ads:124:07: info: precondition proved (CVC5: 1 VC)
+multiset.ads:130:07: info: precondition proved (CVC5: 1 VC)
