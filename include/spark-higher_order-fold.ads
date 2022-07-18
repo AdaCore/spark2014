@@ -26,6 +26,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
+
 package SPARK.Higher_Order.Fold with SPARK_Mode is
 
    generic
@@ -320,58 +323,108 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       type Index_Type is range <>;
       type Element_In is private;
       type Array_Type is array (Index_Type range <>) of Element_In;
-      type Element_Out is range <>;
+      type Element_Out is private;
+      with function Add (Left, Right : Element_Out) return Element_Out;
+      Zero : Element_Out;
+      with function To_Big (X : Element_Out) return Big_Integer
+        with Ghost;
+      with function In_Range (X : Big_Integer) return Boolean
+        with Ghost;
 
       with function Value (X : Element_In) return Element_Out;
       --  Sum the value of each element
    package Sum is
       pragma Annotate (GNATprove, Always_Return, Sum);
 
-      function In_Range
-        (A : Array_Type; X : Element_Out'Base; I : Index_Type) return Boolean
-      is (X in Element_Out'First * Element_Out'Base (I - A'First) ..
-            Element_Out'Last * Element_Out'Base (I - A'First))
+      function "+" (Left, Right : Element_Out) return Element_Out is
+         (Add (Left, Right))
+      with
+        Pre => In_Range (To_Big (Left) + To_Big (Right));
+      --  Axiom: Add does not overflow if the result of the addition on big
+      --  integers is in range.
+      pragma Annotate (GNATprove, Inline_For_Proof, "+");
+
+      procedure Prove_Add (Left, Right : Element_Out)
+      with
+        Ghost,
+        Pre  => In_Range (To_Big (Left) + To_Big (Right)),
+        Post => To_Big (Left) + To_Big (Right) = To_Big (Left + Right);
+      --  Axiom: "+" is the addition on Element_Out.
+
+      procedure Prove_Zero with
+        Ghost,
+        Post => To_Big (Zero) = 0;
+      --  Axiom: Zero is 0
+
+      package Big_Integer_Sum with
+        Ghost
+      is
+         package Index_Conv is new Signed_Conversions (Index_Type);
+         function To_Big_I (X : Index_Type) return Big_Integer renames
+           Index_Conv.To_Big_Integer;
+
+         function Always_True
+           (Unused_A : Array_Type;
+            Unused_X : Big_Integer;
+            Unused_I : Index_Type) return Boolean
+         is (True);
+
+         function Always_True
+           (Unused_A : Array_Type; Unused_X : Big_Integer) return Boolean
+         is (True);
+
+         function Add_Value (X : Element_In; Y : Big_Integer) return
+           Big_Integer
+         is (To_Big (Value (X)) + Y);
+         pragma Annotate (GNATprove, Inline_For_Proof, Add_Value);
+
+         package Sum_Left is new Fold_Left
+           (Index_Type  => Index_Type,
+            Element_In  => Element_In,
+            Array_Type  => Array_Type,
+            Element_Out => Big_Integer,
+            Ind_Prop    => Always_True,
+            Final_Prop  => Always_True,
+            F           => Add_Value);
+
+         function Sum (A : Array_Type) return Big_Integer is
+           (Sum_Left.Fold (A, 0));
+
+         procedure Update_Sum (A1, A2 : Array_Type; I : Index_Type) with
+           Pre  => I in A1'Range and then
+           A1'First = A2'First and then A1'Last = A2'Last and then
+           (for all K in A1'Range => (if K /= I then A1 (K) = A2 (K))),
+           Post => Sum (A2) - To_Big (Value (A2 (I))) =
+             Sum (A1) - To_Big (Value (A1 (I)));
+         --  Lemma: Modification of Sum after an update to the array
+
+         function Length (A : Array_Type) return Big_Integer is
+            (if A'Last < A'First then 0
+             else To_Big_I (A'Last) - To_Big_I (A'First) + 1);
+
+         procedure Sum_Cst (A : Array_Type; C : Element_Out) with
+           Post => (if (for all I in A'Range => Value (A (I)) = C) then
+                      Sum (A) = To_Big (C) * Length (A));
+         --  Lemma: Value of Sum on a constant array
+
+      end Big_Integer_Sum;
+
+      function No_Overflows
+        (A : Array_Type; X : Element_Out; I : Index_Type) return Boolean
+      is (In_Range (To_Big (X) + To_Big (Value (A (I))))
+          and then
+            (if I < A'Last then No_Overflows (A, X + Value (A (I)), I + 1)))
       with Ghost,
+        Subprogram_Variant => (Increases => I),
         Pre => I in A'Range;
 
-      function In_Range_Last
-        (A : Array_Type; X : Element_Out'Base) return Boolean
-      is (X in Element_Out'First * A'Length ..
-            Element_Out'Last * A'Length)
+      function No_Overflows (A : Array_Type) return Boolean is
+        (if A'Length > 0 then No_Overflows (A, Zero, A'First))
       with Ghost;
 
-      function Add_Value (X : Element_In; Y : Element_Out'Base) return
-        Element_Out'Base
-      is (Value (X) + Y)
-      with Pre => Y in
-          Element_Out'Base'First - Element_Out'Min (0, Element_Out'First) ..
-        Element_Out'Base'Last - Element_Out'Max (0, Element_Out'Last);
-      pragma Annotate (GNATprove, Inline_For_Proof, Add_Value);
-
-      package Sum_Left is new Fold_Left
-        (Index_Type  => Index_Type,
-         Element_In  => Element_In,
-         Array_Type  => Array_Type,
-         Element_Out => Element_Out'Base,
-         Ind_Prop    => In_Range,
-         Final_Prop  => In_Range_Last,
-         F           => Add_Value);
-
-      function Sum (A : Array_Type) return Element_Out'Base is
-        (Sum_Left.Fold (A, 0));
-
-      procedure Update_Sum (A1, A2 : Array_Type; I : Index_Type)
-      with Ghost,
-        Pre  => I in A1'Range and then
-        A1'First = A2'First and then A1'Last = A2'Last and then
-        (for all K in A1'Range => (if K /= I then A1 (K) = A2 (K))),
-        Post => Sum (A2) - Value (A2 (I)) = Sum (A1) - Value (A1 (I));
-      --  Lemma: Modification of Sum after an update to the array
-
-      procedure Sum_Cst (A : Array_Type; C : Element_Out) with Ghost,
-        Post => (if (for all I in A'Range => Value (A (I)) = C) then
-                     Sum (A) = C * A'Length);
-      --  Lemma: Value of Sum on a constant array
+      function Sum (A : Array_Type) return Element_Out with
+        Pre  => No_Overflows (A),
+        Post => To_Big (Sum'Result) = Big_Integer_Sum.Sum (A);
    end Sum;
 
    generic
@@ -574,76 +627,129 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       type Element_In is private;
       type Array_Type is array (Index_1 range <>, Index_2 range <>)
         of Element_In;
-      type Element_Out is range <>;
+      type Element_Out is private;
+      with function Add (Left, Right : Element_Out) return Element_Out;
+      Zero : Element_Out;
+      with function To_Big (X : Element_Out) return Big_Integer
+        with Ghost;
+      with function In_Range (X : Big_Integer) return Boolean
+        with Ghost;
 
       with function Value (X : Element_In) return Element_Out;
       --  Sum the value of each element
    package Sum_2 is
       pragma Annotate (GNATprove, Always_Return, Sum_2);
 
-      function In_Range
-        (A : Array_Type; X : Element_Out'Base; I : Index_1; J : Index_2)
-         return Boolean
-      is (X in Element_Out'First *
-          (Element_Out'Base (I - A'First (1)) * A'Length (2)
-           + Element_Out'Base (J - A'First (2))) ..
-            Element_Out'Last *
-              (Element_Out'Base (I - A'First (1)) * A'Length (2)
-               + Element_Out'Base (J - A'First (2))))
-      with Ghost,
-        Pre => I in A'Range (1) and then J in A'Range (2),
-        Post =>
-          (if In_Range'Result then
-             X in
-               Element_Out'Base'First -
-                 Element_Out'Min (0, Element_Out'First) ..
-               Element_Out'Base'Last - Element_Out'Max (0, Element_Out'Last));
+      function "+" (Left, Right : Element_Out) return Element_Out is
+         (Add (Left, Right))
+      with
+        Pre => In_Range (To_Big (Left) + To_Big (Right));
+      --  Axiom: Add does not overflow if the result of the addition on big
+      --  integers is in range.
+      pragma Annotate (GNATprove, Inline_For_Proof, "+");
 
-      function Result_In_Range
-        (A : Array_Type; X : Element_Out'Base) return Boolean
+      procedure Prove_Add (Left, Right : Element_Out)
+      with
+        Ghost,
+        Pre  => In_Range (To_Big (Left) + To_Big (Right)),
+        Post => To_Big (Left) + To_Big (Right) = To_Big (Left + Right);
+      --  Axiom: "+" is the addition on Element_Out.
+
+      procedure Prove_Zero with
+        Ghost,
+        Post => To_Big (Zero) = 0;
+      --  Axiom: Zero is 0
+
+      package Big_Integer_Sum with
+        Ghost
       is
-        (X in
-           Element_Out'First * A'Length (1) * A'Length (2) ..
-             Element_Out'Last * A'Length (1) * A'Length (2));
+         package Index_Conv_1 is new Signed_Conversions (Index_1);
+         function To_Big_1 (X : Index_1) return Big_Integer renames
+           Index_Conv_1.To_Big_Integer;
+         package Index_Conv_2 is new Signed_Conversions (Index_2);
+         function To_Big_2 (X : Index_2) return Big_Integer renames
+           Index_Conv_2.To_Big_Integer;
 
-      function Add_Value (X : Element_In; Y : Element_Out'Base) return
-        Element_Out'Base
-      is (Value (X) + Y)
-      with Pre => Y in
-          Element_Out'Base'First - Element_Out'Min (0, Element_Out'First) ..
-        Element_Out'Base'Last - Element_Out'Max (0, Element_Out'Last),
-        Post => Add_Value'Result = (Value (X) + Y);
-      pragma Annotate (GNATprove, Inline_For_Proof, Add_Value);
+         function Always_True
+           (Unused_A : Array_Type;
+            Unused_X : Big_Integer;
+            Unused_I : Index_1;
+            Unused_J : Index_2) return Boolean
+         is (True);
 
-      package Fold_Sum is new Fold_2
-        (Index_1     => Index_1,
-         Index_2     => Index_2,
-         Element_In  => Element_In,
-         Array_Type  => Array_Type,
-         Element_Out => Element_Out'Base,
-         Ind_Prop    => In_Range,
-         Final_Prop  => Result_In_Range,
-         F           => Add_Value);
+         function Always_True
+           (Unused_A : Array_Type; Unused_X : Big_Integer) return Boolean
+         is (True);
 
-      function Sum (A : Array_Type) return Element_Out'Base is
-        (Fold_Sum.Fold (A, 0));
+         function Add_Value (X : Element_In; Y : Big_Integer) return
+           Big_Integer
+         is (To_Big (Value (X)) + Y);
+         pragma Annotate (GNATprove, Inline_For_Proof, Add_Value);
 
-      procedure Update_Sum (A1, A2 : Array_Type; I : Index_1; J : Index_2)
+         package Fold_Sum is new Fold_2
+           (Index_1     => Index_1,
+            Index_2     => Index_2,
+            Element_In  => Element_In,
+            Array_Type  => Array_Type,
+            Element_Out => Big_Integer,
+            Ind_Prop    => Always_True,
+            Final_Prop  => Always_True,
+            F           => Add_Value);
+
+         function Sum (A : Array_Type) return Big_Integer is
+           (Fold_Sum.Fold (A, 0));
+
+         procedure Update_Sum (A1, A2 : Array_Type; I : Index_1; J : Index_2)
+           with Ghost,
+           Pre  => I in A1'Range (1) and then J in A1'Range (2) and then
+           A1'First (1) = A2'First (1) and then
+           A1'Last (1) = A2'Last (1) and then
+           A1'First (2) = A2'First (2) and then
+           A1'Last (2) = A2'Last (2) and then
+           (for all K in A1'Range (1) =>
+              (for all L in A2'Range (2) =>
+                   (if K /= I or else L /= J then A1 (K, L) = A2 (K, L)))),
+           Post => Sum (A2) - To_Big (Value (A2 (I, J))) =
+             Sum (A1) - To_Big (Value (A1 (I, J)));
+         --  Lemma: Modification of Sum after an update to the array
+
+         function Length_1 (A : Array_Type) return Big_Integer is
+            (if A'Last (1) < A'First (1) then 0
+             else To_Big_1 (A'Last (1)) - To_Big_1 (A'First (1)) + 1);
+
+         function Length_2 (A : Array_Type) return Big_Integer is
+            (if A'Last (2) < A'First (2) then 0
+             else To_Big_2 (A'Last (2)) - To_Big_2 (A'First (2)) + 1);
+
+         procedure Sum_Cst (A : Array_Type; C : Element_Out) with Ghost,
+           Post => (if (for all I in A'Range (1) =>
+                        (for all J in A'Range (2) => Value (A (I, J)) = C))
+                    then Sum (A) = To_Big (C) * Length_1 (A) * Length_2 (A));
+         --  Lemma: Value of Sum on a constant array
+
+      end Big_Integer_Sum;
+
+      function No_Overflows
+        (A : Array_Type; X : Element_Out; I : Index_1; J : Index_2)
+         return Boolean
+      is (In_Range (To_Big (X) + To_Big (Value (A (I, J))))
+          and then
+            (if J < A'Last (2)
+             then No_Overflows (A, X + Value (A (I, J)), I, J + 1)
+             elsif I < A'Last (1)
+             then No_Overflows (A, X + Value (A (I, J)), I + 1, A'First (2))))
       with Ghost,
-        Pre  => I in A1'Range (1) and then J in A1'Range (2) and then
-        A1'First (1) = A2'First (1) and then A1'Last (1) = A2'Last (1) and then
-        A1'First (2) = A2'First (2) and then A1'Last (2) = A2'Last (2) and then
-        (for all K in A1'Range (1) =>
-           (for all L in A2'Range (2) =>
-              (if K /= I or else L /= J then A1 (K, L) = A2 (K, L)))),
-        Post => Sum (A2) - Value (A2 (I, J)) = Sum (A1) - Value (A1 (I, J));
-      --  Lemma: Modification of Sum after an update to the array
+        Subprogram_Variant => (Increases => I, Increases => J),
+        Pre => I in A'Range (1) and then J in A'Range (2);
 
-      procedure Sum_Cst (A : Array_Type; C : Element_Out) with Ghost,
-        Post => (if (for all I in A'Range (1) =>
-                   (for all J in A'Range (2) => Value (A (I, J)) = C)) then
-                     Sum (A) = C * A'Length (1) * A'Length (2));
-      --  Lemma: Value of Sum on a constant array
+      function No_Overflows (A : Array_Type) return Boolean is
+        (if A'Length (1) > 0 and A'Length (2) > 0
+         then No_Overflows (A, Zero, A'First (1), A'First (2)))
+      with Ghost;
+
+      function Sum (A : Array_Type) return Element_Out with
+        Pre  => No_Overflows (A),
+        Post => To_Big (Sum'Result) = Big_Integer_Sum.Sum (A);
 
    end Sum_2;
 

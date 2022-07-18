@@ -56,5 +56,5 @@ if __name__ == "__main__":
             count += 1
         print(line)
 
-    if not (count == 9):
-        print("FAILED There should be exactly 9 axioms in this tests")
+    if not (count == 15):
+        print("FAILED There should be exactly 15 axioms in this tests")
