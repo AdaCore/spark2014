@@ -513,17 +513,14 @@ package body Gnat2Why.Tables is
 
       if Is_Base_Type (E) then
          Init_Component_Info (E, Comp_Info (Position), Visibility => Regular);
-      else
-         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
-      end if;
 
-      if Is_Tagged_Type (Root_Retysp (E)) then
-         Descendants.Include (E, Node_Sets.Empty_Set);
-         Store_In_Ancestors (E);
-
-         if Ekind (E) /= E_Record_Subtype then
+         if Is_Tagged_Type (Root_Retysp (E)) then
+            Descendants.Include (E, Node_Sets.Empty_Set);
+            Store_In_Ancestors (E);
             Init_Tagged_Components (E);
          end if;
+      else
+         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
       end if;
    end Init_Component_Info;
 

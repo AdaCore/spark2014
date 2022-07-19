@@ -27,7 +27,7 @@ tagged_discr.adb:7:09: info: discriminant check proved (CVC5: 1 VC)
 tagged_discr.adb:15:14: info: discriminant check proved (CVC5: 1 VC)
 tagged_discr.adb:17:14: info: discriminant check proved (CVC5: 1 VC)
 tagged_discr.adb:23:08: info: discriminant check proved (CVC5: 1 VC)
-tagged_discr.adb:40:08: info: discriminant check proved (Z3: 1 VC)
+tagged_discr.adb:40:08: info: discriminant check proved (CVC5: 1 VC)
 tagged_discr.ads:19:28: info: discriminant check proved (CVC5: 1 VC)
 tagged_discr.ads:20:29: info: discriminant check proved (CVC5: 1 VC)
 tagged_discr.ads:22:20: info: initialization of "V" proved

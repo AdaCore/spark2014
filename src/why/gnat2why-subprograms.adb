@@ -5205,7 +5205,7 @@ package body Gnat2Why.Subprograms is
       E  : Entity_Id)
    is
       Ty            : constant Entity_Id :=
-        SPARK_Util.Subprograms.Find_Dispatching_Type (E);
+        Base_Retysp (SPARK_Util.Subprograms.Find_Dispatching_Type (E));
       Descendants   : Node_Sets.Set := Get_Descendant_Set (Ty);
       Anc_Binders   : constant Binder_Array :=
         (if Ekind (E) = E_Function then

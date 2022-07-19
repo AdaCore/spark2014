@@ -229,8 +229,24 @@ package body Why.Gen.Records is
    --  Record component of a concrete extension type standing for a component
    --  Field not present in Rec.
 
-   function Next_Tag return Int;
-   --  Return a fresh Int value to be used as the tag of a new tagged type
+   --  Module for the representation of the tag of tagged types as integers
+
+   package Tag_Representation is
+
+      function Get_Tag (Ty : Type_Kind_Id) return Int with
+        Pre => Retysp (Ty) = Ty
+        and then Is_Base_Type (Ty)
+        and then Is_Tagged_Type (Ty);
+      --  Return the Int value to be used for the tag of a tagged type Ty
+
+   private
+
+      Used_Tags     : Node_To_Int_Maps.Map;
+      --  Map from tagged types to their tag value
+      Last_Tag_Used : Int := 0;
+      --  Last value returned for a tag
+
+   end Tag_Representation;
 
    function W_Type_Of_Component
      (Field        : Entity_Id;
@@ -504,6 +520,7 @@ package body Why.Gen.Records is
         (1 => (B_Name => Tag1_Ident, others => <>),
          2 => (B_Name => Tag2_Ident, others => <>));
       Th              : Theory_UC;
+
    begin
       Th := Open_Theory
         (WF_Context,
@@ -549,7 +566,7 @@ package body Why.Gen.Records is
               Get_Descendant_Set (E);
          begin
             for Descendant of Descendants loop
-               if E /= Descendant then
+               if Descendant /= E then
                   declare
                      Axiom_Name : constant String :=
                        Full_Name (E)
@@ -557,8 +574,14 @@ package body Why.Gen.Records is
                        & "__" & Compat_Axiom;
                      Def        : W_Pred_Id := New_Call
                        (Name => Compat_Tag_Symb,
-                        Args =>  (1 => +E_Symb (Descendant, WNE_Tag),
-                                  2 => +E_Symb (E, WNE_Tag)));
+                        Args =>
+                          (1 => New_Integer_Constant
+                               (Value => UI_From_Int
+                                    (Tag_Representation.Get_Tag
+                                       (Descendant))),
+                           2 => New_Integer_Constant
+                             (Value => UI_From_Int
+                                  (Tag_Representation.Get_Tag (E)))));
 
                   begin
                      if not E_Descendants.Contains (Descendant) then
@@ -579,7 +602,7 @@ package body Why.Gen.Records is
          end loop;
       end;
 
-      Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => E);
+      Close_Theory (Th, Kind => Definition_Theory);
    end Create_Compatible_Tags_Theory;
 
    --------------------------------------------
@@ -1219,11 +1242,9 @@ package body Why.Gen.Records is
                   Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => EW_Int_Type,
-                  Def         =>
-                    (if Base_Retysp (E) /= E
-                     then +E_Symb (Base_Retysp (E), WNE_Tag)
-                     else New_Integer_Constant
-                       (Value => UI_From_Int (Next_Tag)))));
+                  Def         => New_Integer_Constant
+                    (Value => UI_From_Int
+                         (Tag_Representation.Get_Tag (Base_Retysp (E))))));
       end if;
 
       if Root = E
@@ -4461,18 +4482,6 @@ package body Why.Gen.Records is
       end if;
    end New_Tag_Update;
 
-   --------------
-   -- Next_Tag --
-   --------------
-
-   Last_Tag_Used : Int := 0;
-
-   function Next_Tag return Int is
-   begin
-      Last_Tag_Used := Last_Tag_Used + 1;
-      return Last_Tag_Used;
-   end Next_Tag;
-
    ------------------------------------
    -- Oldest_Parent_With_Same_Fields --
    ------------------------------------
@@ -4776,5 +4785,28 @@ package body Why.Gen.Records is
          return False;
       end if;
    end Record_Type_Is_Clone;
+
+   ------------------------
+   -- Tag_Representation --
+   ------------------------
+
+   package body Tag_Representation is
+
+      -------------
+      -- Get_Tag --
+      -------------
+
+      function Get_Tag (Ty : Type_Kind_Id) return Int is
+         Position : Node_To_Int_Maps.Cursor;
+         Inserted : Boolean;
+      begin
+         Used_Tags.Insert (Ty, Last_Tag_Used + 1, Position, Inserted);
+         if Inserted then
+            Last_Tag_Used := Last_Tag_Used + 1;
+         end if;
+         return Node_To_Int_Maps.Element (Position);
+      end Get_Tag;
+
+   end Tag_Representation;
 
 end Why.Gen.Records;
