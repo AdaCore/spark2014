@@ -603,9 +603,7 @@ package body Why.Inter is
          when Axiom_Theory =>
             pragma Assert (Present (Defined_Entity));
             Record_Dependencies;
-            Add_To_Graph (Module_Dependencies,
-                          +E_Module (Defined_Entity),
-                          +Th.Module);
+            Record_Extra_Dependency (E_Module (Defined_Entity), Th.Module);
             Add_Definition_Imports;
 
          --  case 4: a theory for generating VCs
@@ -1161,6 +1159,20 @@ package body Why.Inter is
                         Finished => False);
    end Open_Theory;
 
+   -----------------------------
+   -- Record_Extra_Dependency --
+   -----------------------------
+
+   procedure Record_Extra_Dependency
+     (Defining_Module : W_Module_Id;
+      Axiom_Module    : W_Module_Id)
+   is
+   begin
+      Add_To_Graph (Module_Dependencies,
+                    +Defining_Module,
+                    +Axiom_Module);
+   end Record_Extra_Dependency;
+
    ---------------
    -- To_Why_Id --
    ---------------
@@ -1219,7 +1231,9 @@ package body Why.Inter is
       else
          declare
             Module : constant W_Module_Id :=
-              (if Ekind (E) in Subprogram_Kind | Entry_Kind
+              (if Selector = Dispatch then
+                  E_Dispatch_Module (E, Axiom => Domain = EW_Prog)
+               elsif Ekind (E) in Subprogram_Kind | Entry_Kind
                  and then Domain = EW_Prog
                then
                   E_Axiom_Module (E)
@@ -1229,7 +1243,7 @@ package body Why.Inter is
                   E_Module (E));
             Namespace : constant Symbol :=
               (case Selector is
-                 when Dispatch  => NID (To_String (WNE_Dispatch_Module)),
+                 when Dispatch  => No_Symbol,
                  when No_Return => NID (To_String (WNE_No_Return_Module)),
                  when Refine    => NID (To_String (WNE_Refine_Module)),
                  when Standard  => No_Symbol);

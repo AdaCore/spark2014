@@ -141,9 +141,12 @@ private
 
    procedure Declare_Logic_Functions
      (Th           : Theory_UC;
+      Dispatch_Th  : Theory_UC := Empty_Theory;
       E            : Callable_Kind_Id;
       Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>));
-   --  @param File section in which the expression should be translated
+   --  @param Th theory in which the logic functions should be declared
+   --  @param Dispatch_Th if E is a dispatching operation, specific theory for
+   --    its dispatch functions.
    --  @param E entry or subprogram or subprogram type entity
    --  @param Spec_Binders special binders to be used in addition to normal
    --    binders for the subprogram.
@@ -152,11 +155,14 @@ private
 
    procedure Generate_Subprogram_Program_Fun
      (Th                     : Theory_UC;
+      Dispatch_Th            : Theory_UC := Empty_Theory;
       E                      : Callable_Kind_Id;
       Prog_Id                : W_Identifier_Id;
       Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
       Is_Access_Subp_Wrapper : Boolean := False);
-   --  @param File section in which the expression should be translated
+   --  @param Th theory in which the program functions should be declared
+   --  @param Dispatch_Th if E is a dispatching operation, specific theory for
+   --    its dispatch functions.
    --  @param E entry or subprogram or subprogram type entity
    --  @param Prog_Id name of the program function
    --  @param Spec_Binders special binders to be used in addition to normal
@@ -169,6 +175,7 @@ private
 
    procedure Generate_Axiom_For_Post
      (Th                     : Theory_UC;
+      Dispatch_Th            : Theory_UC := Empty_Theory;
       E                      : Callable_Kind_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
@@ -176,7 +183,9 @@ private
    with Pre => Is_Access_Subp_Wrapper
      or else Ekind (E) = E_Subprogram_Type
      or else (Is_True_Boolean (+Spec_Guard) and Spec_Binders'Length = 0);
-   --  @param File section in which the expression should be translated
+   --  @param Th theory in which the axioms should be generated
+   --  @param Dispatch_Th if E is a dispatching operation, specific theory for
+   --    its dispatch axioms.
    --  @param E entry or subprogram or subprogram type entity
    --  @param Ent_For_Name entity to use to get the name of the logic Id for
    --    E. It maybe different from E for subprogram types for which the

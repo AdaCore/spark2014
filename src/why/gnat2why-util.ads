@@ -265,6 +265,12 @@ package Gnat2Why.Util is
    --  Used to construct a new theory by adding declarations one by one to it.
    --  Adding is only allowed if "Finished" is False.
 
+   Empty_Theory : constant Theory_UC :=
+     (Th       => Why_Empty,
+      Module   => Why_Empty,
+      Section  => WF_Context,
+      Finished => False);
+
    procedure Init_Why_Sections;
    --  Call this procedure to initialize the predefined sections of the Why
    --  file.

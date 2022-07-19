@@ -432,8 +432,8 @@ example_tagged_obj.adb:61:07: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:67:13: warning: assuming "Has_Key" has no effect on global items
 example_tagged_obj.adb:67:13: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:67:50: info: precondition proved (CVC5: 1 VC)
+example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 1 VC; Z3: 4 VC)
 example_tagged_obj.adb:70:09: info: precondition proved (Z3: 1 VC)
-example_tagged_obj.adb:70:32: medium: postcondition might fail, cannot prove Child (Deref (X)) = (New_F, Child (Deref (X)).G'old)
 example_tagged_obj.adb:70:39: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:70:39: info: tag check proved (Z3: 1 VC)
 example_tagged_obj.adb:70:67: info: precondition proved (CVC5: 1 VC)

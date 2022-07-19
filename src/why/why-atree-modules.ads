@@ -769,6 +769,11 @@ package Why.Atree.Modules is
      Pre => not Is_Itype (Ty) and then Can_Be_Default_Initialized (Ty);
    --  Function returning the extra module for the default assumption of Ty
 
+   function E_Dispatch_Module
+     (Subp  : Subprogram_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id;
+   --  Function returning the module for the dispatching variant of Subp
+
    function E_Invariant_Module (Ty : Type_Kind_Id) return W_Module_Id with
      Pre => Has_Invariants_In_SPARK (Ty);
    --  Function returning the extra module for the type invariant of Ty

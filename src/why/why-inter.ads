@@ -258,6 +258,12 @@ package Why.Inter is
    --  @param Right
    --  @return Returns True if the type Ids have the same structure.
 
+   procedure Record_Extra_Dependency
+     (Defining_Module : W_Module_Id;
+      Axiom_Module    : W_Module_Id);
+   --  Record an extra dependency between Defining_Module and Axiom_Module so
+   --  the second is withed along with the first in VC modules.
+
 private
    Module_Dependencies : Why_Node_Graphs.Map;
    --  Mapping from an module to the set of modules on which it depends. This

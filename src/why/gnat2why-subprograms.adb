@@ -2353,6 +2353,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Declare_Logic_Functions
      (Th           : Theory_UC;
+      Dispatch_Th  : Theory_UC := Empty_Theory;
       E            : Callable_Kind_Id;
       Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>))
    is
@@ -2497,32 +2498,31 @@ package body Gnat2Why.Subprograms is
             Return_Type => EW_Bool_Type));
 
       --  Generate logic functions and guards for dispatching and
-      --  refined versions of the function.
+      --  refined versions of the function in a separate module.
 
       if Is_Dispatching_Operation (E)
         and then not Is_Hidden_Dispatching_Operation (E)
       then
          Emit
-           (Th,
-            New_Namespace_Declaration
-              (Name         => NID (To_String (WNE_Dispatch_Module)),
-               Declarations =>
-                 (1 => New_Function_Decl
-                      (Domain      => EW_Pterm,
-                       Name        => Logic_Id,
-                       Binders     => Tag_Binder & Logic_Why_Binders,
-                       Location    => No_Location,
-                       Labels      => Symbol_Sets.Empty_Set,
-                       Return_Type => Why_Type),
-                  2 => New_Function_Decl
-                    (Domain      => EW_Pred,
-                     Name        => Pred_Id,
-                     Binders     =>
-                       Pred_Binders (1) & Tag_Binder &
-                       Pred_Binders (2 .. Pred_Binders'Length),
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Location    => No_Location,
-                     Return_Type => EW_Bool_Type))));
+           (Dispatch_Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => Logic_Id,
+               Binders     => Tag_Binder & Logic_Why_Binders,
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
+               Return_Type => Why_Type));
+         Emit
+           (Dispatch_Th,
+            New_Function_Decl
+              (Domain      => EW_Pred,
+               Name        => Pred_Id,
+               Binders     =>
+                 Pred_Binders (1) & Tag_Binder &
+                 Pred_Binders (2 .. Pred_Binders'Length),
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Return_Type => EW_Bool_Type));
       end if;
 
       if Entity_Body_In_SPARK (E)
@@ -4774,6 +4774,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Generate_Axiom_For_Post
      (Th                     : Theory_UC;
+      Dispatch_Th            : Theory_UC := Empty_Theory;
       E                      : Callable_Kind_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
@@ -5006,7 +5007,8 @@ package body Gnat2Why.Subprograms is
          --  Dynamic invariant / type invariants of the result
 
          procedure Emit_Post_Axiom
-           (Suffix    : String;
+           (Th        : Theory_UC;
+            Suffix    : String;
             Selector  : Selection_Kind;
             Pre, Post : W_Pred_Id);
          --  Emit the post_axiom with the given axiom_suffix, pre and
@@ -5017,7 +5019,8 @@ package body Gnat2Why.Subprograms is
          ---------------------
 
          procedure Emit_Post_Axiom
-           (Suffix    : String;
+           (Th        : Theory_UC;
+            Suffix    : String;
             Selector  : Selection_Kind;
             Pre, Post : W_Pred_Id)
          is
@@ -5108,7 +5111,7 @@ package body Gnat2Why.Subprograms is
 
             elsif not Is_True_Boolean (+Spec_Guard) then
                Emit
-                 (My_Th,
+                 (Th,
                   New_Guarded_Axiom
                     (Name     => NID (Short_Name (E) & "__" & Suffix),
                      Binders  => Spec_Binders,
@@ -5136,7 +5139,7 @@ package body Gnat2Why.Subprograms is
 
             else
                Emit
-                 (My_Th,
+                 (Th,
                   New_Guarded_Axiom
                     (Name     => NID (Short_Name (E) & "__" & Suffix),
                      Binders  => Binders,
@@ -5156,7 +5159,7 @@ package body Gnat2Why.Subprograms is
          --  Do not emit an axiom for E if it is inlined for proof
 
          if No (Retrieve_Inline_Annotation (E)) then
-            Emit_Post_Axiom (Post_Axiom, Why.Inter.Standard, Pre, Post);
+            Emit_Post_Axiom (My_Th, Post_Axiom, Why.Inter.Standard, Pre, Post);
          end if;
 
          if Is_Dispatching_Operation (E)
@@ -5164,7 +5167,8 @@ package body Gnat2Why.Subprograms is
          then
             pragma Assert (Present (Dispatch_Pre)
                             and then Present (Dispatch_Post));
-            Emit_Post_Axiom (Post_Dispatch_Axiom,
+            Emit_Post_Axiom (Dispatch_Th,
+                             Post_Dispatch_Axiom,
                              Dispatch,
                              New_And_Pred
                                (Left  => Compute_Guard_For_Dispatch
@@ -5180,7 +5184,8 @@ package body Gnat2Why.Subprograms is
            and then Has_Contracts (E, Pragma_Refined_Post)
          then
             pragma Assert (Present (Refined_Post));
-            Emit_Post_Axiom (Post_Refine_Axiom,
+            Emit_Post_Axiom (My_Th,
+                             Post_Refine_Axiom,
                              Refine,
                              Pre,
                              Refined_Post);
@@ -5568,7 +5573,8 @@ package body Gnat2Why.Subprograms is
    ------------------------------------
 
    procedure Generate_Subprogram_Completion (E : Callable_Kind_Id) is
-      Th : Theory_UC;
+      Dispatch_Th : Theory_UC := Empty_Theory;
+      Th          : Theory_UC;
    begin
       Th :=
         Open_Theory
@@ -5581,6 +5587,26 @@ package body Gnat2Why.Subprograms is
                 " defined at " & Build_Location_String (Sloc (E))
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  If E is a dispatching operation, create a theory for the axioms of
+      --  its dispatching version.
+
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+        and then not Is_Predicate_Function (E)
+      then
+         Dispatch_Th :=
+           Open_Theory
+             (WF_Context, E_Dispatch_Module (E, Axiom => True),
+              Comment =>
+                "Module for declaring a program function (and possibly "
+              & "an axiom) for the dispatching variant of "
+              & """" & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      end if;
 
       declare
          Use_Result_Name : constant Boolean := Ekind (E) = E_Function;
@@ -5598,15 +5624,16 @@ package body Gnat2Why.Subprograms is
          end if;
 
          Generate_Subprogram_Program_Fun
-           (Th, E, To_Why_Id (E, Domain => EW_Prog, Local => True));
+           (Th, Dispatch_Th, E,
+            To_Why_Id (E, Domain => EW_Prog, Local => True));
 
-         Generate_Axiom_For_Post (Th, E);
+         Generate_Axiom_For_Post (Th, Dispatch_Th, E);
 
          if Is_Dispatching_Operation (E)
            and then not Is_Hidden_Dispatching_Operation (E)
            and then not Is_Predicate_Function (E)
          then
-            Generate_Dispatch_Compatibility_Axioms (Th, E);
+            Generate_Dispatch_Compatibility_Axioms (Dispatch_Th, E);
          end if;
 
          if Within_Protected_Type (E) then
@@ -5623,6 +5650,17 @@ package body Gnat2Why.Subprograms is
       Close_Theory (Th,
                     Kind => Axiom_Theory,
                     Defined_Entity => E);
+
+      --  Close the dispatching axiom module if it is not empty and add an
+      --  extra dependency to the dispatching definition module.
+
+      if Dispatch_Th /= Empty_Theory then
+         Close_Theory (Dispatch_Th,
+                       Kind => Definition_Theory);
+         Record_Extra_Dependency
+           (Defining_Module => E_Dispatch_Module (E),
+            Axiom_Module    => Dispatch_Th.Module);
+      end if;
    end Generate_Subprogram_Completion;
 
    -------------------------------------
@@ -5631,6 +5669,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Generate_Subprogram_Program_Fun
      (Th                     : Theory_UC;
+      Dispatch_Th            : Theory_UC := Empty_Theory;
       E                      : Callable_Kind_Id;
       Prog_Id                : W_Identifier_Id;
       Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
@@ -5944,16 +5983,13 @@ package body Gnat2Why.Subprograms is
               and then not Is_Hidden_Dispatching_Operation (E)
             then
                Emit
-                 (Th,
-                  New_Namespace_Declaration
-                    (Name         => NID (To_String (WNE_Dispatch_Module)),
-                     Declarations =>
-                       (1 => Create_Function_Decl
+                 (Dispatch_Th,
+                  Create_Function_Decl
                             (Prog_Id   => Prog_Id,
                              Selector  => Dispatch,
                              Pre       => Dispatch_Pre,
                              Post      => Dispatch_Post,
-                             Effects   => Effects))));
+                             Effects   => Effects));
             end if;
 
             if Entity_Body_In_SPARK (E)
@@ -6108,32 +6144,31 @@ package body Gnat2Why.Subprograms is
                   end;
 
                   Emit
-                    (Th,
-                     New_Namespace_Declaration
-                       (Name         => NID (To_String (WNE_Dispatch_Module)),
-                        Declarations =>
-                          (1 => New_Function_Decl
-                               (Domain      => EW_Pred,
-                                Name        => Spec_Post_Id,
-                                Binders     =>
-                                  Tag_Binder & Procedure_Logic_Binders (E),
-                                Location    => No_Location,
-                                Labels      => Symbol_Sets.Empty_Set,
-                                Return_Type => EW_Bool_Type),
-                           2 => New_Function_Decl
-                               (Domain      => EW_Prog,
-                                Name        => Prog_Id,
-                                Binders     => Spec_Binders & Func_Why_Binders,
-                                Location    => No_Location,
-                                Labels      => Symbol_Sets.Empty_Set,
-                                Return_Type => EW_Unit_Type,
-                                Effects     => Effects,
-                                Pre         => Dispatch_Pre,
-                                Post        => New_And_Pred
-                                  (Conjuncts =>
-                                       (1 => Dispatch_Post,
-                                        2 => Dynamic_Prop_Effects,
-                                        3 => Spec_Post_Call))))));
+                    (Dispatch_Th,
+                     New_Function_Decl
+                       (Domain      => EW_Pred,
+                        Name        => Spec_Post_Id,
+                        Binders     =>
+                          Tag_Binder & Procedure_Logic_Binders (E),
+                        Location    => No_Location,
+                        Labels      => Symbol_Sets.Empty_Set,
+                        Return_Type => EW_Bool_Type));
+                  Emit
+                    (Dispatch_Th,
+                     New_Function_Decl
+                       (Domain      => EW_Prog,
+                        Name        => Prog_Id,
+                        Binders     => Spec_Binders & Func_Why_Binders,
+                        Location    => No_Location,
+                        Labels      => Symbol_Sets.Empty_Set,
+                        Return_Type => EW_Unit_Type,
+                        Effects     => Effects,
+                        Pre         => Dispatch_Pre,
+                        Post        => New_And_Pred
+                          (Conjuncts =>
+                               (1 => Dispatch_Post,
+                                2 => Dynamic_Prop_Effects,
+                                3 => Spec_Post_Call))));
                end;
             end if;
 
@@ -6458,8 +6493,9 @@ package body Gnat2Why.Subprograms is
                                    Binders => Pred_Binders,
                                    Typ     => EW_Bool_Type)));
 
-      Params : Transformation_Params;
-      Th     : Theory_UC;
+      Params      : Transformation_Params;
+      Th          : Theory_UC;
+      Dispatch_Th : Theory_UC := Empty_Theory;
    begin
 
       Th :=
@@ -6474,6 +6510,25 @@ package body Gnat2Why.Subprograms is
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
+      --  If E is a dispatching operation, create a theory for the axioms of
+      --  its dispatching version.
+
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+      then
+         Dispatch_Th :=
+           Open_Theory
+             (WF_Context, E_Dispatch_Module (E, Axiom => True),
+              Comment =>
+                "Module for declaring a program function (and possibly "
+              & "an axiom) for the dispatching variant of "
+              & """" & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      end if;
+
       --  Store an appropriate value for the result identifier in Result_Name.
 
       Result_Name := New_Result_Ident (Type_Of_Node (E));
@@ -6486,14 +6541,14 @@ package body Gnat2Why.Subprograms is
       end if;
 
       Generate_Subprogram_Program_Fun
-        (Th, E, To_Why_Id (E, Domain => EW_Prog, Local => True));
+        (Th, Dispatch_Th, E, To_Why_Id (E, Domain => EW_Prog, Local => True));
 
-      Generate_Axiom_For_Post (Th, E);
+      Generate_Axiom_For_Post (Th, Dispatch_Th, E);
 
       if Is_Dispatching_Operation (E)
         and then not Is_Hidden_Dispatching_Operation (E)
       then
-         Generate_Dispatch_Compatibility_Axioms (Th, E);
+         Generate_Dispatch_Compatibility_Axioms (Dispatch_Th, E);
       end if;
 
       --  If the entity's body is not in SPARK,
@@ -6520,6 +6575,17 @@ package body Gnat2Why.Subprograms is
                        Kind => Definition_Theory);
          Result_Name := Why_Empty;
          Result_Is_Mutable := False;
+
+         --  Close the dispatching axiom module if it is not empty and add an
+         --  extra dependency to the dispatching definition module.
+
+         if Dispatch_Th /= Empty_Theory then
+            Close_Theory (Dispatch_Th,
+                          Kind => Definition_Theory);
+            Record_Extra_Dependency
+              (Defining_Module => E_Dispatch_Module (E),
+               Axiom_Module    => Dispatch_Th.Module);
+         end if;
          return;
       end if;
 
@@ -6639,6 +6705,17 @@ package body Gnat2Why.Subprograms is
       Close_Theory (Th,
                     Kind => Axiom_Theory,
                     Defined_Entity => E);
+
+      --  Close the dispatching axiom module if it is not empty and add an
+      --  extra dependency to the dispatching definition module.
+
+      if Dispatch_Th /= Empty_Theory then
+         Close_Theory (Dispatch_Th,
+                       Kind => Definition_Theory);
+         Record_Extra_Dependency
+           (Defining_Module => E_Dispatch_Module (E),
+            Axiom_Module    => Dispatch_Th.Module);
+      end if;
    end Translate_Expression_Function_Body;
 
    -------------------------------
@@ -6646,7 +6723,8 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    procedure Translate_Subprogram_Spec (E : Callable_Kind_Id) is
-      Th : Theory_UC;
+      Th          : Theory_UC;
+      Dispatch_Th : Theory_UC := Empty_Theory;
    begin
       Th :=
         Open_Theory
@@ -6660,18 +6738,44 @@ package body Gnat2Why.Subprograms is
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
+      --  If E is a dispatching operation, create a theory for its dispatching
+      --  version.
+
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+      then
+         Dispatch_Th :=
+           Open_Theory
+             (WF_Context, E_Dispatch_Module (E),
+              Comment =>
+                "Module for declaring the dispatching variant of the"
+              & " subprogram"
+              & """" & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      end if;
+
       --  No logic function is created for volatile functions. The function's
       --  effects are modelled by an effect on the program function.
 
       if Ekind (E) = E_Function
         and then not Has_Pragma_Volatile_Function (E)
       then
-         Declare_Logic_Functions (Th, E);
+         Declare_Logic_Functions (Th, Dispatch_Th, E);
       end if;
 
       Close_Theory (Th,
                     Kind => Definition_Theory,
                     Defined_Entity => E);
+
+      --  Close the dispatching module if it is not empty
+
+      if Dispatch_Th /= Empty_Theory then
+         Close_Theory (Dispatch_Th,
+                       Kind => Definition_Theory);
+      end if;
    end Translate_Subprogram_Spec;
 
    -------------------------------------------------

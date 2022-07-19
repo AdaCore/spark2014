@@ -110,17 +110,19 @@ package body Why.Atree.Modules is
    --  there is already a module associated to E in Modules, in which case the
    --  existing module is returned.
 
-   Why_Symb_Map         : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Entity_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Axiom_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Compl_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Init_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rec_Axiom_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Record_Rep_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Record_Compl_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rep_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   DIC_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Invariant_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Why_Symb_Map           : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Entity_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Axiom_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Init_Modules           : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rec_Axiom_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Rep_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Compl_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   DIC_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Invariant_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------------
    -- E_Axiom_Module --
@@ -157,6 +159,24 @@ package body Why.Atree.Modules is
    begin
       return Hashconsed_Entity_Module (Ty, Name, DIC_Modules);
    end E_DIC_Module;
+
+   -----------------------
+   -- E_Dispatch_Module --
+   -----------------------
+
+   function E_Dispatch_Module
+     (Subp  : Subprogram_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Subp) & "___dispatch" &
+        (if Axiom then "___axiom" else "");
+   begin
+      if Axiom then
+         return Hashconsed_Entity_Module (Subp, Name, Dispatch_Axiom_Modules);
+      else
+         return Hashconsed_Entity_Module (Subp, Name, Dispatch_Modules);
+      end if;
+   end E_Dispatch_Module;
 
    -------------------
    -- E_Init_Module --
@@ -2763,8 +2783,7 @@ package body Why.Atree.Modules is
                  (E, WNE_Dispatch_Func_Guard,
                   New_Identifier
                     (Symb      => NID (Name & "__" & Function_Guard),
-                     Module    => M,
-                     Namespace => NID (To_String (WNE_Dispatch_Module)),
+                     Module    => E_Dispatch_Module (E),
                      Domain    => EW_Pred,
                      Typ       => EW_Unit_Type));
             end if;
@@ -2775,8 +2794,7 @@ package body Why.Atree.Modules is
               (E, WNE_Specific_Post,
                New_Identifier
                  (Symb      => NID (Name & "__" & Specific_Post),
-                  Module    => M,
-                  Namespace => NID (To_String (WNE_Dispatch_Module)),
+                  Module    => E_Dispatch_Module (E),
                   Domain    => EW_Pred,
                   Typ       => EW_Unit_Type));
          end if;
