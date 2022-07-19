@@ -334,13 +334,13 @@
   </goal>
   <goal name="def&#39;vc.106" proved="true">
   <proof prover="0"><result status="valid" steps="24173"/></proof>
-  <proof prover="1"><result status="unknown" steps="40149"/></proof>
+  <proof prover="1"><result status="unknown" steps="40192"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
-  <proof prover="1"><result status="valid" steps="37556"/></proof>
+  <proof prover="1"><result status="valid" steps="37560"/></proof>
   </goal>
   <goal name="def&#39;vc.108" proved="true">
-  <proof prover="1"><result status="valid" steps="44932"/></proof>
+  <proof prover="1"><result status="valid" steps="44964"/></proof>
   </goal>
  </transf>
  </goal>

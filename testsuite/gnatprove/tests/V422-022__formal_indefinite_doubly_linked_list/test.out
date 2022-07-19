@@ -858,7 +858,7 @@ test_list.adb:343:22: medium: assertion might fail
 test_list.adb:343:46: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:343:80: warning: assuming "Model" always returns
 test_list.adb:343:80: warning: no returning annotation available for "Model"
-test_list.adb:345:07: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: call at line 341 should mention Position (for argument C) in a postcondition]
+test_list.adb:345:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:345:07: warning: assuming "Splice" always returns
 test_list.adb:345:07: warning: no returning annotation available for "Splice"
 test_list.adb:347:22: medium: assertion might fail

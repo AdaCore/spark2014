@@ -161,10 +161,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.50" proved="true">
-  <proof prover="0"><result status="valid" steps="671377"/></proof>
+  <proof prover="0"><result status="valid" steps="671388"/></proof>
   </goal>
   <goal name="def&#39;vc.51" proved="true">
-  <proof prover="0"><result status="valid" steps="325160"/></proof>
+  <proof prover="0"><result status="valid" steps="325165"/></proof>
   </goal>
   <goal name="def&#39;vc.52" proved="true">
   <proof prover="0"><result status="valid" steps="7662"/></proof>

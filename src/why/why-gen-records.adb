@@ -3836,11 +3836,8 @@ package body Why.Gen.Records is
 
    function Get_Rep_Record_Completion (E : Entity_Id) return W_Module_Id is
       Ancestor : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
-      Name     : constant String :=
-        Full_Name (Ancestor) & To_String (WNE_Rec_Rep) & "__Compl";
    begin
-      return New_Module (File => No_Symbol,
-                         Name => Name);
+      return E_Record_Compl_Module (Ancestor);
    end Get_Rep_Record_Completion;
 
    ---------------------------
@@ -3849,11 +3846,8 @@ package body Why.Gen.Records is
 
    function Get_Rep_Record_Module (E : Entity_Id) return W_Module_Id is
       Ancestor : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
-      Name     : constant String :=
-        Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
    begin
-      return New_Module (File => No_Symbol,
-                         Name => Name);
+      return E_Record_Rep_Module (Ancestor);
    end Get_Rep_Record_Module;
 
    ---------------------

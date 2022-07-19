@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Ordered_Sets;
 with Common_Containers;    use Common_Containers;
 with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Gnat2Why.Util;        use Gnat2Why.Util;
@@ -51,9 +50,6 @@ package Why.Inter is
       Definition_Theory,      --  definition of symbols
       Axiom_Theory,           --  axioms for previously defined symbols
       VC_Generation_Theory);  --  generation of VCs
-
-   package Why_Node_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Why_Node_Id);
 
    function Compute_Module_Set (W : Why_Node_Id) return Why_Node_Sets.Set;
    --  For a given Why node, compute the required modules, to be included to
@@ -263,8 +259,8 @@ package Why.Inter is
    --  @return Returns True if the type Ids have the same structure.
 
 private
-   Entity_Dependencies : Node_Graphs.Map;
-   --  Mapping from an entity to the set of entities on which it depends. This
+   Module_Dependencies : Why_Node_Graphs.Map;
+   --  Mapping from an module to the set of modules on which it depends. This
    --  map is filled by Close_Theory.
 
 end Why.Inter;

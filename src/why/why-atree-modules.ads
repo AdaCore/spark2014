@@ -29,6 +29,7 @@ with Checked_Types;                  use Checked_Types;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
+with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
 with SPARK_Definition;               use SPARK_Definition;
 with Why.Ids;                        use Why.Ids;
 with Why.Gen.Names;                  use Why.Gen.Names;
@@ -754,6 +755,15 @@ package Why.Atree.Modules is
    --  with a node which is not an entity, and no module is known for this
    --  entity.
 
+   function E_Record_Rep_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Is_Record_Type_In_Why (E);
+   --  Return the module for representative type of a record type E
+
+   function E_Record_Compl_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Is_Record_Type_In_Why (E);
+   --  Return the module for the completion of the representative type of a
+   --  record type E.
+
    function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the logic function __call associated with the profile of a
    --  function or function type.
@@ -786,5 +796,12 @@ package Why.Atree.Modules is
                                       return M_Array_1_Comp_Type;
    function Init_Array_1_Bool_Op_Module (Module : W_Module_Id)
                                       return M_Array_1_Bool_Op_Type;
+
+   function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
+   with
+     Pre => Is_Subprogram_Or_Entry (E) and then Is_Recursive (E);
+   --  Function returning the set of axiom modules mutually recursive with a
+   --  given entity. Those are the modules which should not be included in the
+   --  VC module for E.
 
 end Why.Atree.Modules;
