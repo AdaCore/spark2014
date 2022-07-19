@@ -51,6 +51,6 @@ stack.adb:20:22: info: range check proved (CVC5: 2 VC)
 stack.adb:21:19: info: index check proved (CVC5: 2 VC)
 stack.adb:32:22: info: range check proved (CVC5: 2 VC)
 stack.ads:23:14: info: precondition proved (CVC5: 1 VC)
-stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X
+stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (N => 1, Top => 1, Content => (1 => 0)) and S.Content'First = 1 and S.Content'Last = 1 and X = 0)
 stack.ads:27:14: info: postcondition proved (CVC5: 1 VC)
 stack.ads:37:07: info: range check proved (CVC5: 2 VC)

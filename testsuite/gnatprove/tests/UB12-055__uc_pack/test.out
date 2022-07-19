@@ -1,4 +1,4 @@
 repro.adb:11:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Arr doesn't have a Pack pragma or aspect]
 repro.adb:11:53: high: type is unsuitable for unchecked conversion [possible explanation: type Arr doesn't have a Pack pragma or aspect]
 repro.adb:11:61: info: type is suitable for unchecked conversion (Trivial)
-repro.adb:16:19: medium: assertion might fail
+repro.adb:16:19: medium: assertion might fail (e.g. when Y = -1)

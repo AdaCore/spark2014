@@ -18,7 +18,7 @@ arith.adb:16:14: medium: divide by zero might fail [possible fix: add preconditi
 arith.adb:16:14: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y in Integer) to subprogram at line 1]
 arith.adb:16:18: medium: overflow check might fail, cannot prove lower bound for X / Y * Z [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y * Z in Integer) to subprogram at line 1]
 arith.adb:19:14: info: overflow check proved (CodePeer)
-arith.adb:19:18: high: overflow check might fail, cannot prove lower bound for X * Y + Z (e.g. when X = -2 and Y = 2 and Z = Integer'First+3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Z >= 0 then X * Y <= Integer'Last - Z else X * Y >= Integer'First - Z) to subprogram at line 1]
+arith.adb:19:18: medium: overflow check might fail, cannot prove lower bound for X * Y + Z [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Z >= 0 then X * Y <= Integer'Last - Z else X * Y >= Integer'First - Z) to subprogram at line 1]
 arith.adb:20:14: info: division check proved (CodePeer)
 arith.adb:20:14: info: overflow check proved (CodePeer)
 arith.adb:20:18: medium: overflow check might fail, cannot prove lower bound for X / Y - Z [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Z >= 0 then X / Y >= Integer'First + Z else X / Y <= Integer'Last + Z) to subprogram at line 1]
@@ -26,7 +26,7 @@ arith.adb:23:12: warning: possible reassociation due to missing parentheses
 arith.adb:23:14: medium: overflow check might fail, cannot prove lower bound for X * (X - Y - Z) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * (X - Y - Z) in Integer) to subprogram at line 1]
 arith.adb:23:17: warning: possible reassociation due to missing parentheses
 arith.adb:23:19: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X >= Integer'First + Y else X <= Integer'Last + Y) to subprogram at line 1]
-arith.adb:23:23: high: overflow check might fail, cannot prove lower bound for X - Y - Z (e.g. when X = -1 and Y = 1073741825 and Z = 1073741823) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Z >= 0 then X - Y >= Integer'First + Z else X - Y <= Integer'Last + Z) to subprogram at line 1]
+arith.adb:23:23: high: overflow check might fail, cannot prove lower bound for X - Y - Z (e.g. when X = -1 and Y = 1 and Z = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Z >= 0 then X - Y >= Integer'First + Z else X - Y <= Integer'Last + Z) to subprogram at line 1]
 arith.adb:23:28: info: division check proved (CodePeer)
 arith.adb:26:11: warning: possible reassociation due to missing parentheses
 arith.adb:26:16: medium: overflow check might fail, cannot prove lower bound for Tmp2 - Tmp1 [reason for check: result of subtraction must fit in a 32-bits machine integer]

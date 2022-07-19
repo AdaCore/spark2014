@@ -188,9 +188,9 @@ very_longs.adb:450:47: info: index check proved (CVC5: 2 VC)
 very_longs.adb:450:47: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:450:84: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:450:88: info: index check proved (CVC5: 2 VC)
-very_longs.adb:451:35: medium: divide by zero might fail [possible fix: precondition of subprogram at line 440 should mention V]
+very_longs.adb:451:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 440 should mention V]
 very_longs.adb:451:64: info: index check proved (CVC5: 2 VC)
-very_longs.adb:454:35: medium: divide by zero might fail [possible fix: precondition of subprogram at line 440 should mention V]
+very_longs.adb:454:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 440 should mention V]
 very_longs.adb:454:66: info: index check proved (CVC5: 2 VC)
 very_longs.adb:458:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:459:60: info: overflow check proved (CVC5: 2 VC)

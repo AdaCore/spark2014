@@ -32,7 +32,7 @@ ipv4_parsing.adb:41:37: info: overflow check proved (Z3: 2 VC)
 ipv4_parsing.adb:67:66: info: initialization of "V" proved
 ipv4_parsing.adb:67:86: info: initialization of "Error" proved
 ipv4_parsing.adb:68:72: info: overflow check proved (Z3: 2 VC)
-ipv4_parsing.adb:69:14: info: postcondition proved (Trivial: 1 VC; Z3: 7 VC)
+ipv4_parsing.adb:69:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 6 VC)
 ipv4_parsing.adb:69:43: info: overflow check proved (Z3: 2 VC)
 ipv4_parsing.adb:70:27: info: precondition proved (Z3: 1 VC)
 ipv4_parsing.adb:70:56: info: precondition proved (Z3: 3 VC)

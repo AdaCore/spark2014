@@ -14,7 +14,7 @@ p.adb:23:37: high: overflow check might fail, cannot prove upper bound for Y - X
 p.adb:23:37: medium: overflow check might fail, cannot prove upper bound for Y - X [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if X >= 0 then Y >= Integer'First + X else Y <= Integer'Last + X) to subprogram at line 4]
 p.adb:23:41: info: cannot unroll loop (too many loop iterations)
 p.adb:24:25: info: overflow check proved (CodePeer)
-p.adb:24:25: medium: range check might fail, cannot prove upper bound for Tmp_S + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 23 should mention Tmp_S in a loop invariant]
+p.adb:24:25: medium: range check might fail, cannot prove upper bound for Tmp_S + 1 (e.g. when Tmp_S = 0 and Y = 0) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 23 should mention Tmp_S in a loop invariant]
 p.adb:28:04: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:28:14: warning: subprogram "Proc_Loop" has no effect
 p.adb:29:07: info: initialization of "Tmp_S" proved

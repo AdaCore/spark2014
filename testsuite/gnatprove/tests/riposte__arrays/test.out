@@ -64,7 +64,7 @@ counterexample expected for check at arrays.adb:63
   trace at arrays.adb:58 --> S = ('a' => True, others => False)
   trace at arrays.adb:59 --> C = 'NUL'
   trace at arrays.adb:63 --> C = 'NUL' and S = ('a' => True, others => False)
-  trace at arrays.adb:66 --> Contains_B'Result = True and S = ('a' => True, others => False)
+  trace at arrays.adb:66 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:81
   trace at arrays.adb:78 --> M = (others => 'a')
   trace at arrays.adb:79 --> C = 'NUL'

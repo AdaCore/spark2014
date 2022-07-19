@@ -71,9 +71,9 @@ very_longs-divide.adb:119:44: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:44: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:81: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:85: info: index check proved (CVC5: 2 VC)
-very_longs-divide.adb:120:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:120:32: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:120:61: info: index check proved (CVC5: 2 VC)
-very_longs-divide.adb:123:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:123:32: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:123:63: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:127:47: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:128:56: info: overflow check proved (CVC5: 2 VC)

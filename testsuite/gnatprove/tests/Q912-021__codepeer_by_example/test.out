@@ -139,4 +139,4 @@ sum_all_arr.adb:6:18: high: overflow check might fail [CWE 190], cannot prove lo
 top_down.adb:2:21: info: initialization of "Y" proved
 top_down.adb:4:04: info: no contextual analysis of "Ident" (multiple returns)
 top_down.adb:6:13: high: array index check might fail [CWE 119] (e.g. when X = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (X in 1 .. 10) to subprogram at line 4]
-top_down.adb:13:12: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]
+top_down.adb:13:12: medium: array index check might fail [CWE 119] (e.g. when A = (others => 1)) [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]

@@ -1,7 +1,7 @@
 p.adb:9:13: info: precondition proved (CVC5: 1 VC)
 p.adb:9:13: warning: assuming "Shift_Right" always returns
 p.adb:9:13: warning: no returning annotation available for "Shift_Right"
-p.adb:16:13: high: precondition might fail
+p.adb:16:13: high: precondition might fail (e.g. when A = 0)
 p.adb:16:13: warning: assuming "Shift_Right" always returns
 p.adb:16:13: warning: no returning annotation available for "Shift_Right"
 p.ads:10:19: info: postcondition proved (CVC5: 1 VC)

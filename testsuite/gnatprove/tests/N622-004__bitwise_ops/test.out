@@ -233,7 +233,7 @@ aco-math-very_longs.adb:423:72: medium: array index check might fail [reason for
 aco-math-very_longs.adb:423:114: medium: overflow check might fail, cannot prove upper bound for J + N [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 415 should mention J and N in a precondition]
 aco-math-very_longs.adb:423:119: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention J and N in a precondition]
 aco-math-very_longs.adb:424:35: medium: divide by zero might fail [possible fix: subprogram at line 415 should mention N and V in a precondition]
-aco-math-very_longs.adb:424:70: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention N in a precondition]
+aco-math-very_longs.adb:424:70: medium: array index check might fail (e.g. when N = 1 and V = (Octet_Length => ?, Long_Digits => (1 => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention N in a precondition]
 aco-math-very_longs.adb:425:35: medium: divide by zero might fail [possible fix: subprogram at line 415 should mention N and V in a precondition]
 aco-math-very_longs.adb:425:72: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:431:69: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention N in a precondition]
@@ -255,8 +255,8 @@ aco-math-very_longs.adb:456:61: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:457:63: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:458:45: warning: assuming "Shift_Right" always returns
 aco-math-very_longs.adb:458:45: warning: no returning annotation available for "Shift_Right"
-aco-math-very_longs.adb:461:49: medium: overflow check might fail, cannot prove upper bound for J + Divisor_Index [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 444 should mention J in a precondition]
-aco-math-very_longs.adb:461:65: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 444 should mention J in a precondition]
+aco-math-very_longs.adb:461:49: medium: overflow check might fail, cannot prove upper bound for J + Divisor_Index (e.g. when Divisor_Index = 1 and J = Digit_Index_Type'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 444 should mention J in a precondition]
+aco-math-very_longs.adb:461:65: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 4 and U = (Octet_Length => ?, Long_Digits => (others => Octet'Last-2)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 444 should mention J in a precondition]
 aco-math-very_longs.adb:466:29: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:466:45: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:467:60: info: overflow check proved (CVC5: 2 VC)

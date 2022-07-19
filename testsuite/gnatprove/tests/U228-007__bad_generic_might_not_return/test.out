@@ -15,7 +15,7 @@ gnatprove: error during generation of Global contracts
 pack.adb:5:07: medium: exception might be raised
 pack.adb:11:10: high: precondition might fail, in instantiation at pack.adb:15
 pack.adb:27:22: info: assertion proved (CVC5: 1 VC)
-pack.adb:36:10: medium: precondition might fail, in instantiation at pack.adb:43
+pack.adb:36:10: high: precondition might fail, in instantiation at pack.adb:43
 pack.ads:8:06: info: data dependencies proved, in instantiation at pack.adb:15
 pack.ads:9:06: warning: postcondition does not check the outcome of calling "Call_Jump_Gen"
 pack.ads:9:14: info: postcondition proved (CVC5: 1 VC), in instantiation at pack.adb:15

@@ -1,7 +1,7 @@
 reason_for_check.adb:8:41: info: initialization of "W" proved
 reason_for_check.adb:12:14: info: overflow check proved (CVC5: 2 VC)
-reason_for_check.adb:18:07: high: precondition might fail, cannot prove V < 1000 (e.g. when X1 = 1000 and X2 = 0) [possible fix: precondition of subprogram at line 16 should mention X1 and X2]
-reason_for_check.adb:18:21: high: range check might fail, cannot prove lower bound for X1 (e.g. when X1 = -1 and X2 = 0) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at line 16 should mention X1]
+reason_for_check.adb:18:07: high: precondition might fail, cannot prove V < 1000 (e.g. when X1 = 1000) [possible fix: precondition of subprogram at line 16 should mention X1 and X2]
+reason_for_check.adb:18:21: high: range check might fail, cannot prove lower bound for X1 (e.g. when X1 = -1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at line 16 should mention X1]
 reason_for_check.adb:18:29: high: range check might fail, cannot prove lower bound for X2 (e.g. when X2 = -1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention X2]
 reason_for_check.adb:18:29: info: range check proved (CVC5: 2 VC)
 reason_for_check.adb:19:07: high: precondition might fail, cannot prove V < 1000 (e.g. when Y1 = 1000 and Y2 = 1) [possible fix: precondition of subprogram at line 16 should mention Y1 and Y2]
@@ -34,13 +34,13 @@ reason_for_check.adb:64:32: medium: float overflow check might fail [reason for 
 reason_for_check.adb:68:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 reason_for_check.adb:68:51: warning: unused variable "E"
 reason_for_check.adb:68:64: medium: "U" might not be initialized in "Oper_Fixed" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "U" on all paths or make "U" an IN OUT parameter]
-reason_for_check.adb:71:30: medium: overflow check might fail, cannot prove upper bound for -X (e.g. when Op = Minus and X = -1) [reason for check: result of fixed-point negation must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X in a precondition]
-reason_for_check.adb:72:30: medium: overflow check might fail, cannot prove upper bound for abs X (e.g. when Op = AbsVal and X = -1) [reason for check: result of fixed-point absolute value must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X in a precondition]
-reason_for_check.adb:73:32: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when Op = Add and X = -1 and Y = -1/128) [reason for check: result of fixed-point addition must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
-reason_for_check.adb:74:32: medium: overflow check might fail, cannot prove lower bound for X - Y (e.g. when Op = Sub and X = -1 and Y = 1/128) [reason for check: result of fixed-point subtraction must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
+reason_for_check.adb:71:30: medium: overflow check might fail, cannot prove upper bound for -X (e.g. when X = -1) [reason for check: result of fixed-point negation must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X in a precondition]
+reason_for_check.adb:72:30: medium: overflow check might fail, cannot prove upper bound for abs X (e.g. when X = -1) [reason for check: result of fixed-point absolute value must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X in a precondition]
+reason_for_check.adb:73:32: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = -1 and Y = -1/128) [reason for check: result of fixed-point addition must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
+reason_for_check.adb:74:32: medium: overflow check might fail, cannot prove lower bound for X - Y (e.g. when X = -1 and Y = 1/128) [reason for check: result of fixed-point subtraction must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
 reason_for_check.adb:75:32: medium: overflow check might fail, cannot prove upper bound for X * Y [reason for check: result of fixed-point multiplication must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
-reason_for_check.adb:76:32: medium: divide by zero might fail (e.g. when Op = Div and Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 68]
-reason_for_check.adb:76:32: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when Op = Div and X = 0 and Y = 0) [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
+reason_for_check.adb:76:32: medium: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 68]
+reason_for_check.adb:76:32: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when X = 0 and Y = 0) [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
 reason_for_check.adb:92:04: warning: analyzing unreferenced procedure "Convert_Enum"
 reason_for_check.adb:92:38: info: initialization of "U" proved
 reason_for_check.adb:94:12: medium: range check might fail, cannot prove lower bound for X (e.g. when X = A) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 92 should mention X in a precondition]
@@ -60,7 +60,7 @@ reason_for_check.adb:119:04: warning: analyzing unreferenced procedure "Assign"
 reason_for_check.adb:119:34: info: initialization of "T" proved
 reason_for_check.adb:121:09: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at line 119 should mention T'Length or T'First or T'Last in a precondition]
 reason_for_check.adb:126:04: warning: analyzing unreferenced function "Get_Small"
-reason_for_check.adb:128:27: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
+reason_for_check.adb:128:27: medium: length check might fail (e.g. when S = (1 => 'NUL') and S'First = 1 and S'Last = 1) [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
 reason_for_check.adb:134:04: warning: analyzing unreferenced procedure "Oper_Mask"
 reason_for_check.adb:137:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 reason_for_check.adb:137:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]

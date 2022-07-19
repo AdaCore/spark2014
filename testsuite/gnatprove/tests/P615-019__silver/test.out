@@ -22,7 +22,7 @@ discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail [possible fix: subprogram at line 17 should mention R in a precondition]
 division_by_zero.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 division_by_zero.adb:9:55: info: initialization of "U" proved
-division_by_zero.adb:12:27: high: divide by zero might fail (e.g. when Op = D and Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 9]
+division_by_zero.adb:12:27: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 9]
 division_by_zero.adb:12:27: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y in Integer) to subprogram at line 9]
 division_by_zero.adb:13:27: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 9]
 division_by_zero.adb:14:27: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 9]
@@ -69,13 +69,13 @@ overflow_check.adb:31:32: medium: float overflow check might fail [reason for ch
 overflow_check.adb:35:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 overflow_check.adb:35:51: warning: unused variable "E"
 overflow_check.adb:35:64: medium: "U" might not be initialized in "Oper_Fixed" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "U" on all paths or make "U" an IN OUT parameter]
-overflow_check.adb:38:30: medium: overflow check might fail, cannot prove upper bound for -X (e.g. when Op = Minus and X = -1) [reason for check: result of fixed-point negation must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X in a precondition]
-overflow_check.adb:39:30: medium: overflow check might fail, cannot prove upper bound for abs X (e.g. when Op = AbsVal and X = -1) [reason for check: result of fixed-point absolute value must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X in a precondition]
-overflow_check.adb:40:32: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when Op = Add and X = -1 and Y = -1/128) [reason for check: result of fixed-point addition must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
-overflow_check.adb:41:32: medium: overflow check might fail, cannot prove lower bound for X - Y (e.g. when Op = Sub and X = -1 and Y = 1/128) [reason for check: result of fixed-point subtraction must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:38:30: medium: overflow check might fail, cannot prove upper bound for -X (e.g. when X = -1) [reason for check: result of fixed-point negation must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X in a precondition]
+overflow_check.adb:39:30: medium: overflow check might fail, cannot prove upper bound for abs X (e.g. when X = -1) [reason for check: result of fixed-point absolute value must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X in a precondition]
+overflow_check.adb:40:32: medium: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = -1 and Y = -1/128) [reason for check: result of fixed-point addition must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:41:32: medium: overflow check might fail, cannot prove lower bound for X - Y (e.g. when X = -1 and Y = 1/128) [reason for check: result of fixed-point subtraction must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
 overflow_check.adb:42:32: medium: overflow check might fail, cannot prove upper bound for X * Y [reason for check: result of fixed-point multiplication must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
-overflow_check.adb:43:32: medium: divide by zero might fail (e.g. when Op = Div and Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 35]
-overflow_check.adb:43:32: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when Op = Div and X = 0 and Y = 0) [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:43:32: medium: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at line 35]
+overflow_check.adb:43:32: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when X = 0 and Y = 0) [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 35 should mention X and Y in a precondition]
 range_check.adb:16:04: warning: analyzing unreferenced procedure "Convert_Enum"
 range_check.adb:16:38: info: initialization of "U" proved
 range_check.adb:18:12: medium: range check might fail, cannot prove lower bound for X (e.g. when X = A) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 16 should mention X in a precondition]

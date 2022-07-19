@@ -20,6 +20,7 @@ goal def'vc :
     let test__parity__result'unused = int__ref'mk test__parity__result in
     test__parity__result = A ->
     (let result'unused'unused = test__parity__result in
+     let int__content'result'unused'unused = test__parity__result in
      exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))))
 
 

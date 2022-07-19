@@ -167,7 +167,7 @@ formal_vectors.adb:147:08: info: predicate check proved (CVC5: 1 VC), in instant
 formal_vectors.adb:147:22: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:08: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:08: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:31]
+formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 (e.g. when I = 1 and V = (Top => 1, Content => ?) and V.Content.all'First = 2 and V.Content.all'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:31]
 formal_vectors.adb:152:21: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:25: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:158:11: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
@@ -251,8 +251,8 @@ formal_vectors.ads:20:19: info: precondition proved (CVC5: 2 VC), in instantiati
 formal_vectors.ads:20:19: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11 [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 formal_vectors.ads:20:31: info: range check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:23:41: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.ads:24:15: info: postcondition proved (CVC5: 2 VC; Z3: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:24:43: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.ads:26:19: medium: postcondition might fail, cannot prove Model (V)'Old <= Model (V), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:27:19: info: precondition proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:29:71: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:45:14: info: postcondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11

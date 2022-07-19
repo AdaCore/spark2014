@@ -29,5 +29,4 @@ counterexample expected for check at test.adb:39
   trace at test.adb:41 --> B = 0
   trace at test.adb:43 --> A = 3 and B = -2
   trace at test.adb:44 --> B = 0
-  trace at test.adb:46 --> B = 0
-  trace at test.adb:47 --> B = -2 and Test_If_2'Result = -2
+  trace at test.adb:47 --> Test_If_2'Result = -2
