@@ -1644,10 +1644,16 @@ package body SPARK_Definition is
             Mark_Component_Association (N);
 
          when N_Iterated_Component_Association =>
-            Mark_Actions (N, Loop_Actions (N));
-            Mark_Entity (Defining_Identifier (N));
-            Mark_List (Discrete_Choices (N));
-            Mark (Expression (N));
+            if Present (Iterator_Specification (N)) then
+               Mark_Unsupported
+                 ("iterated component association with iterator specification",
+                  N);
+            else
+               Mark_Actions (N, Loop_Actions (N));
+               Mark_Entity (Defining_Identifier (N));
+               Mark_List (Discrete_Choices (N));
+               Mark (Expression (N));
+            end if;
 
          when N_Delay_Relative_Statement
             | N_Delay_Until_Statement
