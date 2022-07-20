@@ -732,6 +732,9 @@ only part of a program:
   from SPARK code, either through a dispatching call or through a call to
   an access-to-subprogram, and to (predefined) operators like ``"="``.
 
+* When the body of a subprogram is not analyzed by GNATprove, it shall not be
+  mutually recursive with a subprogram analyzed by GNATprove.
+
 * When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
   it is annotated with ``Volatile_Function``.
