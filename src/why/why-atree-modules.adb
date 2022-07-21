@@ -110,19 +110,23 @@ package body Why.Atree.Modules is
    --  there is already a module associated to E in Modules, in which case the
    --  existing module is returned.
 
-   Why_Symb_Map           : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Entity_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Axiom_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Compl_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Init_Modules           : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rec_Axiom_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Record_Rep_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Record_Compl_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rep_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   DIC_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Dispatch_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Dispatch_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Invariant_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Why_Symb_Map              : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Entity_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Axiom_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Init_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rec_Axiom_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Rep_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Compl_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   DIC_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Axiom_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Eq_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Eq_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Invariant_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   User_Eq_Modules           : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   User_Eq_Axiom_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------------
    -- E_Axiom_Module --
@@ -177,6 +181,24 @@ package body Why.Atree.Modules is
          return Hashconsed_Entity_Module (Subp, Name, Dispatch_Modules);
       end if;
    end E_Dispatch_Module;
+
+   --------------------------
+   -- E_Dispatch_Eq_Module --
+   --------------------------
+
+   function E_Dispatch_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___dispatch_eq" &
+        (if Axiom then "___axiom" else "");
+   begin
+      if Axiom then
+         return Hashconsed_Entity_Module (Ty, Name, Dispatch_Eq_Axiom_Modules);
+      else
+         return Hashconsed_Entity_Module (Ty, Name, Dispatch_Eq_Modules);
+      end if;
+   end E_Dispatch_Eq_Module;
 
    -------------------
    -- E_Init_Module --
@@ -267,9 +289,9 @@ package body Why.Atree.Modules is
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
       use Why_Symb_Maps;
-      E2 : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
+      E2  : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
       Key : constant Why_Symb := Why_Symb'(Entity => E2, Symb => S);
-      C : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
+      C   : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
    begin
       return Id : W_Identifier_Id do
          if Has_Element (C) then
@@ -284,6 +306,24 @@ package body Why.Atree.Modules is
          end if;
       end return;
    end E_Symb;
+
+   ----------------------
+   -- E_User_Eq_Module --
+   ----------------------
+
+   function E_User_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___user_eq" &
+        (if Axiom then "___axiom" else "");
+   begin
+      if Axiom then
+         return Hashconsed_Entity_Module (Ty, Name, User_Eq_Axiom_Modules);
+      else
+         return Hashconsed_Entity_Module (Ty, Name, User_Eq_Modules);
+      end if;
+   end E_User_Eq_Module;
 
    ------------------------
    -- Get_Logic_Function --
@@ -2877,6 +2917,16 @@ package body Why.Atree.Modules is
                Domain => EW_Term,
                Typ    => EW_Bool_Type));
 
+         if not Use_Predefined_Equality_For_Type (E) then
+            Insert_Symbol
+              (E, WNE_User_Eq,
+               New_Identifier
+                 (Symb   => NID ("user_eq"),
+                  Module => E_User_Eq_Module (E),
+                  Domain => EW_Term,
+                  Typ    => EW_Int_Type));
+         end if;
+
          Insert_Symbol
            (E, WNE_Dummy,
             New_Identifier
@@ -3341,13 +3391,15 @@ package body Why.Atree.Modules is
                end if;
 
                if Is_Tagged_Type (E) then
-                  Insert_Symbol
-                    (E, WNE_Dispatch_Eq,
-                     New_Identifier
-                       (Symb   => NID ("__dispatch_eq"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Bool_Type));
+                  if E = Root then
+                     Insert_Symbol
+                       (E, WNE_Dispatch_Eq,
+                        New_Identifier
+                          (Symb   => NID ("__dispatch_eq"),
+                           Module => E_Dispatch_Eq_Module (E),
+                           Domain => EW_Term,
+                           Typ    => EW_Bool_Type));
+                  end if;
                   Insert_Symbol
                     (E, WNE_Attr_Tag,
                      New_Identifier

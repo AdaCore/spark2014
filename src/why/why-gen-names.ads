@@ -293,6 +293,7 @@ package Why.Gen.Names is
       WNE_Axiom_Suffix,  --  ___axiom
 
       WNE_Bool_Eq,
+      WNE_User_Eq,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
       WNE_Default_Init,            --  assumption for default initialization

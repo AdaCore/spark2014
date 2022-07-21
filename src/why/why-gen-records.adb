@@ -1172,18 +1172,6 @@ package body Why.Gen.Records is
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
                   Def         => +True_Term));
-
-            Emit
-              (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => New_Identifier (Name => "user_eq"),
-                  Return_Type => EW_Bool_Type,
-                  Binders     => R_Binder &
-                    Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                    others => <>)),
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set));
          end;
 
          Declare_Attributes (Th, E);
@@ -1256,26 +1244,6 @@ package body Why.Gen.Records is
 
       Declare_Attributes (Th, E);
       Declare_Component_Attributes (Th, E);
-
-      --  Declare place-holder for primitive equality function
-
-      declare
-         B_Ident : constant W_Identifier_Id :=
-           New_Identifier (Name => "b", Typ => Abstr_Ty);
-      begin
-         Emit
-           (Th,
-            New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => New_Identifier (Name => "user_eq"),
-               Return_Type => EW_Bool_Type,
-               Binders     => R_Binder &
-                 Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                 others => <>)),
-               Location    => No_Location,
-               Labels      => Symbol_Sets.Empty_Set));
-      end;
-
    end Declare_Ada_Record;
 
    ------------------------
@@ -3217,10 +3185,7 @@ package body Why.Gen.Records is
                if Present (Parent_With_Eq) then
                   declare
                      Eq_Id : constant W_Identifier_Id :=
-                       New_Identifier (Module   => E_Module (Parent_With_Eq),
-                                       Name     => "user_eq",
-                                       Typ      => EW_Bool_Type,
-                                       Ada_Node => Parent_With_Eq);
+                       E_Symb (Parent_With_Eq, WNE_User_Eq);
                      --  We use the user-defined equality on Parent_With_Eq
 
                   begin
@@ -3300,27 +3265,6 @@ package body Why.Gen.Records is
                           (Why_Eq, +A_Ident, +B_Ident, EW_Term)
                         else Why_Empty)));
             end;
-         end if;
-
-         --  Declare the dispatching equality function in root types
-
-         if Is_Root and then Is_Tagged_Type (E) then
-            Emit
-              (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (E_Symb (E, WNE_Dispatch_Eq)),
-                  Return_Type => EW_Bool_Type,
-                  Binders     => Binder_Array'
-                    (1 => Binder_Type'(B_Name => New_Identifier
-                                       (Name => To_String (WNE_Attr_Tag),
-                                        Typ  => EW_Int_Type),
-                                       others => <>),
-                     2 => R_Binder (1),
-                     3 => Binder_Type'(B_Name => B_Ident,
-                                       others => <>)),
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set));
          end if;
       end Declare_Equality_Function;
 

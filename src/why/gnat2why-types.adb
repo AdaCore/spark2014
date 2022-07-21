@@ -33,6 +33,7 @@ with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                 use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
+with Gnat2Why.Tables;               use Gnat2Why.Tables;
 with Gnat2Why.Util;                 use Gnat2Why.Util;
 with Namet;                         use Namet;
 with Sinput;                        use Sinput;
@@ -221,10 +222,7 @@ package body Gnat2Why.Types is
         with Pre => Has_Invariants_In_SPARK (E);
       --  Create a function to express type E's invariant
 
-      procedure Generate_Axioms_For_Equality
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      with Pre => not Is_Limited_View (E);
+      procedure Generate_Axioms_For_Equality (E : Type_Kind_Id);
       --  Generate axioms defining the equality functions __user_eq and
       --  __dispatch_eq on E.
 
@@ -753,13 +751,37 @@ package body Gnat2Why.Types is
       -- Generate_Axioms_For_Equality  --
       -----------------------------------
 
-      procedure Generate_Axioms_For_Equality
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      is
-         Eq : constant Entity_Id := Get_User_Defined_Eq (Base_Type (E));
-         Ty : constant W_Type_Id := EW_Abstract (E);
+      procedure Generate_Axioms_For_Equality (E : Type_Kind_Id) is
+         Eq             : constant Entity_Id :=
+           Get_User_Defined_Eq (Base_Type (E));
+         Ty             : constant W_Type_Id := EW_Abstract (E);
+         Is_Tagged_Root : constant Boolean :=
+           Is_Tagged_Type (E) and then Root_Retysp (E) = E;
+         Var_A          : constant W_Identifier_Id :=
+           New_Identifier (Ada_Node => E,
+                           Name     => "a",
+                           Typ      => Ty);
+         Var_B          : constant W_Identifier_Id :=
+           New_Identifier (Ada_Node => E,
+                           Name     => "b",
+                           Typ      => Ty);
+
+         User_Th     : Theory_UC;
+         Dispatch_Th : Theory_UC;
+
       begin
+         if Is_Tagged_Root then
+            Dispatch_Th :=
+              Open_Theory
+                (WF_Context, E_Dispatch_Eq_Module (E, Axiom => True),
+                 Comment =>
+                   "Module giving axioms for dispatching equality of record"
+                 & " type """ & Get_Name_String (Chars (E)) & """"
+                 & (if Sloc (E) > 0 then
+                      " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         end if;
 
          --  When there is a user-provided equality, generate an axiom to give
          --  the value of the user_eq symbol.
@@ -767,15 +789,18 @@ package body Gnat2Why.Types is
          if not Use_Predefined_Equality_For_Type (E)
            and then Entity_In_SPARK (Eq)
          then
+            User_Th :=
+              Open_Theory
+                (WF_Context, E_User_Eq_Module (E, Axiom => True),
+                 Comment =>
+                   "Module giving axioms for primitive equality of record"
+                 & " type """ & Get_Name_String (Chars (E)) & """"
+                 & (if Sloc (E) > 0 then
+                      " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
             declare
-               Var_A : constant W_Identifier_Id :=
-                 New_Identifier (Ada_Node => E,
-                                 Name     => "a",
-                                 Typ      => Ty);
-               Var_B : constant W_Identifier_Id :=
-                 New_Identifier (Ada_Node => E,
-                                 Name     => "b",
-                                 Typ      => Ty);
                Arg_A : constant W_Expr_Id :=
                  Insert_Simple_Conversion
                    (Domain => EW_Term,
@@ -810,22 +835,25 @@ package body Gnat2Why.Types is
                      Typ      => EW_Bool_Type));
             begin
                Emit
-                 (Th,
+                 (User_Th,
                   New_Defining_Axiom
                     (Ada_Node => E,
                      Binders  =>
                        (1 => Binder_Type'(B_Name => Var_A, others => <>),
                         2 => Binder_Type'(B_Name => Var_B, others => <>)),
-                     Name     =>
-                       New_Identifier
-                         (Module => E_Module (E),
-                          Name   => "user_eq"),
+                     Name     => E_Symb (E, WNE_User_Eq),
                      Def      => +Def));
+
+               Close_Theory (User_Th,
+                             Kind => Definition_Theory);
+               Record_Extra_Dependency
+                 (Defining_Module => E_User_Eq_Module (E),
+                  Axiom_Module    => User_Th.Module);
 
                --  If E is the root of a tagged hierarchy, also generate a
                --  definition for the dispatching equality symbol.
 
-               if Is_Tagged_Type (E) and then Root_Retysp (E) = E then
+               if Is_Tagged_Root then
 
                   --  We don't handle hardcoded dispatching equality yet
 
@@ -839,7 +867,7 @@ package body Gnat2Why.Types is
                         Typ    => EW_Int_Type);
                   begin
                      Emit
-                       (Th,
+                       (Dispatch_Th,
                         New_Defining_Axiom
                           (Ada_Node => E,
                            Binders  =>
@@ -868,98 +896,100 @@ package body Gnat2Why.Types is
                   end;
                end if;
             end;
-         end if;
 
          --  If E is a tagged type, emit a compatibility axiom for its
          --  dispatching equality. No need for a compatibility axiom if the
          --  equality on the root type was redefined, because in this case we
          --  already have a defining axiom for the dispatching equality.
 
-         if Is_Tagged_Type (E)
-           and then Use_Predefined_Equality_For_Type (Root_Retysp (E))
-         then
+         elsif Is_Tagged_Root and then not Is_Concurrent_Type (E) then
             declare
-               Root  : constant Entity_Id := Root_Retysp (E);
-               Var_A : constant W_Identifier_Id :=
-                 New_Identifier (Ada_Node => E,
-                                 Name     => "a",
-                                 Typ      => EW_Abstract (Root));
-               Var_B : constant W_Identifier_Id :=
-                 New_Identifier (Ada_Node => E,
-                                 Name     => "b",
-                                 Typ      => EW_Abstract (Root));
-               E_Tag : constant W_Identifier_Id := E_Symb (E, WNE_Tag);
+               Descendants : Node_Sets.Set := Get_Descendant_Set (E);
+               Dispatch_Eq : constant W_Identifier_Id :=
+                 E_Symb (E, WNE_Dispatch_Eq);
+               D_Tag       : W_Identifier_Id;
 
             begin
-               --  Generate:
+               Descendants.Insert (E);
+
+               --  For each descendant D of E, generate:
                --
-               --  axiom <E>__compat_axiom:
-               --    forall a :root, b : root [__dispatch_eq <E>.__tag a b].
-               --      (attr__tag a = <E>.__tag /\ attr__tag b = <E>.__tag) ->
-               --         __dispatch_eq <E>.__tag a b =
-               --           <E>.bool_eq (<E>.of_base a) (<E>.of_base b)
+               --  axiom <D>__compat_axiom:
+               --    forall a :e, b : e [__dispatch_eq <D>.__tag a b].
+               --      (attr__tag a = <D>.__tag /\ attr__tag b = <D>.__tag) ->
+               --         __dispatch_eq <D>.__tag a b =
+               --           <D>.bool_eq (<D>.of_base a) (<D>.of_base b)
                --
-               --  if E uses the predefined equality, and
+               --  if D uses the predefined equality, and
                --
-               --  axiom <E>__compat_axiom:
-               --    forall a :root, b : root [__dispatch_eq <E>.__tag a b].
-               --      (attr__tag a = <E>.__tag /\ attr__tag b = <E>.__tag) ->
-               --         __dispatch_eq <E>.__tag a b =
-               --            <E>.user_eq  (<E>.of_base a) (<E>.of_base b)
+               --  axiom <D>__compat_axiom:
+               --    forall a :e, b : e [__dispatch_eq <D>.__tag a b].
+               --      (attr__tag a = <D>.__tag /\ attr__tag b = <D>.__tag) ->
+               --         __dispatch_eq <D>.__tag a b =
+               --            <D>.user_eq  (<D>.of_base a) (<D>.of_base b)
                --
                --  otherwise.
 
-               Emit
-                 (Th,
-                  New_Guarded_Axiom
-                    (Ada_Node => E,
-                     Binders  =>
-                       (1 => Binder_Type'(B_Name => Var_A, others => <>),
-                        2 => Binder_Type'(B_Name => Var_B, others => <>)),
-                     Triggers => New_Triggers
-                       (Triggers =>
-                            (1 => New_Trigger
-                                 (Terms =>
-                                    (1 => +W_Term_Id'(New_Call
-                                     (Name =>
-                                        E_Symb (Root, WNE_Dispatch_Eq),
-                                      Args => (+E_Tag, +Var_A, +Var_B),
-                                      Typ  => EW_Bool_Type)))))),
-                     Name     =>
-                       NID (Full_Name (E) & "__" & Compat_Axiom),
-                     Pre      => New_And_Pred
-                       (Left  => New_Comparison
-                            (Symbol   => Why_Eq,
-                             Left     => +New_Tag_Access
-                               (Domain => EW_Term,
-                                Name   => +Var_A,
-                                Ty     => Root),
-                             Right    => +E_Symb (E, WNE_Tag)),
-                        Right => New_Comparison
-                          (Symbol   => Why_Eq,
-                           Left     => +New_Tag_Access
-                             (Domain => EW_Term,
-                              Name   => +Var_B,
-                              Ty     => Root),
-                           Right    => +E_Symb (E, WNE_Tag))),
-                     Def      => New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => New_Call
-                          (Name => E_Symb (Root, WNE_Dispatch_Eq),
-                           Args => (+E_Tag, +Var_A, +Var_B),
-                           Typ  => EW_Bool_Type),
-                        Right  => +New_Ada_Equality
-                          (Typ    => E,
-                           Domain => EW_Term,
-                           Left   => +W_Term_Id'(New_Call
-                             (Name => E_Symb (E, WNE_Of_Base),
-                              Args => (1 => +Var_A),
-                              Typ  => EW_Abstract (E))),
-                           Right  => +W_Term_Id'(New_Call
-                             (Name => E_Symb (E, WNE_Of_Base),
-                              Args => (1 => +Var_B),
-                              Typ  => EW_Abstract (E)))))));
+               for D of Descendants loop
+                  D_Tag := E_Symb (D, WNE_Tag);
+                  Emit
+                    (Dispatch_Th,
+                     New_Guarded_Axiom
+                       (Binders  =>
+                            (1 => Binder_Type'(B_Name => Var_A, others => <>),
+                             2 => Binder_Type'(B_Name => Var_B, others => <>)),
+                        Triggers => New_Triggers
+                          (Triggers =>
+                               (1 => New_Trigger
+                                    (Terms =>
+                                       (1 => +W_Term_Id'(New_Call
+                                        (Name => Dispatch_Eq,
+                                         Args => (+D_Tag, +Var_A, +Var_B),
+                                         Typ  => EW_Bool_Type)))))),
+                        Name     =>
+                          NID (Full_Name (D) & "__" & Compat_Axiom),
+                        Pre      => New_And_Pred
+                          (Left  => New_Comparison
+                               (Symbol   => Why_Eq,
+                                Left     => +New_Tag_Access
+                                  (Domain => EW_Term,
+                                   Name   => +Var_A,
+                                   Ty     => E),
+                                Right    => +D_Tag),
+                           Right => New_Comparison
+                             (Symbol   => Why_Eq,
+                              Left     => +New_Tag_Access
+                                (Domain => EW_Term,
+                                 Name   => +Var_B,
+                                 Ty     => E),
+                              Right    => +D_Tag)),
+                        Def      => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => New_Call
+                             (Name => Dispatch_Eq,
+                              Args => (+D_Tag, +Var_A, +Var_B),
+                              Typ  => EW_Bool_Type),
+                           Right  => +New_Ada_Equality
+                             (Typ    => D,
+                              Domain => EW_Term,
+                              Left   => +W_Term_Id'(New_Call
+                                (Name => E_Symb (D, WNE_Of_Base),
+                                 Args => (1 => +Var_A),
+                                 Typ  => EW_Abstract (D))),
+                              Right  => +W_Term_Id'(New_Call
+                                (Name => E_Symb (D, WNE_Of_Base),
+                                 Args => (1 => +Var_B),
+                                 Typ  => EW_Abstract (D)))))));
+               end loop;
             end;
+         end if;
+
+         if Is_Tagged_Root then
+            Close_Theory (Dispatch_Th,
+                          Kind => Definition_Theory);
+            Record_Extra_Dependency
+              (Defining_Module => E_Dispatch_Eq_Module (E),
+               Axiom_Module    => Dispatch_Th.Module);
          end if;
       end Generate_Axioms_For_Equality;
 
@@ -1010,10 +1040,6 @@ package body Gnat2Why.Types is
          end if;
 
          Complete_Tagged_Record_Type (Th, E);
-      end if;
-
-      if not Is_Limited_View (E) then
-         Generate_Axioms_For_Equality (Th, E);
       end if;
 
       --  Generate a predicate for E's dynamic property. For provability, it is
@@ -1082,6 +1108,12 @@ package body Gnat2Why.Types is
          Create_Type_Invariant (Th, E);
          Close_Theory (Th,
                        Kind => Definition_Theory);
+      end if;
+
+      if (Is_Tagged_Type (E) and then E = Root_Retysp (E))
+        or else not Use_Predefined_Equality_For_Type (E)
+      then
+         Generate_Axioms_For_Equality (E);
       end if;
    end Generate_Type_Completion;
 
@@ -1176,6 +1208,13 @@ package body Gnat2Why.Types is
 
    procedure Translate_Type (E : Type_Kind_Id) is
 
+      procedure Create_Additional_Equality_Theories (E : Entity_Id)
+      with Pre => (Is_Tagged_Type (E) and then E = Root_Retysp (E))
+        or else not Use_Predefined_Equality_For_Type (E);
+      --  Create a module for the primitive equality __user_eq on values of
+      --  type E and another module for the dispatching equality on E if it is
+      --  the root of a tagged hierarchy.
+
       procedure Generate_Ref_Type_And_Havoc_Fun
         (Th           : Theory_UC;
          E            : Entity_Id;
@@ -1186,6 +1225,81 @@ package body Gnat2Why.Types is
 
       procedure Translate_Underlying_Type (Th : Theory_UC; E  : Entity_Id);
       --  Translate a non-private type entity E
+
+      -----------------------------------------
+      -- Create_Additional_Equality_Theories --
+      -----------------------------------------
+
+      procedure Create_Additional_Equality_Theories (E : Entity_Id) is
+         W_Type   : constant W_Type_Id := EW_Abstract (E);
+         A_Ident  : constant W_Identifier_Id :=
+           New_Identifier (Name => "a", Typ => W_Type);
+         B_Ident  : constant W_Identifier_Id :=
+           New_Identifier (Name => "b", Typ => W_Type);
+         Binders  : constant Binder_Array :=
+           (1 => (B_Name => A_Ident,
+                  others => <>),
+            2 => (B_Name => B_Ident,
+                  others => <>));
+         Th       : Theory_UC;
+
+      begin
+         --  Declare place-holder for primitive equality function
+
+         if not Use_Predefined_Equality_For_Type (E) then
+            Th := Open_Theory
+              (WF_Context, E_User_Eq_Module (E),
+               Comment =>
+                 "Module for primitive equality of record type "
+               & """" & Get_Name_String (Chars (E)) & """"
+               & (if Sloc (E) > 0 then
+                    " defined at " & Build_Location_String (Sloc (E))
+                 else "")
+               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_User_Eq)),
+                  Return_Type => EW_Bool_Type,
+                  Binders     => Binders,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set));
+
+            Close_Theory (Th, Kind => Definition_Theory);
+         end if;
+
+         --  Declare the dispatching equality function in root tagged types
+
+         if Is_Tagged_Type (E) and then E = Root_Retysp (E) then
+            Th := Open_Theory
+              (WF_Context, E_Dispatch_Eq_Module (E),
+               Comment =>
+                 "Module for dispatching equality of record type "
+               & """" & Get_Name_String (Chars (E)) & """"
+               & (if Sloc (E) > 0 then
+                    " defined at " & Build_Location_String (Sloc (E))
+                 else "")
+               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_Dispatch_Eq)),
+                  Return_Type => EW_Bool_Type,
+                  Binders     =>
+                    Binder_Type'(B_Name => New_Identifier
+                                 (Name => To_String (WNE_Attr_Tag),
+                                  Typ  => EW_Int_Type),
+                                 others => <>) & Binders,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set));
+
+            Close_Theory (Th, Kind => Definition_Theory);
+         end if;
+      end Create_Additional_Equality_Theories;
 
       -------------------------------------
       -- Generate_Ref_Type_And_Havoc_Fun --
@@ -1444,6 +1558,16 @@ package body Gnat2Why.Types is
          Create_Rep_Pointer_Theory_If_Needed (Get_Incomplete_Access (E));
          Declare_Rep_Pointer_Compl_If_Needed
            (Repr_Pointer_Type (Get_Incomplete_Access (E)));
+      end if;
+
+      --  For record types, potentially declare theories for the __user_eq
+      --  (primitive equality) and __dispatch_eq (dispatching equality)
+      --  symbols.
+
+      if (Is_Tagged_Type (E) and then E = Root_Retysp (E))
+        or else not Use_Predefined_Equality_For_Type (E)
+      then
+         Create_Additional_Equality_Theories (E);
       end if;
    end Translate_Type;
 

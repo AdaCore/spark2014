@@ -253,7 +253,7 @@ example_recursive.adb:275:42: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 example_recursive.adb:278:16: medium: precondition might fail, cannot prove Reachable (L2, N2, P, M)
 example_recursive.adb:278:91: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:278:91: medium: precondition might fail
-example_recursive.adb:279:29: medium: precondition might fail
+example_recursive.adb:279:29: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:279:60: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:279:60: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:280:27: medium: range check might fail, cannot prove lower bound for Max - 1 [reason for check: result of subtraction must fit in the target type of the assignment]

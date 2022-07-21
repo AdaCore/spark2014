@@ -778,6 +778,18 @@ package Why.Atree.Modules is
      Pre => Has_Invariants_In_SPARK (Ty);
    --  Function returning the extra module for the type invariant of Ty
 
+   function E_Dispatch_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   with Pre => Is_Tagged_Type (Ty) and then Ty = Root_Retysp (Ty);
+   --  Function returning the module for the dispatching equality on Ty
+
+   function E_User_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   with Pre => not Use_Predefined_Equality_For_Type (Ty);
+   --  Function returning the module for the user equality on Ty
+
    function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the logic function __call associated with the profile of a
    --  function or function type.

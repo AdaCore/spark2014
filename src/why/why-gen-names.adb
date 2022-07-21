@@ -1075,6 +1075,7 @@ package body Why.Gen.Names is
             | WNE_To_Rep
             | WNE_To_Wrapper
             | WNE_Type_Invariant
+            | WNE_User_Eq
             | WNE_Empty
          =>
             raise Program_Error);
