@@ -833,3 +833,46 @@ verify that all file descriptors are closed before being finalized.
 .. literalinclude:: /examples/ug__ownership_annotations/text_io.ads
    :language: ada
    :linenos:
+
+Instantiating Lemma Procedures Automatically
+--------------------------------------------
+
+As featured in :ref:`Manual Proof Using User Lemmas`, it is possible to write
+lemmas in |SPARK| as ghost procedures. However, actual calls to the procedure
+need to be manually inserted in the program whenever an instance of the
+lemma is necessary.
+It is possible to use a pragma ``Annotate`` to instruct |GNATprove| that an
+axiom should be introduced for a lemma procedure so manual
+instantiations are no longer necessary. This annotation is called
+``Automatic_Instantiation``. As an example, the ``Equivalent`` function below
+is an equivalence relation. This is expressed using three lemma procedures
+which should be instantiated automatically:
+
+.. code-block:: ada
+
+   function Equivalent (X, Y : Integer) return Boolean with
+     Global => null;
+
+   procedure Lemma_Reflexive (X : Integer) with
+     Ghost,
+     Global => null,
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Post => Equivalent (X, X);
+
+   procedure Lemma_Symmetric (X, Y : Integer) with
+     Ghost,
+     Global => null,
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Pre  => Equivalent (X, Y),
+     Post => Equivalent (Y, X);
+
+   procedure Lemma_Transitive (X, Y, Z : Integer) with
+     Ghost,
+     Global => null,
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Pre  => Equivalent (X, Y) and Equivalent (Y, Z),
+     Post => Equivalent (X, Z);
+
+Such lemmas should be declared directly after a function declaration, here the
+``Equivalent`` function. The axiom will only be available when the associated
+function is used in the proof context.

@@ -31,6 +31,7 @@ with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
 with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
 with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with Why.Ids;                        use Why.Ids;
 with Why.Gen.Names;                  use Why.Gen.Names;
@@ -734,24 +735,29 @@ package Why.Atree.Modules is
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 
    function E_Compl_Module (E : Entity_Id) return W_Module_Id;
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__compl"). Memoization may be used. Returns Empty when it is called
    --  with a node which is not an entity, and no module is known for this
    --  entity.
 
    function E_Rep_Module (E : Entity_Id) return W_Module_Id;
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__rep"). Memoization may be used. Returns Empty when it is called with
    --  a node which is not an entity, and no module is known for this entity.
 
    function E_Init_Module (E : Entity_Id) return W_Module_Id;
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__init"). Memoization may be used. Returns Empty when it is called with
    --  a node which is not an entity, and no module is known for this entity.
 
+   function E_Lemma_Axiom_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Has_Automatic_Instantiation_Annotation (E);
+   --  Return the module for the post axiom of a lemma procedure annotated
+   --  with Automatic_Instantiation.
+
    function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id with
      Pre => Has_Post_Axiom (E) and then Is_Recursive (E);
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__rec_axiom"). Memoization may be used. Returns Empty when it is called
    --  with a node which is not an entity, and no module is known for this
    --  entity.
@@ -827,7 +833,7 @@ package Why.Atree.Modules is
 
    function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
    with
-     Pre => Is_Subprogram_Or_Entry (E) and then Is_Recursive (E);
+     Pre => Is_Subprogram_Or_Entry (E);
    --  Function returning the set of axiom modules mutually recursive with a
    --  given entity. Those are the modules which should not be included in the
    --  VC module for E.

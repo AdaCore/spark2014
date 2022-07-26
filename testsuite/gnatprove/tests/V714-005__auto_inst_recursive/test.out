@@ -1,0 +1,13 @@
+test_bad.adb:22:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:53:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:58:42: medium: postcondition might fail, cannot prove P (X) [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:89:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:97:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:133:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:137:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:148:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:152:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:193:17: warning: lemma procedure cannot be instanciated automatically
+test_bad.adb:193:17: warning: procedure "Lemma_Prove_P" might not return
+test_bad.adb:196:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:201:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]

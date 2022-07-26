@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Namet;                  use Namet;
 with Snames;                 use Snames;
@@ -504,14 +503,12 @@ package body Why.Inter is
       -----------------------
 
       procedure Add_Axiom_Imports is
-         use Flow_Generated_Globals.Phase_2;
          Filter  : Why_Node_Sets.Set;
          Closure : Why_Node_Sets.Set;
 
       begin
          if Present (Defined_Entity)
            and then Is_Subprogram_Or_Entry (Defined_Entity)
-           and then Is_Recursive (Defined_Entity)
          then
             Filter := Mutually_Recursive_Modules (Defined_Entity);
          end if;

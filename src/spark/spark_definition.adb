@@ -270,17 +270,6 @@ package body SPARK_Definition is
    procedure Discard_Underlying_Type (T : Type_Kind_Id);
    --  Mark T's underlying type as seen and store T as its partial view
 
-   function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
-     (Comes_From_Source (N)
-      or else (Is_Rewrite_Substitution (N)
-               and then Comes_From_Source (Original_Node (N))));
-   --  When scanning a list of statements or declarations to decide the range
-   --  of application of a pragma Annotate, some statements starts a new range
-   --  for pragma to apply. If the declaration does not come from source, we
-   --  consider it to be part of the preceding one as far as pragma Annotate
-   --  is concerned. The exception to this rule are expression functions, and
-   --  assertions which are rewritten by the front-end into pragma Check.
-
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
@@ -7367,6 +7356,87 @@ package body SPARK_Definition is
             end loop;
          end if;
 
+         --  If E is a lemma procedure annotated with Automatic_Instantiation,
+         --  also mark its associated function.
+
+         if Has_Automatic_Instantiation_Annotation (E) then
+            Queue_For_Marking
+              (Retrieve_Automatic_Instantiation_Annotation (E));
+
+         --  Go over the ghost procedure declaration directly following E to
+         --  mark them in case they are lemmas with automatic instantiation.
+         --  We assume that lemma procedures associated to E are declared just
+         --  after E, possibly interspaced with compiler generated stuff and
+         --  pragmas and that the pragma Automatic_Instantiation is always
+         --  located directly after the lemma procedure declaration.
+
+         elsif Ekind (E) = E_Function
+           and then not Is_Volatile_Function (E)
+         then
+            declare
+               Decl_Node : constant Node_Id := Parent (Declaration_Node (E));
+               Cur       : Node_Id;
+               Proc      : Entity_Id := Empty;
+
+            begin
+               if Is_List_Member (Decl_Node)
+                 and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
+               then
+                  Cur := Next (Decl_Node);
+                  while Present (Cur) loop
+
+                     --  We have found a pragma Automatic_Instantiation that
+                     --  applies to Proc, add Proc to the queue for marking and
+                     --  continue the search.
+
+                     if Present (Proc)
+                       and then Is_Pragma_Annotate_GNATprove (Cur)
+                       and then Is_Pragma_Annotate_Automatic_Instantiation
+                         (Cur, Proc)
+                     then
+                        Queue_For_Marking (Proc);
+                        Proc := Empty;
+
+                     --  Ignore other pragmas
+
+                     elsif Nkind (Cur) = N_Pragma then
+                        null;
+
+                     --  We have found a declaration. If Cur is not a lemma
+                     --  procedure annotated with Automatic_Instantiation we
+                     --  can stop the search.
+
+                     elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+
+                        --  Cur is a declaration of a ghost procedure. Store
+                        --  it in Proc and continue the search to see if there
+                        --  is an associated Automatic_Instantiation
+                        --  Annotation. If there is already something in Proc,
+                        --  stop the search as no pragma
+                        --  Automatic_Instantiation has been found directly
+                        --  after the declaration of Proc.
+
+                        if Nkind (Cur) = N_Subprogram_Declaration
+                          and then Ekind (Unique_Defining_Entity (Cur))
+                            = E_Procedure
+                          and then Is_Ghost_Entity
+                            (Unique_Defining_Entity (Cur))
+                          and then No (Proc)
+                        then
+                           Proc := Unique_Defining_Entity (Cur);
+
+                        --  We have found a declaration which is not a lemma
+                        --  procedure, we can stop the search.
+
+                        else
+                           exit;
+                        end if;
+                     end if;
+                     Next (Cur);
+                  end loop;
+               end if;
+            end;
+         end if;
       end if;
 
       --  Restore prestate

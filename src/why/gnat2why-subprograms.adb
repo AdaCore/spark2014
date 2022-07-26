@@ -262,6 +262,11 @@ package body Gnat2Why.Subprograms is
    --  are introduced when translating loop exit statements and goto
    --  statements.
 
+   procedure Generate_Axiom_For_Lemma (E : E_Procedure_Id) with
+     Pre => Has_Automatic_Instantiation_Annotation (E);
+   --  @param E a lemma procedure
+   --  Emit an axiom for the postcondition of E.
+
    procedure Generate_Dispatch_Compatibility_Axioms
      (Th : Theory_UC;
       E  : Entity_Id)
@@ -4768,6 +4773,91 @@ package body Gnat2Why.Subprograms is
       end;
    end Get_Location_For_Aspect;
 
+   ------------------------------
+   -- Generate_Axiom_For_Lemma --
+   ------------------------------
+
+   procedure Generate_Axiom_For_Lemma (E : E_Procedure_Id) is
+      Binders : Item_Array := Compute_Binders (E, EW_Term);
+      Params  : Transformation_Params;
+      Pre     : W_Pred_Id;
+      Post    : W_Pred_Id;
+      Th      : Theory_UC;
+
+   begin
+      Params :=
+        (Phase       => Generate_Logic,
+         Gen_Marker  => GM_None,
+         Ref_Allowed => False,
+         Old_Policy  => Ignore);
+
+      Th :=
+        Open_Theory
+          (WF_Context, E_Lemma_Axiom_Module (E),
+           Comment =>
+             "Module for declaring an axiom for the post condition"
+           & " of the lemma procedure "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  Do not generate an axiom for the postcondition of potentially
+      --  non-returning lemmas.
+
+      if Is_Potentially_Nonreturning (E) then
+         Error_Msg_N
+           ("?lemma procedure cannot be instanciated automatically", E);
+         Error_Msg_NE ("\procedure & might not return", E, E);
+         return;
+      end if;
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Localize_Binders (Binders);
+      Push_Binders_To_Symbol_Table (Binders);
+
+      Pre := +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred);
+      Post :=
+        +New_And_Expr
+        (Left   =>
+           +Compute_Spec (Params, E, Pragma_Postcondition, EW_Pred),
+         Right  => +Compute_Contract_Cases_Postcondition (Params, E),
+         Domain => EW_Pred);
+
+      declare
+         Guard : constant W_Pred_Id :=
+           +New_And_Then_Expr
+           (Left   => +Compute_Guard_Formula (Binders, Params),
+            Right  => +Compute_Type_Invariants_For_Subprogram
+              (E, True, Params),
+            Domain => EW_Pred);
+         --  Dynamic invariant / type invariants of the inputs
+
+      begin
+         --  We generate:
+         --  forall binders. Guard /\ Pre -> Post
+
+         Emit
+           (Th,
+            New_Guarded_Axiom
+              (Name     => NID (Short_Name (E) & "__" & Post_Axiom),
+               Binders  => To_Binder_Array (Binders),
+               Pre      =>
+                 New_And_Pred (Left   => Guard,
+                               Right  => Pre),
+               Def      => Post));
+      end;
+
+      Close_Theory (Th, Kind => Definition_Theory);
+      Record_Extra_Dependency
+        (Defining_Module => E_Module
+           (Retrieve_Automatic_Instantiation_Annotation (E)),
+         Axiom_Module    => Th.Module);
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+   end Generate_Axiom_For_Lemma;
+
    -----------------------------
    -- Generate_Axiom_For_Post --
    -----------------------------
@@ -5660,6 +5750,13 @@ package body Gnat2Why.Subprograms is
          Record_Extra_Dependency
            (Defining_Module => E_Dispatch_Module (E),
             Axiom_Module    => Dispatch_Th.Module);
+      end if;
+
+      --  If E is a lemma procedure with an Automatic_Instantiation annotation,
+      --  generate a lemma for the postcondition of E.
+
+      if Has_Automatic_Instantiation_Annotation (E) then
+         Generate_Axiom_For_Lemma (E);
       end if;
    end Generate_Subprogram_Completion;
 

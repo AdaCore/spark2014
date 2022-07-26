@@ -32,7 +32,6 @@ with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
-with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util;                 use SPARK_Util;
 with Stand;                      use Stand;
 with String_Utils;               use String_Utils;
@@ -115,6 +114,7 @@ package body Why.Atree.Modules is
    Axiom_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Compl_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Init_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Lemma_Axiom_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Rec_Axiom_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Record_Rep_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Record_Compl_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
@@ -212,6 +212,18 @@ package body Why.Atree.Modules is
    begin
       return Hashconsed_Entity_Module (E, Name, Init_Modules);
    end E_Init_Module;
+
+   --------------------------
+   -- E_Lemma_Axiom_Module --
+   --------------------------
+
+   function E_Lemma_Axiom_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        (if Nkind (E) in N_Entity
+         then Full_Name (E) & "___post_axiom" else "");
+   begin
+      return Hashconsed_Entity_Module (E, Name, Lemma_Axiom_Modules);
+   end E_Lemma_Axiom_Module;
 
    --------------
    -- E_Module --
@@ -3838,12 +3850,29 @@ package body Why.Atree.Modules is
    function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
    is
       S : Why_Node_Sets.Set;
+
    begin
-      for C in Rec_Axiom_Modules.Iterate loop
-         if Mutually_Recursive (E, Ada_To_Why.Key (C)) then
+      --  For recursive functions, include the axiom module of mutually
+      --  recursive subprograms if any.
+
+      if Is_Recursive (E) then
+         for C in Rec_Axiom_Modules.Iterate loop
+            if Mutually_Recursive (E, Ada_To_Why.Key (C)) then
+               S.Insert (Ada_To_Why.Element (C));
+            end if;
+         end loop;
+      end if;
+
+      --  For all subprograms, include the axiom module of lemma functions
+      --  if they are mutually recursive with the E taking into account the
+      --  phantom link between a function and its lemma.
+
+      for C in Lemma_Axiom_Modules.Iterate loop
+         if Lemma_Mutually_Recursive (Ada_To_Why.Key (C), E) then
             S.Insert (Ada_To_Why.Element (C));
          end if;
       end loop;
+
       return S;
    end Mutually_Recursive_Modules;
 
