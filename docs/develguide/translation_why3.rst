@@ -2231,6 +2231,14 @@ index at the current iteration:
 
  predicate dynamic_predicate (x : int) (L_1__i : int) = 1 <= x <= L_1__i
 
+As (private) functions taking an object of the type can be used in type
+invariants, the predicate for invariants is generated in a separate
+module (see ``Why.Atree.Modules.E_Invariant_Module``). This prevents the
+tool from seeing the defining axiom of the function while checking the function itself. Subtype predicates do not have their own module. Since
+they are used every time the type is used, it would not help to avoid
+recursivity. It falls in the category of the "no recursivity through
+types" assumption/limitation.
+
 Default initialization
 """"""""""""""""""""""
 
@@ -2291,6 +2299,10 @@ hold on default values, since the default initial condition itself is checked
 assuming all applicable invariants and predicates (at least when the default
 initial condition is checked at declaration, see ``Needs_DIC_Check_At_Decl``
 and ``Needs_DIC_Check_At_Use``).
+
+Like for type invariants, the default initial assumption predicate is
+generated in a separate module (see ``Why.Atree.Modules.E_DIC_Module``). This prevents the tool from seeing the defining axiom of a function called
+from the default initialization of a type while checking the function itself.
 
 Dynamic invariants
 """"""""""""""""""
@@ -2459,7 +2471,7 @@ User equality
 """""""""""""
 If primitive equality over a type which ultimately is a record is redefined by
 the user, an axiom is provided to supply a definition for the primitive
-equality function ``user_eq`` in the completion of the type entity. For example,
+equality function ``user_eq``. For example,
 consider a type with two components, a ``Main`` component, which is the one we
 care about, and another ``Ignored`` component which is only used for some
 secondary usage, like logging. We define equality on this record type as
@@ -2484,11 +2496,16 @@ value of the generic primitive equality function ``user_eq`` introduced for
  axiom user_eq__def_axiom :
   (forall a b : t_rec__. P__t_rec.user_eq a b = P__Oeq.oeq a b)
 
+The ``user_eq`` function and its axiom are generated in a separate
+module (see ``Why.Atree.Modules.E_User_Eq_Module``). This prevents the
+tool from seeing the defining axiom of the primitive equality while
+checking the function itself.
+
 Dispatching equality
 """"""""""""""""""""
 
-For tagged types which are not marked as limited, axioms are generated in
-the completion module to define the dispatching equality on those types.
+For tagged types which are not marked as limited, axioms are generated
+to define the dispatching equality on those types.
 There are two cases. If the primitive equality is overridden by a function
 ``Oeq`` on the root type of the hierarchy, then a single axiom is generated.
 It states that ``__dispatch_eq`` is equal to the dispatching version of
@@ -2524,6 +2541,11 @@ was redefined on the type ``Child``:
       (attr__tag a = Child.__tag /\ attr__tag b = Child.__tag) ->
          __dispatch_eq Child.__tag a b =
             Child.user_eq  (Child.of_base a) (Child.of_base b)
+
+The ``__dispatch_eq`` function and its axioms are generated in a separate
+module (see ``Why.Atree.Modules.E_Dispatch_Eq_Module``). This prevents the
+tool from seeing the defining axiom of the dispatching equality while
+checking potential overriddings of the primitive equality.
 
 Wrapper types for Relaxed_Initialization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4979,8 +5001,31 @@ The decision to ignore unproved VCs that correspond to warnings is done in
 proper classification of this message as a warning is done in
 ``Error_Msg_Proof`` in :file:`gnat2why-flow_error_messages.adb`.
 
-Handling of Imports (Close_Theory)
-----------------------------------
+Handling of Imports
+-------------------
+
+Apart for specific standalone theories, the handling of inclusion of
+modules is handled automatically in ``Why.Inter.Close_Theory``. This
+generation of imports is done in two parts. First, the Why3 AST for the
+module that is being closed is traversed and the referenced modules are
+collected (see ``Why.Inter.Compute_Module_Set``) and included. This is
+enough except for modules used to generate VCs. Indeed, in this case, we
+also need the axioms for the used symbols which might be in different
+completion or axiom modules to avoid issue with ordering of entities and
+recursivity. This is done using a specific ``Module_Dependencies`` map
+which stores dependencies between a "definition" module and a set of
+"axiom" modules. This map is populated automatically when closing an
+axiom module with a specific definined entity. Otherwise, it is updated
+manually using the ``Why.Inter.Record_Extra_Dependency`` function.
+When closing a module used to generate VCs, the closure of the initial
+module set through the ``Module_Dependencies`` map is computed and the
+modules are imported in the module being closed. At this point, it is
+important to take into account the potential mutal recursivity between
+entities to avoid including the axioms of entities ``A`` when verifying
+entity ``B`` and the axioms of entity ``B`` when verifying entity ``A``.
+To that end, a set of modules that should not be included for a given
+entity is computed using ``Why.Atree.Modules.Mutually_Recursive_Modules.
+These modules are filtered when computing the closure.
 
 Global Structures
 =================
