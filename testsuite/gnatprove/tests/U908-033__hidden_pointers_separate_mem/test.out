@@ -45,10 +45,10 @@ example_recursive.adb:89:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:90:22: info: precondition proved (CVC5: 8 VC)
 example_recursive.adb:91:48: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:91:63: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:92:14: info: postcondition proved (CVC5: 2 VC)
 example_recursive.adb:92:45: info: precondition proved (CVC5: 8 VC)
-example_recursive.adb:92:45: medium: postcondition might fail, cannot prove Reachable (F, A, L, A2, M1) = Reachable (F, A, L, A2, M2)
 example_recursive.adb:92:75: info: precondition proved (CVC5: 8 VC)
-example_recursive.adb:98:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC; Z3: 1 VC)
+example_recursive.adb:98:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
 example_recursive.adb:98:10: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:98:53: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:98:53: info: tag check proved (CVC5: 1 VC)
@@ -67,7 +67,7 @@ example_recursive.adb:107:06: info: data dependencies proved
 example_recursive.adb:109:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:113:07: info: precondition proved (CVC5: 10 VC)
 example_recursive.adb:115:06: info: data dependencies proved
-example_recursive.adb:120:14: medium: postcondition might fail, cannot prove Valid_List (Create'result)
+example_recursive.adb:120:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC)
 example_recursive.adb:122:15: info: precondition proved (CVC5: 3 VC)
 example_recursive.adb:125:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 example_recursive.adb:126:07: info: initialization of "F" proved
@@ -77,8 +77,8 @@ example_recursive.adb:139:13: info: tag check proved (Z3: 1 VC)
 example_recursive.adb:139:27: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:143:22: medium: assertion might fail
 example_recursive.adb:144:22: info: assertion proved (Z3: 1 VC)
+example_recursive.adb:144:30: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:144:30: info: tag check proved (Z3: 1 VC)
-example_recursive.adb:144:30: medium: precondition might fail
 example_recursive.adb:151:14: medium: in inlined expression function body at example_recursive.adb:44
 example_recursive.adb:151:14: medium: postcondition might fail, cannot prove Valid_List (Address (L.F), Address (L.F), L.L, +L.M)
 example_recursive.adb:151:52: info: overflow check proved (CVC5: 2 VC)
