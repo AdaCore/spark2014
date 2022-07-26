@@ -2991,6 +2991,9 @@ package body CE_RAC is
                elsif Is_Tagged_Type (Left_Ty) then
                   RAC_Unsupported ("RAC_In tagged types", Left_Ty);
 
+               elsif Has_Predicates (Right_Ty) then
+                  RAC_Unsupported ("RAC_In type with predicate", Right_Ty);
+
                elsif Has_Discriminants (Left_Ty)
                  and then Is_Constrained (Right_Ty)
                then
@@ -3005,6 +3008,7 @@ package body CE_RAC is
 
                      Match := Left_Dis_Val = Right_Dis_Val;
                   end;
+
                else
                   --  If there are no discriminants or if the type is not
                   --  constrained, the left and right operands necessarily
@@ -3019,6 +3023,9 @@ package body CE_RAC is
                  or else Root_Left_Ty = Right_Ty
                then
                   return True;
+
+               elsif Has_Predicates (Right_Ty) then
+                  RAC_Unsupported ("RAC_In type with predicate", Right_Ty);
 
                else
                   declare

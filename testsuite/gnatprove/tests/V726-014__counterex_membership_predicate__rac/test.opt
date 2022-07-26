@@ -1,0 +1,1 @@
+ALL XFAIL Composite types with predicates unsupported by small-step RAC
