@@ -49,14 +49,14 @@ infinite_sequences.adb:50:39: medium: loop invariant might not be preserved by a
 infinite_sequences.adb:50:59: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:50:65: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:50:67: info: predicate check proved (Trivial: 2 VC)
-infinite_sequences.adb:51:39: medium: loop invariant might fail in first iteration
+infinite_sequences.adb:51:39: info: loop invariant initialization proved (CVC5: 1 VC)
 infinite_sequences.adb:51:39: medium: loop invariant might not be preserved by an arbitrary iteration
 infinite_sequences.adb:51:39: medium: precondition might fail
 infinite_sequences.adb:51:55: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:61: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:51:63: info: predicate check proved (Trivial: 2 VC)
+infinite_sequences.adb:53:19: info: loop invariant initialization proved (CVC5: 2 VC)
 infinite_sequences.adb:53:19: info: precondition proved (Trivial: 2 VC)
-infinite_sequences.adb:54:23: medium: loop invariant might fail in first iteration, cannot prove Has_Key (Content, K)
 infinite_sequences.adb:54:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Key (Content, K)
 infinite_sequences.adb:54:41: medium: in inlined predicate at a-nbnbin.ads:55
 infinite_sequences.adb:54:41: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
@@ -73,8 +73,8 @@ infinite_sequences.adb:57:53: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:58:21: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:58:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequences.adb:58:25: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:13
-infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove Lst >= Fst - 1
+infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:14
+infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove Has_Key (M, I)
 infinite_sequences.ads:7:09: info: predicate check proved on default value (CVC5: 3 VC)
 infinite_sequences.ads:10:14: info: postcondition proved (CVC5: 1 VC)
 infinite_sequences.ads:10:18: info: predicate check proved (Trivial: 1 VC)
@@ -358,18 +358,14 @@ red_black_trees.adb:231:75: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:231:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
 red_black_trees.adb:231:77: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:271:22: info: precondition proved (Trivial: 1 VC)
+red_black_trees.adb:272:24: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:272:24: medium: assertion might fail, cannot prove Get (X3, I - First (Y3) + First (X3)) = Get (Y3, I) [possible fix: you should consider adding a postcondition to function First and function Get or turning them into expression functions in their unit spec]
-red_black_trees.adb:272:24: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:272:24: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:272:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:37: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:272:48: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:272:48: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: you should consider adding a postcondition to function First or turning it into an expression function in its unit spec]
+red_black_trees.adb:272:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:272:50: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:272:64: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:272:64: medium: precondition might fail, cannot prove Low <= Arg
-red_black_trees.adb:272:73: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:272:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:272:64: info: precondition proved (CVC5: 2 VC)
+red_black_trees.adb:272:73: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:298:29: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:304:33: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:304:33: info: predicate check proved (Trivial: 2 VC)
@@ -569,7 +565,7 @@ red_black_trees.adb:422:59: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:64: medium: pointer dereference check might fail
 red_black_trees.adb:422:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:422:79: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:422:84: medium: pointer dereference check might fail
+red_black_trees.adb:422:84: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:93: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:422:97: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:422:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 397 should mention Pos]

@@ -28,14 +28,14 @@ deceleration_curve.adb:41:25: medium: assertion might fail, cannot prove 0.0 < 1
 deceleration_curve.adb:41:34: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:41:34: info: float overflow check proved (CVC5: 1 VC)
 deceleration_curve.adb:41:48: info: division check proved (CVC5: 1 VC)
-deceleration_curve.adb:41:48: info: float overflow check proved (Z3: 1 VC)
+deceleration_curve.adb:41:48: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 deceleration_curve.adb:43:14: medium: assertion might fail
 deceleration_curve.adb:44:38: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:44:38: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-deceleration_curve.adb:46:14: medium: assertion might fail
+deceleration_curve.adb:46:14: info: assertion proved (Z3: 1 VC)
 deceleration_curve.adb:48:39: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:48:39: info: float overflow check proved (Z3: 1 VC)
-deceleration_curve.adb:48:48: info: float overflow check proved (Z3: 1 VC)
+deceleration_curve.adb:48:48: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 deceleration_curve.adb:50:48: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:50:48: info: float overflow check proved (Z3: 1 VC)
 deceleration_curve.adb:51:12: info: float overflow check proved (Z3: 1 VC)

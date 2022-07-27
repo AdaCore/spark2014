@@ -442,8 +442,8 @@ parser_utilities.adb:1000:33: info: loop invariant initialization proved (CVC5: 
 parser_utilities.adb:1000:33: info: loop invariant preservation proved (CVC5: 2 VC)
 parser_utilities.adb:1001:27: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1010:13: info: loop invariant initialization proved (CVC5: 4 VC)
-parser_utilities.adb:1011:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BegIdx <= EndIdx
-parser_utilities.adb:1014:26: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+parser_utilities.adb:1010:13: info: loop invariant preservation proved (CVC5: 4 VC)
+parser_utilities.adb:1014:26: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1024:14: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC5: 6 VC)
 parser_utilities.adb:1028:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I >= BegIdx
@@ -460,7 +460,7 @@ parser_utilities.adb:1070:33: info: loop invariant initialization proved (CVC5: 
 parser_utilities.adb:1070:33: info: loop invariant preservation proved (CVC5: 2 VC)
 parser_utilities.adb:1071:27: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1080:13: info: loop invariant initialization proved (CVC5: 4 VC)
-parser_utilities.adb:1081:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BegIdx <= EndIdx
+parser_utilities.adb:1080:13: info: loop invariant preservation proved (CVC5: 4 VC)
 parser_utilities.adb:1084:26: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1094:14: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1096:16: info: loop invariant initialization proved (CVC5: 6 VC)

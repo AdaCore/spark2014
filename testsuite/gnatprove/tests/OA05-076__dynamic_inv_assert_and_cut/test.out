@@ -212,9 +212,9 @@ lsc-bignum.adb:230:36: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:231:41: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:249:08: info: flow dependencies proved
 lsc-bignum.adb:254:17: high: overflow check might fail, cannot prove upper bound for A_Last + 1 (e.g. when A_Last = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-lsc-bignum.adb:257:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.adb:257:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = Natural'Last-1 and B_First = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.adb:257:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:259:18: high: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and C_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.adb:259:18: medium: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.adb:259:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:261:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.adb:261:10: warning: assuming "Num_Of_Big_Int" always returns
@@ -1566,7 +1566,7 @@ lsc-bignum.ads:74:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:74:60: info: justified that "A" might not be initialized
 lsc-bignum.ads:74:63: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:83:08: info: flow dependencies proved
-lsc-bignum.ads:90:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:90:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = Natural'Last and B_First = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:90:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:92:10: info: postcondition proved (Trivial: 2 VC; Z3: 2 VC)
 lsc-bignum.ads:92:19: info: range check proved (Z3: 2 VC)
@@ -1582,7 +1582,7 @@ lsc-bignum.ads:96:20: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:96:32: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:104:07: info: initialization of "Carry" proved
 lsc-bignum.ads:106:08: info: flow dependencies proved
-lsc-bignum.ads:112:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:112:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = Natural'Last and B_First = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:112:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:115:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.ads:115:10: warning: assuming "Num_Of_Big_Int" always returns
@@ -1615,7 +1615,7 @@ lsc-bignum.ads:118:41: warning: assuming "*" always returns
 lsc-bignum.ads:118:41: warning: no returning annotation available for "*"
 lsc-bignum.ads:118:43: warning: assuming "Num_Of_Boolean" always returns
 lsc-bignum.ads:118:43: warning: no returning annotation available for "Num_Of_Boolean"
-lsc-bignum.ads:132:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 1 and B_First = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:132:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = Natural'Last and B_First = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:132:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:135:10: medium: postcondition might fail
 lsc-bignum.ads:136:11: warning: assuming "Num_Of_Big_Int" always returns
@@ -1632,11 +1632,11 @@ lsc-bignum.ads:137:56: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:137:56: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:140:07: info: initialization of "A" proved
 lsc-bignum.ads:151:08: info: flow dependencies proved
-lsc-bignum.ads:158:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and B_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:158:18: high: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and B_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:158:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:160:18: high: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and C_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:160:18: high: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and C_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:160:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:162:18: high: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and M_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:162:18: high: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and M_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:162:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:163:10: warning: assuming "Num_Of_Big_Int" always returns
 lsc-bignum.ads:163:10: warning: no returning annotation available for "Num_Of_Big_Int"
@@ -1707,15 +1707,15 @@ lsc-bignum.ads:190:07: info: initialization of "Aux2" proved
 lsc-bignum.ads:192:07: info: initialization of "Aux3" proved
 lsc-bignum.ads:194:07: info: initialization of "Aux4" proved
 lsc-bignum.ads:200:08: info: flow dependencies proved
-lsc-bignum.ads:224:18: high: overflow check might fail, cannot prove upper bound for X_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and X_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:224:18: high: overflow check might fail, cannot prove upper bound for X_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and X_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:224:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:229:18: high: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and M_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:229:18: high: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and M_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:229:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:231:21: high: overflow check might fail, cannot prove upper bound for Aux1_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and Aux1_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:231:21: high: overflow check might fail, cannot prove upper bound for Aux1_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and Aux1_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:231:31: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:233:21: high: overflow check might fail, cannot prove upper bound for Aux2_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and Aux2_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:233:21: high: overflow check might fail, cannot prove upper bound for Aux2_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and Aux2_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:233:31: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:235:21: high: overflow check might fail, cannot prove upper bound for Aux3_First + (A_Last - A_First) (e.g. when A_First = 0 and A_Last = 2 and Aux3_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+lsc-bignum.ads:235:21: high: overflow check might fail, cannot prove upper bound for Aux3_First + (A_Last - A_First) (e.g. when A_First = Natural'Last-3 and A_Last = Natural'Last-1 and Aux3_First = Natural'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:235:31: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:237:21: medium: overflow check might fail, cannot prove upper bound for Aux4_First + (2 ** K * (A_Last - A_First + 1) - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lsc-bignum.ads:237:26: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
