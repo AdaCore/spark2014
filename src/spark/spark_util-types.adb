@@ -414,10 +414,13 @@ package body SPARK_Util.Types is
    -----------------------------
 
    function Acts_As_Incomplete_Type (Ty : Type_Kind_Id) return Boolean is
-     ((Is_Incomplete_Type (Ty) and then Present (Full_View (Ty)))
+     ((Is_Incomplete_Type (Ty)
+      and then not From_Limited_With (Ty)
+      and then Present (Full_View (Ty)))
       or else Is_Partial_View (Ty)
       or else
         (Is_Class_Wide_Type (Ty)
+         and then not From_Limited_With (Ty)
          and then Nkind (Atree.Parent (Ty)) in
            N_Incomplete_Type_Declaration
          | N_Private_Type_Declaration));

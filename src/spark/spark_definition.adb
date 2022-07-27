@@ -468,6 +468,27 @@ package body SPARK_Definition is
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
    --  not belonging to the analyzed subprogram/line.
 
+   function Is_Incomplete_Type_From_Limited_With (E : Entity_Id) return Boolean
+   is
+     ((Is_Incomplete_Type (E) or else Is_Class_Wide_Type (E))
+      and then From_Limited_With (E));
+   --  Return true of the limited view of a type coming from a limited with
+
+   procedure Reject_Incomplete_Type_From_Limited_With
+     (Limited_View  : Entity_Id;
+      Marked_Entity : Entity_Id)
+   with Pre => Is_Incomplete_Type_From_Limited_With (Limited_View);
+   --  For now, reject incomplete types coming from limited with.
+   --  They need to be handled using their No_Limited_View if they
+   --  have one. Unlike other incomplete types, the frontend does
+   --  not replace them by their non-limited view when they occur as a
+   --  parameter subtype or the result type in a subprogram
+   --  declaration, so we cannot avoid marking them altogether as we
+   --  do for regular incomplete types with a full view.
+   --  As limited view do not have an appropriate location, when an entity
+   --  Marked_Entity has a limited type, the violation is emited on
+   --  Marked_Entity instead.
+
    -----------------------------------
    -- Check_Compatible_Access_Types --
    -----------------------------------
@@ -867,6 +888,14 @@ package body SPARK_Definition is
 
    function In_SPARK (E : Entity_Id) return Boolean is
    begin
+      --  Incomplete types coming from limited with should never be marked as
+      --  they have an inappropriate location. The construct referencing them
+      --  should be rejected instead.
+
+      if Is_Incomplete_Type_From_Limited_With (E) then
+         return False;
+      end if;
+
       Mark_Entity (E);
       return Entities_In_SPARK.Contains (E);
    end In_SPARK;
@@ -4960,8 +4989,16 @@ package body SPARK_Definition is
 
       procedure Mark_Parameter_Entity (E : Object_Kind_Id) is
          T : constant Type_Kind_Id := Etype (E);
+
       begin
-         if not Retysp_In_SPARK (T) then
+         --  If T is not in SPARK, E is not in SPARK. If T is a limited view
+         --  coming from a limited with, reject E directly to have a better
+         --  location.
+
+         if Is_Incomplete_Type_From_Limited_With (T) then
+            Reject_Incomplete_Type_From_Limited_With (T, E);
+
+         elsif not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
 
          --  If no violations were found and the object is annotated with
@@ -5111,9 +5148,14 @@ package body SPARK_Definition is
             end loop;
 
             --  If the result type of a subprogram is not in SPARK, then the
-            --  subprogram is not in SPARK.
+            --  subprogram is not in SPARK. If the result types is a limited
+            --  view coming from a limited with, reject the function directly
+            --  to have a better location.
 
-            if not Retysp_In_SPARK (Etype (Id)) then
+            if Is_Incomplete_Type_From_Limited_With (Etype (Id)) then
+               Reject_Incomplete_Type_From_Limited_With (Etype (Id), Id);
+
+            elsif not Retysp_In_SPARK (Etype (Id)) then
                Mark_Violation (Id, From => Etype (Id));
 
             --  For now we disallow access designating subprograms returning
@@ -6446,19 +6488,12 @@ package body SPARK_Definition is
 
          elsif Is_Incomplete_Or_Private_Type (E) then
 
-            --  For now, reject incomplete types coming from limited with.
-            --  They need to be handled using their No_Limited_View if they
-            --  have one. Unlike other incomplete types, the frontend does
-            --  not replace them by their non-limited view when they occur as a
-            --  parameter subtype or the result type in a subprogram
-            --  declaration, so we cannot avoid marking them altogether as we
-            --  do for regular incomplete types with a full view.
+            --  Incomplete types coming from limited views should never be
+            --  marked as they have a bad location, so constructs using them
+            --  are rejected instead.
 
-            if Is_Incomplete_Type (E) and then From_Limited_With (E) then
-               Mark_Unsupported
-                 ("incomplete type from limited with", E,
-                  Cont_Msg =>
-                    "consider restructuring code to avoid `LIMITED WITH`");
+            if Is_Incomplete_Type_From_Limited_With (E) then
+               raise Program_Error;
             end if;
 
             --  If the type and its Retysp are different entities, aspects
@@ -6813,6 +6848,16 @@ package body SPARK_Definition is
                   else
                      Access_To_Incomplete_Types.Append (E);
                   end if;
+
+               --  If the designated type is a limited view coming from a
+               --  limited with, reject the access type directly to have a
+               --  better location.
+
+               elsif (Is_Incomplete_Type (Des_Ty)
+                      or else Is_Class_Wide_Type (Des_Ty))
+                 and then From_Limited_With (Des_Ty)
+               then
+                  Reject_Incomplete_Type_From_Limited_With (Des_Ty, E);
 
                elsif not Retysp_In_SPARK (Des_Ty) then
                   Mark_Violation (E, From => Des_Ty);
@@ -9059,12 +9104,39 @@ package body SPARK_Definition is
       Marking_Queue.Append (E);
    end Queue_For_Marking;
 
+   ----------------------------------------------
+   -- Reject_Incomplete_Type_From_Limited_With --
+   ----------------------------------------------
+
+   procedure Reject_Incomplete_Type_From_Limited_With
+     (Limited_View  : Entity_Id;
+      Marked_Entity : Entity_Id)
+   is
+   begin
+      Error_Msg_Node_1 := Limited_View;
+      Error_Msg_Node_2 := Limited_View;
+      Mark_Unsupported
+        ("limited view of type & coming from limited with", Marked_Entity,
+         E              => Limited_View,
+         Cont_Msg       =>
+           "consider restructuring code to avoid `LIMITED WITH`",
+         Root_Cause_Msg => "limited view coming from limited with");
+   end Reject_Incomplete_Type_From_Limited_With;
+
    ---------------------
    -- Retysp_In_SPARK --
    ---------------------
 
    function Retysp_In_SPARK (E : Type_Kind_Id) return Boolean is
    begin
+      --  Incomplete types coming from limited with should never be marked as
+      --  they have an inappropriate location. The construct referencing them
+      --  should be rejected instead.
+
+      if Is_Incomplete_Type_From_Limited_With (E) then
+         return False;
+      end if;
+
       Mark_Entity (E);
       Mark_Entity (Retysp (E));
       return Entities_In_SPARK.Contains (Retysp (E));

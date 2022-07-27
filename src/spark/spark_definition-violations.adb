@@ -250,9 +250,11 @@ package body SPARK_Definition.Violations is
    ----------------------
 
    procedure Mark_Unsupported
-     (Msg      : String;
-      N        : Node_Id;
-      Cont_Msg : String := "")
+     (Msg            : String;
+      N              : Node_Id;
+      E              : Entity_Id := Types.Empty;
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "")
    is
    begin
       --  Flag the violation, so that the current entity is marked
@@ -263,16 +265,25 @@ package body SPARK_Definition.Violations is
       --  Define the root cause
 
       if Emit_Messages then
-         Add_Violation_Root_Cause (N, Msg);
+         Add_Violation_Root_Cause
+           (N, Msg => (if Root_Cause_Msg /= "" then Root_Cause_Msg else Msg));
       end if;
 
       --  If SPARK_Mode is On, raise an error
 
       if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-         Error_Msg_N (Msg & " is not yet supported", N);
+         if Present (E) then
+            Error_Msg_NE (Msg & " is not yet supported", N, E);
 
-         if Cont_Msg /= "" then
-            Error_Msg_N ('\' & Cont_Msg, N);
+            if Cont_Msg /= "" then
+               Error_Msg_NE ('\' & Cont_Msg, N, E);
+            end if;
+         else
+            Error_Msg_N (Msg & " is not yet supported", N);
+
+            if Cont_Msg /= "" then
+               Error_Msg_N ('\' & Cont_Msg, N);
+            end if;
          end if;
       end if;
    end Mark_Unsupported;

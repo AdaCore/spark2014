@@ -94,15 +94,19 @@ private package SPARK_Definition.Violations is
    --  the given Mode.
 
    procedure Mark_Unsupported
-     (Msg      : String;
-      N        : Node_Id;
-      Cont_Msg : String := "")
+     (Msg            : String;
+      N              : Node_Id;
+      E              : Entity_Id := Types.Empty;
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "")
      with
        Global => (Output => Violation_Detected,
                   Input  => Current_SPARK_Pragma);
    --  Mark node N as an unsupported SPARK construct. An error message is
    --  issued if current SPARK_Mode is On. Cont_Msg is a continuous message
-   --  when specified.
+   --  when specified. If Root_Cause_Msg is set, the corresponding message is
+   --  used as root cause message for cascading violations (typically used if
+   --  Msg has character insertions).
 
    procedure Mark_Violation
      (Msg            : String;
