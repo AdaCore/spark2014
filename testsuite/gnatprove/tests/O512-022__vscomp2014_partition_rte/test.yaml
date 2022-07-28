@@ -1,4 +1,0 @@
-prove_all:
-  steps: 20000
-  procs: 0
-  opt: ["--proof=progressive"]
