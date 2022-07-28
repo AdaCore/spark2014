@@ -67,7 +67,7 @@ names.adb:80:20: medium: precondition might fail [possible fix: loop at line 73 
 names.adb:84:21: info: cannot unroll loop (too many loop iterations)
 names.adb:85:10: medium: precondition might fail [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
 names.adb:88:22: info: assertion proved (CVC5: 1 VC)
-names.adb:89:22: info: assertion proved (Z3: 1 VC)
+names.adb:89:22: info: assertion proved (CVC5: 1 VC)
 names.adb:90:22: info: assertion proved (CVC5: 1 VC)
 names.adb:92:07: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:9 should mention Entry_Table]
 names.adb:93:55: info: overflow check proved (CVC5: 2 VC)

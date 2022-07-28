@@ -13,7 +13,7 @@ lat_long.adb:10:54: medium: float overflow check might fail [reason for check: r
 lat_long.ads:8:34: info: float overflow check proved (CVC5: 1 VC)
 lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1
 lat_long.ads:18:26: medium: precondition might fail [possible fix: subprogram at line 17 should mention X in a precondition]
-lat_long.ads:29:14: info: postcondition proved (Z3: 1 VC)
+lat_long.ads:29:14: info: postcondition proved (altergo: 1 VC)
 lat_long.ads:30:57: info: float overflow check proved (altergo: 1 VC)
 lat_long.ads:30:101: info: float overflow check proved (altergo: 1 VC)
 lat_long.ads:31:58: info: float overflow check proved (altergo: 1 VC)

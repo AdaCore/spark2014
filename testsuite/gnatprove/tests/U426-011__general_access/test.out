@@ -14,12 +14,12 @@ bad_gen_access.adb:24:12: error: violation of aspect SPARK_Mode at line 3
 ext.ads:10:20: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:11:20: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 ext.ads:16:37: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
-ext.ads:18:19: info: assertion proved (CVC5: 1 VC)
+ext.ads:18:19: info: assertion proved (altergo: 1 VC)
 ext.ads:18:40: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:25:22: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:36:28: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 ext.ads:37:28: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
-ext.ads:42:19: info: assertion proved (CVC5: 1 VC)
+ext.ads:42:19: info: assertion proved (altergo: 1 VC)
 ext.ads:42:39: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 ext.ads:43:39: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:44:39: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
@@ -28,7 +28,7 @@ ext.ads:56:29: medium: resource or memory leak might occur [possible explanation
 ext.ads:57:29: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 ext.ads:58:32: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 ext.ads:59:32: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
-ext.ads:67:19: info: assertion proved (CVC5: 1 VC)
+ext.ads:67:19: info: assertion proved (altergo: 1 VC)
 ext.ads:67:39: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 ext.ads:68:39: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:69:39: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
@@ -45,23 +45,23 @@ gen_access.adb:15:28: warning: assuming "Mk" always returns
 gen_access.adb:15:28: warning: assuming "Mk" has no effect on global items
 gen_access.adb:15:28: warning: no Global contract available for "Mk"
 gen_access.adb:15:28: warning: no returning annotation available for "Mk"
-gen_access.adb:16:19: info: assertion proved (CVC5: 1 VC)
+gen_access.adb:16:19: info: assertion proved (altergo: 1 VC)
 gen_access.adb:16:31: warning: assuming "Mk" always returns
 gen_access.adb:16:31: warning: assuming "Mk" has no effect on global items
 gen_access.adb:16:31: warning: no Global contract available for "Mk"
 gen_access.adb:16:31: warning: no returning annotation available for "Mk"
-gen_access.adb:24:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+gen_access.adb:24:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 gen_access.adb:24:24: warning: assuming "Mk" always returns
 gen_access.adb:24:24: warning: assuming "Mk" has no effect on global items
 gen_access.adb:24:24: warning: no Global contract available for "Mk"
 gen_access.adb:24:24: warning: no returning annotation available for "Mk"
 gen_access.adb:25:04: medium: resource or memory leak might occur at end of scope
-gen_access.adb:26:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+gen_access.adb:26:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 gen_access.adb:26:24: warning: assuming "Mk" always returns
 gen_access.adb:26:24: warning: assuming "Mk" has no effect on global items
 gen_access.adb:26:24: warning: no Global contract available for "Mk"
 gen_access.adb:26:24: warning: no returning annotation available for "Mk"
-gen_access.adb:37:19: info: assertion proved (CVC5: 1 VC)
+gen_access.adb:37:19: info: assertion proved (altergo: 1 VC)
 gen_access.adb:37:22: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 gen_access.adb:37:22: warning: assuming "Mk_Arr_1" always returns
 gen_access.adb:37:22: warning: assuming "Mk_Arr_1" has no effect on global items
@@ -118,7 +118,7 @@ gen_access.adb:96:10: warning: statement has no effect
 gen_access.adb:96:22: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:96:22: warning: "L.N" is set by "Delete" but not used after the call
 gen_access.adb:97:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
-gen_access.adb:111:19: info: assertion proved (CVC5: 1 VC)
+gen_access.adb:111:19: info: assertion proved (Z3: 1 VC)
 gen_access.adb:111:22: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 gen_access.adb:111:22: warning: assuming "Mk_List2" always returns
 gen_access.adb:111:22: warning: assuming "Mk_List2" has no effect on global items
@@ -130,7 +130,7 @@ gen_access.adb:112:18: warning: assuming "Mk_List2" has no effect on global item
 gen_access.adb:112:18: warning: no Global contract available for "Mk_List2"
 gen_access.adb:112:18: warning: no returning annotation available for "Mk_List2"
 gen_access.adb:113:04: medium: resource or memory leak might occur at end of scope
-gen_access.adb:124:19: info: assertion proved (CVC5: 1 VC)
+gen_access.adb:124:19: info: assertion proved (Z3: 1 VC)
 gen_access.adb:124:22: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 gen_access.adb:124:22: warning: assuming "Mk_My_Acc" always returns
 gen_access.adb:124:22: warning: assuming "Mk_My_Acc" has no effect on global items
@@ -142,22 +142,22 @@ gen_access.adb:125:19: warning: assuming "Mk_My_Acc" has no effect on global ite
 gen_access.adb:125:19: warning: no Global contract available for "Mk_My_Acc"
 gen_access.adb:125:19: warning: no returning annotation available for "Mk_My_Acc"
 gen_access.adb:126:04: medium: resource or memory leak might occur at end of scope
-gen_access.adb:129:07: info: pointer dereference check proved (CVC5: 1 VC)
+gen_access.adb:129:07: info: pointer dereference check proved (Z3: 1 VC)
 gen_access.adb:129:16: medium: resource or memory leak might occur
-gen_access.adb:132:33: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:132:57: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:132:59: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:133:20: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:133:22: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:133:24: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:133:48: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:133:50: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:133:52: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:133:54: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:134:20: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:134:22: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:134:24: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:134:26: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:134:28: info: pointer dereference check proved (CVC5: 1 VC)
+gen_access.adb:132:33: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:132:57: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:132:59: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:133:20: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:133:22: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:133:24: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:133:48: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:133:50: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:133:52: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:133:54: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:134:20: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:134:22: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:134:24: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:134:26: info: pointer dereference check proved (Z3: 1 VC)
+gen_access.adb:134:28: info: pointer dereference check proved (Z3: 1 VC)
 gen_access.adb:137:04: info: precondition proved (Trivial: 1 VC; Z3: 2 VC)
 gnatprove: error during flow analysis and proof

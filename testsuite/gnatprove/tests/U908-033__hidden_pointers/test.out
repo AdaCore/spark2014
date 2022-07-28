@@ -420,7 +420,7 @@ example_tagged_obj.adb:61:07: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:67:13: warning: assuming "Has_Key" has no effect on global items
 example_tagged_obj.adb:67:13: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:67:50: info: precondition proved (CVC5: 1 VC)
-example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 4 VC; Z3: 1 VC)
+example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 5 VC)
 example_tagged_obj.adb:70:09: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:70:39: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:70:39: info: tag check proved (CVC5: 1 VC)
@@ -540,7 +540,7 @@ example_untagged_obj.adb:61:04: info: precondition proved (CVC5: 2 VC)
 example_untagged_obj.adb:62:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:62:19: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:63:19: info: assertion proved (CVC5: 1 VC)
-example_untagged_obj.adb:63:19: medium: precondition might fail
+example_untagged_obj.adb:63:19: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:64:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:64:19: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:65:19: info: assertion proved (CVC5: 1 VC)

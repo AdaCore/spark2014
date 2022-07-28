@@ -137,8 +137,8 @@ very_longs.adb:292:34: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:292:38: info: index check proved (CVC5: 2 VC)
 very_longs.adb:293:25: warning: assuming "Shift_Right" always returns
 very_longs.adb:293:25: warning: no returning annotation available for "Shift_Right"
+very_longs.adb:295:44: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:295:44: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at very_longs.ads:59 should mention L in a precondition]
-very_longs.adb:295:44: medium: overflow check might fail, cannot prove lower bound for L.Octet_Length + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at very_longs.ads:59 should mention L in a precondition]
 very_longs.adb:307:15: info: range check proved (CVC5: 2 VC)
 very_longs.adb:310:15: info: range check proved (CVC5: 2 VC)
 very_longs.adb:310:93: info: overflow check proved (CVC5: 2 VC)

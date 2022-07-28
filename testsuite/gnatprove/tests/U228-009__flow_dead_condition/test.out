@@ -15,7 +15,7 @@ p.adb:38:29: info: initialization of "MyOut" proved
 p.adb:39:11: info: data dependencies proved
 p.adb:42:18: medium: pointer dereference check might fail [possible fix: subprogram at line 37 should mention X in a precondition]
 p.adb:42:26: medium: pointer dereference check might fail [possible fix: subprogram at line 37 should mention A in a precondition]
-p.adb:46:04: info: precondition proved (CVC5: 2 VC)
+p.adb:46:04: medium: precondition might fail, cannot prove X /= null
 p.adb:46:17: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 p.adb:47:18: high: formal parameter "X" and global "A" are aliased (SPARK RM 6.4.2)
-p.adb:51:04: info: precondition proved (CVC5: 2 VC)
+p.adb:51:04: medium: precondition might fail, cannot prove X /= null

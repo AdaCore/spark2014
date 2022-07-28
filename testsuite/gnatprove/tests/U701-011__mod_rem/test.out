@@ -20,7 +20,7 @@ mod_rem.adb:20:47: info: overflow check proved (CVC5: 2 VC)
 mod_rem.adb:20:50: info: division check proved (CVC5: 1 VC)
 mod_rem.adb:20:55: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 mod_rem.adb:20:58: info: division check proved (CVC5: 1 VC)
-mod_rem.adb:20:58: info: overflow check proved (Z3: 2 VC)
+mod_rem.adb:20:58: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 mod_rem.adb:21:69: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 mod_rem.adb:21:69: medium: assertion might fail, cannot prove -(A/B) = A/(-B) [possible fix: precondition of subprogram at line 3 should mention A]
 mod_rem.adb:21:72: info: division check proved (CVC5: 1 VC)

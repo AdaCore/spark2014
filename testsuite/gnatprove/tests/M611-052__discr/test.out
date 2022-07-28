@@ -44,13 +44,13 @@ list.ads:13:79: info: overflow check proved (CVC5: 2 VC)
 list.ads:13:83: info: overflow check proved (CVC5: 2 VC)
 list.ads:13:83: info: range check proved (CVC5: 2 VC)
 stack.adb:4:47: info: range check proved (CVC5: 1 VC)
-stack.adb:4:47: medium: range check might fail (e.g. when S = (N => 0, Top => 1, Content => ?) and S.Content'First = 1 and S.Content'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
+stack.adb:4:47: medium: range check might fail (e.g. when S = (N => 0, Top => 1, Content => (others => 1))) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
 stack.adb:5:55: info: range check proved (CVC5: 1 VC)
-stack.adb:5:55: medium: range check might fail (e.g. when S = (N => 0, Top => 2, Content => ?) and S.Content'First = 1 and S.Content'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
+stack.adb:5:55: medium: range check might fail (e.g. when S = (N => 0, Top => 2, Content => (others => 1))) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
 stack.adb:20:22: info: range check proved (CVC5: 2 VC)
 stack.adb:21:19: info: index check proved (CVC5: 2 VC)
 stack.adb:32:22: info: range check proved (CVC5: 2 VC)
 stack.ads:23:14: info: precondition proved (CVC5: 1 VC)
-stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (N => 1, Top => 1, Content => (1 => 0)) and S.Content'First = 1 and S.Content'Last = 1 and X = 0)
+stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (N => 1, Top => 1, Content => (others => 0)) and X = 0)
 stack.ads:27:14: info: postcondition proved (CVC5: 1 VC)
 stack.ads:37:07: info: range check proved (CVC5: 2 VC)

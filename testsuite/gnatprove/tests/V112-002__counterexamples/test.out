@@ -8,13 +8,13 @@ main.adb:26:38: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:29:22: medium: assertion might fail (e.g. when H = (C => new Integer'(3)))
 main.adb:29:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:35:06: info: data dependencies proved
-main.adb:39:22: medium: assertion might fail (e.g. when A = (1 => 0, others => ?) and A (1)'Initialized = True and A (2)'Initialized = False)
+main.adb:39:22: medium: assertion might fail (e.g. when A (1)'Initialized = True and A (2)'Initialized = False)
 main.adb:44:06: info: data dependencies proved
 main.adb:48:40: medium: assertion might fail, cannot prove E /= 1
 main.adb:57:06: info: data dependencies proved
 main.adb:58:52: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:58:56: info: index check proved (CVC5: 2 VC)
-main.adb:61:22: medium: assertion might fail (e.g. when H = (L => 1, S => new String'("h")) and H.S.all'First = 1 and H.S.all'Last = 1)
+main.adb:61:22: medium: assertion might fail (e.g. when H = (L => 1, S => new String'((others => 'h'))))
 main.adb:61:23: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:61:27: info: index check proved (CVC5: 2 VC)
 main.adb:83:06: info: data dependencies proved

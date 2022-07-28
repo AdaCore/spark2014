@@ -119,7 +119,7 @@ aco-math-very_longs.adb:271:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:271:42: info: in default value at aco-math-very_longs.adb:271
 aco-math-very_longs.adb:271:42: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:271:42: info: range check proved (CVC5: 2 VC)
-aco-math-very_longs.adb:271:42: medium: overflow check might fail, cannot prove upper bound for L.Octet_Length + R.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and R = (Octet_Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (L.Octet_Length <= 2147483647 - R.Octet_Length) to subprogram at aco-math-very_longs.ads:70]
+aco-math-very_longs.adb:271:42: medium: overflow check might fail, cannot prove upper bound for L.Octet_Length + R.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and R = (Octet_Length => Digit_Index_Type'Last, Long_Digits => (others => 0))) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (L.Octet_Length <= 2147483647 - R.Octet_Length) to subprogram at aco-math-very_longs.ads:70]
 aco-math-very_longs.adb:272:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:273:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:274:07: info: initialization of "T_Digit" proved
@@ -137,7 +137,7 @@ aco-math-very_longs.adb:289:34: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:289:38: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:290:48: warning: assuming "Shift_Right" always returns
 aco-math-very_longs.adb:290:48: warning: no returning annotation available for "Shift_Right"
-aco-math-very_longs.adb:292:44: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
+aco-math-very_longs.adb:292:44: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:292:44: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:304:15: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:307:15: info: range check proved (CVC5: 2 VC)

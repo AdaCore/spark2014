@@ -3,8 +3,8 @@ alias.adb:10:14: medium: overflow check might fail, cannot prove lower bound for
 alias.adb:15:18: medium: overflow check might fail, cannot prove lower bound for H.F + X.F (e.g. when H = (D => ?, F => Integer'First) and X = (D => ?, F => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at alias.ads:14 should mention H and X in a precondition]
 alias.adb:19:18: medium: overflow check might fail, cannot prove lower bound for H.F + X.F (e.g. when H = (D => ?, F => Integer'First) and X = (D => True, F => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at alias.ads:16 should mention H and X in a precondition]
 alias.adb:24:10: info: index check proved (CVC5: 2 VC)
-alias.adb:24:19: medium: array index check might fail (e.g. when I'Last = 0 and X'Last = 1) [reason for check: value must be a valid index into the array]
-alias.adb:24:22: medium: overflow check might fail, cannot prove upper bound for I (1) + X (1) (e.g. when I = (1 => Natural'Last, others => 1) and X = (1 => 1) and X'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at alias.ads:22 should mention I and X in a precondition]
+alias.adb:24:19: medium: array index check might fail (e.g. when I'Last = 0) [reason for check: value must be a valid index into the array]
+alias.adb:24:22: medium: overflow check might fail, cannot prove upper bound for I (1) + X (1) (e.g. when I = (1 => Natural'Last, others => 1) and X = (1 => 1, others => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at alias.ads:22 should mention I and X in a precondition]
 alias.adb:24:27: medium: array index check might fail (e.g. when X'First = 2) [reason for check: value must be a valid index into the array]
 alias.adb:28:10: info: index check proved (CVC5: 2 VC)
 alias.adb:28:19: medium: array index check might fail (e.g. when I'Last = 0) [reason for check: value must be a valid index into the array]

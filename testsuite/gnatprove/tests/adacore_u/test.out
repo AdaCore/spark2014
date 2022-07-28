@@ -1,7 +1,7 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
-aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and J = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
+aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
 global_stack.ads:4:12: error: function with output global "Top" is not allowed in SPARK
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
@@ -99,17 +99,17 @@ stacks.adb:9:19: info: index check proved (CVC5: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC5: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC5: 2 VC)
 communication.adb:5:15: medium: length check might fail (e.g. when Address = (1 => 'NUL') and Address'First = 1 and Address'Last = 1) [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition]
-communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:20:32: medium: overflow check might fail, cannot prove upper bound for B.First + 1 (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:21:24: medium: overflow check might fail, cannot prove upper bound for B.First + B.Length (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:20:32: medium: overflow check might fail, cannot prove upper bound for B.First + 1 (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:21:24: medium: overflow check might fail, cannot prove upper bound for B.First + B.Length (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:32: info: overflow check proved (CVC5: 2 VC)
 communication.adb:22:43: info: overflow check proved (CVC5: 2 VC)
-communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (1 => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:23:34: info: overflow check proved (CVC5: 2 VC)
 communication.adb:25:32: info: index check proved (CVC5: 2 VC)
 communication.adb:25:32: info: overflow check proved (CVC5: 2 VC)
 communication.adb:26:34: info: overflow check proved (CVC5: 2 VC)
-communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
+communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 1)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
 communication.adb:36:34: info: range check proved (CVC5: 2 VC)
 communication.adb:39:30: info: index check proved (CVC5: 2 VC)
 communication.adb:40:34: info: range check proved (CVC5: 2 VC)

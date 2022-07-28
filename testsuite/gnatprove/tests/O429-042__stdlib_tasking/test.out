@@ -104,7 +104,7 @@ ada_real_time.ads:147:61: info: division check proved (CVC5: 1 VC)
 ada_real_time.ads:147:61: info: overflow check proved (CVC5: 2 VC)
 ada_real_time.ads:147:61: info: range check proved (CVC5: 2 VC)
 ada_real_time.ads:148:58: info: division check proved (CVC5: 1 VC)
-ada_real_time.ads:148:58: info: overflow check proved (altergo: 2 VC)
+ada_real_time.ads:148:58: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 ada_real_time.ads:150:22: warning: assuming "<" always returns
 ada_real_time.ads:150:22: warning: no returning annotation available for "<"
 ada_real_time.ads:151:27: info: implicit function contract not available for proof ("To_Duration" might not return)

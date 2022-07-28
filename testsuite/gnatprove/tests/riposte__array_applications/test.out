@@ -7,7 +7,7 @@ array_applications.adb:26:13: info: loop invariant preservation proved (CVC5: 3 
 array_applications.adb:26:22: info: range check proved (CVC5: 4 VC)
 array_applications.adb:27:18: info: index check proved (CVC5: 4 VC)
 array_applications.adb:27:27: info: index check proved (CVC5: 4 VC)
-array_applications.adb:27:32: medium: overflow check might fail, cannot prove upper bound for A(J - 1) + A(J - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+array_applications.adb:27:32: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
 array_applications.adb:27:38: info: index check proved (CVC5: 4 VC)
 array_applications.adb:34:09: info: data dependencies proved
 array_applications.adb:35:09: info: flow dependencies proved
@@ -18,7 +18,7 @@ array_applications.adb:46:13: info: loop invariant preservation proved (CVC5: 3 
 array_applications.adb:46:22: info: range check proved (CVC5: 4 VC)
 array_applications.adb:47:18: info: index check proved (CVC5: 4 VC)
 array_applications.adb:47:27: info: index check proved (CVC5: 4 VC)
-array_applications.adb:47:32: medium: overflow check might fail, cannot prove upper bound for A(J - 1) + A(J - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+array_applications.adb:47:32: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
 array_applications.adb:47:38: info: index check proved (CVC5: 4 VC)
 array_applications.adb:60:09: info: data dependencies proved
 array_applications.adb:61:09: info: flow dependencies proved

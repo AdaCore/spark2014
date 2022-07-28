@@ -168,7 +168,7 @@ partition_refinement.adb:146:47: info: range check proved (CVC5: 2 VC)
 partition_refinement.adb:147:13: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:149:52: info: unrolling loop
 partition_refinement.adb:179:38: info: precondition proved (CVC5: 2 VC)
-partition_refinement.adb:180:10: info: precondition proved (CVC5: 10 VC; Z3: 2 VC)
+partition_refinement.adb:180:10: info: precondition proved (CVC5: 11 VC; Z3: 1 VC)
 partition_refinement.adb:180:34: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:181:10: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:183:33: info: loop invariant initialization proved (CVC5: 1 VC)
