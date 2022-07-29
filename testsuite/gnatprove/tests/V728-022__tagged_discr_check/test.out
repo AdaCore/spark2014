@@ -1,0 +1,1 @@
+main.adb:24:11: medium: discriminant check might fail [possible fix: subprogram at line 7 should mention R in a precondition]
