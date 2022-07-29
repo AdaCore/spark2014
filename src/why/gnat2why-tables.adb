@@ -328,10 +328,7 @@ package body Gnat2Why.Tables is
       Rec_Ty  : constant Entity_Id := Find_Rec_Node_For_Variant (Rec);
       C_I_Map : Component_Info_Map renames
         Comp_Info (Rec_Ty).Variant_Info;
-      R_Comp  : constant Entity_Id :=
-        (if Nkind (Comp) = N_Defining_Identifier
-         then Original_Record_Component (Comp)
-         else Comp);
+      R_Comp  : constant Entity_Id := Original_Record_Component (Comp);
       Curs    : constant Component_Info_Maps.Cursor :=
         C_I_Map.Find (R_Comp);
    begin
