@@ -50,6 +50,7 @@ project GNATprove is
          when "Debug" =>
             for Default_Switches ("Ada") use
                Common_Switches & ("-O0", "-gnata", "-gnatwae", "-gnatVa");
+            for Default_Switches ("C") use ("-g", "-Wall");
          when "Production" =>
             for Default_Switches ("Ada") use
                Common_Switches & ("-O2", "-gnatn");

@@ -60,8 +60,8 @@ package Named_Semaphores is
    procedure Create (Name : String; Init : Natural; S : out Semaphore);
    --  Creates a semaphore with the given name and the initial value Init
    --  in the semaphore namespace. The semaphore can be used directly in the
-   --  same process using Wait, Release or Close, or in it can be opened via
-   --  Open in other processes.
+   --  same process using Wait, Release or Close, or it can be opened via Open
+   --  in other processes.
 
    procedure Open (Name : String; S : out Semaphore);
    --  Open a semaphore that already has been created previously using Create
